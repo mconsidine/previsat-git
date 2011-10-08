@@ -1,0 +1,346 @@
+/*
+ *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
+ *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Nom du fichier
+ * >    observateur.cpp
+ *
+ * Localisation
+ * >    librairies.observateur
+ *
+ * Heritage
+ * >
+ *
+ * Description
+ * >    Utilitaires lies au lieu d'observation
+ *
+ * Auteur
+ * >    Astropedia
+ *
+ * Date de creation
+ * >    30 juillet 2011
+ *
+ * Date de revision
+ * >
+ *
+ */
+
+#include <cmath>
+#include "observateur.h"
+#include "librairies/maths/maths.h"
+
+/*
+ * Constructeur par defaut
+ */
+Observateur::Observateur()
+{
+}
+
+/*
+ * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
+ */
+Observateur::Observateur(const QString nomlieu, const double longitude, const double latitude, const double altitude)
+{
+    /* Declarations des variables locales */
+    double coster, sinter;
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _nomlieu = nomlieu;
+    _longitude = DEG2RAD * longitude;
+    _latitude = DEG2RAD * latitude;
+    _altitude = altitude * 1.e-3;
+
+    _coslat = cos(_latitude);
+    _sinlat = sin(_latitude);
+
+    coster = 1. / sqrt(1. - E2 * _sinlat * _sinlat);
+    sinter = G2 * coster;
+
+    _rayon = (RAYON_TERRESTRE * coster + _altitude) * _coslat;
+    _posZ = (RAYON_TERRESTRE * sinter + _altitude) * _sinlat;
+
+    // Pour l'extinction atmospherique
+    _aray = 0.1451 * exp(-_altitude / 7.996);
+    _aaer = 0.120 * exp(-_altitude / 1.5);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Constructeur a partir d'un lieu d'observation
+ */
+Observateur::Observateur(const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _nomlieu = observateur._nomlieu;
+    _longitude = observateur._longitude;
+    _latitude = observateur._latitude;
+    _altitude = observateur._altitude;
+
+    _coslat = observateur._coslat;
+    _sinlat = observateur._sinlat;
+
+    _rayon = observateur._rayon;
+    _posZ = observateur._posZ;
+
+    // Pour l'extinction atmospherique
+    _aray = observateur._aray;
+    _aaer = observateur._aaer;
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Constructeur a partir des donnees relatives au lieu d'observation a une date donnee (pour le calcul des previsions)
+ */
+Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz, const double aaer, const double aray)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _position = position;
+    _vitesse = vitesse;
+    _rotHz = rotHz;
+    _aaer = aaer;
+    _aray = aray;
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Destructeur
+ */
+Observateur::~Observateur()
+{
+}
+
+
+/* Methodes */
+/*
+ * Calcul de la position et de la vitesse du lieu d'observation
+ */
+void Observateur::CalculPosVit(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _tempsSideralGreenwich = CalculTempsSideralGreenwich(date);
+
+    // Temps sideral local
+    const double tsl = _tempsSideralGreenwich - _longitude;
+    const double costsl = cos(tsl);
+    const double sintsl = sin(tsl);
+
+    /* Corps de la methode */
+    // Position de l'observateur
+    _position = Vecteur3D(_rayon * costsl, _rayon * sintsl, _posZ);
+
+    // Vitesse de l'observateur
+    _vitesse = Vecteur3D(-OMEGA * _position.getY(), OMEGA * _position.getX(), 0.);
+
+    // Matrice utile pour le calcul des coordonnees horizontales
+    const Vecteur3D v1(_sinlat * costsl, -sintsl, _coslat * costsl);
+    const Vecteur3D v2(_sinlat * sintsl, costsl, _coslat * sintsl);
+    const Vecteur3D v3(-_coslat, 0., _sinlat);
+    _rotHz = Matrice(v1, v2, v3);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul du temps sideral de Greenwich
+ * D'apres la formule donnee dans l'Astronomical Algorithms 2nd edition de Jean Meeus, p88
+ */
+double Observateur::CalculTempsSideralGreenwich(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double tu2 = tu * tu;
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + 0.000387933 * tu2 - tu2 * tu / 38710000., T360));
+}
+
+/*
+ * Calcul de la distance entre 2 lieux d'observation (mesuree le long de la surface terrestre),
+ * mais sans tenir compte de l'altitude
+ * Astronomical Algorithms 2nd edition de Jean Meeus, p85
+ */
+double Observateur::CalculDistance(const Observateur observateur) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double f = 0.5 * (_latitude + observateur._latitude);
+    const double g = 0.5 * (_latitude - observateur._latitude);
+    const double l = 0.5 * (_longitude - observateur._longitude);
+
+    const double sf = sin(f);
+    const double sf2 = sf * sf;
+    const double cf = cos(f);
+    const double cf2 = cf * cf;
+
+    const double sg = sin(g);
+    const double sg2 = sg * sg;
+    const double cg = cos(g);
+    const double cg2 = cg * cg;
+
+    const double sl = sin(l);
+    const double sl2 = sl * sl;
+    const double cl = cos(l);
+    const double cl2 = cl * cl;
+
+    /* Corps de la methode */
+    const double s = sg2 * cl2 + cf2 * sl2;
+    const double c = cg2 * cl2 + sf2 * sl2;
+
+    const double om = atan(sqrt(s / c));
+    const double r = sqrt(s * c) / om;
+    const double d = 2. * om * RAYON_TERRESTRE;
+    const double h1 = 0.5 * (3. * r - 1.) / c;
+    const double h2 = 0.5 * (3. * r + 1.) / s;
+
+    /* Retour */
+    return (d * (1. + APLA * h1 * sf2 * cg2 - APLA * h2 * cf2 * sg2));
+}
+
+/*
+ * Calcul du lieu d'observation qui est l'intersection d'un vecteur et de l'ellipsoide terrestre
+ */
+Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction)
+{
+    /* Declarations des variables locales */
+    double lat, lon;
+    QString nom = "";
+    Vecteur3D dir = direction.Normalise();
+
+    /* Initialisations */
+    lon = 0.;
+    lat = 0.;
+    const double x = origine.getX();
+    const double y = origine.getY();
+    const double z = origine.getZ();
+    const double z2 = z * z;
+    const double r2 = x * x + y * y;
+
+    const double dx = dir.getX();
+    const double dy = dir.getY();
+    const double dz = dir.getZ();
+    const double cz2 = dx * dx + dy * dy;
+
+    /* Corps de la methode */
+    const double a = 1. - E2 * cz2;
+    const double b = -(G2 * (x * dx + y * dy) + z * dz);
+    const double c = G2 * (r2 - RAYON_TERRESTRE * RAYON_TERRESTRE) + z2;
+    const double b2 = b * b;
+    const double ac = a * c;
+
+    if (b2 > ac) {
+
+        const double s = sqrt(b2 - ac);
+        const double k1 = (b < 0.) ? (b - s) / a : c / (b + s);
+        const double k2 = c / (a * k1);
+        const double k = (fabs(k1) < fabs(k2)) ? k1 : k2;
+
+        const Vecteur3D intersection = origine + (dir * k);
+        const double tsg = CalculTempsSideralGreenwich(date);
+
+        // Longitude
+        lon = Maths::modulo(tsg - atan2(intersection.getY(), intersection.getX()), DEUX_PI);
+        if (fabs(lon) > PI)
+            lon -= Maths::sgn(lon) * DEUX_PI;
+        lon *= RAD2DEG;
+
+        // Latitude
+        lat = RAD2DEG * atan2(intersection.getZ(), G2 * sqrt(intersection.getX() * intersection.getX() + intersection.getY() * intersection.getY()));
+
+        nom = "INTERSECT";
+    }
+
+    Observateur res = Observateur(nom, lon, lat, 0.);
+
+    /* Retour */
+    return (res);
+}
+
+/* Accesseurs */
+double Observateur::getAaer() const
+{
+    return _aaer;
+}
+
+double Observateur::getAltitude() const
+{
+    return _altitude;
+}
+
+double Observateur::getAray() const
+{
+    return _aray;
+}
+
+double Observateur::getLatitude() const
+{
+    return _latitude;
+}
+
+double Observateur::getLongitude() const
+{
+    return _longitude;
+}
+
+QString Observateur::getNomlieu() const
+{
+    return _nomlieu;
+}
+
+Vecteur3D Observateur::getPosition() const
+{
+    return _position;
+}
+
+Matrice Observateur::getRotHz() const
+{
+    return _rotHz;
+}
+
+double Observateur::getTempsSideralGreenwich() const
+{
+    return _tempsSideralGreenwich;
+}
+
+Vecteur3D Observateur::getVitesse() const
+{
+    return _vitesse;
+}
