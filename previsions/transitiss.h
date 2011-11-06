@@ -75,10 +75,16 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur, QVector<QList<QVector<double > > > &tabEphem);
-    static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps, double minmax[]);
-    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps, const bool itransit, const double seuilConjonction, Date dates[]);
-    static void CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps, const bool itransit, const double seuilConjonction, double &dateInter);
+    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur,
+                                      QVector<QList<QVector<double > > > &tabEphem);
+    static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[],
+                               const int typeCorps, double minmax[]);
+    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax,
+                               const int typeCorps, const bool itransit, const double seuilConjonction,
+                               Date dates[]);
+    static void CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[],
+                           const int typeCorps, const bool itransit, const double seuilConjonction,
+                           double &dateInter);
 
 
 };

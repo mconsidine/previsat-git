@@ -123,7 +123,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     QVectorIterator<TLE> it2(tabtle);
     QVector<TLE> tabtle2;
     while (it2.hasNext()) {
-        TLE tle = it2.next();
+        const TLE tle = it2.next();
         if (tle.getNorad() == "") {
             _tabStsIri.removeAt(i);
         } else {
@@ -155,7 +155,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     while (it4.hasNext()) {
 
         Satellite sat = it4.next();
-        QString sts = it1.next();
+        const QString sts = it1.next();
 
         // Boucle sur le tableau d'ephemerides du Soleil
         it3.toFront();
@@ -170,7 +170,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
             const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
             const Matrice mat = Matrice(v1, v2, v3);
-            Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(),
+                                                observateur.getAray());
 
             // Position ECI du Soleil
             const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
@@ -212,7 +213,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                             jjm[1] = jj0;
                             jjm[2] = jj0 + NB_JOUR_PAR_MIN;
 
-                            // Calcul par interpolation de l'instant correspondant a l'angle de reflexion minimum
+                            // Calcul par interpolation de l'instant correspondant
+                            // a l'angle de reflexion minimum
                             CalculAngleMin(sat, observateur, soleil, jjm, minmax);
 
 
@@ -230,7 +232,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
                             if (minmax[0] - temp > PAS_INT1) {
 
-                                Date date2 = Date(minmax[0], 0., false);
+                                const Date date2 = Date(minmax[0], 0., false);
 
                                 observateur.CalculPosVit(date2);
 
@@ -244,17 +246,20 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                     soleil.CalculPosition(date2);
                                     soleil.CalculCoordHoriz(observateur, false);
 
-                                    double mgn0 = (soleil.getHauteur() < conditions.getCrep()) ? conditions.getMgn1() : conditions.getMgn2();
+                                    const double mgn0 = (soleil.getHauteur() < conditions.getCrep()) ?
+                                                conditions.getMgn1() : conditions.getMgn2();
 
                                     // Magnitude du flash
-                                    double mag = MagnitudeFlash(sat, observateur, soleil, minmax[1], conditions.getExt());
+                                    double mag = MagnitudeFlash(sat, observateur, soleil, minmax[1],
+                                                                conditions.getExt());
 
                                     if (mag <= mgn0) {
 
                                         Date dates[conditions.getNbl()];
 
                                         // Calcul des limites du flash
-                                        CalculLimitesFlash(sat, observateur, soleil, conditions, minmax[0], mgn0, dates);
+                                        CalculLimitesFlash(sat, observateur, soleil, conditions, minmax[0],
+                                                           mgn0, dates);
 
                                         if (dates[conditions.getNbl() / 2].getJourJulienUTC() < DATE_INFINIE) {
 
@@ -282,9 +287,11 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                                 angref = AngleReflexion(sat, soleil);
 
                                                 // Magnitude du flash
-                                                mag = MagnitudeFlash(sat, observateur, soleil, angref, conditions.getExt());
+                                                mag = MagnitudeFlash(sat, observateur, soleil, angref,
+                                                                     conditions.getExt());
 
-                                                if (angref > conditions.getAng0() + 1.e-3 || mag > mgn0 + 0.01) {
+                                                if (angref > conditions.getAng0() + 1.e-3 ||
+                                                        mag > mgn0 + 0.01) {
                                                     if (res.count() % conditions.getNbl() != 0)
                                                         res.removeLast();
                                                     if (res.count() % conditions.getNbl() != 0)
@@ -297,29 +304,44 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                                 // Altitude du satellite
                                                 double altitude, ct, latitude, phi;
                                                 Vecteur3D position = sat.getPosition();
-                                                const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+                                                const double r = sqrt(position.getX() * position.getX() +
+                                                                      position.getY() * position.getY());
                                                 latitude = atan(position.getZ() / r);
                                                 do {
                                                     phi = latitude;
-                                                    double sph = sin(phi);
+                                                    const double sph = sin(phi);
                                                     ct = 1. / sqrt(1. - E2 * sph * sph);
-                                                    latitude = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
+                                                    latitude = atan((position.getZ() + RAYON_TERRESTRE * ct *
+                                                                     E2 * sph) / r);
                                                 } while (fabs(latitude - phi) > 1.e-7);
                                                 altitude = r / cos(latitude) - RAYON_TERRESTRE * ct;
 
                                                 // Ecriture du flash
 
                                                 // Date calendaire
-                                                Date date3 = Date(dates[i].getJourJulienUTC() + conditions.getDtu() + EPS_DATES, 0., true);
+                                                const Date date3 = Date(dates[i].getJourJulienUTC() +
+                                                                  conditions.getDtu() + EPS_DATES, 0., true);
                                                 ligne = date3.ToShortDate(Date::LONG);
 
                                                 // Coordonnees topocentriques
-                                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0, false ,false)).append(" ");
-                                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0, false ,false)).append(" ");
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(sat.getAzimut(),
+                                                                                    Maths::DEGRE, 3, 0, false,
+                                                                                    false)).append(" ");
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(sat.getHauteur(),
+                                                                                     Maths::DEGRE, 2, 0,
+                                                                                     false, false)).append(" ");
 
                                                 // Coordonnees equatoriales
-                                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0, false ,false)).append(" ");
-                                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0, true ,false)).append(" ");
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(sat.getAscensionDroite(),
+                                                                                    Maths::HEURE1, 2, 0,
+                                                                                    false, false)).append(" ");
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(sat.getDeclinaison(),
+                                                                                    Maths::DEGRE, 2, 0, true,
+                                                                                    false)).append(" ");
 
                                                 ligne = ligne.append(sat.getConstellation()).append(" ");
 
@@ -339,42 +361,67 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                                     altitude *= MILE_PAR_KM;
                                                     distance *= MILE_PAR_KM;
                                                 }
-                                                ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
+                                                ligne = ligne.arg(altitude, 6, 'f', 1).
+                                                        arg(distance, 6, 'f', 1);
 
                                                 // Coordonnees topocentriques du Soleil
-                                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false ,false)).append(" ");
-                                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true ,false));
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(soleil.getAzimut(),
+                                                                                    Maths::DEGRE, 3, 0, false,
+                                                                                    false)).append(" ");
+                                                ligne = ligne.
+                                                        append(Maths::ToSexagesimal(soleil.getHauteur(),
+                                                                                    Maths::DEGRE, 2, 0, true,
+                                                                                    false));
                                                 ligne = ligne.append(QString::number(i));
 
-                                                // Recherche des coordonnees geographiques ou se produit le maximum du flash
+                                                // Recherche des coordonnees geographiques ou se produit
+                                                // le maximum du flash
                                                 if (i == conditions.getNbl() / 2) {
 
-                                                    Vecteur3D direction = _PR.Transposee() * _solsat;
-                                                    obsmax = Observateur::CalculIntersectionEllipsoide(dates[i], position, direction);
+                                                    const Vecteur3D direction = _PR.Transposee() * _solsat;
+                                                    obsmax = Observateur::
+                                                            CalculIntersectionEllipsoide(dates[i], position,
+                                                                                         direction);
                                                     if (obsmax.getNomlieu() != "") {
 
                                                         obsmax.CalculPosVit(dates[i]);
                                                         sat.CalculCoordHoriz(obsmax, false);
 
                                                         // Distance entre les 2 lieux d'observation
-                                                        const double distanceObs = observateur.CalculDistance(obsmax);
-                                                        double diff = obsmax.getLongitude() - observateur.getLongitude();
+                                                        const double distanceObs = observateur.
+                                                                CalculDistance(obsmax);
+                                                        double diff = obsmax.getLongitude() - observateur.
+                                                                getLongitude();
                                                         if (fabs(diff) > PI)
                                                             diff -= Maths::sgn(diff) * PI;
-                                                        const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
+                                                        const QString dir = (diff > 0) ? QObject::tr("(W)") :
+                                                                                         QObject::tr("(E)");
 
                                                         // Angle de reflexion pour le lieu du maximum
                                                         const double angRefMax = AngleReflexion(sat, soleil);
 
                                                         // Magnitude du flash
-                                                        const double magFlashMax = MagnitudeFlash(sat, obsmax, soleil, angRefMax, conditions.getExt());
+                                                        const double magFlashMax =
+                                                                MagnitudeFlash(sat, obsmax, soleil, angRefMax,
+                                                                               conditions.getExt());
 
-                                                        const QString ew = (obsmax.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-                                                        const QString ns = (obsmax.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+                                                        const QString ew = (obsmax.getLongitude() >= 0.) ?
+                                                                    QObject::tr("W") : QObject::tr("E");
+                                                        const QString ns = (obsmax.getLatitude() >= 0.) ?
+                                                                    QObject::tr("N") : QObject::tr("S");
 
                                                         // Ecriture de la chaine de caracteres
-                                                        ligne = ligne.append("   %1 %2  %3 %4  %5 %6    ").append((magFlashMax > 0.) ? "+%7" : "-%7");
-                                                        ligne = ligne.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir).arg(fabs(magFlashMax), 2, 'f', 1).append((sat.isPenombre()) ? "*" : "");
+                                                        ligne = ligne.append("   %1 %2  %3 %4  %5 %6    ").
+                                                                append((magFlashMax > 0.) ? "+%7" : "-%7");
+                                                        ligne = ligne.
+                                                                arg(fabs(obsmax.getLongitude() * RAD2DEG), 8,
+                                                                    'f', 4, QChar('0')).arg(ew).
+                                                                arg(fabs(obsmax.getLatitude() * RAD2DEG), 7,
+                                                                    'f', 4, QChar('0')).arg(ns).
+                                                                arg(distanceObs, 5, 'f', 1).arg(dir).
+                                                                arg(fabs(magFlashMax), 2, 'f', 1).
+                                                                append((sat.isPenombre()) ? "*" : "");
                                                     }
                                                 }
 
@@ -394,7 +441,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                         } // fin if (angref <= 0.2)
 
                         jj0 += pas;
-                        Date date0 = Date(jj0, 0., false);
+                        const Date date0 = Date(jj0, 0., false);
 
                         observateur.CalculPosVit(date0);
 
@@ -418,7 +465,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
                 bool atrouve = false;
                 while (it3.hasNext() && !atrouve) {
-                    double jj = it3.next().at(0);
+                    const double jj = it3.next().at(0);
                     if (jj >= date.getJourJulienUTC()) {
                         atrouve = true;
                         it3.previous();
@@ -445,7 +492,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
         while (i < res.count()) {
             for (int j=0; j<conditions.getNbl(); j++) {
                 ligne = res.at(i);
-                flux << ligne.mid(ligne.length() - 4) << ligne.mid(0, ligne.length() - 4).remove(119, 1) << endl;
+                flux << ligne.mid(ligne.length() - 4) << ligne.mid(0, ligne.length() - 4).remove(119, 1) <<
+                        endl;
                 i++;
             }
             flux << endl;
@@ -461,7 +509,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     return;
 }
 
-void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur, QList<QVector<double> > &tabEphem)
+void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
+                                           QList<QVector<double> > &tabEphem)
 {
     /* Declarations des variables locales */
     int i;
@@ -525,8 +574,8 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 
     /* Corps de la methode */
     Vecteur3D xx = satellite.getVitesse().Normalise();
-    Vecteur3D yy = satellite.getPosition().Normalise() ^ xx;
-    Vecteur3D zz = xx ^ yy;
+    const Vecteur3D yy = satellite.getPosition().Normalise() ^ xx;
+    const Vecteur3D zz = xx ^ yy;
 
     // Matrice de passage ECI geocentrique -> ECI satellite
     Matrice P = Matrice(xx, yy, zz);
@@ -552,7 +601,7 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         const Vecteur3D v3(-SINPHI * cospsi, SINPHI * sinpsi, COSPHI);
 
         // Matrice de rotation repere satellite -> repere panneau
-        Matrice R(v1, v2, v3);
+        const Matrice R(v1, v2, v3);
 
         // Matrice produit P x R
         _PR = (P * R).Transposee();
@@ -588,18 +637,18 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     return (ang);
 }
 
-void Iridium::CalculAngleMin(Satellite &satellite, Observateur &observateur, Soleil &soleil, const double jjm[], double minmax[])
+void Iridium::CalculAngleMin(Satellite &satellite, Observateur &observateur, Soleil &soleil,
+                             const double jjm[], double minmax[])
 {
     /* Declarations des variables locales */
     double ang[3];
-    Date date;
 
     /* Initialisations */
 
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        date = Date(jjm[i], 0., false);
+        const Date date = Date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -621,7 +670,9 @@ void Iridium::CalculAngleMin(Satellite &satellite, Observateur &observateur, Sol
     return;
 }
 
-void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur, Soleil &soleil, const Conditions &conditions, const double dateMaxFlash, const double mgn0, Date lim[])
+void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur, Soleil &soleil,
+                                 const Conditions &conditions, const double dateMaxFlash, const double mgn0,
+                                 Date lim[])
 {
     /* Declarations des variables locales */
     double tmp;
@@ -665,9 +716,9 @@ void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur,
         }
     }
 
-    dateInf = Maths::max(limite[0], limite[1]);
-    dateInf = Maths::max(dateInf, limite[2]);
-    dateInf = Maths::max(dateInf, limite[3]);
+    dateInf = qMax(limite[0], limite[1]);
+    dateInf = qMax(dateInf, limite[2]);
+    dateInf = qMax(dateInf, limite[3]);
 
 
     // Determination de la date superieure du flash
@@ -701,9 +752,9 @@ void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur,
         }
     }
 
-    dateSup = Maths::min(limite[0], limite[1]);
-    dateSup = Maths::min(dateSup, limite[2]);
-    dateSup = Maths::min(dateSup, limite[3]);
+    dateSup = qMin(limite[0], limite[1]);
+    dateSup = qMin(dateSup, limite[2]);
+    dateSup = qMin(dateSup, limite[3]);
 
     jjm[0] = dateInf;
     jjm[1] = 0.5 * (dateInf + dateSup);
@@ -732,18 +783,18 @@ void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur,
     return;
 }
 
-void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil soleil, const Conditions conditions, const double jjm[], const double mgn0, double limite[])
+void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil soleil,
+                          const Conditions conditions, const double jjm[], const double mgn0, double limite[])
 {
     /* Declarations des variables locales */
     double ang[3], ecl[3], ht[3], mag[3];
-    Date date;
 
     /* Initialisations */
 
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        date = Date(jjm[i], 0., false);
+        const Date date = Date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -757,7 +808,8 @@ void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil s
 
         // Conditions d'eclipse du satellite
         satellite.CalculSatelliteEclipse(soleil);
-        ecl[i] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
+        ecl[i] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() -
+                satellite.getElongation();
 
         // Angle de reflexion
         ang[i] = AngleReflexion(satellite, soleil);
@@ -766,15 +818,19 @@ void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil s
         mag[i] = MagnitudeFlash(satellite, observateur, soleil, ang[i], conditions.getExt());
     }
 
-    double t_ang, t_ecl, t_ht, t_mag;
-    // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee par l'utilisateur
-    t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, EPS_DATES);
+    double t_ecl, t_ht;
+    // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee
+    // par l'utilisateur
+    const double t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, EPS_DATES);
 
-    // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle de reflexion specifie par l'utilisateur
-    t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, conditions.getAng0(), EPS_DATES);
+    // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle
+    // de reflexion specifie par l'utilisateur
+    const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, conditions.getAng0(), EPS_DATES);
 
-    // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie par l'utilisateur
-    if ((ht[0] - conditions.getHaut()) * (ht[0] - conditions.getHaut()) < 0. || (ht[0] < conditions.getHaut() && ht[2] < conditions.getHaut())) {
+    // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie
+    // par l'utilisateur
+    if ((ht[0] - conditions.getHaut()) * (ht[0] - conditions.getHaut()) < 0. ||
+            (ht[0] < conditions.getHaut() && ht[2] < conditions.getHaut())) {
         t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, conditions.getHaut(), EPS_DATES);
     } else {
         t_ht = DATE_INFINIE;
@@ -795,7 +851,8 @@ void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil s
     return;
 }
 
-double Iridium::MagnitudeFlash(Satellite satellite, const Observateur observateur, const Soleil soleil, const double angle, const bool ext)
+double Iridium::MagnitudeFlash(Satellite satellite, const Observateur observateur, const Soleil soleil,
+                               const double angle, const bool ext)
 {
     /* Declarations des variables locales */
 

@@ -71,7 +71,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     /* Initialisations */
     vis = false;
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
-    QStringList liste("25544");
+    const QStringList liste("25544");
     QVector<TLE> tabtle;
 
     // Verification du fichier TLE
@@ -125,7 +125,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
             const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(),
+                                                observateur.getAray());
 
             Corps corps;
             corps.setPosition(Vecteur3D(list.at(13), list.at(14), list.at(15)));
@@ -145,7 +146,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 vis = true;
 
                 do {
-                    Date date0 = Date(jj0, 0., false);
+                    const Date date0 = Date(jj0, 0., false);
 
                     observateur.CalculPosVit(date0);
 
@@ -209,7 +210,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     sat.CalculPosVit(date2);
                     sat.CalculCoordHoriz(observateur, false);
 
-                    if (sat.getHauteur() >= conditions.getHaut() && minmax[1] <= conditions.getSeuilConjonction()) {
+                    if (sat.getHauteur() >= conditions.getHaut() &&
+                            minmax[1] <= conditions.getSeuilConjonction()) {
 
                         Date dates[3];
 
@@ -236,7 +238,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                         // Calcul des dates extremes de la conjonction ou du transit
                         dates[1] = date2;
-                        CalculElements(sat, observateur, minmax[0], typeCorps, itr, conditions.getSeuilConjonction(), dates);
+                        CalculElements(sat, observateur, minmax[0], typeCorps, itr,
+                                       conditions.getSeuilConjonction(), dates);
 
                         // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
                         for (int j=0; j<3; j++) {
@@ -250,12 +253,13 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                             // Altitude du satellite
                             double altitude, ct, lat, phi;
-                            Vecteur3D position = sat.getPosition();
-                            const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+                            const Vecteur3D position = sat.getPosition();
+                            const double r = sqrt(position.getX() * position.getX() +
+                                                  position.getY() * position.getY());
                             lat = atan((position.getZ() / r));
                             do {
                                 phi = lat;
-                                double sph = sin(phi);
+                                const double sph = sin(phi);
                                 ct = 1. / (sqrt(1. - E2 * sph * sph));
                                 lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
                             } while (fabs(lat - phi) > 1.e-7);
@@ -269,16 +273,20 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                             // Ecriture du resultat
 
                             // Date calendaire
-                            Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
+                            const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
                             ligne = date3.ToShortDate(Date::LONG);
 
                             // Coordonnees topocentriques du satellite
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append(" ");
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0, false, false)).append(" ");
+                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                      false, false)).append(" ");
+                            ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
+                                                                      false, false)).append(" ");
 
                             // Coordonnees equatoriales du satellite
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0, false, false)).append(" ");
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0, true, false)).append(" ");
+                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1,
+                                                                      2, 0, false, false)).append(" ");
+                            ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2,
+                                                                      0, true, false)).append(" ");
 
                             // Constellation
                             ligne = ligne.append(sat.getConstellation()).append(" ");
@@ -292,10 +300,13 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                             ligne = ligne.append((itr) ? QObject::tr("T") : QObject::tr("C")).append("    ");
 
                             // Corps concerne (Soleil, Lune)
-                            ligne = ligne.append((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).append("   ");
+                            ligne = ligne.append((typeCorps == 1) ? QObject::tr("S") :
+                                                                    QObject::tr("L")).append("   ");
 
                             // Illumination
-                            ligne = ligne.append((sat.isEclipse()) ? QObject::tr("Omb") : (sat.isPenombre()) ? QObject::tr("Pen") : QObject::tr("Lum")).append(" ");
+                            ligne = ligne.append((sat.isEclipse()) ?
+                                                     QObject::tr("Omb") : (sat.isPenombre()) ?
+                                                         QObject::tr("Pen") : QObject::tr("Lum")).append(" ");
 
                             // Altitude du satellite et distance a l'observateur
                             ligne = ligne.append("%1 %2");
@@ -307,14 +318,18 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                             ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
 
                             // Coordonnees topocentriques du Soleil
-                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append("  ");
-                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, false));
+                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                      false, false)).append("  ");
+                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0,
+                                                                      true, false));
 
                             // Recherche du maximum (transit ou conjonction)
                             if (j == 1) {
 
-                                Vecteur3D direction = corps.getDist() - sat.getDist();
-                                Observateur obsmin = Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
+                                const Vecteur3D direction = corps.getDist() - sat.getDist();
+                                Observateur obsmin =
+                                        Observateur::CalculIntersectionEllipsoide(dates[j], position,
+                                                                                  direction);
 
                                 obsmin.CalculPosVit(dates[j]);
                                 sat.CalculCoordHoriz(obsmin, false);
@@ -337,12 +352,17 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     diff -= Maths::sgn(diff) * PI;
                                 const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
 
-                                const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-                                const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+                                const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") :
+                                                                                   QObject::tr("E");
+                                const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") :
+                                                                                  QObject::tr("S");
 
                                 // Ecriture de la chaine de caracteres
                                 ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
-                                ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
+                                ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,
+                                                  QChar('0')).arg(ew).
+                                        arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                        arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
 
                             }
                             res.append(ligne);
@@ -360,7 +380,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
                 bool atrouve = false;
                 while (it2.hasNext() && !atrouve) {
-                    double jj = it2.next().at(0);
+                    const double jj = it2.next().at(0);
                     if (jj >= date.getJourJulienUTC()) {
                         atrouve = true;
                         it2.previous();
@@ -399,7 +419,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     return;
 }
 
-void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur, QVector<QList<QVector<double> > > &tabEphem)
+void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur,
+                                       QVector<QList<QVector<double> > > &tabEphem)
 {
     /* Declarations des variables locales */
     bool lvis, svis;
@@ -519,7 +540,8 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
     return;
 }
 
-void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps, double minmax[])
+void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[],
+                                const int typeCorps, double minmax[])
 {
     /* Declarations des variables locales */
     double angle[3];
@@ -532,7 +554,7 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        Date date = Date(jjm[i], 0., false);
+        const Date date = Date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -561,7 +583,9 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     return;
 }
 
-void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps, const bool itransit, const double seuilConjonction, Date dates[])
+void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, const double jmax,
+                                const int typeCorps, const bool itransit, const double seuilConjonction,
+                                Date dates[])
 {
     /* Declarations des variables locales */
     int it;
@@ -620,7 +644,9 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
     return;
 }
 
-void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps, const bool itransit, const double seuilConjonction, double &dateInter)
+void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[],
+                            const int typeCorps, const bool itransit, const double seuilConjonction,
+                            double &dateInter)
 {
     /* Declarations des variables locales */
     double rayon, dist;
@@ -634,7 +660,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        Date date = Date(jjm[i], 0., false);
+        const Date date = Date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -653,7 +679,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
         }
         corps.CalculCoordHoriz(observateur, false);
 
-        angle[i] = corps.getDist().Angle(satellite.getDist())        ;
+        angle[i] = corps.getDist().Angle(satellite.getDist());
     }
 
     if (itransit) {

@@ -68,8 +68,12 @@ public:
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
     double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
-    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const int nbTrajectoires, const bool visibilite, const bool extinction, QList<Satellite> &satellites);
-    static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
+    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
+                                            const Soleil &soleil, const int nbTracesAuSol,
+                                            const bool visibilite, const bool extinction,
+                                            QList<Satellite> &satellites);
+    static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle,
+                               QList<Satellite> &satellites);
 
     /* Accesseurs */
     bool isEclipse() const;
@@ -89,6 +93,7 @@ public:
     double getT3() const;
     TLE getTle() const;
     ElementsOsculateurs getElements() const;
+    QList<QVector<double> > getTraceAuSol() const;
 
 
 protected:
@@ -346,7 +351,7 @@ private:
     TLE _tle;
     SatVariables _sat;
     ElementsOsculateurs _elements;
-    QList<QVector<double> > _trajectoire;
+    QList<QVector<double> > _traceAuSol;
 
     /* Methodes privees */
     void SGP4Init();
@@ -354,7 +359,7 @@ private:
     void Dpper();
     void Dsinit(const double tc);
     void Dspace(const double tc);
-    void CalculTrajectoire(const Date &date, const int nbTrajectoires);
+    void CalculTracesAuSol(const Date &date, const int nbOrbites);
 
 };
 

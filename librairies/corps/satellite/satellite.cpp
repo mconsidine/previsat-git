@@ -61,8 +61,6 @@ Satellite::Satellite(const TLE &tle)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    //    if (tle == NULL)
-    //        throw PreviSatException();
 
     /* Corps du constructeur */
     _tle = tle;
@@ -238,12 +236,15 @@ void Satellite::CalculPosVit(const Date &date)
                 _sat.x7thm1 = 7. * cosisq - 1.;
             }
 
-            const double mrt = RAYON_TERRESTRE * (rl * (1. - 1.5 * temp2 * betal * _sat.con41) + 0.5 * temp1 * _sat.x1mth2 * cos2u);
+            const double mrt = RAYON_TERRESTRE *
+                    (rl * (1. - 1.5 * temp2 * betal * _sat.con41) + 0.5 * temp1 * _sat.x1mth2 * cos2u);
             su -= 0.25 * temp2 * _sat.x7thm1 * sin2u;
             const double xnode = _sat.nodep + 1.5 * temp2 * cosip * sin2u;
             const double xinc = _sat.xincp + 1.5 * temp2 * cosip * sinip * cos2u;
-            const double mvt = RAYON_TERRESTRE * NB_MIN_PAR_SEC * (KE * rdotl - _sat.nm * temp1 * _sat.x1mth2 * sin2u);
-            const double rvdot = RAYON_TERRESTRE * NB_MIN_PAR_SEC * (KE * rvdotl + _sat.nm * temp1 * (_sat.x1mth2 * cos2u + 1.5 * _sat.con41));
+            const double mvt = RAYON_TERRESTRE * NB_MIN_PAR_SEC *
+                    (KE * rdotl - _sat.nm * temp1 * _sat.x1mth2 * sin2u);
+            const double rvdot = RAYON_TERRESTRE * NB_MIN_PAR_SEC *
+                    (KE * rvdotl + _sat.nm * temp1 * (_sat.x1mth2 * cos2u + 1.5 * _sat.con41));
 
             // Vecteurs directeurs
             const double sinsu = sin(su);
@@ -291,16 +292,18 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
     if (std::isnan(_rayonApparentTerre))
         _rayonApparentTerre = PI_SUR_DEUX;
 
-    Vecteur3D rho = soleil.getPosition() - _position;
+    const Vecteur3D rho = soleil.getPosition() - _position;
     _rayonApparentSoleil = asin(RAYON_SOLAIRE / rho.Norme());
 
     _elongation = soleil.getPosition().Angle((-_position));
 
     // Test si le satellite est en phase d'eclipse
-    _eclipse = (_rayonApparentTerre > _rayonApparentSoleil && _elongation < _rayonApparentTerre - _rayonApparentSoleil) ? true : false;
+    _eclipse = (_rayonApparentTerre > _rayonApparentSoleil
+                && _elongation < _rayonApparentTerre - _rayonApparentSoleil) ? true : false;
 
     // Test si le satellite est dans la penombre
-    _penombre = (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation && _elongation < _rayonApparentTerre + _rayonApparentSoleil) ? true : false;
+    _penombre = (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
+                 && _elongation < _rayonApparentTerre + _rayonApparentSoleil) ? true : false;
 
     /* Retour */
     return;
@@ -372,7 +375,11 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 
     // Nombre d'orbites
     const double age = date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC();
-    _nbOrbites = _tle.getNbOrbites() + (int) (floor((_tle.getNo() + age * _tle.getBstar()) * age + Maths::modulo(_tle.getOmegao() + _tle.getMo(), DEUX_PI) / T360 - Maths::modulo(_elements.getArgumentPerigee() + _elements.getAnomalieVraie(), DEUX_PI) / DEUX_PI + 0.5));
+    _nbOrbites = _tle.getNbOrbites() +
+            (int) (floor((_tle.getNo() + age * _tle.getBstar()) * age +
+                         Maths::modulo(_tle.getOmegao() + _tle.getMo(), DEUX_PI) / T360 -
+                         Maths::modulo(_elements.getArgumentPerigee() + _elements.getAnomalieVraie(),
+                                       DEUX_PI) / DEUX_PI + 0.5));
 
     /* Retour */
     return;
@@ -381,7 +388,10 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 /*
  * Calcul de la position d'une liste de satellites
  */
-void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const int nbTrajectoires, const bool visibilite, const bool extinction, QList<Satellite> &satellites)
+void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
+                                            const Soleil &soleil, const int nbTracesAuSol,
+                                            const bool visibilite, const bool extinction,
+                                            QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -419,7 +429,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             satellites[isat].CalculElementsOsculateurs(date);
 
             // Calcul de la trajectoire
-            satellites[isat].CalculTrajectoire(date, nbTrajectoires);
+            satellites[isat].CalculTracesAuSol(date, nbTracesAuSol);
         }
     }
 
@@ -430,7 +440,8 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 /*
  * Lecture des donnees relatives aux satellites
  */
-void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites)
+void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle,
+                               QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
     int j;
@@ -462,7 +473,10 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
             norad = norad.mid(0, 5);
             for (int isat=0; isat<nb; isat++) {
                 if (listeSatellites.at(isat) == norad) {
-                    sscanf(ligne, "%*5s%6lf%6lf%6lf%4lf%*c%c%6lf", &satellites[isat]._t1, &satellites[isat]._t2, &satellites[isat]._t3, &satellites[isat]._magnitudeStandard, &satellites[isat]._methMagnitude, &satellites[isat]._section);
+                    sscanf(ligne, "%*5s%6lf%6lf%6lf%4lf%*c%c%6lf", &satellites[isat]._t1,
+                           &satellites[isat]._t2, &satellites[isat]._t3,
+                           &satellites[isat]._magnitudeStandard, &satellites[isat]._methMagnitude,
+                           &satellites[isat]._section);
                     j++;
                     break;
                 }
@@ -559,24 +573,33 @@ void Satellite::SGP4Init()
         const double psisq = fabs(1. - etasq);
         const double coef = qzms24 * pow(tsi, 4.);
         const double coef1 = coef * pow(psisq, -3.5);
-        const double cc2 = coef1 * _sat.no * (_sat.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq * _sat.con41 * (8. + 3. * etasq * (8. + etasq)));
+        const double cc2 = coef1 * _sat.no *
+                (_sat.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq * _sat.con41 *
+                 (8. + 3. * etasq * (8. + etasq)));
         _sat.cc1 = _sat.bstar * cc2;
         cc3 = 0.;
         if (_sat.ecco > 1.e-4)
             cc3 = -2. * coef * tsi * J3SJ2 * _sat.no * _sat.sinio / _sat.ecco;
 
         _sat.x1mth2 = 1. - _sat.cosio2;
-        _sat.cc4 = 2. * _sat.no * coef1 * _sat.ao * _sat.omeosq * (_sat.eta * (2. + 0.5 * etasq) + _sat.ecco * (0.5 + 2. * etasq) - J2 * tsi / (_sat.ao * psisq) * (-3. * _sat.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) + 0.75 * _sat.x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _sat.argpo)));
+        _sat.cc4 = 2. * _sat.no * coef1 * _sat.ao * _sat.omeosq *
+                (_sat.eta * (2. + 0.5 * etasq) + _sat.ecco * (0.5 + 2. * etasq) - J2 * tsi /
+                 (_sat.ao * psisq) * (-3. * _sat.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
+                                      0.75 * _sat.x1mth2 * (2. * etasq - eeta * (1. + etasq)) *
+                                      cos(2. * _sat.argpo)));
         _sat.cc5 = 2. * coef1 * _sat.ao * _sat.omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
 
         const double cosio4 = _sat.cosio2 * _sat.cosio2;
         const double temp1 = 1.5 * J2 * pinvsq * _sat.no;
         const double temp2 = 0.5 * temp1 * J2 * pinvsq;
         const double temp3 = -0.46875 * J4 * pinvsq * pinvsq * _sat.no;
-        _sat.mdot = _sat.no + 0.5 * temp1 * _sat.rteosq * _sat.con41 + 0.0625 * temp2 * _sat.rteosq * (13. - 78. * _sat.cosio2 + 137. * cosio4);
-        _sat.argpdot = -0.5 * temp1 * _sat.con42 + 0.0625 * temp2 * (7. - 114. * _sat.cosio2 + 395. * cosio4) + temp3 * (3. - 36. * _sat.cosio2 + 49. * cosio4);
+        _sat.mdot = _sat.no + 0.5 * temp1 * _sat.rteosq * _sat.con41 + 0.0625 * temp2 * _sat.rteosq *
+                (13. - 78. * _sat.cosio2 + 137. * cosio4);
+        _sat.argpdot = -0.5 * temp1 * _sat.con42 + 0.0625 * temp2 * (7. - 114. * _sat.cosio2 + 395. * cosio4) +
+                temp3 * (3. - 36. * _sat.cosio2 + 49. * cosio4);
         const double xhdot1 = -temp1 * _sat.cosio;
-        _sat.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _sat.cosio2) + 2. * temp3 * (3. - 7. * _sat.cosio2)) * _sat.cosio;
+        _sat.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _sat.cosio2) + 2. * temp3 *
+                                 (3. - 7. * _sat.cosio2)) * _sat.cosio;
         _sat.xpidot = _sat.argpdot + _sat.nodedot;
         _sat.omgcof = _sat.bstar * cc3 * cos(_sat.argpo);
         _sat.xmcof = 0.;
@@ -631,7 +654,8 @@ void Satellite::SGP4Init()
             _sat.d4 = 0.5 * temp * _sat.ao * tsi * (221. * _sat.ao + 31. * sfour) * _sat.cc1;
             _sat.t3cof = _sat.d2 + 2. * cc1sq;
             _sat.t4cof = 0.25 * (3. * _sat.d3 + _sat.cc1 * (12. * _sat.d2 + 10. * cc1sq));
-            _sat.t5cof = 0.2 * (3. * _sat.d4 + 12. * _sat.cc1 * _sat.d3 + 6. * _sat.d2 * _sat.d2 + 15. * cc1sq * (2. * _sat.d2 + cc1sq));
+            _sat.t5cof = 0.2 * (3. * _sat.d4 + 12. * _sat.cc1 * _sat.d3 + 6. * _sat.d2 * _sat.d2 + 15. *
+                                cc1sq * (2. * _sat.d2 + cc1sq));
         }
         _sat.init = true;
     } else {
@@ -721,10 +745,12 @@ void Satellite::Dscom(const double tc) {
         _sat.z2 = 6. * (a1 * a3 + a2 * a4) + _sat.z32 * _sat.emsq;
         _sat.z3 = 3. * (a3 * a3 + a4 * a4) + _sat.z33 * _sat.emsq;
         _sat.z11 = -6. * a1 * a5 + _sat.emsq * (-24. * x1 * x7 - 6. * x3 * x5);
-        _sat.z12 = -6. * (a1 * a6 + a3 * a5) + _sat.emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
+        _sat.z12 = -6. * (a1 * a6 + a3 * a5) +
+                _sat.emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
         _sat.z13 = -6. * a3 * a6 + _sat.emsq * (-24. * x2 * x8 - 6. * x4 * x6);
         _sat.z21 = 6. * a2 * a5 + _sat.emsq * (24. * x1 * x5 - 6. * x3 * x7);
-        _sat.z22 = 6. * (a4 * a5 + a2 * a6) + _sat.emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
+        _sat.z22 = 6. * (a4 * a5 + a2 * a6) +
+                _sat.emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
         _sat.z23 = 6. * a4 * a6 + _sat.emsq * (24. * x2 * x6 - 6. * x4 * x8);
         _sat.z1 = _sat.z1 + _sat.z1 + betasq * _sat.z31;
         _sat.z2 = _sat.z2 + _sat.z2 + betasq * _sat.z32;
@@ -1018,10 +1044,14 @@ void Satellite::Dsinit(const double tc) {
             _sat.f322 = -1.875 * _sat.sinim * (1. + 2. * _sat.cosim - 3. * cosisq);
             _sat.f441 = 35. * sini2 * _sat.f220;
             _sat.f442 = 39.375 * sini2 * sini2;
-            _sat.f522 = 9.84375 * _sat.sinim * (sini2 * (1. - 2. * _sat.cosim - 5. * cosisq) + 0.33333333 * (-2. + 4. * _sat.cosim + 6. * cosisq));
-            _sat.f523 = _sat.sinim * (4.92187512 * sini2 * (-2. - 4. * _sat.cosim + 10. * cosisq) + 6.56250012 * (1. + 2. * _sat.cosim - 3. * cosisq));
-            _sat.f542 = 29.53125 * _sat.sinim * (2. - 8. * _sat.cosim + cosisq * (-12. + 8. * _sat.cosim + 10. * cosisq));
-            _sat.f543 = 29.53125 * _sat.sinim * (-2. - 8. * _sat.cosim + cosisq * (12. + 8. * _sat.cosim - 10. * cosisq));
+            _sat.f522 = 9.84375 * _sat.sinim * (sini2 * (1. - 2. * _sat.cosim - 5. * cosisq) + 0.33333333 *
+                                                (-2. + 4. * _sat.cosim + 6. * cosisq));
+            _sat.f523 = _sat.sinim * (4.92187512 * sini2 * (-2. - 4. * _sat.cosim + 10. * cosisq) +
+                                      6.56250012 * (1. + 2. * _sat.cosim - 3. * cosisq));
+            _sat.f542 = 29.53125 * _sat.sinim * (2. - 8. * _sat.cosim + cosisq *
+                                                 (-12. + 8. * _sat.cosim + 10. * cosisq));
+            _sat.f543 = 29.53125 * _sat.sinim * (-2. - 8. * _sat.cosim + cosisq *
+                                                 (12. + 8. * _sat.cosim - 10. * cosisq));
 
             const double xno2 = _sat.nm * _sat.nm;
             const double ainv2 = aonv * aonv;
@@ -1130,9 +1160,11 @@ void Satellite::Dspace(const double tc) {
 
             // Termes de resonance quasi-synchrones
             if (_sat.irez != 2) {
-                xndt = _sat.del1 * sin(_sat.xli - FASX2) + _sat.del2 * sin(2. * (_sat.xli - FASX4)) + _sat.del3 * sin(3. * (_sat.xli - FASX6));
+                xndt = _sat.del1 * sin(_sat.xli - FASX2) + _sat.del2 * sin(2. * (_sat.xli - FASX4)) +
+                        _sat.del3 * sin(3. * (_sat.xli - FASX6));
                 xldot = _sat.xni + _sat.xfact;
-                xnddt = _sat.del1 * cos(_sat.xli - FASX2) + 2. * _sat.del2 * cos(2. * (_sat.xli - FASX4)) + 3. * _sat.del3 * cos(3. * (_sat.xli - FASX6));
+                xnddt = _sat.del1 * cos(_sat.xli - FASX2) + 2. * _sat.del2 * cos(2. * (_sat.xli - FASX4)) +
+                        3. * _sat.del3 * cos(3. * (_sat.xli - FASX6));
                 xnddt *= xldot;
             } else {
 
@@ -1140,9 +1172,17 @@ void Satellite::Dspace(const double tc) {
                 const double xomi = _sat.argpo + _sat.argpdot * _sat.atime;
                 const double x2omi = xomi + xomi;
                 const double x2li = _sat.xli + _sat.xli;
-                xndt = _sat.d2201 * sin(x2omi + _sat.xli - G22) + _sat.d2211 * sin(_sat.xli - G22) + _sat.d3210 * sin(xomi + _sat.xli - G32) + _sat.d3222 * sin(-xomi + _sat.xli - G32) + _sat.d4410 * sin(x2omi + x2li - G44) + _sat.d4422 * sin(x2li - G44) + _sat.d5220 * sin(xomi + _sat.xli - G52) + _sat.d5232 * sin(-xomi + _sat.xli - G52) + _sat.d5421 * sin(xomi + x2li - G54) + _sat.d5433 * sin(-xomi + x2li - G54);
+                xndt = _sat.d2201 * sin(x2omi + _sat.xli - G22) + _sat.d2211 * sin(_sat.xli - G22) +
+                        _sat.d3210 * sin(xomi + _sat.xli - G32) + _sat.d3222 * sin(-xomi + _sat.xli - G32)
+                        + _sat.d4410 * sin(x2omi + x2li - G44) + _sat.d4422 * sin(x2li - G44) + _sat.d5220 *
+                        sin(xomi + _sat.xli - G52) + _sat.d5232 * sin(-xomi + _sat.xli - G52) + _sat.d5421 *
+                        sin(xomi + x2li - G54) + _sat.d5433 * sin(-xomi + x2li - G54);
                 xldot = _sat.xni + _sat.xfact;
-                xnddt = _sat.d2201 * cos(x2omi + _sat.xli - G22) + _sat.d2211 * cos(_sat.xli - G22) + _sat.d3210 * cos(xomi + _sat.xli - G32) + _sat.d3222 * cos(-xomi + _sat.xli - G32) + _sat.d5220 * cos(xomi + _sat.xli - G52) + _sat.d5232 * cos(-xomi + _sat.xli - G52) + 2.0 * (_sat.d4410 * cos(x2omi + x2li - G44) + _sat.d4422 * cos(x2li - G44) + _sat.d5421 * cos(xomi + x2li - G54) + _sat.d5433 * cos(-xomi + x2li - G54));
+                xnddt = _sat.d2201 * cos(x2omi + _sat.xli - G22) + _sat.d2211 * cos(_sat.xli - G22) +
+                        _sat.d3210 * cos(xomi + _sat.xli - G32) + _sat.d3222 * cos(-xomi + _sat.xli - G32) +
+                        _sat.d5220 * cos(xomi + _sat.xli - G52) + _sat.d5232 * cos(-xomi + _sat.xli - G52) +
+                        2.0 * (_sat.d4410 * cos(x2omi + x2li - G44) + _sat.d4422 * cos(x2li - G44) +
+                               _sat.d5421 * cos(xomi + x2li - G54) + _sat.d5433 * cos(-xomi + x2li - G54));
                 xnddt *= xldot;
             }
 
@@ -1180,7 +1220,7 @@ void Satellite::Dspace(const double tc) {
 /*
  * Calcul de la trajectoire du satellite
  */
-void Satellite::CalculTrajectoire(const Date &date, const int nbTrajectoires)
+void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
 {
     /* Declarations des variables locales */
     double lat, lon, phi;
@@ -1191,16 +1231,17 @@ void Satellite::CalculTrajectoire(const Date &date, const int nbTrajectoires)
     const double st = 1. / (_tle.getNo() * T360);
 
     /* Corps de la methode */
-    for (int i=0; i<360 * nbTrajectoires; i++) {
+    for (int i=0; i<360 * nbOrbites; i++) {
 
-        Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+        const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
 
         // Position du satellite
         sat.CalculPosVit(j0);
 
         // Longitude
-        Vecteur3D position = sat._position;
-        lon = RAD2DEG * Maths::modulo(PI + atan2(position.getY(), position.getX()) - Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
+        const Vecteur3D position = sat._position;
+        lon = RAD2DEG * Maths::modulo(PI + atan2(position.getY(), position.getX()) -
+                                      Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
         if (lon < 0.)
             lon += T360;
 
@@ -1210,8 +1251,8 @@ void Satellite::CalculTrajectoire(const Date &date, const int nbTrajectoires)
         phi = DEUX_PI;
         while (fabs(lat - phi) > 1.e-7) {
             phi = lat;
-            double sph = sin(phi);
-            double ct = 1. / sqrt(1. - E2 * sph * sph);
+            const double sph = sin(phi);
+            const double ct = 1. / sqrt(1. - E2 * sph * sph);
             lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
         }
         lat = RAD2DEG * (PI_SUR_DEUX - lat);
@@ -1224,7 +1265,7 @@ void Satellite::CalculTrajectoire(const Date &date, const int nbTrajectoires)
 
         QVector<double> list;
         list << lon << lat << ((sat.isEclipse()) ? 1.: 0.);
-        _trajectoire.append(list);
+        _traceAuSol.append(list);
     }
 
     /* Retour */
@@ -1315,4 +1356,9 @@ TLE Satellite::getTle() const
 ElementsOsculateurs Satellite::getElements() const
 {
     return _elements;
+}
+
+QList<QVector<double> > Satellite::getTraceAuSol() const
+{
+    return _traceAuSol;
 }

@@ -101,7 +101,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
         int ent = 0;
         vis = false;
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.getTle().getNo()), DEUX_TIERS) * (1. - sat.getTle().getEcco());
+        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.getTle().getNo()),
+                                                     DEUX_TIERS) * (1. - sat.getTle().getEcco());
         const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides du Soleil
@@ -117,7 +118,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
             const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(),
+                                                observateur.getAray());
 
             // Position ECI du Soleil
             const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
@@ -143,7 +145,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                     sat.CalculMagnitude(obs, conditions.getExt());
 
                     // Toutes les conditions sont remplies
-                    if (sat.getMagnitude() < conditions.getMgn1() || sat.getMagnitudeStandard() > 98. || !conditions.getEcl()) {
+                    if (sat.getMagnitude() < conditions.getMgn1() || sat.getMagnitudeStandard() > 98. ||
+                            !conditions.getEcl()) {
 
                         if (ent == 2)
                             ent = 1;
@@ -157,16 +160,19 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         bool afin = false;
                         while (!afin) {
 
-                            if ((!sat.isEclipse() || !conditions.getEcl()) && (sat.getMagnitude() < conditions.getMgn1() || sat.getMagnitudeStandard() > 98. || !conditions.getEcl())) {
+                            if ((!sat.isEclipse() || !conditions.getEcl()) &&
+                                    (sat.getMagnitude() < conditions.getMgn1() ||
+                                     sat.getMagnitudeStandard() > 98. || !conditions.getEcl())) {
 
                                 // Altitude du satellite
                                 double altitude, ct, lat, phi;
-                                Vecteur3D position = sat.getPosition();
-                                const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+                                const Vecteur3D position = sat.getPosition();
+                                const double r = sqrt(position.getX() * position.getX() +
+                                                      position.getY() * position.getY());
                                 lat = atan((position.getZ() / r));
                                 do {
                                     phi = lat;
-                                    double sph = sin(phi);
+                                    const double sph = sin(phi);
                                     ct = 1. / (sqrt(1. - E2 * sph * sph));
                                     lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
                                 } while (fabs(lat - phi) > 1.e-7);
@@ -178,13 +184,14 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                         if (res.at(res.count() - 1) != "")
                                             res.append("");
 
-                                    QString nom = sat.getTle().getNom();
-                                    if (nom.toLower() == "iss") {
+                                    const QString nomsat = sat.getTle().getNom();
+                                    if (nomsat.toLower() == "iss") {
                                         res.append("ISS");
                                     } else {
-                                        ligne = nom;
-                                        if (nom.contains("R/B") || nom.contains(" DEB"))
-                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.getTle().getNorad());
+                                        ligne = nomsat;
+                                        if (nomsat.contains("R/B") || nomsat.contains(" DEB"))
+                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).
+                                                    arg(sat.getTle().getNorad());
                                         res.append(ligne);
                                     }
                                     res.append(QObject::tr("   Date     Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
@@ -192,16 +199,22 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 }
 
                                 // Calcul de la date calendaire
-                                Date date2 = Date(date.getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
+                                const Date date2 = Date(date.getJourJulien() + conditions.getDtu() +
+                                                        EPS_DATES, 0.);
                                 ligne = date2.ToShortDate(Date::COURT).append(" ");
 
                                 // Coordonnees topocentriques du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0, false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3,
+                                                                          0, false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2,
+                                                                          0, false, false)).append(" ");
 
                                 // Coordonnees equatoriales du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0, false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0, true, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(),
+                                                                          Maths::HEURE1, 2, 0, false,
+                                                                          false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE,
+                                                                          2, 0, true, false)).append("  ");
 
                                 // Constellation
                                 ligne = ligne.append(sat.getConstellation()).append(" ");
@@ -228,8 +241,10 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 ligne = ligne.arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1);
 
                                 // Coordonnees topocentriques du Soleil
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append("  ");
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, false));
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE,
+                                                                          3, 0, false, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE,
+                                                                          2, 0, true, false));
 
                                 res.append(ligne);
                                 pass = true;
@@ -255,13 +270,11 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 if (sat.getHauteur() < 0.) {
                                     afin = true;
                                 } else {
-
                                     sat.CalculSatelliteEclipse(soleil);
                                     sat.CalculMagnitude(observateur, conditions.getExt());
                                     sat.CalculCoordEquat(observateur);
                                 }
                             }
-
                         } // fin while (!afin)
 
                         ent = 2;
@@ -274,7 +287,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         // Recherche de la nouvelle date dans le tableau d'ephemerides
                         bool atrouve = false;
                         while (it3.hasNext() && !atrouve) {
-                            double jj = it3.next().at(0);
+                            const double jj = it3.next().at(0);
                             if (jj >= date.getJourJulienUTC()) {
                                 atrouve = true;
                                 it3.previous();
@@ -313,7 +326,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 /*
  * Calcul des ephemerides du Soleil et de la position de l'observateur
  */
-void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur, QList<QVector<double> > &tabEphem)
+void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
+                                             QList<QVector<double> > &tabEphem)
 {
     /* Declarations des variables locales */
     bool svis;
