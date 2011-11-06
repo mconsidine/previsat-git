@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/Icon3.ico</file>
+        <file>resources/open.png</file>
+        <file>resources/save.png</file>
+        <file>resources/help.png</file>
+        <file>resources/globe.ico</file>
+        <file>resources/lune01.gif</file>
+        <file>resources/lune02.gif</file>
+        <file>resources/lune03.gif</file>
+        <file>resources/lune04.gif</file>
+        <file>resources/lune05.gif</file>
+        <file>resources/lune06.gif</file>
+        <file>resources/lune07.gif</file>
+        <file>resources/lune08.gif</file>
+        <file>resources/lune09.gif</file>
+        <file>resources/lune10.gif</file>
+        <file>resources/lune11.gif</file>
+        <file>resources/lune12.gif</file>
+        <file>resources/lune13.gif</file>
+        <file>resources/lune14.gif</file>
+        <file>resources/lune15.gif</file>
+        <file>resources/lune16.gif</file>
+        <file>resources/lune17.gif</file>
+        <file>resources/lune18.gif</file>
+        <file>resources/lune19.gif</file>
+        <file>resources/lune20.gif</file>
+        <file>resources/lune21.gif</file>
+        <file>resources/lune22.gif</file>
+        <file>resources/lune23.gif</file>
+        <file>resources/lune24.gif</file>
+        <file>resources/lune25.gif</file>
+        <file>resources/lune26.gif</file>
+        <file>resources/lune27.gif</file>
+        <file>resources/lune28.gif</file>
+        <file>resources/map.jpg</file>
+    </qresource>
+</RCC>
