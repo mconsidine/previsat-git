@@ -59,30 +59,6 @@ public:
     /* Methodes publiques */
     static double arrondi(const double x, const int n);
 
-    inline static double min(const double x, const double y)
-    {
-        /* Declarations des variables locales */
-
-        /* Initialisations */
-
-        /* Corps de la methode */
-
-        /* Retour */
-        return ((x < y) ? x : y);
-    }
-
-    inline static double max(const double x, const double y)
-    {
-        /* Declarations des variables locales */
-
-        /* Initialisations */
-
-        /* Corps de la methode */
-
-        /* Retour */
-        return ((x >= y) ? x : y);
-    }
-
     inline static double modulo(const double x, const double y)
     {
         /* Declarations des variables locales */
@@ -102,8 +78,10 @@ public:
 
     static int sgn(const double x);
     static void CalculExtremumInterpolation3(const double xtab[], const double ytab[], double extremum[]);
-    static double CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval, const double epsilon);
-    static QString ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales, const bool signe, const bool espace);
+    static double CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval,
+                                              const double epsilon);
+    static QString ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg,
+                                 const int nbDecimales, const bool signe, const bool espace);
 
     /* Accesseurs */
 

@@ -76,7 +76,8 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur, QList<QVector<double> > &tabEphem);
+    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
+                                             QList<QVector<double> > &tabEphem);
 
 };
 

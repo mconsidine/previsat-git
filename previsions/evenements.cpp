@@ -79,7 +79,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
     flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2011") << endl << endl;
     ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
-    flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), Maths::HEURE1, 2, 0, false, false).mid(0, 6)) << endl;
+    flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
+            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), Maths::HEURE1,
+                                     2, 0, false, false).mid(0, 6)) << endl;
     flux << QObject::tr("Unité de distance         : %1").arg(conditions.getUnite()) << endl << endl;
 
     /* Corps de la methode */
@@ -101,7 +103,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
         Satellite sat = it1.next();
         QStringList res;
 
-        QList<QVector<double> > list = it2.next();
+        const QList<QVector<double> > list = it2.next();
         const int dim = list.size();
         QListIterator<QVector<double > > it3(list);
         do {
@@ -125,21 +127,28 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, 0., EPS_DATES);
 
-                    Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
+                    const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") : QObject::tr("Noeud Descendant - PSO = 180°");
+                    const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") :
+                                                                QObject::tr("Noeud Descendant - PSO = 180°");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
-                    const double pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                    const double pso = RAD2DEG *
+                            Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                          sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
+                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                            arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                            arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
                     ligne = ligne.append(typeNoeud);
 
                     res.append(ligne);
@@ -151,13 +160,16 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             if (conditions.getApassOmbre()) {
 
                 k = i;
-                if ((list1.at(4) - list1.at(5) - list1.at(3)) * (list3.at(4) - list3.at(5) - list3.at(3)) < 0. && !apassOmbre) {
+                if ((list1.at(4) - list1.at(5) - list1.at(3)) *
+                        (list3.at(4) - list3.at(5) - list3.at(3)) < 0. && !apassOmbre) {
 
                     // Il y a passage ombre->lumiere ou lumiere->ombre : calcul par interpolation de la date
                     apassOmbre = true;
                     k = i;
 
-                    const double ytab1[] = {list1.at(4) - list1.at(5) - list1.at(3), list2.at(4) - list2.at(5) - list2.at(3), list3.at(4) - list3.at(5) - list3.at(3)};
+                    const double ytab1[] = {list1.at(4) - list1.at(5) - list1.at(3),
+                                            list2.at(4) - list2.at(5) - list2.at(3),
+                                            list3.at(4) - list3.at(5) - list3.at(3)};
 
                     double datp = Maths::CalculValeurXInterpolation3(xtab, ytab1, 0., EPS_DATES);
 
@@ -167,21 +179,30 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
+                    const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") :
+                                                                 QObject::tr("Ombre -> Pénombre");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
-                    double pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                    double pso = RAD2DEG *
+                            Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                          sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
+                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                            arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                            arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
                     ligne = ligne.append(typeOmbre);
 
                     res.append(ligne);
 
                     // Calcul du passage lumiere/penombre
-                    const double ytab2[] = {list1.at(4) + list1.at(5) - list1.at(3), list2.at(4) + list2.at(5) - list2.at(3), list3.at(4) + list3.at(5) - list3.at(3)};
+                    const double ytab2[] = {list1.at(4) + list1.at(5) - list1.at(3),
+                                            list2.at(4) + list2.at(5) - list2.at(3),
+                                            list3.at(4) + list3.at(5) - list3.at(3)};
 
                     datp = Maths::CalculValeurXInterpolation3(xtab, ytab2, 0., EPS_DATES);
 
@@ -191,15 +212,21 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ? QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
+                    const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ?
+                                QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
-                    pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                    pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                                  sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
+                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                            arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                            arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
                     ligne = ligne.append(typePenombre);
 
                     res.append(ligne);
@@ -210,7 +237,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             // Recherche des passages apogee/perigee
             if (conditions.getApassApogee()) {
 
-                if ((list2.at(2) > list1.at(2) && list2.at(2) > list3.at(2)) || (list2.at(2) < list1.at(2) && list2.at(2) < list3.at(2))) {
+                if ((list2.at(2) > list1.at(2) && list2.at(2) > list3.at(2)) ||
+                        (list2.at(2) < list1.at(2) && list2.at(2) < list3.at(2))) {
 
                     // Il y a passage au perigee ou a l'apogee : calcul par interpolation de la date
                     double minmax[2];
@@ -218,17 +246,20 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     Maths::CalculExtremumInterpolation3(xtab, ytab, minmax);
 
-                    Date date = Date(minmax[0] + conditions.getDtu() + EPS_DATES, conditions.getDtu());
+                    const Date date = Date(minmax[0] + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("Périgée :") : QObject::tr("Apogée :");
+                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("Périgée :") :
+                                                                      QObject::tr("Apogée :");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
-                    const double pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                    const double pso = RAD2DEG *
+                            Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                          sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  %7 %8  %9 (%10 %9)";
@@ -238,7 +269,13 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typeDist).arg(rayonVecteur, 0, 'f', 1).arg(conditions.getUnite()).arg(altitude, 0, 'f', 1);
+                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                            arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                            arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).
+                            arg(typeDist).arg(rayonVecteur, 0, 'f', 1).arg(conditions.getUnite()).
+                            arg(altitude, 0, 'f', 1);
 
                     res.append(ligne);
                 }
@@ -255,21 +292,28 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, 0., EPS_DATES);
 
-                    Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
+                    const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Transition jour -> nuit") : QObject::tr("Transition nuit - > jour");
+                    const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Transition jour -> nuit") :
+                                                               QObject::tr("Transition nuit -> jour");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
-                    const double pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                    const double pso = RAD2DEG *
+                            Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                          sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
+                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                            arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                            arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
                     ligne = ligne.append(typeTrans);
 
                     res.append(ligne);
@@ -284,7 +328,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                 for (int n=1; n<4; n+=2) {
 
                     const double noeud = 90. * n * DEG2RAD;
-                    if ((list1.at(7) - noeud) * (list3.at(7) - noeud) < 0. && list1.at(7) < noeud && !apassPso) {
+                    if ((list1.at(7) - noeud) * (list3.at(7) - noeud) < 0. &&
+                            list1.at(7) < noeud && !apassPso) {
 
                         // Il y a une transition jour/nuit : calcul par interpolation de la date
                         apassPso = true;
@@ -292,7 +337,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                         const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, noeud, EPS_DATES);
 
-                        Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
+                        const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                         // Calcul de la position du satellite pour la date calculee
                         sat.CalculPosVit(date);
@@ -300,11 +345,18 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                         // Calcul de la PSO
                         sat.CalculElementsOsculateurs(date);
-                        const double pso = RAD2DEG * Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
+                        const double pso = RAD2DEG *
+                                Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                              sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                         // Ecriture de la ligne de resultat
-                        ligne = "%1  %2°  %3° %4  %5° %6  Passage à PSO = %7°";
-                        ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(noeud * RAD2DEG);
+                        ligne = QObject::tr("%1  %2°  %3° %4  %5° %6  Passage à PSO = %7°");
+                        ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                                arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                                arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
+                                arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
+                                arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).
+                                arg(noeud * RAD2DEG);
 
                         res.append(ligne);
                         m++;
@@ -362,7 +414,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 /*
  * Calcul des ephemerides du satellite
  */
-void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats, QList<QList<QVector<double> > > &tabEphem)
+void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats,
+                                   QList<QList<QVector<double> > > &tabEphem)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -400,7 +453,8 @@ void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite
             listVal.append(sat.getRayonApparentTerre());
             listVal.append(sat.getRayonApparentSoleil());
             listVal.append(position * soleil.getPosition());
-            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), T360));
+            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() +
+                                         sat.getElements().getArgumentPerigee(), T360));
 
             tab.append(listVal);
 

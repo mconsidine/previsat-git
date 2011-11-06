@@ -40,7 +40,7 @@
  *
  */
 
-#include "QMessageBox"
+#include <QMessageBox>
 #include "messages.h"
 
 void Messages::Afficher(const QString message, const MessageType ierr)

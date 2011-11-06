@@ -109,7 +109,8 @@ void Maths::CalculExtremumInterpolation3(const double xtab[], const double ytab[
  * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
  * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-27
  */
-double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval, const double epsilon)
+double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval,
+                                          const double epsilon)
 {
     /* Declarations des variables locales */
     int iter;
@@ -130,10 +131,9 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
     /* Corps de la methode */
     const double dy = 2. * yy[1];
     while (fabs(dn0) >= epsilon && iter < 10000) {
-        double tmp1, tmp2;
 
-        tmp1 = c * n0;
-        tmp2 = a + b + tmp1;
+        const double tmp1 = c * n0;
+        const double tmp2 = a + b + tmp1;
         dn0 = -(dy + n0 * tmp2) / (tmp1 + tmp2);
         n0 += dn0;
         iter++;
@@ -146,13 +146,13 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
 /*
  * Conversion d'un angle sous forme decimale en chaine de caracteres formattee
  */
-QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales, const bool signe, const bool espace)
+QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg,
+                             const int nbDecimales, const bool signe, const bool espace)
 {
     /* Declarations des variables locales */
-    bool tst1, tst2;
     int dec, deg, degr, min;
     double sec, xval, y;
-    QString esp, res;
+    QString res;
 
     /* Initialisations */
     switch (typeAngle) {
@@ -183,9 +183,9 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     if (dec < 0)
         dec = 0;
 
-    tst1 = typeAngle == DEGRE || typeAngle == NO_TYPE;
-    tst2 = typeAngle == HEURE1;
-    esp = (espace && typeAngle != HEURE2) ? " " : "";
+    const bool tst1 = (typeAngle == DEGRE || typeAngle == NO_TYPE);
+    const bool tst2 = (typeAngle == HEURE1);
+    const QString esp = (espace && typeAngle != HEURE2) ? " " : "";
 
     /* Corps de la methode */
     deg = (int) y;

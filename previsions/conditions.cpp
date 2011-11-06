@@ -46,7 +46,10 @@
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 
-Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu, const double jj1, const double jj2, const double mgn1, const QString fic, const QString out, const QString unite, const QStringList listeSatellites)
+Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0,
+                       const double dtu, const double jj1, const double jj2, const double mgn1,
+                       const QString fic, const QString out, const QString unite,
+                       const QStringList listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -71,7 +74,10 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     return;
 }
 
-Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const char ope, const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1, const double mgn2, const QString fic, const QString out, const QString unite)
+Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
+                       const char ope, const double ang0, const double dtu, const double jj1,
+                       const double jj2, const double mgn1, const double mgn2, const QString fic,
+                       const QString out, const QString unite)
 {
     /* Declarations des variables locales */
 
@@ -98,7 +104,10 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     return;
 }
 
-Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso, const bool atransJn, const double dtu, const double jj1, const double jj2, const QString fic, const QString out, const QString unite, const QStringList listeSatellites)
+Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre,
+                       const bool apassPso, const bool atransJn, const double dtu, const double jj1,
+                       const double jj2, const QString fic, const QString out, const QString unite,
+                       const QStringList listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -122,7 +131,9 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
     return;
 }
 
-Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE, const double seuilConjonction, const double dtu, const double jj1, const double jj2, const QString fic, const QString out, const QString unite)
+Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE,
+                       const double seuilConjonction, const double dtu, const double jj1, const double jj2,
+                       const QString fic, const QString out, const QString unite)
 {
     /* Declarations des variables locales */
 
@@ -148,19 +159,25 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
 /*
  * Ecriture de l'entete du fichier de resultats
  */
-void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &conditions, QVector<TLE> &tabtle, const bool itransit)
+void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &conditions,
+                              QVector<TLE> &tabtle, const bool itransit)
 {
     /* Declarations des variables locales */
-    double tlemin, tlemax, tmp;
     QString ligne1, ligne2;
 
     /* Initialisations */
     ligne1 = "";
-    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), Maths::DEGRE, 3, 0, false, false);
+    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), Maths::DEGRE,
+                                             3, 0, false, false);
     const QString ew = (observateur.getLongitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
-    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), Maths::DEGRE, 2, 0, false, false);
+
+    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), Maths::DEGRE,
+                                             2, 0, false, false);
     const QString ns = (observateur.getLatitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
-    const double alt = (conditions._unite == QObject::tr("km")) ? observateur.getAltitude() : observateur.getAltitude() * PIED_PAR_METRE;
+
+    const double alt = (conditions._unite == QObject::tr("km")) ? observateur.getAltitude() :
+                                                                  observateur.getAltitude() * PIED_PAR_METRE;
+
     const QString unit = (conditions._unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
     const QString cond1 = QObject::tr("Conditions d'observations : ");
     const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
@@ -171,16 +188,17 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     // Calcul de l'age des TLE
     if (tabtle.size() == 1) {
         ligne1 = QObject::tr("Age du TLE                : %1 jours (au %2)");
-        ligne1 = ligne1.arg(fabs(conditions._jj1 - tabtle.at(0).getEpoque().getJourJulienUTC()), 4, 'f', 2).arg(date.ToShortDate(Date::COURT));
+        ligne1 = ligne1.arg(fabs(conditions._jj1 - tabtle.at(0).getEpoque().getJourJulienUTC()), 4, 'f', 2).
+                arg(date.ToShortDate(Date::COURT));
 
     } else {
-        tlemin = -DATE_INFINIE;
-        tlemax = DATE_INFINIE;
+        double tlemin = -DATE_INFINIE;
+        double tlemax = DATE_INFINIE;
 
         QVectorIterator<TLE> it(tabtle);
         while (it.hasNext()) {
-            TLE tle = it.next();
-            double epok = tle.getEpoque().getJourJulienUTC();
+            const TLE tle = it.next();
+            const double epok = tle.getEpoque().getJourJulienUTC();
             if (epok > tlemin)
                 tlemin = epok;
             if (epok < tlemax)
@@ -189,14 +207,15 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
         if (tlemax > conditions._jj1) {
             if (tlemin > tlemax) {
-                tmp = tlemin;
+                const double tmp = tlemin;
                 tlemin = tlemax;
                 tlemax = tmp;
             }
         }
 
         ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
-        ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).arg(date.ToShortDate(Date::COURT)).arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
+        ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).arg(date.ToShortDate(Date::COURT)).
+                arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
     }
 
     QFile fichier(conditions._out);
@@ -209,14 +228,17 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     flux << ligne2 << endl;
 
     ligne2 = QObject::tr("Fuseau horaire            : %1 %2%3");
-    ligne2 = ligne2.arg(QObject::tr("UTC")).arg((conditions._dtu >= 0.) ? "+" : "-").arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions._dtu), Maths::HEURE1, 2, 0, false, false).mid(0, 6));
+    ligne2 = ligne2.arg(QObject::tr("UTC")).arg((conditions._dtu >= 0.) ? "+" : "-").
+            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions._dtu),
+                                     Maths::HEURE1, 2, 0, false, false).mid(0, 6));
     flux << ligne2 << endl;
 
     if (itransit) {
         flux << (cond1 + cond2).arg(conditions._haut * RAD2DEG) << endl;
 
     } else {
-        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) << endl;
+        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) <<
+                endl;
         flux << QString(cond1.size(), ' ') << cond2.arg(conditions._haut * RAD2DEG) << endl;
     }
 

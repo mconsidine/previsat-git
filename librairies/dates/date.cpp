@@ -180,7 +180,8 @@ Date::Date(const int annee, const int mois, const double xjour, const double off
 /*
  * Constructeur a partir d'une date calendaire
  */
-Date::Date(const int annee, const int mois, const int jour, const int heure, const int minutes, const double secondes, const double offsetUTC)
+Date::Date(const int annee, const int mois, const int jour, const int heure, const int minutes,
+           const double secondes, const double offsetUTC)
 {
     /* Declarations des variables locales */
 
@@ -252,11 +253,14 @@ QString Date::ToShortDate(const DateFormat format) const
     res = "%1/%2/%3 %4:%5:%6";
 
     /* Corps de la methode */
-    const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const double jjsec =
+            Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     Date date = Date(jjsec, _offsetUTC);
 
     /* Retour */
-    return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).arg(date._jour, 2, 10, QChar('0')).arg(date._heure, 2, 10, QChar('0')).arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')));
+    return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
+            arg(date._jour, 2, 10, QChar('0')).arg(date._heure, 2, 10, QChar('0')).
+            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')));
 }
 
 QString Date::ToLongDate() const
@@ -264,7 +268,8 @@ QString Date::ToLongDate() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) _secondes));
+    const QDateTime date =
+            QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES)));
 
     /* Corps de la methode */
     QString res = date.toString(Qt::SystemLocaleLongDate);
@@ -285,7 +290,8 @@ void Date::CalculJourJulien()
     /* Initialisations */
     d = _annee;
     n = _mois;
-    const double xj = _jour + _heure * NB_JOUR_PAR_HEUR + _minutes * NB_JOUR_PAR_MIN + _secondes * NB_JOUR_PAR_SEC;
+    const double xj = _jour + _heure * NB_JOUR_PAR_HEUR + _minutes * NB_JOUR_PAR_MIN + _secondes *
+            NB_JOUR_PAR_SEC;
 
     /* Corps de la methode */
     if (n < 3) {

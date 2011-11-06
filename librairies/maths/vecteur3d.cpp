@@ -257,7 +257,8 @@ Vecteur3D Vecteur3D::operator ^ (const Vecteur3D &vecteur)
     /* Corps de la methode */
 
     /* Retour */
-    return (Vecteur3D(_y * vecteur._z - _z * vecteur._y, _z * vecteur._x - _x * vecteur._z, _x * vecteur._y - _y * vecteur._x));
+    return (Vecteur3D(_y * vecteur._z - _z * vecteur._y, _z * vecteur._x - _x * vecteur._z,
+                      _x * vecteur._y - _y * vecteur._x));
 }
 
 /* Accesseurs */
