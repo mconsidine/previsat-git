@@ -87,8 +87,8 @@ void Corps::CalculCoordEquat(const Observateur &observateur)
     atrouve = false;
     i = 0;
     const double ch = cos(_hauteur);
-    Vecteur3D vec1 = Vecteur3D(-cos(_azimut) * ch, sin(_azimut) * ch, sin(_hauteur));
-    Vecteur3D vec2 = Vecteur3D(observateur.getRotHz().Transposee() * vec1);
+    const Vecteur3D vec1 = Vecteur3D(-cos(_azimut) * ch, sin(_azimut) * ch, sin(_hauteur));
+    const Vecteur3D vec2 = Vecteur3D(observateur.getRotHz().Transposee() * vec1);
 
     /* Corps de la methode */
     // Declinaison
@@ -131,7 +131,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc)
     /* Initialisations */
     _dist = _position - observateur.getPosition();
     _distance = _dist.Norme();
-    Vecteur3D vec = observateur.getRotHz() * _dist;
+    const Vecteur3D vec = observateur.getRotHz() * _dist;
 
     /* Corps de la methode */
     // Hauteur
@@ -158,7 +158,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc)
         if (_azimut < 0.)
             _azimut += DEUX_PI;
 
-        Vecteur3D distp = _vitesse - observateur.getVitesse();
+        const Vecteur3D distp = _vitesse - observateur.getVitesse();
 
         // Taux de variation de la distance a l'observateur
         _rangeRate = _dist * distp /_distance;
@@ -179,7 +179,8 @@ void Corps::CalculCoordTerrestres(const Observateur &observateur)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(observateur.getTempsSideralGreenwich() - atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = Maths::modulo(observateur.getTempsSideralGreenwich() -
+                               atan2(_position.getY(), _position.getX()), DEUX_PI);
     if (fabs(_longitude) > PI)
         _longitude -= Maths::sgn(_longitude) * DEUX_PI;
 
@@ -200,7 +201,8 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) -
+                               atan2(_position.getY(), _position.getX()), DEUX_PI);
     if (fabs(_longitude) > PI)
         _longitude -= Maths::sgn(_longitude) * DEUX_PI;
 
@@ -216,11 +218,44 @@ void Corps::CalculCoordTerrestres(const Date &date)
 void Corps::CalculZoneVisibilite()
 {
     /* Declarations des variables locales */
+    double lo1;
 
     /* Initialisations */
+    double lo0 = _longitude;
+    if (lo0 > 0.)
+        lo0 -= DEUX_PI;
+    const double cl0 = cos(_latitude);
+    const double sl0 = sin(_latitude);
+    double beta = acos((RAYON_TERRESTRE - 15.) / _position.Norme());
+    if (std::isnan(beta))
+        beta = 0.;
+    const double cb = cos(beta);
+    const double sb = sin(beta);
 
     /* Corps de la methode */
+    for(int i=0; i<360; i++) {
 
+        const double az = DEG2RAD * i;
+        const double la1 = asin(sl0 * cb + cos(az) * sb * cl0);
+
+        if (i == 0 && beta > PI_SUR_DEUX - _latitude) {
+            lo1 = lo0 + PI;
+        } else {
+            if (i == 180 && beta > PI_SUR_DEUX + _latitude) {
+                lo1 = lo0 + PI;
+            } else {
+                const double numden = (cb - sl0 * sin(la1)) / (cl0 * cos(la1));
+                if (fabs(numden > 1.)) {
+                    lo1 = lo0;
+                } else {
+                    lo1 = (i <= 180) ? lo0 + acos(numden) : lo0 - acos(numden);
+                }
+            }
+        }
+        const QPointF pt(fmod(PI - lo1, DEUX_PI) * RAD2DEG, (PI_SUR_DEUX - la1) * RAD2DEG);
+        _zone.append(pt);
+    }
+    _zone.append(_zone.at(0));
 
     /* Retour */
     return;
@@ -232,7 +267,7 @@ void Corps::CalculZoneVisibilite()
 void Corps::CalculLatitudeAltitude()
 {
     /* Declarations des variables locales */
-    double c, lat, sph;
+    double c, lat;
 
     /* Initialisations */
     c = 1.;
@@ -244,13 +279,14 @@ void Corps::CalculLatitudeAltitude()
     _latitude = atan2(_position.getZ(), r0);
     do {
         lat = _latitude;
-        sph = sin(lat);
+        const double sph = sin(lat);
         c = 1. / sqrt(1. - E2 * sph * sph);
         _latitude = atan((_position.getZ() + RAYON_TERRESTRE * c * E2 * sph) / r0);
     } while (fabs(_latitude - lat) > 1.e-7);
 
     // Altitude
-    _altitude = (r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) : r0 / cos(_latitude) - RAYON_TERRESTRE * c;
+    _altitude = (r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) :
+                               r0 / cos(_latitude) - RAYON_TERRESTRE * c;
 
     /* Retour */
     return;
@@ -365,4 +401,9 @@ bool Corps::isVisible() const
 Vecteur3D Corps::getVitesse() const
 {
     return _vitesse;
+}
+
+QVector<QPointF> Corps::getZone() const
+{
+    return _zone;
 }
