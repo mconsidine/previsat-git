@@ -40,6 +40,9 @@
 #ifndef CORPS_H
 #define CORPS_H
 
+#include <QList>
+#include <QPointF>
+#include <QVector>
 #include <string>
 #include "librairies/dates/date.h"
 #include "librairies/maths/vecteur3d.h"
@@ -79,6 +82,7 @@ public:
     double getRangeRate() const;
     bool isVisible() const;
     Vecteur3D getVitesse() const;
+    QVector<QPointF> getZone() const;
 
     /* Modificateurs */
     void setPosition(Vecteur3D position);
@@ -113,7 +117,7 @@ protected:
     Vecteur3D _dist;
 
     // Zone de visibilite
-    //...
+    QVector<QPointF> _zone;
 
     /* Methodes protegees */
 
