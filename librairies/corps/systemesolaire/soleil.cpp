@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@
 
 Soleil::Soleil()
 {
+    _distanceUA = 0.;
 }
 
 Soleil::Soleil(const Vecteur3D &position)
@@ -56,6 +57,7 @@ Soleil::Soleil(const Vecteur3D &position)
 
     /* Corps du constructeur */
     _position = position;
+    _distanceUA = position.Norme();
 
     /* Retour */
     return;

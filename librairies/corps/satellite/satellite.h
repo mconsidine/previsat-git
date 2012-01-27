@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -78,6 +78,7 @@ public:
     /* Accesseurs */
     bool isEclipse() const;
     bool isIeralt() const;
+    double getAgeTLE() const;
     double getElongation() const;
     double getFractionIlluminee() const;
     double getMagnitude() const;
@@ -338,6 +339,7 @@ private:
     bool _penombre;
     char _methMagnitude;
     int _nbOrbites;
+    double _ageTLE;
     double _elongation;
     double _fractionIlluminee;
     double _magnitude;

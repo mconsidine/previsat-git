@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -83,7 +83,6 @@ static QStringList _tabStsIri;
 void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool vis;
     int i, nb;
     QString ligne;
     QStringList listeSatellites, res;
@@ -93,7 +92,6 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     QList<QVector<double > > tabEphem;
 
     /* Initialisations */
-    vis = false;
     i = 0;
     nb = 0;
 
@@ -184,7 +182,6 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
             // Le satellite a une hauteur superieure a celle specifiee par l'utilisateur
             if (sat.getHauteur() >= conditions.getHaut()) {
 
-                vis = true;
                 double temp = -DATE_INFINIE;
 
                 // Determination de la condition d'eclipse du satellite
@@ -513,12 +510,10 @@ void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observa
                                            QList<QVector<double> > &tabEphem)
 {
     /* Declarations des variables locales */
-    int i;
     QVector<double> tab;
     Soleil soleil;
 
     /* Initialisations */
-    i = 0;
 
     /* Corps de la methode */
     Date date = Date(conditions.getJj1(), 0., false);
@@ -784,7 +779,7 @@ void Iridium::CalculLimitesFlash(Satellite &satellite, Observateur &observateur,
 }
 
 void Iridium::LimiteFlash(Satellite satellite, Observateur observateur, Soleil soleil,
-                          const Conditions conditions, const double jjm[], const double mgn0, double limite[])
+                          const Conditions &conditions, const double jjm[], const double mgn0, double limite[])
 {
     /* Declarations des variables locales */
     double ang[3], ecl[3], ht[3], mag[3];

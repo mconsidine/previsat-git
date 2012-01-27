@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@
  */
 
 #include <cmath>
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
@@ -52,6 +53,14 @@
 /* Constructeurs */
 TLE::TLE()
 {
+    _nbOrbites = 0;
+    _argpo = 0.;
+    _bstar = 0.;
+    _ecco = 0.;
+    _inclo = 0.;
+    _mo = 0.;
+    _no = 0.;
+    _omegao = 0.;
 }
 
 /*
@@ -68,26 +77,43 @@ TLE::TLE(const QString ligne1, const QString ligne2)
     /* Corps du constructeur */
     _ligne1 = ligne1;
     _ligne2 = ligne2;
-    char li1[69], li2[69];
-    strncpy(li1, ligne1.toStdString().c_str(), ligne1.size());
-    strncpy(li2, ligne2.toStdString().c_str(), ligne2.size());
 
     // Numero NORAD
     _norad = _ligne1.mid(2, 5);
 
-    // Lecture de la premiere ligne
-    sscanf(li1, "%*2d%*5d%*c%*10s%2d%12lf%*11f%*7f%*2d%7lf%2d", &an, &jrs, &_bstar, &ibe);
-
+    // Epoque
+    an = _ligne1.mid(18, 2).toInt();
+    jrs = _ligne1.mid(20, 12).toDouble();
     an = (an < 57) ? an + AN2000 : an + 1900;
     const Date date = Date(an, 1, 1., 0.);
     _epoque = Date(date.getJourJulien() + jrs - 1., 0., true);
+
+    // Coefficient pseudo-balistique
+    _bstar = _ligne1.mid(53, 6).toDouble();
+    ibe = _ligne1.mid(59, 2).toInt();
     _bstar *= 1.e-5 * pow(10., ibe);
 
-    // Lecture de la seconde ligne
-    sscanf(li2, "%*2d%*5d%9lf%9lf%8lf%9lf%9lf%11lf%5d", &_inclo, &_omegao, &_ecco, &_argpo, &_mo, &_no,
-           &_nbOrbites);
-    _ecco *= 1.e-7;
+    // Elements orbitaux moyens
+    // Inclinaison
+    _inclo = _ligne2.mid(8, 8).toDouble();
 
+    // Ascension droite du noeud ascendant
+    _omegao = _ligne2.mid(17, 8).toDouble();
+
+    // Excentricite
+    _ecco = 1.e-7 * _ligne2.mid(26, 7).toDouble();
+
+    // Argument du perigee
+    _argpo = _ligne2.mid(34, 8).toDouble();
+
+    // Anomalie moyenne
+    _mo = _ligne2.mid(43, 8).toDouble();
+
+    // Moyen mouvement
+    _no = _ligne2.mid(52, 11).toDouble();
+
+    // Inclinaison
+    _nbOrbites = _ligne2.mid(63, 5).toInt();
     /* Retour */
     return;
 }
@@ -153,7 +179,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
         if (nb == 0 || nomsat != "---")
             throw PreviSatException(8);
 
-    } catch (PreviSatException e) {
+    } catch (PreviSatException &e) {
 
         QString msg = "";
         nb = 0;
@@ -216,7 +242,8 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     /* Initialisations */
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
 
-    QFile donneesSatellites("data/donnees.sat");
+    QString nomfic = QCoreApplication::applicationDirPath() + "/data/donnees.sat";
+    QFile donneesSatellites(nomfic.toStdString().c_str());
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly);
         QTextStream flux(&donneesSatellites);
@@ -228,11 +255,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     /* Corps de la methode */
     try {
 
-        int j, k;
+        int j;
         QString nomsat;
 
         j = 0;
-        k = 0;
         nomsat = "---";
         QFile fichier(nomFichier);
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -287,7 +313,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         }
         fichier.close();
 
-    } catch (PreviSatException e) {
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -357,7 +383,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
             j++;
         } else {
             if (nomFicOld == nomFicNew) {
-                if (norad1.toInt() < norad2.toInt() && j > isat || amaj) {
+                if ((norad1.toInt() < norad2.toInt() && j > isat) || amaj) {
 
                     // TLE absent du fichier de TLE anciens
                     // Ajout ?

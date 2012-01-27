@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ private:
                                    const Conditions &conditions, const double dateMaxFlash, const double mgn0,
                                    Date lim[]);
     static void LimiteFlash(Satellite satellite, Observateur observateur, Soleil soleil,
-                            const Conditions conditions, const double jjm[], const double mgn0,
+                            const Conditions &conditions, const double jjm[], const double mgn0,
                             double limite[]);
     static double MagnitudeFlash(Satellite satellite, const Observateur observateur, const Soleil soleil,
                                  const double angle, const bool ext);

@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
  *
  */
 
+#include <QCoreApplication>
 #include <fstream>
 #include "satellite.h"
 #include "librairies/maths/maths.h"
@@ -54,6 +55,23 @@ bool Satellite::initCalcul = false;
 /* Constructeurs */
 Satellite::Satellite()
 {
+    _eclipse = true;
+    _ieralt = true;
+    _penombre = false;
+    _methMagnitude = 'v';
+    _nbOrbites = 0;
+	_ageTLE = 0.;
+    _elongation = 0.;
+    _fractionIlluminee = 0.;
+    _magnitude = 99.;
+    _magnitudeStandard = 99.;
+    _rayonApparentSoleil = 0.;
+    _rayonApparentTerre = 0.;
+    _section = 0.;
+    _t1 = 0.;
+    _t2 = 0.;
+    _t3 = 0.;
+	_sat = SatVariables();
 }
 
 Satellite::Satellite(const TLE &tle)
@@ -271,7 +289,7 @@ void Satellite::CalculPosVit(const Date &date)
             _vitesse = uu1 - vv1;
         }
 
-    } catch (PreviSatException e) {
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -374,9 +392,9 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
     _elements.CalculElementsOsculateurs(_position, _vitesse);
 
     // Nombre d'orbites
-    const double age = date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC();
+    _ageTLE = date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC();
     _nbOrbites = _tle.getNbOrbites() +
-            (int) (floor((_tle.getNo() + age * _tle.getBstar()) * age +
+            (int) (floor((_tle.getNo() + _ageTLE * _tle.getBstar()) * _ageTLE +
                          Maths::modulo(_tle.getOmegao() + _tle.getMo(), DEUX_PI) / T360 -
                          Maths::modulo(_elements.getArgumentPerigee() + _elements.getAnomalieVraie(),
                                        DEUX_PI) / DEUX_PI + 0.5));
@@ -444,10 +462,8 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
                                QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
-    int j;
 
     /* Initialisations */
-    j = 0;
     const int nb = listeSatellites.size();
 
     if (!Satellite::initCalcul) {
@@ -464,19 +480,23 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
 
     /* Corps de la methode */
     FILE *fmgn = NULL;
-    if ((fmgn = fopen("data/donnees.sat", "r")) != NULL) {
+    QString nomfic = QCoreApplication::applicationDirPath() + "/data/donnees.sat";
+    if ((fmgn = fopen(nomfic.toStdString().c_str(), "r")) != NULL) {
 
+        int j = 0;
         char ligne[4096];
         while (fgets(ligne, 4096, fmgn) != NULL && j < nb) {
 
-            QString norad = ligne;
-            norad = norad.mid(0, 5);
+            QString ligne2 = ligne;
+            QString norad = ligne2.mid(0, 5);
             for (int isat=0; isat<nb; isat++) {
                 if (listeSatellites.at(isat) == norad) {
-                    sscanf(ligne, "%*5s%6lf%6lf%6lf%4lf%*c%c%6lf", &satellites[isat]._t1,
-                           &satellites[isat]._t2, &satellites[isat]._t3,
-                           &satellites[isat]._magnitudeStandard, &satellites[isat]._methMagnitude,
-                           &satellites[isat]._section);
+                    satellites[isat]._t1 = ligne2.mid(6, 5).toDouble();
+                    satellites[isat]._t2 = ligne2.mid(12, 4).toDouble();
+                    satellites[isat]._t3 = ligne2.mid(17, 4).toDouble();
+                    satellites[isat]._magnitudeStandard = ligne2.mid(22, 4).toDouble();
+                    satellites[isat]._methMagnitude = ligne2.at(27).toAscii();
+                    satellites[isat]._section = ligne2.mid(29, 6).toDouble();
                     j++;
                     break;
                 }
@@ -1141,8 +1161,9 @@ void Satellite::Dspace(const double tc) {
     // }
 
     // Integration numerique (Euler-MacLaurin)
-    double ft = 0.;
     if (_sat.irez != 0) {
+        double ft = 0.;
+
         if (_sat.atime == 0. || _sat.t * _sat.atime <= 0. || fabs(_sat.t) < fabs(_sat.atime)) {
             _sat.atime = 0.;
             _sat.xni = _sat.no;
@@ -1281,6 +1302,11 @@ bool Satellite::isEclipse() const
 bool Satellite::isIeralt() const
 {
     return _ieralt;
+}
+
+double Satellite::getAgeTLE() const
+{
+    return _ageTLE;
 }
 
 double Satellite::getElongation() const

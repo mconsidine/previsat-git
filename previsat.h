@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 namespace Ui {
-    class PreviSat;
+class PreviSat;
 }
 
 class PreviSat : public QMainWindow
@@ -13,7 +13,7 @@ class PreviSat : public QMainWindow
 
 public:
     explicit PreviSat(QWidget *parent = 0);
-    void Initialisations(const QString repertoireExe);
+    void Initialisations();
     void EnchainementCalculs();
     void AffichageDonnees();
     void AffichageCourbes();
@@ -25,8 +25,8 @@ private:
     void InitFicMap();
 
     void AffichageLieuObs();
+    void AffichageListeFichiersTLE();
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
-
 };
 
 #endif // PREVISAT_H

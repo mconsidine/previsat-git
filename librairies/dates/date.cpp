@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -50,6 +50,16 @@
 /* Constructeurs */
 Date::Date()
 {
+    _annee = 0;
+    _mois = 0;
+    _jour = 0;
+    _heure = 0;
+    _minutes = 0;
+    _secondes = 0.;
+
+    _jourJulien = 0.;
+    _jourJulienUTC = 0.;
+    _offsetUTC = 0.;
 }
 
 /*
@@ -110,13 +120,13 @@ Date::Date(const Date &date, const double offsetUTC)
 Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
 {
     /* Declarations des variables locales */
-    int a, z;
 
     /* Initialisations */
 
     /* Corps du constructeur */
     if (acalc) {
 
+        int a, z;
         const double j1 = jourJulien + 0.5;
         z = (int) floor(j1);
         const double f = j1 - z;

@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -53,6 +53,7 @@ QList<LigneConstellation> LigneConstellation::_lignesCst;
 
 LigneConstellation::LigneConstellation()
 {
+    _dessin = false;
 }
 
 LigneConstellation::LigneConstellation(const Etoile &etoile1, const Etoile &etoile2)
@@ -104,10 +105,10 @@ void LigneConstellation::InitTabLignesCst()
     /* Initialisations */
 
     /* Corps de la methode */
-    int i = 0;
     QFile fichier("data/constlines.cst");
     if (fichier.exists()) {
 
+        int i = 0;
         fichier.open(QIODevice::ReadOnly);
         QTextStream flux(&fichier);
 

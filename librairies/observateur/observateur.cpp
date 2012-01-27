@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -49,6 +49,16 @@
  */
 Observateur::Observateur()
 {
+    _longitude = 0.;
+    _latitude = 0.;
+    _altitude = 0.;
+    _coslat = 1.;
+    _sinlat = 0.;
+    _rayon = 0.;
+    _posZ = 0.;
+    _aaer = 0.;
+    _aray = 0.;
+    _tempsSideralGreenwich = 0.;
 }
 
 /*
@@ -61,6 +71,7 @@ Observateur::Observateur(const QString nomlieu, const double longitude, const do
     double coster, sinter;
 
     /* Initialisations */
+    _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
     _nomlieu = nomlieu;
@@ -93,6 +104,7 @@ Observateur::Observateur(const Observateur &observateur)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
     _nomlieu = observateur._nomlieu;
@@ -105,6 +117,11 @@ Observateur::Observateur(const Observateur &observateur)
 
     _rayon = observateur._rayon;
     _posZ = observateur._posZ;
+
+    _position = observateur._position;
+    _vitesse = observateur._vitesse;
+
+    _rotHz = observateur._rotHz;
 
     // Pour l'extinction atmospherique
     _aray = observateur._aray;
@@ -126,6 +143,14 @@ Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, co
     /* Initialisations */
 
     /* Corps du constructeur */
+    _longitude = 0.;
+    _latitude = 0.;
+    _altitude = 0.;
+    _coslat = 1.;
+    _sinlat = 0.;
+    _rayon = 0.;
+    _posZ = 0.;
+    _tempsSideralGreenwich = 0.;
     _position = position;
     _vitesse = vitesse;
     _rotHz = rotHz;
@@ -201,7 +226,7 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
  * mais sans tenir compte de l'altitude
  * Astronomical Algorithms 2nd edition de Jean Meeus, p85
  */
-double Observateur::CalculDistance(const Observateur observateur) const
+double Observateur::CalculDistance(const Observateur &observateur) const
 {
     /* Declarations des variables locales */
 

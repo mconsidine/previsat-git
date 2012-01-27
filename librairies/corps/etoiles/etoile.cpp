@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ QList<Etoile> Etoile::_etoiles;
 
 Etoile::Etoile()
 {
+    _magnitude = 0.;
 }
 
 Etoile::Etoile(const QString nom, const double ascensionDroite, const double declinaison, const double magnitude)
@@ -131,7 +132,7 @@ void Etoile::CalculCoordHoriz(const Observateur &observateur)
 void Etoile::InitTabEtoiles()
 {
     /* Declarations des variables locales */
-    int ad1, ad2, de1, de2, de3, i, sgn;
+    int ad1, ad2, de1, de2, de3, i;
     double ad3, ascDte, dec, mag;
     char ligne1[4096];
     std::string ligne2;
@@ -156,7 +157,7 @@ void Etoile::InitTabEtoiles()
                 sscanf(ligne1, "%2d%2d%4lf%*2s%2d%2d%2d%*7f%*7f%6lf", &ad1, &ad2, &ad3, &de1, &de2, &de3, &mag);
 
                 ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
-                sgn = (ligne2.at(9) == '-') ? -1 : 1;
+                const int sgn = (ligne2.at(9) == '-') ? -1 : 1;
                 dec = sgn * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
 
                 if (ligne2.length() > 37)

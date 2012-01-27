@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2011") << endl << endl;
+    flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2012") << endl << endl;
     ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
             arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), Maths::HEURE1,

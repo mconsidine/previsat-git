@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
  *
  */
 
+#include <QCoreApplication>
 #include <cmath>
 #include <fstream>
 #include "corps.h"
@@ -60,6 +61,19 @@ Corps::Corps()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _azimut = 0.;
+    _hauteur = 0.;
+    _distance = 0.;
+
+    _ascensionDroite = 0.;
+    _declinaison = 0.;
+
+    _longitude = 0.;
+    _latitude = 0.;
+    _altitude = 0.;
+
+    _visible = false;
+    _rangeRate = 0.;
 
     /* Retour */
     return;
@@ -299,7 +313,6 @@ void Corps::InitTabConstellations()
 {
     /* Declarations des variables locales */
     int i;
-    double ad1, ad2, de;
     char ligne[4096];
 
     /* Initialisations */
@@ -307,17 +320,16 @@ void Corps::InitTabConstellations()
 
     /* Corps de la methode */
     FILE *fcst = NULL;
-    if ((fcst = fopen("data/constellations.cst", "r")) != NULL) {
+    QString nomfic = QCoreApplication::applicationDirPath() + "/data/constellations.cst";
+    if ((fcst = fopen(nomfic.toStdString().c_str(), "r")) != NULL) {
 
         while (fgets(ligne, 4096, fcst) != NULL) {
 
-            QString cst(ligne);
-            cst = cst.mid(0, 3);
-            sscanf(ligne, "%*s%8lf%8lf%9lf", &ad1, &ad2, &de);
-            _tabConst[i] = cst;
-            _tabCstCoord[i][0] = ad1 * HEUR2RAD;
-            _tabCstCoord[i][1] = ad2 * HEUR2RAD;
-            _tabCstCoord[i][2] = de * DEG2RAD;
+            QString ligne2(ligne);
+            _tabConst[i] = ligne2.mid(0, 3);
+            _tabCstCoord[i][0] = ligne2.mid(4, 7).toDouble() * HEUR2RAD;
+            _tabCstCoord[i][1] = ligne2.mid(12, 7).toDouble() * HEUR2RAD;
+            _tabCstCoord[i][2] = ligne2.mid(20, 8).toDouble() * DEG2RAD;
             i++;
         }
     }

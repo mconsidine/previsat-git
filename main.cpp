@@ -1,7 +1,7 @@
 #include <QLibraryInfo>
 #include <QLocale>
-#include <QTranslator>
 #include <QtGui/QApplication>
+#include <QTranslator>
 #include "previsat.h"
 
 int main(int argc, char *argv[])
@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     PreviSat w;
-    w.Initialisations(QCoreApplication::applicationDirPath());
+
+    w.Initialisations();
 
     w.EnchainementCalculs();
 
