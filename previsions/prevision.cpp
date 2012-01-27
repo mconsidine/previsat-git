@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@
 void Prevision::CalculPassages(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool pass, svis, vis;
+    bool pass;
 
     QString ligne;
     QStringList res;
@@ -67,8 +67,6 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
     /* Initialisations */
     pass = false;
-    svis = true;
-    vis = false;
 
     // Creation de la liste de TLE
     TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
@@ -99,7 +97,6 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
         Satellite sat = it2.next();
         int ent = 0;
-        vis = false;
 
         const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.getTle().getNo()),
                                                      DEUX_TIERS) * (1. - sat.getTle().getEcco());
@@ -134,7 +131,6 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             // Le satellite a une hauteur superieure a celle specifiee
             if (sat.getHauteur() >= conditions.getHaut()) {
 
-                vis = true;
                 // Conditions d'eclipse du satellite
                 sat.CalculSatelliteEclipse(soleil);
 

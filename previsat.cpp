@@ -1,17 +1,17 @@
 #include <QDateTime>
 #include <QDir>
-#include <QFile>
 #include <QGraphicsTextItem>
-#include <QImageReader>
 #include <QSettings>
 #include <QSound>
 #include <QTextStream>
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
+#include "librairies/dates/date.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
+#include "librairies/observateur/observateur.h"
 #include "previsat.h"
 #include "ui_previsat.h"
 
@@ -46,6 +46,7 @@ static double offsetUTC;
 static QList<Observateur> observateurs;
 static QStringList ficObs;
 static QStringList listeObs;
+static QStringList listeFicTLE;
 
 // Cartes du monde
 static QStringList ficMap;
@@ -76,14 +77,14 @@ PreviSat::~PreviSat()
 /*
  * Initialisations generales
  */
-void PreviSat::Initialisations(const QString repertoireExe)
+void PreviSat::Initialisations()
 {
     /* Declarations des variables locales */
     QDir di;
 
     /* Initialisations */
     info = true;
-    dirExe = repertoireExe;
+    dirExe = QCoreApplication::applicationDirPath();
     dirDat = dirExe + QDir::separator() + "data";
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
@@ -137,12 +138,6 @@ void PreviSat::Initialisations(const QString repertoireExe)
     l1 = settings.value("TLE/l1", "").toString();
     l2 = settings.value("TLE/l2", "").toString();
 
-    // Liste de satellites
-    nbSat = settings.value("TLE/nbsat", 2).toInt();
-    liste = settings.value("TLE/liste", "25544#20580").toString().split("#");
-
-    nomfic = settings.value("fichier/nom", dirTle + QDir::separator() + "visual.txt").toString();
-
     // Affichage des champs par defaut
     ui->affconst->setChecked(settings.value("affichage/affconst", true).toBool());
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
@@ -184,7 +179,11 @@ void PreviSat::Initialisations(const QString repertoireExe)
         ui->ajdfic->setCurrentIndex(0);
     }
 
-    // Ouverture du fichier TLE
+    // Affichage des fichiers TLE
+    AffichageListeFichiersTLE();
+
+    // Ouverture du fichier TLE par defaut
+    nbSat = liste.size();
     if (nbSat == 0) {
         tles.resize(1);
         nbSat = 1;
@@ -193,7 +192,7 @@ void PreviSat::Initialisations(const QString repertoireExe)
         bipSat.resize(nbSat);
     }
 
-    // Lecture du fichier TLE
+    // Lecture du fichier TLE par defaut
     const QFile fi(nomfic);
     if (fi.exists()) {
 
@@ -204,10 +203,8 @@ void PreviSat::Initialisations(const QString repertoireExe)
 
             // Lecture du fichier
             TLE::LectureFichier(nomfic, liste, tles);
-        } catch (PreviSatException e) {
+        } catch (PreviSatException &e) {
         }
-
-        ui->nomFichier->setText(fi.fileName().mid(fi.fileName().lastIndexOf("/")+1));
 
         // Mise a jour de la liste de satellites
         int i = 0;
@@ -278,7 +275,6 @@ void PreviSat::Initialisations(const QString repertoireExe)
 void PreviSat::InitFicObs(const bool alarm)
 {
     /* Declarations des variables locales */
-    int sts;
 
     /* Initialisations */
     ui->coordonnees->setVisible(false);
@@ -299,7 +295,8 @@ void PreviSat::InitFicObs(const bool alarm)
                 Messages::Afficher(tr("POSITION : Erreur rencontrée lors de l'initialisation\nIl n'existe aucun fichier de lieux d'observation"), Messages::WARNING);
         } else {
 
-            // Liste de fichiers de lieux d'observation
+            int sts;
+			// Liste de fichiers de lieux d'observation
             foreach(QString fic, di.entryList(QDir::Files)) {
 
                 sts = 0;
@@ -420,7 +417,7 @@ void PreviSat::AffichageDonnees()
     } else {
         ui->satellite->setVisible(true);
         if (ui->onglets->count() < 7) {
-            ui->onglets->insertTab(1, ui->osculateur, tr("Éléments osculateurs"));
+            ui->onglets->insertTab(1, ui->osculateurs, tr("Éléments osculateurs"));
             ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
         }
     }
@@ -1127,7 +1124,7 @@ void PreviSat::AffichageCourbes()
                 for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
                     int lsat2 = qRound(satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ);
                     int bsat2 = qRound(satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT);
-                    int ils;
+                    int ils = 99999;
 
                     if (fabs(lsat2 - lsat1) > lcarte2) {
                         if (lsat2 < lsat1)
@@ -1170,7 +1167,7 @@ void PreviSat::AffichageCourbes()
                     for(int j=1; j<361; j++) {
                         int lsat2 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
                         int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
-                        int ils;
+                        int ils = 99999;
 
                         if (fabs(lsat2 - lsat1) > lcarte2) {
                             if (lsat2 < lsat1)
@@ -1288,12 +1285,47 @@ void PreviSat::AffichageLieuObs()
 }
 
 /*
+ * Affichage de la liste de fichiers TLE
+ */
+void PreviSat::AffichageListeFichiersTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    listeFicTLE = settings.value("fichier/nomFichiersTLE", "visual.txt#25544&20580").toString().split("$");
+
+    /* Corps de la methode */
+    ui->nomFichiersTLE->clear();
+    QStringListIterator it(listeFicTLE);
+    while (it.hasNext()) {
+
+        const QString ficTLE = it.next();
+        const QString fic = ficTLE.split("#").at(0);
+        const QStringList listeTLE = ficTLE.split("#").at(1).split("&");
+
+        const QFile fi(dirTle + QDir::separator() + fic);
+        if (fi.exists()) {
+            ui->nomFichiersTLE->addItem(fic);
+
+            if (ficTLE == listeFicTLE.first()) {
+                nomfic = fi.fileName();
+                liste = listeTLE;
+            }
+        }
+    }
+    ui->nomFichiersTLE->addItem(tr("* Parcourir..."));
+    ui->nomFichiersTLE->setCurrentIndex(0);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Affichage des noms des satellites dans les listes
  */
 void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList listeSat)
 {
     /* Declarations des variables locales */
-    bool check;
     QString ligne, li1, li2, magn, nomsat, norad;
 
     /* Initialisations */
@@ -1347,7 +1379,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                 //                if (nomsat.contains(" DEB") || nomsat.contains("R/B"))
                 //                    nomsat = nomsat.append("  (").append(norad).append(")");
 
-                check = false;
+                bool check = false;
                 for (int j=0; j<listeSat.length(); j++) {
                     if (norad == listeSat.at(j)) {
                         check = true;

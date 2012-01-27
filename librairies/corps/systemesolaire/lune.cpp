@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -97,6 +97,8 @@ static const int _tabCoef2[60][4] = {{0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 1, -1}, 
 /* Constructeurs */
 Lune::Lune()
 {
+    _elongation = 0.;
+    _fractionIlluminee = 0.;
 }
 
 /* Destructeur */

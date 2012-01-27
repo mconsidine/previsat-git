@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -59,7 +59,6 @@ static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool vis;
     double rayon = 0.;
     Soleil soleil;
     Lune lune;
@@ -69,7 +68,6 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     QVector<QList<QVector<double> > > tabEphem;
 
     /* Initialisations */
-    vis = false;
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
     const QStringList liste("25544");
     QVector<TLE> tabtle;
@@ -143,7 +141,6 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 jj0 = date.getJourJulienUTC() - PAS0;
                 jj2 = jj0 + temps1;
                 ang0 = PI;
-                vis = true;
 
                 do {
                     const Date date0 = Date(jj0, 0., false);
@@ -370,10 +367,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     }
                     date = Date(jj2, 0., false);
                 } else {
-                    if (sat.getHauteur() < conditions.getHaut()) {
+                    if (sat.getHauteur() < conditions.getHaut())
                         date = Date(date.getJourJulienUTC() + periode, 0., false);
-                        vis = false;
-                    }
                 }
                 date = Date(date.getJourJulienUTC() + PAS0, 0., false);
 

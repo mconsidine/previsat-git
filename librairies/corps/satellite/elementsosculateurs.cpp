@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -45,6 +45,17 @@
 
 ElementsOsculateurs::ElementsOsculateurs()
 {
+    _demiGrandAxe = 0.;
+    _excentricite = 0.;
+    _inclinaison = 0.;
+    _ascDroiteNA = 0.;
+    _argumentPerigee = 0.;
+    _anomalieVraie = 0.;
+    _anomalieMoyenne = 0.;
+    _anomalieExcentrique = 0.;
+    _apogee = 0.;
+    _perigee = 0.;
+    _periode = 0.;
 }
 
 ElementsOsculateurs::~ElementsOsculateurs()

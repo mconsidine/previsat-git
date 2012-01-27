@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -222,7 +222,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2011") << endl << endl;
+    flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2012") << endl << endl;
     ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
     ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt).arg(unit);
     flux << ligne2 << endl;

@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ public:
     /* Methodes publiques */
     void CalculPosVit(const Date &date);
     static double CalculTempsSideralGreenwich(const Date &date);
-    double CalculDistance(const Observateur observateur) const;
+    double CalculDistance(const Observateur &observateur) const;
     static Observateur CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction);
 
     /* Accesseurs */

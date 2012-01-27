@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ double Vecteur3D::Norme() const
 /*
  * Calcul de l'angle entre 2 vecteurs
  */
-double Vecteur3D::Angle(const Vecteur3D vecteur)
+double Vecteur3D::Angle(const Vecteur3D &vecteur)
 {
     /* Declarations des variables locales */
 

@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2011  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
 
 PreviSatException::PreviSatException() throw()
 {
+    _ierr = 0;
 }
 
 PreviSatException::PreviSatException(const int ierr) throw()
@@ -53,6 +54,7 @@ PreviSatException::PreviSatException(const int ierr) throw()
 
 PreviSatException::PreviSatException(const QString message, const Messages::MessageType ierr) throw()
 {
+    _ierr = ierr;
     Messages::Afficher(message, ierr);
 }
 
