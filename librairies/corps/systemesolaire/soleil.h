@@ -24,7 +24,7 @@
  * >    librairies.corps.systemesolaire
  *
  * Heritage
- * >
+ * >    Corps
  *
  * Auteur
  * >    Astropedia

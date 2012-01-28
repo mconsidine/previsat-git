@@ -66,6 +66,7 @@ public:
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
     void CalculZoneVisibilite();
+    Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
 
     /* Accesseurs */
     double getAltitude() const;

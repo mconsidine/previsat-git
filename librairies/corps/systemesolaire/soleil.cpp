@@ -24,7 +24,7 @@
  * >    librairies.corps.systemesolaire
  *
  * Heritage
- * >
+ * >    Corps
  *
  * Description
  * >    Utilitaires lies a la position du Soleil
@@ -73,6 +73,7 @@ void Soleil::CalculPosition(const Date &date)
     double u, u1;
 
     /* Initialisations */
+    const double a = 1.000001018;
     const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
     const double tu2 = tu * tu;
 
@@ -99,17 +100,14 @@ void Soleil::CalculPosition(const Date &date)
     // Anomalie vraie
     const double v = 2. * atan(sqrt((1. + e) / (1. - e)) * tan(0.5 * u));
 
-    // Longitude vraie
-    const double lv = lp + v;
-
     // Rayon vecteur
-    _distanceUA = 1.000001018 * (1. - e * cos(u));
-    const double rp = _distanceUA * UA;
+    _distanceUA = a * (1. - e * cos(u));
 
-    const double obliquite = ARCSEC2RAD * (84381.448 - 46.815 * tu - 0.00059 * tu2 + 0.001813 * tu * tu2);
+    // Longitude vraie
+    const double lv = lp + v - a * (1. - e * e) / _distanceUA * 20.49552 * ARCSEC2RAD;
 
-    const double xx = rp * sin(lv);
-    _position = Vecteur3D(rp * cos(lv), xx * cos(obliquite), xx * sin(obliquite));
+    Vecteur3D pos(lv, 0., _distanceUA);
+    _position = Sph2Cart(pos, date) * UA;
 
     /* Retour */
     return;

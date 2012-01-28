@@ -276,6 +276,31 @@ void Corps::CalculZoneVisibilite()
 }
 
 /*
+ * Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
+ */
+Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t2 = t * t;
+
+    /* Corps de la methode */
+    const double obliquite = ARCSEC2RAD * (84381.448 - 46.815 * t - 0.00059 * t2 + 0.001813 * t * t2);
+    const double cb = cos(vecteur.getY());
+    const double sb = sin(vecteur.getY());
+    const double ce = cos(obliquite);
+    const double se = sin(obliquite);
+    const double xx = vecteur.getZ() * cb * sin(vecteur.getX());
+
+    /* Retour */
+    return Vecteur3D(vecteur.getZ() * cb * cos(vecteur.getX()),
+                     xx * ce - vecteur.getZ() * se * sb,
+                     xx * se + vecteur.getZ() * ce * sb);
+}
+
+/*
  * Calcul de l'altitude et de l'altitude
  */
 void Corps::CalculLatitudeAltitude()
