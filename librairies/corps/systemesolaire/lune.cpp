@@ -24,7 +24,7 @@
  * >    librairies.corps.systemesolaire
  *
  * Heritage
- * >
+ * >    Corps
  *
  * Description
  * >    Utilitaires lies a la position de la Lune
@@ -186,14 +186,8 @@ void Lune::CalculPosition(const Date &date)
     const double bt = DEG2RAD * b0 * 1.e-6;
     const double rp = 385000.56 + r0 * 1.e-3;
 
-    const double cb = cos(bt);
-    const double sb = sin(bt);
-    const double obliquite = ARCSEC2RAD * (84381.448 - 46.815 * t - 0.00059 * t2 + 0.001813 * t * t2);
-    const double ce = cos(obliquite);
-    const double se = sin(obliquite);
-    const double xx = rp * cb * sin(lv);
-
-    _position = Vecteur3D(rp * cb * cos(lv), xx * ce - rp * se * sb, xx * se + rp * ce * sb);
+    Vecteur3D pos(lv, bt, rp);
+    _position = Sph2Cart(pos, date);
 
     /* Retour */
     return;
