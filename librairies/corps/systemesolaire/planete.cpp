@@ -146,7 +146,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
 
     // Prise en compte de l'aberration
     const double jj2 = date.getJourJulienUTC() - 0.0057755182 * _distance;
-    Date date2(jj2, 0., false);
+    const Date date2(jj2, 0., false);
 
     CalculElements(date2);
     CalculCoordonneesSpheriques();
