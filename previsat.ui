@@ -301,9 +301,9 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>137</y>
+            <y>140</y>
             <width>200</width>
-            <height>272</height>
+            <height>269</height>
            </rect>
           </property>
           <property name="font">
@@ -353,7 +353,7 @@
         <widget class="QFrame" name="frameOnglets">
          <property name="minimumSize">
           <size>
-           <width>840</width>
+           <width>800</width>
            <height>0</height>
           </size>
          </property>
@@ -368,7 +368,7 @@
            <rect>
             <x>6</x>
             <y>0</y>
-            <width>803</width>
+            <width>791</width>
             <height>241</height>
            </rect>
           </property>
@@ -376,7 +376,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="autoFillBackground">
@@ -389,7 +389,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>0</y>
+              <y>2</y>
               <width>31</width>
               <height>16</height>
              </rect>
@@ -402,7 +402,7 @@
             <property name="geometry">
              <rect>
               <x>50</x>
-              <y>0</y>
+              <y>2</y>
               <width>271</width>
               <height>16</height>
              </rect>
@@ -1102,7 +1102,7 @@
            <widget class="QScrollArea" name="soleilLune">
             <property name="geometry">
              <rect>
-              <x>570</x>
+              <x>560</x>
               <y>32</y>
               <width>217</width>
               <height>175</height>
@@ -1578,7 +1578,7 @@
             <property name="geometry">
              <rect>
               <x>50</x>
-              <y>0</y>
+              <y>2</y>
               <width>271</width>
               <height>16</height>
              </rect>
@@ -1591,7 +1591,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>0</y>
+              <y>2</y>
               <width>31</width>
               <height>16</height>
              </rect>
@@ -1604,7 +1604,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>104</y>
+              <y>114</y>
               <width>115</width>
               <height>16</height>
              </rect>
@@ -1617,7 +1617,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>35</y>
+              <y>45</y>
               <width>442</width>
               <height>16</height>
              </rect>
@@ -1635,7 +1635,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>170</y>
+              <y>180</y>
               <width>19</width>
               <height>16</height>
              </rect>
@@ -1648,7 +1648,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>119</y>
+              <y>129</y>
               <width>106</width>
               <height>16</height>
              </rect>
@@ -1661,7 +1661,7 @@
             <property name="geometry">
              <rect>
               <x>313</x>
-              <y>89</y>
+              <y>99</y>
               <width>67</width>
               <height>16</height>
              </rect>
@@ -1677,7 +1677,7 @@
             <property name="geometry">
              <rect>
               <x>343</x>
-              <y>170</y>
+              <y>180</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -1693,7 +1693,7 @@
             <property name="geometry">
              <rect>
               <x>595</x>
-              <y>89</y>
+              <y>99</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -1709,7 +1709,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>170</y>
+              <y>180</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -1725,7 +1725,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>20</y>
+              <y>30</y>
               <width>31</width>
               <height>16</height>
              </rect>
@@ -1738,7 +1738,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>140</y>
+              <y>150</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -1754,7 +1754,7 @@
             <property name="geometry">
              <rect>
               <x>595</x>
-              <y>104</y>
+              <y>114</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -1770,7 +1770,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>104</y>
+              <y>114</y>
               <width>16</width>
               <height>16</height>
              </rect>
@@ -1783,7 +1783,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>89</y>
+              <y>99</y>
               <width>97</width>
               <height>16</height>
              </rect>
@@ -1796,7 +1796,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>170</y>
+              <y>180</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -1809,7 +1809,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>155</y>
+              <y>165</y>
               <width>101</width>
               <height>16</height>
              </rect>
@@ -1822,7 +1822,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>89</y>
+              <y>99</y>
               <width>82</width>
               <height>16</height>
              </rect>
@@ -1838,7 +1838,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>170</y>
+              <y>180</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -1851,7 +1851,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>119</y>
+              <y>129</y>
               <width>82</width>
               <height>16</height>
              </rect>
@@ -1867,7 +1867,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>89</y>
+              <y>99</y>
               <width>16</width>
               <height>16</height>
              </rect>
@@ -1880,7 +1880,7 @@
             <property name="geometry">
              <rect>
               <x>223</x>
-              <y>74</y>
+              <y>84</y>
               <width>121</width>
               <height>16</height>
              </rect>
@@ -1893,7 +1893,7 @@
             <property name="geometry">
              <rect>
               <x>343</x>
-              <y>140</y>
+              <y>150</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -1909,7 +1909,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>119</y>
+              <y>129</y>
               <width>70</width>
               <height>16</height>
              </rect>
@@ -1922,7 +1922,7 @@
             <property name="geometry">
              <rect>
               <x>574</x>
-              <y>140</y>
+              <y>150</y>
               <width>127</width>
               <height>16</height>
              </rect>
@@ -1938,7 +1938,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>119</y>
+              <y>129</y>
               <width>16</width>
               <height>16</height>
              </rect>
@@ -1951,7 +1951,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>140</y>
+              <y>150</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -1964,7 +1964,7 @@
             <property name="geometry">
              <rect>
               <x>577</x>
-              <y>155</y>
+              <y>165</y>
               <width>124</width>
               <height>16</height>
              </rect>
@@ -1980,7 +1980,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>104</y>
+              <y>114</y>
               <width>82</width>
               <height>16</height>
              </rect>
@@ -1996,7 +1996,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>74</y>
+              <y>84</y>
               <width>115</width>
               <height>16</height>
              </rect>
@@ -2009,7 +2009,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>140</y>
+              <y>150</y>
               <width>22</width>
               <height>16</height>
              </rect>
@@ -2022,7 +2022,7 @@
             <property name="geometry">
              <rect>
               <x>343</x>
-              <y>155</y>
+              <y>165</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -2038,7 +2038,7 @@
             <property name="geometry">
              <rect>
               <x>580</x>
-              <y>170</y>
+              <y>180</y>
               <width>70</width>
               <height>16</height>
              </rect>
@@ -2054,7 +2054,7 @@
             <property name="geometry">
              <rect>
               <x>318</x>
-              <y>104</y>
+              <y>114</y>
               <width>61</width>
               <height>16</height>
              </rect>
@@ -2067,7 +2067,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>140</y>
+              <y>150</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -2080,7 +2080,7 @@
             <property name="geometry">
              <rect>
               <x>318</x>
-              <y>119</y>
+              <y>129</y>
               <width>61</width>
               <height>16</height>
              </rect>
@@ -2093,7 +2093,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>47</y>
+              <y>57</y>
               <width>442</width>
               <height>16</height>
              </rect>
@@ -2111,7 +2111,7 @@
             <property name="geometry">
              <rect>
               <x>16</x>
-              <y>155</y>
+              <y>165</y>
               <width>19</width>
               <height>16</height>
              </rect>
@@ -2124,7 +2124,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>155</y>
+              <y>165</y>
               <width>115</width>
               <height>16</height>
              </rect>
@@ -2137,7 +2137,7 @@
             <property name="geometry">
              <rect>
               <x>595</x>
-              <y>119</y>
+              <y>129</y>
               <width>55</width>
               <height>16</height>
              </rect>
@@ -2153,7 +2153,7 @@
             <property name="geometry">
              <rect>
               <x>229</x>
-              <y>104</y>
+              <y>114</y>
               <width>82</width>
               <height>16</height>
              </rect>
@@ -2166,7 +2166,7 @@
             <property name="geometry">
              <rect>
               <x>481</x>
-              <y>89</y>
+              <y>99</y>
               <width>115</width>
               <height>16</height>
              </rect>
@@ -2179,7 +2179,7 @@
             <property name="geometry">
              <rect>
               <x>43</x>
-              <y>20</y>
+              <y>30</y>
               <width>271</width>
               <height>16</height>
              </rect>
@@ -2316,7 +2316,7 @@
             <property name="geometry">
              <rect>
               <x>34</x>
-              <y>155</y>
+              <y>165</y>
               <width>91</width>
               <height>16</height>
              </rect>
@@ -2408,7 +2408,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>15</y>
+              <y>20</y>
               <width>442</width>
               <height>16</height>
              </rect>
@@ -2523,7 +2523,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>27</y>
+              <y>32</y>
               <width>442</width>
               <height>16</height>
              </rect>
@@ -2651,7 +2651,7 @@
             <property name="geometry">
              <rect>
               <x>43</x>
-              <y>0</y>
+              <y>2</y>
               <width>271</width>
               <height>16</height>
              </rect>
@@ -3005,7 +3005,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>0</y>
+              <y>2</y>
               <width>31</width>
               <height>16</height>
              </rect>
@@ -3061,6 +3061,425 @@
            <attribute name="title">
             <string>Prévisions</string>
            </attribute>
+           <widget class="QLabel" name="lbl_dateInitialePrev">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Date initiale :</string>
+            </property>
+           </widget>
+           <widget class="QDateTimeEdit" name="dateInitialePrev">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>6</y>
+              <width>131</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::UpDownArrows</enum>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_dateFinalePrev">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>34</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Date finale :</string>
+            </property>
+           </widget>
+           <widget class="QDateTimeEdit" name="dateFinalePrev">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>30</y>
+              <width>131</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::UpDownArrows</enum>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_pasGeneration">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>60</y>
+              <width>101</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Pas de génération :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="pasGeneration">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>56</y>
+              <width>101</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <item>
+             <property name="text">
+              <string>1 seconde</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>5 secondes</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10 secondes</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>20 secondes</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>30 secondes</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>1 minute</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2 minutes</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>5 minutes</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QLabel" name="lbl_lieuxObservation2">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>90</y>
+              <width>101</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Lieu d'observation :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="lieuxObservation2">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>86</y>
+              <width>191</width>
+              <height>22</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_hauteurSoleilPrev">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>120</y>
+              <width>101</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Hauteur du Soleil :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="hauteurSoleilPrev">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>116</y>
+              <width>191</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Horizon (0°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule civil (-6°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule nautique (-12°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule astronomique (-18°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Indifférent</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Autre...</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QLabel" name="lbl_hauteurSatPrev">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>150</y>
+              <width>151</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Hauteur minimale du satellite :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="hauteurSatPrev">
+            <property name="geometry">
+             <rect>
+              <x>160</x>
+              <y>146</y>
+              <width>141</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <item>
+             <property name="text">
+              <string>0°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>5°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>15°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>20°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Autre...</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QCheckBox" name="illuminationPrev">
+            <property name="geometry">
+             <rect>
+              <x>360</x>
+              <y>90</y>
+              <width>121</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Illumination requise</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="magnitudeMaxPrev">
+            <property name="geometry">
+             <rect>
+              <x>360</x>
+              <y>120</y>
+              <width>121</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Magnitude maximale</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="valMagnitudeMaxPrev">
+            <property name="geometry">
+             <rect>
+              <x>484</x>
+              <y>117</y>
+              <width>51</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-8.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>14.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>4.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="liste2">
+            <property name="geometry">
+             <rect>
+              <x>580</x>
+              <y>10</y>
+              <width>200</width>
+              <height>201</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>MS Shell Dlg 2</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="effacerHeuresPrev">
+            <property name="geometry">
+             <rect>
+              <x>230</x>
+              <y>6</y>
+              <width>111</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Effacer heures</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="calculsPrev">
+            <property name="geometry">
+             <rect>
+              <x>360</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Calculs</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="annulerPrev">
+            <property name="geometry">
+             <rect>
+              <x>460</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Annuler</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="afficherPrev">
+            <property name="geometry">
+             <rect>
+              <x>460</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Afficher</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="valHauteurSoleilPrev">
+            <property name="geometry">
+             <rect>
+              <x>310</x>
+              <y>118</y>
+              <width>31</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="inputMask">
+             <string>###; </string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="maxLength">
+             <number>3</number>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="valHauteurSatPrev">
+            <property name="geometry">
+             <rect>
+              <x>310</x>
+              <y>147</y>
+              <width>31</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="inputMask">
+             <string>99; </string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="maxLength">
+             <number>2</number>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="iridium">
            <property name="autoFillBackground">
@@ -3069,6 +3488,541 @@
            <attribute name="title">
             <string>Flashs Iridium</string>
            </attribute>
+           <widget class="QLabel" name="lbl_dateInitialeIri">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Date initiale :</string>
+            </property>
+           </widget>
+           <widget class="QDateTimeEdit" name="dateFinaleIri">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>30</y>
+              <width>131</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::UpDownArrows</enum>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="effacerHeuresIri">
+            <property name="geometry">
+             <rect>
+              <x>230</x>
+              <y>6</y>
+              <width>111</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Effacer heures</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_dateFinaleIri">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>34</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Date finale :</string>
+            </property>
+           </widget>
+           <widget class="QDateTimeEdit" name="dateInitialeIri">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>6</y>
+              <width>131</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::UpDownArrows</enum>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="hauteurSoleilIri">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>56</y>
+              <width>191</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Horizon (0°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule civil (-6°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule nautique (-12°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Crépuscule astronomique (-18°)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Indifférent</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Autre...</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QLabel" name="lbl_hauteurSoleilIri">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>60</y>
+              <width>101</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Hauteur du Soleil :</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_lieuxObservation3">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>92</y>
+              <width>101</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Lieu d'observation :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="lieuxObservation3">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>88</y>
+              <width>191</width>
+              <height>22</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_hauteurSatIri">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>124</y>
+              <width>151</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Hauteur minimale du satellite :</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="hauteurSatIri">
+            <property name="geometry">
+             <rect>
+              <x>160</x>
+              <y>120</y>
+              <width>141</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>0°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>5°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>15°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>20°</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Autre...</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QCheckBox" name="satellitesOperationnels">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>153</y>
+              <width>241</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Uniquement les satellites opérationnels</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="ordreChronologique">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>180</y>
+              <width>201</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Classer par ordre chronologique</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_fichierTLEIri">
+            <property name="geometry">
+             <rect>
+              <x>350</x>
+              <y>94</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Fichier TLE :</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="fichierTLEIri">
+            <property name="geometry">
+             <rect>
+              <x>420</x>
+              <y>91</y>
+              <width>251</width>
+              <height>20</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="parcourirIri">
+            <property name="geometry">
+             <rect>
+              <x>680</x>
+              <y>90</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Parcourir...</string>
+            </property>
+           </widget>
+           <widget class="QGroupBox" name="groupBoxAffichageLignesIri">
+            <property name="geometry">
+             <rect>
+              <x>420</x>
+              <y>10</y>
+              <width>151</width>
+              <height>71</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string>Affichage des résultats</string>
+            </property>
+            <widget class="QRadioButton" name="affichage1ligneIri">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>82</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>1 ligne</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="affichage3lignesIri">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>40</y>
+               <width>82</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>3 lignes</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </widget>
+           <widget class="QLabel" name="lbl_magnitudeMaxNuitIri">
+            <property name="geometry">
+             <rect>
+              <x>350</x>
+              <y>124</y>
+              <width>141</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Magnitude maximale (nuit) :</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="magnitudeMaxNuitIri">
+            <property name="geometry">
+             <rect>
+              <x>490</x>
+              <y>120</y>
+              <width>51</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-8.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>8.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>2.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="magnitudeMaxJourIri">
+            <property name="geometry">
+             <rect>
+              <x>490</x>
+              <y>150</y>
+              <width>51</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-8.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>8.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>-4.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_magnitudeMaxJourIri">
+            <property name="geometry">
+             <rect>
+              <x>350</x>
+              <y>154</y>
+              <width>141</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Magnitude maximale (jour) :</string>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="angleMaxReflexionIri">
+            <property name="geometry">
+             <rect>
+              <x>490</x>
+              <y>180</y>
+              <width>51</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>8.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>4.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_angleMaxReflexionIri">
+            <property name="geometry">
+             <rect>
+              <x>350</x>
+              <y>184</y>
+              <width>141</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Angle maximal de réflexion :</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="afficherIri">
+            <property name="geometry">
+             <rect>
+              <x>680</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Afficher</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="calculsIri">
+            <property name="geometry">
+             <rect>
+              <x>580</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Calculs</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="annulerIri">
+            <property name="geometry">
+             <rect>
+              <x>680</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Annuler</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="valHauteurSoleilIri">
+            <property name="geometry">
+             <rect>
+              <x>310</x>
+              <y>57</y>
+              <width>31</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="inputMask">
+             <string>###; </string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="maxLength">
+             <number>3</number>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="valHauteurSatIri">
+            <property name="geometry">
+             <rect>
+              <x>310</x>
+              <y>120</y>
+              <width>31</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="inputMask">
+             <string>99; </string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="maxLength">
+             <number>2</number>
+            </property>
+           </widget>
+           <zorder>annulerIri</zorder>
+           <zorder>lbl_dateInitialeIri</zorder>
+           <zorder>dateFinaleIri</zorder>
+           <zorder>effacerHeuresIri</zorder>
+           <zorder>lbl_dateFinaleIri</zorder>
+           <zorder>dateInitialeIri</zorder>
+           <zorder>hauteurSoleilIri</zorder>
+           <zorder>lbl_hauteurSoleilIri</zorder>
+           <zorder>lbl_lieuxObservation3</zorder>
+           <zorder>lieuxObservation3</zorder>
+           <zorder>lbl_hauteurSatIri</zorder>
+           <zorder>hauteurSatIri</zorder>
+           <zorder>satellitesOperationnels</zorder>
+           <zorder>ordreChronologique</zorder>
+           <zorder>lbl_fichierTLEIri</zorder>
+           <zorder>fichierTLEIri</zorder>
+           <zorder>parcourirIri</zorder>
+           <zorder>groupBoxAffichageLignesIri</zorder>
+           <zorder>lbl_magnitudeMaxNuitIri</zorder>
+           <zorder>magnitudeMaxNuitIri</zorder>
+           <zorder>magnitudeMaxJourIri</zorder>
+           <zorder>lbl_magnitudeMaxJourIri</zorder>
+           <zorder>angleMaxReflexionIri</zorder>
+           <zorder>lbl_angleMaxReflexionIri</zorder>
+           <zorder>afficherIri</zorder>
+           <zorder>calculsIri</zorder>
+           <zorder>valHauteurSoleilIri</zorder>
+           <zorder>valHauteurSatIri</zorder>
           </widget>
           <widget class="QWidget" name="options">
            <property name="autoFillBackground">
@@ -3077,15 +4031,15 @@
            <attribute name="title">
             <string>Options</string>
            </attribute>
-           <widget class="QTabWidget" name="optionsLieuxAffichage">
+           <widget class="QTabWidget" name="ongletsOptions">
             <property name="enabled">
              <bool>true</bool>
             </property>
             <property name="geometry">
              <rect>
-              <x>5</x>
+              <x>4</x>
               <y>3</y>
-              <width>791</width>
+              <width>767</width>
               <height>211</height>
              </rect>
             </property>
@@ -3280,7 +4234,7 @@
                 </rect>
                </property>
                <property name="inputMask">
-                <string notr="true">9999; </string>
+                <string notr="true">####; </string>
                </property>
                <property name="text">
                 <string notr="true">0000</string>
@@ -3658,7 +4612,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>784</width>
+                <width>761</width>
                 <height>190</height>
                </rect>
               </property>
@@ -3702,7 +4656,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-103</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>293</height>
                 </rect>
@@ -4231,6 +5185,1715 @@
            <attribute name="title">
             <string>Outils</string>
            </attribute>
+           <widget class="QTabWidget" name="ongletsOutils">
+            <property name="geometry">
+             <rect>
+              <x>4</x>
+              <y>3</y>
+              <width>781</width>
+              <height>211</height>
+             </rect>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="miseAJourTLE">
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
+             <attribute name="title">
+              <string>Mise à jour TLE</string>
+             </attribute>
+             <widget class="QLabel" name="lbl_fichierAMettreAJour">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>121</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Fichier à mettre à jour :</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="fichierAMettreAJour">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>8</y>
+                <width>251</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="fichierALire">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>38</y>
+                <width>251</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_fichierALire">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>121</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Fichier à lire :</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="parcourirMaj1">
+              <property name="geometry">
+               <rect>
+                <x>390</x>
+                <y>6</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="parcourirMaj2">
+              <property name="geometry">
+               <rect>
+                <x>390</x>
+                <y>36</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="mettreAJourTLE">
+              <property name="geometry">
+               <rect>
+                <x>390</x>
+                <y>66</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Mettre à jour</string>
+              </property>
+             </widget>
+             <widget class="QGroupBox" name="groupBoxMajTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>80</y>
+                <width>281</width>
+                <height>91</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Gestionnaire de mise à jour des TLE</string>
+              </property>
+              <widget class="QRadioButton" name="majTLEAutomatique">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>20</y>
+                 <width>91</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Automatique</string>
+               </property>
+              </widget>
+              <widget class="QRadioButton" name="majTLEManuel">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>40</y>
+                 <width>91</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Manuel</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="ageMaxTLE">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>60</y>
+                 <width>181</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Age maximal des TLE (en jours) :</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="nbJoursAgeMaxTLE">
+               <property name="geometry">
+                <rect>
+                 <x>195</x>
+                 <y>58</y>
+                 <width>42</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>60</number>
+               </property>
+               <property name="value">
+                <number>15</number>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="mettreAJourTLE_2">
+               <property name="geometry">
+                <rect>
+                 <x>145</x>
+                 <y>18</y>
+                 <width>91</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Paramétrage...</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLineEdit" name="compteRenduMaj">
+              <property name="geometry">
+               <rect>
+                <x>490</x>
+                <y>5</y>
+                <width>281</width>
+                <height>175</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="extractionFichierTLE">
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
+             <attribute name="title">
+              <string>Extraction fichier TLE</string>
+             </attribute>
+             <widget class="QLabel" name="lbl_fichierALireCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Fichier à lire :</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="fichierALireCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>7</y>
+                <width>251</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="parcourir1CreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>340</x>
+                <y>6</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_numeroNORADCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>91</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Numéro NORAD :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="numeroNORADCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>100</x>
+                <y>37</y>
+                <width>91</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Tous</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Sélection...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QFrame" name="frameNORAD">
+              <property name="geometry">
+               <rect>
+                <x>200</x>
+                <y>37</y>
+                <width>141</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <widget class="QLabel" name="lbl_noradMin">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>4</y>
+                 <width>21</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>de</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="noradMin">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>0</y>
+                 <width>51</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>99999</number>
+               </property>
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_noradMax">
+               <property name="geometry">
+                <rect>
+                 <x>74</x>
+                 <y>4</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>à</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="noradMax">
+               <property name="geometry">
+                <rect>
+                 <x>90</x>
+                 <y>0</y>
+                 <width>51</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>99999</number>
+               </property>
+               <property name="value">
+                <number>99999</number>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="lbl_ADNoeudAscendantCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>111</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>AD noeud ascendant :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="numeroNORADCreerTLE_2">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>67</y>
+                <width>91</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>De 0° à 360°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QFrame" name="frameADNA">
+              <property name="geometry">
+               <rect>
+                <x>220</x>
+                <y>67</y>
+                <width>141</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <widget class="QLabel" name="lbl_ADNAMin">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>4</y>
+                 <width>21</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>de</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="ADNAMin">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>360</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_ADNAMax">
+               <property name="geometry">
+                <rect>
+                 <x>74</x>
+                 <y>4</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>à</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="ADNAMax">
+               <property name="geometry">
+                <rect>
+                 <x>90</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>360</number>
+               </property>
+               <property name="value">
+                <number>360</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg1">
+               <property name="geometry">
+                <rect>
+                 <x>62</x>
+                 <y>0</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg2">
+               <property name="geometry">
+                <rect>
+                 <x>132</x>
+                 <y>1</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="lbl_excentriciteCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Excentricité :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="excentriciteCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>97</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>De 0 à 1</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QFrame" name="frameExcentricite">
+              <property name="geometry">
+               <rect>
+                <x>174</x>
+                <y>95</y>
+                <width>171</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <widget class="QLabel" name="lbl_excMin">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>4</y>
+                 <width>21</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>de</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_excMax">
+               <property name="geometry">
+                <rect>
+                 <x>86</x>
+                 <y>4</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>à</string>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="excMin">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>0</y>
+                 <width>61</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="inputMask">
+                <string>9.9999999; </string>
+               </property>
+               <property name="text">
+                <string>0.0000000</string>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="excMax">
+               <property name="geometry">
+                <rect>
+                 <x>100</x>
+                 <y>0</y>
+                 <width>61</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="inputMask">
+                <string>9.9999999; </string>
+               </property>
+               <property name="text">
+                <string>1.0000000</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="lbl_inclinaisonCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>130</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Inclinaison :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="inclinaisonCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>127</y>
+                <width>91</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>1 intervalle</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>2 intervalles</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QSpinBox" name="inclMax1">
+              <property name="geometry">
+               <rect>
+                <x>270</x>
+                <y>126</y>
+                <width>41</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>180</number>
+              </property>
+              <property name="value">
+               <number>180</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_inclMin1">
+              <property name="geometry">
+               <rect>
+                <x>180</x>
+                <y>130</y>
+                <width>21</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>de</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="deg3">
+              <property name="geometry">
+               <rect>
+                <x>242</x>
+                <y>126</y>
+                <width>16</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>°</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="deg4">
+              <property name="geometry">
+               <rect>
+                <x>312</x>
+                <y>126</y>
+                <width>16</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>°</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="inclMin1">
+              <property name="geometry">
+               <rect>
+                <x>200</x>
+                <y>126</y>
+                <width>41</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>360</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_inclMax1">
+              <property name="geometry">
+               <rect>
+                <x>254</x>
+                <y>130</y>
+                <width>16</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>à</string>
+              </property>
+             </widget>
+             <widget class="QFrame" name="frameIncl">
+              <property name="geometry">
+               <rect>
+                <x>324</x>
+                <y>125</y>
+                <width>151</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <widget class="QLabel" name="lbl_inclMin2">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>4</y>
+                 <width>31</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>et de</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="inclMin2">
+               <property name="geometry">
+                <rect>
+                 <x>30</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>360</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_inclMax2">
+               <property name="geometry">
+                <rect>
+                 <x>82</x>
+                 <y>4</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>à</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="inclMax2">
+               <property name="geometry">
+                <rect>
+                 <x>100</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>180</number>
+               </property>
+               <property name="value">
+                <number>180</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg5">
+               <property name="geometry">
+                <rect>
+                 <x>71</x>
+                 <y>0</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg6">
+               <property name="geometry">
+                <rect>
+                 <x>140</x>
+                 <y>1</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="lbl_nomFichierPerso">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>160</y>
+                <width>131</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Nom du fichier personnel :</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="nomFichierPerso">
+              <property name="geometry">
+               <rect>
+                <x>140</x>
+                <y>158</y>
+                <width>251</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="parcourir2CreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>400</x>
+                <y>157</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_nbRevCreeTLE">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>40</y>
+                <width>161</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Nombre de révolutions par jour :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_revMin">
+              <property name="geometry">
+               <rect>
+                <x>540</x>
+                <y>40</y>
+                <width>21</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>de</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="revMax">
+              <property name="geometry">
+               <rect>
+                <x>650</x>
+                <y>37</y>
+                <width>81</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="inputMask">
+               <string>99.999999999; </string>
+              </property>
+              <property name="text">
+               <string>18.000000000</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_revMax">
+              <property name="geometry">
+               <rect>
+                <x>635</x>
+                <y>40</y>
+                <width>16</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>à</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="revMin">
+              <property name="geometry">
+               <rect>
+                <x>560</x>
+                <y>37</y>
+                <width>71</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="inputMask">
+               <string>9.999999999; </string>
+              </property>
+              <property name="text">
+               <string>0.000000000</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_argumentPerigee_2">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>70</y>
+                <width>111</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Argument du périgée :</string>
+              </property>
+             </widget>
+             <widget class="QFrame" name="frameArgumentPerigee">
+              <property name="geometry">
+               <rect>
+                <x>494</x>
+                <y>66</y>
+                <width>141</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <widget class="QLabel" name="lbl_ArgMin">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>4</y>
+                 <width>21</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>de</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="argMin">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>360</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_argMax">
+               <property name="geometry">
+                <rect>
+                 <x>74</x>
+                 <y>4</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>à</string>
+               </property>
+              </widget>
+              <widget class="QSpinBox" name="argMax">
+               <property name="geometry">
+                <rect>
+                 <x>90</x>
+                 <y>0</y>
+                 <width>41</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>360</number>
+               </property>
+               <property name="value">
+                <number>360</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg7">
+               <property name="geometry">
+                <rect>
+                 <x>62</x>
+                 <y>0</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="deg8">
+               <property name="geometry">
+                <rect>
+                 <x>132</x>
+                 <y>1</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>°</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="lbl_magnitudeMaxCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>100</y>
+                <width>111</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Magnitude maximale :</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="magnitudeMaxCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>490</x>
+                <y>96</y>
+                <width>41</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="minimum">
+               <number>-10</number>
+              </property>
+              <property name="maximum">
+               <number>99</number>
+              </property>
+              <property name="value">
+               <number>99</number>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="rechercheCreerTLE">
+              <property name="geometry">
+               <rect>
+                <x>560</x>
+                <y>157</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Recherche</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="evenementsOrbitaux">
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
+             <attribute name="title">
+              <string>Évènements orbitaux</string>
+             </attribute>
+             <widget class="QDateTimeEdit" name="dateInitialeEvt">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>10</y>
+                <width>131</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateFinaleEvt">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>38</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Date finale :</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="effacerHeuresEvt">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>10</y>
+                <width>111</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Effacer heures</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateInitialeEvt">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>14</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Date initiale :</string>
+              </property>
+             </widget>
+             <widget class="QDateTimeEdit" name="dateFinaleEvt">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>34</y>
+                <width>131</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QGroupBox" name="groupBoxEvenements">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>391</width>
+                <height>81</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Évènements</string>
+              </property>
+              <widget class="QCheckBox" name="passageNoeuds">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>20</y>
+                 <width>131</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Passages aux noeuds</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="passageQuadrangles">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>40</y>
+                 <width>151</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Passages aux quadrangles</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="passageApogee">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>60</y>
+                 <width>161</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Passages apogée/périgée</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="passageOmbre">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>20</y>
+                 <width>201</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Passages ombre/pénombre/lumière</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="transitionJourNuit">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>40</y>
+                 <width>161</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Transitions jour/nuit</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QListWidget" name="liste3">
+              <property name="geometry">
+               <rect>
+                <x>570</x>
+                <y>4</y>
+                <width>200</width>
+                <height>178</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>MS Shell Dlg 2</family>
+                <pointsize>8</pointsize>
+               </font>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="calculsEvt">
+              <property name="geometry">
+               <rect>
+                <x>370</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Calculs</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="annulerEvt">
+              <property name="geometry">
+               <rect>
+                <x>470</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Annuler</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="afficherEvt">
+              <property name="geometry">
+               <rect>
+                <x>470</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Afficher</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="transitsISS">
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
+             <attribute name="title">
+              <string>Transits ISS</string>
+             </attribute>
+             <widget class="QDateTimeEdit" name="dateFinaleTransit">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>34</y>
+                <width>131</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QDateTimeEdit" name="dateInitialeTransit">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>10</y>
+                <width>131</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="effacerHeuresTransit">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>10</y>
+                <width>111</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Effacer heures</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateInitialeTransit">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>14</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Date initiale :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateFinaleTransit">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>38</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Date finale :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="lieuxObservation4">
+              <property name="geometry">
+               <rect>
+                <x>110</x>
+                <y>60</y>
+                <width>191</width>
+                <height>22</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_lieuxObservation4">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>64</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Lieu d'observation :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_fichierTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>94</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Fichier TLE :</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="fichierTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>91</y>
+                <width>251</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="parcourirTransit">
+              <property name="geometry">
+               <rect>
+                <x>340</x>
+                <y>90</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ageTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>120</y>
+                <width>111</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Age maximal du TLE :</string>
+              </property>
+             </widget>
+             <widget class="QDoubleSpinBox" name="ageMaxTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>116</y>
+                <width>41</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>7.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="hauteurSatTransit">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>90</y>
+                <width>61</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>0°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>5°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>10°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>15°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>20°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLineEdit" name="valHauteurSatTransit">
+              <property name="geometry">
+               <rect>
+                <x>670</x>
+                <y>90</y>
+                <width>31</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="inputMask">
+               <string>99; </string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="maxLength">
+               <number>2</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_hauteurSatTransit">
+              <property name="geometry">
+               <rect>
+                <x>450</x>
+                <y>94</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Hauteur minimale du satellite :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_2">
+              <property name="geometry">
+               <rect>
+                <x>450</x>
+                <y>120</y>
+                <width>181</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Élongation maximale avec le corps :</string>
+              </property>
+             </widget>
+             <widget class="QDoubleSpinBox" name="elongationMaxCorps">
+              <property name="geometry">
+               <rect>
+                <x>630</x>
+                <y>116</y>
+                <width>51</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>20.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>5</y>
+                <width>91</width>
+                <height>71</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Corps</string>
+              </property>
+              <widget class="QCheckBox" name="soleilTransit">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>20</y>
+                 <width>70</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Soleil</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="luneTransit">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>44</y>
+                 <width>70</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Lune</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QPushButton" name="annulerTransit">
+              <property name="geometry">
+               <rect>
+                <x>610</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Annuler</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="afficherTransit">
+              <property name="geometry">
+               <rect>
+                <x>610</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Afficher</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="calculsTransit">
+              <property name="geometry">
+               <rect>
+                <x>510</x>
+                <y>160</y>
+                <width>91</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Calculs</string>
+              </property>
+             </widget>
+            </widget>
+           </widget>
           </widget>
          </widget>
         </widget>
@@ -4251,89 +6914,8 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="barreStatut"/>
-  <action name="actionOuvrir_Fichier_TLE">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/open.png</normaloff>:/resources/open.png</iconset>
-   </property>
-   <property name="text">
-    <string>Ouvrir Fichier TLE</string>
-   </property>
-   <property name="toolTip">
-    <string>Ouvrir Fichier TLE</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionEnregistrer">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/save.png</normaloff>:/resources/save.png</iconset>
-   </property>
-   <property name="text">
-    <string>Enregistrer</string>
-   </property>
-   <property name="toolTip">
-    <string>Enregistrer</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionAgrandir">
-   <property name="text">
-    <string>Agrandir</string>
-   </property>
-   <property name="toolTip">
-    <string>Agrandir</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+M</string>
-   </property>
-  </action>
-  <action name="actionCiel">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/globe.ico</normaloff>:/resources/globe.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Ciel</string>
-   </property>
-   <property name="toolTip">
-    <string>Ciel</string>
-   </property>
-   <property name="shortcut">
-    <string>F9</string>
-   </property>
-  </action>
-  <action name="actionAide">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/help.png</normaloff>:/resources/help.png</iconset>
-   </property>
-   <property name="text">
-    <string>Aide</string>
-   </property>
-   <property name="toolTip">
-    <string>Aide</string>
-   </property>
-   <property name="shortcut">
-    <string>F1</string>
-   </property>
-  </action>
-  <action name="actionTata">
-   <property name="text">
-    <string>tata</string>
-   </property>
-   <property name="shortcutContext">
-    <enum>Qt::WidgetShortcut</enum>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

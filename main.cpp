@@ -4,8 +4,6 @@
 #include <QTranslator>
 #include "previsat.h"
 
-#include "librairies/corps/systemesolaire/planete.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -14,13 +12,6 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     a.installTranslator(&translator);
-
-    Date date(2005, 1, 1., 0.);
-    Planete planete(0);
-    Soleil soleil;
-    soleil.CalculPosition(date);
-    planete.CalculPosition(date, soleil);
-
 
     PreviSat w;
 
