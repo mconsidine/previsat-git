@@ -88,7 +88,7 @@ void Soleil::CalculPosition(const Date &date)
     const double e = 0.01670843 - 4.2037e-5 * tu - 1.267e-7 * tu2;
 
     // Anomalie moyenne
-    const double ms = ls -lp;
+    const double ms = ls - lp;
 
     // Resolution de l'equation de Kepler : u = ms + e sin(u)
     u = ms;
@@ -106,7 +106,7 @@ void Soleil::CalculPosition(const Date &date)
     // Longitude vraie
     const double lv = lp + v - a * (1. - e * e) / _distanceUA * 20.49552 * ARCSEC2RAD;
 
-    Vecteur3D pos(lv, 0., _distanceUA);
+    const Vecteur3D pos(lv, 0., _distanceUA);
     _position = Sph2Cart(pos, date) * UA;
 
     /* Retour */
