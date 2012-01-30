@@ -1,6 +1,7 @@
 #include <QDateTime>
 #include <QDir>
 #include <QGraphicsTextItem>
+#include <QPalette>
 #include <QSettings>
 #include <QSound>
 #include <QTextStream>
@@ -449,6 +450,26 @@ void PreviSat::AffichageDonnees()
 
         // Temps ecoule depuis l'epoque
         chaine = tr("%1 jours");
+        QBrush brush;
+        QColor col;
+        QPalette palette;
+        brush.setStyle(Qt::SolidPattern);
+
+        // Indicateur de l'age du TLE
+        if (fabs(satellites.at(0).getAgeTLE()) > 15.) {
+            brush.setColor(Qt::red);
+        } else if (fabs(satellites.at(0).getAgeTLE()) > 10.) {
+            col.setNamedColor("orange");
+            brush.setColor(col);
+        } else if (fabs(satellites.at(0).getAgeTLE()) > 5.) {
+            col.setNamedColor("goldenrod");
+            brush.setColor(col);
+        } else {
+            col.setNamedColor("forestgreen");
+            brush.setColor(col);
+        }
+        palette.setBrush(QPalette::WindowText, brush);
+        ui->ageTLE->setPalette(palette);
         ui->ageTLE->setText(chaine.arg(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().
                                        getJourJulienUTC(), 0, 'f', 2));
 
@@ -1303,7 +1324,7 @@ void PreviSat::AffichageListeFichiersTLE()
         const QString fic = ficTLE.split("#").at(0);
         const QStringList listeTLE = ficTLE.split("#").at(1).split("&");
 
-        const QFile fi(dirTle + QDir::separator() + fic);
+        const QFile fi((fic.contains(QDir::separator())) ? fic : dirTle + QDir::separator() + fic);
         if (fi.exists()) {
             ui->nomFichiersTLE->addItem(fic);
 
