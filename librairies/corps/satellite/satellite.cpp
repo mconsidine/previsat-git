@@ -1252,6 +1252,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
     const double st = 1. / (_tle.getNo() * T360);
 
     /* Corps de la methode */
+    _traceAuSol.clear();
     for (int i=0; i<360 * nbOrbites; i++) {
 
         const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
