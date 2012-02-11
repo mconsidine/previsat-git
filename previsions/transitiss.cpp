@@ -213,8 +213,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         Date dates[3];
 
                         // Position du corps (Soleil ou Lune)
+                        soleil.CalculPosition(date2);
                         if (typeCorps == 1) {
-                            soleil.CalculPosition(date2);
                             corps.setPosition(soleil.getPosition());
                             rayon = RAYON_SOLAIRE;
                         }
@@ -232,137 +232,141 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.getDistance());
 
                         const bool itr = (ang <= rayonApparent);
+                        sat.CalculSatelliteEclipse(soleil);
 
-                        // Calcul des dates extremes de la conjonction ou du transit
-                        dates[1] = date2;
-                        CalculElements(sat, observateur, minmax[0], typeCorps, itr,
-                                       conditions.getSeuilConjonction(), dates);
+                        if (itr || (!itr && !sat.isEclipse())) {
 
-                        // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
-                        for (int j=0; j<3; j++) {
+                            // Calcul des dates extremes de la conjonction ou du transit
+                            dates[1] = date2;
+                            CalculElements(sat, observateur, minmax[0], typeCorps, itr,
+                                           conditions.getSeuilConjonction(), dates);
 
-                            observateur.CalculPosVit(dates[j]);
+                            // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
+                            for (int j=0; j<3; j++) {
 
-                            // Position de l'ISS
-                            sat.CalculPosVit(dates[j]);
-                            sat.CalculCoordHoriz(observateur);
-                            sat.CalculCoordEquat(observateur);
+                                observateur.CalculPosVit(dates[j]);
 
-                            // Altitude du satellite
-                            double altitude, ct, lat, phi;
-                            const Vecteur3D position = sat.getPosition();
-                            const double r = sqrt(position.getX() * position.getX() +
-                                                  position.getY() * position.getY());
-                            lat = atan((position.getZ() / r));
-                            do {
-                                phi = lat;
-                                const double sph = sin(phi);
-                                ct = 1. / (sqrt(1. - E2 * sph * sph));
-                                lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-                            } while (fabs(lat - phi) > 1.e-7);
-                            altitude = r / cos(lat) - RAYON_TERRESTRE * ct;
+                                // Position de l'ISS
+                                sat.CalculPosVit(dates[j]);
+                                sat.CalculCoordHoriz(observateur);
+                                sat.CalculCoordEquat(observateur);
 
-                            // Position du Soleil
-                            soleil.CalculPosition(dates[j]);
-                            soleil.CalculCoordHoriz(observateur);
-                            sat.CalculSatelliteEclipse(soleil);
+                                // Altitude du satellite
+                                double altitude, ct, lat, phi;
+                                const Vecteur3D position = sat.getPosition();
+                                const double r = sqrt(position.getX() * position.getX() +
+                                                      position.getY() * position.getY());
+                                lat = atan((position.getZ() / r));
+                                do {
+                                    phi = lat;
+                                    const double sph = sin(phi);
+                                    ct = 1. / (sqrt(1. - E2 * sph * sph));
+                                    lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
+                                } while (fabs(lat - phi) > 1.e-7);
+                                altitude = r / cos(lat) - RAYON_TERRESTRE * ct;
 
-                            // Ecriture du resultat
+                                // Position du Soleil
+                                soleil.CalculPosition(dates[j]);
+                                soleil.CalculCoordHoriz(observateur);
+                                sat.CalculSatelliteEclipse(soleil);
 
-                            // Date calendaire
-                            const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
-                            ligne = date3.ToShortDate(Date::LONG);
+                                // Ecriture du resultat
 
-                            // Coordonnees topocentriques du satellite
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
-                                                                      false, false)).append(" ");
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
-                                                                      false, false)).append(" ");
+                                // Date calendaire
+                                const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
+                                ligne = date3.ToShortDate(Date::LONG);
 
-                            // Coordonnees equatoriales du satellite
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1,
-                                                                      2, 0, false, false)).append(" ");
-                            ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2,
-                                                                      0, true, false)).append(" ");
+                                // Coordonnees topocentriques du satellite
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                          false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
+                                                                          false, false)).append(" ");
 
-                            // Constellation
-                            ligne = ligne.append(sat.getConstellation()).append(" ");
+                                // Coordonnees equatoriales du satellite
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1,
+                                                                          2, 0, false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2,
+                                                                          0, true, false)).append(" ");
 
-                            // Distance angulaire
-                            ang = corps.getDist().Angle(sat.getDist()) * RAD2DEG;
-                            ligne = ligne.append("%1   ");
-                            ligne = ligne.arg(ang, 5, 'f', 2);
+                                // Constellation
+                                ligne = ligne.append(sat.getConstellation()).append(" ");
 
-                            // Type d'evenement (conjonction ou transit)
-                            ligne = ligne.append((itr) ? QObject::tr("T") : QObject::tr("C")).append("    ");
+                                // Distance angulaire
+                                ang = corps.getDist().Angle(sat.getDist()) * RAD2DEG;
+                                ligne = ligne.append("%1   ");
+                                ligne = ligne.arg(ang, 5, 'f', 2);
 
-                            // Corps concerne (Soleil, Lune)
-                            ligne = ligne.append((typeCorps == 1) ? QObject::tr("S") :
-                                                                    QObject::tr("L")).append("   ");
+                                // Type d'evenement (conjonction ou transit)
+                                ligne = ligne.append((itr) ? QObject::tr("T") : QObject::tr("C")).append("    ");
 
-                            // Illumination
-                            ligne = ligne.append((sat.isEclipse()) ?
-                                                     QObject::tr("Omb") : (sat.isPenombre()) ?
-                                                         QObject::tr("Pen") : QObject::tr("Lum")).append(" ");
+                                // Corps concerne (Soleil, Lune)
+                                ligne = ligne.append((typeCorps == 1) ? QObject::tr("S") :
+                                                                        QObject::tr("L")).append("   ");
 
-                            // Altitude du satellite et distance a l'observateur
-                            ligne = ligne.append("%1 %2");
-                            double distance = sat.getDistance();
-                            if (conditions.getUnite() == QObject::tr("mi")) {
-                                altitude *= MILE_PAR_KM;
-                                distance *= MILE_PAR_KM;
-                            }
-                            ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
+                                // Illumination
+                                ligne = ligne.append((sat.isEclipse()) ?
+                                                         QObject::tr("Omb") : (sat.isPenombre()) ?
+                                                             QObject::tr("Pen") : QObject::tr("Lum")).append(" ");
 
-                            // Coordonnees topocentriques du Soleil
-                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
-                                                                      false, false)).append("  ");
-                            ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0,
-                                                                      true, false));
-
-                            // Recherche du maximum (transit ou conjonction)
-                            if (j == 1) {
-
-                                const Vecteur3D direction = corps.getDist() - sat.getDist();
-                                Observateur obsmin =
-                                        Observateur::CalculIntersectionEllipsoide(dates[j], position,
-                                                                                  direction);
-
-                                obsmin.CalculPosVit(dates[j]);
-                                sat.CalculCoordHoriz(obsmin, false);
-
-                                if (typeCorps == 1) {
-                                    soleil.CalculPosition(dates[j]);
-                                    corps.setPosition(soleil.getPosition());
-                                    rayon = RAYON_SOLAIRE;
+                                // Altitude du satellite et distance a l'observateur
+                                ligne = ligne.append("%1 %2");
+                                double distance = sat.getDistance();
+                                if (conditions.getUnite() == QObject::tr("mi")) {
+                                    altitude *= MILE_PAR_KM;
+                                    distance *= MILE_PAR_KM;
                                 }
-                                if (typeCorps == 2) {
-                                    lune.CalculPosition(dates[j]);
-                                    corps.setPosition(lune.getPosition());
-                                    rayon = RAYON_LUNAIRE;
+                                ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
+
+                                // Coordonnees topocentriques du Soleil
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                          false, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0,
+                                                                          true, false));
+
+                                // Recherche du maximum (transit ou conjonction)
+                                if (j == 1) {
+
+                                    const Vecteur3D direction = corps.getDist() - sat.getDist();
+                                    Observateur obsmin =
+                                            Observateur::CalculIntersectionEllipsoide(dates[j], position,
+                                                                                      direction);
+
+                                    obsmin.CalculPosVit(dates[j]);
+                                    sat.CalculCoordHoriz(obsmin, false);
+
+                                    if (typeCorps == 1) {
+                                        soleil.CalculPosition(dates[j]);
+                                        corps.setPosition(soleil.getPosition());
+                                        rayon = RAYON_SOLAIRE;
+                                    }
+                                    if (typeCorps == 2) {
+                                        lune.CalculPosition(dates[j]);
+                                        corps.setPosition(lune.getPosition());
+                                        rayon = RAYON_LUNAIRE;
+                                    }
+                                    corps.CalculCoordHoriz(obsmin, false);
+
+                                    const double distanceObs = observateur.CalculDistance(obsmin);
+                                    double diff = obsmin.getLongitude() - observateur.getLongitude();
+                                    if (fabs(diff) > PI)
+                                        diff -= Maths::sgn(diff) * PI;
+                                    const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
+
+                                    const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") :
+                                                                                       QObject::tr("E");
+                                    const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") :
+                                                                                      QObject::tr("S");
+
+                                    // Ecriture de la chaine de caracteres
+                                    ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
+                                    ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,
+                                                      QChar('0')).arg(ew).
+                                            arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                            arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
+
                                 }
-                                corps.CalculCoordHoriz(obsmin, false);
-
-                                const double distanceObs = observateur.CalculDistance(obsmin);
-                                double diff = obsmin.getLongitude() - observateur.getLongitude();
-                                if (fabs(diff) > PI)
-                                    diff -= Maths::sgn(diff) * PI;
-                                const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
-
-                                const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") :
-                                                                                   QObject::tr("E");
-                                const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") :
-                                                                                  QObject::tr("S");
-
-                                // Ecriture de la chaine de caracteres
-                                ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
-                                ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,
-                                                  QChar('0')).arg(ew).
-                                        arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
-                                        arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
-
+                                res.append(ligne);
                             }
-                            res.append(ligne);
                         }
                     }
                     date = Date(jj2, 0., false);
