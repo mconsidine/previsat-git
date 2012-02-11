@@ -34,5 +34,12 @@
         <file>resources/lune27.gif</file>
         <file>resources/lune28.gif</file>
         <file>resources/map.jpg</file>
+        <file>resources/maxi.png</file>
+        <file>resources/mini.png</file>
+        <file>resources/backward.png</file>
+        <file>resources/forward.png</file>
+        <file>resources/pause.png</file>
+        <file>resources/play.png</file>
+        <file>resources/rewind.png</file>
     </qresource>
 </RCC>
