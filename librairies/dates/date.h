@@ -40,6 +40,7 @@
 #ifndef DATE_H
 #define DATE_H
 
+#include <QDateTime>
 #include <QString>
 #include "dateConstants.h"
 
@@ -65,6 +66,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    QDateTime ToQDateTime(const int type) const;
     Date ToLocalDate() const;
     Date ToLocalDate(const double offsetUTC) const;
     QString ToShortDate(const DateFormat format) const;
