@@ -247,6 +247,7 @@ void Corps::CalculZoneVisibilite()
     const double sb = sin(beta);
 
     /* Corps de la methode */
+    _zone.clear();
     for(int i=0; i<360; i++) {
 
         const double az = DEG2RAD * i;
