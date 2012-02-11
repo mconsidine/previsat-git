@@ -119,6 +119,8 @@ static const double _tabPlanetes[7][6][4] = {
 Planete::Planete(const int iplanete)
 {
     _iplanete = iplanete;
+    for(int i=0; i<6; i++)
+        _elem[i] = 0.;
 }
 
 void Planete::CalculPosition(const Date &date, const Soleil &soleil)
