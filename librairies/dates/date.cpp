@@ -43,7 +43,7 @@
 #include <cmath>
 #include <ctime>
 #include <fstream>
-#include <QDateTime>
+//#include <QDateTime>
 #include "date.h"
 #include "librairies/maths/maths.h"
 
@@ -222,6 +222,22 @@ Date::~Date()
 
 
 /* Methodes */
+/*
+ * Conversion de la date en QDateTime
+ */
+QDateTime Date::ToQDateTime(const int type) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int sec = (type == 0) ? 0 : qRound(_secondes);
+
+    /* Retour */
+    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)));
+}
+
 /*
  * Conversion de la date en date locale
  */
