@@ -60,6 +60,7 @@ static const double DEG2RAD = PI / 180.;
 static const double ARCSEC2RAD = PI / 648000.;
 static const double HEUR2RAD = PI / 12.;
 
+static const double DEUX_SUR_PI = 1. / PI_SUR_DEUX;
 static const double DEG_PAR_ARCMIN = 1. / ARCMIN_PAR_DEG;
 static const double DEG_PAR_ARCSEC = 1. / ARCSEC_PAR_DEG;
 static const double RAD2DEG = 1. / DEG2RAD;
