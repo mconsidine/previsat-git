@@ -65,7 +65,10 @@ HEADERS  += previsat.h \
     previsions/iridium.h \
     previsions/evenements.h \
     previsions/conditions.h \
-    librairies/corps/systemesolaire/planete.h
+    librairies/corps/systemesolaire/planete.h \
+    zlib/zlib.h \
+    zlib/zconf.h \
+    zlib/ioapi.h
 
 FORMS    += previsat.ui
 
@@ -73,6 +76,7 @@ OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
+
 
 
 
