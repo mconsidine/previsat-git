@@ -41,6 +41,7 @@
  */
 
 #include <QCoreApplication>
+#include <QDir>
 #include <fstream>
 #include "satellite.h"
 #include "librairies/maths/maths.h"
@@ -480,8 +481,8 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
 
     /* Corps de la methode */
     FILE *fmgn = NULL;
-    QString nomfic = QCoreApplication::applicationDirPath() + "/data/donnees.sat";
-    if ((fmgn = fopen(nomfic.toStdString().c_str(), "r")) != NULL) {
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "donnees.sat";
+    if ((fmgn = fopen(fic.toStdString().c_str(), "r")) != NULL) {
 
         int j = 0;
         char ligne[4096];

@@ -125,7 +125,7 @@ TLE::~TLE()
 
 /* Methodes */
 /*
- * Verication du fichier TLE
+ * Verification du fichier TLE
  */
 int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
 {
@@ -143,6 +143,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
 
     /* Corps de la methode */
     try {
+
         QFile fichier(nomFichier);
         if (fichier.exists()) {
 
@@ -152,7 +153,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
-                if (nomsat == "---" || nomsat == "")
+                if (nomsat == "---" || nomsat.isEmpty())
                     nomsat = ligne.trimmed();
 
                 if (ligne.size() > 0) {
@@ -241,9 +242,8 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 
     /* Initialisations */
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
-
-    QString nomfic = QCoreApplication::applicationDirPath() + "/data/donnees.sat";
-    QFile donneesSatellites(nomfic.toStdString().c_str());
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "donnees.sat";
+    QFile donneesSatellites(fic.toStdString().c_str());
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly);
         QTextStream flux(&donneesSatellites);

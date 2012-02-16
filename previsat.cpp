@@ -51,9 +51,12 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QUrl>
+#include "librairies/corps/etoiles/etoile.h"
+#include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
+#include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/dates/date.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -105,9 +108,13 @@ static QStringList ficMap;
 static double DEG2PXHZ;
 static double DEG2PXVT;
 
-// Soleil, Lune
+// Soleil, Lune, etoiles, planetes
 static Soleil soleil;
 static Lune lune;
+static QList<Etoile> etoiles;
+static QList<LigneConstellation> lignesCst;
+static QList<Planete> planetes;
+static QColor couleurPlanetes[7] = { Qt::gray, Qt::white, Qt::red, QColor("orange"), Qt::darkYellow, Qt::green, Qt::blue };
 
 // Registre
 static QSettings settings("Astropedia", "previsat");
@@ -162,9 +169,9 @@ void PreviSat::Initialisations()
 
     /* Corps de la methode */
     // Verifications preliminaires
-//    di = QDir(dirOut);
-//    if (di.exists())
-//
+    //    di = QDir(dirOut);
+    //    if (di.exists())
+    //
 
     di = QDir(dirTle);
     if (!di.exists())
@@ -293,6 +300,9 @@ void PreviSat::Initialisations()
     ui->afficherIri->setVisible(false);
     ui->annulerIri->setVisible(false);
 
+    ui->coordonnees->setVisible(false);
+    ui->nouveauLieu->setVisible(false);
+    ui->nouvelleCategorie->setVisible(false);
     ui->nvEw->setCurrentIndex(0);
     ui->nvNs->setCurrentIndex(0);
 
@@ -444,11 +454,8 @@ void PreviSat::Initialisations()
 
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
-    //...
-
-    chronometre->setInterval(200);
-    connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
-    chronometre->start();
+    Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
+    LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
 
     // Mise a jour des TLE si necessaire
@@ -474,6 +481,10 @@ void PreviSat::Initialisations()
     if (PreviSat::height() > ymax)
         PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
 
+    chronometre->setInterval(200);
+    connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
+    chronometre->start();
+
     EnchainementCalculs();
     AffichageDonnees();
     AffichageCourbes();
@@ -492,9 +503,6 @@ void PreviSat::InitFicObs(const bool alarm)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    ui->coordonnees->setVisible(false);
-    ui->nouveauLieu->setVisible(false);
-    ui->nouvelleCategorie->setVisible(false);
 
     /* Corps de la methode */
     ui->fichiersObs->clear();
@@ -645,8 +653,8 @@ void PreviSat::AffichageDonnees()
         }
 
         /*
-     * Affichage des donnees sur l'onglet General
-     */
+         * Affichage des donnees sur l'onglet General
+         */
         QString chaine = dateCourante.ToLongDate().append("  ");//.append(tr("UTC"));
         if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
             QTime heur;
@@ -663,8 +671,8 @@ void PreviSat::AffichageDonnees()
 
 
         /*
-     * Affichage des donnees relatives au satellite par defaut
-     */
+         * Affichage des donnees relatives au satellite par defaut
+         */
         if (l1 != "" && l2 != "") {
 
             // Nom
@@ -674,7 +682,6 @@ void PreviSat::AffichageDonnees()
             // Temps ecoule depuis l'epoque
             chaine = tr("%1 jours");
             QBrush brush;
-            QColor col;
             QPalette palette;
             brush.setStyle(Qt::SolidPattern);
 
@@ -682,14 +689,11 @@ void PreviSat::AffichageDonnees()
             if (fabs(satellites.at(0).getAgeTLE()) > 15.) {
                 brush.setColor(Qt::red);
             } else if (fabs(satellites.at(0).getAgeTLE()) > 10.) {
-                col.setNamedColor("orange");
-                brush.setColor(col);
+                brush.setColor(QColor("orange"));
             } else if (fabs(satellites.at(0).getAgeTLE()) > 5.) {
-                col.setNamedColor("goldenrod");
-                brush.setColor(col);
+                brush.setColor(QColor("goldenrod"));
             } else {
-                col.setNamedColor("forestgreen");
-                brush.setColor(col);
+                brush.setColor(QColor("forestgreen"));
             }
             palette.setBrush(QPalette::WindowText, brush);
             ui->ageTLE->setPalette(palette);
@@ -821,8 +825,8 @@ void PreviSat::AffichageDonnees()
 
 
         /*
-     * Donnees relatives au Soleil
-     */
+         * Donnees relatives au Soleil
+         */
         // Hauteur/azimut/distance
         ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, true));
         ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false, true));
@@ -839,8 +843,8 @@ void PreviSat::AffichageDonnees()
 
 
         /*
-     * Donnees relatives a la Lune
-     */
+         * Donnees relatives a la Lune
+         */
         // Hauteur/azimut/distance
         ui->hauteurLune->setText(Maths::ToSexagesimal(lune.getHauteur(), Maths::DEGRE, 2, 0, true, true));
         ui->azimutLune->setText(Maths::ToSexagesimal(lune.getAzimut(), Maths::DEGRE, 3, 0, false, true));
@@ -868,8 +872,8 @@ void PreviSat::AffichageDonnees()
 
 
         /*
-     * Affichage des donnees sur l'onglet Elements Osculateurs
-     */
+         * Affichage des donnees sur l'onglet Elements Osculateurs
+         */
         ui->utcManuel2->setText(ui->utcManuel->text());
         if (l1 != "" && l2 != "") {
 
@@ -1013,6 +1017,7 @@ void PreviSat::AffichageDonnees()
                 if (satellites.at(0).getMagnitudeStandard() > 98.) {
                     ui->magnitudeStdMax->setText("?/?");
                 } else {
+
                     // Estimation de la magnitude maximale
                     xval = satellites.at(0).getMagnitudeStandard() - 15.75 + 5. *
                             log10(1.45 * (satellites.at(0).getElements().getDemiGrandAxe() *
@@ -1127,29 +1132,31 @@ void PreviSat::AffichageCourbes()
     // Couleur du ciel
     QBrush bru(Qt::black);
     QBrush bru2(Qt::black);
-    //if ()
-    const double hts = soleil.getHauteur() * RAD2DEG;
-    if (hts >= 0.) {
-        // Jour
-        bru = QBrush(QColor::fromRgb(213, 255, 254));
+    if (ui->ciel->isVisible() || ui->radar->isVisible()) {
 
-    } else {
-        const int red = (int) (213.15126 / (1. + 0.0018199 * exp(-0.983684 * hts)) + 0.041477);
-        const int green = (int) (qMax(qMin(256.928983 / (1. + 0.008251 * exp(-0.531535 * hts)) - 0.927648,
-                                           255.), 0.));
+        const double hts = soleil.getHauteur() * RAD2DEG;
+        if (hts >= 0.) {
+            // Jour
+            bru = QBrush(QColor::fromRgb(213, 255, 254));
 
-        // Algorithme special pour le bleu
-        int blue;
-        if (hts >= -6.) {
-            blue = 254;
-        } else if (hts >= -12.) {
-            blue = (int) (-2.74359 * hts * hts - 31.551282 * hts + 163.461538);
         } else {
-            blue = (int) (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hts)) - 1.46635, 0.));
+
+            const int red = (int) (213.15126 / (1. + 0.0018199 * exp(-0.983684 * hts)) + 0.041477);
+            const int green = (int) (qMax(qMin(256.928983 / (1. + 0.008251 * exp(-0.531535 * hts)) - 0.927648,
+                                               255.), 0.));
+
+            // Algorithme special pour le bleu
+            int blue;
+            if (hts >= -6.) {
+                blue = 254;
+            } else if (hts >= -12.) {
+                blue = (int) (-2.74359 * hts * hts - 31.551282 * hts + 163.461538);
+            } else {
+                blue = (int) (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hts)) - 1.46635, 0.));
+            }
+            bru = QBrush(QColor::fromRgb(red, green, blue));
         }
-        bru = QBrush(QColor::fromRgb(red, green, blue));
     }
-    //}
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
 
@@ -1479,7 +1486,159 @@ void PreviSat::AffichageCourbes()
     } else {
 
         // Affichage de la carte du ciel
-        //...
+        QGraphicsScene *scene3 = new QGraphicsScene;
+        rect = QRect(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
+
+        scene3->setBackgroundBrush(QBrush(PreviSat::palette().background().color()));
+        QPen pen(bru, Qt::SolidPattern);
+        scene3->addEllipse(rect, pen, bru);
+        const int lciel = qRound(0.5 * ui->ciel->width());
+        const int hciel = qRound(0.5 * ui->ciel->height());
+
+        // Affichage des constellations
+        if (ui->affconst->isChecked()) {
+
+            QListIterator<LigneConstellation> it(lignesCst);
+            while (it.hasNext()) {
+
+                const LigneConstellation lig = it.next();
+                if (lig.isDessin()) {
+
+                    // Calcul des coordonnees radar des etoiles pour le dessin de la constellation
+                    const int lstr1 = qRound(lciel - lciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
+                                             sin(lig.getEtoile1().getAzimut()));
+                    const int bstr1 = qRound(hciel - hciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
+                                             cos(lig.getEtoile1().getAzimut()));
+
+                    const int lstr2 = qRound(lciel - lciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
+                                             sin(lig.getEtoile2().getAzimut()));
+                    const int bstr2 = qRound(hciel - hciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
+                                             cos(lig.getEtoile2().getAzimut()));
+
+                    QColor col;
+                    col.setNamedColor("deepskyblue");
+                    const QPen crayon(col);
+                    if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
+                        scene3->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
+                }
+            }
+        }
+
+        // Affichage des etoiles
+        QListIterator<Etoile> it1(etoiles);
+        while (it1.hasNext()) {
+
+            const Etoile etoile = it1.next();
+            if (etoile.isVisible() && etoile.getMagnitude() <= ui->magnitudeEtoiles->value()) {
+
+                const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
+                const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
+
+                rect = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(qRound(lstr-1.5), qRound(bstr-1.5), 3, 3);
+                bru2 = (soleil.getHauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
+                scene3->addEllipse(rect, QPen(), bru2);
+
+                // Nom des etoiles les plus brillantes
+                if (ui->affetoiles->isChecked()) {
+                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+                        if (etoile.getMagnitude() < ui->magnitudeEtoiles->value() - 1.9) {
+                            if (!etoile.getNom().isEmpty() && etoile.getNom().at(0).isUpper()) {
+
+                                const int lst = lstr - lciel;
+                                const int bst = hciel - bstr;
+                                const QString nomsat = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
+                                QGraphicsSimpleTextItem *txtStr = new QGraphicsSimpleTextItem(nomsat);
+                                const int lng = txtStr->boundingRect().width();
+
+                                const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
+                                const int ynstr = (bstr + 9 > ui->ciel->height()) ? bstr - 10 : bstr + 1;
+
+                                txtStr->setBrush(bru2);
+                                txtStr->setPos(xnstr, ynstr);
+                                txtStr->setFont(QFont(PreviSat::font().family(), 7));
+                                scene3->addItem(txtStr);
+                            }
+                        }
+                    }
+                }
+
+                // Calcul des coordonnees radar des planetes
+                for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+
+                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                            sin(planetes.at(iplanete).getAzimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                            cos(planetes.at(iplanete).getAzimut()));
+
+                    rect = QRect(lpla - 2, bpla - 2, 4, 4);
+                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                }
+
+                if (ui->affsoleil->isChecked() && soleil.isVisible()) {
+
+                    // Calcul des coordonnees radar du Soleil
+                    const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
+                    const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+
+                    rect = QRect(lsol - 7, bsol - 7, 15, 15);
+                    scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+                }
+
+                if (ui->afflune->isChecked() && lune.isVisible()) {
+
+                    // Calcul des coordonnees radar du Soleil
+                    const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
+                    const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+
+//                    ui->imglun->setStyleSheet("background: transparent; border: none");
+//                    ui->imglun->setScene(scnlun);
+//                    if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+//                        ui->imglun->rotate(180.);
+
+                    ui->imglun->setGeometry(llun-7, blun-7, 17, 17);
+                }
+
+                for(int isat=nbSat-1; isat>=0; isat--) {
+
+                    if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
+
+                        // Calcul des coordonnees radar du satellite
+                        const int lsat = qRound(lciel - lciel * (satellites.at(isat).getHauteur() * DEUX_SUR_PI - 1.) *
+                                                sin(satellites.at(isat).getAzimut()));
+                        const int bsat = qRound(hciel - hciel * (satellites.at(isat).getHauteur() * DEUX_SUR_PI - 1.) *
+                                                cos(satellites.at(isat).getAzimut()));
+
+                        rect = QRect(lsat - 3, bsat - 3, 6, 6);
+                        const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+                        scene3->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
+
+                        // Nom des satellites
+                        if (ui->affnomsat->isChecked()) {
+
+                            if ((ui->affnomsat->checkState() == Qt::Checked && isat == 0) ||
+                                    ui->affnomsat->checkState() == Qt::PartiallyChecked) {
+
+                                const int lst = lsat - lciel;
+                                const int bst = hciel - bsat;
+                                QGraphicsSimpleTextItem *txtStr = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
+                                const int lng = txtStr->boundingRect().width();
+
+                                const int xnsat = (sqrt((lst + lng) * (lst + lng) + bst * bst) + 6 > lciel) ? lsat - lng - 1 : lsat + 3;
+                                const int ynsat = (sqrt((xnsat - lciel) * (xnsat - lciel) + (bst - 13) * (bst - 13)) + 6 > hciel) ? bst - 12 : bst + 3;
+
+                                txtStr->setBrush(bru2);
+                                txtStr->setPos(xnsat, ynsat);
+                                scene3->addItem(txtStr);
+                            }
+                        }
+                    }
+                }
+
+                scene3->addEllipse(-5, -5, ui->ciel->width() + 10, ui->ciel->height() + 10, QPen(QBrush(PreviSat::palette().background().color()), 10.4));
+                scene3->addEllipse(0, 0, ui->ciel->width() - 1, ui->ciel->height() - 1, QPen(QBrush(Qt::gray), 2));
+            }
+        }
+        ui->ciel->setScene(scene3);
     }
 
     // Radar
@@ -1562,7 +1721,7 @@ void PreviSat::AffichageCourbes()
                 const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).getAzimut()));
 
                 rect = QRect(lsat - 3, bsat - 3, 6, 6);
-                QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+                const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
                 scene2->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -1825,12 +1984,27 @@ void PreviSat::EnchainementCalculs()
         }
     }
 
+    if (ui->ciel->isVisible()) {
 
-    /*
-     * Calcul de la position du catalogue d'etoiles
-     */
-    //if
-    //...
+        /*
+         * Calcul de la position des planetes
+         */
+        planetes.clear();
+        for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+
+            Planete planete(iplanete);
+            planete.CalculPosition(dateCourante, soleil);
+            planete.CalculCoordHoriz(observateurs.at(0));
+            planetes.append(planete);
+        }
+
+        /*
+         * Calcul de la position du catalogue d'etoiles
+         */
+        Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
+        LigneConstellation::CalculLignesCst(etoiles, lignesCst);
+
+    }
 
     /*
      * Calcul de la position courante des satellites
@@ -2045,6 +2219,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     /* Corps de la methode */
     ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     ui->maximise->move(11 + ui->carte->width(), 5);
+    ui->affichageCiel->move(11 + ui->carte->width(), 32);
 
     const int hcarte = ui->carte->height() - 3;
     const int lcarte = ui->carte->width() - 3;
@@ -2625,8 +2800,43 @@ void PreviSat::on_actionWww_space_track_org_activated()
     QDesktopServices::openUrl(QUrl("http://www.space-track.org"));
 }
 
+void PreviSat::on_affichageCiel_clicked()
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
 
+    /* Corps de la methode */
+    if (ui->ciel->isVisible()) {
+        ui->carte->setVisible(true);
+        ui->frameLat->setVisible(true);
+        ui->frameLon->setVisible(true);
+        ui->imglun->setVisible(true);
+        ui->ciel->setVisible(false);
+        ui->nord->setVisible(false);
+        ui->sud->setVisible(false);
+        ui->est->setVisible(false);
+        ui->ouest->setVisible(false);
+        ui->affichageCiel->setToolTip(tr("Carte du ciel"));
+    } else {
+        ui->carte->setVisible(false);
+        ui->frameLat->setVisible(false);
+        ui->frameLon->setVisible(false);
+        ui->imglun->setVisible(false);
+        ui->ciel->setVisible(true);
+        ui->nord->setVisible(true);
+        ui->sud->setVisible(true);
+        ui->est->setVisible(true);
+        ui->ouest->setVisible(true);
+        ui->affichageCiel->setToolTip(tr("Carte du monde"));
+    }
 
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
 
+    QResizeEvent *event;
+    resizeEvent(event);
 
+    /* Retour */
+    return;
+}

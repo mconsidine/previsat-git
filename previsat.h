@@ -54,7 +54,7 @@ class PreviSat : public QMainWindow
 public:
     explicit PreviSat(QWidget *parent = 0);
     void Initialisations();
-    void EnchainementCalculs();
+
 
     ~PreviSat();
 
@@ -69,6 +69,7 @@ private:
     void AffichageLieuObs();
     void AffichageListeFichiersTLE();
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
+    void EnchainementCalculs();
     void EnregistrerOnglet() const;
     void MajWebTLE(const bool alarm) const;
     void MaximiseCarte() const;
@@ -95,6 +96,7 @@ private slots:
     void on_actionWww_celestrak_com_activated();
     void on_actionRapport_de_bug_activated();
     void on_actionAstropedia_free_fr_activated();
+    void on_affichageCiel_clicked();
 };
 
 #endif // PREVISAT_H
