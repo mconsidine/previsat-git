@@ -40,6 +40,8 @@
  *
  */
 
+#include <QCoreApplication>
+#include <QDir>
 #include <QFile>
 #include <QString>
 #include <QStringList>
@@ -49,7 +51,6 @@
 const int LigneConstellation::TABMAX;
 bool LigneConstellation::_initLig = false;
 int LigneConstellation::_tabLigCst[TABMAX][2];
-QList<LigneConstellation> LigneConstellation::_lignesCst;
 
 LigneConstellation::LigneConstellation()
 {
@@ -75,7 +76,7 @@ LigneConstellation::~LigneConstellation()
 {
 }
 
-void LigneConstellation::CalculLignesCst(const QList<Etoile> etoiles)
+void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst)
 {
     /* Declarations des variables locales */
     int ind1, ind2;
@@ -87,11 +88,11 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> etoiles)
     }
 
     /* Corps de la methode */
-    _lignesCst.clear();
+    lignesCst.clear();
     for (int i=0; i<TABMAX; i++) {
         ind1 = _tabLigCst[i][0] - 1;
         ind2 = _tabLigCst[i][1] - 1;
-        _lignesCst[i] = LigneConstellation(etoiles[ind1], etoiles[ind2]);
+        lignesCst.append(LigneConstellation(etoiles[ind1], etoiles[ind2]));
     }
 
     /* Retour */
@@ -105,18 +106,19 @@ void LigneConstellation::InitTabLignesCst()
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fichier("data/constlines.cst");
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "constlines.cst";
+    QFile fichier(fic.toStdString().c_str());
     if (fichier.exists()) {
 
         int i = 0;
-        fichier.open(QIODevice::ReadOnly);
+        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichier);
 
         while (!flux.atEnd()) {
 
-            QStringList ligne = flux.readLine().split(" ");
-            _tabLigCst[i][0] = ligne[0].toInt();
-            _tabLigCst[i][1] = ligne[1].toInt();
+            const QStringList ligne = flux.readLine().split(" ");
+            _tabLigCst[i][0] = ligne.at(0).toInt();
+            _tabLigCst[i][1] = ligne.at(1).toInt();
             i++;
         }
     }
@@ -126,7 +128,18 @@ void LigneConstellation::InitTabLignesCst()
     return;
 }
 
-QList<LigneConstellation> LigneConstellation::getLignesCst()
+/* Accesseurs */
+bool LigneConstellation::isDessin() const
 {
-    return _lignesCst;
+    return (_dessin);
+}
+
+Etoile LigneConstellation::getEtoile1() const
+{
+    return (_etoile1);
+}
+
+Etoile LigneConstellation::getEtoile2() const
+{
+    return (_etoile2);
 }

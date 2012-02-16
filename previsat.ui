@@ -154,10 +154,10 @@
            </rect>
           </property>
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Plain</enum>
           </property>
           <widget class="QLabel" name="W150">
            <property name="geometry">
@@ -339,10 +339,10 @@
            </rect>
           </property>
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Plain</enum>
           </property>
           <widget class="QLabel" name="N60">
            <property name="geometry">
@@ -451,6 +451,9 @@
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
@@ -464,7 +467,7 @@
          <widget class="QLabel" name="nord">
           <property name="geometry">
            <rect>
-            <x>415</x>
+            <x>410</x>
             <y>5</y>
             <width>31</width>
             <height>16</height>
@@ -480,7 +483,7 @@
          <widget class="QLabel" name="sud">
           <property name="geometry">
            <rect>
-            <x>415</x>
+            <x>410</x>
             <y>402</y>
             <width>31</width>
             <height>16</height>
@@ -497,7 +500,7 @@
           <property name="geometry">
            <rect>
             <x>621</x>
-            <y>198</y>
+            <y>202</y>
             <width>31</width>
             <height>16</height>
            </rect>
@@ -510,7 +513,7 @@
           <property name="geometry">
            <rect>
             <x>199</x>
-            <y>198</y>
+            <y>202</y>
             <width>31</width>
             <height>20</height>
            </rect>
@@ -520,6 +523,38 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="affichageCiel">
+          <property name="geometry">
+           <rect>
+            <x>815</x>
+            <y>32</y>
+            <width>20</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Carte du ciel</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/resources/globe.ico</normaloff>:/resources/globe.ico</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+M</string>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
           </property>
          </widget>
          <zorder>carte</zorder>
@@ -532,6 +567,7 @@
          <zorder>sud</zorder>
          <zorder>ouest</zorder>
          <zorder>est</zorder>
+         <zorder>affichageCiel</zorder>
         </widget>
        </item>
        <item>
@@ -588,7 +624,7 @@
            </rect>
           </property>
           <property name="title">
-           <string>Mode</string>
+           <string>Mode de fonctionnement</string>
           </property>
           <widget class="QRadioButton" name="tempsReel">
            <property name="geometry">
@@ -1017,7 +1053,7 @@
              <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Plain</enum>
             </property>
             <widget class="QLabel" name="lbl_nomsat1">
              <property name="geometry">
@@ -4778,7 +4814,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="autoFillBackground">
@@ -5935,7 +5971,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>3</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="autoFillBackground">

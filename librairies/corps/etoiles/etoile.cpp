@@ -40,13 +40,14 @@
  *
  */
 
+#include <QCoreApplication>
+#include <QDir>
 #include <stdio.h>
 #include "etoile.h"
 #include "librairies/maths/mathConstants.h"
 
 static const int TABMAX = 9110;
 bool Etoile::_initStar = false;
-QList<Etoile> Etoile::_etoiles;
 
 Etoile::Etoile()
 {
@@ -61,8 +62,8 @@ Etoile::Etoile(const QString nom, const double ascensionDroite, const double dec
 
     /* Corps du constructeur */
     _nom = nom;
-    _ascensionDroite = ascensionDroite;
-    _declinaison = declinaison;
+    _ascensionDroite = ascensionDroite * HEUR2RAD;
+    _declinaison = declinaison * DEG2RAD;
     _magnitude = magnitude;
 
     /* Retour */
@@ -73,19 +74,19 @@ Etoile::~Etoile()
 {
 }
 
-void Etoile::CalculPositionEtoiles(const Observateur &observateur)
+void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     if (!_initStar) {
-        InitTabEtoiles();
+        InitTabEtoiles(etoiles);
         _initStar = true;
     }
 
     /* Corps de la methode */
     for (int i=0; i<TABMAX; i++)
-        _etoiles[i].CalculCoordHoriz(observateur);
+        etoiles[i].CalculCoordHoriz(observateur);
 
     /* Retour */
     return;
@@ -115,7 +116,7 @@ void Etoile::CalculCoordHoriz(const Observateur &observateur)
         _hauteur = ht + refraction;
         if (_hauteur >= 0.) {
             // Azimut
-            _azimut = atan2(vec2.getY(), vec2.getX());
+            _azimut = atan2(vec2.getY(), -vec2.getX());
             if (_azimut < 0.)
                 _azimut += DEUX_PI;
             _visible = true;
@@ -129,32 +130,34 @@ void Etoile::CalculCoordHoriz(const Observateur &observateur)
     return;
 }
 
-void Etoile::InitTabEtoiles()
+void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
-    int ad1, ad2, de1, de2, de3, i;
-    double ad3, ascDte, dec, mag;
-    char ligne1[4096];
-    std::string ligne2;
-    QString nom;
 
     /* Initialisations */
-    i = 0;
 
     /* Corps de la methode */
+    etoiles.clear();
     FILE *fstr = NULL;
-    if ((fstr = fopen("data/etoiles.str", "r")) != NULL) {
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "etoiles.str";
+    if ((fstr = fopen(fic.toStdString().c_str(), "r")) != NULL) {
+
+        char ligne1[4096];
+        std::string ligne2;
 
         while (fgets(ligne1, 4096, fstr) != NULL) {
 
-            nom = "";
-            ascDte = 0.;
-            dec = 0.;
-            mag = 99.;
+            int ad1, ad2, de1, de2, de3;
+            double ad3;
+
+            QString nom = "";
+            double ascDte = 0.;
+            double dec = 0.;
+            double mag = 99.;
             ligne2.assign(ligne1);
 
             if (ligne2.length() > 34) {
-                sscanf(ligne1, "%2d%2d%4lf%*2s%2d%2d%2d%*7f%*7f%6lf", &ad1, &ad2, &ad3, &de1, &de2, &de3, &mag);
+                sscanf(ligne1, "%2d%2d%4lf%*1s%2d%2d%2d%*7f%*7f%6lf", &ad1, &ad2, &ad3, &de1, &de2, &de3, &mag);
 
                 ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
                 const int sgn = (ligne2.at(9) == '-') ? -1 : 1;
@@ -164,8 +167,7 @@ void Etoile::InitTabEtoiles()
                     nom = QString::fromStdString(ligne2.substr(37, ligne2.length()));
             }
 
-            _etoiles[i] = Etoile(nom, ascDte, dec, mag);
-            i++;
+            etoiles.append(Etoile(nom, ascDte, dec, mag));
         }
     }
     fclose(fstr);
@@ -174,7 +176,13 @@ void Etoile::InitTabEtoiles()
     return;
 }
 
-QList<Etoile> Etoile::getEtoiles()
+/* Accesseurs */
+double Etoile::getMagnitude() const
 {
-    return _etoiles;
+    return (_magnitude);
+}
+
+QString Etoile::getNom() const
+{
+    return (_nom);
 }

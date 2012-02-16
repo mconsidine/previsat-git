@@ -58,11 +58,12 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void CalculPositionEtoiles(const Observateur &observateur);
+    static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
     void CalculCoordHoriz(const Observateur &observateur);
 
     /* Accesseurs */
-    static QList<Etoile> getEtoiles();
+    double getMagnitude() const;
+    QString getNom() const;
 
 
 protected:
@@ -82,10 +83,9 @@ private:
     static bool _initStar;
     double _magnitude;
     QString _nom;
-    static QList<Etoile> _etoiles;
 
     /* Methodes privees */
-    static void InitTabEtoiles();
+    static void InitTabEtoiles(QList<Etoile> &etoiles);
 
 };
 

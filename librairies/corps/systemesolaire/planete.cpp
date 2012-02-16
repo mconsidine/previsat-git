@@ -42,14 +42,6 @@
 
 #include "planete.h"
 
-static const int MERCURE = 0;
-static const int VENUS   = 1;
-static const int MARS    = 2;
-static const int JUPITER = 3;
-static const int SATURNE = 4;
-static const int URANUS  = 5;
-static const int NEPTUNE = 6;
-
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
     {
@@ -147,13 +139,13 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     _distance = _dist.Norme();
 
     // Prise en compte de l'aberration
-    const double jj2 = date.getJourJulienUTC() - 0.0057755182 * _distance;
+    const double jj2 = date.getJourJulienUTC() - 0.0057755183 * _distance;
     const Date date2(jj2, 0., false);
 
     CalculElements(date2);
     CalculCoordonneesSpheriques();
-    _position = Sph2Cart(_positionSph, date2);
-    _dist = _position + solpos;
+    _position = Sph2Cart(_positionSph, date2) + solpos;
+    _position = _position * UA;
 
     /* Retour */
     return;
@@ -199,7 +191,7 @@ void Planete::CalculCoordonneesSpheriques()
     double na = atan(tan(_elem[5] - _elem[4]) / cos(_elem[3]));
     if (cos(_elem[5] - _elem[4]) < 0.)
         na += PI;
-    double nm = atan2(tan(_elem[0] - _elem[4]), cos(_elem[3]));
+    double nm = atan(tan(_elem[0] - _elem[4]) / cos(_elem[3]));
     if (cos(_elem[0] - _elem[4] - nm) < 0.)
         nm += PI;
     const double m = nm - na;

@@ -56,11 +56,13 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void CalculLignesCst(const QList<Etoile> etoiles);
+    static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
     static void InitTabLignesCst();
 
     /* Accesseurs */
-    static QList<LigneConstellation> getLignesCst();
+    bool isDessin() const;
+    Etoile getEtoile1() const;
+    Etoile getEtoile2() const;
 
 
 protected:
@@ -83,7 +85,6 @@ private:
     Etoile _etoile1;
     Etoile _etoile2;
     static int _tabLigCst[TABMAX][2];
-    static QList<LigneConstellation> _lignesCst;
 
     /* Methodes privees */
 
