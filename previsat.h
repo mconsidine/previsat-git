@@ -67,12 +67,10 @@ private:
     void AffichageCourbes();
     void AffichageCiel() const;
     void AffichageLieuObs();
-    void AffichageListeFichiersTLE();
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
     void EnchainementCalculs();
     void EnregistrerOnglet() const;
     void MajWebTLE(const bool alarm) const;
-    void MaximiseCarte() const;
     void VerifAgeTLE() const;
     void EcritureListeRegistre();
 
@@ -86,6 +84,8 @@ private slots:
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *);
 
     void on_maximise_clicked();
     void on_actionOuvrir_fichier_TLE_activated();
