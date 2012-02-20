@@ -147,7 +147,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
         QFile fichier(nomFichier);
         if (fichier.exists()) {
 
-            fichier.open(QIODevice::ReadOnly);
+            fichier.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fichier);
 
             while (!flux.atEnd()) {
@@ -245,7 +245,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "donnees.sat";
     QFile donneesSatellites(fic.toStdString().c_str());
     if (donneesSatellites.exists()) {
-        donneesSatellites.open(QIODevice::ReadOnly);
+        donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
         magn = flux.readAll();
     }
@@ -439,7 +439,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     if (nbMaj > 0 || nbAdd > 0 || nbSup > 0) {
 
         QFile fichier(ficOld);
-        fichier.open(QIODevice::WriteOnly);
+        fichier.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream flux(&fichier);
 
         QVectorIterator<TLE> it(tleOld);
