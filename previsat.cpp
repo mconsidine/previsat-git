@@ -39,7 +39,7 @@
  * >
  *
  */
-//#include <QMessageBox>
+
 #include <QtCore/qmath.h>
 #include <QDesktopServices>
 #include <QDesktopWidget>
@@ -116,12 +116,39 @@ static QList<LigneConstellation> lignesCst;
 static QList<Planete> planetes;
 static QColor couleurPlanetes[7] = { Qt::gray, Qt::white, Qt::red, QColor("orange"), Qt::darkYellow, Qt::green, Qt::blue };
 
+// SAA
+static double tabSAA1[59][2] = { { -96.5, -29 }, { -95, -24.5 }, { -90, -16 }, { -85, -10 }, { -80, -6 }, { -75, -3.5 },
+                                 { -70, 0 }, { -65, 4 }, { -60, 6.5 }, { -55, 8 }, { -50, 9 }, { -45, 10 }, { -40, 11 },
+                                 { -35, 12 }, { -30, 13 }, { -25, 12 }, { -20, 9.5 }, { -15, 8 }, { -10, 7 }, { -5, 6 },
+                                 { 0, 4 }, { 5, 2 }, { 10, -3 }, { 15, -4 }, { 20, -5 }, { 25, -6 }, { 30, -8 },
+                                 { 35, -11.5 }, { 40, -14 }, { 42.5, -17.5 }, { 40, -22 }, { 35, -23.5 }, { 30, -25 },
+                                 { 25, -27 }, { 20, -29 }, { 15, -32 }, { 10, -33.5 }, { 5, -35 }, { 0, -36 },
+                                 { -5, -37 }, { -10, -38.5 }, { -15, -42.5 }, { -20, -44.5 }, { -25, -46 },
+                                 { -30, -47.5 }, { -35, -48.5 }, { -40, -49.5 }, { -45, -49 }, { -50, -48.5 },
+                                 { -55, -47.5 }, { -60, -47 }, { -65, -46.5 }, { -70, -45.5 }, { -75, -43.5 },
+                                 { -80, -42 }, { -85, -38.5 }, { -90, -36 }, { -95, -33 }, { -96.5, -29 } };
+
+static double tabSAA2[70][2] = { { -113, -20 }, { -110, -13 }, { -105, -9 }, { -100, -5 }, { -95, -3 }, { -90, 1 },
+                                 { -85, 3 }, { -80, 6 }, { -75, 7 }, { -70, 8 }, { -65, 9 }, { -60, 10 }, { -55, 13 },
+                                 { -50, 15 }, { -45, 16 }, { -40, 18 }, { -35, 19 }, { -30, 21.5 }, { -25, 23 },
+                                 { -20, 22.5 }, { -15, 21.5 }, { -10, 18 }, { -5, 16 }, { 0, 13 }, { 5, 10 }, { 10, 7 },
+                                 { 15, 5 }, { 20, 3 }, { 25, 0 }, { 30, -2 }, { 35, -3 }, { 40, -5 }, { 45, -7 },
+                                 { 50, -12 }, { 53, -17 }, { 53, -20 }, { 50, -22 }, { 45, -23 }, { 40, -23.5 },
+                                 { 35, -24 }, { 30, -24.5 }, { 25, -25 }, { 20, -26 }, { 15, -26.5 }, { 10, -27 },
+                                 { 5, -28 }, { 0, -30 }, { -5, -32 }, { -10, -34 }, { -15, -36 }, { -20, -38 },
+                                 { -25, -40 }, { -30, -42.5 }, { -35, -44 }, { -40, -46 }, { -45, -46.5 }, { -50, -47 },
+                                 { -55, -47 }, { -60, -47 }, { -65, -47 }, { -70, -46.5 }, { -75, -46 }, { -80, -45.5 },
+                                 { -85, -44 }, { -90, -43 }, { -95, -40 }, { -100, -37 }, { -105, -33 }, { -110, -28 },
+                                 { -113, -20 } };
+
 // Registre
 static QSettings settings("Astropedia", "previsat");
 
 static QTimer *chronometre;
 
 QLabel *messagesStatut;
+QLabel *messagesStatut2;
+QLabel *messagesStatut3;
 QLabel *modeFonctionnement;
 QLabel *stsDate;
 QLabel *stsHeure;
@@ -242,15 +269,15 @@ void PreviSat::Initialisations()
     ui->affinvew->setChecked(settings.value("affichage/affinvew", false).toBool());
     ui->affinvns->setChecked(settings.value("affichage/affinvns", false).toBool());
     ui->afflune->setChecked(settings.value("affichage/afflune", true).toBool());
-    ui->affnomlieu->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomlieu", Qt::PartiallyChecked).toUInt()));
-    ui->affnomsat->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomsat", Qt::PartiallyChecked).toUInt()));
+    ui->affnomlieu->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomlieu", Qt::Checked).toUInt()));
+    ui->affnomsat->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomsat", Qt::Checked).toUInt()));
     ui->affnotif->setChecked(settings.value("affichage/affnotif", true).toBool());
     ui->affnuit->setChecked(settings.value("affichage/affnuit", true).toBool());
     ui->affphaselune->setChecked(settings.value("affichage/affphaselune", true).toBool());
-    ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::PartiallyChecked).toUInt()));
+    ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
     ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
     ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
-    ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::PartiallyChecked).toUInt()));
+    ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
     ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
     ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
     ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
@@ -335,7 +362,19 @@ void PreviSat::Initialisations()
     messagesStatut = new QLabel("", this);
     messagesStatut->setFrameStyle(QFrame::NoFrame);
     messagesStatut->setIndent(3);
-    messagesStatut->setMinimumSize(778, 0);
+    messagesStatut->setMinimumSize(398, 0);
+
+    messagesStatut2 = new QLabel("", this);
+    messagesStatut2->setFrameStyle(QFrame::NoFrame);
+    messagesStatut2->setFixedWidth(140);
+    messagesStatut2->setAlignment(Qt::AlignCenter);
+    messagesStatut2->setVisible(false);
+
+    messagesStatut3 = new QLabel("", this);
+    messagesStatut3->setFrameStyle(QFrame::NoFrame);
+    messagesStatut3->setFixedWidth(140);
+    messagesStatut3->setAlignment(Qt::AlignCenter);
+    messagesStatut3->setVisible(false);
 
     modeFonctionnement = new QLabel("", this);
     modeFonctionnement->setFrameStyle(QFrame::NoFrame);
@@ -349,10 +388,12 @@ void PreviSat::Initialisations()
 
     stsHeure = new QLabel("", this);
     stsHeure->setFrameStyle(QFrame::NoFrame);
-    stsHeure->setFixedWidth(70);
+    stsHeure->setFixedWidth(77);
     stsHeure->setAlignment(Qt::AlignCenter);
 
     ui->barreStatut->addPermanentWidget(messagesStatut, 1);
+    ui->barreStatut->addPermanentWidget(messagesStatut2);
+    ui->barreStatut->addPermanentWidget(messagesStatut3);
     ui->barreStatut->addPermanentWidget(modeFonctionnement);
     ui->barreStatut->addPermanentWidget(stsDate);
     ui->barreStatut->addPermanentWidget(stsHeure);
@@ -529,7 +570,7 @@ void PreviSat::InitFicObs(const bool alarm)
                 QFile fi(file);
                 if (fi.exists()) {
 
-                    fi.open(QIODevice::ReadOnly);
+                    fi.open(QIODevice::ReadOnly | QIODevice::Text);
                     QTextStream flux(&fi);
                     while (!flux.atEnd()) {
                         const QString lieu = flux.readLine();
@@ -1132,7 +1173,7 @@ void PreviSat::AffichageCourbes()
     // Couleur du ciel
     QBrush bru(Qt::black);
     QBrush bru2(Qt::black);
-    if (ui->ciel->isVisible() || ui->radar->isVisible()) {
+    if (!ui->ciel->isHidden() || !ui->radar->isHidden()) {
 
         const double hts = soleil.getHauteur() * RAD2DEG;
         if (hts >= 0.) {
@@ -1211,6 +1252,35 @@ void PreviSat::AffichageCourbes()
             ui->frameLon->setVisible(false);
         }
 
+        // Affichage de la SAA
+        if (ui->affSAA->isChecked()) {
+
+            const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
+            QVector<QPoint> zoneSAA1;
+            zoneSAA1.resize(59);
+
+            for(int i=0; i<59; i++) {
+                zoneSAA1[i].setX(qRound((180. + tabSAA1[i][0]) * DEG2PXHZ));
+                zoneSAA1[i].setY(qRound((90. - tabSAA1[i][1]) * DEG2PXVT));
+            }
+
+            const QPolygonF poly2(zoneSAA1);
+            scene->addPolygon(poly2, QPen(Qt::NoBrush, 0), alpha);
+
+            if (ui->affSAA->checkState() == Qt::Checked) {
+
+                QVector<QPoint> zoneSAA2;
+                zoneSAA2.resize(70);
+
+                for(int i=0; i<70; i++) {
+                    zoneSAA2[i].setX(qRound((180. + tabSAA2[i][0]) * DEG2PXHZ));
+                    zoneSAA2[i].setY(qRound((90. - tabSAA2[i][1]) * DEG2PXVT));
+                }
+
+                const QPolygonF poly1(zoneSAA2);
+                scene->addPolygon(poly1, QPen(Qt::NoBrush, 0), alpha);
+            }
+        }
 
         // Affichage du Soleil
         const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
@@ -1326,10 +1396,8 @@ void PreviSat::AffichageCourbes()
         // Affichage de la Lune
         if (ui->afflune->isChecked()) {
 
-            const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ) +
-                    ui->carte->geometry().left() - 1;
-            const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT) +
-                    ui->carte->geometry().top() - 1;
+            const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
+            const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
 
             ui->imglun->setStyleSheet("background: transparent; border: none");
             ui->imglun->setScene(scnlun);
@@ -1344,8 +1412,7 @@ void PreviSat::AffichageCourbes()
         int nbMax;
         if (ui->affnomlieu->checkState() == Qt::Unchecked)
             nbMax = 0;
-        if (ui->affnomlieu->checkState() == Qt::Checked ||
-                ui->affnomlieu->checkState() == Qt::PartiallyChecked)
+        if (ui->affnomlieu->checkState() == Qt::Checked || ui->affnomlieu->checkState() == Qt::PartiallyChecked)
             nbMax = ui->lieuxObservation1->count() - 1;
 
         QPen crayon(Qt::white);
@@ -1357,7 +1424,7 @@ void PreviSat::AffichageCourbes()
             scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
             scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
 
-            if (j == 0 || ui->affnomlieu->checkState() == Qt::PartiallyChecked) {
+            if (j == 0 || ui->affnomlieu->checkState() == Qt::Checked) {
 
                 QGraphicsSimpleTextItem *txtObs = new QGraphicsSimpleTextItem(observateurs.at(j).
                                                                               getNomlieu());
@@ -1409,9 +1476,9 @@ void PreviSat::AffichageCourbes()
 
         // Affichage de la zone de visibilite des satellites
         if (ui->affvisib->isChecked()) {
-            if (ui->affvisib->checkState() == Qt::Checked)
-                nbMax = 1;
             if (ui->affvisib->checkState() == Qt::PartiallyChecked)
+                nbMax = 1;
+            if (ui->affvisib->checkState() == Qt::Checked)
                 nbMax = liste.size();
 
             crayon = QPen(Qt::white);
@@ -1465,8 +1532,8 @@ void PreviSat::AffichageCourbes()
                 // Nom des satellites
                 if (ui->affnomsat->isChecked()) {
 
-                    if ((ui->affnomsat->checkState() == Qt::Checked && isat == 0) ||
-                            ui->affnomsat->checkState() == Qt::PartiallyChecked) {
+                    if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
+                            ui->affnomsat->checkState() == Qt::Checked) {
                         QGraphicsSimpleTextItem *txtSat = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
                         const int lng = txtSat->boundingRect().width();
                         const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
@@ -1534,9 +1601,9 @@ void PreviSat::AffichageCourbes()
                 const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
                 const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
 
-                rect = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(qRound(lstr-1.5), qRound(bstr-1.5), 3, 3);
+                rect = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1., bstr-1., 2.5, 3.5);
                 bru2 = (soleil.getHauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
-                scene3->addEllipse(rect, QPen(), bru2);
+                scene3->addEllipse(rect, QPen(Qt::NoPen), bru2);
 
                 // Nom des etoiles les plus brillantes
                 if (ui->affetoiles->isChecked()) {
@@ -1565,13 +1632,15 @@ void PreviSat::AffichageCourbes()
                 // Calcul des coordonnees radar des planetes
                 for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            sin(planetes.at(iplanete).getAzimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            cos(planetes.at(iplanete).getAzimut()));
+                    if (planetes.at(iplanete).getHauteur() >= 0.) {
+                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(iplanete).getAzimut()));
+                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(iplanete).getAzimut()));
 
-                    rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                        rect = QRect(lpla - 2, bpla - 2, 4, 4);
+                        scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                    }
                 }
 
                 if (ui->affsoleil->isChecked() && soleil.isVisible()) {
@@ -1590,10 +1659,10 @@ void PreviSat::AffichageCourbes()
                     const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
                     const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
 
-//                    ui->imglun->setStyleSheet("background: transparent; border: none");
-//                    ui->imglun->setScene(scnlun);
-//                    if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
-//                        ui->imglun->rotate(180.);
+                    //                    ui->imglun->setStyleSheet("background: transparent; border: none");
+                    //                    ui->imglun->setScene(scnlun);
+                    //                    if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+                    //                        ui->imglun->rotate(180.);
 
                     ui->imglun->setGeometry(llun-7, blun-7, 17, 17);
                 }
@@ -1615,8 +1684,8 @@ void PreviSat::AffichageCourbes()
                         // Nom des satellites
                         if (ui->affnomsat->isChecked()) {
 
-                            if ((ui->affnomsat->checkState() == Qt::Checked && isat == 0) ||
-                                    ui->affnomsat->checkState() == Qt::PartiallyChecked) {
+                            if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
+                                    ui->affnomsat->checkState() == Qt::Checked) {
 
                                 const int lst = lsat - lciel;
                                 const int bst = hciel - bsat;
@@ -1645,7 +1714,12 @@ void PreviSat::AffichageCourbes()
     htr = false;
     if (ui->affradar->checkState() == Qt::Checked || (ui->affradar->checkState() == Qt::PartiallyChecked && ht)) {
 
-        ui->frameZone->setVisible(true);
+        ui->coordGeo1->setVisible(true);
+        ui->coordGeo2->setVisible(true);
+        ui->coordGeo3->setVisible(true);
+        ui->coordGeo4->setVisible(true);
+        ui->imglun2->setVisible(true);
+        ui->radar->setVisible(true);
         QGraphicsScene *scene2 = new QGraphicsScene;
         htr = true;
         // Dessin du fond du radar
@@ -1731,7 +1805,12 @@ void PreviSat::AffichageCourbes()
         scene2->addEllipse(-4, -4, 208, 208, QPen(QBrush(ui->frameZone->palette().background().color()), 6));
         ui->radar->setScene(scene2);
     } else {
-        ui->frameZone->setVisible(false);
+        ui->coordGeo1->setVisible(false);
+        ui->coordGeo2->setVisible(false);
+        ui->coordGeo3->setVisible(false);
+        ui->coordGeo4->setVisible(false);
+        ui->imglun2->setVisible(false);
+        ui->radar->setVisible(false);
     }
 
     /* Retour */
@@ -1744,7 +1823,6 @@ void PreviSat::AffichageCourbes()
 void PreviSat::AffichageLieuObs()
 {
     /* Declarations des variables locales */
-    double atd, la, lo;
 
     /* Initialisations */
     listeObs = settings.value("observateur/lieu", "Paris#-002.345277778&+48.860833333&60").toString().split("$");
@@ -1770,9 +1848,9 @@ void PreviSat::AffichageLieuObs()
 
         // Longitude/Latitude/Altitude
         const QStringList coord = obs.mid(delim + 1).split("&");
-        lo = coord.at(0).toDouble();
-        la = coord.at(1).toDouble();
-        atd = coord.at(2).toInt();
+        const double lo = coord.at(0).toDouble();
+        const double la = coord.at(1).toDouble();
+        const int atd = coord.at(2).toInt();
 
         // Creation du lieu d'observation
         observateurs.append(Observateur(nomlieu, lo, la, atd));
@@ -1781,16 +1859,15 @@ void PreviSat::AffichageLieuObs()
 
             const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
             const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
-            QString alt = "%1 %2";
+            const QString alt = "%1 %2";
 
             // Affichage des coordonnees
             ui->longitudeObs->setText(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, Maths::DEGRE, 3, 0,
                                                            false, true).append(" ").append(ew));
             ui->latitudeObs->setText(Maths::ToSexagesimal(fabs(la) * DEG2RAD, Maths::DEGRE, 2, 0,
                                                           false, true).append(" ").append(ns));
-            alt = alt.arg((ui->unitesKm->isChecked()) ? atd : atd * PIED_PAR_METRE).
-                    arg((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
-            ui->altitudeObs->setText(alt);
+            ui->altitudeObs->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : atd * PIED_PAR_METRE).
+                                     arg((ui->unitesKm->isChecked()) ? tr("m") : tr("ft")));
         }
     }
     ui->lieuxObservation1->setCurrentIndex(0);
@@ -1817,7 +1894,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
     mapSatellites.clear();
     QFile donneesSatellites("data/donnees.sat");
     if (donneesSatellites.exists()) {
-        donneesSatellites.open(QIODevice::ReadOnly);
+        donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
         magn = flux.readAll();
     } else {
@@ -2218,6 +2295,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
 
     /* Corps de la methode */
     ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
+    ui->frameCarte2->setGeometry(ui->carte->geometry());
     ui->maximise->move(11 + ui->carte->width(), 5);
     ui->affichageCiel->move(11 + ui->carte->width(), 32);
 
@@ -2229,33 +2307,39 @@ void PreviSat::resizeEvent(QResizeEvent *event)
 
     ui->liste1->setGeometry(10, 149, 200, hcarte - 140);
 
-    ui->S60->move(5, hcarte / 6. - 8);
-    ui->S30->move(5, hcarte / 3. - 8);
-    ui->SS->move(5, hcarte / 2.4 - 8);
-    ui->N0->move(5, hcarte * 0.5 - 8);
-    ui->NN->move(5, hcarte * 7. / 12. - 8);
-    ui->N30->move(5, hcarte / 1.5 - 8);
-    ui->N60->move(5, hcarte / 1.2 - 8);
+    ui->S60->move(5, hcarte / 1.2 - 1);
+    ui->S30->move(5, hcarte / 1.5 - 1);
+    ui->SS->move(5, hcarte * 7. / 12. - 1);
+    ui->N0->move(5, hcarte * 0.5 - 1);
+    ui->NN->move(5, hcarte / 2.4 - 1);
+    ui->N30->move(5, hcarte / 3. - 1);
+    ui->N60->move(5, hcarte / 6. - 1);
     ui->frameLat->setGeometry(7 + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
     ui->W150->move(lcarte / 12. - 8, 0);
     ui->W120->move(lcarte / 6. - 8, 0);
-    ui->W90->move(lcarte / 4. - 4, 0);
-    ui->W60->move(lcarte / 3. - 4, 0);
-    ui->W30->move(lcarte / 2.4 - 4, 0);
+    ui->W90->move(lcarte / 4. - 5, 0);
+    ui->W60->move(lcarte / 3. - 5, 0);
+    ui->W30->move(lcarte / 2.4 - 5, 0);
     ui->WW->move(lcarte * 11. / 24. - 2, 0);
-    ui->W0->move(lcarte * 0.5 - 1, 0);
+    ui->W0->move(lcarte * 0.5 - 2, 0);
     ui->EE->move(lcarte * 13. / 24. - 2, 0);
-    ui->E30->move(lcarte * 7. / 12. - 4, 0);
-    ui->E60->move(lcarte / 1.5, 0);
-    ui->E90->move(lcarte * 0.75 - 4, 0);
+    ui->E30->move(lcarte * 7. / 12. - 5, 0);
+    ui->E60->move(lcarte / 1.5 - 5, 0);
+    ui->E90->move(lcarte * 0.75 - 5, 0);
     ui->E120->move(lcarte / 1.2 - 8, 0);
     ui->E150->move(lcarte * 11. / 12. - 8, 0);
     ui->frameLon->setGeometry(6, 7 + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
     ui->onglets->move(ui->frameCarte->width() * 0.5 - 419, 0);
-    ui->enregistrerOnglet->move(ui->onglets->x() + 774, 3);
-    //...
+    //ui->enregistrerOnglet->move(ui->onglets->x() + 774, 3);
+
+    ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
+                          ui->frameCarte->height() - 44, ui->frameCarte->height() - 44);
+    ui->sud->move(qRound(0.5 * ui->frameCarte->width()) - 20, ui->ciel->y() + ui->ciel->height());
+    ui->nord->move(ui->sud->x(), 5);
+    ui->est->move(ui->ciel->x() - ui->est->width() - 2, qRound(0.5 * ui->ciel->height()) + 10);
+    ui->ouest->move(ui->ciel->x() + ui->ciel->width() + 2, ui->est->y());
 
     if (Satellite::initCalcul) {
 
@@ -2299,7 +2383,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
 
             // Agrandissement de la carte
             if (event->key() == Qt::Key_M)
-                MaximiseCarte();
+                on_maximise_clicked();
 
         } else {
 
@@ -2363,7 +2447,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                 // Distance au carre du curseur au satellite
                 const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
 
-                // Le cuseur est au-dessus d'un satellite
+                // Le curseur est au-dessus d'un satellite
                 if (dt <= 16) {
                     const QString norad = liste.at(isat);
                     liste[isat] = liste.at(0);
@@ -2391,6 +2475,57 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                 }
             }
         }
+
+        if (!ui->radar->isHidden()) {
+
+            if (event->x() >= 826 && event->x() <= 1026 && event->y() >= 447 && event->y() <= 647) {
+
+                const int x = event->x() - 926;
+                const int y = event->y() - 547;
+
+                if (x * x + y * y < 10000 && htr) {
+
+                    const int xf = (ui->affinvew->isChecked()) ? 1 : -1;
+                    const int yf = (ui->affinvns->isChecked()) ? -1 : 1;
+
+                    for(int isat=0; isat<nbSat; isat++) {
+
+                        const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).getAzimut()));
+                        const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).getAzimut()));
+
+                        // Distance au carre du satellite au curseur
+                        const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
+
+                        // Le curseur est au dessus d'un satellite
+                        if (dt <= 16) {
+                            const QString norad = liste.at(isat);
+                            liste[isat] = liste.at(0);
+                            liste[0] = norad;
+
+                            const bool bip = bipSat.at(isat);
+                            bipSat[isat] = bipSat.at(0);
+                            bipSat[0] = bip;
+
+                            Satellite::initCalcul = false;
+
+                            // Ecriture des cles de registre
+                            EcritureListeRegistre();
+
+                            info = true;
+
+                            // Enchainement de l'ensemble des calculs
+                            EnchainementCalculs();
+
+                            // Affichage des donnees numeriques
+                            AffichageDonnees();
+
+                            // Affichage des elements graphiques
+                            AffichageCourbes();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /* Retour */
@@ -2403,11 +2538,6 @@ void PreviSat::AffichageCiel() const
 }
 
 void PreviSat::EnregistrerOnglet() const
-{
-
-}
-
-void PreviSat::MaximiseCarte() const
 {
 
 }
@@ -2511,11 +2641,11 @@ void PreviSat::on_maximise_clicked()
     if (ui->frameOngletsZone->sizePolicy().verticalPolicy() == QSizePolicy::Preferred) {
         ui->frameOngletsZone->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
         ui->onglets->setVisible(false);
-        ui->enregistrerOnglet->setVisible(false);
+        //ui->enregistrerOnglet->setVisible(false);
     } else {
         ui->frameOngletsZone->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
         ui->onglets->setVisible(true);
-        ui->enregistrerOnglet->setVisible(true);
+        //ui->enregistrerOnglet->setVisible(true);
     }
 
     if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Preferred) {
@@ -2836,6 +2966,209 @@ void PreviSat::on_affichageCiel_clicked()
 
     QResizeEvent *event;
     resizeEvent(event);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::mouseMoveEvent(QMouseEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    messagesStatut->setText("");
+    messagesStatut2->setVisible(false);
+    messagesStatut3->setVisible(false);
+
+    /* Corps de la methode */
+    if (ui->affcoord->isChecked()) {
+
+        // Deplacement de la souris sur la carte du monde
+        if (!ui->carte->isHidden()) {
+            if (event->x() > 6 && event->x() < 807 && event->y() > 6 && event->y() < 407) {
+
+                const int x = event->x() - 6;
+                const int y = event->y() - 6;
+
+                // Longitude
+                const double lo0 = 180. - x / DEG2PXHZ;
+                const QString ews = (lo0 < 0.) ? tr("Est") : tr("Ouest");
+
+                // Latitude
+                const double la0 = 90. - y /DEG2PXVT;
+                const QString nss = (la0 < 0.) ? tr("Sud") : tr("Nord");
+
+                const QString msg = " : %1° %2";
+                messagesStatut2->setText(tr("Longitude") + msg.arg(fabs(lo0), 6, 'f', 2, QChar('0')).arg(ews));
+                messagesStatut3->setText(tr("Latitude") + msg.arg(fabs(la0), 5, 'f', 2, QChar('0')).arg(nss));
+                messagesStatut2->setVisible(true);
+                messagesStatut3->setVisible(true);
+
+                for(int isat=0; isat<nbSat; isat++) {
+
+                    const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                    // Distance au carre du curseur au satellite
+                    const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
+
+                    // Le curseur est au-dessus d'un satellite
+                    if (dt <= 16 && !satellites.at(isat).isIeralt()) {
+                        QString msg = tr("%1 (numéro NORAD : %2)");
+                        messagesStatut->setText(msg.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                        break;
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text() == tr("Soleil"))
+                            messagesStatut->setText("");
+                        PreviSat::setCursor(Qt::ArrowCursor);
+                    }
+                }
+
+                if (ui->affsoleil->isChecked()) {
+
+                    const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                    // Distance au carre du curseur au Soleil
+                    const int dt = (x - lsol) * (x - lsol) + (y - bsol) * (y - bsol);
+
+                    // Le curseur est au-dessus du Soleil
+                    if (dt <= 81) {
+                        messagesStatut->setText(tr("Soleil"));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text() == tr("Soleil"))
+                            messagesStatut->setText("");
+                    }
+                }
+
+                if (ui->afflune->isChecked()) {
+                    //////////////////////// Ne marche pas?????????????????????
+                    const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
+                    const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                    // Distance au carre du curseur a la Lune
+                    const int dt = (x - llun) * (x - llun) + (y - blun) * (y - blun);
+
+                    //Le curseur est au-dessus de la Lune
+                    if (dt <= 81) {
+                        messagesStatut->setText(tr("Lune"));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text() == tr("Lune"))
+                            messagesStatut->setText("");
+                    }
+                }
+            }
+        }
+
+        if (!ui->radar->isHidden()) {
+
+            if (event->x() >= 826 && event->x() <= 1026 && event->y() >= 447 && event->y() <= 647) {
+
+                const int x1 = event->x() - 926;
+                const int y1 = event->y() - 547;
+
+                if (x1 * x1 + y1 * y1 < 10000 && htr) {
+
+                    const int xf = (ui->affinvew->isChecked()) ? 1 : -1;
+                    const int yf = (ui->affinvns->isChecked()) ? -1 : 1;
+
+                    const double x2 = -x1 / (100. * xf);
+                    const double y2 = -y1 / (100. * yf);
+
+                    const double ht = 90. * (1. - sqrt(x2 * x2 + y2 * y2));
+                    double az = atan2(x2, y2) * RAD2DEG;
+                    if (az < 0.)
+                        az += T360;
+
+                    const QString msg = " : %1°";
+                    messagesStatut2->setText(tr("Azimut") + msg.arg(fabs(az), 6, 'f', 2, QChar('0')));
+                    messagesStatut3->setText(tr("Hauteur") + msg.arg(fabs(ht), 5, 'f', 2, QChar('0')));
+                    messagesStatut2->setVisible(true);
+                    messagesStatut3->setVisible(true);
+
+                    for(int isat=0; isat<nbSat; isat++) {
+
+                        const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).getAzimut()));
+                        const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).getAzimut()));
+
+                        const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
+
+                        // Le curseur est au-dessus du satellite
+                        if (dt <= 16 && !satellites.at(isat).isIeralt()) {
+                            QString msg = tr("%1 (numéro NORAD : %2)");
+                            messagesStatut->setText(msg.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                            PreviSat::setCursor(Qt::CrossCursor);
+                            break;
+                        } else {
+                            if (messagesStatut->text().contains("NORAD") || messagesStatut->text() == tr("Soleil"))
+                                messagesStatut->setText("");
+                            PreviSat::setCursor(Qt::ArrowCursor);
+                        }
+                    }
+
+                    // Soleil
+                    if (ui->affsoleil->isChecked()) {
+
+                        const int lsol = qRound(-100. * xf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
+                        const int bsol = qRound(-100. * yf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+
+                        const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
+
+                        // Le curseur est au-dessus du Soleil
+                        if (dt <= 81) {
+                            messagesStatut->setText(tr("Soleil"));
+                            PreviSat::setCursor(Qt::CrossCursor);
+                        } else {
+                            if (messagesStatut->text().contains("NORAD") || messagesStatut->text().contains(tr("Soleil")))
+                                messagesStatut->setText("");
+                        }
+                    }
+
+                    // Soleil
+                    if (ui->afflune->isChecked()) {
+
+                        const int llun = qRound(-100. * xf * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
+                        const int blun = qRound(-100. * yf * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+
+                        const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
+
+                        // Le curseur est au-dessus de la Lune
+                        if (dt <= 81) {
+                            messagesStatut->setText(tr("Lune"));
+                            PreviSat::setCursor(Qt::CrossCursor);
+                        } else {
+                            if (messagesStatut->text().contains("NORAD") || messagesStatut->text().contains(tr("Lune")))
+                                messagesStatut->setText("");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!ui->ciel->isHidden()) {
+        const int x = event->x() - ui->ciel->x();
+        const int y = event->y() - ui->ciel->y();
+        const int x0 = qRound(0.5 * ui->ciel->width());
+        const int y0 = qRound(0.5 * ui->ciel->height());
+
+        if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= x0 * y0)
+            on_maximise_clicked();
+    }
 
     /* Retour */
     return;
