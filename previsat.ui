@@ -723,7 +723,7 @@
          <widget class="QComboBox" name="valManuel">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>70</x>
             <y>85</y>
             <width>81</width>
             <height>22</height>
@@ -756,9 +756,9 @@
          <widget class="QGroupBox" name="mode">
           <property name="geometry">
            <rect>
-            <x>35</x>
+            <x>18</x>
             <y>6</y>
-            <width>184</width>
+            <width>201</width>
             <height>73</height>
            </rect>
           </property>
@@ -807,7 +807,7 @@
          <widget class="QLabel" name="lbl_secondes">
           <property name="geometry">
            <rect>
-            <x>88</x>
+            <x>74</x>
             <y>88</y>
             <width>71</width>
             <height>16</height>
@@ -823,7 +823,7 @@
          <widget class="QComboBox" name="pasManuel">
           <property name="geometry">
            <rect>
-            <x>35</x>
+            <x>20</x>
             <y>85</y>
             <width>45</width>
             <height>22</height>
@@ -882,7 +882,7 @@
          <widget class="QComboBox" name="pasReel">
           <property name="geometry">
            <rect>
-            <x>35</x>
+            <x>20</x>
             <y>85</y>
             <width>45</width>
             <height>22</height>
@@ -943,6 +943,12 @@
           <property name="horizontalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="textElideMode">
+           <enum>Qt::ElideNone</enum>
+          </property>
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
@@ -988,6 +994,15 @@
            <string notr="true"/>
           </property>
          </widget>
+         <zorder>valManuel</zorder>
+         <zorder>mode</zorder>
+         <zorder>lbl_secondes</zorder>
+         <zorder>pasManuel</zorder>
+         <zorder>lbl_nomFichiersTLE</zorder>
+         <zorder>pasReel</zorder>
+         <zorder>nomFichierTLE</zorder>
+         <zorder>barreMenu</zorder>
+         <zorder>liste1</zorder>
         </widget>
        </item>
       </layout>
@@ -8529,7 +8544,48 @@
     <addaction name="separator"/>
     <addaction name="menuAide"/>
    </widget>
+   <widget class="QMenu" name="menuContextuelListe1">
+    <property name="title">
+     <string>MenuContextuelListe1</string>
+    </property>
+    <widget class="QMenu" name="menuAjouter_selection_dans">
+     <property name="title">
+      <string>Ajouter sélection dans</string>
+     </property>
+     <addaction name="actionNouveau_fichier_TLE"/>
+     <addaction name="actionFichier_TLE_existant"/>
+    </widget>
+    <addaction name="actionDefinir_par_defaut"/>
+    <addaction name="menuAjouter_selection_dans"/>
+   </widget>
+   <widget class="QMenu" name="menuMenuContextuelListes">
+    <property name="title">
+     <string>MenuContextuelListes</string>
+    </property>
+    <addaction name="actionTous"/>
+    <addaction name="actionAucun"/>
+   </widget>
+   <widget class="QMenu" name="menuMenuContextuelCategorie">
+    <property name="title">
+     <string>MenuContextuelCategorie</string>
+    </property>
+    <addaction name="actionCreer_une_categorie"/>
+    <addaction name="actionSupprimerCategorie"/>
+    <addaction name="actionTelecharger"/>
+   </widget>
+   <widget class="QMenu" name="menuMenuContextuelLieux">
+    <property name="title">
+     <string>MenuContextuelLieux</string>
+    </property>
+    <addaction name="actionCreer_un_nouveau_lieu"/>
+    <addaction name="actionAjouter_Mes_Preferes"/>
+    <addaction name="actionSupprimerLieu"/>
+   </widget>
    <addaction name="menuOuvrir_fichier_TLE"/>
+   <addaction name="menuContextuelListe1"/>
+   <addaction name="menuMenuContextuelListes"/>
+   <addaction name="menuMenuContextuelCategorie"/>
+   <addaction name="menuMenuContextuelLieux"/>
   </widget>
   <action name="actionOuvrir_fichier_TLE">
    <property name="text">
@@ -8588,6 +8644,61 @@
   <action name="actionA_propos">
    <property name="text">
     <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionDefinir_par_defaut">
+   <property name="text">
+    <string>Définir par défaut</string>
+   </property>
+  </action>
+  <action name="actionNouveau_fichier_TLE">
+   <property name="text">
+    <string>Nouveau fichier TLE</string>
+   </property>
+  </action>
+  <action name="actionFichier_TLE_existant">
+   <property name="text">
+    <string>Fichier TLE existant</string>
+   </property>
+  </action>
+  <action name="actionTous">
+   <property name="text">
+    <string>Tous</string>
+   </property>
+  </action>
+  <action name="actionAucun">
+   <property name="text">
+    <string>Aucun</string>
+   </property>
+  </action>
+  <action name="actionCreer_une_categorie">
+   <property name="text">
+    <string>Créer une catégorie</string>
+   </property>
+  </action>
+  <action name="actionSupprimerCategorie">
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+  </action>
+  <action name="actionTelecharger">
+   <property name="text">
+    <string>Télécharger...</string>
+   </property>
+  </action>
+  <action name="actionCreer_un_nouveau_lieu">
+   <property name="text">
+    <string>Créer un nouveau lieu</string>
+   </property>
+  </action>
+  <action name="actionAjouter_Mes_Preferes">
+   <property name="text">
+    <string>Ajouter à Mes Préférés</string>
+   </property>
+  </action>
+  <action name="actionSupprimerLieu">
+   <property name="text">
+    <string>Supprimer</string>
    </property>
   </action>
  </widget>

@@ -41,5 +41,6 @@
         <file>resources/pause.png</file>
         <file>resources/play.png</file>
         <file>resources/rewind.png</file>
+        <file>resources/lune29.gif</file>
     </qresource>
 </RCC>

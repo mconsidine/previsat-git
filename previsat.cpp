@@ -84,7 +84,9 @@ static bool htr;
 static bool info;
 static bool notif;
 static bool old;
+static int ind;
 static int nbSat;
+static QString nor;
 static QString nomfic;
 static QStringList liste;
 static QVector<bool> bipSat;
@@ -675,7 +677,7 @@ void PreviSat::AffichageDonnees()
             l1 = "";
             l2 = "";
         }
-        if (l1 == "" && l2 == "") {
+        if (l1.isEmpty() && l2.isEmpty()) {
 
             // Cas ou aucun satellite n'est selectionne dans la liste de satellites
             ui->satellite->setVisible(false);
@@ -1128,7 +1130,7 @@ void PreviSat::AffichageDonnees()
 void PreviSat::AffichageCourbes()
 {
     /* Declarations des variables locales */
-    int ind;
+    int indLune;
 
     /* Initialisations */
     bool ht = false;
@@ -1157,16 +1159,16 @@ void PreviSat::AffichageCourbes()
         double diff = (ll - ls) * RAD2DEG;
         if (diff < 0.)
             diff += T360;
-        ind = (int) (diff / 12.857) + 2;
-        if (ind > 28)
-            ind = 0;
+        indLune = (int) (diff / 12.857) + 2;
+        if (indLune > 29)
+            indLune = 1;
     } else {
-        ind = 14;
+        indLune = 15;
     }
     QString src = ":/resources/lune%1.gif";
     QGraphicsScene *scnlun = new QGraphicsScene;
     QPixmap pixlun;
-    pixlun.load(src.arg(ind, 2, 10, QChar('0')));
+    pixlun.load(src.arg(indLune, 2, 10, QChar('0')));
     pixlun = pixlun.scaled(ui->imglun->size());
     scnlun->addPixmap(pixlun);
 
@@ -1892,7 +1894,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
     nbSat = 0;
     nomsat = "---";
     mapSatellites.clear();
-    QFile donneesSatellites("data/donnees.sat");
+    QFile donneesSatellites(dirDat + QDir::separator() + "donnees.sat");
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
@@ -1978,10 +1980,14 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
             nomsat = ligne.trimmed();
         }
         mapSatellites.sort();
-        if (li1.length() > 0) {
+        if (l1.length() > 0) {
+            li1 = l1;
+            li2 = l2;
             ui->liste1->setCurrentItem(elem0);
             ui->liste2->setCurrentRow(ui->liste1->currentRow());
             ui->liste3->setCurrentRow(ui->liste1->currentRow());
+            l1 = li1;
+            l2 = li2;
         }
     }
 
@@ -2305,7 +2311,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
 
-    ui->liste1->setGeometry(10, 149, 200, hcarte - 140);
+    ui->liste1->setGeometry(20, 149, 200, hcarte - 140);
 
     ui->S60->move(5, hcarte / 1.2 - 1);
     ui->S30->move(5, hcarte / 1.5 - 1);
@@ -2331,8 +2337,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     ui->E150->move(lcarte * 11. / 12. - 8, 0);
     ui->frameLon->setGeometry(6, 7 + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
-    ui->onglets->move(ui->frameCarte->width() * 0.5 - 419, 0);
-    //ui->enregistrerOnglet->move(ui->onglets->x() + 774, 3);
+    ui->onglets->move(ui->frameCarte->width() * 0.5 - 411, 0);
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
                           ui->frameCarte->height() - 44, ui->frameCarte->height() - 44);
@@ -2375,48 +2380,31 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
 
     } else {
 
-        Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
-        if (mod.testFlag(Qt::ControlModifier)) {
+        double jd = dateCourante.getJourJulien();
 
-            if (ui->liste1->hasFocus())
-                ui->carte->setFocus();
+        // Etape precedente/suivante (mode manuel)
+        if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_F12) {
 
-            // Agrandissement de la carte
-            if (event->key() == Qt::Key_M)
-                on_maximise_clicked();
+            int sgn;
+            if (!ui->modeManuel->isChecked())
+                ui->modeManuel->setChecked(true);
+            if (event->key() == Qt::Key_F11)
+                sgn = -1;
+            if (event->key() == Qt::Key_F12)
+                sgn = 1;
 
-        } else {
+            jd = (ui->valManuel->currentIndex() < 3) ? jd + sgn * ui->pasManuel->currentText().toDouble() *
+                                                       qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) *
+                                                       NB_JOUR_PAR_SEC :
+                                                       jd + sgn * ui->pasManuel->currentText().toDouble();
 
-            double jd = dateCourante.getJourJulien();
+            const Date date = Date(jd + EPS_DATES, 0.);
 
-            // Etape precedente/suivante (mode manuel)
-            if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_F12) {
-
-                int sgn;
-                if (!ui->modeManuel->isChecked())
-                    ui->modeManuel->setChecked(true);
-                if (event->key() == Qt::Key_F11)
-                    sgn = -1;
-                if (event->key() == Qt::Key_F12)
-                    sgn = 1;
-
-                jd = (ui->valManuel->currentIndex() < 3) ? jd + sgn * ui->pasManuel->currentText().toDouble() *
-                                                           qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) *
-                                                           NB_JOUR_PAR_SEC :
-                                                           jd + sgn * ui->pasManuel->currentText().toDouble();
-
-                Date date = Date(jd + EPS_DATES, 0.);
-
-                if (ui->dateHeure4->isVisible()) {
-                    ui->dateHeure4->setDateTime(date.ToQDateTime(1));
-                } else {
-                    ui->dateHeure3->setDateTime(date.ToQDateTime(1));
-                    ui->dateHeure3->setFocus();
-                }
-
-                // Affichage de la carte du ciel ou de la carte du monde
-                if (event->key() == Qt::Key_F9)
-                    AffichageCiel();
+            if (ui->dateHeure4->isVisible()) {
+                ui->dateHeure4->setDateTime(date.ToQDateTime(1));
+            } else {
+                ui->dateHeure3->setDateTime(date.ToQDateTime(1));
+                ui->dateHeure3->setFocus();
             }
         }
     }
@@ -2532,16 +2520,6 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
     return;
 }
 
-void PreviSat::AffichageCiel() const
-{
-
-}
-
-void PreviSat::EnregistrerOnglet() const
-{
-
-}
-
 
 /***********
  * Systeme *
@@ -2592,7 +2570,7 @@ void PreviSat::EcritureListeRegistre()
 
             AfficherListeSatellites(nomfic, liste);
 
-            const QString nor = liste.at(0);
+            const QString norad = liste.at(0);
 
             int j = 0, k = 0;
             tles.clear();
@@ -2611,14 +2589,14 @@ void PreviSat::EcritureListeRegistre()
                 QListWidgetItem *elem1 = new QListWidgetItem(mapSatellites.at(i));
                 if (elem1->checkState() == Qt::Checked) {
                     liste[k] = mapSatellites.at(i).mid(mapSatellites.indexOf("#"));
-                    if (nor == liste.at(k))
+                    if (norad == liste.at(k))
                         j = k;
                     k++;
                 }
             }
             if (j > 0) {
                 liste[j] = liste.at(0);
-                liste[0] = nor;
+                liste[0] = norad;
             }
             TLE::LectureFichier(nomfic, liste, tles);
 
@@ -2743,43 +2721,37 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
             // Verification du fichier TLE
             try {
                 nsat = TLE::VerifieFichier(fichier, true);
-                nomfic = (fi.absoluteDir() == dirTle) ? fi.baseName() : fichier;
+                nomfic = fichier;
             } catch (PreviSatException &e) {
                 messagesStatut->setText("");
                 throw PreviSatException();
             }
 
-            ui->nomFichierTLE->setText(nomfic);
+            ui->nomFichierTLE->setText(fi.fileName());
             const QString chaine = tr("Fichier TLE OK : %1 satellites");
             messagesStatut->setText(chaine.arg(nsat));
             listeFicTLE.insert(0, nomfic);
-            EcritureListeRegistre();
+            settings.setValue("fichier/nom", nomfic);
 
             // Ouverture du fichier TLE
             AfficherListeSatellites(nomfic, liste);
 
             // Mise a jour de la liste de satellites selectionnes
             if (nbSat > 0) {
-                const QString nor = liste.at(0);
-                nbSat = 0;
-                for (int i=0; i<mapSatellites.size(); i++) {
-                    QListWidgetItem *elem1 = new QListWidgetItem(mapSatellites.at(i));
-                    if (elem1->checkState() == Qt::Checked)
-                        nbSat++;
-                }
+                nor = liste.at(0);
+                nbSat = getListe1ItemChecked();
 
                 if (nbSat > 0) {
                     liste.clear();
-                    liste.reserve(nbSat);
+
                     tles.clear();
                     tles.resize(nbSat);
                     bipSat.resize(nbSat);
 
                     int j = -1;
-                    for (int i=0; i<nbSat; i++) {
-                        QListWidgetItem *elem1 = new QListWidgetItem(mapSatellites.at(i));
-                        if (elem1->checkState() == Qt::Checked) {
-                            liste[i] = mapSatellites.at(i).split("#").at(0);
+                    for (int i=0; i<mapSatellites.size(); i++) {
+                        if (ui->liste1->item(i)->checkState() == Qt::Checked) {
+                            liste.append(mapSatellites.at(i).split("#").at(1));
                             if (liste.at(i) == nor)
                                 j = i;
                         }
@@ -3014,8 +2986,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
 
                     // Le curseur est au-dessus d'un satellite
                     if (dt <= 16 && !satellites.at(isat).isIeralt()) {
-                        QString msg = tr("%1 (numéro NORAD : %2)");
-                        messagesStatut->setText(msg.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                        QString msg2 = tr("%1 (numéro NORAD : %2)");
+                        messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
                         PreviSat::setCursor(Qt::CrossCursor);
                         break;
                     } else {
@@ -3098,8 +3070,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
 
                         // Le curseur est au-dessus du satellite
                         if (dt <= 16 && !satellites.at(isat).isIeralt()) {
-                            QString msg = tr("%1 (numéro NORAD : %2)");
-                            messagesStatut->setText(msg.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                            QString msg2 = tr("%1 (numéro NORAD : %2)");
+                            messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
                             PreviSat::setCursor(Qt::CrossCursor);
                             break;
                         } else {
@@ -3127,7 +3099,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                         }
                     }
 
-                    // Soleil
+                    // Lune
                     if (ui->afflune->isChecked()) {
 
                         const int llun = qRound(-100. * xf * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
@@ -3147,6 +3119,109 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                 }
             }
         }
+
+        if (!ui->ciel->isHidden()) {
+
+            const int lciel = qRound(0.5 * ui->ciel->width());
+            const int hciel = qRound(0.5 * ui->ciel->height());
+            const int x1 = event->x() - ui->ciel->x() - lciel;
+            const int y1 = event->y() - ui->ciel->y() - hciel;
+
+            if (x1 * x1 + y1 * y1 < hciel * lciel) {
+
+                const double x2 = -x1 / (double) lciel;
+                const double y2 = -y1 / (double) hciel;
+
+                const double ht = 90. * (1. - sqrt(x2 * x2 + y2 * y2));
+                double az = atan2(x2, y2) * RAD2DEG;
+                if (az < 0.)
+                    az += T360;
+
+                const QString msg = " : %1°";
+                messagesStatut2->setText(tr("Azimut") + msg.arg(fabs(az), 6, 'f', 2, QChar('0')));
+                messagesStatut3->setText(tr("Hauteur") + msg.arg(fabs(ht), 5, 'f', 2, QChar('0')));
+                messagesStatut2->setVisible(true);
+                messagesStatut3->setVisible(true);
+
+
+                for(int isat=0; isat<nbSat; isat++) {
+
+                    const int lsat = qRound(-0.5 * ui->ciel->width() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).getAzimut()));
+                    const int bsat = qRound(-0.5 * ui->ciel->height() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).getAzimut()));
+
+                    // Distance au carre du satellite au curseur
+                    const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
+
+                    if (dt <= 16 && !satellites.at(isat).isIeralt()) {
+                        QString msg2 = tr("%1 (numéro NORAD : %2)");
+                        messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                        break;
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text() == tr("Soleil"))
+                            messagesStatut->setText("");
+                        PreviSat::setCursor(Qt::ArrowCursor);
+                    }
+                }
+
+                //if (ui->af->isChecked()) {
+
+                for(int ipla=MERCURE; ipla<=NEPTUNE; ipla++) {
+
+                    const int lpla = qRound(-0.5 * ui->ciel->width() * (1. - planetes.at(ipla).getHauteur() * DEUX_SUR_PI) * sin(planetes.at(ipla).getAzimut()));
+                    const int bpla = qRound(-0.5 * ui->ciel->height() * (1. - planetes.at(ipla).getHauteur() * DEUX_SUR_PI) * cos(planetes.at(ipla).getAzimut()));
+
+                    // Distance au carre du Soleil au curseur
+                    const int dt = (x1 - lpla) * (x1 - lpla) + (y1 - bpla) * (y1 - bpla);
+
+                    // Le curseur est au-dessus d'une planete
+                    if (dt <= 16) {
+                        messagesStatut->setText(planetes.at(ipla).getNom());
+                        PreviSat::setCursor(Qt::CrossCursor);
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text().contains(tr("Soleil")))
+                            messagesStatut->setText("");
+                    }
+                }
+                //}
+
+                if (ui->affsoleil->isChecked()) {
+
+                    const int lsol = qRound(-0.5 * ui->ciel->width() * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
+                    const int bsol = qRound(-0.5 * ui->ciel->height() * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+
+                    // Distance au carre du Soleil au curseur
+                    const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
+
+                    // Le curseur est au-dessus du Soleil
+                    if (dt <= 81) {
+                        messagesStatut->setText(tr("Soleil"));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text().contains(tr("Soleil")))
+                            messagesStatut->setText("");
+                    }
+                }
+
+                if (ui->afflune->isChecked()) {
+
+                    const int llun = qRound(-0.5 * ui->ciel->width() * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
+                    const int blun = qRound(-0.5 * ui->ciel->height() * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+
+                    // Distance au carre de la Lune au curseur
+                    const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
+
+                    // Le curseur est au-dessus de la Lune
+                    if (dt <= 81) {
+                        messagesStatut->setText(tr("Lune"));
+                        PreviSat::setCursor(Qt::CrossCursor);
+                    } else {
+                        if (messagesStatut->text().contains("NORAD") || messagesStatut->text().contains(tr("Lune")))
+                            messagesStatut->setText("");
+                    }
+                }
+            }
+        }
     }
 
     /* Retour */
@@ -3160,7 +3235,7 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *event)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (!ui->ciel->isHidden()) {
+    if (ui->ciel->underMouse() && !ui->ciel->isHidden()) {
         const int x = event->x() - ui->ciel->x();
         const int y = event->y() - ui->ciel->y();
         const int x0 = qRound(0.5 * ui->ciel->width());
@@ -3172,4 +3247,320 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *event)
 
     /* Retour */
     return;
+}
+
+void PreviSat::contextMenuEvent(QContextMenuEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->liste1->underMouse()) {
+        ui->menuContextuelListe1->exec(event->globalPos());
+    }
+
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionDefinir_par_defaut_activated()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    int j = -1;
+
+    /* Corps de la methode */
+    for(int i=0; i<nbSat; i++) {
+        if (liste.at(i) == nor) {
+            j = i;
+            break;
+        }
+    }
+
+    // Le satellite selectionne fait deja partie de la liste
+    if (j > 0) {
+        liste[j] = liste.at(0);
+        liste[0] = nor;
+        nor = "";
+    }
+
+    // Le satellite selectionne ne fait pas partie de la liste : on l'ajoute dans la liste
+    if (j == -1) {
+
+        nbSat++;
+        liste.append("");
+        tles.resize(nbSat);
+        bipSat.resize(nbSat);
+
+        for(int i=nbSat-1; i>0; i--)
+            liste[i] = liste.at(i-1);
+        liste[0] = nor;
+        nor = "";
+
+        ui->liste1->setCurrentRow(ind);
+        ui->liste2->setCurrentRow(ind);
+        ind = -1;
+    }
+
+    Satellite::initCalcul = false;
+
+    // Ecriture des cles de registre
+    EcritureListeRegistre();
+
+    info = true;
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    // Affichage des donnees numeriques
+    AffichageDonnees();
+
+    // Affichage des elements graphiques
+    AffichageCourbes();
+
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionNouveau_fichier_TLE_activated()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QStringList listeSat = liste;
+    listeSat.sort();
+
+    /* Corps de la methode */
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), "",
+                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+
+    QFile fichier(fic);
+    fichier.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream flux(&fichier);
+
+    for(int j=0; j<nbSat; j++) {
+        for(int i=0; i<nbSat; i++) {
+            if (tles.at(i).getNorad() == listeSat.at(j)) {
+                flux << tles.at(i).getNom()    << endl <<
+                        tles.at(i).getLigne1() << endl <<
+                        tles.at(i).getLigne2() << endl;
+                break;
+            }
+        }
+    }
+    fichier.close();
+    const QString msg = tr("Fichier %1 créé");
+    messagesStatut->setText(msg.arg(fichier.fileName()));
+
+    /* Retour */
+    return;
+}
+void PreviSat::on_actionFichier_TLE_existant_activated()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+
+    try {
+        bool atrouve;
+        // Verification que le fichier est un TLE
+        int nsat = TLE::VerifieFichier(fic, true);
+
+        // Lecture du TLE
+        QStringList listeSat;
+        QVector<TLE> tabtle;
+        tabtle.reserve(nsat);
+        TLE::LectureFichier(fic, listeSat, tabtle);
+
+        // Ajout des satellites selectionnes dans le tableau de TLE
+        QFile fichier(fic);
+        fichier.open(QIODevice::Append | QIODevice::Text);
+        QTextStream flux(&fichier);
+
+        for(int i=0; i<liste.size(); i++) {
+            atrouve = false;
+            for(int j=0; j<nsat; j++) {
+                if (liste.at(i) == tabtle.at(j).getNorad()) {
+                    atrouve = true;
+                    break;
+                }
+            }
+            if (!atrouve) {
+                flux << tles.at(i).getNom()    << endl <<
+                        tles.at(i).getLigne1() << endl <<
+                        tles.at(i).getLigne2() << endl;
+            }
+        }
+        fichier.close();
+
+        // Reecriture du fichier en triant par numero NORAD
+        QFile fi(fic);
+        const QString ficTmp = fic + ".tmp";
+        fi.rename(ficTmp);
+
+        nsat = TLE::VerifieFichier(ficTmp, false);
+        tabtle.resize(nsat);
+        TLE::LectureFichier(ficTmp, listeSat, tabtle);
+        for(int i=0; i<nsat; i++)
+            listeSat.append(tabtle.at(i).getNorad());
+
+        listeSat.sort();
+
+        fichier.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux2(&fichier);
+
+        for(int j=0; j<nsat; j++) {
+            for(int i=0; i<nsat; i++) {
+                if (tabtle.at(i).getNorad() == listeSat.at(j)) {
+                    flux2 << tles.at(i).getNom()    << endl <<
+                             tles.at(i).getLigne1() << endl <<
+                             tles.at(i).getLigne2() << endl;
+                    break;
+                }
+            }
+        }
+        fichier.close();
+
+        const QString msg = tr("Fichier %1 augmenté de nouveaux satellites");
+        messagesStatut->setText(msg.arg(fichier.fileName()));
+
+    } catch (PreviSatException &e) {
+
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_liste1_doubleClicked(const QModelIndex &index)
+{
+    if (ui->liste1->currentRow() >= 0) {
+        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
+            ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
+        } else {
+            nor = mapSatellites.at(ui->liste1->currentRow()).split("#").at(1);
+            ui->liste1->currentItem()->setCheckState(Qt::Checked);
+            on_actionDefinir_par_defaut_activated();
+        }
+    }
+}
+
+void PreviSat::on_liste1_pressed(const QModelIndex &index)
+{
+    on_liste1_currentRowChanged(index.row());
+}
+
+void PreviSat::on_liste1_currentRowChanged(int currentRow)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QFile fi(nomfic);
+    if (!fi.exists()) {
+        const QString msg = tr("POSITION : Le fichier %1 n'existe pas");
+        Messages::Afficher(msg.arg(nomfic), Messages::WARNING);
+
+        // Remplissage du premier element du tableau de TLE avec le satellite en memoire
+        nbSat = 0;
+        tles.clear();
+        tles.append(TLE(l1, l2));
+        liste.clear();
+        liste.append("");
+        bipSat.resize(1);
+        l1 = "";
+        l2 = "";
+        ui->liste1->clear();
+        ui->liste2->clear();
+        ui->liste3->clear();
+    }
+
+    /* Corps de la methode */
+    const int n = getListe1ItemChecked();
+    if (n == 0) {
+        l1 = "";
+        l2 = "";
+    }
+
+    if (ui->liste1->hasFocus()) {
+    if (ui->liste1->currentRow() >= 0 ) {
+
+        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
+
+            // Ajout d'un nouveau satellite dans la liste
+            if (nbSat != n) {
+                nbSat = n;
+                liste.reserve(nbSat);
+                const int r = ui->liste1->currentRow();
+                liste[nbSat-1] = mapSatellites.at(r).split("#").at(1);
+                ui->liste2->item(r)->setCheckState(Qt::Checked);
+                ui->liste3->item(r)->setCheckState(Qt::Checked);
+            }
+        } else {
+
+            // Suppression d'un satellite de la liste
+            for(int i=0; liste.size(); i++) {
+                const int r = ui->liste1->currentRow();
+                if (mapSatellites.at(r).split("#").at(1) == liste.at(i)) {
+                    for(int j=i; j<liste.size()-1; j++) {
+                        liste[j] = liste.at(j+1);
+                        bipSat[j] = bipSat.at(j+1);
+                    }
+                    break;
+                }
+                nbSat = n;
+                liste.removeLast();
+                bipSat.remove(nbSat);
+                ui->liste2->item(r)->setCheckState(Qt::Unchecked);
+                ui->liste3->item(r)->setCheckState(Qt::Unchecked);
+            }
+        }
+    }
+
+    if (nbSat > 0)
+        tles.resize(nbSat);
+    bipSat.resize(nbSat);
+    Satellite::initCalcul = false;
+    info = true;
+
+    // Ecriture des cles de registre
+    EcritureListeRegistre();
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    if (satellites.at(0).isIeralt() && ui->liste1->currentItem()->checkState() == Qt::Checked) {
+        chronometre->stop();
+        const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
+        Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), Messages::WARNING);
+        chronometre->start();
+        l1 = "";
+        l2 = "";
+    }
+
+    // Affichage des donnees numeriques
+    AffichageDonnees();
+
+    // Affichage des elements graphiques
+    AffichageCourbes();
+}
+    /* Retour */
+    return;
+}
+
+int PreviSat::getListe1ItemChecked()
+{
+    int k = 0;
+    for (int i=0; i<ui->liste1->count(); i++) {
+        if (ui->liste1->item(i)->checkState() == Qt::Checked)
+            k++;
+    }
+    return (k);
 }
