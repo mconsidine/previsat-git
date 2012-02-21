@@ -47,7 +47,7 @@
 static const double RAYON_SOLAIRE = 696000.;
 
 // Unite astronomique (km)
-static const double UA = 149597870.;
+static const double UA2KM = 149597870.;
 
 // Magnitude du centre du disque solaire
 static const double MAGNITUDE_SOLEIL = -26.98;
