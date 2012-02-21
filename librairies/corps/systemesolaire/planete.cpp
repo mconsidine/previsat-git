@@ -42,6 +42,10 @@
 
 #include "planete.h"
 
+static const QString _nomPlanetes[7] = { QObject::tr("Mercure"), QObject::tr("Vénus"), QObject::tr("Mars"),
+                                         QObject::tr("Jupiter"), QObject::tr("Saturne"), QObject::tr("Uranus"),
+                                         QObject::tr("Neptune") };
+
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
     {
@@ -120,7 +124,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Vecteur3D solpos = soleil.getPosition() * (1. / UA);
+    const Vecteur3D solpos = soleil.getPosition() * (1. / UA2KM);
 
     /* Corps de la methode */
     // Calcul des elements orbitaux
@@ -144,8 +148,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
 
     CalculElements(date2);
     CalculCoordonneesSpheriques();
-    _position = Sph2Cart(_positionSph, date2) + solpos;
-    _position = _position * UA;
+    _position = (Sph2Cart(_positionSph, date2) + solpos) * UA2KM;
 
     /* Retour */
     return;
@@ -223,4 +226,9 @@ void Planete::CalculCoordonneesSpheriques()
 
     /* Retour */
     return;
+}
+
+QString Planete::getNom() const
+{
+    return (_nomPlanetes[_iplanete]);
 }
