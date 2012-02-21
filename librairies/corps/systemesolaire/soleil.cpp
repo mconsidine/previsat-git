@@ -107,7 +107,7 @@ void Soleil::CalculPosition(const Date &date)
     const double lv = lp + v - a * (1. - e * e) / _distanceUA * 20.49552 * ARCSEC2RAD;
 
     const Vecteur3D pos(lv, 0., _distanceUA);
-    _position = Sph2Cart(pos, date) * UA;
+    _position = Sph2Cart(pos, date) * UA2KM;
 
     /* Retour */
     return;
