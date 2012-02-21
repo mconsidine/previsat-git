@@ -67,7 +67,7 @@ public:
     void CalculPosition(const Date &date, const Soleil &soleil);
 
     /* Accesseurs */
-
+    QString getNom() const;
 
 
 protected:
@@ -87,6 +87,7 @@ private:
     int _iplanete;
     double _elem[6];
     Vecteur3D _positionSph;
+    QString _nom;
 
     /* Methodes privees */
     void CalculElements(const Date &date);
