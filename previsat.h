@@ -42,6 +42,7 @@
 
 #include <QKeyEvent>
 #include <QMainWindow>
+#include <QModelIndex>
 
 namespace Ui {
 class PreviSat;
@@ -65,11 +66,10 @@ private:
 
     void AffichageDonnees();
     void AffichageCourbes();
-    void AffichageCiel() const;
     void AffichageLieuObs();
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
     void EnchainementCalculs();
-    void EnregistrerOnglet() const;
+    int getListe1ItemChecked();
     void MajWebTLE(const bool alarm) const;
     void VerifAgeTLE() const;
     void EcritureListeRegistre();
@@ -86,6 +86,7 @@ private slots:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
+    void contextMenuEvent(QContextMenuEvent *event);
 
     void on_maximise_clicked();
     void on_actionOuvrir_fichier_TLE_activated();
@@ -97,6 +98,12 @@ private slots:
     void on_actionRapport_de_bug_activated();
     void on_actionAstropedia_free_fr_activated();
     void on_affichageCiel_clicked();
+    void on_actionDefinir_par_defaut_activated();
+    void on_actionNouveau_fichier_TLE_activated();
+    void on_actionFichier_TLE_existant_activated();
+    void on_liste1_doubleClicked(const QModelIndex &index);
+    void on_liste1_pressed(const QModelIndex &index);
+    void on_liste1_currentRowChanged(int currentRow);
 };
 
 #endif // PREVISAT_H

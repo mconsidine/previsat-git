@@ -81,7 +81,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
     // Lecture du TLE
     TLE::LectureFichier(conditions.getFic(), liste, tabtle);
-    if (tabtle.at(0).getNorad() == "") {
+    if (tabtle.at(0).getNorad().isEmpty()) {
         QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 ne contient pas le TLE de l'ISS");
         msg = msg.arg(conditions.getFic());
         throw PreviSatException(msg, Messages::WARNING);
