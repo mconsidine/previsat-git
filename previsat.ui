@@ -658,37 +658,6 @@
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
-          <widget class="QGraphicsView" name="imglun">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>17</width>
-             <height>17</height>
-            </rect>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
-           <property name="verticalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="cacheMode">
-            <set>QGraphicsView::CacheBackground</set>
-           </property>
-          </widget>
          </widget>
          <zorder>carte</zorder>
          <zorder>frameLon</zorder>
@@ -804,7 +773,7 @@
            </property>
           </widget>
          </widget>
-         <widget class="QLabel" name="lbl_secondes">
+         <widget class="QLabel" name="secondes">
           <property name="geometry">
            <rect>
             <x>74</x>
@@ -996,7 +965,7 @@
          </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
-         <zorder>lbl_secondes</zorder>
+         <zorder>secondes</zorder>
          <zorder>pasManuel</zorder>
          <zorder>lbl_nomFichiersTLE</zorder>
          <zorder>pasReel</zorder>
@@ -5901,7 +5870,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>761</width>
-                <height>190</height>
+                <height>187</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -5947,7 +5916,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-106</y>
                  <width>784</width>
                  <height>293</height>
                 </rect>
@@ -6220,12 +6189,12 @@
                   <rect>
                    <x>6</x>
                    <y>18</y>
-                   <width>118</width>
+                   <width>91</width>
                    <height>17</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Heure locale = UTC</string>
+                  <string>Heure locale = </string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -6260,14 +6229,17 @@
                 <widget class="QLabel" name="tuc">
                  <property name="geometry">
                   <rect>
-                   <x>126</x>
-                   <y>19</y>
-                   <width>43</width>
-                   <height>16</height>
+                   <x>98</x>
+                   <y>17</y>
+                   <width>71</width>
+                   <height>20</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>+ 02:00</string>
+                  <string>UTC + 02:00</string>
+                 </property>
+                 <property name="indent">
+                  <number>2</number>
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="utcAuto">

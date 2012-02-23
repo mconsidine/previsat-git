@@ -76,6 +76,7 @@ private:
 
 private slots:
     void GestionTempsReel();
+    void ModificationOption();
     void SauveOngletGeneral();
     void SauveOngletElementsOsculateurs();
     void SauveOngletInformations();
@@ -104,6 +105,48 @@ private slots:
     void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_pressed(const QModelIndex &index);
     void on_liste1_currentRowChanged(int currentRow);
+    void on_lieuxObservation1_currentIndexChanged(int index);
+    void on_tempsReel_toggled(bool checked);
+    void on_modeManuel_toggled(bool checked);
+    void on_dateHeure3_editingFinished();
+    void on_dateHeure4_editingFinished();
+    void on_play_clicked();
+    void on_pause_clicked();
+    void on_rewind_clicked();
+    void on_forward_clicked();
+    void on_backward_clicked();
+
+    void on_affsoleil_stateChanged(int arg1);
+    void on_affnuit_stateChanged(int arg1);
+    void on_affgrille_stateChanged(int arg1);
+    void on_afflune_stateChanged(int arg1);
+    void on_affphaselune_stateChanged(int arg1);
+    void on_rotationLune_stateChanged(int arg1);
+    void on_affnomsat_stateChanged(int arg1);
+    void on_affvisib_stateChanged(int arg1);
+    void on_afftraj_stateChanged(int arg1);
+    void on_nombreTrajectoires_valueChanged(int arg1);
+    void on_affradar_stateChanged(int arg1);
+    void on_affinvns_stateChanged(int arg1);
+    void on_affinvew_stateChanged(int arg1);
+    void on_affnomlieu_stateChanged(int arg1);
+    void on_affnotif_stateChanged(int arg1);
+    void on_calJulien_stateChanged(int arg1);
+    void on_affcoord_stateChanged(int arg1);
+    void on_extinctionAtmospherique_stateChanged(int arg1);
+    void on_affetoiles_stateChanged(int arg1);
+    void on_affconst_stateChanged(int arg1);
+    void on_magnitudeEtoiles_valueChanged(double arg1);
+    void on_affSAA_stateChanged(int arg1);
+    void on_unitesKm_toggled(bool checked);
+    void on_unitesMi_toggled(bool checked);
+    void on_heureLegale_toggled(bool checked);
+    void on_utc_toggled(bool checked);
+    void on_intensiteOmbre_valueChanged(int value);
+    void on_updown_valueChanged(int arg1);
+    void on_utcAuto_stateChanged(int arg1);
+    void on_listeMap_currentIndexChanged(int index);
+    void on_majFicPrevisat_clicked();
 };
 
 #endif // PREVISAT_H
