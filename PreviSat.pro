@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     previsions/iridium.cpp \
     previsions/evenements.cpp \
     previsions/conditions.cpp \
-    librairies/corps/systemesolaire/planete.cpp
+    librairies/corps/systemesolaire/planete.cpp \
+    threadcalculs.cpp
 
 HEADERS  += previsat.h \
     librairies/corps/corps.h \
@@ -68,7 +69,8 @@ HEADERS  += previsat.h \
     librairies/corps/systemesolaire/planete.h \
     zlib/zlib.h \
     zlib/zconf.h \
-    zlib/ioapi.h
+    zlib/ioapi.h \
+    threadcalculs.h
 
 FORMS    += previsat.ui
 
@@ -76,6 +78,26 @@ OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
