@@ -41,8 +41,10 @@
 #define PREVISAT_H
 
 #include <QKeyEvent>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QModelIndex>
+#include "threadcalculs.h"
 
 namespace Ui {
 class PreviSat;
@@ -69,12 +71,13 @@ private:
     void AffichageLieuObs();
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
     void EnchainementCalculs();
-    int getListe1ItemChecked();
+    int getListeItemChecked(const QListWidget *listWidget) const;
     void MajWebTLE(const bool alarm) const;
     void VerifAgeTLE() const;
     void EcritureListeRegistre();
 
 private slots:
+    void CalculsTermines();
     void GestionTempsReel();
     void ModificationOption();
     void SauveOngletGeneral();
@@ -87,7 +90,6 @@ private slots:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
-    void contextMenuEvent(QContextMenuEvent *event);
 
     void on_maximise_clicked();
     void on_actionOuvrir_fichier_TLE_activated();
@@ -98,13 +100,18 @@ private slots:
     void on_actionWww_celestrak_com_activated();
     void on_actionRapport_de_bug_activated();
     void on_actionAstropedia_free_fr_activated();
+    void on_actionFichier_d_aide_activated(int arg1);
+    void on_actionA_propos_activated(int arg1);
     void on_affichageCiel_clicked();
+
     void on_actionDefinir_par_defaut_activated();
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
     void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_pressed(const QModelIndex &index);
-    void on_liste1_currentRowChanged(int currentRow);
+    void on_liste1_activated(const QModelIndex &index);
+    void on_liste1_customContextMenuRequested(const QPoint &pos);
+
     void on_lieuxObservation1_currentIndexChanged(int index);
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
@@ -147,6 +154,52 @@ private slots:
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
     void on_majFicPrevisat_clicked();
+
+    void on_actionCreer_une_categorie_activated(int arg1);
+    void on_actionSupprimerCategorie_activated(int arg1);
+    void on_actionTelechargerCategorie_activated(int arg1);
+    void on_annulerCategorie_clicked();
+    void on_validerCategorie_clicked();
+    void on_fichiersObs_currentRowChanged(int currentRow);
+    void on_fichiersObs_customContextMenuRequested(const QPoint &pos);
+    void on_lieuxObs_currentRowChanged(int currentRow);
+    void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
+    void on_actionCreer_un_nouveau_lieu_activated();
+    void on_actionAjouter_Mes_Preferes_activated();
+    void on_validerObs_clicked();
+    void on_annulerObs_clicked();
+    void on_actionSupprimerLieu_activated();
+    void on_ajoutLieu_clicked();
+    void on_supprLieu_clicked();
+
+    void on_barreMenu_pressed();
+    void on_onglets_currentChanged(QWidget *arg1);
+
+    void on_parcourirMaj1_clicked();
+    void on_parcourirMaj2_clicked();
+    void on_mettreAJourTLE_clicked();
+    void on_gestionnaireMajTLE_clicked();
+    void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
+    void on_actionCopier_dans_le_presse_papier_activated();
+
+    void on_numeroNORADCreerTLE_currentIndexChanged(int index);
+    void on_ADNoeudAscendantCreerTLE_currentIndexChanged(int index);
+    void on_excentriciteCreerTLE_currentIndexChanged(int index);
+    void on_inclinaisonCreerTLE_currentIndexChanged(int index);
+    void on_argumentPerigeeCreerTLE_currentIndexChanged(int index);
+    void on_parcourir1CreerTLE_clicked();
+    void on_parcourir2CreerTLE_clicked();
+    void on_rechercheCreerTLE_clicked();
+
+    void on_effacerHeuresPrev_clicked();
+    void on_liste2_customContextMenuRequested(const QPoint &pos);
+    void on_actionTous_activated();
+    void on_actionAucun_activated();
+    void on_hauteurSatPrev_currentIndexChanged(int index);
+    void on_hauteurSoleilPrev_currentIndexChanged(int index);
+    void on_magnitudeMaxPrev_toggled(bool checked);
+    void on_calculsPrev_clicked();
+    void on_annulerPrev_clicked();
 };
 
 #endif // PREVISAT_H
