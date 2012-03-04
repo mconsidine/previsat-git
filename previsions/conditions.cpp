@@ -46,6 +46,10 @@
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 
+Conditions::Conditions()
+{
+}
+
 Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0,
                        const double dtu, const double jj1, const double jj2, const double mgn1,
                        const QString fic, const QString out, const QString unite,

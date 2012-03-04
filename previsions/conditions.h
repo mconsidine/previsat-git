@@ -49,6 +49,8 @@ class Conditions
 public:
 
     /* Constructeurs */
+    Conditions();
+
     // Constructeur pour le calcul des previsions de passages
     Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0,
                const double dtu, const double jj1, const double jj2, const double mgn1, const QString fic,
