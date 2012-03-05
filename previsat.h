@@ -44,7 +44,6 @@
 #include <QListWidget>
 #include <QMainWindow>
 #include <QModelIndex>
-#include "threadcalculs.h"
 
 namespace Ui {
 class PreviSat;
@@ -200,6 +199,27 @@ private slots:
     void on_magnitudeMaxPrev_toggled(bool checked);
     void on_calculsPrev_clicked();
     void on_annulerPrev_clicked();
+    void on_afficherPrev_clicked();
+
+    void on_effacerHeuresIri_clicked();
+    void on_parcourirIri_clicked();
+    void on_hauteurSatIri_currentIndexChanged(int index);
+    void on_hauteurSoleilIri_currentIndexChanged(int index);
+    void on_calculsIri_clicked();
+    void on_annulerIri_clicked();
+    void on_afficherIri_clicked();
+
+    void on_effacerHeuresEvt_clicked();
+    void on_calculsEvt_clicked();
+    void on_annulerEvt_clicked();
+    void on_afficherEvt_clicked();
+
+    void on_effacerHeuresTransit_clicked();
+    void on_parcourirTransit_clicked();
+    void on_hauteurSatTransit_currentIndexChanged(int index);
+    void on_calculsTransit_clicked();
+    void on_annulerTransit_clicked();
+    void on_afficherTransit_clicked();
 };
 
 #endif // PREVISAT_H

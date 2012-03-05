@@ -1043,7 +1043,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -4841,7 +4841,7 @@
             <property name="geometry">
              <rect>
               <x>460</x>
-              <y>160</y>
+              <y>180</y>
               <width>91</width>
               <height>23</height>
              </rect>
@@ -6722,7 +6722,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="mouseTracking">
@@ -8731,7 +8731,7 @@
    </widget>
    <widget class="QMenu" name="menuContextuelListe1">
     <property name="title">
-     <string>MenuContextuelListe1</string>
+     <string notr="true">MenuContextuelListe1</string>
     </property>
     <widget class="QMenu" name="menuAjouter_selection_dans">
      <property name="title">
@@ -8745,14 +8745,14 @@
    </widget>
    <widget class="QMenu" name="menuContextuelListes">
     <property name="title">
-     <string>MenuContextuelListes</string>
+     <string notr="true">MenuContextuelListes</string>
     </property>
     <addaction name="actionTous"/>
     <addaction name="actionAucun"/>
    </widget>
    <widget class="QMenu" name="menuContextuelCategorie">
     <property name="title">
-     <string>MenuContextuelCategorie</string>
+     <string notr="true">MenuContextuelCategorie</string>
     </property>
     <addaction name="actionCreer_une_categorie"/>
     <addaction name="actionSupprimerCategorie"/>
@@ -8760,7 +8760,7 @@
    </widget>
    <widget class="QMenu" name="menuContextuelLieux">
     <property name="title">
-     <string>MenuContextuelLieux</string>
+     <string notr="true">MenuContextuelLieux</string>
     </property>
     <addaction name="actionCreer_un_nouveau_lieu"/>
     <addaction name="actionAjouter_Mes_Preferes"/>
@@ -8768,7 +8768,7 @@
    </widget>
    <widget class="QMenu" name="menuContextuelCompteRenduMaj">
     <property name="title">
-     <string>MenuContextuelCompteRenduMaj</string>
+     <string notr="true">MenuContextuelCompteRenduMaj</string>
     </property>
     <addaction name="actionCopier_dans_le_presse_papier"/>
    </widget>
