@@ -66,6 +66,8 @@
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "previsions/conditions.h"
+#include "afficher.h"
+#include "gestionnairetle.h"
 #include "threadcalculs.h"
 #include "zlib/zlib.h"
 #include "previsat.h"
@@ -214,7 +216,7 @@ void PreviSat::Initialisations()
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
-            di.mkdir(dir);
+            di.mkpath(dir);
     }
 
     di = QDir(dirDat);
@@ -228,7 +230,7 @@ void PreviSat::Initialisations()
     // Verification de la presence des fichiers du repertoire data
     QStringList ficdata;
     ficdata << "chimes.wav" << "constellations.cst" << "constlines.cst" << "cross.cur" << "donnees.sat" <<
-               "etoiles.str" << "gestionnaireTLE" << "iridium.sts";
+               "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
@@ -265,12 +267,12 @@ void PreviSat::Initialisations()
     ui->majTLEAutomatique->setChecked(settings.value("temps/majTLEAutomatique", false).toBool());
     ui->majTLEManuel->setChecked(settings.value("temps/majTLEManuel", true).toBool());
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
-    nomfic = settings.value("fichier/nom", dirTle + QDir::separator() + "visual.txt").toString();
+    nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
-    ui->fichierTLEIri->setText(settings.value("fichier/fichierTLEIri", dirTle + QDir::separator() + "iridium.txt").toString());
+    ui->fichierTLEIri->setText(settings.value("fichier/fichierTLEIri", QDir::convertSeparators(dirTle + QDir::separator() + "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
     ui->affconst->setChecked(settings.value("affichage/affconst", true).toBool());
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
@@ -2284,7 +2286,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() == 0) ? "" : ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)));
-    settings.setValue("fichier/nom", nomfic);
+    settings.setValue("fichier/nom", QDir::convertSeparators(nomfic));
     settings.setValue("fichier/iridium", ui->fichierTLEIri->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
@@ -4056,7 +4058,9 @@ void PreviSat::on_majFicPrevisat_clicked()
 
 void PreviSat::on_actionFichier_d_aide_activated(int arg1)
 {
-    //...
+    Afficher *afficher = new Afficher;
+    afficher->setWindowTitle(tr("Fichier d'aide de PreviSat"));
+    afficher->show(dirExe + QDir::separator() + "aide" + QDir::separator() + "index.html", false);
 }
 
 void PreviSat::on_actionA_propos_activated(int arg1)
@@ -4229,7 +4233,6 @@ void PreviSat::on_lieuxObs_currentRowChanged(int currentRow)
         const QString msg = "%1 ";
         ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
                                                              msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
-
     }
 
     /* Retour */
@@ -4243,7 +4246,6 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
     /* Initialisations */
 
     /* Corps de la methode */
-
     if (ui->lieuxObs->currentRow() < 0) {
         ui->actionSupprimerLieu->setVisible(false);
         ui->actionAjouter_Mes_Preferes->setVisible(false);
@@ -4705,7 +4707,9 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
 void PreviSat::on_gestionnaireMajTLE_clicked()
 {
-    //...
+    GestionnaireTLE *gestionnaire = new GestionnaireTLE;
+    gestionnaire->setWindowModality(Qt::WindowModal);
+    gestionnaire->show();
 }
 
 void PreviSat::on_compteRenduMaj_customContextMenuRequested(const QPoint &pos)
@@ -4907,10 +4911,9 @@ void PreviSat::on_rechercheCreerTLE_clicked()
                             if (tabtle.at(isat).getNo() >= nbrevmin && tabtle.at(isat).getNo() <= nbrevmax) {
 
                                 // Magnitude
-                                double mag = 99.;
                                 if (sats.at(isat).getMagnitudeStandard() < 98.) {
                                     const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI * NB_JOUR_PAR_MIN), DEUX_TIERS);
-                                    mag = sats.at(isat).getMagnitudeStandard() - 15.75 * 5. * log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
+									const double mag = sats.at(isat).getMagnitudeStandard() - 15.75 * 5. * log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
 
                                     if (mag <= mgmax) {
 
@@ -5008,6 +5011,7 @@ void PreviSat::on_calculsPrev_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    //...
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -5128,7 +5132,7 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Lancement des calculs
         const Conditions conditions(ecl, ext, crep, haut, pas0, dtu, jj1, jj2, mag, nomfic, out, unite, listeSat);
-        const Observateur obser(observateurs.at(0));
+        const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -5154,6 +5158,31 @@ void PreviSat::CalculsTermines()
         }
         break;
 
+    case ThreadCalculs::IRIDIUM:
+        ui->annulerIri->setVisible(false);
+        ui->calculsIri->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherIri->setVisible(true);
+            ui->afficherIri->setFocus();
+        }
+        break;
+
+    case ThreadCalculs::EVENEMENTS:
+        ui->annulerEvt->setVisible(false);
+        ui->calculsEvt->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherEvt->setVisible(true);
+            ui->afficherEvt->setFocus();
+        }
+        break;
+
+    case ThreadCalculs::TRANSITS:
+        ui->annulerTransit->setVisible(false);
+        ui->calculsTransit->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherTransit->setVisible(true);
+            ui->afficherTransit->setFocus();
+        }
     default:
         break;
     }
@@ -5167,9 +5196,464 @@ void PreviSat::on_annulerPrev_clicked()
     threadCalculs->wait();
 
     ui->annulerPrev->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul"));
+    messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
     QFile fi(dirOut + QDir::separator() + "prevision.txt");
     if (fi.exists())
         fi.remove();
 }
 
+
+void PreviSat::on_afficherPrev_clicked()
+{
+    Afficher *afficher = new Afficher;
+    afficher->setWindowTitle(tr("Prévisions de passage des satellites"));
+    afficher->show(dirOut + QDir::separator() + "prevision.txt", true);
+}
+
+
+void PreviSat::on_effacerHeuresIri_clicked()
+{
+    ui->dateInitialeIri->setTime(QTime(0, 0, 0));
+    ui->dateFinaleIri->setTime(QTime(0, 0, 0));
+}
+
+void PreviSat::on_parcourirIri_clicked()
+{
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+    if (!fichier.isEmpty()) {
+        fichier = QDir::convertSeparators(fichier);
+        ui->fichierTLEIri->setText(fichier);
+    }
+}
+
+void PreviSat::on_hauteurSatIri_currentIndexChanged(int index)
+{
+    if (index == ui->hauteurSatIri->count() - 1) {
+        ui->valHauteurSatIri->setVisible(true);
+        ui->valHauteurSatIri->setFocus();
+    } else {
+        ui->valHauteurSatIri->setVisible(false);
+    }
+}
+
+void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
+{
+    if (index == ui->hauteurSoleilIri->count() - 1) {
+        ui->valHauteurSoleilIri->setVisible(true);
+        ui->valHauteurSoleilIri->setFocus();
+    } else {
+        ui->valHauteurSoleilIri->setVisible(false);
+    }
+}
+
+void PreviSat::on_calculsIri_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    //...
+    messagesStatut->setText("");
+
+    /* Corps de la methode */
+    ui->afficherPrev->setVisible(false);
+    ui->afficherEvt->setVisible(false);
+    ui->afficherTransit->setVisible(false);
+
+    try {
+        if (ui->fichierTLEIri->text().isEmpty())
+            throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE n'est pas spécifié"), Messages::WARNING);
+
+        const QFileInfo fi(ui->fichierTLEIri->text());
+        if (!fi.exists()) {
+            ui->fichierTLEIri->setText("");
+            throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE est incorrect"), Messages::WARNING);
+        }
+        ui->afficherIri->setVisible(false);
+
+        // Ecart heure locale - UTC
+        const double dtu = dateCourante.getOffsetUTC();
+
+        // Date et heure initiales
+        const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
+                         ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(), ui->dateInitialeIri->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien initial
+        double jj1 = date1.getJourJulien() - dtu;
+
+        // Date et heure finales
+        const Date date2(ui->dateFinaleIri->date().year(), ui->dateFinaleIri->date().month(), ui->dateFinaleIri->date().day(),
+                         ui->dateFinaleIri->time().hour(), ui->dateFinaleIri->time().minute(), ui->dateFinaleIri->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien final
+        double jj2 = date2.getJourJulien() - dtu;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (jj1 > jj2) {
+            const double tmp = jj2;
+            jj2 = jj1;
+            jj1 = tmp;
+        }
+
+        // Hauteur minimale du satellite
+        const int haut = (ui->hauteurSatIri->currentIndex() == 5) ? fabs(ui->valHauteurSatIri->text().toInt()) :
+                                                                     5 * ui->hauteurSatIri->currentIndex();
+
+        // Hauteur maximale du Soleil
+        int crep;
+        if (ui->hauteurSoleilIri->currentIndex() <= 3) {
+            crep = -6 * ui->hauteurSoleilIri->currentIndex();
+        } else if (ui->hauteurSoleilIri->currentIndex() == 4) {
+            crep = 90;
+        } else if (ui->hauteurSoleilIri->currentIndex() == 5) {
+            crep = ui->valHauteurSoleilIri->text().toInt();
+        }
+
+        // Prise en compte des satellites operationnels uniquement
+        const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
+
+        // Choix du tri par ordre chronologique
+        const char chr = (ui->ordreChronologique->isChecked()) ? 'o' : 'n';
+
+        // Choix du nombre de lignes par flash
+        const int nbl = (ui->affichage3lignesIri->isChecked()) ? 3 : 1;
+
+        // Angle maximal de reflexion
+        const double ang0 = ui->angleMaxReflexionIri->value();
+
+        // Magnitude maximale (nuit)
+        const double mgn1 = ui->magnitudeMaxNuitIri->value();
+
+        // Magnitude maximale (nuit)
+        const double mgn2 = ui->magnitudeMaxJourIri->value();
+
+        // Prise en compte de l'extinction atmospherique
+        const bool ext = ui->extinctionAtmospherique->isChecked();
+
+        // Nom du fichier resultat
+        const QString out = dirOut + QDir::separator() + "prevision.txt";
+        QFile fi2(out);
+        if (fi2.exists())
+            fi2.remove();
+        QDir di(dirOut);
+        if (!di.exists())
+            di.mkpath(dirOut);
+
+        // Unite pour les distances
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+
+        messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
+        ui->calculsIri->setVisible(false);
+        ui->annulerIri->setVisible(true);
+        ui->annulerIri->setFocus();
+
+
+        // Lancement des calculs
+        const Conditions conditions(ext, crep, haut, nbl, chr, ope, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(), out, unite);
+        Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
+
+        threadCalculs = new ThreadCalculs(ThreadCalculs::IRIDIUM, conditions, obser);
+        connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
+        threadCalculs->start();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_annulerIri_clicked()
+{
+    // Trouver methode alternative a terminate
+    threadCalculs->terminate();
+    threadCalculs->wait();
+
+    ui->annulerIri->setVisible(false);
+    messagesStatut->setText(tr("Annulation du calcul des flashs Iridium"));
+    QFile fi(dirOut + QDir::separator() + "prevision.txt");
+    if (fi.exists())
+        fi.remove();
+}
+
+void PreviSat::on_afficherIri_clicked()
+{
+    Afficher *afficher = new Afficher;
+    afficher->setWindowTitle(tr("Prévisions ds flashs Iridium"));
+    afficher->show(dirOut + QDir::separator() + "prevision.txt", true);
+}
+
+
+void PreviSat::on_effacerHeuresEvt_clicked()
+{
+    ui->dateInitialeEvt->setTime(QTime(0, 0, 0));
+    ui->dateFinaleEvt->setTime(QTime(0, 0, 0));
+}
+
+void PreviSat::on_calculsEvt_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    //...
+    messagesStatut->setText("");
+
+    /* Corps de la methode */
+    ui->afficherPrev->setVisible(false);
+    ui->afficherIri->setVisible(false);
+    ui->afficherTransit->setVisible(false);
+
+    try {
+        const int nsat = getListeItemChecked(ui->liste3);
+        if (nsat == 0)
+            throw PreviSatException(tr("EVENEMENTS : Aucun satellite n'est sélectionné dans la liste"), Messages::WARNING);
+
+        ui->afficherEvt->setVisible(false);
+
+        // Ecart heure locale - UTC
+        const double dtu = dateCourante.getOffsetUTC();
+
+        // Date et heure initiales
+        const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
+                         ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(), ui->dateInitialeEvt->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien initial
+        double jj1 = date1.getJourJulien() - dtu;
+
+        // Date et heure finales
+        const Date date2(ui->dateFinaleEvt->date().year(), ui->dateFinaleEvt->date().month(), ui->dateFinaleEvt->date().day(),
+                         ui->dateFinaleEvt->time().hour(), ui->dateFinaleEvt->time().minute(), ui->dateFinaleEvt->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien final
+        double jj2 = date2.getJourJulien() - dtu;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (jj1 > jj2) {
+            const double tmp = jj2;
+            jj2 = jj1;
+            jj1 = tmp;
+        }
+
+        // Passages aux noeuds
+        const bool noeuds = ui->passageNoeuds->isChecked();
+
+        // Passages ombre/penombre/lumiere
+        const bool ombre = ui->passageOmbre->isChecked();
+
+        // Passages apogee/perigee
+        const bool apogee = ui->passageApogee->isChecked();
+
+        // Transitions jour/nuit
+        const bool jourNuit = ui->transitionJourNuit->isChecked();
+
+        // Passages aux quadrangles
+        const bool quadr = ui->passageQuadrangles->isChecked();
+
+        // Liste des numeros NORAD
+        QStringList listeSat;
+        for (int i=0; i<ui->liste3->count(); i++) {
+            if (ui->liste3->item(i)->checkState() == Qt::Checked)
+                listeSat.append(mapSatellites.at(i).split("#").at(1));
+        }
+
+        // Nom du fichier resultat
+        const QString out = dirOut + QDir::separator() + "prevision.txt";
+        QFile fi2(out);
+        if (fi2.exists())
+            fi2.remove();
+        QDir di(dirOut);
+        if (!di.exists())
+            di.mkpath(dirOut);
+
+        // Unite pour les distances
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+
+        messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
+        ui->calculsEvt->setVisible(false);
+        ui->annulerEvt->setVisible(true);
+        ui->annulerEvt->setFocus();
+
+
+        // Lancement des calculs
+        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, dtu, jj1, jj2, nomfic, out, unite, listeSat);
+        const Observateur obser;
+
+        threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions, obser);
+        connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
+        threadCalculs->start();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+
+}
+
+void PreviSat::on_annulerEvt_clicked()
+{
+    // Trouver methode alternative a terminate
+    threadCalculs->terminate();
+    threadCalculs->wait();
+
+    ui->annulerEvt->setVisible(false);
+    messagesStatut->setText(tr("Annulation du calcul des évènements orbitaux"));
+    QFile fi(dirOut + QDir::separator() + "prevision.txt");
+    if (fi.exists())
+        fi.remove();
+}
+
+void PreviSat::on_afficherEvt_clicked()
+{
+    Afficher *afficher = new Afficher;
+    afficher->setWindowTitle(tr("Évènements orbitaux"));
+    afficher->show(dirOut + QDir::separator() + "prevision.txt", true);
+}
+
+void PreviSat::on_effacerHeuresTransit_clicked()
+{
+    ui->dateInitialeTransit->setTime(QTime(0, 0, 0));
+    ui->dateFinaleTransit->setTime(QTime(0, 0, 0));
+}
+
+void PreviSat::on_parcourirTransit_clicked()
+{
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+    if (!fichier.isEmpty()) {
+        fichier = QDir::convertSeparators(fichier);
+        ui->fichierTLETransit->setText(fichier);
+    }
+}
+
+void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
+{
+    if (index == ui->hauteurSatTransit->count() - 1) {
+        ui->valHauteurSatTransit->setVisible(true);
+        ui->valHauteurSatTransit->setFocus();
+    } else {
+        ui->valHauteurSatTransit->setVisible(false);
+    }
+}
+
+void PreviSat::on_calculsTransit_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    //...
+    messagesStatut->setText("");
+
+    /* Corps de la methode */
+    ui->afficherPrev->setVisible(false);
+    ui->afficherIri->setVisible(false);
+    ui->afficherEvt->setVisible(false);
+
+    try {
+        if (ui->fichierTLETransit->text().isEmpty())
+            throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE n'est pas spécifié"), Messages::WARNING);
+
+        const QFileInfo fi(ui->fichierTLETransit->text());
+        if (!fi.exists()) {
+            ui->fichierTLETransit->setText("");
+            throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE est incorrect"), Messages::WARNING);
+        }
+
+        ui->afficherTransit->setVisible(false);
+
+        // Ecart heure locale - UTC
+        const double dtu = dateCourante.getOffsetUTC();
+
+        // Date et heure initiales
+        const Date date1(ui->dateInitialeTransit->date().year(), ui->dateInitialeTransit->date().month(), ui->dateInitialeTransit->date().day(),
+                         ui->dateInitialeTransit->time().hour(), ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien initial
+        double jj1 = date1.getJourJulien() - dtu;
+
+        // Date et heure finales
+        const Date date2(ui->dateFinaleTransit->date().year(), ui->dateFinaleTransit->date().month(), ui->dateFinaleTransit->date().day(),
+                         ui->dateFinaleTransit->time().hour(), ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(),
+                         dateCourante.getOffsetUTC());
+
+        // Jour julien final
+        double jj2 = date2.getJourJulien() - dtu;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (jj1 > jj2) {
+            const double tmp = jj2;
+            jj2 = jj1;
+            jj1 = tmp;
+        }
+
+        // Age maximal du TLE
+        const double ageTLE = ui->ageMaxTLETransit->value();
+
+        // Hauteur minimale du satellite
+        const int haut = (ui->hauteurSatTransit->currentIndex() == 5) ? fabs(ui->valHauteurSatTransit->text().toInt()) :
+                                                                     5 * ui->hauteurSatTransit->currentIndex();
+
+        // Elongation maximale
+        const double elong = ui->elongationMaxCorps->value();
+
+        // Selection des corps
+        const bool calcSol = ui->soleilTransit->isChecked();
+        const bool calcLune = ui->luneTransit->isChecked();
+
+        // Nom du fichier resultat
+        const QString out = dirOut + QDir::separator() + "prevision.txt";
+        QFile fi2(out);
+        if (fi2.exists())
+            fi2.remove();
+        QDir di(dirOut);
+        if (!di.exists())
+            di.mkpath(dirOut);
+
+        // Unite pour les distances
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+
+        messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
+        ui->calculsTransit->setVisible(false);
+        ui->annulerTransit->setVisible(true);
+        ui->annulerTransit->setFocus();
+
+
+        // Lancement des calculs
+        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, dtu, jj1, jj2, fi.absoluteFilePath(), out, unite);
+        const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
+
+        threadCalculs = new ThreadCalculs(ThreadCalculs::TRANSITS, conditions, obser);
+        connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
+        threadCalculs->start();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_annulerTransit_clicked()
+{
+    // Trouver methode alternative a terminate
+    threadCalculs->terminate();
+    threadCalculs->wait();
+
+    ui->annulerTransit->setVisible(false);
+    messagesStatut->setText(tr("Annulation du calcul des transits ISS"));
+    QFile fi(dirOut + QDir::separator() + "prevision.txt");
+    if (fi.exists())
+        fi.remove();
+}
+
+void PreviSat::on_afficherTransit_clicked()
+{
+    Afficher *afficher = new Afficher;
+    afficher->setWindowTitle(tr("Transits ISS"));
+    afficher->show(dirOut + QDir::separator() + "prevision.txt", true);
+}

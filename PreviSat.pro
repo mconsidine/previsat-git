@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui webkit
 
 TARGET = PreviSat
 TEMPLATE = app
@@ -38,7 +38,9 @@ SOURCES += main.cpp\
     previsions/evenements.cpp \
     previsions/conditions.cpp \
     librairies/corps/systemesolaire/planete.cpp \
-    threadcalculs.cpp
+    threadcalculs.cpp \
+    afficher.cpp \
+    gestionnairetle.cpp
 
 HEADERS  += previsat.h \
     librairies/corps/corps.h \
@@ -70,14 +72,40 @@ HEADERS  += previsat.h \
     zlib/zlib.h \
     zlib/zconf.h \
     zlib/ioapi.h \
-    threadcalculs.h
+    threadcalculs.h \
+    afficher.h \
+    gestionnairetle.h
 
-FORMS    += previsat.ui
+FORMS    += previsat.ui \
+    afficher.ui \
+    gestionnairetle.ui
 
 OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
