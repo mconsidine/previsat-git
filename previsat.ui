@@ -692,7 +692,7 @@
          <widget class="QComboBox" name="valManuel">
           <property name="geometry">
            <rect>
-            <x>70</x>
+            <x>90</x>
             <y>85</y>
             <width>81</width>
             <height>22</height>
@@ -727,7 +727,7 @@
            <rect>
             <x>18</x>
             <y>6</y>
-            <width>201</width>
+            <width>171</width>
             <height>73</height>
            </rect>
           </property>
@@ -776,7 +776,7 @@
          <widget class="QLabel" name="secondes">
           <property name="geometry">
            <rect>
-            <x>74</x>
+            <x>94</x>
             <y>88</y>
             <width>71</width>
             <height>16</height>
@@ -792,7 +792,7 @@
          <widget class="QComboBox" name="pasManuel">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>40</x>
             <y>85</y>
             <width>45</width>
             <height>22</height>
@@ -836,7 +836,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>122</y>
+            <y>114</y>
             <width>41</width>
             <height>16</height>
            </rect>
@@ -851,7 +851,7 @@
          <widget class="QComboBox" name="pasReel">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>40</x>
             <y>85</y>
             <width>45</width>
             <height>22</height>
@@ -895,9 +895,9 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>149</y>
+            <y>138</y>
             <width>200</width>
-            <height>260</height>
+            <height>271</height>
            </rect>
           </property>
           <property name="font">
@@ -929,7 +929,7 @@
           <property name="geometry">
            <rect>
             <x>61</x>
-            <y>122</y>
+            <y>114</y>
             <width>157</width>
             <height>16</height>
            </rect>
@@ -950,17 +950,20 @@
          <widget class="QPushButton" name="barreMenu">
           <property name="geometry">
            <rect>
-            <x>170</x>
-            <y>84</y>
-            <width>51</width>
+            <x>200</x>
+            <y>10</y>
+            <width>21</width>
             <height>24</height>
            </rect>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
           </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
           <property name="text">
-           <string>Menu</string>
+           <string/>
           </property>
           <property name="shortcut">
            <string notr="true"/>
@@ -1043,7 +1046,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -5476,7 +5479,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -6670,9 +6673,6 @@
                 </property>
                 <property name="text">
                  <string>Affichage de la SAA</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
                 </property>
                </widget>
                <widget class="QCheckBox" name="affplanetes">
@@ -8705,8 +8705,11 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuOuvrir_fichier_TLE">
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <property name="title">
-     <string>Menu</string>
+     <string notr="true">Menu</string>
     </property>
     <widget class="QMenu" name="menuAide">
      <property name="title">

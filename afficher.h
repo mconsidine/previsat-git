@@ -52,7 +52,7 @@ class Afficher : public QMainWindow
 
 public:
     explicit Afficher(QWidget *parent = 0);
-    void show(const QString fic, const bool affBarre);
+    void show(const QString fic);
     ~Afficher();
 
 private:
