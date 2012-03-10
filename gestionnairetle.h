@@ -41,6 +41,7 @@
 #define GESTIONNAIRETLE_H
 
 #include <QMainWindow>
+#include <QtNetwork>
 
 namespace Ui {
     class GestionnaireTLE;
@@ -58,28 +59,22 @@ private slots:
     void on_fermer_clicked();
     void on_actionCreer_un_groupe_activated();
     void on_actionSupprimerGroupe_activated();
-
     void on_listeGroupeTLE_customContextMenuRequested(const QPoint &pos);
-
     void on_listeGroupeTLE_currentRowChanged(int currentRow);
-
     void on_valider_clicked();
-
     void on_annuler_clicked();
-
     void on_actionAjouter_des_fichiers_activated();
-
     void on_actionSupprimer_activated();
-
     void on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos);
-
     void on_MajAutoGroupe_toggled(bool checked);
-
     void on_MajMaintenant_clicked();
 
 private:
     Ui::GestionnaireTLE *ui;
     void load();
+    void MessageErreur(QNetworkReply::NetworkError) const;
+    void Enregistrer(const QString fic) const;
+    void ProgressionTelechargement(qint64 recu, qint64 total) const;
 };
 
 #endif // GESTIONNAIRETLE_H

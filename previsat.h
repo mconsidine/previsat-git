@@ -44,6 +44,7 @@
 #include <QListWidget>
 #include <QMainWindow>
 #include <QModelIndex>
+#include <QNetworkReply>
 
 namespace Ui {
 class PreviSat;
@@ -56,33 +57,47 @@ class PreviSat : public QMainWindow
 public:
     explicit PreviSat(QWidget *parent = 0);
     void Initialisations();
-
-
     ~PreviSat();
 
 private:
     Ui::PreviSat *ui;
-    void InitFicObs(const bool alarm);
-    void InitFicMap();
 
+    // Initialisation
+    void InitFicObs(const bool alarm) const;
+    void InitFicMap() const;
+
+    // Affichage
     void AffichageDonnees();
-    void AffichageCourbes();
-    void AffichageLieuObs();
-    void AfficherListeSatellites(const QString fichier, const QStringList listeSat);
-    void EnchainementCalculs();
+    void AffichageCourbes() const;
+    void AffichageLieuObs() const;
+    void AfficherListeSatellites(const QString fichier, const QStringList listeSat) const;
+    void CalculsAffichage();
+
+    // Calculs
+    void EnchainementCalculs() const;
+    void MajWebTLE(const bool alarm);
+    void Enregistrer(const QString fic) const;
+    void MessageErreur(QNetworkReply::NetworkError, const bool alarm) const;
+    void VerifAgeTLE();
+
+    // Interface
+    void SauveOngletGeneral(const QString fic) const;
+    void SauveOngletElementsOsculateurs(const QString fic) const;
+    void SauveOngletInformations(const QString fic) const;
+    void ModificationOption();
     int getListeItemChecked(const QListWidget *listWidget) const;
-    void MajWebTLE(const bool alarm) const;
-    void VerifAgeTLE() const;
-    void EcritureListeRegistre();
+
+    // Systeme
+    void EcritureListeRegistre() const;
+    bool DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const;
+
+    // Calculs de previsions
+    void CalculsTermines();
+
 
 private slots:
-    void CalculsTermines();
+
     void GestionTempsReel();
-    void ModificationOption();
-    void SauveOngletGeneral();
-    void SauveOngletElementsOsculateurs();
-    void SauveOngletInformations();
-    bool DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse);
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);

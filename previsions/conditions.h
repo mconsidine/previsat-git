@@ -162,7 +162,6 @@ private:
 
     /* Methodes privees */
 
-
 };
 
 #endif // CONDITIONS_H

@@ -45,21 +45,14 @@
 #include <QFile>
 #include <QFileDialog>
 #include "afficher.h"
+#include "globals.h"
 #include "ui_afficher.h"
-
-static QString dirExe;
-static QString dirOut;
 
 Afficher::Afficher(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
-    QCoreApplication::setApplicationName("PreviSat");
-    QCoreApplication::setOrganizationName("Astropedia");
-    dirExe = QCoreApplication::applicationDirPath();
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-
 }
 
 Afficher::~Afficher()
@@ -67,9 +60,8 @@ Afficher::~Afficher()
     delete ui;
 }
 
-void Afficher::show(const QString fic, const bool affBarre)
+void Afficher::show(const QString fic)
 {
-    ui->barreOutils->setVisible(affBarre);
     ui->fichier->load(QUrl(fic));
     setVisible(true);
 }
@@ -81,15 +73,14 @@ void Afficher::resizeEvent(QResizeEvent *event)
 
 void Afficher::on_actionEnregistrer_activated()
 {
-    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirExe,
+    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
         if (fi.exists())
             fi.remove();
 
-        QFile fi2(dirOut + QDir::separator() + "prevision.txt");
+        QFile fi2(dirTmp + QDir::separator() + "prevision.txt");
         fi2.copy(fi.fileName());
     }
-
 }
