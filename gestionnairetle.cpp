@@ -332,7 +332,6 @@ void GestionnaireTLE::on_MajMaintenant_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int sts = 0;
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
     QString adresse = groupe.toLower();
 
@@ -395,7 +394,6 @@ void GestionnaireTLE::MessageErreur(QNetworkReply::NetworkError) const
 {
     QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
     throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
-    return;
 }
 
 void GestionnaireTLE::Enregistrer(const QString fic) const
