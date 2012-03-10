@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit
+QT       += core gui webkit network
 
 TARGET = PreviSat
 TEMPLATE = app
@@ -74,7 +74,8 @@ HEADERS  += previsat.h \
     zlib/ioapi.h \
     threadcalculs.h \
     afficher.h \
-    gestionnairetle.h
+    gestionnairetle.h \
+    globals.h
 
 FORMS    += previsat.ui \
     afficher.ui \
@@ -84,6 +85,7 @@ OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
+
 
 
 
