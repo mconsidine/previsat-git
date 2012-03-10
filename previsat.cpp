@@ -2551,10 +2551,9 @@ int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
         if (listWidget->item(i)->checkState() == Qt::Checked)
             k++;
     }
+	
+	/* Retour */
     return (k);
-
-    /* Retour */
-    return;
 }
 
 /*
