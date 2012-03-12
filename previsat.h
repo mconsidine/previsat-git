@@ -44,7 +44,7 @@
 #include <QListWidget>
 #include <QMainWindow>
 #include <QModelIndex>
-#include <QNetworkReply>
+#include <QtNetwork>
 
 namespace Ui {
 class PreviSat;
@@ -98,6 +98,7 @@ private:
 private slots:
 
     void GestionTempsReel();
+    void ListeInfo(QUrlInfo &infoFichier);
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);

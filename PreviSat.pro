@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     librairies/corps/systemesolaire/planete.cpp \
     threadcalculs.cpp \
     afficher.cpp \
-    gestionnairetle.cpp
+    gestionnairetle.cpp \
+    telecharger.cpp \
+    apropos.cpp
 
 HEADERS  += previsat.h \
     librairies/corps/corps.h \
@@ -75,16 +77,26 @@ HEADERS  += previsat.h \
     threadcalculs.h \
     afficher.h \
     gestionnairetle.h \
-    globals.h
+    globals.h \
+    telecharger.h \
+    apropos.h
 
 FORMS    += previsat.ui \
     afficher.ui \
-    gestionnairetle.ui
+    gestionnairetle.ui \
+    telecharger.ui \
+    apropos.ui
 
 OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
+
+
+
+
+
+
 
 
 
