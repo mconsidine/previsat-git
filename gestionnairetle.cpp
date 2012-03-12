@@ -70,6 +70,9 @@ GestionnaireTLE::~GestionnaireTLE()
 
 void GestionnaireTLE::load()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     selec = -1;
     ui->barreMenu->setVisible(false);
     ui->frame->setVisible(false);
@@ -79,6 +82,7 @@ void GestionnaireTLE::load()
     ui->listeFichiersTLE->clear();
     ficTLE = dirDat + QDir::separator() + "gestionnaireTLE.gst";
 
+    /* Corps de la methode */
     QFile fi(ficTLE);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
@@ -93,6 +97,9 @@ void GestionnaireTLE::load()
 
     ui->listeGroupeTLE->setCurrentRow(0);
     init = true;
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_fermer_clicked()
@@ -102,6 +109,11 @@ void GestionnaireTLE::on_fermer_clicked()
 
 void GestionnaireTLE::on_actionCreer_un_groupe_activated()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->listeFichiers->clear();
     ui->domaine->setText("");
     ui->domaine->setEnabled(true);
@@ -110,14 +122,21 @@ void GestionnaireTLE::on_actionCreer_un_groupe_activated()
     ui->nomGroupe->setText("");
     ui->nomGroupe->setEnabled(true);
     ui->groupe->setVisible(true);
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_actionSupprimerGroupe_activated()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     QDir di(dirTmp);
     if (!di.exists())
         di.mkpath(dirTmp);
 
+    /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer le groupe ""%1""?");
     const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
@@ -147,22 +166,38 @@ void GestionnaireTLE::on_actionSupprimerGroupe_activated()
 
         load();
     }
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_listeGroupeTLE_customContextMenuRequested(const QPoint &pos)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->listeGroupeTLE->setCurrentRow(ui->listeGroupeTLE->indexAt(pos).row());
     ui->actionSupprimerGroupe->setVisible(ui->listeGroupeTLE->currentRow() >= 0);
     ui->menuContextuelGroupe->exec(QCursor::pos());
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     init = false;
     ui->groupe->setVisible(false);
     ui->listeFichiersTLE->setCurrentRow(-1);
-    if (selec != ui->listeGroupeTLE->currentRow()) {
-        selec = ui->listeGroupeTLE->currentRow();
+
+    /* Corps de la methode */
+    if (selec != currentRow) {
+        selec = currentRow;
         if (selec >= 0) {
 
             ui->listeFichiersTLE->clear();
@@ -193,10 +228,18 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
             init = true;
         }
     }
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_valider_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     try {
         if (ui->domaine->text().trimmed().isEmpty())
             throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), Messages::WARNING);
@@ -224,17 +267,33 @@ void GestionnaireTLE::on_valider_clicked()
 
     } catch (PreviSatException &e) {
     }
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_annuler_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->groupe->setVisible(false);
     ui->domaine->setVisible(true);
     ui->nomGroupe->setVisible(true);
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     const QStringList nomGroupe = ui->listeGroupeTLE->currentItem()->text().split("@");
     ui->groupe->setEnabled(false);
     ui->nomGroupe->setText(nomGroupe.at(0));
@@ -248,10 +307,18 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
     }
     ui->groupe->setVisible(true);
     ui->listeFichiers->setFocus();
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_actionSupprimer_activated()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe ""%1""?");
     const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
@@ -288,16 +355,32 @@ void GestionnaireTLE::on_actionSupprimer_activated()
         sw.rename(sr.fileName());
         load();
     }
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->groupe->setVisible(false);
     ui->actionSupprimer->setVisible(ui->listeFichiersTLE->currentRow() >= 0);
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (init) {
         QDir di(dirTmp);
         if (!di.exists())
@@ -325,6 +408,9 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
         sr.remove();
         sw.rename(sr.fileName());
     }
+
+    /* Retour */
+    return;
 }
 
 void GestionnaireTLE::on_MajMaintenant_clicked()
@@ -392,7 +478,14 @@ void GestionnaireTLE::on_MajMaintenant_clicked()
 
 void GestionnaireTLE::MessageErreur(QNetworkReply::NetworkError) const
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
+
+    /* Retour */
     throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
 }
 
@@ -416,8 +509,16 @@ void GestionnaireTLE::Enregistrer(const QString fic) const
 
 void GestionnaireTLE::ProgressionTelechargement(qint64 recu, qint64 total) const
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (total != -1) {
        ui->barreProgression->setRange(0, total);
        ui->barreProgression->setValue(recu);
     }
+
+    /* Retour */
+    return;
 }

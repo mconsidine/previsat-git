@@ -67,8 +67,10 @@
 #include "librairies/observateur/observateur.h"
 #include "previsions/conditions.h"
 #include "afficher.h"
+#include "apropos.h"
 #include "gestionnairetle.h"
 #include "globals.h"
+#include "telecharger.h"
 #include "threadcalculs.h"
 #include "zlib/zlib.h"
 #include "previsat.h"
@@ -76,8 +78,6 @@
 
 // Repertoires
 static QString dirExe;
-static QString dirCoo;
-static QString dirMap;
 
 // TLE par defaut
 static QString nom;
@@ -141,6 +141,7 @@ static QSettings settings("Astropedia", "previsat");
 
 static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
+static Afficher *afficherResultats;
 
 QLabel *messagesStatut;
 QLabel *messagesStatut2;
@@ -2111,11 +2112,11 @@ void PreviSat::EnchainementCalculs() const
 
     if (nbSat > 0) {
         if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
-            //...
+            chronometre->stop();
             QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
             msg = msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad());
             Messages::Afficher(msg, Messages::WARNING);
-            //...
+            chronometre->start();
             l1 = "";
             l2 = "";
         }
@@ -2270,7 +2271,7 @@ void PreviSat::VerifAgeTLE()
     if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ui->nbJoursAgeMaxTLE->value()) {
         const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
         const int res = QMessageBox::question(this, tr("Information"), msg.arg(ui->nbJoursAgeMaxTLE->value()),
-                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
         if (res == QMessageBox::Yes) {
             const QFileInfo fi(nomfic);
@@ -2551,8 +2552,8 @@ int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
         if (listWidget->item(i)->checkState() == Qt::Checked)
             k++;
     }
-	
-	/* Retour */
+
+    /* Retour */
     return (k);
 }
 
@@ -2776,8 +2777,12 @@ void PreviSat::closeEvent(QCloseEvent *)
 
     /* Corps de la methode */
     QDir di = QDir(dirTmp);
-    if (di.exists())
-        di.rmdir(dirTmp);
+    if (di.entryList(QDir::Files).count() > 0) {
+        foreach(QString fic, di.entryList(QDir::Files)) {
+            QFile fi(dirTmp + QDir::separator() + fic);
+            fi.remove();
+        }
+    }
 
     // Sauvegarde des donnees du logiciel
     settings.setValue("temps/valManuel", ui->valManuel->currentIndex());
@@ -4492,7 +4497,12 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
         } else {
             if (index == ui->listeMap->count()) {
                 selec2 = -1;
-                //...
+                dirHttp = 2;
+
+                Telecharger *telecharger = new Telecharger;
+                telecharger->setWindowModality(Qt::ApplicationModal);
+                telecharger->show();
+                ui->listeMap->setCurrentIndex(ui->listeMap->findText(settings.value("fichier/listeMap", "").toString()));
                 InitFicMap();
                 selec2 = 0;
             } else {
@@ -4513,7 +4523,49 @@ void PreviSat::on_majFicPrevisat_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    //...
+    const QString httpDirDat = "http://astropedia.free.fr/previsat/commun/data/";
+    QStringList fichiers;
+    fichiers << "donnees.sat" << "iridium.sts";
+
+    try {
+        int nb = 0;
+        for(int i=1; i<fichiers.size(); i++) {
+
+            const QString fic = dirDat + QDir::separator() + fichiers.at(i);
+            QUrlInfo infoFichier;
+            QFtp *ftp = new QFtp;
+            connect(ftp, SIGNAL(listInfo(QUrlInfo)), this, SLOT(ListeInfo(QUrlInfo)));
+
+            const QFileInfo fi(fic);
+            if (fi.created().operator < (infoFichier.lastModified())) {
+                const QUrl url(httpDirDat + fic);
+
+                const QNetworkRequest requete(url);
+                QNetworkAccessManager *mng = new QNetworkAccessManager;
+                QNetworkReply *rep = mng->get(requete);
+
+                connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
+                connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer(fic)));
+
+                nb++;
+            }
+        }
+
+        if (nb == 0)
+            Messages::Afficher(tr("Aucune mise à jour nécessaire"), Messages::INFO);
+        else
+            Messages::Afficher(tr("La prise en compte des fichiers téléchargés nécessite un redémarrage de PreviSat"), Messages::INFO);
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::ListeInfo(QUrlInfo &infoFichier)
+{
+
 }
 
 void PreviSat::on_actionFichier_d_aide_activated(int arg1)
@@ -4542,7 +4594,9 @@ void PreviSat::on_actionA_propos_activated(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    //...
+    Apropos *apropos = new Apropos;
+    apropos->setWindowModality(Qt::ApplicationModal);
+    apropos->show();
 
     /* Retour */
     return;
@@ -4600,7 +4654,9 @@ void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    //...
+    dirHttp = 1;
+    Telecharger *telecharger = new Telecharger;
+    telecharger->show();
 
     /* Retour */
     return;
@@ -5594,7 +5650,8 @@ void PreviSat::on_calculsPrev_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    //...
+    if (afficherResultats->isVisible())
+        afficherResultats->close();
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -5758,9 +5815,9 @@ void PreviSat::on_afficherPrev_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    Afficher *afficher = new Afficher;
-    afficher->setWindowTitle(tr("Prévisions de passage des satellites"));
-    afficher->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats = new Afficher;
+    afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
+    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
 
     /* Retour */
     return;
@@ -5840,7 +5897,8 @@ void PreviSat::on_calculsIri_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    //...
+    if (afficherResultats->isVisible())
+        afficherResultats->close();
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -5981,9 +6039,9 @@ void PreviSat::on_afficherIri_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    Afficher *afficher = new Afficher;
-    afficher->setWindowTitle(tr("Prévisions des flashs Iridium"));
-    afficher->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats = new Afficher;
+    afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
+    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
 
     /* Retour */
     return;
@@ -6009,7 +6067,8 @@ void PreviSat::on_calculsEvt_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    //...
+    if (afficherResultats->isVisible())
+        afficherResultats->close();
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -6133,9 +6192,9 @@ void PreviSat::on_afficherEvt_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    Afficher *afficher = new Afficher;
-    afficher->setWindowTitle(tr("Évènements orbitaux"));
-    afficher->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats = new Afficher;
+    afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
+    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
 
     /* Retour */
     return;
@@ -6196,7 +6255,8 @@ void PreviSat::on_calculsTransit_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    //...
+    if (afficherResultats->isVisible())
+        afficherResultats->close();
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -6317,9 +6377,9 @@ void PreviSat::on_afficherTransit_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    Afficher *afficher = new Afficher;
-    afficher->setWindowTitle(tr("Transits ISS"));
-    afficher->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats = new Afficher;
+    afficherResultats->setWindowTitle(tr("Transits ISS"));
+    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
 
     /* Retour */
     return;

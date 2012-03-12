@@ -68,13 +68,13 @@ private slots:
     void on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos);
     void on_MajAutoGroupe_toggled(bool checked);
     void on_MajMaintenant_clicked();
+    void MessageErreur(QNetworkReply::NetworkError) const;
+    void Enregistrer(const QString fic) const;
+    void ProgressionTelechargement(qint64 recu, qint64 total) const;
 
 private:
     Ui::GestionnaireTLE *ui;
     void load();
-    void MessageErreur(QNetworkReply::NetworkError) const;
-    void Enregistrer(const QString fic) const;
-    void ProgressionTelechargement(qint64 recu, qint64 total) const;
 };
 
 #endif // GESTIONNAIRETLE_H

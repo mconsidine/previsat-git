@@ -46,8 +46,12 @@
 #include <QString>
 #include "librairies/corps/satellite/tle.h"
 
+static int dirHttp;
+
 // Repertoires
+static QString dirCoo;
 static QString dirDat;
+static QString dirMap;
 static QString dirOut;
 static QString dirTle;
 static QString dirTmp;

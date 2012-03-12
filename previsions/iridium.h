@@ -77,19 +77,23 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
+    static void DeterminationFlash(const double minmax[2], const QString &sts, const Conditions &conditions,
+                                   double &temp, QStringList &res, Observateur &observateur, Satellite &sat,
+                                   Soleil &soleil);
     static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
                                              QList<QVector<double> > &tabEphem);
     static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
-    static void CalculAngleMin(Satellite &satellite, Observateur &observateur, Soleil &soleil,
-                               const double jjm[], double minmax[]);
-    static void CalculLimitesFlash(Satellite &satellite, Observateur &observateur, Soleil &soleil,
-                                   const Conditions &conditions, const double dateMaxFlash, const double mgn0,
-                                   Date lim[]);
-    static void LimiteFlash(Satellite satellite, Observateur observateur, Soleil soleil,
-                            const Conditions &conditions, const double jjm[], const double mgn0,
-                            double limite[]);
-    static double MagnitudeFlash(Satellite satellite, const Observateur observateur, const Soleil soleil,
-                                 const double angle, const bool ext);
+    static void CalculAngleMin(const double jjm[], Satellite &satellite, Observateur &observateur, Soleil &soleil,
+                               double minmax[]);
+    static void CalculLimitesFlash(const double mgn0, const double dateMaxFlash, const Conditions &conditions,
+                                   Satellite &satellite, Observateur &observateur, Soleil &soleil, Date lim[]);
+    static void LimiteFlash(const double mgn0, const double jjm[], const Conditions &conditions, Satellite &satellite,
+                            Observateur &observateur, Soleil &soleil, double limite[]);
+    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
+                                 Satellite &satellite);
+    static QString EcrireFlash(const Date &date, const int i, const double altitude, const double angref,
+                               const double mag, const QString &sts, const Conditions &conditions,
+                               const Observateur &observateur, const Soleil &soleil, Satellite &sat);
     static int LectureStatutIridium(const char ope);
 
 };
