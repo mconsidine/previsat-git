@@ -130,8 +130,8 @@ private slots:
     void on_lieuxObservation1_currentIndexChanged(int index);
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
-    void on_dateHeure3_editingFinished();
-    void on_dateHeure4_editingFinished();
+    void on_dateHeure3_dateTimeChanged(const QDateTime &date);
+    void on_dateHeure4_dateTimeChanged(const QDateTime &date);
     void on_play_clicked();
     void on_pause_clicked();
     void on_rewind_clicked();
