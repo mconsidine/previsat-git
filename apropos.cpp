@@ -48,7 +48,14 @@ Apropos::Apropos(QWidget *parent) :
     ui(new Ui::Apropos)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("A propos de PreviSat 3.0"));
+    setWindowTitle(tr("À propos de PreviSat 3.0"));
+    QGraphicsScene *scene = new QGraphicsScene;
+    scene->setSceneRect(ui->imagePreviSat->rect());
+    scene->setBackgroundBrush(QBrush(Apropos::palette().background().color()));
+    scene->addPixmap(QPixmap(":/resources/previsat.png").scaled(ui->imagePreviSat->size()));
+    ui->imagePreviSat->setScene(scene);
+    QGraphicsView view(scene);
+    view.setRenderHints(QPainter::Antialiasing);
 }
 
 Apropos::~Apropos()
