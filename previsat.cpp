@@ -1817,6 +1817,7 @@ void PreviSat::AffichageLieuObs() const
     ui->lieuxObservation3->clear();
     ui->lieuxObservation4->clear();
     ui->selecLieux->clear();
+    observateurs.clear();
     QStringListIterator it(listeObs);
     while (it.hasNext()) {
 
@@ -3051,7 +3052,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
 
         // Selection du satellite sur la carte du monde
-        if (ui->carte->underMouse()) {
+        if (!ui->carte->isHidden()) {
 
             const int x = event->x() - 6;
             const int y = event->y() - 6;
@@ -3084,8 +3085,6 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
         }
 
         if (!ui->radar->isHidden()) {
-
-            if (ui->radar->underMouse()) {
 
                 const int x = event->x() - ui->radar->x() - 100;
                 const int y = event->y() - ui->radar->y() - 100;
@@ -3120,7 +3119,6 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 
                             CalculsAffichage();
                         }
-                    }
                 }
             }
         }
@@ -3980,6 +3978,8 @@ void PreviSat::on_liste1_activated(const QModelIndex &index)
                     liste.removeAt(i);
                     tles.remove(i);
                     bipSat.remove(i);
+                    ui->liste2->item(r)->setCheckState(Qt::Unchecked);
+                    ui->liste3->item(r)->setCheckState(Qt::Unchecked);
                     break;
                 }
             }
@@ -3992,6 +3992,8 @@ void PreviSat::on_liste1_activated(const QModelIndex &index)
             nbSat++;
             tles.resize(nbSat);
             bipSat.resize(nbSat);
+            ui->liste2->item(r)->setCheckState(Qt::Checked);
+            ui->liste3->item(r)->setCheckState(Qt::Checked);
         }
 
         Satellite::initCalcul = false;
@@ -4044,16 +4046,16 @@ void PreviSat::on_lieuxObservation1_currentIndexChanged(int index)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->lieuxObservation1->hasFocus() && ui->lieuxObservation1->currentIndex() > 0) {
+    if (ui->lieuxObservation1->hasFocus() && index > 0) {
 
         const QString chaine = listeObs.at(0);
-        listeObs[0] = listeObs.at(ui->lieuxObservation1->currentIndex());
-        listeObs[ui->lieuxObservation1->currentIndex()] = chaine;
+        listeObs[0] = listeObs.at(index);
+        listeObs[index] = chaine;
 
         QString nomlieu = "";
         for(int i=0; i<listeObs.count(); i++) {
             if (i > 0)
-                nomlieu += "#";
+                nomlieu += "$";
             nomlieu += listeObs.at(i);
         }
         settings.setValue("observateur/lieu", nomlieu);

@@ -4,19 +4,24 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit network
+QT       += core gui network webkit
 
 TARGET = PreviSat
 TEMPLATE = app
 
 VERSION = 3.0.0.0
-ICON = resources/Icon3.ico
+ICON = resources/previsat.png
 win32:RC_FILE = icone.rc
 
 TRANSLATIONS = PreviSat_en.ts
 
 SOURCES += main.cpp\
-        previsat.cpp \
+    previsat.cpp \
+    afficher.cpp \
+    apropos.cpp \
+    gestionnairetle.cpp \
+    telecharger.cpp \
+    threadcalculs.cpp \
     librairies/corps/corps.cpp \
     librairies/corps/etoiles/etoile.cpp \
     librairies/corps/etoiles/ligneconstellation.cpp \
@@ -24,6 +29,7 @@ SOURCES += main.cpp\
     librairies/corps/satellite/satellite.cpp \
     librairies/corps/satellite/tle.cpp \
     librairies/corps/systemesolaire/lune.cpp \
+    librairies/corps/systemesolaire/planete.cpp \
     librairies/corps/systemesolaire/soleil.cpp \
     librairies/dates/date.cpp \
     librairies/exceptions/previsatexception.cpp \
@@ -32,19 +38,19 @@ SOURCES += main.cpp\
     librairies/maths/matrice.cpp \
     librairies/maths/vecteur3d.cpp \
     librairies/observateur/observateur.cpp \
-    previsions/transitiss.cpp \
-    previsions/prevision.cpp \
-    previsions/iridium.cpp \
-    previsions/evenements.cpp \
     previsions/conditions.cpp \
-    librairies/corps/systemesolaire/planete.cpp \
-    threadcalculs.cpp \
-    afficher.cpp \
-    gestionnairetle.cpp \
-    telecharger.cpp \
-    apropos.cpp
+    previsions/evenements.cpp \
+    previsions/iridium.cpp \
+    previsions/prevision.cpp \
+    previsions/transitiss.cpp
 
 HEADERS  += previsat.h \
+    afficher.h \
+    apropos.h \
+    gestionnairetle.h \
+    globals.h \
+    telecharger.h \
+    threadcalculs.h \
     librairies/corps/corps.h \
     librairies/corps/etoiles/etoile.h \
     librairies/corps/etoiles/ligneconstellation.h \
@@ -53,6 +59,7 @@ HEADERS  += previsat.h \
     librairies/corps/satellite/tle.h \
     librairies/corps/systemesolaire/lune.h \
     librairies/corps/systemesolaire/LuneConstants.h \
+    librairies/corps/systemesolaire/planete.h \
     librairies/corps/systemesolaire/soleil.h \
     librairies/corps/systemesolaire/SoleilConstants.h \
     librairies/corps/systemesolaire/TerreConstants.h \
@@ -65,82 +72,22 @@ HEADERS  += previsat.h \
     librairies/maths/matrice.h \
     librairies/maths/vecteur3d.h \
     librairies/observateur/observateur.h \
-    previsions/transitiss.h \
-    previsions/prevision.h \
-    previsions/iridium.h \
-    previsions/evenements.h \
     previsions/conditions.h \
-    librairies/corps/systemesolaire/planete.h \
+    previsions/evenements.h \
+    previsions/iridium.h \
+    previsions/prevision.h \
+    previsions/transitiss.h \
     zlib/zlib.h \
     zlib/zconf.h \
-    zlib/ioapi.h \
-    threadcalculs.h \
-    afficher.h \
-    gestionnairetle.h \
-    globals.h \
-    telecharger.h \
-    apropos.h
+    zlib/ioapi.h
 
 FORMS    += previsat.ui \
     afficher.ui \
+    apropos.ui \
     gestionnairetle.ui \
-    telecharger.ui \
-    apropos.ui
+    telecharger.ui
 
 OTHER_FILES += icone.rc
 
 RESOURCES += \
     resources.qrc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
