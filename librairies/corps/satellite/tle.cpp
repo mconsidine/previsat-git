@@ -357,7 +357,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     int res2 = -1;
     while (isat < nbOld || j < nbNew) {
 
-        QString norad1 = tleOld.at(isat)._norad;
+        QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : "99999";
         QString norad2;
         if (nomFicOld == nomFicNew) {
             norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";

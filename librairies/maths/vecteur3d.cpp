@@ -102,7 +102,8 @@ Vecteur3D::Vecteur3D(const double x, const double y, const double z)
 /*
  * Destructeur
  */
-Vecteur3D::~Vecteur3D(){
+Vecteur3D::~Vecteur3D()
+{
 }
 
 /* Methodes */

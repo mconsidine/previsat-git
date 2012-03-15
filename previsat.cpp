@@ -192,7 +192,7 @@ void PreviSat::Initialisations()
     dirDat = dirExe + QDir::separator() + "data";
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +"Astropedia" +
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "Astropedia" +
             QDir::separator() + "PreviSat";
     dirTle = dirExe + QDir::separator() + "tle";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
@@ -2247,7 +2247,7 @@ void PreviSat::MessageErreur(QNetworkReply::NetworkError, const bool alarm) cons
     /* Corps de la methode */
     QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
     if (alarm) {
-        ui->compteRenduMaj->setText(ui->compteRenduMaj->text() + rep->errorString() + "\n");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + rep->errorString() + "\n");
         throw PreviSatException();
     } else {
         messagesStatut->setText(rep->errorString());
@@ -3925,12 +3925,13 @@ void PreviSat::on_liste1_doubleClicked(const QModelIndex &index)
     /* Initialisations */
 
     /* Corps de la methode */
+
     if (ui->liste1->currentRow() >= 0) {
-        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
-            ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
-        } else {
-            nor = mapSatellites.at(ui->liste1->currentRow()).split("#").at(1);
+        if (ui->liste1->currentItem()->checkState() == Qt::Unchecked) {
             ui->liste1->currentItem()->setCheckState(Qt::Checked);
+        } else {
+            ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
+            nor = mapSatellites.at(ui->liste1->currentRow()).split("#").at(1);
             on_actionDefinir_par_defaut_activated();
         }
     }
@@ -3969,52 +3970,30 @@ void PreviSat::on_liste1_activated(const QModelIndex &index)
     }
 
     /* Corps de la methode */
-    int n = getListeItemChecked(ui->liste1);
-    if (n == 0) {
-        l1 = "";
-        l2 = "";
-    }
-
-    const int r = index.row();
     if (ui->liste1->hasFocus()) {
-        if (r >= 0) {
+        const int r = index.row();
+        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
-            if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
-
-                // Suppression d'un satellite de la liste
-                for(int i=0; liste.size(); i++) {
-                    if (mapSatellites.at(r).split("#").at(1) == liste.at(i)) {
-                        for(int j=i; j<liste.size()-1; j++) {
-                            liste[j] = liste.at(j+1);
-                            bipSat[j] = bipSat.at(j+1);
-                        }
-                        break;
-                    }
-                    nbSat = n;
-                    liste.removeLast();
-                    bipSat.remove(nbSat);
-                    ui->liste2->item(r)->setCheckState(Qt::Unchecked);
-                    ui->liste3->item(r)->setCheckState(Qt::Unchecked);
-                }
-
-            } else {
-
-                // Ajout d'un nouveau satellite dans la liste
-                n++;
-                if (nbSat != n) {
-                    nbSat = n;
-
-                    liste.append(mapSatellites.at(r).split("#").at(1));
-                    ui->liste1->item(r)->setCheckState(Qt::Checked);
-                    ui->liste2->item(r)->setCheckState(Qt::Checked);
-                    ui->liste3->item(r)->setCheckState(Qt::Checked);
+            // Suppression d'un satellite de la liste
+            for(int i=0; i<liste.size(); i++) {
+                if (mapSatellites.at(r).split("#").at(1) == liste.at(i)) {
+                    liste.removeAt(i);
+                    tles.remove(i);
+                    bipSat.remove(i);
+                    break;
                 }
             }
+            nbSat--;
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            liste.append(mapSatellites.at(r).split("#").at(1));
+            nbSat++;
+            tles.resize(nbSat);
+            bipSat.resize(nbSat);
         }
 
-        if (nbSat > 0)
-            tles.resize(nbSat);
-        bipSat.resize(nbSat);
         Satellite::initCalcul = false;
         info = true;
 
@@ -5277,33 +5256,35 @@ void PreviSat::on_mettreAJourTLE_clicked()
         for(int i=0; i<compteRendu.count()-4; i++) {
             const QString nomsat = compteRendu.at(i).split("#").at(0);
             const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setText(ui->compteRenduMaj->text() + msgcpt.arg(nomsat).arg(norad) + "\n");
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
         }
 
 
         if (nbmaj < nbold) {
             msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-            ui->compteRenduMaj->setText("\n" + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+            if (!ui->compteRenduMaj->toPlainText().isEmpty())
+                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
         }
 
         if (nbmaj == nbold && nbold != 0) {
             msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-            ui->compteRenduMaj->setText(msgcpt.arg(nbold) + "\n");
+            ui->compteRenduMaj->setPlainText(msgcpt.arg(nbold) + "\n");
         }
 
         if (nbmaj == 0 && nbold != 0) {
             ui->compteRenduMaj->clear();
-            ui->compteRenduMaj->setText(tr("Aucun TLE mis à jour") + "\n");
+            ui->compteRenduMaj->setPlainText(tr("Aucun TLE mis à jour") + "\n");
         }
 
         if (nbsup > 0) {
             msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-            ui->compteRenduMaj->setText("\n" + msgcpt.arg(nbsup) + "\n");
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbsup) + "\n");
         }
 
         if (nbadd > 0) {
             msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-            ui->compteRenduMaj->setText("\n" + msgcpt.arg(nbadd) + "\n");
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbadd) + "\n");
         }
 
         if (agz) {
@@ -5364,7 +5345,7 @@ void PreviSat::on_actionCopier_dans_le_presse_papier_activated()
 
     /* Corps de la methode */
     QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(ui->compteRenduMaj->text());
+    clipboard->setText(ui->compteRenduMaj->toPlainText());
 
     /* Retour */
     return;
@@ -5514,6 +5495,10 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         nbrevmin = qMin(nbrevmin, nbrevmax);
         nbrevmax = qMax(nbrevmin, nbrevmax);
 
+        // Argument du perigee
+        const double argmin = (ui->argumentPerigeeCreerTLE->currentIndex() == 0) ? 0. : qMin(ui->argMin->value(), ui->argMax->value());
+        const double argmax = (ui->argumentPerigeeCreerTLE->currentIndex() == 0) ? T360 : qMax(ui->argMin->value(), ui->argMax->value());
+
         // Magnitude maximale
         const double mgmax = qMin((double) ui->magnitudeMaxCreerTLE->value(), 99.);
 
@@ -5573,18 +5558,21 @@ void PreviSat::on_rechercheCreerTLE_clicked()
                             // Moyen mouvement
                             if (tabtle.at(isat).getNo() >= nbrevmin && tabtle.at(isat).getNo() <= nbrevmax) {
 
-                                // Magnitude
-                                if (sats.at(isat).getMagnitudeStandard() < 98.) {
-                                    const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI * NB_JOUR_PAR_MIN), DEUX_TIERS);
-                                    const double mag = sats.at(isat).getMagnitudeStandard() - 15.75 * 5. * log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
+                                if (tabtle.at(isat).getArgpo() >= argmin && tabtle.at(isat).getArgpo() <= argmax) {
 
-                                    if (mag <= mgmax) {
+                                    // Magnitude
+                                    if (sats.at(isat).getMagnitudeStandard() < 98.) {
+                                        const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI * NB_JOUR_PAR_MIN), DEUX_TIERS);
+                                        const double mag = sats.at(isat).getMagnitudeStandard() - 15.75 * 5. * log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
 
-                                        // Ecriture du TLE
-                                        if (tabtle.at(isat).getNom() != tabtle.at(isat).getNorad())
-                                            flux << tabtle.at(isat).getNom() << endl;
-                                        flux << tabtle.at(isat).getLigne1() << endl;
-                                        flux << tabtle.at(isat).getLigne2() << endl;
+                                        if (mag <= mgmax) {
+
+                                            // Ecriture du TLE
+                                            if (tabtle.at(isat).getNom() != tabtle.at(isat).getNorad())
+                                                flux << tabtle.at(isat).getNom() << endl;
+                                            flux << tabtle.at(isat).getLigne1() << endl;
+                                            flux << tabtle.at(isat).getLigne2() << endl;
+                                        }
                                     }
                                 }
                             }
