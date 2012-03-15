@@ -339,7 +339,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     LectureFichier(ficOld, liste, tleOld);
 
     // Verification du fichier contenant les TLE recents
-    const int nbNew = VerifieFichier(ficNew, false);
+    int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
         throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficNew), Messages::WARNING);
 
@@ -357,19 +357,17 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     int res2 = -1;
     while (isat < nbOld || j < nbNew) {
 
-        bool amaj = false;
-        if (isat >= nbOld)
-            isat = nbOld - 1;
         QString norad1 = tleOld.at(isat)._norad;
         QString norad2;
         if (nomFicOld == nomFicNew) {
-            norad2 = tleNew.at(j)._norad;
-            if (j == isat && norad1 > norad2)
-                amaj = true;
-
+            norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";
         } else {
-            while ((norad2 = tleNew.at(j)._norad).compare(norad1))
-                j++;
+            if (j < nbNew) {
+                while ((norad2 = tleNew.at(j)._norad).compare(norad1))
+                    j++;
+            } else {
+                norad2 = tleNew.at(nbNew - 1)._norad;
+            }
         }
 
         if (norad1 == norad2) {
@@ -386,20 +384,18 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         } else {
             if (nomFicOld == nomFicNew) {
 
-                if ((norad1.toInt() < norad2.toInt() && j > isat) || amaj) {
+                if (norad1.toInt() > norad2.toInt()) {
 
                     // TLE absent du fichier de TLE anciens
                     // Ajout ?
                     if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll) {
-                        QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
-                        message = message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad);
-                        res1 = QMessageBox::question(0, QObject::tr("Ajout du nouveau TLE"), message,
-                                                    QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
-                                                    QMessageBox::NoToAll, QMessageBox::No);
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
+                        res1 = QMessageBox::question(0, QObject::tr("Ajout du nouveau TLE"),
+                                                     message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad),
+                                                     QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
+                                                     QMessageBox::NoToAll, QMessageBox::No);
                     }
                     if (res1 == QMessageBox::Yes || res1 == QMessageBox::YesToAll) {
-                        if (isat > 0)
-                            isat++;
                         tleOld.insert(isat, tleNew.at(j));
                         nbOld++;
                         nbAdd++;
@@ -410,9 +406,9 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
                     // TLE absent du fichier de TLE recents
                     // Suppression ?
                     if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll) {
-                        QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
-                        message = message.arg(tleOld.at(isat)._nom).arg(tleOld.at(isat)._norad);
-                        res2 = QMessageBox::question(0, QObject::tr("Suppression du TLE"), message,
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
+                        res2 = QMessageBox::question(0, QObject::tr("Suppression du TLE"),
+                                                     message.arg(tleOld.at(isat)._nom).arg(tleOld.at(isat)._norad),
                                                      QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
                                                      QMessageBox::NoToAll, QMessageBox::No);
                     }
@@ -430,10 +426,10 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         isat++;
     }
 
-    compteRendu.append(QString(nbMaj));
-    compteRendu.append(QString(nbOld));
-    compteRendu.append(QString(nbAdd));
-    compteRendu.append(QString(nbSup));
+    compteRendu.append(QString::number(nbMaj));
+    compteRendu.append(QString::number(nbOld));
+    compteRendu.append(QString::number(nbAdd));
+    compteRendu.append(QString::number(nbSup));
 
     // Copie des TLE dans le fichier
     if (nbMaj > 0 || nbAdd > 0 || nbSup > 0) {
@@ -443,12 +439,11 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         QTextStream flux(&fichier);
 
         QVectorIterator<TLE> it(tleOld);
-        int i = 0;
         while (it.hasNext()) {
-            flux << tleOld.at(i)._nom << endl;
-            flux << tleOld.at(i)._ligne1 << endl;
-            flux << tleOld.at(i)._ligne2 << endl;
-            i++;
+            const TLE tle = it.next();
+            flux << tle._nom << endl;
+            flux << tle._ligne1 << endl;
+            flux << tle._ligne2 << endl;
         }
         fichier.close();
     }
