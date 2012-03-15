@@ -233,7 +233,7 @@ void PreviSat::Initialisations()
     }
 
     // Chargement des fichiers images de cartes du monde
-    InitFicMap();
+    InitFicMap(false);
 
     // Verification de l'absence du fichier de mise a jour
     //    QFile fi(dirExe + QDir::separator() + "maj.exe");
@@ -566,6 +566,7 @@ void PreviSat::InitFicObs(const bool alarm) const
         } else {
 
             // Liste de fichiers de lieux d'observation
+            ficObs.clear();
             foreach(QString fic, di.entryList(QDir::Files)) {
 
                 try {
@@ -615,7 +616,7 @@ void PreviSat::InitFicObs(const bool alarm) const
 /*
  * Chargement de la liste de cartes du monde
  */
-void PreviSat::InitFicMap() const
+void PreviSat::InitFicMap(const bool majAff) const
 {
     /* Declarations des variables locales */
     QStringList filtres;
@@ -639,10 +640,10 @@ void PreviSat::InitFicMap() const
             ficMap.append(file);
             ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
             if (settings.value("fichier/listeMap", "").toString() == file)
-                ui->listeMap->setCurrentIndex(ficMap.indexOf(file));
+                ui->listeMap->setCurrentIndex(ficMap.indexOf(file)+1);
         }
         ui->listeMap->addItem(tr("Télécharger..."));
-        if (ui->listeMap->currentIndex() > 0)
+        if (ui->listeMap->currentIndex() > 0 && majAff)
             AffichageCourbes();
     }
 
@@ -1207,7 +1208,7 @@ void PreviSat::AffichageCourbes() const
     QRect rect;
     const QString nomMap = (ui->listeMap->currentIndex() == 0) ?
                 ":/resources/map.jpg" :
-                ficMap.at(ui->listeMap->currentIndex());
+                ficMap.at(ui->listeMap->currentIndex()-1);
     scene->addPixmap(QPixmap(nomMap).scaled(ui->carte->size()));
 
     if (!ui->carte->isHidden()) {
@@ -2540,6 +2541,55 @@ void PreviSat::ModificationOption()
 
         // Affichage des elements graphiques
         AffichageCourbes();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::AfficherLieuSelectionne(const int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString nomlieu = "";
+
+    /* Corps de la methode */
+    ui->nouveauLieu->setVisible(false);
+    ui->nouvelleCategorie->setVisible(false);
+    messagesStatut->setText("");
+
+    // Recuperation du lieu d'observation de la liste
+    if (ui->lieuxObs->hasFocus() && index >= 0) {
+        nomlieu = mapObs.at(index);
+        ui->selecLieux->setCurrentRow(-1);
+    }
+    if (ui->selecLieux->hasFocus() && index >= 0) {
+        nomlieu = listeObs.at(index);
+        ui->lieuxObs->setCurrentRow(-1);
+    }
+
+    if (!nomlieu.isEmpty()) {
+
+        ui->coordonnees->setVisible(true);
+
+        // Longitude/Latitude/Altitude
+        const QStringList lieu = nomlieu.split("#");
+        const QStringList coord = lieu.at(1).split("&");
+        const double lo = coord.at(0).toDouble();
+        const double la = coord.at(1).toDouble();
+        const int atd = coord.at(2).toInt();
+
+        const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
+        const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
+
+        // Affichage des coordonnees du lieu d'observation
+        ui->nLieu->setText(tr("Lieu :") + " " + lieu.at(0).trimmed());
+        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), Maths::NO_TYPE, 3, 0, false, true) + " " + ew);
+        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), Maths::NO_TYPE, 2, 0, false, true) + " " + ns);
+        const QString msg = "%1 ";
+        ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
+                                                             msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
     }
 
     /* Retour */
@@ -4448,7 +4498,7 @@ void PreviSat::on_updown_valueChanged(int arg1)
 
     /* Corps de la methode */
     QTime heur;
-    heur = heur.addSecs(arg1 * NB_SEC_PAR_MIN);
+    heur = heur.addSecs(fabs(arg1 * NB_SEC_PAR_MIN));
     const QString sgn = (arg1 >= 0) ? " + " : " - ";
     ui->tuc->setText(tr("UTC") + sgn + heur.toString("hh:mm"));
     const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
@@ -4479,13 +4529,13 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    const QDateTime dateLocale = QDateTime::currentDateTime();
-    QDateTime dateUTC(dateLocale);
-    dateUTC.setTimeSpec(Qt::UTC);
-    const int ecart = dateLocale.secsTo(dateUTC) * NB_SEC_PAR_MIN;
-
-    if (ui->utcAuto->isChecked())
+    if (ui->utcAuto->isChecked()) {
+        const QDateTime dateLocale = QDateTime::currentDateTime();
+        QDateTime dateUTC(dateLocale);
+        dateUTC.setTimeSpec(Qt::UTC);
+        const int ecart = (int) (dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
         ui->updown->setValue(ecart);
+    }
 
     /* Retour */
     return;
@@ -4510,10 +4560,10 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
                 telecharger->setWindowModality(Qt::ApplicationModal);
                 telecharger->show();
                 ui->listeMap->setCurrentIndex(ui->listeMap->findText(settings.value("fichier/listeMap", "").toString()));
-                InitFicMap();
+                InitFicMap(true);
                 selec2 = 0;
             } else {
-                settings.setValue("fichier/listeMap", (index == 0) ? "" : ficMap[qMax(0, ui->listeMap->currentIndex()-1)]);
+                settings.setValue("fichier/listeMap", (index == 0) ? "" : ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)));
             }
         }
         AffichageCourbes();
@@ -4634,20 +4684,20 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
 
     /* Corps de la methode */
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
-    const QString msg = tr("Voulez-vous vraiment supprimer la catégorie ""%1""?");
+    QString msg = tr("Voulez-vous vraiment supprimer la catégorie ""%1""?");
     const int res = QMessageBox::question(this, tr("Information"), msg.arg(ui->fichiersObs->currentItem()->text()),
                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
     if (res == QMessageBox::No) {
         messagesStatut->setText("");
     } else {
-        const QString msg2 = tr("La catégorie ""%1"" a été supprimée");
-        messagesStatut->setText(msg2.arg(ui->fichiersObs->currentItem()->text()));
         QFile fi(dirCoo + QDir::separator() + fic);
         fi.remove();
         ui->lieuxObs->clear();
         InitFicObs(false);
         ui->fichiersObs->setCurrentRow(0);
+        msg = tr("La catégorie ""%1"" a été supprimée");
+        messagesStatut->setText(msg.arg(ui->fichiersObs->currentItem()->text()));
     }
 
     /* Retour */
@@ -4663,6 +4713,7 @@ void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
     /* Corps de la methode */
     dirHttp = 1;
     Telecharger *telecharger = new Telecharger;
+    telecharger->setWindowModality(Qt::ApplicationModal);
     telecharger->show();
 
     /* Retour */
@@ -4695,6 +4746,7 @@ void PreviSat::on_validerCategorie_clicked()
                 di.mkdir(dirCoo);
 
             QFile fi(dirCoo + QDir::separator() + ui->nvCategorie->text().toLower());
+            fi.open(QIODevice::WriteOnly | QIODevice::Text);
             fi.write("");
             fi.close();
             InitFicObs(false);
@@ -4741,8 +4793,9 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
             ligne = flux.readLine();
         } while (ligne.isEmpty());
         ui->lieuxObs->addItem(ligne.mid(34));
-        mapObs.append(ligne);
+        mapObs.append(ligne.mid(34).trimmed() + "#" + ligne.mid(0, 33).replace(" ", "&"));
     }
+    mapObs.sort();
 
     /* Retour */
     return;
@@ -4764,46 +4817,12 @@ void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &pos)
 
 void PreviSat::on_lieuxObs_currentRowChanged(int currentRow)
 {
-    /* Declarations des variables locales */
+    AfficherLieuSelectionne(currentRow);
+}
 
-    /* Initialisations */
-    QString nomlieu = "";
-
-    /* Corps de la methode */
-    ui->nouveauLieu->setVisible(false);
-    ui->nouvelleCategorie->setVisible(false);
-    messagesStatut->setText("");
-
-    // Recuperation du lieu d'observation de la liste
-    if (ui->lieuxObs->hasFocus() && currentRow >= 0)
-        nomlieu = mapObs.at(ui->lieuxObs->currentRow());
-    if (ui->selecLieux->hasFocus() && ui->selecLieux->currentRow() >= 0)
-        nomlieu = mapObs.at(currentRow);
-
-    if (!nomlieu.isEmpty()) {
-
-        ui->coordonnees->setVisible(true);
-
-        // Longitude/Latitude/Altitude
-        const QStringList coord = nomlieu.mid(0, 33).split(" ");
-        const double lo = coord.at(0).toDouble();
-        const double la = coord.at(1).toDouble();
-        const int atd = coord.at(2).toInt();
-
-        const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
-        const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
-
-        // Affichage des coordonnees du lieu d'observation
-        ui->nLieu->setText(tr("Lieu :") + " " + nomlieu.mid(34).trimmed());
-        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), Maths::NO_TYPE, 3, 0, false, true) + " " + ew);
-        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), Maths::NO_TYPE, 2, 0, false, true) + " " + ns);
-        const QString msg = "%1 ";
-        ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
-                                                             msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
-    }
-
-    /* Retour */
-    return;
+void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
+{
+    AfficherLieuSelectionne(currentRow);
 }
 
 void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
@@ -4813,7 +4832,7 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->lieuxObs->currentRow() < 0) {
+    if (ui->lieuxObs->indexAt(pos).row() < 0) {
         ui->actionSupprimerLieu->setVisible(false);
         ui->actionAjouter_Mes_Preferes->setVisible(false);
     } else {
@@ -4839,7 +4858,7 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
     ui->nouveauLieu->setVisible(true);
     ui->coordonnees->setVisible(false);
     ui->nvLieu->setText("");
-    ui->nvAltitude->setInputMask("9999 " + (ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->ajdfic->setCurrentIndex(0);
     messagesStatut->setText("");
     ui->nvLieu->setFocus();
@@ -4855,7 +4874,7 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
     /* Initialisations */
     QString fic = ficObs.at(0);
     if (!fic.contains("aapreferes")) {
-        // Le fichier aa preferes n'existe pas, on le cree
+        // Le fichier aapreferes n'existe pas, on le cree
         ficObs.insert(0, dirCoo + QDir::separator() + "aapreferes");
         fic = ficObs.at(0);
 
@@ -4868,28 +4887,38 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
 
     /* Corps de la methode */
     const QString nomlieu = mapObs.at(ui->lieuxObs->currentRow());
-    const QString lieu = nomlieu.mid(34).toLower().trimmed();
+    const QString lieu = nomlieu.split("#").at(0).toLower().trimmed();
 
     // Verification que le lieu d'observation n'existe pas deja dans Mes Preferes
     QFile fichier(fic);
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
     bool atrouve = false;
-    while (!flux.atEnd() || !atrouve) {
+    while (!flux.atEnd() && !atrouve) {
         const QString ligne = flux.readLine().mid(34).toLower().trimmed();
         atrouve = (lieu == ligne);
     }
 
-    if (!atrouve) {
+    if (atrouve) {
+        const QString msg = tr("Le lieu d'observation ""%1"" fait déjà partie de ""Mes Préférés""");
+        Messages::Afficher(msg.arg(nomlieu.split("#").at(0)), Messages::WARNING);
+    } else {
+
+        const QStringList lieux = nomlieu.split("#");
+        const QStringList coord = lieux.at(1).split("&");
+
+        QString ligne = "%1 %2 %3 %4";
+        ligne = ligne.arg(coord.at(0)).arg(coord.at(1)).arg(coord.at(2)).arg(lieux.at(0));
+
         // Ajout du lieu d'observation dans Mes Preferes
         QFile fich(fic);
         fich.open(QIODevice::Append | QIODevice::Text);
-        flux << new QTextStream(&fich);
-        flux << nomlieu;
+        QTextStream flux2(&fich);
+        flux2 << ligne << endl;
         fich.close();
 
         const QString msg = tr("Le lieu d'observation ""%1"" a été ajouté dans la catégorie Mes Preferes");
-        messagesStatut->setText(msg.arg(lieu));
+        messagesStatut->setText(msg.arg(lieu.at(0)));
     }
 
     /* Retour */
@@ -4947,11 +4976,14 @@ void PreviSat::on_validerObs_clicked()
             }
             const double x1 = ((ui->nvEw->currentText() == tr("Est")) ? -1 : 1) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
             const double x2 = ((ui->nvNs->currentText() == tr("Sud")) ? -1 : 1) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
-            const QString msg = "%1 %2 %3 %4";
-            flux << msg.arg(x1, 13, 'f', 9, QChar('0')).arg(x2, 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0'))
-                    .arg(nomlieu);
+
+            const QString msg = "%1%2 %3%4 %5 %6";
+            flux << msg.arg((x1 >= 0.) ? "+" : "-").arg(fabs(x1), 13, 'f', 9, QChar('0'))
+                    .arg((x2 >= 0.) ? "+" : "-").arg(fabs(x2), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0'))
+                    .arg(nomlieu) << endl;
             fi.close();
 
+            on_fichiersObs_currentRowChanged(0);
             ui->nouveauLieu->setVisible(false);
             selec = -1;
         }
@@ -4982,24 +5014,37 @@ void PreviSat::on_actionSupprimerLieu_activated()
 
     if (res == QMessageBox::Yes) {
 
-        const QString ligne = mapObs.at(ui->lieuxObs->currentRow());
+        const QStringList lieu = mapObs.at(ui->lieuxObs->currentRow()).split("#");
+        const QStringList coord = lieu.at(1).split("&");
+        const double lo = coord.at(0).toDouble();
+        const double la = coord.at(1).toDouble();
+        const int atd = coord.at(2).toInt();
+        const QString msg = "%1%2 %3%4 %5 %6";
+        const QString ligne =  msg.arg((lo >= 0.) ? "+" : "-").arg(fabs(lo), 13, 'f', 9, QChar('0'))
+                .arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0'))
+                .arg(lieu.at(0));
+
         QFile sr(fic);
+        sr.open(QIODevice::ReadOnly | QIODevice::Text);
+
         QFile sw(dirTmp + QDir::separator() + "obs.tmp");
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
 
         QTextStream flux(&sr);
         QTextStream flux2(&sw);
         while (!flux.atEnd()) {
             const QString ligne2 = flux.readLine();
             if (ligne != ligne2)
-                flux2 << ligne2;
+                flux2 << ligne2 << endl;
         }
         sw.close();
         sr.close();
 
         sr.remove();
         sw.rename(fic);
+        on_fichiersObs_currentRowChanged(0);
         selec = -1;
-        const QString msg2 = tr("Le lieu d'observation ""%1"" a été supprimé de la catégorie ""%2""");
+        const QString msg2 = tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"");
         messagesStatut->setText(msg2.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()));
     } else {
         messagesStatut->setText("");
@@ -5025,16 +5070,14 @@ void PreviSat::on_ajoutLieu_clicked()
                 }
             }
             ui->selecLieux->addItem(ui->lieuxObs->currentItem()->text());
-            const QString ligne = mapObs.at(ui->lieuxObs->currentRow());
-            const QString coord = ligne.mid(0, 33).replace(" ", "&");
-            listeObs.append(ligne.mid(34).trimmed() + "#" + coord);
+            listeObs.append(mapObs.at(ui->lieuxObs->currentRow()));
 
             QString nomslieux = "";
             QStringListIterator it(listeObs);
             while (it.hasNext()) {
                 nomslieux += it.next() + "$";
             }
-            nomslieux.remove(nomslieux.length());
+            nomslieux.remove(nomslieux.length() - 1, 1);
             settings.setValue("observateur/lieu", nomslieux);
             AffichageLieuObs();
             AffichageCourbes();
@@ -5063,7 +5106,7 @@ void PreviSat::on_supprLieu_clicked()
         while (it.hasNext()) {
             nomslieux += it.next() + "$";
         }
-        nomslieux.remove(nomslieux.length());
+        nomslieux.remove(nomslieux.length() - 1, 1);
         settings.setValue("observateur/lieu", nomslieux);
 
         AffichageLieuObs();
@@ -5106,7 +5149,21 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
         ui->dateInitialeIri->setDateTime(date.ToQDateTime(0));
         ui->dateFinaleIri->setDateTime(ui->dateInitialeIri->dateTime().addDays(7));
 
-    } else if (arg1 == ui->evenementsOrbitaux) {
+    } else {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (arg1 == ui->evenementsOrbitaux) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
         ui->dateFinaleEvt->setDateTime(ui->dateInitialeEvt->dateTime().addDays(7));
@@ -5193,7 +5250,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
                                         ui->fichierALire->text(), Messages::WARNING);
             agz = true;
         } else {
-            fic = fi.fileName();
+            fic = QDir::convertSeparators(fi.absoluteFilePath());
         }
 
         QStringList listeFic;
@@ -5202,22 +5259,22 @@ void PreviSat::on_mettreAJourTLE_clicked()
             fi = QFileInfo(file);
             if (!fi.exists()) {
                 const QString msg = tr("MISE A JOUR : Le fichier %1 n'existe pas");
-                throw PreviSatException(msg.arg(fi.fileName()), Messages::WARNING);
+                throw PreviSatException(msg.arg(fi.absoluteFilePath()), Messages::WARNING);
             }
         }
 
         QStringList compteRendu;
-        TLE::MiseAJourFichier(ui->fichierAMettreAJour->text(), fic, compteRendu);
+        TLE::MiseAJourFichier(QDir::convertSeparators(ui->fichierAMettreAJour->text()), fic, compteRendu);
 
         ui->compteRenduMaj->setVisible(true);
         ui->compteRenduMaj->clear();
-        const int nbsup = compteRendu.last().toInt();
+        const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
         const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
         const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
         const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
 
         QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
-        for(int i=0; i<compteRendu.count()-3; i++) {
+        for(int i=0; i<compteRendu.count()-4; i++) {
             const QString nomsat = compteRendu.at(i).split("#").at(0);
             const QString norad = compteRendu.at(i).split("#").at(1);
             ui->compteRenduMaj->setText(ui->compteRenduMaj->text() + msgcpt.arg(nomsat).arg(norad) + "\n");
@@ -6443,6 +6500,3 @@ void PreviSat::CalculsTermines()
     /* Retour */
     return;
 }
-
-
-

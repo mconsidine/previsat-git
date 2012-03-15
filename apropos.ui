@@ -86,7 +86,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Version 3.0.0.0 (20 mars 2012)</string>
+     <string>Version 3.0.0.0 (15 avril 2012)</string>
     </property>
    </widget>
    <widget class="QLabel" name="informationsCopyright">

@@ -1046,7 +1046,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -5479,7 +5479,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -5787,8 +5787,8 @@
               <property name="contextMenuPolicy">
                <enum>Qt::CustomContextMenu</enum>
               </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              <property name="toolTip">
+               <string>Cliquer droit pour afficher le menu contextuel</string>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -5831,9 +5831,6 @@
                 <pointsize>8</pointsize>
                </font>
               </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
-              </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
@@ -5859,8 +5856,8 @@
               <property name="contextMenuPolicy">
                <enum>Qt::CustomContextMenu</enum>
               </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              <property name="toolTip">
+               <string>Cliquer droit pour afficher le menu contextuel</string>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -6133,7 +6130,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-124</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6439,6 +6436,15 @@
                    <height>22</height>
                   </rect>
                  </property>
+                 <property name="minimum">
+                  <number>-720</number>
+                 </property>
+                 <property name="maximum">
+                  <number>780</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>15</number>
+                 </property>
                 </widget>
                 <widget class="QLabel" name="tuc">
                  <property name="geometry">
@@ -6719,7 +6725,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="mouseTracking">
@@ -8041,7 +8047,7 @@
              <widget class="QListWidget" name="liste3">
               <property name="geometry">
                <rect>
-                <x>560</x>
+                <x>553</x>
                 <y>8</y>
                 <width>201</width>
                 <height>170</height>
@@ -8063,7 +8069,7 @@
              <widget class="QPushButton" name="calculsEvt">
               <property name="geometry">
                <rect>
-                <x>360</x>
+                <x>353</x>
                 <y>155</y>
                 <width>91</width>
                 <height>23</height>
@@ -8076,7 +8082,7 @@
              <widget class="QPushButton" name="annulerEvt">
               <property name="geometry">
                <rect>
-                <x>460</x>
+                <x>453</x>
                 <y>155</y>
                 <width>91</width>
                 <height>23</height>
@@ -8089,7 +8095,7 @@
              <widget class="QPushButton" name="afficherEvt">
               <property name="geometry">
                <rect>
-                <x>460</x>
+                <x>453</x>
                 <y>155</y>
                 <width>91</width>
                 <height>23</height>

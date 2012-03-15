@@ -64,7 +64,7 @@ private:
 
     // Initialisation
     void InitFicObs(const bool alarm) const;
-    void InitFicMap() const;
+    void InitFicMap(const bool majAff) const;
 
     // Affichage
     void AffichageDonnees();
@@ -85,6 +85,7 @@ private:
     void SauveOngletElementsOsculateurs(const QString fic) const;
     void SauveOngletInformations(const QString fic) const;
     void ModificationOption();
+    void AfficherLieuSelectionne(const int index);
     int getListeItemChecked(const QListWidget *listWidget) const;
 
     // Systeme
@@ -178,6 +179,7 @@ private slots:
     void on_fichiersObs_currentRowChanged(int currentRow);
     void on_fichiersObs_customContextMenuRequested(const QPoint &pos);
     void on_lieuxObs_currentRowChanged(int currentRow);
+    void on_selecLieux_currentRowChanged(int currentRow);
     void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
     void on_actionCreer_un_nouveau_lieu_activated();
     void on_actionAjouter_Mes_Preferes_activated();
@@ -189,6 +191,7 @@ private slots:
 
     void on_barreMenu_pressed();
     void on_onglets_currentChanged(QWidget *arg1);
+    void on_ongletsOutils_currentChanged(QWidget *arg1);
 
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
