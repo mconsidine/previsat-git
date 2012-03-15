@@ -1046,7 +1046,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -6725,7 +6725,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="mouseTracking">
@@ -6912,7 +6912,7 @@
                </property>
               </widget>
              </widget>
-             <widget class="QLineEdit" name="compteRenduMaj">
+             <widget class="QPlainTextEdit" name="compteRenduMaj">
               <property name="geometry">
                <rect>
                 <x>490</x>
@@ -6921,8 +6921,8 @@
                 <height>175</height>
                </rect>
               </property>
-              <property name="contextMenuPolicy">
-               <enum>Qt::CustomContextMenu</enum>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
             </widget>
