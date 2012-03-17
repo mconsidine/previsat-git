@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string notr="true"/>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>
