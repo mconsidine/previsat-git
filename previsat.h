@@ -92,14 +92,11 @@ private:
     void EcritureListeRegistre() const;
     bool DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const;
 
-    // Calculs de previsions
-    void CalculsTermines();
-
-
 private slots:
 
     void GestionTempsReel();
     void ListeInfo(QUrlInfo &infoFichier);
+    void CalculsTermines();
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -123,9 +120,7 @@ private slots:
     void on_actionDefinir_par_defaut_activated();
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
-    void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_pressed(const QModelIndex &index);
-    void on_liste1_activated(const QModelIndex &index);
     void on_liste1_customContextMenuRequested(const QPoint &pos);
 
     void on_lieuxObservation1_currentIndexChanged(int index);
