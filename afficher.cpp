@@ -62,13 +62,16 @@ Afficher::~Afficher()
 
 void Afficher::show(const QString fic)
 {
-    ui->fichier->load(QUrl(fic));
+    QFile fi(fic);
+    fi.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString prev = fi.readAll();
+    ui->fichier->setText(prev);
     setVisible(true);
 }
 
 void Afficher::resizeEvent(QResizeEvent *event)
 {
-    ui->fichier->setGeometry(0, 0, Afficher::width(), Afficher::height());
+    ui->fichier->setGeometry(0, 0, Afficher::width(), Afficher::height() - ui->barreOutils->height());
 }
 
 void Afficher::on_actionEnregistrer_activated()
