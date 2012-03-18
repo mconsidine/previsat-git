@@ -45,14 +45,21 @@
 #include <QFile>
 #include <QFileDialog>
 #include "afficher.h"
-#include "globals.h"
 #include "ui_afficher.h"
+
+static QString dirOut;
+static QString dirTmp;
 
 Afficher::Afficher(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
+    QCoreApplication::setApplicationName("PreviSat");
+    QCoreApplication::setOrganizationName("Astropedia");
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "Astropedia" +
+            QDir::separator() + "PreviSat";
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 }
 
 Afficher::~Afficher()

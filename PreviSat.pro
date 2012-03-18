@@ -48,7 +48,6 @@ HEADERS  += previsat.h \
     afficher.h \
     apropos.h \
     gestionnairetle.h \
-    globals.h \
     telecharger.h \
     threadcalculs.h \
     librairies/corps/corps.h \

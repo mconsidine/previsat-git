@@ -69,7 +69,6 @@
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
-#include "globals.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
 #include "zlib/zlib.h"
@@ -77,7 +76,13 @@
 #include "ui_previsat.h"
 
 // Repertoires
+static QString dirCoo;
+static QString dirDat;
 static QString dirExe;
+static QString dirMap;
+static QString dirOut;
+static QString dirTle;
+static QString dirTmp;
 
 // TLE par defaut
 static QString nom;
@@ -91,9 +96,12 @@ static bool notif;
 static bool old;
 static int ind;
 static int nbSat;
+static QString nomfic;
 static QString nor;
 static QVector<bool> bipSat;
+static QVector<TLE> tles;
 static QList<Satellite> satellites;
+static QStringList liste;
 static QStringList mapSatellites;
 static QStringList listeFicTLE;
 
@@ -1071,16 +1079,15 @@ void PreviSat::AffichageDonnees()
                             log10(1.45 * (satellites.at(0).getElements().getDemiGrandAxe() *
                                           (1. - satellites.at(0).getElements().getExcentricite()) -
                                           RAYON_TERRESTRE));
-                    chaine = "%1%2/%3%4";
+                    chaine = "%1%2%3/%4%5";
                     chaine = chaine.arg((satellites.at(0).getMagnitudeStandard() >= 0.) ? "+" : "-").
-                            arg(fabs(satellites.at(0).getMagnitudeStandard()), 0, 'f', 1).
+                            arg(fabs(satellites.at(0).getMagnitudeStandard()), 0, 'f', 1).arg(satellites.at(0).getMethMagnitude()).
                             arg((xval >= 0.) ? "+" : "-").arg(fabs(xval), 0, 'f', 1);
                     ui->magnitudeStdMax->setText(chaine);
                 }
 
                 // Modele orbital
-                chaine = (satellites.at(0).getMethod() == 'd') ? QObject::tr("SGP4 (DS)") :
-                                                                 QObject::tr("SPG4 (NE)");
+                chaine = (satellites.at(0).getMethod() == 'd') ? QObject::tr("SGP4 (DS)") : QObject::tr("SGP4 (NE)");
                 ui->modele->setText(chaine);
 
                 // Dimensions du satellite
@@ -3661,7 +3668,6 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
 
                 if (nbSat > 0) {
                     liste.clear();
-
                     tles.clear();
                     tles.resize(nbSat);
                     bipSat.resize(nbSat);
@@ -3670,8 +3676,8 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                     for (int i=0; i<mapSatellites.size(); i++) {
                         if (ui->liste1->item(i)->checkState() == Qt::Checked) {
                             liste.append(mapSatellites.at(i).split("#").at(1));
-                            if (liste.at(i) == nor)
-                                j = i;
+                            if (liste.last() == nor)
+                                j = liste.size() - 1;
                         }
                     }
 
@@ -3689,6 +3695,10 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                         l2 = "";
                         liste.clear();
                     }
+
+                    Satellite::initCalcul = false;
+
+                    Satellite::LectureDonnees(liste, tles, satellites);
 
                     CalculsAffichage();
 
@@ -4590,9 +4600,8 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
         } else {
             if (index == ui->listeMap->count()) {
                 selec2 = -1;
-                dirHttp = 2;
 
-                Telecharger *telecharger = new Telecharger;
+                Telecharger *telecharger = new Telecharger(2);
                 telecharger->setWindowModality(Qt::ApplicationModal);
                 telecharger->show();
                 ui->listeMap->setCurrentIndex(ui->listeMap->findText(settings.value("fichier/listeMap", "").toString()));
@@ -4747,8 +4756,7 @@ void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    dirHttp = 1;
-    Telecharger *telecharger = new Telecharger;
+    Telecharger *telecharger = new Telecharger(1);
     telecharger->setWindowModality(Qt::ApplicationModal);
     telecharger->show();
 

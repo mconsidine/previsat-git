@@ -1331,6 +1331,11 @@ double Satellite::getMagnitudeStandard() const
     return _magnitudeStandard;
 }
 
+char Satellite::getMethMagnitude() const
+{
+    return _methMagnitude;
+}
+
 char Satellite::getMethod() const
 {
     return _sat.method;

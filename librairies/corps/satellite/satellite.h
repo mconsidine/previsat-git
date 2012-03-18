@@ -83,6 +83,7 @@ public:
     double getFractionIlluminee() const;
     double getMagnitude() const;
     double getMagnitudeStandard() const;
+    char getMethMagnitude() const;
     char getMethod() const;
     int getNbOrbites() const;
     bool isPenombre() const;
