@@ -45,21 +45,40 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QTextStream>
-#include "librairies/exceptions/previsatexception.h"
 #include "gestionnairetle.h"
-#include "globals.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "ui_gestionnairetle.h"
 
 static bool init;
 static int selec;
+static QString nomfic;
+static QStringList liste;
 static QString ficTLE;
+static QString dirDat;
+static QString dirTle;
+static QString dirTmp;
+static QSettings settings("Astropedia", "previsat");
+static QVector<TLE> tabtle;
 
 GestionnaireTLE::GestionnaireTLE(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GestionnaireTLE)
 {
     ui->setupUi(this);
+}
+
+GestionnaireTLE::GestionnaireTLE(QVector<TLE> &tabtles)
+{
+    QCoreApplication::setApplicationName("PreviSat");
+    QCoreApplication::setOrganizationName("Astropedia");
+    const QString dirExe = QCoreApplication::applicationDirPath();
+    dirDat = dirExe + QDir::separator() + "data";
+    dirTle = dirExe + QDir::separator() + "tle";
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
+    liste = settings.value("TLE/liste", "25544&20580").toString().split("&");
+    tabtle = tabtles;
     load();
 }
 
@@ -76,6 +95,7 @@ void GestionnaireTLE::load()
     selec = -1;
     ui->barreMenu->setVisible(false);
     ui->frame->setVisible(false);
+    ui->groupe->setVisible(false);
     ui->fichierTelechargement->setText("");
     ui->barreProgression->setValue(0);
     ui->listeGroupeTLE->clear();
@@ -462,7 +482,7 @@ void GestionnaireTLE::on_MajMaintenant_clicked()
                 if (fic == nomfic) {
 
                     // Recuperation des TLE de la liste
-                    TLE::LectureFichier(nomfic, liste, tles);
+                    TLE::LectureFichier(nomfic, liste, tabtle);
                 }
             }
             ui->frame->setVisible(false);

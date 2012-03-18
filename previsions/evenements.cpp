@@ -262,7 +262,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                           sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  %7 %8  %9 (%10 %9)";
+                    ligne = "%1  %2°  %3° %4  %5° %6  %7 %8 %9 (%10 %9)";
                     double rayonVecteur = minmax[1];
                     double altitude = minmax[1] - RAYON_TERRESTRE;
                     if (conditions.getUnite() == QObject::tr("mi")) {

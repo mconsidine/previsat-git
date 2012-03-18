@@ -42,6 +42,7 @@
 
 #include <QMainWindow>
 #include <QtNetwork>
+#include "librairies/corps/satellite/tle.h"
 
 namespace Ui {
     class GestionnaireTLE;
@@ -53,6 +54,7 @@ class GestionnaireTLE : public QMainWindow
 
 public:
     explicit GestionnaireTLE(QWidget *parent = 0);
+    GestionnaireTLE(QVector<TLE> &tabtles);
     ~GestionnaireTLE();
 
 private slots:

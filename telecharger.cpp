@@ -40,15 +40,19 @@
  *
  */
 
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
-#include "globals.h"
 #include "telecharger.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "ui_telecharger.h"
 
+static int dirHttp;
+static QString dirCoo;
+static QString dirMap;
+static QString dirTmp;
 static const QString httpDirList1 = "http://astropedia.free.fr/previsat/data/coordonnees/";
 static const QString httpDirList2 = "http://astropedia.free.fr/previsat/data/map/";
 
@@ -57,6 +61,18 @@ Telecharger::Telecharger(QWidget *parent) :
     ui(new Ui::Telecharger)
 {
     ui->setupUi(this);
+}
+
+Telecharger::Telecharger(const int idirHttp)
+{
+    dirHttp = idirHttp;
+    QCoreApplication::setApplicationName("PreviSat");
+    QCoreApplication::setOrganizationName("Astropedia");
+    const QString dirExe = QCoreApplication::applicationDirPath();
+    const QString dirDat = dirExe + QDir::separator() + "data";
+    dirCoo = dirDat + QDir::separator() + "coordonnees";
+    dirMap = dirDat + QDir::separator() + "map";
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 
     ui->listeLieuxObs->clear();
     ui->barreProgression->setVisible(false);

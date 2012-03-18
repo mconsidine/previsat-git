@@ -53,6 +53,7 @@ class Telecharger : public QMainWindow
 
 public:
     explicit Telecharger(QWidget *parent = 0);
+    Telecharger(const int idirHttp);
     ~Telecharger();
 
 private slots:
