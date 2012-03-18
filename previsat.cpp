@@ -3871,6 +3871,8 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
 
         ui->liste1->setCurrentRow(ind);
         ui->liste2->setCurrentRow(ind);
+        if (ui->liste1->currentItem()->checkState() == Qt::Unchecked)
+            ui->liste1->currentItem()->setCheckState(Qt::Checked);
         ind = -1;
     }
 
@@ -4030,36 +4032,34 @@ void PreviSat::on_liste1_pressed(const QModelIndex &index)
         if (ind >= 0)
             nor = mapSatellites.at(ind).split("#").at(1);
 
-        QMouseEvent *event;
-        if (event->button() == Qt::LeftButton) {
-            if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
+        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
-                // Suppression d'un satellite de la liste
-                for(int i=0; i<liste.size(); i++) {
-                    if (mapSatellites.at(ind).split("#").at(1) == liste.at(i)) {
-                        ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
-                        liste.removeAt(i);
-                        tles.remove(i);
-                        bipSat.remove(i);
-                        ui->liste2->item(ind)->setCheckState(Qt::Unchecked);
-                        ui->liste3->item(ind)->setCheckState(Qt::Unchecked);
-                        break;
-                    }
+            // Suppression d'un satellite de la liste
+            for(int i=0; i<liste.size(); i++) {
+                if (mapSatellites.at(ind).split("#").at(1) == liste.at(i)) {
+                    ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
+                    liste.removeAt(i);
+                    tles.remove(i);
+                    bipSat.remove(i);
+                    ui->liste2->item(ind)->setCheckState(Qt::Unchecked);
+                    ui->liste3->item(ind)->setCheckState(Qt::Unchecked);
+                    break;
                 }
-                nbSat--;
-
-            } else {
-
-                // Ajout d'un satellite dans la liste
-                liste.append(mapSatellites.at(ind).split("#").at(1));
-                nbSat++;
-                tles.resize(nbSat);
-                bipSat.resize(nbSat);
-                ui->liste1->item(ind)->setCheckState(Qt::Checked);
-                ui->liste2->item(ind)->setCheckState(Qt::Checked);
-                ui->liste3->item(ind)->setCheckState(Qt::Checked);
             }
+            nbSat--;
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            liste.append(mapSatellites.at(ind).split("#").at(1));
+            nbSat++;
+            tles.resize(nbSat);
+            bipSat.resize(nbSat);
+            ui->liste1->item(ind)->setCheckState(Qt::Checked);
+            ui->liste2->item(ind)->setCheckState(Qt::Checked);
+            ui->liste3->item(ind)->setCheckState(Qt::Checked);
         }
+
 
         Satellite::initCalcul = false;
         info = true;
