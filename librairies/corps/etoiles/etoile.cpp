@@ -46,7 +46,6 @@
 #include "etoile.h"
 #include "librairies/maths/mathConstants.h"
 
-static const int TABMAX = 9110;
 bool Etoile::_initStar = false;
 
 Etoile::Etoile()
@@ -85,7 +84,7 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     }
 
     /* Corps de la methode */
-    for (int i=0; i<TABMAX; i++)
+    for (int i=0; i<etoiles.size(); i++)
         etoiles[i].CalculCoordHoriz(observateur);
 
     /* Retour */

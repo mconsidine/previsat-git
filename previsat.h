@@ -57,6 +57,8 @@ class PreviSat : public QMainWindow
 public:
     explicit PreviSat(QWidget *parent = 0);
     void Initialisations();
+    void InitFicTLE();
+    void DemarrageApplication();
     ~PreviSat();
 
 private:
@@ -105,6 +107,7 @@ private slots:
     void mouseDoubleClickEvent(QMouseEvent *);
 
     void on_maximise_clicked();
+    void on_directHelp_clicked();
     void on_actionOuvrir_fichier_TLE_activated();
     void on_actionEnregistrer_activated();
     void on_actionTelecharger_les_mises_jour_activated();
@@ -120,7 +123,8 @@ private slots:
     void on_actionDefinir_par_defaut_activated();
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
-    void on_liste1_pressed(const QModelIndex &index);
+    void on_liste1_clicked(const QModelIndex &index);
+    void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_customContextMenuRequested(const QPoint &pos);
 
     void on_lieuxObservation1_currentIndexChanged(int index);
@@ -156,6 +160,7 @@ private slots:
     void on_affconst_stateChanged(int arg1);
     void on_magnitudeEtoiles_valueChanged(double arg1);
     void on_affSAA_stateChanged(int arg1);
+    void on_affplanetes_stateChanged(int arg1);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
     void on_heureLegale_toggled(bool checked);
@@ -234,6 +239,8 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
+
+
 };
 
 #endif // PREVISAT_H

@@ -631,7 +631,7 @@
           </property>
           <property name="icon">
            <iconset resource="resources.qrc">
-            <normaloff>:/resources/globe.ico</normaloff>:/resources/globe.ico</iconset>
+            <normaloff>:/resources/globe.png</normaloff>:/resources/globe.png</iconset>
           </property>
           <property name="shortcut">
            <string notr="true">F9</string>
@@ -659,17 +659,17 @@
            <enum>QFrame::Plain</enum>
           </property>
          </widget>
+         <zorder>frameLat</zorder>
          <zorder>carte</zorder>
          <zorder>frameLon</zorder>
-         <zorder>frameLat</zorder>
-         <zorder>maximise</zorder>
          <zorder>ciel</zorder>
          <zorder>nord</zorder>
          <zorder>sud</zorder>
          <zorder>ouest</zorder>
          <zorder>est</zorder>
-         <zorder>affichageCiel</zorder>
          <zorder>frameCarte2</zorder>
+         <zorder>affichageCiel</zorder>
+         <zorder>maximise</zorder>
         </widget>
        </item>
        <item>
@@ -915,9 +915,6 @@
           <property name="horizontalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
           <property name="textElideMode">
            <enum>Qt::ElideNone</enum>
           </property>
@@ -951,7 +948,7 @@
           <property name="geometry">
            <rect>
             <x>200</x>
-            <y>10</y>
+            <y>40</y>
             <width>21</width>
             <height>24</height>
            </rect>
@@ -969,6 +966,47 @@
            <string notr="true"/>
           </property>
          </widget>
+         <widget class="QPushButton" name="directHelp">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>10</y>
+            <width>20</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Aide</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/resources/help.png</normaloff>:/resources/help.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string notr="true">F1</string>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
          <zorder>secondes</zorder>
@@ -978,6 +1016,7 @@
          <zorder>nomFichierTLE</zorder>
          <zorder>barreMenu</zorder>
          <zorder>liste1</zorder>
+         <zorder>directHelp</zorder>
         </widget>
        </item>
       </layout>
@@ -1046,7 +1085,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -5479,7 +5518,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -8660,8 +8699,6 @@
         </widget>
        </item>
       </layout>
-      <zorder>frameZone</zorder>
-      <zorder>frameOnglets</zorder>
      </widget>
     </item>
    </layout>

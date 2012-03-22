@@ -328,39 +328,40 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                             Observateur::CalculIntersectionEllipsoide(dates[j], position,
                                                                                       direction);
 
-                                    obsmin.CalculPosVit(dates[j]);
-                                    sat.CalculCoordHoriz(obsmin, false);
+                                    if (!obsmin.getNomlieu().isEmpty()) {
+                                        obsmin.CalculPosVit(dates[j]);
+                                        sat.CalculCoordHoriz(obsmin, false);
 
-                                    if (typeCorps == 1) {
-                                        soleil.CalculPosition(dates[j]);
-                                        corps.setPosition(soleil.getPosition());
-                                        rayon = RAYON_SOLAIRE;
+                                        if (typeCorps == 1) {
+                                            soleil.CalculPosition(dates[j]);
+                                            corps.setPosition(soleil.getPosition());
+                                            rayon = RAYON_SOLAIRE;
+                                        }
+                                        if (typeCorps == 2) {
+                                            lune.CalculPosition(dates[j]);
+                                            corps.setPosition(lune.getPosition());
+                                            rayon = RAYON_LUNAIRE;
+                                        }
+                                        corps.CalculCoordHoriz(obsmin, false);
+
+                                        const double distanceObs = observateur.CalculDistance(obsmin);
+                                        double diff = obsmin.getLongitude() - observateur.getLongitude();
+                                        if (fabs(diff) > PI)
+                                            diff -= Maths::sgn(diff) * PI;
+                                        const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
+
+                                        const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") :
+                                                                                           QObject::tr("E");
+                                        const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") :
+                                                                                          QObject::tr("S");
+
+                                        // Ecriture de la chaine de caracteres
+                                        ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
+                                        ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,
+                                                          QChar('0')).arg(ew).
+                                                arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                                arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
                                     }
-                                    if (typeCorps == 2) {
-                                        lune.CalculPosition(dates[j]);
-                                        corps.setPosition(lune.getPosition());
-                                        rayon = RAYON_LUNAIRE;
-                                    }
-                                    corps.CalculCoordHoriz(obsmin, false);
-
-                                    const double distanceObs = observateur.CalculDistance(obsmin);
-                                    double diff = obsmin.getLongitude() - observateur.getLongitude();
-                                    if (fabs(diff) > PI)
-                                        diff -= Maths::sgn(diff) * PI;
-                                    const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
-
-                                    const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") :
-                                                                                       QObject::tr("E");
-                                    const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") :
-                                                                                      QObject::tr("S");
-
-                                    // Ecriture de la chaine de caracteres
-                                    ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
-                                    ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,
-                                                      QChar('0')).arg(ew).
-                                            arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
-                                            arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
-
                                 }
                                 res.append(ligne);
                             }
@@ -410,6 +411,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
+    res.clear();
 
     /* Retour */
     return;

@@ -10,10 +10,10 @@ TARGET = PreviSat
 TEMPLATE = app
 
 VERSION = 3.0.0.0
-ICON = resources/previsat.png
+ICON = resources/icone.ico
 win32:RC_FILE = icone.rc
 
-TRANSLATIONS = PreviSat_en.ts
+TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts
 
 SOURCES += main.cpp\
     previsat.cpp \
