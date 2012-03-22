@@ -1,10 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/Icon3.ico</file>
         <file>resources/open.png</file>
         <file>resources/save.png</file>
         <file>resources/help.png</file>
-        <file>resources/globe.ico</file>
         <file>resources/lune01.gif</file>
         <file>resources/lune02.gif</file>
         <file>resources/lune03.gif</file>
@@ -33,7 +31,6 @@
         <file>resources/lune26.gif</file>
         <file>resources/lune27.gif</file>
         <file>resources/lune28.gif</file>
-        <file>resources/map.jpg</file>
         <file>resources/maxi.png</file>
         <file>resources/mini.png</file>
         <file>resources/backward.png</file>
@@ -42,6 +39,10 @@
         <file>resources/play.png</file>
         <file>resources/rewind.png</file>
         <file>resources/lune29.gif</file>
-        <file>resources/previsat.png</file>
+        <file>resources/map.png</file>
+        <file>resources/globe.png</file>
+        <file>resources/apropos.png</file>
+        <file>resources/splashscreen.png</file>
+        <file>resources/Icon3.ico</file>
     </qresource>
 </RCC>

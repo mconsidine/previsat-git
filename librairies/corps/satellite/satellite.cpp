@@ -61,7 +61,7 @@ Satellite::Satellite()
     _penombre = false;
     _methMagnitude = 'v';
     _nbOrbites = 0;
-	_ageTLE = 0.;
+    _ageTLE = 0.;
     _elongation = 0.;
     _fractionIlluminee = 0.;
     _magnitude = 99.;
@@ -72,7 +72,7 @@ Satellite::Satellite()
     _t1 = 0.;
     _t2 = 0.;
     _t3 = 0.;
-	_sat = SatVariables();
+    _sat = SatVariables();
 }
 
 Satellite::Satellite(const TLE &tle)
@@ -409,7 +409,7 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
  */
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
                                             const Soleil &soleil, const int nbTracesAuSol,
-                                            const bool visibilite, const bool extinction,
+                                            const bool visibilite, const bool extinction, const bool traceCiel,
                                             QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
@@ -435,6 +435,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         // Calcul de la zone de visibilite du satellite
         if (visibilite)
             satellites[isat].CalculZoneVisibilite();
+
+        // Calcul de la trajectoire dans le ciel
+        if (traceCiel)
+            satellites[isat].CalculTraceCiel(date, observateur);
 
         if (isat == 0) {
 
@@ -1287,8 +1291,57 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
         sat.CalculSatelliteEclipse(soleil);
 
         QVector<double> list;
-        list << lon << lat << ((sat.isEclipse()) ? 1.: 0.);
+        list << lon << lat << ((sat._eclipse) ? 1. : 0.);
         _traceAuSol.append(list);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
+{
+    /* Declarations des variables locales */
+    Satellite sat = Satellite(_tle);
+    Soleil soleil;
+
+    /* Initialisations */
+    bool afin = false;
+    int i = 0;
+    const double st = 1. / (_tle.getNo() * T360);
+
+    /* Corps de la methode */
+    _traceCiel.clear();
+    while (!afin) {
+
+        const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+
+        // Position du satellite
+        sat.CalculPosVit(j0);
+
+        // Position de l'observateur
+        observateur.CalculPosVit(j0);
+
+        // Coordonnees horizontales
+        sat.CalculCoordHoriz(observateur);
+
+        if (sat._hauteur >= 0.) {
+
+            // Position du Soleil
+            soleil.CalculPosition(j0);
+
+            // Conditions d'eclipse
+            sat.CalculSatelliteEclipse(soleil);
+
+            QVector<double> list;
+            list << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.);
+            _traceCiel.append(list);
+
+        } else {
+            afin = true;
+        }
+
+        i++;
     }
 
     /* Retour */
@@ -1394,4 +1447,9 @@ ElementsOsculateurs Satellite::getElements() const
 QList<QVector<double> > Satellite::getTraceAuSol() const
 {
     return _traceAuSol;
+}
+
+QList<QVector<double> > Satellite::getTraceCiel() const
+{
+    return _traceCiel;
 }

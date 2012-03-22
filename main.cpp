@@ -42,6 +42,7 @@
 
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QSplashScreen>
 #include <QtGui/QApplication>
 #include <QTranslator>
 #include "previsat.h"
@@ -50,16 +51,34 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QSplashScreen *splash = new QSplashScreen;
+    splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
+    splash->show();
+
     const QString locale = QLocale::system().name().section('_', 0, 0);
-    QTranslator translator;
-    translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&translator);
+    QTranslator qtTranslator;
+    qtTranslator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+
+    QTranslator appTranslator;
+    appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
+    a.installTranslator(&appTranslator);
 
     PreviSat w;
 
+    Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
+    splash->showMessage(QObject::tr("Initialisations...") + "     ", alignement, Qt::white);
     w.Initialisations();
 
+    splash->showMessage(QObject::tr("Chargement du fichier TLE...") + "     ", alignement, Qt::white);
+    w.InitFicTLE();
+
+    splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+    w.DemarrageApplication();
+
     w.show();
+    splash->finish(&w);
+    delete splash;
 
     return a.exec();
 }

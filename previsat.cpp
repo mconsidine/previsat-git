@@ -97,6 +97,7 @@ static bool old;
 static int ind;
 static int nbSat;
 static QString nomfic;
+static QString ficgz;
 static QString nor;
 static QVector<bool> bipSat;
 static QVector<TLE> tles;
@@ -328,6 +329,7 @@ void PreviSat::Initialisations()
     ui->dateHeure4->setVisible(false);
     ui->utcManuel2->setVisible(false);
     ui->frameSimu->setVisible(false);
+    ui->pause->setEnabled(false);
 
     ui->hauteurSatPrev->setCurrentIndex(0);
     ui->hauteurSoleilPrev->setCurrentIndex(1);
@@ -435,11 +437,36 @@ void PreviSat::Initialisations()
         bipSat.resize(nbSat);
     }
 
+    /* Retour */
+    return;
+}
+
+void PreviSat::InitFicTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     // Lecture du fichier TLE par defaut
     const QFileInfo fi(nomfic);
     if (fi.exists()) {
 
         try {
+
+            if (fi.suffix() == "gz") {
+
+                // Cas d'un fichier compresse au format gz
+                const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
+
+                if (DecompressionFichierGz(nomfic, fic)) {
+                    ficgz = nomfic;
+                    nomfic = fic;
+                } else {
+                    throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                            nomfic, Messages::WARNING);
+                }
+            }
 
             // Verification du fichier
             TLE::VerifieFichier(nomfic, true);
@@ -498,7 +525,17 @@ void PreviSat::Initialisations()
         ui->nomFichierTLE->setVisible(false);
     }
 
+    /* Retour */
+    return;
+}
 
+void PreviSat::DemarrageApplication()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     // Initialisation de la date
     // Determination automatique de l'ecart heure locale - UTC
     const QDateTime dateLocale = QDateTime::currentDateTime();
@@ -636,7 +673,7 @@ void PreviSat::InitFicMap(const bool majAff) const
 
     /* Initialisations */
     const QDir di(dirMap);
-    filtres << "*.bmp" << "*.jpg" << "*.png";
+    filtres << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png";
 
     /* Corps de la methode */
     ui->listeMap->clear();
@@ -1224,11 +1261,12 @@ void PreviSat::AffichageCourbes() const
     }
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
+    QPen crayon(Qt::white);
 
     /* Corps de la methode */
     QRect rect;
     const QString nomMap = (ui->listeMap->currentIndex() == 0) ?
-                ":/resources/map.jpg" :
+                ":/resources/map.png" :
                 ficMap.at(ui->listeMap->currentIndex()-1);
     scene->addPixmap(QPixmap(nomMap).scaled(ui->carte->size()));
 
@@ -1417,7 +1455,6 @@ void PreviSat::AffichageCourbes() const
         if (ui->affnomlieu->checkState() == Qt::Checked || ui->affnomlieu->checkState() == Qt::PartiallyChecked)
             nbMax = ui->lieuxObservation1->count() - 1;
 
-        QPen crayon(Qt::white);
         for(int j=nbMax; j>=0; j--) {
 
             const int lobs = qRound((180. - observateurs.at(j).getLongitude() * RAD2DEG) * DEG2PXHZ);
@@ -1678,6 +1715,34 @@ void PreviSat::AffichageCourbes() const
 
                     if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
+                        // Affichage de la trace dans le ciel
+                        if (satellites.at(isat).getTraceCiel().size() > 0) {
+
+                            const QList<QVector<double> > trace = satellites.at(isat).getTraceCiel();
+                            const double ht1 = trace.at(0).at(0);
+                            const double az1 = trace.at(0).at(1);
+                            int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+                            int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+                            const QColor bleuClair(173, 216, 230);
+
+                            for(int i=1; i<trace.size(); i++) {
+
+                                double ht2 = trace.at(i).at(0);
+                                double az2 = trace.at(i).at(1);
+
+                                crayon = (trace.at(i).at(2) == 0) ? bleuClair : crimson;
+
+                                const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+                                const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+
+                                scene3->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+
+                                lsat1 = lsat2;
+                                bsat1 = bsat2;
+                            }
+                        }
+
                         // Calcul des coordonnees radar du satellite
                         const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
                                                 sin(satellites.at(isat).getAzimut()));
@@ -1929,7 +1994,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                 if (nomsat.length() > 25 && nomsat.mid(25).contains("."))
                     nomsat = nomsat.mid(0, 15).trimmed();
                 if (nomsat.toLower() == "iss (zarya)")
-                    nomsat = "ISS";
+                    nomsat = "ISS ";
                 if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
                     nomsat = nomsat.mid(0, nomsat.indexOf("[")).trimmed();
                 if (nomsat.contains(" DEB") || nomsat.contains("R/B"))
@@ -1956,6 +2021,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                 // Ajout du satellite dans la liste de satellites
                 mapSatellites.append(nomsat + "#" + norad);
                 QListWidgetItem *elem1 = new QListWidgetItem(nomsat, ui->liste1);
+                elem1->setFlags(Qt::ItemIsEnabled);
                 elem1->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
                 QListWidgetItem *elem2 = new QListWidgetItem(nomsat, ui->liste2);
                 elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
@@ -2018,18 +2084,19 @@ void PreviSat::CalculsAffichage()
 void PreviSat::EnchainementCalculs() const
 {
     /* Declarations des variables locales */
-    bool extinction, visibilite;
-    int nbTraces;
 
     /* Initialisations */
     // Nombre de traces au sol a afficher
-    nbTraces = (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
+    const int nbTraces = (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
 
     // Prise en compte de l'extinction atmospherique
-    extinction = ui->extinctionAtmospherique->isChecked();
+    const bool extinction = ui->extinctionAtmospherique->isChecked();
 
     // Calcul de la zone de visibilite des satellites
-    visibilite = !ui->carte->isHidden();
+    const bool visibilite = !ui->carte->isHidden();
+
+    // Calcul de la trace dans le ciel
+    const bool traceCiel = (ui->afftraj->isChecked() && ui->ciel->isVisible());
 
     /* Corps de la methode */
     /*
@@ -2106,8 +2173,9 @@ void PreviSat::EnchainementCalculs() const
     /*
      * Calcul de la position courante des satellites
      */
-    Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite,
-                                           extinction, satellites);
+    if (nbSat > 0)
+        Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite,
+                                               extinction, traceCiel, satellites);
 
     for (int i=0; i<nbSat; i++) {
         if (satellites[i].isVisible() && !bipSat[i]) {
@@ -2687,7 +2755,7 @@ void PreviSat::GestionTempsReel()
 
         if (ui->pause->isEnabled()) {
 
-            if (ui->pasManuel->view()->isVisible()) {
+            if (!ui->pasManuel->view()->isVisible()) {
 
                 double jd = dateCourante.getJourJulien();
                 if (!ui->rewind->isEnabled() || !ui->backward->isEnabled())
@@ -2810,19 +2878,19 @@ bool PreviSat::DecompressionFichierGz(const QString fichierGz, const QString fic
     bool res = false;
 
     /* Corps de la methode */
-    gzFile ficGz = gzopen(fichierGz.toStdString().c_str(), "rb");
-    if (ficGz == NULL) {
+    gzFile fichGz = gzopen(fichierGz.toStdString().c_str(), "rb");
+    if (fichGz == NULL) {
         res = false;
     } else {
 
-        QFile ficDec(fichierDecompresse);
-        ficDec.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux(&ficDec);
+        QFile fichDec(fichierDecompresse);
+        fichDec.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux(&fichDec);
 
-        while (gzgets(ficGz, buffer, 8192) != NULL)
+        while (gzgets(fichGz, buffer, 8192) != NULL)
             flux << buffer;
-        gzclose(ficGz);
-        ficDec.close();
+        gzclose(fichGz);
+        fichDec.close();
         res = true;
     }
 
@@ -2887,8 +2955,9 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() == 0) ? "" : ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)));
-    settings.setValue("fichier/nom", QDir::convertSeparators(nomfic));
+    settings.setValue("fichier/nom", (!ficgz.isEmpty()) ? QDir::convertSeparators(ficgz) : QDir::convertSeparators(nomfic));
     settings.setValue("fichier/iridium", ui->fichierTLEIri->text());
+    settings.setValue("fichier/fichierMaj", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
@@ -2985,11 +3054,13 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         // Capture de la fenetre
         chronometre->stop();
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
-        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), dirOut,
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString(),
                                                          tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
         if (!fic.isEmpty())
             image.save(fic);
         chronometre->start();
+        const QFileInfo fi(fic);
+        settings.setValue("fichier/sauvegarde", fi.absolutePath());
 
     } else if (event->key() == Qt::Key_F10) {
 
@@ -3610,6 +3681,25 @@ void PreviSat::on_maximise_clicked()
     return;
 }
 
+void PreviSat::on_directHelp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString locale = QLocale::system().name().section('_', 0, 0);
+    const QString aide = "file:///" + dirExe + QDir::separator() + "aide" + QDir::separator() + "PreviSat_" + locale + ".pdf";
+
+    /* Corps de la methode */
+    if (!QDesktopServices::openUrl(aide)) {
+        const QFileInfo fi(aide);
+        const QString msg = tr("Impossible d'ouvrir le fichier d'aide %1");
+        Messages::Afficher(msg.arg(fi.fileName()), Messages::WARNING);
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_actionOuvrir_fichier_TLE_activated()
 {
     /* Declarations des variables locales */
@@ -3624,7 +3714,9 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
     try {
         if (!fichier.isEmpty()) {
 
+            bool agz = false;
             int nsat;
+            ficgz = "";
             QFileInfo fi(fichier);
             if (fi.suffix() == "gz") {
 
@@ -3632,7 +3724,9 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                 const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
                 if (DecompressionFichierGz(fichier, fic)) {
+                    ficgz = fichier;
                     fichier = fic;
+                    agz = true;
                 } else {
                     throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
                                             fichier, Messages::WARNING);
@@ -3656,7 +3750,10 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
             const QString chaine = tr("Fichier TLE OK : %1 satellites");
             messagesStatut->setText(chaine.arg(nsat));
             listeFicTLE.insert(0, nomfic);
-            settings.setValue("fichier/nom", nomfic);
+            if (agz)
+                settings.setValue("fichier/nom", ficgz);
+            else
+                settings.setValue("fichier/nom", nomfic);
 
             // Ouverture du fichier TLE
             AfficherListeSatellites(nomfic, liste);
@@ -3707,21 +3804,22 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                         old = false;
                         VerifAgeTLE();
                     }
-                } else {
-                    // Aucun satellite de la liste n'est dans le nouveau fichier
-                    ui->liste1->setCurrentRow(0);
-                    l1 = "";
-                    l2 = "";
-
-                    // Enchainement de l'ensemble des calculs
-                    EnchainementCalculs();
-
-                    // Affichage des donnees numeriques
-                    AffichageDonnees();
-
-                    //Affichage des elements sur la carte du monde et le radar
-                    AffichageCourbes();
                 }
+            } else {
+                // Aucun satellite de la liste n'est dans le nouveau fichier
+                ui->liste1->setCurrentRow(0);
+                l1 = "";
+                l2 = "";
+                liste.clear();
+
+                // Enchainement de l'ensemble des calculs
+                EnchainementCalculs();
+
+                // Affichage des donnees numeriques
+                AffichageDonnees();
+
+                //Affichage des elements sur la carte du monde et le radar
+                AffichageCourbes();
             }
         }
     } catch (PreviSatException &ex) {
@@ -3738,7 +3836,7 @@ void PreviSat::on_actionEnregistrer_activated()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
+    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), settings.value("fichier/sauvegarde", dirOut).toString(),
                                                          tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         switch (ui->onglets->currentIndex()) {
@@ -3757,6 +3855,9 @@ void PreviSat::on_actionEnregistrer_activated()
         default:
             break;
         }
+
+        const QFileInfo fi(fichier);
+        settings.setValue("fichier/sauvegarde", fi.absolutePath());
     }
 
     /* Retour */
@@ -3898,7 +3999,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     listeSat.sort();
 
     /* Corps de la methode */
-    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), "",
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString(),
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
     QFile fichier(fic);
@@ -3916,6 +4017,10 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
         }
     }
     fichier.close();
+
+    const QFileInfo fi(fic);
+    settings.setValue("fichier/sauvegarde", fi.absolutePath());
+
     const QString msg = tr("Fichier %1 créé");
     messagesStatut->setText(msg.arg(fichier.fileName()));
 
@@ -4002,7 +4107,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
     return;
 }
 
-void PreviSat::on_liste1_pressed(const QModelIndex &index)
+void PreviSat::on_liste1_clicked(const QModelIndex &index)
 {
     /* Declarations des variables locales */
 
@@ -4055,11 +4160,15 @@ void PreviSat::on_liste1_pressed(const QModelIndex &index)
             nbSat++;
             tles.resize(nbSat);
             bipSat.resize(nbSat);
-            ui->liste1->item(ind)->setCheckState(Qt::Checked);
+            ui->liste1->currentItem()->setCheckState(Qt::Checked);
             ui->liste2->item(ind)->setCheckState(Qt::Checked);
             ui->liste3->item(ind)->setCheckState(Qt::Checked);
         }
 
+        if (nbSat == 0) {
+            l1 = "";
+            l2 = "";
+        }
 
         Satellite::initCalcul = false;
         info = true;
@@ -4090,6 +4199,24 @@ void PreviSat::on_liste1_pressed(const QModelIndex &index)
     return;
 }
 
+void PreviSat::on_liste1_doubleClicked(const QModelIndex &index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->liste1->currentRow() >= 0) {
+        if (ui->liste1->currentItem()->checkState() == Qt::Unchecked) {
+            nor = mapSatellites.at(index.row()).split("#").at(1);
+            on_actionDefinir_par_defaut_activated();
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
 {
     /* Declarations des variables locales */
@@ -4097,7 +4224,7 @@ void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->liste1->currentRow() > 0)
+    if (ui->liste1->currentRow() >= 0)
         ui->menuContextuelListe1->exec(QCursor::pos());
 
     /* Retour */
@@ -4459,6 +4586,11 @@ void PreviSat::on_affSAA_stateChanged(int arg1)
     ModificationOption();
 }
 
+void PreviSat::on_affplanetes_stateChanged(int arg1)
+{
+    ModificationOption();
+}
+
 void PreviSat::on_unitesKm_toggled(bool checked)
 {
     ModificationOption();
@@ -4672,21 +4804,7 @@ void PreviSat::ListeInfo(QUrlInfo &infoFichier)
 
 void PreviSat::on_actionFichier_d_aide_activated(int arg1)
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QString locale = QLocale::system().name().section('_', 0, 0);
-    const QString aide = "file:///" + dirExe + QDir::separator() + "aide" + QDir::separator() + "PreviSat_" + locale + ".pdf";
-    if (!QDesktopServices::openUrl(aide)) {
-        const QFileInfo fi(aide);
-        const QString msg = tr("Impossible d'ouvrir le fichier d'aide %1");
-        Messages::Afficher(msg.arg(fi.fileName()), Messages::WARNING);
-    }
-
-    /* Retour */
-    return;
+    on_directHelp_clicked();
 }
 
 void PreviSat::on_actionA_propos_activated(int arg1)
@@ -5231,10 +5349,7 @@ void PreviSat::on_parcourirMaj1_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fic = ui->fichierAMettreAJour->text();
-    const QFileInfo fi(fic);
-    const QString dir = (fic.length() > 0) ? fi.filePath() : dirTle;
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dir,
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierMaj", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
@@ -5252,7 +5367,8 @@ void PreviSat::on_parcourirMaj2_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), ui->fichierAMettreAJour->text(),
+
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierALire", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
@@ -5389,7 +5505,7 @@ void PreviSat::on_gestionnaireMajTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    GestionnaireTLE *gestionnaire = new GestionnaireTLE;
+    GestionnaireTLE *gestionnaire = new GestionnaireTLE(tles);
     gestionnaire->setWindowModality(Qt::ApplicationModal);
     gestionnaire->show();
 
@@ -5448,10 +5564,7 @@ void PreviSat::on_parcourir1CreerTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fic = ui->fichierALireCreerTLE->text();
-    const QFileInfo fi(fic);
-    const QString dir = (fic.length() > 0) ? fi.filePath() : dirTle;
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dir,
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierALireCreerTLE", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
@@ -5469,11 +5582,14 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
+    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), settings.value("fichier/sauvegarde", dirOut).toString(),
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
         ui->nomFichierPerso->setText(fichier);
+
+        const QFileInfo fi(fichier);
+        settings.setValue("fichier/sauvegarde", fi.absolutePath());
     }
 
     /* Retour */
@@ -5915,6 +6031,7 @@ void PreviSat::on_annulerPrev_clicked()
     threadCalculs->wait();
 
     ui->annulerPrev->setVisible(false);
+    ui->afficherPrev->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
     QFile fi(dirTmp + QDir::separator() + "prevision.txt");
     if (fi.exists())
@@ -5962,7 +6079,7 @@ void PreviSat::on_parcourirIri_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/iridium", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
@@ -6140,6 +6257,7 @@ void PreviSat::on_annulerIri_clicked()
     threadCalculs->wait();
 
     ui->annulerIri->setVisible(false);
+    ui->afficherIri->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des flashs Iridium"));
     QFile fi(dirTmp + QDir::separator() + "prevision.txt");
     if (fi.exists())
@@ -6293,6 +6411,7 @@ void PreviSat::on_annulerEvt_clicked()
     threadCalculs->wait();
 
     ui->annulerEvt->setVisible(false);
+    ui->afficherEvt->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des évènements orbitaux"));
     QFile fi(dirTmp + QDir::separator() + "prevision.txt");
     if (fi.exists())
@@ -6338,7 +6457,7 @@ void PreviSat::on_parcourirTransit_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierTLETransit", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
@@ -6478,6 +6597,7 @@ void PreviSat::on_annulerTransit_clicked()
     threadCalculs->wait();
 
     ui->annulerTransit->setVisible(false);
+    ui->afficherTransit->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des transits ISS"));
     QFile fi(dirTmp + QDir::separator() + "prevision.txt");
     if (fi.exists())

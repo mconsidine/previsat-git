@@ -293,6 +293,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
+    res.clear();
 
     /* Retour */
     return;
@@ -358,13 +359,6 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
                     // Magnitude du flash
                     mag = MagnitudeFlash(conditions.getExt(), angref, observateur, soleil, sat);
-
-                    if (angref > conditions.getAng0() + 1.e-3 || mag > mgn0 + 0.01) {
-                        if (res.count() % conditions.getNbl() != 0)
-                            res.removeLast();
-                        if (res.count() % conditions.getNbl() != 0)
-                            res.removeLast();
-                    }
 
                     // Ascension droite/declinaison/constellation
                     sat.CalculCoordEquat(observateur);

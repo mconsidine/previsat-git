@@ -91,6 +91,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     CalculEphemerides(conditions, sats, tabEphem);
 
     // Boucle sur le tableau d'ephemerides
+    QStringList res;
     QListIterator<QList<QVector<double > > > it2(tabEphem);
     it1.toFront();
     while (it2.hasNext()) {
@@ -101,7 +102,6 @@ void Evenements::CalculEvenements(const Conditions &conditions)
         bool atransJn = false;
         int i = 0, j = 0, k = 0, l = 0, m = 0;
         Satellite sat = it1.next();
-        QStringList res;
 
         const QList<QVector<double> > list = it2.next();
         const int dim = list.size();
@@ -406,6 +406,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
+    res.clear();
 
     /* Retour */
     return;

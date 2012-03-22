@@ -70,7 +70,7 @@ public:
     void CalculElementsOsculateurs(const Date &date);
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
                                             const Soleil &soleil, const int nbTracesAuSol,
-                                            const bool visibilite, const bool extinction,
+                                            const bool visibilite, const bool extinction, const bool traceCiel,
                                             QList<Satellite> &satellites);
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle,
                                QList<Satellite> &satellites);
@@ -96,6 +96,7 @@ public:
     TLE getTle() const;
     ElementsOsculateurs getElements() const;
     QList<QVector<double> > getTraceAuSol() const;
+    QList<QVector<double> > getTraceCiel() const;
 
 
 protected:
@@ -355,6 +356,7 @@ private:
     SatVariables _sat;
     ElementsOsculateurs _elements;
     QList<QVector<double> > _traceAuSol;
+    QList<QVector<double> > _traceCiel;
 
     /* Methodes privees */
     void SGP4Init();
@@ -363,6 +365,7 @@ private:
     void Dsinit(const double tc);
     void Dspace(const double tc);
     void CalculTracesAuSol(const Date &date, const int nbOrbites);
+    void CalculTraceCiel(const Date &date, Observateur observateur);
 
 };
 

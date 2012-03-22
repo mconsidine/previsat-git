@@ -141,7 +141,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                     sat.CalculMagnitude(obs, conditions.getExt());
 
                     // Toutes les conditions sont remplies
-                    if (sat.getMagnitude() < conditions.getMgn1() || sat.getMagnitudeStandard() > 98. ||
+                    if (sat.getMagnitude() < conditions.getMgn1() || (sat.getMagnitudeStandard() > 98. && conditions.getMgn1() > 98.) ||
                             !conditions.getEcl()) {
 
                         if (ent == 2)
@@ -263,7 +263,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 sat.CalculPosVit(date);
                                 sat.CalculCoordHoriz(observateur);
-                                if (sat.getHauteur() < 0.) {
+                                if (sat.getHauteur() < conditions.getHaut()) {
                                     afin = true;
                                 } else {
                                     sat.CalculSatelliteEclipse(soleil);
@@ -314,6 +314,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
+    res.clear();
 
     /* Retour */
     return;
