@@ -78,10 +78,9 @@ public:
 
     static int sgn(const double x);
     static void CalculExtremumInterpolation3(const double xtab[], const double ytab[], double extremum[]);
-    static double CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval,
-                                              const double epsilon);
-    static QString ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg,
-                                 const int nbDecimales, const bool signe, const bool espace);
+    static double CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval, const double epsilon);
+    static QString ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales,
+                                 const bool signe, const bool espace);
 
     /* Accesseurs */
 

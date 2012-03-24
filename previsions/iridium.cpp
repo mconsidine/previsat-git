@@ -169,8 +169,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
             const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
             const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(),
-                                                observateur.getAray());
+            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
 
             // Position ECI du Soleil
             const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
@@ -211,7 +210,6 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                             // Calcul par interpolation de l'instant correspondant
                             // a l'angle de reflexion minimum
                             CalculAngleMin(jjm, sat, observateur, soleil, minmax);
-
 
                             // Iterations supplementaires pour affiner la date du maximum
                             double pasInt = PAS_INT0;
@@ -684,8 +682,7 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
 
         // Conditions d'eclipse du satellite
         satellite.CalculSatelliteEclipse(soleil);
-        ecl[i] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() -
-                satellite.getElongation();
+        ecl[i] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
 
         // Angle de reflexion
         ang[i] = AngleReflexion(satellite, soleil);
@@ -858,19 +855,14 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
             // Ecriture de la chaine de caracteres
             ligne = ligne.append("   %1 %2  %3 %4  %5 %6    ").append((magFlashMax > 0.) ? "+%7" : "-%7");
             ligne = ligne.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
-                    arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).
-                    arg(distanceObs, 5, 'f', 1).arg(dir).arg(fabs(magFlashMax), 2, 'f', 1).
-                    append((sat.isPenombre()) ? "*" : "");
+                    arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
+                    arg(dir).arg(fabs(magFlashMax), 2, 'f', 1).append((sat.isPenombre()) ? "*" : "");
         }
     }
 
     // Numero Iridium
     ligne = ligne.append(sts.mid(0, 3));
-    if (sts.length() == 9) {
-        ligne = ligne.append(" ");
-    } else {
-        ligne = ligne.trimmed().append("? ");
-    }
+    ligne = (sts.length() == 9) ? ligne.append(" ") : ligne.trimmed().append("? ");
 
     /* Retour */
     return (ligne);

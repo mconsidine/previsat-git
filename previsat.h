@@ -199,7 +199,7 @@ private slots:
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
-    void MAJTerminee(const bool agz, const QString fic, const QStringList compteRendu);
+    void MAJTerminee();
     void on_gestionnaireMajTLE_clicked();
     void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
     void on_actionCopier_dans_le_presse_papier_activated();

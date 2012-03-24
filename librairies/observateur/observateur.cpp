@@ -64,8 +64,7 @@ Observateur::Observateur()
 /*
  * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
  */
-Observateur::Observateur(const QString nomlieu, const double longitude, const double latitude,
-                         const double altitude)
+Observateur::Observateur(const QString nomlieu, const double longitude, const double latitude, const double altitude)
 {
     /* Declarations des variables locales */
     double coster, sinter;
@@ -135,8 +134,8 @@ Observateur::Observateur(const Observateur &observateur)
  * Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
  * (pour le calcul des previsions)
  */
-Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz,
-                         const double aaer, const double aray)
+Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz, const double aaer,
+                         const double aray)
 {
     /* Declarations des variables locales */
 
@@ -217,8 +216,8 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Corps de la methode */
 
     /* Retour */
-    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() +
-                                    0.000387933 * tu2 - tu2 * tu / 38710000., T360));
+    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + 0.000387933 * tu2 -
+                                    tu2 * tu / 38710000., T360));
 }
 
 /*
@@ -267,8 +266,7 @@ double Observateur::CalculDistance(const Observateur &observateur) const
 /*
  * Calcul du lieu d'observation qui est l'intersection d'un vecteur et de l'ellipsoide terrestre
  */
-Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine,
-                                                      Vecteur3D direction)
+Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction)
 {
     /* Declarations des variables locales */
     double lat, lon;
@@ -313,9 +311,8 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3
         lon *= RAD2DEG;
 
         // Latitude
-        lat = RAD2DEG * atan2(intersection.getZ(),
-                              G2 * sqrt(intersection.getX() * intersection.getX() +
-                                        intersection.getY() * intersection.getY()));
+        lat = RAD2DEG * atan2(intersection.getZ(), G2 * sqrt(intersection.getX() * intersection.getX() +
+                                                             intersection.getY() * intersection.getY()));
 
         nom = "INTERSECT";
     }

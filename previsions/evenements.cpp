@@ -252,8 +252,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("Périgée :") :
-                                                                      QObject::tr("Apogée :");
+                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("Périgée :") : QObject::tr("Apogée :");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
@@ -454,8 +453,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite
             listVal.append(sat.getRayonApparentTerre());
             listVal.append(sat.getRayonApparentSoleil());
             listVal.append(position * soleil.getPosition());
-            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() +
-                                         sat.getElements().getArgumentPerigee(), T360));
+            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), T360));
 
             tab.append(listVal);
 

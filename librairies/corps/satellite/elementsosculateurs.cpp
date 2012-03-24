@@ -109,8 +109,7 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         _anomalieVraie = DEUX_PI - _anomalieVraie;
 
     // Anomalie excentrique
-    _anomalieExcentrique = 2. * atan(sqrt((1. - _excentricite) / (1. + _excentricite)) * tan(0.5 *
-                                                                                             _anomalieVraie));
+    _anomalieExcentrique = 2. * atan(sqrt((1. - _excentricite) / (1. + _excentricite)) * tan(0.5 * _anomalieVraie));
     if (_anomalieExcentrique < 0.)
         _anomalieExcentrique += DEUX_PI;
 
@@ -125,8 +124,8 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
     const double gamma = 1. + _excentricite * cos(_argumentPerigee);
     const double gamma2 = gamma * gamma;
     const double temp3 = sin(_inclinaison);
-    const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * temp3 * temp3) / (alpha2 * sqrt(beta) * gamma2) +
-                                        gamma2 * gamma / (alpha2 * beta * beta * beta));
+    const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * temp3 * temp3) / (alpha2 * sqrt(beta) * gamma2) + gamma2 * gamma /
+                                        (alpha2 * beta * beta * beta));
 
     // Apogee, perigee, periode orbitale
     _apogee = _demiGrandAxe * (1. + _excentricite);

@@ -128,12 +128,9 @@ Vecteur3D Matrice::operator *(const Vecteur3D &vecteur)
     /* Initialisations */
 
     /* Corps de la methode */
-    const double x = _vecteur1.getX() * vecteur.getX() + _vecteur2.getX() * vecteur.getY() +
-            _vecteur3.getX() * vecteur.getZ();
-    const double y = _vecteur1.getY() * vecteur.getX() + _vecteur2.getY() * vecteur.getY() +
-            _vecteur3.getY() * vecteur.getZ();
-    const double z = _vecteur1.getZ() * vecteur.getX() + _vecteur2.getZ() * vecteur.getY() +
-            _vecteur3.getZ() * vecteur.getZ();
+    const double x = _vecteur1.getX() * vecteur.getX() + _vecteur2.getX() * vecteur.getY() + _vecteur3.getX() * vecteur.getZ();
+    const double y = _vecteur1.getY() * vecteur.getX() + _vecteur2.getY() * vecteur.getY() + _vecteur3.getY() * vecteur.getZ();
+    const double z = _vecteur1.getZ() * vecteur.getX() + _vecteur2.getZ() * vecteur.getY() + _vecteur3.getZ() * vecteur.getZ();
 
     /* Retour */
     return (Vecteur3D(x, y, z));

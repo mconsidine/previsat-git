@@ -75,9 +75,7 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats,
-                                  QList<QList<QVector<double> > > &tabEphem);
-
+    static void CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats, QList<QList<QVector<double> > > &tabEphem);
 
 };
 

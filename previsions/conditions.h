@@ -52,14 +52,14 @@ public:
     Conditions();
 
     // Constructeur pour le calcul des previsions de passages
-    Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0,
-               const double dtu, const double jj1, const double jj2, const double mgn1, const QString fic,
-               const QString out, const QString unite, const QStringList listeSatellites);
+    Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu,
+               const double jj1, const double jj2, const double mgn1, const QString fic, const QString out,
+               const QString unite, const QStringList listeSatellites);
 
     // Constructeur pour le calcul des flashs Iridium
     Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const char ope,
-               const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1,
-               const double mgn2, const QString fic, const QString out, const QString unite);
+               const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1, const double mgn2,
+               const QString fic, const QString out, const QString unite);
 
     // Constructeur pour le calcul des evenements orbitaux
     Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso,
@@ -68,16 +68,16 @@ public:
 
     // Constructeur pour le calcul des transits ISS
     Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE,
-               const double seuilConjonction, const double dtu, const double jj1, const double jj2,
-               const QString fic, const QString out, const QString unite);
+               const double seuilConjonction, const double dtu, const double jj1, const double jj2, const QString fic,
+               const QString out, const QString unite);
 
     /* Constantes publiques */
 
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void EcrireEntete(const Observateur &observateur, const Conditions &conditions,
-                             QVector<TLE> &tabtle, const bool itransit);
+    static void EcrireEntete(const Observateur &observateur, const Conditions &conditions, QVector<TLE> &tabtle,
+                             const bool itransit);
 
     /* Accesseurs */
     bool getEcl() const;

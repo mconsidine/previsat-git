@@ -106,7 +106,8 @@ void LigneConstellation::InitTabLignesCst()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString ficLig = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "constlines.cst";
+    const QString ficLig = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "constlines.cst";
     QFile fichier(ficLig);
     if (fichier.exists()) {
 

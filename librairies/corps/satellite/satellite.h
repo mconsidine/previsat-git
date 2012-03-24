@@ -68,12 +68,10 @@ public:
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
     double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
-    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
-                                            const Soleil &soleil, const int nbTracesAuSol,
-                                            const bool visibilite, const bool extinction, const bool traceCiel,
-                                            QList<Satellite> &satellites);
-    static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle,
-                               QList<Satellite> &satellites);
+    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
+                                            const int nbTracesAuSol, const bool visibilite, const bool extinction,
+                                            const bool traceCiel, QList<Satellite> &satellites);
+    static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
     bool isEclipse() const;

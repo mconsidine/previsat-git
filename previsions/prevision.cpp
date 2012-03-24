@@ -115,8 +115,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
             const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(),
-                                                observateur.getAray());
+            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
 
             // Position ECI du Soleil
             const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
@@ -141,8 +140,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                     sat.CalculMagnitude(obs, conditions.getExt());
 
                     // Toutes les conditions sont remplies
-                    if (sat.getMagnitude() < conditions.getMgn1() || (sat.getMagnitudeStandard() > 98. && conditions.getMgn1() > 98.) ||
-                            !conditions.getEcl()) {
+                    if (sat.getMagnitude() < conditions.getMgn1() ||
+                            (sat.getMagnitudeStandard() > 98. && conditions.getMgn1() > 98.) || !conditions.getEcl()) {
 
                         if (ent == 2)
                             ent = 1;
@@ -163,8 +162,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 // Altitude du satellite
                                 double altitude, ct, lat, phi;
                                 const Vecteur3D position = sat.getPosition();
-                                const double r = sqrt(position.getX() * position.getX() +
-                                                      position.getY() * position.getY());
+                                const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
                                 lat = atan((position.getZ() / r));
                                 do {
                                     phi = lat;
@@ -177,7 +175,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 // Ecriture du resultat
                                 if (ent == 0) {
                                     if (res.count() > 0)
-                                        if (res.at(res.count() - 1) != "")
+                                        if (!res.at(res.count() - 1).isEmpty())
                                             res.append("");
 
                                     const QString nomsat = sat.getTle().getNom();
@@ -195,22 +193,20 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 }
 
                                 // Calcul de la date calendaire
-                                const Date date2 = Date(date.getJourJulien() + conditions.getDtu() +
-                                                        EPS_DATES, 0.);
+                                const Date date2 = Date(date.getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
                                 ligne = date2.ToShortDate(Date::COURT).append(" ");
 
                                 // Coordonnees topocentriques du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3,
-                                                                          0, false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2,
-                                                                          0, false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                          false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
+                                                                          false, false)).append(" ");
 
                                 // Coordonnees equatoriales du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(),
-                                                                          Maths::HEURE1, 2, 0, false,
-                                                                          false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE,
-                                                                          2, 0, true, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0,
+                                                                          false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0,
+                                                                          true, false)).append("  ");
 
                                 // Constellation
                                 ligne = ligne.append(sat.getConstellation()).append(" ");
@@ -218,7 +214,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 // Magnitude
                                 const double mag = sat.getMagnitude();
                                 if (mag > 98.) {
-                                    ligne = (conditions.getEcl() || sat.getMagnitudeStandard() > 98.) ? ligne.append(" ????  ") : ligne.append(" ----  ");
+                                    ligne = (conditions.getEcl() || sat.getMagnitudeStandard() > 98.) ?
+                                                ligne.append(" ????  ") : ligne.append(" ----  ");
                                 } else {
                                     if (mag < 9.95)
                                         ligne = ligne.append(" ");
@@ -237,10 +234,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 ligne = ligne.arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1);
 
                                 // Coordonnees topocentriques du Soleil
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE,
-                                                                          3, 0, false, false)).append("  ");
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE,
-                                                                          2, 0, true, false));
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
+                                                                          false, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, false));
 
                                 res.append(ligne);
                                 pass = true;
@@ -307,7 +303,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
         i++;
     }
     if (res.count() > 0)
-        if (res.at(res.count() - 1) != "")
+        if (!res.at(res.count() - 1).isEmpty())
             flux << endl;
 
     ligne = QObject::tr("Temps écoulé : %1s");
