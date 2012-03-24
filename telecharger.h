@@ -52,15 +52,14 @@ class Telecharger : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Telecharger(QWidget *parent = 0);
-    Telecharger(const int idirHttp);
+    explicit Telecharger(const int idirHttp, QWidget *parent = 0);
     ~Telecharger();
 
 private slots:
     void on_fermer_clicked();
     void on_interrogerServeur_clicked();
     void MessageErreur(QNetworkReply::NetworkError) const;
-    void Enregistrer(const QString fic) const;
+    void Enregistrer() const;
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
 
     void on_telecharger_clicked();

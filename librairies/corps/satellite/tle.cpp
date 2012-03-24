@@ -372,7 +372,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         }
 
         if (norad1 == norad2) {
-            if (tleOld.at(isat)._epoque.getJourJulienUTC() < tleNew.at(isat)._epoque.getJourJulienUTC()) {
+            if (tleOld.at(isat)._epoque.getJourJulienUTC() < tleNew.at(j)._epoque.getJourJulienUTC()) {
                 const QString nomsat =
                         (tleNew.at(j)._nom == norad2) ? tleOld.at(isat)._nom : tleNew.at(j)._nom;
                 tleOld[isat] = tleNew[j];
