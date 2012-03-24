@@ -1172,7 +1172,7 @@ void PreviSat::AffichageDonnees()
     if (scene2 != NULL)
         scene2->deleteLater();
     if (scene3 != NULL)
-        scene3->clear();
+        scene3->deleteLater();
 
     /* Retour */
     return;
@@ -2022,7 +2022,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                 if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
                     nomsat = nomsat.mid(0, nomsat.indexOf("[")).trimmed();
                 if (nomsat.contains(" DEB") || nomsat.contains("R/B"))
-                    nomsat = nomsat.append("  (").append(norad).append(")");
+                    nomsat = nomsat.append("\t\t\t\t(").append(norad).append(")");
 
                 bool check = false;
                 for (int j=0; j<listeSat.length(); j++) {
@@ -4309,6 +4309,27 @@ void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
     return;
 }
 
+void PreviSat::on_liste1_entered(const QModelIndex &index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->liste1->setToolTip("");
+
+    /* Corps de la methode */
+    const int r = index.row();
+    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
+    const QString norad = mapSatellites.at(r).split("#").at(1);
+    if (nomsat != norad) {
+        const QString msg = tr("%1 (numéro NORAD : %2)");
+        ui->liste1->setToolTip(msg.arg(nomsat).arg(norad));
+    }
+
+    /* Retour */
+    return;
+}
+
+
 void PreviSat::on_lieuxObservation1_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
@@ -5583,17 +5604,6 @@ void PreviSat::on_mettreAJourTLE_clicked()
     return;
 }
 
-void PreviSat::MAJTerminee()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    /* Retour */
-    return;
-}
-
 void PreviSat::on_gestionnaireMajTLE_clicked()
 {
     /* Declarations des variables locales */
@@ -5894,6 +5904,26 @@ void PreviSat::on_effacerHeuresPrev_clicked()
 void PreviSat::on_liste2_customContextMenuRequested(const QPoint &pos)
 {
     ui->menuContextuelListes->exec(QCursor::pos());
+}
+
+void PreviSat::on_liste2_entered(const QModelIndex &index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->liste2->setToolTip("");
+
+    /* Corps de la methode */
+    const int r = index.row();
+    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
+    const QString norad = mapSatellites.at(r).split("#").at(1);
+    if (nomsat != norad) {
+        const QString msg = tr("%1 (numéro NORAD : %2)");
+        ui->liste2->setToolTip(msg.arg(nomsat).arg(norad));
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionTous_activated()
@@ -6537,6 +6567,26 @@ void PreviSat::on_afficherEvt_clicked()
     return;
 }
 
+void PreviSat::on_liste3_entered(const QModelIndex &index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->liste3->setToolTip("");
+
+    /* Corps de la methode */
+    const int r = index.row();
+    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
+    const QString norad = mapSatellites.at(r).split("#").at(1);
+    if (nomsat != norad) {
+        const QString msg = tr("%1 (numéro NORAD : %2)");
+        ui->liste3->setToolTip(msg.arg(nomsat).arg(norad));
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_effacerHeuresTransit_clicked()
 {
     /* Declarations des variables locales */
@@ -6775,3 +6825,5 @@ void PreviSat::CalculsTermines()
     /* Retour */
     return;
 }
+
+

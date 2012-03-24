@@ -1088,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -4830,6 +4830,9 @@
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
+            <property name="textElideMode">
+             <enum>Qt::ElideNone</enum>
+            </property>
             <property name="sortingEnabled">
              <bool>true</bool>
             </property>
@@ -5521,7 +5524,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -8104,8 +8107,14 @@
                 <pointsize>8</pointsize>
                </font>
               </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="textElideMode">
+               <enum>Qt::ElideNone</enum>
               </property>
               <property name="sortingEnabled">
                <bool>true</bool>
