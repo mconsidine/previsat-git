@@ -65,6 +65,7 @@ private:
     Ui::PreviSat *ui;
 
     // Initialisation
+    void InitFicCst() const;
     void InitFicObs(const bool alarm) const;
     void InitFicMap(const bool majAff) const;
 
@@ -110,6 +111,8 @@ private slots:
     void on_directHelp_clicked();
     void on_actionOuvrir_fichier_TLE_activated();
     void on_actionEnregistrer_activated();
+    void on_actionImprimer_carte_activated();
+    void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionTelecharger_les_mises_jour_activated();
     void on_actionDonnez_votre_avis_activated();
     void on_actionWww_space_track_org_activated();
@@ -196,6 +199,7 @@ private slots:
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
+    void MAJTerminee(const bool agz, const QString fic, const QStringList compteRendu);
     void on_gestionnaireMajTLE_clicked();
     void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
     void on_actionCopier_dans_le_presse_papier_activated();
@@ -239,8 +243,6 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
-
-
 };
 
 #endif // PREVISAT_H

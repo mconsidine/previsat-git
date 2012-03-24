@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     previsions/evenements.cpp \
     previsions/iridium.cpp \
     previsions/prevision.cpp \
-    previsions/transitiss.cpp
+    previsions/transitiss.cpp \
+    librairies/corps/etoiles/constellation.cpp
 
 HEADERS  += previsat.h \
     afficher.h \
@@ -78,7 +79,8 @@ HEADERS  += previsat.h \
     previsions/transitiss.h \
     zlib/zlib.h \
     zlib/zconf.h \
-    zlib/ioapi.h
+    zlib/ioapi.h \
+    librairies/corps/etoiles/constellation.h
 
 FORMS    += previsat.ui \
     afficher.ui \

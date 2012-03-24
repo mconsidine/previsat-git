@@ -1325,7 +1325,7 @@ void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
         // Coordonnees horizontales
         sat.CalculCoordHoriz(observateur);
 
-        if (sat._hauteur >= 0.) {
+        if (sat._hauteur >= 0. && i < 360) {
 
             // Position du Soleil
             soleil.CalculPosition(j0);

@@ -41,10 +41,25 @@
  */
 
 #include "threadcalculs.h"
+#include "librairies/corps/satellite/tle.h"
 #include "previsions/evenements.h"
 #include "previsions/iridium.h"
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
+
+ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const QString ficOld, const QString ficNew, QStringList &compteRendu)
+{
+    _typeCalcul = typeCalcul;
+    _ficOld = ficOld;
+    _ficNew = ficNew;
+    _compteRendu = compteRendu;
+}
+
+ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions)
+{
+    _typeCalcul = typeCalcul;
+    _conditions = conditions;
+}
 
 ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &observateur)
 {
@@ -56,6 +71,10 @@ ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &cond
 void ThreadCalculs::run()
 {
     switch (_typeCalcul) {
+    case MAJTLE:
+        TLE::MiseAJourFichier(_ficOld, _ficNew, _compteRendu);
+        break;
+
     case PREVISION:
         Prevision::CalculPassages(_conditions, _observateur);
         break;
