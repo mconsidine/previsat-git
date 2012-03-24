@@ -129,6 +129,7 @@ private slots:
     void on_liste1_clicked(const QModelIndex &index);
     void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_customContextMenuRequested(const QPoint &pos);
+    void on_liste1_entered(const QModelIndex &index);
 
     void on_lieuxObservation1_currentIndexChanged(int index);
     void on_tempsReel_toggled(bool checked);
@@ -199,7 +200,6 @@ private slots:
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
-    void MAJTerminee();
     void on_gestionnaireMajTLE_clicked();
     void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
     void on_actionCopier_dans_le_presse_papier_activated();
@@ -215,6 +215,7 @@ private slots:
 
     void on_effacerHeuresPrev_clicked();
     void on_liste2_customContextMenuRequested(const QPoint &pos);
+    void on_liste2_entered(const QModelIndex &index);
     void on_actionTous_activated();
     void on_actionAucun_activated();
     void on_hauteurSatPrev_currentIndexChanged(int index);
@@ -236,6 +237,7 @@ private slots:
     void on_calculsEvt_clicked();
     void on_annulerEvt_clicked();
     void on_afficherEvt_clicked();
+    void on_liste3_entered(const QModelIndex &index);
 
     void on_effacerHeuresTransit_clicked();
     void on_parcourirTransit_clicked();
@@ -243,6 +245,8 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
+
+
 };
 
 #endif // PREVISAT_H
