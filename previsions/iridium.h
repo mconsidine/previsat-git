@@ -77,9 +77,8 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void DeterminationFlash(const double minmax[2], const QString &sts, const Conditions &conditions,
-                                   double &temp, QStringList &res, Observateur &observateur, Satellite &sat,
-                                   Soleil &soleil);
+    static void DeterminationFlash(const double minmax[2], const QString &sts, const Conditions &conditions, double &temp,
+                                   QStringList &res, Observateur &observateur, Satellite &sat, Soleil &soleil);
     static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
                                              QList<QVector<double> > &tabEphem);
     static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
@@ -91,9 +90,9 @@ private:
                             Observateur &observateur, Soleil &soleil, double limite[]);
     static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
                                  Satellite &satellite);
-    static QString EcrireFlash(const Date &date, const int i, const double altitude, const double angref,
-                               const double mag, const QString &sts, const Conditions &conditions,
-                               const Observateur &observateur, const Soleil &soleil, Satellite &sat);
+    static QString EcrireFlash(const Date &date, const int i, const double altitude, const double angref, const double mag,
+                               const QString &sts, const Conditions &conditions, const Observateur &observateur,
+                               const Soleil &soleil, Satellite &sat);
     static int LectureStatutIridium(const char ope);
 
 };

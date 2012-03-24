@@ -23,6 +23,7 @@ SOURCES += main.cpp\
     telecharger.cpp \
     threadcalculs.cpp \
     librairies/corps/corps.cpp \
+    librairies/corps/etoiles/constellation.cpp \
     librairies/corps/etoiles/etoile.cpp \
     librairies/corps/etoiles/ligneconstellation.cpp \
     librairies/corps/satellite/elementsosculateurs.cpp \
@@ -42,8 +43,7 @@ SOURCES += main.cpp\
     previsions/evenements.cpp \
     previsions/iridium.cpp \
     previsions/prevision.cpp \
-    previsions/transitiss.cpp \
-    librairies/corps/etoiles/constellation.cpp
+    previsions/transitiss.cpp
 
 HEADERS  += previsat.h \
     afficher.h \
@@ -52,6 +52,7 @@ HEADERS  += previsat.h \
     telecharger.h \
     threadcalculs.h \
     librairies/corps/corps.h \
+    librairies/corps/etoiles/constellation.h \
     librairies/corps/etoiles/etoile.h \
     librairies/corps/etoiles/ligneconstellation.h \
     librairies/corps/satellite/elementsosculateurs.h \
@@ -79,8 +80,7 @@ HEADERS  += previsat.h \
     previsions/transitiss.h \
     zlib/zlib.h \
     zlib/zconf.h \
-    zlib/ioapi.h \
-    librairies/corps/etoiles/constellation.h
+    zlib/ioapi.h
 
 FORMS    += previsat.ui \
     afficher.ui \

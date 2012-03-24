@@ -158,7 +158,7 @@ void GestionnaireTLE::on_actionSupprimerGroupe_activated()
 
     /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
-    const QString msg = tr("Voulez-vous vraiment supprimer le groupe ""%1""?");
+    const QString msg = tr("Voulez-vous vraiment supprimer le groupe \"%1\"?");
     const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
 
     if (res == QMessageBox::Yes) {
@@ -271,7 +271,7 @@ void GestionnaireTLE::on_valider_clicked()
         if (ui->nomGroupe->isEnabled()) {
             for(int i=0; i<ui->listeGroupeTLE->count(); i++) {
                 if (ligne.toLower() == ui->listeGroupeTLE->item(i)->text().toLower()) {
-                    const QString msg = tr("Le groupe ""%1"" existe déjà");
+                    const QString msg = tr("Le groupe \"%1\" existe déjà");
                     throw PreviSatException(msg.arg(ligne), Messages::WARNING);
                 }
             }
@@ -340,7 +340,7 @@ void GestionnaireTLE::on_actionSupprimer_activated()
 
     /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
-    const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe ""%1""?");
+    const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe \"%1\"?");
     const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
 
     if (res == QMessageBox::Yes) {
@@ -362,7 +362,8 @@ void GestionnaireTLE::on_actionSupprimer_activated()
             QString ligne = flux.readLine();
             if (ligne.mid(0, adresse.length()) == adresse) {
                 for(int i=0; i<ui->listeFichiersTLE->selectedItems().count(); i++)
-                    ligne = ligne.replace(ui->listeFichiersTLE->selectedItems().at(i)->text(), "").replace(",,", ",").replace("#,", "#");
+                    ligne = ligne.replace(ui->listeFichiersTLE->selectedItems().at(i)->text(), "").replace(",,", ",").
+                            replace("#,", "#");
                 if (ligne.endsWith(","))
                     ligne = ligne.remove(ligne.length() - 1, 1);
             }

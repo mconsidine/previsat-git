@@ -100,7 +100,8 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
     /* Corps de la methode */
     etoiles.clear();
     FILE *fstr = NULL;
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "etoiles.str";
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "etoiles.str";
     if ((fstr = fopen(fic.toStdString().c_str(), "r")) != NULL) {
 
         char ligne1[4096];

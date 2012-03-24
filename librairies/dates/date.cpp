@@ -279,8 +279,7 @@ QString Date::ToShortDate(const DateFormat format) const
     res = "%1/%2/%3 %4:%5:%6";
 
     /* Corps de la methode */
-    const double jjsec =
-            Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     Date date = Date(jjsec, _offsetUTC);
 
     /* Retour */

@@ -231,8 +231,7 @@ void Corps::CalculCoordTerrestres(const Observateur &observateur)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(observateur.getTempsSideralGreenwich() -
-                               atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = Maths::modulo(observateur.getTempsSideralGreenwich() - atan2(_position.getY(), _position.getX()), DEUX_PI);
     if (fabs(_longitude) > PI)
         _longitude -= Maths::sgn(_longitude) * DEUX_PI;
 
@@ -253,8 +252,7 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) -
-                               atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.getY(), _position.getX()), DEUX_PI);
     if (fabs(_longitude) > PI)
         _longitude -= Maths::sgn(_longitude) * DEUX_PI;
 
@@ -334,8 +332,7 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
     const double xx = vecteur.getZ() * cb * sin(vecteur.getX());
 
     /* Retour */
-    return Vecteur3D(vecteur.getZ() * cb * cos(vecteur.getX()),
-                     xx * ce - vecteur.getZ() * se * sb,
+    return Vecteur3D(vecteur.getZ() * cb * cos(vecteur.getX()), xx * ce - vecteur.getZ() * se * sb,
                      xx * se + vecteur.getZ() * ce * sb);
 }
 

@@ -55,12 +55,13 @@ public:
         TRANSITS
     };
 
-    ThreadCalculs(const TypeCalcul typeCalcul, const QString _ficOld, const QString _ficNew, QStringList &compteRendu);
+    ThreadCalculs(const TypeCalcul typeCalcul, const QString _ficOld, const QString _ficNew);
     ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions);
     ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &observateur);
     void run();
 
     TypeCalcul getTypeCalcul() const;
+    QStringList getCompteRendu() const;
 
 private:
     QString _ficOld;

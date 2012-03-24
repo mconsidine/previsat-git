@@ -50,10 +50,9 @@ Conditions::Conditions()
 {
 }
 
-Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0,
-                       const double dtu, const double jj1, const double jj2, const double mgn1,
-                       const QString fic, const QString out, const QString unite,
-                       const QStringList listeSatellites)
+Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu,
+                       const double jj1, const double jj2, const double mgn1, const QString fic, const QString out,
+                       const QString unite, const QStringList listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -78,10 +77,9 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     return;
 }
 
-Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
-                       const char ope, const double ang0, const double dtu, const double jj1,
-                       const double jj2, const double mgn1, const double mgn2, const QString fic,
-                       const QString out, const QString unite)
+Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const char ope,
+                       const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1,
+                       const double mgn2, const QString fic, const QString out, const QString unite)
 {
     /* Declarations des variables locales */
 
@@ -108,10 +106,9 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     return;
 }
 
-Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre,
-                       const bool apassPso, const bool atransJn, const double dtu, const double jj1,
-                       const double jj2, const QString fic, const QString out, const QString unite,
-                       const QStringList listeSatellites)
+Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso,
+                       const bool atransJn, const double dtu, const double jj1, const double jj2, const QString fic,
+                       const QString out, const QString unite, const QStringList listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -136,8 +133,8 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
 }
 
 Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE,
-                       const double seuilConjonction, const double dtu, const double jj1, const double jj2,
-                       const QString fic, const QString out, const QString unite)
+                       const double seuilConjonction, const double dtu, const double jj1, const double jj2, const QString fic,
+                       const QString out, const QString unite)
 {
     /* Declarations des variables locales */
 
@@ -163,20 +160,18 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
 /*
  * Ecriture de l'entete du fichier de resultats
  */
-void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &conditions,
-                              QVector<TLE> &tabtle, const bool itransit)
+void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &conditions, QVector<TLE> &tabtle,
+                              const bool itransit)
 {
     /* Declarations des variables locales */
     QString ligne1, ligne2;
 
     /* Initialisations */
     ligne1 = "";
-    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), Maths::DEGRE,
-                                             3, 0, false, false);
+    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), Maths::DEGRE, 3, 0, false, false);
     const QString ew = (observateur.getLongitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
-    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), Maths::DEGRE,
-                                             2, 0, false, false);
+    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), Maths::DEGRE, 2, 0, false, false);
     const QString ns = (observateur.getLatitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
     const double alt = (conditions._unite == QObject::tr("km")) ? observateur.getAltitude() :
@@ -241,8 +236,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
         flux << (cond1 + cond2).arg(conditions._haut * RAD2DEG) << endl;
 
     } else {
-        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) <<
-                endl;
+        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) << endl;
         flux << QString(cond1.size(), ' ') << cond2.arg(conditions._haut * RAD2DEG) << endl;
     }
 

@@ -146,8 +146,8 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
 /*
  * Conversion d'un angle sous forme decimale en chaine de caracteres formattee
  */
-QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg,
-                             const int nbDecimales, const bool signe, const bool espace)
+QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales,
+                             const bool signe, const bool espace)
 {
     /* Declarations des variables locales */
     int dec, deg, degr, min;
@@ -200,25 +200,11 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
         deg++;
     }
 
-    // Signe
-    res = res.append((Maths::sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-");
-
-    // Degres (ou heures)
-    res = res.append("%1");
-    res = res.arg(deg, degr, 10, QChar('0'));
-    res = res.append((tst1) ? "°" : (tst2) ? QObject::tr("h") : ":");
-    res = res.append(esp);
-
-    // Minutes
-    res = res.append("%1");
-    res = res.arg(min, 2, 10, QChar('0'));
-    res = res.append((tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":");
-    res = res.append(esp);
-
-    // Secondes
-    res = res.append("%1");
-    res = res.arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, QChar('0'));
-    res = res.append((tst1) ? "\"" : (tst2) ? QObject::tr("s") : "");
+    res = "%1%2%3%4%5%6%7%8%9";
+    res = res.arg((Maths::sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-")
+            .arg(deg, degr, 10, QChar('0')).arg((tst1) ? "°" : (tst2) ? QObject::tr("h") : ":").arg(esp)
+            .arg(min, 2, 10, QChar('0')).arg((tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":").arg(esp)
+            .arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, QChar('0')).arg((tst1) ? "\"" : (tst2) ? QObject::tr("s") : "");
 
     /* Retour */
     return (res);

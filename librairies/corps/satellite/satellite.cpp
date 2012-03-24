@@ -407,10 +407,9 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 /*
  * Calcul de la position d'une liste de satellites
  */
-void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur,
-                                            const Soleil &soleil, const int nbTracesAuSol,
-                                            const bool visibilite, const bool extinction, const bool traceCiel,
-                                            QList<Satellite> &satellites)
+void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
+                                            const int nbTracesAuSol, const bool visibilite, const bool extinction,
+                                            const bool traceCiel, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -463,8 +462,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 /*
  * Lecture des donnees relatives aux satellites
  */
-void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle,
-                               QList<Satellite> &satellites)
+void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -485,7 +483,8 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
 
     /* Corps de la methode */
     FILE *fmgn = NULL;
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "donnees.sat";
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "donnees.sat";
     if ((fmgn = fopen(fic.toStdString().c_str(), "r")) != NULL) {
 
         int j = 0;
@@ -598,9 +597,8 @@ void Satellite::SGP4Init()
         const double psisq = fabs(1. - etasq);
         const double coef = qzms24 * pow(tsi, 4.);
         const double coef1 = coef * pow(psisq, -3.5);
-        const double cc2 = coef1 * _sat.no *
-                (_sat.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq * _sat.con41 *
-                 (8. + 3. * etasq * (8. + etasq)));
+        const double cc2 = coef1 * _sat.no * (_sat.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq *
+                                              _sat.con41 * (8. + 3. * etasq * (8. + etasq)));
         _sat.cc1 = _sat.bstar * cc2;
         cc3 = 0.;
         if (_sat.ecco > 1.e-4)
@@ -610,8 +608,7 @@ void Satellite::SGP4Init()
         _sat.cc4 = 2. * _sat.no * coef1 * _sat.ao * _sat.omeosq *
                 (_sat.eta * (2. + 0.5 * etasq) + _sat.ecco * (0.5 + 2. * etasq) - J2 * tsi /
                  (_sat.ao * psisq) * (-3. * _sat.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
-                                      0.75 * _sat.x1mth2 * (2. * etasq - eeta * (1. + etasq)) *
-                                      cos(2. * _sat.argpo)));
+                                      0.75 * _sat.x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _sat.argpo)));
         _sat.cc5 = 2. * coef1 * _sat.ao * _sat.omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
 
         const double cosio4 = _sat.cosio2 * _sat.cosio2;
@@ -623,8 +620,7 @@ void Satellite::SGP4Init()
         _sat.argpdot = -0.5 * temp1 * _sat.con42 + 0.0625 * temp2 * (7. - 114. * _sat.cosio2 + 395. * cosio4) +
                 temp3 * (3. - 36. * _sat.cosio2 + 49. * cosio4);
         const double xhdot1 = -temp1 * _sat.cosio;
-        _sat.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _sat.cosio2) + 2. * temp3 *
-                                 (3. - 7. * _sat.cosio2)) * _sat.cosio;
+        _sat.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _sat.cosio2) + 2. * temp3 * (3. - 7. * _sat.cosio2)) * _sat.cosio;
         _sat.xpidot = _sat.argpdot + _sat.nodedot;
         _sat.omgcof = _sat.bstar * cc3 * cos(_sat.argpo);
         _sat.xmcof = 0.;
@@ -770,12 +766,10 @@ void Satellite::Dscom(const double tc) {
         _sat.z2 = 6. * (a1 * a3 + a2 * a4) + _sat.z32 * _sat.emsq;
         _sat.z3 = 3. * (a3 * a3 + a4 * a4) + _sat.z33 * _sat.emsq;
         _sat.z11 = -6. * a1 * a5 + _sat.emsq * (-24. * x1 * x7 - 6. * x3 * x5);
-        _sat.z12 = -6. * (a1 * a6 + a3 * a5) +
-                _sat.emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
+        _sat.z12 = -6. * (a1 * a6 + a3 * a5) + _sat.emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
         _sat.z13 = -6. * a3 * a6 + _sat.emsq * (-24. * x2 * x8 - 6. * x4 * x6);
         _sat.z21 = 6. * a2 * a5 + _sat.emsq * (24. * x1 * x5 - 6. * x3 * x7);
-        _sat.z22 = 6. * (a4 * a5 + a2 * a6) +
-                _sat.emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
+        _sat.z22 = 6. * (a4 * a5 + a2 * a6) + _sat.emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
         _sat.z23 = 6. * a4 * a6 + _sat.emsq * (24. * x2 * x6 - 6. * x4 * x8);
         _sat.z1 = _sat.z1 + _sat.z1 + betasq * _sat.z31;
         _sat.z2 = _sat.z2 + _sat.z2 + betasq * _sat.z32;
@@ -1011,9 +1005,9 @@ void Satellite::Dsinit(const double tc) {
     // the following if statement should be commented out
     // if (inclm < 0.)
     // {
-    // inclm = -inclm
-    // argpm = argpm - PI
-    // nodem = nodem + PI
+    //     inclm = -inclm
+    //     argpm = argpm - PI
+    //     nodem = nodem + PI
     // }
 
     // Initialisation des termes de resonance
@@ -1073,10 +1067,8 @@ void Satellite::Dsinit(const double tc) {
                                                 (-2. + 4. * _sat.cosim + 6. * cosisq));
             _sat.f523 = _sat.sinim * (4.92187512 * sini2 * (-2. - 4. * _sat.cosim + 10. * cosisq) +
                                       6.56250012 * (1. + 2. * _sat.cosim - 3. * cosisq));
-            _sat.f542 = 29.53125 * _sat.sinim * (2. - 8. * _sat.cosim + cosisq *
-                                                 (-12. + 8. * _sat.cosim + 10. * cosisq));
-            _sat.f543 = 29.53125 * _sat.sinim * (-2. - 8. * _sat.cosim + cosisq *
-                                                 (12. + 8. * _sat.cosim - 10. * cosisq));
+            _sat.f542 = 29.53125 * _sat.sinim * (2. - 8. * _sat.cosim + cosisq * (-12. + 8. * _sat.cosim + 10. * cosisq));
+            _sat.f543 = 29.53125 * _sat.sinim * (-2. - 8. * _sat.cosim + cosisq * (12. + 8. * _sat.cosim - 10. * cosisq));
 
             const double xno2 = _sat.nm * _sat.nm;
             const double ainv2 = aonv * aonv;
@@ -1160,9 +1152,9 @@ void Satellite::Dspace(const double tc) {
     // the following if statement should be commented out
     // if (inclm < 0.)
     // {
-    // inclm = -inclm
-    // argpm = argpm - PI
-    // nodem = nodem + PI
+    //     inclm = -inclm
+    //     argpm = argpm - PI
+    //     nodem = nodem + PI
     // }
 
     // Integration numerique (Euler-MacLaurin)
@@ -1199,8 +1191,8 @@ void Satellite::Dspace(const double tc) {
                 const double x2omi = xomi + xomi;
                 const double x2li = _sat.xli + _sat.xli;
                 xndt = _sat.d2201 * sin(x2omi + _sat.xli - G22) + _sat.d2211 * sin(_sat.xli - G22) +
-                        _sat.d3210 * sin(xomi + _sat.xli - G32) + _sat.d3222 * sin(-xomi + _sat.xli - G32)
-                        + _sat.d4410 * sin(x2omi + x2li - G44) + _sat.d4422 * sin(x2li - G44) + _sat.d5220 *
+                        _sat.d3210 * sin(xomi + _sat.xli - G32) + _sat.d3222 * sin(-xomi + _sat.xli - G32) +
+                        _sat.d4410 * sin(x2omi + x2li - G44) + _sat.d4422 * sin(x2li - G44) + _sat.d5220 *
                         sin(xomi + _sat.xli - G52) + _sat.d5232 * sin(-xomi + _sat.xli - G52) + _sat.d5421 *
                         sin(xomi + x2li - G54) + _sat.d5433 * sin(-xomi + x2li - G54);
                 xldot = _sat.xni + _sat.xfact;

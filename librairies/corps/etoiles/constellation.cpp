@@ -96,7 +96,8 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "constlabel.cst";
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "constlabel.cst";
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);

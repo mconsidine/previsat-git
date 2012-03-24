@@ -54,8 +54,8 @@ public:
     Date(const Date &date, const double offsetUTC = 0.);
     Date(const double jourJulien, const double offsetUTC, const bool acalc = true);
     Date(const int annee, const int mois, const double xjour, const double offsetUTC);
-    Date(const int annee, const int mois, const int jour, const int heure, const int minutes,
-         const double secondes, const double offsetUTC);
+    Date(const int annee, const int mois, const int jour, const int heure, const int minutes, const double secondes,
+         const double offsetUTC);
     ~Date();
 
     /* Enumerations */

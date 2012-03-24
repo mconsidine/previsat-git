@@ -59,8 +59,7 @@ public:
 
     /* Methodes publiques */
     static int VerifieFichier(const QString nomFichier, const bool alarm);
-    static void LectureFichier(const QString &nomFichier, const QStringList &listeSatellites,
-                               QVector<TLE> &tabtle);
+    static void LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, QVector<TLE> &tabtle);
     static void MiseAJourFichier(const QString ficOld, const QString ficNew, QStringList &compteRendu);
 
     /* Accesseurs */

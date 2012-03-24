@@ -242,7 +242,8 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 
     /* Initialisations */
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "donnees.sat";
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "donnees.sat";
     QFile donneesSatellites(fic.toStdString().c_str());
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -513,15 +514,14 @@ void TLE::VerifieLignes(const QString li1, const QString li2)
     {}
 
     // Verification des espaces dans les lignes
-    if (li1.at(1) != ' ' || li1.at(8) != ' ' || li1.at(17) != ' ' || li1.at(32) != ' ' ||
-            li1.at(43) != ' ' || li1.at(52) != ' ' || li1.at(61) != ' ' || li1.at(63) != ' ' ||
-            li2.at(1) != ' ' || li2.at(7) != ' ' || li2.at(16) != ' ' || li2.at(25) != ' ' ||
-            li2.at(33) != ' ' || li2.at(42) != ' ' || li2.at(51) != ' ')
+    if (li1.at(1) != ' ' || li1.at(8) != ' ' || li1.at(17) != ' ' || li1.at(32) != ' ' || li1.at(43) != ' ' ||
+            li1.at(52) != ' ' || li1.at(61) != ' ' || li1.at(63) != ' ' || li2.at(1) != ' ' || li2.at(7) != ' ' ||
+            li2.at(16) != ' ' || li2.at(25) != ' ' || li2.at(33) != ' ' || li2.at(42) != ' ' || li2.at(51) != ' ')
         throw PreviSatException(3);
 
     // Verification de la ponctuation des lignes
-    if (li1.at(23) != '.' || li1.at(34) != '.' || li2.at(11) != '.' || li2.at(20) != '.' ||
-            li2.at(37) != '.' || li2.at(46) != '.' || li2.at(54) != '.')
+    if (li1.at(23) != '.' || li1.at(34) != '.' || li2.at(11) != '.' || li2.at(20) != '.' || li2.at(37) != '.' ||
+            li2.at(46) != '.' || li2.at(54) != '.')
         throw PreviSatException(4);
 
     // Verification du numero NORAD
