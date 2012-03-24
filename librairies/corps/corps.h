@@ -63,6 +63,7 @@ public:
     /* Methodes publiques */
     void CalculCoordEquat(const Observateur &observateur);
     void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true);
+    void CalculCoordHoriz2(const Observateur &observateur);
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
     void CalculZoneVisibilite();

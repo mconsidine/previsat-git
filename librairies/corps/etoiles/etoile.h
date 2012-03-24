@@ -59,7 +59,6 @@ public:
 
     /* Methodes publiques */
     static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
-    void CalculCoordHoriz(const Observateur &observateur);
 
     /* Accesseurs */
     double getMagnitude() const;

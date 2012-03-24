@@ -85,45 +85,7 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
 
     /* Corps de la methode */
     for (int i=0; i<etoiles.size(); i++)
-        etoiles[i].CalculCoordHoriz(observateur);
-
-    /* Retour */
-    return;
-}
-
-void Etoile::CalculCoordHoriz(const Observateur &observateur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    _visible = false;
-    _hauteur = -PI;
-    const double cd = cos(_declinaison);
-    Vecteur3D vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
-    Vecteur3D vec2 = observateur.getRotHz() * vec1;
-
-    /* Corps de la methode */
-    // Hauteur
-    const double ht = asin(vec2.getZ());
-
-    if (ht > -DEG2RAD) {
-
-        // Prise en compte de la refraction atmospherique
-        const double htd = ht * RAD2DEG;
-        const double refraction = DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11))));
-
-        _hauteur = ht + refraction;
-        if (_hauteur >= 0.) {
-            // Azimut
-            _azimut = atan2(vec2.getY(), -vec2.getX());
-            if (_azimut < 0.)
-                _azimut += DEUX_PI;
-            _visible = true;
-        } else {
-            _visible = false;
-            _hauteur = ht;
-        }
-    }
+        etoiles[i].CalculCoordHoriz2(observateur);
 
     /* Retour */
     return;

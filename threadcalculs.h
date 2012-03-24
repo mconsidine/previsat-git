@@ -48,18 +48,25 @@ class ThreadCalculs : public QThread
 {
 public:
     enum TypeCalcul {
+        MAJTLE,
         PREVISION,
         IRIDIUM,
         EVENEMENTS,
         TRANSITS
     };
 
+    ThreadCalculs(const TypeCalcul typeCalcul, const QString _ficOld, const QString _ficNew, QStringList &compteRendu);
+    ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions);
     ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &observateur);
     void run();
 
     TypeCalcul getTypeCalcul() const;
 
 private:
+    QString _ficOld;
+    QString _ficNew;
+    QStringList _compteRendu;
+
     TypeCalcul _typeCalcul;
     Conditions _conditions;
     Observateur _observateur;

@@ -49,11 +49,14 @@
 #include <QFileDialog>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
+#include <QPrintDialog>
+#include <QPrinter>
 #include <QSettings>
 #include <QSound>
 #include <QTextStream>
 #include <QTimer>
 #include <QUrl>
+#include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/satellite.h"
@@ -128,9 +131,10 @@ static double DEG2PXVT;
 static Soleil soleil;
 static Lune lune;
 static QList<Etoile> etoiles;
+static QList<Constellation> constellations;
 static QList<LigneConstellation> lignesCst;
 static QList<Planete> planetes;
-static QColor couleurPlanetes[7] = { Qt::gray, Qt::white, Qt::red, QColor("orange"), Qt::darkYellow, Qt::green, Qt::blue };
+static QList<QColor> couleurPlanetes;
 
 // SAA
 static double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. },
@@ -153,6 +157,7 @@ static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
 
 // Interface graphique
+QPalette paletteDefaut;
 QGraphicsScene *scene;
 QGraphicsScene *scene2;
 QGraphicsScene *scene3;
@@ -197,6 +202,8 @@ void PreviSat::Initialisations()
     old = false;
     selec = -1;
     selec2 = 0;
+    couleurPlanetes << Qt::gray << Qt::white << Qt::red << QColor("orange") << Qt::darkYellow << Qt::green << Qt::blue;
+    paletteDefaut = PreviSat::palette();
     tim = QDateTime();
 
     // Repertoires
@@ -234,8 +241,8 @@ void PreviSat::Initialisations()
 
     // Verification de la presence des fichiers du repertoire data
     QStringList ficdata;
-    ficdata << "chimes.wav" << "constellations.cst" << "constlines.cst" << "cross.cur" << "donnees.sat" <<
-               "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
+    ficdata << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "cross.cur" <<
+               "donnees.sat" << "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
@@ -278,7 +285,7 @@ void PreviSat::Initialisations()
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
     ui->fichierTLEIri->setText(settings.value("fichier/fichierTLEIri", QDir::convertSeparators(dirTle + QDir::separator() + "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
-    ui->affconst->setChecked(settings.value("affichage/affconst", true).toBool());
+    ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
     ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
     ui->affgrille->setChecked(settings.value("affichage/affgrille", true).toBool());
@@ -428,15 +435,6 @@ void PreviSat::Initialisations()
         ui->ajdfic->setCurrentIndex(0);
     }
 
-    // Ouverture du fichier TLE par defaut
-    if (nbSat == 0) {
-        tles.resize(1);
-        nbSat = 1;
-    } else {
-        tles.resize(nbSat);
-        bipSat.resize(nbSat);
-    }
-
     /* Retour */
     return;
 }
@@ -448,6 +446,15 @@ void PreviSat::InitFicTLE()
     /* Initialisations */
 
     /* Corps de la methode */
+    // Ouverture du fichier TLE par defaut
+    if (nbSat == 0) {
+        tles.resize(1);
+        nbSat = 1;
+    } else {
+        tles.resize(nbSat);
+        bipSat.resize(nbSat);
+    }
+
     // Lecture du fichier TLE par defaut
     const QFileInfo fi(nomfic);
     if (fi.exists()) {
@@ -552,6 +559,7 @@ void PreviSat::DemarrageApplication()
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
     Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
+    Constellation::CalculConstellations(observateurs.at(0), constellations);
     LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
 
@@ -1604,7 +1612,7 @@ void PreviSat::AffichageCourbes() const
         const int hciel = qRound(0.5 * ui->ciel->height());
 
         // Affichage des constellations
-        if (ui->affconst->isChecked()) {
+        if (ui->affconst->checkState() != Qt::Unchecked) {
 
             QListIterator<LigneConstellation> it(lignesCst);
             while (it.hasNext()) {
@@ -1628,6 +1636,38 @@ void PreviSat::AffichageCourbes() const
                     const QPen crayon(col);
                     if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                         scene3->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
+                }
+            }
+
+            // Affichage du nom des constellations
+            if (ui->affconst->checkState() == Qt::Checked) {
+
+                if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+                    QListIterator<Constellation> it(constellations);
+                    while (it.hasNext()) {
+
+                        const Constellation cst = it.next();
+                        if (cst.isVisible()) {
+
+                            // Calcul des coordonnees radar du label
+                            const int lcst = qRound(lciel - lciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * sin(cst.getAzimut()));
+                            const int bcst = qRound(hciel - hciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * cos(cst.getAzimut()));
+
+                            const int lst = lcst - lciel;
+                            const int bst = hciel - bcst;
+
+                            QGraphicsSimpleTextItem *txtCst = new QGraphicsSimpleTextItem(cst.getNom());
+                            const int lng = txtCst->boundingRect().width();
+
+                            const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
+                            const int yncst = (bcst + 9 > ui->ciel->height()) ? bcst - 10 : bcst + 1;
+
+                            txtCst->setBrush(QBrush(Qt::darkYellow));
+                            txtCst->setPos(xncst, yncst);
+                            txtCst->setFont(QFont(PreviSat::font().family(), 8));
+                            scene3->addItem(txtCst);
+                        }
+                    }
                 }
             }
         }
@@ -2167,6 +2207,8 @@ void PreviSat::EnchainementCalculs() const
          */
         Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
         if (ui->affconst->isChecked())
+            Constellation::CalculConstellations(observateurs.at(0), constellations);
+        if (ui->affconst->checkState() != Qt::Unchecked)
             LigneConstellation::CalculLignesCst(etoiles, lignesCst);
     }
 
@@ -2942,7 +2984,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
     settings.setValue("affichage/affsoleil", ui->affsoleil->isChecked());
     settings.setValue("affichage/afftracesol", ui->afftraj->isChecked());
-    settings.setValue("affichage/affconst", ui->affconst->isChecked());
+    settings.setValue("affichage/affconst", ui->affconst->checkState());
     settings.setValue("affichage/affetoiles", ui->affetoiles->isChecked());
     settings.setValue("affichage/nombreTrajectoires", ui->nombreTrajectoires->value());
     settings.setValue("affichage/magnitudeEtoiles", ui->magnitudeEtoiles->value());
@@ -3862,6 +3904,46 @@ void PreviSat::on_actionEnregistrer_activated()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionImprimer_carte_activated()
+{
+    /* Declarations des variables locales */
+    QPrinter printer;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    printer.setOrientation((ui->carte->isVisible()) ? QPrinter::Landscape : QPrinter::Portrait);
+    QPrintDialog dial(&printer, this);
+    if (dial.exec() == QDialog::Accepted) {
+        printer.newPage();
+        QPainter p(&printer);
+
+        const QPixmap pixmap = QPixmap::grabWidget((ui->carte->isVisible()) ? ui->carte : ui->ciel);
+        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ? pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
+        const int x = (pixscl.width() == pixmap.width()) ? printer.pageRect().width() / 2 - pixscl.width() / 2 : 50;
+        p.drawPixmap(x, 50, pixscl);
+        p.end();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
+{
+    QPalette palette;
+    const QBrush alpha = (arg1) ? QBrush(QColor::fromRgb(64, 0, 0, 255)) : QBrush(Qt::NoBrush);
+
+    if (arg1)
+        palette.setBrush(this->backgroundRole(), alpha);
+    else
+        palette = paletteDefaut;
+
+    this->setPalette(palette);
+
+    AffichageCourbes();
 }
 
 void PreviSat::on_actionAstropedia_free_fr_activated()
@@ -5424,74 +5506,87 @@ void PreviSat::on_mettreAJourTLE_clicked()
         }
 
         QStringList compteRendu;
-        TLE::MiseAJourFichier(QDir::convertSeparators(ui->fichierAMettreAJour->text()), fic, compteRendu);
+        threadCalculs = new ThreadCalculs(ThreadCalculs::MAJTLE, ui->fichierAMettreAJour->text(), fic, compteRendu);
+        connect(threadCalculs, SIGNAL(finished()), this, SLOT(MAJTerminee(agz, fic, compteRendu)));
+        threadCalculs->start();
 
-        ui->compteRenduMaj->setVisible(true);
-        ui->compteRenduMaj->clear();
-        const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
-        const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
-        const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
-        const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
-
-        QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
-        for(int i=0; i<compteRendu.count()-4; i++) {
-            const QString nomsat = compteRendu.at(i).split("#").at(0);
-            const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
-        }
-
-
-        if (nbmaj < nbold) {
-            msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-            if (!ui->compteRenduMaj->toPlainText().isEmpty())
-                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
-        }
-
-        if (nbmaj == nbold && nbold != 0) {
-            msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-            ui->compteRenduMaj->setPlainText(msgcpt.arg(nbold) + "\n");
-        }
-
-        if (nbmaj == 0 && nbold != 0) {
-            ui->compteRenduMaj->clear();
-            ui->compteRenduMaj->setPlainText(tr("Aucun TLE mis à jour") + "\n");
-        }
-
-        if (nbsup > 0) {
-            msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbsup) + "\n");
-        }
-
-        if (nbadd > 0) {
-            msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbadd) + "\n");
-        }
-
-        if (agz) {
-            QFile fich(fic);
-            fich.remove();
-        }
-
-        messagesStatut->setText(tr("Terminé !"));
-
-        if (nomfic == ui->fichierAMettreAJour->text().trimmed() && nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0)) {
-
-            // Recuperation des TLE de la liste
-            TLE::LectureFichier(nomfic, liste, tles);
-
-            l1 = tles.at(0).getLigne1();
-            l2 = tles.at(0).getLigne2();
-
-            if (nbSat > 0) {
-
-                // Lecture des donnees satellite
-                Satellite::LectureDonnees(liste, tles, satellites);
-
-                CalculsAffichage();
-            }
-        }
     } catch (PreviSatException &e) {
+    }
+    /* Retour */
+    return;
+}
+
+void PreviSat::MAJTerminee(const bool agz, const QString fic, const QStringList compteRendu)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ui->compteRenduMaj->setVisible(true);
+    ui->compteRenduMaj->clear();
+    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
+    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
+    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
+    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
+
+    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+    for(int i=0; i<compteRendu.count()-4; i++) {
+        const QString nomsat = compteRendu.at(i).split("#").at(0);
+        const QString norad = compteRendu.at(i).split("#").at(1);
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
+    }
+
+
+    if (nbmaj < nbold) {
+        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+        if (!ui->compteRenduMaj->toPlainText().isEmpty())
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+    }
+
+    if (nbmaj == nbold && nbold != 0) {
+        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
+        ui->compteRenduMaj->setPlainText(msgcpt.arg(nbold) + "\n");
+    }
+
+    if (nbmaj == 0 && nbold != 0) {
+        ui->compteRenduMaj->clear();
+        ui->compteRenduMaj->setPlainText(tr("Aucun TLE mis à jour") + "\n");
+    }
+
+    if (nbsup > 0) {
+        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbsup) + "\n");
+    }
+
+    if (nbadd > 0) {
+        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbadd) + "\n");
+    }
+
+    if (agz) {
+        QFile fich(fic);
+        fich.remove();
+    }
+
+    messagesStatut->setText(tr("Terminé !"));
+
+    if (nomfic == ui->fichierAMettreAJour->text().trimmed() && nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0)) {
+
+        // Recuperation des TLE de la liste
+        TLE::LectureFichier(nomfic, liste, tles);
+
+        l1 = tles.at(0).getLigne1();
+        l2 = tles.at(0).getLigne2();
+
+        if (nbSat > 0) {
+
+            // Lecture des donnees satellite
+            Satellite::LectureDonnees(liste, tles, satellites);
+
+            CalculsAffichage();
+        }
     }
 
     /* Retour */
@@ -6386,9 +6481,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Lancement des calculs
         const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, dtu, jj1, jj2, nomfic, out, unite, listeSat);
-        const Observateur obser;
 
-        threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions, obser);
+        threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
         threadCalculs->start();
 

@@ -57,7 +57,6 @@ public:
 
     /* Methodes publiques */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
-    static void InitTabLignesCst();
 
     /* Accesseurs */
     bool isDessin() const;
@@ -87,6 +86,7 @@ private:
     static int _tabLigCst[TABMAX][2];
 
     /* Methodes privees */
+    static void InitTabLignesCst();
 
 };
 

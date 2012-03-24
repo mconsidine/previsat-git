@@ -98,6 +98,9 @@
           <property name="mouseTracking">
            <bool>true</bool>
           </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
@@ -1085,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -6169,7 +6172,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-124</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6648,6 +6651,9 @@
                 </property>
                 <property name="text">
                  <string>Affichage des constellations</string>
+                </property>
+                <property name="tristate">
+                 <bool>true</bool>
                 </property>
                </widget>
                <widget class="QPushButton" name="majFicPrevisat">
@@ -8769,6 +8775,9 @@
     </widget>
     <addaction name="actionOuvrir_fichier_TLE"/>
     <addaction name="actionEnregistrer"/>
+    <addaction name="actionImprimer_carte"/>
+    <addaction name="separator"/>
+    <addaction name="actionVision_nocturne"/>
     <addaction name="separator"/>
     <addaction name="menuAide"/>
    </widget>
@@ -8939,6 +8948,25 @@
   <action name="actionCopier_dans_le_presse_papier">
    <property name="text">
     <string>Copier dans le presse-papier</string>
+   </property>
+  </action>
+  <action name="actionVision_nocturne">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Vision nocturne</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionImprimer_carte">
+   <property name="text">
+    <string>Imprimer carte</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>
