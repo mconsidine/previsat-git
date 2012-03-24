@@ -3005,6 +3005,8 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     /* Initialisations */
 
     /* Corps de la methode */
+    if (ui->frameCarte->height() >= PreviSat::height())
+        ui->frameCarte->setGeometry(0, 0, ui->frameCarte->width(), PreviSat::height() - 23);
     ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     ui->frameCarte2->setGeometry(ui->carte->geometry());
     ui->maximise->move(11 + ui->carte->width(), 5);
@@ -4004,8 +4006,6 @@ void PreviSat::on_affichageCiel_clicked()
         ui->ouest->setVisible(true);
         ui->affichageCiel->setToolTip(tr("Carte du monde"));
     }
-
-    //Satellite::initCalcul = false;
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();

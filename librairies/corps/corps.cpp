@@ -189,9 +189,11 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
     /* Initialisations */
     _visible = false;
     _hauteur = -PI;
-    const double cd = cos(_declinaison);
-    Vecteur3D vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
-    Vecteur3D vec2 = observateur.getRotHz() * vec1;
+    if (_vec1.isNul()) {
+        const double cd = cos(_declinaison);
+        _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
+    }
+    Vecteur3D vec2 = observateur.getRotHz() * _vec1;
 
     /* Corps de la methode */
     // Hauteur
