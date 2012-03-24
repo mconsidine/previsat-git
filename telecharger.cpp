@@ -50,21 +50,19 @@
 #include "ui_telecharger.h"
 
 static int dirHttp;
+static QString fic;
 static QString dirCoo;
 static QString dirMap;
 static QString dirTmp;
 static const QString httpDirList1 = "http://astropedia.free.fr/previsat/data/coordonnees/";
 static const QString httpDirList2 = "http://astropedia.free.fr/previsat/data/map/";
 
-Telecharger::Telecharger(QWidget *parent) :
+Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Telecharger)
 {
     ui->setupUi(this);
-}
 
-Telecharger::Telecharger(const int idirHttp)
-{
     dirHttp = idirHttp;
     QCoreApplication::setApplicationName("PreviSat");
     QCoreApplication::setOrganizationName("Astropedia");
@@ -99,13 +97,13 @@ void Telecharger::on_interrogerServeur_clicked()
 
     /* Corps de la methode */
     const QUrl url(httpDirList + "liste");
-    const QString fic = dirTmp + QDir::separator() + "listeMap.tmp";
+    fic = dirTmp + QDir::separator() + "listeMap.tmp";
     const QNetworkRequest requete(url);
     QNetworkAccessManager *mng = new QNetworkAccessManager;
     QNetworkReply *rep = mng->get(requete);
 
     connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
-    connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer(fic)));
+    connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
 
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -138,7 +136,7 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
     throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
 }
 
-void Telecharger::Enregistrer(const QString fic) const
+void Telecharger::Enregistrer() const
 {
     /* Declarations des variables locales */
 

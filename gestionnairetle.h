@@ -53,9 +53,10 @@ class GestionnaireTLE : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GestionnaireTLE(QWidget *parent = 0);
-    GestionnaireTLE(QVector<TLE> &tabtles);
+    explicit GestionnaireTLE(QVector<TLE> &tabtles, QWidget *parent = 0);
     ~GestionnaireTLE();
+
+    QVector<TLE> getTabtles() const;
 
 private slots:
     void on_fermer_clicked();
@@ -71,11 +72,12 @@ private slots:
     void on_MajAutoGroupe_toggled(bool checked);
     void on_MajMaintenant_clicked();
     void MessageErreur(QNetworkReply::NetworkError) const;
-    void Enregistrer(const QString fic) const;
+    void Enregistrer() const;
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
 
 private:
     Ui::GestionnaireTLE *ui;
+    QVector<TLE> _tabtle;
     void load();
 };
 
