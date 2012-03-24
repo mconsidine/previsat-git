@@ -129,6 +129,7 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
+    Vecteur3D _vec1;
 
     /* Methodes privees */
     void CalculLatitudeAltitude();

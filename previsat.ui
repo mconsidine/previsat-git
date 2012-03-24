@@ -1088,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -6172,7 +6172,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-124</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -8958,7 +8958,7 @@
     <string>Vision nocturne</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string notr="true">Ctrl+N</string>
    </property>
   </action>
   <action name="actionImprimer_carte">
@@ -8966,7 +8966,7 @@
     <string>Imprimer carte</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string notr="true">Ctrl+P</string>
    </property>
   </action>
  </widget>
