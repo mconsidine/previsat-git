@@ -2976,8 +2976,8 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
 
-    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() == 0) ? "" : ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)));
-    settings.setValue("fichier/nom", (!ficgz.isEmpty()) ? QDir::convertSeparators(ficgz) : QDir::convertSeparators(nomfic));
+    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)) : "");
+    settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
     settings.setValue("fichier/iridium", ui->fichierTLEIri->text());
     settings.setValue("fichier/fichierMaj", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());

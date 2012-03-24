@@ -76,14 +76,14 @@ protected:
 private:
 
     /* Constantes privees */
-    static const int TABMAX = 646;
+    //static const int TABMAX = 646;
 
     /* Variables privees */
     bool _dessin;
     static bool _initLig;
     Etoile _etoile1;
     Etoile _etoile2;
-    static int _tabLigCst[TABMAX][2];
+    static QList<QVector<int> > _tabLigCst;
 
     /* Methodes privees */
     static void InitTabLignesCst();

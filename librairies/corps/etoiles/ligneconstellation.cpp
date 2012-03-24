@@ -48,9 +48,8 @@
 #include <QTextStream>
 #include "ligneconstellation.h"
 
-const int LigneConstellation::TABMAX;
 bool LigneConstellation::_initLig = false;
-int LigneConstellation::_tabLigCst[TABMAX][2];
+QList<QVector<int> > LigneConstellation::_tabLigCst;
 
 LigneConstellation::LigneConstellation()
 {
@@ -89,10 +88,10 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
 
     /* Corps de la methode */
     lignesCst.clear();
-    for (int i=0; i<TABMAX; i++) {
-        ind1 = _tabLigCst[i][0] - 1;
-        ind2 = _tabLigCst[i][1] - 1;
-        lignesCst.append(LigneConstellation(etoiles[ind1], etoiles[ind2]));
+    for (int i=0; i<_tabLigCst.size(); i++) {
+        ind1 = _tabLigCst.at(i).at(0) - 1;
+        ind2 = _tabLigCst.at(i).at(1) - 1;
+        lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
     }
 
     /* Retour */
@@ -111,16 +110,18 @@ void LigneConstellation::InitTabLignesCst()
     QFile fichier(ficLig);
     if (fichier.exists()) {
 
-        int i = 0;
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichier);
 
+        _tabLigCst.clear();
         while (!flux.atEnd()) {
 
             const QStringList ligne = flux.readLine().split(" ");
-            _tabLigCst[i][0] = ligne.at(0).toInt();
-            _tabLigCst[i][1] = ligne.at(1).toInt();
-            i++;
+            QVector<int> vec;
+            vec.clear();
+            vec.push_back(ligne.at(0).toInt());
+            vec.push_back(ligne.at(1).toInt());
+            _tabLigCst.append(vec);
         }
     }
     fichier.close();
