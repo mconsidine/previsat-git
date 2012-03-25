@@ -453,7 +453,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite
             listVal.append(sat.getRayonApparentTerre());
             listVal.append(sat.getRayonApparentSoleil());
             listVal.append(position * soleil.getPosition());
-            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), T360));
+            listVal.append(Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI));
 
             tab.append(listVal);
 

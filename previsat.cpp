@@ -298,7 +298,7 @@ void PreviSat::Initialisations()
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
     ui->fichierTLEIri->setText(settings.value("fichier/iridium", QDir::convertSeparators(dirTle + QDir::separator() +
-                                                                                               "iridium.txt")).toString());
+                                                                                         "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
@@ -1733,7 +1733,7 @@ void PreviSat::AffichageCourbes() const
             }
         }
 
-        if (ui->affsoleil->isChecked() && soleil.isVisible()) {
+        if (ui->affsoleil->isChecked()) {
 
             // Dessin de l'ecliptique
             if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
@@ -1778,12 +1778,14 @@ void PreviSat::AffichageCourbes() const
                 }
             }
 
-            // Calcul des coordonnees radar du Soleil
-            const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-            const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+            if (soleil.isVisible()) {
+                // Calcul des coordonnees radar du Soleil
+                const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
+                const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
 
-            rect = QRect(lsol - 7, bsol - 7, 15, 15);
-            scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+                rect = QRect(lsol - 7, bsol - 7, 15, 15);
+                scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            }
         }
 
         if (ui->afflune->isChecked() && lune.isVisible()) {
@@ -6445,7 +6447,6 @@ void PreviSat::on_calculsIri_clicked()
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         int i = 0;
         listeSatellites.clear();
-        QList<Satellite> sats;
         QVectorIterator<TLE> it2(tabtle);
         QVector<TLE> tabtle2;
         while (it2.hasNext()) {
@@ -6453,7 +6454,6 @@ void PreviSat::on_calculsIri_clicked()
             if (tle.getNorad().isEmpty()) {
                 tabStsIri.removeAt(i);
             } else {
-                sats.append(Satellite(tle));
                 listeSatellites.append(tle.getNorad());
                 tabtle2.append(tle);
                 i++;
@@ -6463,17 +6463,6 @@ void PreviSat::on_calculsIri_clicked()
         // Il n'y a aucun satellite Iridium dans le fichier TLE
         if (listeSatellites.size() == 0)
             throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium n'a été trouvé dans le fichier TLE"), Messages::WARNING);
-
-
-
-
-
-
-
-
-
-
-
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsIri->setVisible(false);
