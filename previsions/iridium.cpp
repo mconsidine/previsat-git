@@ -84,7 +84,6 @@ static Matrice _PR;
 void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    int i;
     QString ligne;
     QStringList res;
     QTime tps;
@@ -233,7 +232,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     if (res.count() > 0) {
         flux << QObject::tr("Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max") << endl;
 
-        i = 0;
+        int i = 0;
         while (i < res.count()) {
             for (int j=0; j<conditions.getNbl(); j++) {
                 ligne = res.at(i);

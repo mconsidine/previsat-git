@@ -48,6 +48,42 @@
 
 Conditions::Conditions()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _acalcLune = false;
+    _acalcSol = false;
+    _apassApogee = false;
+    _apassNoeuds = false;
+    _apassOmbre = false;
+    _apassPso = false;
+    _atransJn = false;
+    _ecl = false;
+    _ext = false;
+    _chr = '';
+    _nbl = 0;
+
+    _ageTLE = 0.;
+    _ang0 = 0.;
+    _crep = 0.;
+    _dtu = 0.;
+    _jj1 = 0.;
+    _jj2 = 0.;
+    _haut = 0.;
+    _mgn1 = 99.;
+    _mgn2 = 99.;
+    _pas0 = 0.;
+    _seuilConjonction = 0.;
+
+    _fic = "";
+    _out = "";
+    _unite = "";
+    _listeSatellites = QStringList("");
+
+    /* Retour */
+    return;
 }
 
 Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu,
@@ -72,6 +108,20 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     _out = out;
     _unite = unite;
     _listeSatellites = listeSatellites;
+
+    _acalcLune = false;
+    _acalcSol = false;
+    _apassApogee = false;
+    _apassNoeuds = false;
+    _apassOmbre = false;
+    _apassPso = false;
+    _atransJn = false;
+    _chr = '';
+    _nbl = 0;
+    _ageTLE = 0.;
+    _ang0 = 0.;
+    _mgn2 = 99.;
+    _seuilConjonction = 0.;
 
     /* Retour */
     return;
@@ -104,6 +154,18 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     _tabStsIri = tabStsIri;
     _tabtle = tabtle;
 
+    _acalcLune = false;
+    _acalcSol = false;
+    _apassApogee = false;
+    _apassNoeuds = false;
+    _apassOmbre = false;
+    _apassPso = false;
+    _atransJn = false;
+    _ecl = false;
+    _ageTLE = 0.;
+    _pas0 = 0.;
+    _seuilConjonction = 0.;
+
     /* Retour */
     return;
 }
@@ -130,6 +192,21 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
     _unite = unite;
     _listeSatellites = listeSatellites;
 
+    _acalcLune = false;
+    _acalcSol = false;
+    _ecl = false;
+    _ext = false;
+    _chr = '';
+    _nbl = 0;
+    _ageTLE = 0.;
+    _ang0 = 0.;
+    _crep = 0.;
+    _haut = 0.;
+    _mgn1 = 99.;
+    _mgn2 = 99.;
+    _pas0 = 0.;
+    _seuilConjonction = 0.;
+
     /* Retour */
     return;
 }
@@ -154,6 +231,21 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
     _fic = fic;
     _out = out;
     _unite = unite;
+
+    _apassApogee = false;
+    _apassNoeuds = false;
+    _apassOmbre = false;
+    _apassPso = false;
+    _atransJn = false;
+    _ecl = false;
+    _ext = false;
+    _chr = '';
+    _nbl = 0;
+    _ang0 = 0.;
+    _crep = 0.;
+    _mgn1 = 99.;
+    _mgn2 = 99.;
+    _pas0 = 0.;
 
     /* Retour */
     return;
