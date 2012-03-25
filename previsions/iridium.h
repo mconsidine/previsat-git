@@ -57,6 +57,7 @@ public:
 
     /* Methodes publiques */
     static void CalculFlashsIridium(const Conditions &conditions, Observateur &observateur);
+    static int LectureStatutIridium(const char ope, QStringList &tabStsIri);
 
     /* Accesseurs */
 
@@ -93,7 +94,7 @@ private:
     static QString EcrireFlash(const Date &date, const int i, const double altitude, const double angref, const double mag,
                                const QString &sts, const Conditions &conditions, const Observateur &observateur,
                                const Soleil &soleil, Satellite &sat);
-    static int LectureStatutIridium(const char ope);
+
 
 };
 

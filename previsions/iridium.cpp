@@ -77,7 +77,6 @@ static char _mir;
 static int _pan;
 static Vecteur3D _solsat;
 static Matrice _PR;
-static QStringList _tabStsIri;
 
 /*
  * Calcul des flashs Iridium
@@ -85,60 +84,18 @@ static QStringList _tabStsIri;
 void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    int i, nb;
+    int i;
     QString ligne;
-    QStringList listeSatellites, res;
+    QStringList res;
     QTime tps;
     QList<Satellite> sats;
-    QVector<TLE> tabtle;
     QList<QVector<double > > tabEphem;
 
     /* Initialisations */
-    i = 0;
-    nb = 0;
-
-    // Lecture du fichier de statut des satellites Iridium
-    nb = LectureStatutIridium(conditions.getOpe());
-    if (nb == 0)
-        throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"));
-
-    // Creation de la liste de satellites
-    QStringListIterator it1(_tabStsIri);
-    while (it1.hasNext()) {
-        listeSatellites.append(it1.next().mid(4, 5));
-    }
-
-    // Verification du fichier TLE
-    if (TLE::VerifieFichier(conditions.getFic(), false) == 0) {
-        const QString msg = QObject::tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
-        throw PreviSatException(msg.arg(conditions.getFic()));
-    }
-
-    // Lecture du fichier TLE
-    TLE::LectureFichier(conditions.getFic(), listeSatellites, tabtle);
-
-    // Mise a jour de la liste de satellites et creation du tableau de satellites
-    listeSatellites.clear();
-    QVectorIterator<TLE> it2(tabtle);
-    QVector<TLE> tabtle2;
-    while (it2.hasNext()) {
-        const TLE tle = it2.next();
-        if (tle.getNorad().isEmpty()) {
-            _tabStsIri.removeAt(i);
-        } else {
-            sats.append(Satellite(tle));
-            listeSatellites.append(tle.getNorad());
-            tabtle2.append(tle);
-            i++;
-        }
-    }
-
-    // Il n'y a aucun satellite Iridium dans le fichier TLE
-    if (listeSatellites.size() == 0)
-        throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium n'a été trouvé dans le fichier TLE"));
+    QVector<TLE> tabtle = conditions.getTabtle();
 
     // Ecriture de l'entete du fichier de previsions
-    Conditions::EcrireEntete(observateur, conditions, tabtle2, false);
+    Conditions::EcrireEntete(observateur, conditions, tabtle, false);
 
     /* Corps de la methode */
     tps.start();
@@ -149,7 +106,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     QListIterator<QVector<double> > it3(tabEphem);
 
     // Boucle sur les satellites
-    it1 = QStringListIterator(_tabStsIri);
+    QStringListIterator it1 = QStringListIterator(conditions.getTabStsIri());
     QListIterator<Satellite> it4(sats);
     while (it4.hasNext()) {
 
@@ -868,7 +825,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     return (ligne);
 }
 
-int Iridium::LectureStatutIridium(const char ope)
+int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 {
     /* Declarations des variables locales */
     int i;
@@ -886,11 +843,11 @@ int Iridium::LectureStatutIridium(const char ope)
 
         ligne = flux.readLine();
         if (ligne.size() == 9) {
-            _tabStsIri.append(ligne);
+            tabStsIri.append(ligne);
             i++;
         } else {
             if (ligne.at(10) == '?' && ope == 'n') {
-                _tabStsIri.append(ligne);
+                tabStsIri.append(ligne);
                 i++;
             }
         }

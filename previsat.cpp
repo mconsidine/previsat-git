@@ -69,6 +69,7 @@
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "previsions/conditions.h"
+#include "previsions/iridium.h"
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
@@ -296,7 +297,7 @@ void PreviSat::Initialisations()
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
-    ui->fichierTLEIri->setText(settings.value("fichier/fichierTLEIri", QDir::convertSeparators(dirTle + QDir::separator() +
+    ui->fichierTLEIri->setText(settings.value("fichier/iridium", QDir::convertSeparators(dirTle + QDir::separator() +
                                                                                                "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
@@ -6415,6 +6416,65 @@ void PreviSat::on_calculsIri_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
 
+
+
+        // Lecture du fichier de statut des satellites Iridium
+        QStringList tabStsIri;
+        const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
+        if (nb == 0)
+            throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), Messages::WARNING);
+
+        // Creation de la liste de satellites
+        QStringList listeSatellites;
+        QStringListIterator it1(tabStsIri);
+        while (it1.hasNext()) {
+            listeSatellites.append(it1.next().mid(4, 5));
+        }
+
+        // Verification du fichier TLE
+        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
+            const QString msg = QObject::tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), Messages::WARNING);
+        }
+
+        QVector<TLE> tabtle;
+
+        // Lecture du fichier TLE
+        TLE::LectureFichier(fi.absoluteFilePath(), listeSatellites, tabtle);
+
+        // Mise a jour de la liste de satellites et creation du tableau de satellites
+        int i = 0;
+        listeSatellites.clear();
+        QList<Satellite> sats;
+        QVectorIterator<TLE> it2(tabtle);
+        QVector<TLE> tabtle2;
+        while (it2.hasNext()) {
+            const TLE tle = it2.next();
+            if (tle.getNorad().isEmpty()) {
+                tabStsIri.removeAt(i);
+            } else {
+                sats.append(Satellite(tle));
+                listeSatellites.append(tle.getNorad());
+                tabtle2.append(tle);
+                i++;
+            }
+        }
+
+        // Il n'y a aucun satellite Iridium dans le fichier TLE
+        if (listeSatellites.size() == 0)
+            throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium n'a été trouvé dans le fichier TLE"), Messages::WARNING);
+
+
+
+
+
+
+
+
+
+
+
+
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsIri->setVisible(false);
         ui->annulerIri->setVisible(true);
@@ -6422,8 +6482,8 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ext, crep, haut, nbl, chr, ope, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(),
-                                    out, unite);
+        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(), out,
+                                    unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::IRIDIUM, conditions, obser);
@@ -6776,11 +6836,33 @@ void PreviSat::on_calculsTransit_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
 
+        const QStringList listeTLE("25544");
+        QVector<TLE> tabtle;
+
+        // Verification du fichier TLE
+        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
+            const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), Messages::WARNING);
+        }
+
+        // Lecture du TLE
+        TLE::LectureFichier(fi.absoluteFilePath(), listeTLE, tabtle);
+        if (tabtle.at(0).getNorad().isEmpty()) {
+            const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 ne contient pas le TLE de l'ISS");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), Messages::WARNING);
+        }
+
+        // Age du TLE
+        const double age = fabs(jj1 - tabtle.at(0).getEpoque().getJourJulienUTC());
+        if (age > ageTLE + 0.05) {
+            const QString msg = QObject::tr("TRANSIT : L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+            Messages::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), Messages::INFO);
+        }
+
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsTransit->setVisible(false);
         ui->annulerTransit->setVisible(true);
         ui->annulerTransit->setFocus();
-
 
         // Lancement des calculs
         const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, dtu, jj1, jj2, fi.absoluteFilePath(), out, unite);
@@ -6886,5 +6968,3 @@ void PreviSat::CalculsTermines()
     /* Retour */
     return;
 }
-
-

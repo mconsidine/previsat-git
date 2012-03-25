@@ -57,9 +57,9 @@ public:
                const QString unite, const QStringList listeSatellites);
 
     // Constructeur pour le calcul des flashs Iridium
-    Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const char ope,
+    Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
                const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1, const double mgn2,
-               const QString fic, const QString out, const QString unite);
+               const QString fic, const QString out, const QString unite, const QStringList &tabStsIri, const QVector<TLE> &tabtle);
 
     // Constructeur pour le calcul des evenements orbitaux
     Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso,
@@ -99,6 +99,8 @@ public:
     char getOpe() const;
     double getAng0() const;
     double getMgn2() const;
+    QStringList getTabStsIri() const;
+    QVector<TLE> getTabtle() const;
 
     bool getApassApogee() const;
     bool getApassNoeuds() const;
@@ -143,9 +145,10 @@ private:
     // Pour le calcul des flashs Iridium
     int _nbl;
     char _chr;
-    char _ope;
     double _ang0;
     double _mgn2;
+    QStringList _tabStsIri;
+    QVector<TLE> _tabtle;
 
     // Pour le calcul des evenements orbitaux
     bool _apassApogee;
