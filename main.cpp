@@ -42,6 +42,8 @@
 
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QMessageBox>
+#include <QSharedMemory>
 #include <QSplashScreen>
 #include <QtGui/QApplication>
 #include <QTranslator>
@@ -50,6 +52,12 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QSharedMemory mem("{FDC73C84-52A2-4748-B5A7-9017DB3D0212}");
+    if (mem.create(sizeof(int)) == false) {
+        QMessageBox::warning(0, QObject::tr("Information"), QObject::tr("Une instance de PreviSat est déjà ouverte"));
+        return 1;
+    }
 
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
