@@ -69,29 +69,13 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
     /* Initialisations */
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
-    const QStringList liste("25544");
+    const QStringList listeTLE("25544");
     QVector<TLE> tabtle;
 
-    // Verification du fichier TLE
-    if (TLE::VerifieFichier(conditions.getFic(), false) == 0) {
-        const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
-        throw PreviSatException(msg.arg(conditions.getFic()));
-    }
-
     // Lecture du TLE
-    TLE::LectureFichier(conditions.getFic(), liste, tabtle);
-    if (tabtle.at(0).getNorad().isEmpty()) {
-        const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 ne contient pas le TLE de l'ISS");
-        throw PreviSatException(msg.arg(conditions.getFic()));
-    }
-    const double periode = 1. / tabtle.at(0).getNo() - temps1;
+    TLE::LectureFichier(conditions.getFic(), listeTLE, tabtle);
 
-//    // Age du TLE
-//    const double age = fabs(conditions.getJj1() - tabtle.at(0).getEpoque().getJourJulienUTC());
-//    if (age > conditions.getAgeTLE() + 0.05) {
-//        const QString msg = QObject::tr("TRANSIT : L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-//        PreviSatException(msg.arg(age, 0, 'f', 1).arg(conditions.getAgeTLE(), 0, 'f', 1).toStdString().c_str());
-//    }
+    const double periode = 1. / tabtle.at(0).getNo() - temps1;
 
     // Ecriture de l'entete
     Conditions::EcrireEntete(observateur, conditions, tabtle, true);

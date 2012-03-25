@@ -52,12 +52,6 @@ PreviSatException::PreviSatException(const int ierr) throw()
     _ierr = ierr;
 }
 
-PreviSatException::PreviSatException(const QString message) throw()
-{
-    _ierr = 1;
-    qWarning("%s", message.toStdString().c_str());
-}
-
 PreviSatException::PreviSatException(const QString message, const Messages::MessageType ierr) throw()
 {
     _ierr = ierr;

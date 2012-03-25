@@ -77,9 +77,10 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     return;
 }
 
-Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const char ope,
+Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
                        const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1,
-                       const double mgn2, const QString fic, const QString out, const QString unite)
+                       const double mgn2, const QString fic, const QString out, const QString unite,
+                       const QStringList &tabStsIri, const QVector<TLE> &tabtle)
 {
     /* Declarations des variables locales */
 
@@ -91,7 +92,6 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     _haut = haut * DEG2RAD;
     _nbl = nbl;
     _chr = chr;
-    _ope = ope;
     _ang0 = ang0 * DEG2RAD;
     _dtu = dtu;
     _jj1 = jj1;
@@ -101,6 +101,8 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     _fic = fic;
     _out = out;
     _unite = unite;
+    _tabStsIri = tabStsIri;
+    _tabtle = tabtle;
 
     /* Retour */
     return;
@@ -325,11 +327,6 @@ char Conditions::getChr() const
     return _chr;
 }
 
-char Conditions::getOpe() const
-{
-    return _ope;
-}
-
 double Conditions::getAng0() const
 {
     return _ang0;
@@ -340,6 +337,15 @@ double Conditions::getMgn2() const
     return _mgn2;
 }
 
+QStringList Conditions::getTabStsIri() const
+{
+    return _tabStsIri;
+}
+
+QVector<TLE> Conditions::getTabtle() const
+{
+    return _tabtle;
+}
 
 bool Conditions::getApassApogee() const
 {
