@@ -62,7 +62,7 @@ Conditions::Conditions()
     _atransJn = false;
     _ecl = false;
     _ext = false;
-    _chr = '';
+    _chr = ' ';
     _nbl = 0;
 
     _ageTLE = 0.;
@@ -116,7 +116,7 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     _apassOmbre = false;
     _apassPso = false;
     _atransJn = false;
-    _chr = '';
+    _chr = ' ';
     _nbl = 0;
     _ageTLE = 0.;
     _ang0 = 0.;
@@ -196,7 +196,7 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
     _acalcSol = false;
     _ecl = false;
     _ext = false;
-    _chr = '';
+    _chr = ' ';
     _nbl = 0;
     _ageTLE = 0.;
     _ang0 = 0.;
@@ -239,7 +239,7 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
     _atransJn = false;
     _ecl = false;
     _ext = false;
-    _chr = '';
+    _chr = ' ';
     _nbl = 0;
     _ang0 = 0.;
     _crep = 0.;

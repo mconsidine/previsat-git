@@ -370,7 +370,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     fichier.open(QIODevice::Append | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << QObject::tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance") << endl;
+    if (res.count() > 0)
+        flux << QObject::tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance") << endl;
     int i = 0;
     while (i < res.count()) {
         for (int k=0; k<3; k++) {

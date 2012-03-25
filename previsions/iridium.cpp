@@ -92,6 +92,11 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
     /* Initialisations */
     QVector<TLE> tabtle = conditions.getTabtle();
+    QVectorIterator<TLE> it1(tabtle);
+    while (it1.hasNext()) {
+        const TLE tle = it1.next();
+        sats.append(Satellite(tle));
+    }
 
     // Ecriture de l'entete du fichier de previsions
     Conditions::EcrireEntete(observateur, conditions, tabtle, false);
@@ -102,21 +107,21 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     // Calcul des ephemerides du Soleil et du lieu d'observation
     CalculEphemSoleilObservateur(conditions, observateur, tabEphem);
 
-    QListIterator<QVector<double> > it3(tabEphem);
+    QListIterator<QVector<double> > it2(tabEphem);
 
     // Boucle sur les satellites
-    QStringListIterator it1 = QStringListIterator(conditions.getTabStsIri());
+    QStringListIterator it3 = QStringListIterator(conditions.getTabStsIri());
     QListIterator<Satellite> it4(sats);
     while (it4.hasNext()) {
 
         Satellite sat = it4.next();
-        const QString sts = it1.next();
+        const QString sts = it3.next();
 
         // Boucle sur le tableau d'ephemerides du Soleil
-        it3.toFront();
-        while (it3.hasNext()) {
+        it2.toFront();
+        while (it2.hasNext()) {
 
-            const QVector<double> list = it3.next();
+            const QVector<double> list = it2.next();
             Date date = Date(list.at(0), 0., false);
 
             // Donnees liees au lieu d'observation
@@ -208,11 +213,11 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
                 bool atrouve = false;
-                while (it3.hasNext() && !atrouve) {
-                    const double jj = it3.next().at(0);
+                while (it2.hasNext() && !atrouve) {
+                    const double jj = it2.next().at(0);
                     if (jj >= date.getJourJulienUTC()) {
                         atrouve = true;
-                        it3.previous();
+                        it2.previous();
                     }
                 }
             }
