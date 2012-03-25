@@ -106,7 +106,6 @@ static QVector<bool> bipSat;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QStringList liste;
-static QStringList mapSatellites;
 static QStringList listeFicTLE;
 
 // Date courante
@@ -1967,7 +1966,6 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
     /* Initialisations */
     nbSat = 0;
     QString nomsat = "---";
-    mapSatellites.clear();
     QFile donneesSatellites(dirDat + QDir::separator() + "donnees.sat");
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -2021,8 +2019,6 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                     nomsat = "ISS ";
                 if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
                     nomsat = nomsat.mid(0, nomsat.indexOf("[")).trimmed();
-                if (nomsat.contains(" DEB") || nomsat.contains("R/B"))
-                    nomsat = nomsat.append("\t\t\t\t(").append(norad).append(")");
 
                 bool check = false;
                 for (int j=0; j<listeSat.length(); j++) {
@@ -2043,20 +2039,19 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
                 }
 
                 // Ajout du satellite dans la liste de satellites
-                mapSatellites.append(nomsat + "#" + norad);
-                QListWidgetItem *elem1 = new QListWidgetItem(nomsat, ui->liste1);
+                const QString nomsat2 = nomsat + "\t\t\t\t#" + norad;
+                QListWidgetItem *elem1 = new QListWidgetItem(nomsat2, ui->liste1);
                 elem1->setFlags(Qt::ItemIsEnabled);
                 elem1->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-                QListWidgetItem *elem2 = new QListWidgetItem(nomsat, ui->liste2);
+                QListWidgetItem *elem2 = new QListWidgetItem(nomsat2, ui->liste2);
                 elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-                QListWidgetItem *elem3 = new QListWidgetItem(nomsat, ui->liste3);
+                QListWidgetItem *elem3 = new QListWidgetItem(nomsat2, ui->liste3);
                 elem3->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
                 if (nomsat == nom)
                     elem0 = elem1;
             }
             nomsat = ligne.trimmed();
         }
-        mapSatellites.sort();
         if (l1.length() > 0) {
             li1 = l1;
             li2 = l2;
@@ -2851,6 +2846,7 @@ void PreviSat::EcritureListeRegistre() const
             TLE::VerifieFichier(nomfic, true);
 
             AfficherListeSatellites(nomfic, liste);
+            nbSat = getListeItemChecked(ui->liste1);
 
             nor = liste.at(0);
 
@@ -2863,14 +2859,11 @@ void PreviSat::EcritureListeRegistre() const
             if (nbSat == 0) {
                 l1 = "";
                 l2 = "";
-            } else {
-                liste.reserve(nbSat);
             }
 
-            for (int i=0; i<mapSatellites.size(); i++) {
-                QListWidgetItem *elem1 = new QListWidgetItem(mapSatellites.at(i));
-                if (elem1->checkState() == Qt::Checked) {
-                    liste[k] = mapSatellites.at(i).mid(mapSatellites.indexOf("#"));
+            for (int i=0; i<nbSat; i++) {
+                if (ui->liste1->item(i)->checkState() == Qt::Checked) {
+                    liste[k] = ui->liste1->item(i)->text().split("#").at(1);
                     if (nor == liste.at(k))
                         j = k;
                     k++;
@@ -3809,9 +3802,9 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                     bipSat.resize(nbSat);
 
                     int j = -1;
-                    for (int i=0; i<mapSatellites.size(); i++) {
+                    for (int i=0; i<nbSat; i++) {
                         if (ui->liste1->item(i)->checkState() == Qt::Checked) {
-                            liste.append(mapSatellites.at(i).split("#").at(1));
+                            liste.append(ui->liste1->item(i)->text().split("#").at(1));
                             if (liste.last() == nor)
                                 j = liste.size() - 1;
                         }
@@ -4123,7 +4116,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         // Lecture du TLE
         QStringList listeSat;
         QVector<TLE> tabtle;
-        tabtle.reserve(nsat);
+        tabtle.resize(nsat);
         TLE::LectureFichier(fic, listeSat, tabtle);
 
         // Ajout des satellites selectionnes dans le tableau de TLE
@@ -4213,13 +4206,13 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     if (ui->liste1->hasFocus()) {
         ind = index.row();
         if (ind >= 0)
-            nor = mapSatellites.at(ind).split("#").at(1);
+            nor = ui->liste1->item(ind)->text().split("#").at(1);
 
         if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite de la liste
             for(int i=0; i<liste.size(); i++) {
-                if (mapSatellites.at(ind).split("#").at(1) == liste.at(i)) {
+                if (ui->liste1->item(ind)->text().split("#").at(1) == liste.at(i)) {
                     ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
                     liste.removeAt(i);
                     tles.remove(i);
@@ -4234,7 +4227,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         } else {
 
             // Ajout d'un satellite dans la liste
-            liste.append(mapSatellites.at(ind).split("#").at(1));
+            liste.append(ui->liste1->item(ind)->text().split("#").at(1));
             nbSat++;
             tles.resize(nbSat);
             bipSat.resize(nbSat);
@@ -4286,7 +4279,7 @@ void PreviSat::on_liste1_doubleClicked(const QModelIndex &index)
     /* Corps de la methode */
     if (ui->liste1->currentRow() >= 0) {
         if (ui->liste1->currentItem()->checkState() == Qt::Unchecked) {
-            nor = mapSatellites.at(index.row()).split("#").at(1);
+            nor = ui->liste1->item(index.row())->text().split("#").at(1);
             on_actionDefinir_par_defaut_activated();
         }
     }
@@ -4318,8 +4311,8 @@ void PreviSat::on_liste1_entered(const QModelIndex &index)
 
     /* Corps de la methode */
     const int r = index.row();
-    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
-    const QString norad = mapSatellites.at(r).split("#").at(1);
+    const QString nomsat = ui->liste1->item(r)->text().split("#").at(0).trimmed();
+    const QString norad = ui->liste1->item(r)->text().split("#").at(1);
     if (nomsat != norad) {
         const QString msg = tr("%1 (numéro NORAD : %2)");
         ui->liste1->setToolTip(msg.arg(nomsat).arg(norad));
@@ -4861,7 +4854,7 @@ void PreviSat::on_majFicPrevisat_clicked()
 
     try {
         int nb = 0;
-        for(int i=1; i<fichiers.size(); i++) {
+        for(int i=0; i<fichiers.size(); i++) {
 
             const QString fic = dirDat + QDir::separator() + fichiers.at(i);
             QUrlInfo infoFichier;
@@ -5915,8 +5908,8 @@ void PreviSat::on_liste2_entered(const QModelIndex &index)
 
     /* Corps de la methode */
     const int r = index.row();
-    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
-    const QString norad = mapSatellites.at(r).split("#").at(1);
+    const QString nomsat = ui->liste2->item(r)->text().split("#").at(0).trimmed();
+    const QString norad = ui->liste2->item(r)->text().split("#").at(1);
     if (nomsat != norad) {
         const QString msg = tr("%1 (numéro NORAD : %2)");
         ui->liste2->setToolTip(msg.arg(nomsat).arg(norad));
@@ -5977,6 +5970,7 @@ void PreviSat::on_hauteurSatPrev_currentIndexChanged(int index)
     /* Corps de la methode */
     if (index == ui->hauteurSatPrev->count() - 1) {
         ui->valHauteurSatPrev->setVisible(true);
+        ui->valHauteurSatPrev->setCursorPosition(0);
         ui->valHauteurSatPrev->setFocus();
     } else {
         ui->valHauteurSatPrev->setVisible(false);
@@ -5995,6 +5989,7 @@ void PreviSat::on_hauteurSoleilPrev_currentIndexChanged(int index)
     /* Corps de la methode */
     if (index == ui->hauteurSoleilPrev->count() - 1) {
         ui->valHauteurSoleilPrev->setVisible(true);
+        ui->valHauteurSoleilPrev->setCursorPosition(0);
         ui->valHauteurSoleilPrev->setFocus();
     } else {
         ui->valHauteurSoleilPrev->setVisible(false);
@@ -6113,7 +6108,7 @@ void PreviSat::on_calculsPrev_clicked()
         QStringList listeSat;
         for (int i=0; i<ui->liste2->count(); i++) {
             if (ui->liste2->item(i)->checkState() == Qt::Checked)
-                listeSat.append(mapSatellites.at(i).split("#").at(1));
+                listeSat.append(ui->liste2->item(i)->text().split("#").at(1));
         }
 
         // Nom du fichier resultat
@@ -6230,6 +6225,7 @@ void PreviSat::on_hauteurSatIri_currentIndexChanged(int index)
     /* Corps de la methode */
     if (index == ui->hauteurSatIri->count() - 1) {
         ui->valHauteurSatIri->setVisible(true);
+        ui->valHauteurSatIri->setCursorPosition(0);
         ui->valHauteurSatIri->setFocus();
     } else {
         ui->valHauteurSatIri->setVisible(false);
@@ -6248,6 +6244,7 @@ void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
     /* Corps de la methode */
     if (index == ui->hauteurSoleilIri->count() - 1) {
         ui->valHauteurSoleilIri->setVisible(true);
+        ui->valHauteurSoleilIri->setCursorPosition(0);
         ui->valHauteurSoleilIri->setFocus();
     } else {
         ui->valHauteurSoleilIri->setVisible(false);
@@ -6495,7 +6492,7 @@ void PreviSat::on_calculsEvt_clicked()
         QStringList listeSat;
         for (int i=0; i<ui->liste3->count(); i++) {
             if (ui->liste3->item(i)->checkState() == Qt::Checked)
-                listeSat.append(mapSatellites.at(i).split("#").at(1));
+                listeSat.append(ui->liste3->item(i)->text().split("#").at(1));
         }
 
         // Nom du fichier resultat
@@ -6576,8 +6573,8 @@ void PreviSat::on_liste3_entered(const QModelIndex &index)
 
     /* Corps de la methode */
     const int r = index.row();
-    const QString nomsat = mapSatellites.at(r).split("\t").at(0).split("#").at(0);
-    const QString norad = mapSatellites.at(r).split("#").at(1);
+    const QString nomsat = ui->liste3->item(r)->text().split("#").at(0).trimmed();
+    const QString norad = ui->liste3->item(r)->text().split("#").at(1);
     if (nomsat != norad) {
         const QString msg = tr("%1 (numéro NORAD : %2)");
         ui->liste3->setToolTip(msg.arg(nomsat).arg(norad));
@@ -6628,6 +6625,7 @@ void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
     /* Corps de la methode */
     if (index == ui->hauteurSatTransit->count() - 1) {
         ui->valHauteurSatTransit->setVisible(true);
+        ui->valHauteurSatTransit->setCursorPosition(0);
         ui->valHauteurSatTransit->setFocus();
     } else {
         ui->valHauteurSatTransit->setVisible(false);

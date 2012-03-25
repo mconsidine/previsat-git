@@ -246,7 +246,6 @@ private slots:
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
 
-
 };
 
 #endif // PREVISAT_H
