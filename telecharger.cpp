@@ -184,7 +184,7 @@ void Telecharger::on_telecharger_clicked()
 
         if (ui->listeLieuxObs->item(i)->checkState() == Qt::Checked) {
 
-            QString fic = ui->listeLieuxObs->item(i)->text().toLower();
+            fic = ui->listeLieuxObs->item(i)->text().toLower();
             const QUrl url(httpDirList + fic);
             fic.insert(0, dest);
 

@@ -148,6 +148,20 @@ static double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }
                                 { -70., -45.5 }, { -75., -43.5 }, { -80., -42. }, { -85., -38.5 }, { -90., -36. },
                                 { -95., -33. }, { -96.5, -29. } };
 
+
+// Ecliptique
+static double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 },
+                                       { 2.5, 14.783 }, { 3., 17. }, { 3.5, 18.983 }, { 4., 20.567 }, { 4.5, 21.817 },
+                                       { 5., 22.75 }, { 5.5, 23.25 }, { 6., 23.433 }, { 6.5, 23.25 }, { 7., 22.75 },
+                                       { 7.5, 21.817 }, { 8., 20.567 }, { 8.5, 18.983 }, { 9., 17. }, { 9.5, 14.783 },
+                                       { 10., 12.217 }, { 10.5, 9.417 }, { 11., 6.4 }, { 11.5, 3.233 }, { 12., 0. },
+                                       { 12.5, -3.233 }, { 13., -6.4 }, { 13.5, -9.417 }, { 14., -12.217 }, { 14.5, -14.783 },
+                                       { 15., -17. }, { 15.5, -18.983 }, { 16., -20.567 }, { 16.5, -21.817 }, { 17., -22.75 },
+                                       { 17.5, -23.25 }, { 18., -23.433 }, { 18.5, -23.25 }, { 19., -22.75 },
+                                       { 19.5, -21.817 }, { 20., -20.567 }, { 20.5, -18.983 }, { 21., -17. },
+                                       { 21.5, -14.783 }, { 22., -12.217 }, { 22.5, -9.417 }, { 23., -6.4 }, { 23.5, -3.233 },
+                                       { 24., 0. } };
+
 // Registre
 static QSettings settings("Astropedia", "previsat");
 
@@ -1359,55 +1373,59 @@ void PreviSat::AffichageCourbes() const
                 if (soleil.getLatitude() < 0.) {
 
                     for(int j=3; j<363; j++) {
-                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ));
-                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT));
+                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
+                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
                     zone[0] = QPoint(ui->carte->width() - 1, 0);
-                    zone[1] = QPoint(ui->carte->width() - 1, hcarte + 1);
-                    zone[2] = QPoint(ui->carte->width() - 1, qRound(0.5 * (zone[3].y() + zone[362].y())));
+                    zone[1] = QPoint(ui->carte->width() - 1, hcarte + 2);
+                    zone[2] = QPoint(ui->carte->width() - 1, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
 
-                    zone[363] = QPoint(0, qRound(0.5 * (zone[3].y() + zone[362].y())));
-                    zone[364] = QPoint(0, hcarte + 1);
+                    zone[363] = QPoint(0, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
+                    zone[364] = QPoint(0, hcarte + 2);
                     zone[365] = QPoint(0, 0);
 
                 } else {
 
                     for(int j=2; j<362; j++) {
-                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ));
-                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT));
+                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
+                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
 
                     zone[0] = QPoint(0, 0);
-                    zone[1] = QPoint(0, qRound(0.5 * (zone[2].y() + zone[361].y())));
+                    zone[1] = QPoint(0, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
 
-                    zone[362] = QPoint(ui->carte->width() - 1, qRound(0.5 * (zone[2].y() + zone[361].y())));
+                    zone[362] = QPoint(ui->carte->width() - 1, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
                     zone[363] = QPoint(ui->carte->width() - 1, 0);
-                    zone[364] = QPoint(ui->carte->width() - 1, hcarte + 1);
-                    zone[365] = QPoint(0, hcarte + 1);
+                    zone[364] = QPoint(ui->carte->width() - 1, hcarte + 2);
+                    zone[365] = QPoint(0, hcarte + 2);
                 }
 
                 const QPolygonF poly(zone);
                 scene->addPolygon(poly, QPen(Qt::NoBrush, 0), alpha);
+
             } else {
 
                 QVector<QPoint> zone1;
                 zone1.resize(4);
-                const int x1 = qRound(qMin(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ);
-                const int x2 = qRound(qMax(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ);
+                const int x1 = qRound(qMin(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ) + 1;
+                const int x2 = qRound(qMax(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ) + 1;
 
-                if (lsol > lcarte / 4 && lsol < (4 * lcarte) / 3) {
+                zone1.resize(4);
+                if (lsol > lcarte / 4 && lsol < (3 * lcarte) / 4) {
 
                     QVector<QPoint> zone2;
 
+                    zone2.resize(4);
+
                     zone1[0] = QPoint(0, 0);
                     zone1[1] = QPoint(x1, 0);
-                    zone1[2] = QPoint(x1, hcarte + 1);
-                    zone1[3] = QPoint(0, hcarte + 1);
+                    zone1[2] = QPoint(x1, hcarte + 2);
+                    zone1[3] = QPoint(0, hcarte + 2);
 
                     zone2[0] = QPoint(ui->carte->width() - 1, 0);
                     zone2[1] = QPoint(x2, 0);
-                    zone2[2] = QPoint(x2, hcarte + 1);
-                    zone2[3] = QPoint(lcarte + 1, hcarte + 1);
+                    zone2[2] = QPoint(x2, hcarte + 2);
+                    zone2[3] = QPoint(lcarte + 1, hcarte + 2);
 
                     const QPolygonF poly1(zone1);
                     const QPolygonF poly2(zone2);
@@ -1417,8 +1435,8 @@ void PreviSat::AffichageCourbes() const
                 } else {
 
                     zone1[0] = QPoint(x1, 0);
-                    zone1[1] = QPoint(x1, hcarte + 1);
-                    zone1[2] = QPoint(x2, hcarte + 1);
+                    zone1[1] = QPoint(x1, hcarte + 2);
+                    zone1[2] = QPoint(x2, hcarte + 2);
                     zone1[3] = QPoint(x2, 0);
 
                     const QPolygonF poly1(zone1);
@@ -1694,96 +1712,141 @@ void PreviSat::AffichageCourbes() const
                         }
                     }
                 }
-
-                if (ui->affplanetes->isChecked()) {
-
-                    // Calcul des coordonnees radar des planetes
-                    for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
-
-                        if (planetes.at(iplanete).getHauteur() >= 0.) {
-                            const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                    sin(planetes.at(iplanete).getAzimut()));
-                            const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                    cos(planetes.at(iplanete).getAzimut()));
-
-                            rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                            scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
-                        }
-                    }
-                }
-
-                if (ui->affsoleil->isChecked() && soleil.isVisible()) {
-
-                    // Calcul des coordonnees radar du Soleil
-                    const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-                    const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
-
-                    rect = QRect(lsol - 7, bsol - 7, 15, 15);
-                    scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
-                }
-
-                if (ui->afflune->isChecked() && lune.isVisible()) {
-
-                    // Calcul des coordonnees radar de la Lune
-                    const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
-                    const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
-
-                    QGraphicsPixmapItem *lun = scene->addPixmap(pixlun);
-                    QTransform transform;
-                    transform.translate(llun - 7, blun - 7);
-                    if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
-                        transform.rotate(180.);
-                    lun->setTransform(transform);
-                }
-
-                for(int isat=nbSat-1; isat>=0; isat--) {
-
-                    if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
-
-                        // Affichage de la trace dans le ciel
-                        if (satellites.at(isat).getTraceCiel().size() > 0) {
-
-                            const QList<QVector<double> > trace = satellites.at(isat).getTraceCiel();
-                            const double ht1 = trace.at(0).at(0);
-                            const double az1 = trace.at(0).at(1);
-                            int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
-                            int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
-
-                            const QColor bleuClair(173, 216, 230);
-
-                            for(int i=1; i<trace.size(); i++) {
-
-                                double ht2 = trace.at(i).at(0);
-                                double az2 = trace.at(i).at(1);
-
-                                crayon = (trace.at(i).at(2) == 0) ? bleuClair : crimson;
-
-                                const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
-                                const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
-
-                                scene3->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
-
-                                lsat1 = lsat2;
-                                bsat1 = bsat2;
-                            }
-                        }
-
-                        // Calcul des coordonnees radar du satellite
-                        const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                                sin(satellites.at(isat).getAzimut()));
-                        const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                                cos(satellites.at(isat).getAzimut()));
-
-                        rect = QRect(lsat - 3, bsat - 3, 6, 6);
-                        const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
-                        scene3->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
-                    }
-                }
-
-                scene3->addEllipse(-5, -5, ui->ciel->width() + 10, ui->ciel->height() + 10, QPen(QBrush(PreviSat::palette().background().color()), 10.4));
-                scene3->addEllipse(0, 0, ui->ciel->width() - 1, ui->ciel->height() - 1, QPen(QBrush(Qt::gray), 2));
             }
         }
+
+        if (ui->affplanetes->isChecked()) {
+
+            // Calcul des coordonnees radar des planetes
+            for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+
+                if (planetes.at(iplanete).getHauteur() >= 0.) {
+                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                            sin(planetes.at(iplanete).getAzimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                            cos(planetes.at(iplanete).getAzimut()));
+
+                    rect = QRect(lpla - 2, bpla - 2, 4, 4);
+                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                }
+            }
+        }
+
+        if (ui->affsoleil->isChecked() && soleil.isVisible()) {
+
+            // Dessin de l'ecliptique
+            if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+
+                const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
+                const double de1 = tabEcliptique[0][1] * DEG2RAD;
+                const double cd1 = cos(de1);
+                Vecteur3D vec = Vecteur3D(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+                Vecteur3D vec1 = observateurs.at(0).getRotHz() * vec;
+
+                double ht1 = asin(vec1.getZ());
+                double az1 = atan2(vec1.getY(), -vec1.getX());
+                if (az1 < 0.)
+                    az1 += DEUX_PI;
+
+                int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+                int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+                for(int i=1; i<49; i++) {
+
+                    const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
+                    const double de2 = tabEcliptique[i][1] * DEG2RAD;
+                    const double cd2 = cos(de2);
+                    vec = Vecteur3D(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+                    Vecteur3D vec2 = observateurs.at(0).getRotHz() * vec;
+
+                    const double ht2 = asin(vec2.getZ());
+
+                    double az2 = atan2(vec2.getY(), -vec2.getX());
+                    if (az2 < 0.)
+                        az2 += DEUX_PI;
+
+                    const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+                    const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+
+                    if (ht1 >= 0. || ht2 >= 0.)
+                        scene3->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
+
+                    lecl1 = lecl2;
+                    becl1 = becl2;
+                    ht1 = ht2;
+                }
+            }
+
+            // Calcul des coordonnees radar du Soleil
+            const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
+            const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+
+            rect = QRect(lsol - 7, bsol - 7, 15, 15);
+            scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+        }
+
+        if (ui->afflune->isChecked() && lune.isVisible()) {
+
+            // Calcul des coordonnees radar de la Lune
+            const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
+            const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+
+            QGraphicsPixmapItem *lun = scene3->addPixmap(pixlun);
+            QTransform transform;
+            transform.translate(llun - 7, blun - 7);
+            if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+                transform.rotate(180.);
+            lun->setTransform(transform);
+        }
+
+        for(int isat=nbSat-1; isat>=0; isat--) {
+
+            if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
+
+                // Affichage de la trace dans le ciel
+                if (satellites.at(isat).getTraceCiel().size() > 0) {
+
+                    const QList<QVector<double> > trace = satellites.at(isat).getTraceCiel();
+                    const double ht1 = trace.at(0).at(0);
+                    const double az1 = trace.at(0).at(1);
+                    int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+                    int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+                    const QColor bleuClair(173, 216, 230);
+
+                    for(int i=1; i<trace.size(); i++) {
+
+                        double ht2 = trace.at(i).at(0);
+                        double az2 = trace.at(i).at(1);
+
+                        crayon = (trace.at(i).at(2) == 0) ? bleuClair : crimson;
+
+                        const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+                        const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+
+                        scene3->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+
+                        lsat1 = lsat2;
+                        bsat1 = bsat2;
+                    }
+                }
+
+                // Calcul des coordonnees radar du satellite
+                const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
+                                        sin(satellites.at(isat).getAzimut()));
+                const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
+                                        cos(satellites.at(isat).getAzimut()));
+
+                rect = QRect(lsat - 3, bsat - 3, 6, 6);
+                const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+                scene3->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
+            }
+        }
+
+        scene3->addEllipse(-10, -10, ui->ciel->width() + 20, ui->ciel->height() + 20,
+                           QPen(QBrush(PreviSat::palette().background().color()), 20.6));
+        scene3->addEllipse(0, 0, ui->ciel->width() - 1, ui->ciel->height() - 1, QPen(QBrush(Qt::gray), 2));
+
         ui->ciel->setScene(scene3);
         QGraphicsView view3(scene3);
         view3.setRenderHints(QPainter::Antialiasing);
