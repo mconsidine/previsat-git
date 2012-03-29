@@ -358,16 +358,17 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     int res2 = -1;
     while (isat < nbOld || j < nbNew) {
 
-        QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : "99999";
+        QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : (nomFicOld == nomFicNew) ? "99999" : "";
         QString norad2;
         if (nomFicOld == nomFicNew) {
             norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";
         } else {
-            if (j < nbNew) {
+            if (j < nbNew && !norad1.isEmpty()) {
                 while ((norad2 = tleNew.at(j)._norad).compare(norad1))
                     j++;
             } else {
-                norad2 = tleNew.at(nbNew - 1)._norad;
+                j = nbNew;
+                norad2 = "0";
             }
         }
 
@@ -421,7 +422,8 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
                     }
                 }
             } else {
-                compteRendu.append(tleOld[isat]._nom + "#" + tleOld[isat]._norad);
+                if (!norad1.isEmpty())
+                    compteRendu.append(tleOld[isat]._nom + "#" + tleOld[isat]._norad);
             }
         }
         isat++;

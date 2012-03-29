@@ -519,7 +519,8 @@ void PreviSat::InitFicTLE()
         nbSat = tles.size();
 
         if (nbSat == 0) {
-            tles[0] = TLE(l1, l2);
+
+            tles.append(TLE(l1, l2));
 
             // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites contenus dans le fichier)
             AfficherListeSatellites(nomfic, liste);
@@ -3073,7 +3074,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
 
-    ui->liste1->setGeometry(20, 138, 200, hcarte - 140);
+    ui->liste1->setGeometry(20, 138, 200, hcarte - 132);
 
     ui->S60->move(5, hcarte / 1.2 - 1);
     ui->S30->move(5, hcarte / 1.5 - 1);
@@ -3868,7 +3869,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                     bipSat.resize(nbSat);
 
                     int j = -1;
-                    for (int i=0; i<nbSat; i++) {
+                    for (int i=0; i<ui->liste1->count(); i++) {
                         if (ui->liste1->item(i)->checkState() == Qt::Checked) {
                             liste.append(ui->liste1->item(i)->text().split("#").at(1));
                             if (liste.last() == nor)
@@ -4344,7 +4345,7 @@ void PreviSat::on_liste1_doubleClicked(const QModelIndex &index)
 
     /* Corps de la methode */
     if (ui->liste1->currentRow() >= 0) {
-        if (ui->liste1->currentItem()->checkState() == Qt::Unchecked) {
+        if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
             nor = ui->liste1->item(index.row())->text().split("#").at(1);
             on_actionDefinir_par_defaut_activated();
         }
@@ -5649,6 +5650,8 @@ void PreviSat::on_mettreAJourTLE_clicked()
             if (nbSat > 0) {
 
                 AfficherListeSatellites(nomfic, liste);
+
+                Satellite::initCalcul = false;
 
                 // Lecture des donnees satellite
                 Satellite::LectureDonnees(liste, tles, satellites);
