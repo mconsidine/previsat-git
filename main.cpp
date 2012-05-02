@@ -75,11 +75,14 @@ int main(int argc, char *argv[])
     PreviSat w;
 
     Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
-    splash->showMessage(QObject::tr("Initialisations...") + "     ", alignement, Qt::white);
-    w.Initialisations();
+    splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
+    w.ChargementConfig();
 
-    splash->showMessage(QObject::tr("Chargement du fichier TLE...") + "     ", alignement, Qt::white);
-    w.InitFicTLE();
+    splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
+    w.ChargementTLE();
+
+    splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
+    w.MAJTLE();
 
     splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
     w.DemarrageApplication();
