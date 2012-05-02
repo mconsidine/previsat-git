@@ -43,7 +43,10 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
+#include <QMessageBox>
+#include <QQueue>
 #include <QTextStream>
+#include <QTimer>
 #include "telecharger.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -54,8 +57,12 @@ static QString fic;
 static QString dirCoo;
 static QString dirMap;
 static QString dirTmp;
-static const QString httpDirList1 = "http://astropedia.free.fr/previsat/data/coordonnees/";
-static const QString httpDirList2 = "http://astropedia.free.fr/previsat/data/map/";
+static const QString httpDirList1 = "http://astropedia.free.fr/previsat/commun/data/coordonnees/";
+static const QString httpDirList2 = "http://astropedia.free.fr/previsat/commun/data/map/";
+static QFile ficDwn;
+static QNetworkAccessManager mng;
+static QQueue<QUrl> downQueue;
+static QNetworkReply *rep;
 
 Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     QMainWindow(parent),
@@ -105,20 +112,6 @@ void Telecharger::on_interrogerServeur_clicked()
     connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
     connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
 
-    QFile fi(fic);
-    fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fi);
-
-    while (!flux.atEnd()) {
-        QString ligne = flux.readLine();
-        ligne[0] = ligne[0].toUpper();
-
-        QListWidgetItem *elem1 = new QListWidgetItem(ligne, ui->listeLieuxObs);
-        elem1->setCheckState(Qt::Unchecked);
-    }
-
-    ui->telecharger->setVisible(true);
-
     /* Retour */
     return;
 }
@@ -150,6 +143,19 @@ void Telecharger::Enregistrer() const
     fi.close();
     rep->deleteLater();
 
+    fi.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fi);
+
+    while (!flux.atEnd()) {
+        QString ligne = flux.readLine();
+        ligne[0] = ligne[0].toUpper();
+
+        QListWidgetItem *elem1 = new QListWidgetItem(ligne, ui->listeLieuxObs);
+        elem1->setCheckState(Qt::Unchecked);
+    }
+
+    ui->telecharger->setVisible(true);
+
     /* Retour */
     return;
 }
@@ -162,8 +168,8 @@ void Telecharger::ProgressionTelechargement(qint64 recu, qint64 total) const
 
     /* Corps de la methode */
     if (total != -1) {
-       ui->barreProgression->setRange(0, total);
-       ui->barreProgression->setValue(recu);
+        ui->barreProgression->setRange(0, total);
+        ui->barreProgression->setValue(recu);
     }
 
     /* Retour */
@@ -175,30 +181,104 @@ void Telecharger::on_telecharger_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString httpDirList = (dirHttp == 1) ? httpDirList1 : httpDirList2;
-    const QString dest = (dirHttp == 1) ? dirCoo + QDir::separator() : dirMap + QDir::separator();
 
     /* Corps de la methode */
-    ui->barreProgression->setVisible(true);
     for(int i=0; i<ui->listeLieuxObs->count(); i++) {
 
         if (ui->listeLieuxObs->item(i)->checkState() == Qt::Checked) {
 
-            fic = ui->listeLieuxObs->item(i)->text().toLower();
+            QString httpDirList, dest;
+
+            fic = ui->listeLieuxObs->item(i)->text();
+            if (dirHttp == 1) {
+                httpDirList = httpDirList1;
+                dest = dirCoo + QDir::separator();
+                fic.toLower();
+            } else {
+                httpDirList = httpDirList2;
+                dest = dirMap + QDir::separator();
+            }
+
             const QUrl url(httpDirList + fic);
-            fic.insert(0, dest);
+            fic = fic.toLower().insert(0, dest);
 
-            const QNetworkRequest requete(url);
-            QNetworkAccessManager *mng = new QNetworkAccessManager;
-            QNetworkReply *rep = mng->get(requete);
-
-            connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
-            connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer(fic)));
-            connect(rep, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(ProgressionTelechargement(qint64, qint64)));
+            AjoutFichier(url);
         }
+
+        if (downQueue.isEmpty())
+            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
     }
-    ui->barreProgression->setVisible(false);
 
     /* Retour */
     return;
+}
+
+void Telecharger::AjoutFichier(const QUrl &url)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty())
+        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
+    downQueue.enqueue(url);
+
+    /* Retour */
+    return;
+}
+
+void Telecharger::TelechargementSuivant()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty()) {
+        emit TelechargementFini();
+        ui->barreProgression->setVisible(false);
+
+        QMessageBox::information(0, tr("Information"), tr("Veuillez redémarrer PreviSat pour prendre en compte la mise à jour"));
+    } else {
+
+        ui->barreProgression->setVisible(true);
+        ui->barreProgression->setValue(0);
+        QUrl url = downQueue.dequeue();
+        const QString dest = (dirHttp == 1) ? dirCoo + QDir::separator() : dirMap + QDir::separator();
+        ficDwn.setFileName(dest + QDir::separator() + QFileInfo(url.path()).fileName());
+
+        if (ficDwn.open(QIODevice::WriteOnly)) {
+
+            QNetworkRequest requete(url);
+            rep = mng.get(requete);
+            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
+            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
+            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Telecharger::FinEnregistrementFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ficDwn.close();
+
+    /* Corps de la methode */
+
+    rep->deleteLater();
+    TelechargementSuivant();
+
+    /* Retour */
+    return;
+}
+
+void Telecharger::EcritureFichier()
+{
+    ficDwn.write(rep->readAll());
 }

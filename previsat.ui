@@ -6697,9 +6697,6 @@
                   <height>22</height>
                  </rect>
                 </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
                 <property name="decimals">
                  <number>1</number>
                 </property>
@@ -8786,8 +8783,6 @@
     <addaction name="actionEnregistrer"/>
     <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
-    <addaction name="actionVision_nocturne"/>
-    <addaction name="separator"/>
     <addaction name="menuAide"/>
    </widget>
    <widget class="QMenu" name="menuContextuelListe1">
@@ -8969,17 +8964,6 @@
   <action name="actionCopier_dans_le_presse_papier">
    <property name="text">
     <string>Copier dans le presse-papier</string>
-   </property>
-  </action>
-  <action name="actionVision_nocturne">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Vision nocturne</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Ctrl+N</string>
    </property>
   </action>
   <action name="actionImprimer_carte">

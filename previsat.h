@@ -56,9 +56,11 @@ class PreviSat : public QMainWindow
 
 public:
     explicit PreviSat(QWidget *parent = 0);
-    void Initialisations();
-    void InitFicTLE();
+    void ChargementConfig();
+    void ChargementTLE();
+    void MAJTLE();
     void DemarrageApplication();
+
     ~PreviSat();
 
 private:
@@ -79,8 +81,7 @@ private:
     // Calculs
     void EnchainementCalculs() const;
     void MajWebTLE(const bool alarm);
-    void Enregistrer(const QString fic) const;
-    void MessageErreur(QNetworkReply::NetworkError, const bool alarm) const;
+    void AjoutFichier(const QUrl &url);
     void VerifAgeTLE();
 
     // Interface
@@ -95,11 +96,18 @@ private:
     void EcritureListeRegistre() const;
     bool DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const;
 
+signals:
+    void TelechargementFini();
+
 private slots:
 
     void GestionTempsReel();
-    void ListeInfo(QUrlInfo &infoFichier);
+    void ClicListeSatellites();
     void CalculsTermines();
+    void TelechargementSuivant();
+//    void ProgressionTelechargement(qint64 recus, qint64 total);
+    void FinEnregistrementFichier();
+    void EcritureFichier();
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -112,7 +120,6 @@ private slots:
     void on_actionOuvrir_fichier_TLE_activated();
     void on_actionEnregistrer_activated();
     void on_actionImprimer_carte_activated();
-    void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionTelecharger_les_mises_jour_activated();
     void on_actionDonnez_votre_avis_activated();
     void on_actionWww_space_track_org_activated();
@@ -127,7 +134,6 @@ private slots:
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
     void on_liste1_clicked(const QModelIndex &index);
-    void on_liste1_doubleClicked(const QModelIndex &index);
     void on_liste1_customContextMenuRequested(const QPoint &pos);
     void on_liste1_entered(const QModelIndex &index);
 

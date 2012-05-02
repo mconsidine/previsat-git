@@ -53,7 +53,11 @@ class Telecharger : public QMainWindow
 
 public:
     explicit Telecharger(const int idirHttp, QWidget *parent = 0);
+    void AjoutFichier(const QUrl &url);
     ~Telecharger();
+
+signals:
+    void TelechargementFini();
 
 private slots:
     void on_fermer_clicked();
@@ -61,6 +65,9 @@ private slots:
     void MessageErreur(QNetworkReply::NetworkError) const;
     void Enregistrer() const;
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
+    void TelechargementSuivant();
+    void FinEnregistrementFichier();
+    void EcritureFichier();
 
     void on_telecharger_clicked();
 

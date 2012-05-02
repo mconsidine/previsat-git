@@ -11,7 +11,11 @@ TEMPLATE = app
 
 VERSION = 3.0.0.0
 ICON = resources/icone.ico
-win32:RC_FILE = icone.rc
+
+win32 {
+    LIBS = zlibwapi.dll
+    RC_FILE = icone.rc
+}
 
 TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts
 
