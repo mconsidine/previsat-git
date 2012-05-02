@@ -219,7 +219,7 @@ void Planete::CalculCoordonneesSpheriques()
     const double b = atan(sin(nl) * tan(_elem[3]));
 
     // Rayon vecteur
-    const double r = _elem[1] * (1. - _elem[2] * _elem[2]) / (1. + _elem[2] * cos(v));
+    const double r = _elem[1] * (1. - _elem[2] * cos(u));
 
     // Position
     _positionSph = Vecteur3D(l, b, r);
