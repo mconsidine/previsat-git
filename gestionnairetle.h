@@ -42,6 +42,7 @@
 
 #include <QMainWindow>
 #include <QtNetwork>
+#include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 
 namespace Ui {
@@ -53,12 +54,17 @@ class GestionnaireTLE : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GestionnaireTLE(QVector<TLE> &tabtles, QWidget *parent = 0);
+    explicit GestionnaireTLE(QVector<TLE> *tabtles, QWidget *parent = 0);
+    void AjoutFichier(const QUrl &url);
     ~GestionnaireTLE();
 
-    QVector<TLE> getTabtles() const;
+signals:
+    void TelechargementFini();
 
 private slots:
+    void TelechargementSuivant();
+    void FinEnregistrementFichier();
+    void EcritureFichier();
     void on_fermer_clicked();
     void on_actionCreer_un_groupe_activated();
     void on_actionSupprimerGroupe_activated();
