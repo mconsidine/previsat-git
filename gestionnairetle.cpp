@@ -46,7 +46,6 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include "gestionnairetle.h"
-#include "librairies/corps/satellite/satellite.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "ui_gestionnairetle.h"
 
@@ -60,13 +59,17 @@ static QString dirDat;
 static QString dirTle;
 static QString dirTmp;
 static QSettings settings("Astropedia", "previsat");
+static QFile ficDwn;
+static QNetworkAccessManager mng;
+static QQueue<QUrl> downQueue;
+static QNetworkReply *rep;
 
-GestionnaireTLE::GestionnaireTLE(QVector<TLE> &tabtles, QWidget *parent) :
+GestionnaireTLE::GestionnaireTLE(QVector<TLE> *tabtles, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GestionnaireTLE)
 {
     ui->setupUi(this);
-    _tabtle = tabtles;
+    _tabtle = *tabtles;
     load();
 }
 
@@ -319,9 +322,9 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
     ui->domaine->setText(nomGroupe.at(1));
 
     ui->listeFichiers->clear();
-    for(int i=0; i<ui->listeFichiersTLE->count(); i++) {
+    for(int i=0; i<ui->listeFichiersTLE->count(); i++)
         ui->listeFichiers->setText(ui->listeFichiers->text() + "\n" + ui->listeFichiersTLE->item(i)->text());
-    }
+
     ui->groupe->setVisible(true);
     ui->listeFichiers->setFocus();
 
@@ -467,30 +470,11 @@ void GestionnaireTLE::on_MajMaintenant_clicked()
 
                 ui->frame->setVisible(true);
                 for(int i=0; i<listeTLE.count(); i++) {
-
                     const QUrl url(adresse + listeTLE.at(i));
-                    fic = dirTle + QDir::separator() + listeTLE.at(i);
-                    const QNetworkRequest requete(url);
-                    QNetworkAccessManager *mng = new QNetworkAccessManager;
-                    QNetworkReply *rep = mng->get(requete);
-                    ui->fichierTelechargement->setText(listeTLE.at(i));
-                    ui->fichierTelechargement->setGeometry(83 - ui->fichierTelechargement->width() * 0.5,
-                                                           ui->fichierTelechargement->y(), ui->fichierTelechargement->width(),
-                                                           ui->fichierTelechargement->height());
-
-                    connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
-                    connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
-                    connect(rep, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(ProgressionTelechargement(qint64, qint64)));
-
-                    if (fic == nomfic) {
-
-                        // Recuperation des TLE de la liste
-                        TLE::LectureFichier(nomfic, liste, _tabtle);
-                    }
+                    AjoutFichier(url);
                 }
-                ui->frame->setVisible(false);
-
-            Messages::Afficher(tr("Mise à jour de la catégorie effectuée"), Messages::INFO);
+                if (downQueue.isEmpty())
+                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
             }
         }
     } catch (PreviSatException &e) {
@@ -507,7 +491,6 @@ void GestionnaireTLE::MessageErreur(QNetworkReply::NetworkError) const
     /* Initialisations */
 
     /* Corps de la methode */
-    QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
 
     /* Retour */
     throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
@@ -520,7 +503,6 @@ void GestionnaireTLE::Enregistrer() const
     /* Initialisations */
 
     /* Corps de la methode */
-    QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
     QFile fi(fic);
     fi.open(QIODevice::WriteOnly | QIODevice::Text);
     fi.write(rep->readAll());
@@ -547,7 +529,76 @@ void GestionnaireTLE::ProgressionTelechargement(qint64 recu, qint64 total) const
     return;
 }
 
-QVector<TLE> GestionnaireTLE::getTabtles() const
+void GestionnaireTLE::AjoutFichier(const QUrl &url)
 {
-    return _tabtle;
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty())
+        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
+    downQueue.enqueue(url);
+
+    /* Retour */
+    return;
+}
+
+void GestionnaireTLE::TelechargementSuivant()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty()) {
+        emit TelechargementFini();
+        Messages::Afficher(tr("Mise à jour de la catégorie effectuée."), Messages::INFO);
+        ui->frame->setVisible(false);
+    } else {
+
+        ui->barreProgression->setValue(0);
+        QUrl url = downQueue.dequeue();
+        const QString fich = QFileInfo(url.path()).fileName();
+        fic = QDir::convertSeparators(dirTle + QDir::separator() + fich);
+        ficDwn.setFileName(fic);
+        ui->fichierTelechargement->setText(fich);
+
+        if (ficDwn.open(QIODevice::WriteOnly)) {
+
+            QNetworkRequest requete(url);
+            rep = mng.get(requete);
+            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
+            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
+            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void GestionnaireTLE::FinEnregistrementFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ficDwn.close();
+
+    /* Corps de la methode */
+    if (fic == nomfic) {
+
+        // Recuperation des TLE de la liste
+        TLE::LectureFichier(nomfic, liste, _tabtle);
+    }
+    rep->deleteLater();
+    TelechargementSuivant();
+
+    /* Retour */
+    return;
+}
+
+void GestionnaireTLE::EcritureFichier()
+{
+    ficDwn.write(rep->readAll());
 }
