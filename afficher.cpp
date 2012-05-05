@@ -44,11 +44,13 @@
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
+#include <QSettings>
 #include "afficher.h"
 #include "ui_afficher.h"
 
 static QString dirOut;
 static QString dirTmp;
+static QSettings settings("Astropedia", "previsat");
 
 Afficher::Afficher(QWidget *parent) :
     QMainWindow(parent),
@@ -57,8 +59,8 @@ Afficher::Afficher(QWidget *parent) :
     ui->setupUi(this);
     QCoreApplication::setApplicationName("PreviSat");
     QCoreApplication::setOrganizationName("Astropedia");
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "Astropedia" +
-            QDir::separator() + "PreviSat";
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + "Astropedia" + QDir::separator() + "PreviSat").toString();
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 }
 
@@ -83,7 +85,7 @@ void Afficher::resizeEvent(QResizeEvent *event)
 
 void Afficher::on_actionEnregistrer_activated()
 {
-    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
+    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
@@ -92,5 +94,7 @@ void Afficher::on_actionEnregistrer_activated()
 
         QFile fi2(dirTmp + QDir::separator() + "prevision.txt");
         fi2.copy(fi.fileName());
+        QFileInfo fi3(fichier);
+        settings.setValue("fichier/sauvegarde", fi3.absolutePath());
     }
 }

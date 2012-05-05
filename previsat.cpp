@@ -176,11 +176,10 @@ static QNetworkReply *rep;
 static QFile ficDwn;
 static QString dirDwn;
 
-static int cpt;
-static QTimer *gstclic = new QTimer;
 static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
+static GestionnaireTLE *gestionnaire;
 
 // Interface graphique
 QPalette paletteDefaut;
@@ -227,7 +226,6 @@ void PreviSat::ChargementConfig()
     info = true;
     old = false;
     selec = -1;
-    cpt = 0;
     selec2 = 0;
     couleurPlanetes << Qt::gray << Qt::white << Qt::red << QColor("orange") << Qt::darkYellow << Qt::green << Qt::blue;
     paletteDefaut = PreviSat::palette();
@@ -634,8 +632,6 @@ void PreviSat::DemarrageApplication()
     chronometre->setInterval(200);
     connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
     chronometre->start();
-
-    connect(gstclic, SIGNAL(timeout()), this, SLOT(ClicListeSatellites()));
 
     CalculsAffichage();
 
@@ -3907,7 +3903,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
 
     /* Corps de la methode */
     // Ouverture d'un fichier TLE
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/repTLE", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
 
     try {
@@ -3923,9 +3919,14 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                 const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
                 if (DecompressionFichierGz(fichier, fic)) {
-                    ficgz = fichier;
-                    fichier = fic;
-                    agz = true;
+
+                    nsat = TLE::VerifieFichier(fic, false);
+                    if (nsat == 0)
+                        throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                                fichier, Messages::WARNING);
+                        ficgz = fichier;
+                        fichier = fic;
+                        agz = true;
                 } else {
                     throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
                                             fichier, Messages::WARNING);
@@ -3953,6 +3954,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                 settings.setValue("fichier/nom", ficgz);
             else
                 settings.setValue("fichier/nom", nomfic);
+            settings.setValue("fichier/repTLE", fi.absolutePath());
 
             // Ouverture du fichier TLE
             AfficherListeSatellites(nomfic, liste);
@@ -4035,28 +4037,30 @@ void PreviSat::on_actionEnregistrer_activated()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), settings.value("fichier/sauvegarde", dirOut).toString(),
-                                                         tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
-    if (!fichier.isEmpty()) {
-        switch (ui->onglets->currentIndex()) {
-        case 0:
-            // Sauvegarde de l'onglet General
-            SauveOngletGeneral(fichier);
-            break;
-        case 1:
-            // Sauvegarde de l'onglet Elements osculateurs
-            SauveOngletElementsOsculateurs(fichier);
-            break;
-        case 2:
-            // Sauvegarde de l'onglet Informations satellite
-            SauveOngletInformations(fichier);
-            break;
-        default:
-            break;
-        }
+    if (ui->actionEnregistrer->isVisible() && ui->onglets->currentIndex() < 3) {
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), settings.value("fichier/sauvegarde", dirOut).toString(),
+                                                             tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+        if (!fichier.isEmpty()) {
+            switch (ui->onglets->currentIndex()) {
+            case 0:
+                // Sauvegarde de l'onglet General
+                SauveOngletGeneral(fichier);
+                break;
+            case 1:
+                // Sauvegarde de l'onglet Elements osculateurs
+                SauveOngletElementsOsculateurs(fichier);
+                break;
+            case 2:
+                // Sauvegarde de l'onglet Informations satellite
+                SauveOngletInformations(fichier);
+                break;
+            default:
+                break;
+            }
 
-        const QFileInfo fi(fichier);
-        settings.setValue("fichier/sauvegarde", fi.absolutePath());
+            const QFileInfo fi(fichier);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
     }
 
     /* Retour */
@@ -4261,7 +4265,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
     try {
-        bool atrouve;
+        bool atrouve2;
         // Verification que le fichier est un TLE
         int nsat = TLE::VerifieFichier(fic, true);
 
@@ -4277,14 +4281,14 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         QTextStream flux(&fichier);
 
         for(int i=0; i<liste.size(); i++) {
-            atrouve = false;
+            atrouve2 = false;
             for(int j=0; j<nsat; j++) {
                 if (liste.at(i) == tabtle.at(j).getNorad()) {
-                    atrouve = true;
+                    atrouve2 = true;
                     break;
                 }
             }
-            if (!atrouve) {
+            if (!atrouve2) {
                 flux << tles.at(i).getNom()    << endl <<
                         tles.at(i).getLigne1() << endl <<
                         tles.at(i).getLigne2() << endl;
@@ -4335,41 +4339,6 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     /* Declarations des variables locales */
 
     /* Initialisations */
-
-    /* Corps de la methode */
-    gstclic->start(QApplication::doubleClickInterval());
-    cpt++;
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::ClicListeSatellites()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    //    if (QMouseEvent::button() == Qt::LeftButton)
-    //        QMessageBox::information(0, "", "coucou");
-
-    /* Corps de la methode */
-    if (cpt == 1) {
-
-        // Simple clic sur la liste de satellites
-
-    }
-
-    if (cpt == 2) {
-
-        // Double clic sur la liste de satellites
-
-
-    }
-    cpt = 0;
-    gstclic->stop();
-
-
     QFile fi(nomfic);
     if (!fi.exists()) {
         const QString msg = tr("POSITION : Le fichier %1 n'existe pas");
@@ -4389,7 +4358,7 @@ void PreviSat::ClicListeSatellites()
         ui->liste3->clear();
     }
 
-
+    /* Corps de la methode */
     if (ui->liste1->hasFocus()) {
         ind = ui->liste1->currentRow();
         if (ind >= 0)
@@ -5076,7 +5045,7 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
     /* Corps de la methode */
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
     QString msg = tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?");
-    const int res = QMessageBox::question(this, tr("Information"), msg.arg(ui->fichiersObs->currentItem()->text()),
+    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(ui->fichiersObs->currentItem()->text()),
                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
     if (res == QMessageBox::No) {
@@ -5127,7 +5096,7 @@ void PreviSat::on_validerCategorie_clicked()
     } else {
         int cpt = 0;
         for(int i=0; i<ui->fichiersObs->count(); i++) {
-            if (ui->nvCategorie->text().toLower() == ui->fichiersObs->currentItem()->text().toLower())
+            if (ui->nvCategorie->text().toLower() == ui->fichiersObs->item(i)->text().toLower())
                 cpt++;
         }
         if (cpt == 0) {
@@ -5285,13 +5254,13 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
     QFile fichier(fic);
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
-    bool atrouve = false;
-    while (!flux.atEnd() && !atrouve) {
+    bool atrouve2 = false;
+    while (!flux.atEnd() && !atrouve2) {
         const QString ligne = flux.readLine().mid(34).toLower().trimmed();
-        atrouve = (lieu == ligne);
+        atrouve2 = (lieu == ligne);
     }
 
-    if (atrouve) {
+    if (atrouve2) {
         const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
         Messages::Afficher(msg.arg(nomlieu.split("#").at(0)), Messages::WARNING);
     } else {
@@ -5401,7 +5370,7 @@ void PreviSat::on_actionSupprimerLieu_activated()
     const QString fic = ficObs.at(ui->fichiersObs->currentRow());
     const QString nomlieu = ui->lieuxObs->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catégorie \"%2\"?");
-    const int res = QMessageBox::question(this, tr("Information"), msg.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()),
+    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()),
                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
     if (res == QMessageBox::Yes) {
@@ -5513,7 +5482,7 @@ void PreviSat::on_supprLieu_clicked()
 
 void PreviSat::on_barreMenu_pressed()
 {
-    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 2 && ui->onglets->count() == 7) ||
+    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) ||
                                       ui->onglets->currentIndex() < 1);
 }
 
@@ -5637,10 +5606,17 @@ void PreviSat::on_mettreAJourTLE_clicked()
             // Cas d'un fichier compresse au format gz
             fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
-            if (!DecompressionFichierGz(ui->fichierALire->text(), fic))
-                throw PreviSatException(tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier") + " " +
+            if (DecompressionFichierGz(ui->fichierALire->text(), fic)) {
+
+                const int nsat = TLE::VerifieFichier(fic, false);
+                if (nsat == 0)
+                    throw PreviSatException(tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier") + " " +
                                         ui->fichierALire->text(), Messages::WARNING);
-            agz = true;
+                agz = true;
+            } else {
+                throw PreviSatException(tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                    ui->fichierALire->text(), Messages::WARNING);
+            }
         } else {
             fic = QDir::convertSeparators(fi.absoluteFilePath());
         }
@@ -5742,7 +5718,7 @@ void PreviSat::on_gestionnaireMajTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    GestionnaireTLE *gestionnaire = new GestionnaireTLE(tles);
+    gestionnaire = new GestionnaireTLE(&tles);
     gestionnaire->setWindowModality(Qt::ApplicationModal);
     gestionnaire->show();
 
@@ -5862,6 +5838,11 @@ void PreviSat::on_rechercheCreerTLE_clicked()
                 const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
                 if (DecompressionFichierGz(ficlu, fic)) {
+
+                    const int nsat = TLE::VerifieFichier(fic, false);
+                    if (nsat == 0)
+                        throw PreviSatException(tr("PERSONNEL : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                                ficlu, Messages::WARNING);
                     ficlu = fic;
                 } else {
                     throw PreviSatException(tr("PERSONNEL : Erreur rencontrée lors de la décompression du fichier") + " " +
@@ -6034,7 +6015,8 @@ void PreviSat::on_effacerHeuresPrev_clicked()
 
 void PreviSat::on_liste2_customContextMenuRequested(const QPoint &pos)
 {
-    ui->menuContextuelListes->exec(QCursor::pos());
+    if (ui->liste2->currentRow() >= 0)
+        ui->menuContextuelListes->exec(QCursor::pos());
 }
 
 void PreviSat::on_liste2_entered(const QModelIndex &index)
@@ -6673,6 +6655,10 @@ void PreviSat::on_calculsEvt_clicked()
         // Passages aux quadrangles
         const bool quadr = ui->passageQuadrangles->isChecked();
 
+        const bool eve = noeuds || ombre || apogee || jourNuit || quadr;
+        if (!eve)
+            throw PreviSatException(tr("EVENEMENTS : EVENEMENTS : Aucun évènement sélectionné"), Messages::WARNING);
+
         // Liste des numeros NORAD
         QStringList listeSat;
         for (int i=0; i<ui->liste3->count(); i++) {
@@ -6744,6 +6730,20 @@ void PreviSat::on_afficherEvt_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
     afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_liste3_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->liste3->currentRow() >= 0)
+        ui->menuContextuelListes->exec(QCursor::pos());
 
     /* Retour */
     return;

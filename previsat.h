@@ -102,10 +102,8 @@ signals:
 private slots:
 
     void GestionTempsReel();
-    void ClicListeSatellites();
     void CalculsTermines();
     void TelechargementSuivant();
-//    void ProgressionTelechargement(qint64 recus, qint64 total);
     void FinEnregistrementFichier();
     void EcritureFichier();
     void closeEvent(QCloseEvent *event);
@@ -243,6 +241,7 @@ private slots:
     void on_calculsEvt_clicked();
     void on_annulerEvt_clicked();
     void on_afficherEvt_clicked();
+    void on_liste3_customContextMenuRequested(const QPoint &pos);
     void on_liste3_entered(const QModelIndex &index);
 
     void on_effacerHeuresTransit_clicked();
@@ -251,7 +250,6 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
-
 };
 
 #endif // PREVISAT_H
