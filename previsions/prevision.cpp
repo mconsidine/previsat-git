@@ -311,6 +311,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     flux << ligne << endl;
     fichier.close();
     res.clear();
+    tabtle.clear();
+    sats.clear();
+    tabEphem.clear();
 
     /* Retour */
     return;

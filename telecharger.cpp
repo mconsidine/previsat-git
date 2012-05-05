@@ -106,8 +106,7 @@ void Telecharger::on_interrogerServeur_clicked()
     const QUrl url(httpDirList + "liste");
     fic = dirTmp + QDir::separator() + "listeMap.tmp";
     const QNetworkRequest requete(url);
-    QNetworkAccessManager *mng = new QNetworkAccessManager;
-    QNetworkReply *rep = mng->get(requete);
+    rep = mng.get(requete);
 
     connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
     connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
@@ -123,7 +122,6 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
     /* Initialisations */
 
     /* Corps de la methode */
-    QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
 
     /* Retour */
     throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
@@ -136,7 +134,6 @@ void Telecharger::Enregistrer() const
     /* Initialisations */
 
     /* Corps de la methode */
-    QNetworkReply *rep = qobject_cast<QNetworkReply*>(sender());
     QFile fi(fic);
     fi.open(QIODevice::WriteOnly | QIODevice::Text);
     fi.write(rep->readAll());
@@ -204,7 +201,6 @@ void Telecharger::on_telecharger_clicked()
 
             AjoutFichier(url);
         }
-
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
     }

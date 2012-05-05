@@ -389,6 +389,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     flux << ligne << endl;
     fichier.close();
     res.clear();
+    tabtle.clear();
+    tabEphem.clear();
 
     /* Retour */
     return;

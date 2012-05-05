@@ -225,7 +225,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
         }
 
         if (alarm)
-            PreviSatException(msg, Messages::WARNING);
+            throw PreviSatException(msg, Messages::WARNING);
     }
 
     /* Retour */

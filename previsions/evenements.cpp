@@ -406,6 +406,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     flux << ligne << endl;
     fichier.close();
     res.clear();
+    tabtle.clear();
+    sats.clear();
+    tabEphem.clear();
 
     /* Retour */
     return;

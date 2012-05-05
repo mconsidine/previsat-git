@@ -253,6 +253,9 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     flux << ligne << endl;
     fichier.close();
     res.clear();
+    tabtle.clear();
+    sats.clear();
+    tabEphem.clear();
 
     /* Retour */
     return;
