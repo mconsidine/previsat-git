@@ -553,7 +553,7 @@ void GestionnaireTLE::TelechargementSuivant()
     /* Corps de la methode */
     if (downQueue.isEmpty()) {
         emit TelechargementFini();
-        Messages::Afficher(tr("Mise à jour de la catégorie effectuée."), Messages::INFO);
+        Messages::Afficher(tr("Mise à jour de la catégorie effectuée"), Messages::INFO);
         ui->frame->setVisible(false);
     } else {
 

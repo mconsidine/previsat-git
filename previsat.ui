@@ -898,7 +898,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>138</y>
+            <y>136</y>
             <width>200</width>
             <height>271</height>
            </rect>
@@ -1088,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">

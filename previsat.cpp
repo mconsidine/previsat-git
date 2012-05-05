@@ -3169,7 +3169,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
 
-    ui->liste1->setGeometry(20, 138, 200, hcarte - 132);
+    ui->liste1->setGeometry(20, 136, 200, hcarte - 127);
 
     ui->S60->move(5, hcarte / 1.2 - 1);
     ui->S30->move(5, hcarte / 1.5 - 1);
@@ -5152,7 +5152,7 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
             ligne = flux.readLine();
         } while (ligne.isEmpty());
         ui->lieuxObs->addItem(ligne.mid(34));
-        mapObs.append(ligne.mid(34).trimmed() + "#" + ligne.mid(0, 33).replace(" ", "&"));
+        mapObs.append(ligne.mid(34).trimmed() + " #" + ligne.mid(0, 33).replace(" ", "&"));
     }
     mapObs.sort();
 
@@ -6657,7 +6657,7 @@ void PreviSat::on_calculsEvt_clicked()
 
         const bool eve = noeuds || ombre || apogee || jourNuit || quadr;
         if (!eve)
-            throw PreviSatException(tr("EVENEMENTS : EVENEMENTS : Aucun évènement sélectionné"), Messages::WARNING);
+            throw PreviSatException(tr("EVENEMENTS : Aucun évènement sélectionné"), Messages::WARNING);
 
         // Liste des numeros NORAD
         QStringList listeSat;
