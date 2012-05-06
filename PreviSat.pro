@@ -9,7 +9,7 @@ QT       += core gui network webkit
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION = 3.0.0.11
+VERSION = 3.0.0.12
 ICON = resources/icone.ico
 
 win32 {
