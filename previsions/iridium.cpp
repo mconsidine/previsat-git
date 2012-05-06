@@ -602,7 +602,7 @@ void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, c
     CalculAngleMin(jjm, satellite, observateur, soleil, minmax);
     double dateMax = minmax[0];
 
-    if (dateInf < dateSup - EPS_DATES) {
+    if ((dateInf < dateSup - EPS_DATES) && fabs(dateSup - dateInf) > 10. * EPS_DATES){
         if (dateMax < dateInf)
             dateMax = dateInf;
         if (dateMax > dateSup)
