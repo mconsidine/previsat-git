@@ -74,6 +74,7 @@ private:
     // Affichage
     void AffichageDonnees();
     void AffichageCourbes() const;
+    void AffichageGroupesTLE() const;
     void AffichageLieuObs() const;
     void AfficherListeSatellites(const QString fichier, const QStringList listeSat) const;
     void CalculsAffichage();
@@ -83,6 +84,7 @@ private:
     void MajWebTLE(const bool alarm);
     void AjoutFichier(const QUrl &url);
     void VerifAgeTLE();
+    void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
 
     // Interface
     void SauveOngletGeneral(const QString fic) const;
@@ -106,6 +108,7 @@ private slots:
     void TelechargementSuivant();
     void FinEnregistrementFichier();
     void EcritureFichier();
+    void ProgressionTelechargement(qint64 recu, qint64 total) const;
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -201,6 +204,7 @@ private slots:
     void on_onglets_currentChanged(QWidget *arg1);
     void on_ongletsOutils_currentChanged(QWidget *arg1);
 
+    void on_MajMaintenant_clicked();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();

@@ -107,7 +107,7 @@ static QVector<bool> bipSat;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QStringList liste;
-static QStringList listeFicTLE;
+static QStringList listeGroupeMaj;
 
 // Date courante
 static Date dateCourante;
@@ -167,9 +167,10 @@ static double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, 
 static QSettings settings("Astropedia", "previsat");
 
 // Telechargement
-static bool amaj;
+static bool amajInt;
 static bool alarme;
 static bool atrouve;
+static bool aupdnow;
 static QNetworkAccessManager mng;
 static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
@@ -299,10 +300,6 @@ void PreviSat::ChargementConfig()
     ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
-    ui->nbJoursAgeMaxTLE->setValue(settings.value("temps/agemax", 15).toInt());
-    ui->majTLEAutomatique->setChecked(settings.value("temps/majTLEAutomatique", false).toBool());
-    ui->majTLEManuel->setChecked(settings.value("temps/majTLEManuel", true).toBool());
-    ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
     nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
@@ -390,6 +387,9 @@ void PreviSat::ChargementConfig()
     ui->excentriciteCreerTLE->setCurrentIndex(0);
     ui->inclinaisonCreerTLE->setCurrentIndex(0);
     ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
+    ui->fichierTelechargement->setText("");
+    ui->barreProgression->setValue(0);
+    ui->frameBarreProgression->setVisible(false);
     ui->compteRenduMaj->setVisible(false);
     ui->frameADNA->setVisible(false);
     ui->frameArgumentPerigee->setVisible(false);
@@ -586,11 +586,17 @@ void PreviSat::MAJTLE()
     // Date et heure locales
     dateCourante = Date(offsetUTC);
 
+    // Chargement des groupes de TLE
+    AffichageGroupesTLE();
+
     // Mise a jour des TLE si necessaire
-    if (ui->majTLEAutomatique->isChecked()) {
-        if (ui->ageMaxTLE->isChecked()) {
+    if (listeGroupeMaj.count() > 0) {
+
+        const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
+        if (ageMaxTLE) {
             const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
-            if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ui->nbJoursAgeMaxTLE->value()) {
+            const int ageMax = settings.value("temps/ageMax", 15).toInt();
+            if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax) {
                 MajWebTLE(false);
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             }
@@ -599,10 +605,9 @@ void PreviSat::MAJTLE()
             MajWebTLE(false);
             settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
         }
-    }
-
-    if (ui->majTLEManuel->isChecked() && ui->ageMaxTLE->isChecked())
+    } else {
         VerifAgeTLE();
+    }
 
     /* Retour */
     return;
@@ -1990,6 +1995,35 @@ void PreviSat::AffichageCourbes() const
 }
 
 /*
+ * Affichage des groupes de TLE
+ */
+void PreviSat::AffichageGroupesTLE() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE.gst");
+    fi.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fi);
+
+    while (!flux.atEnd()) {
+        const QStringList ligne = flux.readLine().split("#");
+        QString nomGroupe = ligne.at(0);
+        nomGroupe[0] = nomGroupe[0].toUpper();
+        ui->groupeTLE->addItem(nomGroupe);
+
+        if (ligne.at(1) == "1")
+            listeGroupeMaj.append(ligne.at(0) + "#" + ligne.at(2));
+    }
+    fi.close();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Affichage du lieu d'observation sur l'interface graphique
  */
 void PreviSat::AffichageLieuObs() const
@@ -2328,48 +2362,40 @@ void PreviSat::MajWebTLE(const bool alarm)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    amaj = false;
-    atrouve = false;
-
     alarme = alarm;
+    amajInt = false;
+    atrouve = false;
+    aupdnow = false;
+    dirDwn = dirTle;
     if (alarm) {
         ui->compteRenduMaj->clear();
         ui->compteRenduMaj->setVisible(true);
     }
-    dirDwn = dirTle;
 
     /* Corps de la methode */
-    QFile sr(dirDat + QDir::separator() + "gestionnaireTLE.gst");
-    sr.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&sr);
+    QStringListIterator it(listeGroupeMaj);
+    while (it.hasNext()) {
+        const QStringList ligne = it.next().split("#");
+        QString adresse = ligne.at(0).split("@").at(1);
+        const QStringList listeTLE = ligne.at(1).split(",");
 
-    while (!flux.atEnd()) {
+        if (adresse.contains("celestrak"))
+            adresse = "http://www.celestrak.com/NORAD/elements/";
+        if (!adresse.startsWith("http://"))
+            adresse.insert(0, "http://");
+        if (!adresse.endsWith("/"))
+            adresse.append("/");
 
-        const QStringList ligne = flux.readLine().split("#");
-        if (ligne.at(1) == "1") {
-
-            QString adresse = ligne.at(0).split("@").at(1);
-            const QStringList listeTLE = ligne.at(2).split(",");
-
-            if (adresse.contains("celestrak"))
-                adresse = "http://www.celestrak.com/NORAD/elements/";
-            if (!adresse.startsWith("http://"))
-                adresse.insert(0, "http://");
-            if (!adresse.endsWith("/"))
-                adresse.append("/");
-
-            foreach(QString file, listeTLE) {
-                AjoutFichier(QUrl(adresse + file));
-                const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
-                if (fic == nomfic)
-                    atrouve = true;
-            }
-
-            if (downQueue.isEmpty())
-                QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        foreach(QString file, listeTLE) {
+            AjoutFichier(QUrl(adresse + file));
+            const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
+            if (fic == nomfic)
+                atrouve = true;
         }
+
+        if (downQueue.isEmpty())
+            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
     }
-    sr.close();
 
     // Mise a jour du fichier courant
     if (!atrouve) {
@@ -2402,6 +2428,22 @@ void PreviSat::AjoutFichier(const QUrl &url)
     return;
 }
 
+void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (total != -1) {
+        ui->barreProgression->setRange(0, total);
+        ui->barreProgression->setValue(recu);
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::TelechargementSuivant()
 {
     /* Declarations des variables locales */
@@ -2411,16 +2453,19 @@ void PreviSat::TelechargementSuivant()
     /* Corps de la methode */
     if (downQueue.isEmpty()) {
         emit TelechargementFini();
+        ui->frameBarreProgression->setVisible(false);
     } else {
 
-        QUrl url = downQueue.dequeue();
-        ficDwn.setFileName(dirDwn + QDir::separator() + QFileInfo(url.path()).fileName());
+        const QUrl url = downQueue.dequeue();
+        const QString fic = QFileInfo(url.path()).fileName();
+        ui->fichierTelechargement->setText(fic);
+        ficDwn.setFileName(dirDwn + QDir::separator() + fic);
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
 
             QNetworkRequest requete(url);
             rep = mng.get(requete);
-            //connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
+            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
             connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
             connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
 
@@ -2450,19 +2495,25 @@ void PreviSat::FinEnregistrementFichier()
     // Mise a jour des TLE
     if (atrouve) {
 
-        // Recuperation des TLE de la liste
-        TLE::LectureFichier(nomfic, liste, tles);
+        if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
 
-        Satellite::initCalcul = false;
-        Satellite::LectureDonnees(liste, tles, satellites);
+            atrouve = false;
 
-        CalculsAffichage();
+            // Recuperation des TLE de la liste
+            TLE::LectureFichier(nomfic, liste, tles);
+
+            Satellite::initCalcul = false;
+            Satellite::LectureDonnees(liste, tles, satellites);
+
+            CalculsAffichage();
+
+        }
     }
 
     // Mise a jour des fichiers internes
-    if (amaj) {
+    if (amajInt) {
 
-        amaj = false;
+        amajInt = false;
         if (ficDwn.exists()) {
 
             ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -2501,6 +2552,39 @@ void PreviSat::FinEnregistrementFichier()
                 QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
         }
     }
+
+    // Mise a jour des fichiers TLE selectionnes
+    if (aupdnow) {
+
+        QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
+        QFileInfo ff(fichierALire);
+        QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
+
+        QFile fi(fichierAMettreAJour);
+        if (fi.exists()) {
+
+            QStringList compteRendu;
+            TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
+
+            bool aecr = false;
+            EcritureCompteRenduMaj(compteRendu, aecr);
+            aup = true;
+
+        } else {
+            fi.copy(fichierALire, fichierAMettreAJour);
+        }
+
+        if (fichierAMettreAJour == nomfic) {
+            // Recuperation des TLE de la liste
+            TLE::LectureFichier(nomfic, liste, tles);
+
+            Satellite::initCalcul = false;
+            Satellite::LectureDonnees(liste, tles, satellites);
+
+            CalculsAffichage();
+        }
+    }
+
     if (aup)
         rep->deleteLater();
     TelechargementSuivant();
@@ -2522,11 +2606,12 @@ void PreviSat::VerifAgeTLE()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const int ageMax = settings.value("temps/ageMax", 15).toInt();
 
     /* Corps de la methode */
-    if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ui->nbJoursAgeMaxTLE->value()) {
+    if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
         const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
-        const int res = QMessageBox::question(this, tr("Information"), msg.arg(ui->nbJoursAgeMaxTLE->value()),
+        const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax),
                                               QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
         if (res == QMessageBox::Yes) {
@@ -3098,10 +3183,10 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("temps/valManuel", ui->valManuel->currentIndex());
     settings.setValue("temps/pasManuel", ui->pasManuel->currentIndex());
     settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
-    settings.setValue("temps/ageMax", ui->nbJoursAgeMaxTLE->value());
-    settings.setValue("temps/majTLEAutomatique", ui->majTLEAutomatique->isChecked());
-    settings.setValue("temps/majTLEManuel", ui->majTLEManuel->isChecked());
-    settings.setValue("temps/ageMaxTLE", ui->ageMaxTLE->isChecked());
+    //settings.setValue("temps/ageMax", ui->nbJoursAgeMaxTLE->value());
+    //settings.setValue("temps/majTLEAutomatique", ui->majTLEAutomatique->isChecked());
+    //settings.setValue("temps/majTLEManuel", ui->majTLEManuel->isChecked());
+    //settings.setValue("temps/ageMaxTLE", ui->ageMaxTLE->isChecked());
     settings.setValue("temps/dtu", ui->updown->value() * NB_JOUR_PAR_MIN);
 
     settings.setValue("affichage/affcoord", ui->affcoord->isChecked());
@@ -3924,9 +4009,9 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                     if (nsat == 0)
                         throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
                                                 fichier, Messages::WARNING);
-                        ficgz = fichier;
-                        fichier = fic;
-                        agz = true;
+                    ficgz = fichier;
+                    fichier = fic;
+                    agz = true;
                 } else {
                     throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
                                             fichier, Messages::WARNING);
@@ -3949,7 +4034,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
             ui->nomFichierTLE->setVisible(true);
             const QString chaine = tr("Fichier TLE OK : %1 satellites");
             messagesStatut->setText(chaine.arg(nsat));
-            listeFicTLE.insert(0, nomfic);
+
             if (agz)
                 settings.setValue("fichier/nom", ficgz);
             else
@@ -4986,7 +5071,7 @@ void PreviSat::on_majFicPrevisat_clicked()
 
     /* Initialisations */
     dirDwn = dirTmp;
-    amaj = true;
+    amajInt = true;
     atrouve = false;
 
     /* Corps de la methode */
@@ -5542,6 +5627,53 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
     return;
 }
 
+
+/*
+ * Mise a jour des TLE
+ */
+void PreviSat::on_MajMaintenant_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    aupdnow = true;
+    dirDwn = dirTmp;
+    const QString groupeTLE = ui->groupeTLE->currentText().toLower();
+    ui->compteRenduMaj->clear();
+    ui->compteRenduMaj->setVisible(true);
+
+    /* Corps de la methode */
+    // Telechargement des fichiers
+    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE.gst");
+    fi.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fi);
+
+    ui->frameBarreProgression->setVisible(true);
+    while (!flux.atEnd()) {
+        const QStringList ligne = flux.readLine().split("#");
+        if (ligne.at(0) == groupeTLE) {
+
+            QString adresse = ligne.at(0).split("@").at(1);
+            if (adresse.contains("celestrak"))
+                adresse = "http://www.celestrak.com/NORAD/elements/";
+            if (!adresse.startsWith("http://"))
+                adresse.insert(0, "http://");
+            if (!adresse.endsWith("/"))
+                adresse.append("/");
+
+            const QStringList listeTLE = ligne.at(2).split(",");
+            foreach(QString file, listeTLE)
+                AjoutFichier(QUrl(adresse + file));
+
+            if (downQueue.isEmpty())
+                QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_parcourirMaj1_clicked()
 {
     /* Declarations des variables locales */
@@ -5611,11 +5743,11 @@ void PreviSat::on_mettreAJourTLE_clicked()
                 const int nsat = TLE::VerifieFichier(fic, false);
                 if (nsat == 0)
                     throw PreviSatException(tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier") + " " +
-                                        ui->fichierALire->text(), Messages::WARNING);
+                                            ui->fichierALire->text(), Messages::WARNING);
                 agz = true;
             } else {
                 throw PreviSatException(tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier") + " " +
-                                    ui->fichierALire->text(), Messages::WARNING);
+                                        ui->fichierALire->text(), Messages::WARNING);
             }
         } else {
             fic = QDir::convertSeparators(fi.absoluteFilePath());
@@ -5634,48 +5766,8 @@ void PreviSat::on_mettreAJourTLE_clicked()
         QStringList compteRendu;
         TLE::MiseAJourFichier(ui->fichierAMettreAJour->text(), fic, compteRendu);
 
-        ui->compteRenduMaj->setVisible(true);
-        ui->compteRenduMaj->clear();
-
-        const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
-        const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
-        const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
-        const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
-
-        QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
-        for(int i=0; i<compteRendu.count()-4; i++) {
-            const QString nomsat = compteRendu.at(i).split("#").at(0);
-            const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
-        }
-
-
-        if (nbmaj < nbold) {
-            msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-            if (!ui->compteRenduMaj->toPlainText().isEmpty())
-                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
-        }
-
-        if (nbmaj == nbold && nbold != 0) {
-            msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-            ui->compteRenduMaj->setPlainText(msgcpt.arg(nbold) + "\n");
-        }
-
-        if (nbmaj == 0 && nbold != 0) {
-            ui->compteRenduMaj->clear();
-            ui->compteRenduMaj->setPlainText(tr("Aucun TLE mis à jour") + "\n");
-        }
-
-        if (nbsup > 0) {
-            msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbsup) + "\n");
-        }
-
-        if (nbadd > 0) {
-            msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n" + msgcpt.arg(nbadd) + "\n");
-        }
+        bool aecr = false;
+        EcritureCompteRenduMaj(compteRendu, aecr);
 
         if (agz) {
             QFile fich(fic);
@@ -5684,7 +5776,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
         messagesStatut->setText(tr("Terminé !"));
 
-        if (nomfic == ui->fichierAMettreAJour->text().trimmed() && nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0)) {
+        if (nomfic == ui->fichierAMettreAJour->text().trimmed() && aecr) {
 
             // Recuperation des TLE de la liste
             TLE::LectureFichier(nomfic, liste, tles);
@@ -5711,6 +5803,57 @@ void PreviSat::on_mettreAJourTLE_clicked()
     return;
 }
 
+void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
+    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
+    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
+    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
+    const QString fic = compteRendu.at(compteRendu.count()-5);
+
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
+    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+    if (nbmaj < nbold && nbmaj > 0) {
+        for(int i=0; i<compteRendu.count()-5; i++) {
+            const QString nomsat = compteRendu.at(i).split("#").at(0);
+            const QString norad = compteRendu.at(i).split("#").at(1);
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
+        }
+
+        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+    }
+
+    if (nbmaj == nbold && nbold != 0) {
+        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
+    }
+
+    if (nbmaj == 0 && nbold != 0)
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis à jour") + "\n");
+
+    if (nbsup > 0) {
+        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
+    }
+
+    if (nbadd > 0) {
+        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
+    }
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+
+    aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_gestionnaireMajTLE_clicked()
 {
     /* Declarations des variables locales */
@@ -5718,7 +5861,7 @@ void PreviSat::on_gestionnaireMajTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    gestionnaire = new GestionnaireTLE(&tles);
+    gestionnaire = new GestionnaireTLE;
     gestionnaire->setWindowModality(Qt::ApplicationModal);
     gestionnaire->show();
 
@@ -7031,3 +7174,5 @@ void PreviSat::CalculsTermines()
     /* Retour */
     return;
 }
+
+

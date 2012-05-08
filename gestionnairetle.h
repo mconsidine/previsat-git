@@ -54,17 +54,11 @@ class GestionnaireTLE : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GestionnaireTLE(QVector<TLE> *tabtles, QWidget *parent = 0);
-    void AjoutFichier(const QUrl &url);
+    explicit GestionnaireTLE(QWidget *parent = 0);
     ~GestionnaireTLE();
 
-signals:
-    void TelechargementFini();
-
 private slots:
-    void TelechargementSuivant();
-    void FinEnregistrementFichier();
-    void EcritureFichier();
+    void closeEvent(QCloseEvent *);
     void on_fermer_clicked();
     void on_actionCreer_un_groupe_activated();
     void on_actionSupprimerGroupe_activated();
@@ -76,14 +70,9 @@ private slots:
     void on_actionSupprimer_activated();
     void on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos);
     void on_MajAutoGroupe_toggled(bool checked);
-    void on_MajMaintenant_clicked();
-    void MessageErreur(QNetworkReply::NetworkError) const;
-    void Enregistrer() const;
-    void ProgressionTelechargement(qint64 recu, qint64 total) const;
 
 private:
     Ui::GestionnaireTLE *ui;
-    QVector<TLE> _tabtle;
     void load();
 };
 
