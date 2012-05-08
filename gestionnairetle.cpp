@@ -51,31 +51,27 @@
 
 static bool init;
 static int selec;
-static QString fic;
-static QString nomfic;
-static QStringList liste;
 static QString ficTLE;
 static QString dirDat;
-static QString dirTle;
 static QString dirTmp;
 static QSettings settings("Astropedia", "previsat");
-static QFile ficDwn;
-static QNetworkAccessManager mng;
-static QQueue<QUrl> downQueue;
-static QNetworkReply *rep;
 
-GestionnaireTLE::GestionnaireTLE(QVector<TLE> *tabtles, QWidget *parent) :
+GestionnaireTLE::GestionnaireTLE(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GestionnaireTLE)
 {
     ui->setupUi(this);
-    _tabtle = *tabtles;
     load();
 }
 
 GestionnaireTLE::~GestionnaireTLE()
 {
     delete ui;
+}
+
+void GestionnaireTLE::closeEvent(QCloseEvent *event)
+{
+    on_fermer_clicked();
 }
 
 void GestionnaireTLE::load()
@@ -85,21 +81,17 @@ void GestionnaireTLE::load()
     /* Initialisations */
     selec = -1;
     ui->barreMenu->setVisible(false);
-    ui->frame->setVisible(false);
     ui->groupe->setVisible(false);
-    ui->fichierTelechargement->setText("");
-    ui->barreProgression->setValue(0);
     ui->listeGroupeTLE->clear();
     ui->listeFichiersTLE->clear();
+    ui->nbJoursAgeMaxTLE->setValue(settings.value("temps/ageMax", 15).toInt());
+    ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
 
     QCoreApplication::setApplicationName("PreviSat");
     QCoreApplication::setOrganizationName("Astropedia");
     const QString dirExe = QCoreApplication::applicationDirPath();
     dirDat = dirExe + QDir::separator() + "data";
-    dirTle = dirExe + QDir::separator() + "tle";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-    nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
-    liste = settings.value("TLE/liste", "25544&20580").toString().split("&");
     ficTLE = dirDat + QDir::separator() + "gestionnaireTLE.gst";
 
     /* Corps de la methode */
@@ -124,6 +116,8 @@ void GestionnaireTLE::load()
 
 void GestionnaireTLE::on_fermer_clicked()
 {
+    settings.setValue("temps/ageMax", ui->nbJoursAgeMaxTLE->value());
+    settings.setValue("temps/ageMaxTLE", ui->ageMaxTLE->isChecked());
     close();
 }
 
@@ -432,173 +426,4 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
 
     /* Retour */
     return;
-}
-
-void GestionnaireTLE::on_MajMaintenant_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString groupe = ui->listeGroupeTLE->currentItem()->text();
-    QString adresse = groupe.toLower();
-
-    /* Corps de la methode */
-    ui->MajMaintenant->setEnabled(false);
-    QFile sr(ficTLE);
-    sr.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&sr);
-
-    try {
-        while (!flux.atEnd()) {
-            const QString ligne = flux.readLine();
-            const QStringList nomGroupe = ligne.split("#");
-
-            QStringList listeTLE;
-            if (nomGroupe.at(0) == adresse) {
-
-                if (nomGroupe.length() > 2)
-                    listeTLE = nomGroupe.at(2).split(",");
-                else
-                    listeTLE.append("");
-
-                if (adresse.contains("celestrak"))
-                    adresse = "http://www.celestrak.com/NORAD/elements/";
-                if (!adresse.startsWith("http://"))
-                    adresse.insert(0, "http://");
-                if (!adresse.endsWith("/"))
-                    adresse.append("/");
-
-                ui->frame->setVisible(true);
-                for(int i=0; i<listeTLE.count(); i++) {
-                    const QUrl url(adresse + listeTLE.at(i));
-                    AjoutFichier(url);
-                }
-                if (downQueue.isEmpty())
-                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-            }
-        }
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::MessageErreur(QNetworkReply::NetworkError) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
-}
-
-void GestionnaireTLE::Enregistrer() const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    QFile fi(fic);
-    fi.open(QIODevice::WriteOnly | QIODevice::Text);
-    fi.write(rep->readAll());
-    fi.close();
-    rep->deleteLater();
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::ProgressionTelechargement(qint64 recu, qint64 total) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (total != -1) {
-        ui->barreProgression->setRange(0, total);
-        ui->barreProgression->setValue(recu);
-    }
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::AjoutFichier(const QUrl &url)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty())
-        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
-    downQueue.enqueue(url);
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::TelechargementSuivant()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty()) {
-        emit TelechargementFini();
-        Messages::Afficher(tr("Mise à jour de la catégorie effectuée"), Messages::INFO);
-        ui->frame->setVisible(false);
-    } else {
-
-        ui->barreProgression->setValue(0);
-        QUrl url = downQueue.dequeue();
-        const QString fich = QFileInfo(url.path()).fileName();
-        fic = QDir::convertSeparators(dirTle + QDir::separator() + fich);
-        ficDwn.setFileName(fic);
-        ui->fichierTelechargement->setText(fich);
-
-        if (ficDwn.open(QIODevice::WriteOnly)) {
-
-            QNetworkRequest requete(url);
-            rep = mng.get(requete);
-            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
-            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
-            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::FinEnregistrementFichier()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    ficDwn.close();
-
-    /* Corps de la methode */
-    if (fic == nomfic) {
-
-        // Recuperation des TLE de la liste
-        TLE::LectureFichier(nomfic, liste, _tabtle);
-    }
-    rep->deleteLater();
-    TelechargementSuivant();
-
-    /* Retour */
-    return;
-}
-
-void GestionnaireTLE::EcritureFichier()
-{
-    ficDwn.write(rep->readAll());
 }

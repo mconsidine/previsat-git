@@ -429,6 +429,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         isat++;
     }
 
+    compteRendu.append(nomFicOld);
     compteRendu.append(QString::number(nbMaj));
     compteRendu.append(QString::number(nbOld));
     compteRendu.append(QString::number(nbAdd));

@@ -1088,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -6782,44 +6782,97 @@
              <attribute name="title">
               <string>Mise à jour TLE</string>
              </attribute>
-             <widget class="QLabel" name="lbl_fichierAMettreAJour">
+             <widget class="QPushButton" name="MajMaintenant">
+              <property name="geometry">
+               <rect>
+                <x>258</x>
+                <y>10</y>
+                <width>161</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Mettre à jour maintenant</string>
+              </property>
+             </widget>
+             <widget class="QFrame" name="frameBarreProgression">
+              <property name="geometry">
+               <rect>
+                <x>559</x>
+                <y>10</y>
+                <width>201</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QProgressBar" name="barreProgression">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>201</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+              </widget>
+              <widget class="QLabel" name="fichierTelechargement">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>2</y>
+                 <width>161</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string notr="true">TextLabel</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QComboBox" name="groupeTLE">
               <property name="geometry">
                <rect>
                 <x>10</x>
                 <y>10</y>
+                <width>238</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Commun@www.celestrak.com</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QPushButton" name="gestionnaireMajTLE">
+              <property name="geometry">
+               <rect>
+                <x>429</x>
+                <y>10</y>
                 <width>121</width>
-                <height>16</height>
+                <height>23</height>
                </rect>
               </property>
               <property name="text">
-               <string>Fichier à mettre à jour :</string>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="fichierAMettreAJour">
-              <property name="geometry">
-               <rect>
-                <x>130</x>
-                <y>8</y>
-                <width>251</width>
-                <height>20</height>
-               </rect>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="fichierALire">
-              <property name="geometry">
-               <rect>
-                <x>130</x>
-                <y>38</y>
-                <width>251</width>
-                <height>20</height>
-               </rect>
+               <string>Paramétrage...</string>
               </property>
              </widget>
              <widget class="QLabel" name="lbl_fichierALire">
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>40</y>
+                <y>85</y>
                 <width>121</width>
                 <height>16</height>
                </rect>
@@ -6828,12 +6881,22 @@
                <string>Fichier à lire :</string>
               </property>
              </widget>
+             <widget class="QLineEdit" name="fichierALire">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>83</y>
+                <width>190</width>
+                <height>20</height>
+               </rect>
+              </property>
+             </widget>
              <widget class="QPushButton" name="parcourirMaj1">
               <property name="geometry">
                <rect>
-                <x>390</x>
-                <y>6</y>
-                <width>91</width>
+                <x>330</x>
+                <y>51</y>
+                <width>90</width>
                 <height>23</height>
                </rect>
               </property>
@@ -6841,25 +6904,35 @@
                <string>Parcourir...</string>
               </property>
              </widget>
-             <widget class="QPushButton" name="parcourirMaj2">
+             <widget class="QLineEdit" name="fichierAMettreAJour">
               <property name="geometry">
                <rect>
-                <x>390</x>
-                <y>36</y>
-                <width>91</width>
-                <height>23</height>
+                <x>130</x>
+                <y>53</y>
+                <width>190</width>
+                <height>20</height>
                </rect>
               </property>
-              <property name="text">
-               <string>Parcourir...</string>
+             </widget>
+             <widget class="QPlainTextEdit" name="compteRenduMaj">
+              <property name="geometry">
+               <rect>
+                <x>429</x>
+                <y>50</y>
+                <width>327</width>
+                <height>131</height>
+               </rect>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
              <widget class="QPushButton" name="mettreAJourTLE">
               <property name="geometry">
                <rect>
-                <x>390</x>
-                <y>66</y>
-                <width>91</width>
+                <x>330</x>
+                <y>111</y>
+                <width>90</width>
                 <height>23</height>
                </rect>
               </property>
@@ -6867,107 +6940,30 @@
                <string>Mettre à jour</string>
               </property>
              </widget>
-             <widget class="QGroupBox" name="groupBoxMajTLE">
+             <widget class="QPushButton" name="parcourirMaj2">
+              <property name="geometry">
+               <rect>
+                <x>330</x>
+                <y>81</y>
+                <width>90</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Parcourir...</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_fichierAMettreAJour">
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>80</y>
-                <width>251</width>
-                <height>91</height>
+                <y>55</y>
+                <width>121</width>
+                <height>16</height>
                </rect>
               </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="title">
-               <string>Gestionnaire de mise à jour des TLE</string>
-              </property>
-              <widget class="QRadioButton" name="majTLEAutomatique">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>20</y>
-                 <width>91</width>
-                 <height>17</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Automatique</string>
-               </property>
-              </widget>
-              <widget class="QRadioButton" name="majTLEManuel">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>40</y>
-                 <width>91</width>
-                 <height>17</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Manuel</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-              <widget class="QCheckBox" name="ageMaxTLE">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>60</y>
-                 <width>181</width>
-                 <height>17</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Age maximal des TLE (en jours) :</string>
-               </property>
-              </widget>
-              <widget class="QSpinBox" name="nbJoursAgeMaxTLE">
-               <property name="geometry">
-                <rect>
-                 <x>195</x>
-                 <y>58</y>
-                 <width>42</width>
-                 <height>22</height>
-                </rect>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>60</number>
-               </property>
-               <property name="value">
-                <number>15</number>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="gestionnaireMajTLE">
-               <property name="geometry">
-                <rect>
-                 <x>145</x>
-                 <y>18</y>
-                 <width>91</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Paramétrage...</string>
-               </property>
-              </widget>
-             </widget>
-             <widget class="QPlainTextEdit" name="compteRenduMaj">
-              <property name="geometry">
-               <rect>
-                <x>490</x>
-                <y>5</y>
-                <width>266</width>
-                <height>175</height>
-               </rect>
-              </property>
-              <property name="horizontalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
+              <property name="text">
+               <string>Fichier à mettre à jour :</string>
               </property>
              </widget>
             </widget>
