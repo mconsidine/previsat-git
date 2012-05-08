@@ -184,7 +184,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                 pasInt *= 0.5;
                             }
 
-                            if (minmax[0] - temp > PAS_INT1)
+                            if (minmax[0] - temp > 5. * PAS_INT1)
                                 DeterminationFlash(minmax, sts, conditions, temp, res, observateur, sat, soleil);
 
                         } // fin if (angref <= 0.2)
@@ -561,8 +561,8 @@ void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, c
 
     // Determination de la date superieure du flash
     jjm[0] = dateMaxFlash;
-    jjm[1] = 0.5 * (dateMaxFlash + jj2);
-    jjm[2] = jj2;
+    jjm[1] = 0.5 * (dateMaxFlash + jj2 + PAS1);
+    jjm[2] = jj2 + PAS1;
 
     LimiteFlash(mgn0, jjm, conditions, satellite, observateur, soleil, limite);
 
