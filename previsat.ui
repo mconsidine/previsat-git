@@ -1088,7 +1088,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -6849,11 +6849,6 @@
                 <height>22</height>
                </rect>
               </property>
-              <item>
-               <property name="text">
-                <string>Commun@www.celestrak.com</string>
-               </property>
-              </item>
              </widget>
              <widget class="QPushButton" name="gestionnaireMajTLE">
               <property name="geometry">
