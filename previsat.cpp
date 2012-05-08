@@ -2459,6 +2459,7 @@ void PreviSat::TelechargementSuivant()
         const QUrl url = downQueue.dequeue();
         const QString fic = QFileInfo(url.path()).fileName();
         ui->fichierTelechargement->setText(fic);
+        ui->barreProgression->setValue(0);
         ficDwn.setFileName(dirDwn + QDir::separator() + fic);
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
