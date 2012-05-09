@@ -321,8 +321,8 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
                 && _elongation < _rayonApparentTerre - _rayonApparentSoleil) ? true : false;
 
     // Test si le satellite est dans la penombre
-    _penombre = (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
-                 && _elongation < _rayonApparentTerre + _rayonApparentSoleil) ? true : false;
+    _penombre = (_eclipse || (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
+                 && _elongation < _rayonApparentTerre + _rayonApparentSoleil)) ? true : false;
 
     /* Retour */
     return;
