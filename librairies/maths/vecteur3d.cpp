@@ -149,9 +149,11 @@ double Vecteur3D::Angle(const Vecteur3D &vecteur)
     /* Corps de la methode */
     const double norme1 = Norme();
     const double norme2 = vecteur.Norme();
+    const double cosang = (*this) * vecteur / (norme1 * norme2);
+    const double res = (cosang < 1.) ? acos(cosang) : (fabs(cosang - 1.) < EPSDBL) ? 0. : -1.;
 
     /* Retour */
-    return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : acos((*this) * vecteur / (norme1 * norme2)));
+    return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : res);
 }
 
 /*
