@@ -184,7 +184,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                                 pasInt *= 0.5;
                             }
 
-                            if (minmax[0] - temp > 5. * PAS_INT1)
+                            if (minmax[0] - temp > PAS1)
                                 DeterminationFlash(minmax, sts, conditions, temp, res, observateur, sat, soleil);
 
                         } // fin if (angref <= 0.2)
@@ -600,9 +600,22 @@ void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, c
 
     double minmax[2];
     CalculAngleMin(jjm, satellite, observateur, soleil, minmax);
+
+    // Iterations supplementaires pour affiner la date du maximum
+    double pasInt = PAS_INT0;
+    for (int it=0; it<4; it++) {
+
+        jjm[0] = minmax[0] - pasInt;
+        jjm[1] = minmax[0];
+        jjm[2] = minmax[0] + pasInt;
+
+        CalculAngleMin(jjm, satellite, observateur, soleil, minmax);
+        pasInt *= 0.5;
+    }
+
     double dateMax = minmax[0];
 
-    if ((dateInf < dateSup - EPS_DATES) && fabs(dateSup - dateInf) > 10. * EPS_DATES){
+    if (dateInf < dateSup - EPS_DATES) {
         if (dateMax < dateInf)
             dateMax = dateInf;
         if (dateMax > dateSup)
@@ -664,9 +677,8 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
     // de reflexion specifie par l'utilisateur
     const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, conditions.getAng0(), EPS_DATES);
 
-    // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie
-    // par l'utilisateur
-    if ((ht[0] - conditions.getHaut()) * (ht[0] - conditions.getHaut()) < 0. ||
+    // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie par l'utilisateur
+    if ((ht[0] - conditions.getHaut()) * (ht[2] - conditions.getHaut()) < 0. ||
             (ht[0] < conditions.getHaut() && ht[2] < conditions.getHaut())) {
         t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, conditions.getHaut(), EPS_DATES);
     } else {

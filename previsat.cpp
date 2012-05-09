@@ -6617,8 +6617,6 @@ void PreviSat::on_calculsIri_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
 
-
-
         // Lecture du fichier de statut des satellites Iridium
         QStringList tabStsIri;
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
@@ -7147,6 +7145,7 @@ void PreviSat::CalculsTermines()
         if (fi.exists()) {
             ui->afficherIri->setVisible(true);
             ui->afficherIri->setFocus();
+            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->text()));
         }
         break;
 
@@ -7165,6 +7164,7 @@ void PreviSat::CalculsTermines()
         if (fi.exists()) {
             ui->afficherTransit->setVisible(true);
             ui->afficherTransit->setFocus();
+            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->text()));
         }
 
     default:
