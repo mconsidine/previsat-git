@@ -186,7 +186,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
         nb = 0;
 
         // Construction du message
-        ierr = (int) e.what();
+        ierr = QString(e.what()).toInt();
         switch (ierr) {
         case 1:
             msg = QObject::tr("POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");

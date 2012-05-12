@@ -42,7 +42,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
-#include <fstream>
+#include <QTextStream>
 #include "satellite.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/SoleilConstants.h"
@@ -322,7 +322,7 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
 
     // Test si le satellite est dans la penombre
     _penombre = (_eclipse || (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
-                 && _elongation < _rayonApparentTerre + _rayonApparentSoleil)) ? true : false;
+                              && _elongation < _rayonApparentTerre + _rayonApparentSoleil)) ? true : false;
 
     /* Retour */
     return;
@@ -482,32 +482,34 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         satellites[isat]._magnitudeStandard = 99.;
 
     /* Corps de la methode */
-    FILE *fmgn = NULL;
     const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
             "donnees.sat";
-    if ((fmgn = fopen(fic.toStdString().c_str(), "r")) != NULL) {
+    QFile fi(fic);
+    if (fi.exists()) {
+
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
 
         int j = 0;
-        char ligne[4096];
-        while (fgets(ligne, 4096, fmgn) != NULL && j < nb) {
+        while (!flux.atEnd() && j < nb) {
 
-            QString ligne2 = ligne;
-            QString norad = ligne2.mid(0, 5);
-            for (int isat=0; isat<nb; isat++) {
+            const QString ligne = flux.readLine();
+            const QString norad = ligne.mid(0, 5);
+            for(int isat=0; isat<nb; isat++) {
                 if (listeSatellites.at(isat) == norad) {
-                    satellites[isat]._t1 = ligne2.mid(6, 5).toDouble();
-                    satellites[isat]._t2 = ligne2.mid(12, 4).toDouble();
-                    satellites[isat]._t3 = ligne2.mid(17, 4).toDouble();
-                    satellites[isat]._magnitudeStandard = ligne2.mid(22, 4).toDouble();
-                    satellites[isat]._methMagnitude = ligne2.at(27).toAscii();
-                    satellites[isat]._section = ligne2.mid(29, 6).toDouble();
+                    satellites[isat]._t1 = ligne.mid(6, 5).toDouble();
+                    satellites[isat]._t2 = ligne.mid(12, 4).toDouble();
+                    satellites[isat]._t3 = ligne.mid(17, 4).toDouble();
+                    satellites[isat]._magnitudeStandard = ligne.mid(22, 4).toDouble();
+                    satellites[isat]._methMagnitude = ligne.at(27).toAscii();
+                    satellites[isat]._section = ligne.mid(29, 6).toDouble();
                     j++;
                     break;
                 }
             }
         }
     }
-    fclose(fmgn);
+    fi.close();
 
     /* Retour */
     return;

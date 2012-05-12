@@ -42,7 +42,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
-#include <stdio.h>
+#include <QTextStream>
 #include "etoile.h"
 #include "librairies/maths/mathConstants.h"
 
@@ -99,40 +99,42 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 
     /* Corps de la methode */
     etoiles.clear();
-    FILE *fstr = NULL;
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "etoiles.str";
-    if ((fstr = fopen(fic.toStdString().c_str(), "r")) != NULL) {
+    //    FILE *fstr = NULL;
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "etoiles.str";
+    QFile fi(fic);
+    if (fi.exists()) {
 
-        char ligne1[4096];
-        std::string ligne2;
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
 
-        while (fgets(ligne1, 4096, fstr) != NULL) {
+        while (!flux.atEnd()) {
 
-            int ad1, ad2, de1, de2, de3;
-            double ad3;
-
-            QString nom = "";
+            const QString ligne = flux.readLine();
             double ascDte = 0.;
             double dec = 0.;
             double mag = 99.;
-            ligne2.assign(ligne1);
+            QString nom = "";
 
-            if (ligne2.length() > 34) {
-                sscanf(ligne1, "%2d%2d%4lf%*1s%2d%2d%2d%*7f%*7f%6lf", &ad1, &ad2, &ad3, &de1, &de2, &de3, &mag);
+            if (ligne.length() > 34) {
 
+                const int ad1 = ligne.mid(0, 2).toInt();
+                const int ad2 = ligne.mid(2, 2).toInt();
+                const double ad3 = ligne.mid(4, 4).toDouble();
                 ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
-                const int sgn = (ligne2.at(9) == '-') ? -1 : 1;
+
+                const int sgn = (ligne.at(9) == '-') ? -1 : 1;
+                const int de1 = ligne.mid(10, 2).toInt();
+                const int de2 = ligne.mid(12, 2).toInt();
+                const int de3 = ligne.mid(14, 2).toInt();
                 dec = sgn * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
 
-                if (ligne2.length() > 37)
-                    nom = QString::fromStdString(ligne2.substr(37, ligne2.length()));
+                mag = ligne.mid(31, 5).toDouble();
+                nom = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
             }
-
             etoiles.append(Etoile(nom, ascDte, dec, mag));
         }
     }
-    fclose(fstr);
+    fi.close();
 
     /* Retour */
     return;

@@ -43,6 +43,6 @@
         <file>resources/globe.png</file>
         <file>resources/apropos.png</file>
         <file>resources/splashscreen.png</file>
-        <file>resources/Icon3.ico</file>
+        <file>resources/icone.ico</file>
     </qresource>
 </RCC>
