@@ -41,8 +41,9 @@
  */
 
 #include <QCoreApplication>
+#include <QDir>
+#include <QTextStream>
 #include <cmath>
-#include <fstream>
 #include "corps.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
@@ -376,27 +377,32 @@ void Corps::InitTabConstellations()
 {
     /* Declarations des variables locales */
     int i;
-    char ligne[4096];
 
     /* Initialisations */
     i = 0;
 
     /* Corps de la methode */
-    FILE *fcst = NULL;
-    QString nomfic = QCoreApplication::applicationDirPath() + "/data/constellations.cst";
-    if ((fcst = fopen(nomfic.toStdString().c_str(), "r")) != NULL) {
 
-        while (fgets(ligne, 4096, fcst) != NULL) {
+    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
+            "constellations.cst";
+    QFile fi(fic);
+    if (fi.exists()) {
 
-            QString ligne2(ligne);
-            _tabConst[i] = ligne2.mid(0, 3);
-            _tabCstCoord[i][0] = ligne2.mid(4, 7).toDouble() * HEUR2RAD;
-            _tabCstCoord[i][1] = ligne2.mid(12, 7).toDouble() * HEUR2RAD;
-            _tabCstCoord[i][2] = ligne2.mid(20, 8).toDouble() * DEG2RAD;
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+
+        int i = 0;
+        while (!flux.atEnd()) {
+
+            const QString ligne = flux.readLine();
+            _tabConst[i] = ligne.mid(0, 3);
+            _tabCstCoord[i][0] = ligne.mid(4, 7).toDouble() * HEUR2RAD;
+            _tabCstCoord[i][1] = ligne.mid(12, 7).toDouble() * HEUR2RAD;
+            _tabCstCoord[i][2] = ligne.mid(20, 8).toDouble() * DEG2RAD;
             i++;
         }
     }
-    fclose(fcst);
+    fi.close();
 
     /* Retour */
     return;
