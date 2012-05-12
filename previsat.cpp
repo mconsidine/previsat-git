@@ -167,8 +167,8 @@ static double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, 
 static QSettings settings("Astropedia", "previsat");
 
 // Telechargement
+static bool amajDeb;
 static bool amajInt;
-static bool alarme;
 static bool atrouve;
 static bool aupdnow;
 static QNetworkAccessManager mng;
@@ -301,6 +301,7 @@ void PreviSat::ChargementConfig()
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
     nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
+
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
@@ -308,6 +309,7 @@ void PreviSat::ChargementConfig()
     ui->fichierTLEIri->setText(settings.value("fichier/iridium", QDir::convertSeparators(dirTle + QDir::separator() +
                                                                                          "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
+    ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
     ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
@@ -571,6 +573,7 @@ void PreviSat::MAJTLE()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    amajDeb = false;
 
     /* Corps de la methode */
     // Initialisation de la date
@@ -597,12 +600,12 @@ void PreviSat::MAJTLE()
             const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
             const int ageMax = settings.value("temps/ageMax", 15).toInt();
             if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax) {
-                MajWebTLE(false);
+                MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             }
         } else {
             messagesStatut->setText(tr("Mise à jour automatique des TLE"));
-            MajWebTLE(false);
+            MajWebTLE();
             settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
         }
     } else {
@@ -2357,20 +2360,16 @@ void PreviSat::EnchainementCalculs() const
 /*
  * Mise a jour automatique des TLE
  */
-void PreviSat::MajWebTLE(const bool alarm)
+void PreviSat::MajWebTLE()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    alarme = alarm;
+    amajDeb = true;
     amajInt = false;
     atrouve = false;
     aupdnow = false;
     dirDwn = dirTle;
-    if (alarm) {
-        ui->compteRenduMaj->clear();
-        ui->compteRenduMaj->setVisible(true);
-    }
 
     /* Corps de la methode */
     QStringListIterator it(listeGroupeMaj);
@@ -2387,10 +2386,21 @@ void PreviSat::MajWebTLE(const bool alarm)
             adresse.append("/");
 
         foreach(QString file, listeTLE) {
-            AjoutFichier(QUrl(adresse + file));
+
+            const QUrl url(adresse + file);
+            AjoutFichier(url);
+
             const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
             if (fic == nomfic)
                 atrouve = true;
+
+            QNetworkRequest requete(url);
+            rep = mng.get(requete);
+
+            // Creation d'une boucle pour rendre le telechargement synchrone
+            QEventLoop loop;
+            connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
+            loop.exec();
         }
 
         if (downQueue.isEmpty())
@@ -2403,10 +2413,13 @@ void PreviSat::MajWebTLE(const bool alarm)
         const QFile fi(nomfic);
         const QUrl url("http://www.celestrak.com/NORAD/elements/" + fi.fileName());
         AjoutFichier(url);
-        if (downQueue.isEmpty())
-            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
 
-        settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+        if (downQueue.isEmpty()) {
+            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        } else {
+            settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+        }
+        atrouve = false;
     }
 
     /* Retour */
@@ -2465,18 +2478,14 @@ void PreviSat::TelechargementSuivant()
         if (ficDwn.open(QIODevice::WriteOnly)) {
 
             QNetworkRequest requete(url);
-            rep = mng.get(requete);
+            if (!amajDeb)
+                rep = mng.get(requete);
             connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
             connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
             connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
 
         } else {
-            if (alarme) {
-                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Erreur du téléchargement du fichier")
-                                                 + " " + ficDwn.fileName() + "\n");
-            } else {
-                messagesStatut->setText(tr("Erreur du téléchargement du fichier") + " " + ficDwn.fileName());
-            }
+            messagesStatut->setText(tr("Erreur du téléchargement du fichier") + " " + ficDwn.fileName());
         }
     }
 
@@ -2498,8 +2507,6 @@ void PreviSat::FinEnregistrementFichier()
 
         if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
 
-            atrouve = false;
-
             // Recuperation des TLE de la liste
             TLE::LectureFichier(nomfic, liste, tles);
 
@@ -2507,7 +2514,6 @@ void PreviSat::FinEnregistrementFichier()
             Satellite::LectureDonnees(liste, tles, satellites);
 
             CalculsAffichage();
-
         }
     }
 
@@ -2573,6 +2579,8 @@ void PreviSat::FinEnregistrementFichier()
 
         } else {
             fi.copy(fichierALire, fichierAMettreAJour);
+            const QString msg = tr("Ajout du fichier %1") + "\n";
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
         }
 
         if (fichierAMettreAJour == nomfic) {
@@ -2618,7 +2626,7 @@ void PreviSat::VerifAgeTLE()
         if (res == QMessageBox::Yes) {
             const QFileInfo fi(nomfic);
             if (fi.absoluteDir() == dirTle) {
-                MajWebTLE(false);
+                MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             } else {
                 QDesktopServices::openUrl(QUrl("http://www.celestrak.com/NORAD/elements/"));
@@ -3124,7 +3132,6 @@ void PreviSat::EcritureListeRegistre() const
             TLE::LectureFichier(nomfic, liste, tles);
 
         } catch (PreviSatException &ex) {
-
         }
     }
 
@@ -3184,12 +3191,9 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("temps/valManuel", ui->valManuel->currentIndex());
     settings.setValue("temps/pasManuel", ui->pasManuel->currentIndex());
     settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
-    //settings.setValue("temps/ageMax", ui->nbJoursAgeMaxTLE->value());
-    //settings.setValue("temps/majTLEAutomatique", ui->majTLEAutomatique->isChecked());
-    //settings.setValue("temps/majTLEManuel", ui->majTLEManuel->isChecked());
-    //settings.setValue("temps/ageMaxTLE", ui->ageMaxTLE->isChecked());
     settings.setValue("temps/dtu", ui->updown->value() * NB_JOUR_PAR_MIN);
 
+    settings.setValue("affichage/groupeTLE", ui->groupeTLE->currentIndex());
     settings.setValue("affichage/affcoord", ui->affcoord->isChecked());
     settings.setValue("affichage/affgrille", ui->affgrille->isChecked());
     settings.setValue("affichage/affinvew", ui->affinvew->isChecked());
@@ -7175,5 +7179,3 @@ void PreviSat::CalculsTermines()
     /* Retour */
     return;
 }
-
-
