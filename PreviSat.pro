@@ -9,7 +9,7 @@ QT       += core gui network webkit
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION = 3.0.0.15
+VERSION = 3.0.0.16
 ICON = resources/icone.ico
 
 win32 {
@@ -17,7 +17,7 @@ win32 {
     RC_FILE = icone.rc
 }
 
-TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts
+TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
 
 SOURCES += main.cpp\
     previsat.cpp \

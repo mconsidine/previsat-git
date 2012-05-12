@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     PreviSat w;
 
-    Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
+    const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
     splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
     w.ChargementConfig();
 
