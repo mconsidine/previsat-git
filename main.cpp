@@ -53,10 +53,25 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QSharedMemory mem("{FDC73C84-52A2-4748-B5A7-9017DB3D0212}");
-    if (mem.create(sizeof(int)) == false) {
-        QMessageBox::warning(0, QObject::tr("Information"), QObject::tr("Une instance de PreviSat est déjà ouverte"));
-        return 1;
+    qint64 pid = a.applicationPid();
+    QSharedMemory mem;
+    mem.setKey("pid");
+    if (!mem.create(sizeof(pid))) {
+        if (mem.error() == QSharedMemory::AlreadyExists) {
+            if (mem.attach(QSharedMemory::ReadOnly)) {
+                mem.lock();
+                qint64 p = *(qint64 *) mem.constData();
+                mem.unlock();
+                QMessageBox::warning(0, QObject::tr("Information"), QObject::tr("Une instance de PreviSat est déjà ouverte"));
+                return 1;
+            }
+        } else {
+            QMessageBox::information(0, QObject::tr("Information"), mem.errorString());
+        }
+    } else {
+        mem.lock();
+        memcpy(mem.data(), &pid, mem.size());
+        mem.unlock();
     }
 
     QSplashScreen *splash = new QSplashScreen;
