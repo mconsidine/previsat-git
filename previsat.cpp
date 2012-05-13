@@ -1211,9 +1211,8 @@ void PreviSat::AffichageDonnees()
                 }
 
                 ui->dimensions->setText(chaine);
-                QGraphicsSimpleTextItem *txt = new QGraphicsSimpleTextItem(chaine);
-                const int lng = txt->boundingRect().width();
-                ui->sq->move(ui->dimensions->x() + lng, ui->sq->y());
+                ui->dimensions->adjustSize();
+                ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
                 info = false;
             }
         }

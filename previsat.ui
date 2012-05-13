@@ -16,6 +16,11 @@
     <height>690</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>8</pointsize>
+   </font>
+  </property>
   <property name="mouseTracking">
    <bool>true</bool>
   </property>
@@ -2012,6 +2017,11 @@
                 <height>16</height>
                </rect>
               </property>
+              <property name="font">
+               <font>
+                <pointsize>8</pointsize>
+               </font>
+              </property>
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
@@ -2231,6 +2241,11 @@
                 <width>196</width>
                 <height>16</height>
                </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>8</pointsize>
+               </font>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -6186,7 +6201,7 @@
                <widget class="QCheckBox" name="afflune">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>9</y>
                   <width>70</width>
                   <height>17</height>
@@ -6199,7 +6214,7 @@
                <widget class="QCheckBox" name="affphaselune">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>33</y>
                   <width>118</width>
                   <height>17</height>
@@ -6212,7 +6227,7 @@
                <widget class="QCheckBox" name="rotationLune">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>57</y>
                   <width>235</width>
                   <height>17</height>
@@ -6225,7 +6240,7 @@
                <widget class="QCheckBox" name="affnomsat">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>9</y>
                   <width>124</width>
                   <height>17</height>
@@ -6241,7 +6256,7 @@
                <widget class="QCheckBox" name="affvisib">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>33</y>
                   <width>112</width>
                   <height>17</height>
@@ -6257,7 +6272,7 @@
                <widget class="QCheckBox" name="afftraj">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>57</y>
                   <width>85</width>
                   <height>17</height>
@@ -6273,7 +6288,7 @@
                 </property>
                 <property name="geometry">
                  <rect>
-                  <x>579</x>
+                  <x>577</x>
                   <y>54</y>
                   <width>37</width>
                   <height>22</height>
@@ -6289,7 +6304,7 @@
                <widget class="QCheckBox" name="affnotif">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>124</y>
                   <width>124</width>
                   <height>17</height>
@@ -6302,7 +6317,7 @@
                <widget class="QCheckBox" name="calJulien">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>148</y>
                   <width>145</width>
                   <height>17</height>
@@ -6318,7 +6333,7 @@
                <widget class="QCheckBox" name="affnomlieu">
                 <property name="geometry">
                  <rect>
-                  <x>249</x>
+                  <x>240</x>
                   <y>100</y>
                   <width>169</width>
                   <height>17</height>
@@ -6334,9 +6349,9 @@
                <widget class="QCheckBox" name="extinctionAtmospherique">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>124</y>
-                  <width>247</width>
+                  <width>251</width>
                   <height>17</height>
                  </rect>
                 </property>
@@ -6347,7 +6362,7 @@
                <widget class="QCheckBox" name="affcoord">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>100</y>
                   <width>166</width>
                   <height>17</height>
@@ -6360,7 +6375,7 @@
                <widget class="QLabel" name="lbl_carteMonde">
                 <property name="geometry">
                  <rect>
-                  <x>492</x>
+                  <x>490</x>
                   <y>148</y>
                   <width>91</width>
                   <height>16</height>
@@ -6373,7 +6388,7 @@
                <widget class="QComboBox" name="listeMap">
                 <property name="geometry">
                  <rect>
-                  <x>579</x>
+                  <x>577</x>
                   <y>145</y>
                   <width>151</width>
                   <height>22</height>
@@ -6386,7 +6401,7 @@
                <widget class="QGroupBox" name="groupBoxUnites">
                 <property name="geometry">
                  <rect>
-                  <x>243</x>
+                  <x>240</x>
                   <y>189</y>
                   <width>205</width>
                   <height>70</height>
@@ -6431,9 +6446,9 @@
                <widget class="QGroupBox" name="groupBoxOffsetUTC">
                 <property name="geometry">
                  <rect>
-                  <x>489</x>
+                  <x>480</x>
                   <y>189</y>
-                  <width>238</width>
+                  <width>251</width>
                   <height>70</height>
                  </rect>
                 </property>
@@ -6662,7 +6677,7 @@
                <widget class="QPushButton" name="majFicPrevisat">
                 <property name="geometry">
                  <rect>
-                  <x>243</x>
+                  <x>240</x>
                   <y>266</y>
                   <width>169</width>
                   <height>23</height>
@@ -6801,7 +6816,7 @@
                 <x>559</x>
                 <y>10</y>
                 <width>201</width>
-                <height>31</height>
+                <height>41</height>
                </rect>
               </property>
               <property name="frameShape">
@@ -6815,20 +6830,26 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>201</width>
+                 <width>191</width>
                  <height>23</height>
                 </rect>
                </property>
                <property name="value">
                 <number>0</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="format">
+                <string notr="true">%p%</string>
+               </property>
               </widget>
               <widget class="QLabel" name="fichierTelechargement">
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>2</y>
-                 <width>161</width>
+                 <y>20</y>
+                 <width>191</width>
                  <height>20</height>
                 </rect>
                </property>
@@ -8007,7 +8028,7 @@
                 <rect>
                  <x>10</x>
                  <y>20</y>
-                 <width>131</width>
+                 <width>141</width>
                  <height>17</height>
                 </rect>
                </property>
@@ -8023,7 +8044,7 @@
                 <rect>
                  <x>10</x>
                  <y>40</y>
-                 <width>151</width>
+                 <width>161</width>
                  <height>17</height>
                 </rect>
                </property>
@@ -8053,7 +8074,7 @@
               <widget class="QCheckBox" name="passageOmbre">
                <property name="geometry">
                 <rect>
-                 <x>190</x>
+                 <x>180</x>
                  <y>20</y>
                  <width>201</width>
                  <height>17</height>
@@ -8069,7 +8090,7 @@
               <widget class="QCheckBox" name="transitionJourNuit">
                <property name="geometry">
                 <rect>
-                 <x>190</x>
+                 <x>180</x>
                  <y>40</y>
                  <width>161</width>
                  <height>17</height>
