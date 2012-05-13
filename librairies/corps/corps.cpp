@@ -376,10 +376,8 @@ void Corps::CalculLatitudeAltitude()
 void Corps::InitTabConstellations()
 {
     /* Declarations des variables locales */
-    int i;
 
     /* Initialisations */
-    i = 0;
 
     /* Corps de la methode */
 
