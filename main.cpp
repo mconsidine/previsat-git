@@ -59,9 +59,6 @@ int main(int argc, char *argv[])
     if (!mem.create(sizeof(pid))) {
         if (mem.error() == QSharedMemory::AlreadyExists) {
             if (mem.attach(QSharedMemory::ReadOnly)) {
-                mem.lock();
-                qint64 p = *(qint64 *) mem.constData();
-                mem.unlock();
                 QMessageBox::warning(0, QObject::tr("Information"), QObject::tr("Une instance de PreviSat est déjà ouverte"));
                 return 1;
             }

@@ -56,7 +56,7 @@ Apropos::Apropos(QWidget *parent) :
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
-    ui->numeroVersion->setText(tr("Version 3.0.0.16 (20 mai 2012)"));
+    ui->numeroVersion->setText(tr("Version 3.0.0.17 (20 mai 2012)"));
 }
 
 Apropos::~Apropos()
