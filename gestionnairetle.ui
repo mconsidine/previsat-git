@@ -28,6 +28,11 @@
     <height>294</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>8</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Gestionnaire de téléchargement des TLE</string>
   </property>
@@ -284,7 +289,7 @@
      <x>0</x>
      <y>0</y>
      <width>642</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuContextuelGroupe">
