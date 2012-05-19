@@ -198,13 +198,13 @@
       <string>Annuler</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="listeFichiers">
+    <widget class="QPlainTextEdit" name="listeFichiers">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>194</width>
-       <height>94</height>
+       <width>195</width>
+       <height>91</height>
       </rect>
      </property>
     </widget>
@@ -289,7 +289,7 @@
      <x>0</x>
      <y>0</y>
      <width>642</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuContextuelGroupe">

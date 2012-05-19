@@ -274,7 +274,7 @@ void GestionnaireTLE::on_valider_clicked()
         QFile sw(ficTLE);
         sw.open(QIODevice::Append | QIODevice::Text);
         QTextStream flux(&sw);
-        flux << ligne + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + ui->listeFichiers->text().replace("\n", ",") << endl;
+        flux << ligne + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + ui->listeFichiers->document()->toPlainText().replace("\n", ",") << endl;
         sw.close();
         load();
         ui->groupe->setVisible(false);
@@ -309,7 +309,8 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
 
     /* Corps de la methode */
     const QStringList nomGroupe = ui->listeGroupeTLE->currentItem()->text().split("@");
-    ui->groupe->setEnabled(false);
+    ui->groupe->setEnabled(true);
+    ui->nomGroupe->setEnabled(false);
     ui->nomGroupe->setText(nomGroupe.at(0));
 
     ui->domaine->setEnabled(false);
@@ -317,7 +318,7 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
 
     ui->listeFichiers->clear();
     for(int i=0; i<ui->listeFichiersTLE->count(); i++)
-        ui->listeFichiers->setText(ui->listeFichiers->text() + "\n" + ui->listeFichiersTLE->item(i)->text());
+        ui->listeFichiers->setPlainText(ui->listeFichiers->document()->toPlainText() + ui->listeFichiersTLE->item(i)->text() + "\n");
 
     ui->groupe->setVisible(true);
     ui->listeFichiers->setFocus();
@@ -384,6 +385,7 @@ void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoin
     /* Corps de la methode */
     ui->groupe->setVisible(false);
     ui->actionSupprimer->setVisible(ui->listeFichiersTLE->currentRow() >= 0);
+    ui->menuContextuelFichiersTLE->exec(QCursor::pos());
 
     /* Retour */
     return;
