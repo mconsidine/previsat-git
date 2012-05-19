@@ -53,6 +53,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    const QString locale = QLocale::system().name().section('_', 0, 0);
+    QTranslator qtTranslator;
+    qtTranslator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+
+    QTranslator appTranslator;
+    appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
+    a.installTranslator(&appTranslator);
+
     qint64 pid = a.applicationPid();
     QSharedMemory mem;
     mem.setKey("pid");
@@ -74,15 +83,6 @@ int main(int argc, char *argv[])
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
     splash->show();
-
-    const QString locale = QLocale::system().name().section('_', 0, 0);
-    QTranslator qtTranslator;
-    qtTranslator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
-
-    QTranslator appTranslator;
-    appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
-    a.installTranslator(&appTranslator);
 
     PreviSat w;
 

@@ -1093,7 +1093,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -1134,7 +1134,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Mercredi 31 décembre 2022  00:00:00             UTC + 01:00</string>
+             <string>Mercredi 31 décembre 2022  00:00:00                UTC + 01:00</string>
             </property>
            </widget>
            <widget class="QLabel" name="lbl_lieuxObservation1">
@@ -1299,7 +1299,7 @@
             <widget class="QLabel" name="nomsat1">
              <property name="geometry">
               <rect>
-               <x>36</x>
+               <x>38</x>
                <y>3</y>
                <width>291</width>
                <height>16</height>
@@ -1905,7 +1905,7 @@
             <widget class="QLabel" name="conditionsObservation">
              <property name="geometry">
               <rect>
-               <x>306</x>
+               <x>312</x>
                <y>108</y>
                <width>133</width>
                <height>16</height>
@@ -2529,7 +2529,7 @@
              <rect>
               <x>45</x>
               <y>2</y>
-              <width>221</width>
+              <width>231</width>
               <height>22</height>
              </rect>
             </property>
@@ -2556,7 +2556,7 @@
            <widget class="QLabel" name="utcManuel">
             <property name="geometry">
              <rect>
-              <x>272</x>
+              <x>281</x>
               <y>6</y>
               <width>71</width>
               <height>16</height>
@@ -2572,7 +2572,7 @@
            <widget class="QFrame" name="frameSimu">
             <property name="geometry">
              <rect>
-              <x>340</x>
+              <x>350</x>
               <y>0</y>
               <width>131</width>
               <height>31</height>
@@ -3363,7 +3363,7 @@
            <widget class="QLabel" name="nomsat2">
             <property name="geometry">
              <rect>
-              <x>43</x>
+              <x>45</x>
               <y>30</y>
               <width>271</width>
               <height>16</height>
@@ -3949,7 +3949,7 @@
            <widget class="QLabel" name="nomsat3">
             <property name="geometry">
              <rect>
-              <x>43</x>
+              <x>45</x>
               <y>2</y>
               <width>271</width>
               <height>16</height>
@@ -4490,7 +4490,7 @@
              <rect>
               <x>80</x>
               <y>6</y>
-              <width>131</width>
+              <width>145</width>
               <height>22</height>
              </rect>
             </property>
@@ -4525,7 +4525,7 @@
              <rect>
               <x>80</x>
               <y>30</y>
-              <width>131</width>
+              <width>145</width>
               <height>22</height>
              </rect>
             </property>
@@ -4560,7 +4560,7 @@
              <rect>
               <x>110</x>
               <y>56</y>
-              <width>101</width>
+              <width>111</width>
               <height>22</height>
              </rect>
             </property>
@@ -4855,7 +4855,7 @@
            <widget class="QPushButton" name="effacerHeuresPrev">
             <property name="geometry">
              <rect>
-              <x>220</x>
+              <x>233</x>
               <y>6</y>
               <width>111</width>
               <height>23</height>
@@ -4989,7 +4989,7 @@
              <rect>
               <x>80</x>
               <y>30</y>
-              <width>131</width>
+              <width>145</width>
               <height>22</height>
              </rect>
             </property>
@@ -5003,9 +5003,9 @@
            <widget class="QPushButton" name="effacerHeuresIri">
             <property name="geometry">
              <rect>
-              <x>220</x>
+              <x>230</x>
               <y>6</y>
-              <width>111</width>
+              <width>115</width>
               <height>23</height>
              </rect>
             </property>
@@ -5031,7 +5031,7 @@
              <rect>
               <x>80</x>
               <y>6</y>
-              <width>131</width>
+              <width>145</width>
               <height>22</height>
              </rect>
             </property>
@@ -5539,7 +5539,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -6190,7 +6190,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-124</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6785,7 +6785,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="mouseTracking">
@@ -6894,7 +6894,7 @@
                </rect>
               </property>
               <property name="text">
-               <string>Fichier à lire :</string>
+               <string>Fichier TLE à lire :</string>
               </property>
              </widget>
              <widget class="QLineEdit" name="fichierALire">
@@ -7001,18 +7001,18 @@
                <rect>
                 <x>10</x>
                 <y>10</y>
-                <width>71</width>
+                <width>91</width>
                 <height>16</height>
                </rect>
               </property>
               <property name="text">
-               <string>Fichier à lire :</string>
+               <string>Fichier TLE à lire :</string>
               </property>
              </widget>
              <widget class="QLineEdit" name="fichierALireCreerTLE">
               <property name="geometry">
                <rect>
-                <x>80</x>
+                <x>100</x>
                 <y>7</y>
                 <width>251</width>
                 <height>20</height>
@@ -7022,7 +7022,7 @@
              <widget class="QPushButton" name="parcourir1CreerTLE">
               <property name="geometry">
                <rect>
-                <x>340</x>
+                <x>360</x>
                 <y>6</y>
                 <width>91</width>
                 <height>23</height>
@@ -7164,9 +7164,9 @@
              <widget class="QComboBox" name="ADNoeudAscendantCreerTLE">
               <property name="geometry">
                <rect>
-                <x>120</x>
+                <x>124</x>
                 <y>67</y>
-                <width>91</width>
+                <width>100</width>
                 <height>22</height>
                </rect>
               </property>
@@ -7184,7 +7184,7 @@
              <widget class="QFrame" name="frameADNA">
               <property name="geometry">
                <rect>
-                <x>220</x>
+                <x>230</x>
                 <y>67</y>
                 <width>141</width>
                 <height>23</height>
@@ -7215,7 +7215,7 @@
               <widget class="QSpinBox" name="ADNAMin">
                <property name="geometry">
                 <rect>
-                 <x>20</x>
+                 <x>22</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7234,7 +7234,7 @@
               <widget class="QLabel" name="lbl_ADNAMax">
                <property name="geometry">
                 <rect>
-                 <x>74</x>
+                 <x>76</x>
                  <y>4</y>
                  <width>16</width>
                  <height>16</height>
@@ -7247,7 +7247,7 @@
               <widget class="QSpinBox" name="ADNAMax">
                <property name="geometry">
                 <rect>
-                 <x>90</x>
+                 <x>92</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7266,7 +7266,7 @@
               <widget class="QLabel" name="deg1">
                <property name="geometry">
                 <rect>
-                 <x>62</x>
+                 <x>64</x>
                  <y>0</y>
                  <width>16</width>
                  <height>16</height>
@@ -7279,7 +7279,7 @@
               <widget class="QLabel" name="deg2">
                <property name="geometry">
                 <rect>
-                 <x>132</x>
+                 <x>134</x>
                  <y>1</y>
                  <width>16</width>
                  <height>16</height>
@@ -7436,7 +7436,7 @@
              <widget class="QSpinBox" name="inclMax1">
               <property name="geometry">
                <rect>
-                <x>270</x>
+                <x>272</x>
                 <y>126</y>
                 <width>41</width>
                 <height>22</height>
@@ -7468,7 +7468,7 @@
              <widget class="QLabel" name="deg3">
               <property name="geometry">
                <rect>
-                <x>242</x>
+                <x>244</x>
                 <y>126</y>
                 <width>16</width>
                 <height>16</height>
@@ -7481,7 +7481,7 @@
              <widget class="QLabel" name="deg4">
               <property name="geometry">
                <rect>
-                <x>312</x>
+                <x>314</x>
                 <y>126</y>
                 <width>16</width>
                 <height>16</height>
@@ -7494,7 +7494,7 @@
              <widget class="QSpinBox" name="inclMin1">
               <property name="geometry">
                <rect>
-                <x>200</x>
+                <x>202</x>
                 <y>126</y>
                 <width>41</width>
                 <height>22</height>
@@ -7513,7 +7513,7 @@
              <widget class="QLabel" name="lbl_inclMax1">
               <property name="geometry">
                <rect>
-                <x>254</x>
+                <x>256</x>
                 <y>130</y>
                 <width>16</width>
                 <height>16</height>
@@ -7528,7 +7528,7 @@
                <rect>
                 <x>324</x>
                 <y>125</y>
-                <width>151</width>
+                <width>161</width>
                 <height>23</height>
                </rect>
               </property>
@@ -7557,7 +7557,7 @@
               <widget class="QSpinBox" name="inclMin2">
                <property name="geometry">
                 <rect>
-                 <x>30</x>
+                 <x>32</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7576,7 +7576,7 @@
               <widget class="QLabel" name="lbl_inclMax2">
                <property name="geometry">
                 <rect>
-                 <x>82</x>
+                 <x>84</x>
                  <y>4</y>
                  <width>16</width>
                  <height>16</height>
@@ -7589,7 +7589,7 @@
               <widget class="QSpinBox" name="inclMax2">
                <property name="geometry">
                 <rect>
-                 <x>100</x>
+                 <x>102</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7608,7 +7608,7 @@
               <widget class="QLabel" name="deg5">
                <property name="geometry">
                 <rect>
-                 <x>71</x>
+                 <x>74</x>
                  <y>0</y>
                  <width>16</width>
                  <height>16</height>
@@ -7621,7 +7621,7 @@
               <widget class="QLabel" name="deg6">
                <property name="geometry">
                 <rect>
-                 <x>140</x>
+                 <x>144</x>
                  <y>1</y>
                  <width>16</width>
                  <height>16</height>
@@ -7697,7 +7697,7 @@
              <widget class="QLineEdit" name="revMax">
               <property name="geometry">
                <rect>
-                <x>650</x>
+                <x>652</x>
                 <y>37</y>
                 <width>81</width>
                 <height>20</height>
@@ -7713,7 +7713,7 @@
              <widget class="QLabel" name="lbl_revMax">
               <property name="geometry">
                <rect>
-                <x>635</x>
+                <x>637</x>
                 <y>40</y>
                 <width>16</width>
                 <height>16</height>
@@ -7726,7 +7726,7 @@
              <widget class="QLineEdit" name="revMin">
               <property name="geometry">
                <rect>
-                <x>560</x>
+                <x>562</x>
                 <y>37</y>
                 <width>71</width>
                 <height>20</height>
@@ -7755,7 +7755,7 @@
              <widget class="QFrame" name="frameArgumentPerigee">
               <property name="geometry">
                <rect>
-                <x>593</x>
+                <x>600</x>
                 <y>66</y>
                 <width>141</width>
                 <height>23</height>
@@ -7786,7 +7786,7 @@
               <widget class="QSpinBox" name="argMin">
                <property name="geometry">
                 <rect>
-                 <x>20</x>
+                 <x>21</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7805,7 +7805,7 @@
               <widget class="QLabel" name="lbl_argMax">
                <property name="geometry">
                 <rect>
-                 <x>74</x>
+                 <x>76</x>
                  <y>4</y>
                  <width>16</width>
                  <height>16</height>
@@ -7818,7 +7818,7 @@
               <widget class="QSpinBox" name="argMax">
                <property name="geometry">
                 <rect>
-                 <x>90</x>
+                 <x>92</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7837,7 +7837,7 @@
               <widget class="QLabel" name="deg7">
                <property name="geometry">
                 <rect>
-                 <x>62</x>
+                 <x>64</x>
                  <y>0</y>
                  <width>16</width>
                  <height>16</height>
@@ -7850,7 +7850,7 @@
               <widget class="QLabel" name="deg8">
                <property name="geometry">
                 <rect>
-                 <x>132</x>
+                 <x>134</x>
                  <y>1</y>
                  <width>16</width>
                  <height>16</height>
@@ -7911,7 +7911,7 @@
                <rect>
                 <x>494</x>
                 <y>67</y>
-                <width>91</width>
+                <width>100</width>
                 <height>22</height>
                </rect>
               </property>
@@ -7942,7 +7942,7 @@
                <rect>
                 <x>80</x>
                 <y>10</y>
-                <width>131</width>
+                <width>145</width>
                 <height>22</height>
                </rect>
               </property>
@@ -7969,9 +7969,9 @@
              <widget class="QPushButton" name="effacerHeuresEvt">
               <property name="geometry">
                <rect>
-                <x>220</x>
+                <x>230</x>
                 <y>10</y>
-                <width>111</width>
+                <width>115</width>
                 <height>23</height>
                </rect>
               </property>
@@ -7997,7 +7997,7 @@
                <rect>
                 <x>80</x>
                 <y>34</y>
-                <width>131</width>
+                <width>145</width>
                 <height>22</height>
                </rect>
               </property>
@@ -8190,7 +8190,7 @@
                <rect>
                 <x>80</x>
                 <y>34</y>
-                <width>131</width>
+                <width>145</width>
                 <height>22</height>
                </rect>
               </property>
@@ -8206,7 +8206,7 @@
                <rect>
                 <x>80</x>
                 <y>10</y>
-                <width>131</width>
+                <width>145</width>
                 <height>22</height>
                </rect>
               </property>
@@ -8220,9 +8220,9 @@
              <widget class="QPushButton" name="effacerHeuresTransit">
               <property name="geometry">
                <rect>
-                <x>220</x>
+                <x>230</x>
                 <y>10</y>
-                <width>111</width>
+                <width>115</width>
                 <height>23</height>
                </rect>
               </property>

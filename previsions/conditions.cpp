@@ -272,7 +272,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
                                                                   observateur.getAltitude() * PIED_PAR_METRE;
 
     const QString unit = (conditions._unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
-    const QString cond1 = QObject::tr("Conditions d'observations : ");
+    const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
     const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
 
     /* Corps de la methode */
