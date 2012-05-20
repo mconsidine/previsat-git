@@ -1272,7 +1272,7 @@ void PreviSat::AffichageCourbes() const
     } else {
         indLune = 15;
     }
-    const QString src = ":/resources/lune%1.gif";
+    const QString src = ":/resources/lune%1.png";
     QPixmap pixlun;
     pixlun.load(src.arg(indLune, 2, 10, QChar('0')));
     pixlun = pixlun.scaled(17, 17);
