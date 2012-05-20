@@ -6190,7 +6190,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-116</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6820,10 +6820,10 @@
                </rect>
               </property>
               <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
+               <enum>QFrame::NoFrame</enum>
               </property>
               <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
+               <enum>QFrame::Plain</enum>
               </property>
               <widget class="QProgressBar" name="barreProgression">
                <property name="geometry">
@@ -8774,7 +8774,7 @@
      <x>0</x>
      <y>0</y>
      <width>1068</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOuvrir_fichier_TLE">
