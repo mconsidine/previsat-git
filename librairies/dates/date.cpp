@@ -297,7 +297,7 @@ QString Date::ToLongDate() const
             QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES)));
 
     /* Corps de la methode */
-    QString res = date.toString(Qt::SystemLocaleLongDate);
+    QString res = date.toString(QObject::tr("dddd dd MMMM yyyy  HH:mm:ss"));
     res[0] = res[0].toUpper();
 
     /* Retour */
