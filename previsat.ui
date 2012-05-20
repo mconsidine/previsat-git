@@ -3903,7 +3903,7 @@
              <rect>
               <x>313</x>
               <y>165</y>
-              <width>91</width>
+              <width>101</width>
               <height>16</height>
              </rect>
             </property>
@@ -5539,7 +5539,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -5556,7 +5556,7 @@
                <rect>
                 <x>189</x>
                 <y>0</y>
-                <width>109</width>
+                <width>141</width>
                 <height>16</height>
                </rect>
               </property>
@@ -5868,7 +5868,7 @@
                <rect>
                 <x>12</x>
                 <y>0</y>
-                <width>136</width>
+                <width>141</width>
                 <height>16</height>
                </rect>
               </property>
@@ -6119,7 +6119,7 @@
                <rect>
                 <x>379</x>
                 <y>0</y>
-                <width>109</width>
+                <width>131</width>
                 <height>16</height>
                </rect>
               </property>
@@ -6785,7 +6785,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="mouseTracking">
@@ -7528,7 +7528,7 @@
                <rect>
                 <x>324</x>
                 <y>125</y>
-                <width>161</width>
+                <width>181</width>
                 <height>23</height>
                </rect>
               </property>
@@ -7546,18 +7546,21 @@
                 <rect>
                  <x>0</x>
                  <y>4</y>
-                 <width>31</width>
+                 <width>41</width>
                  <height>16</height>
                 </rect>
                </property>
                <property name="text">
                 <string>et de</string>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
               </widget>
               <widget class="QSpinBox" name="inclMin2">
                <property name="geometry">
                 <rect>
-                 <x>32</x>
+                 <x>50</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7576,10 +7579,10 @@
               <widget class="QLabel" name="lbl_inclMax2">
                <property name="geometry">
                 <rect>
-                 <x>84</x>
+                 <x>101</x>
                  <y>4</y>
-                 <width>16</width>
-                 <height>16</height>
+                 <width>20</width>
+                 <height>20</height>
                 </rect>
                </property>
                <property name="text">
@@ -7589,7 +7592,7 @@
               <widget class="QSpinBox" name="inclMax2">
                <property name="geometry">
                 <rect>
-                 <x>102</x>
+                 <x>120</x>
                  <y>0</y>
                  <width>41</width>
                  <height>22</height>
@@ -7608,7 +7611,7 @@
               <widget class="QLabel" name="deg5">
                <property name="geometry">
                 <rect>
-                 <x>74</x>
+                 <x>90</x>
                  <y>0</y>
                  <width>16</width>
                  <height>16</height>
@@ -7621,7 +7624,7 @@
               <widget class="QLabel" name="deg6">
                <property name="geometry">
                 <rect>
-                 <x>144</x>
+                 <x>160</x>
                  <y>1</y>
                  <width>16</width>
                  <height>16</height>
@@ -8771,7 +8774,7 @@
      <x>0</x>
      <y>0</y>
      <width>1068</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOuvrir_fichier_TLE">
@@ -8884,9 +8887,6 @@
    </property>
    <property name="text">
     <string>Fichier d'aide</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">F1</string>
    </property>
   </action>
   <action name="actionAstropedia_free_fr">

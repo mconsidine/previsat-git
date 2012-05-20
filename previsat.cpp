@@ -309,7 +309,6 @@ void PreviSat::ChargementConfig()
     ui->fichierTLEIri->setText(settings.value("fichier/iridium", QDir::convertSeparators(dirTle + QDir::separator() +
                                                                                          "iridium.txt")).toString());
     ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
-    ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
     ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
@@ -2020,6 +2019,7 @@ void PreviSat::AffichageGroupesTLE() const
             listeGroupeMaj.append(ligne.at(0) + "#" + ligne.at(2));
     }
     fi.close();
+    ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
 
     /* Retour */
     return;
@@ -2999,7 +2999,7 @@ void PreviSat::GestionTempsReel()
         stsDate->setToolTip(tr("Jour julien"));
         stsHeure->setToolTip(tr("Jour"));
     } else {
-        stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString("dd/MM/yyyy"));
+        stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
         stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), date1.getSecondes()).toString("hh:mm:ss"));
         stsDate->setToolTip(tr("Date"));
         stsHeure->setToolTip(tr("Heure"));
