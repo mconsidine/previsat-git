@@ -636,6 +636,9 @@ void PreviSat::DemarrageApplication()
     if (PreviSat::height() > ymax)
         PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
 
+    QResizeEvent *event;
+    resizeEvent(event);
+
     chronometre->setInterval(200);
     connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
     chronometre->start();
