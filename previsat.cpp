@@ -6756,6 +6756,7 @@ void PreviSat::on_afficherIri_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
     afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
 
     /* Retour */
     return;
