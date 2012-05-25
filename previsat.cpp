@@ -942,12 +942,14 @@ void PreviSat::AffichageDonnees()
                     }
                 } else {
                     chaine = tr("Satellite non visible");
-                    if (satellites.at(0).isPenombre())
-                        chaine = chaine.append(" : ").append(tr("Pénombre"));
-                    chaine = chaine.append(" (%1%)");
-                    chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
-                    if (satellites.at(0).isEclipse() && !satellites.at(0).isPenombre())
+                    if (satellites.at(0).isEclipse()) {
                         chaine = tr("Satellite non visible (Ombre)");
+                    } else {
+                        if (satellites.at(0).isPenombre())
+                            chaine = chaine.append(" : ").append(tr("Pénombre"));
+                        chaine = chaine.append(" (%1%)");
+                        chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
+                    }
                     ui->magnitudeSat->setText(chaine);
                 }
             }
@@ -2506,13 +2508,20 @@ void PreviSat::FinEnregistrementFichier()
 
         if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
 
-            // Recuperation des TLE de la liste
-            TLE::LectureFichier(nomfic, liste, tles);
+            const int nb = TLE::VerifieFichier(nomfic, false);
+            if (nb == 0) {
+                const QString msg = tr("Problème lors du téléchargement du fichier %1");
+                Messages::Afficher(msg.arg(nomfic), Messages::WARNING);
+            } else {
 
-            Satellite::initCalcul = false;
-            Satellite::LectureDonnees(liste, tles, satellites);
+                // Recuperation des TLE de la liste
+                TLE::LectureFichier(nomfic, liste, tles);
 
-            CalculsAffichage();
+                Satellite::initCalcul = false;
+                Satellite::LectureDonnees(liste, tles, satellites);
+
+                CalculsAffichage();
+            }
         }
     }
 
@@ -2583,13 +2592,21 @@ void PreviSat::FinEnregistrementFichier()
         }
 
         if (fichierAMettreAJour == nomfic) {
-            // Recuperation des TLE de la liste
-            TLE::LectureFichier(nomfic, liste, tles);
 
-            Satellite::initCalcul = false;
-            Satellite::LectureDonnees(liste, tles, satellites);
+            const int nb = TLE::VerifieFichier(nomfic, false);
+            if (nb == 0) {
+                const QString msg = tr("Problème lors du téléchargement du fichier %1");
+                Messages::Afficher(msg.arg(ff.fileName()), Messages::WARNING);
+            } else {
 
-            CalculsAffichage();
+                // Recuperation des TLE de la liste
+                TLE::LectureFichier(nomfic, liste, tles);
+
+                Satellite::initCalcul = false;
+                Satellite::LectureDonnees(liste, tles, satellites);
+
+                CalculsAffichage();
+            }
         }
     }
 
@@ -2625,7 +2642,25 @@ void PreviSat::VerifAgeTLE()
         if (res == QMessageBox::Yes) {
             const QFileInfo fi(nomfic);
             if (fi.absoluteDir() == dirTle) {
-                MajWebTLE();
+                amajDeb = true;
+                amajInt = false;
+                atrouve = true;
+                aupdnow = false;
+                dirDwn = dirTle;
+                const QUrl url("http://www.celestrak.com/NORAD/elements/" + fi.fileName());
+                AjoutFichier(url);
+
+                QNetworkRequest requete(url);
+                rep = mng.get(requete);
+
+                // Creation d'une boucle pour rendre le telechargement synchrone
+                QEventLoop loop;
+                connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
+                loop.exec();
+
+                if (downQueue.isEmpty())
+                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             } else {
                 QDesktopServices::openUrl(QUrl("http://www.celestrak.com/NORAD/elements/"));
