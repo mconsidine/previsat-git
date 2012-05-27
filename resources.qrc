@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/open.png</file>
-        <file>resources/save.png</file>
         <file>resources/help.png</file>
         <file>resources/maxi.png</file>
         <file>resources/mini.png</file>

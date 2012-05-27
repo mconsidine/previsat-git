@@ -57,6 +57,8 @@ Afficher::Afficher(QWidget *parent) :
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
+    QStyle *style = QApplication::style();
+    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
     QCoreApplication::setApplicationName("PreviSat");
     QCoreApplication::setOrganizationName("Astropedia");
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +

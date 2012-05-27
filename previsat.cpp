@@ -267,7 +267,7 @@ void PreviSat::ChargementConfig()
 
     // Verification de la presence des fichiers du repertoire data
     QStringList ficdata;
-    ficdata << "chimes.mp3" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "donnees.sat" <<
+    ficdata << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "donnees.sat" <<
                "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -1259,7 +1259,7 @@ void PreviSat::AffichageCourbes() const
     // Notification sonore
     if (notif && ui->affnotif->isChecked()) {
         if (ui->tempsReel->isChecked())
-            QSound::play(dirDat + QDir::separator() + "chimes.mp3");
+            QSound::play(dirDat + QDir::separator() + "chimes.wav");
         notif = false;
     }
 

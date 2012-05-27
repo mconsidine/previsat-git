@@ -69,10 +69,6 @@
    <addaction name="actionEnregistrer"/>
   </widget>
   <action name="actionEnregistrer">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/save.png</normaloff>:/resources/save.png</iconset>
-   </property>
    <property name="text">
     <string>Enregistrer</string>
    </property>
@@ -84,8 +80,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
