@@ -267,7 +267,7 @@ void PreviSat::ChargementConfig()
 
     // Verification de la presence des fichiers du repertoire data
     QStringList ficdata;
-    ficdata << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "donnees.sat" <<
+    ficdata << "chimes.mp3" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "donnees.sat" <<
                "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -321,7 +321,7 @@ void PreviSat::ChargementConfig()
     ui->affnotif->setChecked(settings.value("affichage/affnotif", true).toBool());
     ui->affnuit->setChecked(settings.value("affichage/affnuit", true).toBool());
     ui->affphaselune->setChecked(settings.value("affichage/affphaselune", true).toBool());
-    ui->affplanetes->setChecked(settings.value("affichage/affplanetes", true).toBool());
+    ui->affplanetes->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affplanetes", Qt::Checked).toUInt()));
     ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
     ui->affSAA->setChecked(settings.value("affichage/affSAA", false).toBool());
     ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
@@ -347,6 +347,9 @@ void PreviSat::ChargementConfig()
     settings.setValue("fichier/path", dirExe);
 
     // Affichage au demarrage
+    QStyle *style = QApplication::style();
+    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+    ui->actionOuvrir_fichier_TLE->setIcon(style->standardIcon(QStyle::SP_DirOpenIcon));
     ui->ciel->setVisible(false);
     ui->nord->setVisible(false);
     ui->sud->setVisible(false);
@@ -665,8 +668,6 @@ void PreviSat::InitFicObs(const bool alarm) const
     ui->ajdfic->clear();
 
     // Repertoire contenant les fichiers de lieux d'observation
-
-
     const QDir di = QDir(dirCoo);
     if (di.exists()) {
 
@@ -1258,7 +1259,7 @@ void PreviSat::AffichageCourbes() const
     // Notification sonore
     if (notif && ui->affnotif->isChecked()) {
         if (ui->tempsReel->isChecked())
-            QSound::play(dirDat + QDir::separator() + "chimes.wav");
+            QSound::play(dirDat + QDir::separator() + "chimes.mp3");
         notif = false;
     }
 
@@ -1738,8 +1739,8 @@ void PreviSat::AffichageCourbes() const
 
                                 const int lst = lstr - lciel;
                                 const int bst = hciel - bstr;
-                                const QString nomsat = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
-                                QGraphicsSimpleTextItem *txtStr = new QGraphicsSimpleTextItem(nomsat);
+                                const QString nomstr = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
+                                QGraphicsSimpleTextItem *txtStr = new QGraphicsSimpleTextItem(nomstr);
                                 const int lng = txtStr->boundingRect().width();
 
                                 const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
@@ -1756,19 +1757,38 @@ void PreviSat::AffichageCourbes() const
             }
         }
 
-        if (ui->affplanetes->isChecked()) {
+        if (ui->affplanetes->checkState() != Qt::Unchecked) {
 
             // Calcul des coordonnees radar des planetes
             for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
                 if (planetes.at(iplanete).getHauteur() >= 0.) {
+
                     const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
                                             sin(planetes.at(iplanete).getAzimut()));
                     const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
                                             cos(planetes.at(iplanete).getAzimut()));
 
+                    const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                     rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
+
+                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
+                            ui->affplanetes->checkState() == Qt::Checked) {
+                        const int lpl = lpla - lciel;
+                        const int bpl = hciel - bpla;
+                        const QString nompla = planetes.at(iplanete).getNom();
+                        QGraphicsSimpleTextItem *txtPla = new QGraphicsSimpleTextItem(nompla);
+                        const int lng = txtPla->boundingRect().width();
+
+                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                        const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
+
+                        txtPla->setBrush(bru3);
+                        txtPla->setPos(xnpla, ynpla);
+                        txtPla->setFont(QFont(PreviSat::font().family(), 7));
+                        scene3->addItem(txtPla);
+                    }
                 }
             }
         }
@@ -2306,7 +2326,7 @@ void PreviSat::EnchainementCalculs() const
         /*
          * Calcul de la position des planetes
          */
-        if (ui->affplanetes->isChecked()) {
+        if (ui->affplanetes->checkState() != Qt::Unchecked) {
             planetes.clear();
             for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
@@ -3241,7 +3261,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/affnotif", ui->affnotif->isChecked());
     settings.setValue("affichage/affnuit", ui->affnuit->isChecked());
     settings.setValue("affichage/affphaselune", ui->affphaselune->isChecked());
-    settings.setValue("affichage/affplanetes", ui->affplanetes->isChecked());
+    settings.setValue("affichage/affplanetes", ui->affplanetes->checkState());
     settings.setValue("affichage/affradar", ui->affradar->checkState());
     settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
     settings.setValue("affichage/affsoleil", ui->affsoleil->isChecked());
@@ -3847,7 +3867,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                     }
                 }
 
-                if (ui->affplanetes->isChecked()) {
+                if (ui->affplanetes->checkState() != Qt::Unchecked) {
 
                     for(int ipla=MERCURE; ipla<=NEPTUNE; ipla++) {
 
