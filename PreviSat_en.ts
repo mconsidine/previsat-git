@@ -4,18 +4,18 @@
 <context>
     <name>Afficher</name>
     <message>
-        <location filename="afficher.ui" line="77"/>
-        <location filename="afficher.ui" line="80"/>
+        <location filename="afficher.ui" line="73"/>
+        <location filename="afficher.ui" line="76"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="88"/>
+        <location filename="afficher.cpp" line="90"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="89"/>
+        <location filename="afficher.cpp" line="91"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
