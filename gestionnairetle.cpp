@@ -207,7 +207,6 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
     /* Initialisations */
     init = false;
     ui->groupe->setVisible(false);
-    ui->listeFichiersTLE->setCurrentRow(-1);
 
     /* Corps de la methode */
     if (selec != currentRow) {
@@ -242,6 +241,7 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
             init = true;
         }
     }
+    ui->listeFichiersTLE->setCurrentRow(-1);
 
     /* Retour */
     return;
@@ -261,21 +261,32 @@ void GestionnaireTLE::on_valider_clicked()
         if (ui->nomGroupe->text().trimmed().isEmpty())
             throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), Messages::WARNING);
 
-        const QString ligne = ui->nomGroupe->text().trimmed() + "@" + ui->domaine->text().trimmed();
-        if (ui->nomGroupe->isEnabled()) {
-            for(int i=0; i<ui->listeGroupeTLE->count(); i++) {
-                if (ligne.toLower() == ui->listeGroupeTLE->item(i)->text().toLower()) {
-                    const QString msg = tr("Le groupe \"%1\" existe déjà");
-                    throw PreviSatException(msg.arg(ligne), Messages::WARNING);
-                }
-            }
+        const QString groupeDomaine = ui->nomGroupe->text().toLower().trimmed() + "@" + ui->domaine->text().trimmed();
+        const QString listeFics = ui->listeFichiers->document()->toPlainText().replace("\n", ",");
+
+        QFile sr(ficTLE);
+        sr.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&sr);
+        QStringList list;
+        while (!flux.atEnd()) {
+            const QString ligne = flux.readLine();
+            if (ligne.mid(0, ligne.indexOf("#")) == groupeDomaine)
+                list.append(groupeDomaine + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + "#" + listeFics);
+            else
+                list.append(ligne);
         }
+        sr.close();
 
         QFile sw(ficTLE);
-        sw.open(QIODevice::Append | QIODevice::Text);
-        QTextStream flux(&sw);
-        flux << ligne + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + ui->listeFichiers->document()->toPlainText().replace("\n", ",") << endl;
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux2(&sw);
+
+        QStringListIterator it(list);
+        while (it.hasNext()) {
+            flux2 << it.next() << endl;
+        }
         sw.close();
+
         load();
         ui->groupe->setVisible(false);
 
@@ -321,6 +332,7 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
         ui->listeFichiers->setPlainText(ui->listeFichiers->document()->toPlainText() + ui->listeFichiersTLE->item(i)->text() + "\n");
 
     ui->groupe->setVisible(true);
+    ui->listeFichiers->moveCursor(QTextCursor::End);
     ui->listeFichiers->setFocus();
 
     /* Retour */
@@ -384,6 +396,7 @@ void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoin
 
     /* Corps de la methode */
     ui->groupe->setVisible(false);
+    ui->listeFichiersTLE->setCurrentRow(ui->listeFichiersTLE->indexAt(pos).row());
     ui->actionSupprimer->setVisible(ui->listeFichiersTLE->currentRow() >= 0);
     ui->menuContextuelFichiersTLE->exec(QCursor::pos());
 

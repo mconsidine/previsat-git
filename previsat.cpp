@@ -469,6 +469,9 @@ void PreviSat::ChargementConfig()
         ui->ajdfic->setCurrentIndex(0);
     }
 
+    QResizeEvent *event;
+    resizeEvent(event);
+
     /* Retour */
     return;
 }
@@ -638,9 +641,6 @@ void PreviSat::DemarrageApplication()
         PreviSat::setGeometry(0, 0, xmax, PreviSat::height());
     if (PreviSat::height() > ymax)
         PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
-
-    QResizeEvent *event;
-    resizeEvent(event);
 
     chronometre->setInterval(200);
     connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
@@ -2494,9 +2494,11 @@ void PreviSat::TelechargementSuivant()
     } else {
 
         const QUrl url = downQueue.dequeue();
+
         const QString fic = QFileInfo(url.path()).fileName();
         ui->fichierTelechargement->setText(fic);
         ui->barreProgression->setValue(0);
+        ui->frameBarreProgression->setVisible(true);
         ficDwn.setFileName(dirDwn + QDir::separator() + fic);
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
@@ -2504,12 +2506,14 @@ void PreviSat::TelechargementSuivant()
             QNetworkRequest requete(url);
             if (!amajDeb)
                 rep = mng.get(requete);
+
             connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
             connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
             connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
 
         } else {
-            messagesStatut->setText(tr("Erreur du téléchargement du fichier") + " " + ficDwn.fileName());
+            const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+            messagesStatut->setText(msg.arg(ficDwn.fileName()));
         }
     }
 
@@ -2522,113 +2526,139 @@ void PreviSat::FinEnregistrementFichier()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    bool atr = false;
     bool aup = false;
     ficDwn.close();
 
     /* Corps de la methode */
-    // Mise a jour des TLE
-    if (atrouve) {
+    QFile fd(ficDwn.fileName());
+    fd.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flx(&fd);
+    const QString lg = flx.readLine();
+    fd.close();
+    if (lg.contains("DOCTYPE"))
+        atr = true;
 
-        if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
+    if (rep->error() || atr) {
 
-            const int nb = TLE::VerifieFichier(nomfic, false);
-            if (nb == 0) {
-                const QString msg = tr("Problème lors du téléchargement du fichier %1");
-                Messages::Afficher(msg.arg(nomfic), Messages::WARNING);
-            } else {
+        // Erreur survenue lors du telechargement
+        ui->frameBarreProgression->setVisible(false);
+        const QFileInfo ff(ficDwn.fileName());
 
-                // Recuperation des TLE de la liste
-                TLE::LectureFichier(nomfic, liste, tles);
+        if (fd.exists())
+            fd.remove();
 
-                Satellite::initCalcul = false;
-                Satellite::LectureDonnees(liste, tles, satellites);
+        QString msg = tr("Erreur lors du téléchargement du fichier %1");
+        if (rep->error())
+            msg += " : " + rep->errorString();
+        Messages::Afficher(msg.arg(ff.baseName()), Messages::WARNING);
 
-                CalculsAffichage();
-            }
-        }
-    }
+    } else {
 
-    // Mise a jour des fichiers internes
-    if (amajInt) {
+        // Mise a jour des TLE
+        if (atrouve) {
 
-        amajInt = false;
-        if (ficDwn.exists()) {
+            if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
 
-            ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&ficDwn);
-            const QStringList ligne = flux.readLine().split("-");
-            ficDwn.close();
-            rep->deleteLater();
-            TelechargementSuivant();
+                const int nb = TLE::VerifieFichier(nomfic, false);
+                if (nb == 0) {
+                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    Messages::Afficher(msg.arg(nomfic), Messages::WARNING);
+                } else {
 
-            const int an = ligne.at(0).toInt();
-            const int mo = ligne.at(1).toInt();
-            const int jo = ligne.at(2).toInt();
-            const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+                    // Recuperation des TLE de la liste
+                    TLE::LectureFichier(nomfic, liste, tles);
 
-            const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
-            QStringList fichiers;
-            fichiers << "donnees.sat" << "iridium.sts";
-            dirDwn = dirDat;
+                    Satellite::initCalcul = false;
+                    Satellite::LectureDonnees(liste, tles, satellites);
 
-            for(int i=0; i<fichiers.size(); i++) {
-
-                const QString fic = dirDat + QDir::separator() + fichiers.at(i);
-                const QFileInfo fi(fic);
-
-                if (fi.lastModified() < dateHttp) {
-                    AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
-                    aup = true;
+                    CalculsAffichage();
                 }
             }
-            if (downQueue.isEmpty())
-                QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-
-            if (aup)
-                QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
-            else
-                QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
-        }
-    }
-
-    // Mise a jour des fichiers TLE selectionnes
-    if (aupdnow) {
-
-        QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
-        QFileInfo ff(fichierALire);
-        QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
-
-        QFile fi(fichierAMettreAJour);
-        if (fi.exists()) {
-
-            QStringList compteRendu;
-            TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
-
-            bool aecr = false;
-            EcritureCompteRenduMaj(compteRendu, aecr);
-            aup = true;
-
-        } else {
-            fi.copy(fichierALire, fichierAMettreAJour);
-            const QString msg = tr("Ajout du fichier %1") + "\n";
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
         }
 
-        if (fichierAMettreAJour == nomfic) {
+        // Mise a jour des fichiers internes
+        if (amajInt) {
 
-            const int nb = TLE::VerifieFichier(nomfic, false);
-            if (nb == 0) {
-                const QString msg = tr("Problème lors du téléchargement du fichier %1");
-                Messages::Afficher(msg.arg(ff.fileName()), Messages::WARNING);
+            amajInt = false;
+            if (ficDwn.exists()) {
+
+                ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
+                QTextStream flux(&ficDwn);
+                const QStringList ligne = flux.readLine().split("-");
+                ficDwn.close();
+                rep->deleteLater();
+                TelechargementSuivant();
+
+                const int an = ligne.at(0).toInt();
+                const int mo = ligne.at(1).toInt();
+                const int jo = ligne.at(2).toInt();
+                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+
+                const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
+                QStringList fichiers;
+                fichiers << "donnees.sat" << "iridium.sts";
+                dirDwn = dirDat;
+
+                for(int i=0; i<fichiers.size(); i++) {
+
+                    const QString fic = dirDat + QDir::separator() + fichiers.at(i);
+                    const QFileInfo fi(fic);
+
+                    if (fi.lastModified() < dateHttp) {
+                        AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
+                        aup = true;
+                    }
+                }
+                if (downQueue.isEmpty())
+                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+                if (aup)
+                    QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
+                else
+                    QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
+            }
+        }
+
+        // Mise a jour des fichiers TLE selectionnes
+        if (aupdnow) {
+
+            QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
+            QFileInfo ff(fichierALire);
+            QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
+
+            QFile fi(fichierAMettreAJour);
+            if (fi.exists()) {
+
+                QStringList compteRendu;
+                TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
+
+                bool aecr = false;
+                EcritureCompteRenduMaj(compteRendu, aecr);
+                aup = true;
+
             } else {
+                fi.copy(fichierALire, fichierAMettreAJour);
+                const QString msg = tr("Ajout du fichier %1") + "\n";
+                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
+            }
 
-                // Recuperation des TLE de la liste
-                TLE::LectureFichier(nomfic, liste, tles);
+            if (fichierAMettreAJour == nomfic) {
 
-                Satellite::initCalcul = false;
-                Satellite::LectureDonnees(liste, tles, satellites);
+                const int nb = TLE::VerifieFichier(nomfic, false);
+                if (nb == 0) {
+                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    Messages::Afficher(msg.arg(ff.fileName()), Messages::WARNING);
+                } else {
 
-                CalculsAffichage();
+                    // Recuperation des TLE de la liste
+                    TLE::LectureFichier(nomfic, liste, tles);
+
+                    Satellite::initCalcul = false;
+                    Satellite::LectureDonnees(liste, tles, satellites);
+
+                    CalculsAffichage();
+                }
             }
         }
     }
@@ -2645,6 +2675,7 @@ void PreviSat::EcritureFichier()
 {
     ficDwn.write(rep->readAll());
 }
+
 
 /*
  * Verification de l'age d'un TLE
