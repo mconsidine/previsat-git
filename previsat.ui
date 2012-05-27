@@ -1093,7 +1093,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -5539,7 +5539,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -6190,7 +6190,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-116</y>
+                 <y>-124</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6751,6 +6751,9 @@
                  <string>Affichage des planètes</string>
                 </property>
                 <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <property name="tristate">
                  <bool>true</bool>
                 </property>
                </widget>
@@ -8857,10 +8860,6 @@
    <addaction name="menuContextuelCompteRenduMaj"/>
   </widget>
   <action name="actionOuvrir_fichier_TLE">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/open.png</normaloff>:/resources/open.png</iconset>
-   </property>
    <property name="text">
     <string>Ouvrir fichier TLE</string>
    </property>
@@ -8869,10 +8868,6 @@
    </property>
   </action>
   <action name="actionEnregistrer">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/resources/save.png</normaloff>:/resources/save.png</iconset>
-   </property>
    <property name="text">
     <string>Enregistrer</string>
    </property>
