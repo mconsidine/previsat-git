@@ -63,7 +63,7 @@ Afficher::Afficher(QWidget *parent) :
     QCoreApplication::setOrganizationName("Astropedia");
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
                             QDir::separator() + "Astropedia" + QDir::separator() + "PreviSat").toString();
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 }
 
 Afficher::~Afficher()

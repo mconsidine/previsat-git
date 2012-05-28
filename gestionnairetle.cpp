@@ -91,7 +91,7 @@ void GestionnaireTLE::load()
     QCoreApplication::setOrganizationName("Astropedia");
     const QString dirExe = QCoreApplication::applicationDirPath();
     dirDat = dirExe + QDir::separator() + "data";
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
     ficTLE = dirDat + QDir::separator() + "gestionnaireTLE.gst";
 
     /* Corps de la methode */

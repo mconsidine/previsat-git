@@ -242,7 +242,7 @@ void PreviSat::ChargementConfig()
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "Astropedia" +
             QDir::separator() + "PreviSat";
     dirTle = dirExe + QDir::separator() + "tle";
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     DEG2PXHZ = 1. / 0.45;
     DEG2PXVT = 1. / 0.45;
