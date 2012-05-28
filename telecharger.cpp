@@ -77,7 +77,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     const QString dirDat = dirExe + QDir::separator() + "data";
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     ui->listeLieuxObs->clear();
     ui->barreProgression->setVisible(false);
