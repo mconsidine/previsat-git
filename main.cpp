@@ -52,6 +52,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setOrganizationName("Astropedia");
+    a.setApplicationName("PreviSat");
 
     const QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator qtTranslator;

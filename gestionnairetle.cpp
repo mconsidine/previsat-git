@@ -40,7 +40,6 @@
  *
  */
 
-#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
@@ -87,8 +86,6 @@ void GestionnaireTLE::load()
     ui->nbJoursAgeMaxTLE->setValue(settings.value("temps/ageMax", 15).toInt());
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
 
-    QCoreApplication::setApplicationName("PreviSat");
-    QCoreApplication::setOrganizationName("Astropedia");
     const QString dirExe = QCoreApplication::applicationDirPath();
     dirDat = dirExe + QDir::separator() + "data";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
