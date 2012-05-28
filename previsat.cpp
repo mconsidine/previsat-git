@@ -41,7 +41,7 @@
  */
 
 #include <QClipboard>
-#include <QCoreApplication>
+//#include <QCoreApplication>
 #include <QtCore/qmath.h>
 #include <QDesktopServices>
 #include <QDesktopWidget>
@@ -233,8 +233,6 @@ void PreviSat::ChargementConfig()
     tim = QDateTime();
 
     // Repertoires
-    QCoreApplication::setApplicationName("PreviSat");
-    QCoreApplication::setOrganizationName("Astropedia");
     dirExe = QCoreApplication::applicationDirPath();
     dirDat = dirExe + QDir::separator() + "data";
     dirCoo = dirDat + QDir::separator() + "coordonnees";

@@ -71,8 +71,6 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     ui->setupUi(this);
 
     dirHttp = idirHttp;
-    QCoreApplication::setApplicationName("PreviSat");
-    QCoreApplication::setOrganizationName("Astropedia");
     const QString dirExe = QCoreApplication::applicationDirPath();
     const QString dirDat = dirExe + QDir::separator() + "data";
     dirCoo = dirDat + QDir::separator() + "coordonnees";
