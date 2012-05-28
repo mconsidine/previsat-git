@@ -59,8 +59,26 @@ Afficher::Afficher(QWidget *parent) :
     ui->setupUi(this);
     QStyle *style = QApplication::style();
     ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+
+#if defined (Q_OS_WIN)
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
-                            QDir::separator() + "Astropedia" + QDir::separator() + "PreviSat").toString();
+                            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() +
+                            QCoreApplication::applicationName()).toString();
+
+#elif defined (Q_OS_LINUX)
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
+
+#elif defined (Q_OS_MAC)
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
+
+#else
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() +
+                            QCoreApplication::applicationName()).toString();
+#endif
+
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 }
 
