@@ -72,7 +72,13 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
 
     dirHttp = idirHttp;
     const QString dirExe = QCoreApplication::applicationDirPath();
+
+#if defined (Q_OS_WIN)
     const QString dirDat = dirExe + QDir::separator() + "data";
+#else
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
+
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);

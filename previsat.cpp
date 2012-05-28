@@ -41,7 +41,6 @@
  */
 
 #include <QClipboard>
-//#include <QCoreApplication>
 #include <QtCore/qmath.h>
 #include <QDesktopServices>
 #include <QDesktopWidget>
@@ -234,12 +233,33 @@ void PreviSat::ChargementConfig()
 
     // Repertoires
     dirExe = QCoreApplication::applicationDirPath();
+#if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
+            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirTle = dirExe + QDir::separator() + "tle";
+
+#elif defined (Q_OS_LINUX)
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
+            QCoreApplication::applicationName();
+    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+
+#elif defined (Q_OS_MAC)
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
+            QCoreApplication::applicationName();
+    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
+            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+#endif
+
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "Astropedia" +
-            QDir::separator() + "PreviSat";
-    dirTle = dirExe + QDir::separator() + "tle";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     DEG2PXHZ = 1. / 0.45;

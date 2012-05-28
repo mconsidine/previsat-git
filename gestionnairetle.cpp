@@ -87,7 +87,12 @@ void GestionnaireTLE::load()
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
 
     const QString dirExe = QCoreApplication::applicationDirPath();
+#if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
+
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
     ficTLE = dirDat + QDir::separator() + "gestionnaireTLE.gst";
 
