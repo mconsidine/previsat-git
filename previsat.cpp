@@ -5687,10 +5687,8 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (ui->barreMenu->hasFocus()) {
-        messagesStatut->setText("");
-        ui->compteRenduMaj->setVisible(false);
-    }
+    messagesStatut->setText("");
+    ui->compteRenduMaj->setVisible(false);
 
     /* Corps de la methode */
     if (arg1 == ui->osculateurs) {
