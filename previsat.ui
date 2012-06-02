@@ -1093,7 +1093,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="mouseTracking">
@@ -5539,7 +5539,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="mouseTracking">
@@ -6190,7 +6190,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-124</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
