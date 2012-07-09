@@ -5184,6 +5184,7 @@ void PreviSat::on_majFicPrevisat_clicked()
     dirDwn = dirTmp;
     amajInt = true;
     atrouve = false;
+    aupdnow = false;
 
     /* Corps de la methode */
     // Recuperation des informations de mise a jour
