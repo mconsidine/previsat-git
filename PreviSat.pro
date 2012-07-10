@@ -9,13 +9,18 @@ QT       += core gui network
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION = 3.0.1.4
+VERSION = 3.0.2.2
 ICON = resources/icone.ico
+
+ZLIB_DIR = zlib
 
 win32 {
     LIBS = zlibwapi.dll
     RC_FILE = icone.rc
+    #INCLUDEPATH += ZLIB_DIR
 }
+
+#unix:INCLUDEPATH += ZLIB_DIR
 
 TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
 
@@ -82,9 +87,7 @@ HEADERS  += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    zlib/zlib.h \
-    zlib/zconf.h \
-    zlib/ioapi.h
+    ZLIB_DIR/zlib.h
 
 FORMS    += previsat.ui \
     afficher.ui \

@@ -45,9 +45,9 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="apropos.cpp" line="59"/>
-        <source>Version 3.0.2.0 (8 juillet 2012)</source>
-        <oldsource>Version 3.0.1.4 (30 mai 2012)</oldsource>
-        <translation>Version 3.0.2.0 (July 8th, 2012)</translation>
+        <source>Version 3.0.2.2 (28 juillet 2012)</source>
+        <oldsource>Version 3.0.2.0 (8 juillet 2012)</oldsource>
+        <translation>Version 3.0.2.2 (July 28th, 2012)</translation>
     </message>
 </context>
 <context>
