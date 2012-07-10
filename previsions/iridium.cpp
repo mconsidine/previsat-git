@@ -155,7 +155,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                     const double jj2 = jj0 + TEMPS1;
                     do {
 
-                        double minmax[2], jjm[3];
+                        double minmax[2];
 
                         // Calcul de l'angle de reflexion
                         _pan = -1;
@@ -164,6 +164,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
                         if (angref <= 0.2) {
 
+						    double jjm[3];
                             jjm[0] = jj0 - NB_JOUR_PAR_MIN;
                             jjm[1] = jj0;
                             jjm[2] = jj0 + NB_JOUR_PAR_MIN;

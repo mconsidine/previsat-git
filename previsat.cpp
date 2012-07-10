@@ -3248,7 +3248,6 @@ void PreviSat::EcritureListeRegistre() const
 bool PreviSat::DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const
 {
     /* Declarations des variables locales */
-    char buffer[8192];
 
     /* Initialisations */
     bool res = false;
@@ -3263,6 +3262,7 @@ bool PreviSat::DecompressionFichierGz(const QString fichierGz, const QString fic
         fichDec.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream flux(&fichDec);
 
+        char buffer[8192];
         while (gzgets(fichGz, buffer, 8192) != NULL)
             flux << buffer;
         gzclose(fichGz);
