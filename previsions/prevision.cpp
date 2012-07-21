@@ -194,18 +194,18 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 // Calcul de la date calendaire
                                 const Date date2 = Date(date.getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
-                                ligne = date2.ToShortDate(Date::COURT).append(" ");
+                                ligne = date2.ToShortDate(COURT).append(" ");
 
                                 // Coordonnees topocentriques du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0,
                                                                           false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,
                                                                           false, false)).append(" ");
 
                                 // Coordonnees equatoriales du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0,
                                                                           false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0,
                                                                           true, false)).append("  ");
 
                                 // Constellation
@@ -234,9 +234,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 ligne = ligne.arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1);
 
                                 // Coordonnees topocentriques du Soleil
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
-                                                                          false, false)).append("  ");
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, false));
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false)).append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false));
 
                                 res.append(ligne);
                                 pass = true;

@@ -252,18 +252,16 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Date calendaire
                                 const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
-                                ligne = date3.ToShortDate(Date::LONG);
+                                ligne = date3.ToShortDate(LONG);
 
                                 // Coordonnees topocentriques du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0,
-                                                                          false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0,
-                                                                          false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,  false, false)).append(" ");
 
                                 // Coordonnees equatoriales du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0,
                                                                           false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0,
+                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0,
                                                                           true, false)).append(" ");
 
                                 // Constellation
@@ -295,10 +293,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
 
                                 // Coordonnees topocentriques du Soleil
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0,
-                                                                          false, false)).append("  ");
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0,
-                                                                          true, false));
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false))
+                                        .append("  ");
+                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false));
 
                                 // Recherche du maximum (transit ou conjonction)
                                 if (j == 1) {

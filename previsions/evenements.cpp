@@ -80,8 +80,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     flux << QString("PreviSat 3.0 / Astropedia (c) 2005-2012") << endl << endl;
     ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
-            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), Maths::HEURE1,
-                                     2, 0, false, false).mid(0, 6)) << endl;
+            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), HEURE1, 2, 0, false, false).
+                mid(0, 6)) << endl;
     flux << QObject::tr("Unité de distance         : %1").arg(conditions.getUnite()) << endl << endl;
 
     /* Corps de la methode */
@@ -144,7 +144,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -190,7 +190,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -222,7 +222,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -268,7 +268,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -308,7 +308,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     // Ecriture de la ligne de resultat
                     ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -350,7 +350,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                         // Ecriture de la ligne de resultat
                         ligne = QObject::tr("%1  %2°  %3° %4  %5° %6  Passage à PSO = %7°");
-                        ligne = ligne.arg(date.ToShortDate(Date::COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                        ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                                 arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                                 arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                                 arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).

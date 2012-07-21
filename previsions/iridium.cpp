@@ -767,15 +767,15 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
 
     // Date calendaire
     const Date date3 = Date(date.getJourJulienUTC() + conditions.getDtu() + EPS_DATES, 0., true);
-    ligne = date3.ToShortDate(Date::LONG);
+    ligne = date3.ToShortDate(LONG);
 
     // Coordonnees topocentriques
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), Maths::DEGRE, 2, 0, false, false)).append(" ");
+    ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
+    ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0, false, false)).append(" ");
 
     // Coordonnees equatoriales
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), Maths::HEURE1, 2, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), Maths::DEGRE, 2, 0, true, false)).append(" ");
+    ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false)).append(" ");
+    ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false)).append(" ");
 
     ligne = ligne.append(sat.getConstellation()).append(" ");
 
@@ -798,8 +798,8 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
 
     // Coordonnees topocentriques du Soleil
-    ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, false));
+    ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
+    ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false));
     ligne = ligne.append(QString::number(i));
 
     // Recherche des coordonnees geographiques ou se produit

@@ -262,10 +262,10 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     /* Initialisations */
     ligne1 = "";
-    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), Maths::DEGRE, 3, 0, false, false);
+    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), DEGRE, 3, 0, false, false);
     const QString ew = (observateur.getLongitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
-    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), Maths::DEGRE, 2, 0, false, false);
+    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), DEGRE, 2, 0, false, false);
     const QString ns = (observateur.getLatitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
     const double alt = (conditions._unite == QObject::tr("km")) ? observateur.getAltitude() :
@@ -282,7 +282,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     if (tabtle.size() == 1) {
         ligne1 = QObject::tr("Age du TLE                : %1 jours (au %2)");
         ligne1 = ligne1.arg(fabs(conditions._jj1 - tabtle.at(0).getEpoque().getJourJulienUTC()), 4, 'f', 2).
-                arg(date.ToShortDate(Date::COURT));
+                arg(date.ToShortDate(COURT));
 
     } else {
         double tlemin = -DATE_INFINIE;
@@ -307,7 +307,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
         }
 
         ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
-        ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).arg(date.ToShortDate(Date::COURT)).
+        ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).arg(date.ToShortDate(COURT)).
                 arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
     }
 
@@ -322,8 +322,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     ligne2 = QObject::tr("Fuseau horaire            : %1 %2%3");
     ligne2 = ligne2.arg(QObject::tr("UTC")).arg((conditions._dtu >= 0.) ? "+" : "-").
-            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions._dtu),
-                                     Maths::HEURE1, 2, 0, false, false).mid(0, 6));
+            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions._dtu), HEURE1, 2, 0, false, false).mid(0, 6));
     flux << ligne2 << endl;
 
     if (itransit) {
