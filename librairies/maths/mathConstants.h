@@ -43,6 +43,15 @@
 #ifndef MATHCONSTANTS_H
 #define MATHCONSTANTS_H
 
+enum AngleFormatType {
+    DEGRE,
+    HEURE1,
+    HEURE2,
+    RADIAN,
+    ARCSEC,
+    NO_TYPE
+};
+
 static const double EPSDBL = 1.e-12;
 static const double EPSDBL100 = 1.e-10;
 
