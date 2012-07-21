@@ -45,9 +45,9 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="apropos.cpp" line="59"/>
-        <source>Version 3.0.2.2 (28 juillet 2012)</source>
-        <oldsource>Version 3.0.2.0 (8 juillet 2012)</oldsource>
-        <translation>Version 3.0.2.2 (July 28th, 2012)</translation>
+        <source>Version 3.0.2.3 (28 juillet 2012)</source>
+        <oldsource>Version 3.0.2.2 (28 juillet 2012)</oldsource>
+        <translation>Version 3.0.2.3 (July 28th, 2012)</translation>
     </message>
 </context>
 <context>
@@ -2692,9 +2692,9 @@ Do you want to remove this TLE from the file to update?</translation>
     <message>
         <location filename="previsat.cpp" line="798"/>
         <location filename="previsions/evenements.cpp" line="267"/>
-        <location filename="previsions/iridium.cpp" line="793"/>
+        <location filename="previsions/iridium.cpp" line="794"/>
         <location filename="previsions/prevision.cpp" line="230"/>
-        <location filename="previsions/transitiss.cpp" line="291"/>
+        <location filename="previsions/transitiss.cpp" line="289"/>
         <source>mi</source>
         <translation>mi</translation>
     </message>
@@ -2815,12 +2815,12 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="333"/>
+        <location filename="previsions/conditions.cpp" line="332"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="337"/>
+        <location filename="previsions/conditions.cpp" line="336"/>
         <location filename="previsions/evenements.cpp" line="85"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
@@ -2842,8 +2842,8 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="273"/>
         <location filename="previsions/evenements.cpp" line="313"/>
         <location filename="previsions/evenements.cpp" line="355"/>
-        <location filename="previsions/iridium.cpp" line="828"/>
-        <location filename="previsions/transitiss.cpp" line="332"/>
+        <location filename="previsions/iridium.cpp" line="829"/>
+        <location filename="previsions/transitiss.cpp" line="329"/>
         <source>W</source>
         <translation>W</translation>
     </message>
@@ -2854,8 +2854,8 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="273"/>
         <location filename="previsions/evenements.cpp" line="313"/>
         <location filename="previsions/evenements.cpp" line="355"/>
-        <location filename="previsions/iridium.cpp" line="828"/>
-        <location filename="previsions/transitiss.cpp" line="332"/>
+        <location filename="previsions/iridium.cpp" line="829"/>
+        <location filename="previsions/transitiss.cpp" line="329"/>
         <source>E</source>
         <translation>E</translation>
     </message>
@@ -2866,8 +2866,8 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="275"/>
         <location filename="previsions/evenements.cpp" line="315"/>
         <location filename="previsions/evenements.cpp" line="357"/>
-        <location filename="previsions/iridium.cpp" line="829"/>
-        <location filename="previsions/transitiss.cpp" line="333"/>
+        <location filename="previsions/iridium.cpp" line="830"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>N</source>
         <translation>N</translation>
     </message>
@@ -2878,9 +2878,9 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="275"/>
         <location filename="previsions/evenements.cpp" line="315"/>
         <location filename="previsions/evenements.cpp" line="357"/>
-        <location filename="previsions/iridium.cpp" line="829"/>
-        <location filename="previsions/transitiss.cpp" line="281"/>
-        <location filename="previsions/transitiss.cpp" line="333"/>
+        <location filename="previsions/iridium.cpp" line="830"/>
+        <location filename="previsions/transitiss.cpp" line="279"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>S</source>
         <translation>S</translation>
     </message>
@@ -2943,9 +2943,9 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="404"/>
-        <location filename="previsions/iridium.cpp" line="251"/>
-        <location filename="previsions/prevision.cpp" line="309"/>
-        <location filename="previsions/transitiss.cpp" line="387"/>
+        <location filename="previsions/iridium.cpp" line="252"/>
+        <location filename="previsions/prevision.cpp" line="308"/>
+        <location filename="previsions/transitiss.cpp" line="384"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
@@ -2976,19 +2976,19 @@ Aucun satellite Iridium n&apos;a été trouvé dans le fichier TLE</source>
 There is no Iridium satellites in the TLE file</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="820"/>
-        <location filename="previsions/transitiss.cpp" line="330"/>
+        <location filename="previsions/iridium.cpp" line="821"/>
+        <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="820"/>
-        <location filename="previsions/transitiss.cpp" line="330"/>
+        <location filename="previsions/iridium.cpp" line="821"/>
+        <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="238"/>
+        <location filename="previsions/iridium.cpp" line="239"/>
         <source>Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max</source>
         <translation>Ir     Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat     Range    Max Magn</translation>
     </message>
@@ -3012,37 +3012,37 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
 The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="278"/>
+        <location filename="previsions/transitiss.cpp" line="276"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="278"/>
+        <location filename="previsions/transitiss.cpp" line="276"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="281"/>
+        <location filename="previsions/transitiss.cpp" line="279"/>
         <source>L</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="285"/>
+        <location filename="previsions/transitiss.cpp" line="283"/>
         <source>Omb</source>
         <translation>Sha</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="286"/>
+        <location filename="previsions/transitiss.cpp" line="284"/>
         <source>Pen</source>
         <translation>Pen</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="286"/>
+        <location filename="previsions/transitiss.cpp" line="284"/>
         <source>Lum</source>
         <translation>Ill</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="374"/>
+        <location filename="previsions/transitiss.cpp" line="371"/>
         <source>   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance</source>
         <translation>   Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat     Range</translation>
     </message>

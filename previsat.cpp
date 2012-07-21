@@ -875,10 +875,10 @@ void PreviSat::AffichageDonnees()
 
             // Longitude/latitude/altitude
             const QString ews = (satellites.at(0).getLongitude() > 0.) ? tr("Ouest") : tr("Est");
-            ui->longitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLongitude()), Maths::DEGRE, 3, 0, false,
+            ui->longitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLongitude()), DEGRE, 3, 0, false,
                                                            true).append(" ").append(ews));
             const QString nss = (satellites.at(0).getLatitude() > 0.) ? tr("Nord") : tr("Sud");
-            ui->latitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLatitude()), Maths::DEGRE, 2, 0, false,
+            ui->latitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLatitude()), DEGRE, 2, 0, false,
                                                           true).append(" ").append(nss));
             chaine = "%1 " + unite1;
             if (ui->unitesKm->isChecked()) {
@@ -890,8 +890,8 @@ void PreviSat::AffichageDonnees()
             }
 
             // Hauteur/azimut/distance
-            ui->hauteurSat->setText(Maths::ToSexagesimal(satellites.at(0).getHauteur(), Maths::DEGRE, 2, 0, true, true));
-            ui->azimutSat->setText(Maths::ToSexagesimal(satellites.at(0).getAzimut(), Maths::DEGRE, 3, 0, false, true));
+            ui->hauteurSat->setText(Maths::ToSexagesimal(satellites.at(0).getHauteur(), DEGRE, 2, 0, true, true));
+            ui->azimutSat->setText(Maths::ToSexagesimal(satellites.at(0).getAzimut(), DEGRE, 3, 0, false, true));
             chaine = "%1 " + unite1;
             if (ui->unitesKm->isChecked()) {
                 chaine = chaine.arg(satellites.at(0).getDistance(), 0, 'f', 1);
@@ -902,9 +902,9 @@ void PreviSat::AffichageDonnees()
             }
 
             // Ascension droite/declinaison/constellation
-            ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellites.at(0).getAscensionDroite(), Maths::HEURE1, 2, 0,
+            ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellites.at(0).getAscensionDroite(), HEURE1, 2, 0,
                                                                  false, true).trimmed());
-            ui->declinaisonSat->setText(Maths::ToSexagesimal(satellites.at(0).getDeclinaison(), Maths::DEGRE, 2, 0, true,
+            ui->declinaisonSat->setText(Maths::ToSexagesimal(satellites.at(0).getDeclinaison(), DEGRE, 2, 0, true,
                                                              true).trimmed());
             ui->constellationSat->setText(satellites.at(0).getConstellation());
 
@@ -1000,16 +1000,16 @@ void PreviSat::AffichageDonnees()
          * Donnees relatives au Soleil
          */
         // Hauteur/azimut/distance
-        ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.getHauteur(), Maths::DEGRE, 2, 0, true, true));
-        ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.getAzimut(), Maths::DEGRE, 3, 0, false, true));
+        ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, true));
+        ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, true));
         chaine = "%1 " + tr("UA");
         chaine = chaine.arg(soleil.getDistanceUA(), 0, 'f', 3);
         ui->distanceSoleil->setText(chaine);
 
         // Ascension droite/declinaison/constellation
-        ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.getAscensionDroite(), Maths::HEURE1, 2, 0, false,
+        ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.getAscensionDroite(), HEURE1, 2, 0, false,
                                                                 true).trimmed());
-        ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.getDeclinaison(), Maths::DEGRE, 2, 0, true, true).trimmed());
+        ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.getDeclinaison(), DEGRE, 2, 0, true, true).trimmed());
         ui->constellationSoleil->setText(soleil.getConstellation());
 
 
@@ -1017,8 +1017,8 @@ void PreviSat::AffichageDonnees()
          * Donnees relatives a la Lune
          */
         // Hauteur/azimut/distance
-        ui->hauteurLune->setText(Maths::ToSexagesimal(lune.getHauteur(), Maths::DEGRE, 2, 0, true, true));
-        ui->azimutLune->setText(Maths::ToSexagesimal(lune.getAzimut(), Maths::DEGRE, 3, 0, false, true));
+        ui->hauteurLune->setText(Maths::ToSexagesimal(lune.getHauteur(), DEGRE, 2, 0, true, true));
+        ui->azimutLune->setText(Maths::ToSexagesimal(lune.getAzimut(), DEGRE, 3, 0, false, true));
         chaine = "%1 " + unite1;
         if (ui->unitesKm->isChecked()) {
             chaine = chaine.arg(lune.getDistance(), 0, 'f', 0);
@@ -1029,9 +1029,9 @@ void PreviSat::AffichageDonnees()
         }
 
         // Ascension droite/declinaison/constellation
-        ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.getAscensionDroite(), Maths::HEURE1, 2, 0, false,
+        ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.getAscensionDroite(), HEURE1, 2, 0, false,
                                                               true).trimmed());
-        ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.getDeclinaison(), Maths::DEGRE, 2, 0, true, true).trimmed());
+        ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.getDeclinaison(), DEGRE, 2, 0, true, true).trimmed());
         ui->constellationLune->setText(lune.getConstellation());
 
         // Illumination/Phase
@@ -1120,7 +1120,7 @@ void PreviSat::AffichageDonnees()
             chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
             ui->perigee->setText(chaine);
 
-            ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, Maths::HEURE1,
+            ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1,
                                                       1, 0, false, true));
 
             if (info) {
@@ -1140,7 +1140,7 @@ void PreviSat::AffichageDonnees()
                 ui->cospar->setText(l1.mid(9, 8).trimmed());
 
                 // Epoque du TLE
-                ui->epoque->setText(tles.at(0).getEpoque().ToShortDate(Date::COURT));
+                ui->epoque->setText(tles.at(0).getEpoque().ToShortDate(COURT));
 
                 // Nombre d'orbites a l'epoque
                 ui->nbOrbitesEpoque->setText(l2.mid(63, 5).trimmed());
@@ -2114,8 +2114,8 @@ void PreviSat::AffichageLieuObs() const
             const QString alt = "%1 %2";
 
             // Affichage des coordonnees
-            ui->longitudeObs->setText(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, Maths::DEGRE, 3, 0, false, true).append(" ").append(ew));
-            ui->latitudeObs->setText(Maths::ToSexagesimal(fabs(la) * DEG2RAD, Maths::DEGRE, 2, 0,false, true).append(" ").append(ns));
+            ui->longitudeObs->setText(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, DEGRE, 3, 0, false, true).append(" ").append(ew));
+            ui->latitudeObs->setText(Maths::ToSexagesimal(fabs(la) * DEG2RAD, DEGRE, 2, 0,false, true).append(" ").append(ns));
             ui->altitudeObs->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : atd * PIED_PAR_METRE).
                                      arg((ui->unitesKm->isChecked()) ? tr("m") : tr("ft")));
         }
@@ -3038,8 +3038,8 @@ void PreviSat::AfficherLieuSelectionne(const int index)
 
         // Affichage des coordonnees du lieu d'observation
         ui->nLieu->setText(tr("Lieu :") + " " + lieu.at(0).trimmed());
-        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), Maths::NO_TYPE, 3, 0, false, true) + " " + ew);
-        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), Maths::NO_TYPE, 2, 0, false, true) + " " + ns);
+        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), NO_TYPE, 3, 0, false, true) + " " + ew);
+        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), NO_TYPE, 2, 0, false, true) + " " + ns);
         const QString msg = "%1 ";
         ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
                                                              msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
@@ -3886,10 +3886,10 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                 if (ad < 0.)
                     ad += DEUX_PI;
 
-                messagesStatut2->setText(tr("Ascension droite :") + " " + Maths::ToSexagesimal(ad, Maths::HEURE1, 2, 0,
-                                                                                               false, false).mid(0, 7));
-                messagesStatut3->setText(tr("Déclinaison :") + " " + Maths::ToSexagesimal(dec, Maths::DEGRE, 2, 0,
-                                                                                          true, false).mid(0, 7));
+                messagesStatut2->setText(tr("Ascension droite :") + " " +
+                                         Maths::ToSexagesimal(ad, HEURE1, 2, 0, false, false).mid(0, 7));
+                messagesStatut3->setText(tr("Déclinaison :") + " " +
+                                         Maths::ToSexagesimal(dec, DEGRE, 2, 0, true, false).mid(0, 7));
                 messagesStatut2->setVisible(true);
                 messagesStatut3->setVisible(true);
 

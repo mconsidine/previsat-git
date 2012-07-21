@@ -274,7 +274,7 @@ QString Date::ToShortDate(const DateFormat format) const
     QString res;
 
     /* Initialisations */
-    const int fmt = (format == Date::COURT) ? 0 : 1;
+    const int fmt = (format == COURT) ? 0 : 1;
     const double tmp = floor(_jourJulien);
     res = "%1/%2/%3 %4:%5:%6";
 

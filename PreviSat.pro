@@ -9,7 +9,7 @@ QT       += core gui network
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION = 3.0.2.2
+VERSION = 3.0.2.3
 ICON = resources/icone.ico
 
 ZLIB_DIR = zlib
@@ -87,7 +87,8 @@ HEADERS  += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    ZLIB_DIR/zlib.h
+    ZLIB_DIR/zlib.h \
+    librairies/corps/systemesolaire/planeteConstants.h
 
 FORMS    += previsat.ui \
     afficher.ui \
