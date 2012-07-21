@@ -58,9 +58,6 @@ public:
          const double offsetUTC);
     ~Date();
 
-    /* Enumerations */
-    enum DateFormat { COURT, LONG };
-
     /* Constantes publiques */
 
     /* Variables publiques */
