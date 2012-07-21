@@ -49,9 +49,6 @@ public:
 
     /* Constructeurs */
 
-    /* Enumerations */
-    enum AngleFormatType { DEGRE, HEURE1, HEURE2, RADIAN, ARCSEC, NO_TYPE };
-
     /* Constantes publiques */
 
     /* Variables publiques */
