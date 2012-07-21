@@ -43,6 +43,11 @@
 #ifndef DATECONSTANTS_H
 #define DATECONSTANTS_H
 
+enum DateFormat {
+    COURT,
+    LONG
+};
+
 static const int AN2000 = 2000;
 
 static const double EPS_DATES = 1.e-7;
