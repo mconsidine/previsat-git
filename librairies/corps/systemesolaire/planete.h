@@ -42,14 +42,7 @@
 
 #include "librairies/corps/corps.h"
 #include "librairies/corps/systemesolaire/soleil.h"
-
-static const int MERCURE = 0;
-static const int VENUS   = 1;
-static const int MARS    = 2;
-static const int JUPITER = 3;
-static const int SATURNE = 4;
-static const int URANUS  = 5;
-static const int NEPTUNE = 6;
+#include "planeteConstants.h"
 
 class Planete : public Corps
 {
