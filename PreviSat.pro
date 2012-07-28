@@ -17,10 +17,7 @@ ZLIB_DIR = zlib
 win32 {
     LIBS = zlibwapi.dll
     RC_FILE = icone.rc
-    #INCLUDEPATH += ZLIB_DIR
 }
-
-#unix:INCLUDEPATH += ZLIB_DIR
 
 TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
 
