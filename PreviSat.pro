@@ -67,6 +67,7 @@ HEADERS  += previsat.h \
     librairies/corps/systemesolaire/lune.h \
     librairies/corps/systemesolaire/LuneConstants.h \
     librairies/corps/systemesolaire/planete.h \
+    librairies/corps/systemesolaire/planeteConstants.h \
     librairies/corps/systemesolaire/soleil.h \
     librairies/corps/systemesolaire/SoleilConstants.h \
     librairies/corps/systemesolaire/TerreConstants.h \
@@ -84,8 +85,7 @@ HEADERS  += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    ZLIB_DIR/zlib.h \
-    librairies/corps/systemesolaire/planeteConstants.h
+    ZLIB_DIR/zlib.h
 
 FORMS    += previsat.ui \
     afficher.ui \
