@@ -7226,6 +7226,7 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
 
     /* Retour */
     return;
