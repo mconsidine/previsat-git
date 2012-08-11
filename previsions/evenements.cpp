@@ -100,6 +100,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
         bool apassOmbre = false;
         bool apassPso = false;
         bool atransJn = false;
+        res.clear();
         int i = 0, j = 0, k = 0, l = 0, m = 0;
         Satellite sat = it1.next();
 
