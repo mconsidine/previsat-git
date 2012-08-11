@@ -4751,6 +4751,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->valManuel->setVisible(true);
         ui->dateHeure3->setDateTime(QDateTime::currentDateTime());
         ui->dateHeure3->setVisible(true);
+        ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
         ui->dateHeure4->setVisible(true);
         ui->dateHeure1->setVisible(false);
         ui->dateHeure2->setVisible(false);
