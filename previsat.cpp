@@ -47,6 +47,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QGraphicsTextItem>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -74,7 +75,7 @@
 #include "gestionnairetle.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
-#include "zlib/zlib.h"
+#include "zlib.h"
 #include "previsat.h"
 #include "ui_previsat.h"
 
@@ -299,11 +300,6 @@ void PreviSat::ChargementConfig()
 
     // Chargement des fichiers images de cartes du monde
     InitFicMap(false);
-
-    // Verification de l'absence du fichier de mise a jour
-    //    QFile fi(dirExe + QDir::separator() + "maj.exe");
-    //    if (fi.exists())
-    //        fi.remove();
 
     // Recuperation des donnees en memoire
     // TLE par defaut (lors de la premiere utilisation de PreviSat, ces chaines de caracteres sont vides)
@@ -5322,6 +5318,27 @@ void PreviSat::on_validerCategorie_clicked()
     return;
 }
 
+void PreviSat::on_actionRenommerCategorie_activated()
+{
+    /* Declarations des variables locales */
+    bool ok;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QString nvNomCateg = QInputDialog::getText(0, tr("Catégorie"), tr("Nouveau nom de la catégorie :"),
+                                                     QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), &ok);
+
+    if (ok && !nvNomCateg.trimmed().isEmpty()) {
+        QFile fi(dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text().toLower());
+        fi.rename(dirCoo + QDir::separator() + nvNomCateg.trimmed().toLower());
+        InitFicObs(false);
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
 {
     /* Declarations des variables locales */
@@ -5366,6 +5383,7 @@ void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &pos)
 
     /* Corps de la methode */
     ui->actionSupprimerCategorie->setVisible(ui->fichiersObs->currentRow() > 0);
+    ui->actionRenommerCategorie->setVisible(ui->fichiersObs->currentRow() > 0);
     ui->menuContextuelCategorie->exec(QCursor::pos());
 
     /* Retour */
@@ -5373,11 +5391,6 @@ void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &pos)
 }
 
 void PreviSat::on_lieuxObs_currentRowChanged(int currentRow)
-{
-    AfficherLieuSelectionne(currentRow);
-}
-
-void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
 {
     AfficherLieuSelectionne(currentRow);
 }
@@ -5390,9 +5403,13 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
     /* Corps de la methode */
     if (ui->lieuxObs->indexAt(pos).row() < 0) {
+        ui->actionRenommerLieu->setVisible(false);
+        ui->actionModifier_coordonnees->setVisible(false);
         ui->actionSupprimerLieu->setVisible(false);
         ui->actionAjouter_Mes_Preferes->setVisible(false);
     } else {
+        ui->actionRenommerLieu->setVisible(true);
+        ui->actionModifier_coordonnees->setVisible(true);
         ui->actionSupprimerLieu->setVisible(true);
         ui->actionAjouter_Mes_Preferes->setVisible(ui->fichiersObs->currentRow() > 0);
     }
@@ -5402,6 +5419,11 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
+{
+    AfficherLieuSelectionne(currentRow);
 }
 
 void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
@@ -5417,7 +5439,10 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
     ui->nvLieu->setText("");
     ui->nvLongitude->setText("000°00'00\"");
     ui->nvLatitude->setText("000°00'00\"");
+    ui->nvAltitude->setText("0000");
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    ui->lbl_ajouterDans->setVisible(true);
+    ui->ajdfic->setVisible(true);
     ui->ajdfic->setCurrentIndex(0);
     messagesStatut->setText("");
     ui->nvLieu->setFocus();
@@ -5479,6 +5504,72 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
         const QString msg = tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Preferes\"");
         messagesStatut->setText(msg.arg(lieu.at(0)));
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionModifier_coordonnees_activated()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ui->nouvelleCategorie->setVisible(false);
+    ui->nouveauLieu->setVisible(true);
+    ui->coordonnees->setVisible(false);
+
+    const QString obs = mapObs.at(ui->lieuxObs->currentRow());
+    ui->nvLieu->setText(obs.mid(0, obs.indexOf("#")).trimmed());
+
+    const QStringList coord = obs.mid(obs.indexOf("#") + 1).split("&");
+    const double lo = coord.at(0).toDouble();
+    const double la = coord.at(1).toDouble();
+    const int atd = coord.at(2).toInt();
+
+    ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, DEGRE, 3, 0, false, true));
+    ui->nvEw->setCurrentIndex((lo <= 0.) ? 0 : 1);
+    ui->nvLatitude->setText(Maths::ToSexagesimal(fabs(la) * DEG2RAD, DEGRE, 2, 0,false, true));
+    ui->nvNs->setCurrentIndex((la >= 0.) ? 0 : 1);
+    const QString alt = "%1";
+    ui->nvAltitude->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE), 4, 10, QChar('0')));
+    ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    ui->lbl_ajouterDans->setVisible(false);
+    ui->ajdfic->setVisible(false);
+
+    // Suppression du lieu du fichier
+    const QStringList lieu = mapObs.at(ui->lieuxObs->currentRow()).split("#");
+    const QString msg2 = "%1%2 %3%4 %5 %6";
+    const QString ligne =  msg2.arg((lo >= 0.) ? "+" : "-").arg(fabs(lo), 13, 'f', 9, QChar('0'))
+            .arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0'))
+            .arg(lieu.at(0)).trimmed();
+
+    const QString fic = (ui->fichiersObs->currentRow() == 0) ?
+                dirCoo + QDir::separator() + "aapreferes" :
+                dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text();
+
+    QFile sr(fic);
+    sr.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QFile sw(dirTmp + QDir::separator() + "obs.tmp");
+    sw.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    QTextStream flux(&sr);
+    QTextStream flux2(&sw);
+    while (!flux.atEnd()) {
+        const QString ligne2 = flux.readLine();
+        if (ligne != ligne2)
+            flux2 << ligne2 << endl;
+    }
+    sw.close();
+    sr.close();
+
+    sr.remove();
+    sw.rename(fic);
+
+    messagesStatut->setText("");
+    ui->nvLieu->setFocus();
 
     /* Retour */
     return;
@@ -5556,6 +5647,50 @@ void PreviSat::on_validerObs_clicked()
 void PreviSat::on_annulerObs_clicked()
 {
     ui->nouveauLieu->setVisible(false);
+}
+
+void PreviSat::on_actionRenommerLieu_activated()
+{
+    /* Declarations des variables locales */
+    bool ok;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QString nvNomLieu = QInputDialog::getText(0, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"),
+                                                    QLineEdit::Normal, ui->lieuxObs->currentItem()->text(), &ok);
+
+    if (ok && !nvNomLieu.trimmed().isEmpty()) {
+
+        const QString fic = (ui->fichiersObs->currentRow() == 0) ?
+                    dirCoo + QDir::separator() + "aapreferes" :
+                    dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text();
+
+        QFile sr(fic);
+        sr.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        QFile sw(dirTmp + QDir::separator() + "obs.tmp");
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+
+        QTextStream flux(&sr);
+        QTextStream flux2(&sw);
+        while (!flux.atEnd()) {
+            const QString ligne = flux.readLine();
+            if (ligne.mid(34).toLower().trimmed() == ui->lieuxObs->currentItem()->text().toLower().trimmed())
+                flux2 << ligne.mid(0, 34) << nvNomLieu.trimmed() << endl;
+            else
+                flux2 << ligne << endl;
+        }
+        sw.close();
+        sr.close();
+
+        sr.remove();
+        sw.rename(fic);
+        on_fichiersObs_currentRowChanged(ui->fichiersObs->currentRow());
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionSupprimerLieu_activated()
