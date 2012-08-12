@@ -2764,12 +2764,12 @@
              <rect>
               <x>50</x>
               <y>6</y>
-              <width>291</width>
+              <width>301</width>
               <height>16</height>
              </rect>
             </property>
             <property name="text">
-             <string>Mercredi 31 décembre 2022  00:00:00             UTC + 01:00</string>
+             <string>Mercredi 31 décembre 2022  00:00:00                UTC + 01:00</string>
             </property>
            </widget>
            <widget class="QLabel" name="lbl_dateHeure2">
@@ -3518,7 +3518,7 @@
              <rect>
               <x>45</x>
               <y>2</y>
-              <width>221</width>
+              <width>231</width>
               <height>22</height>
              </rect>
             </property>
@@ -3542,7 +3542,7 @@
            <widget class="QLabel" name="utcManuel2">
             <property name="geometry">
              <rect>
-              <x>272</x>
+              <x>281</x>
               <y>6</y>
               <width>71</width>
               <height>16</height>
@@ -5891,6 +5891,9 @@
                 <pointsize>8</pointsize>
                </font>
               </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
@@ -6041,7 +6044,7 @@
               <widget class="QLabel" name="nAltitude">
                <property name="geometry">
                 <rect>
-                 <x>60</x>
+                 <x>66</x>
                  <y>51</y>
                  <width>41</width>
                  <height>16</height>
@@ -8835,6 +8838,7 @@
      <string notr="true">MenuContextuelCategorie</string>
     </property>
     <addaction name="actionCreer_une_categorie"/>
+    <addaction name="actionRenommerCategorie"/>
     <addaction name="actionSupprimerCategorie"/>
     <addaction name="actionTelechargerCategorie"/>
    </widget>
@@ -8844,6 +8848,8 @@
     </property>
     <addaction name="actionCreer_un_nouveau_lieu"/>
     <addaction name="actionAjouter_Mes_Preferes"/>
+    <addaction name="actionRenommerLieu"/>
+    <addaction name="actionModifier_coordonnees"/>
     <addaction name="actionSupprimerLieu"/>
    </widget>
    <widget class="QMenu" name="menuContextuelCompteRenduMaj">
@@ -8985,6 +8991,21 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionRenommerCategorie">
+   <property name="text">
+    <string>Renommer</string>
+   </property>
+  </action>
+  <action name="actionRenommerLieu">
+   <property name="text">
+    <string>Renommer</string>
+   </property>
+  </action>
+  <action name="actionModifier_coordonnees">
+   <property name="text">
+    <string>Modifier coordonnées</string>
    </property>
   </action>
  </widget>
