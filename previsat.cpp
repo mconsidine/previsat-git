@@ -1286,7 +1286,7 @@ void PreviSat::AffichageCourbes() const
         double diff = (ll - ls) * RAD2DEG;
         if (diff < 0.)
             diff += T360;
-        indLune = (int) (diff / 12.857) + 2;
+        indLune = (int) (diff / 12.19075) + 1;
         if (indLune > 29)
             indLune = 1;
     } else {
@@ -5807,6 +5807,7 @@ void PreviSat::on_supprLieu_clicked()
         EnchainementCalculs();
         AffichageDonnees();
         AffichageCourbes();
+        ui->coordonnees->setVisible(false);
     }
 
     /* Retour */
