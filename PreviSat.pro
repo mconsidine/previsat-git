@@ -4,22 +4,27 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+#-------------------------------------------------
+VERSION = 3.0.3.4
+ZLIB_DIR = zlib
+TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
+#-------------------------------------------------
+
+QT += core gui network
 
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION = 3.0.2.3
 ICON = resources/icone.ico
-
-ZLIB_DIR = zlib
 
 win32 {
     LIBS = zlibwapi.dll
     RC_FILE = icone.rc
 }
 
-TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
+VERSTR = '\\"$${VERSION}\\"'
+DEFINES += APPVERSION=\"$${VERSTR}\"
+INCLUDEPATH += $$ZLIB_DIR
 
 SOURCES += main.cpp\
     previsat.cpp \
@@ -51,7 +56,7 @@ SOURCES += main.cpp\
     previsions/prevision.cpp \
     previsions/transitiss.cpp
 
-HEADERS  += previsat.h \
+HEADERS += previsat.h \
     afficher.h \
     apropos.h \
     gestionnairetle.h \
@@ -87,7 +92,7 @@ HEADERS  += previsat.h \
     previsions/transitiss.h \
     ZLIB_DIR/zlib.h
 
-FORMS    += previsat.ui \
+FORMS += previsat.ui \
     afficher.ui \
     apropos.ui \
     gestionnairetle.ui \

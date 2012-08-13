@@ -40,6 +40,7 @@
  *
  */
 
+#include <QDate>
 #include "apropos.h"
 #include "ui_apropos.h"
 
@@ -56,7 +57,10 @@ Apropos::Apropos(QWidget *parent) :
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
-    ui->numeroVersion->setText(tr("Version 3.0.2.3 (29 juillet 2012)"));
+
+    const QString numVersion = "3.0.3.4";
+    const QString msg = tr("Version %1  (%2)");
+    ui->numeroVersion->setText(msg.arg(APPVERSION).arg(QDate::currentDate().toString(Qt::SystemLocaleShortDate)));
 }
 
 Apropos::~Apropos()
