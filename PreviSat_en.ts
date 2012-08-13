@@ -44,7 +44,7 @@ PreviSat is free !</translation>
         <translation>About PreviSat 3.0</translation>
     </message>
     <message>
-        <location filename="apropos.cpp" line="62"/>
+        <location filename="apropos.cpp" line="60"/>
         <source>Version %1  (%2)</source>
         <translation>Version %1  (%2)</translation>
     </message>
