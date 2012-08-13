@@ -57,8 +57,6 @@ Apropos::Apropos(QWidget *parent) :
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
-
-    const QString numVersion = "3.0.3.4";
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).arg(QDate::currentDate().toString(Qt::SystemLocaleShortDate)));
 }
