@@ -2504,15 +2504,19 @@ void PreviSat::TelechargementSuivant()
     /* Corps de la methode */
     if (downQueue.isEmpty()) {
         emit TelechargementFini();
-        ui->frameBarreProgression->setVisible(false);
+        if (ui->miseAJourTLE->isVisible())
+            ui->frameBarreProgression->setVisible(false);
     } else {
 
         const QUrl url = downQueue.dequeue();
 
         const QString fic = QFileInfo(url.path()).fileName();
         ui->fichierTelechargement->setText(fic);
-        ui->barreProgression->setValue(0);
-        ui->frameBarreProgression->setVisible(true);
+        if (ui->miseAJourTLE->isVisible()) {
+            ui->barreProgression->setValue(0);
+            ui->frameBarreProgression->setVisible(true);
+            ui->compteRenduMaj->setVisible(true);
+        }
         ficDwn.setFileName(dirDwn + QDir::separator() + fic);
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
