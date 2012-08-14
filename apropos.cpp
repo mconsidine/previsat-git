@@ -58,7 +58,9 @@ Apropos::Apropos(QWidget *parent) :
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
     const QString msg = tr("Version %1  (%2)");
-    ui->numeroVersion->setText(msg.arg(APPVERSION).arg(QDate::currentDate().toString(Qt::SystemLocaleShortDate)));
+    ui->numeroVersion->setText(msg.arg(APPVERSION).
+                               arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM dd yyyy")).
+                                   toString(Qt::SystemLocaleShortDate)));
 }
 
 Apropos::~Apropos()
