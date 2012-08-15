@@ -123,11 +123,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     // Il y a passage a un noeud : calcul par interpolation de la date
                     apassNoeuds = true;
-
                     const double ytab[] = {list1.at(1), list2.at(1), list3.at(1)};
-
                     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, 0., EPS_DATES);
-
                     const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
@@ -173,7 +170,6 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                             list3.at(4) - list3.at(5) - list3.at(3)};
 
                     double datp = Maths::CalculValeurXInterpolation3(xtab, ytab1, 0., EPS_DATES);
-
                     Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
@@ -206,7 +202,6 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                             list3.at(4) + list3.at(5) - list3.at(3)};
 
                     datp = Maths::CalculValeurXInterpolation3(xtab, ytab2, 0., EPS_DATES);
-
                     date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
@@ -246,7 +241,6 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = {list1.at(2), list2.at(2), list3.at(2)};
 
                     Maths::CalculExtremumInterpolation3(xtab, ytab, minmax);
-
                     const Date date = Date(minmax[0] + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
@@ -289,9 +283,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     // Il y a une transition jour/nuit : calcul par interpolation de la date
                     atransJn = true;
                     const double ytab[] = {list1.at(6), list2.at(6), list3.at(6)};
-
                     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, 0., EPS_DATES);
-
                     const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                     // Calcul de la position du satellite pour la date calculee
@@ -334,9 +326,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         // Il y a une transition jour/nuit : calcul par interpolation de la date
                         apassPso = true;
                         const double ytab[] = {list1.at(7), list2.at(7), list3.at(7)};
-
                         const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, noeud, EPS_DATES);
-
                         const Date date = Date(datp + conditions.getDtu() + EPS_DATES, conditions.getDtu());
 
                         // Calcul de la position du satellite pour la date calculee

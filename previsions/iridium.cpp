@@ -262,6 +262,9 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     return;
 }
 
+/*
+ * Determination du flash
+ */
 void Iridium::DeterminationFlash(const double minmax[], const QString &sts, const Conditions &conditions, double &temp,
                                  QStringList &res, Observateur &observateur, Satellite &sat, Soleil &soleil)
 {
@@ -353,6 +356,9 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
     return;
 }
 
+/*
+ * Calcul des ephemerides du Soleil et de la position de l'observateur
+ */
 void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
                                            QList<QVector<double> > &tabEphem)
 {
@@ -406,6 +412,9 @@ void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observa
     return;
 }
 
+/*
+ * Calcul de l'angle de reflexion du panneau
+ */
 double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 {
     /* Declarations des variables locales */
@@ -477,6 +486,9 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     return (ang);
 }
 
+/*
+ * Calcul de l'angle minimum du panneau
+ */
 void Iridium::CalculAngleMin(const double jjm[], Satellite &satellite, Observateur &observateur, Soleil &soleil,
                              double minmax[])
 {
@@ -510,6 +522,9 @@ void Iridium::CalculAngleMin(const double jjm[], Satellite &satellite, Observate
     return;
 }
 
+/*
+ * Calcul des bornes inferieures et superieures du flash
+ */
 void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, const Conditions &conditions,
                                  Satellite &satellite, Observateur &observateur, Soleil &soleil, Date lim[])
 {
@@ -635,6 +650,9 @@ void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, c
     return;
 }
 
+/*
+ * Calcul d'une limite du flash
+ */
 void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Conditions &conditions, Satellite &satellite,
                           Observateur &observateur, Soleil &soleil, double limite[])
 {
@@ -701,6 +719,9 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
     return;
 }
 
+/*
+ * Determination de la magnitude du flash
+ */
 double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
                                Satellite &satellite)
 {
@@ -752,6 +773,9 @@ double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observa
     return (magnitude);
 }
 
+/*
+ * Ecriture d'une ligne de flash
+ */
 QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, const double angref, const double mag,
                              const QString &sts, const Conditions &conditions, const Observateur &observateur,
                              const Soleil &soleil, Satellite &sat)
@@ -845,6 +869,9 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     return (ligne);
 }
 
+/*
+ * Lecture du fichier de statut des satellites Iridium
+ */
 int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 {
     /* Declarations des variables locales */

@@ -56,6 +56,9 @@ static const double PAS0 = 2. * NB_JOUR_PAR_MIN;
 static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 
+/*
+ * Calcul des transits ISS devant la Lune et/ou le Soleil
+ */
 void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
@@ -393,6 +396,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     return;
 }
 
+/*
+ * Calcul des ephemerides du Soleil et de la Lune
+ */
 void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur,
                                        QVector<QList<QVector<double> > > &tabEphem)
 {
@@ -514,6 +520,9 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
     return;
 }
 
+/*
+ * Calcul de l'angle minimum
+ */
 void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
                                 double minmax[])
 {
@@ -557,6 +566,9 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     return;
 }
 
+/*
+ * Calcul des elements du transit ou de la conjonction
+ */
 void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,
                                 const bool itransit, const double seuilConjonction, Date dates[])
 {
@@ -617,6 +629,9 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
     return;
 }
 
+/*
+ * Calcul de la date d'une borne du transit ou conjonction
+ */
 void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
                             const bool itransit, const double seuilConjonction, double &dateInter)
 {

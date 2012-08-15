@@ -43,6 +43,9 @@
 #include <QMessageBox>
 #include "messages.h"
 
+/*
+ * Affichage d'une boite de message
+ */
 void Messages::Afficher(const QString message, const MessageType ierr)
 {
     /* Declarations des variables locales */

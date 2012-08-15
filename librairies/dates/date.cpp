@@ -43,13 +43,17 @@
 #include <cmath>
 #include <ctime>
 #include <fstream>
-//#include <QDateTime>
 #include "date.h"
 #include "librairies/maths/maths.h"
 
 /* Constructeurs */
 Date::Date()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _annee = 0;
     _mois = 0;
     _jour = 0;
@@ -60,6 +64,9 @@ Date::Date()
     _jourJulien = 0.;
     _jourJulienUTC = 0.;
     _offsetUTC = 0.;
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -288,6 +295,9 @@ QString Date::ToShortDate(const DateFormat format) const
             arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')));
 }
 
+/*
+ * Conversion de la date en chaine de caracteres
+ */
 QString Date::ToLongDate() const
 {
     /* Declarations des variables locales */

@@ -79,7 +79,6 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    double _elongation;
     double _fractionIlluminee;
     QString _phase;
 
