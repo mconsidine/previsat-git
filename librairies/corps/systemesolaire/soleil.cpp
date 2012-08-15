@@ -44,6 +44,8 @@
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/SoleilConstants.h"
 
+static const double ax = 1.000001018;
+
 Soleil::Soleil()
 {
     _distanceUA = 0.;
@@ -67,13 +69,15 @@ Soleil::~Soleil()
 {
 }
 
+/* Calcul de la position du Soleil a partir du modele simplifie
+ * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
+ */
 void Soleil::CalculPosition(const Date &date)
 {
     /* Declarations des variables locales */
     double u, u1;
 
     /* Initialisations */
-    const double a = 1.000001018;
     const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
     const double tu2 = tu * tu;
 
@@ -101,12 +105,14 @@ void Soleil::CalculPosition(const Date &date)
     const double v = 2. * atan(sqrt((1. + e) / (1. - e)) * tan(0.5 * u));
 
     // Rayon vecteur
-    _distanceUA = a * (1. - e * cos(u));
+    _distanceUA = ax * (1. - e * cos(u));
 
     // Longitude vraie
-    const double lv = lp + v - a * (1. - e * e) / _distanceUA * 20.49552 * ARCSEC2RAD;
+    const double lv = lp + v - ax * (1. - e * e) / _distanceUA * 20.49552 * ARCSEC2RAD;
 
     const Vecteur3D pos(lv, 0., _distanceUA);
+
+    // Position cartesienne equatoriale
     _position = Sph2Cart(pos, date) * UA2KM;
 
     /* Retour */

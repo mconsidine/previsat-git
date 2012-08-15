@@ -109,9 +109,6 @@ protected:
 private:
 
     /* Constantes privees */
-    static double J3SJ2;
-    static double RPTIM;
-
     // Pour le modele haute orbite
     static const double ZEL = 0.0549;
     static const double ZES = 0.01675;

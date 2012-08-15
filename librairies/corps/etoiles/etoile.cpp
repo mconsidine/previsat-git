@@ -48,6 +48,9 @@
 
 bool Etoile::_initStar = false;
 
+/*
+ * Constructeurs
+ */
 Etoile::Etoile()
 {
     _magnitude = 0.;
@@ -69,10 +72,14 @@ Etoile::Etoile(const QString nom, const double ascensionDroite, const double dec
     return;
 }
 
+/*
+ * Destructeur
+ */
 Etoile::~Etoile()
 {
 }
 
+/* Calcul de la position des etoiles */
 void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
@@ -91,6 +98,9 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     return;
 }
 
+/*
+ * Lecture du catalogue d'etoiles
+ */
 void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
@@ -99,7 +109,6 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 
     /* Corps de la methode */
     etoiles.clear();
-    //    FILE *fstr = NULL;
     const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "etoiles.str";
     QFile fi(fic);
     if (fi.exists()) {

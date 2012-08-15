@@ -48,6 +48,9 @@
 
 bool Constellation::_initCst = false;
 
+/*
+ * Constructeurs
+ */
 Constellation::Constellation()
 {
 }
@@ -67,10 +70,16 @@ Constellation::Constellation(const QString nom, const double ascensionDroite, co
     return;
 }
 
+/*
+ * Destructeur
+ */
 Constellation::~Constellation()
 {
 }
 
+/*
+ * Calcul des positions des noms des constellations pour la carte du ciel
+ */
 void Constellation::CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
@@ -89,6 +98,9 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
     return;
 }
 
+/*
+ * Lecture des noms et positions des constellations
+ */
 void Constellation::InitTabCst(QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
@@ -114,6 +126,7 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     return;
 }
 
+/* Accesseurs */
 QString Constellation::getNom() const
 {
     return _nom;

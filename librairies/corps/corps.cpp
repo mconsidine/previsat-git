@@ -183,6 +183,9 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc)
     return;
 }
 
+/*
+ * Calcul des coordonnees horizontales (avec condition de visibilite)
+ */
 void Corps::CalculCoordHoriz2(const Observateur &observateur)
 {
     /* Declarations des variables locales */
@@ -255,7 +258,8 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.getY(), _position.getX()),
+                               DEUX_PI);
     if (fabs(_longitude) > PI)
         _longitude -= Maths::sgn(_longitude) * DEUX_PI;
 
@@ -340,7 +344,7 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
 }
 
 /*
- * Calcul de l'altitude et de l'altitude
+ * Calcul de la latitude terrestre et de l'altitude (avec prise en compte de l'aplatissement du globe terrestre)
  */
 void Corps::CalculLatitudeAltitude()
 {
@@ -380,7 +384,6 @@ void Corps::InitTabConstellations()
     /* Initialisations */
 
     /* Corps de la methode */
-
     const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
             "constellations.cst";
     QFile fi(fic);

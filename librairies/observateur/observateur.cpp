@@ -49,6 +49,11 @@
  */
 Observateur::Observateur()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _longitude = 0.;
     _latitude = 0.;
     _altitude = 0.;
@@ -59,6 +64,9 @@ Observateur::Observateur()
     _aaer = 0.;
     _aray = 0.;
     _tempsSideralGreenwich = 0.;
+
+    /* Retour */
+    return;
 }
 
 /*

@@ -51,6 +51,9 @@
 bool LigneConstellation::_initLig = false;
 QList<QVector<int> > LigneConstellation::_tabLigCst;
 
+/*
+ * Constructeurs
+ */
 LigneConstellation::LigneConstellation()
 {
     _dessin = false;
@@ -71,10 +74,16 @@ LigneConstellation::LigneConstellation(const Etoile &etoile1, const Etoile &etoi
     return;
 }
 
+/*
+ * Destructeur
+ */
 LigneConstellation::~LigneConstellation()
 {
 }
 
+/*
+ * Calcul des lignes de constellations
+ */
 void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst)
 {
     /* Declarations des variables locales */
@@ -98,6 +107,9 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     return;
 }
 
+/*
+ * Lecture du fichier contenant les lignes de constellations
+ */
 void LigneConstellation::InitTabLignesCst()
 {
     /* Declarations des variables locales */

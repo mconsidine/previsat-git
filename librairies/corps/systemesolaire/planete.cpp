@@ -119,6 +119,9 @@ Planete::Planete(const int iplanete)
         _elem[i] = 0.;
 }
 
+/*
+ * Calcul de la position d'une planete
+ */
 void Planete::CalculPosition(const Date &date, const Soleil &soleil)
 {
     /* Declarations des variables locales */
@@ -154,6 +157,9 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     return;
 }
 
+/*
+ * Calcul des elements orbitaux moyens d'une planete
+ */
 void Planete::CalculElements(const Date &date)
 {
     /* Declarations des variables locales */
@@ -182,6 +188,9 @@ void Planete::CalculElements(const Date &date)
     return;
 }
 
+/*
+ * Calcul des coordonnees spheriques ecliptiques d'une planete
+ */
 void Planete::CalculCoordonneesSpheriques()
 {
     /* Declarations des variables locales */
@@ -228,6 +237,7 @@ void Planete::CalculCoordonneesSpheriques()
     return;
 }
 
+/* Accesseurs */
 QString Planete::getNom() const
 {
     return (_nomPlanetes[_iplanete]);

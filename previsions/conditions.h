@@ -70,6 +70,7 @@ public:
     Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE,
                const double seuilConjonction, const double dtu, const double jj1, const double jj2, const QString fic,
                const QString out, const QString unite);
+    ~Conditions();
 
     /* Constantes publiques */
 

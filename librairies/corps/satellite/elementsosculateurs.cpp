@@ -43,8 +43,14 @@
 #include "elementsosculateurs.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 
+static const double temp1 = 1. / GE;
+
 ElementsOsculateurs::ElementsOsculateurs()
-{
+{    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _demiGrandAxe = 0.;
     _excentricite = 0.;
     _inclinaison = 0.;
@@ -56,8 +62,14 @@ ElementsOsculateurs::ElementsOsculateurs()
     _apogee = 0.;
     _perigee = 0.;
     _periode = 0.;
+
+    /* Retour */
+    return;
 }
 
+/*
+ * Destructeur
+ */
 ElementsOsculateurs::~ElementsOsculateurs()
 {
 }
@@ -71,7 +83,6 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double temp1 = 1. / GE;
     const double p = position.Norme();
     const double v = vitesse.Norme();
     const double temp2 = 1. / p;
@@ -130,7 +141,7 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
     // Apogee, perigee, periode orbitale
     _apogee = _demiGrandAxe * (1. + _excentricite);
     _perigee = _demiGrandAxe * (1. - _excentricite);
-    _periode = nn0 * DEUX_PI * sqrt(_demiGrandAxe * _demiGrandAxe * _demiGrandAxe / GE) * NB_HEUR_PAR_SEC;
+    _periode = nn0 * DEUX_PI * sqrt(_demiGrandAxe * _demiGrandAxe * _demiGrandAxe * temp1) * NB_HEUR_PAR_SEC;
 
     /* Retour */
     return;

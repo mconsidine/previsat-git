@@ -48,8 +48,8 @@
 #include "librairies/corps/systemesolaire/SoleilConstants.h"
 #include "librairies/exceptions/previsatexception.h"
 
-double Satellite::J3SJ2 = J3 / J2;
-double Satellite::RPTIM = OMEGA * NB_SEC_PAR_MIN;
+static const double J3SJ2 = J3 / J2;
+static const double RPTIM = OMEGA * NB_SEC_PAR_MIN;
 
 bool Satellite::initCalcul = false;
 
@@ -364,9 +364,9 @@ void Satellite::CalculMagnitude(const Observateur &observateur, const bool extin
 double Satellite::ExtinctionAtmospherique(const Observateur &observateur)
 {
     /* Declarations des variables locales */
-    double corr = 0.;
 
     /* Initialisations */
+    double corr = 0.;
 
     /* Corps de la methode */
     if (_hauteur >= 0.) {
@@ -1293,6 +1293,9 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
     return;
 }
 
+/*
+ * Calcul de la trace dans le ciel
+ */
 void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
 {
     /* Declarations des variables locales */
@@ -1334,7 +1337,6 @@ void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
         } else {
             afin = true;
         }
-
         i++;
     }
 

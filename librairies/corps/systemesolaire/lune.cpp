@@ -86,11 +86,20 @@ static const int _tabCoef2[60][4] = {{0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 1, -1}, 
                                      {2, -1, -2, -1}, {0, 1, 2, 1}, {4, 0, -2, -1}, {4, -1, -1, -1}, {1, 0, 1, -1},
                                      {4, 0, 1, -1}, {1, 0, -1, -1}, {4, -1, 0, -1}, {2, -2, 0, 1}};
 
+static const Vecteur3D w(0., 0., 1.);
+
 /* Constructeurs */
 Lune::Lune()
 {
-    _elongation = 0.;
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _fractionIlluminee = 0.;
+
+    /* Retour */
+    return;
 }
 
 /* Destructeur */
@@ -177,29 +186,32 @@ void Lune::CalculPosition(const Date &date)
     const double lv = ll + DEG2RAD * l0 * 1.e-6;
     const double bt = DEG2RAD * b0 * 1.e-6;
     const double rp = 385000.56 + r0 * 1.e-3;
-
     Vecteur3D pos(lv, bt, rp);
+
+    // Position cartesienne equatoriale
     _position = Sph2Cart(pos, date);
 
     /* Retour */
     return;
 }
 
+/*
+ * Calcul de la phase de la Lune
+ */
 void Lune::CalculPhase(const Soleil &soleil)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Vecteur3D w(0., 0., 1.);
 
     /* Corps de la methode */
     // Elongation (ou angle de phase)
-    _elongation = soleil.getPosition().Angle(-_position);
+    const double elongation = soleil.getPosition().Angle(-_position);
 
     const bool sgn = ((soleil.getPosition() ^ _position) * w > 0.) ? true : false;
 
     // Fraction illuminee
-    _fractionIlluminee = 0.5 * (1. + cos(_elongation));
+    _fractionIlluminee = 0.5 * (1. + cos(elongation));
 
     // Phase
     if (_fractionIlluminee >= 0. && _fractionIlluminee < 0.03)
@@ -221,6 +233,7 @@ void Lune::CalculPhase(const Soleil &soleil)
     return;
 }
 
+/* Accesseurs */
 double Lune::getFractionIlluminee() const
 {
     return _fractionIlluminee;

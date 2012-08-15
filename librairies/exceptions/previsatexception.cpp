@@ -43,6 +43,9 @@
 #include <stdio.h>
 #include "previsatexception.h"
 
+/*
+ * Constructeurs
+ */
 PreviSatException::PreviSatException() throw()
 {
     _ierr = 0;
@@ -59,6 +62,9 @@ PreviSatException::PreviSatException(const QString message, const Messages::Mess
     Messages::Afficher(message, ierr);
 }
 
+/*
+ * Code d'erreur
+ */
 const char* PreviSatException::what() const throw()
 {
     return (QString::number(_ierr).toStdString().c_str());

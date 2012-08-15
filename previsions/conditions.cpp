@@ -46,6 +46,9 @@
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 
+/*
+ * Constructeurs
+ */
 Conditions::Conditions()
 {
     /* Declarations des variables locales */
@@ -249,6 +252,13 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
 
     /* Retour */
     return;
+}
+
+/*
+ * Destructeur
+ */
+Conditions::~Conditions()
+{
 }
 
 /*
