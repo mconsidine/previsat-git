@@ -1257,6 +1257,7 @@ void PreviSat::AffichageCourbes() const
 
     /* Initialisations */
     scene = new QGraphicsScene;
+    scene2 = new QGraphicsScene;
     scene3 = new QGraphicsScene;
     scene->setSceneRect(ui->carte->rect());
 
@@ -1300,7 +1301,7 @@ void PreviSat::AffichageCourbes() const
     // Couleur du ciel
     QBrush bru(Qt::black);
     QBrush bru2(Qt::black);
-    if (!ui->ciel->isHidden() || !ui->radar->isHidden()) {
+    if (!ui->ciel->isHidden() || ui->affradar->isChecked()) {
 
         const double hts = soleil.getHauteur() * RAD2DEG;
         if (hts >= 0.) {
@@ -1938,8 +1939,8 @@ void PreviSat::AffichageCourbes() const
         ui->coordGeo3->setVisible(true);
         ui->coordGeo4->setVisible(true);
         ui->radar->setVisible(true);
-        scene2 = new QGraphicsScene;
         htr = true;
+
         // Dessin du fond du radar
         rect = QRect(0, 0, 200, 200);
 
