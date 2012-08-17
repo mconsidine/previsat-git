@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     const QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator qtTranslator;
-    qtTranslator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
     a.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;

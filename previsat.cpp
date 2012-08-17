@@ -2507,6 +2507,7 @@ void PreviSat::TelechargementSuivant()
         emit TelechargementFini();
         if (ui->miseAJourTLE->isVisible())
             ui->frameBarreProgression->setVisible(false);
+        messagesStatut->setText(tr("Terminé !"));
     } else {
 
         const QUrl url = downQueue.dequeue();
