@@ -216,7 +216,7 @@ PreviSat::~PreviSat()
  ******************/
 
 /*
- * Initialisations generales
+ * Chargement de la configuration
  */
 void PreviSat::ChargementConfig()
 {
@@ -490,6 +490,9 @@ void PreviSat::ChargementConfig()
     return;
 }
 
+/*
+ * Chargement du fichier TLE
+ */
 void PreviSat::ChargementTLE()
 {
     /* Declarations des variables locales */
@@ -587,6 +590,9 @@ void PreviSat::ChargementTLE()
     return;
 }
 
+/*
+ * Mise a jour des TLE lors du demarrage
+ */
 void PreviSat::MAJTLE()
 {
     /* Declarations des variables locales */
@@ -635,6 +641,9 @@ void PreviSat::MAJTLE()
     return;
 }
 
+/*
+ * Demarrage de l'application apres le chargement de la configuration
+ */
 void PreviSat::DemarrageApplication()
 {
     /* Declarations des variables locales */
