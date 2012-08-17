@@ -194,16 +194,17 @@ void Telecharger::on_telecharger_clicked()
             if (dirHttp == 1) {
                 httpDirList = httpDirList1;
                 dest = dirCoo + QDir::separator();
-                fic.toLower();
             } else {
                 httpDirList = httpDirList2;
                 dest = dirMap + QDir::separator();
+                fic = fic.toLower();
             }
 
             const QUrl url(httpDirList + fic);
             fic = fic.toLower().insert(0, dest);
 
             AjoutFichier(url);
+
         }
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
@@ -270,7 +271,6 @@ void Telecharger::FinEnregistrementFichier()
     ficDwn.close();
 
     /* Corps de la methode */
-
     rep->deleteLater();
     TelechargementSuivant();
 
