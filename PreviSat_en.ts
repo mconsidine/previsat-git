@@ -3168,12 +3168,12 @@ The file %1 does not contain the TLE of ISS</translation>
         <translation>Error occured while downloding file :</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="242"/>
+        <location filename="telecharger.cpp" line="243"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="242"/>
+        <location filename="telecharger.cpp" line="243"/>
         <source>Veuillez redémarrer PreviSat pour prendre en compte la mise à jour</source>
         <translation>Please restart PreviSat in order to take into account the updating</translation>
     </message>
