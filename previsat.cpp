@@ -2570,7 +2570,7 @@ void PreviSat::FinEnregistrementFichier()
         QString msg = tr("Erreur lors du téléchargement du fichier %1");
         if (rep->error())
             msg += " : " + rep->errorString();
-        Messages::Afficher(msg.arg(ff.baseName()), Messages::WARNING);
+        Messages::Afficher(msg.arg(ff.fileName()), Messages::WARNING);
 
     } else {
 
