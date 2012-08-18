@@ -5743,7 +5743,7 @@ void PreviSat::on_actionSupprimerLieu_activated()
         QTextStream flux2(&sw);
         while (!flux.atEnd()) {
             const QString ligne2 = flux.readLine();
-            if (ligne != ligne2)
+            if (ligne.trimmed() != ligne2.trimmed())
                 flux2 << ligne2 << endl;
         }
         sw.close();
