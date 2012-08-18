@@ -1592,43 +1592,45 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la zone de visibilite des satellites
-        if (ui->affvisib->isChecked()) {
-            if (ui->affvisib->checkState() == Qt::PartiallyChecked)
-                nbMax = 1;
-            if (ui->affvisib->checkState() == Qt::Checked)
-                nbMax = liste.size();
+        if (nbSat > 0) {
+            if (ui->affvisib->isChecked()) {
+                if (ui->affvisib->checkState() == Qt::PartiallyChecked)
+                    nbMax = 1;
+                if (ui->affvisib->checkState() == Qt::Checked)
+                    nbMax = liste.size();
 
-            crayon = QPen(Qt::white);
-            for(int isat=0; isat<nbMax; isat++) {
+                crayon = QPen(Qt::white);
+                for(int isat=0; isat<nbMax; isat++) {
 
-                if (!satellites.at(isat).isIeralt()) {
+                    if (!satellites.at(isat).isIeralt()) {
 
-                    int lsat1 = qRound(satellites.at(isat).getZone().at(0).x() * DEG2PXHZ);
-                    int bsat1 = qRound(satellites.at(isat).getZone().at(0).y() * DEG2PXVT);
+                        int lsat1 = qRound(satellites.at(isat).getZone().at(0).x() * DEG2PXHZ);
+                        int bsat1 = qRound(satellites.at(isat).getZone().at(0).y() * DEG2PXVT);
 
-                    for(int j=1; j<361; j++) {
-                        int lsat2 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                        int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
-                        int ils = 99999;
+                        for(int j=1; j<361; j++) {
+                            int lsat2 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
+                            int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
+                            int ils = 99999;
 
-                        if (fabs(lsat2 - lsat1) > lcarte2) {
-                            if (lsat2 < lsat1)
-                                lsat2 += lcarte;
-                            else
-                                lsat1 += lcarte;
-                            ils = j;
-                        }
+                            if (fabs(lsat2 - lsat1) > lcarte2) {
+                                if (lsat2 < lsat1)
+                                    lsat2 += lcarte;
+                                else
+                                    lsat1 += lcarte;
+                                ils = j;
+                            }
 
-                        scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
-
-                        if (ils == j) {
-                            lsat1 -= lcarte + 1;
-                            lsat2 -= lcarte + 1;
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
-                            ils = 0;
+
+                            if (ils == j) {
+                                lsat1 -= lcarte + 1;
+                                lsat2 -= lcarte + 1;
+                                scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+                                ils = 0;
+                            }
+                            lsat1 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
+                            bsat1 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
                         }
-                        lsat1 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                        bsat1 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
                     }
                 }
             }
