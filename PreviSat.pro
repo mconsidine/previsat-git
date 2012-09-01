@@ -78,8 +78,9 @@ HEADERS += previsat.h \
     librairies/corps/systemesolaire/TerreConstants.h \
     librairies/dates/date.h \
     librairies/dates/dateConstants.h \
-    librairies/exceptions/previsatexception.h \
     librairies/exceptions/messages.h \
+    librairies/exceptions/messagesConstants.h \
+    librairies/exceptions/previsatexception.h \
     librairies/maths/mathConstants.h \
     librairies/maths/maths.h \
     librairies/maths/matrice.h \
@@ -91,7 +92,6 @@ HEADERS += previsat.h \
     previsions/prevision.h \
     previsions/transitiss.h \
     $$ZLIB_DIR/zlib.h \
-    librairies/exceptions/messagesConstants.h
 
 FORMS += previsat.ui \
     afficher.ui \
