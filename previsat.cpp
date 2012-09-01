@@ -624,7 +624,8 @@ void PreviSat::MAJTLE()
         if (ageMaxTLE) {
             const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
             const int ageMax = settings.value("temps/ageMax", 15).toInt();
-            if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax) {
+            if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax ||
+                    fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
                 MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             }
