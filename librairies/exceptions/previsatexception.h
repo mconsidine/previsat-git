@@ -51,7 +51,7 @@ public:
     /* Constructeurs */
     PreviSatException() throw();
     PreviSatException(const int ierr) throw();
-    PreviSatException(const QString message, const Messages::MessageType ierr) throw();
+    PreviSatException(const QString message, const MessageType ierr) throw();
 
     /* Constantes publiques */
 

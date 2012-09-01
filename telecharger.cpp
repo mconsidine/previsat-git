@@ -128,7 +128,7 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
     /* Corps de la methode */
 
     /* Retour */
-    throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), Messages::WARNING);
+    throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), WARNING);
 }
 
 void Telecharger::Enregistrer() const
