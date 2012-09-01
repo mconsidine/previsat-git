@@ -3667,7 +3667,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 
         if (stsDate->underMouse() || stsHeure->underMouse()) {
             ui->calJulien->setChecked(!ui->calJulien->isChecked());
-            AffichageDonnees();
+            CalculsAffichage();
         }
     }
 

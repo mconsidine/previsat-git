@@ -90,7 +90,7 @@ HEADERS += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    ZLIB_DIR/zlib.h
+    $$ZLIB_DIR/zlib.h
 
 FORMS += previsat.ui \
     afficher.ui \
