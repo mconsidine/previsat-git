@@ -49,7 +49,7 @@ Apropos::Apropos(QWidget *parent) :
     ui(new Ui::Apropos)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("À propos de PreviSat 3.0"));
+    setWindowTitle(tr("À propos de PreviSat") + " " + APPVER_MAJ);
     QGraphicsScene *scene = new QGraphicsScene;
     scene->setSceneRect(ui->imagePreviSat->rect());
     scene->setBackgroundBrush(QBrush(Apropos::palette().background().color()));
@@ -57,9 +57,10 @@ Apropos::Apropos(QWidget *parent) :
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
+    ui->nomLogiciel->setText("PreviSat " + QString(APPVER_MAJ));
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).
-                               arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM dd yyyy")).
+                               arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).
                                    toString(Qt::SystemLocaleShortDate)));
 }
 
