@@ -2718,42 +2718,45 @@ void PreviSat::VerifAgeTLE()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const int ageMax = settings.value("temps/ageMax", 15).toInt();
 
     /* Corps de la methode */
-    if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
-        const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
-        const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax),
-                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    if (tles.count() > 0) {
 
-        if (res == QMessageBox::Yes) {
-            const QFileInfo fi(nomfic);
-            if (fi.absoluteDir() == dirTle) {
-                amajDeb = true;
-                amajInt = false;
-                atrouve = true;
-                aupdnow = false;
-                dirDwn = dirTle;
-                const QUrl url("http://www.celestrak.com/NORAD/elements/" + fi.fileName());
-                AjoutFichier(url);
+        const int ageMax = settings.value("temps/ageMax", 15).toInt();
+        if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
+            const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
+            const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax),
+                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
-                QNetworkRequest requete(url);
-                rep = mng.get(requete);
+            if (res == QMessageBox::Yes) {
+                const QFileInfo fi(nomfic);
+                if (fi.absoluteDir() == dirTle) {
+                    amajDeb = true;
+                    amajInt = false;
+                    atrouve = true;
+                    aupdnow = false;
+                    dirDwn = dirTle;
+                    const QUrl url("http://www.celestrak.com/NORAD/elements/" + fi.fileName());
+                    AjoutFichier(url);
 
-                // Creation d'une boucle pour rendre le telechargement synchrone
-                QEventLoop loop;
-                connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-                loop.exec();
+                    QNetworkRequest requete(url);
+                    rep = mng.get(requete);
 
-                if (downQueue.isEmpty())
-                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+                    // Creation d'une boucle pour rendre le telechargement synchrone
+                    QEventLoop loop;
+                    connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
+                    loop.exec();
 
-                settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
-            } else {
-                QDesktopServices::openUrl(QUrl("http://www.celestrak.com/NORAD/elements/"));
+                    if (downQueue.isEmpty())
+                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+                    settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+                } else {
+                    QDesktopServices::openUrl(QUrl("http://www.celestrak.com/NORAD/elements/"));
+                }
             }
+            old = true;
         }
-        old = true;
     }
 
     /* Retour */
