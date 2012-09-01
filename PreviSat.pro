@@ -5,9 +5,10 @@
 #-------------------------------------------------
 
 #-------------------------------------------------
-VERSION = 3.0.4.3
+VER_MAJ = 3.0
+VERSION = 3.0.4.4
 ZLIB_DIR = zlib
-TRANSLATIONS = PreviSat_en.ts PreviSat_es.ts PreviSat_pt.ts
+TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
 QT += core gui network
@@ -22,8 +23,10 @@ win32 {
     RC_FILE = icone.rc
 }
 
-VERSTR = '\\"$${VERSION}\\"'
-DEFINES += APPVERSION=\"$${VERSTR}\"
+VERSIONSTR = '\\"$${VERSION}\\"'
+VER_MAJSTR = '\\"$${VER_MAJ}\\"'
+DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
+           APPVER_MAJ=\"$${VER_MAJSTR}\"
 INCLUDEPATH += $$ZLIB_DIR
 
 SOURCES += main.cpp\
