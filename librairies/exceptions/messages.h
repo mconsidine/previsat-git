@@ -40,15 +40,13 @@
 #define MESSAGES_H
 
 #include <QString>
+#include "messagesConstants.h"
 
 class Messages
 {
 public:
 
     /* Constructeurs */
-
-    /* Enumerations */
-    enum MessageType { ERREUR = -1, INFO = 0, WARNING = 1 };
 
     /* Constantes publiques */
 

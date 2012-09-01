@@ -258,10 +258,10 @@ void GestionnaireTLE::on_valider_clicked()
     /* Corps de la methode */
     try {
         if (ui->domaine->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), Messages::WARNING);
+            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), WARNING);
 
         if (ui->nomGroupe->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), Messages::WARNING);
+            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), WARNING);
 
         const QString groupeDomaine = ui->nomGroupe->text().toLower().trimmed() + "@" + ui->domaine->text().trimmed();
         const QString listeFics = ui->listeFichiers->document()->toPlainText().replace("\n", ",");

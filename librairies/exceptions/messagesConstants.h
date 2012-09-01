@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    previsatexception.h
+ * >    messagesConstants.h
  *
  * Localisation
  * >    librairies.exceptions
@@ -26,61 +26,28 @@
  * Heritage
  * >
  *
+ * Description
+ * >     Constantes liees aux boites de messages
+ *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    11 juillet 2011
+ * >    1er septembre 2012
  *
  * Date de revision
  * >
  *
  */
 
-#ifndef PREVISATEXCEPTION_H
-#define PREVISATEXCEPTION_H
+#ifndef MESSAGESCONSTANTS_H
+#define MESSAGESCONSTANTS_H
 
-#include <QString>
-#include <exception>
-#include "messages.h"
+enum MessageType {
 
-class PreviSatException : public std::exception
-{
-public:
-
-    /* Constructeurs */
-    PreviSatException() throw();
-    PreviSatException(const int ierr) throw();
-    PreviSatException(const QString message, const MessageType ierr) throw();
-
-    /* Constantes publiques */
-
-    /* Variables publiques */
-
-    /* Methodes publiques */
-    virtual const char* what() const throw();
-
-    /* Accesseurs */
-
-
-protected:
-
-    /* Constantes protegees */
-
-    /* Variables protegees */
-
-    /* Methodes protegees */
-
-
-private:
-
-    /* Constantes privees */
-
-    /* Variables privees */
-    int _ierr;
-
-    /* Methodes privees */
-
+    ERREUR = -1,
+    INFO = 0,
+    WARNING = 1
 };
 
-#endif // PREVISATEXCEPTION_H
+#endif // MESSAGESCONSTANTS_H

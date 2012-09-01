@@ -225,7 +225,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
         }
 
         if (alarm)
-            throw PreviSatException(msg, Messages::WARNING);
+            throw PreviSatException(msg, WARNING);
     }
 
     /* Retour */
@@ -334,7 +334,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficOld), Messages::WARNING);
+        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficOld), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficOld, liste, tleOld);
@@ -342,7 +342,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
     // Verification du fichier contenant les TLE recents
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficNew), Messages::WARNING);
+        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficNew), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficNew, liste, tleNew);
