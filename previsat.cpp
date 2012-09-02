@@ -269,19 +269,19 @@ void PreviSat::ChargementConfig()
 
     /* Corps de la methode */
     // Verification et creation des arborescences
+    di = QDir(dirDat);
+    if (!di.exists()) {
+        const QString message = tr("POSITION : Erreur rencontrée lors de l'initialisation\nLe répertoire %1 n'existe pas, veuillez réinstaller PreviSat");
+        Messages::Afficher(message.arg(QDir::convertSeparators(dirDat)), ERREUR);
+        exit(1);
+    }
+
     QStringList listeDir;
     listeDir << dirMap << dirOut << dirTle << dirTmp;
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
             di.mkpath(dir);
-    }
-
-    di = QDir(dirDat);
-    if (!di.exists()) {
-        const QString message = tr("POSITION : Erreur rencontrée lors de l'initialisation\nLe répertoire %1 n'existe pas, veuillez réinstaller PreviSat");
-        Messages::Afficher(message.arg(dirDat), ERREUR);
-        exit(1);
     }
 
     // Verification de la presence des fichiers du repertoire data
