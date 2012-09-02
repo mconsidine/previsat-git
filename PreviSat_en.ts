@@ -1810,7 +1810,7 @@ PreviSat is free !</translation>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="282"/>
+        <location filename="previsat.cpp" line="274"/>
         <source>POSITION : Erreur rencontrée lors de l&apos;initialisation
 Le répertoire %1 n&apos;existe pas, veuillez réinstaller PreviSat</source>
         <translation>POSITION : Error occured while initialization
