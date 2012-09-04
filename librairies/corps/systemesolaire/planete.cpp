@@ -118,6 +118,7 @@ Planete::Planete(const int iplanete)
     if (!_init)
         nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
                        QObject::tr("Saturne") << QObject::tr("Uranus") << QObject::tr("Neptune");
+    _init = true;
     for(int i=0; i<6; i++)
         _elem[i] = 0.;
 }
