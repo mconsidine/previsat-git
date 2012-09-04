@@ -3065,37 +3065,37 @@ The file %1 does not contain the TLE of ISS</translation>
         <translation>   Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat     Range</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="45"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="118"/>
         <source>Mercure</source>
         <translation>Mercury</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="45"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="118"/>
         <source>Vénus</source>
         <translation>Venus</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="45"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="118"/>
         <source>Mars</source>
         <translation>Mars</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="46"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="118"/>
         <source>Jupiter</source>
         <translation>Jupiter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="46"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="119"/>
         <source>Saturne</source>
         <translation>Saturn</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="46"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="119"/>
         <source>Uranus</source>
         <translation>Uranus</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/planete.cpp" line="47"/>
+        <location filename="librairies/corps/systemesolaire/planete.cpp" line="119"/>
         <source>Neptune</source>
         <translation>Neptune</translation>
     </message>
