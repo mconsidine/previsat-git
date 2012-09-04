@@ -37,14 +37,14 @@
  *
  * Date de revision
  * >
- *
+ * >    4 septembre 2012
  */
 
+#include <QStringList>
 #include "planete.h"
 
-static const QString _nomPlanetes[7] = { QObject::tr("Mercure"), QObject::tr("Vénus"), QObject::tr("Mars"),
-                                         QObject::tr("Jupiter"), QObject::tr("Saturne"), QObject::tr("Uranus"),
-                                         QObject::tr("Neptune") };
+bool Planete::_init;
+static QStringList nomPlanetes;
 
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
@@ -115,6 +115,9 @@ static const double _tabPlanetes[7][6][4] = {
 Planete::Planete(const int iplanete)
 {
     _iplanete = iplanete;
+    if (!_init)
+        nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
+                       QObject::tr("Saturne") << QObject::tr("Uranus") << QObject::tr("Neptune");
     for(int i=0; i<6; i++)
         _elem[i] = 0.;
 }
@@ -240,5 +243,5 @@ void Planete::CalculCoordonneesSpheriques()
 /* Accesseurs */
 QString Planete::getNom() const
 {
-    return (_nomPlanetes[_iplanete]);
+    return (nomPlanetes.at(_iplanete));
 }

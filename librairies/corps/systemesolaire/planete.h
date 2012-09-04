@@ -33,7 +33,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >
+ * >    4 septembre 2012
  *
  */
 
@@ -77,6 +77,7 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
+    static bool _init;
     int _iplanete;
     double _elem[6];
     Vecteur3D _positionSph;
