@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 septembre 2012
+ * >    4 septembre 2012
  *
  */
 
@@ -608,7 +608,7 @@ void PreviSat::MAJTLE()
     dateUTC.setTimeSpec(Qt::UTC);
     const double ecart = dateLocale.secsTo(dateUTC) * NB_JOUR_PAR_SEC;
     offsetUTC = (ui->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
-    ui->updown->setValue((int) (offsetUTC * NB_MIN_PAR_JOUR + EPS_DATES));
+    ui->updown->setValue(Maths::sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
     offsetUTC = (ui->heureLegale->isChecked()) ? ui->updown->value() * NB_JOUR_PAR_MIN : 0.;
 
     // Date et heure locales
@@ -837,7 +837,7 @@ void PreviSat::AffichageDonnees()
         QString chaine = dateCourante.ToLongDate().append("  ");
         if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
             QTime heur;
-            heur = heur.addSecs(NB_SEC_PAR_JOUR * fabs(dateCourante.getOffsetUTC() + EPS_DATES));
+            heur = heur.addSecs(fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES);
             QString chaineUTC = tr("UTC").append((dateCourante.getOffsetUTC() > 0.) ? " + " : " - ").
                     append(heur.toString("hh:mm"));
             chaine = chaine.append(chaineUTC);
