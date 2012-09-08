@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 septembre 2012
+ * >    8 septembre 2012
  *
  */
 
@@ -2245,6 +2245,7 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
             l1 = li1;
             l2 = li2;
         }
+        delete elem0;
     }
 
     /* Retour */
@@ -7440,6 +7441,7 @@ void PreviSat::CalculsTermines()
     default:
         break;
     }
+    threadCalculs->deleteLater();
     messagesStatut->setText((fi.exists()) ? tr("Terminé !") : "");
 
     /* Retour */
