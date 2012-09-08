@@ -36,12 +36,13 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <math.h>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
@@ -877,12 +878,18 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
     /* Declarations des variables locales */
     int i;
     QString ligne;
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
     i = 0;
 
     /* Corps de la methode */
-    QFile fichier(QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "iridium.sts");
+    QFile fichier(dirDat + QDir::separator() + "iridium.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 

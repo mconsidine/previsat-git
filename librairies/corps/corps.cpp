@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
 #include <cmath>
@@ -380,12 +381,17 @@ void Corps::CalculLatitudeAltitude()
 void Corps::InitTabConstellations()
 {
     /* Declarations des variables locales */
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
 
     /* Corps de la methode */
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "constellations.cst";
+    const QString fic = dirDat + QDir::separator() + "constellations.cst";
     QFile fi(fic);
     if (fi.exists()) {
 

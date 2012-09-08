@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QString>
@@ -113,12 +114,17 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
 void LigneConstellation::InitTabLignesCst()
 {
     /* Declarations des variables locales */
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
 
     /* Corps de la methode */
-    const QString ficLig = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "constlines.cst";
+    const QString ficLig = dirDat + QDir::separator() + "constlines.cst";
     QFile fichier(ficLig);
     if (fichier.exists()) {
 

@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
 #include "satellite.h"
@@ -465,8 +466,14 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
     const int nb = listeSatellites.size();
 
     if (!Satellite::initCalcul) {
@@ -482,8 +489,7 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         satellites[isat]._magnitudeStandard = 99.;
 
     /* Corps de la methode */
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "donnees.sat";
+    const QString fic = dirDat + QDir::separator() + "donnees.sat";
     QFile fi(fic);
     if (fi.exists()) {
 

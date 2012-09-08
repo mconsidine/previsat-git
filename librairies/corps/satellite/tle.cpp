@@ -36,12 +36,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <cmath>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
@@ -239,11 +240,16 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 {
     /* Declarations des variables locales */
     QString magn;
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "donnees.sat";
+    const QString fic = dirDat + QDir::separator() + "donnees.sat";
     QFile donneesSatellites(fic.toStdString().c_str());
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
