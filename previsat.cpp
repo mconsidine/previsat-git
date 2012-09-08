@@ -5154,11 +5154,17 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
 
     /* Corps de la methode */
     if (ui->utcAuto->isChecked()) {
+
         const QDateTime dateLocale = QDateTime::currentDateTime();
         QDateTime dateUTC(dateLocale);
         dateUTC.setTimeSpec(Qt::UTC);
+
         const int ecart = (int) (dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
         ui->updown->setValue(ecart);
+
+        const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
+        dateCourante = Date(dateCourante, offset);
+        CalculsAffichage();
     }
 
     /* Retour */
