@@ -2555,75 +2555,75 @@ The position of the satellite %1 (NORAD number : %2) can not be calculated (nega
 <context>
     <name>QObject</name>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="192"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="193"/>
         <source>POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>POSITION : The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="197"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="198"/>
         <source>POSITION : Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>POSITION : The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="202"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="203"/>
         <source>POSITION : Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="207"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="208"/>
         <source>POSITION : Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="212"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="213"/>
         <source>POSITION : Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>POSITION : The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="218"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="219"/>
         <source>POSITION : Erreur CheckSum ligne %1 :
 Satellite %2 - numéro NORAD : %3</source>
         <translation>POSITION : CheckSum Error line %1 :
 Satellite %2 - NORAD number : %3</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="223"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="224"/>
         <source>POSITION : Le fichier %1 ne contient aucun satellite ou n&apos;est pas valide</source>
         <translation>POSITION : The file %1 does not contain satellites or is not valid</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="337"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="345"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="343"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="351"/>
         <source>MISE A JOUR : Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>UPDATE : Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="394"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="400"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the file to update.
 Do you want to add this TLE in the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="395"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="401"/>
         <source>Ajout du nouveau TLE</source>
         <translation>Adding of the new TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="411"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="417"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the TLE files to read.
 Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="412"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="418"/>
         <source>Suppression du TLE</source>
         <translation>Deletion of the TLE</translation>
     </message>
@@ -2711,7 +2711,7 @@ Do you want to remove this TLE from the file to update?</translation>
     <message>
         <location filename="previsat.cpp" line="804"/>
         <location filename="previsions/evenements.cpp" line="262"/>
-        <location filename="previsions/iridium.cpp" line="818"/>
+        <location filename="previsions/iridium.cpp" line="819"/>
         <location filename="previsions/prevision.cpp" line="230"/>
         <location filename="previsions/transitiss.cpp" line="292"/>
         <source>mi</source>
@@ -2860,7 +2860,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="268"/>
         <location filename="previsions/evenements.cpp" line="306"/>
         <location filename="previsions/evenements.cpp" line="346"/>
-        <location filename="previsions/iridium.cpp" line="853"/>
+        <location filename="previsions/iridium.cpp" line="854"/>
         <location filename="previsions/transitiss.cpp" line="332"/>
         <source>W</source>
         <translation>W</translation>
@@ -2872,7 +2872,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="268"/>
         <location filename="previsions/evenements.cpp" line="306"/>
         <location filename="previsions/evenements.cpp" line="346"/>
-        <location filename="previsions/iridium.cpp" line="853"/>
+        <location filename="previsions/iridium.cpp" line="854"/>
         <location filename="previsions/transitiss.cpp" line="332"/>
         <source>E</source>
         <translation>E</translation>
@@ -2884,7 +2884,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="270"/>
         <location filename="previsions/evenements.cpp" line="308"/>
         <location filename="previsions/evenements.cpp" line="348"/>
-        <location filename="previsions/iridium.cpp" line="854"/>
+        <location filename="previsions/iridium.cpp" line="855"/>
         <location filename="previsions/transitiss.cpp" line="333"/>
         <source>N</source>
         <translation>N</translation>
@@ -2896,7 +2896,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="270"/>
         <location filename="previsions/evenements.cpp" line="308"/>
         <location filename="previsions/evenements.cpp" line="348"/>
-        <location filename="previsions/iridium.cpp" line="854"/>
+        <location filename="previsions/iridium.cpp" line="855"/>
         <location filename="previsions/transitiss.cpp" line="282"/>
         <location filename="previsions/transitiss.cpp" line="333"/>
         <source>S</source>
@@ -2961,14 +2961,14 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="252"/>
+        <location filename="previsions/iridium.cpp" line="253"/>
         <location filename="previsions/prevision.cpp" line="308"/>
         <location filename="previsions/transitiss.cpp" line="387"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="70"/>
+        <location filename="previsions/iridium.cpp" line="71"/>
         <source>ADG</source>
         <translation>FRL</translation>
     </message>
@@ -2994,19 +2994,19 @@ Aucun satellite Iridium n&apos;a été trouvé dans le fichier TLE</source>
 There is no Iridium satellites in the TLE file</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="845"/>
+        <location filename="previsions/iridium.cpp" line="846"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="845"/>
+        <location filename="previsions/iridium.cpp" line="846"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="239"/>
+        <location filename="previsions/iridium.cpp" line="240"/>
         <source>Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max</source>
         <translation>Ir     Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat     Range    Max Magn</translation>
     </message>
