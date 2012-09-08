@@ -36,11 +36,12 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
@@ -104,12 +105,17 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
 void Constellation::InitTabCst(QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
 
     /* Corps de la methode */
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() +
-            "constlabel.cst";
+    const QString fic = dirDat + QDir::separator() + "constlabel.cst";
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);

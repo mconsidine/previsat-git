@@ -6,7 +6,7 @@
 
 #-------------------------------------------------
 VER_MAJ = 3.0
-VERSION = 3.0.4.8
+VERSION = 3.0.4.9
 ZLIB_DIR = zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
@@ -94,7 +94,7 @@ HEADERS += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    $$ZLIB_DIR/zlib.h \
+    $$ZLIB_DIR/zlib.h
 
 FORMS += previsat.ui \
     afficher.ui \

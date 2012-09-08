@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 septembre 2012
  *
  */
 
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
 #include "etoile.h"
@@ -104,12 +105,18 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
 void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
+    QString dirDat;
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
+    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
 
     /* Corps de la methode */
     etoiles.clear();
-    const QString fic = QCoreApplication::applicationDirPath() + QDir::separator() + "data" + QDir::separator() + "etoiles.str";
+    const QString fic = dirDat + QDir::separator() + "etoiles.str";
     QFile fi(fic);
     if (fi.exists()) {
 
