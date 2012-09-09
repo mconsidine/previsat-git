@@ -2245,7 +2245,6 @@ void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList 
             l1 = li1;
             l2 = li2;
         }
-        delete elem0;
     }
 
     /* Retour */
