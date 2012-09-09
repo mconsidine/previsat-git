@@ -10,12 +10,12 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="106"/>
+        <location filename="afficher.cpp" line="110"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="107"/>
+        <location filename="afficher.cpp" line="111"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
