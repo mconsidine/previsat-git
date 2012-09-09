@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 septembre 2012
+ * >    9 septembre 2012
  *
  */
 

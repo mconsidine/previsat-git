@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >
+ * >    9 septembre 2012
  *
  */
 
@@ -91,7 +91,11 @@ void Afficher::show(const QString fic)
 {
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString prev = fi.readAll();
+#if defined (Q_OS_WIN)
+    const QString prev = fi.readAll();
+#else
+    const QString prev = fi.trUtf8(fi.readAll());
+#endif
     ui->fichier->setText(prev);
     setVisible(true);
 }
