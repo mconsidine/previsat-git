@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    16 septembre 2012
  *
  */
 
@@ -370,7 +370,7 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
             norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";
         } else {
             if (j < nbNew && !norad1.isEmpty()) {
-                while ((norad2 = tleNew.at(j)._norad).compare(norad1))
+                while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1))
                     j++;
             } else {
                 j = nbNew;
@@ -457,6 +457,8 @@ void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringLi
         }
         fichier.close();
     }
+    tleOld.clear();
+    tleNew.clear();
 
     /* Retour */
     return;
