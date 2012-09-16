@@ -625,7 +625,7 @@ void PreviSat::MAJTLE()
             const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
             const int ageMax = settings.value("temps/ageMax", 15).toInt();
             if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax ||
-                    fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
+                    (dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
                 MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             }
@@ -650,22 +650,24 @@ void PreviSat::DemarrageApplication()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const int xmax = QApplication::desktop()->width();
+    const int ymax = QApplication::desktop()->height();
 
     /* Corps de la methode */
+    // Redimensionnement de la fenetre si necessaire
+    if (PreviSat::width() > xmax)
+        PreviSat::setGeometry(0, 0, xmax, PreviSat::height());
+    if (PreviSat::height() > ymax)
+        PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
+
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
     Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
     Constellation::CalculConstellations(observateurs.at(0), constellations);
     LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
-    const int xmax = QApplication::desktop()->width();
-    const int ymax = QApplication::desktop()->height();
 
-    if (PreviSat::width() > xmax)
-        PreviSat::setGeometry(0, 0, xmax, PreviSat::height());
-    if (PreviSat::height() > ymax)
-        PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
-
+    // Demarrage du temps reel
     chronometre->setInterval(200);
     connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
     chronometre->start();
@@ -2379,18 +2381,18 @@ void PreviSat::EnchainementCalculs() const
     /*
      * Calcul de la position courante des satellites
      */
-    if (nbSat > 0)
+    if (nbSat > 0) {
+
         Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
                                                traceCiel, satellites);
 
-    for (int i=0; i<nbSat; i++) {
-        if (satellites[i].isVisible() && !bipSat[i]) {
-            notif = true;
-            bipSat[i] = true;
+        for (int i=0; i<nbSat; i++) {
+            if (satellites[i].isVisible() && !bipSat[i]) {
+                notif = true;
+                bipSat[i] = true;
+            }
         }
-    }
 
-    if (nbSat > 0) {
         if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
             chronometre->stop();
             const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
@@ -2399,6 +2401,7 @@ void PreviSat::EnchainementCalculs() const
             l1 = "";
             l2 = "";
         }
+
         if (ui->onglets->count() < 7 && !satellites[0].isIeralt()) {
             l1 = tles.at(0).getLigne1();
             l2 = tles.at(0).getLigne2();
@@ -2492,222 +2495,6 @@ void PreviSat::AjoutFichier(const QUrl &url)
 
     /* Retour */
     return;
-}
-
-void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (total != -1) {
-        ui->barreProgression->setRange(0, total);
-        ui->barreProgression->setValue(recu);
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::TelechargementSuivant()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty()) {
-        emit TelechargementFini();
-        if (ui->miseAJourTLE->isVisible())
-            ui->frameBarreProgression->setVisible(false);
-        messagesStatut->setText(tr("Terminé !"));
-    } else {
-
-        const QUrl url = downQueue.dequeue();
-
-        const QString fic = QFileInfo(url.path()).fileName();
-        ui->fichierTelechargement->setText(fic);
-        if (ui->miseAJourTLE->isVisible()) {
-            ui->barreProgression->setValue(0);
-            ui->frameBarreProgression->setVisible(true);
-            ui->compteRenduMaj->setVisible(true);
-        }
-        ficDwn.setFileName(dirDwn + QDir::separator() + fic);
-
-        if (ficDwn.open(QIODevice::WriteOnly)) {
-
-            QNetworkRequest requete(url);
-            if (!amajDeb)
-                rep = mng.get(requete);
-
-            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
-            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
-            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
-
-        } else {
-            const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-            messagesStatut->setText(msg.arg(ficDwn.fileName()));
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::FinEnregistrementFichier()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    bool atr = false;
-    bool aup = false;
-    ficDwn.close();
-
-    /* Corps de la methode */
-    QFile fd(ficDwn.fileName());
-    fd.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flx(&fd);
-    const QString lg = flx.readLine();
-    fd.close();
-    if (lg.contains("DOCTYPE"))
-        atr = true;
-
-    if (rep->error() || atr) {
-
-        // Erreur survenue lors du telechargement
-        ui->frameBarreProgression->setVisible(false);
-        const QFileInfo ff(ficDwn.fileName());
-
-        if (fd.exists())
-            fd.remove();
-
-        QString msg = tr("Erreur lors du téléchargement du fichier %1");
-        if (rep->error())
-            msg += " : " + rep->errorString();
-        Messages::Afficher(msg.arg(ff.fileName()), WARNING);
-
-    } else {
-
-        // Mise a jour des TLE
-        if (atrouve) {
-
-            if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
-
-                const int nb = TLE::VerifieFichier(nomfic, false);
-                if (nb == 0) {
-                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                    Messages::Afficher(msg.arg(nomfic), WARNING);
-                } else {
-
-                    // Recuperation des TLE de la liste
-                    TLE::LectureFichier(nomfic, liste, tles);
-
-                    Satellite::initCalcul = false;
-                    Satellite::LectureDonnees(liste, tles, satellites);
-
-                    CalculsAffichage();
-                }
-            }
-        }
-
-        // Mise a jour des fichiers internes
-        if (amajInt) {
-
-            amajInt = false;
-            if (ficDwn.exists()) {
-
-                ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
-                QTextStream flux(&ficDwn);
-                const QStringList ligne = flux.readLine().split("-");
-                ficDwn.close();
-                rep->deleteLater();
-                TelechargementSuivant();
-
-                const int an = ligne.at(0).toInt();
-                const int mo = ligne.at(1).toInt();
-                const int jo = ligne.at(2).toInt();
-                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
-
-                const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
-                QStringList fichiers;
-                fichiers << "donnees.sat" << "iridium.sts";
-                dirDwn = dirDat;
-
-                for(int i=0; i<fichiers.size(); i++) {
-
-                    const QString fic = dirDat + QDir::separator() + fichiers.at(i);
-                    const QFileInfo fi(fic);
-
-                    if (fi.lastModified() < dateHttp) {
-                        AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
-                        aup = true;
-                    }
-                }
-                if (downQueue.isEmpty())
-                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-
-                if (aup)
-                    QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
-                else
-                    QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
-            }
-        }
-
-        // Mise a jour des fichiers TLE selectionnes
-        if (aupdnow) {
-
-            QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
-            QFileInfo ff(fichierALire);
-            QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
-
-            QFile fi(fichierAMettreAJour);
-            if (fi.exists()) {
-
-                QStringList compteRendu;
-                TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
-
-                bool aecr = false;
-                EcritureCompteRenduMaj(compteRendu, aecr);
-                aup = true;
-
-            } else {
-                fi.copy(fichierALire, fichierAMettreAJour);
-                const QString msg = tr("Ajout du fichier %1") + "\n";
-                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
-            }
-
-            if (fichierAMettreAJour == nomfic) {
-
-                const int nb = TLE::VerifieFichier(nomfic, false);
-                if (nb == 0) {
-                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                    Messages::Afficher(msg.arg(ff.fileName()), WARNING);
-                } else {
-
-                    // Recuperation des TLE de la liste
-                    TLE::LectureFichier(nomfic, liste, tles);
-
-                    Satellite::initCalcul = false;
-                    Satellite::LectureDonnees(liste, tles, satellites);
-
-                    CalculsAffichage();
-                }
-            }
-        }
-    }
-
-    if (aup)
-        rep->deleteLater();
-    TelechargementSuivant();
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::EcritureFichier()
-{
-    ficDwn.write(rep->readAll());
 }
 
 
@@ -2970,6 +2757,57 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
     return;
 }
 
+void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
+    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
+    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
+    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
+    const QString fic = compteRendu.at(compteRendu.count()-5);
+
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
+    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+    if (nbmaj < nbold && nbmaj > 0) {
+        for(int i=0; i<compteRendu.count()-5; i++) {
+            const QString nomsat = compteRendu.at(i).split("#").at(0);
+            const QString norad = compteRendu.at(i).split("#").at(1);
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
+        }
+
+        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+    }
+
+    if (nbmaj == nbold && nbold != 0) {
+        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
+    }
+
+    if (nbmaj == 0 && nbold != 0)
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis à jour") + "\n");
+
+    if (nbsup > 0) {
+        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
+    }
+
+    if (nbadd > 0) {
+        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
+    }
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+
+    aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::ModificationOption()
 {
     /* Declarations des variables locales */
@@ -3088,96 +2926,6 @@ int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
     return (k);
 }
 
-/*
- * Gestion du temps reel
- */
-void PreviSat::GestionTempsReel()
-{
-    /* Declarations des variables locales */
-    double pas1, pas2;
-    Date date1, date2;
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->tempsReel->isChecked()) {
-        modeFonctionnement->setText(tr("Temps réel"));
-        date1 = Date(dateCourante.getOffsetUTC());
-        pas1 = ui->pasReel->currentText().toDouble();
-        pas2 = 0.;
-    } else {
-        modeFonctionnement->setText(tr("Mode manuel"));
-        date1 = dateCourante;
-        if (ui->valManuel->currentIndex() < 3) {
-            pas1 = ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) *
-                    NB_JOUR_PAR_SEC;
-        } else {
-            pas1 = ui->pasManuel->currentText().toDouble();
-        }
-        pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 1. : pas1 * NB_SEC_PAR_JOUR;
-    }
-
-    // Affichage du jour julien
-    date2 = Date(date1.getAnnee(), 1, 1., 0.);
-    if (ui->calJulien->isChecked()) {
-        stsDate->setText(QString::number(date1.getJourJulien() + TJ2000, 'f', 5));
-        stsHeure->setText(QString::number(date1.getJourJulien() - date2.getJourJulien() + 1., 'f', 5));
-        stsDate->setToolTip(tr("Jour julien"));
-        stsHeure->setToolTip(tr("Jour"));
-    } else {
-        stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
-        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), date1.getSecondes()).toString("hh:mm:ss"));
-        stsDate->setToolTip(tr("Date"));
-        stsHeure->setToolTip(tr("Heure"));
-    }
-
-    // Lancement des calculs
-    if (ui->tempsReel->isChecked() && tim.secsTo(QDateTime::currentDateTime()) >= pas1) {
-        tim = (tim.addSecs(pas1) <= QDateTime::currentDateTime()) ? tim.addSecs(pas1) : QDateTime::currentDateTime();
-
-        // Date actuelle
-        dateCourante = Date(dateCourante.getOffsetUTC());
-
-        // Enchainement de l'ensemble des calculs
-        EnchainementCalculs();
-
-        // Donnees numeriques
-        AffichageDonnees();
-
-        // Affichage des elements graphiques
-        AffichageCourbes();
-    }
-
-    if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTime()) >= pas2)) {
-        tim = QDateTime::currentDateTime();
-
-        if (ui->pause->isEnabled()) {
-
-            if (!ui->pasManuel->view()->isVisible()) {
-
-                double jd = dateCourante.getJourJulien();
-                if (!ui->rewind->isEnabled() || !ui->backward->isEnabled())
-                    jd -= pas1;
-                if (!ui->play->isEnabled() || !ui->forward->isEnabled())
-                    jd += pas1;
-
-                dateCourante = Date(jd + EPS_DATES, dateCourante.getOffsetUTC());
-
-                // Enchainement de l'ensemble des calculs
-                EnchainementCalculs();
-
-                if (ui->dateHeure4->isVisible())
-                    ui->dateHeure4->setDateTime(dateCourante.ToQDateTime(1));
-                else
-                    ui->dateHeure3->setDateTime(dateCourante.ToQDateTime(1));
-            }
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
 
 /***********
  * Systeme *
@@ -3291,6 +3039,369 @@ bool PreviSat::DecompressionFichierGz(const QString &fichierGz, const QString &f
 
     /* Retour */
     return (res);
+}
+
+
+/*
+ * Gestion du temps reel
+ */
+void PreviSat::GestionTempsReel()
+{
+    /* Declarations des variables locales */
+    double pas1, pas2;
+    Date date1, date2;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->tempsReel->isChecked()) {
+        modeFonctionnement->setText(tr("Temps réel"));
+        date1 = Date(dateCourante.getOffsetUTC());
+        pas1 = ui->pasReel->currentText().toDouble();
+        pas2 = 0.;
+    } else {
+        modeFonctionnement->setText(tr("Mode manuel"));
+        date1 = dateCourante;
+        if (ui->valManuel->currentIndex() < 3) {
+            pas1 = ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) *
+                    NB_JOUR_PAR_SEC;
+        } else {
+            pas1 = ui->pasManuel->currentText().toDouble();
+        }
+        pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 1. : pas1 * NB_SEC_PAR_JOUR;
+    }
+
+    // Affichage du jour julien
+    date2 = Date(date1.getAnnee(), 1, 1., 0.);
+    if (ui->calJulien->isChecked()) {
+        stsDate->setText(QString::number(date1.getJourJulien() + TJ2000, 'f', 5));
+        stsHeure->setText(QString::number(date1.getJourJulien() - date2.getJourJulien() + 1., 'f', 5));
+        stsDate->setToolTip(tr("Jour julien"));
+        stsHeure->setToolTip(tr("Jour"));
+    } else {
+        stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
+        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), date1.getSecondes()).toString("hh:mm:ss"));
+        stsDate->setToolTip(tr("Date"));
+        stsHeure->setToolTip(tr("Heure"));
+    }
+
+    // Lancement des calculs
+    if (ui->tempsReel->isChecked() && tim.secsTo(QDateTime::currentDateTime()) >= pas1) {
+        tim = (tim.addSecs(pas1) <= QDateTime::currentDateTime()) ? tim.addSecs(pas1) : QDateTime::currentDateTime();
+
+        // Date actuelle
+        dateCourante = Date(dateCourante.getOffsetUTC());
+
+        // Enchainement de l'ensemble des calculs
+        EnchainementCalculs();
+
+        // Donnees numeriques
+        AffichageDonnees();
+
+        // Affichage des elements graphiques
+        AffichageCourbes();
+    }
+
+    if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTime()) >= pas2)) {
+        tim = QDateTime::currentDateTime();
+
+        if (ui->pause->isEnabled()) {
+
+            if (!ui->pasManuel->view()->isVisible()) {
+
+                double jd = dateCourante.getJourJulien();
+                if (!ui->rewind->isEnabled() || !ui->backward->isEnabled())
+                    jd -= pas1;
+                if (!ui->play->isEnabled() || !ui->forward->isEnabled())
+                    jd += pas1;
+
+                dateCourante = Date(jd + EPS_DATES, dateCourante.getOffsetUTC());
+
+                // Enchainement de l'ensemble des calculs
+                EnchainementCalculs();
+
+                if (ui->dateHeure4->isVisible())
+                    ui->dateHeure4->setDateTime(dateCourante.ToQDateTime(1));
+                else
+                    ui->dateHeure3->setDateTime(dateCourante.ToQDateTime(1));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::CalculsTermines()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QFileInfo fi(dirTmp + QDir::separator() + "prevision.txt");
+    switch (threadCalculs->getTypeCalcul()) {
+    case ThreadCalculs::PREVISION:
+        ui->annulerPrev->setVisible(false);
+        ui->calculsPrev->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherPrev->setVisible(true);
+            ui->afficherPrev->setFocus();
+        }
+        break;
+
+    case ThreadCalculs::IRIDIUM:
+        ui->annulerIri->setVisible(false);
+        ui->calculsIri->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherIri->setVisible(true);
+            ui->afficherIri->setFocus();
+            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->text()));
+        }
+        break;
+
+    case ThreadCalculs::EVENEMENTS:
+        ui->annulerEvt->setVisible(false);
+        ui->calculsEvt->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherEvt->setVisible(true);
+            ui->afficherEvt->setFocus();
+        }
+        break;
+
+    case ThreadCalculs::TRANSITS:
+        ui->annulerTransit->setVisible(false);
+        ui->calculsTransit->setVisible(true);
+        if (fi.exists()) {
+            ui->afficherTransit->setVisible(true);
+            ui->afficherTransit->setFocus();
+            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->text()));
+        }
+
+    default:
+        break;
+    }
+    threadCalculs->deleteLater();
+    messagesStatut->setText((fi.exists()) ? tr("Terminé !") : "");
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::TelechargementSuivant()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty()) {
+        emit TelechargementFini();
+        if (ui->miseAJourTLE->isVisible())
+            ui->frameBarreProgression->setVisible(false);
+        messagesStatut->setText(tr("Terminé !"));
+    } else {
+
+        const QUrl url = downQueue.dequeue();
+
+        const QString fic = QFileInfo(url.path()).fileName();
+        ui->fichierTelechargement->setText(fic);
+        if (ui->miseAJourTLE->isVisible()) {
+            ui->barreProgression->setValue(0);
+            ui->frameBarreProgression->setVisible(true);
+            ui->compteRenduMaj->setVisible(true);
+        }
+        ficDwn.setFileName(dirDwn + QDir::separator() + fic);
+
+        if (ficDwn.open(QIODevice::WriteOnly)) {
+
+            QNetworkRequest requete(url);
+            if (!amajDeb)
+                rep = mng.get(requete);
+
+            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
+            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
+            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
+
+        } else {
+            const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+            messagesStatut->setText(msg.arg(ficDwn.fileName()));
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::FinEnregistrementFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool atr = false;
+    bool aup = false;
+    ficDwn.close();
+
+    /* Corps de la methode */
+    QFile fd(ficDwn.fileName());
+    fd.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flx(&fd);
+    const QString lg = flx.readLine();
+    fd.close();
+    if (lg.contains("DOCTYPE"))
+        atr = true;
+
+    if (rep->error() || atr) {
+
+        // Erreur survenue lors du telechargement
+        ui->frameBarreProgression->setVisible(false);
+        const QFileInfo ff(ficDwn.fileName());
+
+        if (fd.exists())
+            fd.remove();
+
+        QString msg = tr("Erreur lors du téléchargement du fichier %1");
+        if (rep->error())
+            msg += " : " + rep->errorString();
+        Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+
+    } else {
+
+        // Mise a jour des TLE
+        if (atrouve) {
+
+            if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
+
+                const int nb = TLE::VerifieFichier(nomfic, false);
+                if (nb == 0) {
+                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    Messages::Afficher(msg.arg(nomfic), WARNING);
+                } else {
+
+                    // Recuperation des TLE de la liste
+                    TLE::LectureFichier(nomfic, liste, tles);
+
+                    Satellite::initCalcul = false;
+                    Satellite::LectureDonnees(liste, tles, satellites);
+
+                    CalculsAffichage();
+                }
+            }
+        }
+
+        // Mise a jour des fichiers internes
+        if (amajInt) {
+
+            amajInt = false;
+            if (ficDwn.exists()) {
+
+                ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
+                QTextStream flux(&ficDwn);
+                const QStringList ligne = flux.readLine().split("-");
+                ficDwn.close();
+                rep->deleteLater();
+                TelechargementSuivant();
+
+                const int an = ligne.at(0).toInt();
+                const int mo = ligne.at(1).toInt();
+                const int jo = ligne.at(2).toInt();
+                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+
+                const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
+                QStringList fichiers;
+                fichiers << "donnees.sat" << "iridium.sts";
+                dirDwn = dirDat;
+
+                for(int i=0; i<fichiers.size(); i++) {
+
+                    const QString fic = dirDat + QDir::separator() + fichiers.at(i);
+                    const QFileInfo fi(fic);
+
+                    if (fi.lastModified() < dateHttp) {
+                        AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
+                        aup = true;
+                    }
+                }
+                if (downQueue.isEmpty())
+                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+                if (aup)
+                    QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
+                else
+                    QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
+            }
+        }
+
+        // Mise a jour des fichiers TLE selectionnes
+        if (aupdnow) {
+
+            QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
+            QFileInfo ff(fichierALire);
+            QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
+
+            QFile fi(fichierAMettreAJour);
+            if (fi.exists()) {
+
+                QStringList compteRendu;
+                TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
+
+                bool aecr = false;
+                EcritureCompteRenduMaj(compteRendu, aecr);
+                aup = true;
+
+            } else {
+                fi.copy(fichierALire, fichierAMettreAJour);
+                const QString msg = tr("Ajout du fichier %1") + "\n";
+                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
+            }
+
+            if (fichierAMettreAJour == nomfic) {
+
+                const int nb = TLE::VerifieFichier(nomfic, false);
+                if (nb == 0) {
+                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+                } else {
+
+                    // Recuperation des TLE de la liste
+                    TLE::LectureFichier(nomfic, liste, tles);
+
+                    Satellite::initCalcul = false;
+                    Satellite::LectureDonnees(liste, tles, satellites);
+
+                    CalculsAffichage();
+                }
+            }
+        }
+    }
+
+    if (aup)
+        rep->deleteLater();
+    TelechargementSuivant();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::EcritureFichier()
+{
+    ficDwn.write(rep->readAll());
+}
+
+void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (total != -1) {
+        ui->barreProgression->setRange(0, total);
+        ui->barreProgression->setValue(recu);
+    }
+
+    /* Retour */
+    return;
 }
 
 
@@ -4091,6 +4202,45 @@ void PreviSat::on_maximise_clicked()
     return;
 }
 
+void PreviSat::on_affichageCiel_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->ciel->isVisible()) {
+        ui->carte->setVisible(true);
+        ui->frameLat->setVisible(true);
+        ui->frameLon->setVisible(true);
+        ui->ciel->setVisible(false);
+        ui->nord->setVisible(false);
+        ui->sud->setVisible(false);
+        ui->est->setVisible(false);
+        ui->ouest->setVisible(false);
+        ui->affichageCiel->setToolTip(tr("Carte du ciel"));
+    } else {
+        ui->carte->setVisible(false);
+        ui->frameLat->setVisible(false);
+        ui->frameLon->setVisible(false);
+        ui->ciel->setVisible(true);
+        ui->nord->setVisible(true);
+        ui->sud->setVisible(true);
+        ui->est->setVisible(true);
+        ui->ouest->setVisible(true);
+        ui->affichageCiel->setToolTip(tr("Carte du monde"));
+    }
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    QResizeEvent *event;
+    resizeEvent(event);
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_directHelp_clicked()
 {
     /* Declarations des variables locales */
@@ -4110,6 +4260,10 @@ void PreviSat::on_directHelp_clicked()
     return;
 }
 
+
+/*
+ * Menu deroulant
+ */
 void PreviSat::on_actionOuvrir_fichier_TLE_activated()
 {
     /* Declarations des variables locales */
@@ -4308,14 +4462,19 @@ void PreviSat::on_actionImprimer_carte_activated()
     return;
 }
 
+void PreviSat::on_actionFichier_d_aide_activated(int arg1)
+{
+    on_directHelp_clicked();
+}
+
 void PreviSat::on_actionAstropedia_free_fr_activated()
 {
     QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/"));
 }
 
-void PreviSat::on_actionRapport_de_bug_activated()
+void PreviSat::on_actionDonnez_votre_avis_activated()
 {
-    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/contacts/rapport/rapport.html"));
+    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/contacts/avis/avis.html"));
 }
 
 void PreviSat::on_actionTelecharger_les_mises_jour_activated()
@@ -4323,9 +4482,9 @@ void PreviSat::on_actionTelecharger_les_mises_jour_activated()
     QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/"));
 }
 
-void PreviSat::on_actionDonnez_votre_avis_activated()
+void PreviSat::on_actionRapport_de_bug_activated()
 {
-    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/contacts/avis/avis.html"));
+    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/contacts/rapport/rapport.html"));
 }
 
 void PreviSat::on_actionWww_celestrak_com_activated()
@@ -4338,45 +4497,25 @@ void PreviSat::on_actionWww_space_track_org_activated()
     QDesktopServices::openUrl(QUrl("http://www.space-track.org"));
 }
 
-void PreviSat::on_affichageCiel_clicked()
+void PreviSat::on_actionA_propos_activated(int arg1)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->ciel->isVisible()) {
-        ui->carte->setVisible(true);
-        ui->frameLat->setVisible(true);
-        ui->frameLon->setVisible(true);
-        ui->ciel->setVisible(false);
-        ui->nord->setVisible(false);
-        ui->sud->setVisible(false);
-        ui->est->setVisible(false);
-        ui->ouest->setVisible(false);
-        ui->affichageCiel->setToolTip(tr("Carte du ciel"));
-    } else {
-        ui->carte->setVisible(false);
-        ui->frameLat->setVisible(false);
-        ui->frameLon->setVisible(false);
-        ui->ciel->setVisible(true);
-        ui->nord->setVisible(true);
-        ui->sud->setVisible(true);
-        ui->est->setVisible(true);
-        ui->ouest->setVisible(true);
-        ui->affichageCiel->setToolTip(tr("Carte du monde"));
-    }
-
-    // Enchainement de l'ensemble des calculs
-    EnchainementCalculs();
-
-    QResizeEvent *event;
-    resizeEvent(event);
+    Apropos *apropos = new Apropos;
+    apropos->setWindowModality(Qt::ApplicationModal);
+    apropos->show();
 
     /* Retour */
     return;
 }
 
+
+/*
+ * Gestion de la liste principale de satellites
+ */
 void PreviSat::on_actionDefinir_par_defaut_activated()
 {
     /* Declarations des variables locales */
@@ -4677,6 +4816,9 @@ void PreviSat::on_liste1_entered(const QModelIndex &index)
 }
 
 
+/*
+ * Gestion de l'onglet General
+ */
 void PreviSat::on_lieuxObservation1_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
@@ -4922,6 +5064,10 @@ void PreviSat::on_backward_clicked()
     return;
 }
 
+
+/*
+ * Gestion des options d'affichage
+ */
 void PreviSat::on_affsoleil_stateChanged(int arg1)
 {
     ModificationOption();
@@ -4930,6 +5076,22 @@ void PreviSat::on_affsoleil_stateChanged(int arg1)
 void PreviSat::on_affnuit_stateChanged(int arg1)
 {
     ModificationOption();
+}
+
+void PreviSat::on_intensiteOmbre_valueChanged(int value)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->intensiteOmbre->isVisible()) {
+        AffichageCourbes();
+        ui->intensiteOmbre->setToolTip(QString::number(value));
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_affgrille_stateChanged(int arg1)
@@ -5098,22 +5260,6 @@ void PreviSat::on_utc_toggled(bool checked)
     return;
 }
 
-void PreviSat::on_intensiteOmbre_valueChanged(int value)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->intensiteOmbre->isVisible()) {
-        AffichageCourbes();
-        ui->intensiteOmbre->setToolTip(QString::number(value));
-    }
-
-    /* Retour */
-    return;
-}
-
 void PreviSat::on_updown_valueChanged(int arg1)
 {
     /* Declarations des variables locales */
@@ -5222,26 +5368,10 @@ void PreviSat::on_majFicPrevisat_clicked()
     return;
 }
 
-void PreviSat::on_actionFichier_d_aide_activated(int arg1)
-{
-    on_directHelp_clicked();
-}
 
-void PreviSat::on_actionA_propos_activated(int arg1)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    Apropos *apropos = new Apropos;
-    apropos->setWindowModality(Qt::ApplicationModal);
-    apropos->show();
-
-    /* Retour */
-    return;
-}
-
+/*
+ * Gestion des lieux d'observation
+ */
 void PreviSat::on_actionCreer_une_categorie_activated(int arg1)
 {
     /* Declarations des variables locales */
@@ -5843,6 +5973,10 @@ void PreviSat::on_supprLieu_clicked()
     return;
 }
 
+
+/*
+ * Gestion des onglets
+ */
 void PreviSat::on_barreMenu_pressed()
 {
     ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) ||
@@ -6080,57 +6214,6 @@ void PreviSat::on_mettreAJourTLE_clicked()
     return;
 }
 
-void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
-    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
-    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
-    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
-    const QString fic = compteRendu.at(compteRendu.count()-5);
-
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
-    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
-    if (nbmaj < nbold && nbmaj > 0) {
-        for(int i=0; i<compteRendu.count()-5; i++) {
-            const QString nomsat = compteRendu.at(i).split("#").at(0);
-            const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
-        }
-
-        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
-    }
-
-    if (nbmaj == nbold && nbold != 0) {
-        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
-    }
-
-    if (nbmaj == 0 && nbold != 0)
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis à jour") + "\n");
-
-    if (nbsup > 0) {
-        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
-    }
-
-    if (nbadd > 0) {
-        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
-    }
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
-
-    aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
-
-    /* Retour */
-    return;
-}
-
 void PreviSat::on_gestionnaireMajTLE_clicked()
 {
     /* Declarations des variables locales */
@@ -6165,6 +6248,10 @@ void PreviSat::on_actionCopier_dans_le_presse_papier_activated()
     return;
 }
 
+
+/*
+ * Extraction d'un fichier TLE
+ */
 void PreviSat::on_numeroNORADCreerTLE_currentIndexChanged(int index)
 {
     ui->frameNORAD->setVisible(index != 0);
@@ -6416,6 +6503,9 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 }
 
 
+/*
+ * Calcul des previsions de passage
+ */
 void PreviSat::on_effacerHeuresPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -6682,7 +6772,6 @@ void PreviSat::on_calculsPrev_clicked()
     return;
 }
 
-
 void PreviSat::on_annulerPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -6705,7 +6794,6 @@ void PreviSat::on_annulerPrev_clicked()
     return;
 }
 
-
 void PreviSat::on_afficherPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -6722,6 +6810,9 @@ void PreviSat::on_afficherPrev_clicked()
 }
 
 
+/*
+ * Calcul des flashs Iridium
+ */
 void PreviSat::on_effacerHeuresIri_clicked()
 {
     /* Declarations des variables locales */
@@ -6995,6 +7086,9 @@ void PreviSat::on_afficherIri_clicked()
 }
 
 
+/*
+ * Calcul des evenements orbitaux
+ */
 void PreviSat::on_effacerHeuresEvt_clicked()
 {
     /* Declarations des variables locales */
@@ -7004,6 +7098,41 @@ void PreviSat::on_effacerHeuresEvt_clicked()
     /* Corps de la methode */
     ui->dateInitialeEvt->setTime(QTime(0, 0, 0));
     ui->dateFinaleEvt->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_liste3_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->liste3->currentRow() >= 0)
+        ui->menuContextuelListes->exec(QCursor::pos());
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_liste3_entered(const QModelIndex &index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->liste3->setToolTip("");
+
+    /* Corps de la methode */
+    const int r = index.row();
+    const QStringList sat = ui->liste3->item(r)->text().split("#");
+    const QString nomsat = sat.at(0).trimmed();
+    const QString norad = sat.at(1);
+    if (nomsat != norad) {
+        const QString msg = tr("%1 (numéro NORAD : %2)");
+        ui->liste3->setToolTip(msg.arg(nomsat).arg(norad));
+    }
 
     /* Retour */
     return;
@@ -7151,41 +7280,10 @@ void PreviSat::on_afficherEvt_clicked()
     return;
 }
 
-void PreviSat::on_liste3_customContextMenuRequested(const QPoint &pos)
-{
-    /* Declarations des variables locales */
 
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->liste3->currentRow() >= 0)
-        ui->menuContextuelListes->exec(QCursor::pos());
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_liste3_entered(const QModelIndex &index)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    ui->liste3->setToolTip("");
-
-    /* Corps de la methode */
-    const int r = index.row();
-    const QStringList sat = ui->liste3->item(r)->text().split("#");
-    const QString nomsat = sat.at(0).trimmed();
-    const QString norad = sat.at(1);
-    if (nomsat != norad) {
-        const QString msg = tr("%1 (numéro NORAD : %2)");
-        ui->liste3->setToolTip(msg.arg(nomsat).arg(norad));
-    }
-
-    /* Retour */
-    return;
-}
-
+/*
+ * Calcul des transits ISS
+ */
 void PreviSat::on_effacerHeuresTransit_clicked()
 {
     /* Declarations des variables locales */
@@ -7391,62 +7489,6 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
     afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::CalculsTermines()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QFileInfo fi(dirTmp + QDir::separator() + "prevision.txt");
-    switch (threadCalculs->getTypeCalcul()) {
-    case ThreadCalculs::PREVISION:
-        ui->annulerPrev->setVisible(false);
-        ui->calculsPrev->setVisible(true);
-        if (fi.exists()) {
-            ui->afficherPrev->setVisible(true);
-            ui->afficherPrev->setFocus();
-        }
-        break;
-
-    case ThreadCalculs::IRIDIUM:
-        ui->annulerIri->setVisible(false);
-        ui->calculsIri->setVisible(true);
-        if (fi.exists()) {
-            ui->afficherIri->setVisible(true);
-            ui->afficherIri->setFocus();
-            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->text()));
-        }
-        break;
-
-    case ThreadCalculs::EVENEMENTS:
-        ui->annulerEvt->setVisible(false);
-        ui->calculsEvt->setVisible(true);
-        if (fi.exists()) {
-            ui->afficherEvt->setVisible(true);
-            ui->afficherEvt->setFocus();
-        }
-        break;
-
-    case ThreadCalculs::TRANSITS:
-        ui->annulerTransit->setVisible(false);
-        ui->calculsTransit->setVisible(true);
-        if (fi.exists()) {
-            ui->afficherTransit->setVisible(true);
-            ui->afficherTransit->setFocus();
-            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->text()));
-        }
-
-    default:
-        break;
-    }
-    threadCalculs->deleteLater();
-    messagesStatut->setText((fi.exists()) ? tr("Terminé !") : "");
 
     /* Retour */
     return;
