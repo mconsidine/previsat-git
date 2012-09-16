@@ -67,7 +67,6 @@ private:
     Ui::PreviSat *ui;
 
     // Initialisation
-    void InitFicCst() const;
     void InitFicObs(const bool alarm) const;
     void InitFicMap(const bool majAff) const;
 
@@ -84,12 +83,12 @@ private:
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
     void VerifAgeTLE();
-    void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
 
     // Interface
     void SauveOngletGeneral(const QString &fic) const;
     void SauveOngletElementsOsculateurs(const QString &fic) const;
     void SauveOngletInformations(const QString &fic) const;
+    void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
     void ModificationOption();
     void AfficherLieuSelectionne(const int index);
     int getListeItemChecked(const QListWidget *listWidget) const;
@@ -109,6 +108,7 @@ private slots:
     void FinEnregistrementFichier();
     void EcritureFichier();
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
+
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -117,20 +117,24 @@ private slots:
     void mouseDoubleClickEvent(QMouseEvent *);
 
     void on_maximise_clicked();
+    void on_affichageCiel_clicked();
+
     void on_directHelp_clicked();
+
+    // Menu deroulant
     void on_actionOuvrir_fichier_TLE_activated();
     void on_actionEnregistrer_activated();
     void on_actionImprimer_carte_activated();
-    void on_actionTelecharger_les_mises_jour_activated();
-    void on_actionDonnez_votre_avis_activated();
-    void on_actionWww_space_track_org_activated();
-    void on_actionWww_celestrak_com_activated();
-    void on_actionRapport_de_bug_activated();
-    void on_actionAstropedia_free_fr_activated();
     void on_actionFichier_d_aide_activated(int arg1);
+    void on_actionAstropedia_free_fr_activated();
+    void on_actionDonnez_votre_avis_activated();
+    void on_actionTelecharger_les_mises_jour_activated();
+    void on_actionRapport_de_bug_activated();
+    void on_actionWww_celestrak_com_activated();
+    void on_actionWww_space_track_org_activated();
     void on_actionA_propos_activated(int arg1);
-    void on_affichageCiel_clicked();
 
+    // Gestion de la liste principale de satellites
     void on_actionDefinir_par_defaut_activated();
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
@@ -138,6 +142,7 @@ private slots:
     void on_liste1_customContextMenuRequested(const QPoint &pos);
     void on_liste1_entered(const QModelIndex &index);
 
+    // Gestion de l'onglet General
     void on_lieuxObservation1_currentIndexChanged(int index);
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
@@ -149,8 +154,10 @@ private slots:
     void on_forward_clicked();
     void on_backward_clicked();
 
+    // Gestion des options d'affichage
     void on_affsoleil_stateChanged(int arg1);
     void on_affnuit_stateChanged(int arg1);
+    void on_intensiteOmbre_valueChanged(int value);
     void on_affgrille_stateChanged(int arg1);
     void on_afflune_stateChanged(int arg1);
     void on_affphaselune_stateChanged(int arg1);
@@ -176,12 +183,12 @@ private slots:
     void on_unitesMi_toggled(bool checked);
     void on_heureLegale_toggled(bool checked);
     void on_utc_toggled(bool checked);
-    void on_intensiteOmbre_valueChanged(int value);
     void on_updown_valueChanged(int arg1);
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
     void on_majFicPrevisat_clicked();
 
+    // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
     void on_actionSupprimerCategorie_activated(int arg1);
     void on_actionTelechargerCategorie_activated(int arg1);
@@ -203,10 +210,12 @@ private slots:
     void on_ajoutLieu_clicked();
     void on_supprLieu_clicked();
 
+    // Gestion des onglets
     void on_barreMenu_pressed();
     void on_onglets_currentChanged(QWidget *arg1);
     void on_ongletsOutils_currentChanged(QWidget *arg1);
 
+    // Mise a jour des TLE
     void on_MajMaintenant_clicked();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
@@ -215,6 +224,7 @@ private slots:
     void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
     void on_actionCopier_dans_le_presse_papier_activated();
 
+    // Extraction d'un fichier TLE
     void on_numeroNORADCreerTLE_currentIndexChanged(int index);
     void on_ADNoeudAscendantCreerTLE_currentIndexChanged(int index);
     void on_excentriciteCreerTLE_currentIndexChanged(int index);
@@ -224,6 +234,7 @@ private slots:
     void on_parcourir2CreerTLE_clicked();
     void on_rechercheCreerTLE_clicked();
 
+    // Calcul des previsions de passage
     void on_effacerHeuresPrev_clicked();
     void on_liste2_customContextMenuRequested(const QPoint &pos);
     void on_liste2_entered(const QModelIndex &index);
@@ -236,6 +247,7 @@ private slots:
     void on_annulerPrev_clicked();
     void on_afficherPrev_clicked();
 
+    // Calcul des flashs Iridium
     void on_effacerHeuresIri_clicked();
     void on_parcourirIri_clicked();
     void on_hauteurSatIri_currentIndexChanged(int index);
@@ -244,13 +256,15 @@ private slots:
     void on_annulerIri_clicked();
     void on_afficherIri_clicked();
 
+    // Calcul des evenements orbitaux
     void on_effacerHeuresEvt_clicked();
+    void on_liste3_customContextMenuRequested(const QPoint &pos);
+    void on_liste3_entered(const QModelIndex &index);
     void on_calculsEvt_clicked();
     void on_annulerEvt_clicked();
     void on_afficherEvt_clicked();
-    void on_liste3_customContextMenuRequested(const QPoint &pos);
-    void on_liste3_entered(const QModelIndex &index);
 
+    // Calcul des transits ISS
     void on_effacerHeuresTransit_clicked();
     void on_parcourirTransit_clicked();
     void on_hauteurSatTransit_currentIndexChanged(int index);
