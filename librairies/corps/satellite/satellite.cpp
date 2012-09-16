@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    16 septembre 2012
  *
  */
 
@@ -540,8 +540,10 @@ void Satellite::SGP4Init()
     _sat.inclo = DEG2RAD * _tle.getInclo();
     _sat.mo = DEG2RAD * _tle.getMo();
     _sat.no = _tle.getNo() * DEUX_PI * NB_JOUR_PAR_MIN;
-    if (_sat.no < EPSDBL100)
-        throw PreviSatException();
+    if (_sat.no < EPSDBL100) {
+	    const QString msg = QObject::tr("Nombre de révolutions par jour négatif\nSatellite %1 (numéro NORAD %2)");
+        throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
+    }
 
     _sat.omegao = DEG2RAD * _tle.getOmegao();
 
@@ -583,9 +585,10 @@ void Satellite::SGP4Init()
         sfour = ss;
         qzms24 = qzms2t;
 
-        if (_sat.rp < 1.)
-            throw new PreviSatException();
-
+        if (_sat.rp < 1.) {
+            const QString msg = QObject::tr("TLE contenant des valeurs aboutissant à une altitude négative\nSatellite %1 (numéro NORAD %2)");
+            throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
+        }
         const double perige = (_sat.rp - 1.) * RAYON_TERRESTRE;
         if (perige < 156.) {
             sfour = perige - 78.;
@@ -688,7 +691,8 @@ void Satellite::SGP4Init()
         }
         _sat.init = true;
     } else {
-        throw new PreviSatException();
+	    const QString msg = QObject::tr("Valeurs numériques du TLE incorrectes\nSatellite %1 (numéro NORAD %2)");
+        throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
     }
 
     /* Retour */
