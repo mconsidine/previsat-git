@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 septembre 2012
+ * >    16 septembre 2012
  *
  */
 
@@ -3348,7 +3348,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
     settings.setValue("fichier/iridium", ui->fichierTLEIri->text());
-    settings.setValue("fichier/fichierMaj", ui->fichierAMettreAJour->text());
+    settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
@@ -6050,6 +6050,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
         }
 
         messagesStatut->setText(tr("Terminé !"));
+        ui->compteRenduMaj->setVisible(true);
 
         if (nomfic == ui->fichierAMettreAJour->text().trimmed() && aecr) {
 
@@ -6357,50 +6358,43 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 
             // Numero NORAD
             const int norad = tabtle.at(isat).getNorad().toInt();
-            if (norad >= nrdmin && norad <= nrdmax) {
+            bool aecr = (norad >= nrdmin && norad <= nrdmax);
 
-                // Ascension droite du noeud ascendant
-                if (tabtle.at(isat).getOmegao() >= ascmin && tabtle.at(isat).getOmegao() <= ascmax) {
+            // Ascension droite du noeud ascendant
+            aecr = aecr && (tabtle.at(isat).getOmegao() >= ascmin && tabtle.at(isat).getOmegao() <= ascmax);
 
-                    // Excentricite
-                    if (tabtle.at(isat).getEcco() >= exmin && tabtle.at(isat).getEcco() <= exmax) {
+            // Excentricite
+            aecr = aecr && (tabtle.at(isat).getEcco() >= exmin && tabtle.at(isat).getEcco() <= exmax);
 
-                        // Inclinaison
-                        int iinc = 0;
-                        if (tabtle.at(isat).getInclo() >= imin1 && tabtle.at(isat).getInclo() <= imax1)
-                            iinc = 1;
-                        if (tabtle.at(isat).getInclo() >= imin2 && tabtle.at(isat).getInclo() <= imax2 &&
-                                ui->inclinaisonCreerTLE->currentIndex() == 1)
-                            iinc = 1;
+            // Inclinaison
+            aecr = aecr && ((tabtle.at(isat).getInclo() >= imin1 && tabtle.at(isat).getInclo() <= imax1) ||
+                            (tabtle.at(isat).getInclo() >= imin2 && tabtle.at(isat).getInclo() <= imax2 &&
+                             ui->inclinaisonCreerTLE->currentIndex() == 1));
 
-                        if (iinc == 1) {
+            // Moyen mouvement
+            aecr = aecr && (tabtle.at(isat).getNo() >= nbrevmin && tabtle.at(isat).getNo() <= nbrevmax);
 
-                            // Moyen mouvement
-                            if (tabtle.at(isat).getNo() >= nbrevmin && tabtle.at(isat).getNo() <= nbrevmax) {
+            // Argument du perigee
+            aecr = aecr && (tabtle.at(isat).getArgpo() >= argmin && tabtle.at(isat).getArgpo() <= argmax);
 
-                                if (tabtle.at(isat).getArgpo() >= argmin && tabtle.at(isat).getArgpo() <= argmax) {
+            // Magnitude
+            double mag;
+            if (sats.at(isat).getMagnitudeStandard() < 98.9) {
+                const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI *
+                                                               NB_JOUR_PAR_MIN), DEUX_TIERS);
+                mag = sats.at(isat).getMagnitudeStandard() - 15.75 + 5. *
+                        log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
+            } else {
+                mag = -10.;
+            }
+            aecr = aecr && (mag <= mgmax) ;
 
-                                    // Magnitude
-                                    if (sats.at(isat).getMagnitudeStandard() < 98.) {
-                                        const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI *
-                                                                                       NB_JOUR_PAR_MIN), DEUX_TIERS);
-                                        const double mag = sats.at(isat).getMagnitudeStandard() - 15.75 * 5. *
-                                                log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
-
-                                        if (mag <= mgmax) {
-
-                                            // Ecriture du TLE
-                                            if (tabtle.at(isat).getNom() != tabtle.at(isat).getNorad())
-                                                flux << tabtle.at(isat).getNom() << endl;
-                                            flux << tabtle.at(isat).getLigne1() << endl;
-                                            flux << tabtle.at(isat).getLigne2() << endl;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            // Ecriture du TLE
+            if (aecr) {
+                if (tabtle.at(isat).getNom() != tabtle.at(isat).getNorad())
+                    flux << tabtle.at(isat).getNom() << endl;
+                flux << tabtle.at(isat).getLigne1() << endl;
+                flux << tabtle.at(isat).getLigne2() << endl;
             }
         }
         sw.close();
@@ -6408,6 +6402,10 @@ void PreviSat::on_rechercheCreerTLE_clicked()
             const QString msg = tr("Fichier %1 écrit");
             messagesStatut->setText(msg.arg(sw.fileName()));
         }
+        sats.clear();
+        listeSat.clear();
+        tabtle.clear();
+
     } catch (PreviSatException &e) {
     }
     ui->rechercheCreerTLE->setEnabled(true);
