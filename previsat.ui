@@ -7706,7 +7706,7 @@
              <widget class="QLineEdit" name="revMax">
               <property name="geometry">
                <rect>
-                <x>652</x>
+                <x>662</x>
                 <y>37</y>
                 <width>81</width>
                 <height>20</height>
@@ -7722,7 +7722,7 @@
              <widget class="QLabel" name="lbl_revMax">
               <property name="geometry">
                <rect>
-                <x>637</x>
+                <x>647</x>
                 <y>40</y>
                 <width>16</width>
                 <height>16</height>
@@ -7737,15 +7737,15 @@
                <rect>
                 <x>562</x>
                 <y>37</y>
-                <width>71</width>
+                <width>81</width>
                 <height>20</height>
                </rect>
               </property>
               <property name="inputMask">
-               <string>9.999999999; </string>
+               <string>99.999999999; </string>
               </property>
               <property name="text">
-               <string>0.000000000</string>
+               <string>00.000000000</string>
               </property>
              </widget>
              <widget class="QLabel" name="lbl_argumentPerigee_2">
