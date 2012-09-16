@@ -510,10 +510,10 @@ void PreviSat::ChargementTLE()
     }
 
     // Lecture du fichier TLE par defaut
-    const QFileInfo fi(nomfic);
-    if (fi.exists()) {
+    try {
 
-        try {
+        const QFileInfo fi(nomfic);
+        if (fi.exists()) {
 
             if (fi.suffix() == "gz") {
 
@@ -535,55 +535,55 @@ void PreviSat::ChargementTLE()
             // Lecture du fichier
             TLE::LectureFichier(nomfic, liste, tles);
 
-        } catch (PreviSatException &e) {
-        }
+            ui->nomFichierTLE->setText(fi.fileName());
 
-        ui->nomFichierTLE->setText(fi.fileName());
-
-        // Mise a jour de la liste de satellites
-        int i = 0;
-        liste.clear();
-        bipSat.clear();
-        QVectorIterator<TLE> it2(tles);
-        while (it2.hasNext()) {
-            const TLE tle = it2.next();
-            if (tle.getNorad().isEmpty()) {
-                tles.remove(i);
-            } else {
-                liste.append(tles.at(i).getNorad());
-                bipSat.append(false);
-                i++;
+            // Mise a jour de la liste de satellites
+            int i = 0;
+            liste.clear();
+            bipSat.clear();
+            QVectorIterator<TLE> it2(tles);
+            while (it2.hasNext()) {
+                const TLE tle = it2.next();
+                if (tle.getNorad().isEmpty()) {
+                    tles.remove(i);
+                } else {
+                    liste.append(tles.at(i).getNorad());
+                    bipSat.append(false);
+                    i++;
+                }
             }
-        }
-        nbSat = tles.size();
+            nbSat = tles.size();
 
-        if (nbSat == 0) {
+            if (nbSat == 0) {
 
-            tles.append(TLE(l1, l2));
+                if (!l1.isEmpty() && !l2.isEmpty())
+                    tles.append(TLE(l1, l2));
 
-            // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites contenus dans le fichier)
-            AfficherListeSatellites(nomfic, liste);
+                // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites contenus dans le fichier)
+                AfficherListeSatellites(nomfic, liste);
+                l1 = "";
+                l2 = "";
+            } else {
+                AfficherListeSatellites(nomfic, liste);
+            }
+
+            // Recuperation des donnees satellites
+            Satellite::LectureDonnees(liste, tles, satellites);
+
+        } else {
+            nbSat = 0;
+            tles.clear();
+            liste.clear();
+            bipSat.clear();
             l1 = "";
             l2 = "";
-        } else {
-            AfficherListeSatellites(nomfic, liste);
+            ui->liste1->clear();
+            ui->liste2->clear();
+            ui->liste3->clear();
+            ui->lbl_nomFichierTLE->setVisible(false);
+            ui->nomFichierTLE->setVisible(false);
         }
-
-        // Recuperation des donnees satellites
-        Satellite::LectureDonnees(liste, tles, satellites);
-
-    } else {
-        nbSat = 0;
-        tles.clear();
-        liste.clear();
-        bipSat.clear();
-        l1 = "";
-        l2 = "";
-        ui->liste1->clear();
-        ui->liste2->clear();
-        ui->liste3->clear();
-        ui->lbl_nomFichierTLE->setVisible(false);
-        ui->nomFichierTLE->setVisible(false);
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -817,7 +817,8 @@ void PreviSat::AffichageDonnees()
 
             // Cas ou aucun satellite n'est selectionne dans la liste de satellites
             ui->satellite->setVisible(false);
-            PreviSat::setWindowTitle("PreviSat " + QString(APPVER_MAJ));
+            const QString msg = "PreviSat %1";
+            PreviSat::setWindowTitle(msg.arg(QString(APPVER_MAJ)));
 
             if (ui->onglets->count() == 7) {
                 ui->onglets->removeTab(1);
@@ -857,7 +858,7 @@ void PreviSat::AffichageDonnees()
             // Nom
             ui->nomsat1->setText(nom);
             const QString msg = "PreviSat %1 - %2";
-            PreviSat::setWindowTitle(msg.arg(APPVER_MAJ).arg(nom));
+            PreviSat::setWindowTitle(msg.arg(QString(APPVER_MAJ)).arg(nom));
 
             // Temps ecoule depuis l'epoque
             chaine = tr("%1 jours");
@@ -2142,7 +2143,7 @@ void PreviSat::AffichageLieuObs() const
 /*
  * Affichage des noms des satellites dans les listes
  */
-void PreviSat::AfficherListeSatellites(const QString fichier, const QStringList listeSat) const
+void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const
 {
     /* Declarations des variables locales */
     QString magn;
@@ -2770,7 +2771,7 @@ void PreviSat::VerifAgeTLE()
 /*
  * Sauvegarde des donnees de l'onglet General
  */
-void PreviSat::SauveOngletGeneral(const QString fic) const
+void PreviSat::SauveOngletGeneral(const QString &fic) const
 {
     /* Declarations des variables locales */
 
@@ -2854,7 +2855,7 @@ void PreviSat::SauveOngletGeneral(const QString fic) const
 /*
  * Sauvegarde des donnees de l'onglet Elements osculateurs
  */
-void PreviSat::SauveOngletElementsOsculateurs(const QString fic) const
+void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 {
     /* Declarations des variables locales */
 
@@ -2914,7 +2915,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString fic) const
 /*
  * Sauvegarde des donnees de l'onglet Informations satellite
  */
-void PreviSat::SauveOngletInformations(const QString fic) const
+void PreviSat::SauveOngletInformations(const QString &fic) const
 {
     /* Declarations des variables locales */
 
@@ -3263,7 +3264,7 @@ void PreviSat::EcritureListeRegistre() const
     return;
 }
 
-bool PreviSat::DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const
+bool PreviSat::DecompressionFichierGz(const QString &fichierGz, const QString &fichierDecompresse) const
 {
     /* Declarations des variables locales */
 

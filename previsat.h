@@ -76,7 +76,7 @@ private:
     void AffichageCourbes() const;
     void AffichageGroupesTLE() const;
     void AffichageLieuObs() const;
-    void AfficherListeSatellites(const QString fichier, const QStringList listeSat) const;
+    void AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const;
     void CalculsAffichage();
 
     // Calculs
@@ -87,16 +87,16 @@ private:
     void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
 
     // Interface
-    void SauveOngletGeneral(const QString fic) const;
-    void SauveOngletElementsOsculateurs(const QString fic) const;
-    void SauveOngletInformations(const QString fic) const;
+    void SauveOngletGeneral(const QString &fic) const;
+    void SauveOngletElementsOsculateurs(const QString &fic) const;
+    void SauveOngletInformations(const QString &fic) const;
     void ModificationOption();
     void AfficherLieuSelectionne(const int index);
     int getListeItemChecked(const QListWidget *listWidget) const;
 
     // Systeme
     void EcritureListeRegistre() const;
-    bool DecompressionFichierGz(const QString fichierGz, const QString fichierDecompresse) const;
+    bool DecompressionFichierGz(const QString &fichierGz, const QString &fichierDecompresse) const;
 
 signals:
     void TelechargementFini();
