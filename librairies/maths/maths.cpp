@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -152,7 +152,6 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     /* Declarations des variables locales */
     int dec, deg, degr, min;
     double sec, xval, y;
-    QString res;
 
     /* Initialisations */
     switch (typeAngle) {
@@ -185,7 +184,12 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
 
     const bool tst1 = (typeAngle == DEGRE || typeAngle == NO_TYPE);
     const bool tst2 = (typeAngle == HEURE1);
+    const QChar chr = QChar('0');
     const QString esp = (espace && typeAngle != HEURE2) ? " " : "";
+    const QString signe0 = (Maths::sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
+    const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h") : ":";
+    const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":";
+    const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s") : "";
 
     /* Corps de la methode */
     deg = (int) y;
@@ -200,12 +204,9 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
         deg++;
     }
 
-    res = "%1%2%3%4%5%6%7%8%9";
-    res = res.arg((Maths::sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-")
-            .arg(deg, degr, 10, QChar('0')).arg((tst1) ? "°" : (tst2) ? QObject::tr("h") : ":").arg(esp)
-            .arg(min, 2, 10, QChar('0')).arg((tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":").arg(esp)
-            .arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, QChar('0')).arg((tst1) ? "\"" : (tst2) ? QObject::tr("s") : "");
+    const QString fmt = "%1%2%3%4%5%6%7%8%9";
 
     /* Retour */
-    return (res);
+    return (fmt.arg(signe0).arg(deg, degr, 10, chr).arg(unite1).arg(esp).arg(min, 2, 10, chr).arg(unite2).arg(esp)
+            .arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, chr).arg(unite3));
 }

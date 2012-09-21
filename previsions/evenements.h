@@ -33,7 +33,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -55,6 +55,7 @@ public:
 
     /* Methodes publiques */
     static void CalculEvenements(const Conditions &conditions);
+    static void FinTraitement();
 
     /* Accesseurs */
 
@@ -75,7 +76,7 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats, QList<QList<QVector<double> > > &tabEphem);
+    static void CalculEphemerides(const Conditions &conditions);
 
 };
 

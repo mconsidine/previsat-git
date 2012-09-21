@@ -33,7 +33,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -55,6 +55,7 @@ public:
 
     /* Methodes publiques */
     static void CalculTransitsISS(const Conditions &conditions, Observateur &observateur);
+    static void FinTraitement();
 
     /* Accesseurs */
 
@@ -75,8 +76,7 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur,
-                                      QVector<QList<QVector<double > > > &tabEphem);
+    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur);
     static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
                                double minmax[]);
     static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,

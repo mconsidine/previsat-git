@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -50,6 +50,11 @@
 
 static const double PAS = NB_JOUR_PAR_MIN;
 
+static QStringList res;
+static QVector<TLE> tabtle;
+static QList<Satellite> sats;
+static QList<QList<QVector<double > > > tabEphem;
+
 /*
  * Calcul des evenements orbitaux
  */
@@ -58,11 +63,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     /* Declarations des variables locales */
     QString ligne;
     QTime tps;
-    QVector<TLE> tabtle;
-    QList<Satellite> sats;
-    QList<QList<QVector<double > > > tabEphem;
 
     /* Initialisations */
+    const QString fmt = "%1  %2°  %3° %4  %5° %6  %7";
     // Creation de la liste de TLE
     TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
 
@@ -88,10 +91,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     tps.start();
 
     // Calcul des ephemerides du satellite
-    CalculEphemerides(conditions, sats, tabEphem);
+    CalculEphemerides(conditions);
 
     // Boucle sur le tableau d'ephemerides
-    QStringList res;
     QListIterator<QList<QVector<double > > > it2(tabEphem);
     it1.toFront();
     while (it2.hasNext()) {
@@ -141,13 +143,11 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                           sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
-                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
-                    ligne = ligne.append(typeNoeud);
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typeNoeud);
 
                     res.append(ligne);
                     j++;
@@ -186,13 +186,11 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                           sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
-                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
-                    ligne = ligne.append(typeOmbre);
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typeOmbre);
 
                     res.append(ligne);
 
@@ -217,13 +215,11 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                                   sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
-                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
-                    ligne = ligne.append(typePenombre);
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typePenombre);
 
                     res.append(ligne);
                     k++;
@@ -256,14 +252,14 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                           sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  %7 %8 %9 (%10 %9)";
+                    const QString fmt2 = fmt + " %8 %9 (%10 %9)";
                     double rayonVecteur = minmax[1];
                     double altitude = minmax[1] - RAYON_TERRESTRE;
                     if (conditions.getUnite() == QObject::tr("mi")) {
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt2.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -300,13 +296,11 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                           sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    ligne = "%1  %2°  %3° %4  %5° %6  ";
-                    ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
-                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S"));
-                    ligne = ligne.append(typeTrans);
+                            arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typeTrans);
 
                     res.append(ligne);
                     l++;
@@ -340,13 +334,12 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                               sat.getElements().getArgumentPerigee(), DEUX_PI);
 
                         // Ecriture de la ligne de resultat
-                        ligne = QObject::tr("%1  %2°  %3° %4  %5° %6  Passage à PSO = %7°");
-                        ligne = ligne.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                        ligne = fmt.arg(date.ToShortDate(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                                 arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                                 arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                                 arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
                                 arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).
-                                arg(noeud * RAD2DEG);
+                                arg(QObject::tr("Passage à PSO =") + " " + QString::number(noeud * RAD2DEG) + "°");
 
                         res.append(ligne);
                         m++;
@@ -388,6 +381,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                 i++;
             }
             flux << endl;
+            res.clear();
         }
     }
     int fin = tps.elapsed();
@@ -396,20 +390,24 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
-    res.clear();
-    tabtle.clear();
-    sats.clear();
-    tabEphem.clear();
+    FinTraitement();
 
     /* Retour */
     return;
 }
 
+void Evenements::FinTraitement()
+{
+    res.clear();
+    tabtle.clear();
+    sats.clear();
+    tabEphem.clear();
+}
+
 /*
  * Calcul des ephemerides du satellite
  */
-void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite> &sats,
-                                   QList<QList<QVector<double> > > &tabEphem)
+void Evenements::CalculEphemerides(const Conditions &conditions)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -456,6 +454,9 @@ void Evenements::CalculEphemerides(const Conditions &conditions, QList<Satellite
 
         tabEphem.append(tab);
     }
+
+    listVal.clear();
+    tab.clear();
 
     /* Retour */
     return;
