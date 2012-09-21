@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -56,6 +56,10 @@ static const double PAS0 = 2. * NB_JOUR_PAR_MIN;
 static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 
+static QStringList res;
+static QVector<TLE> tabtle;
+static QVector<QList<QVector<double> > > tabEphem;
+
 /*
  * Calcul des transits ISS devant la Lune et/ou le Soleil
  */
@@ -66,14 +70,11 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     Soleil soleil;
     Lune lune;
     QTime tps;
-    QString ligne;
-    QStringList res;
-    QVector<QList<QVector<double> > > tabEphem;
 
     /* Initialisations */
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
+    const QString fmt = "%1%2 %3 %4 %5 %6 %7   %8    %9   %10 %11 %12%13  %14%15";
     const QStringList listeTLE("25544");
-    QVector<TLE> tabtle;
 
     // Lecture du TLE
     TLE::LectureFichier(conditions.getFic(), listeTLE, tabtle);
@@ -88,7 +89,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     Satellite sat = Satellite(tabtle.at(0));
 
     // Generation des ephemerides du Soleil et de la Lune
-    CalculEphemSoleilLune(conditions, observateur, tabEphem);
+    CalculEphemSoleilLune(conditions, observateur);
 
     // Boucle sur le tableau d'ephemerides
     QVectorIterator<QList<QVector<double> > > it1(tabEphem);
@@ -255,52 +256,40 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Date calendaire
                                 const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
-                                ligne = date3.ToShortDate(LONG);
 
                                 // Coordonnees topocentriques du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,  false, false)).append(" ");
+                                const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
+                                const QString ht = Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,  false, false);
 
                                 // Coordonnees equatoriales du satellite
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0,
-                                                                          false, false)).append(" ");
-                                ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0,
-                                                                          true, false)).append(" ");
-
-                                // Constellation
-                                ligne = ligne.append(sat.getConstellation()).append(" ");
+                                const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0,
+                                                                        false, false);
+                                const QString de = Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false);
 
                                 // Distance angulaire
                                 ang = corps.getDist().Angle(sat.getDist()) * RAD2DEG;
-                                ligne = ligne.append("%1   ");
-                                ligne = ligne.arg(ang, 5, 'f', 2);
-
-                                // Type d'evenement (conjonction ou transit)
-                                ligne = ligne.append((itr) ? QObject::tr("T") : QObject::tr("C")).append("    ");
-
-                                // Corps concerne (Soleil, Lune)
-                                ligne = ligne.append((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).append("   ");
-
-                                // Illumination
-                                ligne = ligne.append((sat.isEclipse()) ?
-                                                         QObject::tr("Omb") : (sat.isPenombre()) ?
-                                                             QObject::tr("Pen") : QObject::tr("Lum")).append(" ");
 
                                 // Altitude du satellite et distance a l'observateur
-                                ligne = ligne.append("%1 %2");
                                 double distance = sat.getDistance();
                                 if (conditions.getUnite() == QObject::tr("mi")) {
                                     altitude *= MILE_PAR_KM;
                                     distance *= MILE_PAR_KM;
                                 }
-                                ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
 
                                 // Coordonnees topocentriques du Soleil
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false))
-                                        .append("  ");
-                                ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false));
+                                const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
+                                const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
+
+                                QString result = fmt.arg(date3.ToShortDate(LONG)).arg(az).arg(ht).arg(ad).arg(de).
+                                        arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
+                                        arg((itr) ? QObject::tr("T") : QObject::tr("C")).
+                                        arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
+                                        arg((sat.isEclipse()) ? QObject::tr("Omb") : (sat.isPenombre()) ?
+                                                                    QObject::tr("Pen") : QObject::tr("Lum")).
+                                        arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
                                 // Recherche du maximum (transit ou conjonction)
+                                QString max;
                                 if (j == 1) {
 
                                     const Vecteur3D direction = corps.getDist() - sat.getDist();
@@ -333,13 +322,15 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
 
                                         // Ecriture de la chaine de caracteres
-                                        ligne = ligne.append("   %1 %2  %3 %4  %5 %6");
-                                        ligne = ligne.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,QChar('0')).arg(ew).
-                                                arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).
-                                                arg(distanceObs, 5, 'f', 1).arg(dir);
+                                        const QString fmt2 = "   %1 %2  %3 %4  %5 %6";
+                                        max = fmt2.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
+                                                arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                                arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
                                     }
+                                } else {
+                                    max = "";
                                 }
-                                res.append(ligne);
+                                res.append(result.arg(max));
                             }
                         }
                     }
@@ -370,8 +361,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     fichier.open(QIODevice::Append | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    if (res.count() > 0)
+    if (res.size() > 0)
         flux << QObject::tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance") << endl;
+
     int i = 0;
     while (i < res.count()) {
         for (int k=0; k<3; k++) {
@@ -384,23 +376,27 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         if (!res.at(res.count() - 1).isEmpty())
             flux << endl;
 
-    ligne = QObject::tr("Temps écoulé : %1s");
+    QString ligne = QObject::tr("Temps écoulé : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
-    res.clear();
-    tabtle.clear();
-    tabEphem.clear();
+    FinTraitement();
 
     /* Retour */
     return;
 }
 
+void TransitISS::FinTraitement()
+{
+    res.clear();
+    tabtle.clear();
+    tabEphem.clear();
+}
+
 /*
  * Calcul des ephemerides du Soleil et de la Lune
  */
-void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur,
-                                       QVector<QList<QVector<double> > > &tabEphem)
+void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
     bool lvis, svis;
@@ -515,6 +511,10 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
     }
     tabEphem.append(tabEphemSoleil);
     tabEphem.append(tabEphemLune);
+
+    tab.clear();
+    tabEphemLune.clear();
+    tabEphemSoleil.clear();
 
     /* Retour */
     return;

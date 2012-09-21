@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -58,6 +58,7 @@ public:
     /* Methodes publiques */
     static void CalculFlashsIridium(const Conditions &conditions, Observateur &observateur);
     static int LectureStatutIridium(const char ope, QStringList &tabStsIri);
+    static void FinTraitement();
 
     /* Accesseurs */
 
@@ -79,9 +80,8 @@ private:
 
     /* Methodes privees */
     static void DeterminationFlash(const double minmax[2], const QString &sts, const Conditions &conditions, double &temp,
-                                   QStringList &res, Observateur &observateur, Satellite &sat, Soleil &soleil);
-    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
-                                             QList<QVector<double> > &tabEphem);
+                                   Observateur &observateur, Satellite &sat, Soleil &soleil);
+    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur);
     static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
     static void CalculAngleMin(const double jjm[], Satellite &satellite, Observateur &observateur, Soleil &soleil,
                                double minmax[]);

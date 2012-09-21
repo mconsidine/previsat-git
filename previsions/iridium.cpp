@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    21 septembre 2012
  *
  */
 
@@ -79,6 +79,11 @@ static int _pan;
 static Vecteur3D _solsat;
 static Matrice _PR;
 
+static QStringList res;
+static QList<Satellite> sats;
+static QVector<TLE> tabtle;
+static QList<QVector<double > > tabEphem;
+
 /*
  * Calcul des flashs Iridium
  */
@@ -86,13 +91,11 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 {
     /* Declarations des variables locales */
     QString ligne;
-    QStringList res;
     QTime tps;
-    QList<Satellite> sats;
-    QList<QVector<double > > tabEphem;
+
 
     /* Initialisations */
-    QVector<TLE> tabtle = conditions.getTabtle();
+    tabtle = conditions.getTabtle();
     QVectorIterator<TLE> it1(tabtle);
     while (it1.hasNext()) {
         const TLE tle = it1.next();
@@ -106,7 +109,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     tps.start();
 
     // Calcul des ephemerides du Soleil et du lieu d'observation
-    CalculEphemSoleilObservateur(conditions, observateur, tabEphem);
+    CalculEphemSoleilObservateur(conditions, observateur);
 
     QListIterator<QVector<double> > it2(tabEphem);
 
@@ -187,7 +190,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                             }
 
                             if (minmax[0] - temp > PAS1)
-                                DeterminationFlash(minmax, sts, conditions, temp, res, observateur, sat, soleil);
+                                DeterminationFlash(minmax, sts, conditions, temp, observateur, sat, soleil);
 
                         } // fin if (angref <= 0.2)
 
@@ -254,20 +257,25 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
+    FinTraitement();
+
+    /* Retour */
+    return;
+}
+
+void Iridium::FinTraitement()
+{
     res.clear();
     tabtle.clear();
     sats.clear();
     tabEphem.clear();
-
-    /* Retour */
-    return;
 }
 
 /*
  * Determination du flash
  */
 void Iridium::DeterminationFlash(const double minmax[], const QString &sts, const Conditions &conditions, double &temp,
-                                 QStringList &res, Observateur &observateur, Satellite &sat, Soleil &soleil)
+                                 Observateur &observateur, Satellite &sat, Soleil &soleil)
 {
     /* Declarations des variables locales */
 
@@ -360,8 +368,7 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 /*
  * Calcul des ephemerides du Soleil et de la position de l'observateur
  */
-void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
-                                           QList<QVector<double> > &tabEphem)
+void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
     QVector<double> tab;
@@ -408,6 +415,8 @@ void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observa
 
         date = Date(date.getJourJulienUTC() + PAS0, 0., false);
     } while (date.getJourJulienUTC() <= conditions.getJj2());
+
+    tab.clear();
 
     /* Retour */
     return;
@@ -782,53 +791,46 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
                              const Soleil &soleil, Satellite &sat)
 {
     /* Declarations des variables locales */
-    QString ligne;
     Observateur obsmax;
 
     /* Initialisations */
     double altitude = alt;
+    const QString fmt = "%1%2 %3 %4 %5 %6 %7  %8  %9%10 %11%12 %13%14%15";
 
     /* Corps de la methode */
 
     // Date calendaire
     const Date date3 = Date(date.getJourJulienUTC() + conditions.getDtu() + EPS_DATES, 0., true);
-    ligne = date3.ToShortDate(LONG);
 
     // Coordonnees topocentriques
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0, false, false)).append(" ");
+    const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
+    const QString ht = Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0, false, false);
 
     // Coordonnees equatoriales
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false)).append(" ");
-
-    ligne = ligne.append(sat.getConstellation()).append(" ");
-
-    // Angle de reflexion, miroir
-    ligne = ligne.append("%1  %2  ");
-    ligne = ligne.arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir);
+    const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false);
+    const QString de = Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false);
 
     // Magnitude
-    ligne = ligne.append((mag > 0.) ? "+%1" : "-%1");
-    ligne = ligne.arg(fabs(mag), 2, 'f', 1);
-    ligne = ligne.append((sat.isPenombre()) ? "*" : " ");
+    const QString fmgn = "%1%2%3";
+    const QString magn = fmgn.arg((mag > 0.) ? "+" : "-").arg(fabs(mag), 2, 'f', 1).arg((sat.isPenombre()) ? "*" : " ");
 
     // Altitude du satellite et distance a l'observateur
-    ligne = ligne.append("%1 %2");
     double distance = sat.getDistance();
     if (conditions.getUnite() == QObject::tr("mi")) {
         altitude *= MILE_PAR_KM;
         distance *= MILE_PAR_KM;
     }
-    ligne = ligne.arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1);
 
     // Coordonnees topocentriques du Soleil
-    ligne = ligne.append(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false)).append(" ");
-    ligne = ligne.append(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false));
-    ligne = ligne.append(QString::number(i));
+    const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
+    const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-    // Recherche des coordonnees geographiques ou se produit
-    // le maximum du flash
+    QString result = fmt.arg(date3.ToShortDate(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
+            arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).
+            arg(azs).arg(hts).arg(i);
+
+    // Recherche des coordonnees geographiques ou se produit le maximum du flash
+    QString max;
     if (i == conditions.getNbl() / 2) {
 
         const Vecteur3D direction = _PR.Transposee() * _solsat;
@@ -855,19 +857,23 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
             const QString ns = (obsmax.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
 
             // Ecriture de la chaine de caracteres
-            ligne = ligne.append("   %1 %2  %3 %4  %5 %6    ").append((magFlashMax > 0.) ? "+%7" : "-%7");
-            ligne = ligne.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
+            const QString fmt2 = "   %1 %2  %3 %4  %5 %6    %7%8%9";
+            max = fmt2.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
                     arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
-                    arg(dir).arg(fabs(magFlashMax), 2, 'f', 1).append((sat.isPenombre()) ? "*" : "");
+                    arg(dir).arg((magFlashMax >= 0.) ? "+" : "-").arg(fabs(magFlashMax), 2, 'f', 1).
+                    arg((sat.isPenombre()) ? "*" : "");
         }
+    } else {
+        max = "";
     }
+    result = result.arg(max);
 
     // Numero Iridium
-    ligne = ligne.append(sts.mid(0, 3));
-    ligne = (sts.length() == 9) ? ligne.append(" ") : ligne.trimmed().append("? ");
+    result = result.append(sts.mid(0, 3));
+    result = (sts.length() == 9) ? result.append(" ") : result.trimmed().append("? ");
 
     /* Retour */
-    return (ligne);
+    return (result);
 }
 
 /*

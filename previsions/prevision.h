@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -56,6 +56,7 @@ public:
 
     /* Methodes publiques */
     static void CalculPassages(const Conditions &conditions, Observateur &observateur);
+    static void FinTraitement();
 
     /* Accesseurs */
 
@@ -76,8 +77,7 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur,
-                                             QList<QVector<double> > &tabEphem);
+    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur);
 
 };
 

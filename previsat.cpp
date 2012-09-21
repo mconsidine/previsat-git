@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 septembre 2012
+ * >    21 septembre 2012
  *
  */
 
@@ -69,7 +69,10 @@
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "previsions/conditions.h"
+#include "previsions/evenements.h"
 #include "previsions/iridium.h"
+#include "previsions/prevision.h"
+#include "previsions/transitiss.h"
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
@@ -6783,6 +6786,8 @@ void PreviSat::on_annulerPrev_clicked()
     threadCalculs->terminate();
     threadCalculs->wait();
 
+    Prevision::FinTraitement();
+
     ui->annulerPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
@@ -7058,6 +7063,8 @@ void PreviSat::on_annulerIri_clicked()
     threadCalculs->terminate();
     threadCalculs->wait();
 
+    Iridium::FinTraitement();
+
     ui->annulerIri->setVisible(false);
     ui->afficherIri->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des flashs Iridium"));
@@ -7253,6 +7260,8 @@ void PreviSat::on_annulerEvt_clicked()
     // Trouver methode alternative a terminate
     threadCalculs->terminate();
     threadCalculs->wait();
+
+    Evenements::FinTraitement();
 
     ui->annulerEvt->setVisible(false);
     ui->afficherEvt->setVisible(false);
@@ -7466,6 +7475,8 @@ void PreviSat::on_annulerTransit_clicked()
     // Trouver methode alternative a terminate
     threadCalculs->terminate();
     threadCalculs->wait();
+
+    TransitISS::FinTraitement();
 
     ui->annulerTransit->setVisible(false);
     ui->afficherTransit->setVisible(false);

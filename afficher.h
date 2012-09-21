@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >
+ * >    21 septembre 2012
  *
  */
 
@@ -59,6 +59,7 @@ private:
     Ui::Afficher *ui;
 
 private slots:
+    void closeEvent(QCloseEvent *);
     void resizeEvent(QResizeEvent *);
     void on_actionEnregistrer_activated();
 };
