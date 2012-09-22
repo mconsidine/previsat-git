@@ -181,7 +181,6 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 // Ecriture du resultat
                                 if (ent == 0) {
 
-                                    flux << endl;
                                     const QString nomsat = sat.getTle().getNom();
 
                                     if (nomsat.toLower() == "iss") {
@@ -219,7 +218,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                     const QString fmagn = "%1%2%3%4";
                                     const QString esp = (mag < 9.95) ? " " : "";
                                     const QString signe = (mag >= 0.) ? "+" : "-";
-                                    const QString pen = (sat.isPenombre()) ? "*" : " ";
+                                    const QString pen = (sat.isPenombre()) ? "* " : "  ";
                                     magn = fmagn.arg(esp).arg(signe).arg(fabs(mag), 0, 'f', 1, QChar('0')).arg(pen);
                                 }
 
