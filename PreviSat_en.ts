@@ -2666,8 +2666,8 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="librairies/exceptions/messages.cpp" line="59"/>
-        <location filename="main.cpp" line="73"/>
-        <location filename="main.cpp" line="77"/>
+        <location filename="main.cpp" line="97"/>
+        <location filename="main.cpp" line="101"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -2709,7 +2709,7 @@ Do you want to remove this TLE from the file to update?</translation>
         <location filename="previsat.cpp" line="809"/>
         <location filename="previsions/evenements.cpp" line="258"/>
         <location filename="previsions/iridium.cpp" line="819"/>
-        <location filename="previsions/prevision.cpp" line="228"/>
+        <location filename="previsions/prevision.cpp" line="227"/>
         <location filename="previsions/transitiss.cpp" line="274"/>
         <source>mi</source>
         <translation>mi</translation>
@@ -2947,7 +2947,7 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="373"/>
-        <location filename="previsions/prevision.cpp" line="192"/>
+        <location filename="previsions/prevision.cpp" line="191"/>
         <source>  (numéro NORAD : %1)</source>
         <translation>  (NORAD number : %1)</translation>
     </message>
@@ -2959,7 +2959,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="389"/>
         <location filename="previsions/iridium.cpp" line="256"/>
-        <location filename="previsions/prevision.cpp" line="296"/>
+        <location filename="previsions/prevision.cpp" line="295"/>
         <location filename="previsions/transitiss.cpp" line="379"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
@@ -3008,7 +3008,7 @@ There is no Iridium satellites in the TLE file</translation>
         <translation>Ir     Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat     Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/prevision.cpp" line="197"/>
+        <location filename="previsions/prevision.cpp" line="196"/>
         <source>   Date     Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil</source>
         <translation>   Date     Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat  Const Magn  Altitude     Range   Sun Azim    Sun Elev</translation>
     </message>
@@ -3097,27 +3097,27 @@ The file %1 does not contain the TLE of ISS</translation>
         <translation>Neptune</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="73"/>
+        <location filename="main.cpp" line="97"/>
         <source>Une instance de PreviSat est déjà ouverte</source>
         <translation>An instance of PreviSat is already launched</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="92"/>
+        <location filename="main.cpp" line="117"/>
         <source>Initialisation de la configuration...</source>
         <translation>Initialisation of configuration...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="95"/>
+        <location filename="main.cpp" line="120"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>Loading TLE file...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="98"/>
+        <location filename="main.cpp" line="123"/>
         <source>Mise à jour des TLE...</source>
         <translation>Updating TLEs...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="101"/>
+        <location filename="main.cpp" line="126"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>Launching application...</translation>
     </message>
