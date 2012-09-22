@@ -51,11 +51,34 @@
 
 int main(int argc, char *argv[])
 {
+    /* Declarations des variables locales */
+    QString locale;
+    QStringList filtre;
+
+    /* Initialisations */
     QApplication a(argc, argv);
     a.setOrganizationName("Astropedia");
     a.setApplicationName("PreviSat");
+    filtre << "PreviSat_*.qm";
 
-    const QString locale = QLocale::system().name().section('_', 0, 0);
+    /* Corps de la methode */
+    // Definition de la locale
+    QDir di(QCoreApplication::applicationDirPath());
+    const int nbloc = di.entryList(filtre, QDir::Files).count();
+    if (nbloc == 0) {
+        locale = QLocale(QLocale::French, QLocale::France).name().section('_', 0, 0);
+    } else {
+        const QStringList listeTr = di.entryList(filtre, QDir::Files);
+        if (nbloc == 1) {
+            locale = listeTr.at(0).section('_', 1).mid(0, 2);
+        } else {
+            if (listeTr.contains("PreviSat_en.qm"))
+                locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
+            else
+                locale = QLocale::system().name().section('_', 0, 0);
+        }
+    }
+
     QTranslator qtTranslator;
     qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
     a.installTranslator(&qtTranslator);
@@ -64,6 +87,7 @@ int main(int argc, char *argv[])
     appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
     a.installTranslator(&appTranslator);
 
+    // Verification si une instance de PreviSat existe
     qint64 pid = a.applicationPid();
     QSharedMemory mem;
     mem.setKey("pid");
@@ -82,6 +106,7 @@ int main(int argc, char *argv[])
         mem.unlock();
     }
 
+    // Lancement du splash screen et demarrage de l'application
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
     splash->show();
@@ -105,5 +130,6 @@ int main(int argc, char *argv[])
     splash->finish(&w);
     delete splash;
 
+    /* Retour */
     return a.exec();
 }
