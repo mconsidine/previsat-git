@@ -60,6 +60,7 @@ public:
     void ChargementTLE();
     void MAJTLE();
     void DemarrageApplication();
+    static QString DeterminationLocale();
 
     ~PreviSat();
 
