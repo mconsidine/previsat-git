@@ -52,32 +52,14 @@
 int main(int argc, char *argv[])
 {
     /* Declarations des variables locales */
-    QString locale;
-    QStringList filtre;
 
     /* Initialisations */
     QApplication a(argc, argv);
     a.setOrganizationName("Astropedia");
     a.setApplicationName("PreviSat");
-    filtre << "PreviSat_*.qm";
 
     /* Corps de la methode */
-    // Definition de la locale
-    QDir di(QCoreApplication::applicationDirPath());
-    const int nbloc = di.entryList(filtre, QDir::Files).count();
-    if (nbloc == 0) {
-        locale = QLocale(QLocale::French, QLocale::France).name().section('_', 0, 0);
-    } else {
-        const QStringList listeTr = di.entryList(filtre, QDir::Files);
-        if (nbloc == 1) {
-            locale = listeTr.at(0).section('_', 1).mid(0, 2);
-        } else {
-            if (listeTr.contains("PreviSat_en.qm"))
-                locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
-            else
-                locale = QLocale::system().name().section('_', 0, 0);
-        }
-    }
+    const QString locale = PreviSat::DeterminationLocale();
 
     QTranslator qtTranslator;
     qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
