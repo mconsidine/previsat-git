@@ -4883,6 +4883,9 @@
             <property name="text">
              <string>Calculs</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QPushButton" name="annulerPrev">
             <property name="geometry">
@@ -5429,6 +5432,9 @@
             <property name="text">
              <string>Calculs</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QPushButton" name="annulerIri">
             <property name="geometry">
@@ -5789,6 +5795,9 @@
                <property name="text">
                 <string>Valider</string>
                </property>
+               <property name="default">
+                <bool>true</bool>
+               </property>
               </widget>
               <widget class="QPushButton" name="annulerObs">
                <property name="geometry">
@@ -6102,6 +6111,9 @@
                <property name="text">
                 <string>Valider</string>
                </property>
+               <property name="default">
+                <bool>true</bool>
+               </property>
               </widget>
               <widget class="QPushButton" name="annulerCategorie">
                <property name="geometry">
@@ -6193,7 +6205,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-124</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>310</height>
                 </rect>
@@ -6814,6 +6826,9 @@
               </property>
               <property name="text">
                <string>Mettre à jour maintenant</string>
+              </property>
+              <property name="default">
+               <bool>true</bool>
               </property>
              </widget>
              <widget class="QFrame" name="frameBarreProgression">
@@ -7914,6 +7929,9 @@
               <property name="text">
                <string>Recherche</string>
               </property>
+              <property name="default">
+               <bool>true</bool>
+              </property>
              </widget>
              <widget class="QComboBox" name="argumentPerigeeCreerTLE">
               <property name="geometry">
@@ -8155,6 +8173,9 @@
               </property>
               <property name="text">
                <string>Calculs</string>
+              </property>
+              <property name="default">
+               <bool>true</bool>
               </property>
              </widget>
              <widget class="QPushButton" name="annulerEvt">
@@ -8554,6 +8575,9 @@
               </property>
               <property name="text">
                <string>Calculs</string>
+              </property>
+              <property name="default">
+               <bool>true</bool>
               </property>
              </widget>
             </widget>
