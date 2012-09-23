@@ -5795,9 +5795,6 @@
                <property name="text">
                 <string>Valider</string>
                </property>
-               <property name="default">
-                <bool>true</bool>
-               </property>
               </widget>
               <widget class="QPushButton" name="annulerObs">
                <property name="geometry">
@@ -6110,9 +6107,6 @@
                </property>
                <property name="text">
                 <string>Valider</string>
-               </property>
-               <property name="default">
-                <bool>true</bool>
                </property>
               </widget>
               <widget class="QPushButton" name="annulerCategorie">
@@ -6815,7 +6809,7 @@
              <attribute name="title">
               <string>Mise à jour TLE</string>
              </attribute>
-             <widget class="QPushButton" name="MajMaintenant">
+             <widget class="QPushButton" name="majMaintenant">
               <property name="geometry">
                <rect>
                 <x>258</x>
@@ -9137,7 +9131,7 @@
   <tabstop>utcAuto</tabstop>
   <tabstop>utc</tabstop>
   <tabstop>groupeTLE</tabstop>
-  <tabstop>MajMaintenant</tabstop>
+  <tabstop>majMaintenant</tabstop>
   <tabstop>gestionnaireMajTLE</tabstop>
   <tabstop>fichierAMettreAJour</tabstop>
   <tabstop>parcourirMaj1</tabstop>

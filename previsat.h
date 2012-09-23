@@ -217,7 +217,8 @@ private slots:
     void on_ongletsOutils_currentChanged(QWidget *arg1);
 
     // Mise a jour des TLE
-    void on_MajMaintenant_clicked();
+    void on_groupeTLE_currentIndexChanged(int index);
+    void on_majMaintenant_clicked();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
