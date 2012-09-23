@@ -6055,6 +6055,10 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     } else {
     }
 
+    if (ui->miseAJourTLE->isVisible()) {
+        ui->majMaintenant->setDefault(true);
+        ui->majMaintenant->setFocus();
+    }
 
     if (ui->evenementsOrbitaux->isVisible()) {
         ui->afficherEvt->setDefault(false);
@@ -6108,7 +6112,12 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
 /*
  * Mise a jour des TLE
  */
-void PreviSat::on_MajMaintenant_clicked()
+void PreviSat::on_groupeTLE_currentIndexChanged(int index)
+{
+    ui->majMaintenant->setFocus();
+}
+
+void PreviSat::on_majMaintenant_clicked()
 {
     /* Declarations des variables locales */
 
