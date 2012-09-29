@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    29 septembre 2012
  *
  */
 
@@ -327,7 +327,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl;
     ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
-    ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt).arg(unit);
+    ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;
 
     ligne2 = QObject::tr("Fuseau horaire            : %1 %2%3");
