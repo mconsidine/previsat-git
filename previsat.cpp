@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    29 septembre 2012
  *
  */
 
@@ -2160,7 +2160,7 @@ void PreviSat::AffichageLieuObs() const
             const QString fmt = "%1 %2";
             ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, DEGRE, 3, 0, false, true)).arg(ew));
             ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la) * DEG2RAD, DEGRE, 2, 0,false, true)).arg(ns));
-            ui->altitudeObs->setText(fmt.arg((ui->unitesKm->isChecked()) ? atd : atd * PIED_PAR_METRE).
+            ui->altitudeObs->setText(fmt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE + EPSDBL100)).
                                      arg((ui->unitesKm->isChecked()) ? tr("m") : tr("ft")));
         }
     }
@@ -5204,6 +5204,10 @@ void PreviSat::on_calJulien_stateChanged(int arg1)
 
 void PreviSat::on_affcoord_stateChanged(int arg1)
 {
+    if (messagesStatut2 != NULL)
+        messagesStatut2->setVisible(false);
+    if (messagesStatut2 != NULL)
+        messagesStatut3->setVisible(false);
     ModificationOption();
 }
 
