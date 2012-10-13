@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -72,7 +72,7 @@ Observateur::Observateur()
 /*
  * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
  */
-Observateur::Observateur(const QString nomlieu, const double longitude, const double latitude, const double altitude)
+Observateur::Observateur(const QString &nomlieu, const double longitude, const double latitude, const double altitude)
 {
     /* Declarations des variables locales */
     double coster, sinter;

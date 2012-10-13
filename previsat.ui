@@ -930,28 +930,6 @@
            <bool>true</bool>
           </property>
          </widget>
-         <widget class="QLabel" name="nomFichierTLE">
-          <property name="geometry">
-           <rect>
-            <x>61</x>
-            <y>114</y>
-            <width>157</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string>visual.txt</string>
-          </property>
-         </widget>
          <widget class="QPushButton" name="barreMenu">
           <property name="geometry">
            <rect>
@@ -1015,16 +993,26 @@
            <bool>true</bool>
           </property>
          </widget>
+         <widget class="QComboBox" name="listeFichiersTLE">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>110</y>
+            <width>161</width>
+            <height>22</height>
+           </rect>
+          </property>
+         </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
          <zorder>secondes</zorder>
          <zorder>pasManuel</zorder>
          <zorder>lbl_nomFichierTLE</zorder>
          <zorder>pasReel</zorder>
-         <zorder>nomFichierTLE</zorder>
          <zorder>barreMenu</zorder>
          <zorder>liste1</zorder>
          <zorder>directHelp</zorder>
+         <zorder>listeFichiersTLE</zorder>
         </widget>
        </item>
       </layout>

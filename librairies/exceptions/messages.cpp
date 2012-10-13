@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -46,7 +46,7 @@
 /*
  * Affichage d'une boite de message
  */
-void Messages::Afficher(const QString message, const MessageType ierr)
+void Messages::Afficher(const QString &message, const MessageType ierr)
 {
     /* Declarations des variables locales */
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -57,7 +57,7 @@ Etoile::Etoile()
     _magnitude = 0.;
 }
 
-Etoile::Etoile(const QString nom, const double ascensionDroite, const double declinaison, const double magnitude)
+Etoile::Etoile(const QString &nom, const double ascensionDroite, const double declinaison, const double magnitude)
 {
     /* Declarations des variables locales */
 

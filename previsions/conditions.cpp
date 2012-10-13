@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -90,8 +90,8 @@ Conditions::Conditions()
 }
 
 Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu,
-                       const double jj1, const double jj2, const double mgn1, const QString fic, const QString out,
-                       const QString unite, const QStringList listeSatellites)
+                       const double jj1, const double jj2, const double mgn1, const QString &fic, const QString &out,
+                       const QString &unite, const QStringList &listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -132,7 +132,7 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
 
 Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
                        const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1,
-                       const double mgn2, const QString fic, const QString out, const QString unite,
+                       const double mgn2, const QString &fic, const QString &out, const QString &unite,
                        const QStringList &tabStsIri, const QVector<TLE> &tabtle)
 {
     /* Declarations des variables locales */

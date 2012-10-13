@@ -33,7 +33,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -50,7 +50,7 @@ public:
 
     /* Constructeurs */
     Constellation();
-    Constellation(const QString nom, const double ascensionDroite, const double declinaison);
+    Constellation(const QString &nom, const double ascensionDroite, const double declinaison);
     ~Constellation();
 
     /* Constantes publiques */

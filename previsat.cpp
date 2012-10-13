@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 septembre 2012
+ * >    12 octobre 2012
  *
  */
 
@@ -102,6 +102,7 @@ static bool info;
 static bool notif;
 static bool old;
 static int ind;
+static int idxf;
 static int nbSat;
 static QString nomfic;
 static QString ficgz;
@@ -110,6 +111,7 @@ static QVector<bool> bipSat;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QStringList liste;
+static QStringList ficTLE;
 static QStringList listeGroupeMaj;
 
 // Date courante
@@ -505,6 +507,9 @@ void PreviSat::ChargementTLE()
     /* Initialisations */
 
     /* Corps de la methode */
+    // Chargement des fichiers TLE
+    InitFicTLE();
+
     // Ouverture du fichier TLE par defaut
     if (nbSat == 0) {
         tles.resize(1);
@@ -539,8 +544,6 @@ void PreviSat::ChargementTLE()
 
             // Lecture du fichier
             TLE::LectureFichier(nomfic, liste, tles);
-
-            ui->nomFichierTLE->setText(fi.fileName());
 
             // Mise a jour de la liste de satellites
             int i = 0;
@@ -585,8 +588,6 @@ void PreviSat::ChargementTLE()
             ui->liste1->clear();
             ui->liste2->clear();
             ui->liste3->clear();
-            ui->lbl_nomFichierTLE->setVisible(false);
-            ui->nomFichierTLE->setVisible(false);
         }
     } catch (PreviSatException &e) {
     }
@@ -823,6 +824,75 @@ void PreviSat::InitFicMap(const bool majAff) const
         ui->listeMap->addItem(tr("Télécharger..."));
         if (ui->listeMap->currentIndex() > 0 && majAff)
             AffichageCourbes();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement de la liste de fichiers TLE
+ */
+void PreviSat::InitFicTLE() const
+{
+    /* Declarations des variables locales */
+    QStringList filtres;
+
+    /* Initialisations */
+    bool aNomficTrouve = false;
+    const QDir di(dirTle);
+    filtres << "*.txt" << "*.tle" << "*";
+
+    /* Corps de la methode */
+    try {
+        ficTLE.clear();
+        ui->listeFichiersTLE->clear();
+        if (di.entryList(filtres, QDir::Files).count() != 0) {
+
+            foreach(QString fic, di.entryList(filtres, QDir::Files)) {
+
+                const QString file = QDir::convertSeparators(dirTle + QDir::separator() + fic);
+                if (TLE::VerifieFichier(file, false) > 0) {
+
+                    ficTLE.append(file);
+                    const int idx = ficTLE.indexOf(file);
+                    ui->listeFichiersTLE->addItem(fic);
+
+                    if (QDir::convertSeparators(nomfic) == QDir::convertSeparators(file)) {
+                        ui->listeFichiersTLE->setCurrentIndex(idx);
+                        ui->listeFichiersTLE->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                        idxf = idx;
+                        aNomficTrouve = true;
+                    }
+                }
+            }
+        }
+
+        if (!aNomficTrouve) {
+            const QString fic = settings.value("fichier/nom", nomfic).toString();
+
+            if (!fic.isEmpty()) {
+
+                const QFileInfo fi(fic);
+                if (fi.exists()) {
+
+                    ficTLE.append(fic);
+                    const int idx = ficTLE.indexOf(fic);
+
+                    ui->listeFichiersTLE->addItem(fic.mid(fic.lastIndexOf(QDir::separator()) + 1));
+                    ui->listeFichiersTLE->setCurrentIndex(idx);
+                    ui->listeFichiersTLE->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    idxf = idx;
+                }
+            }
+        }
+
+        if (ficTLE.count() == 0)
+            ui->listeFichiersTLE->addItem("");
+
+        ui->listeFichiersTLE->addItem(tr("Parcourir..."));
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -2211,7 +2281,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
 
             const QString ligne = flux.readLine();
 
-            if (ligne.at(0) == '1') {
+            if (ligne.mid(0, 2) == "1 ") {
 
                 li1 = ligne;
 
@@ -2220,7 +2290,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                 } while (li2.trimmed().length() == 0);
 
                 const QString norad = li1.mid(2, 5);
-                if (nomsat.at(0) == '1' || nomsat == "---") {
+                if (nomsat.mid(0, 2) == "1 " || nomsat == "---") {
 
                     const int indx1 = magn.indexOf(norad);
                     if (indx1 >= 0) {
@@ -2336,109 +2406,113 @@ void PreviSat::EnchainementCalculs() const
     const bool traceCiel = (ui->afftraj->isChecked() && ui->ciel->isVisible());
 
     /* Corps de la methode */
-    /*
+    try {
+        /*
      * Calcul de la position de l'observateur
      */
-    observateurs[0].CalculPosVit(dateCourante);
+        observateurs[0].CalculPosVit(dateCourante);
 
 
-    /*
+        /*
      * Position du Soleil
      */
-    soleil.CalculPosition(dateCourante);
+        soleil.CalculPosition(dateCourante);
 
-    // Position topocentrique
-    soleil.CalculCoordHoriz(observateurs.at(0));
+        // Position topocentrique
+        soleil.CalculCoordHoriz(observateurs.at(0));
 
-    if (!ui->carte->isHidden()) {
-
-        // Coordonnees terrestres
-        soleil.CalculCoordTerrestres(observateurs.at(0));
-
-        // Zone d'ombre
-        soleil.CalculZoneVisibilite();
-
-        if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
-            soleil.CalculCoordEquat(observateurs.at(0));
-    }
-
-
-    /*
-     * Position de la Lune
-     */
-    if (ui->afflune->isChecked()) {
-
-        lune.CalculPosition(dateCourante);
-        lune.CalculPhase(soleil);
-
-        // Coordonnees topocentriques
-        lune.CalculCoordHoriz(observateurs.at(0));
-
-        if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
-            // Coordonnees equatoriales
-            lune.CalculCoordEquat(observateurs.at(0));
+        if (!ui->carte->isHidden()) {
 
             // Coordonnees terrestres
-            lune.CalculCoordTerrestres(observateurs.at(0));
-        }
-    }
+            soleil.CalculCoordTerrestres(observateurs.at(0));
 
-    if (ui->ciel->isVisible()) {
+            // Zone d'ombre
+            soleil.CalculZoneVisibilite();
+
+            if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
+                soleil.CalculCoordEquat(observateurs.at(0));
+        }
+
 
         /*
+     * Position de la Lune
+     */
+        if (ui->afflune->isChecked()) {
+
+            lune.CalculPosition(dateCourante);
+            lune.CalculPhase(soleil);
+
+            // Coordonnees topocentriques
+            lune.CalculCoordHoriz(observateurs.at(0));
+
+            if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
+                // Coordonnees equatoriales
+                lune.CalculCoordEquat(observateurs.at(0));
+
+                // Coordonnees terrestres
+                lune.CalculCoordTerrestres(observateurs.at(0));
+            }
+        }
+
+        if (ui->ciel->isVisible()) {
+
+            /*
          * Calcul de la position des planetes
          */
-        if (ui->affplanetes->checkState() != Qt::Unchecked) {
-            planetes.clear();
-            for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+            if (ui->affplanetes->checkState() != Qt::Unchecked) {
+                planetes.clear();
+                for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-                Planete planete(iplanete);
-                planete.CalculPosition(dateCourante, soleil);
-                planete.CalculCoordHoriz(observateurs.at(0));
-                planetes.append(planete);
+                    Planete planete(iplanete);
+                    planete.CalculPosition(dateCourante, soleil);
+                    planete.CalculCoordHoriz(observateurs.at(0));
+                    planetes.append(planete);
+                }
             }
+
+            /*
+         * Calcul de la position du catalogue d'etoiles
+         */
+            Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
+            if (ui->affconst->isChecked())
+                Constellation::CalculConstellations(observateurs.at(0), constellations);
+            if (ui->affconst->checkState() != Qt::Unchecked)
+                LigneConstellation::CalculLignesCst(etoiles, lignesCst);
         }
 
         /*
-         * Calcul de la position du catalogue d'etoiles
-         */
-        Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
-        if (ui->affconst->isChecked())
-            Constellation::CalculConstellations(observateurs.at(0), constellations);
-        if (ui->affconst->checkState() != Qt::Unchecked)
-            LigneConstellation::CalculLignesCst(etoiles, lignesCst);
-    }
-
-    /*
      * Calcul de la position courante des satellites
      */
-    if (nbSat > 0) {
+        if (nbSat > 0) {
 
-        Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
-                                               traceCiel, satellites);
+            Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
+                                                   traceCiel, satellites);
 
-        for (int i=0; i<nbSat; i++) {
-            if (satellites[i].isVisible() && !bipSat[i]) {
-                notif = true;
-                bipSat[i] = true;
+            for (int i=0; i<nbSat; i++) {
+                if (satellites[i].isVisible() && !bipSat[i]) {
+                    notif = true;
+                    bipSat[i] = true;
+                }
+            }
+
+            if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
+                chronometre->stop();
+                const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
+                Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
+                chronometre->start();
+                l1 = "";
+                l2 = "";
+            }
+
+            if (ui->onglets->count() < 7 && !satellites[0].isIeralt()) {
+                l1 = tles.at(0).getLigne1();
+                l2 = tles.at(0).getLigne2();
             }
         }
+        Satellite::initCalcul = true;
 
-        if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
-            chronometre->stop();
-            const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
-            Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
-            chronometre->start();
-            l1 = "";
-            l2 = "";
-        }
-
-        if (ui->onglets->count() < 7 && !satellites[0].isIeralt()) {
-            l1 = tles.at(0).getLigne1();
-            l2 = tles.at(0).getLigne2();
-        }
+    } catch (PreviSatException &e) {
     }
-    Satellite::initCalcul = true;
 
     /* Retour */
     return;
@@ -2587,6 +2661,149 @@ void PreviSat::VerifAgeTLE()
  * Interface *
  ************/
 /*
+ * Ouverture d'un fichier TLE
+ */
+void PreviSat::OuvertureFichierTLE(const QString &fichier)
+{
+    /* Declarations des variables locales */
+    int nsat;
+
+    /* Initialisations */
+    bool agz = false;
+    QString fich = fichier;
+    ficgz = "";
+
+    /* Corps de la methode */
+    try {
+        QFileInfo fi(fich);
+        if (fi.suffix() == "gz") {
+
+            // Cas d'un fichier compresse au format gz
+            const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
+
+            if (DecompressionFichierGz(fich, fic)) {
+
+                nsat = TLE::VerifieFichier(fic, false);
+                if (nsat == 0)
+                    throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                            fichier, WARNING);
+                ficgz = fich;
+                fich = fic;
+                agz = true;
+            } else {
+                throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
+                                        fich, WARNING);
+            }
+        }
+
+        messagesStatut->setText(tr("Ouverture du fichier TLE..."));
+
+        // Verification du fichier TLE
+        nsat = TLE::VerifieFichier(fich, true);
+        nomfic = fich;
+
+        const QString chaine = tr("Fichier TLE OK : %1 satellites");
+        messagesStatut->setText(chaine.arg(nsat));
+
+        if (agz)
+            settings.setValue("fichier/nom", ficgz);
+        else
+            settings.setValue("fichier/nom", nomfic);
+        settings.setValue("fichier/repTLE", fi.absolutePath());
+
+        if (QDir::convertSeparators(fi.absolutePath()) == QDir::convertSeparators(dirTle)) {
+            ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(QDir::convertSeparators(fi.filePath())));
+        } else {
+            if (!ficTLE.contains(fi.absoluteFilePath())) {
+                if (ui->listeFichiersTLE->itemText(0) == "") {
+                    ui->listeFichiersTLE->setItemText(0, fi.fileName());
+                } else {
+                    ui->listeFichiersTLE->removeItem(ui->listeFichiersTLE->count() - 1);
+                    ui->listeFichiersTLE->addItem(QDir::convertSeparators(fi.fileName()));
+                    ui->listeFichiersTLE->addItem(tr("Parcourir..."));
+                }
+                ficTLE.append(fi.absoluteFilePath());
+                ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(fi.absoluteFilePath()));
+            }
+        }
+
+        // Ouverture du fichier TLE
+        AfficherListeSatellites(nomfic, liste);
+
+        // Mise a jour de la liste de satellites selectionnes
+        if (nbSat > 0) {
+            nor = liste.at(0);
+            nbSat = getListeItemChecked(ui->liste1);
+
+            if (nbSat > 0) {
+                liste.clear();
+                tles.clear();
+                tles.resize(nbSat);
+                bipSat.resize(nbSat);
+
+                int j = -1;
+                for (int i=0; i<ui->liste1->count(); i++) {
+                    if (ui->liste1->item(i)->checkState() == Qt::Checked) {
+                        liste.append(ui->liste1->item(i)->text().split("#").at(1));
+                        if (liste.last() == nor)
+                            j = liste.size() - 1;
+                    }
+                }
+
+                if (j > 0) {
+                    liste[j] = liste[0];
+                    liste[0] = nor;
+                }
+
+                info = true;
+
+                EcritureListeRegistre();
+
+                if (nbSat == 0) {
+                    l1 = "";
+                    l2 = "";
+                    liste.clear();
+                }
+
+                Satellite::initCalcul = false;
+
+                Satellite::LectureDonnees(liste, tles, satellites);
+
+                CalculsAffichage();
+
+                // Verification de l'age du TLE
+                if (!l1.isEmpty() && !l2.isEmpty()) {
+                    old = false;
+                    VerifAgeTLE();
+                }
+            }
+        } else {
+
+            // Aucun satellite de la liste n'est dans le nouveau fichier
+            ui->liste1->setCurrentRow(0);
+            l1 = "";
+            l2 = "";
+            liste.clear();
+
+            // Enchainement de l'ensemble des calculs
+            EnchainementCalculs();
+
+            // Affichage des donnees numeriques
+            AffichageDonnees();
+
+            //Affichage des elements sur la carte du monde et le radar
+            AffichageCourbes();
+        }
+    } catch (PreviSatException &e) {
+        messagesStatut->setText("");
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Sauvegarde des donnees de l'onglet General
  */
 void PreviSat::SauveOngletGeneral(const QString &fic) const
@@ -2596,75 +2813,78 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile sw(fic);
-    sw.open(QIODevice::WriteOnly | QIODevice::Text);
-    if (!sw.isWritable()) {
-        const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
-        throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+    try {
+        QFile sw(fic);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (!sw.isWritable()) {
+            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+        flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
+
+        flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
+        QString chaine = tr("Longitude : %1\tLatitude : %2\tAltitude : %3");
+        flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl << endl << endl;
+
+        if (ui->onglets->count() == 7) {
+
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
+
+            chaine = tr("Longitude : %1\tHauteur    : %2\tAscension droite :  %3");
+            flux << chaine.arg(ui->longitudeSat->text().trimmed()).arg(ui->hauteurSat->text())
+                    .arg(ui->ascensionDroiteSat->text().trimmed()) << endl;
+
+            chaine = tr("Latitude  :  %1\tAzimut (N) : %2\tDéclinaison      : %3");
+            flux << chaine.arg(ui->latitudeSat->text().trimmed()).arg(ui->azimutSat->text().trimmed())
+                    .arg(ui->declinaisonSat->text()) << endl;
+
+            chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
+            flux << chaine.arg(ui->altitudeSat->text()).arg(QString(18 - ui->altitudeSat->text().length(), QChar(' ')))
+                    .arg(ui->distanceSat->text()).arg(QString(18 - ui->distanceSat->text().length(), QChar(' ')))
+                    .arg(ui->constellationSat->text()) << endl << endl;
+
+            chaine = tr("Direction          : %1  \t%2");
+            flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
+
+            chaine = tr("Vitesse orbitale   : %1%2  \tConditions d'observation : %3");
+            flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
+                    .arg(ui->conditionsObservation->text()) << endl;
+
+            chaine = tr("Variation distance : %1  \tOrbite n°%2");
+            flux << chaine.arg(ui->rangeRate->text()).arg(ui->nbOrbitesSat->text()) << endl << endl << endl;
+        }
+
+        // Donnees sur le Soleil
+        flux << tr("Coordonnées du Soleil :") << endl;
+        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
+
+        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
+        flux << chaine.arg(ui->azimutSoleil->text().trimmed()).arg(ui->declinaisonSoleil->text()) << endl;
+
+        chaine = tr("Distance   : %1   \tConstellation    : %2");
+        flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
+
+        // Donnees sur la Lune
+        flux << tr("Coordonnées de la Lune :") << endl;
+        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
+
+        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
+        flux << chaine.arg(ui->azimutLune->text().trimmed()).arg(ui->declinaisonLune->text()) << endl;
+
+        chaine = tr("Distance   : %1  \tConstellation    : %2");
+        flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
+        flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
+        flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
+
+        sw.close();
+    } catch (PreviSatException &e) {
     }
-    QTextStream flux(&sw);
-
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
-    flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
-
-    flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
-    QString chaine = tr("Longitude : %1\tLatitude : %2\tAltitude : %3");
-    flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl << endl << endl;
-
-    if (ui->onglets->count() == 7) {
-
-        // Donnees sur le satellite
-        flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
-
-        chaine = tr("Longitude : %1\tHauteur    : %2\tAscension droite :  %3");
-        flux << chaine.arg(ui->longitudeSat->text().trimmed()).arg(ui->hauteurSat->text())
-                .arg(ui->ascensionDroiteSat->text().trimmed()) << endl;
-
-        chaine = tr("Latitude  :  %1\tAzimut (N) : %2\tDéclinaison      : %3");
-        flux << chaine.arg(ui->latitudeSat->text().trimmed()).arg(ui->azimutSat->text().trimmed())
-                .arg(ui->declinaisonSat->text()) << endl;
-
-        chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
-        flux << chaine.arg(ui->altitudeSat->text()).arg(QString(18 - ui->altitudeSat->text().length(), QChar(' ')))
-                .arg(ui->distanceSat->text()).arg(QString(18 - ui->distanceSat->text().length(), QChar(' ')))
-                .arg(ui->constellationSat->text()) << endl << endl;
-
-        chaine = tr("Direction          : %1  \t%2");
-        flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
-
-        chaine = tr("Vitesse orbitale   : %1%2  \tConditions d'observation : %3");
-        flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
-                .arg(ui->conditionsObservation->text()) << endl;
-
-        chaine = tr("Variation distance : %1  \tOrbite n°%2");
-        flux << chaine.arg(ui->rangeRate->text()).arg(ui->nbOrbitesSat->text()) << endl << endl << endl;
-    }
-
-    // Donnees sur le Soleil
-    flux << tr("Coordonnées du Soleil :") << endl;
-    chaine = tr("Hauteur    : %1\tAscension droite :  %2");
-    flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
-
-    chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
-    flux << chaine.arg(ui->azimutSoleil->text().trimmed()).arg(ui->declinaisonSoleil->text()) << endl;
-
-    chaine = tr("Distance   : %1   \tConstellation    : %2");
-    flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
-
-    // Donnees sur la Lune
-    flux << tr("Coordonnées de la Lune :") << endl;
-    chaine = tr("Hauteur    : %1\tAscension droite :  %2");
-    flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
-
-    chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
-    flux << chaine.arg(ui->azimutLune->text().trimmed()).arg(ui->declinaisonLune->text()) << endl;
-
-    chaine = tr("Distance   : %1  \tConstellation    : %2");
-    flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
-    flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
-    flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
-
-    sw.close();
 
     /* Retour */
     return;
@@ -2680,51 +2900,54 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile sw(fic);
-    sw.open(QIODevice::WriteOnly | QIODevice::Text);
-    if (!sw.isWritable()) {
-        const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
-        throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+    try {
+        QFile sw(fic);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (!sw.isWritable()) {
+            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+        flux << tr("Date :") << " " << ui->dateHeure2->text() << endl << endl;
+
+        // Donnees sur le satellite
+        flux << tr("Nom du satellite :") + " " + ui->nomsat2->text() << endl;
+        flux << ui->ligne1->text() << endl;
+        flux << ui->ligne2->text() << endl << endl;
+
+        flux << tr("Vecteur d'état (ECI) :\t\t\t\tÉléments osculateurs :") << endl;
+        QString chaine = tr("x : %1%2\tvx : %3\tDemi-grand axe : %4\tAscension droite du noeud ascendant : %5%6");
+        flux << chaine.arg(ui->xsat->text()).arg(QString(18 - ui->xsat->text().length(), QChar(' '))).arg(ui->vxsat->text())
+                .arg(ui->demiGrandAxe->text()).arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0')))
+                .arg(ui->ADNoeudAscendant->text()) << endl;
+
+        chaine = tr("y : %1%2\tvy : %3\tExcentricité   : %4\tArgument du périgée                 : %5%6");
+        flux << chaine.arg(ui->ysat->text()).arg(QString(18 - ui->ysat->text().length(), QChar(' '))).arg(ui->vysat->text())
+                .arg(ui->excentricite->text()).arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0')))
+                .arg(ui->argumentPerigee->text()) << endl;
+
+        chaine = tr("z : %1%2\tvz : %3\tInclinaison    : %4%5\tAnomalie moyenne                    : %6%7");
+        flux << chaine.arg(ui->zsat->text()).arg(QString(18 - ui->zsat->text().length(), QChar(' '))).arg(ui->vzsat->text())
+                .arg(QString(9 - ui->inclinaison->text().length(), QChar('0'))).arg(ui->inclinaison->text())
+                .arg(QString(9 - ui->anomalieMoyenne->text().length(), QChar('0'))).arg(ui->anomalieMoyenne->text()) << endl << endl;
+
+
+        chaine = tr("Anomalie vraie       : %1%2\t\tApogée  (Altitude) : %3");
+        flux << chaine.arg(QString(9 - ui->anomalieVraie->text().length(), QChar('0'))).arg(ui->anomalieVraie->text())
+                .arg(ui->apogee->text()) << endl;
+
+        chaine = tr("Anomalie excentrique : %1%2\t\tPérigée (Altitude) : %3");
+        flux << chaine.arg(QString(9 - ui->anomalieExcentrique->text().length(), QChar('0')))
+                .arg(ui->anomalieExcentrique->text()).arg(ui->perigee->text()) << endl;
+
+        chaine = tr("Champ de vue         : %1  \t\tPériode orbitale   : %2");
+        flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl;
+
+        sw.close();
+    } catch (PreviSatException &e) {
     }
-    QTextStream flux(&sw);
-
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
-    flux << tr("Date :") << " " << ui->dateHeure2->text() << endl << endl;
-
-    // Donnees sur le satellite
-    flux << tr("Nom du satellite :") + " " + ui->nomsat2->text() << endl;
-    flux << ui->ligne1->text() << endl;
-    flux << ui->ligne2->text() << endl << endl;
-
-    flux << tr("Vecteur d'état (ECI) :\t\t\t\tÉléments osculateurs :") << endl;
-    QString chaine = tr("x : %1%2\tvx : %3\tDemi-grand axe : %4\tAscension droite du noeud ascendant : %5%6");
-    flux << chaine.arg(ui->xsat->text()).arg(QString(18 - ui->xsat->text().length(), QChar(' '))).arg(ui->vxsat->text())
-            .arg(ui->demiGrandAxe->text()).arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0')))
-            .arg(ui->ADNoeudAscendant->text()) << endl;
-
-    chaine = tr("y : %1%2\tvy : %3\tExcentricité   : %4\tArgument du périgée                 : %5%6");
-    flux << chaine.arg(ui->ysat->text()).arg(QString(18 - ui->ysat->text().length(), QChar(' '))).arg(ui->vysat->text())
-            .arg(ui->excentricite->text()).arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0')))
-            .arg(ui->argumentPerigee->text()) << endl;
-
-    chaine = tr("z : %1%2\tvz : %3\tInclinaison    : %4%5\tAnomalie moyenne                    : %6%7");
-    flux << chaine.arg(ui->zsat->text()).arg(QString(18 - ui->zsat->text().length(), QChar(' '))).arg(ui->vzsat->text())
-            .arg(QString(9 - ui->inclinaison->text().length(), QChar('0'))).arg(ui->inclinaison->text())
-            .arg(QString(9 - ui->anomalieMoyenne->text().length(), QChar('0'))).arg(ui->anomalieMoyenne->text()) << endl << endl;
-
-
-    chaine = tr("Anomalie vraie       : %1%2\t\tApogée  (Altitude) : %3");
-    flux << chaine.arg(QString(9 - ui->anomalieVraie->text().length(), QChar('0'))).arg(ui->anomalieVraie->text())
-            .arg(ui->apogee->text()) << endl;
-
-    chaine = tr("Anomalie excentrique : %1%2\t\tPérigée (Altitude) : %3");
-    flux << chaine.arg(QString(9 - ui->anomalieExcentrique->text().length(), QChar('0')))
-            .arg(ui->anomalieExcentrique->text()).arg(ui->perigee->text()) << endl;
-
-    chaine = tr("Champ de vue         : %1  \t\tPériode orbitale   : %2");
-    flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl;
-
-    sw.close();
 
     /* Retour */
     return;
@@ -2740,49 +2963,53 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile sw(fic);
-    sw.open(QIODevice::WriteOnly | QIODevice::Text);
-    if (!sw.isWritable()) {
-        const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
-        throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+    try {
+        QFile sw(fic);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (!sw.isWritable()) {
+            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+
+        // Donnees sur le satellite
+        flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;
+        flux << ui->line1->text() << endl;
+        flux << ui->line2->text() << endl << endl;
+
+        QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour");
+        flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()) << endl;
+
+        chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2");
+        flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()) << endl;
+
+        chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3");
+        flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()) << endl;
+
+        chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
+        flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
+
+        chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
+        flux << chaine.arg(QString(9 - ui->inclinaisonMoy->text().trimmed().length(), QChar('0')))
+                .arg(ui->inclinaisonMoy->text().trimmed()).arg(QString(9 - ui->anomalieMoy->text().trimmed().length(), QChar('0')))
+                .arg(ui->anomalieMoy->text().trimmed()) << endl;
+
+        chaine = tr("AD noeud ascendant      : %1%2\t\tMagnitude std/max     : %3");
+        flux << chaine.arg(QString(9 - ui->ADNoeudAscendantMoy->text().trimmed().length(), QChar('0')))
+                .arg(ui->ADNoeudAscendantMoy->text().trimmed()).arg(ui->magnitudeStdMax->text()) << endl;
+
+        chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+        flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
+
+        chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3^2");
+        flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
+                .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text()) << endl;
+        sw.close();
+
+    } catch (PreviSatException &e) {
     }
-    QTextStream flux(&sw);
-
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
-
-    // Donnees sur le satellite
-    flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;
-    flux << ui->line1->text() << endl;
-    flux << ui->line2->text() << endl << endl;
-
-    QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour");
-    flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()) << endl;
-
-    chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2");
-    flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()) << endl;
-
-    chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3");
-    flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()) << endl;
-
-    chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
-    flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
-
-    chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
-    flux << chaine.arg(QString(9 - ui->inclinaisonMoy->text().trimmed().length(), QChar('0')))
-            .arg(ui->inclinaisonMoy->text().trimmed()).arg(QString(9 - ui->anomalieMoy->text().trimmed().length(), QChar('0')))
-            .arg(ui->anomalieMoy->text().trimmed()) << endl;
-
-    chaine = tr("AD noeud ascendant      : %1%2\t\tMagnitude std/max     : %3");
-    flux << chaine.arg(QString(9 - ui->ADNoeudAscendantMoy->text().trimmed().length(), QChar('0')))
-            .arg(ui->ADNoeudAscendantMoy->text().trimmed()).arg(ui->magnitudeStdMax->text()) << endl;
-
-    chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
-    flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
-
-    chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3^2");
-    flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
-            .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text()) << endl;
-    sw.close();
 
     /* Retour */
     return;
@@ -3282,141 +3509,146 @@ void PreviSat::FinEnregistrementFichier()
     ficDwn.close();
 
     /* Corps de la methode */
-    QFile fd(ficDwn.fileName());
-    fd.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flx(&fd);
-    const QString lg = flx.readLine();
-    fd.close();
-    if (lg.contains("DOCTYPE"))
-        atr = true;
+    try {
+        QFile fd(ficDwn.fileName());
+        fd.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flx(&fd);
+        const QString lg = flx.readLine();
+        fd.close();
+        if (lg.contains("DOCTYPE"))
+            atr = true;
 
-    if (rep->error() || atr) {
+        if (rep->error() || atr) {
 
-        // Erreur survenue lors du telechargement
-        ui->frameBarreProgression->setVisible(false);
-        const QFileInfo ff(ficDwn.fileName());
+            // Erreur survenue lors du telechargement
+            ui->frameBarreProgression->setVisible(false);
+            const QFileInfo ff(ficDwn.fileName());
 
-        if (fd.exists())
-            fd.remove();
+            if (fd.exists())
+                fd.remove();
 
-        QString msg = tr("Erreur lors du téléchargement du fichier %1");
-        if (rep->error())
-            msg += " : " + rep->errorString();
-        Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+            QString msg = tr("Erreur lors du téléchargement du fichier %1");
+            if (rep->error())
+                msg += " : " + rep->errorString();
+            Messages::Afficher(msg.arg(ff.fileName()), WARNING);
 
-    } else {
+        } else {
 
-        // Mise a jour des TLE
-        if (atrouve) {
+            // Mise a jour des TLE
+            if (atrouve) {
 
-            if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
+                if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
 
-                const int nb = TLE::VerifieFichier(nomfic, false);
-                if (nb == 0) {
-                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                    Messages::Afficher(msg.arg(nomfic), WARNING);
-                } else {
+                    const int nb = TLE::VerifieFichier(nomfic, false);
+                    if (nb == 0) {
+                        const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                        Messages::Afficher(msg.arg(nomfic), WARNING);
+                    } else {
 
-                    // Recuperation des TLE de la liste
-                    TLE::LectureFichier(nomfic, liste, tles);
+                        // Recuperation des TLE de la liste
+                        TLE::LectureFichier(nomfic, liste, tles);
 
-                    Satellite::initCalcul = false;
-                    Satellite::LectureDonnees(liste, tles, satellites);
+                        Satellite::initCalcul = false;
+                        Satellite::LectureDonnees(liste, tles, satellites);
 
-                    CalculsAffichage();
-                }
-            }
-        }
-
-        // Mise a jour des fichiers internes
-        if (amajInt) {
-
-            amajInt = false;
-            if (ficDwn.exists()) {
-
-                ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
-                QTextStream flux(&ficDwn);
-                const QStringList ligne = flux.readLine().split("-");
-                ficDwn.close();
-                rep->deleteLater();
-                TelechargementSuivant();
-
-                const int an = ligne.at(0).toInt();
-                const int mo = ligne.at(1).toInt();
-                const int jo = ligne.at(2).toInt();
-                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
-
-                const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
-                QStringList fichiers;
-                fichiers << "donnees.sat" << "iridium.sts";
-                dirDwn = dirDat;
-
-                for(int i=0; i<fichiers.size(); i++) {
-
-                    const QString fic = dirDat + QDir::separator() + fichiers.at(i);
-                    const QFileInfo fi(fic);
-
-                    if (fi.lastModified() < dateHttp) {
-                        AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
-                        aup = true;
+                        CalculsAffichage();
                     }
                 }
-                if (downQueue.isEmpty())
-                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-
-                if (aup)
-                    QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
-                else
-                    QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
-            }
-        }
-
-        // Mise a jour des fichiers TLE selectionnes
-        if (aupdnow) {
-
-            QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
-            QFileInfo ff(fichierALire);
-            QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
-
-            QFile fi(fichierAMettreAJour);
-            if (fi.exists()) {
-
-                QStringList compteRendu;
-                TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
-
-                bool aecr = false;
-                EcritureCompteRenduMaj(compteRendu, aecr);
-                aup = true;
-
-            } else {
-                fi.copy(fichierALire, fichierAMettreAJour);
-                const QString msg = tr("Ajout du fichier %1") + "\n";
-                ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
             }
 
-            if (fichierAMettreAJour == nomfic) {
+            // Mise a jour des fichiers internes
+            if (amajInt) {
 
-                const int nb = TLE::VerifieFichier(nomfic, false);
-                if (nb == 0) {
-                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                    Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+                amajInt = false;
+                if (ficDwn.exists()) {
+
+                    ficDwn.open(QIODevice::ReadOnly | QIODevice::Text);
+                    QTextStream flux(&ficDwn);
+                    const QStringList ligne = flux.readLine().split("-");
+                    ficDwn.close();
+                    rep->deleteLater();
+                    TelechargementSuivant();
+
+                    const int an = ligne.at(0).toInt();
+                    const int mo = ligne.at(1).toInt();
+                    const int jo = ligne.at(2).toInt();
+                    const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+
+                    const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
+                    QStringList fichiers;
+                    fichiers << "donnees.sat" << "iridium.sts";
+                    dirDwn = dirDat;
+
+                    for(int i=0; i<fichiers.size(); i++) {
+
+                        const QString fic = dirDat + QDir::separator() + fichiers.at(i);
+                        const QFileInfo fi(fic);
+
+                        if (fi.lastModified() < dateHttp) {
+                            AjoutFichier(QUrl(httpDirDat + fichiers.at(i)));
+                            aup = true;
+                        }
+                    }
+                    if (downQueue.isEmpty())
+                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+                    if (aup)
+                        QMessageBox::information(0, tr("Information"), tr("Mise à jour des fichiers internes effectuée"));
+                    else
+                        QMessageBox::information(0, tr("Information"), tr("Aucune mise à jour des fichiers internes est nécessaire"));
+                }
+            }
+
+            // Mise a jour des fichiers TLE selectionnes
+            if (aupdnow) {
+
+                QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
+                QFileInfo ff(fichierALire);
+                QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
+
+                QFile fi(fichierAMettreAJour);
+                if (fi.exists()) {
+
+                    QStringList compteRendu;
+                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
+
+                    bool aecr = false;
+                    EcritureCompteRenduMaj(compteRendu, aecr);
+                    aup = true;
+
                 } else {
+                    fi.copy(fichierALire, fichierAMettreAJour);
+                    const QString msg = tr("Ajout du fichier %1") + "\n";
+                    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
+                }
 
-                    // Recuperation des TLE de la liste
-                    TLE::LectureFichier(nomfic, liste, tles);
+                if (fichierAMettreAJour == nomfic) {
 
-                    Satellite::initCalcul = false;
-                    Satellite::LectureDonnees(liste, tles, satellites);
+                    const int nb = TLE::VerifieFichier(nomfic, false);
+                    if (nb == 0) {
+                        const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                        Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+                    } else {
 
-                    CalculsAffichage();
+                        // Recuperation des TLE de la liste
+                        TLE::LectureFichier(nomfic, liste, tles);
+
+                        Satellite::initCalcul = false;
+                        Satellite::LectureDonnees(liste, tles, satellites);
+
+                        CalculsAffichage();
+                    }
                 }
             }
         }
-    }
 
-    if (aup)
-        rep->deleteLater();
-    TelechargementSuivant();
+        if (aup)
+            rep->deleteLater();
+        TelechargementSuivant();
+
+    } catch (PreviSatException &e) {
+        ui->frameBarreProgression->setVisible(false);
+    }
 
     /* Retour */
     return;
@@ -4310,125 +4542,16 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
 
     /* Corps de la methode */
     // Ouverture d'un fichier TLE
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/repTLE", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
+    const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                         settings.value("fichier/repTLE", dirTle).toString(),
+                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
 
     try {
         if (!fichier.isEmpty()) {
-
-            bool agz = false;
-            int nsat;
-            ficgz = "";
-            QFileInfo fi(fichier);
-            if (fi.suffix() == "gz") {
-
-                // Cas d'un fichier compresse au format gz
-                const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
-
-                if (DecompressionFichierGz(fichier, fic)) {
-
-                    nsat = TLE::VerifieFichier(fic, false);
-                    if (nsat == 0)
-                        throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
-                                                fichier, WARNING);
-                    ficgz = fichier;
-                    fichier = fic;
-                    agz = true;
-                } else {
-                    throw PreviSatException(tr("POSITION : Erreur rencontrée lors de la décompression du fichier") + " " +
-                                            fichier, WARNING);
-                }
-            }
-
-            messagesStatut->setText(tr("Ouverture du fichier TLE..."));
-
-            // Verification du fichier TLE
-            try {
-                nsat = TLE::VerifieFichier(fichier, true);
-                nomfic = fichier;
-            } catch (PreviSatException &e) {
-                messagesStatut->setText("");
-                throw PreviSatException();
-            }
-
-            ui->nomFichierTLE->setText(fi.fileName());
-            ui->lbl_nomFichierTLE->setVisible(true);
-            ui->nomFichierTLE->setVisible(true);
-            const QString chaine = tr("Fichier TLE OK : %1 satellites");
-            messagesStatut->setText(chaine.arg(nsat));
-
-            if (agz)
-                settings.setValue("fichier/nom", ficgz);
-            else
-                settings.setValue("fichier/nom", nomfic);
-            settings.setValue("fichier/repTLE", fi.absolutePath());
-
-            // Ouverture du fichier TLE
-            AfficherListeSatellites(nomfic, liste);
-
-            // Mise a jour de la liste de satellites selectionnes
-            if (nbSat > 0) {
-                nor = liste.at(0);
-                nbSat = getListeItemChecked(ui->liste1);
-
-                if (nbSat > 0) {
-                    liste.clear();
-                    tles.clear();
-                    tles.resize(nbSat);
-                    bipSat.resize(nbSat);
-
-                    int j = -1;
-                    for (int i=0; i<ui->liste1->count(); i++) {
-                        if (ui->liste1->item(i)->checkState() == Qt::Checked) {
-                            liste.append(ui->liste1->item(i)->text().split("#").at(1));
-                            if (liste.last() == nor)
-                                j = liste.size() - 1;
-                        }
-                    }
-
-                    if (j > 0) {
-                        liste[j] = liste[0];
-                        liste[0] = nor;
-                    }
-
-                    info = true;
-
-                    EcritureListeRegistre();
-
-                    if (nbSat == 0) {
-                        l1 = "";
-                        l2 = "";
-                        liste.clear();
-                    }
-
-                    Satellite::initCalcul = false;
-
-                    Satellite::LectureDonnees(liste, tles, satellites);
-
-                    CalculsAffichage();
-
-                    // Verification de l'age du TLE
-                    if (!l1.isEmpty() && !l2.isEmpty()) {
-                        old = false;
-                        VerifAgeTLE();
-                    }
-                }
-            } else {
-                // Aucun satellite de la liste n'est dans le nouveau fichier
-                ui->liste1->setCurrentRow(0);
-                l1 = "";
-                l2 = "";
-                liste.clear();
-
-                // Enchainement de l'ensemble des calculs
-                EnchainementCalculs();
-
-                // Affichage des donnees numeriques
-                AffichageDonnees();
-
-                //Affichage des elements sur la carte du monde et le radar
-                AffichageCourbes();
-            }
+//            if (!ui->listeFichiersTLE->currentText().isEmpty())
+//                ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(nomfic));
+//        } else {
+            OuvertureFichierTLE(fichier);
         }
     } catch (PreviSatException &ex) {
     }
@@ -4554,6 +4677,29 @@ void PreviSat::on_actionA_propos_activated(int arg1)
 /*
  * Gestion de la liste principale de satellites
  */
+void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->listeFichiersTLE->itemText(ui->listeFichiersTLE->count()-1) == tr("Parcourir...")) {
+
+        if (index == ui->listeFichiersTLE->count() - 1) {
+            on_actionOuvrir_fichier_TLE_activated();
+        } else {
+            ui->listeFichiersTLE->setItemData(idxf, Qt::white, Qt::BackgroundRole);
+            ui->listeFichiersTLE->setItemData(index, Qt::gray, Qt::BackgroundRole);
+            OuvertureFichierTLE(ficTLE.at(index));
+            idxf = index;
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_actionDefinir_par_defaut_activated()
 {
     /* Declarations des variables locales */

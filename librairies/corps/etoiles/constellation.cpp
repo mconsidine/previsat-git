@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -56,7 +56,7 @@ Constellation::Constellation()
 {
 }
 
-Constellation::Constellation(const QString nom, const double ascensionDroite, const double declinaison)
+Constellation::Constellation(const QString &nom, const double ascensionDroite, const double declinaison)
 {
     /* Declarations des variables locales */
 

@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -52,7 +52,7 @@ class Afficher : public QMainWindow
 
 public:
     explicit Afficher(QWidget *parent = 0);
-    void show(const QString fic);
+    void show(const QString &fic);
     ~Afficher();
 
 private:
