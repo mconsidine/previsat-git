@@ -69,6 +69,7 @@ private:
 
     // Initialisation
     void InitFicObs(const bool alarm) const;
+    void InitFicTLE() const;
     void InitFicMap(const bool majAff) const;
 
     // Affichage
@@ -86,6 +87,7 @@ private:
     void VerifAgeTLE();
 
     // Interface
+    void OuvertureFichierTLE(const QString &fichier);
     void SauveOngletGeneral(const QString &fic) const;
     void SauveOngletElementsOsculateurs(const QString &fic) const;
     void SauveOngletInformations(const QString &fic) const;
@@ -136,6 +138,7 @@ private slots:
     void on_actionA_propos_activated(int arg1);
 
     // Gestion de la liste principale de satellites
+    void on_listeFichiersTLE_currentIndexChanged(int index);
     void on_actionDefinir_par_defaut_activated();
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -50,7 +50,7 @@ public:
 
     /* Constructeurs */
     TLE();
-    TLE(const QString ligne1, const QString ligne2);
+    TLE(const QString &ligne1, const QString &ligne2);
     ~TLE();
 
     /* Constantes publiques */
@@ -58,9 +58,9 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static int VerifieFichier(const QString nomFichier, const bool alarm);
+    static int VerifieFichier(const QString &nomFichier, const bool alarm);
     static void LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, QVector<TLE> &tabtle);
-    static void MiseAJourFichier(const QString ficOld, const QString ficNew, QStringList &compteRendu);
+    static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, QStringList &compteRendu);
 
     /* Accesseurs */
     double getArgpo() const;
@@ -109,7 +109,7 @@ private:
 
     /* Methodes privees */
     static bool CheckSum(const QString ligne);
-    static void VerifieLignes(const QString li1, const QString li2);
+    static void VerifieLignes(const QString &li1, const QString &li2);
 
 };
 

@@ -56,7 +56,7 @@ PreviSatException::PreviSatException(const int ierr) throw()
     _ierr = ierr;
 }
 
-PreviSatException::PreviSatException(const QString message, const MessageType ierr) throw()
+PreviSatException::PreviSatException(const QString &message, const MessageType ierr) throw()
 {
     _ierr = ierr;
     Messages::Afficher(message, ierr);

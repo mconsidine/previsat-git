@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >
+ * >    12 octobre 2012
  *
  */
 
@@ -107,13 +107,16 @@ void Telecharger::on_interrogerServeur_clicked()
     const QString httpDirList = (dirHttp == 1) ? httpDirList1 : httpDirList2;
 
     /* Corps de la methode */
-    const QUrl url(httpDirList + "liste");
-    fic = dirTmp + QDir::separator() + "listeMap.tmp";
-    const QNetworkRequest requete(url);
-    rep = mng.get(requete);
+    try {
+        const QUrl url(httpDirList + "liste");
+        fic = dirTmp + QDir::separator() + "listeMap.tmp";
+        const QNetworkRequest requete(url);
+        rep = mng.get(requete);
 
-    connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
-    connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
+        connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
+        connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
+    } catch (PreviSatException &e) {
+    }
 
     /* Retour */
     return;

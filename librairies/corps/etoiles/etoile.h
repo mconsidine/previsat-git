@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -50,7 +50,7 @@ public:
 
     /* Constructeurs */
     Etoile();
-    Etoile(const QString nom, const double ascensionDroite, const double declinaison, const double magnitude);
+    Etoile(const QString &nom, const double ascensionDroite, const double declinaison, const double magnitude);
     ~Etoile();
 
     /* Constantes publiques */

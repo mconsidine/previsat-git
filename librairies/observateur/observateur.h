@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -51,7 +51,7 @@ public:
 
     /* Constructeurs */
     Observateur();
-    Observateur(const QString nomlieu, const double longitude, const double latitude, const double altitude);
+    Observateur(const QString &nomlieu, const double longitude, const double latitude, const double altitude);
     Observateur(const Observateur &observateur);
     Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz, const double aaer, const double aray);
     ~Observateur();

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -275,7 +275,7 @@ Date Date::ToLocalDate(const double offsetUTC) const
     return (Date(_jourJulienUTC + offsetUTC));
 }
 
-QString Date::ToShortDate(const DateFormat format) const
+QString Date::ToShortDate(const DateFormat &format) const
 {
     /* Declarations des variables locales */
     QString res;

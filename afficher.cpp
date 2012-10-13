@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -88,7 +88,7 @@ Afficher::~Afficher()
     delete ui;
 }
 
-void Afficher::show(const QString fic)
+void Afficher::show(const QString &fic)
 {
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);

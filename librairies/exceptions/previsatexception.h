@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
 
@@ -51,7 +51,7 @@ public:
     /* Constructeurs */
     PreviSatException() throw();
     PreviSatException(const int ierr) throw();
-    PreviSatException(const QString message, const MessageType ierr) throw();
+    PreviSatException(const QString &message, const MessageType ierr) throw();
 
     /* Constantes publiques */
 

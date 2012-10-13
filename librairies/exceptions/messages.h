@@ -33,9 +33,10 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    11 octobre 2012
  *
  */
+
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
@@ -53,7 +54,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void Afficher(const QString message, const MessageType ierr);
+    static void Afficher(const QString &message, const MessageType ierr);
 
     /* Accesseurs */
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 septembre 2012
+ * >    11 octobre 2012
  *
  */
 
@@ -67,7 +67,7 @@ TLE::TLE()
 /*
  * Constructeur a partir des 2 lignes du TLE
  */
-TLE::TLE(const QString ligne1, const QString ligne2)
+TLE::TLE(const QString &ligne1, const QString &ligne2)
 {
     /* Declarations des variables locales */
     int an, ibe;
@@ -128,7 +128,7 @@ TLE::~TLE()
 /*
  * Verification du fichier TLE
  */
-int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
+int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 {
     /* Declarations des variables locales */
     int ierr, itle, nb;
@@ -158,7 +158,7 @@ int TLE::VerifieFichier(const QString nomFichier, const bool alarm)
                     nomsat = ligne.trimmed();
 
                 if (ligne.size() > 0) {
-                    if (ligne.at(0) == '1') {
+                    if (ligne.mid(0, 2) == "1 ") {
                         li1 = ligne;
 
                         do {
@@ -274,7 +274,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         while (!flux.atEnd() || j > jmax) {
 
             const QString ligne = flux.readLine();
-            if (ligne.at(0) == '1') {
+            if (ligne.mid(0, 2) == "1 ") {
 
                 QString li1, li2;
                 li1 = ligne;
@@ -282,7 +282,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     li2 = flux.readLine();
                 } while (li2.trimmed().length() == 0);
 
-                if (nomsat.at(0) == '1' || nomsat == "---") {
+                if (nomsat.mid(0, 2) == "1 " || nomsat == "---") {
                     const int indx1 = magn.indexOf(li1.mid(2, 5));
                     if (indx1 >= 0) {
                         const int indx2 = magn.indexOf('\n', indx1) - indx1;
@@ -327,7 +327,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     return;
 }
 
-void TLE::MiseAJourFichier(const QString ficOld, const QString ficNew, QStringList &compteRendu)
+void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, QStringList &compteRendu)
 {
     /* Declarations des variables locales */
     QVector<TLE> tleNew, tleOld;
@@ -495,7 +495,7 @@ bool TLE::CheckSum(const QString ligne)
 /*
  * Verification des lignes du TLE
  */
-void TLE::VerifieLignes(const QString li1, const QString li2)
+void TLE::VerifieLignes(const QString &li1, const QString &li2)
 {
     /* Declarations des variables locales */
     int exc, ierr;
@@ -512,7 +512,7 @@ void TLE::VerifieLignes(const QString li1, const QString li2)
     }
 
     // Verification du numero des lignes
-    if (li1.at(0) != '1' || li2.at(0) != '2') {
+    if (li1.mid(0, 2) != "1 " || li2.mid(0, 2) != "2 ") {
         exc = 2;
         ierr++;
     }
