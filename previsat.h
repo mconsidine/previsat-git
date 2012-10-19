@@ -130,7 +130,6 @@ private slots:
     void on_actionImprimer_carte_activated();
     void on_actionFichier_d_aide_activated(int arg1);
     void on_actionAstropedia_free_fr_activated();
-    void on_actionDonnez_votre_avis_activated();
     void on_actionTelecharger_les_mises_jour_activated();
     void on_actionRapport_de_bug_activated();
     void on_actionWww_celestrak_com_activated();
@@ -248,6 +247,7 @@ private slots:
     void on_hauteurSatPrev_currentIndexChanged(int index);
     void on_hauteurSoleilPrev_currentIndexChanged(int index);
     void on_magnitudeMaxPrev_toggled(bool checked);
+    void on_parametrageDefautPrev_clicked();
     void on_calculsPrev_clicked();
     void on_annulerPrev_clicked();
     void on_afficherPrev_clicked();
@@ -257,6 +257,7 @@ private slots:
     void on_parcourirIri_clicked();
     void on_hauteurSatIri_currentIndexChanged(int index);
     void on_hauteurSoleilIri_currentIndexChanged(int index);
+    void on_parametrageDefautIri_clicked();
     void on_calculsIri_clicked();
     void on_annulerIri_clicked();
     void on_afficherIri_clicked();
@@ -265,6 +266,7 @@ private slots:
     void on_effacerHeuresEvt_clicked();
     void on_liste3_customContextMenuRequested(const QPoint &pos);
     void on_liste3_entered(const QModelIndex &index);
+    void on_parametrageDefautEvt_clicked();
     void on_calculsEvt_clicked();
     void on_annulerEvt_clicked();
     void on_afficherEvt_clicked();
@@ -273,6 +275,7 @@ private slots:
     void on_effacerHeuresTransit_clicked();
     void on_parcourirTransit_clicked();
     void on_hauteurSatTransit_currentIndexChanged(int index);
+    void on_parametrageDefautTransit_clicked();
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();

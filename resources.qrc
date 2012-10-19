@@ -42,5 +42,6 @@
         <file>resources/lune27.png</file>
         <file>resources/lune28.png</file>
         <file>resources/lune29.png</file>
+        <file>resources/print.png</file>
     </qresource>
 </RCC>
