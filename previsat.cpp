@@ -366,6 +366,7 @@ void PreviSat::ChargementConfig()
         ui->unitesMi->setChecked(true);
 
     settings.setValue("fichier/path", dirExe);
+    settings.setValue("fichier/version", QString(APPVERSION));
 
     // Affichage au demarrage
     QStyle *style = QApplication::style();
@@ -386,16 +387,27 @@ void PreviSat::ChargementConfig()
     ui->frameSimu->setVisible(false);
     ui->pause->setEnabled(false);
 
-    ui->hauteurSatPrev->setCurrentIndex(0);
-    ui->hauteurSoleilPrev->setCurrentIndex(1);
+    ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
+    ui->lieuxObservation2->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
+    ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
+    ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
+    ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
+    ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
+    ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isVisible());
     ui->valHauteurSatPrev->setVisible(false);
     ui->valHauteurSoleilPrev->setVisible(false);
-    ui->valMagnitudeMaxPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
     ui->annulerPrev->setVisible(false);
 
-    ui->hauteurSatIri->setCurrentIndex(2);
-    ui->hauteurSoleilIri->setCurrentIndex(1);
+    ui->hauteurSatIri->setCurrentIndex(settings.value("previsions/hauteurSatIri", 2).toInt());
+    ui->hauteurSoleilIri->setCurrentIndex(settings.value("previsions/hauteurSoleilIri", 1).toInt());
+    ui->lieuxObservation3->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
+    ui->satellitesOperationnels->setChecked(settings.value("previsions/satellitesOperationnels", true).toBool());
+    ui->ordreChronologique->setChecked(settings.value("previsions/ordreChronologique", true).toBool());
+    ui->magnitudeMaxJourIri->setValue(settings.value("previsions/magnitudeMaxJourIri", -4.).toDouble());
+    ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
+    ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 4.).toDouble());
+    ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setVisible(false);
@@ -422,11 +434,18 @@ void PreviSat::ChargementConfig()
     ui->frameIncl->setVisible(false);
     ui->frameNORAD->setVisible(false);
 
+    ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
+    ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
+    ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
+    ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
+    ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
     ui->afficherEvt->setVisible(false);
     ui->annulerEvt->setVisible(false);
 
-    ui->hauteurSatTransit->setCurrentIndex(1);
-    ui->pasGeneration->setCurrentIndex(5);
+    ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
+    ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
+    ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
+    ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
     ui->valHauteurSatTransit->setVisible(false);
     ui->afficherTransit->setVisible(false);
     ui->annulerTransit->setVisible(false);
@@ -3737,6 +3756,34 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
     settings.setValue("fichier/fichierTLETransit", ui->fichierTLETransit->text());
 
+    settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
+    settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
+    settings.setValue("previsions/hauteurSatPrev", (ui->hauteurSatPrev->currentIndex() > 4) ? 0 : ui->hauteurSatPrev->currentIndex());
+    settings.setValue("previsions/hauteurSoleilPrev", (ui->hauteurSoleilPrev->currentIndex() > 4) ? 1 : ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/illuminationPrev", ui->illuminationPrev->isChecked());
+    settings.setValue("previsions/magnitudeMaxPrev", ui->magnitudeMaxPrev->isChecked());
+
+    settings.setValue("previsions/hauteurSatIri", (ui->hauteurSatIri->currentIndex() > 4) ? 2 : ui->hauteurSatIri->currentIndex());
+    settings.setValue("previsions/hauteurSoleilIri", (ui->hauteurSoleilIri->currentIndex() > 4) ? 1 : ui->hauteurSoleilIri->currentIndex());
+    settings.setValue("previsions/lieuxObservation3", ui->lieuxObservation3->currentIndex());
+    settings.setValue("previsions/satellitesOperationnels", ui->satellitesOperationnels->isChecked());
+    settings.setValue("previsions/ordreChronologique", ui->ordreChronologique->isChecked());
+    settings.setValue("previsions/magnitudeMaxJourIri", ui->magnitudeMaxJourIri->value());
+    settings.setValue("previsions/magnitudeMaxNuitIri", ui->magnitudeMaxNuitIri->value());
+    settings.setValue("previsions/angleMaxReflexionIri", ui->angleMaxReflexionIri->value());
+    settings.setValue("previsions/affichage3lignesIri",  ui->affichage3lignesIri->isChecked());
+
+    settings.setValue("previsions/passageApogee", ui->passageApogee->isChecked());
+    settings.setValue("previsions/passageNoeuds", ui->passageNoeuds->isChecked());
+    settings.setValue("previsions/passageOmbre", ui->passageOmbre->isChecked());
+    settings.setValue("previsions/passageQuadrangles", ui->passageQuadrangles->isChecked());
+    settings.setValue("previsions/transitionJourNuit", ui->transitionJourNuit->isChecked());
+
+    settings.setValue("previsions/hauteurSatTransit", (ui->hauteurSatTransit->currentIndex() > 4) ? 1 : ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
+    settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
+    settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
+
     EcritureListeRegistre();
 
     /* Retour */
@@ -4547,10 +4594,10 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
                                                          tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
 
     try {
-        if (!fichier.isEmpty()) {
-//            if (!ui->listeFichiersTLE->currentText().isEmpty())
-//                ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(nomfic));
-//        } else {
+        if (fichier.isEmpty()) {
+            if (!ui->listeFichiersTLE->currentText().isEmpty())
+                ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(nomfic));
+        } else {
             OuvertureFichierTLE(fichier);
         }
     } catch (PreviSatException &ex) {
@@ -4633,14 +4680,17 @@ void PreviSat::on_actionAstropedia_free_fr_activated()
     QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/"));
 }
 
-void PreviSat::on_actionDonnez_votre_avis_activated()
-{
-    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/contacts/avis/avis.html"));
-}
-
 void PreviSat::on_actionTelecharger_les_mises_jour_activated()
 {
-    QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/"));
+    const QString fic = "setup.exe";
+    const QFile fi(dirExe + QDir::separator() + fic);
+    if (fi.exists()) {
+        QProcess proc;
+        proc.startDetached(fic);
+        close();
+    } else {
+        QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/"));
+    }
 }
 
 void PreviSat::on_actionRapport_de_bug_activated()
@@ -6858,6 +6908,20 @@ void PreviSat::on_magnitudeMaxPrev_toggled(bool checked)
     ui->valMagnitudeMaxPrev->setVisible(checked);
 }
 
+void PreviSat::on_parametrageDefautPrev_clicked()
+{
+    on_onglets_currentChanged(ui->previsions);
+    ui->pasGeneration->setCurrentIndex(5);
+    ui->lieuxObservation2->setCurrentIndex(0);
+    ui->hauteurSatPrev->setCurrentIndex(0);
+    ui->hauteurSoleilPrev->setCurrentIndex(1);
+    ui->valHauteurSatPrev->setVisible(false);
+    ui->valHauteurSoleilPrev->setVisible(false);
+    ui->valMagnitudeMaxPrev->setVisible(false);
+    ui->illuminationPrev->setChecked(true);
+    ui->magnitudeMaxPrev->setChecked(false);
+}
+
 void PreviSat::on_calculsPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -7109,6 +7173,22 @@ void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_parametrageDefautIri_clicked()
+{
+    on_onglets_currentChanged(ui->iridium);
+    ui->hauteurSatIri->setCurrentIndex(2);
+    ui->hauteurSoleilIri->setCurrentIndex(1);
+    ui->valHauteurSatIri->setVisible(false);
+    ui->valHauteurSoleilIri->setVisible(false);
+    ui->lieuxObservation3->setCurrentIndex(0);
+    ui->satellitesOperationnels->setChecked(true);
+    ui->ordreChronologique->setChecked(true);
+    ui->magnitudeMaxJourIri->setValue(-4.);
+    ui->magnitudeMaxNuitIri->setValue(2.);
+    ui->angleMaxReflexionIri->setValue(4.);
+    ui->affichage3lignesIri->setChecked(true);
 }
 
 void PreviSat::on_calculsIri_clicked()
@@ -7368,6 +7448,16 @@ void PreviSat::on_liste3_entered(const QModelIndex &index)
     return;
 }
 
+void PreviSat::on_parametrageDefautEvt_clicked()
+{
+    on_ongletsOutils_currentChanged(ui->evenementsOrbitaux);
+    ui->passageApogee->setChecked(true);
+    ui->passageNoeuds->setChecked(true);
+    ui->passageOmbre->setChecked(true);
+    ui->passageQuadrangles->setChecked(true);
+    ui->transitionJourNuit->setChecked(true);
+}
+
 void PreviSat::on_calculsEvt_clicked()
 {
     /* Declarations des variables locales */
@@ -7565,6 +7655,16 @@ void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_parametrageDefautTransit_clicked()
+{
+    on_ongletsOutils_currentChanged(ui->transitsISS);
+    ui->hauteurSatTransit->setCurrentIndex(1);
+    ui->valHauteurSatTransit->setVisible(false);
+    ui->lieuxObservation4->setCurrentIndex(0);
+    ui->ageMaxTLETransit->setValue(2.);
+    ui->elongationMaxCorps->setValue(5.);
 }
 
 void PreviSat::on_calculsTransit_clicked()
