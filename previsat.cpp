@@ -103,6 +103,8 @@ static bool notif;
 static bool old;
 static int ind;
 static int idxf;
+static int idxfi;
+static int idxft;
 static int nbSat;
 static QString nomfic;
 static QString ficgz;
@@ -112,6 +114,8 @@ static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QStringList liste;
 static QStringList ficTLE;
+static QStringList ficTLEIri;
+static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
 
 // Date courante
@@ -194,6 +198,7 @@ QPalette paletteDefaut;
 QGraphicsScene *scene;
 QGraphicsScene *scene2;
 QGraphicsScene *scene3;
+QScrollArea *scrollArea;
 
 QLabel *messagesStatut;
 QLabel *messagesStatut2;
@@ -266,6 +271,7 @@ void PreviSat::ChargementConfig()
     dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
 #endif
 
+    dirTle = QDir::convertSeparators(dirTle);
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
@@ -327,9 +333,26 @@ void PreviSat::ChargementConfig()
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
-    ui->fichierTLEIri->setText(settings.value("fichier/iridium", QDir::convertSeparators(dirTle + QDir::separator() +
-                                                                                         "iridium.txt")).toString());
-    ui->fichierTLETransit->setText(settings.value("fichier/fichierTLETransit", nomfic).toString());
+
+    ficTLEIri.clear();
+    const QString nomFicIri = settings.value("fichier/iridium", dirTle + QDir::separator() + "iridium.txt").toString().trimmed();
+    const QFileInfo fi(nomFicIri);
+    if (fi.exists()) {
+        ui->fichierTLEIri->addItem((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? nomFicIri.mid(nomFicIri.lastIndexOf(QDir::separator()) + 1) : nomFicIri);
+        ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
+        ficTLEIri.append(QDir::convertSeparators(nomFicIri));
+    }
+    ui->fichierTLEIri->addItem(tr("Parcourir..."));
+
+    ficTLETransit.clear();
+    const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().trimmed();
+    const QFileInfo fit(nomFicTransit);
+    if (fit.exists()) {
+        ui->fichierTLETransit->addItem((QDir::convertSeparators(fit.absolutePath()) == dirTle) ? nomFicTransit.mid(nomFicTransit.lastIndexOf(QDir::separator()) + 1) : nomFicTransit);
+        ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
+        ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
+    }
+    ui->fichierTLETransit->addItem(tr("Parcourir..."));
 
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
@@ -352,6 +375,7 @@ void PreviSat::ChargementConfig()
     ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
     ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
     ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
+    ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 1).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
@@ -368,6 +392,7 @@ void PreviSat::ChargementConfig()
 
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
+    settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
     QStyle *style = QApplication::style();
@@ -387,6 +412,12 @@ void PreviSat::ChargementConfig()
     ui->utcManuel2->setVisible(false);
     ui->frameSimu->setVisible(false);
     ui->pause->setEnabled(false);
+
+    QPalette pal;
+    const QBrush coulLabel = QBrush(QColor::fromRgb(227, 227, 227));
+    pal.setBrush(ui->lbl_coordonneesSoleil->backgroundRole(), coulLabel);
+    ui->lbl_coordonneesSoleil->setPalette(pal);
+    ui->lbl_coordonneesLune->setPalette(pal);
 
     ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
     ui->lieuxObservation2->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
@@ -452,7 +483,7 @@ void PreviSat::ChargementConfig()
     ui->annulerTransit->setVisible(false);
 
     // Menu
-    ui->barreMenu->setMenu(ui->menuOuvrir_fichier_TLE);
+    ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
 
     // Barre de statut
@@ -678,13 +709,26 @@ void PreviSat::DemarrageApplication()
     /* Initialisations */
     const int xmax = QApplication::desktop()->width();
     const int ymax = QApplication::desktop()->height();
+    int xPrevi = PreviSat::width();
+    int yPrevi = PreviSat::height();
 
     /* Corps de la methode */
     // Redimensionnement de la fenetre si necessaire
-    if (PreviSat::width() > xmax)
-        PreviSat::setGeometry(0, 0, xmax, PreviSat::height());
-    if (PreviSat::height() > ymax)
-        PreviSat::setGeometry(0, 0, PreviSat::width(), ymax);
+    if (xPrevi > xmax)
+        xPrevi = xmax;
+    if (yPrevi > ymax)
+        yPrevi = ymax;
+    if (xPrevi < PreviSat::width() || yPrevi < PreviSat::height()) {
+        if (xmax < PreviSat::minimumWidth())
+            PreviSat::setMinimumWidth(xmax);
+        if (ymax < PreviSat::minimumHeight())
+            PreviSat::setMinimumHeight(ymax);
+        PreviSat::resize(xPrevi, yPrevi);
+        scrollArea = new QScrollArea(this);
+        scrollArea->setWidget(centralWidget());
+        scrollArea->setWidgetResizable(true);
+        setCentralWidget(scrollArea);
+    }
 
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
@@ -1483,6 +1527,14 @@ void PreviSat::AffichageCourbes() const
         const int hcarte2 = qRound(hcarte * 0.5);
         const int lcarte2 = qRound(lcarte * 0.5);
 
+        // Affichage du filtre de la carte en mode vision nocturne
+        const QBrush alphaNuit = (ui->actionVision_nocturne->isChecked()) ? QBrush(QColor::fromRgb(128, 0, 0, 128)) : QBrush(Qt::NoBrush);
+        const QRect rectCarte(0, 0, ui->carte->width(), ui->carte->height());
+        scene->addRect(rectCarte, QPen(Qt::NoBrush, 0), alphaNuit);
+
+        const QRect rectRadar(0, 0, ui->radar->width(), ui->radar->height());
+        scene2->addRect(rectRadar, QPen(Qt::NoBrush, 0), alphaNuit);
+
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
@@ -2158,7 +2210,7 @@ void PreviSat::AffichageCourbes() const
 
         // Cercle exterieur du radar
         scene2->addEllipse(0, 0, 200, 200, QPen(QBrush(Qt::gray), 2.1));
-        scene2->addEllipse(-6, -6, 212, 212, QPen(QBrush(ui->frameZone->palette().background().color()), 11));
+        scene2->addEllipse(-26, -26, 252, 252, QPen(QBrush(ui->frameZone->palette().background().color()), 51));
         ui->radar->setScene(scene2);
     } else {
         ui->coordGeo1->setVisible(false);
@@ -2731,11 +2783,11 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
             settings.setValue("fichier/nom", nomfic);
         settings.setValue("fichier/repTLE", fi.absolutePath());
 
-        if (QDir::convertSeparators(fi.absolutePath()) == QDir::convertSeparators(dirTle)) {
+        if (QDir::convertSeparators(fi.absolutePath()) == dirTle) {
             ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(QDir::convertSeparators(fi.filePath())));
         } else {
             if (!ficTLE.contains(fi.absoluteFilePath())) {
-                if (ui->listeFichiersTLE->itemText(0) == "") {
+                if (ui->listeFichiersTLE->itemText(0).isEmpty()) {
                     ui->listeFichiersTLE->setItemText(0, fi.fileName());
                 } else {
                     ui->listeFichiersTLE->removeItem(ui->listeFichiersTLE->count() - 1);
@@ -2746,6 +2798,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(fi.absoluteFilePath()));
             }
         }
+        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
 
         // Ouverture du fichier TLE
         AfficherListeSatellites(nomfic, liste);
@@ -2817,6 +2870,37 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
     } catch (PreviSatException &e) {
         messagesStatut->setText("");
         throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLE)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+        const QFileInfo fi(fichier);
+        const QString fic = (QDir::convertSeparators(fi.absolutePath()) == dirTle) ? fi.fileName() : fichier;
+        if (listeFicTLE.contains(QDir::convertSeparators(fi.absoluteFilePath()))) {
+            comboBox->setCurrentIndex(listeFicTLE.indexOf(QDir::convertSeparators(fi.filePath())));
+        } else {
+            listeFicTLE.append(QDir::convertSeparators(fi.absoluteFilePath()));
+            if (comboBox->itemText(0).isEmpty()) {
+                comboBox->setItemText(0, fic);
+            } else {
+                comboBox->removeItem(comboBox->count() - 1);
+                comboBox->addItem(QDir::convertSeparators(fic));
+                comboBox->setCurrentIndex(comboBox->count() - 1);
+                comboBox->addItem(tr("Parcourir..."));
+            }
+        }
+        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -3438,7 +3522,7 @@ void PreviSat::CalculsTermines()
             ui->afficherIri->setVisible(true);
             ui->afficherIri->setDefault(true);
             ui->afficherIri->setFocus();
-            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->text()));
+            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->currentText()));
         }
         break;
 
@@ -3461,7 +3545,7 @@ void PreviSat::CalculsTermines()
             ui->afficherTransit->setVisible(true);
             ui->afficherTransit->setDefault(true);
             ui->afficherTransit->setFocus();
-            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->text()));
+            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->currentText()));
         }
 
     default:
@@ -3745,17 +3829,18 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
+    settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
-    settings.setValue("fichier/iridium", ui->fichierTLEIri->text());
+    settings.setValue("fichier/iridium", ficTLEIri.at(0));
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
-    settings.setValue("fichier/fichierTLETransit", ui->fichierTLETransit->text());
+    settings.setValue("fichier/fichierTLETransit", ficTLETransit.at(0));
 
     settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
     settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
@@ -4671,6 +4756,130 @@ void PreviSat::on_actionImprimer_carte_activated()
     return;
 }
 
+
+void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
+{
+    /* Declarations des variables locales */
+    QPalette paletteWin, palLbl, palList;
+
+    /* Initialisations */
+    const QBrush alpha = (arg1) ? QBrush(QColor::fromRgb(178 - ui->intensiteVision->value(), 0, 0, 255)) : QBrush(Qt::NoBrush);
+    const QBrush coulLbl = (arg1) ? QBrush(QColor::fromRgb(165 - ui->intensiteVision->value(), 0, 0)) : QBrush(QColor::fromRgb(227, 227, 227));
+    const QColor coulList = (arg1) ? QColor(205 - ui->intensiteVision->value(), 0, 0) : QColor(255, 255, 255);
+    settings.setValue("affichage/flagIntensiteVision", arg1);
+    settings.setValue("affichage/valIntensiteVision", 178 - ui->intensiteVision->value());
+
+    /* Corps de la methode */
+    if (arg1) {
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+    } else {
+        paletteWin = paletteDefaut;
+    }
+
+    this->setPalette(paletteWin);
+
+    palLbl.setBrush(ui->lbl_coordonneesSoleil->backgroundRole(), coulLbl);
+    ui->lbl_coordonneesSoleil->setPalette(palLbl);
+    ui->lbl_coordonneesLune->setPalette(palLbl);
+
+    palList.setColor(QPalette::Base, coulList);
+    ui->liste1->setPalette(palList);
+    ui->liste2->setPalette(palList);
+    ui->liste3->setPalette(palList);
+
+    ui->dateHeure3->setPalette(palList);
+    ui->dateHeure4->setPalette(palList);
+    ui->lieuxObservation1->setPalette(palList);
+
+    ui->barreMenu->setPalette(palList);
+    ui->menuPrincipal->setPalette(palList);
+    ui->pasManuel->setPalette(palList);
+    ui->pasReel->setPalette(palList);
+    ui->valManuel->setPalette(palList);
+    ui->listeFichiersTLE->setPalette(palList);
+
+    ui->dateInitialePrev->setPalette(palList);
+    ui->dateFinalePrev->setPalette(palList);
+    ui->pasGeneration->setPalette(palList);
+    ui->lieuxObservation2->setPalette(palList);
+    ui->hauteurSoleilPrev->setPalette(palList);
+    ui->valHauteurSoleilPrev->setPalette(palList);
+    ui->hauteurSatPrev->setPalette(palList);
+    ui->valHauteurSatPrev->setPalette(palList);
+    ui->valMagnitudeMaxPrev->setPalette(palList);
+
+    ui->dateInitialeIri->setPalette(palList);
+    ui->dateFinaleIri->setPalette(palList);
+    ui->lieuxObservation3->setPalette(palList);
+    ui->hauteurSoleilIri->setPalette(palList);
+    ui->valHauteurSoleilIri->setPalette(palList);
+    ui->hauteurSatIri->setPalette(palList);
+    ui->valHauteurSatIri->setPalette(palList);
+    ui->fichierTLEIri->setPalette(palList);
+    ui->magnitudeMaxJourIri->setPalette(palList);
+    ui->magnitudeMaxNuitIri->setPalette(palList);
+    ui->angleMaxReflexionIri->setPalette(palList);
+
+    ui->fichiersObs->setPalette(palList);
+    ui->lieuxObs->setPalette(palList);
+    ui->selecLieux->setPalette(palList);
+    ui->nvCategorie->setPalette(palList);
+    ui->nvLieu->setPalette(palList);
+    ui->nvLongitude->setPalette(palList);
+    ui->nvLatitude->setPalette(palList);
+    ui->nvAltitude->setPalette(palList);
+    ui->ajdfic->setPalette(palList);
+
+    ui->nombreTrajectoires->setPalette(palList);
+    ui->listeMap->setPalette(palList);
+    ui->magnitudeEtoiles->setPalette(palList);
+
+    ui->groupeTLE->setPalette(palList);
+    ui->fichierAMettreAJour->setPalette(palList);
+    ui->fichierALire->setPalette(palList);
+    ui->compteRenduMaj->setPalette(palList);
+
+    ui->fichierALireCreerTLE->setPalette(palList);
+    ui->numeroNORADCreerTLE->setPalette(palList);
+    ui->noradMin->setPalette(palList);
+    ui->noradMax->setPalette(palList);
+    ui->ADNoeudAscendantCreerTLE->setPalette(palList);
+    ui->ADNAMin->setPalette(palList);
+    ui->ADNAMax->setPalette(palList);
+    ui->excentriciteCreerTLE->setPalette(palList);
+    ui->excMin->setPalette(palList);
+    ui->excMax->setPalette(palList);
+    ui->inclinaisonCreerTLE->setPalette(palList);
+    ui->inclMin1->setPalette(palList);
+    ui->inclMax1->setPalette(palList);
+    ui->inclMin2->setPalette(palList);
+    ui->inclMax2->setPalette(palList);
+    ui->revMin->setPalette(palList);
+    ui->revMax->setPalette(palList);
+    ui->argumentPerigeeCreerTLE->setPalette(palList);
+    ui->argMin->setPalette(palList);
+    ui->argMax->setPalette(palList);
+    ui->magnitudeMaxCreerTLE->setPalette(palList);
+    ui->nomFichierPerso->setPalette(palList);
+
+    ui->dateInitialeEvt->setPalette(palList);
+    ui->dateFinaleEvt->setPalette(palList);
+
+    ui->dateInitialeTransit->setPalette(palList);
+    ui->dateFinaleTransit->setPalette(palList);
+    ui->lieuxObservation4->setPalette(palList);
+    ui->fichierTLETransit->setPalette(palList);
+    ui->ageMaxTLETransit->setPalette(palList);
+    ui->hauteurSatTransit->setPalette(palList);
+    ui->valHauteurSatTransit->setPalette(palList);
+    ui->elongationMaxCorps->setPalette(palList);
+
+    AffichageCourbes();
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_actionFichier_d_aide_activated(int arg1)
 {
     on_directHelp_clicked();
@@ -4735,7 +4944,7 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->listeFichiersTLE->itemText(ui->listeFichiersTLE->count()-1) == tr("Parcourir...")) {
+    if (ui->listeFichiersTLE->itemText(ui->listeFichiersTLE->count() - 1) == tr("Parcourir...")) {
 
         if (index == ui->listeFichiersTLE->count() - 1) {
             on_actionOuvrir_fichier_TLE_activated();
@@ -5436,6 +5645,22 @@ void PreviSat::on_affSAA_stateChanged(int arg1)
 void PreviSat::on_affplanetes_stateChanged(int arg1)
 {
     ModificationOption();
+}
+
+void PreviSat::on_intensiteVision_valueChanged(int value)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->intensiteVision->isVisible()) {
+        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
+        ui->intensiteVision->setToolTip(QString::number(value));
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_unitesKm_toggled(bool checked)
@@ -7120,18 +7345,37 @@ void PreviSat::on_effacerHeuresIri_clicked()
     return;
 }
 
-void PreviSat::on_parcourirIri_clicked()
+void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/iridium", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
-    if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
-        ui->fichierTLEIri->setText(fichier);
+    try {
+        if (ui->fichierTLEIri->itemText(ui->fichierTLEIri->count() - 1) == tr("Parcourir...")) {
+
+            if (index == ui->fichierTLEIri->count() - 1) {
+
+                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/iridium", dirTle).toString(),
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+
+                if (fichier.isEmpty()) {
+                    if (!ui->fichierTLEIri->currentText().isEmpty())
+                        ui->fichierTLEIri->setCurrentIndex(0);
+                } else {
+                    AffichageListeFichiersTLE(fichier, ui->fichierTLEIri, ficTLEIri);
+                }
+
+            } else {
+                ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
+                ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
+                idxfi = index;
+            }
+        }
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -7207,12 +7451,12 @@ void PreviSat::on_calculsIri_clicked()
     ui->afficherTransit->setVisible(false);
 
     try {
-        if (ui->fichierTLEIri->text().isEmpty())
+        if (ui->fichierTLEIri->currentText().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
             throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
-        const QFileInfo fi(ui->fichierTLEIri->text());
+        const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
         if (!fi.exists()) {
-            ui->fichierTLEIri->setText("");
+            ui->fichierTLEIri->removeItem(ui->fichierTLEIri->currentIndex());
             throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE est incorrect"), WARNING);
         }
         ui->afficherIri->setVisible(false);
@@ -7621,18 +7865,37 @@ void PreviSat::on_effacerHeuresTransit_clicked()
     return;
 }
 
-void PreviSat::on_parcourirTransit_clicked()
+void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierTLETransit", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
-    if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
-        ui->fichierTLETransit->setText(fichier);
+    try {
+        if (ui->fichierTLETransit->itemText(ui->fichierTLETransit->count() - 1) == tr("Parcourir...")) {
+
+            if (index == ui->fichierTLETransit->count() - 1) {
+
+                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierTLETransit", dirTle).toString(),
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+
+                if (fichier.isEmpty()) {
+                    if (!ui->fichierTLETransit->currentText().isEmpty())
+                        ui->fichierTLETransit->setCurrentIndex(0);
+                } else {
+                    AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
+                }
+
+            } else {
+                ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
+                ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLETransit, ficTLETransit);
+                idxft = index;
+            }
+        }
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -7683,12 +7946,12 @@ void PreviSat::on_calculsTransit_clicked()
     ui->afficherEvt->setVisible(false);
 
     try {
-        if (ui->fichierTLETransit->text().isEmpty())
+        if (ui->fichierTLETransit->currentText().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
             throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
-        const QFileInfo fi(ui->fichierTLETransit->text());
+        const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
         if (!fi.exists()) {
-            ui->fichierTLETransit->setText("");
+            ui->fichierTLETransit->removeItem(ui->fichierTLETransit->currentIndex());
             throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE est incorrect"), WARNING);
         }
 

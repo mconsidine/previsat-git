@@ -40,6 +40,7 @@
 #ifndef PREVISAT_H
 #define PREVISAT_H
 
+#include <QComboBox>
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMainWindow>
@@ -88,6 +89,7 @@ private:
 
     // Interface
     void OuvertureFichierTLE(const QString &fichier);
+    void AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLE);
     void SauveOngletGeneral(const QString &fic) const;
     void SauveOngletElementsOsculateurs(const QString &fic) const;
     void SauveOngletInformations(const QString &fic) const;
@@ -128,6 +130,7 @@ private slots:
     void on_actionOuvrir_fichier_TLE_activated();
     void on_actionEnregistrer_activated();
     void on_actionImprimer_carte_activated();
+    void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionFichier_d_aide_activated(int arg1);
     void on_actionAstropedia_free_fr_activated();
     void on_actionTelecharger_les_mises_jour_activated();
@@ -182,6 +185,7 @@ private slots:
     void on_magnitudeEtoiles_valueChanged(double arg1);
     void on_affSAA_stateChanged(int arg1);
     void on_affplanetes_stateChanged(int arg1);
+    void on_intensiteVision_valueChanged(int value);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
     void on_heureLegale_toggled(bool checked);
@@ -254,7 +258,7 @@ private slots:
 
     // Calcul des flashs Iridium
     void on_effacerHeuresIri_clicked();
-    void on_parcourirIri_clicked();
+    void on_fichierTLEIri_currentIndexChanged(int index);
     void on_hauteurSatIri_currentIndexChanged(int index);
     void on_hauteurSoleilIri_currentIndexChanged(int index);
     void on_parametrageDefautIri_clicked();
@@ -273,7 +277,7 @@ private slots:
 
     // Calcul des transits ISS
     void on_effacerHeuresTransit_clicked();
-    void on_parcourirTransit_clicked();
+    void on_fichierTLETransit_currentIndexChanged(int index);
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_parametrageDefautTransit_clicked();
     void on_calculsTransit_clicked();

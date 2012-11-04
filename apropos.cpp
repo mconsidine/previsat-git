@@ -41,8 +41,11 @@
  */
 
 #include <QDate>
+#include <QSettings>
 #include "apropos.h"
 #include "ui_apropos.h"
+
+static QSettings settings("Astropedia", "previsat");
 
 Apropos::Apropos(QWidget *parent) :
     QMainWindow(parent),
@@ -50,6 +53,7 @@ Apropos::Apropos(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(tr("À propos de PreviSat") + " " + APPVER_MAJ);
+
     QGraphicsScene *scene = new QGraphicsScene;
     scene->setSceneRect(ui->imagePreviSat->rect());
     scene->setBackgroundBrush(QBrush(Apropos::palette().background().color()));
@@ -57,6 +61,21 @@ Apropos::Apropos(QWidget *parent) :
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);
+
+    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
+
+        QPalette paletteWin, palList;
+        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
+        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
+        const QColor coulList = QColor(red + 27, 0, 0);
+
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+        palList.setColor(QPalette::Base, coulList);
+
+        this->setPalette(paletteWin);
+        ui->imagePreviSat->setBackgroundBrush(alpha);
+    }
+
     ui->nomLogiciel->setText("PreviSat " + QString(APPVER_MAJ));
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).

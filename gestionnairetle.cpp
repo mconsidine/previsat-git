@@ -86,6 +86,25 @@ void GestionnaireTLE::load()
     ui->nbJoursAgeMaxTLE->setValue(settings.value("temps/ageMax", 15).toInt());
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
 
+    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
+
+        QPalette paletteWin, palList;
+        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
+        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
+        const QColor coulList = QColor(red + 27, 0, 0);
+
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+        palList.setColor(QPalette::Base, coulList);
+
+        this->setPalette(paletteWin);
+        ui->listeGroupeTLE->setPalette(palList);
+        ui->listeFichiersTLE->setPalette(palList);
+        ui->domaine->setPalette(palList);
+        ui->nomGroupe->setPalette(palList);
+        ui->listeFichiers->setPalette(palList);
+        ui->nbJoursAgeMaxTLE->setPalette(palList);
+    }
+
     const QString dirExe = QCoreApplication::applicationDirPath();
 #if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";

@@ -61,6 +61,20 @@ Afficher::Afficher(QWidget *parent) :
     QStyle *style = QApplication::style();
     ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
 
+    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
+
+        QPalette paletteWin, palList;
+        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
+        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
+        const QColor coulList = QColor(red + 27, 0, 0);
+
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+        palList.setColor(QPalette::Base, coulList);
+
+        this->setPalette(paletteWin);
+        ui->fichier->setPalette(palList);
+    }
+
 #if defined (Q_OS_WIN)
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
                             QDir::separator() + QCoreApplication::organizationName() + QDir::separator() +
