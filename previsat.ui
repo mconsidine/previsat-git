@@ -920,6 +920,9 @@
           <property name="contextMenuPolicy">
            <enum>Qt::CustomContextMenu</enum>
           </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
           <property name="horizontalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
@@ -1074,9 +1077,6 @@
           <property name="mouseTracking">
            <bool>true</bool>
           </property>
-          <property name="autoFillBackground">
-           <bool>true</bool>
-          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -1148,6 +1148,9 @@
              </rect>
             </property>
             <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="autoFillBackground">
              <bool>true</bool>
             </property>
            </widget>
@@ -1922,9 +1925,9 @@
             <widget class="QLabel" name="ageTLE">
              <property name="geometry">
               <rect>
-               <x>483</x>
+               <x>484</x>
                <y>3</y>
-               <width>71</width>
+               <width>70</width>
                <height>20</height>
               </rect>
              </property>
@@ -1981,7 +1984,7 @@
             <property name="widgetResizable">
              <bool>false</bool>
             </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+            <widget class="QWidget" name="affichageSoleilLune">
              <property name="geometry">
               <rect>
                <x>0</x>
@@ -2010,8 +2013,8 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(227, 227, 227);</string>
+              <property name="autoFillBackground">
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Coordonnées du Soleil :</string>
@@ -2235,8 +2238,8 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(227, 227, 227);</string>
+              <property name="autoFillBackground">
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Coordonnées de la Lune :</string>
@@ -2521,6 +2524,9 @@
             <property name="mouseTracking">
              <bool>true</bool>
             </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::UpDownArrows</enum>
             </property>
@@ -2566,6 +2572,9 @@
             <property name="mouseTracking">
              <bool>true</bool>
             </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
@@ -2588,6 +2597,9 @@
               </size>
              </property>
              <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="autoFillBackground">
               <bool>true</bool>
              </property>
              <property name="text">
@@ -2622,6 +2634,9 @@
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -2652,6 +2667,9 @@
               </size>
              </property>
              <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="autoFillBackground">
               <bool>true</bool>
              </property>
              <property name="text">
@@ -2686,6 +2704,9 @@
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -2716,6 +2737,9 @@
               </size>
              </property>
              <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="autoFillBackground">
               <bool>true</bool>
              </property>
              <property name="text">
@@ -5223,29 +5247,6 @@
              <string>Fichier TLE :</string>
             </property>
            </widget>
-           <widget class="QLineEdit" name="fichierTLEIri">
-            <property name="geometry">
-             <rect>
-              <x>420</x>
-              <y>91</y>
-              <width>241</width>
-              <height>20</height>
-             </rect>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="parcourirIri">
-            <property name="geometry">
-             <rect>
-              <x>670</x>
-              <y>90</y>
-              <width>91</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Parcourir...</string>
-            </property>
-           </widget>
            <widget class="QGroupBox" name="groupBoxAffichageLignesIri">
             <property name="geometry">
              <rect>
@@ -5498,6 +5499,19 @@
              <string>Paramétrage par défaut</string>
             </property>
            </widget>
+           <widget class="QComboBox" name="fichierTLEIri">
+            <property name="geometry">
+             <rect>
+              <x>410</x>
+              <y>91</y>
+              <width>161</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+            </property>
+           </widget>
            <zorder>annulerIri</zorder>
            <zorder>lbl_dateInitialeIri</zorder>
            <zorder>dateFinaleIri</zorder>
@@ -5513,8 +5527,6 @@
            <zorder>satellitesOperationnels</zorder>
            <zorder>ordreChronologique</zorder>
            <zorder>lbl_fichierTLEIri</zorder>
-           <zorder>fichierTLEIri</zorder>
-           <zorder>parcourirIri</zorder>
            <zorder>groupBoxAffichageLignesIri</zorder>
            <zorder>lbl_magnitudeMaxNuitIri</zorder>
            <zorder>magnitudeMaxNuitIri</zorder>
@@ -5527,6 +5539,7 @@
            <zorder>valHauteurSoleilIri</zorder>
            <zorder>valHauteurSatIri</zorder>
            <zorder>parametrageDefautIri</zorder>
+           <zorder>fichierTLEIri</zorder>
           </widget>
           <widget class="QWidget" name="options">
            <property name="mouseTracking">
@@ -6213,7 +6226,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>784</width>
-                 <height>310</height>
+                 <height>360</height>
                 </rect>
                </property>
                <property name="mouseTracking">
@@ -6699,7 +6712,7 @@
                 <property name="geometry">
                  <rect>
                   <x>240</x>
-                  <y>266</y>
+                  <y>282</y>
                   <width>169</width>
                   <height>23</height>
                  </rect>
@@ -6750,7 +6763,7 @@
                 <property name="geometry">
                  <rect>
                   <x>12</x>
-                  <y>264</y>
+                  <y>284</y>
                   <width>121</width>
                   <height>17</height>
                  </rect>
@@ -6763,7 +6776,7 @@
                 <property name="geometry">
                  <rect>
                   <x>12</x>
-                  <y>287</y>
+                  <y>308</y>
                   <width>141</width>
                   <height>17</height>
                  </rect>
@@ -6776,6 +6789,41 @@
                 </property>
                 <property name="tristate">
                  <bool>true</bool>
+                </property>
+               </widget>
+               <widget class="QSlider" name="intensiteVision">
+                <property name="geometry">
+                 <rect>
+                  <x>120</x>
+                  <y>332</y>
+                  <width>100</width>
+                  <height>19</height>
+                 </rect>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="pageStep">
+                 <number>5</number>
+                </property>
+                <property name="value">
+                 <number>50</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+               <widget class="QLabel" name="lbl_intensiteVision">
+                <property name="geometry">
+                 <rect>
+                  <x>12</x>
+                  <y>332</y>
+                  <width>101</width>
+                  <height>16</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Vision nocturne :</string>
                 </property>
                </widget>
               </widget>
@@ -8332,36 +8380,13 @@
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>94</y>
-                <width>71</width>
+                <y>92</y>
+                <width>61</width>
                 <height>16</height>
                </rect>
               </property>
               <property name="text">
                <string>Fichier TLE :</string>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="fichierTLETransit">
-              <property name="geometry">
-               <rect>
-                <x>80</x>
-                <y>91</y>
-                <width>251</width>
-                <height>20</height>
-               </rect>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="parcourirTransit">
-              <property name="geometry">
-               <rect>
-                <x>340</x>
-                <y>90</y>
-                <width>91</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Parcourir...</string>
               </property>
              </widget>
              <widget class="QLabel" name="lbl_ageTLETransit">
@@ -8402,8 +8427,8 @@
              <widget class="QComboBox" name="hauteurSatTransit">
               <property name="geometry">
                <rect>
-                <x>600</x>
-                <y>90</y>
+                <x>530</x>
+                <y>88</y>
                 <width>61</width>
                 <height>22</height>
                </rect>
@@ -8445,8 +8470,8 @@
              <widget class="QLineEdit" name="valHauteurSatTransit">
               <property name="geometry">
                <rect>
-                <x>670</x>
-                <y>90</y>
+                <x>600</x>
+                <y>88</y>
                 <width>31</width>
                 <height>20</height>
                </rect>
@@ -8464,8 +8489,8 @@
              <widget class="QLabel" name="lbl_hauteurSatTransit">
               <property name="geometry">
                <rect>
-                <x>450</x>
-                <y>94</y>
+                <x>380</x>
+                <y>92</y>
                 <width>151</width>
                 <height>16</height>
                </rect>
@@ -8477,7 +8502,7 @@
              <widget class="QLabel" name="lbl_elongationMaxCorps">
               <property name="geometry">
                <rect>
-                <x>450</x>
+                <x>380</x>
                 <y>120</y>
                 <width>181</width>
                 <height>16</height>
@@ -8490,7 +8515,7 @@
              <widget class="QDoubleSpinBox" name="elongationMaxCorps">
               <property name="geometry">
                <rect>
-                <x>630</x>
+                <x>560</x>
                 <y>116</y>
                 <width>51</width>
                 <height>22</height>
@@ -8612,6 +8637,19 @@
                <string>Paramétrage par défaut</string>
               </property>
              </widget>
+             <widget class="QComboBox" name="fichierTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>70</x>
+                <y>90</y>
+                <width>161</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+              </property>
+             </widget>
             </widget>
            </widget>
           </widget>
@@ -8634,9 +8672,6 @@
          </property>
          <property name="mouseTracking">
           <bool>true</bool>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -8839,7 +8874,7 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuOuvrir_fichier_TLE">
+   <widget class="QMenu" name="menuPrincipal">
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
@@ -8909,7 +8944,7 @@
     </property>
     <addaction name="actionCopier_dans_le_presse_papier"/>
    </widget>
-   <addaction name="menuOuvrir_fichier_TLE"/>
+   <addaction name="menuPrincipal"/>
    <addaction name="menuContextuelListe1"/>
    <addaction name="menuContextuelListes"/>
    <addaction name="menuContextuelCategorie"/>
@@ -8957,11 +8992,6 @@
   <action name="actionTelecharger_les_mises_jour">
    <property name="text">
     <string>Télécharger les mises à jour</string>
-   </property>
-  </action>
-  <action name="actionDonnez_votre_avis">
-   <property name="text">
-    <string>Donnez votre avis !</string>
    </property>
   </action>
   <action name="actionWww_celestrak_com">
@@ -9067,6 +9097,9 @@
    </property>
   </action>
   <action name="actionVision_nocturne">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Vision nocturne</string>
    </property>
@@ -9122,8 +9155,6 @@
   <tabstop>ordreChronologique</tabstop>
   <tabstop>affichage1ligneIri</tabstop>
   <tabstop>affichage3lignesIri</tabstop>
-  <tabstop>fichierTLEIri</tabstop>
-  <tabstop>parcourirIri</tabstop>
   <tabstop>magnitudeMaxNuitIri</tabstop>
   <tabstop>magnitudeMaxJourIri</tabstop>
   <tabstop>angleMaxReflexionIri</tabstop>
@@ -9227,8 +9258,6 @@
   <tabstop>dateFinaleTransit</tabstop>
   <tabstop>effacerHeuresTransit</tabstop>
   <tabstop>lieuxObservation4</tabstop>
-  <tabstop>fichierTLETransit</tabstop>
-  <tabstop>parcourirTransit</tabstop>
   <tabstop>ageMaxTLETransit</tabstop>
   <tabstop>soleilTransit</tabstop>
   <tabstop>luneTransit</tabstop>

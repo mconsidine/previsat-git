@@ -243,9 +243,6 @@
     <property name="contextMenuPolicy">
      <enum>Qt::CustomContextMenu</enum>
     </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
-    </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>

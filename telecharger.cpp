@@ -45,6 +45,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QQueue>
+#include <QSettings>
 #include <QTextStream>
 #include <QTimer>
 #include "telecharger.h"
@@ -63,6 +64,8 @@ static QFile ficDwn;
 static QNetworkAccessManager mng;
 static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
+
+static QSettings settings("Astropedia", "previsat");
 
 Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     QMainWindow(parent),
@@ -86,6 +89,20 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     ui->listeLieuxObs->clear();
     ui->barreProgression->setVisible(false);
     ui->telecharger->setVisible(false);
+
+    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
+
+        QPalette paletteWin, palList;
+        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
+        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
+        const QColor coulList = QColor(red + 27, 0, 0);
+
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+        palList.setColor(QPalette::Base, coulList);
+
+        this->setPalette(paletteWin);
+        ui->listeLieuxObs->setPalette(palList);
+    }
 }
 
 Telecharger::~Telecharger()
