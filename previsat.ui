@@ -7060,6 +7060,19 @@
                <string>Fichier à mettre à jour :</string>
               </property>
              </widget>
+             <widget class="QCheckBox" name="affichageMsgMAJ">
+              <property name="geometry">
+               <rect>
+                <x>560</x>
+                <y>13</y>
+                <width>201</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Affichage des messages informatifs</string>
+              </property>
+             </widget>
             </widget>
             <widget class="QWidget" name="extractionFichierTLE">
              <property name="mouseTracking">

@@ -342,7 +342,10 @@ void PreviSat::ChargementConfig()
         ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLEIri.append(QDir::convertSeparators(nomFicIri));
     }
+    if (ficTLEIri.isEmpty())
+        ui->fichierTLEIri->addItem("");
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
+
 
     ficTLETransit.clear();
     const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().trimmed();
@@ -352,6 +355,8 @@ void PreviSat::ChargementConfig()
         ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
     }
+    if (ficTLETransit.isEmpty())
+        ui->fichierTLETransit->addItem("");
     ui->fichierTLETransit->addItem(tr("Parcourir..."));
 
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
@@ -379,6 +384,7 @@ void PreviSat::ChargementConfig()
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 1).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
+    ui->affichageMsgMAJ->setChecked(settings.value("fichier/affichageMsgMAJ", true).toBool());
 
     if (settings.value("affichage/utc", false).toBool())
         ui->utc->setChecked(true);
@@ -3567,8 +3573,10 @@ void PreviSat::TelechargementSuivant()
     /* Corps de la methode */
     if (downQueue.isEmpty()) {
         emit TelechargementFini();
-        if (ui->miseAJourTLE->isVisible())
+        if (ui->miseAJourTLE->isVisible()) {
             ui->frameBarreProgression->setVisible(false);
+            ui->affichageMsgMAJ->setVisible(true);
+        }
         messagesStatut->setText(tr("Terminé !"));
     } else {
 
@@ -3714,7 +3722,8 @@ void PreviSat::FinEnregistrementFichier()
                 if (fi.exists()) {
 
                     QStringList compteRendu;
-                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, compteRendu);
+                    const bool affMsg = ui->affichageMsgMAJ->isChecked();
+                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
 
                     bool aecr = false;
                     EcritureCompteRenduMaj(compteRendu, aecr);
@@ -3833,14 +3842,15 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
 
-    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex()-1)) : "");
+    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
-    settings.setValue("fichier/iridium", ficTLEIri.at(0));
+    settings.setValue("fichier/iridium", (ficTLEIri.count() > 0) ? ficTLEIri.at(0) : "");
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
+    settings.setValue("fichier/affichageMsgMAJ", ui->affichageMsgMAJ->isChecked());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
-    settings.setValue("fichier/fichierTLETransit", ficTLETransit.at(0));
+    settings.setValue("fichier/fichierTLETransit", (ficTLETransit.count() > 0) ? ficTLETransit.at(0) : "");
 
     settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
     settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
@@ -6560,6 +6570,7 @@ void PreviSat::on_majMaintenant_clicked()
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
+    ui->affichageMsgMAJ->setVisible(false);
     ui->frameBarreProgression->setVisible(true);
     while (!flux.atEnd()) {
         const QStringList ligne = flux.readLine().split("#");
@@ -6676,7 +6687,8 @@ void PreviSat::on_mettreAJourTLE_clicked()
         }
 
         QStringList compteRendu;
-        TLE::MiseAJourFichier(ui->fichierAMettreAJour->text(), fic, compteRendu);
+        const bool affMsg = ui->affichageMsgMAJ->isChecked();
+        TLE::MiseAJourFichier(ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
 
         bool aecr = false;
         EcritureCompteRenduMaj(compteRendu, aecr);

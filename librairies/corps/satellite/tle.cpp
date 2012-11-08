@@ -327,7 +327,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     return;
 }
 
-void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, QStringList &compteRendu)
+void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const bool affMsg, QStringList &compteRendu)
 {
     /* Declarations des variables locales */
     QVector<TLE> tleNew, tleOld;
@@ -360,8 +360,8 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, QString
     int nbAdd = 0;
     int nbSup = 0;
     int isat = 0;
-    int res1 = -1;
-    int res2 = -1;
+    int res1 = (affMsg) ? -1 : QMessageBox::YesToAll;
+    int res2 = (affMsg) ? -1 : QMessageBox::YesToAll;
     while (isat < nbOld || j < nbNew) {
 
         QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : (nomFicOld == nomFicNew) ? "99999" : "";
@@ -396,7 +396,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, QString
 
                     // TLE absent du fichier de TLE anciens
                     // Demande d'ajout
-                    if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll) {
+                    if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll && affMsg) {
                         const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
                         res1 = QMessageBox::question(0, QObject::tr("Ajout du nouveau TLE"),
                                                      message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad),
@@ -413,7 +413,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, QString
 
                     // TLE absent du fichier de TLE recents
                     // Demande de suppression
-                    if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll) {
+                    if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll && affMsg) {
                         const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
                         res2 = QMessageBox::question(0, QObject::tr("Suppression du TLE"),
                                                      message.arg(tleOld.at(isat)._nom).arg(tleOld.at(isat)._norad),
