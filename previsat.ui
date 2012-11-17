@@ -6905,7 +6905,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>191</width>
+                 <width>196</width>
                  <height>23</height>
                 </rect>
                </property>
@@ -7060,17 +7060,14 @@
                <string>Fichier à mettre à jour :</string>
               </property>
              </widget>
-             <widget class="QCheckBox" name="affichageMsgMAJ">
+             <widget class="QComboBox" name="affichageMsgMAJ">
               <property name="geometry">
                <rect>
                 <x>560</x>
-                <y>13</y>
-                <width>201</width>
-                <height>17</height>
+                <y>11</y>
+                <width>196</width>
+                <height>22</height>
                </rect>
-              </property>
-              <property name="text">
-               <string>Affichage des messages informatifs</string>
               </property>
              </widget>
             </widget>
