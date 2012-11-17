@@ -346,7 +346,6 @@ void PreviSat::ChargementConfig()
         ui->fichierTLEIri->addItem("");
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
 
-
     ficTLETransit.clear();
     const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().trimmed();
     const QFileInfo fit(nomFicTransit);
@@ -358,6 +357,10 @@ void PreviSat::ChargementConfig()
     if (ficTLETransit.isEmpty())
         ui->fichierTLETransit->addItem("");
     ui->fichierTLETransit->addItem(tr("Parcourir..."));
+
+    ui->affichageMsgMAJ->addItem(tr("Affichage des messages informatifs"));
+    ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
+    ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
 
     ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
@@ -384,7 +387,7 @@ void PreviSat::ChargementConfig()
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 1).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
-    ui->affichageMsgMAJ->setChecked(settings.value("fichier/affichageMsgMAJ", true).toBool());
+    ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
 
     if (settings.value("affichage/utc", false).toBool())
         ui->utc->setChecked(true);
@@ -3722,7 +3725,7 @@ void PreviSat::FinEnregistrementFichier()
                 if (fi.exists()) {
 
                     QStringList compteRendu;
-                    const bool affMsg = ui->affichageMsgMAJ->isChecked();
+                    const int affMsg = ui->affichageMsgMAJ->currentIndex();
                     TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
 
                     bool aecr = false;
@@ -3847,7 +3850,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("fichier/iridium", (ficTLEIri.count() > 0) ? ficTLEIri.at(0) : "");
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
-    settings.setValue("fichier/affichageMsgMAJ", ui->affichageMsgMAJ->isChecked());
+    settings.setValue("fichier/affichageMsgMAJ", ui->affichageMsgMAJ->currentIndex());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
     settings.setValue("fichier/fichierTLETransit", (ficTLETransit.count() > 0) ? ficTLETransit.at(0) : "");
@@ -4845,6 +4848,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->magnitudeEtoiles->setPalette(palList);
 
     ui->groupeTLE->setPalette(palList);
+    ui->affichageMsgMAJ->setPalette(palList);
     ui->fichierAMettreAJour->setPalette(palList);
     ui->fichierALire->setPalette(palList);
     ui->compteRenduMaj->setPalette(palList);
@@ -6687,7 +6691,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
         }
 
         QStringList compteRendu;
-        const bool affMsg = ui->affichageMsgMAJ->isChecked();
+        const int affMsg = ui->affichageMsgMAJ->currentIndex();
         TLE::MiseAJourFichier(ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
 
         bool aecr = false;
