@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    25 novembre 2012
  *
  */
 
@@ -63,6 +63,13 @@ ElementsOsculateurs::ElementsOsculateurs()
     _perigee = 0.;
     _periode = 0.;
 
+    _ex = 0.;
+    _ey = 0.;
+    _pso = 0.;
+    _ix = 0.;
+    _iy = 0.;
+    _argumentLatitudeVrai = 0.;
+
     /* Retour */
     return;
 }
@@ -75,8 +82,9 @@ ElementsOsculateurs::~ElementsOsculateurs()
 }
 
 /*
- * Calcul des elements osculateurs
+ * Calcul des elements osculateurs pour une orbite elliptique
  * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
+ * Trajectoires spatiales, O. Zarrouati
  */
 void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur3D &vitesse)
 {
@@ -84,64 +92,110 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
     /* Initialisations */
     const double p = position.Norme();
-    const double v = vitesse.Norme();
-    const double temp2 = 1. / p;
-    const double v2 = v * v;
-    const double rv = position * vitesse;
 
     /* Corps de la methode */
-    // Demi-grand axe
-    _demiGrandAxe = 1. / (2. * temp2 - v2 * temp1);
+    if (p > EPSDBL100) {
 
-    // Excentricite
-    Vecteur3D exc = (position * (v2 * temp1 - temp2)) - (vitesse * (rv * temp1));
-    _excentricite = exc.Norme();
+        const double v = vitesse.Norme();
+        const double temp2 = 1. / p;
+        const double v2 = v * v;
+        const double rv = position * vitesse;
 
-    // Inclinaison
-    const Vecteur3D h = position ^ vitesse;
-    _inclinaison = acos(h.getZ() / h.Norme());
+        // Demi-grand axe
+        _demiGrandAxe = 1. / (2. * temp2 - v2 * temp1);
 
-    // Ascension droite du noeud ascendant
-    Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
-    _ascDroiteNA = acos(n.getX() / n.Norme());
-    if (n.getY() < 0.)
-        _ascDroiteNA = DEUX_PI - _ascDroiteNA;
+        // Excentricite
+        Vecteur3D exc = (position * (v2 * temp1 - temp2)) - (vitesse * (rv * temp1));
+        _excentricite = exc.Norme();
 
-    // Argument du perigee
-    const double ne = n * exc;
-    _argumentPerigee = acos(ne / (n.Norme() * _excentricite));
-    if (exc.getZ() < 0.)
-        _argumentPerigee = DEUX_PI - _argumentPerigee;
+        // Inclinaison
+        Vecteur3D h = position ^ vitesse;
+        const double ci = h.getZ() / h.Norme();
+        _inclinaison = acos(ci);
 
-    // Anomalie vraie
-    const double er = exc * position;
-    _anomalieVraie = acos(er * temp2 / _excentricite);
-    if (rv < 0.)
-        _anomalieVraie = DEUX_PI - _anomalieVraie;
+        // Ascension droite du noeud ascendant
+        Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
+        const double ca = n.getX() / n.Norme();
+        _ascDroiteNA = acos(ca);
+        if (n.getY() < 0.)
+            _ascDroiteNA = DEUX_PI - _ascDroiteNA;
 
-    // Anomalie excentrique
-    _anomalieExcentrique = 2. * atan(sqrt((1. - _excentricite) / (1. + _excentricite)) * tan(0.5 * _anomalieVraie));
-    if (_anomalieExcentrique < 0.)
-        _anomalieExcentrique += DEUX_PI;
+        // Argument du perigee
+        const double ne = n * exc;
+        _argumentPerigee = acos(ne / (n.Norme() * _excentricite));
+        if (exc.getZ() < 0.)
+            _argumentPerigee = DEUX_PI - _argumentPerigee;
 
-    // Anomalie moyenne
-    _anomalieMoyenne = _anomalieExcentrique - _excentricite * sin(_anomalieExcentrique);
-    if (_anomalieMoyenne < 0.)
-        _anomalieMoyenne += DEUX_PI;
+        // Anomalie vraie
+        const double er = exc * position;
+        _anomalieVraie = acos(er * temp2 / _excentricite);
+        if (rv < 0.)
+            _anomalieVraie = DEUX_PI - _anomalieVraie;
 
-    const double alpha = _demiGrandAxe / RAYON_TERRESTRE;
-    const double alpha2 = alpha * alpha;
-    const double beta = 1. - _excentricite * _excentricite;
-    const double gamma = 1. + _excentricite * cos(_argumentPerigee);
-    const double gamma2 = gamma * gamma;
-    const double temp3 = sin(_inclinaison);
-    const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * temp3 * temp3) / (alpha2 * sqrt(beta) * gamma2) + gamma2 * gamma /
-                                        (alpha2 * beta * beta * beta));
+        // Anomalie excentrique
+        _anomalieExcentrique = 2. * atan(sqrt((1. - _excentricite) / (1. + _excentricite)) * tan(0.5 * _anomalieVraie));
+        if (_anomalieExcentrique < 0.)
+            _anomalieExcentrique += DEUX_PI;
 
-    // Apogee, perigee, periode orbitale
-    _apogee = _demiGrandAxe * (1. + _excentricite);
-    _perigee = _demiGrandAxe * (1. - _excentricite);
-    _periode = nn0 * DEUX_PI * sqrt(_demiGrandAxe * _demiGrandAxe * _demiGrandAxe * temp1) * NB_HEUR_PAR_SEC;
+        // Anomalie moyenne
+        _anomalieMoyenne = _anomalieExcentrique - _excentricite * sin(_anomalieExcentrique);
+        if (_anomalieMoyenne < 0.)
+            _anomalieMoyenne += DEUX_PI;
+
+        const double alpha = _demiGrandAxe / RAYON_TERRESTRE;
+        const double alpha2 = alpha * alpha;
+        const double beta = 1. - _excentricite * _excentricite;
+        const double gamma = 1. + _excentricite * cos(_argumentPerigee);
+        const double gamma2 = gamma * gamma;
+        const double temp3 = sin(_inclinaison);
+        const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * temp3 * temp3) / (alpha2 * sqrt(beta) * gamma2) + gamma2 * gamma /
+                                            (alpha2 * beta * beta * beta));
+
+        // Apogee, perigee, periode orbitale
+        _apogee = _demiGrandAxe * (1. + _excentricite);
+        _perigee = _demiGrandAxe * (1. - _excentricite);
+        _periode = nn0 * DEUX_PI * sqrt(_demiGrandAxe * _demiGrandAxe * _demiGrandAxe * temp1) * NB_HEUR_PAR_SEC;
+
+        // Calcul des parametres adaptes
+        const Vecteur3D hn = h.Normalise();
+        const double d = 1. / (1. + hn.getZ());
+        const double hx = -d * hn.getY();
+        const double hy = d * hn.getX();
+        _ix = 2. * ci * hx;
+        _iy = 2. * ci * hy;
+
+        const double cl = (position.getX() - d * position.getZ() * hn.getX()) / p;
+        const double sl = (position.getY() - d * position.getZ() * hn.getY()) / p;
+        _argumentLatitudeVrai = atan2(sl, cl);
+        if (_argumentLatitudeVrai < 0.)
+            _argumentLatitudeVrai += DEUX_PI;
+
+        const double se = rv / sqrt(GE * _demiGrandAxe);
+        const double ce = p * v2 / GE - 1.;
+        const double e2 = _excentricite * _excentricite;
+        const double f = ce - e2;
+        const double g = sqrt(1. - e2) * se;
+        const double tmp1 = _demiGrandAxe / p;
+        _ex = tmp1 * (f * cl + g * sl);
+        _ey = tmp1 * (f * sl - g * cl);
+
+        const double sa = sin(_ascDroiteNA);
+
+        const Vecteur3D r = Vecteur3D(ca, sa, 0.);
+        const Vecteur3D s = Vecteur3D(-ci * sa, ci * ca, sin(_inclinaison));
+
+        const double xr = position * r;
+        const double xs = position * s;
+        const double t2 = rv / sqrt(GE * _demiGrandAxe);
+
+        const double tmp0 = sqrt(1. - e2);
+        const double bt = 1. / (1. + tmp0);
+        const double ae = atan2(xs / _demiGrandAxe + _ey - t2 * bt * _ex, xr / _demiGrandAxe + _ex - t2 * bt * _ey);
+        _pso = ae - t2;
+        if (_pso < 0.)
+            _pso += DEUX_PI;
+
+    }
 
     /* Retour */
     return;
@@ -188,9 +242,34 @@ double ElementsOsculateurs::getExcentricite() const
     return _excentricite;
 }
 
+double ElementsOsculateurs::getEx() const
+{
+    return _ex;
+}
+
+double ElementsOsculateurs::getEy() const
+{
+    return _ey;
+}
+
 double ElementsOsculateurs::getInclinaison() const
 {
     return _inclinaison;
+}
+
+double ElementsOsculateurs::getIx() const
+{
+    return _ix;
+}
+
+double ElementsOsculateurs::getIy() const
+{
+    return _iy;
+}
+
+double ElementsOsculateurs::getArgumentLatitudeVrai() const
+{
+    return _argumentLatitudeVrai;
 }
 
 double ElementsOsculateurs::getPerigee() const
@@ -201,4 +280,9 @@ double ElementsOsculateurs::getPerigee() const
 double ElementsOsculateurs::getPeriode() const
 {
     return _periode;
+}
+
+double ElementsOsculateurs::getPso() const
+{
+    return _pso;
 }

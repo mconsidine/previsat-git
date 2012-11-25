@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    25 novembre 2012
  *
  */
 
@@ -75,6 +75,7 @@ private:
 
     // Affichage
     void AffichageDonnees();
+    void AffichageElementsOsculateurs() const;
     void AffichageCourbes() const;
     void AffichageGroupesTLE() const;
     void AffichageLieuObs() const;
@@ -188,6 +189,7 @@ private slots:
     void on_intensiteVision_valueChanged(int value);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
+    void on_typeParametres_currentIndexChanged(int index);
     void on_heureLegale_toggled(bool checked);
     void on_utc_toggled(bool checked);
     void on_updown_valueChanged(int arg1);
