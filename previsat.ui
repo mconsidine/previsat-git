@@ -1002,6 +1002,9 @@
             <height>22</height>
            </rect>
           </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
          </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
@@ -6086,14 +6089,14 @@
            <widget class="QComboBox" name="fichierTLEIri">
             <property name="geometry">
              <rect>
-              <x>410</x>
-              <y>91</y>
-              <width>161</width>
-              <height>20</height>
+              <x>420</x>
+              <y>90</y>
+              <width>160</width>
+              <height>22</height>
              </rect>
             </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+            <property name="mouseTracking">
+             <bool>true</bool>
             </property>
            </widget>
            <zorder>annulerIri</zorder>
@@ -9239,6 +9242,9 @@
                 <width>161</width>
                 <height>20</height>
                </rect>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
               </property>
               <property name="sizeAdjustPolicy">
                <enum>QComboBox::AdjustToMinimumContentsLength</enum>

@@ -338,7 +338,7 @@ void PreviSat::ChargementConfig()
     const QString nomFicIri = settings.value("fichier/iridium", dirTle + QDir::separator() + "iridium.txt").toString().trimmed();
     const QFileInfo fi(nomFicIri);
     if (fi.exists()) {
-        ui->fichierTLEIri->addItem((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? nomFicIri.mid(nomFicIri.lastIndexOf(QDir::separator()) + 1) : nomFicIri);
+        ui->fichierTLEIri->addItem(fi.fileName());
         ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLEIri.append(QDir::convertSeparators(nomFicIri));
     }
@@ -350,7 +350,7 @@ void PreviSat::ChargementConfig()
     const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().trimmed();
     const QFileInfo fit(nomFicTransit);
     if (fit.exists()) {
-        ui->fichierTLETransit->addItem((QDir::convertSeparators(fit.absolutePath()) == dirTle) ? nomFicTransit.mid(nomFicTransit.lastIndexOf(QDir::separator()) + 1) : nomFicTransit);
+        ui->fichierTLETransit->addItem(fit.fileName());
         ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
     }
@@ -2855,6 +2855,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
     /* Initialisations */
     bool agz = false;
+    old = false;
     QString fich = fichier;
     ficgz = "";
 
@@ -2959,8 +2960,8 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
                 // Verification de l'age du TLE
                 if (!l1.isEmpty() && !l2.isEmpty()) {
-                    old = false;
-                    VerifAgeTLE();
+                    if (!old)
+                        VerifAgeTLE();
                 }
             }
         } else {
@@ -2998,16 +2999,15 @@ void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comb
     /* Corps de la methode */
     try {
         const QFileInfo fi(fichier);
-        const QString fic = (QDir::convertSeparators(fi.absolutePath()) == dirTle) ? fi.fileName() : fichier;
         if (listeFicTLE.contains(QDir::convertSeparators(fi.absoluteFilePath()))) {
             comboBox->setCurrentIndex(listeFicTLE.indexOf(QDir::convertSeparators(fi.filePath())));
         } else {
             listeFicTLE.append(QDir::convertSeparators(fi.absoluteFilePath()));
             if (comboBox->itemText(0).isEmpty()) {
-                comboBox->setItemText(0, fic);
+                comboBox->setItemText(0, fi.fileName());
             } else {
                 comboBox->removeItem(comboBox->count() - 1);
-                comboBox->addItem(QDir::convertSeparators(fic));
+                comboBox->addItem(QDir::convertSeparators(fi.fileName()));
                 comboBox->setCurrentIndex(comboBox->count() - 1);
                 comboBox->addItem(tr("Parcourir..."));
             }
@@ -4707,6 +4707,12 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                 }
             }
         }
+    }
+
+    if (ui->listeFichiersTLE->underMouse()) {
+        const QFileInfo fi(nomfic);
+        if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
+            ui->listeFichiersTLE->setToolTip(nomfic);
     }
 
     /* Retour */
@@ -7583,6 +7589,13 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
     return;
 }
 
+void PreviSat::on_fichierTLEIri_highlighted(int index)
+{
+    const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
+    if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
+        ui->fichierTLEIri->setToolTip(fi.absoluteFilePath());
+}
+
 void PreviSat::on_hauteurSatIri_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
@@ -8091,7 +8104,7 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
             } else {
                 ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
                 ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
-                AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLETransit, ficTLETransit);
+                AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
                 idxft = index;
             }
         }
@@ -8101,6 +8114,13 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_fichierTLETransit_highlighted(int index)
+{
+    const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
+    if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
+        ui->fichierTLETransit->setToolTip(fi.absoluteFilePath());
 }
 
 void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
