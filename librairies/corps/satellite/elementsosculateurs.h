@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    25 novembre 2012
  *
  */
 
@@ -67,10 +67,15 @@ public:
     double getAscensionDroiteNA() const;
     double getDemiGrandAxe() const;
     double getExcentricite() const;
+    double getEx() const;
+    double getEy() const;
     double getInclinaison() const;
+    double getIx() const;
+    double getIy() const;
+    double getArgumentLatitudeVrai() const;
     double getPerigee() const;
     double getPeriode() const;
-
+    double getPso() const;
 
 protected:
 
@@ -97,6 +102,14 @@ private:
      double _apogee;
      double _perigee;
      double _periode;
+
+     // Parametres adaptes
+     double _ex;
+     double _ey;
+     double _pso;
+     double _ix;
+     double _iy;
+     double _argumentLatitudeVrai;
 
     /* Methodes privees */
 

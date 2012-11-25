@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 octobre 2012
+ * >    25 novembre 2012
  *
  */
 
@@ -387,6 +387,7 @@ void PreviSat::ChargementConfig()
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 1).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
+    ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
     ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
 
     if (settings.value("affichage/utc", false).toBool())
@@ -1265,54 +1266,7 @@ void PreviSat::AffichageDonnees()
             ui->vzsat->setText(chaine);
 
             // Elements osculateurs
-            chaine = "%1 " + unite1;
-            double xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getDemiGrandAxe() :
-                                                        satellites.at(0).getElements().getDemiGrandAxe() * MILE_PAR_KM;
-            chaine = chaine.arg(xval, 0, 'f', 1);
-            ui->demiGrandAxe->setText(chaine);
-
-            chaine = "%1";
-            chaine = chaine.arg(satellites.at(0).getElements().getExcentricite(), 0, 'f', 7);
-            ui->excentricite->setText(chaine);
-
-            chaine2 = "%1°";
-            chaine = chaine2.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 4);
-            ui->inclinaison->setText(chaine);
-
-            chaine = chaine2.arg(satellites.at(0).getElements().getAscensionDroiteNA() * RAD2DEG, 0, 'f', 4);
-            ui->ADNoeudAscendant->setText(chaine);
-
-            chaine = chaine2.arg(satellites.at(0).getElements().getArgumentPerigee() * RAD2DEG, 0, 'f', 4);
-            ui->argumentPerigee->setText(chaine);
-
-            chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
-            ui->anomalieMoyenne->setText(chaine);
-
-            chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieVraie() * RAD2DEG, 0, 'f', 4);
-            ui->anomalieVraie->setText(chaine);
-
-            chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieExcentrique() * RAD2DEG, 0, 'f', 4);
-            ui->anomalieExcentrique->setText(chaine);
-
-            chaine = "±" + chaine2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites.at(0).getAltitude())) *
-                                       RAD2DEG, 0, 'f', 2);
-            ui->champDeVue->setText(chaine);
-
-            // Apogee/perigee/periode orbitale
-            chaine2 = "%2 %1 (%3 %1)";
-            chaine2 = chaine2.arg(unite1);
-            xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getApogee() :
-                                                 satellites.at(0).getElements().getApogee() * MILE_PAR_KM;
-            chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
-            ui->apogee->setText(chaine);
-
-            xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getPerigee() :
-                                                 satellites.at(0).getElements().getPerigee() * MILE_PAR_KM;
-            chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
-            ui->perigee->setText(chaine);
-
-            ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1,
-                                                      1, 0, false, true));
+            AffichageElementsOsculateurs();
 
             if (info) {
                 // Affichage des donnees sur l'onglet Informations satellite
@@ -1375,7 +1329,7 @@ void PreviSat::AffichageDonnees()
                 } else {
 
                     // Estimation de la magnitude maximale
-                    xval = satellites.at(0).getMagnitudeStandard() - 15.75 + 5. *
+                    const double xval = satellites.at(0).getMagnitudeStandard() - 15.75 + 5. *
                             log10(1.45 * (satellites.at(0).getElements().getDemiGrandAxe() *
                                           (1. - satellites.at(0).getElements().getExcentricite()) - RAYON_TERRESTRE));
                     chaine = "%1%2%3/%4%5";
@@ -1437,6 +1391,156 @@ void PreviSat::AffichageDonnees()
         scene2->deleteLater();
     if (scene3 != NULL)
         scene3->deleteLater();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des elements osculateurs
+ */
+void PreviSat::AffichageElementsOsculateurs() const
+{
+    /* Declarations des variables locales */
+    QString chaine, chaine2;
+
+    /* Initialisations */
+    QString unite1 = (ui->unitesKm->isChecked()) ? QObject::tr("km") : QObject::tr("mi");
+
+    /* Corps de la methode */
+    chaine = "%1 " + unite1;
+    double xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getDemiGrandAxe() :
+                                                satellites.at(0).getElements().getDemiGrandAxe() * MILE_PAR_KM;
+    chaine = chaine.arg(xval, 0, 'f', 1);
+    if (ui->typeParametres->currentIndex() == 2)
+        ui->demiGrandAxe->move(330, 103);
+    else
+        ui->demiGrandAxe->move(303, 103);
+    ui->demiGrandAxe->setText(chaine);
+
+    ui->frameCirculaire->setVisible(false);
+    ui->frameCirculaireEquatorial->setVisible(false);
+    ui->frameEquatorial->setVisible(false);
+    ui->frameKeplerien->setVisible(false);
+
+    switch (ui->typeParametres->currentIndex()) {
+    case 0:
+        // Parametres kepleriens
+        ui->frameKeplerien->setVisible(true);
+
+        chaine = "%1";
+        chaine = chaine.arg(satellites.at(0).getElements().getExcentricite(), 0, 'f', 7);
+        ui->excentricite->setText(chaine);
+
+        chaine2 = "%1°";
+        chaine = chaine2.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 4);
+        ui->inclinaison->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getAscensionDroiteNA() * RAD2DEG, 0, 'f', 4);
+        ui->ADNoeudAscendant->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentPerigee() * RAD2DEG, 0, 'f', 4);
+        ui->argumentPerigee->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
+        ui->anomalieMoyenne->setText(chaine);
+        break;
+
+    case 1:
+        // Parametres circulaires
+        ui->frameCirculaire->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).getElements().getEx(), 0, 'f', 7);
+        ui->ex1->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getEy(), 0, 'f', 7);
+        ui->ey1->setText(chaine);
+
+        chaine2 = "%1°";
+        chaine = chaine2.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 4);
+        ui->inclinaison2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getAscensionDroiteNA() * RAD2DEG, 0, 'f', 4);
+        ui->ADNoeudAscendant2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getPso() * RAD2DEG, 0, 'f', 4);
+        ui->positionSurOrbite->setText(chaine);
+        break;
+
+    case 2:
+        // Parametres equatoriaux
+        ui->frameEquatorial->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).getElements().getExcentricite(), 0, 'f', 7);
+        ui->excentricite2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getIx(), 0, 'f', 7);
+        ui->ix1->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getIy(), 0, 'f', 7);
+        ui->iy1->setText(chaine);
+
+        chaine2 = "%1°";
+        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentPerigee() * RAD2DEG, 0, 'f', 4);
+        ui->argumentPerigee2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLatitudeVrai() * RAD2DEG, 0, 'f', 4);
+        ui->argumentLatitudeVrai->setText(chaine);
+        break;
+
+    case 3:
+        // Parametres circulaires equatoriaux
+        ui->frameCirculaireEquatorial->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).getElements().getEx(), 0, 'f', 7);
+        ui->ex2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getEy(), 0, 'f', 7);
+        ui->ey2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getIx(), 0, 'f', 7);
+        ui->ix2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).getElements().getIy(), 0, 'f', 7);
+        ui->iy2->setText(chaine);
+
+        chaine2 = "%1°";
+        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLatitudeVrai() * RAD2DEG, 0, 'f', 4);
+        ui->argumentLatitudeVrai2->setText(chaine);
+        break;
+
+    default:
+        break;
+    }
+
+    chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieVraie() * RAD2DEG, 0, 'f', 4);
+    ui->anomalieVraie->setText(chaine);
+
+    chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieExcentrique() * RAD2DEG, 0, 'f', 4);
+    ui->anomalieExcentrique->setText(chaine);
+
+    chaine = "±" + chaine2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites.at(0).getAltitude())) *
+                               RAD2DEG, 0, 'f', 2);
+    ui->champDeVue->setText(chaine);
+
+    // Apogee/perigee/periode orbitale
+    chaine2 = "%2 %1 (%3 %1)";
+    chaine2 = chaine2.arg(unite1);
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getApogee() :
+                                         satellites.at(0).getElements().getApogee() * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    ui->apogee->setText(chaine);
+
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getPerigee() :
+                                         satellites.at(0).getElements().getPerigee() * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    ui->perigee->setText(chaine);
+
+    ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1,
+                                              1, 0, false, true));
 
     /* Retour */
     return;
@@ -3030,32 +3134,99 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << ui->ligne1->text() << endl;
         flux << ui->ligne2->text() << endl << endl;
 
-        flux << tr("Vecteur d'état (ECI) :\t\t\t\tÉléments osculateurs :") << endl;
-        QString chaine = tr("x : %1%2\tvx : %3\tDemi-grand axe : %4\tAscension droite du noeud ascendant : %5%6");
-        flux << chaine.arg(ui->xsat->text()).arg(QString(18 - ui->xsat->text().length(), QChar(' '))).arg(ui->vxsat->text())
-                .arg(ui->demiGrandAxe->text()).arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0')))
-                .arg(ui->ADNoeudAscendant->text()) << endl;
+        flux << tr("Vecteur d'état (ECI) :") << endl;
+        QString chaine = tr("x : %1%2\tvx : %3");
+        flux << chaine.arg(ui->xsat->text()).arg(QString(18 - ui->xsat->text().length(), QChar(' '))).
+                arg(ui->vxsat->text()) << endl;
 
-        chaine = tr("y : %1%2\tvy : %3\tExcentricité   : %4\tArgument du périgée                 : %5%6");
-        flux << chaine.arg(ui->ysat->text()).arg(QString(18 - ui->ysat->text().length(), QChar(' '))).arg(ui->vysat->text())
-                .arg(ui->excentricite->text()).arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0')))
-                .arg(ui->argumentPerigee->text()) << endl;
+        chaine = tr("y : %1%2\tvy : %3");
+        flux << chaine.arg(ui->ysat->text()).arg(QString(18 - ui->ysat->text().length(), QChar(' '))).
+                arg(ui->vysat->text()) << endl;
 
-        chaine = tr("z : %1%2\tvz : %3\tInclinaison    : %4%5\tAnomalie moyenne                    : %6%7");
-        flux << chaine.arg(ui->zsat->text()).arg(QString(18 - ui->zsat->text().length(), QChar(' '))).arg(ui->vzsat->text())
-                .arg(QString(9 - ui->inclinaison->text().length(), QChar('0'))).arg(ui->inclinaison->text())
-                .arg(QString(9 - ui->anomalieMoyenne->text().length(), QChar('0'))).arg(ui->anomalieMoyenne->text()) << endl << endl;
+        chaine = tr("z : %1%2\tvz : %3");
+        flux << chaine.arg(ui->zsat->text()).arg(QString(18 - ui->zsat->text().length(), QChar(' '))).
+                arg(ui->vzsat->text()) << endl << endl;
 
 
-        chaine = tr("Anomalie vraie       : %1%2\t\tApogée  (Altitude) : %3");
+        flux << tr("Éléments osculateurs :") << endl;
+        switch (ui->typeParametres->currentIndex()) {
+
+        case 0:
+            // Parametres kepleriens
+            chaine = tr("Demi-grand axe : %1\tAscension droite du noeud ascendant : %2%3");
+            flux << chaine.arg(ui->demiGrandAxe->text()).
+                    arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0'))).
+                    arg(ui->ADNoeudAscendant->text()) << endl;
+
+            chaine = tr("Excentricité   : %1\tArgument du périgée                 : %2%3");
+            flux << chaine.arg(ui->excentricite->text()).
+                    arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0'))).
+                    arg(ui->argumentPerigee->text()) << endl;
+
+            chaine = tr("Inclinaison    : %1%2\tAnomalie moyenne                    : %3%4");
+            flux << chaine.arg(QString(9 - ui->inclinaison->text().length(), QChar('0'))).arg(ui->inclinaison->text()).
+                    arg(QString(9 - ui->anomalieMoyenne->text().length(), QChar('0'))).arg(ui->anomalieMoyenne->text())
+                 << endl << endl;
+            break;
+
+        case 1:
+            // Parametres circulaires
+            chaine = tr("Demi-grand axe : %1\tAscension droite du noeud ascendant : %2%3");
+            flux << chaine.arg(ui->demiGrandAxe->text()).
+                    arg(QString(9 - ui->ADNoeudAscendant2->text().length(), QChar('0'))).
+                    arg(ui->ADNoeudAscendant2->text()) << endl;
+
+            chaine = tr("Ex             : %1\tInclinaison                         : %2%3");
+            flux << chaine.arg(ui->ex1->text()).arg(QString(9 - ui->inclinaison2->text().length(), QChar('0'))).
+                    arg(ui->inclinaison2->text()) << endl;
+
+            chaine = tr("Ey             : %1\tPosition sur orbite                 : %2%3");
+            flux << chaine.arg(ui->ey1->text()).arg(QString(9 - ui->positionSurOrbite->text().length(), QChar('0'))).
+                    arg(ui->positionSurOrbite->text())
+                 << endl << endl;
+            break;
+
+        case 2:
+            // Parametres equatoriaux
+            chaine = tr("Demi-grand axe      : %1 \tIx                        : %2");
+            flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix1->text()) << endl;
+
+            chaine = tr("Excentricité        : %1 \tIy                        : %2");
+            flux << chaine.arg(ui->excentricite2->text()).arg(ui->iy1->text()) << endl;
+
+            chaine = tr("Argument du périgée : %1%2 \tArgument de latitude vrai : %3%4");
+            flux << chaine.arg(QString(9 - ui->argumentPerigee2->text().length(), QChar('0'))).
+                    arg(ui->argumentPerigee2->text()).
+                    arg(QString(9 - ui->argumentLatitudeVrai->text().length(), QChar('0'))).
+                    arg(ui->argumentLatitudeVrai->text()) << endl << endl;
+            break;
+
+        case 3:
+            // Parametres equatoriaux
+            chaine = tr("Demi-grand axe : %1\tIx                        : %2");
+            flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix2->text()) << endl;
+
+            chaine = tr("Ex             : %1\tIy                        : %2");
+            flux << chaine.arg(ui->ex2->text()).arg(ui->iy2->text()) << endl;
+
+            chaine = tr("Ey             : %1\tArgument de latitude vrai : %2%3");
+            flux << chaine.arg(ui->ey2->text()).arg(QString(9 - ui->argumentLatitudeVrai2->text().length(), QChar('0'))).
+                    arg(ui->argumentLatitudeVrai2->text()) << endl << endl;
+            break;
+
+        default:
+            break;
+        }
+
+        chaine = tr("Anomalie vraie       : %1%2\tApogée  (Altitude) : %3");
         flux << chaine.arg(QString(9 - ui->anomalieVraie->text().length(), QChar('0'))).arg(ui->anomalieVraie->text())
                 .arg(ui->apogee->text()) << endl;
 
-        chaine = tr("Anomalie excentrique : %1%2\t\tPérigée (Altitude) : %3");
+        chaine = tr("Anomalie excentrique : %1%2\tPérigée (Altitude) : %3");
         flux << chaine.arg(QString(9 - ui->anomalieExcentrique->text().length(), QChar('0')))
                 .arg(ui->anomalieExcentrique->text()).arg(ui->perigee->text()) << endl;
 
-        chaine = tr("Champ de vue         : %1  \t\tPériode orbitale   : %2");
+        chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
         flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl;
 
         sw.close();
@@ -3580,6 +3751,11 @@ void PreviSat::TelechargementSuivant()
             ui->frameBarreProgression->setVisible(false);
             ui->affichageMsgMAJ->setVisible(true);
         }
+        amajDeb = true;
+        amajInt = false;
+        atrouve = false;
+        aupdnow = false;
+        ui->majMaintenant->setEnabled(true);
         messagesStatut->setText(tr("Terminé !"));
     } else {
 
@@ -3844,6 +4020,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
+    settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
@@ -4810,6 +4987,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->pasReel->setPalette(palList);
     ui->valManuel->setPalette(palList);
     ui->listeFichiersTLE->setPalette(palList);
+    ui->typeParametres->setPalette(palList);
 
     ui->dateInitialePrev->setPalette(palList);
     ui->dateFinalePrev->setPalette(palList);
@@ -5685,6 +5863,12 @@ void PreviSat::on_unitesKm_toggled(bool checked)
 void PreviSat::on_unitesMi_toggled(bool checked)
 {
     ModificationOption();
+}
+
+void PreviSat::on_typeParametres_currentIndexChanged(int index)
+{
+    if (ui->typeParametres->isVisible())
+        AffichageElementsOsculateurs();
 }
 
 void PreviSat::on_heureLegale_toggled(bool checked)
@@ -6565,6 +6749,7 @@ void PreviSat::on_majMaintenant_clicked()
     aupdnow = true;
     dirDwn = dirTmp;
     const QString groupeTLE = ui->groupeTLE->currentText().toLower();
+    ui->majMaintenant->setEnabled(false);
     ui->compteRenduMaj->clear();
     ui->compteRenduMaj->setVisible(true);
 
