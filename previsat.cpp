@@ -1451,10 +1451,10 @@ void PreviSat::AffichageElementsOsculateurs() const
         ui->frameCirculaire->setVisible(true);
 
         chaine2 = "%1";
-        chaine = chaine2.arg(satellites.at(0).getElements().getEx(), 0, 'f', 7);
+        chaine = chaine2.arg(satellites.at(0).getElements().getExCirc(), 0, 'f', 7);
         ui->ex1->setText(chaine);
 
-        chaine = chaine2.arg(satellites.at(0).getElements().getEy(), 0, 'f', 7);
+        chaine = chaine2.arg(satellites.at(0).getElements().getEyCirc(), 0, 'f', 7);
         ui->ey1->setText(chaine);
 
         chaine2 = "%1°";
@@ -1483,11 +1483,11 @@ void PreviSat::AffichageElementsOsculateurs() const
         ui->iy1->setText(chaine);
 
         chaine2 = "%1°";
-        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentPerigee() * RAD2DEG, 0, 'f', 4);
-        ui->argumentPerigee2->setText(chaine);
+        chaine = chaine2.arg((satellites.at(0).getElements().getAscensionDroiteNA() + satellites.at(0).getElements().getArgumentPerigee()) * RAD2DEG, 0, 'f', 4);
+        ui->longitudePerigee->setText(chaine);
 
-        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLatitudeVrai() * RAD2DEG, 0, 'f', 4);
-        ui->argumentLatitudeVrai->setText(chaine);
+        chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
+        ui->anomalieMoyenne2->setText(chaine);
         break;
 
     case 3:
@@ -1495,10 +1495,10 @@ void PreviSat::AffichageElementsOsculateurs() const
         ui->frameCirculaireEquatorial->setVisible(true);
 
         chaine2 = "%1";
-        chaine = chaine2.arg(satellites.at(0).getElements().getEx(), 0, 'f', 7);
+        chaine = chaine2.arg(satellites.at(0).getElements().getExCEq(), 0, 'f', 7);
         ui->ex2->setText(chaine);
 
-        chaine = chaine2.arg(satellites.at(0).getElements().getEy(), 0, 'f', 7);
+        chaine = chaine2.arg(satellites.at(0).getElements().getEyCEq(), 0, 'f', 7);
         ui->ey2->setText(chaine);
 
         chaine = chaine2.arg(satellites.at(0).getElements().getIx(), 0, 'f', 7);
@@ -1508,8 +1508,8 @@ void PreviSat::AffichageElementsOsculateurs() const
         ui->iy2->setText(chaine);
 
         chaine2 = "%1°";
-        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLatitudeVrai() * RAD2DEG, 0, 'f', 4);
-        ui->argumentLatitudeVrai2->setText(chaine);
+        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLongitudeVraie() * RAD2DEG, 0, 'f', 4);
+        ui->argumentLongitudeVraie2->setText(chaine);
         break;
 
     default:
@@ -3188,30 +3188,30 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 2:
             // Parametres equatoriaux
-            chaine = tr("Demi-grand axe      : %1 \tIx                        : %2");
+            chaine = tr("Demi-grand axe      : %1 \tIx                   : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité        : %1 \tIy                        : %2");
+            chaine = tr("Excentricité        : %1 \tIy                   : %2");
             flux << chaine.arg(ui->excentricite2->text()).arg(ui->iy1->text()) << endl;
 
-            chaine = tr("Argument du périgée : %1%2 \tArgument de latitude vrai : %3%4");
-            flux << chaine.arg(QString(9 - ui->argumentPerigee2->text().length(), QChar('0'))).
-                    arg(ui->argumentPerigee2->text()).
-                    arg(QString(9 - ui->argumentLatitudeVrai->text().length(), QChar('0'))).
-                    arg(ui->argumentLatitudeVrai->text()) << endl << endl;
+            chaine = tr("Argument du périgée : %1%2 \tLongitude du périgée : %3%4");
+            flux << chaine.arg(QString(9 - ui->longitudePerigee->text().length(), QChar('0'))).
+                    arg(ui->longitudePerigee->text()).
+                    arg(QString(9 - ui->anomalieMoyenne2->text().length(), QChar('0'))).
+                    arg(ui->anomalieMoyenne2->text()) << endl << endl;
             break;
 
         case 3:
-            // Parametres equatoriaux
-            chaine = tr("Demi-grand axe : %1\tIx                        : %2");
+            // Parametres circulaires equatoriaux
+            chaine = tr("Demi-grand axe : %1\tIx                         : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix2->text()) << endl;
 
-            chaine = tr("Ex             : %1\tIy                        : %2");
+            chaine = tr("Ex             : %1\tIy                         : %2");
             flux << chaine.arg(ui->ex2->text()).arg(ui->iy2->text()) << endl;
 
-            chaine = tr("Ey             : %1\tArgument de latitude vrai : %2%3");
-            flux << chaine.arg(ui->ey2->text()).arg(QString(9 - ui->argumentLatitudeVrai2->text().length(), QChar('0'))).
-                    arg(ui->argumentLatitudeVrai2->text()) << endl << endl;
+            chaine = tr("Ey             : %1\tArgument de longitude vrai : %2%3");
+            flux << chaine.arg(ui->ey2->text()).arg(QString(9 - ui->argumentLongitudeVraie2->text().length(), QChar('0'))).
+                    arg(ui->argumentLongitudeVraie2->text()) << endl << endl;
             break;
 
         default:

@@ -600,7 +600,6 @@ PreviSat is free !</translation>
     </message>
     <message utf8="true">
         <location filename="previsat.ui" line="3541"/>
-        <location filename="previsat.ui" line="3857"/>
         <location filename="previsat.ui" line="4883"/>
         <location filename="previsat.ui" line="8427"/>
         <source>Argument du périgée :</source>
@@ -608,6 +607,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="3512"/>
+        <location filename="previsat.ui" line="3789"/>
         <location filename="previsat.ui" line="4899"/>
         <source>Anomalie moyenne :</source>
         <translation>Mean anomaly :</translation>
@@ -1071,16 +1071,20 @@ PreviSat is free !</translation>
         <translation>Ix :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="3789"/>
-        <location filename="previsat.ui" line="3958"/>
-        <source>Argument latitude vrai :</source>
-        <translation>True latitude argument :</translation>
-    </message>
-    <message>
         <location filename="previsat.ui" line="3844"/>
         <location filename="previsat.ui" line="4016"/>
         <source>Iy :</source>
         <translation>Iy :</translation>
+    </message>
+    <message utf8="true">
+        <location filename="previsat.ui" line="3857"/>
+        <source>Longitude du périgée :</source>
+        <translation>Longitude of perigee :</translation>
+    </message>
+    <message>
+        <location filename="previsat.ui" line="3958"/>
+        <source>Argument longitude vraie :</source>
+        <translation>True longitude argument :</translation>
     </message>
     <message utf8="true">
         <location filename="previsat.ui" line="5151"/>
@@ -1734,7 +1738,6 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="8414"/>
         <source>00.000000000</source>
-        <oldsource>0.000000000</oldsource>
         <translation>00.000000000</translation>
     </message>
     <message>
@@ -1850,10 +1853,6 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="9594"/>
         <source>Télécharger les mises à jour</source>
         <translation>Check for updates</translation>
-    </message>
-    <message>
-        <source>Donnez votre avis !</source>
-        <translation type="obsolete">Give your opinion !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9599"/>
@@ -2057,21 +2056,8 @@ The directory containing the observation sites does not exist</translation>
         <translation>Orbital velocity   : %1%2  	Conditions of observation : %3</translation>
     </message>
     <message>
-        <source>y : %1%2	vy : %3	Excentricité   : %4	Argument du périgée                 : %5%6</source>
-        <translation type="obsolete">y : %1%2	vy : %3	Eccentricity   : %4	Argument of perigee                 : %5%6</translation>
-    </message>
-    <message>
-        <source>z : %1%2	vz : %3	Inclinaison    : %4%5	Anomalie moyenne                    : %6%7</source>
-        <translation type="obsolete">z : %1%2	vz : %3	Inclination    : %4%5	Mean anomaly                    : %6%7</translation>
-    </message>
-    <message>
-        <source>Anomalie vraie       : %1%2		Apogée  (Altitude) : %3</source>
-        <translation type="obsolete">True anomaly       : %1%2		Apogee  (Altitude) : %3</translation>
-    </message>
-    <message>
         <location filename="previsat.cpp" line="3054"/>
         <source>Longitude : %1	Hauteur    : %2	Ascension droite :  %3</source>
-        <oldsource>Anomalie excentrique : %1%2		Périgée (Altitude) : %3</oldsource>
         <translation>Longitude : %1	Elevation : %2	Right ascension : %3</translation>
     </message>
     <message>
@@ -2281,14 +2267,6 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="3099"/>
         <source>Phase        :</source>
         <translation>Phase        :</translation>
-    </message>
-    <message>
-        <source>Vecteur d&apos;état (ECI) :				Éléments osculateurs :</source>
-        <translation type="obsolete">State vector (ECI) :				Osculating elements :</translation>
-    </message>
-    <message>
-        <source>x : %1%2	vx : %3	Demi-grand axe : %4	Ascension droite du noeud ascendant : %5%6</source>
-        <translation type="obsolete">x : %1%2	vx : %3	Semi-major axis : %4	Right ascension of the ascending node : %5%6</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3266"/>
@@ -2528,52 +2506,52 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="previsat.cpp" line="3161"/>
         <source>Excentricité   : %1	Argument du périgée                 : %2%3</source>
-        <translation>Eccentricity   : %1	Argument of perigee                 : %2%3</translation>
+        <translation>Eccentricity    : %1	Argument of perigee                   : %2%3</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3166"/>
         <source>Inclinaison    : %1%2	Anomalie moyenne                    : %3%4</source>
-        <translation>Inclination    : %1%2	Mean anomaly                    : %3%4</translation>
+        <translation>Inclination     : %1%2	Mean anomaly                          : %3%4</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3179"/>
         <source>Ex             : %1	Inclinaison                         : %2%3</source>
-        <translation>Ex             : %1	Inclination                         : %2%3</translation>
+        <translation>Ex              : %1	Inclination                           : %2%3</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3183"/>
         <source>Ey             : %1	Position sur orbite                 : %2%3</source>
-        <translation>Ey             : %1	Position on orbit                   : %2%3</translation>
+        <translation>Ey              : %1	Position on orbit                     : %2%3</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3191"/>
-        <source>Demi-grand axe      : %1 	Ix                        : %2</source>
-        <translation>Semi-major axis       : %1 	Ix                        : %2</translation>
+        <source>Demi-grand axe      : %1 	Ix                   : %2</source>
+        <translation>Semi-major axis     : %1 	Ix                   : %2</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3194"/>
-        <source>Excentricité        : %1 	Iy                        : %2</source>
-        <translation>Eccentricity        : %1 	Iy                        : %2</translation>
+        <source>Excentricité        : %1 	Iy                   : %2</source>
+        <translation>Eccentricity        : %1 	Iy                   : %2</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3197"/>
-        <source>Argument du périgée : %1%2 	Argument de latitude vrai : %3%4</source>
-        <translation>Argument of perigee : %1%2 	True latitude argument : %3%4</translation>
+        <source>Argument du périgée : %1%2 	Longitude du périgée : %3%4</source>
+        <translation>Argument of perigee : %1%2 	Longitude of perigee : %3%4</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3206"/>
-        <source>Demi-grand axe : %1	Ix                        : %2</source>
-        <translation>Semi-major axis : %1 	Ix                        : %2</translation>
+        <source>Demi-grand axe : %1	Ix                         : %2</source>
+        <translation>Semi-major axis : %1	Ix                       : %2</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3209"/>
-        <source>Ex             : %1	Iy                        : %2</source>
-        <translation>Ex             : %1	Iy                        : %2</translation>
+        <source>Ex             : %1	Iy                         : %2</source>
+        <translation>Ex              : %1	Iy                       : %2</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3212"/>
-        <source>Ey             : %1	Argument de latitude vrai : %2%3</source>
-        <translation>Ey             : %1	True latitude argument : %2%3</translation>
+        <source>Ey             : %1	Argument de longitude vrai : %2%3</source>
+        <translation>Ey              : %1	True longtitude argument : %2%3</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3221"/>
@@ -2583,12 +2561,12 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="previsat.cpp" line="3225"/>
         <source>Anomalie excentrique : %1%2	Périgée (Altitude) : %3</source>
-        <translation>Eccentric anomaly : %1%2	Perigee (Altitude) : %3</translation>
+        <translation>Eccentric anomaly  : %1%2	Perigee (Altitude) : %3</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="3229"/>
         <source>Champ de vue         : %1  	Période orbitale   : %2</source>
-        <translation>Field of view         : %1  	Orbital period   : %2</translation>
+        <translation>Field of view      : %1  	Orbital period     : %2</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="7040"/>

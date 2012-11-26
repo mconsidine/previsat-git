@@ -67,12 +67,14 @@ public:
     double getAscensionDroiteNA() const;
     double getDemiGrandAxe() const;
     double getExcentricite() const;
-    double getEx() const;
-    double getEy() const;
+    double getExCEq() const;
+    double getExCirc() const;
+    double getEyCEq() const;
+    double getEyCirc() const;
     double getInclinaison() const;
     double getIx() const;
     double getIy() const;
-    double getArgumentLatitudeVrai() const;
+    double getArgumentLongitudeVraie() const;
     double getPerigee() const;
     double getPeriode() const;
     double getPso() const;
@@ -104,12 +106,14 @@ private:
      double _periode;
 
      // Parametres adaptes
-     double _ex;
-     double _ey;
+     double _exCirc;
+     double _eyCirc;
+     double _exCEq;
+     double _eyCEq;
      double _pso;
      double _ix;
      double _iy;
-     double _argumentLatitudeVrai;
+     double _argumentLongitudeVraie;
 
     /* Methodes privees */
 
