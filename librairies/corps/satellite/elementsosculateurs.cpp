@@ -63,12 +63,14 @@ ElementsOsculateurs::ElementsOsculateurs()
     _perigee = 0.;
     _periode = 0.;
 
-    _ex = 0.;
-    _ey = 0.;
+    _exCEq = 0.;
+    _exCirc = 0.;
+    _eyCEq = 0.;
+    _eyCirc = 0.;
     _pso = 0.;
     _ix = 0.;
     _iy = 0.;
-    _argumentLatitudeVrai = 0.;
+    _argumentLongitudeVraie = 0.;
 
     /* Retour */
     return;
@@ -166,9 +168,9 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
         const double cl = (position.getX() - d * position.getZ() * hn.getX()) / p;
         const double sl = (position.getY() - d * position.getZ() * hn.getY()) / p;
-        _argumentLatitudeVrai = atan2(sl, cl);
-        if (_argumentLatitudeVrai < 0.)
-            _argumentLatitudeVrai += DEUX_PI;
+        _argumentLongitudeVraie = atan2(sl, cl);
+        if (_argumentLongitudeVraie < 0.)
+            _argumentLongitudeVraie += DEUX_PI;
 
         const double se = rv / sqrt(GE * _demiGrandAxe);
         const double ce = p * v2 / GE - 1.;
@@ -176,10 +178,13 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         const double f = ce - e2;
         const double g = sqrt(1. - e2) * se;
         const double tmp1 = _demiGrandAxe / p;
-        _ex = tmp1 * (f * cl + g * sl);
-        _ey = tmp1 * (f * sl - g * cl);
+        _exCEq = tmp1 * (f * cl + g * sl);
+        _eyCEq = tmp1 * (f * sl - g * cl);
 
         const double sa = sin(_ascDroiteNA);
+
+        _exCirc = _exCEq * ca + _eyCEq * sa;
+        _eyCirc = _eyCEq * ca - _exCEq * sa;
 
         const Vecteur3D r = Vecteur3D(ca, sa, 0.);
         const Vecteur3D s = Vecteur3D(-ci * sa, ci * ca, sin(_inclinaison));
@@ -190,11 +195,10 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
         const double tmp0 = sqrt(1. - e2);
         const double bt = 1. / (1. + tmp0);
-        const double ae = atan2(xs / _demiGrandAxe + _ey - t2 * bt * _ex, xr / _demiGrandAxe + _ex - t2 * bt * _ey);
+        const double ae = atan2(xs / _demiGrandAxe + _eyCEq - t2 * bt * _exCEq, xr / _demiGrandAxe + _exCEq - t2 * bt * _eyCEq);
         _pso = ae - t2;
         if (_pso < 0.)
             _pso += DEUX_PI;
-
     }
 
     /* Retour */
@@ -242,14 +246,24 @@ double ElementsOsculateurs::getExcentricite() const
     return _excentricite;
 }
 
-double ElementsOsculateurs::getEx() const
+double ElementsOsculateurs::getExCEq() const
 {
-    return _ex;
+    return _exCEq;
 }
 
-double ElementsOsculateurs::getEy() const
+double ElementsOsculateurs::getExCirc() const
 {
-    return _ey;
+    return _exCirc;
+}
+
+double ElementsOsculateurs::getEyCEq() const
+{
+    return _eyCEq;
+}
+
+double ElementsOsculateurs::getEyCirc() const
+{
+    return _eyCirc;
 }
 
 double ElementsOsculateurs::getInclinaison() const
@@ -267,9 +281,9 @@ double ElementsOsculateurs::getIy() const
     return _iy;
 }
 
-double ElementsOsculateurs::getArgumentLatitudeVrai() const
+double ElementsOsculateurs::getArgumentLongitudeVraie() const
 {
-    return _argumentLatitudeVrai;
+    return _argumentLongitudeVraie;
 }
 
 double ElementsOsculateurs::getPerigee() const

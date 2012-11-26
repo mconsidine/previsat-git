@@ -3431,7 +3431,7 @@
              <rect>
               <x>229</x>
               <y>103</y>
-              <width>431</width>
+              <width>450</width>
               <height>51</height>
              </rect>
             </property>
@@ -3592,7 +3592,7 @@
              <rect>
               <x>229</x>
               <y>103</y>
-              <width>431</width>
+              <width>450</width>
               <height>51</height>
              </rect>
             </property>
@@ -3753,7 +3753,7 @@
              <rect>
               <x>229</x>
               <y>103</y>
-              <width>431</width>
+              <width>450</width>
               <height>51</height>
              </rect>
             </property>
@@ -3776,20 +3776,20 @@
               <string>Ix :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="lbl_argumentLatitudeVrai">
+            <widget class="QLabel" name="lbl_anomalieMoyenne2">
              <property name="geometry">
               <rect>
                <x>252</x>
                <y>30</y>
-               <width>117</width>
+               <width>130</width>
                <height>16</height>
               </rect>
              </property>
              <property name="text">
-              <string>Argument latitude vrai :</string>
+              <string>Anomalie moyenne :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="argumentLatitudeVrai">
+            <widget class="QLabel" name="anomalieMoyenne2">
              <property name="geometry">
               <rect>
                <x>366</x>
@@ -3844,7 +3844,7 @@
               <string>Iy :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="lbl_argumentPerigee3">
+            <widget class="QLabel" name="lbl_longitudePerigee">
              <property name="geometry">
               <rect>
                <x>0</x>
@@ -3854,10 +3854,10 @@
               </rect>
              </property>
              <property name="text">
-              <string>Argument du périgée :</string>
+              <string>Longitude du périgée :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="argumentPerigee2">
+            <widget class="QLabel" name="longitudePerigee">
              <property name="geometry">
               <rect>
                <x>114</x>
@@ -3906,13 +3906,13 @@
              </property>
             </widget>
             <zorder>lbl_ix1</zorder>
-            <zorder>lbl_argumentLatitudeVrai</zorder>
-            <zorder>argumentLatitudeVrai</zorder>
+            <zorder>lbl_anomalieMoyenne2</zorder>
+            <zorder>anomalieMoyenne2</zorder>
             <zorder>excentricite2</zorder>
             <zorder>lbl_excentricite2</zorder>
             <zorder>lbl_iy1</zorder>
-            <zorder>lbl_argumentPerigee3</zorder>
-            <zorder>argumentPerigee2</zorder>
+            <zorder>lbl_longitudePerigee</zorder>
+            <zorder>longitudePerigee</zorder>
             <zorder>iy1</zorder>
             <zorder>ix1</zorder>
             <zorder>ligne1</zorder>
@@ -3922,7 +3922,7 @@
              <rect>
               <x>229</x>
               <y>103</y>
-              <width>431</width>
+              <width>450</width>
               <height>51</height>
              </rect>
             </property>
@@ -3945,23 +3945,23 @@
               <string>Ix :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="lbl_argumentLatitudeVrai2">
+            <widget class="QLabel" name="lbl_argumentLongitudeVraie2">
              <property name="geometry">
               <rect>
                <x>252</x>
                <y>30</y>
-               <width>117</width>
+               <width>130</width>
                <height>16</height>
               </rect>
              </property>
              <property name="text">
-              <string>Argument latitude vrai :</string>
+              <string>Argument longitude vraie :</string>
              </property>
             </widget>
-            <widget class="QLabel" name="argumentLatitudeVrai2">
+            <widget class="QLabel" name="argumentLongitudeVraie2">
              <property name="geometry">
               <rect>
-               <x>366</x>
+               <x>382</x>
                <y>30</y>
                <width>55</width>
                <height>16</height>
@@ -4048,7 +4048,7 @@
             <widget class="QLabel" name="ix2">
              <property name="geometry">
               <rect>
-               <x>360</x>
+               <x>376</x>
                <y>0</y>
                <width>61</width>
                <height>16</height>
@@ -4064,7 +4064,7 @@
             <widget class="QLabel" name="iy2">
              <property name="geometry">
               <rect>
-               <x>360</x>
+               <x>376</x>
                <y>15</y>
                <width>61</width>
                <height>16</height>
