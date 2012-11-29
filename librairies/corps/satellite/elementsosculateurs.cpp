@@ -161,10 +161,8 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         // Calcul des parametres adaptes
         const Vecteur3D hn = h.Normalise();
         const double d = 1. / (1. + hn.getZ());
-        const double hx = -d * hn.getY();
-        const double hy = d * hn.getX();
-        _ix = 2. * ci * hx;
-        _iy = 2. * ci * hy;
+        _ix = -d * hn.getY();
+        _iy = d * hn.getX();
 
         const double cl = (position.getX() - d * position.getZ() * hn.getX()) / p;
         const double sl = (position.getY() - d * position.getZ() * hn.getY()) / p;
