@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 novembre 2012
+ * >    29 novembre 2012
  *
  */
 
@@ -7572,8 +7572,10 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
                         ui->fichierTLEIri->setCurrentIndex(0);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLEIri, ficTLEIri);
+                    ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    idxfi = index;
                 }
-
             } else {
                 ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
                 ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
@@ -8099,8 +8101,10 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                         ui->fichierTLETransit->setCurrentIndex(0);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
+                    ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    idxft = index;
                 }
-
             } else {
                 ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
                 ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
