@@ -173,8 +173,9 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         const double se = rv / sqrt(GE * _demiGrandAxe);
         const double ce = p * v2 / GE - 1.;
         const double e2 = _excentricite * _excentricite;
+        const double tmp0 = sqrt(1. - e2);
         const double f = ce - e2;
-        const double g = sqrt(1. - e2) * se;
+        const double g = tmp0 * se;
         const double tmp1 = _demiGrandAxe / p;
         _exCEq = tmp1 * (f * cl + g * sl);
         _eyCEq = tmp1 * (f * sl - g * cl);
@@ -189,12 +190,10 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
         const double xr = position * r;
         const double xs = position * s;
-        const double t2 = rv / sqrt(GE * _demiGrandAxe);
 
-        const double tmp0 = sqrt(1. - e2);
         const double bt = 1. / (1. + tmp0);
-        const double ae = atan2(xs / _demiGrandAxe + _eyCEq - t2 * bt * _exCEq, xr / _demiGrandAxe + _exCEq - t2 * bt * _eyCEq);
-        _pso = ae - t2;
+        const double ae = atan2(xs / _demiGrandAxe + _eyCirc - se * bt * _exCirc, xr / _demiGrandAxe + _exCirc - se * bt * _eyCirc);
+        _pso = ae - _exCirc * sin(ae) + _eyCirc * cos(ae);
         if (_pso < 0.)
             _pso += DEUX_PI;
     }
