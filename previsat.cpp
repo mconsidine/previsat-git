@@ -3060,8 +3060,8 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
                     .arg(ui->declinaisonSat->text()) << endl;
 
             chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
-            flux << chaine.arg(ui->altitudeSat->text()).arg(QString(18 - ui->altitudeSat->text().length(), QChar(' ')))
-                    .arg(ui->distanceSat->text()).arg(QString(18 - ui->distanceSat->text().length(), QChar(' ')))
+            flux << chaine.arg(ui->altitudeSat->text()).arg(QString(13 - ui->altitudeSat->text().length(), QChar(' ')))
+                    .arg(ui->distanceSat->text()).arg(QString(13 - ui->distanceSat->text().length(), QChar(' ')))
                     .arg(ui->constellationSat->text()) << endl << endl;
 
             chaine = tr("Direction          : %1  \t%2");
@@ -3076,7 +3076,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         }
 
         // Donnees sur le Soleil
-        flux << tr("Coordonnées du Soleil :") << endl;
+        flux << QObject::tr("Coordonnées du Soleil :") << endl;
         chaine = tr("Hauteur    : %1\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
 
@@ -3087,7 +3087,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
 
         // Donnees sur la Lune
-        flux << tr("Coordonnées de la Lune :") << endl;
+        flux << QObject::tr("Coordonnées de la Lune :") << endl;
         chaine = tr("Hauteur    : %1\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
 
@@ -3134,21 +3134,21 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << ui->ligne1->text() << endl;
         flux << ui->ligne2->text() << endl << endl;
 
-        flux << tr("Vecteur d'état (ECI) :") << endl;
+        flux << QObject::tr("Vecteur d'état (ECI) :") << endl;
         QString chaine = tr("x : %1%2\tvx : %3");
-        flux << chaine.arg(ui->xsat->text()).arg(QString(18 - ui->xsat->text().length(), QChar(' '))).
+        flux << chaine.arg(QString(13 - ui->xsat->text().length(), QChar(' '))).arg(ui->xsat->text()).
                 arg(ui->vxsat->text()) << endl;
 
         chaine = tr("y : %1%2\tvy : %3");
-        flux << chaine.arg(ui->ysat->text()).arg(QString(18 - ui->ysat->text().length(), QChar(' '))).
+        flux << chaine.arg(QString(13 - ui->ysat->text().length(), QChar(' '))).arg(ui->ysat->text()).
                 arg(ui->vysat->text()) << endl;
 
         chaine = tr("z : %1%2\tvz : %3");
-        flux << chaine.arg(ui->zsat->text()).arg(QString(18 - ui->zsat->text().length(), QChar(' '))).
+        flux << chaine.arg(QString(13 - ui->zsat->text().length(), QChar(' '))).arg(ui->zsat->text()).
                 arg(ui->vzsat->text()) << endl << endl;
 
 
-        flux << tr("Éléments osculateurs :") << endl;
+        flux << QObject::tr("Éléments osculateurs :") << endl;
         switch (ui->typeParametres->currentIndex()) {
 
         case 0:
@@ -3188,13 +3188,13 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 2:
             // Parametres equatoriaux
-            chaine = tr("Demi-grand axe      : %1 \tIx                   : %2");
+            chaine = tr("Demi-grand axe       : %1\tIx               : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité        : %1 \tIy                   : %2");
+            chaine = tr("Excentricité         : %1\tIy               : %2");
             flux << chaine.arg(ui->excentricite2->text()).arg(ui->iy1->text()) << endl;
 
-            chaine = tr("Argument du périgée : %1%2 \tLongitude du périgée : %3%4");
+            chaine = tr("Longitude du périgée : %1%2\tAnomalie moyenne : %3%4");
             flux << chaine.arg(QString(9 - ui->longitudePerigee->text().length(), QChar('0'))).
                     arg(ui->longitudePerigee->text()).
                     arg(QString(9 - ui->anomalieMoyenne2->text().length(), QChar('0'))).
