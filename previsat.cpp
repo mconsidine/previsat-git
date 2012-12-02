@@ -3751,7 +3751,6 @@ void PreviSat::TelechargementSuivant()
             ui->frameBarreProgression->setVisible(false);
             ui->affichageMsgMAJ->setVisible(true);
         }
-        amajDeb = true;
         amajInt = false;
         atrouve = false;
         aupdnow = false;
@@ -5451,6 +5450,7 @@ void PreviSat::on_liste1_entered(const QModelIndex &index)
     if (nomsat != norad) {
         const QString msg = tr("%1 (numéro NORAD : %2)");
         ui->liste1->setToolTip(msg.arg(nomsat).arg(norad));
+        messagesStatut->setText(ui->liste1->toolTip());
     }
 
     /* Retour */
