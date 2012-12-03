@@ -3856,7 +3856,7 @@ void PreviSat::FinEnregistrementFichier()
                     QTextStream flux(&ficDwn);
                     const QStringList ligne = flux.readLine().split("-");
                     ficDwn.close();
-                    rep->deleteLater();
+
                     TelechargementSuivant();
 
                     const int an = ligne.at(0).toInt();
