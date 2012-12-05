@@ -7558,6 +7558,7 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    ui->fichierTLEIri->setToolTip("");
 
     /* Corps de la methode */
     try {
@@ -8082,6 +8083,7 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    ui->fichierTLETransit->setToolTip("");
 
     /* Corps de la methode */
     try {
