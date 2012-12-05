@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 novembre 2012
+ * >    5 decembre 2012
  *
  */
 
@@ -261,7 +261,6 @@ private slots:
     // Calcul des flashs Iridium
     void on_effacerHeuresIri_clicked();
     void on_fichierTLEIri_currentIndexChanged(int index);
-    void on_fichierTLEIri_highlighted(int index);
     void on_hauteurSatIri_currentIndexChanged(int index);
     void on_hauteurSoleilIri_currentIndexChanged(int index);
     void on_parametrageDefautIri_clicked();
@@ -286,7 +285,6 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
-    void on_fichierTLETransit_highlighted(int index);
 };
 
 #endif // PREVISAT_H
