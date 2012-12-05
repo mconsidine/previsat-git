@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 novembre 2012
+ * >    5 decembre 2012
  *
  */
 
@@ -6656,7 +6656,8 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    messagesStatut->setText("");
+    if (messagesStatut != NULL)
+        messagesStatut->setText("");
     ui->compteRenduMaj->setVisible(false);
 
     /* Corps de la methode */
@@ -7582,6 +7583,8 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
                 AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
                 idxfi = index;
             }
+            const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
+            ui->fichierTLEIri->setToolTip((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
         }
 
     } catch (PreviSatException &e) {
@@ -7589,13 +7592,6 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
 
     /* Retour */
     return;
-}
-
-void PreviSat::on_fichierTLEIri_highlighted(int index)
-{
-    const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
-    if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
-        ui->fichierTLEIri->setToolTip(fi.absoluteFilePath());
 }
 
 void PreviSat::on_hauteurSatIri_currentIndexChanged(int index)
@@ -8111,6 +8107,8 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                 AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
                 idxft = index;
             }
+            const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
+            ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
         }
 
     } catch (PreviSatException &e) {
@@ -8118,13 +8116,6 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
 
     /* Retour */
     return;
-}
-
-void PreviSat::on_fichierTLETransit_highlighted(int index)
-{
-    const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
-    if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
-        ui->fichierTLETransit->setToolTip(fi.absoluteFilePath());
 }
 
 void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
