@@ -341,6 +341,7 @@ void PreviSat::ChargementConfig()
         ui->fichierTLEIri->addItem(fi.fileName());
         ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLEIri.append(QDir::convertSeparators(nomFicIri));
+        idxfi = 0;
     }
     if (ficTLEIri.isEmpty())
         ui->fichierTLEIri->addItem("");
@@ -353,6 +354,7 @@ void PreviSat::ChargementConfig()
         ui->fichierTLETransit->addItem(fit.fileName());
         ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
+        idxft = 0;
     }
     if (ficTLETransit.isEmpty())
         ui->fichierTLETransit->addItem("");
@@ -7571,7 +7573,7 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLEIri->currentText().isEmpty())
-                        ui->fichierTLEIri->setCurrentIndex(0);
+                        ui->fichierTLEIri->setCurrentIndex(idxfi);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLEIri, ficTLEIri);
                     ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
@@ -8096,7 +8098,7 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLETransit->currentText().isEmpty())
-                        ui->fichierTLETransit->setCurrentIndex(0);
+                        ui->fichierTLETransit->setCurrentIndex(idxft);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
                     ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
