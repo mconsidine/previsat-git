@@ -3041,7 +3041,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
 
         flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
@@ -3128,7 +3128,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure2->text() << endl << endl;
 
         // Donnees sur le satellite
@@ -3258,7 +3258,7 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl << endl;
+        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
 
         // Donnees sur le satellite
         flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;

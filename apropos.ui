@@ -116,7 +116,7 @@
      </rect>
     </property>
     <property name="text">
-     <string notr="true">Copyright © Astropedia 2005-2012</string>
+     <string notr="true">Copyright © Astropedia 2005-2013</string>
     </property>
    </widget>
    <widget class="QLabel" name="siteInternet">

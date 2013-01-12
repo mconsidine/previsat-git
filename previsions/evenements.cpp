@@ -80,7 +80,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2012" << endl << endl;
+    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl;
     ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
             arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), HEURE1, 2, 0, false, false).
