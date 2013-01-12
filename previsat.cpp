@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2012  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2013  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 decembre 2012
+ * >    12 janvier 2013
  *
  */
 
@@ -2324,8 +2324,8 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Cercle exterieur du radar
+        scene2->addEllipse(-26, -26, 252, 252, QPen(QBrush(ui->frameZone->palette().background().color()), 54));
         scene2->addEllipse(0, 0, 200, 200, QPen(QBrush(Qt::gray), 2.1));
-        scene2->addEllipse(-26, -26, 252, 252, QPen(QBrush(ui->frameZone->palette().background().color()), 51));
         ui->radar->setScene(scene2);
     } else {
         ui->coordGeo1->setVisible(false);
