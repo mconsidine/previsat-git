@@ -404,6 +404,8 @@ void PreviSat::ChargementConfig()
     else
         ui->unitesMi->setChecked(true);
 
+    if (settings.value("fichier/sauvegarde").toString().isEmpty())
+        settings.setValue("fichier/sauvegarde", dirOut);
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
     settings.setValue("affichage/flagIntensiteVision", false);
