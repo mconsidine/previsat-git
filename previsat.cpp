@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 janvier 2013
+ * >    19 janvier 2013
  *
  */
 
@@ -117,6 +117,8 @@ static QStringList ficTLE;
 static QStringList ficTLEIri;
 static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
+
+static QString ficRes;
 
 // Date courante
 static Date dateCourante;
@@ -289,8 +291,7 @@ void PreviSat::ChargementConfig()
         exit(1);
     }
 
-    QStringList listeDir;
-    listeDir << dirMap << dirOut << dirTle << dirTmp;
+    const QStringList listeDir(QStringList () << dirMap << dirOut << dirTle << dirTmp);
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
@@ -298,9 +299,9 @@ void PreviSat::ChargementConfig()
     }
 
     // Verification de la presence des fichiers du repertoire data
-    QStringList ficdata;
-    ficdata << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" << "donnees.sat" <<
-               "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts";
+    const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" <<
+                              "constlines.cst" << "donnees.sat" << "etoiles.str" << "gestionnaireTLE.gst" <<
+                              "iridium.sts");
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
@@ -768,10 +769,9 @@ void PreviSat::DemarrageApplication()
 QString PreviSat::DeterminationLocale()
 {
     /* Declarations des variables locales */
-    QStringList filtre;
 
     /* Initialisations */
-    filtre << "PreviSat_*.qm";
+    const QStringList filtre(QStringList () << "PreviSat_*.qm");
 
     /* Corps de la methode */
     QDir di(QCoreApplication::applicationDirPath());
@@ -874,11 +874,10 @@ void PreviSat::InitFicObs(const bool alarm) const
 void PreviSat::InitFicMap(const bool majAff) const
 {
     /* Declarations des variables locales */
-    QStringList filtres;
 
     /* Initialisations */
     const QDir di(dirMap);
-    filtres << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png";
+    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
 
     /* Corps de la methode */
     ui->listeMap->clear();
@@ -912,12 +911,11 @@ void PreviSat::InitFicMap(const bool majAff) const
 void PreviSat::InitFicTLE() const
 {
     /* Declarations des variables locales */
-    QStringList filtres;
 
     /* Initialisations */
     bool aNomficTrouve = false;
     const QDir di(dirTle);
-    filtres << "*.txt" << "*.tle" << "*";
+    const QStringList filtres(QStringList () << "*.txt" << "*.tle" << "*");
 
     /* Corps de la methode */
     try {
@@ -3683,7 +3681,7 @@ void PreviSat::CalculsTermines()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QFileInfo fi(dirTmp + QDir::separator() + "prevision.txt");
+    const QFileInfo fi(ficRes);
     switch (threadCalculs->getTypeCalcul()) {
     case ThreadCalculs::PREVISION:
         ui->annulerPrev->setVisible(false);
@@ -3867,8 +3865,7 @@ void PreviSat::FinEnregistrementFichier()
                     const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
 
                     const QString httpDirDat = "http://astropedia.free.fr/previsat/Qt/data/";
-                    QStringList fichiers;
-                    fichiers << "donnees.sat" << "iridium.sts";
+                    const QStringList fichiers(QStringList () << "donnees.sat" << "iridium.sts");
                     dirDwn = dirDat;
 
                     for(int i=0; i<fichiers.size(); i++) {
@@ -4154,13 +4151,18 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         // Capture de la fenetre
         chronometre->stop();
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
-        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString(),
+        const QString nomFicDefaut = "previsat_" +
+                dateCourante.ToShortDate(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
+                ui->tuc->text().remove(" ").remove(":");
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"),
+                                                         settings.value("fichier/sauvegarde", dirOut).toString() + QDir::separator() + nomFicDefaut,
                                                          tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
-        if (!fic.isEmpty())
+        if (!fic.isEmpty()) {
             image.save(fic);
+            const QFileInfo fi(fic);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
         chronometre->start();
-        const QFileInfo fi(fic);
-        settings.setValue("fichier/sauvegarde", fi.absolutePath());
 
     } else if (event->key() == Qt::Key_F10) {
 
@@ -4898,7 +4900,12 @@ void PreviSat::on_actionEnregistrer_activated()
 
     /* Corps de la methode */
     if (ui->actionEnregistrer->isVisible() && ui->onglets->currentIndex() < 3) {
-        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), settings.value("fichier/sauvegarde", dirOut).toString(),
+
+        const QStringList listeNoms(QStringList() << tr("onglet_general") << tr("onglet_elements") <<
+                                    tr("onglet_informations"));
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
+                                                             settings.value("fichier/sauvegarde", dirOut).toString() +
+                                                             QDir::separator() + listeNoms.at(ui->onglets->currentIndex()) + ".txt",
                                                              tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
         if (!fichier.isEmpty()) {
             switch (ui->onglets->currentIndex()) {
@@ -4919,7 +4926,7 @@ void PreviSat::on_actionEnregistrer_activated()
             }
 
             const QFileInfo fi(fichier);
-            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+            settings.setValue("fichier/sauvegarde", fi.absoluteFilePath());
         }
     }
 
@@ -6874,8 +6881,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
             fic = QDir::convertSeparators(fi.absoluteFilePath());
         }
 
-        QStringList listeFic;
-        listeFic << ui->fichierAMettreAJour->text() << fic;
+        const QStringList listeFic(QStringList () << ui->fichierAMettreAJour->text() << fic);
         foreach(QString file, listeFic) {
             fi = QFileInfo(file);
             if (!fi.exists()) {
@@ -7466,8 +7472,10 @@ void PreviSat::on_calculsPrev_clicked()
         }
 
         // Nom du fichier resultat
-        const QString out = dirTmp + QDir::separator() + "prevision.txt";
-        QFile fi(out);
+        ficRes = dirTmp + QDir::separator() + tr("previsions") + "_" +
+                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+
+        QFile fi(ficRes);
         if (fi.exists())
             fi.remove();
         QDir di(dirTmp);
@@ -7484,7 +7492,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecl, ext, crep, haut, pas0, dtu, jj1, jj2, mag, nomfic, out, unite, listeSat);
+        const Conditions conditions(ecl, ext, crep, haut, pas0, dtu, jj1, jj2, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -7514,7 +7522,7 @@ void PreviSat::on_annulerPrev_clicked()
     ui->annulerPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
-    QFile fi(dirTmp + QDir::separator() + "prevision.txt");
+    QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
 
@@ -7531,7 +7539,7 @@ void PreviSat::on_afficherPrev_clicked()
     /* Corps de la methode */
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
-    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->show(ficRes);
 
     /* Retour */
     return;
@@ -7738,8 +7746,10 @@ void PreviSat::on_calculsIri_clicked()
         const bool ext = ui->extinctionAtmospherique->isChecked();
 
         // Nom du fichier resultat
-        const QString out = dirTmp + QDir::separator() + "prevision.txt";
-        QFile fi2(out);
+        ficRes = dirTmp + QDir::separator() + tr("iridiums") + "_" +
+                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+
+        QFile fi2(ficRes);
         if (fi2.exists())
             fi2.remove();
         QDir di(dirTmp);
@@ -7800,8 +7810,8 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(), out,
-                                    unite, tabStsIri, tabtle2);
+        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(),
+                                    ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::IRIDIUM, conditions, obser);
@@ -7831,7 +7841,7 @@ void PreviSat::on_annulerIri_clicked()
     ui->annulerIri->setVisible(false);
     ui->afficherIri->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des flashs Iridium"));
-    QFile fi(dirTmp + QDir::separator() + "prevision.txt");
+    QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
 
@@ -7848,7 +7858,7 @@ void PreviSat::on_afficherIri_clicked()
     /* Corps de la methode */
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
-    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->show(ficRes);
     afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
 
     /* Retour */
@@ -7992,8 +8002,10 @@ void PreviSat::on_calculsEvt_clicked()
         }
 
         // Nom du fichier resultat
-        const QString out = dirTmp + QDir::separator() + "prevision.txt";
-        QFile fi2(out);
+        ficRes = dirTmp + QDir::separator() + tr("evenements") + "_" +
+                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+
+        QFile fi2(ficRes);
         if (fi2.exists())
             fi2.remove();
         QDir di(dirTmp);
@@ -8010,7 +8022,8 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, dtu, jj1, jj2, nomfic, out, unite, listeSat);
+        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, dtu, jj1, jj2, nomfic, ficRes, unite,
+                                    listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -8039,7 +8052,7 @@ void PreviSat::on_annulerEvt_clicked()
     ui->annulerEvt->setVisible(false);
     ui->afficherEvt->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des évènements orbitaux"));
-    QFile fi(dirTmp + QDir::separator() + "prevision.txt");
+    QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
 
@@ -8056,7 +8069,7 @@ void PreviSat::on_afficherEvt_clicked()
     /* Corps de la methode */
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
-    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->show(ficRes);
 
     /* Retour */
     return;
@@ -8218,8 +8231,10 @@ void PreviSat::on_calculsTransit_clicked()
         const bool calcLune = ui->luneTransit->isChecked();
 
         // Nom du fichier resultat
-        const QString out = dirTmp + QDir::separator() + "prevision.txt";
-        QFile fi2(out);
+        ficRes = dirTmp + QDir::separator() + tr("transits") + "_" +
+                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+
+        QFile fi2(ficRes);
         if (fi2.exists())
             fi2.remove();
         QDir di(dirTmp);
@@ -8258,7 +8273,8 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, dtu, jj1, jj2, fi.absoluteFilePath(), out, unite);
+        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, dtu, jj1, jj2, fi.absoluteFilePath(), ficRes,
+                                    unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::TRANSITS, conditions, obser);
@@ -8289,7 +8305,7 @@ void PreviSat::on_annulerTransit_clicked()
     ui->annulerTransit->setVisible(false);
     ui->afficherTransit->setVisible(false);
     messagesStatut->setText(tr("Annulation du calcul des transits ISS"));
-    QFile fi(dirTmp + QDir::separator() + "prevision.txt");
+    QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
 
@@ -8306,7 +8322,7 @@ void PreviSat::on_afficherTransit_clicked()
     /* Corps de la methode */
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Transits ISS"));
-    afficherResultats->show(dirTmp + QDir::separator() + "prevision.txt");
+    afficherResultats->show(ficRes);
     afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
 
     /* Retour */

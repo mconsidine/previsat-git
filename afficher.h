@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    19 janvier 2013
  *
  */
 
@@ -57,6 +57,7 @@ public:
 
 private:
     Ui::Afficher *ui;
+    QString _fichier;
 
 private slots:
     void closeEvent(QCloseEvent *);

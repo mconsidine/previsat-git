@@ -36,14 +36,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    19 janvier 2013
  *
  */
 
 #include <QFile>
 #include <QTime>
 #include <QTextStream>
-#include <QStringList>
 #include "prevision.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/satellite/tle.h"
