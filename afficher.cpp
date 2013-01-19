@@ -94,6 +94,7 @@ Afficher::Afficher(QWidget *parent) :
                             QCoreApplication::applicationName()).toString();
 #endif
 
+    dirOut = QDir::convertSeparators(dirOut);
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 }
 
@@ -131,7 +132,7 @@ void Afficher::on_actionEnregistrer_activated()
 {
     const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
     const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                         dirOut + QDir::separator() + nomFicDefaut,
+                                                         dirOut.replace(QDir::separator(), "\\") + QDir::separator() + nomFicDefaut,
                                                          tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
