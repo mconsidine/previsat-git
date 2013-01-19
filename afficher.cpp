@@ -130,9 +130,14 @@ void Afficher::resizeEvent(QResizeEvent *event)
 
 void Afficher::on_actionEnregistrer_activated()
 {
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = dirOut.replace(QDir::separator(), "\\");
+#else
+    const QString nomRepDefaut = dirOut;
+#endif
     const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
     const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                         dirOut.replace(QDir::separator(), "\\") + QDir::separator() + nomFicDefaut,
+                                                         nomRepDefaut + QDir::separator() + nomFicDefaut,
                                                          tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
