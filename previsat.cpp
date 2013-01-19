@@ -273,6 +273,7 @@ void PreviSat::ChargementConfig()
     dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
 #endif
 
+    dirOut = QDir::convertSeparators(dirOut);
     dirTle = QDir::convertSeparators(dirTle);
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
@@ -4155,7 +4156,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
                 dateCourante.ToShortDate(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"),
-                                                         settings.value("fichier/sauvegarde", dirOut).toString() + QDir::separator() + nomFicDefaut,
+                                                         settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\") + QDir::separator() + nomFicDefaut,
                                                          tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
         if (!fic.isEmpty()) {
             image.save(fic);
@@ -4903,8 +4904,9 @@ void PreviSat::on_actionEnregistrer_activated()
 
         const QStringList listeNoms(QStringList() << tr("onglet_general") << tr("onglet_elements") <<
                                     tr("onglet_informations"));
+
         const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                             settings.value("fichier/sauvegarde", dirOut).toString() +
+                                                             settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\") +
                                                              QDir::separator() + listeNoms.at(ui->onglets->currentIndex()) + ".txt",
                                                              tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
         if (!fichier.isEmpty()) {
@@ -4926,7 +4928,7 @@ void PreviSat::on_actionEnregistrer_activated()
             }
 
             const QFileInfo fi(fichier);
-            settings.setValue("fichier/sauvegarde", fi.absoluteFilePath());
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
         }
     }
 
@@ -5230,7 +5232,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     listeSat.sort();
 
     /* Corps de la methode */
-    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString(),
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\"),
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
     QFile fichier(fic);
@@ -7022,7 +7024,7 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
 
     /* Corps de la methode */
     QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                   settings.value("fichier/sauvegarde", dirOut).toString(),
+                                                   settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\"),
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
