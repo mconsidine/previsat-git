@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    19 janvier 2013
  *
  */
 
@@ -104,7 +104,8 @@ Afficher::~Afficher()
 
 void Afficher::show(const QString &fic)
 {
-    QFile fi(fic);
+    _fichier = fic;
+    QFile fi(_fichier);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
 #if defined (Q_OS_WIN)
     prev = fi.readAll();
@@ -128,14 +129,16 @@ void Afficher::resizeEvent(QResizeEvent *event)
 
 void Afficher::on_actionEnregistrer_activated()
 {
-    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirOut,
-                                                   tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
+    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
+                                                         dirOut + QDir::separator() + nomFicDefaut,
+                                                         tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
         if (fi.exists())
             fi.remove();
 
-        QFile fi2(dirTmp + QDir::separator() + "prevision.txt");
+        QFile fi2(_fichier);
         fi2.copy(fi.fileName());
         QFileInfo fi3(fichier);
         settings.setValue("fichier/sauvegarde", fi3.absolutePath());
