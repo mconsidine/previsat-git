@@ -4154,11 +4154,16 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         // Capture de la fenetre
         chronometre->stop();
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
-        const QString nomFicDefaut = "previsat_" +
+#if defined (Q_OS_WIN)
+        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+#else
+        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+#endif
+        const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "previsat_" +
                 dateCourante.ToShortDate(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
-        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"),
-                                                         settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\") + QDir::separator() + nomFicDefaut,
+
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
                                                          tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
         if (!fic.isEmpty()) {
             image.save(fic);
@@ -4907,9 +4912,14 @@ void PreviSat::on_actionEnregistrer_activated()
         const QStringList listeNoms(QStringList() << tr("onglet_general") << tr("onglet_elements") <<
                                     tr("onglet_informations"));
 
-        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                             settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\") +
-                                                             QDir::separator() + listeNoms.at(ui->onglets->currentIndex()) + ".txt",
+#if defined (Q_OS_WIN)
+        const QString nomFicDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\") +
+                QDir::separator() + listeNoms.at(ui->onglets->currentIndex()) + ".txt";
+#else
+        const QString nomFicDefaut = settings.value("fichier/sauvegarde", dirOut).toString() +
+                QDir::separator() + listeNoms.at(ui->onglets->currentIndex()) + ".txt";
+#endif
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
                                                              tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
         if (!fichier.isEmpty()) {
             switch (ui->onglets->currentIndex()) {
@@ -5234,7 +5244,12 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     listeSat.sort();
 
     /* Corps de la methode */
-    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\"),
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+#else
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+#endif
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomRepDefaut,
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
     QFile fichier(fic);
@@ -7025,8 +7040,12 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                   settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\"),
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+#else
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+#endif
+    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut,
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
