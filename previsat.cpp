@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 janvier 2013
+ * >    26 janvier 2013
  *
  */
 
@@ -7496,7 +7496,8 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Nom du fichier resultat
         ficRes = dirTmp + QDir::separator() + tr("previsions") + "_" +
-                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
+                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
 
         QFile fi(ficRes);
         if (fi.exists())
@@ -7770,7 +7771,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Nom du fichier resultat
         ficRes = dirTmp + QDir::separator() + tr("iridiums") + "_" +
-                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
+                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8026,7 +8028,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Nom du fichier resultat
         ficRes = dirTmp + QDir::separator() + tr("evenements") + "_" +
-                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
+                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8255,7 +8258,8 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Nom du fichier resultat
         ficRes = dirTmp + QDir::separator() + tr("transits") + "_" +
-                dateCourante.ToShortDate(COURT).remove("/").split(" ").at(0) + ".txt";
+                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
+                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
 
         QFile fi2(ficRes);
         if (fi2.exists())
