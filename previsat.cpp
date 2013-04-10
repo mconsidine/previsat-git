@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 janvier 2013
+ * >    10 avril 2013
  *
  */
 
@@ -1627,6 +1627,7 @@ void PreviSat::AffichageCourbes() const
             bru = QBrush(QColor::fromRgb(red, green, blue));
         }
     }
+
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
     QPen crayon(Qt::white);
@@ -1898,11 +1899,11 @@ void PreviSat::AffichageCourbes() const
                     if (!satellites.at(isat).isIeralt()) {
 
                         int lsat1 = qRound(satellites.at(isat).getZone().at(0).x() * DEG2PXHZ);
-                        int bsat1 = qRound(satellites.at(isat).getZone().at(0).y() * DEG2PXVT);
+                        int bsat1 = qRound(satellites.at(isat).getZone().at(0).y() * DEG2PXVT + 1);
 
                         for(int j=1; j<361; j++) {
                             int lsat2 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                            int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
+                            int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1);
                             int ils = 99999;
 
                             if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -1922,7 +1923,7 @@ void PreviSat::AffichageCourbes() const
                                 ils = 0;
                             }
                             lsat1 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                            bsat1 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT);
+                            bsat1 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1);
                         }
                     }
                 }
@@ -2067,7 +2068,7 @@ void PreviSat::AffichageCourbes() const
 
                                 txtStr->setBrush(bru2);
                                 txtStr->setPos(xnstr, ynstr);
-                                txtStr->setFont(QFont(PreviSat::font().family(), 7));
+                                txtStr->setScale(0.8);
                                 scene3->addItem(txtStr);
                             }
                         }
@@ -2105,7 +2106,7 @@ void PreviSat::AffichageCourbes() const
 
                         txtPla->setBrush(bru3);
                         txtPla->setPos(xnpla, ynpla);
-                        txtPla->setFont(QFont(PreviSat::font().family(), 7));
+                        txtPla->setScale(0.8);
                         scene3->addItem(txtPla);
                     }
                 }
@@ -6437,7 +6438,8 @@ void PreviSat::on_validerObs_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString nomlieu = ui->nvLieu->text().trimmed();
+    QString nomlieu = ui->nvLieu->text().trimmed();
+    nomlieu[0] = nomlieu.at(0).toUpper();
     try {
         if (nomlieu.isEmpty()) {
             throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spécifié"), WARNING);
