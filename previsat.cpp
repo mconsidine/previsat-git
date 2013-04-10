@@ -2054,8 +2054,8 @@ void PreviSat::AffichageCourbes() const
                 // Nom des etoiles les plus brillantes
                 if (ui->affetoiles->isChecked()) {
                     if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-                        if (etoile.getMagnitude() < ui->magnitudeEtoiles->value() - 1.9) {
-                            if (!etoile.getNom().isEmpty() && etoile.getNom().at(0).isUpper()) {
+                        if (!etoile.getNom().isEmpty() && etoile.getNom().at(0).isUpper()) {
+                            if (etoile.getMagnitude() < ui->magnitudeEtoiles->value() - 1.9) {
 
                                 const int lst = lstr - lciel;
                                 const int bst = hciel - bstr;
@@ -2068,7 +2068,8 @@ void PreviSat::AffichageCourbes() const
 
                                 txtStr->setBrush(bru2);
                                 txtStr->setPos(xnstr, ynstr);
-                                txtStr->setScale(0.8);
+                                txtStr->setFont(PreviSat::font());
+                                txtStr->setScale(0.9);
                                 scene3->addItem(txtStr);
                             }
                         }
@@ -2106,7 +2107,8 @@ void PreviSat::AffichageCourbes() const
 
                         txtPla->setBrush(bru3);
                         txtPla->setPos(xnpla, ynpla);
-                        txtPla->setScale(0.8);
+                        txtPla->setFont(PreviSat::font());
+                        txtPla->setScale(0.9);
                         scene3->addItem(txtPla);
                     }
                 }
