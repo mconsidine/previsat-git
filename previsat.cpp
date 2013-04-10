@@ -3308,7 +3308,6 @@ void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr
     /* Declarations des variables locales */
 
     /* Initialisations */
-    ui->compteRenduMaj->clear();
 
     /* Corps de la methode */
     const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
@@ -6870,6 +6869,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
     /* Corps de la methode */
     messagesStatut->setText("");
+    ui->compteRenduMaj->clear();
     ui->compteRenduMaj->setVisible(false);
 
     try {
