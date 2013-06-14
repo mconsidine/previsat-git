@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    14 juin 2013
  *
  */
 
@@ -140,7 +140,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur)
 /*
  * Calcul des coordonnees horizontales
  */
-void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc)
+void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, const bool arefr)
 {
     /* Declarations des variables locales */
 
@@ -164,7 +164,8 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc)
         _visible = true;
     } else {
         _visible = false;
-        _hauteur = ht;
+        if (!arefr)
+            _hauteur = ht;
     }
 
     if (acalc) {

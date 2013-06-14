@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    15 juin 2013
  *
  */
 
@@ -636,7 +636,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
                             const bool itransit, const double seuilConjonction, double &dateInter)
 {
     /* Declarations des variables locales */
-    double rayon, dist;
+    double dist;
     double angle[3];
     Corps corps;
     Soleil soleil;
@@ -670,6 +670,8 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
     }
 
     if (itransit) {
+    
+        double rayon;
         if (typeCorps == 1)
             rayon = RAYON_SOLAIRE;
         if (typeCorps == 2)
