@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 avril 2013
+ * >    14 juin 2013
  *
  */
 
@@ -101,11 +101,16 @@ static bool htr;
 static bool info;
 static bool notif;
 static bool old;
+static bool acalcAOS;
+static bool isAOS;
 static int ind;
 static int idxf;
 static int idxfi;
 static int idxft;
 static int nbSat;
+static double azimAOS;
+static double htSat;
+static QString ctypeAOS;
 static QString nomfic;
 static QString ficgz;
 static QString nor;
@@ -124,6 +129,7 @@ static QString ficRes;
 static Date dateCourante;
 static double offsetUTC;
 static QDateTime tim;
+static Date dateAOS;
 
 // Lieux d'observation
 static int selec;
@@ -239,6 +245,8 @@ void PreviSat::ChargementConfig()
 
     /* Initialisations */
     info = true;
+    acalcAOS = true;
+    htSat = 0.;
     old = false;
     selec = -1;
     selec2 = 0;
@@ -428,6 +436,9 @@ void PreviSat::ChargementConfig()
     ui->utcManuel2->setVisible(false);
     ui->frameSimu->setVisible(false);
     ui->pause->setEnabled(false);
+
+    ui->lbl_prochainAOS->setVisible(false);
+    ui->dateAOS->setVisible(false);
 
     QPalette pal;
     const QBrush coulLabel = QBrush(QColor::fromRgb(227, 227, 227));
@@ -916,12 +927,13 @@ void PreviSat::InitFicTLE() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool aNomficTrouve = false;
-    const QDir di(dirTle);
-    const QStringList filtres(QStringList () << "*.txt" << "*.tle" << "*");
 
     /* Corps de la methode */
     try {
+        bool aNomficTrouve = false;
+        const QDir di(dirTle);
+        const QStringList filtres(QStringList () << "*.txt" << "*.tle" << "*");
+
         ficTLE.clear();
         ui->listeFichiersTLE->clear();
         if (di.entryList(filtres, QDir::Files).count() != 0) {
@@ -1037,6 +1049,20 @@ void PreviSat::AffichageDonnees()
         }
         ui->dateHeure1->setText(chaine);
         ui->dateHeure2->setText(chaine);
+
+        // Conditions d'observation
+        const double ht = soleil.getHauteur() * RAD2DEG;
+        if (ht >= 0.)
+            chaine = tr("Jour");
+        else if (ht >= -6.)
+            chaine = tr("Crépuscule civil");
+        else if (ht >= -12.)
+            chaine = tr("Crépuscule nautique");
+        else if (ht >= -18.)
+            chaine = tr("Crépuscule astronomique");
+        else
+            chaine = tr("Nuit");
+        ui->conditionsObservation->setText(chaine);
 
 
         /*
@@ -1172,23 +1198,48 @@ void PreviSat::AffichageDonnees()
                 }
             }
 
-            // Conditions d'observation
-            const double ht = soleil.getHauteur() * RAD2DEG;
-            if (ht >= 0.)
-                chaine = tr("Jour");
-            else if (ht >= -6.)
-                chaine = tr("Crépuscule civil");
-            else if (ht >= -12.)
-                chaine = tr("Crépuscule nautique");
-            else if (ht >= -18.)
-                chaine = tr("Crépuscule astronomique");
-            else
-                chaine = tr("Nuit");
-            ui->conditionsObservation->setText(chaine);
-
             // Nombre d'orbites du satellite
             chaine = "%1";
             ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).getNbOrbites()));
+
+            // Prochain AOS/LOS
+            if (htSat * satellites.at(0).getHauteur() <= 0.)
+                acalcAOS = true;
+
+            if (acalcAOS) {
+                isAOS = CalculAOS();
+                htSat = satellites.at(0).getHauteur();
+            }
+            if (isAOS) {
+
+                // Type d'evenement
+                chaine = tr("Prochain %1 :");
+                ui->lbl_prochainAOS->setText(chaine.arg(ctypeAOS));
+
+                // Delai de l'evenement
+                chaine = tr("%1 (dans %2min %3s). Azimut : %4");
+                const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
+                double delaiAOS = (dateAOS.getJourJulienUTC() - dateCrt.getJourJulienUTC()) * NB_MIN_PAR_JOUR;
+
+                if (delaiAOS > NB_MIN_PAR_HEUR) {
+                    delaiAOS *= NB_HEUR_PAR_MIN;
+                    chaine = tr("%1 (dans %2h %3min). Azimut : %4");
+                }
+
+                const int ent = (int) delaiAOS;
+                const int frc = (int) (qRound(NB_MIN_PAR_HEUR * (delaiAOS - ent)));
+
+                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT)).arg(ent, 2, 10, QChar('0')).
+                                     arg(frc, 2, 10, QChar('0')).
+                                     arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
+
+                ui->lbl_prochainAOS->setVisible(true);
+                ui->dateAOS->setVisible(true);
+
+            } else {
+                ui->lbl_prochainAOS->setVisible(false);
+                ui->dateAOS->setVisible(false);
+            }
         }
 
 
@@ -2577,6 +2628,123 @@ void PreviSat::CalculsAffichage()
  **********/
 
 /*
+ * Calcul du prochain AOS/LOS
+ */
+bool PreviSat::CalculAOS() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool res = false;
+    ctypeAOS = tr("AOS");
+    Satellite sat = satellites.at(0);
+    Observateur obs = observateurs.at(0);
+
+    /* Corps de la methode */
+    // Determination s'il y a possibilite d'AOS/LOS pour le satellite
+    double incl = sat.getTle().getInclo() * DEG2RAD;
+    if (incl >= PI_SUR_DEUX)
+        incl = PI - incl;
+    res = (incl + acos(RAYON_TERRESTRE / sat.getElements().getApogee())
+           > fabs(obs.getLatitude()) && fabs(sat.getTle().getNo() - 1.0027) > 2.e-4);
+
+    if (res) {
+
+        // Calcul du prochain AOS ou LOS
+        double jjm[3], ht[3];
+        double periode = NB_JOUR_PAR_MIN;
+        if (sat.getHauteur() >= 0.)
+            ctypeAOS = tr("LOS");
+
+        double tAOS = 0.;
+        double t_ht = dateCourante.getJourJulienUTC();
+
+        bool afin = false;
+        int iter = 0;
+        while (!afin) {
+
+            jjm[0] = t_ht;
+            jjm[1] = jjm[0] + 0.5 * periode;
+            jjm[2] = jjm[0] + periode;
+
+            for(int i=0; i<3; i++) {
+
+                const Date date = Date(jjm[i], 0., false);
+
+                obs.CalculPosVit(date);
+
+                sat.CalculPosVit(date);
+                sat.CalculCoordHoriz(obs, false, false);
+                ht[i] = sat.getHauteur();
+            }
+
+            const bool atst1 = ht[0] * ht[1] < 0.;
+            const bool atst2 = ht[1] * ht[2] < 0.;
+            if (atst1 || atst2) {
+
+                t_ht = (atst1) ? jjm[1] : jjm[2];
+
+                if (ctypeAOS == tr("AOS")) {
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht - 0.5 * periode;
+                    jjm[2] = t_ht;
+                } else {
+                    jjm[0] = t_ht;
+                    jjm[1] = t_ht + 0.5 * periode;
+                    jjm[2] = t_ht + periode;
+                }
+
+                while (fabs(tAOS - t_ht) > EPS_DATES) {
+
+                    tAOS = t_ht;
+
+                    for(int i=0; i<3; i++) {
+
+                        const Date date = Date(jjm[i], 0., false);
+
+                        obs.CalculPosVit(date);
+
+                        // Position du satellite
+                        sat.CalculPosVit(date);
+                        sat.CalculCoordHoriz(obs, true, false);
+                        ht[i] = sat.getHauteur();
+                    }
+
+                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
+                    periode *= 0.5;
+
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht;
+                    jjm[2] = t_ht + periode;
+                }
+                dateAOS = Date(tAOS + offsetUTC, offsetUTC);
+                obs.CalculPosVit(dateAOS);
+
+                // Position du satellite
+                sat.CalculPosVit(dateAOS);
+                sat.CalculCoordHoriz(obs, true, false);
+                azimAOS = sat.getAzimut();
+                afin = true;
+            } else {
+                t_ht += periode;
+                iter++;
+
+                if (iter > 50000) {
+                    afin = true;
+                    res = false;
+                }
+            }
+        }
+    }
+
+    acalcAOS = false;
+
+    /* Retour */
+    return (res);
+}
+
+
+/*
  * Enchainement des calculs
  */
 void PreviSat::EnchainementCalculs() const
@@ -2857,16 +3025,18 @@ void PreviSat::VerifAgeTLE()
 void PreviSat::OuvertureFichierTLE(const QString &fichier)
 {
     /* Declarations des variables locales */
-    int nsat;
 
     /* Initialisations */
-    bool agz = false;
-    old = false;
-    QString fich = fichier;
-    ficgz = "";
 
     /* Corps de la methode */
     try {
+
+        int nsat;
+        bool agz = false;
+        old = false;
+        QString fich = fichier;
+        ficgz = "";
+
         QFileInfo fi(fich);
         if (fi.suffix() == "gz") {
 
@@ -2949,6 +3119,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 }
 
                 info = true;
+                acalcAOS = true;
 
                 EcritureListeRegistre();
 
@@ -3049,8 +3220,10 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
 
         flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
-        QString chaine = tr("Longitude : %1\tLatitude : %2\tAltitude : %3");
-        flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl << endl << endl;
+        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3");
+        flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl;
+        chaine = tr("Conditions : %1");
+        flux << chaine.arg(ui->conditionsObservation->text()) << endl << endl << endl;
 
         if (ui->onglets->count() == 7) {
 
@@ -3073,12 +3246,13 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
             chaine = tr("Direction          : %1  \t%2");
             flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
 
-            chaine = tr("Vitesse orbitale   : %1%2  \tConditions d'observation : %3");
+            chaine = tr("Vitesse orbitale   : %1%2  \tOrbite n°%3");
             flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
-                    .arg(ui->conditionsObservation->text()) << endl;
+                    .arg(ui->nbOrbitesSat->text()) << endl;
 
-            chaine = tr("Variation distance : %1  \tOrbite n°%2");
-            flux << chaine.arg(ui->rangeRate->text()).arg(ui->nbOrbitesSat->text()) << endl << endl << endl;
+            chaine = tr("Variation distance : %1  \t%2 %3");
+            flux << chaine.arg(ui->rangeRate->text()).arg(ui->lbl_prochainAOS->text()).arg(ui->dateAOS->text())
+                 << endl << endl << endl;
         }
 
         // Donnees sur le Soleil
@@ -3384,6 +3558,7 @@ void PreviSat::ModificationOption()
 
     if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus()) {
         info = true;
+        acalcAOS = true;
         AffichageLieuObs();
         ui->lieuxObs->setCurrentRow(-1);
         ui->selecLieux->setCurrentRow(-1);
@@ -3800,12 +3975,13 @@ void PreviSat::FinEnregistrementFichier()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool atr = false;
-    bool aup = false;
-    ficDwn.close();
 
     /* Corps de la methode */
     try {
+        bool atr = false;
+        bool aup = false;
+        ficDwn.close();
+
         QFile fd(ficDwn.fileName());
         fd.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flx(&fd);
@@ -3844,8 +4020,12 @@ void PreviSat::FinEnregistrementFichier()
                         // Recuperation des TLE de la liste
                         TLE::LectureFichier(nomfic, liste, tles);
 
+                        info = true;
+                        acalcAOS = true;
                         Satellite::initCalcul = false;
                         Satellite::LectureDonnees(liste, tles, satellites);
+
+                        AfficherListeSatellites(nomfic, liste);
 
                         CalculsAffichage();
                     }
@@ -3929,8 +4109,12 @@ void PreviSat::FinEnregistrementFichier()
                         // Recuperation des TLE de la liste
                         TLE::LectureFichier(nomfic, liste, tles);
 
+                        info = true;
+                        acalcAOS = true;
                         Satellite::initCalcul = false;
                         Satellite::LectureDonnees(liste, tles, satellites);
+
+                        AfficherListeSatellites(nomfic, liste);
 
                         CalculsAffichage();
                     }
@@ -4275,6 +4459,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                     EcritureListeRegistre();
 
                     info = true;
+                    acalcAOS = true;
 
                     CalculsAffichage();
                 }
@@ -4324,6 +4509,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                         EcritureListeRegistre();
 
                         info = true;
+                        acalcAOS = true;
 
                         CalculsAffichage();
                     }
@@ -4371,6 +4557,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                         EcritureListeRegistre();
 
                         info = true;
+                        acalcAOS = true;
 
                         CalculsAffichage();
                     }
@@ -5231,6 +5418,7 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
     EcritureListeRegistre();
 
     info = true;
+    acalcAOS = true;
 
     CalculsAffichage();
 
@@ -5287,11 +5475,12 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
-                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
-
     try {
-        bool atrouve2;
+    
+        const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
+                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+
+
         // Verification que le fichier est un TLE
         int nsat = TLE::VerifieFichier(fic, true);
 
@@ -5307,7 +5496,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         QTextStream flux(&fichier);
 
         for(int i=0; i<liste.size(); i++) {
-            atrouve2 = false;
+            bool atrouve2 = false;
             for(int j=0; j<nsat; j++) {
                 if (liste.at(i) == tabtle.at(j).getNorad()) {
                     atrouve2 = true;
@@ -5425,6 +5614,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
 
         Satellite::initCalcul = false;
         info = true;
+        acalcAOS = true;
 
         // Ecriture des cles de registre
         EcritureListeRegistre();
@@ -5538,6 +5728,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     /* Corps de la methode */
     if (checked) {
 
+        htSat = 0.;
         if (tim.isValid()) {
 
             // Date actuelle
@@ -5593,6 +5784,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->utcManuel2->setVisible(true);
         ui->frameSimu->setVisible(true);
         ui->pasManuel->setFocus();
+        htSat = 0.;
     }
 
     /* Retour */

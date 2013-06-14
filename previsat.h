@@ -83,6 +83,7 @@ private:
     void CalculsAffichage();
 
     // Calculs
+    bool CalculAOS() const;
     void EnchainementCalculs() const;
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);

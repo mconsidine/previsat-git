@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    14 juin 2013
  *
  */
 
@@ -69,6 +69,7 @@ static const double NB_JOUR_PAR_MIN = 1. / NB_MIN_PAR_JOUR;
 static const double NB_JOUR_PAR_SEC = 1. / NB_SEC_PAR_JOUR;
 
 static const double NB_MIN_PAR_SEC = 1. / NB_SEC_PAR_MIN;
+static const double NB_HEUR_PAR_MIN = 1. / NB_MIN_PAR_HEUR;
 static const double NB_HEUR_PAR_SEC = 1. / NB_SEC_PAR_HEUR;
 
 static const double NB_ANJ_PAR_JOURS = 1. / NB_JOURS_PAR_ANJ;
