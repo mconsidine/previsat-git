@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 septembre 2012
+ * >    15 juin 2013
  *
  */
 
@@ -103,18 +103,21 @@ Satellite::~Satellite()
 void Satellite::CalculPosVit(const Date &date)
 {
     /* Declarations des variables locales */
-    int ktr;
-    double coseo1, cosip, eo1, sineo1, sinip, tem5, temp, tempa, tempe, templ, xlm;
 
     /* Initialisations */
-    coseo1 = 0.;
-    sineo1 = 0.;
 
     // Calcul du temps ecoule depuis l'epoque (en minutes)
     const double tsince = NB_MIN_PAR_JOUR * (date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC());
 
     /* Corps de la methode */
     try {
+
+        int ktr;
+        double coseo1, cosip, eo1, sineo1, sinip, tem5, temp, tempa, tempe, templ, xlm;
+
+        coseo1 = 0.;
+        sineo1 = 0.;
+
         _sat.t = tsince;
 
         // Prise en compte des termes seculaires de la gravite et du freinage atmospherique
@@ -1253,7 +1256,6 @@ void Satellite::Dspace(const double tc) {
 void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
 {
     /* Declarations des variables locales */
-    double lat, lon, phi;
     Satellite sat = Satellite(_tle);
     Soleil soleil;
 
@@ -1271,15 +1273,15 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
 
         // Longitude
         const Vecteur3D position = sat._position;
-        lon = RAD2DEG * Maths::modulo(PI + atan2(position.getY(), position.getX()) -
-                                      Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
+        double lon = RAD2DEG * Maths::modulo(PI + atan2(position.getY(), position.getX()) -
+                                             Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
         if (lon < 0.)
             lon += T360;
 
         // Latitude
         const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-        lat = atan(position.getZ() / r);
-        phi = DEUX_PI;
+        double lat = atan(position.getZ() / r);
+        double phi = DEUX_PI;
         while (fabs(lat - phi) > 1.e-7) {
             phi = lat;
             const double sph = sin(phi);

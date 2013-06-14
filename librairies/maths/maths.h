@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    15 juin 2013
  *
  */
 
@@ -62,7 +62,6 @@ public:
         double z;
 
         /* Initialisations */
-        z = x;
 
         /* Corps de la methode */
         z = fmod(x, y);

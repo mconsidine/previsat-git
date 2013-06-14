@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    15 juin 2013
  *
  */
 
@@ -114,7 +114,7 @@ Lune::~Lune()
 void Lune::CalculPosition(const Date &date)
 {
     /* Declarations des variables locales */
-    double ang1, ang2, b0, fact1, fact2, l0, r0;
+    double b0, l0, r0;
     double coef[5];
 
     /* Initialisations */
@@ -150,10 +150,10 @@ void Lune::CalculPosition(const Date &date)
     /* Corps de la methode */
     for (int i=0; i<60; i++) {
 
-        ang1 = 0.;
-        ang2 = 0.;
-        fact1 = 1.;
-        fact2 = 1.;
+        double ang1 = 0.;
+        double ang2 = 0.;
+        double fact1 = 1.;
+        double fact2 = 1.;
 
         for (int j=0; j<4; j++) {
             ang1 += coef[j] * _tabCoef1[i][j];

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2012
+ * >    15 juin 2013
  *
  */
 
@@ -88,7 +88,6 @@ LigneConstellation::~LigneConstellation()
 void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst)
 {
     /* Declarations des variables locales */
-    int ind1, ind2;
 
     /* Initialisations */
     if (!_initLig) {
@@ -99,8 +98,8 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     /* Corps de la methode */
     lignesCst.clear();
     for (int i=0; i<_tabLigCst.size(); i++) {
-        ind1 = _tabLigCst.at(i).at(0) - 1;
-        ind2 = _tabLigCst.at(i).at(1) - 1;
+        const int ind1 = _tabLigCst.at(i).at(0) - 1;
+        const int ind2 = _tabLigCst.at(i).at(1) - 1;
         lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
     }
 

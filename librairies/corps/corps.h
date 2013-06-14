@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    14 juin 2013
  *
  */
 
@@ -62,7 +62,7 @@ public:
 
     /* Methodes publiques */
     void CalculCoordEquat(const Observateur &observateur);
-    void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true);
+    void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true, const bool arefr = true);
     void CalculCoordHoriz2(const Observateur &observateur);
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
