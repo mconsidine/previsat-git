@@ -1217,20 +1217,14 @@ void PreviSat::AffichageDonnees()
                 ui->lbl_prochainAOS->setText(chaine.arg(ctypeAOS));
 
                 // Delai de l'evenement
-                chaine = tr("%1 (dans %2min %3s). Azimut : %4");
+                chaine = tr("%1 (dans %2). Azimut : %3");
                 const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
-                double delaiAOS = (dateAOS.getJourJulienUTC() - dateCrt.getJourJulienUTC()) * NB_MIN_PAR_JOUR;
+                const Date delaiAOS = Date(dateAOS.getJourJulienUTC() - dateCrt.getJourJulienUTC() - 0.5, 0.);
+                const QString cDelai = (delaiAOS.getHeure() > 0) ?
+                            delaiAOS.ToShortDate(COURT).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
+                            delaiAOS.ToShortDate(COURT).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
 
-                if (delaiAOS > NB_MIN_PAR_HEUR) {
-                    delaiAOS *= NB_HEUR_PAR_MIN;
-                    chaine = tr("%1 (dans %2h %3min). Azimut : %4");
-                }
-
-                const int ent = (int) delaiAOS;
-                const int frc = (int) (qRound(NB_MIN_PAR_HEUR * (delaiAOS - ent)));
-
-                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT)).arg(ent, 2, 10, QChar('0')).
-                                     arg(frc, 2, 10, QChar('0')).
+                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT)).arg(cDelai).
                                      arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
 
                 ui->lbl_prochainAOS->setVisible(true);
