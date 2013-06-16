@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2013
+ * >    16 juin 2013
  *
  */
 
@@ -164,7 +164,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
         _visible = true;
     } else {
         _visible = false;
-        if (!arefr)
+        if (arefr)
             _hauteur = ht;
     }
 
