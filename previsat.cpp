@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2013
+ * >    16 juin 2013
  *
  */
 
@@ -1002,8 +1002,8 @@ void PreviSat::AffichageDonnees()
     QString chaine2;
 
     /* Initialisations */
-    QString unite1 = (ui->unitesKm->isChecked()) ? QObject::tr("km") : QObject::tr("mi");
-    const QString unite2 = (ui->unitesKm->isChecked()) ? QObject::tr("km/s") : QObject::tr("mi/s");
+    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("mi/s");
 
     /* Corps de la methode */
     if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
@@ -1014,6 +1014,7 @@ void PreviSat::AffichageDonnees()
             l1 = "";
             l2 = "";
         }
+
         if (l1.isEmpty() && l2.isEmpty()) {
 
             // Cas ou aucun satellite n'est selectionne dans la liste de satellites
@@ -1091,6 +1092,7 @@ void PreviSat::AffichageDonnees()
             } else {
                 brush.setColor(QColor("forestgreen"));
             }
+
             palette.setBrush(QPalette::WindowText, brush);
             ui->ageTLE->setPalette(palette);
             ui->ageTLE->setText(chaine.arg(satellites.at(0).getAgeTLE(), 0, 'f', 2));
@@ -1212,7 +1214,7 @@ void PreviSat::AffichageDonnees()
             }
             if (isAOS) {
 
-                // Type d'evenement
+                // Type d'evenement (AOS ou LOS)
                 chaine = tr("Prochain %1 :");
                 ui->lbl_prochainAOS->setText(chaine.arg(ctypeAOS));
 
@@ -1388,7 +1390,7 @@ void PreviSat::AffichageDonnees()
                 }
 
                 // Modele orbital
-                chaine = (satellites.at(0).getMethod() == 'd') ? QObject::tr("SGP4 (DS)") : QObject::tr("SGP4 (NE)");
+                chaine = (satellites.at(0).getMethod() == 'd') ? tr("SGP4 (DS)") : tr("SGP4 (NE)");
                 ui->modele->setText(chaine);
 
                 // Dimensions du satellite
@@ -1396,27 +1398,27 @@ void PreviSat::AffichageDonnees()
                 double t2 = satellites.at(0).getT2();
                 double t3 = satellites.at(0).getT3();
                 double section = satellites.at(0).getSection();
-                unite1 = QObject::tr("m");
+                unite1 = tr("m");
                 if (ui->unitesMi->isChecked()) {
                     t1 *= PIED_PAR_METRE;
                     t2 *= PIED_PAR_METRE;
                     t3 *= PIED_PAR_METRE;
                     section = Maths::arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
-                    unite1 = QObject::tr("ft");
+                    unite1 = tr("ft");
                 }
 
                 chaine2 = "%1 " + unite1;
                 if (fabs(t2) < EPSDBL100 && fabs(t3) < EPSDBL100)
-                    chaine = QObject::tr("Sphérique. R=").append(chaine2.arg(t1, 0, 'f', 1));
+                    chaine = tr("Sphérique. R=").append(chaine2.arg(t1, 0, 'f', 1));
                 if (fabs(t2) >= EPSDBL100 && fabs(t3) < EPSDBL100)
-                    chaine = QObject::tr("Cylindrique. L=").append(chaine2.arg(t1, 0, 'f', 1)).
-                            append(QObject::tr(", R=")).append(chaine2.arg(t2, 0, 'f', 1));
+                    chaine = tr("Cylindrique. L=").append(chaine2.arg(t1, 0, 'f', 1)).
+                            append(tr(", R=")).append(chaine2.arg(t2, 0, 'f', 1));
                 if (fabs(t2) >= EPSDBL100 && fabs(t3) >= EPSDBL100) {
-                    chaine = QObject::tr("Boîte.").append(" %1 x %2 x %3 ").append(unite1);
+                    chaine = tr("Boîte.").append(" %1 x %2 x %3 ").append(unite1);
                     chaine = chaine.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1);
                 }
                 if (fabs(t1) < EPSDBL100)
-                    chaine = QObject::tr("Inconnues");
+                    chaine = tr("Inconnues");
 
                 if (fabs(section) > EPSDBL100) {
                     chaine = chaine + " / %1 " + unite1;
@@ -1428,11 +1430,13 @@ void PreviSat::AffichageDonnees()
 
                 ui->dimensions->setText(chaine);
                 ui->dimensions->adjustSize();
+                ui->dimensions->setFixedHeight(16);
                 ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
                 info = false;
             }
         }
     }
+
     if (scene != NULL)
         scene->deleteLater();
     if (scene2 != NULL)
@@ -1453,7 +1457,7 @@ void PreviSat::AffichageElementsOsculateurs() const
     QString chaine, chaine2;
 
     /* Initialisations */
-    QString unite1 = (ui->unitesKm->isChecked()) ? QObject::tr("km") : QObject::tr("mi");
+    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
 
     /* Corps de la methode */
     chaine = "%1 " + unite1;
@@ -3250,7 +3254,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         }
 
         // Donnees sur le Soleil
-        flux << QObject::tr("Coordonnées du Soleil :") << endl;
+        flux << tr("Coordonnées du Soleil :") << endl;
         chaine = tr("Hauteur    : %1\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
 
@@ -3261,7 +3265,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
 
         // Donnees sur la Lune
-        flux << QObject::tr("Coordonnées de la Lune :") << endl;
+        flux << tr("Coordonnées de la Lune :") << endl;
         chaine = tr("Hauteur    : %1\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
 
@@ -3308,7 +3312,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << ui->ligne1->text() << endl;
         flux << ui->ligne2->text() << endl << endl;
 
-        flux << QObject::tr("Vecteur d'état (ECI) :") << endl;
+        flux << tr("Vecteur d'état (ECI) :") << endl;
         QString chaine = tr("x : %1%2\tvx : %3");
         flux << chaine.arg(QString(13 - ui->xsat->text().length(), QChar(' '))).arg(ui->xsat->text()).
                 arg(ui->vxsat->text()) << endl;
@@ -3322,7 +3326,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
                 arg(ui->vzsat->text()) << endl << endl;
 
 
-        flux << QObject::tr("Éléments osculateurs :") << endl;
+        flux << tr("Éléments osculateurs :") << endl;
         switch (ui->typeParametres->currentIndex()) {
 
         case 0:
@@ -3997,6 +4001,7 @@ void PreviSat::FinEnregistrementFichier()
             if (rep->error())
                 msg += " : " + rep->errorString();
             Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+            ui->compteRenduMaj->setVisible(false);
 
         } else {
 
@@ -4009,6 +4014,7 @@ void PreviSat::FinEnregistrementFichier()
                     if (nb == 0) {
                         const QString msg = tr("Erreur lors du téléchargement du fichier %1");
                         Messages::Afficher(msg.arg(nomfic), WARNING);
+                        ui->compteRenduMaj->setVisible(false);
                     } else {
 
                         // Recuperation des TLE de la liste
@@ -5470,7 +5476,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
 
     /* Corps de la methode */
     try {
-    
+
         const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
                                                          tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
@@ -7979,7 +7985,7 @@ void PreviSat::on_calculsIri_clicked()
         QStringList tabStsIri;
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
         if (nb == 0)
-            throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), WARNING);
+            throw PreviSatException(tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), WARNING);
 
         // Creation de la liste de satellites
         QStringList listeSatellites;
@@ -7990,7 +7996,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = QObject::tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            const QString msg = tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
@@ -8017,7 +8023,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Il n'y a aucun satellite Iridium dans le fichier TLE
         if (listeSatellites.size() == 0)
-            throw PreviSatException(QObject::tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium n'a été trouvé dans le fichier TLE"), WARNING);
+            throw PreviSatException(tr("IRIDIUM : Erreur rencontrée lors de l'exécution\nAucun satellite Iridium n'a été trouvé dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsIri->setVisible(false);
@@ -8467,21 +8473,21 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            const QString msg = tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
         // Lecture du TLE
         TLE::LectureFichier(fi.absoluteFilePath(), listeTLE, tabtle);
         if (tabtle.at(0).getNorad().isEmpty()) {
-            const QString msg = QObject::tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 ne contient pas le TLE de l'ISS");
+            const QString msg = tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
         // Age du TLE
         const double age = fabs(jj1 - tabtle.at(0).getEpoque().getJourJulienUTC());
         if (age > ageTLE + 0.05) {
-            const QString msg = QObject::tr("TRANSIT : L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+            const QString msg = tr("TRANSIT : L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
             Messages::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 

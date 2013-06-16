@@ -1935,7 +1935,7 @@
               <bool>true</bool>
              </property>
              <property name="text">
-              <string>2011/07/31 00:00:00 (dans 00min 00s)</string>
+              <string>2011/07/31 00:00:00 (dans 00min 00s). Azimut : 000° 00'</string>
              </property>
             </widget>
            </widget>
@@ -4431,7 +4431,7 @@
              <rect>
               <x>424</x>
               <y>180</y>
-              <width>220</width>
+              <width>221</width>
               <height>16</height>
              </rect>
             </property>
@@ -4705,7 +4705,7 @@
              <rect>
               <x>313</x>
               <y>180</y>
-              <width>103</width>
+              <width>101</width>
               <height>16</height>
              </rect>
             </property>
