@@ -2543,8 +2543,13 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
 
                 if (nomsat.length() > 25 && nomsat.mid(25).contains("."))
                     nomsat = nomsat.mid(0, 15).trimmed();
+
+                if (nomsat.mid(0, 2) == "0 ")
+                    nomsat = nomsat.mid(2);
+
                 if (nomsat.toLower() == "iss (zarya)")
                     nomsat = "ISS ";
+
                 if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
                     nomsat = nomsat.mid(0, nomsat.indexOf("[")).trimmed();
 

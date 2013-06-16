@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    16 juin 2013
  *
  */
 
@@ -115,6 +115,7 @@ TLE::TLE(const QString &ligne1, const QString &ligne2)
 
     // Inclinaison
     _nbOrbites = _ligne2.mid(63, 5).toInt();
+
     /* Retour */
     return;
 }
@@ -250,6 +251,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 #endif
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
     const QString fic = dirDat + QDir::separator() + "donnees.sat";
+
     QFile donneesSatellites(fic.toStdString().c_str());
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -283,6 +285,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                 } while (li2.trimmed().length() == 0);
 
                 if (nomsat.mid(0, 2) == "1 " || nomsat == "---") {
+
                     const int indx1 = magn.indexOf(li1.mid(2, 5));
                     if (indx1 >= 0) {
                         const int indx2 = magn.indexOf('\n', indx1) - indx1;
@@ -295,8 +298,12 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                 if (nomsat.size() > 25 && nomsat.mid(25).contains('.') > 0)
                     nomsat = nomsat.mid(0, 15).trimmed();
 
+                if (nomsat.mid(0, 2) == "0 ")
+                    nomsat = nomsat.mid(2);
+
                 if (nomsat.toLower() == "iss (zarya)")
                     nomsat = "ISS";
+
                 if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
                     nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
 
@@ -305,6 +312,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     tle._nom = nomsat.trimmed();
                     tabtle.append(tle);
                 } else {
+
                     for (int i=0; i<listeSatellites.size(); i++) {
                         if (listeSatellites.at(i) == ligne.mid(2, 5)) {
                             TLE tle = TLE(li1, li2);
@@ -369,6 +377,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         if (nomFicOld == nomFicNew) {
             norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";
         } else {
+
             if (j < nbNew && !norad1.isEmpty()) {
                 while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1))
                     j++;
@@ -379,6 +388,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         }
 
         if (norad1 == norad2) {
+
             if (tleOld.at(isat)._epoque.getJourJulienUTC() < tleNew.at(j)._epoque.getJourJulienUTC()) {
                 const QString nomsat =
                         (tleNew.at(j)._nom == norad2) ? tleOld.at(isat)._nom : tleNew.at(j)._nom;
@@ -389,6 +399,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                 compteRendu.append(tleOld[isat]._nom + "#" + tleOld[isat]._norad);
             }
             j++;
+
         } else {
             if (nomFicOld == nomFicNew) {
 
