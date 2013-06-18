@@ -3056,7 +3056,7 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="258"/>
-        <location filename="previsions/iridium.cpp" line="819"/>
+        <location filename="previsions/iridium.cpp" line="833"/>
         <location filename="previsions/prevision.cpp" line="226"/>
         <location filename="previsions/transitiss.cpp" line="274"/>
         <source>mi</source>
@@ -3154,7 +3154,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="264"/>
         <location filename="previsions/evenements.cpp" line="301"/>
         <location filename="previsions/evenements.cpp" line="339"/>
-        <location filename="previsions/iridium.cpp" line="856"/>
+        <location filename="previsions/iridium.cpp" line="870"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>W</source>
         <translation>W</translation>
@@ -3166,7 +3166,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="264"/>
         <location filename="previsions/evenements.cpp" line="301"/>
         <location filename="previsions/evenements.cpp" line="339"/>
-        <location filename="previsions/iridium.cpp" line="856"/>
+        <location filename="previsions/iridium.cpp" line="870"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>E</source>
         <translation>E</translation>
@@ -3178,7 +3178,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="266"/>
         <location filename="previsions/evenements.cpp" line="303"/>
         <location filename="previsions/evenements.cpp" line="341"/>
-        <location filename="previsions/iridium.cpp" line="857"/>
+        <location filename="previsions/iridium.cpp" line="871"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
         <source>N</source>
         <translation>N</translation>
@@ -3190,7 +3190,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="266"/>
         <location filename="previsions/evenements.cpp" line="303"/>
         <location filename="previsions/evenements.cpp" line="341"/>
-        <location filename="previsions/iridium.cpp" line="857"/>
+        <location filename="previsions/iridium.cpp" line="871"/>
         <location filename="previsions/transitiss.cpp" line="286"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
         <source>S</source>
@@ -3255,7 +3255,7 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="389"/>
-        <location filename="previsions/iridium.cpp" line="256"/>
+        <location filename="previsions/iridium.cpp" line="265"/>
         <location filename="previsions/prevision.cpp" line="294"/>
         <location filename="previsions/transitiss.cpp" line="379"/>
         <source>Temps écoulé : %1s</source>
@@ -3267,13 +3267,13 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>FRL</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="848"/>
+        <location filename="previsions/iridium.cpp" line="862"/>
         <location filename="previsions/transitiss.cpp" line="319"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="848"/>
+        <location filename="previsions/iridium.cpp" line="862"/>
         <location filename="previsions/transitiss.cpp" line="319"/>
         <source>(E)</source>
         <translation>(E)</translation>

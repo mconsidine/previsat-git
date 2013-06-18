@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 mai 2013
+ * >    18 juin 2013
  *
  */
 
@@ -244,12 +244,19 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
         int i = 0;
         while (i < res.count()) {
-            for (int j=0; j<conditions.getNbl(); j++) {
-                ligne = res.at(i);
-                flux << ligne.mid(ligne.length() - 4) << ligne.mid(0, ligne.length() - 4).remove(119, 1) << endl;
-                i++;
+
+            ligne = res.at(i);
+
+            QString flash;
+            if (conditions.getNbl() == 1) {
+                flash = ligne.mid(ligne.length() - 4) + ligne.mid(0, ligne.length() - 4).remove(119, 1);
+            } else {
+                flash = ligne.mid(120, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(287, 4) + ligne.mid(124, 119) +
+                        ligne.mid(244, 43) + "\n" + ligne.mid(411, 4) + ligne.mid(291, 119);
             }
-            flux << endl;
+
+            flux << flash << endl << endl;
+            i++;
         }
     }
 
@@ -314,6 +321,7 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
                 // Calcul des valeurs exactes pour les differentes dates
                 _pan = -1;
+                QString flash = "";
                 for(int i=0; i<conditions.getNbl(); i++) {
 
                     observateur.CalculPosVit(dates[i]);
@@ -335,6 +343,9 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
                     // Magnitude du flash
                     mag = MagnitudeFlash(conditions.getExt(), angref, observateur, soleil, sat);
 
+                    if (conditions.getNbl() == 1)
+                        AngleReflexion(sat, soleil);
+
                     // Ascension droite/declinaison/constellation
                     sat.CalculCoordEquat(observateur);
 
@@ -355,8 +366,9 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
                     const QString ligne = EcrireFlash(dates[i], i, altitude, angref, mag, sts, conditions, observateur,
                                                       soleil, sat);
 
-                    res.append(ligne);
+                    flash.append(ligne);
                 } // fin for
+                res.append(flash);
             }
         }
     }
