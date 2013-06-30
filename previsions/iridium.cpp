@@ -251,8 +251,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
             if (conditions.getNbl() == 1) {
                 flash = ligne.mid(ligne.length() - 4) + ligne.mid(0, ligne.length() - 4).remove(119, 1);
             } else {
-                flash = ligne.mid(120, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(287, 4) + ligne.mid(124, 119) +
-                        ligne.mid(244, 43) + "\n" + ligne.mid(411, 4) + ligne.mid(291, 119);
+                flash = ligne.mid(120, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(288, 4) + ligne.mid(124, 119) +
+                        ligne.mid(244, 44) + "\n" + ligne.mid(412, 4) + ligne.mid(292, 119);
             }
 
             flux << flash << endl << endl;
@@ -873,7 +873,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
             max = fmt2.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
                     arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
                     arg(dir).arg((magFlashMax >= 0.) ? "+" : "-").arg(fabs(magFlashMax), 2, 'f', 1).
-                    arg((sat.isPenombre()) ? "*" : "");
+                    arg((sat.isPenombre()) ? "*" : " ");
         }
     } else {
         max = "";
