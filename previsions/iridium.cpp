@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    18 juin 2013
+ * >    1 juillet 2013
  *
  */
 
@@ -255,7 +255,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                         ligne.mid(244, 44) + "\n" + ligne.mid(412, 4) + ligne.mid(292, 119);
             }
 
-            flux << flash << endl << endl;
+            flux << flash.trimmed() << endl << endl;
             i++;
         }
     }
