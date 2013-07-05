@@ -6421,10 +6421,15 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
         do {
             ligne = flux.readLine();
         } while (ligne.isEmpty());
-        ui->lieuxObs->addItem(ligne.mid(34));
         mapObs.append(ligne.mid(34).trimmed() + " #" + ligne.mid(0, 33).replace(" ", "&"));
     }
     mapObs.sort();
+
+    int i = 0;
+    while (i < mapObs.length()) {
+        ui->lieuxObs->addItem(mapObs.at(i).mid(0, mapObs.at(i).indexOf("#")).trimmed());
+        i++;
+    }
 
     /* Retour */
     return;
