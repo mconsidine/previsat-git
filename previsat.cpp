@@ -4271,6 +4271,9 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     /* Corps de la methode */
     if (ui->frameCarte->height() >= PreviSat::height())
         ui->frameCarte->setGeometry(0, 0, ui->frameCarte->width(), PreviSat::height() - 23);
+    if (ui->frameCarte->width() != ui->frameCarteListe->width() - ui->frameListe->width() - 5)
+        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5, ui->frameCarte->height());
+
     ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     ui->frameCarte2->setGeometry(ui->carte->geometry());
     ui->maximise->move(11 + ui->carte->width(), 5);
@@ -4995,7 +4998,7 @@ void PreviSat::on_maximise_clicked()
 
         // Carte minimisee
         ui->frameListe->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
-        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width(),
+        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5,
                                     PreviSat::height() - ui->frameOngletsZone->height() - 23);
         ui->maximise->setIcon(QIcon(":/resources/maxi.png"));
         ui->maximise->setToolTip(tr("Agrandir"));
