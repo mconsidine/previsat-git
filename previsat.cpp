@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 juin 2013
+ * >    14 juillet 2013
  *
  */
 
@@ -4271,8 +4271,10 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     /* Corps de la methode */
     if (ui->frameCarte->height() >= PreviSat::height())
         ui->frameCarte->setGeometry(0, 0, ui->frameCarte->width(), PreviSat::height() - 23);
-    if (ui->frameCarte->width() != ui->frameCarteListe->width() - ui->frameListe->width() - 5)
-        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5, ui->frameCarte->height());
+    if (ui->frameCarte->width() != ui->frameCarteListe->width() - ui->frameListe->width() - 5 &&
+            ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
+        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5,
+                                    ui->frameCarte->height());
 
     ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     ui->frameCarte2->setGeometry(ui->carte->geometry());
