@@ -7310,22 +7310,6 @@
                  <bool>true</bool>
                 </property>
                </widget>
-               <widget class="QPushButton" name="majFicPrevisat">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>282</y>
-                  <width>169</width>
-                  <height>23</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Mise à jour fichiers internes...</string>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-               </widget>
                <widget class="QCheckBox" name="affinvew">
                 <property name="geometry">
                  <rect>
@@ -7426,6 +7410,19 @@
                 </property>
                 <property name="text">
                  <string>Vision nocturne :</string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="verifMAJ">
+                <property name="geometry">
+                 <rect>
+                  <x>240</x>
+                  <y>284</y>
+                  <width>241</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Vérification des mises à jour au démarrage</string>
                 </property>
                </widget>
               </widget>
@@ -9504,8 +9501,10 @@
     <addaction name="separator"/>
     <addaction name="actionFichier_d_aide"/>
     <addaction name="separator"/>
+    <addaction name="actionTelecharger_la_mise_a_jour"/>
+    <addaction name="actionMettre_jour_fichiers_internes"/>
+    <addaction name="separator"/>
     <addaction name="actionAstropedia_free_fr"/>
-    <addaction name="actionTelecharger_les_mises_jour"/>
     <addaction name="actionRapport_de_bug"/>
     <addaction name="separator"/>
     <addaction name="actionWww_celestrak_com"/>
@@ -9604,9 +9603,21 @@
     <string>Rapport de bug</string>
    </property>
   </action>
-  <action name="actionTelecharger_les_mises_jour">
+  <action name="actionTelecharger_la_mise_a_jour">
    <property name="text">
-    <string>Télécharger les mises à jour</string>
+    <string>Télécharger la mise à jour</string>
+   </property>
+   <property name="toolTip">
+    <string>Télécharger la mise à jour</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionWww_celestrak_com">
@@ -9722,6 +9733,14 @@
     <string>Ctrl+N</string>
    </property>
   </action>
+  <action name="actionMettre_jour_fichiers_internes">
+   <property name="text">
+    <string>Mettre à jour les fichiers internes</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -9819,7 +9838,6 @@
   <tabstop>affplanetes</tabstop>
   <tabstop>unitesKm</tabstop>
   <tabstop>unitesMi</tabstop>
-  <tabstop>majFicPrevisat</tabstop>
   <tabstop>heureLegale</tabstop>
   <tabstop>updown</tabstop>
   <tabstop>utcAuto</tabstop>

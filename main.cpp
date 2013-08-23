@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    18 aout 2013
  *
  */
 
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     }
 
     // Lancement du splash screen et demarrage de l'application
-    QSplashScreen *splash = new QSplashScreen;
+    QSplashScreen * const splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
     splash->show();
 

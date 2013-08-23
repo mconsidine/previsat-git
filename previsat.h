@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 decembre 2012
+ * >    18 aout 2013
  *
  */
 
@@ -88,6 +88,8 @@ private:
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
     void VerifAgeTLE();
+    void VerifMAJPreviSat();
+    void MiseAJourFichiers(QAction *action, const QString &typeMAJ);
 
     // Interface
     void OuvertureFichierTLE(const QString &fichier);
@@ -118,7 +120,7 @@ private slots:
 
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
-    void keyPressEvent(QKeyEvent *);
+    void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
@@ -135,7 +137,8 @@ private slots:
     void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionFichier_d_aide_activated(int arg1);
     void on_actionAstropedia_free_fr_activated();
-    void on_actionTelecharger_les_mises_jour_activated();
+    void on_actionTelecharger_la_mise_a_jour_activated();
+    void on_actionMettre_jour_fichiers_internes_activated();
     void on_actionRapport_de_bug_activated();
     void on_actionWww_celestrak_com_activated();
     void on_actionWww_space_track_org_activated();
@@ -196,7 +199,6 @@ private slots:
     void on_updown_valueChanged(int arg1);
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
-    void on_majFicPrevisat_clicked();
 
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);

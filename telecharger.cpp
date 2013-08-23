@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    12 octobre 2012
+ * >    23 aout 2013
  *
  */
 
@@ -58,14 +58,14 @@ static QString fic;
 static QString dirCoo;
 static QString dirMap;
 static QString dirTmp;
-static const QString httpDirList1 = "http://astropedia.free.fr/previsat/commun/data/coordonnees/";
-static const QString httpDirList2 = "http://astropedia.free.fr/previsat/commun/data/map/";
 static QFile ficDwn;
 static QNetworkAccessManager mng;
 static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
 
 static QSettings settings("Astropedia", "previsat");
+static const QString httpDirList1 = settings.value("fichier/httpDirList1").toString();
+static const QString httpDirList2 = settings.value("fichier/httpDirList2").toString();
 
 Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     QMainWindow(parent),
@@ -146,9 +146,11 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
     /* Initialisations */
 
     /* Corps de la methode */
+    const QString msg = tr("Erreur lors du téléchargement du fichier :\n%1");
+    throw PreviSatException(msg.arg(rep->errorString()), WARNING);
 
     /* Retour */
-    throw PreviSatException(tr("Erreur lors du téléchargement du fichier :") + "\n" + rep->errorString(), WARNING);
+    return;
 }
 
 void Telecharger::Enregistrer() const
@@ -171,7 +173,7 @@ void Telecharger::Enregistrer() const
         QString ligne = flux.readLine();
         ligne[0] = ligne[0].toUpper();
 
-        QListWidgetItem *elem1 = new QListWidgetItem(ligne, ui->listeLieuxObs);
+        QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeLieuxObs);
         elem1->setCheckState(Qt::Unchecked);
     }
 

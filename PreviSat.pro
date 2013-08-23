@@ -23,9 +23,6 @@
 # Localisation
 # >
 #
-# Heritage
-# >
-#
 # Description
 # >    Fichier de configuration du projet
 #
@@ -36,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    8 juin 2013
+# >    18 aout 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.1
-VERSION = 3.1.3.3
+VERSION = 3.1.4.1
 ZLIB_DIR = zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------

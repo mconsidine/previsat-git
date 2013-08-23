@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >
+ * >    18 aout 2013
  *
  */
 
@@ -54,7 +54,7 @@ Apropos::Apropos(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(tr("À propos de PreviSat") + " " + APPVER_MAJ);
 
-    QGraphicsScene *scene = new QGraphicsScene;
+    QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(ui->imagePreviSat->rect());
     scene->setBackgroundBrush(QBrush(Apropos::palette().background().color()));
     scene->addPixmap(QPixmap(":/resources/apropos.png").scaled(ui->imagePreviSat->size()));
