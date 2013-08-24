@@ -90,6 +90,7 @@ private:
     void VerifAgeTLE();
     void VerifMAJPreviSat();
     void MiseAJourFichiers(QAction *action, const QString &typeMAJ);
+    void TelechargementFichier(const QString &ficHttp, const bool async);
 
     // Interface
     void OuvertureFichierTLE(const QString &fichier);
