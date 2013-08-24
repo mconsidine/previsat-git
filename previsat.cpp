@@ -421,8 +421,9 @@ void PreviSat::ChargementConfig()
 
     // Affichage au demarrage
     QStyle *style = QApplication::style();
-    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
     ui->actionOuvrir_fichier_TLE->setIcon(style->standardIcon(QStyle::SP_DirOpenIcon));
+    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+
     ui->ciel->setVisible(false);
     ui->nord->setVisible(false);
     ui->sud->setVisible(false);
@@ -3029,7 +3030,7 @@ void PreviSat::VerifMAJPreviSat()
     /* Corps de la methode */
     if (!dirHttpPrevi.isEmpty()) {
 
-        const QStringList listeFic(QStringList () << "version" << "maj");
+        const QStringList listeFic(QStringList () << "versionPreviSat" << "maj");
         amajDeb = true;
         amajPrevi = true;
         dirDwn = dirTmp;
@@ -3055,7 +3056,7 @@ void PreviSat::VerifMAJPreviSat()
             if (!ligne.isEmpty()) {
 
                 bool anew = false;
-                if (fic == "version") {
+                if (fic == "versionPreviSat") {
 
                     const QStringList newVersion = ligne.split(".");
                     const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
@@ -4278,7 +4279,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     const QDir di = QDir(dirTmp);
     if (di.entryList(QDir::Files).count() > 0) {
         foreach(QString fic, di.entryList(QDir::Files)) {
-            if (fic != "version" && fic != "maj") {
+            if (fic != "versionPreviSat" && fic != "maj") {
                 QFile fi(dirTmp + QDir::separator() + fic);
                 fi.remove();
             }
@@ -4359,6 +4360,9 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
     settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
     settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
+
+    if (!ui->verifMAJ->isChecked())
+        settings.setValue("fichier/majPrevi", "0");
 
     EcritureListeRegistre();
 
@@ -5479,11 +5483,13 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
                     if (downQueue.isEmpty())
                         QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
 
-                    QFile fi3(dirDwn + QDir::separator() + fic);
+                    QFile fi3(dirDwn + QDir::separator() + fic + ".gz");
                     if (fi3.exists()) {
+                        const QString nvNom = dirExe + QDir::separator() + fic;
                         fi.remove();
-                        fi3.rename(fi.fileName());
+                        fi3.rename(nvNom);
                     }
+                    settings.setValue("fichier/versionSetup", ligne);
                 }
             }
         }
