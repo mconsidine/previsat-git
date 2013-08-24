@@ -2925,20 +2925,12 @@ void PreviSat::MajWebTLE()
 
         foreach(QString file, listeTLE) {
 
-            const QUrl url(adresse + file);
-            AjoutFichier(url);
-
+            const QString ficMaj = adresse + file;
             const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
             if (fic == nomfic)
                 atrouve = true;
 
-            const QNetworkRequest requete(url);
-            rep = mng.get(requete);
-
-            // Creation d'une boucle pour rendre le telechargement synchrone
-            QEventLoop loop;
-            connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-            loop.exec();
+            TelechargementFichier(ficMaj, false);
         }
 
         if (downQueue.isEmpty())
@@ -3008,19 +3000,8 @@ void PreviSat::VerifAgeTLE()
                     atrouve = true;
                     aupdnow = false;
                     dirDwn = dirTle;
-                    const QUrl url(adresseCelestrakNorad + fi.fileName());
-                    AjoutFichier(url);
-
-                    const QNetworkRequest requete(url);
-                    rep = mng.get(requete);
-
-                    // Creation d'une boucle pour rendre le telechargement synchrone
-                    QEventLoop loop;
-                    connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-                    loop.exec();
-
-                    if (downQueue.isEmpty())
-                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+                    const QString ficMaj = adresseCelestrakNorad + fi.fileName();
+                    TelechargementFichier(ficMaj, false);
 
                     settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
                 } else {
@@ -3059,18 +3040,7 @@ void PreviSat::VerifMAJPreviSat()
             if (!fi.exists()) {
 
                 const QString ficMaj = dirHttpPrevi + fic;
-                const QUrl url(ficMaj);
-                AjoutFichier(url);
-
-                const QNetworkRequest requete(url);
-                rep = mng.get(requete);
-
-                QEventLoop loop;
-                connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-                loop.exec();
-
-                if (downQueue.isEmpty())
-                    QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+                TelechargementFichier(ficMaj, false);
             }
 
             QString ligne;
@@ -3161,6 +3131,34 @@ void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
             }
         }
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QUrl url(ficHttp);
+
+    /* Corps de la methode */
+    AjoutFichier(url);
+
+    const QNetworkRequest requete(url);
+    rep = mng.get(requete);
+
+    if (!async) {
+
+        // Creation d'une boucle pour rendre le telechargement synchrone
+        QEventLoop loop;
+        connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
+        loop.exec();
+    }
+
+    if (downQueue.isEmpty())
+        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
 
     /* Retour */
     return;
@@ -4739,7 +4737,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                 const QString ews = (lo0 < 0.) ? tr("Est") : tr("Ouest");
 
                 // Latitude
-                const double la0 = 90. - y /DEG2PXVT;
+                const double la0 = 90. - y / DEG2PXVT;
                 const QString nss = (la0 < 0.) ? tr("Sud") : tr("Nord");
 
                 const QString msg = " : %1° %2";
@@ -5196,7 +5194,8 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
     // Ouverture d'un fichier TLE
     const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                          settings.value("fichier/repTLE", dirTle).toString(),
-                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
+                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
+                                                            "Fichiers gz (*.gz);;Tous les fichiers (*)"));
 
     try {
         if (fichier.isEmpty()) {
@@ -5275,8 +5274,7 @@ void PreviSat::on_actionImprimer_carte_activated()
         QPainter p(&printer);
 
         const QPixmap pixmap = QPixmap::grabWidget((ui->carte->isVisible()) ? ui->carte : ui->ciel);
-        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ?
-                    pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
+        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ? pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
         const int x = (pixscl.width() == pixmap.width()) ? printer.pageRect().width() / 2 - pixscl.width() / 2 : 50;
         p.drawPixmap(x, 50, pixscl);
         p.end();
@@ -5294,7 +5292,8 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
 
     /* Initialisations */
     const QBrush alpha = (arg1) ? QBrush(QColor::fromRgb(178 - ui->intensiteVision->value(), 0, 0, 255)) : QBrush(Qt::NoBrush);
-    const QBrush coulLbl = (arg1) ? QBrush(QColor::fromRgb(165 - ui->intensiteVision->value(), 0, 0)) : QBrush(QColor::fromRgb(227, 227, 227));
+    const QBrush coulLbl = (arg1) ? QBrush(QColor::fromRgb(165 - ui->intensiteVision->value(), 0, 0)) :
+                                    QBrush(QColor::fromRgb(227, 227, 227));
     const QColor coulList = (arg1) ? QColor(205 - ui->intensiteVision->value(), 0, 0) : QColor(255, 255, 255);
     settings.setValue("affichage/flagIntensiteVision", arg1);
     settings.setValue("affichage/valIntensiteVision", 178 - ui->intensiteVision->value());
@@ -5425,8 +5424,71 @@ void PreviSat::on_actionAstropedia_free_fr_activated()
 void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 {
     const QString fic = "setup.exe";
-    const QFile fi(dirExe + QDir::separator() + fic);
+    QFile fi(dirExe + QDir::separator() + fic);
     if (fi.exists()) {
+
+        // Verification de la version du setup
+        const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed() + "setup/";
+
+        if (!dirHttpPrevi.isEmpty()) {
+
+            const QString fich = "versionSetup";
+            amajDeb = true;
+            amajPrevi = true;
+            dirDwn = dirTmp;
+
+            const QString ficMaj = dirHttpPrevi + fich;
+            TelechargementFichier(ficMaj, false);
+
+            QString ligne;
+            QFile fi2(dirDwn + QDir::separator() + fich);
+
+            if (fi2.exists()) {
+
+                fi2.open(QIODevice::ReadOnly | QIODevice::Text);
+                QTextStream flux(&fi2);
+                ligne = flux.readLine();
+                fi2.close();
+            }
+
+            if (!ligne.isEmpty()) {
+
+                bool anew = false;
+                const QStringList newVersion = ligne.split(".");
+                const QStringList oldVersion = settings.value("fichier/versionSetup", "1.0.0.0").toString().split(".");
+
+                for(int i=0; i<oldVersion.count()-1; i++) {
+                    if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
+                        anew = true;
+                }
+                if (anew) {
+
+#if defined (Q_OS_WIN)
+                    const QString dirHttpSetup = dirHttpPrevi + "Windows/";
+
+#elif defined (Q_OS_LINUX)
+                    const QString dirHttpSetup = dirHttpPrevi + "Linux/";
+
+#elif defined (Q_OS_MAC)
+                    const QString dirHttpSetup = dirHttpPrevi + "Mac/";
+#else
+#endif
+                    const QString fichier = dirHttpSetup + fic;
+                    TelechargementFichier(fichier, false);
+
+                    if (downQueue.isEmpty())
+                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+                    QFile fi3(dirDwn + QDir::separator() + fic);
+                    if (fi3.exists()) {
+                        fi.remove();
+                        fi3.rename(fi.fileName());
+                    }
+                }
+            }
+        }
+
+        // Lancement de la mise a jour
         QProcess proc;
         proc.startDetached(fic);
         close();
@@ -5450,20 +5512,8 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     const QStringList listeFic(QStringList () << "donnees.sat" << "iridium.sts");
 
     foreach(QString fic, listeFic) {
-
         QString ficMaj = dirHttpPrevi + fic;
-        const QUrl url(ficMaj);
-        AjoutFichier(url);
-
-        const QNetworkRequest requete(url);
-        rep = mng.get(requete);
-
-        QEventLoop loop;
-        connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-        loop.exec();
-
-        if (downQueue.isEmpty())
-            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        TelechargementFichier(ficMaj, false);
     }
 
     /* Retour */
@@ -5783,7 +5833,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
 
         if (satellites.at(0).isIeralt() && ui->liste1->currentItem()->checkState() == Qt::Checked) {
             chronometre->stop();
-            const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
+            const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\n" \
+                                   "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
             Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
             chronometre->start();
             l1 = "";
@@ -5958,8 +6009,7 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(),
-                        dateCourante.getOffsetUTC());
+                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
     if (ui->modeManuel->isChecked())
         info = true;
@@ -6360,6 +6410,7 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
 
         const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
         dateCourante = Date(dateCourante, offset);
+
         CalculsAffichage();
     }
 
@@ -6735,9 +6786,8 @@ void PreviSat::on_actionModifier_coordonnees_activated()
     // Suppression du lieu du fichier
     const QStringList lieu = mapObs.at(ui->lieuxObs->currentRow()).split("#");
     const QString msg2 = "%1%2 %3%4 %5 %6";
-    const QString ligne =  msg2.arg((lo >= 0.) ? "+" : "-").arg(fabs(lo), 13, 'f', 9, QChar('0'))
-            .arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0'))
-            .arg(lieu.at(0)).trimmed();
+    const QString ligne =  msg2.arg((lo >= 0.) ? "+" : "-").arg(fabs(lo), 13, 'f', 9, QChar('0')).
+            arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0')).arg(lieu.at(0)).trimmed();
 
     const QString fic = (ui->fichiersObs->currentRow() == 0) ?
                 dirCoo + QDir::separator() + "aapreferes" :
@@ -7015,8 +7065,7 @@ void PreviSat::on_supprLieu_clicked()
  */
 void PreviSat::on_barreMenu_pressed()
 {
-    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) ||
-                                      ui->onglets->currentIndex() < 1);
+    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) || ui->onglets->currentIndex() < 1);
 }
 
 void PreviSat::on_onglets_currentChanged(QWidget *arg1)
@@ -7189,7 +7238,8 @@ void PreviSat::on_parcourirMaj2_clicked()
     /* Corps de la methode */
     QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                    settings.value("fichier/fichierALire", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
+                                                      "Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
         ui->fichierALire->setText(fichier);
@@ -7365,7 +7415,8 @@ void PreviSat::on_parcourir1CreerTLE_clicked()
     /* Corps de la methode */
     QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                    settings.value("fichier/fichierALireCreerTLE", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)"));
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
+                                                      "Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
         ui->fichierALireCreerTLE->setText(fichier);
@@ -7838,9 +7889,9 @@ void PreviSat::on_calculsPrev_clicked()
         }
 
         // Nom du fichier resultat
-        ficRes = dirTmp + QDir::separator() + tr("previsions") + "_" +
-                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
-                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
+        const QString chaine = tr("previsions") + "_%1_%2.txt";
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDate(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDate(COURT).remove("/").split(" ").at(0));
 
         QFile fi(ficRes);
         if (fi.exists())
@@ -8113,9 +8164,9 @@ void PreviSat::on_calculsIri_clicked()
         const bool ext = ui->extinctionAtmospherique->isChecked();
 
         // Nom du fichier resultat
-        ficRes = dirTmp + QDir::separator() + tr("iridiums") + "_" +
-                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
-                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
+        const QString chaine = tr("iridiums") + "_%1_%2.txt";
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDate(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDate(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8144,8 +8195,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\n" \
-                                   "Le fichier %1 n'est pas un TLE");
+            const QString msg = tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
@@ -8374,9 +8424,9 @@ void PreviSat::on_calculsEvt_clicked()
         }
 
         // Nom du fichier resultat
-        ficRes = dirTmp + QDir::separator() + tr("evenements") + "_" +
-                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
-                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
+        const QString chaine = tr("evenements") + "_%1_%2.txt";
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDate(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDate(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8479,8 +8529,10 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
 
             if (index == ui->fichierTLETransit->count() - 1) {
 
-                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/fichierTLETransit", dirTle).toString(),
-                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                                     settings.value("fichier/fichierTLETransit", dirTle).toString(),
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
+                                                                        "Tous les fichiers (*)"));
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLETransit->currentText().isEmpty())
@@ -8606,9 +8658,9 @@ void PreviSat::on_calculsTransit_clicked()
         const bool calcLune = ui->luneTransit->isChecked();
 
         // Nom du fichier resultat
-        ficRes = dirTmp + QDir::separator() + tr("transits") + "_" +
-                date1.ToShortDate(COURT).remove("/").split(" ").at(0) + "_" +
-                date2.ToShortDate(COURT).remove("/").split(" ").at(0) +  ".txt";
+        const QString chaine = tr("transits") + "_%1_%2.txt";
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDate(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDate(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
