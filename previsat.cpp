@@ -5522,6 +5522,12 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
         TelechargementFichier(ficMaj, false);
     }
 
+    QFile fi(dirTmp + QDir::separator() + "maj");
+    if (fi.exists())
+        fi.remove();
+    ui->actionMettre_jour_fichiers_internes->setVisible(false);
+    settings.setValue("fichier/majPrevi", "0");
+
     /* Retour */
     return;
 }
