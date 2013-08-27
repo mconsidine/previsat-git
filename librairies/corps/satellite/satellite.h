@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    27 aout 2013
  *
  */
 
@@ -91,6 +91,10 @@ public:
     double getT1() const;
     double getT2() const;
     double getT3() const;
+    QString getDateLancement() const;
+    QString getCategorieOrbite() const;
+    QString getPays() const;
+
     TLE getTle() const;
     ElementsOsculateurs getElements() const;
     QList<QVector<double> > getTraceAuSol() const;
@@ -347,6 +351,9 @@ private:
     double _t1;
     double _t2;
     double _t3;
+    QString _dateLancement;
+    QString _categorieOrbite;
+    QString _pays;
     TLE _tle;
     SatVariables _sat;
     ElementsOsculateurs _elements;
