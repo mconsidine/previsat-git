@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 aout 2013
+ * >    27 aout 2013
  *
  */
 
@@ -1449,6 +1449,10 @@ void PreviSat::AffichageDonnees()
                 ui->dimensions->setFixedHeight(16);
                 ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
                 info = false;
+
+                ui->dateLancement->setText(satellites.at(0).getDateLancement());
+                ui->categorieOrbite->setText(satellites.at(0).getCategorieOrbite());
+                ui->pays->setText(satellites.at(0).getPays());
             }
         }
     }
@@ -2550,7 +2554,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                     const int indx1 = magn.indexOf(norad);
                     if (indx1 >= 0) {
                         const int indx2 = magn.indexOf("\n", indx1) - indx1;
-                        nomsat = magn.mid(indx1 + 36, indx2 - 36).trimmed();
+                        nomsat = magn.mid(indx1 + 60, indx2 - 60).trimmed();
                     } else {
                         nomsat = norad;
                     }
@@ -3594,14 +3598,16 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         flux << ui->line1->text() << endl;
         flux << ui->line2->text() << endl << endl;
 
-        QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour");
-        flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()) << endl;
+        QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
+        flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()).arg(ui->dateLancement->text()) << endl;
 
-        chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2");
-        flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()) << endl;
+        chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2\t Catégorie d'orbite : %4");
+        flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()).
+                arg(ui->categorieOrbite->text()) << endl;
 
-        chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3");
-        flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()) << endl;
+        chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3\t Pays/Organisation  : %4");
+        flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()).
+                arg(ui->pays->text()) << endl;
 
         chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
         flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
@@ -6758,8 +6764,8 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
         flux2 << ligne << endl;
         fich.close();
 
-        const QString msg = tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Preferes\"");
-        messagesStatut->setText(msg.arg(lieu.at(0)));
+        const QString msg = tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"");
+        messagesStatut->setText(msg.arg(lieu.at(0).toUpper() + lieu.mid(1)));
     }
 
     /* Retour */

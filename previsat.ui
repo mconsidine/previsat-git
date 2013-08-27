@@ -1276,7 +1276,7 @@
               <rect>
                <x>3</x>
                <y>3</y>
-               <width>31</width>
+               <width>35</width>
                <height>16</height>
               </rect>
              </property>
@@ -1290,7 +1290,7 @@
             <widget class="QLabel" name="nomsat1">
              <property name="geometry">
               <rect>
-               <x>38</x>
+               <x>40</x>
                <y>3</y>
                <width>291</width>
                <height>16</height>
@@ -2894,7 +2894,7 @@
              <rect>
               <x>10</x>
               <y>30</y>
-              <width>31</width>
+              <width>35</width>
               <height>16</height>
              </rect>
             </property>
@@ -3236,7 +3236,7 @@
            <widget class="QLabel" name="nomsat2">
             <property name="geometry">
              <rect>
-              <x>45</x>
+              <x>47</x>
               <y>30</y>
               <width>271</width>
               <height>16</height>
@@ -4180,7 +4180,7 @@
            <widget class="QLabel" name="nbOrbitesEpoque">
             <property name="geometry">
              <rect>
-              <x>427</x>
+              <x>392</x>
               <y>108</y>
               <width>37</width>
               <height>16</height>
@@ -4247,7 +4247,7 @@
            <widget class="QLabel" name="lbl_nbRev3">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>93</y>
               <width>100</width>
               <height>16</height>
@@ -4303,7 +4303,7 @@
            <widget class="QLabel" name="lbl_nbOrbitesEpoque">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>108</y>
               <width>109</width>
               <height>16</height>
@@ -4338,7 +4338,7 @@
            <widget class="QLabel" name="lbl_revjour2_2">
             <property name="geometry">
              <rect>
-              <x>535</x>
+              <x>500</x>
               <y>75</y>
               <width>16</width>
               <height>16</height>
@@ -4389,7 +4389,7 @@
            <widget class="QLabel" name="lbl_revjour3_3">
             <property name="geometry">
              <rect>
-              <x>535</x>
+              <x>500</x>
               <y>90</y>
               <width>16</width>
               <height>16</height>
@@ -4429,7 +4429,7 @@
            <widget class="QLabel" name="dimensions">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>180</y>
               <width>221</width>
               <height>16</height>
@@ -4445,7 +4445,7 @@
            <widget class="QLabel" name="nbRev3">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>93</y>
               <width>67</width>
               <height>16</height>
@@ -4496,7 +4496,7 @@
            <widget class="QLabel" name="nbRev2">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>78</y>
               <width>67</width>
               <height>16</height>
@@ -4515,7 +4515,7 @@
            <widget class="QLabel" name="lbl_modele">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>165</y>
               <width>101</width>
               <height>16</height>
@@ -4531,7 +4531,7 @@
            <widget class="QLabel" name="lbl_revjour3">
             <property name="geometry">
              <rect>
-              <x>493</x>
+              <x>458</x>
               <y>93</y>
               <width>46</width>
               <height>16</height>
@@ -4563,7 +4563,7 @@
            <widget class="QLabel" name="nomsat3">
             <property name="geometry">
              <rect>
-              <x>45</x>
+              <x>47</x>
               <y>2</y>
               <width>271</width>
               <height>16</height>
@@ -4703,7 +4703,7 @@
            <widget class="QLabel" name="lbl_dimensions">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>180</y>
               <width>101</width>
               <height>16</height>
@@ -4754,7 +4754,7 @@
            <widget class="QLabel" name="lbl_revjour2">
             <property name="geometry">
              <rect>
-              <x>493</x>
+              <x>458</x>
               <y>78</y>
               <width>46</width>
               <height>16</height>
@@ -4770,7 +4770,7 @@
            <widget class="QLabel" name="anomalieMoy">
             <property name="geometry">
              <rect>
-              <x>421</x>
+              <x>386</x>
               <y>135</y>
               <width>55</width>
               <height>16</height>
@@ -4805,7 +4805,7 @@
            <widget class="QLabel" name="nbRev">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>63</y>
               <width>67</width>
               <height>16</height>
@@ -4824,7 +4824,7 @@
            <widget class="QLabel" name="magnitudeStdMax">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>150</y>
               <width>61</width>
               <height>16</height>
@@ -4834,13 +4834,13 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>-0.5/-2.9</string>
+             <string>-0.5v/-2.9</string>
             </property>
            </widget>
            <widget class="QLabel" name="modele">
             <property name="geometry">
              <rect>
-              <x>424</x>
+              <x>389</x>
               <y>165</y>
               <width>55</width>
               <height>16</height>
@@ -4856,7 +4856,7 @@
            <widget class="QLabel" name="lbl_nbRev2">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>78</y>
               <width>100</width>
               <height>16</height>
@@ -4904,7 +4904,7 @@
            <widget class="QLabel" name="lbl_anomalieMoy">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>135</y>
               <width>109</width>
               <height>16</height>
@@ -4936,7 +4936,7 @@
            <widget class="QLabel" name="lbl_magnitudeStdMax">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>150</y>
               <width>109</width>
               <height>16</height>
@@ -4952,7 +4952,7 @@
            <widget class="QLabel" name="lbl_nbRev">
             <property name="geometry">
              <rect>
-              <x>313</x>
+              <x>278</x>
               <y>63</y>
               <width>103</width>
               <height>16</height>
@@ -4970,7 +4970,7 @@
              <rect>
               <x>10</x>
               <y>2</y>
-              <width>31</width>
+              <width>35</width>
               <height>16</height>
              </rect>
             </property>
@@ -4984,7 +4984,7 @@
            <widget class="QLabel" name="lbl_revjour">
             <property name="geometry">
              <rect>
-              <x>493</x>
+              <x>458</x>
               <y>63</y>
               <width>46</width>
               <height>16</height>
@@ -5016,7 +5016,7 @@
            <widget class="QLabel" name="sq">
             <property name="geometry">
              <rect>
-              <x>635</x>
+              <x>600</x>
               <y>177</y>
               <width>16</width>
               <height>16</height>
@@ -5027,6 +5027,84 @@
             </property>
             <property name="text">
              <string>2</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_dateLancement">
+            <property name="geometry">
+             <rect>
+              <x>540</x>
+              <y>63</y>
+              <width>102</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Date de lancement :</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="dateLancement">
+            <property name="geometry">
+             <rect>
+              <x>654</x>
+              <y>63</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>2013/07/08</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_categorieOrbite">
+            <property name="geometry">
+             <rect>
+              <x>540</x>
+              <y>78</y>
+              <width>102</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Catégorie d'orbite :</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="categorieOrbite">
+            <property name="geometry">
+             <rect>
+              <x>654</x>
+              <y>78</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>LEO/I</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="pays">
+            <property name="geometry">
+             <rect>
+              <x>654</x>
+              <y>93</y>
+              <width>71</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>US</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_pays">
+            <property name="geometry">
+             <rect>
+              <x>540</x>
+              <y>93</y>
+              <width>112</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Pays/Organisation :</string>
             </property>
            </widget>
            <zorder>nbOrbitesEpoque</zorder>
@@ -5072,6 +5150,12 @@
            <zorder>sq</zorder>
            <zorder>line1</zorder>
            <zorder>line2</zorder>
+           <zorder>lbl_dateLancement</zorder>
+           <zorder>dateLancement</zorder>
+           <zorder>lbl_categorieOrbite</zorder>
+           <zorder>categorieOrbite</zorder>
+           <zorder>pays</zorder>
+           <zorder>lbl_pays</zorder>
           </widget>
           <widget class="QWidget" name="previsions">
            <property name="mouseTracking">

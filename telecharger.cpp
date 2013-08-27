@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    23 aout 2013
+ * >    27 aout 2013
  *
  */
 
@@ -64,8 +64,8 @@ static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
 
 static QSettings settings("Astropedia", "previsat");
-static const QString httpDirList1 = settings.value("fichier/httpDirList1").toString();
-static const QString httpDirList2 = settings.value("fichier/httpDirList2").toString();
+static const QString httpDirList1 = settings.value("fichier/dirHttpList1").toString();
+static const QString httpDirList2 = settings.value("fichier/dirHttpList2").toString();
 
 Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     QMainWindow(parent),

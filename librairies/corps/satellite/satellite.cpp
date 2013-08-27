@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juin 2013
+ * >    27 aout 2013
  *
  */
 
@@ -512,6 +512,9 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
                     satellites[isat]._magnitudeStandard = ligne.mid(22, 4).toDouble();
                     satellites[isat]._methMagnitude = ligne.at(27).toAscii();
                     satellites[isat]._section = ligne.mid(29, 6).toDouble();
+                    satellites[isat]._dateLancement = ligne.mid(36, 10);
+                    satellites[isat]._categorieOrbite = ligne.mid(47, 6).trimmed();
+                    satellites[isat]._pays = ligne.mid(54, 5).trimmed();
                     j++;
                     break;
                 }
@@ -1445,6 +1448,21 @@ double Satellite::getT3() const
 TLE Satellite::getTle() const
 {
     return _tle;
+}
+
+QString Satellite::getDateLancement() const
+{
+    return _dateLancement;
+}
+
+QString Satellite::getCategorieOrbite() const
+{
+    return _categorieOrbite;
+}
+
+QString Satellite::getPays() const
+{
+    return _pays;
 }
 
 ElementsOsculateurs Satellite::getElements() const
