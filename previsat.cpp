@@ -4515,15 +4515,12 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         int sgn;
         if (!ui->modeManuel->isChecked())
             ui->modeManuel->setChecked(true);
-        if (event->key() == Qt::Key_F11)
-            sgn = -1;
-        if (event->key() == Qt::Key_F12)
-            sgn = 1;
+        const int sgn = (event->key() == Qt::Key_F11) ? -1 : 1;
 
-        double jd = dateCourante.getJourJulien();
-        jd = (ui->valManuel->currentIndex() < 3) ? jd + sgn * ui->pasManuel->currentText().toDouble() *
-                                                   qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
-                                                   jd + sgn * ui->pasManuel->currentText().toDouble();
+        const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.getJourJulien() +
+                                                                sgn * ui->pasManuel->currentText().toDouble() *
+                                                                qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
+                                                                dateCourante.getJourJulien() + sgn * ui->pasManuel->currentText().toDouble();
 
         const Date date = Date(jd + EPS_DATES, 0.);
 
