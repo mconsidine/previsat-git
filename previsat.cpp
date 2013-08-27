@@ -6496,9 +6496,10 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
 
     /* Corps de la methode */
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
+    const QString categorie = ui->fichiersObs->currentItem()->text();
     QString msg = tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?");
-    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(ui->fichiersObs->currentItem()->text()),
-                                          QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(categorie), QMessageBox::Yes | QMessageBox::No,
+                                          QMessageBox::No);
 
     if (res == QMessageBox::No) {
         messagesStatut->setText("");
@@ -6509,7 +6510,7 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
         InitFicObs(false);
         ui->fichiersObs->setCurrentRow(0);
         msg = tr("La catégorie \"%1\" a été supprimée");
-        messagesStatut->setText(msg.arg(ui->fichiersObs->currentItem()->text()));
+        messagesStatut->setText(msg.arg(categorie));
     }
 
     /* Retour */
