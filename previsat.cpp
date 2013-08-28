@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2013
+ * >    28 aout 2013
  *
  */
 
@@ -117,7 +117,8 @@ static QString nor;
 static QVector<bool> bipSat;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
-static QStringList liste;
+static QString liste;
+static QStringList listeTLE;
 static QStringList ficTLE;
 static QStringList ficTLEIri;
 static QStringList ficTLETransit;
@@ -331,13 +332,22 @@ void PreviSat::ChargementConfig()
     l2 = settings.value("TLE/l2", "").toString();
 
     nbSat = settings.value("TLE/nbsat", 2).toInt();
-    liste = settings.value("TLE/liste", "25544&20580").toString().split("&");
+    liste = settings.value("TLE/liste", "visual.txt#25544&20580").toString();
 
     // Affichage des champs par defaut
     ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
     nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
+
+    QStringListIterator it(liste.split("$"));
+    while (it.hasNext()) {
+        const QString ficTLEs = it.next();
+        if (nomfic.contains(dirTle)) {
+            if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0))
+                listeTLE = ficTLEs.split("#").at(1).split("&");
+        }
+    }
 
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
@@ -627,11 +637,11 @@ void PreviSat::ChargementTLE()
             TLE::VerifieFichier(nomfic, true);
 
             // Lecture du fichier
-            TLE::LectureFichier(nomfic, liste, tles);
+            TLE::LectureFichier(nomfic, listeTLE, tles);
 
             // Mise a jour de la liste de satellites
             int i = 0;
-            liste.clear();
+            listeTLE.clear();
             bipSat.clear();
             QVectorIterator<TLE> it2(tles);
             while (it2.hasNext()) {
@@ -639,7 +649,7 @@ void PreviSat::ChargementTLE()
                 if (tle.getNorad().isEmpty()) {
                     tles.remove(i);
                 } else {
-                    liste.append(tles.at(i).getNorad());
+                    listeTLE.append(tles.at(i).getNorad());
                     bipSat.append(false);
                     i++;
                 }
@@ -653,20 +663,20 @@ void PreviSat::ChargementTLE()
 
                 // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites
                 // contenus dans le fichier)
-                AfficherListeSatellites(nomfic, liste);
+                AfficherListeSatellites(nomfic, listeTLE);
                 l1 = "";
                 l2 = "";
             } else {
-                AfficherListeSatellites(nomfic, liste);
+                AfficherListeSatellites(nomfic, listeTLE);
             }
 
             // Recuperation des donnees satellites
-            Satellite::LectureDonnees(liste, tles, satellites);
+            Satellite::LectureDonnees(listeTLE, tles, satellites);
 
         } else {
             nbSat = 0;
             tles.clear();
-            liste.clear();
+            listeTLE.clear();
             bipSat.clear();
             l1 = "";
             l2 = "";
@@ -1960,7 +1970,7 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la zone de visibilite des satellites
         if (nbSat > 0) {
             if (ui->affvisib->isChecked()) {
-                const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : liste.size();
+                const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
                 crayon = QPen(Qt::white);
                 for(int isat=0; isat<nbMax2; isat++) {
@@ -2919,7 +2929,7 @@ void PreviSat::MajWebTLE()
     while (it.hasNext()) {
         const QStringList ligne = it.next().split("#");
         QString adresse = ligne.at(0).split("@").at(1);
-        const QStringList listeTLE = ligne.at(1).split(",");
+        const QStringList listeTLEs = ligne.at(1).split(",");
 
         if (adresse.contains("celestrak"))
             adresse = adresseCelestrakNorad;
@@ -2928,7 +2938,7 @@ void PreviSat::MajWebTLE()
         if (!adresse.endsWith("/"))
             adresse.append("/");
 
-        foreach(QString file, listeTLE) {
+        foreach(QString file, listeTLEs) {
 
             const QString ficMaj = adresse + file;
             const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
@@ -3230,6 +3240,19 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
         if (QDir::convertSeparators(fi.absolutePath()) == dirTle) {
             ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(QDir::convertSeparators(fi.filePath())));
+
+            QStringListIterator it(liste.split("$"));
+            while (it.hasNext()) {
+
+                const QString ficTLEs = it.next();
+                if (nomfic.contains(dirTle)) {
+                    if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0)) {
+                        listeTLE = ficTLEs.split("#").at(1).split("&");
+                        nbSat = listeTLE.count();
+                        Satellite::initCalcul = false;
+                    }
+                }
+            }
         } else {
             if (!ficTLE.contains(fi.absoluteFilePath())) {
                 if (ui->listeFichiersTLE->itemText(0).isEmpty()) {
@@ -3243,18 +3266,17 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(fi.absoluteFilePath()));
             }
         }
-        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
 
         // Ouverture du fichier TLE
-        AfficherListeSatellites(nomfic, liste);
+        AfficherListeSatellites(nomfic, listeTLE);
 
         // Mise a jour de la liste de satellites selectionnes
         if (nbSat > 0) {
-            nor = liste.at(0);
+            nor = listeTLE.at(0);
             nbSat = getListeItemChecked(ui->liste1);
 
             if (nbSat > 0) {
-                liste.clear();
+                listeTLE.clear();
                 tles.clear();
                 tles.resize(nbSat);
                 bipSat.resize(nbSat);
@@ -3262,15 +3284,15 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 int j = -1;
                 for (int i=0; i<ui->liste1->count(); i++) {
                     if (ui->liste1->item(i)->checkState() == Qt::Checked) {
-                        liste.append(ui->liste1->item(i)->text().split("#").at(1));
-                        if (liste.last() == nor)
-                            j = liste.size() - 1;
+                        listeTLE.append(ui->liste1->item(i)->text().split("#").at(1));
+                        if (listeTLE.last() == nor)
+                            j = listeTLE.size() - 1;
                     }
                 }
 
                 if (j > 0) {
-                    liste[j] = liste[0];
-                    liste[0] = nor;
+                    listeTLE[j] = listeTLE[0];
+                    listeTLE[0] = nor;
                 }
 
                 info = true;
@@ -3281,12 +3303,12 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 if (nbSat == 0) {
                     l1 = "";
                     l2 = "";
-                    liste.clear();
+                    listeTLE.clear();
                 }
 
                 Satellite::initCalcul = false;
 
-                Satellite::LectureDonnees(liste, tles, satellites);
+                Satellite::LectureDonnees(listeTLE, tles, satellites);
 
                 CalculsAffichage();
 
@@ -3302,7 +3324,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
             ui->liste1->setCurrentRow(0);
             l1 = "";
             l2 = "";
-            liste.clear();
+            listeTLE.clear();
 
             // Enchainement de l'ensemble des calculs
             EnchainementCalculs();
@@ -3313,6 +3335,8 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
             //Affichage des elements sur la carte du monde et le radar
             AffichageCourbes();
         }
+        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
+
     } catch (PreviSatException &e) {
         messagesStatut->setText("");
         throw PreviSatException();
@@ -3322,7 +3346,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
     return;
 }
 
-void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLE)
+void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLEs)
 {
     /* Declarations des variables locales */
 
@@ -3331,10 +3355,10 @@ void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comb
     /* Corps de la methode */
     try {
         const QFileInfo fi(fichier);
-        if (listeFicTLE.contains(QDir::convertSeparators(fi.absoluteFilePath()))) {
-            comboBox->setCurrentIndex(listeFicTLE.indexOf(QDir::convertSeparators(fi.filePath())));
+        if (listeFicTLEs.contains(QDir::convertSeparators(fi.absoluteFilePath()))) {
+            comboBox->setCurrentIndex(listeFicTLEs.indexOf(QDir::convertSeparators(fi.filePath())));
         } else {
-            listeFicTLE.append(QDir::convertSeparators(fi.absoluteFilePath()));
+            listeFicTLEs.append(QDir::convertSeparators(fi.absoluteFilePath()));
             if (comboBox->itemText(0).isEmpty()) {
                 comboBox->setItemText(0, fi.fileName());
             } else {
@@ -3815,19 +3839,19 @@ void PreviSat::EcritureListeRegistre() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QString listeTLE = "";
+    QString listeTLEs = "";
 
     /* Corps de la methode */
     try {
-        if (liste.length() > 0)
-            listeTLE = liste.at(0);
+        if (listeTLE.length() > 0)
+            listeTLEs = listeTLE.at(0);
         if (nbSat > 0) {
 
             for (int i=1; i<nbSat; i++)
-                listeTLE.append("&").append(liste.at(i));
+                listeTLEs.append("&").append(listeTLE.at(i));
 
             // Recuperation des TLE de la liste
-            TLE::LectureFichier(nomfic, liste, tles);
+            TLE::LectureFichier(nomfic, listeTLE, tles);
             for (int i=0; i<nbSat; i++)
                 if (tles.at(i).getNorad().isEmpty())
                     throw PreviSatException();
@@ -3836,7 +3860,7 @@ void PreviSat::EcritureListeRegistre() const
             l2 = tles.at(0).getLigne2();
 
             // Recuperation des donnees satellites
-            Satellite::LectureDonnees(liste, tles, satellites);
+            Satellite::LectureDonnees(listeTLE, tles, satellites);
 
             if (tles.at(0).getNom().isEmpty())
                 settings.setValue("TLE/nom", nom);
@@ -3846,22 +3870,39 @@ void PreviSat::EcritureListeRegistre() const
             settings.setValue("TLE/l1", tles.at(0).getLigne1());
             settings.setValue("TLE/l2", tles.at(0).getLigne2());
             settings.setValue("TLE/nbsat", nbSat);
-            settings.setValue("TLE/liste", listeTLE);
 
+            QStringListIterator it(liste.split("$"));
+            while (it.hasNext()) {
+
+                const QString ficTle = it.next();
+                if (nomfic.contains(dirTle)) {
+
+                    const QString fic = nomfic.mid(nomfic.lastIndexOf(QDir::separator())+1);
+                    if (nomfic == dirTle + QDir::separator() + ficTle.split("#").at(0)) {
+                        const int ind1 = liste.indexOf(fic);
+                        const int ind2 = (liste.indexOf("$", ind1) == -1) ? liste.length() : liste.indexOf("$", ind1) - ind1;
+                        liste = liste.replace(ind1, ind2, fic + "#" + listeTLEs);
+                    } else {
+                        if (!liste.contains(fic))
+                            liste.append("$" + fic + "#" + listeTLEs);
+                    }
+                }
+            }
+            settings.setValue("TLE/liste", liste);
         }
     } catch (PreviSatException &e) {
 
         try {
             TLE::VerifieFichier(nomfic, true);
 
-            AfficherListeSatellites(nomfic, liste);
+            AfficherListeSatellites(nomfic, listeTLE);
             nbSat = getListeItemChecked(ui->liste1);
 
-            nor = liste.at(0);
+            nor = listeTLE.at(0);
 
             int j = 0, k = 0;
             tles.clear();
-            liste.clear();
+            listeTLE.clear();
             tles.resize(nbSat);
             bipSat.resize(nbSat);
 
@@ -3872,17 +3913,17 @@ void PreviSat::EcritureListeRegistre() const
 
             for (int i=0; i<nbSat; i++) {
                 if (ui->liste1->item(i)->checkState() == Qt::Checked) {
-                    liste[k] = ui->liste1->item(i)->text().split("#").at(1);
-                    if (nor == liste.at(k))
+                    listeTLE[k] = ui->liste1->item(i)->text().split("#").at(1);
+                    if (nor == listeTLE.at(k))
                         j = k;
                     k++;
                 }
             }
             if (j > 0) {
-                liste[j] = liste.at(0);
-                liste[0] = nor;
+                listeTLE[j] = listeTLE.at(0);
+                listeTLE[0] = nor;
             }
-            TLE::LectureFichier(nomfic, liste, tles);
+            TLE::LectureFichier(nomfic, listeTLE, tles);
 
         } catch (PreviSatException &ex) {
         }
@@ -4176,14 +4217,14 @@ void PreviSat::FinEnregistrementFichier()
                     } else {
 
                         // Recuperation des TLE de la liste
-                        TLE::LectureFichier(nomfic, liste, tles);
+                        TLE::LectureFichier(nomfic, listeTLE, tles);
 
                         info = true;
                         acalcAOS = true;
                         Satellite::initCalcul = false;
-                        Satellite::LectureDonnees(liste, tles, satellites);
+                        Satellite::LectureDonnees(listeTLE, tles, satellites);
 
-                        AfficherListeSatellites(nomfic, liste);
+                        AfficherListeSatellites(nomfic, listeTLE);
 
                         CalculsAffichage();
                     }
@@ -4223,14 +4264,14 @@ void PreviSat::FinEnregistrementFichier()
                     } else {
 
                         // Recuperation des TLE de la liste
-                        TLE::LectureFichier(nomfic, liste, tles);
+                        TLE::LectureFichier(nomfic, listeTLE, tles);
 
                         info = true;
                         acalcAOS = true;
                         Satellite::initCalcul = false;
-                        Satellite::LectureDonnees(liste, tles, satellites);
+                        Satellite::LectureDonnees(listeTLE, tles, satellites);
 
-                        AfficherListeSatellites(nomfic, liste);
+                        AfficherListeSatellites(nomfic, listeTLE);
 
                         CalculsAffichage();
                     }
@@ -4565,9 +4606,9 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 
                 // Le curseur est au-dessus d'un satellite
                 if (dt <= 16) {
-                    const QString norad = liste.at(isat);
-                    liste[isat] = liste.at(0);
-                    liste[0] = norad;
+                    const QString norad = listeTLE.at(isat);
+                    listeTLE[isat] = listeTLE.at(0);
+                    listeTLE[0] = norad;
 
                     bool bip = bipSat.at(isat);
                     bipSat[isat] = bipSat.at(0);
@@ -4615,9 +4656,9 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 
                     // Le curseur est au dessus d'un satellite
                     if (dt <= 16) {
-                        const QString norad = liste.at(isat);
-                        liste[isat] = liste.at(0);
-                        liste[0] = norad;
+                        const QString norad = listeTLE.at(isat);
+                        listeTLE[isat] = listeTLE.at(0);
+                        listeTLE[0] = norad;
 
                         const bool bip = bipSat.at(isat);
                         bipSat[isat] = bipSat.at(0);
@@ -4663,9 +4704,9 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                     const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
                     if (dt <= 16) {
-                        const QString norad = liste.at(isat);
-                        liste[isat] = liste.at(0);
-                        liste[0] = norad;
+                        const QString norad = listeTLE.at(isat);
+                        listeTLE[isat] = listeTLE.at(0);
+                        listeTLE[0] = norad;
 
                         const bool bip = bipSat.at(isat);
                         bipSat[isat] = bipSat.at(0);
@@ -5602,7 +5643,7 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
 
     /* Corps de la methode */
     for(int i=0; i<nbSat; i++) {
-        if (liste.at(i) == nor) {
+        if (listeTLE.at(i) == nor) {
             j = i;
             break;
         }
@@ -5610,8 +5651,8 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
 
     // Le satellite selectionne fait deja partie de la liste
     if (j > 0) {
-        liste[j] = liste.at(0);
-        liste[0] = nor;
+        listeTLE[j] = listeTLE.at(0);
+        listeTLE[0] = nor;
         nor = "";
     }
 
@@ -5619,13 +5660,13 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
     if (j == -1) {
 
         nbSat++;
-        liste.append("");
+        listeTLE.append("");
         tles.resize(nbSat);
         bipSat.resize(nbSat);
 
         for(int i=nbSat-1; i>0; i--)
-            liste[i] = liste.at(i-1);
-        liste[0] = nor;
+            listeTLE[i] = listeTLE.at(i-1);
+        listeTLE[0] = nor;
         nor = "";
 
         ui->liste1->setCurrentRow(ind);
@@ -5654,7 +5695,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QStringList listeSat = liste;
+    QStringList listeSat = listeTLE;
     listeSat.sort();
 
     /* Corps de la methode */
@@ -5718,10 +5759,10 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         fichier.open(QIODevice::Append | QIODevice::Text);
         QTextStream flux(&fichier);
 
-        for(int i=0; i<liste.size(); i++) {
+        for(int i=0; i<listeTLE.size(); i++) {
             bool atrouve2 = false;
             for(int j=0; j<nsat; j++) {
-                if (liste.at(i) == tabtle.at(j).getNorad()) {
+                if (listeTLE.at(i) == tabtle.at(j).getNorad()) {
                     atrouve2 = true;
                     break;
                 }
@@ -5786,8 +5827,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         nbSat = 0;
         tles.clear();
         tles.append(TLE(l1, l2));
-        liste.clear();
-        liste.append("");
+        listeTLE.clear();
+        listeTLE.append("");
         bipSat.resize(1);
         l1 = "";
         l2 = "";
@@ -5805,10 +5846,10 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite de la liste
-            for(int i=0; i<liste.size(); i++) {
-                if (ui->liste1->item(ind)->text().split("#").at(1) == liste.at(i)) {
+            for(int i=0; i<listeTLE.size(); i++) {
+                if (ui->liste1->item(ind)->text().split("#").at(1) == listeTLE.at(i)) {
                     ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
-                    liste.removeAt(i);
+                    listeTLE.removeAt(i);
                     tles.remove(i);
                     bipSat.remove(i);
                     ui->liste2->item(ind)->setCheckState(Qt::Unchecked);
@@ -5821,7 +5862,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         } else {
 
             // Ajout d'un satellite dans la liste
-            liste.append(ui->liste1->item(ind)->text().split("#").at(1));
+            listeTLE.append(ui->liste1->item(ind)->text().split("#").at(1));
             nbSat++;
             tles.resize(nbSat);
             bipSat.resize(nbSat);
@@ -7212,8 +7253,8 @@ void PreviSat::on_majMaintenant_clicked()
             if (!adresse.endsWith("/"))
                 adresse.append("/");
 
-            const QStringList listeTLE = ligne.at(2).split(",");
-            foreach(QString file, listeTLE)
+            const QStringList listeTLEs = ligne.at(2).split(",");
+            foreach(QString file, listeTLEs)
                 AjoutFichier(QUrl(adresse + file));
 
             if (downQueue.isEmpty())
@@ -7334,19 +7375,19 @@ void PreviSat::on_mettreAJourTLE_clicked()
         if (nomfic == ui->fichierAMettreAJour->text().trimmed() && aecr) {
 
             // Recuperation des TLE de la liste
-            TLE::LectureFichier(nomfic, liste, tles);
+            TLE::LectureFichier(nomfic, listeTLE, tles);
 
             l1 = tles.at(0).getLigne1();
             l2 = tles.at(0).getLigne2();
 
             if (nbSat > 0) {
 
-                AfficherListeSatellites(nomfic, liste);
+                AfficherListeSatellites(nomfic, listeTLE);
 
                 Satellite::initCalcul = false;
 
                 // Lecture des donnees satellite
-                Satellite::LectureDonnees(liste, tles, satellites);
+                Satellite::LectureDonnees(listeTLE, tles, satellites);
 
                 CalculsAffichage();
             }
@@ -8687,7 +8728,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
 
-        const QStringList listeTLE("25544");
+        const QStringList listeTLEs("25544");
         QVector<TLE> tabtle;
 
         // Verification du fichier TLE
@@ -8698,7 +8739,7 @@ void PreviSat::on_calculsTransit_clicked()
         }
 
         // Lecture du TLE
-        TLE::LectureFichier(fi.absoluteFilePath(), listeTLE, tabtle);
+        TLE::LectureFichier(fi.absoluteFilePath(), listeTLEs, tabtle);
         if (tabtle.at(0).getNorad().isEmpty()) {
             const QString msg = tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");

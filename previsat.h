@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2013
+ * >    28 aout 2013
  *
  */
 
@@ -94,7 +94,7 @@ private:
 
     // Interface
     void OuvertureFichierTLE(const QString &fichier);
-    void AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLE);
+    void AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLEs);
     void SauveOngletGeneral(const QString &fic) const;
     void SauveOngletElementsOsculateurs(const QString &fic) const;
     void SauveOngletInformations(const QString &fic) const;
