@@ -332,7 +332,8 @@ void PreviSat::ChargementConfig()
     l2 = settings.value("TLE/l2", "").toString();
 
     nbSat = settings.value("TLE/nbsat", 2).toInt();
-    liste = settings.value("TLE/liste", "visual.txt#25544&20580").toString();
+    if (!(liste = settings.value("TLE/liste", "visual.txt#25544&20580").toString()).contains("#"))
+        liste = "visual.txt#25544&20580";
 
     // Affichage des champs par defaut
     ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
@@ -343,10 +344,8 @@ void PreviSat::ChargementConfig()
     QStringListIterator it(liste.split("$"));
     while (it.hasNext()) {
         const QString ficTLEs = it.next();
-        if (nomfic.contains(dirTle)) {
-            if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0))
-                listeTLE = ficTLEs.split("#").at(1).split("&");
-        }
+        if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0))
+            listeTLE = ficTLEs.split("#").at(1).split("&");
     }
 
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
@@ -3870,26 +3869,25 @@ void PreviSat::EcritureListeRegistre() const
             settings.setValue("TLE/l1", tles.at(0).getLigne1());
             settings.setValue("TLE/l2", tles.at(0).getLigne2());
             settings.setValue("TLE/nbsat", nbSat);
-
-            QStringListIterator it(liste.split("$"));
-            while (it.hasNext()) {
-
-                const QString ficTle = it.next();
-                if (nomfic.contains(dirTle)) {
-
-                    const QString fic = nomfic.mid(nomfic.lastIndexOf(QDir::separator())+1);
-                    if (nomfic == dirTle + QDir::separator() + ficTle.split("#").at(0)) {
-                        const int ind1 = liste.indexOf(fic);
-                        const int ind2 = (liste.indexOf("$", ind1) == -1) ? liste.length() : liste.indexOf("$", ind1) - ind1;
-                        liste = liste.replace(ind1, ind2, fic + "#" + listeTLEs);
-                    } else {
-                        if (!liste.contains(fic))
-                            liste.append("$" + fic + "#" + listeTLEs);
-                    }
-                }
-            }
-            settings.setValue("TLE/liste", liste);
         }
+
+        QStringListIterator it(liste.split("$"));
+        while (it.hasNext()) {
+
+            const QString ficTle = it.next();
+
+            const QString fic = nomfic.mid(nomfic.lastIndexOf(QDir::separator())+1);
+            if (nomfic == dirTle + QDir::separator() + ficTle.split("#").at(0)) {
+                const int ind1 = liste.indexOf(fic);
+                const int ind2 = (liste.indexOf("$", ind1) == -1) ? liste.length() : liste.indexOf("$", ind1) - ind1;
+                liste = liste.replace(ind1, ind2, fic + "#" + listeTLEs);
+            } else {
+                if (!liste.contains(fic))
+                    liste.append("$" + fic + "#" + listeTLEs);
+            }
+        }
+        settings.setValue("TLE/liste", liste);
+
     } catch (PreviSatException &e) {
 
         try {
