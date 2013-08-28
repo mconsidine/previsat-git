@@ -4512,7 +4512,6 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
     } else if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_F12) {
 
         // Etape precedente/suivante (mode manuel)
-        int sgn;
         if (!ui->modeManuel->isChecked())
             ui->modeManuel->setChecked(true);
         const int sgn = (event->key() == Qt::Key_F11) ? -1 : 1;

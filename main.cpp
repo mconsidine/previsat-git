@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&appTranslator);
 
     // Verification si une instance de PreviSat existe
-    qint64 pid = a.applicationPid();
+    const qint64 pid = a.applicationPid();
     QSharedMemory mem;
     mem.setKey("pid");
     if (!mem.create(sizeof(pid))) {
