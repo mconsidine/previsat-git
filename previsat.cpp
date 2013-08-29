@@ -426,6 +426,7 @@ void PreviSat::ChargementConfig()
         settings.setValue("fichier/sauvegarde", dirOut);
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
+    settings.setValue("fichier/dirHttpAst", "http://astrodpedia.free.fr/");
     settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
@@ -3038,77 +3039,74 @@ void PreviSat::VerifMAJPreviSat()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
+    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", settings.value("fichier/dirHttpAst").toString() + "previsat/Qt/").toString().trimmed();
 
     /* Corps de la methode */
-    if (!dirHttpPrevi.isEmpty()) {
+    const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt");
+    amajDeb = true;
+    amajPrevi = true;
+    dirDwn = dirTmp;
 
-        const QStringList listeFic(QStringList () << "versionPreviSat" << "maj");
-        amajDeb = true;
-        amajPrevi = true;
-        dirDwn = dirTmp;
+    foreach(QString fic, listeFic) {
 
-        foreach(QString fic, listeFic) {
+        QFile fi(dirDwn + QDir::separator() + fic);
+        if (!fi.exists()) {
 
-            QFile fi(dirDwn + QDir::separator() + fic);
-            if (!fi.exists()) {
+            const QString ficMaj = dirHttpPrevi + fic;
+            TelechargementFichier(ficMaj, false);
+        }
 
-                const QString ficMaj = dirHttpPrevi + fic;
-                TelechargementFichier(ficMaj, false);
-            }
+        QString ligne;
+        if (fi.exists()) {
 
-            QString ligne;
-            if (fi.exists()) {
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            ligne = flux.readLine();
+            fi.close();
+        }
 
-                fi.open(QIODevice::ReadOnly | QIODevice::Text);
-                QTextStream flux(&fi);
-                ligne = flux.readLine();
-                fi.close();
-            }
+        if (!ligne.isEmpty()) {
 
-            if (!ligne.isEmpty()) {
+            bool anew = false;
+            if (fic == "versionPreviSat") {
 
-                bool anew = false;
-                if (fic == "versionPreviSat") {
+                const QStringList newVersion = ligne.split(".");
+                const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
 
-                    const QStringList newVersion = ligne.split(".");
-                    const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
-
-                    for(int i=0; i<oldVersion.count()-1; i++) {
-                        if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
-                            anew = true;
-                    }
-                    if (anew)
-                        MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de PreviSat");
-                    else
-                        ui->actionTelecharger_la_mise_a_jour->setVisible(false);
-
-                } else if (fic == "maj") {
-
-                    const int an = ligne.mid(0, 4).toInt();
-                    const int mo = ligne.mid(5, 2).toInt();
-                    const int jo = ligne.mid(8, 2).toInt();
-
-                    const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
-
-                    const QStringList fichiers(QStringList () << "donnees.sat" << "iridium.sts");
-                    dirDwn = dirDat;
-
-                    for(int i=0; i<fichiers.size(); i++) {
-
-                        const QString fich = dirDat + QDir::separator() + fichiers.at(i);
-                        const QFileInfo fi2(fich);
-
-                        if (fi2.lastModified() < dateHttp)
-                            anew = true;
-                    }
-                    if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible())
-                        MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, "des fichiers internes");
-                    else
-                        ui->actionMettre_jour_fichiers_internes->setVisible(false);
-
-                } else {
+                for(int i=0; i<oldVersion.count()-1; i++) {
+                    if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
+                        anew = true;
                 }
+                if (anew)
+                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de PreviSat");
+                else
+                    ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+
+            } else if (fic == "majFicInt") {
+
+                const int an = ligne.mid(0, 4).toInt();
+                const int mo = ligne.mid(5, 2).toInt();
+                const int jo = ligne.mid(8, 2).toInt();
+
+                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+
+                const QStringList fichiers(QStringList () << "donnees.sat" << "iridium.sts");
+                dirDwn = dirDat;
+
+                for(int i=0; i<fichiers.size(); i++) {
+
+                    const QString fich = dirDat + QDir::separator() + fichiers.at(i);
+                    const QFileInfo fi2(fich);
+
+                    if (fi2.lastModified() < dateHttp)
+                        anew = true;
+                }
+                if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible())
+                    MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, "des fichiers internes");
+                else
+                    ui->actionMettre_jour_fichiers_internes->setVisible(false);
+
+            } else {
             }
         }
     }
@@ -4324,7 +4322,8 @@ void PreviSat::closeEvent(QCloseEvent *)
     const QDir di = QDir(dirTmp);
     if (di.entryList(QDir::Files).count() > 0) {
         foreach(QString fic, di.entryList(QDir::Files)) {
-            if (fic != "versionPreviSat" && fic != "maj") {
+            if (ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) {
+            } else {
                 QFile fi(dirTmp + QDir::separator() + fic);
                 fi.remove();
             }
@@ -5563,7 +5562,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
         TelechargementFichier(ficMaj, false);
     }
 
-    QFile fi(dirTmp + QDir::separator() + "maj");
+    QFile fi(dirTmp + QDir::separator() + "majFicInt");
     if (fi.exists())
         fi.remove();
     ui->actionMettre_jour_fichiers_internes->setVisible(false);
