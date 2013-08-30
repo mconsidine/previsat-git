@@ -347,6 +347,8 @@ void PreviSat::ChargementConfig()
         if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0))
             listeTLE = ficTLEs.split("#").at(1).split("&");
     }
+    if (listeTLE.isEmpty())
+        listeTLE = liste.split("#").at(1).split("&");
 
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
