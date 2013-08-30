@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    30 aout 2013
  *
  */
 
@@ -67,6 +67,7 @@ public:
     Date ToLocalDate() const;
     Date ToLocalDate(const double offsetUTC) const;
     QString ToShortDate(const DateFormat &format) const;
+    QString ToShortDateChrono(const DateFormat &format) const;
     QString ToLongDate() const;
 
     /* Accesseurs */

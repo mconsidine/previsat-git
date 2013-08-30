@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    30 aout 2013
  *
  */
 
@@ -276,6 +276,26 @@ Date Date::ToLocalDate(const double offsetUTC) const
 }
 
 QString Date::ToShortDate(const DateFormat &format) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(0, 0, 0));
+    const int fmt = (format == COURT) ? 0 : 1;
+    const double tmp = floor(_jourJulien);
+    const QString chaine = " %1:%2:%3";
+
+    /* Corps de la methode */
+    const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    Date date2 = Date(jjsec, _offsetUTC);
+    const QString res = date.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(date2._heure, 2, 10, QChar('0')).
+                        arg(date2._minutes, 2, 10, QChar('0')).arg(date2._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0'));
+
+    /* Retour */
+    return (res);
+}
+
+QString Date::ToShortDateChrono(const DateFormat &format) const
 {
     /* Declarations des variables locales */
     QString res;
