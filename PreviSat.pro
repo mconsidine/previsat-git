@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    28 aout 2013
+# >    30 aout 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.2
-VERSION = 3.2.0.3
+VERSION = 3.2.0.5
 ZLIB_DIR = zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------

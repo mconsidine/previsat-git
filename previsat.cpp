@@ -309,9 +309,9 @@ void PreviSat::ChargementConfig()
     }
 
     // Verification de la presence des fichiers du repertoire data
-    const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" <<
-                              "constlines.cst" << "donnees.sat" << "etoiles.str" << "gestionnaireTLE.gst" <<
-                              "iridium.sts");
+    const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
+                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts");
+
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
@@ -485,6 +485,32 @@ void PreviSat::ChargementConfig()
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setVisible(false);
     ui->annulerIri->setVisible(false);
+    ui->statutIridium->setColumnWidth(0, 80);
+    ui->statutIridium->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+
+    // Affichage du statut des satellites Iridium
+    QStringList tabStsIri;
+    const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
+    Iridium::LectureStatutIridium(ope, tabStsIri);
+
+    for(int i=0; i<tabStsIri.count(); i++) {
+
+        const QString item = tabStsIri.at(i);
+        ui->statutIridium->insertRow(i);
+        ui->statutIridium->setRowHeight(i, 16);
+
+        QTableWidgetItem * const item2 = new QTableWidgetItem("Iridium " + item.mid(0, 4).trimmed());
+        QTableWidgetItem * const item3 = new QTableWidgetItem;
+        QColor sts;
+        sts.setNamedColor((tabStsIri.at(i).contains("T")) ? "red" : ((tabStsIri.at(i).contains("?")) ? "orange" : "green"));
+        item3->setBackgroundColor(sts);
+        item3->setToolTip((tabStsIri.at(i).contains("T")) ? tr("Satellite non opérationnel") :
+                                                            ((tabStsIri.at(i).contains("?")) ? tr("Satellite de réserve") :
+                                                                                              tr("Satellite opérationnel")));
+        ui->statutIridium->setItem(i, 0, item2);
+        ui->statutIridium->setItem(i, 1, item3);
+    }
+    ui->statutIridium->sortItems(0);
 
     ui->coordonnees->setVisible(false);
     ui->nouveauLieu->setVisible(false);
@@ -2782,6 +2808,48 @@ bool PreviSat::CalculAOS() const
     return (res);
 }
 
+void PreviSat::CalculAgeTLETransitISS() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const int nbt = TLE::VerifieFichier(ficTLETransit.at(ui->fichierTLETransit->currentIndex()), false);
+
+    /* Corps de la methode */
+
+    if (nbt > 0) {
+
+        // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
+        const QStringList iss("25544");
+        QVector<TLE> tleISS;
+        TLE::LectureFichier(ficTLETransit.at(ui->fichierTLETransit->currentIndex()), iss, tleISS);
+        const double ageISS = dateCourante.getJourJulienUTC() - tleISS.at(0).getEpoque().getJourJulienUTC();
+
+        const QString chaine = tr("%1 jours");
+        QBrush brush;
+        QPalette palette;
+        brush.setStyle(Qt::SolidPattern);
+
+        // Indicateur de l'age du TLE
+        if (fabs(ageISS) > 15.) {
+            brush.setColor(Qt::red);
+        } else if (fabs(ageISS) > 10.) {
+            brush.setColor(QColor("orange"));
+        } else if (fabs(ageISS) > 5.) {
+            brush.setColor(Qt::darkYellow);
+        } else {
+            brush.setColor(QColor("forestgreen"));
+        }
+
+        palette.setBrush(QPalette::WindowText, brush);
+        ui->ageTLETransit->setPalette(palette);
+        ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Enchainement des calculs
@@ -4330,6 +4398,7 @@ void PreviSat::closeEvent(QCloseEvent *)
     if (di.entryList(QDir::Files).count() > 0) {
         foreach(QString fic, di.entryList(QDir::Files)) {
             if (ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) {
+                continue;
             } else {
                 QFile fi(dirTmp + QDir::separator() + fic);
                 fi.remove();
@@ -7178,6 +7247,8 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
         ui->afficherTransit->setDefault(false);
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
+
+        CalculAgeTLETransitISS();
     }
 
     /* Retour */
@@ -7208,6 +7279,8 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
         ui->afficherTransit->setDefault(false);
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
+
+        CalculAgeTLETransitISS();
 
     } else {
     }
@@ -8243,14 +8316,20 @@ void PreviSat::on_calculsIri_clicked()
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
         if (nb == 0)
             throw PreviSatException(tr("IRIDIUM : Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite Iridium susceptible de produire des flashs dans le fichier" \
-                                       " de statut"), WARNING);
+                                       "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), WARNING);
 
         // Creation de la liste de satellites
+        int i = 0;
         QStringList listeSatellites;
         QStringListIterator it1(tabStsIri);
         while (it1.hasNext()) {
-            listeSatellites.append(it1.next().mid(4, 5));
+            const QString item = it1.next();
+            if (item.contains("T") || (item.contains("?") && ope == 'o')) {
+                tabStsIri.removeAt(i);
+            } else {
+                listeSatellites.append(item.mid(4, 5));
+                i++;
+            }
         }
 
         // Verification du fichier TLE
@@ -8265,7 +8344,7 @@ void PreviSat::on_calculsIri_clicked()
         TLE::LectureFichier(fi.absoluteFilePath(), listeSatellites, tabtle);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
-        int i = 0;
+        i = 0;
         listeSatellites.clear();
         QVectorIterator<TLE> it2(tabtle);
         QVector<TLE> tabtle2;
@@ -8611,6 +8690,7 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
             }
             const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
             ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
+            CalculAgeTLETransitISS();
         }
 
     } catch (PreviSatException &e) {

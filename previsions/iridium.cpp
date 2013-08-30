@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    1 juillet 2013
+ * >    30 aout 2013
  *
  */
 
@@ -894,17 +894,14 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
 int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 {
     /* Declarations des variables locales */
-    int i;
-    QString ligne;
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
-    i = 0;
+    int i = 0;
 
     /* Corps de la methode */
     QFile fichier(dirDat + QDir::separator() + "iridium.sts");
@@ -912,16 +909,13 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
     QTextStream flux(&fichier);
 
     while (!flux.atEnd()) {
-
-        ligne = flux.readLine();
+        const QString ligne = flux.readLine();
+        tabStsIri.append(ligne);
         if (ligne.size() == 9) {
-            tabStsIri.append(ligne);
             i++;
         } else {
-            if (ligne.at(10) == '?' && ope == 'n') {
-                tabStsIri.append(ligne);
+            if (ligne.at(10) == '?' && ope == 'n')
                 i++;
-            }
         }
     }
     fichier.close();
