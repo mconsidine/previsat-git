@@ -6098,9 +6098,9 @@
            <widget class="QPushButton" name="afficherIri">
             <property name="geometry">
              <rect>
-              <x>670</x>
+              <x>673</x>
               <y>180</y>
-              <width>91</width>
+              <width>78</width>
               <height>23</height>
              </rect>
             </property>
@@ -6111,9 +6111,9 @@
            <widget class="QPushButton" name="calculsIri">
             <property name="geometry">
              <rect>
-              <x>570</x>
+              <x>590</x>
               <y>180</y>
-              <width>91</width>
+              <width>78</width>
               <height>23</height>
              </rect>
             </property>
@@ -6127,9 +6127,9 @@
            <widget class="QPushButton" name="annulerIri">
             <property name="geometry">
              <rect>
-              <x>670</x>
+              <x>673</x>
               <y>180</y>
-              <width>91</width>
+              <width>78</width>
               <height>23</height>
              </rect>
             </property>
@@ -6179,8 +6179,8 @@
             <property name="geometry">
              <rect>
               <x>590</x>
-              <y>20</y>
-              <width>151</width>
+              <y>10</y>
+              <width>161</width>
               <height>23</height>
              </rect>
             </property>
@@ -6200,6 +6200,38 @@
             <property name="mouseTracking">
              <bool>true</bool>
             </property>
+           </widget>
+           <widget class="QTableWidget" name="statutIridium">
+            <property name="geometry">
+             <rect>
+              <x>590</x>
+              <y>40</y>
+              <width>161</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Satellite</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Statut</string>
+             </property>
+            </column>
            </widget>
            <zorder>annulerIri</zorder>
            <zorder>lbl_dateInitialeIri</zorder>
@@ -6229,6 +6261,7 @@
            <zorder>valHauteurSatIri</zorder>
            <zorder>parametrageDefautIri</zorder>
            <zorder>fichierTLEIri</zorder>
+           <zorder>statutIridium</zorder>
           </widget>
           <widget class="QWidget" name="options">
            <property name="mouseTracking">
@@ -9082,7 +9115,7 @@
                <string>Fichier TLE :</string>
               </property>
              </widget>
-             <widget class="QLabel" name="lbl_ageTLETransit">
+             <widget class="QLabel" name="lbl_ageMaxTLETransit">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -9344,6 +9377,35 @@
               </property>
               <property name="sizeAdjustPolicy">
                <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ageTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>240</x>
+                <y>92</y>
+                <width>65</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Age du TLE : </string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ageTLETransit">
+              <property name="geometry">
+               <rect>
+                <x>306</x>
+                <y>92</y>
+                <width>70</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>-360.3 jours</string>
               </property>
              </widget>
             </widget>

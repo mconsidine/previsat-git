@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 aout 2013
+ * >    30 aout 2013
  *
  */
 
@@ -84,6 +84,7 @@ private:
 
     // Calculs
     bool CalculAOS() const;
+    void CalculAgeTLETransitISS() const;
     void EnchainementCalculs() const;
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
