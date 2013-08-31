@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 aout 2013
+ * >    31 aout 2013
  *
  */
 
@@ -123,6 +123,7 @@ static QStringList ficTLE;
 static QStringList ficTLEIri;
 static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
+static QStringList tabStatutIridium;
 
 static QString ficRes;
 
@@ -489,23 +490,22 @@ void PreviSat::ChargementConfig()
     ui->statutIridium->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 
     // Affichage du statut des satellites Iridium
-    QStringList tabStsIri;
     const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
-    Iridium::LectureStatutIridium(ope, tabStsIri);
+    Iridium::LectureStatutIridium(ope, tabStatutIridium);
 
-    for(int i=0; i<tabStsIri.count(); i++) {
+    for(int i=0; i<tabStatutIridium.count(); i++) {
 
-        const QString item = tabStsIri.at(i);
+        const QString item = tabStatutIridium.at(i);
         ui->statutIridium->insertRow(i);
         ui->statutIridium->setRowHeight(i, 16);
 
         QTableWidgetItem * const item2 = new QTableWidgetItem("Iridium " + item.mid(0, 4).trimmed());
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
-        sts.setNamedColor((tabStsIri.at(i).contains("T")) ? "red" : ((tabStsIri.at(i).contains("?")) ? "orange" : "green"));
+        sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" : "green"));
         item3->setBackgroundColor(sts);
-        item3->setToolTip((tabStsIri.at(i).contains("T")) ? tr("Satellite non opérationnel") :
-                                                            ((tabStsIri.at(i).contains("?")) ? tr("Satellite de réserve") :
+        item3->setToolTip((tabStatutIridium.at(i).contains("T")) ? tr("Satellite non opérationnel") :
+                                                            ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de réserve") :
                                                                                               tr("Satellite opérationnel")));
         ui->statutIridium->setItem(i, 0, item2);
         ui->statutIridium->setItem(i, 1, item3);
@@ -1229,8 +1229,16 @@ void PreviSat::AffichageDonnees()
                         ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
                     } else {
                         chaine = tr("Magnitude (Illumination) : %1%2");
-                        chaine = chaine.arg((satellites.at(0).getMagnitude() >= 0.) ? "+" : "-").
-                                arg(fabs(satellites.at(0).getMagnitude()), 0, 'f', 1);
+                        double magnitude = satellites.at(0).getMagnitude();
+
+                        // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
+                        if (tabStatutIridium.join("").contains(satellites.at(0).getTle().getNorad())) {
+                            const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
+                                                                               satellites.at(0), soleil, observateurs.at(0));
+                            magnitude = qMin(magnitude, mag);
+                        }
+
+                        chaine = chaine.arg((magnitude >= 0.) ? "+" : "-").arg(fabs(magnitude), 0, 'f', 1);
                         if (satellites.at(0).isPenombre())
                             chaine = chaine.append("*");
                         chaine = chaine.append((" (%1%)"));

@@ -6100,7 +6100,7 @@
              <rect>
               <x>673</x>
               <y>180</y>
-              <width>78</width>
+              <width>79</width>
               <height>23</height>
              </rect>
             </property>
@@ -6111,9 +6111,9 @@
            <widget class="QPushButton" name="calculsIri">
             <property name="geometry">
              <rect>
-              <x>590</x>
+              <x>589</x>
               <y>180</y>
-              <width>78</width>
+              <width>79</width>
               <height>23</height>
              </rect>
             </property>
@@ -6129,7 +6129,7 @@
              <rect>
               <x>673</x>
               <y>180</y>
-              <width>78</width>
+              <width>79</width>
               <height>23</height>
              </rect>
             </property>
