@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    30 aout 2013
+ * >    31 aout 2013
  *
  */
 
@@ -276,6 +276,22 @@ void Iridium::FinTraitement()
     tabtle.clear();
     sats.clear();
     tabEphem.clear();
+}
+
+double Iridium::CalculMagnitudeIridium(const bool extinction, const Satellite &satellite, const Soleil &soleil,
+                                       const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _pan = -1;
+    Satellite sat = satellite;
+
+    /* Corps de la methode */
+    const double angRef = AngleReflexion(satellite, soleil);
+
+    /* Retour */
+    return (MagnitudeFlash(extinction, angRef, observateur, soleil, sat));
 }
 
 /*
