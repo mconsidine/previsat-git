@@ -9382,7 +9382,7 @@
              <widget class="QLabel" name="lbl_ageTLETransit">
               <property name="geometry">
                <rect>
-                <x>240</x>
+                <x>234</x>
                 <y>92</y>
                 <width>65</width>
                 <height>16</height>
@@ -9395,7 +9395,7 @@
              <widget class="QLabel" name="ageTLETransit">
               <property name="geometry">
                <rect>
-                <x>306</x>
+                <x>300</x>
                 <y>92</y>
                 <width>70</width>
                 <height>16</height>
