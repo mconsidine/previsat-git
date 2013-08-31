@@ -5469,6 +5469,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->magnitudeMaxJourIri->setPalette(palList);
     ui->magnitudeMaxNuitIri->setPalette(palList);
     ui->angleMaxReflexionIri->setPalette(palList);
+    ui->statutIridium->setPalette(palList);
 
     ui->fichiersObs->setPalette(palList);
     ui->lieuxObs->setPalette(palList);
