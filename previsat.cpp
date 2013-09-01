@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 aout 2013
+ * >    1er septembre 2013
  *
  */
 
@@ -504,9 +504,9 @@ void PreviSat::ChargementConfig()
         QColor sts;
         sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" : "green"));
         item3->setBackgroundColor(sts);
-        item3->setToolTip((tabStatutIridium.at(i).contains("T")) ? tr("Satellite non opérationnel") :
-                                                            ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de réserve") :
-                                                                                              tr("Satellite opérationnel")));
+        item3->setToolTip((tabStatutIridium.at(i).contains("T")) ?
+                              tr("Satellite non opérationnel") :
+                              ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de réserve") : tr("Satellite opérationnel")));
         ui->statutIridium->setItem(i, 0, item2);
         ui->statutIridium->setItem(i, 1, item3);
     }
@@ -687,7 +687,7 @@ void PreviSat::ChargementTLE()
             if (nbSat == 0) {
 
                 if (!l1.isEmpty() && !l2.isEmpty())
-                    tles.append(TLE(l1, l2));
+                    tles.append(TLE(nom, l1, l2));
 
                 // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites
                 // contenus dans le fichier)
@@ -5908,7 +5908,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         // Remplissage du premier element du tableau de TLE avec le satellite en memoire
         nbSat = 0;
         tles.clear();
-        tles.append(TLE(l1, l2));
+        tles.append(TLE(nom, l1, l2));
         listeTLE.clear();
         listeTLE.append("");
         bipSat.resize(1);

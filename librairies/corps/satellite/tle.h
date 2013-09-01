@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    1er septembre 2013
  *
  */
 
@@ -50,7 +50,7 @@ public:
 
     /* Constructeurs */
     TLE();
-    TLE(const QString &ligne1, const QString &ligne2);
+    TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2);
     ~TLE();
 
     /* Constantes publiques */
@@ -103,6 +103,7 @@ private:
     Date _epoque;
 
     QString _nom;
+    QString _ligne0;
     QString _ligne1;
     QString _ligne2;
     QString _norad;
