@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2013
+ * >    1er septembre 2013
  *
  */
 
@@ -67,7 +67,7 @@ TLE::TLE()
 /*
  * Constructeur a partir des 2 lignes du TLE
  */
-TLE::TLE(const QString &ligne1, const QString &ligne2)
+TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
 {
     /* Declarations des variables locales */
     int an, ibe;
@@ -76,6 +76,7 @@ TLE::TLE(const QString &ligne1, const QString &ligne2)
     /* Initialisations */
 
     /* Corps du constructeur */
+    _ligne0 = ligne0;
     _ligne1 = ligne1;
     _ligne2 = ligne2;
 
@@ -265,7 +266,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     try {
 
         int j;
-        QString nomsat;
+        QString li0, nomsat;
 
         j = 0;
         nomsat = "---";
@@ -308,14 +309,14 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
 
                 if (listeSatellites.size() == 0) {
-                    TLE tle = TLE(li1, li2);
+                    TLE tle = TLE(li0, li1, li2);
                     tle._nom = nomsat.trimmed();
                     tabtle.append(tle);
                 } else {
 
                     for (int i=0; i<listeSatellites.size(); i++) {
                         if (listeSatellites.at(i) == ligne.mid(2, 5)) {
-                            TLE tle = TLE(li1, li2);
+                            TLE tle = TLE(li0, li1, li2);
                             tle._nom = nomsat.trimmed();
                             tabtle.replace(i, tle);
                             j++;
@@ -324,7 +325,8 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     }
                 }
             }
-            nomsat = ligne.trimmed();
+            li0 = ligne.trimmed();
+            nomsat = li0;
         }
         fichier.close();
 
@@ -390,10 +392,8 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         if (norad1 == norad2) {
 
             if (tleOld.at(isat)._epoque.getJourJulienUTC() < tleNew.at(j)._epoque.getJourJulienUTC()) {
-                const QString nomsat =
-                        (tleNew.at(j)._nom == norad2) ? tleOld.at(isat)._nom : tleNew.at(j)._nom;
                 tleOld[isat] = tleNew[j];
-                tleOld[isat]._nom = nomsat;
+                tleOld[isat]._ligne0 = (tleNew.at(j)._nom == norad2) ? tleOld.at(isat)._ligne0 : tleNew.at(j)._ligne0;
                 nbMaj++;
             } else {
                 compteRendu.append(tleOld[isat]._nom + "#" + tleOld[isat]._norad);
@@ -462,7 +462,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         QVectorIterator<TLE> it(tleOld);
         while (it.hasNext()) {
             const TLE tle = it.next();
-            flux << tle._nom << endl;
+            flux << tle._ligne0 << endl;
             flux << tle._ligne1 << endl;
             flux << tle._ligne2 << endl;
         }

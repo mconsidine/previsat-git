@@ -2526,12 +2526,12 @@ The directory containing the observation sites does not exist</translation>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="507"/>
+        <location filename="previsat.cpp" line="508"/>
         <source>Satellite non opérationnel</source>
         <translation>Non-operational satellite</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="508"/>
+        <location filename="previsat.cpp" line="509"/>
         <source>Satellite de réserve</source>
         <translation>Spare satellite</translation>
     </message>
@@ -2964,49 +2964,49 @@ The position of the satellite %1 (NORAD number : %2) can not be calculated (nega
 <context>
     <name>QObject</name>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="194"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="195"/>
         <source>POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>POSITION : The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="199"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="200"/>
         <source>POSITION : Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>POSITION : The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="204"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="205"/>
         <source>POSITION : Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="209"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="210"/>
         <source>POSITION : Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="214"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="215"/>
         <source>POSITION : Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>POSITION : The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="220"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="221"/>
         <source>POSITION : Erreur CheckSum ligne %1 :
 Satellite %2 - numéro NORAD : %3</source>
         <translation>POSITION : CheckSum Error line %1 :
 Satellite %2 - NORAD number : %3</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="225"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="226"/>
         <source>POSITION : Le fichier %1 ne contient aucun satellite ou n&apos;est pas valide</source>
         <translation>POSITION : The file %1 does not contain satellites or is not valid</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="351"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="359"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="353"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="361"/>
         <source>MISE A JOUR : Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>UPDATE : Error occured while loading file
