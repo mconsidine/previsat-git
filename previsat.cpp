@@ -499,7 +499,8 @@ void PreviSat::ChargementConfig()
         ui->statutIridium->insertRow(i);
         ui->statutIridium->setRowHeight(i, 16);
 
-        QTableWidgetItem * const item2 = new QTableWidgetItem("Iridium " + item.mid(0, 4).trimmed());
+        const QString iri = "Iridium %1";
+        QTableWidgetItem * const item2 = new QTableWidgetItem(iri.arg(item.mid(0, 4).toInt(), 2, 10, QChar('0')));
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
         sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" : "green"));
