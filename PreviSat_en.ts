@@ -3317,7 +3317,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="389"/>
         <location filename="previsions/iridium.cpp" line="263"/>
-        <location filename="previsions/prevision.cpp" line="294"/>
+        <location filename="previsions/prevision.cpp" line="295"/>
         <location filename="previsions/transitiss.cpp" line="379"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>

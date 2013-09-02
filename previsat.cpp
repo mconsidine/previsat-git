@@ -433,7 +433,7 @@ void PreviSat::ChargementConfig()
     settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
-    QStyle *style = QApplication::style();
+    QStyle * const style = QApplication::style();
     ui->actionOuvrir_fichier_TLE->setIcon(style->standardIcon(QStyle::SP_DirOpenIcon));
     ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
 
@@ -6644,7 +6644,7 @@ void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    Telecharger *const telecharger = new Telecharger(1);
+    Telecharger * const telecharger = new Telecharger(1);
     telecharger->setWindowModality(Qt::ApplicationModal);
     telecharger->show();
 
