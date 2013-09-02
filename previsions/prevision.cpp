@@ -232,7 +232,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                const QString result(fmt.arg(date2.ToShortDate(COURT)).arg(az).arg(ht).arg(ad).arg(de).
+                                const QString result(fmt.arg(date2.ToShortDateChrono(COURT)).arg(az).arg(ht).arg(ad).arg(de).
                                         arg(sat.getConstellation()).arg(magn).arg(altitude, 8, 'f', 1).
                                         arg(distance, 9, 'f', 1).arg(azs).arg(hts));
 
@@ -251,7 +251,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                             soleil.CalculPosition(date);
                             soleil.CalculCoordHoriz(observateur);
 
-                            if (soleil.getHauteur() > conditions.getCrep()) {
+                            if (soleil.getHauteur() > conditions.getCrep() ||
+                                    date.getJourJulienUTC() > conditions.getJj2() + conditions.getPas0()) {
                                 afin = true;
                             } else {
 
