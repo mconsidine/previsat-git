@@ -853,7 +853,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
     const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-    QString result = fmt.arg(date3.ToShortDate(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
+    QString result = fmt.arg(date3.ToShortDateChrono(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
             arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).
             arg(azs).arg(hts).arg(i);
 
