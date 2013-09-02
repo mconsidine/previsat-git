@@ -3116,7 +3116,7 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="258"/>
+        <location filename="previsions/evenements.cpp" line="192"/>
         <location filename="previsions/iridium.cpp" line="847"/>
         <location filename="previsions/prevision.cpp" line="226"/>
         <location filename="previsions/transitiss.cpp" line="274"/>
@@ -3177,13 +3177,13 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/conditions.cpp" line="333"/>
-        <location filename="previsions/evenements.cpp" line="84"/>
+        <location filename="previsions/evenements.cpp" line="83"/>
         <source>Fuseau horaire            : %1 %2%3</source>
         <translation>Local time - UTC offset    : %1 %2%3</translation>
     </message>
     <message>
         <location filename="previsions/conditions.cpp" line="334"/>
-        <location filename="previsions/evenements.cpp" line="85"/>
+        <location filename="previsions/evenements.cpp" line="84"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
@@ -3194,63 +3194,47 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/conditions.cpp" line="346"/>
-        <location filename="previsions/evenements.cpp" line="88"/>
+        <location filename="previsions/evenements.cpp" line="87"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="136"/>
+        <location filename="previsions/evenements.cpp" line="128"/>
         <source>Noeud Ascendant - PSO = 0°</source>
         <translation>Ascending node - Position = 0°</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="137"/>
+        <location filename="previsions/evenements.cpp" line="129"/>
         <source>Noeud Descendant - PSO = 180°</source>
         <translation>Descending node - Position = 180°</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="148"/>
-        <location filename="previsions/evenements.cpp" line="191"/>
-        <location filename="previsions/evenements.cpp" line="220"/>
-        <location filename="previsions/evenements.cpp" line="264"/>
-        <location filename="previsions/evenements.cpp" line="301"/>
-        <location filename="previsions/evenements.cpp" line="339"/>
+        <location filename="previsions/evenements.cpp" line="198"/>
+        <location filename="previsions/evenements.cpp" line="381"/>
         <location filename="previsions/iridium.cpp" line="884"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="148"/>
-        <location filename="previsions/evenements.cpp" line="191"/>
-        <location filename="previsions/evenements.cpp" line="220"/>
-        <location filename="previsions/evenements.cpp" line="264"/>
-        <location filename="previsions/evenements.cpp" line="301"/>
-        <location filename="previsions/evenements.cpp" line="339"/>
+        <location filename="previsions/evenements.cpp" line="198"/>
+        <location filename="previsions/evenements.cpp" line="381"/>
         <location filename="previsions/iridium.cpp" line="884"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="150"/>
-        <location filename="previsions/evenements.cpp" line="193"/>
-        <location filename="previsions/evenements.cpp" line="222"/>
-        <location filename="previsions/evenements.cpp" line="266"/>
-        <location filename="previsions/evenements.cpp" line="303"/>
-        <location filename="previsions/evenements.cpp" line="341"/>
+        <location filename="previsions/evenements.cpp" line="200"/>
+        <location filename="previsions/evenements.cpp" line="383"/>
         <location filename="previsions/iridium.cpp" line="885"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="150"/>
-        <location filename="previsions/evenements.cpp" line="193"/>
-        <location filename="previsions/evenements.cpp" line="222"/>
-        <location filename="previsions/evenements.cpp" line="266"/>
-        <location filename="previsions/evenements.cpp" line="303"/>
-        <location filename="previsions/evenements.cpp" line="341"/>
+        <location filename="previsions/evenements.cpp" line="200"/>
+        <location filename="previsions/evenements.cpp" line="383"/>
         <location filename="previsions/iridium.cpp" line="885"/>
         <location filename="previsions/transitiss.cpp" line="286"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
@@ -3258,64 +3242,64 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="179"/>
+        <location filename="previsions/evenements.cpp" line="149"/>
         <source>Pénombre -&gt; Ombre</source>
         <translation>Penumbra -&gt; Shadow</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="180"/>
-        <location filename="previsions/evenements.cpp" line="209"/>
+        <location filename="previsions/evenements.cpp" line="149"/>
+        <location filename="previsions/evenements.cpp" line="157"/>
         <source>Ombre -&gt; Pénombre</source>
         <translation>Shadow -&gt; Penumbra</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="210"/>
+        <location filename="previsions/evenements.cpp" line="158"/>
         <source>Pénombre -&gt; Lumière</source>
         <translation>Penumbra -&gt; Light</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="210"/>
+        <location filename="previsions/evenements.cpp" line="158"/>
         <source>Lumière -&gt; Pénombre</source>
         <translation>Light -&gt; Penumbra</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="246"/>
+        <location filename="previsions/evenements.cpp" line="181"/>
         <source>Périgée :</source>
         <translation>Perigee :</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="246"/>
+        <location filename="previsions/evenements.cpp" line="181"/>
         <source>Apogée :</source>
         <translation>Apogee :</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="289"/>
+        <location filename="previsions/evenements.cpp" line="216"/>
         <source>Transition jour -&gt; nuit</source>
         <translation>Day -&gt; Night transition</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="290"/>
+        <location filename="previsions/evenements.cpp" line="217"/>
         <source>Transition nuit -&gt; jour</source>
         <translation>Night -&gt; Day transition</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="342"/>
+        <location filename="previsions/evenements.cpp" line="235"/>
         <source>Passage à PSO =</source>
         <translation>Pass to position =</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="373"/>
+        <location filename="previsions/evenements.cpp" line="265"/>
         <location filename="previsions/prevision.cpp" line="190"/>
         <source>  (numéro NORAD : %1)</source>
         <translation>  (NORAD number : %1)</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="375"/>
+        <location filename="previsions/evenements.cpp" line="267"/>
         <source>   Date     Heure      PSO    Longitude  Latitude  Évènements</source>
         <translation>   Date     Hour     Position Longitude  Latitude  Events</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="389"/>
+        <location filename="previsions/evenements.cpp" line="281"/>
         <location filename="previsions/iridium.cpp" line="263"/>
         <location filename="previsions/prevision.cpp" line="295"/>
         <location filename="previsions/transitiss.cpp" line="379"/>
