@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    27 aout 2013
+ * >    1er septembre 2013
  *
  */
 
@@ -273,7 +273,7 @@ void Telecharger::TelechargementSuivant()
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
 
-            QNetworkRequest requete(url);
+            const QNetworkRequest requete(url);
             rep = mng.get(requete);
             connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
             connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));

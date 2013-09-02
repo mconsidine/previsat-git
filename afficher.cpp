@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    19 janvier 2013
+ * >    1er septembre 2013
  *
  */
 
@@ -58,7 +58,7 @@ Afficher::Afficher(QWidget *parent) :
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
-    QStyle *style = QApplication::style();
+    QStyle * const style = QApplication::style();
     ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
 
     if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
