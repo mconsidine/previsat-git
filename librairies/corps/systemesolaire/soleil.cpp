@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    5 septembre 2013
  *
  */
 
@@ -75,7 +75,7 @@ Soleil::~Soleil()
 void Soleil::CalculPosition(const Date &date)
 {
     /* Declarations des variables locales */
-    double u, u1;
+    double u1;
 
     /* Initialisations */
     const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
@@ -95,7 +95,7 @@ void Soleil::CalculPosition(const Date &date)
     const double ms = ls - lp;
 
     // Resolution de l'equation de Kepler : u = ms + e sin(u)
-    u = ms;
+    double u = ms;
     do {
         u1 = u;
         u = u1 + (ms + e * sin(u1) - u1) / (1. - e * cos(u1));

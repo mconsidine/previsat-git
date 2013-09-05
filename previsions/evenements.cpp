@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    2 septembre 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -61,7 +61,6 @@ static QList<QList<QVector<double > > > tabEphem;
 void Evenements::CalculEvenements(const Conditions &conditions)
 {
     /* Declarations des variables locales */
-    QString ligne;
     QTime tps;
 
     /* Initialisations */
@@ -80,7 +79,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     QTextStream flux(&fichier);
 
     flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl;
-    ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
+    QString ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
             arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), HEURE1, 2, 0, false, false).
                 mid(0, 6)) << endl;
@@ -193,7 +192,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    ligne = fmt.arg(date.ToShortDateChrono(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    ligne = fmt.arg(date.ToShortDateAMJ(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -376,7 +375,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
             Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
 
     // Ecriture de la ligne de resultat
-    const QString ligne = fmt.arg(date.ToShortDateChrono(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).

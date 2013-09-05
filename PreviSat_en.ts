@@ -2964,115 +2964,115 @@ The position of the satellite %1 (NORAD number : %2) can not be calculated (nega
 <context>
     <name>QObject</name>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="195"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="192"/>
         <source>POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>POSITION : The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="200"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="197"/>
         <source>POSITION : Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>POSITION : The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="205"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="202"/>
         <source>POSITION : Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="210"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="207"/>
         <source>POSITION : Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>POSITION : Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="215"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="212"/>
         <source>POSITION : Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>POSITION : The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="221"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="218"/>
         <source>POSITION : Erreur CheckSum ligne %1 :
 Satellite %2 - numéro NORAD : %3</source>
         <translation>POSITION : CheckSum Error line %1 :
 Satellite %2 - NORAD number : %3</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="226"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="223"/>
         <source>POSITION : Le fichier %1 ne contient aucun satellite ou n&apos;est pas valide</source>
         <translation>POSITION : The file %1 does not contain satellites or is not valid</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="353"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="361"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="348"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="357"/>
         <source>MISE A JOUR : Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>UPDATE : Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="411"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="408"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the file to update.
 Do you want to add this TLE in the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="412"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="409"/>
         <source>Ajout du nouveau TLE</source>
         <translation>Addition of the new TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="428"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="425"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the TLE files to read.
 Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="429"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="426"/>
         <source>Suppression du TLE</source>
         <translation>Deletion of the TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="218"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="217"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="221"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="220"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="221"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="220"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="224"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="223"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="224"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="223"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="227"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="226"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="227"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="226"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning decrescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="230"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="229"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>
@@ -3094,213 +3094,213 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="190"/>
+        <location filename="librairies/maths/maths.cpp" line="187"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="191"/>
-        <location filename="previsions/conditions.cpp" line="284"/>
+        <location filename="librairies/maths/maths.cpp" line="188"/>
+        <location filename="previsions/conditions.cpp" line="283"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="192"/>
+        <location filename="librairies/maths/maths.cpp" line="189"/>
         <source>s</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="281"/>
-        <location filename="previsions/conditions.cpp" line="284"/>
+        <location filename="previsions/conditions.cpp" line="280"/>
+        <location filename="previsions/conditions.cpp" line="283"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="192"/>
-        <location filename="previsions/iridium.cpp" line="847"/>
+        <location filename="previsions/evenements.cpp" line="191"/>
+        <location filename="previsions/iridium.cpp" line="845"/>
         <location filename="previsions/prevision.cpp" line="226"/>
         <location filename="previsions/transitiss.cpp" line="274"/>
         <source>mi</source>
         <translation>mi</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="284"/>
+        <location filename="previsions/conditions.cpp" line="283"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="276"/>
+        <location filename="previsions/conditions.cpp" line="275"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="276"/>
+        <location filename="previsions/conditions.cpp" line="275"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="279"/>
+        <location filename="previsions/conditions.cpp" line="278"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="279"/>
+        <location filename="previsions/conditions.cpp" line="278"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="285"/>
+        <location filename="previsions/conditions.cpp" line="284"/>
         <source>Conditions d&apos;observations :</source>
         <translation>Conditions of observations :</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="286"/>
+        <location filename="previsions/conditions.cpp" line="285"/>
         <source>Hauteur minimale du satellite = %1°</source>
         <translation>Minimal elevation of the satellite = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="293"/>
+        <location filename="previsions/conditions.cpp" line="292"/>
         <source>Age du TLE                : %1 jours (au %2)</source>
         <translation>Age of the TLE             : %1 days (at %2)</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="319"/>
+        <location filename="previsions/conditions.cpp" line="318"/>
         <source>Age du TLE le plus récent : %1 jours (au %2)
 Age du TLE le plus ancien : %3 jours</source>
         <translation>Age of the most recent TLE : %1 days (at %2)
 Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="329"/>
+        <location filename="previsions/conditions.cpp" line="328"/>
         <source>Lieu d&apos;observation        : %1     %2 %3   %4 %5   %6 %7</source>
         <translation>Location                   : %1     %2 %3   %4 %5   %6 %7</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="333"/>
-        <location filename="previsions/evenements.cpp" line="83"/>
+        <location filename="previsions/conditions.cpp" line="332"/>
+        <location filename="previsions/evenements.cpp" line="82"/>
         <source>Fuseau horaire            : %1 %2%3</source>
         <translation>Local time - UTC offset    : %1 %2%3</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="334"/>
-        <location filename="previsions/evenements.cpp" line="84"/>
+        <location filename="previsions/conditions.cpp" line="333"/>
+        <location filename="previsions/evenements.cpp" line="83"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="342"/>
+        <location filename="previsions/conditions.cpp" line="341"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="346"/>
-        <location filename="previsions/evenements.cpp" line="87"/>
+        <location filename="previsions/conditions.cpp" line="345"/>
+        <location filename="previsions/evenements.cpp" line="86"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="128"/>
+        <location filename="previsions/evenements.cpp" line="127"/>
         <source>Noeud Ascendant - PSO = 0°</source>
         <translation>Ascending node - Position = 0°</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="129"/>
+        <location filename="previsions/evenements.cpp" line="128"/>
         <source>Noeud Descendant - PSO = 180°</source>
         <translation>Descending node - Position = 180°</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="198"/>
-        <location filename="previsions/evenements.cpp" line="381"/>
-        <location filename="previsions/iridium.cpp" line="884"/>
+        <location filename="previsions/evenements.cpp" line="197"/>
+        <location filename="previsions/evenements.cpp" line="380"/>
+        <location filename="previsions/iridium.cpp" line="882"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="198"/>
-        <location filename="previsions/evenements.cpp" line="381"/>
-        <location filename="previsions/iridium.cpp" line="884"/>
+        <location filename="previsions/evenements.cpp" line="197"/>
+        <location filename="previsions/evenements.cpp" line="380"/>
+        <location filename="previsions/iridium.cpp" line="882"/>
         <location filename="previsions/transitiss.cpp" line="321"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="200"/>
-        <location filename="previsions/evenements.cpp" line="383"/>
-        <location filename="previsions/iridium.cpp" line="885"/>
+        <location filename="previsions/evenements.cpp" line="199"/>
+        <location filename="previsions/evenements.cpp" line="382"/>
+        <location filename="previsions/iridium.cpp" line="883"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="200"/>
-        <location filename="previsions/evenements.cpp" line="383"/>
-        <location filename="previsions/iridium.cpp" line="885"/>
+        <location filename="previsions/evenements.cpp" line="199"/>
+        <location filename="previsions/evenements.cpp" line="382"/>
+        <location filename="previsions/iridium.cpp" line="883"/>
         <location filename="previsions/transitiss.cpp" line="286"/>
         <location filename="previsions/transitiss.cpp" line="322"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="149"/>
+        <location filename="previsions/evenements.cpp" line="148"/>
         <source>Pénombre -&gt; Ombre</source>
         <translation>Penumbra -&gt; Shadow</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="149"/>
-        <location filename="previsions/evenements.cpp" line="157"/>
+        <location filename="previsions/evenements.cpp" line="148"/>
+        <location filename="previsions/evenements.cpp" line="156"/>
         <source>Ombre -&gt; Pénombre</source>
         <translation>Shadow -&gt; Penumbra</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="158"/>
+        <location filename="previsions/evenements.cpp" line="157"/>
         <source>Pénombre -&gt; Lumière</source>
         <translation>Penumbra -&gt; Light</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="158"/>
+        <location filename="previsions/evenements.cpp" line="157"/>
         <source>Lumière -&gt; Pénombre</source>
         <translation>Light -&gt; Penumbra</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="181"/>
+        <location filename="previsions/evenements.cpp" line="180"/>
         <source>Périgée :</source>
         <translation>Perigee :</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="181"/>
+        <location filename="previsions/evenements.cpp" line="180"/>
         <source>Apogée :</source>
         <translation>Apogee :</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="216"/>
+        <location filename="previsions/evenements.cpp" line="215"/>
         <source>Transition jour -&gt; nuit</source>
         <translation>Day -&gt; Night transition</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="217"/>
+        <location filename="previsions/evenements.cpp" line="216"/>
         <source>Transition nuit -&gt; jour</source>
         <translation>Night -&gt; Day transition</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="235"/>
+        <location filename="previsions/evenements.cpp" line="234"/>
         <source>Passage à PSO =</source>
         <translation>Pass to position =</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="265"/>
+        <location filename="previsions/evenements.cpp" line="264"/>
         <location filename="previsions/prevision.cpp" line="190"/>
         <source>  (numéro NORAD : %1)</source>
         <translation>  (NORAD number : %1)</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="267"/>
+        <location filename="previsions/evenements.cpp" line="266"/>
         <source>   Date     Heure      PSO    Longitude  Latitude  Évènements</source>
         <translation>   Date     Hour     Position Longitude  Latitude  Events</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="281"/>
-        <location filename="previsions/iridium.cpp" line="263"/>
+        <location filename="previsions/evenements.cpp" line="280"/>
+        <location filename="previsions/iridium.cpp" line="262"/>
         <location filename="previsions/prevision.cpp" line="295"/>
         <location filename="previsions/transitiss.cpp" line="379"/>
         <source>Temps écoulé : %1s</source>
@@ -3312,19 +3312,19 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>FRL</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="876"/>
+        <location filename="previsions/iridium.cpp" line="874"/>
         <location filename="previsions/transitiss.cpp" line="319"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="876"/>
+        <location filename="previsions/iridium.cpp" line="874"/>
         <location filename="previsions/transitiss.cpp" line="319"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="243"/>
+        <location filename="previsions/iridium.cpp" line="242"/>
         <source>Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max</source>
         <translation>Ir     Date       Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat     Range    Max Magn</translation>
     </message>
@@ -3434,26 +3434,26 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="librairies/dates/date.cpp" line="330"/>
+        <location filename="librairies/dates/date.cpp" line="328"/>
         <source>dddd dd MMMM yyyy  HH:mm:ss</source>
         <translation>dddd MMMM dd, yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/satellite.cpp" line="550"/>
+        <location filename="librairies/corps/satellite/satellite.cpp" line="548"/>
         <source>Nombre de révolutions par jour négatif
 Satellite %1 (numéro NORAD %2)</source>
         <translation>Negative number of revolutions per day
 Satellite %1 (NORAD number %2)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/satellite.cpp" line="595"/>
+        <location filename="librairies/corps/satellite/satellite.cpp" line="593"/>
         <source>TLE contenant des valeurs aboutissant à une altitude négative
 Satellite %1 (numéro NORAD %2)</source>
         <translation>TLE containing values leading to a negative altitude
 Satellite %1 (NORAD number %2)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/satellite.cpp" line="700"/>
+        <location filename="librairies/corps/satellite/satellite.cpp" line="698"/>
         <source>Valeurs numériques du TLE incorrectes
 Satellite %1 (numéro NORAD %2)</source>
         <translation>Incorrect numeric values of the TLE

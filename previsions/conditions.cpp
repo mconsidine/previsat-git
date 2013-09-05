@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    5 septembre 2013
  *
  */
 
@@ -268,10 +268,9 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
                               const bool itransit)
 {
     /* Declarations des variables locales */
-    QString ligne1, ligne2;
 
     /* Initialisations */
-    ligne1 = "";
+    QString ligne1 = "";
     const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), DEGRE, 3, 0, false, false);
     const QString ew = (observateur.getLongitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
@@ -326,7 +325,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     QTextStream flux(&fichier);
 
     flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl;
-    ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
+    QString ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
     ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;
 

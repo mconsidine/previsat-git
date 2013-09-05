@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 aout 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -133,9 +133,9 @@ Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
     /* Corps du constructeur */
     if (acalc) {
 
-        int a, z;
+        int a;
         const double j1 = jourJulien + 0.5;
-        z = (int) floor(j1);
+        int z = (int) floor(j1);
         const double f = j1 - z;
         z += (int) (TJ2000 + EPSDBL100);
 
@@ -295,15 +295,14 @@ QString Date::ToShortDate(const DateFormat &format) const
     return (res);
 }
 
-QString Date::ToShortDateChrono(const DateFormat &format) const
+QString Date::ToShortDateAMJ(const DateFormat &format) const
 {
     /* Declarations des variables locales */
-    QString res;
 
     /* Initialisations */
     const int fmt = (format == COURT) ? 0 : 1;
     const double tmp = floor(_jourJulien);
-    res = "%1/%2/%3 %4:%5:%6";
+    QString res = "%1/%2/%3 %4:%5:%6";
 
     /* Corps de la methode */
     const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
@@ -323,8 +322,7 @@ QString Date::ToLongDate() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime date =
-            QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES)));
+    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES)));
 
     /* Corps de la methode */
     QString res = date.toString(QObject::tr("dddd dd MMMM yyyy  HH:mm:ss"));
@@ -340,11 +338,10 @@ QString Date::ToLongDate() const
 void Date::CalculJourJulien()
 {
     /* Declarations des variables locales */
-    int d, n;
 
     /* Initialisations */
-    d = _annee;
-    n = _mois;
+    int d = _annee;
+    int n = _mois;
     const double xj = _jour + _heure * NB_JOUR_PAR_HEUR + _minutes * NB_JOUR_PAR_MIN + _secondes *
             NB_JOUR_PAR_SEC;
 

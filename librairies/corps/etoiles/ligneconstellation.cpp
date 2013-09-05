@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juin 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -113,13 +113,12 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
 void LigneConstellation::InitTabLignesCst()
 {
     /* Declarations des variables locales */
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */
