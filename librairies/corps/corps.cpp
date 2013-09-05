@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 juin 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -96,12 +96,10 @@ Corps::~Corps()
 void Corps::CalculCoordEquat(const Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool atrouve;
-    int i;
 
     /* Initialisations */
-    atrouve = false;
-    i = 0;
+    bool atrouve = false;
+    int i = 0;
     const double ch = cos(_hauteur);
     const Vecteur3D vec1 = Vecteur3D(-cos(_azimut) * ch, sin(_azimut) * ch, sin(_hauteur));
     const Vecteur3D vec2 = Vecteur3D(observateur.getRotHz().Transposee() * vec1);
@@ -351,10 +349,10 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
 void Corps::CalculLatitudeAltitude()
 {
     /* Declarations des variables locales */
-    double c, lat;
+    double lat;
 
     /* Initialisations */
-    c = 1.;
+    double c = 1.;
     _latitude = PI;
 
     /* Corps de la methode */
@@ -382,13 +380,12 @@ void Corps::CalculLatitudeAltitude()
 void Corps::InitTabConstellations()
 {
     /* Declarations des variables locales */
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */

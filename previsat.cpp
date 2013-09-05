@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er septembre 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -429,7 +429,7 @@ void PreviSat::ChargementConfig()
         settings.setValue("fichier/sauvegarde", dirOut);
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
-    settings.setValue("fichier/dirHttpAst", "http://astrodpedia.free.fr/");
+    settings.setValue("fichier/dirHttpAst", "http://astropedia.free.fr/");
     settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
@@ -4597,7 +4597,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
 #endif
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "previsat_" +
-                dateCourante.ToShortDateChrono(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
+                dateCourante.ToShortDateAMJ(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
 
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
@@ -8033,8 +8033,8 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("previsions") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateChrono(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateChrono(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
 
         QFile fi(ficRes);
         if (fi.exists())
@@ -8308,8 +8308,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("iridiums") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateChrono(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateChrono(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8574,8 +8574,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("evenements") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateChrono(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateChrono(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -8809,8 +8809,8 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateChrono(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateChrono(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())

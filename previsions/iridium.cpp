@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    31 aout 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -92,7 +92,6 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     /* Declarations des variables locales */
     QString ligne;
     QTime tps;
-
 
     /* Initialisations */
     tabtle = conditions.getTabtle();
@@ -456,10 +455,9 @@ void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observa
 double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 {
     /* Declarations des variables locales */
-    double ang;
 
     /* Initialisations */
-    ang = PI;
+    double ang = PI;
 
     /* Corps de la methode */
     Vecteur3D xx = satellite.getVitesse().Normalise();
@@ -853,7 +851,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
     const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-    QString result = fmt.arg(date3.ToShortDateChrono(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
+    QString result = fmt.arg(date3.ToShortDateAMJ(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
             arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).
             arg(azs).arg(hts).arg(i);
 

@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    15 juin 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -280,7 +280,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                QString result = fmt.arg(date3.ToShortDateChrono(LONG)).arg(az).arg(ht).arg(ad).arg(de).
+                                QString result = fmt.arg(date3.ToShortDateAMJ(LONG)).arg(az).arg(ht).arg(ad).arg(de).
                                         arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).

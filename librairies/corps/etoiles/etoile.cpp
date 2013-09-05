@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    5 septembre 2013
  *
  */
 
@@ -105,13 +105,12 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
 void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juin 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -114,13 +114,12 @@ Lune::~Lune()
 void Lune::CalculPosition(const Date &date)
 {
     /* Declarations des variables locales */
-    double b0, l0, r0;
     double coef[5];
 
     /* Initialisations */
-    b0 = 0.;
-    l0 = 0.;
-    r0 = 0.;
+    double b0 = 0.;
+    double l0 = 0.;
+    double r0 = 0.;
     const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
     const double t2 = t * t;
     const double t3 = t2 * t;

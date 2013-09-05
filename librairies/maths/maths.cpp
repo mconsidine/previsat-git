@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    5 septembre 2013
  *
  */
 
@@ -113,14 +113,12 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
                                           const double epsilon)
 {
     /* Declarations des variables locales */
-    int iter;
-    double dn0, n0;
     double yy[3];
 
     /* Initialisations */
-    iter = 0;
-    dn0 = 100000.;
-    n0 = 0.;
+    int iter = 0;
+    double dn0 = 100000.;
+    double n0 = 0.;
     for (int i=0; i<3; i++)
         yy[i] = ytab[i] - yval;
 
@@ -150,8 +148,7 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
                              const bool signe, const bool espace)
 {
     /* Declarations des variables locales */
-    int dec, deg, degr, min;
-    double sec, xval, y;
+    double xval;
 
     /* Initialisations */
     switch (typeAngle) {
@@ -170,15 +167,15 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     default:
         xval = xdec;
     }
-    y = fabs(xval) + EPSDBL100;
+    double y = fabs(xval) + EPSDBL100;
 
-    degr = nbDeg;
+    double degr = nbDeg;
     if (degr < 0)
         degr = 0;
     if (degr > 2 && (typeAngle == HEURE1 || typeAngle == HEURE2))
         degr = 2;
 
-    dec = nbDecimales;
+    double dec = nbDecimales;
     if (dec < 0)
         dec = 0;
 
@@ -192,9 +189,9 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s") : "";
 
     /* Corps de la methode */
-    deg = (int) y;
-    min = (int) (ARCMIN_PAR_DEG * (y - deg));
-    sec = ARCSEC_PAR_DEG * (y - deg) - ARCMIN_PAR_DEG * min;
+    int deg = (int) y;
+    int min = (int) (ARCMIN_PAR_DEG * (y - deg));
+    double sec = ARCSEC_PAR_DEG * (y - deg) - ARCMIN_PAR_DEG * min;
     if (fabs(Maths::arrondi(sec, dec) - ARCSEC_PAR_MIN) < EPSDBL100) {
         sec = 0.;
         min++;

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er septembre 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -109,7 +109,7 @@ private:
     QString _norad;
 
     /* Methodes privees */
-    static bool CheckSum(const QString ligne);
+    static bool CheckSum(const QString &ligne);
     static void VerifieLignes(const QString &li1, const QString &li2);
 
 };

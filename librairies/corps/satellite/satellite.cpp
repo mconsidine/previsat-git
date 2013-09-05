@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -469,13 +469,12 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
     const int nb = listeSatellites.size();
 
@@ -533,7 +532,6 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
 void Satellite::SGP4Init()
 {
     /* Declarations des variables locales */
-    double del;
 
     /* Initialisations */
 
@@ -565,7 +563,7 @@ void Satellite::SGP4Init()
 
     const double ak = pow(KE / _sat.no, DEUX_TIERS);
     const double d1 = 0.75 * J2 * (3. * _sat.cosio2 - 1.) / (_sat.rteosq * _sat.omeosq);
-    del = d1 / (ak * ak);
+    double del = d1 / (ak * ak);
     const double adel = ak * (1. - del * del - del * (0.5 * DEUX_TIERS + 134. * del * del / 81.));
     del = d1 / (adel * adel);
     _sat.no /= (1. + del);

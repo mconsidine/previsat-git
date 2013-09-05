@@ -37,7 +37,7 @@
  *
  * Date de revision
  * >
- * >    4 septembre 2012
+ * >    5 septembre 2013
  */
 
 #include <QStringList>
@@ -198,7 +198,7 @@ void Planete::CalculElements(const Date &date)
 void Planete::CalculCoordonneesSpheriques()
 {
     /* Declarations des variables locales */
-    double u, u1;
+    double u1;
 
     /* Initialisations */
 
@@ -213,7 +213,7 @@ void Planete::CalculCoordonneesSpheriques()
     const double m = nm - na;
 
     // Anomalie excentrique (equation de Kepler)
-    u = m;
+    double u = m;
     do {
         u1 = u;
         u = u1 + (m + _elem[2] * sin(u1) - u1) / (1. - _elem[2] * cos(u1));

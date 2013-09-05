@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er septembre 2013
+ * >    5 septembre 2013
  *
  */
 
@@ -70,8 +70,7 @@ TLE::TLE()
 TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
 {
     /* Declarations des variables locales */
-    int an, ibe;
-    double jrs;
+    int an;
 
     /* Initialisations */
 
@@ -85,14 +84,14 @@ TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
 
     // Epoque
     an = _ligne1.mid(18, 2).toInt();
-    jrs = _ligne1.mid(20, 12).toDouble();
+    const double jrs = _ligne1.mid(20, 12).toDouble();
     an = (an < 57) ? an + AN2000 : an + 1900;
     const Date date = Date(an, 1, 1., 0.);
     _epoque = Date(date.getJourJulien() + jrs - 1., 0., true);
 
     // Coefficient pseudo-balistique
     _bstar = _ligne1.mid(53, 6).toDouble();
-    ibe = _ligne1.mid(59, 2).toInt();
+    const int ibe = _ligne1.mid(59, 2).toInt();
     _bstar *= 1.e-5 * pow(10., ibe);
 
     // Elements orbitaux moyens
@@ -133,16 +132,14 @@ TLE::~TLE()
 int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 {
     /* Declarations des variables locales */
-    int ierr, itle, nb;
-    QString li1, li2, nomsat;
 
     /* Initialisations */
-    ierr = 0;
-    itle = 0;
-    nb = 0;
-    nomsat = "---";
-    li1 = "";
-    li2 = "";
+    int ierr = 0;
+    int itle = 0;
+    int nb = 0;
+    QString nomsat = "---";
+    QString li1 = "";
+    QString li2 = "";
 
     /* Corps de la methode */
     try {
@@ -242,13 +239,12 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 {
     /* Declarations des variables locales */
     QString magn;
-    QString dirDat;
 
     /* Initialisations */
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
     const QString fic = dirDat + QDir::separator() + "donnees.sat";
@@ -265,11 +261,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     /* Corps de la methode */
     try {
 
-        int j;
-        QString li0, nomsat;
+        QString li0;
 
-        j = 0;
-        nomsat = "---";
+        int j = 0;
+        QString nomsat = "---";
         QFile fichier(nomFichier);
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichier);
@@ -350,7 +345,8 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficOld), WARNING);
+        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\n" \
+                                            "Le fichier %1 n'est pas un TLE").arg(ficOld), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficOld, liste, tleOld);
@@ -358,7 +354,8 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les TLE recents
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE").arg(ficNew), WARNING);
+        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\n" \
+                                            "Le fichier %1 n'est pas un TLE").arg(ficNew), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficNew, liste, tleNew);
@@ -374,7 +371,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     int res2 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
     while (isat < nbOld || j < nbNew) {
 
-        QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : (nomFicOld == nomFicNew) ? "99999" : "";
+        const QString norad1 = (isat < nbOld) ? tleOld.at(isat)._norad : (nomFicOld == nomFicNew) ? "99999" : "";
         QString norad2;
         if (nomFicOld == nomFicNew) {
             norad2 = (j < nbNew) ? tleNew.at(j)._norad : "99999";
@@ -478,13 +475,13 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
 /*
  * Verification du checksum de la ligne
  */
-bool TLE::CheckSum(const QString ligne)
+bool TLE::CheckSum(const QString &ligne)
 {
     /* Declarations des variables locales */
-    int check, chr;
+    int chr;
 
     /* Initialisations */
-    check = 0;
+    int check = 0;
 
     /* Corps de la methode */
     for (int i=0; i<68; i++) {
@@ -509,11 +506,10 @@ bool TLE::CheckSum(const QString ligne)
 void TLE::VerifieLignes(const QString &li1, const QString &li2)
 {
     /* Declarations des variables locales */
-    int exc, ierr;
 
     /* Initialisations */
-    exc = 0;
-    ierr = 0;
+    int exc = 0;
+    int ierr = 0;
 
     /* Corps de la methode */
     // Verification de la longueur des lignes
