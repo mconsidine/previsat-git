@@ -521,6 +521,19 @@ void PreviSat::ChargementConfig()
     ui->nvEw->setCurrentIndex(0);
     ui->nvNs->setCurrentIndex(0);
 
+    const QIcon suppr(":/resources/suppr.png");
+    ui->actionSupprimerCategorie->setIcon(suppr);
+    ui->actionSupprimerLieu->setIcon(suppr);
+    ui->actionSupprimerLieuSelec->setIcon(suppr);
+
+    const QIcon ajout(":/resources/ajout.png");
+    ui->actionCreer_une_categorie->setIcon(ajout);
+    ui->actionCreer_un_nouveau_lieu->setIcon(ajout);
+
+    ui->actionModifier_coordonnees->setIcon(QIcon(":/resources/editer.png"));
+    ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
+
+
     ui->numeroNORADCreerTLE->setCurrentIndex(0);
     ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
     ui->excentriciteCreerTLE->setCurrentIndex(0);
@@ -6812,6 +6825,12 @@ void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
     AfficherLieuSelectionne(currentRow);
 }
 
+void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &pos)
+{
+    if (ui->selecLieux->count() > 1)
+        ui->menuContextuelLieuxSelec->exec(QCursor::pos());
+}
+
 void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
 {
     /* Declarations des variables locales */
@@ -7132,6 +7151,11 @@ void PreviSat::on_actionSupprimerLieu_activated()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionSupprimerLieuSelec_activated()
+{
+    on_supprLieu_clicked();
 }
 
 void PreviSat::on_ajoutLieu_clicked()
