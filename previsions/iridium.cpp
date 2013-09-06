@@ -251,7 +251,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                 flash = ligne.mid(ligne.length() - 4) + ligne.mid(0, ligne.length() - 4).remove(119, 1);
             } else {
                 flash = ligne.mid(120, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(288, 4) + ligne.mid(124, 119) +
-                        ligne.mid(244, 44) + "\n" + ligne.mid(412, 4) + ligne.mid(292, 119);
+                        ligne.mid(244, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(412, 4) + ligne.mid(292, 119);
             }
 
             flux << flash.trimmed() << endl << endl;

@@ -501,6 +501,8 @@ void PreviSat::ChargementConfig()
 
         const QString iri = "Iridium %1";
         QTableWidgetItem * const item2 = new QTableWidgetItem(iri.arg(item.mid(0, 4).toInt(), 2, 10, QChar('0')));
+        const QString norad = tr("%1 (numéro NORAD : %2)");
+        item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
         sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" : "green"));
@@ -2501,7 +2503,7 @@ void PreviSat::AffichageLieuObs() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    listeObs = settings.value("observateur/lieu", "Paris#-002.345277778&+48.860833333&60").toString().split("$");
+    listeObs = settings.value("observateur/lieu", "Paris#-002.348611111&+48.853333333&30").toString().split("$");
 
     /* Corps de la methode */
     ui->lieuxObservation1->clear();
