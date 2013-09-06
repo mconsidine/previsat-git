@@ -9704,11 +9704,18 @@
     </property>
     <addaction name="actionCopier_dans_le_presse_papier"/>
    </widget>
+   <widget class="QMenu" name="menuContextuelLieuxSelec">
+    <property name="title">
+     <string notr="true">MenuContextuelLieuxSelec</string>
+    </property>
+    <addaction name="actionSupprimerLieuSelec"/>
+   </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuContextuelListe1"/>
    <addaction name="menuContextuelListes"/>
    <addaction name="menuContextuelCategorie"/>
    <addaction name="menuContextuelLieux"/>
+   <addaction name="menuContextuelLieuxSelec"/>
    <addaction name="menuContextuelCompteRenduMaj"/>
   </widget>
   <action name="actionOuvrir_fichier_TLE">
@@ -9885,6 +9892,11 @@
    </property>
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionSupprimerLieuSelec">
+   <property name="text">
+    <string>Supprimer</string>
    </property>
   </action>
  </widget>

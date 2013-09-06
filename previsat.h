@@ -214,6 +214,7 @@ private slots:
     void on_lieuxObs_currentRowChanged(int currentRow);
     void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
     void on_selecLieux_currentRowChanged(int currentRow);
+    void on_selecLieux_customContextMenuRequested(const QPoint &pos);
     void on_actionCreer_un_nouveau_lieu_activated();
     void on_actionAjouter_Mes_Preferes_activated();
     void on_actionModifier_coordonnees_activated();
@@ -221,6 +222,7 @@ private slots:
     void on_annulerObs_clicked();
     void on_actionRenommerLieu_activated();
     void on_actionSupprimerLieu_activated();
+    void on_actionSupprimerLieuSelec_activated();
     void on_ajoutLieu_clicked();
     void on_supprLieu_clicked();
 
