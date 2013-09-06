@@ -134,8 +134,6 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int ierr = 0;
-    int itle = 0;
     int nb = 0;
     QString nomsat = "---";
     QString li1 = "";
@@ -150,6 +148,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
             fichier.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fichier);
 
+            int itle = 0;
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
@@ -186,7 +185,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
         nb = 0;
 
         // Construction du message
-        ierr = QString(e.what()).toInt();
+        const int ierr = QString(e.what()).toInt();
         switch (ierr) {
         case 1:
             msg = QObject::tr("POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
