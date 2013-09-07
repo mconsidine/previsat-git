@@ -2515,7 +2515,7 @@ void PreviSat::AffichageLieuObs() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    listeObs = settings.value("observateur/lieu", "Paris#-002.348611111&+48.853333333&30").toString().split("$");
+    listeObs = settings.value("observateur/lieu", "Paris#-002.348640000&+48.853390000&30").toString().split("$");
 
     /* Corps de la methode */
     ui->lieuxObservation1->clear();
@@ -6175,8 +6175,10 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
                         date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
-    if (ui->modeManuel->isChecked())
+    if (ui->modeManuel->isChecked()) {
         info = true;
+        acalcAOS = true;
+    }
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
@@ -6690,7 +6692,7 @@ void PreviSat::on_validerCategorie_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->nvCategorie->text().isEmpty()) {
+    if (ui->nvCategorie->text().trimmed().isEmpty()) {
         Messages::Afficher(tr("Le nom de la catégorie n'est pas spécifié"), WARNING);
     } else {
         int cpt = 0;
@@ -6821,7 +6823,8 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
         ui->actionRenommerLieu->setVisible(true);
         ui->actionModifier_coordonnees->setVisible(true);
         ui->actionSupprimerLieu->setVisible(true);
-        ui->actionAjouter_Mes_Preferes->setVisible(ui->fichiersObs->currentRow() > 0);
+        const QFileInfo fi(dirCoo + QDir::separator() + "aapreferes");
+        ui->actionAjouter_Mes_Preferes->setVisible(fi.exists() ? ui->fichiersObs->currentRow() > 0 : ui->fichiersObs->currentRow() >= 0);
     }
     ui->actionCreer_un_nouveau_lieu->setVisible(ui->fichiersObs->count() > 0);
 
@@ -6997,12 +7000,13 @@ void PreviSat::on_validerObs_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QString nomlieu = ui->nvLieu->text().trimmed();
-    nomlieu[0] = nomlieu.at(0).toUpper();
     try {
+        QString nomlieu = ui->nvLieu->text().trimmed();
         if (nomlieu.isEmpty()) {
             throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spécifié"), WARNING);
         } else {
+
+            nomlieu[0] = nomlieu.at(0).toUpper();
 
             // Recuperation de la longitude
             const int lo1 = ui->nvLongitude->text().mid(0, 3).toInt();
