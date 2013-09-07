@@ -36,10 +36,11 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    7 septembre 2013
  *
  */
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
 #include <QTime>
@@ -78,7 +79,10 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl;
+    const QString titre = "%1 %2 / %3 (c) %4";
+    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+            arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+
     QString ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
             arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), HEURE1, 2, 0, false, false).

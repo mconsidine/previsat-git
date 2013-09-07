@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    7 septembre 2013
  *
  */
 
@@ -297,8 +297,8 @@ void PreviSat::ChargementConfig()
     di = QDir(dirDat);
     if (!di.exists()) {
         const QString message = tr("POSITION : Erreur rencontrée lors de l'initialisation\n" \
-                                   "Le répertoire %1 n'existe pas, veuillez réinstaller PreviSat");
-        Messages::Afficher(message.arg(QDir::convertSeparators(dirDat)), ERREUR);
+                                   "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
+        Messages::Afficher(message.arg(QDir::convertSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
         exit(1);
     }
 
@@ -317,8 +317,8 @@ void PreviSat::ChargementConfig()
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
         if (!fi.exists()) {
-            const QString message = tr("POSITION : Le fichier %1 n'existe pas, veuillez réinstaller PreviSat");
-            Messages::Afficher(message.arg(fi.fileName()), ERREUR);
+            const QString message = tr("POSITION : Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            Messages::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
         }
     }
@@ -429,7 +429,6 @@ void PreviSat::ChargementConfig()
         settings.setValue("fichier/sauvegarde", dirOut);
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
-    settings.setValue("fichier/dirHttpAst", "http://astropedia.free.fr/");
     settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
@@ -849,7 +848,7 @@ QString PreviSat::DeterminationLocale()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QStringList filtre(QStringList () << "PreviSat_*.qm");
+    const QStringList filtre(QStringList () << QCoreApplication::applicationName() + "_*.qm");
 
     /* Corps de la methode */
     QDir di(QCoreApplication::applicationDirPath());
@@ -861,7 +860,7 @@ QString PreviSat::DeterminationLocale()
         if (nbloc == 1) {
             localePreviSat = listeTr.at(0).section('_', 1).mid(0, 2);
         } else {
-            if (listeTr.contains("PreviSat_en.qm"))
+            if (listeTr.contains(QCoreApplication::applicationName() + "_en.qm"))
                 localePreviSat = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
             else
                 localePreviSat = QLocale::system().name().section('_', 0, 0);
@@ -1086,8 +1085,8 @@ void PreviSat::AffichageDonnees()
 
             // Cas ou aucun satellite n'est selectionne dans la liste de satellites
             ui->satellite->setVisible(false);
-            const QString msg = "PreviSat %1";
-            PreviSat::setWindowTitle(msg.arg(QString(APPVER_MAJ)));
+            const QString msg = "%1 %2";
+            PreviSat::setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
             if (ui->onglets->count() == 7) {
                 ui->onglets->removeTab(1);
@@ -1140,8 +1139,8 @@ void PreviSat::AffichageDonnees()
 
             // Nom
             ui->nomsat1->setText(nom);
-            const QString msg = "PreviSat %1 - %2";
-            PreviSat::setWindowTitle(msg.arg(QString(APPVER_MAJ)).arg(nom));
+            const QString msg = "%1 %2 - %3";
+            PreviSat::setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(nom));
 
             // Temps ecoule depuis l'epoque
             chaine = tr("%1 jours");
@@ -2616,7 +2615,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                 } while (li2.trimmed().length() == 0);
 
                 const QString norad = li1.mid(2, 5);
-                if (nomsat.mid(0, 2) == "1 " || nomsat == "---") {
+                if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 
                     const int indx1 = magn.indexOf(norad);
                     if (indx1 >= 0) {
@@ -3138,7 +3137,8 @@ void PreviSat::VerifMAJPreviSat()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", settings.value("fichier/dirHttpAst").toString() + "previsat/Qt/").toString().trimmed();
+    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", QCoreApplication::organizationDomain() + "previsat/Qt/").
+            toString().trimmed();
 
     /* Corps de la methode */
     const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt");
@@ -3177,7 +3177,7 @@ void PreviSat::VerifMAJPreviSat()
                         anew = true;
                 }
                 if (anew)
-                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de PreviSat");
+                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de " + QCoreApplication::applicationName());
                 else
                     ui->actionTelecharger_la_mise_a_jour->setVisible(false);
 
@@ -3491,7 +3491,9 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
 
         flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
@@ -3581,7 +3583,9 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure2->text() << endl << endl;
 
         // Donnees sur le satellite
@@ -3711,7 +3715,9 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl << endl;
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 
         // Donnees sur le satellite
         flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;
@@ -5311,10 +5317,15 @@ void PreviSat::on_directHelp_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString aide = "file:///" + dirExe + QDir::separator() + "aide" + QDir::separator() + "PreviSat_" + localePreviSat + ".pdf";
+#if defined Q_OS_WIN
+    const QString aide = "file:///%1%2aide%3%4_%5.pdf";
+#else
+    const QString aide = "%1%2aide%3%4_%5.pdf";
+#endif
 
     /* Corps de la methode */
-    if (!QDesktopServices::openUrl(aide)) {
+    if (!QDesktopServices::openUrl(aide.arg(dirExe).arg(QDir::separator()).arg(QDir::separator()).
+                                   arg(QCoreApplication::applicationName()).arg(localePreviSat))) {
         const QFileInfo fi(aide);
         const QString msg = tr("Impossible d'ouvrir le fichier d'aide %1");
         Messages::Afficher(msg.arg(fi.fileName()), WARNING);

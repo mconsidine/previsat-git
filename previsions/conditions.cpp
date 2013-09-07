@@ -36,10 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    7 septembre 2013
  *
  */
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
 #include "conditions.h"
@@ -324,7 +325,10 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    flux << "PreviSat " + QString(APPVER_MAJ) + " / Astropedia (c) 2005-2013" << endl << endl;
+    const QString titre = "%1 %2 / %3 (c) %4";
+    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+            arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+
     QString ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
     ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;

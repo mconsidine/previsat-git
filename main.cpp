@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2013
+ * >    7 septembre 2013
  *
  */
 
@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setOrganizationName("Astropedia");
     a.setApplicationName("PreviSat");
+    a.setOrganizationDomain("http://astropedia.free.fr/");
 
     /* Corps de la methode */
     const QString locale = PreviSat::DeterminationLocale();
@@ -76,7 +77,8 @@ int main(int argc, char *argv[])
     if (!mem.create(sizeof(pid))) {
         if (mem.error() == QSharedMemory::AlreadyExists) {
             if (mem.attach(QSharedMemory::ReadOnly)) {
-                QMessageBox::warning(0, QObject::tr("Information"), QObject::tr("Une instance de PreviSat est déjà ouverte"));
+                const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
+                QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
                 return 1;
             }
         } else {

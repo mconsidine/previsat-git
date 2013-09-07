@@ -2760,7 +2760,7 @@
            <widget class="QLabel" name="conditionsObservation">
             <property name="geometry">
              <rect>
-              <x>400</x>
+              <x>404</x>
               <y>30</y>
               <width>133</width>
               <height>16</height>
@@ -2776,7 +2776,7 @@
            <widget class="QLabel" name="lbl_conditionsObservation">
             <property name="geometry">
              <rect>
-              <x>338</x>
+              <x>340</x>
               <y>30</y>
               <width>61</width>
               <height>16</height>
