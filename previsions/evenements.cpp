@@ -81,7 +81,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
     const QString titre = "%1 %2 / %3 (c) %4";
     flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
-            arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+            arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
     QString ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
     flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
