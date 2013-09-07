@@ -39,7 +39,7 @@
 VER_MAJ = 3.2
 VERSION = 3.2.0.7
 ANNEES_DEV = 2005-2013
-ZLIB_DIR = zlib
+ZLIB_DIR = ./zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
