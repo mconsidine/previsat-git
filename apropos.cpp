@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    18 aout 2013
+ * >    7 septembre 2013
  *
  */
 
@@ -52,7 +52,8 @@ Apropos::Apropos(QWidget *parent) :
     ui(new Ui::Apropos)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("À propos de PreviSat") + " " + APPVER_MAJ);
+    const QString titre = tr("À propos de %1 %2");
+    setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(ui->imagePreviSat->rect());
@@ -76,7 +77,8 @@ Apropos::Apropos(QWidget *parent) :
         ui->imagePreviSat->setBackgroundBrush(alpha);
     }
 
-    ui->nomLogiciel->setText("PreviSat " + QString(APPVER_MAJ));
+    const QString logiciel = "%1 %2";
+    ui->nomLogiciel->setText(logiciel.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).
                                arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).

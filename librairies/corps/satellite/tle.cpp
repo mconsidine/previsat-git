@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    7 septembre 2013
  *
  */
 
@@ -253,6 +253,8 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
         magn = flux.readAll();
+    } else {
+        magn = "";
     }
     donneesSatellites.close();
     tabtle.resize(jmax);
@@ -279,7 +281,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     li2 = flux.readLine();
                 } while (li2.trimmed().length() == 0);
 
-                if (nomsat.mid(0, 2) == "1 " || nomsat == "---") {
+                if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 
                     const int indx1 = magn.indexOf(li1.mid(2, 5));
                     if (indx1 >= 0) {

@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er septembre 2013
+ * >    7 septembre 2013
  *
  */
 
@@ -262,7 +262,8 @@ void Telecharger::TelechargementSuivant()
         emit TelechargementFini();
         ui->barreProgression->setVisible(false);
 
-        QMessageBox::information(0, tr("Information"), tr("Veuillez redémarrer PreviSat pour prendre en compte la mise à jour"));
+        const QString msg = tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour");
+        QMessageBox::information(0, tr("Information"), msg.arg(QCoreApplication::applicationName()));
     } else {
 
         ui->barreProgression->setVisible(true);

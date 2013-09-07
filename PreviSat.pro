@@ -33,11 +33,12 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    4 septembre 2013
+# >    7 septembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.2
 VERSION = 3.2.0.7
+ANNEES_DEV = 2005-2013
 ZLIB_DIR = zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
@@ -56,8 +57,11 @@ win32 {
 
 VERSIONSTR = '\\"$${VERSION}\\"'
 VER_MAJSTR = '\\"$${VER_MAJ}\\"'
+ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
+
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
-           APPVER_MAJ=\"$${VER_MAJSTR}\"
+           APPVER_MAJ=\"$${VER_MAJSTR}\" \
+           APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
 INCLUDEPATH += $$ZLIB_DIR
 
 SOURCES += main.cpp\
