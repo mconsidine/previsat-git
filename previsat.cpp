@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    11 septembre 2013
  *
  */
 
@@ -2598,7 +2598,6 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     if (fichierTLE.exists()) {
 
         QString li1, li2;
-        QListWidgetItem *elem0 = new QListWidgetItem();
         fichierTLE.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichierTLE);
 
@@ -2665,20 +2664,29 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                 elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
                 QListWidgetItem * const elem3 = new QListWidgetItem(nomsat2, ui->liste3);
                 elem3->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-                if (nomsat == nom)
-                    elem0 = elem1;
             }
             nomsat = ligne.trimmed();
         }
         if (l1.length() > 0) {
             li1 = l1;
             li2 = l2;
-            ui->liste1->setCurrentItem(elem0);
-            ui->liste2->setCurrentRow(ui->liste1->currentRow());
-            ui->liste3->setCurrentRow(ui->liste1->currentRow());
+
+            int ind0 = -1;
+            for(int i=0; i<ui->liste1->count(); i++) {
+                const QString norad = ui->liste1->item(i)->text().split("#").at(1);
+                if (norad == listeSat.at(0)) {
+                    ind0 = i;
+                    break;
+                }
+            }
+
+            ui->liste1->setCurrentRow(ind0);
+            ui->liste2->setCurrentRow(ind0);
+            ui->liste3->setCurrentRow(ind0);
             l1 = li1;
             l2 = li2;
         }
+        fichierTLE.close();
     }
 
     /* Retour */
