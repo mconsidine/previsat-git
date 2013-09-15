@@ -45,6 +45,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include "gestionnairetle.h"
+#include "previsat.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "ui_gestionnairetle.h"
 
@@ -53,6 +54,7 @@ static int selec;
 static QString ficTLE;
 static QString dirDat;
 static QString dirTmp;
+static QString localePrevisat;
 static QSettings settings("Astropedia", "previsat");
 
 GestionnaireTLE::GestionnaireTLE(QWidget *parent) :
@@ -79,6 +81,7 @@ void GestionnaireTLE::load()
 
     /* Initialisations */
     selec = -1;
+    localePrevisat = PreviSat::DeterminationLocale();
     ui->barreMenu->setVisible(false);
     ui->groupe->setVisible(false);
     ui->listeGroupeTLE->clear();
@@ -115,7 +118,7 @@ void GestionnaireTLE::load()
 #endif
 
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-    ficTLE = dirDat + QDir::separator() + "gestionnaireTLE.gst";
+    ficTLE = dirDat + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
     /* Corps de la methode */
     QFile fi(ficTLE);
