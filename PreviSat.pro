@@ -55,6 +55,10 @@ win32 {
     RC_FILE = icone.rc
 }
 
+mac {
+    LIBS = /usr/lib/libz.dylib
+}
+
 VERSIONSTR = '\\"$${VERSION}\\"'
 VER_MAJSTR = '\\"$${VER_MAJ}\\"'
 ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'

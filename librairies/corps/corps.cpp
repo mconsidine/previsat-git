@@ -384,8 +384,10 @@ void Corps::InitTabConstellations()
     /* Initialisations */
 #if defined (Q_OS_WIN)
     const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_LINUX)
     const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#else
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */

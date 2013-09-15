@@ -272,16 +272,16 @@ void PreviSat::ChargementConfig()
     dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
 
 #elif defined (Q_OS_MAC)
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
             QCoreApplication::applicationName();
-    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+    dirTle = dirExe + QDir::separator() + "tle";
 
 #else
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
             QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+    dirTle = dirExe + QDir::separator() + "tle";
 #endif
 
     dirOut = QDir::convertSeparators(dirOut);
@@ -293,6 +293,8 @@ void PreviSat::ChargementConfig()
     chronometre = new QTimer(this);
 
     /* Corps de la methode */
+    PreviSat::DeterminationLocale();
+
     // Verification et creation des arborescences
     di = QDir(dirDat);
     if (!di.exists()) {
@@ -311,7 +313,7 @@ void PreviSat::ChargementConfig()
 
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
-                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE.gst" << "iridium.sts");
+                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {

@@ -12,6 +12,7 @@
   </property>
   <property name="font">
    <font>
+    <family>MS Shell Dlg 2</family>
     <pointsize>8</pointsize>
    </font>
   </property>
@@ -19,6 +20,12 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <widget class="QTextEdit" name="fichier">
     <property name="geometry">
      <rect>
@@ -45,6 +52,7 @@
   <widget class="QToolBar" name="barreOutils">
    <property name="font">
     <font>
+     <family>MS Shell Dlg 2</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -74,6 +82,12 @@
    </property>
    <property name="toolTip">
     <string>Enregistrer</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>8</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+S</string>

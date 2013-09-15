@@ -108,8 +108,10 @@ void GestionnaireTLE::load()
     const QString dirExe = QCoreApplication::applicationDirPath();
 #if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_LINUX)
     dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#else
+    dirDat = dirExe + QDir::separator() + "data";
 #endif
 
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
