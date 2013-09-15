@@ -33,6 +33,7 @@
   </property>
   <property name="font">
    <font>
+    <family>MS Shell Dlg 2</family>
     <pointsize>8</pointsize>
    </font>
   </property>
@@ -43,6 +44,12 @@
    <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <property name="autoFillBackground">
     <bool>true</bool>
    </property>
@@ -54,6 +61,12 @@
       <width>250</width>
       <height>250</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="autoFillBackground">
      <bool>true</bool>
@@ -85,6 +98,8 @@
     </property>
     <property name="font">
      <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -102,6 +117,12 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string notr="true">Version 3.0.0.16 (20 mai 2012)</string>
     </property>
@@ -115,6 +136,12 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string notr="true">Copyright © Astropedia 2005-2013</string>
     </property>
@@ -127,6 +154,12 @@
       <width>131</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string notr="true">&lt;a href=&quot;http://astropedia.free.fr/&quot;&gt;http://astropedia.free.fr&lt;/a&gt;</string>
@@ -144,6 +177,12 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>OK</string>
     </property>
@@ -156,6 +195,12 @@
       <width>241</width>
       <height>131</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>PreviSat est un logiciel de calcul de la position des satellites artificiels.

@@ -78,8 +78,10 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
 
 #if defined (Q_OS_WIN)
     const QString dirDat = dirExe + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_LINUX)
     const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#else
+    const QString dirDat = dirExe + QDir::separator() + "data";
 #endif
 
     dirCoo = dirDat + QDir::separator() + "coordonnees";

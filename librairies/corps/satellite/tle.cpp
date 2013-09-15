@@ -242,8 +242,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     /* Initialisations */
 #if defined (Q_OS_WIN)
     const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_LINUX)
     const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#else
+    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #endif
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
     const QString fic = dirDat + QDir::separator() + "donnees.sat";

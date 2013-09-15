@@ -30,6 +30,7 @@
   </property>
   <property name="font">
    <font>
+    <family>MS Shell Dlg 2</family>
     <pointsize>8</pointsize>
    </font>
   </property>
@@ -37,6 +38,12 @@
    <string>Téléchargement de fichiers</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <widget class="QPushButton" name="interrogerServeur">
     <property name="geometry">
      <rect>
@@ -45,6 +52,12 @@
       <width>141</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Interroger le serveur...</string>
@@ -81,6 +94,12 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="value">
      <number>0</number>
     </property>
@@ -100,6 +119,12 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Télécharger...</string>
     </property>
@@ -112,6 +137,12 @@
       <width>111</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Fermer</string>
