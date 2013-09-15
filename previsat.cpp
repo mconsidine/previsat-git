@@ -850,24 +850,19 @@ QString PreviSat::DeterminationLocale()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    bool atrouve = false;
     const QStringList filtre(QStringList () << QCoreApplication::applicationName() + "_*.qm");
 
     /* Corps de la methode */
+    localePreviSat = QLocale::system().name().section('_', 0, 0);
     QDir di(QCoreApplication::applicationDirPath());
-    const int nbloc = di.entryList(filtre, QDir::Files).count();
-    if (nbloc == 0) {
-        localePreviSat = QLocale(QLocale::French, QLocale::France).name().section('_', 0, 0);
-    } else {
-        const QStringList listeTr = di.entryList(filtre, QDir::Files);
-        if (nbloc == 1) {
-            localePreviSat = listeTr.at(0).section('_', 1).mid(0, 2);
-        } else {
-            if (listeTr.contains(QCoreApplication::applicationName() + "_en.qm"))
-                localePreviSat = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
-            else
-                localePreviSat = QLocale::system().name().section('_', 0, 0);
-        }
+    foreach(QString fic,  di.entryList(filtre, QDir::Files)) {
+        if (fic == QCoreApplication::applicationName() + "_" + localePreviSat + ".qm")
+            atrouve = true;
     }
+
+    if (!atrouve && localePreviSat != "fr")
+        localePreviSat = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
 
     /* Retour */
     return (localePreviSat);
@@ -2489,7 +2484,7 @@ void PreviSat::AffichageGroupesTLE() const
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE.gst");
+    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
@@ -7369,7 +7364,7 @@ void PreviSat::on_majMaintenant_clicked()
 
     /* Corps de la methode */
     // Telechargement des fichiers
-    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE.gst");
+    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
