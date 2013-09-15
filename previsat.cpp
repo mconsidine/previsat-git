@@ -850,7 +850,7 @@ QString PreviSat::DeterminationLocale()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool atrouve = false;
+    bool atrouveLocale = false;
     const QStringList filtre(QStringList () << QCoreApplication::applicationName() + "_*.qm");
 
     /* Corps de la methode */
@@ -858,10 +858,10 @@ QString PreviSat::DeterminationLocale()
     QDir di(QCoreApplication::applicationDirPath());
     foreach(QString fic,  di.entryList(filtre, QDir::Files)) {
         if (fic == QCoreApplication::applicationName() + "_" + localePreviSat + ".qm")
-            atrouve = true;
+            atrouveLocale = true;
     }
 
-    if (!atrouve && localePreviSat != "fr")
+    if (!atrouveLocale && localePreviSat != "fr")
         localePreviSat = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
 
     /* Retour */
