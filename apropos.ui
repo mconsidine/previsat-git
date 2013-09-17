@@ -40,6 +40,10 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
+  </property>
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
@@ -220,6 +224,8 @@ PreviSat est entièrement gratuit!</string>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -37,6 +37,10 @@
   <property name="windowTitle">
    <string>Gestionnaire de téléchargement des TLE</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="font">
     <font>
@@ -457,6 +461,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

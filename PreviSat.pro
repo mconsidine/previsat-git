@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    7 septembre 2013
+# >    16 septembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.2
@@ -57,6 +57,7 @@ win32 {
 
 mac {
     LIBS = /usr/lib/libz.dylib
+    ICON = resources/icone.icns
 }
 
 VERSIONSTR = '\\"$${VERSION}\\"'

@@ -37,6 +37,10 @@
   <property name="windowTitle">
    <string>Téléchargement de fichiers</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="font">
     <font>
@@ -150,6 +154,8 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
