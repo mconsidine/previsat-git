@@ -1009,7 +1009,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="29"/>
         <source>PreviSat</source>
-        <translation type="unfinished"></translation>
+        <translation>PreviSat</translation>
     </message>
     <message utf8="both">
         <location filename="previsat.ui" line="2138"/>
