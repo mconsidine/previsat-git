@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    19 septembre 2013
  *
  */
 
@@ -76,13 +76,27 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     dirHttp = idirHttp;
     const QString dirExe = QCoreApplication::applicationDirPath();
 
+    QFont font;
+
 #if defined (Q_OS_WIN)
     const QString dirDat = dirExe + QDir::separator() + "data";
+    font.setFamily("MS Shell Dlg 2");
+    font.setPointSize(8);
+
 #elif defined (Q_OS_LINUX)
     const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    font.setFamily("Sans Serif");
+    font.setPointSize(7);
+
+#elif defined (Q_OS_MAC)
+    const QString dirDat = dirExe + QDir::separator() + "data";
+    font.setFamily("Marion");
+    font.setPointSize(11);
 #else
     const QString dirDat = dirExe + QDir::separator() + "data";
 #endif
+
+    Telecharger::setFont(font);
 
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";

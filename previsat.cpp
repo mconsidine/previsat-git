@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 septembre 2013
+ * >    19 septembre 2013
  *
  */
 
@@ -257,13 +257,18 @@ void PreviSat::ChargementConfig()
     paletteDefaut = PreviSat::palette();
     tim = QDateTime();
 
-    // Repertoires
+    // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
+    QFont font;
+
 #if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
             QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
+
+    font.setFamily("MS Shell Dlg 2");
+    font.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
     dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
@@ -271,11 +276,17 @@ void PreviSat::ChargementConfig()
             QCoreApplication::applicationName();
     dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
 
+    font.setFamily("Sans Serif");
+    font.setPointSize(7);
+
 #elif defined (Q_OS_MAC)
     dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
             QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
+
+    font.setFamily("Marion");
+    font.setPointSize(11);
 
 #else
     dirDat = dirExe + QDir::separator() + "data";
@@ -289,6 +300,8 @@ void PreviSat::ChargementConfig()
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+
+    PreviSat::setFont(font);
 
     chronometre = new QTimer(this);
 
@@ -797,8 +810,8 @@ void PreviSat::DemarrageApplication()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const int xmax = QApplication::desktop()->width();
-    const int ymax = QApplication::desktop()->height();
+    const int xmax = QApplication::desktop()->availableGeometry().width();
+    const int ymax = QApplication::desktop()->availableGeometry().height() - messagesStatut->height() - 10;
     int xPrevi = PreviSat::width();
     int yPrevi = PreviSat::height();
 

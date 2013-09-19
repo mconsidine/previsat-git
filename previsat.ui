@@ -16,12 +16,6 @@
     <height>690</height>
    </size>
   </property>
-  <property name="font">
-   <font>
-    <family>MS Shell Dlg 2</family>
-    <pointsize>8</pointsize>
-   </font>
-  </property>
   <property name="mouseTracking">
    <bool>true</bool>
   </property>
@@ -38,12 +32,6 @@
      <width>1068</width>
      <height>690</height>
     </size>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
    <property name="mouseTracking">
     <bool>true</bool>
@@ -65,8 +53,6 @@
       </property>
       <property name="font">
        <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="mouseTracking">
@@ -101,8 +87,6 @@
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
-           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="mouseTracking">
@@ -125,8 +109,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -162,8 +144,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -197,8 +177,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -221,8 +199,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -243,8 +219,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -265,8 +239,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -287,8 +259,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -309,8 +279,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -331,8 +299,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -353,8 +319,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -375,8 +339,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -397,8 +359,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -419,8 +379,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -441,8 +399,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -463,8 +419,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -485,8 +439,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -508,8 +460,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -532,8 +482,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -554,8 +502,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -576,8 +522,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -598,8 +542,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -620,8 +562,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -642,8 +582,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -664,8 +602,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -687,8 +623,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -724,8 +658,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -749,8 +681,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -774,8 +704,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -796,8 +724,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -827,8 +753,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -862,8 +786,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -899,8 +821,6 @@
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
-           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="mouseTracking">
@@ -923,8 +843,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -962,8 +880,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -983,8 +899,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -1008,8 +922,6 @@
            </property>
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -1031,8 +943,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1053,8 +963,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1102,8 +1010,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1124,8 +1030,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1173,8 +1077,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1207,8 +1109,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1241,8 +1141,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1279,8 +1177,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1312,8 +1208,6 @@
       </property>
       <property name="font">
        <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="mouseTracking">
@@ -1348,8 +1242,6 @@
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
-           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="mouseTracking">
@@ -1372,8 +1264,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -1385,8 +1275,6 @@
           <widget class="QWidget" name="general">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -1409,8 +1297,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1431,8 +1317,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1453,8 +1337,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1475,8 +1357,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1497,8 +1377,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1519,8 +1397,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1541,8 +1417,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1563,8 +1437,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1585,8 +1457,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1607,8 +1477,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1629,8 +1497,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -1653,8 +1519,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1793,8 +1657,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -1817,8 +1679,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1839,8 +1699,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1861,8 +1719,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1883,8 +1739,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1905,8 +1759,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1927,8 +1779,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1949,8 +1799,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1971,8 +1819,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -1996,8 +1842,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2018,8 +1862,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2043,8 +1885,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2065,8 +1905,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2087,8 +1925,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2109,8 +1945,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2131,8 +1965,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2153,8 +1985,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2178,8 +2008,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2200,8 +2028,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2222,8 +2048,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2244,8 +2068,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2269,8 +2091,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2291,8 +2111,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2316,8 +2134,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2338,8 +2154,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2363,8 +2177,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2385,8 +2197,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2407,8 +2217,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2429,8 +2237,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2451,8 +2257,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2473,8 +2277,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -2492,8 +2294,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2533,8 +2333,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -2566,8 +2364,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -2584,8 +2380,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2609,8 +2403,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2634,8 +2426,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2659,8 +2449,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2681,8 +2469,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2703,8 +2489,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2725,8 +2509,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2747,8 +2529,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2769,8 +2549,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2794,8 +2572,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2816,8 +2592,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2838,8 +2612,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2860,8 +2632,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2882,8 +2652,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2907,8 +2675,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2929,8 +2695,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2951,8 +2715,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -2976,8 +2738,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3001,8 +2761,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3023,8 +2781,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3048,8 +2804,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3070,8 +2824,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3092,8 +2844,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3114,8 +2864,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3136,8 +2884,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3158,8 +2904,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3180,8 +2924,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3202,8 +2944,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3224,8 +2964,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3246,8 +2984,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -3270,8 +3006,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -3308,8 +3042,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -3330,8 +3062,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -3363,8 +3093,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -3404,8 +3132,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -3445,8 +3171,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -3486,8 +3210,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -3527,8 +3249,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -3563,8 +3283,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -3585,8 +3303,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -3600,8 +3316,6 @@
           <widget class="QWidget" name="osculateurs">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -3624,8 +3338,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3643,8 +3355,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3663,7 +3373,6 @@
             <property name="font">
              <font>
               <family>Courier New</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3681,8 +3390,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3700,8 +3407,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3722,8 +3427,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3744,8 +3447,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3763,8 +3464,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3785,8 +3484,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3804,8 +3501,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3823,8 +3518,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3842,8 +3535,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3864,8 +3555,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3883,8 +3572,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3905,8 +3592,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3924,8 +3609,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3943,8 +3626,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3965,8 +3646,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -3987,8 +3666,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4006,8 +3683,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4025,8 +3700,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4047,8 +3720,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4069,8 +3740,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4088,8 +3757,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4107,8 +3774,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4129,8 +3794,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4151,8 +3814,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4171,7 +3832,6 @@
             <property name="font">
              <font>
               <family>Courier New</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4189,8 +3849,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4208,8 +3866,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4345,8 +4001,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -4366,8 +4020,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4388,8 +4040,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="buttonSymbols">
@@ -4420,8 +4070,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -4439,8 +4087,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <item>
@@ -4475,8 +4121,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="frameShape">
@@ -4496,8 +4140,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4515,8 +4157,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4534,8 +4174,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4556,8 +4194,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4578,8 +4214,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4597,8 +4231,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4619,8 +4251,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4638,8 +4268,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4660,8 +4288,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4679,8 +4305,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4702,8 +4326,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="frameShape">
@@ -4723,8 +4345,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4742,8 +4362,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4761,8 +4379,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4783,8 +4399,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4802,8 +4416,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4824,8 +4436,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4846,8 +4456,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4865,8 +4473,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4884,8 +4490,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4906,8 +4510,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4929,8 +4531,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="frameShape">
@@ -4950,8 +4550,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4969,8 +4567,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -4988,8 +4584,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5010,8 +4604,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5029,8 +4621,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5048,8 +4638,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5067,8 +4655,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5086,8 +4672,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5108,8 +4692,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5130,8 +4712,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5153,8 +4733,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="frameShape">
@@ -5174,8 +4752,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5193,8 +4769,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5212,8 +4786,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5234,8 +4806,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5256,8 +4826,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5275,8 +4843,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5294,8 +4860,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5313,8 +4877,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5335,8 +4897,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5357,8 +4917,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -5380,8 +4938,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -5402,8 +4958,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -5455,8 +5009,6 @@
           <widget class="QWidget" name="informations">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -5479,8 +5031,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5501,8 +5051,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5523,8 +5071,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5545,8 +5091,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5570,8 +5114,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5593,7 +5135,6 @@
             <property name="font">
              <font>
               <family>Courier New</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5617,8 +5158,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5639,8 +5178,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5661,8 +5198,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5686,8 +5221,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5708,8 +5241,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5730,8 +5261,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5755,8 +5284,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5778,7 +5305,6 @@
             <property name="font">
              <font>
               <family>Courier New</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5802,8 +5328,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5824,8 +5348,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5849,8 +5371,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5871,8 +5391,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5893,8 +5411,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5918,8 +5434,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5940,8 +5454,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -5962,8 +5474,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6102,8 +5612,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -6126,8 +5634,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6148,8 +5654,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6173,8 +5677,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6195,8 +5697,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6217,8 +5717,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6242,8 +5740,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6264,8 +5760,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6289,8 +5783,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6311,8 +5803,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6333,8 +5823,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6355,8 +5843,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6377,8 +5863,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6399,8 +5883,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6421,8 +5903,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6443,8 +5923,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6465,8 +5943,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6487,8 +5963,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6509,8 +5983,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6531,8 +6003,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6553,8 +6023,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6575,8 +6043,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6594,8 +6060,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6613,8 +6077,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6632,8 +6094,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6651,8 +6111,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6670,8 +6128,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -6731,8 +6187,6 @@
           <widget class="QWidget" name="previsions">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -6755,8 +6209,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6777,8 +6229,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6802,8 +6252,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6824,8 +6272,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6849,8 +6295,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6871,8 +6315,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6930,8 +6372,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6952,8 +6392,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6971,8 +6409,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -6993,8 +6429,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7045,8 +6479,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7067,8 +6499,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7116,8 +6546,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7141,8 +6569,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7163,8 +6589,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7197,8 +6621,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7228,8 +6650,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7250,8 +6670,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7275,8 +6693,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7297,8 +6713,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7319,8 +6733,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7347,8 +6759,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7375,8 +6785,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7387,8 +6795,6 @@
           <widget class="QWidget" name="iridium">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -7411,8 +6817,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7430,8 +6834,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="buttonSymbols">
@@ -7452,8 +6854,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7471,8 +6871,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7490,8 +6888,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="buttonSymbols">
@@ -7512,8 +6908,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="currentIndex">
@@ -7561,8 +6955,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7580,8 +6972,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7599,8 +6989,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
            </widget>
@@ -7615,8 +7003,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7634,8 +7020,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="currentIndex">
@@ -7683,8 +7067,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7705,8 +7087,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7727,8 +7107,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7746,8 +7124,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -7767,8 +7143,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -7786,8 +7160,6 @@
              </property>
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="text">
@@ -7809,8 +7181,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7828,8 +7198,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="decimals">
@@ -7859,8 +7227,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="decimals">
@@ -7890,8 +7256,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7909,8 +7273,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="decimals">
@@ -7940,8 +7302,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7959,8 +7319,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -7978,8 +7336,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -8000,8 +7356,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -8019,8 +7373,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="inputMask">
@@ -8044,8 +7396,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="inputMask">
@@ -8069,8 +7419,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="text">
@@ -8088,8 +7436,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -8107,8 +7453,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="horizontalScrollBarPolicy">
@@ -8167,8 +7511,6 @@
           <widget class="QWidget" name="options">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -8194,8 +7536,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -8210,8 +7550,6 @@
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -8234,8 +7572,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -8253,8 +7589,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -8271,8 +7605,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8290,8 +7622,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8309,8 +7639,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
               </widget>
@@ -8325,8 +7653,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="inputMask">
@@ -8353,8 +7679,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <item>
@@ -8379,8 +7703,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8398,8 +7720,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="inputMask">
@@ -8426,8 +7746,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <item>
@@ -8452,8 +7770,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8471,8 +7787,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="inputMask">
@@ -8496,8 +7810,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8515,8 +7827,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8534,8 +7844,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
               </widget>
@@ -8550,8 +7858,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8569,8 +7875,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8589,8 +7893,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
@@ -8616,8 +7918,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="contextMenuPolicy">
@@ -8647,8 +7947,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -8666,8 +7964,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="contextMenuPolicy">
@@ -8688,8 +7984,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -8716,8 +8010,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
@@ -8743,8 +8035,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -8761,8 +8051,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8780,8 +8068,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8799,8 +8085,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8818,8 +8102,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8837,8 +8119,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8856,8 +8136,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8875,8 +8153,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8895,8 +8171,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -8913,8 +8187,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8932,8 +8204,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
               </widget>
@@ -8948,8 +8218,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8967,8 +8235,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -8987,8 +8253,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -8999,8 +8263,6 @@
             <widget class="QWidget" name="optionAffichage">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -9041,8 +8303,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -9077,8 +8337,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="mouseTracking">
@@ -9095,8 +8353,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9114,8 +8370,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9133,8 +8387,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9152,8 +8404,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9174,8 +8424,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9196,8 +8444,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9218,8 +8464,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="minimum">
@@ -9240,8 +8484,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9259,8 +8501,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9281,8 +8521,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9303,8 +8541,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9322,8 +8558,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9341,8 +8575,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9360,8 +8592,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -9379,8 +8609,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="title">
@@ -9397,8 +8625,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9419,8 +8645,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9442,8 +8666,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="title">
@@ -9460,8 +8682,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9482,8 +8702,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9504,8 +8722,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="minimum">
@@ -9529,8 +8745,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9551,8 +8765,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
-                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -9574,8 +8786,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9593,8 +8803,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="maximum">
@@ -9621,8 +8829,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9640,8 +8846,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9659,8 +8863,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9681,8 +8883,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9700,8 +8900,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9719,8 +8917,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9741,8 +8937,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9763,8 +8957,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9782,8 +8974,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="decimals">
@@ -9810,8 +9000,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9829,8 +9017,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9854,8 +9040,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="maximum">
@@ -9882,8 +9066,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9901,8 +9083,6 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -9917,8 +9097,6 @@
           <widget class="QWidget" name="outils">
            <property name="font">
             <font>
-             <family>MS Shell Dlg 2</family>
-             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="mouseTracking">
@@ -9941,8 +9119,6 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
-              <pointsize>8</pointsize>
              </font>
             </property>
             <property name="mouseTracking">
@@ -9957,8 +9133,6 @@
             <widget class="QWidget" name="miseAJourTLE">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -9981,8 +9155,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10003,8 +9175,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="frameShape">
@@ -10024,8 +9194,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="value">
@@ -10049,8 +9217,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10072,8 +9238,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -10088,8 +9252,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10107,8 +9269,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10126,8 +9286,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -10142,8 +9300,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10161,8 +9317,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -10177,8 +9331,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="horizontalScrollBarPolicy">
@@ -10199,8 +9351,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10218,8 +9368,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10237,8 +9385,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10256,8 +9402,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -10265,8 +9409,6 @@
             <widget class="QWidget" name="extractionFichierTLE">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -10289,8 +9431,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10308,8 +9448,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -10324,8 +9462,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10343,8 +9479,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10362,8 +9496,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <item>
@@ -10388,8 +9520,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -10412,8 +9542,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10431,8 +9559,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -10456,8 +9582,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10475,8 +9599,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -10501,8 +9623,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10520,8 +9640,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <item>
@@ -10546,8 +9664,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -10570,8 +9686,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10589,8 +9703,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -10614,8 +9726,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10633,8 +9743,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -10658,8 +9766,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10677,8 +9783,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10697,8 +9801,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10716,8 +9818,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <item>
@@ -10742,8 +9842,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -10766,8 +9864,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10785,8 +9881,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -10804,8 +9898,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="inputMask">
@@ -10826,8 +9918,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="inputMask">
@@ -10849,8 +9939,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10868,8 +9956,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <item>
@@ -10894,8 +9980,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="minimum">
@@ -10919,8 +10003,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10938,8 +10020,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10957,8 +10037,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -10976,8 +10054,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="minimum">
@@ -11001,8 +10077,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11020,8 +10094,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -11044,8 +10116,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11066,8 +10136,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -11091,8 +10159,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11110,8 +10176,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -11135,8 +10199,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11154,8 +10216,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11174,8 +10234,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11193,8 +10251,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -11209,8 +10265,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11228,8 +10282,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11247,8 +10299,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11266,8 +10316,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="inputMask">
@@ -11288,8 +10336,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11307,8 +10353,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="inputMask">
@@ -11329,8 +10373,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11348,8 +10390,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -11372,8 +10412,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11391,8 +10429,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -11416,8 +10452,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11435,8 +10469,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="minimum">
@@ -11460,8 +10492,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11479,8 +10509,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11499,8 +10527,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11518,8 +10544,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="minimum">
@@ -11543,8 +10567,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11565,8 +10587,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <item>
@@ -11584,8 +10604,6 @@
             <widget class="QWidget" name="evenementsOrbitaux">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -11608,8 +10626,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="buttonSymbols">
@@ -11630,8 +10646,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11649,8 +10663,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11668,8 +10680,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11687,8 +10697,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="buttonSymbols">
@@ -11709,8 +10717,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -11730,8 +10736,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11752,8 +10756,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11774,8 +10776,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11796,8 +10796,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11818,8 +10816,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -11841,8 +10837,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -11872,8 +10866,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11894,8 +10886,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11913,8 +10903,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11932,8 +10920,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -11944,8 +10930,6 @@
             <widget class="QWidget" name="transitsISS">
              <property name="font">
               <font>
-               <family>MS Shell Dlg 2</family>
-               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="mouseTracking">
@@ -11968,8 +10952,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="buttonSymbols">
@@ -11990,8 +10972,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="buttonSymbols">
@@ -12012,8 +10992,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12031,8 +11009,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12050,8 +11026,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12069,8 +11043,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
              </widget>
@@ -12085,8 +11057,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12104,8 +11074,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12123,8 +11091,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12142,8 +11108,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="decimals">
@@ -12170,8 +11134,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="currentIndex">
@@ -12219,8 +11181,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="inputMask">
@@ -12244,8 +11204,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12263,8 +11221,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12282,8 +11238,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="decimals">
@@ -12310,8 +11264,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -12331,8 +11283,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -12353,8 +11303,6 @@
                </property>
                <property name="font">
                 <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -12376,8 +11324,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12395,8 +11341,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12414,8 +11358,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12436,8 +11378,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12455,8 +11395,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -12477,8 +11415,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="text">
@@ -12496,8 +11432,6 @@
               </property>
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
-                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="mouseTracking">
@@ -12529,8 +11463,6 @@
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
-           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="mouseTracking">
@@ -12553,8 +11485,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12578,8 +11508,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12600,8 +11528,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12625,8 +11551,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12650,8 +11574,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12675,8 +11597,6 @@
           </property>
           <property name="font">
            <font>
-            <family>MS Shell Dlg 2</family>
-            <pointsize>8</pointsize>
            </font>
           </property>
           <property name="mouseTracking">
@@ -12751,12 +11671,6 @@
      <height>17</height>
     </size>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
@@ -12772,12 +11686,6 @@
      <width>1068</width>
      <height>19</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
    <property name="nativeMenuBar">
     <bool>false</bool>
@@ -12811,8 +11719,6 @@
    <widget class="QMenu" name="menuContextuelListe1">
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="title">
@@ -12878,12 +11784,6 @@
    <property name="text">
     <string>Ouvrir fichier TLE</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="shortcut">
     <string notr="true">Ctrl+O</string>
    </property>
@@ -12891,12 +11791,6 @@
   <action name="actionEnregistrer">
    <property name="text">
     <string>Enregistrer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+S</string>
@@ -12910,12 +11804,6 @@
    <property name="text">
     <string>Fichier d'aide</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="shortcut">
     <string>F1</string>
    </property>
@@ -12924,22 +11812,10 @@
    <property name="text">
     <string>astropedia.free.fr</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionRapport_de_bug">
    <property name="text">
     <string>Rapport de bug</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionTelecharger_la_mise_a_jour">
@@ -12951,8 +11827,6 @@
    </property>
    <property name="font">
     <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -12965,165 +11839,75 @@
    <property name="text">
     <string>www.celestrak.com</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionWww_space_track_org">
    <property name="text">
     <string>www.space-track.org</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionA_propos">
    <property name="text">
     <string>À propos</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionDefinir_par_defaut">
    <property name="text">
     <string>Définir par défaut</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionNouveau_fichier_TLE">
    <property name="text">
     <string>Nouveau fichier TLE</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionFichier_TLE_existant">
    <property name="text">
     <string>Fichier TLE existant</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionTous">
    <property name="text">
     <string>Tous</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionAucun">
    <property name="text">
     <string>Aucun</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionCreer_une_categorie">
    <property name="text">
     <string>Créer une catégorie</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionSupprimerCategorie">
    <property name="text">
     <string>Supprimer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionTelechargerCategorie">
    <property name="text">
     <string>Télécharger...</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionCreer_un_nouveau_lieu">
    <property name="text">
     <string>Créer un nouveau lieu</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionAjouter_Mes_Preferes">
    <property name="text">
     <string>Ajouter à Mes Préférés</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionSupprimerLieu">
    <property name="text">
     <string>Supprimer</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionCopier_dans_le_presse_papier">
    <property name="text">
     <string>Copier dans le presse-papier</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionImprimer_carte">
@@ -13134,12 +11918,6 @@
    <property name="text">
     <string>Imprimer carte</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
    </property>
@@ -13148,33 +11926,15 @@
    <property name="text">
     <string>Renommer</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionRenommerLieu">
    <property name="text">
     <string>Renommer</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionModifier_coordonnees">
    <property name="text">
     <string>Modifier coordonnées</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionVision_nocturne">
@@ -13184,12 +11944,6 @@
    <property name="text">
     <string>Vision nocturne</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
@@ -13198,12 +11952,6 @@
    <property name="text">
     <string>Mettre à jour les fichiers internes</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <property name="visible">
     <bool>false</bool>
    </property>
@@ -13211,12 +11959,6 @@
   <action name="actionSupprimerLieuSelec">
    <property name="text">
     <string>Supprimer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
  </widget>

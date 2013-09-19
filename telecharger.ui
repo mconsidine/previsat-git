@@ -30,8 +30,6 @@
   </property>
   <property name="font">
    <font>
-    <family>MS Shell Dlg 2</family>
-    <pointsize>8</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -42,12 +40,6 @@
     <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <widget class="QPushButton" name="interrogerServeur">
     <property name="geometry">
      <rect>
@@ -59,8 +51,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -78,8 +68,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="mouseTracking">
@@ -100,8 +88,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="value">
@@ -125,8 +111,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -144,8 +128,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">

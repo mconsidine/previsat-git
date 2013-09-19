@@ -30,8 +30,6 @@
   </property>
   <property name="font">
    <font>
-    <family>MS Shell Dlg 2</family>
-    <pointsize>8</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -42,12 +40,6 @@
     <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
    <widget class="QLabel" name="lbl_groupeTLE">
     <property name="geometry">
      <rect>
@@ -59,8 +51,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -78,8 +68,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="contextMenuPolicy">
@@ -100,8 +88,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -119,8 +105,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -138,8 +122,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="frameShape">
@@ -159,8 +141,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -178,8 +158,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
     </widget>
@@ -194,8 +172,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
     </widget>
@@ -210,8 +186,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -229,8 +203,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -248,8 +220,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -267,8 +237,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -286,8 +254,6 @@
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>8</pointsize>
       </font>
      </property>
     </widget>
@@ -303,8 +269,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -322,8 +286,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="mouseTracking">
@@ -347,8 +309,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
@@ -366,8 +326,6 @@
     </property>
     <property name="font">
      <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="minimum">
@@ -420,44 +378,20 @@
    <property name="text">
     <string>Créer un groupe</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionSupprimerGroupe">
    <property name="text">
     <string>Supprimer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionAjouter_des_fichiers">
    <property name="text">
     <string>Ajouter des fichiers</string>
    </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionSupprimer">
    <property name="text">
     <string>Supprimer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <pointsize>8</pointsize>
-    </font>
    </property>
   </action>
  </widget>

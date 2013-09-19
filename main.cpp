@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    19 septembre 2013
  *
  */
 
@@ -99,15 +99,19 @@ int main(int argc, char *argv[])
 
     const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
     splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
+    a.processEvents();
     w.ChargementConfig();
 
     splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
+    a.processEvents();
     w.ChargementTLE();
 
     splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
+    a.processEvents();
     w.MAJTLE();
 
     splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+    a.processEvents();
     w.DemarrageApplication();
 
     w.show();
