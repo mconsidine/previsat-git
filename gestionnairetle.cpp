@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >
+ * >    19 septembre 2013
  *
  */
 
@@ -62,6 +62,24 @@ GestionnaireTLE::GestionnaireTLE(QWidget *parent) :
     ui(new Ui::GestionnaireTLE)
 {
     ui->setupUi(this);
+
+    QFont font;
+
+#if defined (Q_OS_WIN)
+    font.setFamily("MS Shell Dlg 2");
+    font.setPointSize(8);
+
+#elif defined (Q_OS_LINUX)
+    font.setFamily("Sans Serif");
+    font.setPointSize(7);
+
+#elif defined (Q_OS_MAC)
+    font.setFamily("Marion");
+    font.setPointSize(11);
+#else
+#endif
+
+    GestionnaireTLE::setFont(font);
     load();
 }
 
