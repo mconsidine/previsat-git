@@ -52,8 +52,7 @@
        </size>
       </property>
       <property name="font">
-       <font>
-       </font>
+       <font/>
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
@@ -86,8 +85,7 @@
           </size>
          </property>
          <property name="font">
-          <font>
-          </font>
+          <font/>
          </property>
          <property name="mouseTracking">
           <bool>true</bool>
@@ -108,8 +106,7 @@
            </size>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -143,8 +140,7 @@
            </size>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -176,8 +172,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -198,8 +193,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -218,8 +212,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -238,8 +231,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -258,8 +250,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -278,8 +269,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -298,8 +288,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -318,8 +307,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -338,8 +326,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -358,8 +345,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -378,8 +364,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -398,8 +383,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -418,8 +402,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -438,8 +421,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -459,8 +441,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -481,8 +462,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -501,8 +481,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -521,8 +500,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -541,8 +519,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -561,8 +538,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -581,8 +557,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -601,8 +576,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -622,8 +596,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -657,8 +630,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -680,8 +652,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -703,8 +674,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -723,8 +693,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -752,8 +721,7 @@
            </size>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -785,8 +753,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -820,8 +787,7 @@
           </size>
          </property>
          <property name="font">
-          <font>
-          </font>
+          <font/>
          </property>
          <property name="mouseTracking">
           <bool>true</bool>
@@ -842,8 +808,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -879,8 +844,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -898,8 +862,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -921,8 +884,7 @@
             </rect>
            </property>
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -942,8 +904,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -962,8 +923,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1009,8 +969,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1029,8 +988,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1076,8 +1034,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1108,8 +1065,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1140,8 +1096,7 @@
            </size>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1176,8 +1131,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1207,8 +1161,7 @@
        </size>
       </property>
       <property name="font">
-       <font>
-       </font>
+       <font/>
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
@@ -1241,8 +1194,7 @@
           </size>
          </property>
          <property name="font">
-          <font>
-          </font>
+          <font/>
          </property>
          <property name="mouseTracking">
           <bool>true</bool>
@@ -1263,8 +1215,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -1274,8 +1225,7 @@
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -1296,8 +1246,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1316,8 +1265,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1336,8 +1284,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1356,8 +1303,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1376,8 +1322,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1396,8 +1341,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1416,8 +1360,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1436,8 +1379,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1456,8 +1398,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1476,8 +1417,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1496,8 +1436,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -1518,8 +1457,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1678,8 +1616,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1698,8 +1635,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1718,8 +1654,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1738,8 +1673,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1758,8 +1692,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1778,8 +1711,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1798,8 +1730,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1818,8 +1749,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1841,8 +1771,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1861,8 +1790,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1884,8 +1812,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1904,8 +1831,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1924,8 +1850,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1944,8 +1869,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1964,8 +1888,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -1984,8 +1907,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2007,8 +1929,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2027,8 +1948,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2047,8 +1967,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2067,8 +1986,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2090,8 +2008,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2110,8 +2027,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2133,8 +2049,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2153,8 +2068,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2176,8 +2090,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2196,8 +2109,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2216,8 +2128,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2236,8 +2147,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2256,8 +2166,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2276,8 +2185,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Prochain AOS :</string>
@@ -2293,8 +2201,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2332,8 +2239,7 @@
              </size>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -2363,8 +2269,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -2379,8 +2284,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2402,8 +2306,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2425,8 +2328,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2448,8 +2350,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2468,8 +2369,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2488,8 +2388,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2508,8 +2407,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2528,8 +2426,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2548,8 +2445,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2571,8 +2467,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2591,8 +2486,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2611,8 +2505,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2631,8 +2524,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2651,8 +2543,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2674,8 +2565,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2694,8 +2584,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2714,8 +2603,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2737,8 +2625,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2760,8 +2647,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2780,8 +2666,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2803,8 +2688,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2823,8 +2707,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2843,8 +2726,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2863,8 +2745,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2883,8 +2764,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2903,8 +2783,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2923,8 +2802,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2943,8 +2821,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2963,8 +2840,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -2983,8 +2859,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -3005,8 +2880,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -3041,8 +2915,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -3061,8 +2934,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -3092,8 +2964,7 @@
               </size>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -3131,8 +3002,7 @@
               </size>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -3170,8 +3040,7 @@
               </size>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -3209,8 +3078,7 @@
               </size>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -3248,8 +3116,7 @@
               </size>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -3282,8 +3149,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -3302,8 +3168,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -3315,8 +3180,7 @@
           </widget>
           <widget class="QWidget" name="osculateurs">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -3337,8 +3201,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Mercredi 31 décembre 2022  00:00:00                UTC + 01:00</string>
@@ -3354,8 +3217,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Date :</string>
@@ -3389,8 +3251,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>vz :</string>
@@ -3406,8 +3267,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>000.0000°</string>
@@ -3426,8 +3286,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+29.000000 km/s</string>
@@ -3446,8 +3305,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Nom :</string>
@@ -3463,8 +3321,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+29.000000 km/s</string>
@@ -3483,8 +3340,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>y :</string>
@@ -3500,8 +3356,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Champ de vue :</string>
@@ -3517,8 +3372,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Périgée (Altitude) :</string>
@@ -3534,8 +3388,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+36000.000 km</string>
@@ -3554,8 +3407,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Période orbitale :</string>
@@ -3571,8 +3423,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+36000.000 km</string>
@@ -3591,8 +3442,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>x :</string>
@@ -3608,8 +3458,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Éléments osculateurs :</string>
@@ -3625,8 +3474,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>000.0000°</string>
@@ -3645,8 +3493,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>36000.0 km (36000.0 km)</string>
@@ -3665,8 +3512,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>z :</string>
@@ -3682,8 +3528,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Anomalie vraie :</string>
@@ -3699,8 +3544,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>36000.0 km (36000.0 km)</string>
@@ -3719,8 +3563,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+36000.000 km</string>
@@ -3739,8 +3582,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Vecteur d'état (ECI) :</string>
@@ -3756,8 +3598,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>vx :</string>
@@ -3773,8 +3614,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>000.0000°</string>
@@ -3793,8 +3633,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>24h 50m 53s</string>
@@ -3813,8 +3652,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Apogée (Altitude) :</string>
@@ -3848,8 +3686,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>vy :</string>
@@ -3865,8 +3702,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Anomalie excentrique :</string>
@@ -4019,8 +3855,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>+29.000000 km/s</string>
@@ -4039,8 +3874,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -4069,8 +3903,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>UTC + 01:00</string>
@@ -4086,8 +3919,13 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
             <item>
              <property name="text">
@@ -4120,8 +3958,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -4139,8 +3976,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>AD noeud ascendant :</string>
@@ -4156,8 +3992,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Inclinaison :</string>
@@ -4173,8 +4008,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4193,8 +4027,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4213,8 +4046,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Anomalie moyenne :</string>
@@ -4230,8 +4062,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4250,8 +4081,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Argument du périgée :</string>
@@ -4267,8 +4097,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4287,8 +4116,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Excentricité :</string>
@@ -4304,8 +4132,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4325,8 +4152,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -4344,8 +4170,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>AD noeud ascendant :</string>
@@ -4361,8 +4186,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ey :</string>
@@ -4378,8 +4202,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4398,8 +4221,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Position sur orbite :</string>
@@ -4415,8 +4237,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4435,8 +4256,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4455,8 +4275,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ex :</string>
@@ -4472,8 +4291,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Inclinaison :</string>
@@ -4489,8 +4307,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4509,8 +4326,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4530,8 +4346,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -4549,8 +4364,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ix :</string>
@@ -4566,8 +4380,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Anomalie moyenne :</string>
@@ -4583,8 +4396,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4603,8 +4415,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4620,8 +4431,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Excentricité :</string>
@@ -4637,8 +4447,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Iy :</string>
@@ -4654,8 +4463,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Longitude du périgée :</string>
@@ -4671,8 +4479,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4691,8 +4498,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4711,8 +4517,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4732,8 +4537,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -4751,8 +4555,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ix :</string>
@@ -4768,8 +4571,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Argument longitude vraie :</string>
@@ -4785,8 +4587,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>000.0000°</string>
@@ -4805,8 +4606,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4825,8 +4625,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ex :</string>
@@ -4842,8 +4641,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Iy :</string>
@@ -4859,8 +4657,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>Ey :</string>
@@ -4876,8 +4673,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4896,8 +4692,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4916,8 +4711,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>0.0000000</string>
@@ -4937,8 +4731,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>36000.0 km</string>
@@ -4957,8 +4750,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Demi-grand axe :</string>
@@ -5008,8 +4800,7 @@
           </widget>
           <widget class="QWidget" name="informations">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -5030,8 +4821,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5050,8 +4840,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5070,8 +4859,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5090,8 +4878,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5113,8 +4900,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5157,8 +4943,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5177,8 +4962,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5197,8 +4981,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5220,8 +5003,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5240,8 +5022,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5260,8 +5041,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5283,8 +5063,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5327,8 +5106,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5347,8 +5125,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5370,8 +5147,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5390,8 +5166,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5410,8 +5185,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5433,8 +5207,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5453,8 +5226,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5473,8 +5245,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5633,8 +5404,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5653,8 +5423,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5676,8 +5445,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5696,8 +5464,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5716,8 +5483,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5739,8 +5505,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5759,8 +5524,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5782,8 +5546,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5802,8 +5565,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5822,8 +5584,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5842,8 +5603,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5862,8 +5622,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5882,8 +5641,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5902,8 +5660,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5922,8 +5679,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5942,8 +5698,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5962,8 +5717,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -5982,8 +5736,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6002,8 +5755,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6022,8 +5774,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6042,8 +5793,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Date de lancement :</string>
@@ -6059,8 +5809,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>2013/07/08</string>
@@ -6076,8 +5825,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Catégorie d'orbite :</string>
@@ -6093,8 +5841,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>LEO/I</string>
@@ -6110,8 +5857,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>US</string>
@@ -6127,8 +5873,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Pays/Organisation :</string>
@@ -6186,8 +5931,7 @@
           </widget>
           <widget class="QWidget" name="previsions">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -6208,8 +5952,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6228,8 +5971,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6251,8 +5993,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6271,8 +6012,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6294,8 +6034,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6314,8 +6053,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6371,8 +6109,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6391,8 +6128,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6408,8 +6144,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6428,14 +6163,19 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
             </property>
             <property name="currentIndex">
              <number>1</number>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
             <item>
              <property name="text">
@@ -6478,8 +6218,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6498,8 +6237,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6545,8 +6283,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6568,8 +6305,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6588,8 +6324,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6620,8 +6355,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6649,8 +6383,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6669,8 +6402,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6692,8 +6424,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6712,8 +6443,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6732,8 +6462,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6758,8 +6487,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -6784,8 +6512,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Paramétrage par défaut</string>
@@ -6794,8 +6521,7 @@
           </widget>
           <widget class="QWidget" name="iridium">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -6816,8 +6542,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Date initiale :</string>
@@ -6833,8 +6558,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -6853,8 +6577,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Effacer heures</string>
@@ -6870,8 +6593,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Date finale :</string>
@@ -6887,8 +6609,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -6907,11 +6628,16 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="currentIndex">
              <number>1</number>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
             <item>
              <property name="text">
@@ -6954,8 +6680,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Hauteur du Soleil :</string>
@@ -6971,8 +6696,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Lieu d'observation :</string>
@@ -6988,8 +6712,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
            </widget>
            <widget class="QLabel" name="lbl_hauteurSatIri">
@@ -7002,8 +6725,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Hauteur minimale du satellite :</string>
@@ -7019,8 +6741,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="currentIndex">
              <number>2</number>
@@ -7066,8 +6787,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Uniquement les satellites opérationnels</string>
@@ -7086,8 +6806,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Classer par ordre chronologique</string>
@@ -7106,8 +6825,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Fichier TLE :</string>
@@ -7123,8 +6841,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -7142,8 +6859,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>1 ligne</string>
@@ -7159,8 +6875,7 @@
               </rect>
              </property>
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="text">
               <string>3 lignes</string>
@@ -7180,8 +6895,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Magnitude maximale (nuit) :</string>
@@ -7197,8 +6911,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="decimals">
              <number>1</number>
@@ -7226,8 +6939,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="decimals">
              <number>1</number>
@@ -7255,8 +6967,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Magnitude maximale (jour) :</string>
@@ -7272,8 +6983,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="decimals">
              <number>1</number>
@@ -7301,8 +7011,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Angle maximal de réflexion :</string>
@@ -7318,8 +7027,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Afficher</string>
@@ -7335,8 +7043,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Calculs</string>
@@ -7355,8 +7062,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Annuler</string>
@@ -7372,8 +7078,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="inputMask">
              <string>###; </string>
@@ -7395,8 +7100,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="inputMask">
              <string>99; </string>
@@ -7418,8 +7122,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="text">
              <string>Paramétrage par défaut</string>
@@ -7435,8 +7138,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -7452,8 +7154,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -7510,8 +7211,7 @@
           </widget>
           <widget class="QWidget" name="options">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -7535,8 +7235,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -7549,8 +7248,7 @@
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -7571,8 +7269,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Lieux d'observation :</string>
@@ -7588,8 +7285,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -7604,8 +7300,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Nom :</string>
@@ -7621,8 +7316,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Longitude :</string>
@@ -7638,8 +7332,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
               </widget>
               <widget class="QLineEdit" name="nvLongitude">
@@ -7652,8 +7345,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="inputMask">
                 <string notr="true">999°99'99&quot;; </string>
@@ -7678,8 +7370,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <item>
                 <property name="text">
@@ -7702,8 +7393,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Latitude :</string>
@@ -7719,8 +7409,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="inputMask">
                 <string notr="true">99°99'99&quot;; </string>
@@ -7745,8 +7434,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <item>
                 <property name="text">
@@ -7769,8 +7457,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Altitude :</string>
@@ -7786,8 +7473,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="inputMask">
                 <string notr="true">####; </string>
@@ -7809,8 +7495,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>m</string>
@@ -7826,8 +7511,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Ajouter dans :</string>
@@ -7843,8 +7527,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
               </widget>
               <widget class="QPushButton" name="validerObs">
@@ -7857,8 +7540,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Valider</string>
@@ -7874,8 +7556,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Annuler</string>
@@ -7917,8 +7598,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="contextMenuPolicy">
                <enum>Qt::CustomContextMenu</enum>
@@ -7946,8 +7626,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Sélection de la catégorie :</string>
@@ -7963,8 +7642,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="contextMenuPolicy">
                <enum>Qt::CustomContextMenu</enum>
@@ -7983,8 +7661,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -8034,8 +7711,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -8050,8 +7726,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Lieu :</string>
@@ -8067,8 +7742,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Longitude :</string>
@@ -8084,8 +7758,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>179° 59' 59&quot; Ouest</string>
@@ -8101,8 +7774,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>79° 59' 59&quot; Nord</string>
@@ -8118,8 +7790,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Latitude :</string>
@@ -8135,8 +7806,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Altitude :</string>
@@ -8152,8 +7822,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>2000 m</string>
@@ -8170,8 +7839,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -8186,8 +7854,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Nom :</string>
@@ -8203,8 +7870,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
               </widget>
               <widget class="QPushButton" name="validerCategorie">
@@ -8217,8 +7883,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Valider</string>
@@ -8234,8 +7899,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Annuler</string>
@@ -8252,8 +7916,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Lieux sélectionnés :</string>
@@ -8262,8 +7925,7 @@
             </widget>
             <widget class="QWidget" name="optionAffichage">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -8302,8 +7964,7 @@
                </size>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -8336,8 +7997,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="mouseTracking">
                 <bool>true</bool>
@@ -8352,8 +8012,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Lune</string>
@@ -8369,8 +8028,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Phase de la Lune</string>
@@ -8386,8 +8044,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Rotation de la Lune pour l'hémisphère Sud</string>
@@ -8403,8 +8060,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Nom des satellites</string>
@@ -8423,8 +8079,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Zone de visibilité</string>
@@ -8443,8 +8098,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Trace au sol</string>
@@ -8463,8 +8117,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="minimum">
                  <number>1</number>
@@ -8483,8 +8136,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Notification sonore</string>
@@ -8500,8 +8152,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Affichage du jour julien</string>
@@ -8520,8 +8171,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Nom des lieux d'observation</string>
@@ -8540,8 +8190,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Prise en compte de l'extinction atmosphérique</string>
@@ -8557,8 +8206,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Affichage des coordonnées</string>
@@ -8574,8 +8222,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Carte du monde :</string>
@@ -8591,8 +8238,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="styleSheet">
                  <string notr="true"/>
@@ -8608,8 +8254,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="title">
                  <string>Unités</string>
@@ -8624,8 +8269,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>Système métrique</string>
@@ -8644,8 +8288,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>Système anglo-saxon</string>
@@ -8665,8 +8308,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="title">
                  <string>Écart Heure locale - UTC</string>
@@ -8681,8 +8323,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>Heure locale = </string>
@@ -8701,8 +8342,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>Temps Universel Coordonné (UTC)</string>
@@ -8721,8 +8361,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="minimum">
                   <number>-720</number>
@@ -8744,8 +8383,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>UTC + 02:00</string>
@@ -8764,8 +8402,7 @@
                   </rect>
                  </property>
                  <property name="font">
-                  <font>
-                  </font>
+                  <font/>
                  </property>
                  <property name="text">
                   <string>Auto</string>
@@ -8785,8 +8422,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Zone d'ombre</string>
@@ -8802,8 +8438,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="maximum">
                  <number>100</number>
@@ -8828,8 +8463,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Inversion Nord/Sud sur le radar</string>
@@ -8845,8 +8479,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Grille</string>
@@ -8862,8 +8495,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Radar</string>
@@ -8882,8 +8514,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Nom des étoiles</string>
@@ -8899,8 +8530,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Magnitude limite des étoiles :</string>
@@ -8916,8 +8546,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Soleil</string>
@@ -8936,8 +8565,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Affichage des constellations</string>
@@ -8956,8 +8584,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Inversion Est/Ouest sur le radar</string>
@@ -8973,8 +8600,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="decimals">
                  <number>1</number>
@@ -8999,8 +8625,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Affichage de la SAA</string>
@@ -9016,8 +8641,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Affichage des planètes</string>
@@ -9039,8 +8663,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="maximum">
                  <number>100</number>
@@ -9065,8 +8688,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Vision nocturne :</string>
@@ -9082,8 +8704,7 @@
                  </rect>
                 </property>
                 <property name="font">
-                 <font>
-                 </font>
+                 <font/>
                 </property>
                 <property name="text">
                  <string>Vérification des mises à jour au démarrage</string>
@@ -9096,8 +8717,7 @@
           </widget>
           <widget class="QWidget" name="outils">
            <property name="font">
-            <font>
-            </font>
+            <font/>
            </property>
            <property name="mouseTracking">
             <bool>true</bool>
@@ -9118,8 +8738,7 @@
              </rect>
             </property>
             <property name="font">
-             <font>
-             </font>
+             <font/>
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
@@ -9132,8 +8751,7 @@
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -9154,8 +8772,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Mettre à jour maintenant</string>
@@ -9174,8 +8791,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
@@ -9193,8 +8809,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="value">
                 <number>0</number>
@@ -9216,8 +8831,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string notr="true">TextLabel</string>
@@ -9237,8 +8851,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QPushButton" name="gestionnaireMajTLE">
@@ -9251,8 +8864,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Paramétrage...</string>
@@ -9268,8 +8880,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Fichier TLE à lire :</string>
@@ -9285,8 +8896,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QPushButton" name="parcourirMaj1">
@@ -9299,8 +8909,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Parcourir...</string>
@@ -9316,8 +8925,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QPlainTextEdit" name="compteRenduMaj">
@@ -9330,8 +8938,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -9350,8 +8957,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Mettre à jour</string>
@@ -9367,8 +8973,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Parcourir...</string>
@@ -9384,8 +8989,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Fichier à mettre à jour :</string>
@@ -9401,15 +9005,19 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
               </property>
              </widget>
             </widget>
             <widget class="QWidget" name="extractionFichierTLE">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -9430,8 +9038,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Fichier TLE à lire :</string>
@@ -9447,8 +9054,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QPushButton" name="parcourir1CreerTLE">
@@ -9461,8 +9067,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Parcourir...</string>
@@ -9478,8 +9083,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Numéro NORAD :</string>
@@ -9495,8 +9099,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <item>
                <property name="text">
@@ -9519,8 +9122,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -9541,8 +9143,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>de</string>
@@ -9558,8 +9159,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>1</number>
@@ -9581,8 +9181,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>à</string>
@@ -9598,8 +9197,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>1</number>
@@ -9622,8 +9220,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>AD noeud ascendant :</string>
@@ -9639,8 +9236,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <item>
                <property name="text">
@@ -9663,8 +9259,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -9685,8 +9280,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>de</string>
@@ -9702,8 +9296,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -9725,8 +9318,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>à</string>
@@ -9742,8 +9334,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -9765,8 +9356,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -9782,8 +9372,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -9800,8 +9389,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Excentricité :</string>
@@ -9817,8 +9405,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <item>
                <property name="text">
@@ -9841,8 +9428,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -9863,8 +9449,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>de</string>
@@ -9880,8 +9465,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>à</string>
@@ -9897,8 +9481,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="inputMask">
                 <string>9.9999999; </string>
@@ -9917,8 +9500,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="inputMask">
                 <string>9.9999999; </string>
@@ -9938,8 +9520,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Inclinaison :</string>
@@ -9955,8 +9536,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <item>
                <property name="text">
@@ -9979,8 +9559,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="minimum">
                <number>0</number>
@@ -10002,8 +9581,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>de</string>
@@ -10019,8 +9597,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>°</string>
@@ -10036,8 +9613,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>°</string>
@@ -10053,8 +9629,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="minimum">
                <number>0</number>
@@ -10076,8 +9651,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>à</string>
@@ -10093,8 +9667,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -10115,8 +9688,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>et de</string>
@@ -10135,8 +9707,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -10158,8 +9729,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>à</string>
@@ -10175,8 +9745,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -10198,8 +9767,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -10215,8 +9783,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -10233,8 +9800,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Nom du fichier personnel :</string>
@@ -10250,8 +9816,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QPushButton" name="parcourir2CreerTLE">
@@ -10264,8 +9829,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Parcourir...</string>
@@ -10281,8 +9845,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Nombre de révolutions par jour :</string>
@@ -10298,8 +9861,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>de</string>
@@ -10315,8 +9877,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="inputMask">
                <string>99.999999999; </string>
@@ -10335,8 +9896,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>à</string>
@@ -10352,8 +9912,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="inputMask">
                <string>99.999999999; </string>
@@ -10372,8 +9931,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Argument du périgée :</string>
@@ -10389,8 +9947,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -10411,8 +9968,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>de</string>
@@ -10428,8 +9984,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -10451,8 +10006,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>à</string>
@@ -10468,8 +10022,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="minimum">
                 <number>0</number>
@@ -10491,8 +10044,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -10508,8 +10060,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>°</string>
@@ -10526,8 +10077,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Magnitude maximale :</string>
@@ -10543,8 +10093,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="minimum">
                <number>-10</number>
@@ -10566,8 +10115,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Recherche</string>
@@ -10586,8 +10134,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <item>
                <property name="text">
@@ -10603,8 +10150,7 @@
             </widget>
             <widget class="QWidget" name="evenementsOrbitaux">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -10625,8 +10171,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="buttonSymbols">
                <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -10645,8 +10190,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Date finale :</string>
@@ -10662,8 +10206,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Effacer heures</string>
@@ -10679,8 +10222,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Date initiale :</string>
@@ -10696,8 +10238,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="buttonSymbols">
                <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -10716,8 +10257,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -10735,8 +10275,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Passages aux noeuds</string>
@@ -10755,8 +10294,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Passages aux quadrangles</string>
@@ -10775,8 +10313,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Passages apogée/périgée</string>
@@ -10795,8 +10332,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Passages ombre/pénombre/lumière</string>
@@ -10815,8 +10351,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Transitions jour/nuit</string>
@@ -10836,8 +10371,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -10865,8 +10399,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Calculs</string>
@@ -10885,8 +10418,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Annuler</string>
@@ -10902,8 +10434,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Afficher</string>
@@ -10919,8 +10450,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Paramétrage par défaut</string>
@@ -10929,8 +10459,7 @@
             </widget>
             <widget class="QWidget" name="transitsISS">
              <property name="font">
-              <font>
-              </font>
+              <font/>
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
@@ -10951,8 +10480,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="buttonSymbols">
                <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -10971,8 +10499,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="buttonSymbols">
                <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -10991,8 +10518,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Effacer heures</string>
@@ -11008,8 +10534,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Date initiale :</string>
@@ -11025,8 +10550,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Date finale :</string>
@@ -11042,8 +10566,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
              </widget>
              <widget class="QLabel" name="lbl_lieuxObservation4">
@@ -11056,8 +10579,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Lieu d'observation :</string>
@@ -11073,8 +10595,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Fichier TLE :</string>
@@ -11090,8 +10611,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Age maximal du TLE :</string>
@@ -11107,8 +10627,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -11133,8 +10652,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="currentIndex">
                <number>2</number>
@@ -11180,8 +10698,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="inputMask">
                <string>99; </string>
@@ -11203,8 +10720,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Hauteur minimale du satellite :</string>
@@ -11220,8 +10736,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Élongation maximale avec le corps :</string>
@@ -11237,8 +10752,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -11263,8 +10777,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -11282,8 +10795,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Soleil</string>
@@ -11302,8 +10814,7 @@
                 </rect>
                </property>
                <property name="font">
-                <font>
-                </font>
+                <font/>
                </property>
                <property name="text">
                 <string>Lune</string>
@@ -11323,8 +10834,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Annuler</string>
@@ -11340,8 +10850,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Afficher</string>
@@ -11357,8 +10866,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Calculs</string>
@@ -11377,8 +10885,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Paramétrage par défaut</string>
@@ -11394,8 +10901,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -11414,8 +10920,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="text">
                <string>Age du TLE : </string>
@@ -11431,8 +10936,7 @@
                </rect>
               </property>
               <property name="font">
-               <font>
-               </font>
+               <font/>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -11462,8 +10966,7 @@
           </size>
          </property>
          <property name="font">
-          <font>
-          </font>
+          <font/>
          </property>
          <property name="mouseTracking">
           <bool>true</bool>
@@ -11484,8 +10987,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11507,8 +11009,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11527,8 +11028,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11550,8 +11050,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11573,8 +11072,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11596,8 +11094,7 @@
            </rect>
           </property>
           <property name="font">
-           <font>
-           </font>
+           <font/>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
@@ -11684,7 +11181,7 @@
      <x>0</x>
      <y>0</y>
      <width>1068</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -11718,8 +11215,7 @@
    </widget>
    <widget class="QMenu" name="menuContextuelListe1">
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="title">
      <string notr="true">MenuContextuelListe1</string>
@@ -11946,6 +11442,9 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionMettre_jour_fichiers_internes">

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 septembre 2013
+ * >    20 septembre 2013
  *
  */
 
@@ -579,42 +579,55 @@ void PreviSat::ChargementConfig()
     ui->afficherTransit->setVisible(false);
     ui->annulerTransit->setVisible(false);
 
-    // Menu
+    // Menus
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
+    ui->menuAjouter_selection_dans->setFont(font);
+    ui->menuContextuelCategorie->setFont(font);
+    ui->menuContextuelCompteRenduMaj->setFont(font);
+    ui->menuContextuelLieux->setFont(font);
+    ui->menuContextuelLieuxSelec->setFont(font);
+    ui->menuContextuelListe1->setFont(font);
+    ui->menuContextuelListes->setFont(font);
 
     // Barre de statut
     messagesStatut = new QLabel("", this);
+    messagesStatut->setFont(font);
     messagesStatut->setFrameStyle(QFrame::NoFrame);
     messagesStatut->setIndent(3);
     messagesStatut->setMinimumSize(398, 0);
     messagesStatut->setToolTip(tr("Messages"));
 
     messagesStatut2 = new QLabel("", this);
+    messagesStatut2->setFont(font);
     messagesStatut2->setFrameStyle(QFrame::NoFrame);
     messagesStatut2->setFixedWidth(140);
     messagesStatut2->setAlignment(Qt::AlignCenter);
     messagesStatut2->setVisible(false);
 
     messagesStatut3 = new QLabel("", this);
+    messagesStatut3->setFont(font);
     messagesStatut3->setFrameStyle(QFrame::NoFrame);
     messagesStatut3->setFixedWidth(140);
     messagesStatut3->setAlignment(Qt::AlignCenter);
     messagesStatut3->setVisible(false);
 
     modeFonctionnement = new QLabel("", this);
+    modeFonctionnement->setFont(font);
     modeFonctionnement->setFrameStyle(QFrame::NoFrame);
     modeFonctionnement->setFixedWidth(110);
     modeFonctionnement->setAlignment(Qt::AlignCenter);
     modeFonctionnement->setToolTip(tr("Mode de fonctionnement"));
 
     stsDate = new QLabel("", this);
+    stsDate->setFont(font);
     stsDate->setFrameStyle(QFrame::NoFrame);
     stsDate->setFixedWidth(90);
     stsDate->setAlignment(Qt::AlignCenter);
     stsDate->setToolTip(tr("Date"));
 
     stsHeure = new QLabel("", this);
+    stsHeure->setFont(font);
     stsHeure->setFrameStyle(QFrame::NoFrame);
     stsHeure->setFixedWidth(77);
     stsHeure->setAlignment(Qt::AlignCenter);
