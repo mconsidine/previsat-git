@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 septembre 2013
+ * >    21 septembre 2013
  *
  */
 
@@ -4636,6 +4636,26 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
     /* Declarations des variables locales */
 
     /* Initialisations */
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+    const Qt::Key etape_av = Qt::Key_F11;
+    const Qt::Key etape_ap = Qt::Key_F12;
+
+#elif defined (Q_OS_LINUX)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+    const Qt::Key etape_av = Qt::Key_F11;
+    const Qt::Key etape_ap = Qt::Key_F12;
+
+#elif defined (Q_OS_MAC)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+    const Qt::Key etape_av = Qt::Key_F6;
+    const Qt::Key etape_ap = Qt::Key_F7;
+
+#else
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+    const Qt::Key etape_av = Qt::Key_F11;
+    const Qt::Key etape_ap = Qt::Key_F12;
+#endif
 
     /* Corps de la methode */
     if (event->key() == Qt::Key_F8) {
@@ -4643,11 +4663,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         // Capture de la fenetre
         chronometre->stop();
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
-#if defined (Q_OS_WIN)
-        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
-#else
-        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
-#endif
+
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "previsat_" +
                 dateCourante.ToShortDateAMJ(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
@@ -4684,12 +4700,12 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
             }
         }
 
-    } else if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_F12) {
+    } else if (event->key() == etape_av || event->key() == etape_ap) {
 
         // Etape precedente/suivante (mode manuel)
         if (!ui->modeManuel->isChecked())
             ui->modeManuel->setChecked(true);
-        const int sgn = (event->key() == Qt::Key_F11) ? -1 : 1;
+        const int sgn = (event->key() == etape_av) ? -1 : 1;
 
         const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.getJourJulien() +
                                                                 sgn * ui->pasManuel->currentText().toDouble() *
@@ -6618,7 +6634,7 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->optionAffichage->isVisible() && selec2 == 0) {
+    if (ui->optionConfig->isVisible() && selec2 == 0) {
         if (index == 0) {
             settings.setValue("fichier/listeMap", "");
         } else {
