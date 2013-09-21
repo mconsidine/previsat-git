@@ -7923,7 +7923,7 @@
               </property>
              </widget>
             </widget>
-            <widget class="QWidget" name="optionAffichage">
+            <widget class="QWidget" name="optionConfig">
              <property name="font">
               <font/>
              </property>
@@ -7934,7 +7934,7 @@
               <bool>true</bool>
              </property>
              <attribute name="title">
-              <string>Affichage</string>
+              <string>Configuration</string>
              </attribute>
              <widget class="QScrollArea" name="zoneAffichage">
               <property name="geometry">
