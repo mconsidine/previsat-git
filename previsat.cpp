@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2013
+ * >    28 septembre 2013
  *
  */
 
@@ -311,7 +311,7 @@ void PreviSat::ChargementConfig()
     // Verification et creation des arborescences
     di = QDir(dirDat);
     if (!di.exists()) {
-        const QString message = tr("POSITION : Erreur rencontrée lors de l'initialisation\n" \
+        const QString message = tr("Erreur rencontrée lors de l'initialisation\n" \
                                    "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
         Messages::Afficher(message.arg(QDir::convertSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
         exit(1);
@@ -332,7 +332,7 @@ void PreviSat::ChargementConfig()
     while (it1.hasNext()) {
         const QFile fi(dirDat + QDir::separator() + it1.next());
         if (!fi.exists()) {
-            const QString message = tr("POSITION : Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QString message = tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
             Messages::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
         }
@@ -699,7 +699,7 @@ void PreviSat::ChargementTLE()
                     ficgz = nomfic;
                     nomfic = fic;
                 } else {
-                    const QString msg = tr("POSITION : Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                     throw PreviSatException(msg.arg(nomfic), WARNING);
                 }
             }
@@ -914,7 +914,7 @@ void PreviSat::InitFicObs(const bool alarm) const
         // Nombre de fichiers contenus dans le repertoire 'coordonnees'
         if (di.entryList(QDir::Files).count() == 0) {
             if (alarm)
-                Messages::Afficher(tr("POSITION : Erreur rencontrée lors de l'initialisation\n" \
+                Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                       "Il n'existe aucun fichier de lieux d'observation"), WARNING);
         } else {
 
@@ -958,12 +958,12 @@ void PreviSat::InitFicObs(const bool alarm) const
             }
             if (ficObs.count() == 0)
                 if (alarm)
-                    Messages::Afficher(tr("POSITION : Erreur rencontrée lors de l'initialisation\n" \
+                    Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                           "Il n'existe aucun fichier de lieux d'observation"), WARNING);
         }
     } else {
         if (alarm)
-            Messages::Afficher(tr("POSITION : Erreur rencontrée lors de l'initialisation\n" \
+            Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                   "Le répertoire contenant les fichiers de lieux d'observation n'existe pas"), WARNING);
     }
 
@@ -3017,7 +3017,7 @@ void PreviSat::EnchainementCalculs() const
 
             if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
                 chronometre->stop();
-                const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\n" \
+                const QString msg = tr("Erreur rencontrée lors de l'exécution\n" \
                                        "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
                 Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
                 chronometre->start();
@@ -3179,14 +3179,11 @@ void PreviSat::VerifMAJPreviSat()
 
     foreach(QString fic, listeFic) {
 
-        QFile fi(dirDwn + QDir::separator() + fic);
-        if (!fi.exists()) {
-
-            const QString ficMaj = dirHttpPrevi + fic;
-            TelechargementFichier(ficMaj, false);
-        }
+        const QString ficMaj = dirHttpPrevi + fic;
+        TelechargementFichier(ficMaj, false);
 
         QString ligne;
+        QFile fi(dirDwn + QDir::separator() + fic);
         if (fi.exists()) {
 
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -3338,14 +3335,14 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
                 nsat = TLE::VerifieFichier(fic, false);
                 if (nsat == 0) {
-                    const QString msg = tr("POSITION : Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                     throw PreviSatException(msg.arg(fichier), WARNING);
                 }
                 ficgz = fich;
                 fich = fic;
                 agz = true;
             } else {
-                const QString msg = tr("POSITION : Erreur rencontrée lors de la décompression du fichier %1");
+                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                 throw PreviSatException(msg.arg(fich), WARNING);
             }
         }
@@ -3517,7 +3514,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         QFile sw(fic);
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -3609,7 +3606,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         QFile sw(fic);
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -3741,7 +3738,7 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         QFile sw(fic);
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("POSITION : Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -5622,7 +5619,12 @@ void PreviSat::on_actionAstropedia_free_fr_activated()
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 {
+
+#if defined (Q_OS_WIN)
     const QString fic = "setup.exe";
+#else
+    const QString fic = "setup";
+#endif
     QFile fi(dirExe + QDir::separator() + fic);
     if (fi.exists()) {
 
@@ -5664,13 +5666,10 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 
 #if defined (Q_OS_WIN)
                     const QString dirHttpSetup = dirHttpPrevi + "Windows/";
-
 #elif defined (Q_OS_LINUX)
                     const QString dirHttpSetup = dirHttpPrevi + "Linux/";
-
-#elif defined (Q_OS_MAC)
-                    const QString dirHttpSetup = dirHttpPrevi + "Mac/";
 #else
+                    const QString dirHttpSetup = dirHttpPrevi + "autre/";
 #endif
                     const QString fichier = dirHttpSetup + fic;
                     TelechargementFichier(fichier, false);
@@ -5690,6 +5689,11 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
         }
 
         // Lancement de la mise a jour
+#if defined (Q_OS_WIN)
+#else
+        system(qPrintable("chmod +x " + fic));
+#endif
+
         QProcess proc;
         proc.startDetached(fic);
         close();
@@ -5972,7 +5976,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     /* Initialisations */
     QFile fi(nomfic);
     if (!fi.exists()) {
-        const QString msg = tr("POSITION : Le fichier %1 n'existe pas");
+        const QString msg = tr("Le fichier %1 n'existe pas");
         Messages::Afficher(msg.arg(nomfic), WARNING);
 
         // Remplissage du premier element du tableau de TLE avec le satellite en memoire
@@ -6040,7 +6044,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
 
         if (satellites.at(0).isIeralt() && ui->liste1->currentItem()->checkState() == Qt::Checked) {
             chronometre->stop();
-            const QString msg = tr("POSITION : Erreur rencontrée lors de l'exécution\n" \
+            const QString msg = tr("Erreur rencontrée lors de l'exécution\n" \
                                    "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
             Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
             chronometre->start();
@@ -7490,10 +7494,10 @@ void PreviSat::on_mettreAJourTLE_clicked()
     try {
         bool agz = false;
         if (ui->fichierAMettreAJour->text().isEmpty())
-            throw PreviSatException(tr("MISE A JOUR : Le nom du fichier à mettre à jour n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier à mettre à jour n'est pas spécifié"), WARNING);
 
         if (ui->fichierALire->text().isEmpty())
-            throw PreviSatException(tr("MISE A JOUR : Le nom du fichier à lire n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
 
         // Fichier a lire au format gz
         QFileInfo fi(ui->fichierALire->text());
@@ -7507,12 +7511,12 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
                 const int nsat = TLE::VerifieFichier(fic, false);
                 if (nsat == 0) {
-                    const QString msg = tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                     throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
                 }
                 agz = true;
             } else {
-                const QString msg = tr("MISE A JOUR : Erreur rencontrée lors de la décompression du fichier %1");
+                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                 throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
             }
         } else {
@@ -7523,7 +7527,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
         foreach(QString file, listeFic) {
             fi = QFileInfo(file);
             if (!fi.exists()) {
-                const QString msg = tr("MISE A JOUR : Le fichier %1 n'existe pas");
+                const QString msg = tr("Le fichier %1 n'existe pas");
                 throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
             }
         }
@@ -7689,10 +7693,10 @@ void PreviSat::on_rechercheCreerTLE_clicked()
     /* Corps de la methode */
     try {
         if (ui->fichierALireCreerTLE->text().isEmpty())
-            throw PreviSatException(tr("PERSONNEL : Le nom du fichier à lire n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
 
         if (ui->nomFichierPerso->text().isEmpty())
-            throw PreviSatException(tr("PERSONNEL : Le nom du fichier personnel n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier personnel n'est pas spécifié"), WARNING);
 
         // Fichier a lire
         QString ficlu = ui->fichierALireCreerTLE->text();
@@ -7709,17 +7713,17 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 
                     const int nsat = TLE::VerifieFichier(fic, false);
                     if (nsat == 0) {
-                        const QString msg = tr("PERSONNEL : Erreur rencontrée lors de la décompression du fichier %1");
+                        const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                         throw PreviSatException(msg.arg(ficlu), WARNING);
                     }
                     ficlu = fic;
                 } else {
-                    const QString msg = tr("PERSONNEL : Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
                     throw PreviSatException(msg.arg(ficlu), WARNING);
                 }
             }
         } else {
-            const QString msg = tr("PERSONNEL : Le fichier %1 n'existe pas");
+            const QString msg = tr("Le fichier %1 n'existe pas");
             throw PreviSatException(msg.arg(ficlu), WARNING);
         }
 
@@ -7776,7 +7780,7 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         // Verification du fichier TLE
         const int nbs = TLE::VerifieFichier(ficlu, false);
         if (nbs == 0) {
-            const QString msg = tr("PERSONNEL : Erreur rencontrée lors du chargement du fichier %1");
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier %1");
             throw PreviSatException(msg.arg(ficlu), WARNING);
         }
 
@@ -7799,7 +7803,7 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         QFile sw(ui->nomFichierPerso->text());
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("PERSONNEL : Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -8025,7 +8029,7 @@ void PreviSat::on_calculsPrev_clicked()
     try {
         const int nsat = getListeItemChecked(ui->liste2);
         if (nsat == 0)
-            throw PreviSatException(tr("PREVISION : Aucun satellite n'est sélectionné dans la liste"), WARNING);
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
         ui->afficherPrev->setVisible(false);
 
@@ -8320,12 +8324,12 @@ void PreviSat::on_calculsIri_clicked()
 
     try {
         if (ui->fichierTLEIri->currentText().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
-            throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
         const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
         if (!fi.exists()) {
             ui->fichierTLEIri->removeItem(ui->fichierTLEIri->currentIndex());
-            throw PreviSatException(tr("IRIDIUM : Le nom du fichier TLE est incorrect"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
         }
         ui->afficherIri->setVisible(false);
 
@@ -8409,7 +8413,7 @@ void PreviSat::on_calculsIri_clicked()
         QStringList tabStsIri;
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
         if (nb == 0)
-            throw PreviSatException(tr("IRIDIUM : Erreur rencontrée lors de l'exécution\n" \
+            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
                                        "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), WARNING);
 
         // Creation de la liste de satellites
@@ -8428,7 +8432,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("IRIDIUM : Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
@@ -8455,7 +8459,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Il n'y a aucun satellite Iridium dans le fichier TLE
         if (listeSatellites.size() == 0)
-            throw PreviSatException(tr("IRIDIUM : Erreur rencontrée lors de l'exécution\n" \
+            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
                                        "Aucun satellite Iridium n'a été trouvé dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
@@ -8600,7 +8604,7 @@ void PreviSat::on_calculsEvt_clicked()
     try {
         const int nsat = getListeItemChecked(ui->liste3);
         if (nsat == 0)
-            throw PreviSatException(tr("EVENEMENTS : Aucun satellite n'est sélectionné dans la liste"), WARNING);
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
         ui->afficherEvt->setVisible(false);
 
@@ -8647,7 +8651,7 @@ void PreviSat::on_calculsEvt_clicked()
 
         const bool eve = noeuds || ombre || apogee || jourNuit || quadr;
         if (!eve)
-            throw PreviSatException(tr("EVENEMENTS : Aucun évènement sélectionné"), WARNING);
+            throw PreviSatException(tr("Aucun évènement sélectionné"), WARNING);
 
         // Liste des numeros NORAD
         QStringList listeSat;
@@ -8839,12 +8843,12 @@ void PreviSat::on_calculsTransit_clicked()
 
     try {
         if (ui->fichierTLETransit->currentText().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
-            throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
         const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
         if (!fi.exists()) {
             ui->fichierTLETransit->removeItem(ui->fichierTLETransit->currentIndex());
-            throw PreviSatException(tr("TRANSIT : Le nom du fichier TLE est incorrect"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
         }
 
         ui->afficherTransit->setVisible(false);
@@ -8911,7 +8915,7 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\n" \
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
@@ -8919,7 +8923,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Lecture du TLE
         TLE::LectureFichier(fi.absoluteFilePath(), listeTLEs, tabtle);
         if (tabtle.at(0).getNorad().isEmpty()) {
-            const QString msg = tr("TRANSIT : Erreur rencontrée lors du chargement du fichier\n" \
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
@@ -8927,7 +8931,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Age du TLE
         const double age = fabs(jj1 - tabtle.at(0).getEpoque().getJourJulienUTC());
         if (age > ageTLE + 0.05) {
-            const QString msg = tr("TRANSIT : L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
             Messages::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 
