@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    25 septembre 2013
  *
  */
 
@@ -50,8 +50,6 @@
 #include "iridium.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/exceptions/messages.h"
-#include "librairies/exceptions/previsatexception.h"
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;

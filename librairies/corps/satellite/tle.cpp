@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    25 septembre 2013
  *
  */
 
@@ -188,38 +188,38 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
         const int ierr = QString(e.what()).toInt();
         switch (ierr) {
         case 1:
-            msg = QObject::tr("POSITION : La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
+            msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
             msg = msg.arg(nomsat).arg(li2.mid(1, 6).trimmed());
             break;
 
         case 2:
-            msg = QObject::tr("POSITION : Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects");
+            msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects");
             msg = msg.arg(nomsat).arg(li2.mid(2, 5));
             break;
 
         case 3:
-            msg = QObject::tr("POSITION : Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2");
+            msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2");
             msg = msg.arg(nomsat).arg(li2.mid(2, 5));
             break;
 
         case 4:
-            msg = QObject::tr("POSITION : Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2");
+            msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2");
             msg = msg.arg(nomsat).arg(li2.mid(2, 5));
             break;
 
         case 5:
-            msg = QObject::tr("POSITION : Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)");
+            msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)");
             msg = msg.arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
             break;
 
         case 6:
         case 7:
-            msg = QObject::tr("POSITION : Erreur CheckSum ligne %1 :\nSatellite %2 - numéro NORAD : %3");
+            msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numéro NORAD : %3");
             msg = msg.arg(ierr - 5).arg(nomsat).arg(li1.mid(2, 5));
             break;
 
         default:
-            msg = QObject::tr("POSITION : Le fichier %1 ne contient aucun satellite ou n'est pas valide");
+            msg = QObject::tr("Le fichier %1 ne contient aucun satellite ou n'est pas valide");
             msg = msg.arg(nomFichier);
         }
 
@@ -348,7 +348,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(ficOld), WARNING);
 
     // Lecture du TLE
@@ -357,7 +357,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les TLE recents
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
-        throw PreviSatException(QObject::tr("MISE A JOUR : Erreur rencontrée lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(ficNew), WARNING);
 
     // Lecture du TLE
