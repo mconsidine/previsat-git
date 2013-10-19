@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    6 octobre 2013
  *
  */
 
@@ -322,11 +322,11 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
 
     // Test si le satellite est en phase d'eclipse
     _eclipse = (_rayonApparentTerre > _rayonApparentSoleil
-                && _elongation < _rayonApparentTerre - _rayonApparentSoleil) ? true : false;
+                && _elongation < _rayonApparentTerre - _rayonApparentSoleil);
 
     // Test si le satellite est dans la penombre
     _penombre = (_eclipse || (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
-                              && _elongation < _rayonApparentTerre + _rayonApparentSoleil)) ? true : false;
+                              && _elongation < _rayonApparentTerre + _rayonApparentSoleil));
 
     /* Retour */
     return;
@@ -433,7 +433,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul des coordonnees terrestres
         satellites[isat].CalculCoordTerrestres(observateur);
-        satellites[isat]._ieralt = (satellites[isat].getAltitude() < 0.) ? true : false;
+        satellites[isat]._ieralt = (satellites[isat].getAltitude() < 0.);
 
         // Calcul de la zone de visibilite du satellite
         if (visibilite)
