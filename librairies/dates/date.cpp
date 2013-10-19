@@ -245,36 +245,6 @@ QDateTime Date::ToQDateTime(const int type) const
     return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)));
 }
 
-/*
- * Conversion de la date en date locale
- */
-Date Date::ToLocalDate() const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Date(_jourJulienUTC + _offsetUTC));
-}
-
-/*
- * Conversion de la date en date locale
- */
-Date Date::ToLocalDate(const double offsetUTC) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Date(_jourJulienUTC + offsetUTC));
-}
-
 QString Date::ToShortDate(const DateFormat &format) const
 {
     /* Declarations des variables locales */
