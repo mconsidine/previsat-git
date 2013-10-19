@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    19 octobre 2013
  *
  */
 
@@ -75,7 +75,6 @@ Observateur::Observateur()
 Observateur::Observateur(const QString &nomlieu, const double longitude, const double latitude, const double altitude)
 {
     /* Declarations des variables locales */
-    double coster, sinter;
 
     /* Initialisations */
     _tempsSideralGreenwich = 0.;
@@ -89,8 +88,8 @@ Observateur::Observateur(const QString &nomlieu, const double longitude, const d
     _coslat = cos(_latitude);
     _sinlat = sin(_latitude);
 
-    coster = 1. / sqrt(1. - E2 * _sinlat * _sinlat);
-    sinter = G2 * coster;
+    const double coster = 1. / sqrt(1. - E2 * _sinlat * _sinlat);
+    const double sinter = G2 * coster;
 
     _rayon = (RAYON_TERRESTRE * coster + _altitude) * _coslat;
     _posZ = (RAYON_TERRESTRE * sinter + _altitude) * _sinlat;

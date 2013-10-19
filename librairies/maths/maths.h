@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juin 2013
+ * >    19 octobre 2013
  *
  */
 
@@ -59,12 +59,11 @@ public:
     inline static double modulo(const double x, const double y)
     {
         /* Declarations des variables locales */
-        double z;
 
         /* Initialisations */
 
         /* Corps de la methode */
-        z = fmod(x, y);
+        double z = fmod(x, y);
         if (z < 0.)
             z += y;
 
