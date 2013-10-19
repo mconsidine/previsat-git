@@ -4414,6 +4414,8 @@ void PreviSat::FinEnregistrementFichier()
 
     } catch (PreviSatException &e) {
         ui->frameBarreProgression->setVisible(false);
+        ui->majMaintenant->setEnabled(true);
+        ui->compteRenduMaj->setVisible(false);
     }
 
     /* Retour */
