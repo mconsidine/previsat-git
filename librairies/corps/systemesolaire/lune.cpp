@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    6 octobre 2013
  *
  */
 
@@ -207,7 +207,7 @@ void Lune::CalculPhase(const Soleil &soleil)
     // Elongation (ou angle de phase)
     const double elongation = soleil.getPosition().Angle(-_position);
 
-    const bool sgn = ((soleil.getPosition() ^ _position) * w > 0.) ? true : false;
+    const bool sgn = ((soleil.getPosition() ^ _position) * w > 0.);
 
     // Fraction illuminee
     _fractionIlluminee = 0.5 * (1. + cos(elongation));

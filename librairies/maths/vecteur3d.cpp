@@ -119,7 +119,7 @@ bool Vecteur3D::isNul() const
     /* Corps de la methode */
 
     /* Retour */
-    return ((_x < EPSDBL100 && _y < EPSDBL100 && _z < EPSDBL100) ? true : false);
+    return (_x < EPSDBL100 && _y < EPSDBL100 && _z < EPSDBL100);
 }
 
 /*
@@ -219,7 +219,7 @@ Vecteur3D Vecteur3D::operator - (const Vecteur3D &vecteur)
 }
 
 /*
- * Multplication d'un vecteur 3D par un scalaire
+ * Multiplication d'un vecteur 3D par un scalaire
  */
 Vecteur3D Vecteur3D::operator * (const double scalaire)
 {
