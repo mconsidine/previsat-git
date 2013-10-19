@@ -64,8 +64,6 @@ public:
 
     /* Methodes publiques */
     QDateTime ToQDateTime(const int type) const;
-    Date ToLocalDate() const;
-    Date ToLocalDate(const double offsetUTC) const;
     QString ToShortDate(const DateFormat &format) const;
     QString ToShortDateAMJ(const DateFormat &format) const;
     QString ToLongDate() const;
