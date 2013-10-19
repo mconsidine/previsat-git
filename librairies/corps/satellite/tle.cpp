@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 septembre 2013
+ * >    6 octobre 2013
  *
  */
 
@@ -500,7 +500,7 @@ bool TLE::CheckSum(const QString &ligne)
     chr = ligne.at(68).digitValue();
 
     /* Retour */
-    return ((check % 10 == chr) ? true : false);
+    return (check % 10 == chr);
 }
 
 /*
