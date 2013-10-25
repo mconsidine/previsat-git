@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 septembre 2013
+ * >    20 octobre 2013
  *
  */
 
@@ -2242,31 +2242,34 @@ void PreviSat::AffichageCourbes() const
 
                 if (planetes.at(iplanete).getHauteur() >= 0.) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            sin(planetes.at(iplanete).getAzimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            cos(planetes.at(iplanete).getAzimut()));
+                    if ((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).getDistance() > soleil.getDistance() || iplanete >= MARS) {
 
-                    const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
-                    rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                    scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
+                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(iplanete).getAzimut()));
+                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(iplanete).getAzimut()));
 
-                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
-                            ui->affplanetes->checkState() == Qt::Checked) {
-                        const int lpl = lpla - lciel;
-                        const int bpl = hciel - bpla;
-                        const QString nompla = planetes.at(iplanete).getNom();
-                        QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
-                        const int lng = txtPla->boundingRect().width();
+                        const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                        rect = QRect(lpla - 2, bpla - 2, 4, 4);
+                        scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
 
-                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
-                        const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
+                        if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
+                                ui->affplanetes->checkState() == Qt::Checked) {
+                            const int lpl = lpla - lciel;
+                            const int bpl = hciel - bpla;
+                            const QString nompla = planetes.at(iplanete).getNom();
+                            QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
+                            const int lng = txtPla->boundingRect().width();
 
-                        txtPla->setBrush(bru3);
-                        txtPla->setPos(xnpla, ynpla);
-                        txtPla->setFont(PreviSat::font());
-                        txtPla->setScale(0.9);
-                        scene3->addItem(txtPla);
+                            const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                            const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
+
+                            txtPla->setBrush(bru3);
+                            txtPla->setPos(xnpla, ynpla);
+                            txtPla->setFont(PreviSat::font());
+                            txtPla->setScale(0.9);
+                            scene3->addItem(txtPla);
+                        }
                     }
                 }
             }
@@ -2325,6 +2328,46 @@ void PreviSat::AffichageCourbes() const
 
                 rect = QRect(lsol - 7, bsol - 7, 15, 15);
                 scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            }
+        }
+
+        if (ui->affplanetes->checkState() != Qt::Unchecked) {
+
+            // Calcul des coordonnees radar des planetes Mercure et Venus
+            for(int iplanete=MERCURE; iplanete<=VENUS; iplanete++) {
+
+                if (planetes.at(iplanete).getHauteur() >= 0.) {
+
+                    if (planetes.at(iplanete).getDistance() < soleil.getDistance()) {
+
+                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(iplanete).getAzimut()));
+                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(iplanete).getAzimut()));
+
+                        const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
+                        rect = QRect(lpla - 2, bpla - 2, 4, 4);
+                        scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
+
+                        if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
+                                ui->affplanetes->checkState() == Qt::Checked) {
+                            const int lpl = lpla - lciel;
+                            const int bpl = hciel - bpla;
+                            const QString nompla = planetes.at(iplanete).getNom();
+                            QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
+                            const int lng = txtPla->boundingRect().width();
+
+                            const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                            const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
+
+                            txtPla->setBrush(bru3);
+                            txtPla->setPos(xnpla, ynpla);
+                            txtPla->setFont(PreviSat::font());
+                            txtPla->setScale(0.9);
+                            scene3->addItem(txtPla);
+                        }
+                    }
+                }
             }
         }
 
