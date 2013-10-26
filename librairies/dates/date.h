@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -63,6 +63,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    static double CalculOffsetUTC(const QDateTime &date);
     QDateTime ToQDateTime(const int type) const;
     QString ToShortDate(const DateFormat &format) const;
     QString ToShortDateAMJ(const DateFormat &format) const;

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 octobre 2013
+ * >    26 octobre 2013
  *
  */
 
@@ -775,11 +775,7 @@ void PreviSat::MAJTLE()
     /* Corps de la methode */
     // Initialisation de la date
     // Determination automatique de l'ecart heure locale - UTC
-    const QDateTime dateLocale = QDateTime::currentDateTime();
-    QDateTime dateUTC(dateLocale);
-    dateUTC.setTimeSpec(Qt::UTC);
-
-    const double ecart = dateLocale.secsTo(dateUTC) * NB_JOUR_PAR_SEC;
+    const double ecart = Date::CalculOffsetUTC(QDateTime::currentDateTime());
     offsetUTC = (ui->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
     ui->updown->setValue(Maths::sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
     offsetUTC = (ui->heureLegale->isChecked()) ? ui->updown->value() * NB_JOUR_PAR_MIN : 0.;
@@ -2242,7 +2238,8 @@ void PreviSat::AffichageCourbes() const
 
                 if (planetes.at(iplanete).getHauteur() >= 0.) {
 
-                    if ((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).getDistance() > soleil.getDistance() || iplanete >= MARS) {
+                    if (((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).getDistance() > soleil.getDistance()) ||
+                            iplanete >= MARS) {
 
                         const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
                                                 sin(planetes.at(iplanete).getAzimut()));
@@ -4145,11 +4142,12 @@ void PreviSat::GestionTempsReel()
     Date date1, date2;
 
     /* Initialisations */
+    const double offset = Date::CalculOffsetUTC(dateCourante.ToQDateTime(1));
 
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
         modeFonctionnement->setText(tr("Temps réel"));
-        date1 = Date(dateCourante.getOffsetUTC());
+        date1 = Date(offset);
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
     } else {
@@ -4183,7 +4181,7 @@ void PreviSat::GestionTempsReel()
         tim = (tim.addSecs(pas1) <= QDateTime::currentDateTime()) ? tim.addSecs(pas1) : QDateTime::currentDateTime();
 
         // Date actuelle
-        dateCourante = Date(dateCourante.getOffsetUTC());
+        dateCourante = Date(offset);
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -8079,23 +8077,24 @@ void PreviSat::on_calculsPrev_clicked()
         ui->afficherPrev->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double dtu = dateCourante.getOffsetUTC();
+        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialePrev->date().year(), ui->dateInitialePrev->date().month(), ui->dateInitialePrev->date().day(),
                          ui->dateInitialePrev->time().hour(), ui->dateInitialePrev->time().minute(), ui->dateInitialePrev->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - dtu;
+        double jj1 = date1.getJourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinalePrev->date().year(), ui->dateFinalePrev->date().month(), ui->dateFinalePrev->date().day(),
                          ui->dateFinalePrev->time().hour(), ui->dateFinalePrev->time().minute(), ui->dateFinalePrev->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - dtu;
+        double jj2 = date2.getJourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -8186,7 +8185,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecl, ext, crep, haut, pas0, dtu, jj1, jj2, mag, nomfic, ficRes, unite, listeSat);
+        const Conditions conditions(ecl, ext, crep, haut, pas0, jj1, jj2, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -8379,23 +8378,24 @@ void PreviSat::on_calculsIri_clicked()
         ui->afficherIri->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double dtu = dateCourante.getOffsetUTC();
+        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeIri->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleIri->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
                          ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(), ui->dateInitialeIri->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - dtu;
+        double jj1 = date1.getJourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleIri->date().year(), ui->dateFinaleIri->date().month(), ui->dateFinaleIri->date().day(),
                          ui->dateFinaleIri->time().hour(), ui->dateFinaleIri->time().minute(), ui->dateFinaleIri->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - dtu;
+        double jj2 = date2.getJourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -8514,7 +8514,7 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, dtu, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(),
+        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(),
                                     ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
@@ -8899,25 +8899,26 @@ void PreviSat::on_calculsTransit_clicked()
         ui->afficherTransit->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double dtu = dateCourante.getOffsetUTC();
+        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeTransit->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleTransit->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeTransit->date().year(), ui->dateInitialeTransit->date().month(),
                          ui->dateInitialeTransit->date().day(), ui->dateInitialeTransit->time().hour(),
                          ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - dtu;
+        double jj1 = date1.getJourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleTransit->date().year(), ui->dateFinaleTransit->date().month(),
                          ui->dateFinaleTransit->date().day(), ui->dateFinaleTransit->time().hour(),
                          ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - dtu;
+        double jj2 = date2.getJourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -8986,7 +8987,7 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, dtu, jj1, jj2, fi.absoluteFilePath(), ficRes,
+        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, jj1, jj2, fi.absoluteFilePath(), ficRes,
                                     unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 

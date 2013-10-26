@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -72,7 +72,6 @@ Conditions::Conditions()
     _ageTLE = 0.;
     _ang0 = 0.;
     _crep = 0.;
-    _dtu = 0.;
     _jj1 = 0.;
     _jj2 = 0.;
     _haut = 0.;
@@ -90,9 +89,9 @@ Conditions::Conditions()
     return;
 }
 
-Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double dtu,
-                       const double jj1, const double jj2, const double mgn1, const QString &fic, const QString &out,
-                       const QString &unite, const QStringList &listeSatellites)
+Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double jj1,
+                       const double jj2, const double mgn1, const QString &fic, const QString &out, const QString &unite,
+                       const QStringList &listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -104,7 +103,6 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     _crep = crep * DEG2RAD;
     _haut = haut * DEG2RAD;
     _pas0 = pas0 * NB_JOUR_PAR_SEC;
-    _dtu = dtu;
     _jj1 = jj1;
     _jj2 = jj2;
     _mgn1 = mgn1;
@@ -131,9 +129,8 @@ Conditions::Conditions(const bool ecl, const bool ext, const int crep, const int
     return;
 }
 
-Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr,
-                       const double ang0, const double dtu, const double jj1, const double jj2, const double mgn1,
-                       const double mgn2, const QString &fic, const QString &out, const QString &unite,
+Conditions::Conditions(const bool ext, const int crep, const int haut, const int nbl, const char chr, const double ang0, const double jj1,
+                       const double jj2, const double mgn1, const double mgn2, const QString &fic, const QString &out, const QString &unite,
                        const QStringList &tabStsIri, const QVector<TLE> &tabtle)
 {
     /* Declarations des variables locales */
@@ -147,7 +144,6 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     _nbl = nbl;
     _chr = chr;
     _ang0 = ang0 * DEG2RAD;
-    _dtu = dtu;
     _jj1 = jj1;
     _jj2 = jj2;
     _mgn1 = mgn1;
@@ -174,9 +170,9 @@ Conditions::Conditions(const bool ext, const int crep, const int haut, const int
     return;
 }
 
-Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso,
-                       const bool atransJn, const double dtu, const double jj1, const double jj2, const QString fic,
-                       const QString out, const QString unite, const QStringList listeSatellites)
+Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso, const bool atransJn,
+                       const double jj1, const double jj2, const QString &fic, const QString &out, const QString &unite,
+                       const QStringList &listeSatellites)
 {
     /* Declarations des variables locales */
 
@@ -188,7 +184,6 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
     _apassOmbre = apassOmbre;
     _apassPso = apassPso;
     _atransJn = atransJn;
-    _dtu = dtu;
     _jj1 = jj1;
     _jj2 = jj2;
     _fic = fic;
@@ -216,8 +211,8 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
 }
 
 Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int haut, const double ageTLE,
-                       const double seuilConjonction, const double dtu, const double jj1, const double jj2, const QString fic,
-                       const QString out, const QString unite)
+                       const double seuilConjonction, const double jj1, const double jj2, const QString &fic, const QString &out,
+                       const QString &unite)
 {
     /* Declarations des variables locales */
 
@@ -229,7 +224,6 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const int h
     _haut = haut * DEG2RAD;
     _ageTLE = ageTLE;
     _seuilConjonction = seuilConjonction * DEG2RAD;
-    _dtu = dtu;
     _jj1 = jj1;
     _jj2 = jj2;
     _fic = fic;
@@ -286,7 +280,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
 
     /* Corps de la methode */
-    const Date date = Date(conditions._jj1 + conditions._dtu + EPS_DATES, 0.);
+    const Date date = Date(conditions._jj1 + /*conditions._dtu +*/ EPS_DATES, 0.);
 
     // Calcul de l'age des TLE
     if (tabtle.size() == 1) {
@@ -333,9 +327,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;
 
-    ligne2 = QObject::tr("Fuseau horaire            : %1 %2%3");
-    ligne2 = ligne2.arg(QObject::tr("UTC")).arg((conditions._dtu >= 0.) ? "+" : "-").
-            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions._dtu), HEURE1, 2, 0, false, false).mid(0, 6));
+    ligne2 = QObject::tr("Fuseau horaire            : Heure légale");
     flux << ligne2 << endl;
 
     if (itransit) {
@@ -378,11 +370,6 @@ double Conditions::getHaut() const
 double Conditions::getPas0() const
 {
     return _pas0;
-}
-
-double Conditions::getDtu() const
-{
-    return _dtu;
 }
 
 double Conditions::getJj1() const

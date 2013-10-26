@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -229,6 +229,22 @@ Date::~Date()
 
 
 /* Methodes */
+/*
+ * Calcul de l'ecart Heure locale - UTC
+ */
+double Date::CalculOffsetUTC(const QDateTime &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QDateTime utc(date);
+    utc.setTimeSpec(Qt::UTC);
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return (date.secsTo(utc) * NB_JOUR_PAR_SEC);
+}
 /*
  * Conversion de la date en QDateTime
  */
