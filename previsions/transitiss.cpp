@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -255,15 +255,15 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Ecriture du resultat
 
                                 // Date calendaire
-                                const Date date3 = Date(dates[j].getJourJulien() + conditions.getDtu() + EPS_DATES, 0.);
+                                const double offset = Date::CalculOffsetUTC(Date(dates[j].getJourJulienUTC(), 0.).ToQDateTime(1));
+                                const Date date3 = Date(dates[j].getJourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
                                 const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString ht = Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,  false, false);
 
                                 // Coordonnees equatoriales du satellite
-                                const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0,
-                                                                        false, false);
+                                const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false);
                                 const QString de = Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false);
 
                                 // Distance angulaire

@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -83,10 +83,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
-    QString ligne = QObject::tr("Fuseau horaire            : %1 %2%3");
-    flux << ligne.arg(QObject::tr("UTC")).arg((conditions.getDtu() >= 0.) ? "+" : "-").
-            arg(Maths::ToSexagesimal(NB_HEUR_PAR_JOUR * HEUR2RAD * fabs(conditions.getDtu()), HEURE1, 2, 0, false, false).
-                mid(0, 6)) << endl;
+    QString ligne = QObject::tr("Fuseau horaire            : Heure légale");
+    flux << ligne << endl;
     flux << QObject::tr("Unité de distance         : %1").arg(conditions.getUnite()) << endl << endl;
 
     /* Corps de la methode */
@@ -130,7 +128,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = { list1.at(1), list2.at(1), list3.at(1) };
                     const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") :
                                                                 QObject::tr("Noeud Descendant - PSO = 180°");
-                    CalculEvt(xtab, ytab, conditions.getDtu(), 0., typeNoeud, sat);
+                    CalculEvt(xtab, ytab, 0., typeNoeud, sat);
                     j++;
                 }
             }
@@ -150,7 +148,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                             list3.at(4) - list3.at(5) - list3.at(3) };
 
                     const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
-                    CalculEvt(xtab, ytab1, conditions.getDtu(), 0., typeOmbre, sat);
+                    CalculEvt(xtab, ytab1, 0., typeOmbre, sat);
 
                     // Calcul du passage lumiere/penombre
                     const double ytab2[] = { list1.at(4) + list1.at(5) - list1.at(3),
@@ -159,7 +157,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ?
                                 QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
-                    CalculEvt(xtab, ytab2, conditions.getDtu(), 0., typePenombre, sat);
+                    CalculEvt(xtab, ytab2, 0., typePenombre, sat);
                     k++;
                 }
             }
@@ -175,7 +173,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = { list1.at(2), list2.at(2), list3.at(2) };
 
                     Maths::CalculExtremumInterpolation3(xtab, ytab, minmax);
-                    const Date date = Date(minmax[0] + conditions.getDtu() + EPS_DATES, conditions.getDtu());
+                    const double offset = Date::CalculOffsetUTC(Date(minmax[0], 0.).ToQDateTime(1));
+                    const Date date = Date(minmax[0] + offset + EPS_DATES, offset);
 
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
@@ -218,7 +217,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = { list1.at(6), list2.at(6), list3.at(6) };
                     const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Transition jour -> nuit") :
                                                                QObject::tr("Transition nuit -> jour");
-                    CalculEvt(xtab, ytab, conditions.getDtu(), 0., typeTrans, sat);
+                    CalculEvt(xtab, ytab, 0., typeTrans, sat);
                     l++;
                 }
             }
@@ -236,7 +235,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         apassPso = true;
                         const double ytab[] = { list1.at(7), list2.at(7), list3.at(7) };
                         const QString typePso = QObject::tr("Passage à PSO =") + " " + QString::number(noeud * RAD2DEG) + "°";
-                        CalculEvt(xtab, ytab, conditions.getDtu(), noeud, typePso, sat);
+                        CalculEvt(xtab, ytab, noeud, typePso, sat);
                         m++;
                     }
                 }
@@ -357,8 +356,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
     return;
 }
 
-void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const double dtu, const double yval, const QString &typeEvt,
-                           Satellite &sat)
+void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, Satellite &sat)
 {
     /* Declarations des variables locales */
 
@@ -367,7 +365,8 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
 
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);
-    const Date date = Date(datp + dtu + EPS_DATES, dtu);
+    const double offset = Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
+    const Date date = Date(datp + offset + EPS_DATES, offset);
 
     // Calcul de la position du satellite pour la date calculee
     sat.CalculPosVit(date);
