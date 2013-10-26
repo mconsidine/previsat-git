@@ -858,7 +858,7 @@ void PreviSat::DemarrageApplication()
 
     CalculsAffichage();
 
-    tim = QDateTime::currentDateTime();
+    tim = QDateTime::currentDateTimeUtc();
 
     /* Retour */
     return;
@@ -4142,12 +4142,13 @@ void PreviSat::GestionTempsReel()
     Date date1, date2;
 
     /* Initialisations */
-    const double offset = Date::CalculOffsetUTC(dateCourante.ToQDateTime(1));
 
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
         modeFonctionnement->setText(tr("Temps réel"));
-        date1 = Date(offset);
+        const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
+        offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
+        date1 = Date(dateCourante.getOffsetUTC());
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
     } else {
@@ -4177,11 +4178,12 @@ void PreviSat::GestionTempsReel()
     }
 
     // Lancement des calculs
-    if (ui->tempsReel->isChecked() && tim.secsTo(QDateTime::currentDateTime()) >= pas1) {
-        tim = (tim.addSecs(pas1) <= QDateTime::currentDateTime()) ? tim.addSecs(pas1) : QDateTime::currentDateTime();
+    if (ui->tempsReel->isChecked() && tim.secsTo(QDateTime::currentDateTimeUtc()) >= pas1) {
+
+        tim = (tim.addSecs(pas1) <= QDateTime::currentDateTimeUtc()) ? tim.addSecs(pas1) : QDateTime::currentDateTimeUtc();
 
         // Date actuelle
-        dateCourante = Date(offset);
+        dateCourante = Date(offsetUTC);
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -4193,8 +4195,9 @@ void PreviSat::GestionTempsReel()
         AffichageCourbes();
     }
 
-    if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTime()) >= pas2)) {
-        tim = QDateTime::currentDateTime();
+    if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTimeUtc()) >= pas2)) {
+
+        tim = QDateTime::currentDateTimeUtc();
 
         if (ui->pause->isEnabled()) {
 
@@ -4414,7 +4417,6 @@ void PreviSat::FinEnregistrementFichier()
                     QStringList compteRendu;
                     const int affMsg = ui->affichageMsgMAJ->currentIndex();
                     TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
-
                     bool aecr = false;
                     EcritureCompteRenduMaj(compteRendu, aecr);
                     aup = true;
@@ -4725,7 +4727,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         } else {
 
             ui->tempsReel->setChecked(true);
-            tim = QDateTime::currentDateTime();
+            tim = QDateTime::currentDateTimeUtc();
 
             // Date actuelle
             dateCourante = Date(offsetUTC);
@@ -6208,7 +6210,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
             AffichageCourbes();
         }
 
-        tim = QDateTime::currentDateTime();
+        tim = QDateTime::currentDateTimeUtc();
         ui->pasManuel->setVisible(false);
         ui->valManuel->setVisible(false);
         ui->dateHeure1->setVisible(true);
@@ -6574,8 +6576,8 @@ void PreviSat::on_heureLegale_toggled(bool checked)
     /* Corps de la methode */
     if (ui->options->isVisible() && checked) {
 
-        const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
-        dateCourante = Date(dateCourante, offset);
+        offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
+        dateCourante = Date(dateCourante, offsetUTC);
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -6627,11 +6629,11 @@ void PreviSat::on_updown_valueChanged(int arg1)
     heur = heur.addSecs(fabs(arg1 * NB_SEC_PAR_MIN));
     const QString sgn = (arg1 >= 0) ? " + " : " - ";
     ui->tuc->setText(tr("UTC") + sgn + heur.toString("hh:mm"));
-    const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
+    offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
 
     if (ui->options->isVisible()) {
         if (ui->heureLegale->isChecked()) {
-            dateCourante = Date(dateCourante, offset);
+            dateCourante = Date(dateCourante, offsetUTC);
 
             // Enchainement de l'ensemble des calculs
             EnchainementCalculs();
@@ -6664,8 +6666,8 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
         const int ecart = (int) (dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
         ui->updown->setValue(ecart);
 
-        const double offset = ui->updown->value() * NB_JOUR_PAR_MIN;
-        dateCourante = Date(dateCourante, offset);
+        offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
+        dateCourante = Date(dateCourante, offsetUTC);
 
         CalculsAffichage();
     }
@@ -8654,23 +8656,24 @@ void PreviSat::on_calculsEvt_clicked()
         ui->afficherEvt->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double dtu = dateCourante.getOffsetUTC();
+        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeEvt->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleEvt->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
                          ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(), ui->dateInitialeEvt->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - dtu;
+        double jj1 = date1.getJourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleEvt->date().year(), ui->dateFinaleEvt->date().month(), ui->dateFinaleEvt->date().day(),
                          ui->dateFinaleEvt->time().hour(), ui->dateFinaleEvt->time().minute(), ui->dateFinaleEvt->time().second(),
-                         dateCourante.getOffsetUTC());
+                         offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - dtu;
+        double jj2 = date2.getJourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -8727,7 +8730,7 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, dtu, jj1, jj2, nomfic, ficRes, unite,
+        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, jj1, jj2, nomfic, ficRes, unite,
                                     listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
