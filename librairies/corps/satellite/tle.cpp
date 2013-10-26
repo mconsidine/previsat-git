@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2013
+ * >    26 octobre 2013
  *
  */
 
@@ -349,7 +349,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                            "Le fichier %1 n'est pas un TLE").arg(ficOld), WARNING);
+                                            "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficOld, liste, tleOld);
@@ -358,7 +358,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                            "Le fichier %1 n'est pas un TLE").arg(ficNew), WARNING);
+                                            "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);
 
     // Lecture du TLE
     LectureFichier(ficNew, liste, tleNew);

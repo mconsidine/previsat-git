@@ -4416,10 +4416,14 @@ void PreviSat::FinEnregistrementFichier()
 
                     QStringList compteRendu;
                     const int affMsg = ui->affichageMsgMAJ->currentIndex();
-                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
-                    bool aecr = false;
-                    EcritureCompteRenduMaj(compteRendu, aecr);
-                    aup = true;
+                    try {
+                        TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
+                        bool aecr = false;
+                        EcritureCompteRenduMaj(compteRendu, aecr);
+                        aup = true;
+
+                    } catch (PreviSatException &ex) {
+                    }
 
                 } else {
                     fi.copy(fichierALire, fichierAMettreAJour);
