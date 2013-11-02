@@ -4148,6 +4148,7 @@ void PreviSat::GestionTempsReel()
         modeFonctionnement->setText(tr("Temps réel"));
         const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
         offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
+        ui->updown->setValue(Maths::sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
         date1 = Date(dateCourante.getOffsetUTC());
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
