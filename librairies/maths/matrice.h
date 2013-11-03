@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 novembre 2013
  *
  */
 
@@ -58,8 +58,8 @@ public:
 
     /* Methodes publiques */
     Matrice Transposee();
-    Vecteur3D operator * (const Vecteur3D &vecteur);
-    Matrice operator * (const Matrice &matrice);
+    friend inline Vecteur3D operator * (const Matrice &matrice, const Vecteur3D &vecteur);
+    friend inline Matrice operator * (const Matrice &matrice1, const Matrice &matrice2);
 
     /* Accesseurs */
     Vecteur3D getVecteur1() const;
@@ -88,5 +88,25 @@ private:
     /* Methodes privees */
 
 };
+
+/*
+ * Produit d'une matrice avec un vecteur 3D
+ */
+inline Vecteur3D operator * (const Matrice &matrice, const Vecteur3D &vecteur)
+{
+    const double x = matrice._vecteur1.getX() * vecteur.getX() + matrice._vecteur2.getX() * vecteur.getY() + matrice._vecteur3.getX() * vecteur.getZ();
+    const double y = matrice._vecteur1.getY() * vecteur.getX() + matrice._vecteur2.getY() * vecteur.getY() + matrice._vecteur3.getY() * vecteur.getZ();
+    const double z = matrice._vecteur1.getZ() * vecteur.getX() + matrice._vecteur2.getZ() * vecteur.getY() + matrice._vecteur3.getZ() * vecteur.getZ();
+
+    return (Vecteur3D(x, y, z));
+}
+
+/*
+ * Produit de 2 matrices
+ */
+inline Matrice operator * (const Matrice &matrice1, const Matrice &matrice2)
+{
+    return (Matrice(matrice1 * matrice2._vecteur1, matrice1 * matrice2._vecteur2, matrice1 * matrice2._vecteur3));
+}
 
 #endif // MATRICE_H

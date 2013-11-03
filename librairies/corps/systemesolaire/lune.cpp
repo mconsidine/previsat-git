@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -185,7 +185,7 @@ void Lune::CalculPosition(const Date &date)
     const double lv = ll + DEG2RAD * l0 * 1.e-6;
     const double bt = DEG2RAD * b0 * 1.e-6;
     const double rp = 385000.56 + r0 * 1.e-3;
-    Vecteur3D pos(lv, bt, rp);
+    const Vecteur3D pos(lv, bt, rp);
 
     // Position cartesienne equatoriale
     _position = Sph2Cart(pos, date);

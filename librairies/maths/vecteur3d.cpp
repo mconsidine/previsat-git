@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 novembre 2013
  *
  */
 
@@ -170,98 +170,9 @@ Vecteur3D Vecteur3D::Normalise()
     /* Corps de la methode */
 
     /* Retour */
-    return (Vecteur3D((*this) * val));
+    return ((*this) * val);
 }
 
-/*
- * Oppose du vecteur
- */
-Vecteur3D Vecteur3D::operator - ()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return ((*this) * (-1.));
-}
-
-/*
- * Somme de 2 vecteurs 3D
- */
-Vecteur3D Vecteur3D::operator + (const Vecteur3D &vecteur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Vecteur3D(_x + vecteur._x, _y + vecteur._y, _z + vecteur._z));
-}
-
-/*
- * Difference de 2 vecteurs 3D
- */
-Vecteur3D Vecteur3D::operator - (const Vecteur3D &vecteur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Vecteur3D(_x - vecteur._x, _y - vecteur._y, _z - vecteur._z));
-}
-
-/*
- * Multiplication d'un vecteur 3D par un scalaire
- */
-Vecteur3D Vecteur3D::operator * (const double scalaire)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Vecteur3D(scalaire * _x, scalaire * _y, scalaire * _z));
-}
-
-/*
- * Produit scalaire de 2 vecteurs 3D
- */
-double Vecteur3D::operator * (const Vecteur3D &vecteur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (_x * vecteur._x + _y * vecteur._y + _z * vecteur._z);
-}
-
-/*
- * Produit vectoriel de 2 vecteurs 3D
- */
-Vecteur3D Vecteur3D::operator ^ (const Vecteur3D &vecteur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (Vecteur3D(_y * vecteur._z - _z * vecteur._y, _z * vecteur._x - _x * vecteur._z, _x * vecteur._y - _y * vecteur._x));
-}
 
 /* Accesseurs */
 double Vecteur3D::getX() const

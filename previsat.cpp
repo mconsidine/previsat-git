@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 novembre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -2284,8 +2284,8 @@ void PreviSat::AffichageCourbes() const
                 const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
                 const double de1 = tabEcliptique[0][1] * DEG2RAD;
                 const double cd1 = cos(de1);
-                Vecteur3D vec = Vecteur3D(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-                Vecteur3D vec1 = observateurs.at(0).getRotHz() * vec;
+                const Vecteur3D vec = Vecteur3D(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+                const Vecteur3D vec1 = observateurs.at(0).getRotHz() * vec;
 
                 double ht1 = asin(vec1.getZ());
                 double az1 = atan2(vec1.getY(), -vec1.getX());
@@ -2300,8 +2300,8 @@ void PreviSat::AffichageCourbes() const
                     const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
                     const double de2 = tabEcliptique[i][1] * DEG2RAD;
                     const double cd2 = cos(de2);
-                    vec = Vecteur3D(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-                    Vecteur3D vec2 = observateurs.at(0).getRotHz() * vec;
+                    const Vecteur3D vec0 = Vecteur3D(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+                    const Vecteur3D vec2 = observateurs.at(0).getRotHz() * vec0;
 
                     const double ht2 = asin(vec2.getZ());
 

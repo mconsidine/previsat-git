@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -276,18 +276,18 @@ void Satellite::CalculPosVit(const Date &date)
             const double cnod = cos(xnode);
             const double cosi = cos(xinc);
 
-            Vecteur3D mm = Vecteur3D(-snod * cosi, cnod * cosi, sin(xinc));
-            Vecteur3D mm1 = mm * sinsu;
-            Vecteur3D mm2 = mm * cossu;
+            const Vecteur3D mm = Vecteur3D(-snod * cosi, cnod * cosi, sin(xinc));
+            const Vecteur3D mm1 = mm * sinsu;
+            const Vecteur3D mm2 = mm * cossu;
 
-            Vecteur3D nn = Vecteur3D(cnod, snod, 0.);
-            Vecteur3D nn1 = nn * (-cossu);
-            Vecteur3D nn2 = nn * sinsu;
+            const Vecteur3D nn = Vecteur3D(cnod, snod, 0.);
+            const Vecteur3D nn1 = nn * (-cossu);
+            const Vecteur3D nn2 = nn * sinsu;
 
-            Vecteur3D uu = mm1 - nn1;
-            Vecteur3D uu1 = uu * mvt;
-            Vecteur3D vv = mm2 - nn2;
-            Vecteur3D vv1 = vv * (-rvdot);
+            const Vecteur3D uu = mm1 - nn1;
+            const Vecteur3D uu1 = uu * mvt;
+            const Vecteur3D vv = mm2 - nn2;
+            const Vecteur3D vv1 = vv * (-rvdot);
 
             // Position et vitesse
             _position = uu * mrt;
