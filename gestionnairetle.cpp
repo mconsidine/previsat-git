@@ -36,18 +36,23 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    19 septembre 2013
+ * >    1er novembre 2013
  *
  */
 
+#if defined QT_NO_DEBUG
+#pragma GCC diagnostic ignored "-Wshadow"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#endif
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QTextStream>
+#include "ui_gestionnairetle.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "gestionnairetle.h"
 #include "previsat.h"
 #include "librairies/exceptions/previsatexception.h"
-#include "ui_gestionnairetle.h"
 
 static bool init;
 static int selec;
@@ -90,6 +95,7 @@ GestionnaireTLE::~GestionnaireTLE()
 
 void GestionnaireTLE::closeEvent(QCloseEvent *event)
 {
+    Q_UNUSED(event);
     on_fermer_clicked();
 }
 
@@ -453,6 +459,7 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    Q_UNUSED(checked);
 
     /* Corps de la methode */
     if (init) {

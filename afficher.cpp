@@ -36,17 +36,22 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    19 septembre 2013
+ * >    2 novembre 2013
  *
  */
 
+#if defined QT_NO_DEBUG
+#pragma GCC diagnostic ignored "-Wshadow"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#endif
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
-#include "afficher.h"
 #include "ui_afficher.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
+#include "afficher.h"
 
 static QString dirOut;
 static QString dirTmp;
@@ -143,6 +148,7 @@ void Afficher::closeEvent(QCloseEvent *)
 
 void Afficher::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     ui->fichier->setGeometry(0, 0, Afficher::width(), Afficher::height() - ui->barreOutils->height());
 }
 
