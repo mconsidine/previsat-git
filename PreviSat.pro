@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    26 octobre 2013
+# >    1er novembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.2
@@ -49,6 +49,10 @@ TARGET = PreviSat
 TEMPLATE = app
 
 ICON = resources/icone.ico
+
+CONFIG(debug, debug|release){
+    QMAKE_CXXFLAGS += -Wmissing-declarations
+}
 
 win32 {
     LIBS = zlibwapi.dll

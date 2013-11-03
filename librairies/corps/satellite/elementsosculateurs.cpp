@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 novembre 2012
+ * >    3 novembre 2013
  *
  */
 
@@ -107,7 +107,7 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         _demiGrandAxe = 1. / (2. * temp2 - v2 * temp1);
 
         // Excentricite
-        Vecteur3D exc = (position * (v2 * temp1 - temp2)) - (vitesse * (rv * temp1));
+        const Vecteur3D exc = (position * (v2 * temp1 - temp2)) - (vitesse * (rv * temp1));
         _excentricite = exc.Norme();
 
         // Inclinaison
@@ -116,7 +116,7 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         _inclinaison = acos(ci);
 
         // Ascension droite du noeud ascendant
-        Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
+        const Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
         const double ca = n.getX() / n.Norme();
         _ascDroiteNA = acos(ca);
         if (n.getY() < 0.)

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -197,7 +197,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
         const double cd = cos(_declinaison);
         _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
     }
-    Vecteur3D vec2 = observateur.getRotHz() * _vec1;
+    const Vecteur3D vec2 = observateur.getRotHz() * _vec1;
 
     /* Corps de la methode */
     // Hauteur

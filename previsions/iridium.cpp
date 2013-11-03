@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -364,7 +364,7 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
                     // Altitude du satellite
                     double altitude, ct, latitude, phi;
-                    Vecteur3D position = sat.getPosition();
+                    const Vecteur3D position = sat.getPosition();
                     const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
                     latitude = atan(position.getZ() / r);
                     do {
@@ -458,12 +458,12 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     double ang = PI;
 
     /* Corps de la methode */
-    Vecteur3D xx = satellite.getVitesse().Normalise();
+    const Vecteur3D xx = satellite.getVitesse().Normalise();
     const Vecteur3D yy = satellite.getPosition().Normalise() ^ xx;
     const Vecteur3D zz = xx ^ yy;
 
     // Matrice de passage ECI geocentrique -> ECI satellite
-    Matrice P = Matrice(xx, yy, zz);
+    const Matrice P = Matrice(xx, yy, zz);
 
     int imin, imax;
     if (_pan == -1) {
@@ -489,7 +489,8 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         const Matrice R(v1, v2, v3);
 
         // Matrice produit P x R
-        _PR = (P * R).Transposee();
+        Matrice pr = P * R;
+        _PR = pr.Transposee();
 
         // Position observateur dans le repere panneau
         Vecteur3D obsat = _PR * (-satellite.getDist());

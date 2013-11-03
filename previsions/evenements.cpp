@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -331,7 +331,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
             // Sauvegarde des donnees
             listVal.clear();
             listVal.append(date.getJourJulienUTC());
-            Vecteur3D position = sat.getPosition();
+            const Vecteur3D position = sat.getPosition();
             listVal.append(position.getZ());
             listVal.append(position.Norme());
 
