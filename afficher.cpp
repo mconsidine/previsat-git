@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    2 novembre 2013
+ * >    3 novembre 2013
  *
  */
 
@@ -45,6 +45,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
 #include <QDesktopServices>
+#include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
@@ -63,6 +64,27 @@ Afficher::Afficher(QWidget *parent) :
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
+
+    const int xmax = QApplication::desktop()->availableGeometry().width();
+    const int ymax = QApplication::desktop()->availableGeometry().height();
+    int xAff = Afficher::width();
+    int yAff = Afficher::height();
+
+    if (Afficher::x() < 0 || Afficher::y() < 0)
+        Afficher::move(0, 0);
+
+    // Redimensionnement de la fenetre si necessaire
+    if (xAff > xmax)
+        xAff = xmax;
+    if (yAff > ymax)
+        yAff = ymax;
+    if (xAff < Afficher::width() || yAff < Afficher::height()) {
+        if (xmax < Afficher::minimumWidth())
+            Afficher::setMinimumWidth(xmax);
+        if (ymax < Afficher::minimumHeight())
+            Afficher::setMinimumHeight(ymax);
+        Afficher::resize(xAff, yAff);
+    }
 
     QFont font;
 
