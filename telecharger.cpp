@@ -36,10 +36,14 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    19 septembre 2013
+ * >    1er novembre 2013
  *
  */
 
+#if defined QT_NO_DEBUG
+#pragma GCC diagnostic ignored "-Wshadow"
+#pragma GCC diagnostic ignored "-Wmissing-noreturn"
+#endif
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
