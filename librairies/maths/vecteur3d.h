@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    5 novembre 2013
  *
  */
 
@@ -132,7 +132,7 @@ inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire)
  */
 inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
 {
-    return (vecteur1._x * vecteur2._x + vecteur1._y * vecteur2._y + vecteur1._z + vecteur2._z);
+    return (vecteur1._x * vecteur2._x + vecteur1._y * vecteur2._y + vecteur1._z * vecteur2._z);
 }
 
 /*
