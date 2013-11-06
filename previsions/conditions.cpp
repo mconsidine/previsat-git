@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    6 novembre 2013
  *
  */
 
@@ -280,7 +280,8 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
 
     /* Corps de la methode */
-    const Date date = Date(conditions._jj1 + /*conditions._dtu +*/ EPS_DATES, 0.);
+    const double offset = Date::CalculOffsetUTC(Date(conditions._jj1, 0.).ToQDateTime(1).toLocalTime());
+    const Date date = Date(conditions._jj1 + offset + EPS_DATES, 0.);
 
     // Calcul de l'age des TLE
     if (tabtle.size() == 1) {

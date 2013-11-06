@@ -3123,35 +3123,35 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Minimal elevation of the satellite = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="287"/>
+        <location filename="previsions/conditions.cpp" line="288"/>
         <source>Age du TLE                : %1 jours (au %2)</source>
         <translation>Age of the TLE             : %1 days (at %2)</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="313"/>
+        <location filename="previsions/conditions.cpp" line="314"/>
         <source>Age du TLE le plus récent : %1 jours (au %2)
 Age du TLE le plus ancien : %3 jours</source>
         <translation>Age of the most recent TLE : %1 days (at %2)
 Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="326"/>
+        <location filename="previsions/conditions.cpp" line="327"/>
         <source>Lieu d&apos;observation        : %1     %2 %3   %4 %5   %6 %7</source>
         <translation>Location                   : %1     %2 %3   %4 %5   %6 %7</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="330"/>
+        <location filename="previsions/conditions.cpp" line="331"/>
         <location filename="previsions/evenements.cpp" line="86"/>
         <source>Fuseau horaire            : Heure légale</source>
         <translation>Timezone                   : Local time</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="337"/>
+        <location filename="previsions/conditions.cpp" line="338"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="341"/>
+        <location filename="previsions/conditions.cpp" line="342"/>
         <location filename="previsions/evenements.cpp" line="88"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
