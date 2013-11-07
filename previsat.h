@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 aout 2013
+ * >    6 novembre 2013
  *
  */
 
@@ -129,6 +129,8 @@ private slots:
 
     void on_maximise_clicked();
     void on_affichageCiel_clicked();
+    void on_pasReel_currentIndexChanged(int index);
+    void on_pasManuel_currentIndexChanged(int index);
 
     void on_directHelp_clicked();
 
@@ -292,6 +294,7 @@ private slots:
     void on_calculsTransit_clicked();
     void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
+
 };
 
 #endif // PREVISAT_H

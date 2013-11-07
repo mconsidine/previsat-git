@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    6 novembre 2013
  *
  */
 
@@ -357,7 +357,9 @@ void PreviSat::ChargementConfig()
         liste = "visual.txt#25544&20580";
 
     // Affichage des champs par defaut
+    on_pasReel_currentIndexChanged(0);
     ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
+    on_pasManuel_currentIndexChanged(0);
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
     nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
@@ -5411,6 +5413,20 @@ void PreviSat::on_affichageCiel_clicked()
     return;
 }
 
+void PreviSat::on_pasReel_currentIndexChanged(int index)
+{
+    ui->secondes->setText((index == 0) ? tr("seconde") : tr("secondes"));
+}
+
+void PreviSat::on_pasManuel_currentIndexChanged(int index)
+{
+    const bool aindx = (index == 0);
+    ui->valManuel->setItemText(0, (aindx) ? tr("seconde") : tr("secondes"));
+    ui->valManuel->setItemText(1, (aindx) ? tr("minute") : tr("minutes"));
+    ui->valManuel->setItemText(2, (aindx) ? tr("heure") : tr("heures"));
+    ui->valManuel->setItemText(3, (aindx) ? tr("jour") : tr("jours"));
+}
+
 void PreviSat::on_directHelp_clicked()
 {
     /* Declarations des variables locales */
@@ -6233,6 +6249,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         ui->dateHeure4->setVisible(false);
         ui->utcManuel->setVisible(false);
         ui->utcManuel2->setVisible(false);
+        on_pasReel_currentIndexChanged(ui->pasReel->currentIndex());
         ui->pasReel->setVisible(true);
         ui->secondes->setVisible(true);
         ui->frameSimu->setVisible(false);
@@ -6252,6 +6269,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     if (checked) {
         ui->pasReel->setVisible(false);
         ui->secondes->setVisible(false);
+        on_pasManuel_currentIndexChanged(ui->pasManuel->currentIndex());
         ui->pasManuel->setVisible(true);
         ui->valManuel->setVisible(true);
         ui->dateHeure3->setDateTime(QDateTime::currentDateTime());
