@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 novembre 2013
+ * >    10 novembre 2013
  *
  */
 
@@ -2996,6 +2996,7 @@ void PreviSat::EnchainementCalculs() const
             soleil.CalculZoneVisibilite();
 
             if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
+                // Coordonnees equatoriales
                 soleil.CalculCoordEquat(observateurs.at(0));
         }
 
@@ -3003,20 +3004,20 @@ void PreviSat::EnchainementCalculs() const
         /*
          * Position de la Lune
          */
-        if (ui->afflune->isChecked()) {
+        lune.CalculPosition(dateCourante);
+        lune.CalculPhase(soleil);
 
-            lune.CalculPosition(dateCourante);
-            lune.CalculPhase(soleil);
+        // Coordonnees topocentriques
+        lune.CalculCoordHoriz(observateurs.at(0));
 
-            // Coordonnees topocentriques
-            lune.CalculCoordHoriz(observateurs.at(0));
+        if (!ui->carte->isHidden()) {
+
+            // Coordonnees terrestres
+            lune.CalculCoordTerrestres(observateurs.at(0));
 
             if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
                 // Coordonnees equatoriales
                 lune.CalculCoordEquat(observateurs.at(0));
-
-                // Coordonnees terrestres
-                lune.CalculCoordTerrestres(observateurs.at(0));
             }
         }
 
