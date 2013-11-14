@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2013
+ * >    14 novembre 2013
  *
  */
 
@@ -367,11 +367,12 @@ void PreviSat::ChargementConfig()
     QStringListIterator it(liste.split("$"));
     while (it.hasNext()) {
         const QString ficTLEs = it.next();
-        if (nomfic == dirTle + QDir::separator() + ficTLEs.split("#").at(0))
+        const QString baseFicTLE = QDir::convertSeparators(ficTLEs.split("#").at(0));
+        if (nomfic == dirTle + QDir::separator() + baseFicTLE || nomfic == baseFicTLE)
             listeTLE = ficTLEs.split("#").at(1).split("&");
     }
-    if (listeTLE.isEmpty())
-        listeTLE = liste.split("#").at(1).split("&");
+    if (listeTLE.isEmpty() || listeTLE.at(0).isEmpty())
+        listeTLE = liste.split("$").at(0).split("#").at(1).split("&");
 
     ui->fichierAMettreAJour->setText(settings.value("fichier/fichierAMettreAJour", nomfic).toString());
     ui->fichierALire->setText(settings.value("fichier/fichierALire", "").toString());
@@ -2736,16 +2737,19 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
             }
             nomsat = ligne.trimmed();
         }
+
         if (l1.length() > 0) {
             li1 = l1;
             li2 = l2;
 
             int ind0 = -1;
-            for(int i=0; i<ui->liste1->count(); i++) {
-                const QString norad = ui->liste1->item(i)->text().split("#").at(1);
-                if (norad == listeSat.at(0)) {
-                    ind0 = i;
-                    break;
+            if (!listeSat.isEmpty()) {
+                for(int i=0; i<ui->liste1->count(); i++) {
+                    const QString norad = ui->liste1->item(i)->text().split("#").at(1);
+                    if (norad == listeSat.at(0)) {
+                        ind0 = i;
+                        break;
+                    }
                 }
             }
 
@@ -3251,10 +3255,12 @@ void PreviSat::VerifMAJPreviSat()
                     if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
                         anew = true;
                 }
-                if (anew)
+                if (anew) {
                     MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de " + QCoreApplication::applicationName());
-                else
+                    settings.setValue("fichier/majPrevi", "1");
+                } else {
                     ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                }
 
             } else if (fic == "majFicInt") {
 
@@ -3275,16 +3281,17 @@ void PreviSat::VerifMAJPreviSat()
                     if (fi2.lastModified() < dateHttp)
                         anew = true;
                 }
-                if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible())
+                if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
                     MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, "des fichiers internes");
-                else
+                    settings.setValue("fichier/majPrevi", "1");
+                } else {
                     ui->actionMettre_jour_fichiers_internes->setVisible(false);
+                }
 
             } else {
             }
         }
     }
-    settings.setValue("fichier/majPrevi", "1");
 
     /* Retour */
     return;
@@ -4206,6 +4213,8 @@ void PreviSat::GestionTempsReel()
     if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTimeUtc()) >= pas2)) {
 
         tim = QDateTime::currentDateTimeUtc();
+        info = true;
+        acalcAOS = true;
 
         if (ui->pause->isEnabled()) {
 
@@ -5769,8 +5778,8 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 
         QProcess proc;
         proc.startDetached(fic);
-        close();
         settings.setValue("fichier/majPrevi", "0");
+        exit(0);
     } else {
         QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/"));
     }
