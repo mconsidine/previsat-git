@@ -3302,26 +3302,23 @@ void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const bool majPrevi = settings.value("fichier/majPrevi", "0").toInt() == 0;
 
     /* Corps de la methode */
     action->setVisible(true);
-    if (majPrevi) {
 
-        const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+    const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
 
-        const int res = QMessageBox::question(0, tr("Information"), msg.arg(typeMAJ), QMessageBox::Yes | QMessageBox::No,
-                                              QMessageBox::Yes);
+    const int res = QMessageBox::question(0, tr("Information"), msg.arg(typeMAJ), QMessageBox::Yes | QMessageBox::No,
+                                          QMessageBox::Yes);
 
-        if (res == QMessageBox::Yes) {
-            if (action == ui->actionTelecharger_la_mise_a_jour) {
-                on_actionTelecharger_la_mise_a_jour_activated();
-                ui->actionTelecharger_la_mise_a_jour->setVisible(false);
-            }
-            if (action == ui->actionMettre_jour_fichiers_internes) {
-                on_actionMettre_jour_fichiers_internes_activated();
-                ui->actionMettre_jour_fichiers_internes->setVisible(false);
-            }
+    if (res == QMessageBox::Yes) {
+        if (action == ui->actionTelecharger_la_mise_a_jour) {
+            on_actionTelecharger_la_mise_a_jour_activated();
+            ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+        }
+        if (action == ui->actionMettre_jour_fichiers_internes) {
+            on_actionMettre_jour_fichiers_internes_activated();
+            ui->actionMettre_jour_fichiers_internes->setVisible(false);
         }
     }
 
