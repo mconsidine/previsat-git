@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 novembre 2013
+ * >    23 novembre 2013
  *
  */
 
@@ -46,6 +46,7 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QtNetwork>
+#include "vlc/vlc.h"
 
 namespace Ui {
 class PreviSat;
@@ -67,6 +68,12 @@ public:
 
 private:
     Ui::PreviSat *ui;
+
+    bool _isPlaying;
+    libvlc_exception_t _vlcexcep;
+    libvlc_instance_t *_vlcinstance;
+    libvlc_media_player_t *_mp;
+    libvlc_media_t *_m;
 
     // Initialisation
     void InitFicObs(const bool alarm) const;
@@ -103,6 +110,7 @@ private:
     void ModificationOption();
     void AfficherLieuSelectionne(const int index);
     int getListeItemChecked(const QListWidget *listWidget) const;
+    void VLCException(const libvlc_exception_t *ex);
 
     // Systeme
     void EcritureListeRegistre() const;
@@ -131,6 +139,8 @@ private slots:
     void on_affichageCiel_clicked();
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
+    void on_mccISS_toggled(bool checked);
+    void on_fluxVideo_clicked();
 
     void on_directHelp_clicked();
 

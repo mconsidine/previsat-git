@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    10 novembre 2013
+# >    16 novembre 2013
 
 #-------------------------------------------------
-VER_MAJ = 3.2
-VERSION = 3.2.1.5
+VER_MAJ = 3.3
+VERSION = 3.3.0.1
 ANNEES_DEV = 2005-2013
 ZLIB_DIR = ./zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -55,7 +55,7 @@ CONFIG(debug, debug|release){
 }
 
 win32 {
-    LIBS = zlibwapi.dll
+    LIBS = zlibwapi.dll -L. -lvlc
     RC_FILE = icone.rc
 }
 

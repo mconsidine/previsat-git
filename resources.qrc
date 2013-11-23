@@ -47,5 +47,6 @@
         <file>resources/suppr.png</file>
         <file>resources/pref.png</file>
         <file>resources/editer.png</file>
+        <file>resources/NASA.bmp</file>
     </qresource>
 </RCC>

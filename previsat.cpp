@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2013
+ * >    23 novembre 2013
  *
  */
 
@@ -237,6 +237,18 @@ PreviSat::PreviSat(QWidget *parent) :
 
 PreviSat::~PreviSat()
 {
+    if (_isPlaying) {
+
+        // Arret de la lecture
+        libvlc_media_player_stop(_mp, &_vlcexcep);
+
+        // Liberation du lecteur
+        libvlc_media_player_release(_mp);
+
+        libvlc_release(_vlcinstance);
+        VLCException(&_vlcexcep);
+    }
+
     delete ui;
 }
 
@@ -253,6 +265,7 @@ void PreviSat::ChargementConfig()
     QDir di;
 
     /* Initialisations */
+    _isPlaying = false;
     info = true;
     acalcAOS = true;
     htSat = 0.;
@@ -331,7 +344,8 @@ void PreviSat::ChargementConfig()
 
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
-                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts");
+                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
+                              "ISS-Live.asx");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -464,6 +478,7 @@ void PreviSat::ChargementConfig()
     ui->sud->setVisible(false);
     ui->est->setVisible(false);
     ui->ouest->setVisible(false);
+    ui->fluxVideo->setVisible(false);
 
     ui->pasManuel->setVisible(false);
     ui->valManuel->setVisible(false);
@@ -2444,7 +2459,7 @@ void PreviSat::AffichageCourbes() const
 
     // Radar
     htr = false;
-    if (ui->affradar->checkState() == Qt::Checked || (ui->affradar->checkState() == Qt::PartiallyChecked && ht)) {
+    if ((ui->affradar->checkState() == Qt::Checked || (ui->affradar->checkState() == Qt::PartiallyChecked && ht)) && !ui->mccISS->isChecked()) {
 
         ui->coordGeo1->setVisible(true);
         ui->coordGeo2->setVisible(true);
@@ -4011,6 +4026,13 @@ int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
     return (k);
 }
 
+void PreviSat::VLCException(const libvlc_exception_t *ex)
+{
+    if (libvlc_exception_raised(ex)) {
+        const QString msg = tr("Erreur VLC :\n%1");
+        throw PreviSatException(msg.arg(libvlc_exception_get_message(ex)), WARNING);
+    }
+}
 
 /***********
  * Systeme *
@@ -4624,6 +4646,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     /* Corps de la methode */
     if (ui->frameCarte->height() >= PreviSat::height())
         ui->frameCarte->setGeometry(0, 0, ui->frameCarte->width(), PreviSat::height() - 23);
+
     if (ui->frameCarte->width() != ui->frameCarteListe->width() - ui->frameListe->width() - 5 &&
             ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
         ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5,
@@ -4640,7 +4663,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
 
-    ui->liste1->setGeometry(20, 136, 200, hcarte - 127);
+    ui->liste1->setGeometry(20, 156, 200, hcarte - 147);
 
     ui->S60->move(5, hcarte / 1.2 - 1);
     ui->S30->move(5, hcarte / 1.5 - 1);
@@ -4666,7 +4689,12 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     ui->E150->move(lcarte * 11. / 12. - 8, 0);
     ui->frameLon->setGeometry(6, 7 + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
-    ui->onglets->move(ui->frameCarte->width() * 0.5 - 411, 0);
+    const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() * 0.5 - 411;
+    ui->onglets->move(xOng, 0);
+
+    ui->frameFlux->setGeometry(5, 0, ui->frameZone->width() - 14, ui->frameZone->height() - 24);
+    ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()) - 3,
+                        0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()) - 9);
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
                           ui->frameCarte->height() - 44, ui->frameCarte->height() - 44);
@@ -5433,6 +5461,150 @@ void PreviSat::on_pasManuel_currentIndexChanged(int index)
     ui->valManuel->setItemText(2, (aindx) ? tr("heure") : tr("heures"));
     ui->valManuel->setItemText(3, (aindx) ? tr("jour") : tr("jours"));
 }
+
+
+void PreviSat::on_mccISS_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+
+        ui->frameRadar->setVisible(false);
+        ui->coordGeo1->setVisible(false);
+        ui->coordGeo2->setVisible(false);
+        ui->coordGeo3->setVisible(false);
+        ui->coordGeo4->setVisible(false);
+        ui->radar->setVisible(false);
+        ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
+        ui->fluxVideo->setVisible(true);
+
+        ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui->frameOnglets->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    } else {
+
+        if (_isPlaying) {
+
+            _isPlaying = false;
+
+            try {
+
+                // Arret de la lecture
+                libvlc_media_player_stop(_mp, &_vlcexcep);
+
+                // Liberation du lecteur
+                libvlc_media_player_release(_mp);
+
+                libvlc_release(_vlcinstance);
+                VLCException(&_vlcexcep);
+
+            } catch (PreviSatException &e) {
+            }
+        }
+
+        ui->fluxVideo->setVisible(false);
+        ui->frameRadar->setVisible(true);
+        ui->coordGeo1->setVisible(true);
+        ui->coordGeo2->setVisible(true);
+        ui->coordGeo3->setVisible(true);
+        ui->coordGeo4->setVisible(true);
+        ui->radar->setVisible(true);
+
+        ui->frameZone->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    }
+
+    CalculsAffichage();
+
+    QResizeEvent *event = NULL;
+    resizeEvent(event);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_fluxVideo_clicked()
+{
+    /* Declarations des variables locales */
+    QString video;
+
+    /* Initialisations */
+    PreviSat::resize(qMax(PreviSat::width(), qMin(1228, QApplication::desktop()->availableGeometry().width())), PreviSat::height());
+
+    /* Corps de la methode */
+    try {
+
+        // Recuperation de l'adresse du flux video
+        const QString fic = dirDat + QDir::separator() + "ISS-Live.asx";
+        QFile fi(fic);
+        if (fi.exists()) {
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+
+            bool atrouve = false;
+            QTextStream flux(&fi);
+            while (!atrouve) {
+                const QString ligne = flux.readLine();
+                if (ligne.contains("mms")) {
+                    atrouve = true;
+                    const QStringList balise = ligne.split("\"", QString::SkipEmptyParts);
+                    video = balise.at(balise.size()-2);
+                }
+            }
+            fi.close();
+
+            if (!video.isEmpty()) {
+
+                ui->fluxVideo->setText(tr("Veuillez patienter..."));
+
+                // Preparation de la commande VLC
+                const char * const vlc_args[] = { "-I", "dummy", "--ignore-config", "--plugin-path=." };
+
+                // Initialisation d'une instance VLC
+                // Une structure pour l'exception est necessaire pour l'initialisation
+                libvlc_exception_init(&_vlcexcep);
+
+                // Creation d'une nouvelle instance libvlc
+                _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args, &_vlcexcep);
+                VLCException(&_vlcexcep);
+
+                // Creation d'un environnement media player
+                _mp = libvlc_media_player_new(_vlcinstance, &_vlcexcep);
+                VLCException(&_vlcexcep);
+
+                // Creation d'un nouveau descripteur media LibVLC
+                _m = libvlc_media_new(_vlcinstance, video.toAscii(), &_vlcexcep);
+                VLCException(&_vlcexcep);
+
+                libvlc_media_player_set_media(_mp, _m, &_vlcexcep);
+                VLCException(&_vlcexcep);
+
+#if defined (Q_OS_WIN)
+                libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int> (ui->frameFlux->winId()), &_vlcexcep);
+#elif defined (Q_OS_MAC)
+                libvlc_media_player_set_drawable(_mp, ui->frameFlux->winId(), &_vlcexcep);
+#elif defined (Q_OS_LINUX)
+                const int windid = ui->frameFlux->winId();
+                libvlc_media_player_set_xwindow(mp, windid);
+#else
+#endif
+                VLCException(&_vlcexcep);
+
+                libvlc_media_player_play(_mp, &_vlcexcep);
+                VLCException(&_vlcexcep);
+
+                _isPlaying = true;
+            }
+        }
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
 
 void PreviSat::on_directHelp_clicked()
 {
