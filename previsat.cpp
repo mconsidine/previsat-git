@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 novembre 2013
+ * >    24 novembre 2013
  *
  */
 
@@ -240,13 +240,12 @@ PreviSat::~PreviSat()
     if (_isPlaying) {
 
         // Arret de la lecture
-        libvlc_media_player_stop(_mp, &_vlcexcep);
+        libvlc_media_player_stop(_mp);
 
         // Liberation du lecteur
         libvlc_media_player_release(_mp);
 
         libvlc_release(_vlcinstance);
-        VLCException(&_vlcexcep);
     }
 
     delete ui;
@@ -479,6 +478,7 @@ void PreviSat::ChargementConfig()
     ui->est->setVisible(false);
     ui->ouest->setVisible(false);
     ui->fluxVideo->setVisible(false);
+    ui->fluxVideo->raise();
 
     ui->pasManuel->setVisible(false);
     ui->valManuel->setVisible(false);
@@ -4026,13 +4026,6 @@ int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
     return (k);
 }
 
-void PreviSat::VLCException(const libvlc_exception_t *ex)
-{
-    if (libvlc_exception_raised(ex)) {
-        const QString msg = tr("Erreur VLC :\n%1");
-        throw PreviSatException(msg.arg(libvlc_exception_get_message(ex)), WARNING);
-    }
-}
 
 /***********
  * Systeme *
@@ -4695,6 +4688,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     ui->frameFlux->setGeometry(5, 0, ui->frameZone->width() - 14, ui->frameZone->height() - 24);
     ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()) - 3,
                         0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()) - 9);
+    ui->lbl_video->move(ui->fluxVideo->pos());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
                           ui->frameCarte->height() - 44, ui->frameCarte->height() - 44);
@@ -5483,6 +5477,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
         ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui->frameZone->adjustSize();
 
     } else {
 
@@ -5493,19 +5488,19 @@ void PreviSat::on_mccISS_toggled(bool checked)
             try {
 
                 // Arret de la lecture
-                libvlc_media_player_stop(_mp, &_vlcexcep);
+                libvlc_media_player_stop(_mp);
 
                 // Liberation du lecteur
                 libvlc_media_player_release(_mp);
 
                 libvlc_release(_vlcinstance);
-                VLCException(&_vlcexcep);
 
             } catch (PreviSatException &e) {
             }
         }
 
         ui->fluxVideo->setVisible(false);
+        ui->fluxVideo->raise();
         ui->frameRadar->setVisible(true);
         ui->coordGeo1->setVisible(true);
         ui->coordGeo2->setVisible(true);
@@ -5557,43 +5552,40 @@ void PreviSat::on_fluxVideo_clicked()
 
             if (!video.isEmpty()) {
 
+                // Verification de la connexion
+                QTcpSocket socket;
+                socket.connectToHost(QCoreApplication::organizationDomain().remove("http://").remove("/"), 80);
+                if (!socket.waitForConnected(1000))
+                    throw PreviSatException(tr("Impossible de lancer le flux vidéo : vérifiez votre connexion Internet"), WARNING);
+
                 ui->fluxVideo->setText(tr("Veuillez patienter..."));
+                ui->lbl_video->raise();
 
                 // Preparation de la commande VLC
                 const char * const vlc_args[] = { "-I", "dummy", "--ignore-config", "--plugin-path=." };
 
-                // Initialisation d'une instance VLC
-                // Une structure pour l'exception est necessaire pour l'initialisation
-                libvlc_exception_init(&_vlcexcep);
-
                 // Creation d'une nouvelle instance libvlc
-                _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args, &_vlcexcep);
-                VLCException(&_vlcexcep);
+                _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
 
                 // Creation d'un environnement media player
-                _mp = libvlc_media_player_new(_vlcinstance, &_vlcexcep);
-                VLCException(&_vlcexcep);
+                _mp = libvlc_media_player_new(_vlcinstance);
 
                 // Creation d'un nouveau descripteur media LibVLC
-                _m = libvlc_media_new(_vlcinstance, video.toAscii(), &_vlcexcep);
-                VLCException(&_vlcexcep);
+                _m = libvlc_media_new_location(_vlcinstance, video.toAscii());
 
-                libvlc_media_player_set_media(_mp, _m, &_vlcexcep);
-                VLCException(&_vlcexcep);
+                libvlc_media_player_set_media(_mp, _m);
 
 #if defined (Q_OS_WIN)
-                libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int> (ui->frameFlux->winId()), &_vlcexcep);
+                libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
 #elif defined (Q_OS_MAC)
-                libvlc_media_player_set_drawable(_mp, ui->frameFlux->winId(), &_vlcexcep);
+                libvlc_media_player_set_agl (_mp, ui->frameFlux->winId());
 #elif defined (Q_OS_LINUX)
                 const int windid = ui->frameFlux->winId();
                 libvlc_media_player_set_xwindow(mp, windid);
 #else
 #endif
-                VLCException(&_vlcexcep);
 
-                libvlc_media_player_play(_mp, &_vlcexcep);
-                VLCException(&_vlcexcep);
+                libvlc_media_player_play(_mp);
 
                 _isPlaying = true;
             }
