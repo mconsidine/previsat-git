@@ -903,7 +903,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>Centre de contrôle ISS</string>
+            <string>ISS Wall Command Center</string>
            </property>
           </widget>
          </widget>
@@ -11167,9 +11167,6 @@
           <property name="mouseTracking">
            <bool>true</bool>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
@@ -11198,6 +11195,16 @@ le flux vidéo</string>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="lbl_video">
+           <property name="geometry">
+            <rect>
+             <x>60</x>
+             <y>40</y>
+             <width>135</width>
+             <height>161</height>
+            </rect>
            </property>
           </widget>
          </widget>

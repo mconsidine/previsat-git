@@ -33,12 +33,13 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    16 novembre 2013
+# >    23 novembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.3
 VERSION = 3.3.0.1
 ANNEES_DEV = 2005-2013
+VLC_DIR = ./vlc
 ZLIB_DIR = ./zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
@@ -71,7 +72,7 @@ ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
            APPVER_MAJ=\"$${VER_MAJSTR}\" \
            APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
-INCLUDEPATH += $$ZLIB_DIR
+INCLUDEPATH += $$VLC_DIR $$ZLIB_DIR
 
 SOURCES += main.cpp\
     previsat.cpp \
@@ -138,6 +139,7 @@ HEADERS += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
+    $$VLC_DIR/vlc.h \
     $$ZLIB_DIR/zlib.h
 
 FORMS += previsat.ui \
