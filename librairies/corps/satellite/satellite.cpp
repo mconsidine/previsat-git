@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    24 novembre 2013
  *
  */
 
@@ -219,8 +219,7 @@ void Satellite::CalculPosVit(const Date &date)
         while (fabs(tem5) >= EPSDBL && ktr < 10) {
             sineo1 = sin(eo1);
             coseo1 = cos(eo1);
-            tem5 = 1. - coseo1 * axnl - sineo1 * aynl;
-            tem5 = (u - aynl * coseo1 + axnl * sineo1 - eo1) / tem5;
+            tem5 = (u - aynl * coseo1 + axnl * sineo1 - eo1) / (1. - coseo1 * axnl - sineo1 * aynl);
             if (fabs(tem5) >= 0.95) {
                 tem5 = (tem5 > 0.) ? 0.95 : -0.95;
             }
