@@ -4685,7 +4685,8 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() * 0.5 - 411;
     ui->onglets->move(xOng, 0);
 
-    ui->frameFlux->setGeometry(5, 0, ui->frameZone->width() - 14, ui->frameZone->height() - 24);
+    ui->frameZone->resize(PreviSat::width() - ui->onglets->width() - 9, ui->frameZone->height());
+    ui->frameFlux->setGeometry(5, 4, ui->frameZone->width() - 14, ui->frameZone->height() - 28);
     ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()) - 3,
                         0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()) - 9);
     ui->lbl_video->move(ui->fluxVideo->pos());
@@ -5474,6 +5475,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->radar->setVisible(false);
         ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
         ui->fluxVideo->setVisible(true);
+        ui->frameFlux->setFrameShape(QFrame::StyledPanel);
+        ui->frameFlux->setFrameShadow(QFrame::Sunken);
 
         ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -5500,6 +5503,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
         }
 
         ui->fluxVideo->setVisible(false);
+        ui->frameFlux->setFrameShape(QFrame::NoFrame);
+        ui->frameFlux->setFrameShadow(QFrame::Plain);
         ui->fluxVideo->raise();
         ui->frameRadar->setVisible(true);
         ui->coordGeo1->setVisible(true);
@@ -5527,7 +5532,7 @@ void PreviSat::on_fluxVideo_clicked()
     QString video;
 
     /* Initialisations */
-    PreviSat::resize(qMax(PreviSat::width(), qMin(1228, QApplication::desktop()->availableGeometry().width())), PreviSat::height());
+    PreviSat::resize(qMax(PreviSat::width(), qMin(1220, QApplication::desktop()->availableGeometry().width())), PreviSat::height());
 
     /* Corps de la methode */
     try {
