@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 novembre 2013
+ * >    27 novembre 2013
  *
  */
 
@@ -237,17 +237,7 @@ PreviSat::PreviSat(QWidget *parent) :
 
 PreviSat::~PreviSat()
 {
-    if (_isPlaying) {
-
-        // Arret de la lecture
-        libvlc_media_player_stop(_mp);
-
-        // Liberation du lecteur
-        libvlc_media_player_release(_mp);
-
-        libvlc_release(_vlcinstance);
-    }
-
+    on_fermerVideo_clicked();
     delete ui;
 }
 
@@ -273,6 +263,9 @@ void PreviSat::ChargementConfig()
     selec2 = 0;
     paletteDefaut = PreviSat::palette();
     tim = QDateTime();
+    _m = NULL;
+    _mp = NULL;
+    _vlcinstance = NULL;
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -471,6 +464,17 @@ void PreviSat::ChargementConfig()
     QStyle * const style = QApplication::style();
     ui->actionOuvrir_fichier_TLE->setIcon(style->standardIcon(QStyle::SP_DirOpenIcon));
     ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+
+    ui->actionFermerVideo->setIcon(style->standardIcon(QStyle::SP_TitleBarCloseButton));
+    ui->fermerVideo->setDefaultAction(ui->actionFermerVideo);
+
+    ui->actionAgrandirVideo->setIcon(style->standardIcon(QStyle::SP_TitleBarMaxButton));
+    ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
+
+    ui->actionMuetVideo->setIcon(style->standardIcon(QStyle::SP_MediaVolumeMuted));
+    ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
+    ui->frameCtrlVideo->setVisible(false);
+    ui->fluxVideo->raise();
 
     ui->ciel->setVisible(false);
     ui->nord->setVisible(false);
@@ -4251,6 +4255,12 @@ void PreviSat::GestionTempsReel()
         }
     }
 
+    if (_mp != NULL) {
+        if (!_isPlaying)
+            _isPlaying = (bool) libvlc_media_player_is_playing(_mp);
+        ui->frameCtrlVideo->setVisible(_isPlaying);
+    }
+
     /* Retour */
     return;
 }
@@ -4685,10 +4695,12 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() * 0.5 - 411;
     ui->onglets->move(xOng, 0);
 
-    ui->frameZone->resize(PreviSat::width() - ui->onglets->width() - 9, ui->frameZone->height());
-    ui->frameFlux->setGeometry(5, 4, ui->frameZone->width() - 14, ui->frameZone->height() - 28);
-    ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()) - 3,
-                        0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()) - 9);
+    ui->frameZone->resize(PreviSat::width() - ui->onglets->width(), ui->frameZone->height());
+    ui->frameZoneVideo->resize(ui->frameZone->width() - 18, ui->frameZone->height() - 24);
+    ui->frameFlux->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
+    ui->frameCtrlVideo->move(ui->frameZoneVideo->width() - ui->frameCtrlVideo->width() + 2, 0);
+    ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()),
+                        0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()));
     ui->lbl_video->move(ui->fluxVideo->pos());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
@@ -5484,24 +5496,6 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
     } else {
 
-        if (_isPlaying) {
-
-            _isPlaying = false;
-
-            try {
-
-                // Arret de la lecture
-                libvlc_media_player_stop(_mp);
-
-                // Liberation du lecteur
-                libvlc_media_player_release(_mp);
-
-                libvlc_release(_vlcinstance);
-
-            } catch (PreviSatException &e) {
-            }
-        }
-
         ui->fluxVideo->setVisible(false);
         ui->frameFlux->setFrameShape(QFrame::NoFrame);
         ui->frameFlux->setFrameShadow(QFrame::Plain);
@@ -5532,7 +5526,7 @@ void PreviSat::on_fluxVideo_clicked()
     QString video;
 
     /* Initialisations */
-    PreviSat::resize(qMax(PreviSat::width(), qMin(1220, QApplication::desktop()->availableGeometry().width())), PreviSat::height());
+    PreviSat::resize(qMax(PreviSat::width(), qMin(1188, QApplication::desktop()->availableGeometry().width())), PreviSat::height());
 
     /* Corps de la methode */
     try {
@@ -5567,7 +5561,7 @@ void PreviSat::on_fluxVideo_clicked()
                 ui->lbl_video->raise();
 
                 // Preparation de la commande VLC
-                const char * const vlc_args[] = { "-I", "dummy", "--ignore-config", "--plugin-path=." };
+                const char * const vlc_args[] = { "-I", "dummy", "--ignore-config" };
 
                 // Creation d'une nouvelle instance libvlc
                 _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
@@ -5591,8 +5585,6 @@ void PreviSat::on_fluxVideo_clicked()
 #endif
 
                 libvlc_media_player_play(_mp);
-
-                _isPlaying = true;
             }
         }
     } catch (PreviSatException &e) {
@@ -5600,6 +5592,45 @@ void PreviSat::on_fluxVideo_clicked()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_muetVideo_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool muet = (bool) libvlc_audio_get_mute(_mp);
+    QStyle * const style = QApplication::style();
+
+    /* Corps de la methode */
+    ui->actionMuetVideo->setIcon((muet) ? style->standardIcon(QStyle::SP_MediaVolumeMuted) : style->standardIcon(QStyle::SP_MediaVolume));
+    ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
+    libvlc_audio_toggle_mute(_mp);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_fermerVideo_clicked()
+{
+    if (_isPlaying) {
+
+        // Arret de la lecture
+        libvlc_media_player_stop(_mp);
+
+        // Liberation du lecteur
+        libvlc_media_player_release(_mp);
+        libvlc_release(_vlcinstance);
+
+        ui->frameCtrlVideo->setVisible(false);
+        ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
+        ui->fluxVideo->raise();
+
+        _isPlaying = false;
+        _m = NULL;
+        _mp = NULL;
+        _vlcinstance = NULL;
+    }
 }
 
 

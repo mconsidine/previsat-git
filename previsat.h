@@ -137,8 +137,11 @@ private slots:
     void on_affichageCiel_clicked();
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
+
     void on_mccISS_toggled(bool checked);
     void on_fluxVideo_clicked();
+    void on_muetVideo_clicked();
+    void on_fermerVideo_clicked();
 
     void on_directHelp_clicked();
 
