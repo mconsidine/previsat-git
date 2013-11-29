@@ -11260,6 +11260,9 @@
              <height>161</height>
             </rect>
            </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Cliquer pour activer
 le flux vidéo</string>
