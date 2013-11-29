@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 novembre 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -208,6 +208,7 @@ static const QString adresseCelestrakNorad = adresseCelestrak + "NORAD/elements/
 static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
+static QMainWindow *afficherVideo;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 
@@ -399,7 +400,8 @@ void PreviSat::ChargementConfig()
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
 
     ficTLETransit.clear();
-    const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().trimmed();
+    const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().
+            trimmed();
     const QFileInfo fit(nomFicTransit);
     if (fit.exists()) {
         ui->fichierTLETransit->addItem(fit.fileName());
@@ -546,7 +548,8 @@ void PreviSat::ChargementConfig()
         item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
-        sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" : "green"));
+        sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" :
+                                                                                                                     "green"));
         item3->setBackgroundColor(sts);
         item3->setToolTip((tabStatutIridium.at(i).contains("T")) ?
                               tr("Satellite non opérationnel") :
@@ -1666,7 +1669,8 @@ void PreviSat::AffichageElementsOsculateurs() const
         ui->iy1->setText(chaine);
 
         chaine2 = "%1°";
-        chaine = chaine2.arg((satellites.at(0).getElements().getAscensionDroiteNA() + satellites.at(0).getElements().getArgumentPerigee()) * RAD2DEG, 0, 'f', 4);
+        chaine = chaine2.arg((satellites.at(0).getElements().getAscensionDroiteNA() + satellites.at(0).getElements().
+                              getArgumentPerigee()) * RAD2DEG, 0, 'f', 4);
         ui->longitudePerigee->setText(chaine);
 
         chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
@@ -1722,8 +1726,7 @@ void PreviSat::AffichageElementsOsculateurs() const
     chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
     ui->perigee->setText(chaine);
 
-    ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1,
-                                              1, 0, false, true));
+    ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1, 1, 0, false, true));
 
     /* Retour */
     return;
@@ -1825,7 +1828,8 @@ void PreviSat::AffichageCourbes() const
         const int lcarte2 = qRound(lcarte * 0.5);
 
         // Affichage du filtre de la carte en mode vision nocturne
-        const QBrush alphaNuit = (ui->actionVision_nocturne->isChecked()) ? QBrush(QColor::fromRgb(128, 0, 0, 128)) : QBrush(Qt::NoBrush);
+        const QBrush alphaNuit = (ui->actionVision_nocturne->isChecked()) ? QBrush(QColor::fromRgb(128, 0, 0, 128)) :
+                                                                            QBrush(Qt::NoBrush);
         const QRect rectCarte(0, 0, ui->carte->width(), ui->carte->height());
         scene->addRect(rectCarte, QPen(Qt::NoBrush, 0), alphaNuit);
 
@@ -2463,7 +2467,8 @@ void PreviSat::AffichageCourbes() const
 
     // Radar
     htr = false;
-    if ((ui->affradar->checkState() == Qt::Checked || (ui->affradar->checkState() == Qt::PartiallyChecked && ht)) && !ui->mccISS->isChecked()) {
+    if ((ui->affradar->checkState() == Qt::Checked || (ui->affradar->checkState() == Qt::PartiallyChecked && ht)) &&
+            !ui->mccISS->isChecked()) {
 
         ui->coordGeo1->setVisible(true);
         ui->coordGeo2->setVisible(true);
@@ -2541,8 +2546,10 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Calcul des coordonnees radar du satellite
-                const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).getAzimut()));
-                const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).getAzimut()));
+                const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
+                                        sin(satellites.at(isat).getAzimut()));
+                const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
+                                        cos(satellites.at(isat).getAzimut()));
 
                 rect = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
@@ -3201,8 +3208,8 @@ void PreviSat::VerifAgeTLE()
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
         if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
             const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
-            const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax),
-                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax), QMessageBox::Yes | QMessageBox::No,
+                                                  QMessageBox::Yes);
 
             if (res == QMessageBox::Yes) {
 
@@ -4589,7 +4596,8 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
 
-    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ? ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
+    settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
+                          ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
     settings.setValue("fichier/iridium", (ficTLEIri.count() > 0) ? ficTLEIri.at(0) : "");
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
@@ -4602,12 +4610,14 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
     settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
     settings.setValue("previsions/hauteurSatPrev", (ui->hauteurSatPrev->currentIndex() > 4) ? 0 : ui->hauteurSatPrev->currentIndex());
-    settings.setValue("previsions/hauteurSoleilPrev", (ui->hauteurSoleilPrev->currentIndex() > 4) ? 1 : ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/hauteurSoleilPrev", (ui->hauteurSoleilPrev->currentIndex() > 4) ?
+                          1 : ui->hauteurSoleilPrev->currentIndex());
     settings.setValue("previsions/illuminationPrev", ui->illuminationPrev->isChecked());
     settings.setValue("previsions/magnitudeMaxPrev", ui->magnitudeMaxPrev->isChecked());
 
     settings.setValue("previsions/hauteurSatIri", (ui->hauteurSatIri->currentIndex() > 4) ? 2 : ui->hauteurSatIri->currentIndex());
-    settings.setValue("previsions/hauteurSoleilIri", (ui->hauteurSoleilIri->currentIndex() > 4) ? 1 : ui->hauteurSoleilIri->currentIndex());
+    settings.setValue("previsions/hauteurSoleilIri", (ui->hauteurSoleilIri->currentIndex() > 4) ?
+                          1 : ui->hauteurSoleilIri->currentIndex());
     settings.setValue("previsions/lieuxObservation3", ui->lieuxObservation3->currentIndex());
     settings.setValue("previsions/satellitesOperationnels", ui->satellitesOperationnels->isChecked());
     settings.setValue("previsions/ordreChronologique", ui->ordreChronologique->isChecked());
@@ -4622,7 +4632,8 @@ void PreviSat::closeEvent(QCloseEvent *)
     settings.setValue("previsions/passageQuadrangles", ui->passageQuadrangles->isChecked());
     settings.setValue("previsions/transitionJourNuit", ui->transitionJourNuit->isChecked());
 
-    settings.setValue("previsions/hauteurSatTransit", (ui->hauteurSatTransit->currentIndex() > 4) ? 1 : ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/hauteurSatTransit", (ui->hauteurSatTransit->currentIndex() > 4) ?
+                          1 : ui->hauteurSatTransit->currentIndex());
     settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
     settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
     settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
@@ -4648,14 +4659,13 @@ void PreviSat::resizeEvent(QResizeEvent *event)
 
     /* Corps de la methode */
     if (ui->frameCarte->height() >= PreviSat::height())
-        ui->frameCarte->setGeometry(0, 0, ui->frameCarte->width(), PreviSat::height() - 23);
+        ui->frameCarte->resize(ui->frameCarte->width(), PreviSat::height() - 23);
 
     if (ui->frameCarte->width() != ui->frameCarteListe->width() - ui->frameListe->width() - 5 &&
             ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
-        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5,
-                                    ui->frameCarte->height());
+        ui->frameCarte->resize(ui->frameCarteListe->width() - ui->frameListe->width() - 5, ui->frameCarte->height());
 
-    ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
+    ui->carte->resize(ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     ui->frameCarte2->setGeometry(ui->carte->geometry());
     ui->maximise->move(11 + ui->carte->width(), 5);
     ui->affichageCiel->move(11 + ui->carte->width(), 32);
@@ -4666,7 +4676,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
 
-    ui->liste1->setGeometry(20, 156, 200, hcarte - 147);
+    ui->liste1->resize(200, hcarte - 147);
 
     ui->S60->move(5, hcarte / 1.2 - 1);
     ui->S30->move(5, hcarte / 1.5 - 1);
@@ -4765,7 +4775,8 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
                 ui->tuc->text().remove(" ").remove(":");
 
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
-                                                         tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
+                                                         tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;" \
+                                                            "Tous les fichiers (*)"));
         if (!fic.isEmpty()) {
             image.save(fic);
             const QFileInfo fi(fic);
@@ -4806,7 +4817,8 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.getJourJulien() +
                                                                 sgn * ui->pasManuel->currentText().toDouble() *
                                                                 qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
-                                                                dateCourante.getJourJulien() + sgn * ui->pasManuel->currentText().toDouble();
+                                                                dateCourante.getJourJulien() + sgn * ui->pasManuel->currentText().
+                                                                toDouble();
 
         const Date date = Date(jd + EPS_DATES, 0.);
 
@@ -5329,6 +5341,9 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
             ui->listeFichiersTLE->setToolTip(nomfic);
     }
 
+    if (ui->fluxVideo->isVisible())
+        PreviSat::setCursor((ui->fluxVideo->underMouse()) ? Qt::PointingHandCursor : Qt::ArrowCursor);
+
     /* Retour */
     return;
 }
@@ -5396,15 +5411,15 @@ void PreviSat::on_maximise_clicked()
 
         // Carte maximisee
         ui->frameListe->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred));
-        ui->frameCarte->setGeometry(0, 0, PreviSat::width(), PreviSat::height() - 23);
+        ui->frameCarte->resize(PreviSat::width(), PreviSat::height() - 23);
         ui->maximise->setIcon(QIcon(":/resources/mini.png"));
         ui->maximise->setToolTip(tr("Réduire"));
     } else {
 
         // Carte minimisee
         ui->frameListe->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
-        ui->frameCarte->setGeometry(0, 0, ui->frameCarteListe->width() - ui->frameListe->width() - 5,
-                                    PreviSat::height() - ui->frameOngletsZone->height() - 23);
+        ui->frameCarte->resize(ui->frameCarteListe->width() - ui->frameListe->width() - 5,
+                               PreviSat::height() - ui->frameOngletsZone->height() - 23);
         ui->maximise->setIcon(QIcon(":/resources/maxi.png"));
         ui->maximise->setToolTip(tr("Agrandir"));
     }
@@ -5537,12 +5552,12 @@ void PreviSat::on_fluxVideo_clicked()
         if (fi.exists()) {
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
 
-            bool atrouve = false;
+            bool atrouveFlux = false;
             QTextStream flux(&fi);
-            while (!atrouve) {
+            while (!atrouveFlux) {
                 const QString ligne = flux.readLine();
                 if (ligne.contains("mms")) {
-                    atrouve = true;
+                    atrouveFlux = true;
                     const QStringList balise = ligne.split("\"", QString::SkipEmptyParts);
                     video = balise.at(balise.size()-2);
                 }
@@ -5557,6 +5572,7 @@ void PreviSat::on_fluxVideo_clicked()
                 if (!socket.waitForConnected(1000))
                     throw PreviSatException(tr("Impossible de lancer le flux vidéo : vérifiez votre connexion Internet"), WARNING);
 
+                PreviSat::setCursor(Qt::ArrowCursor);
                 ui->fluxVideo->setText(tr("Veuillez patienter..."));
                 ui->lbl_video->raise();
 
@@ -5568,23 +5584,34 @@ void PreviSat::on_fluxVideo_clicked()
 
                 // Creation d'un environnement media player
                 _mp = libvlc_media_player_new(_vlcinstance);
+                _mp2 = libvlc_media_player_new(_vlcinstance);
 
                 // Creation d'un nouveau descripteur media LibVLC
                 _m = libvlc_media_new_location(_vlcinstance, video.toAscii());
 
                 libvlc_media_player_set_media(_mp, _m);
+                libvlc_media_player_set_media(_mp2, _m);
+
+                afficherVideo = new QMainWindow;
+                afficherVideo->resize(640, 360);
+                const QString msg = "%1 %2 - ISS Live";
+                afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
 #if defined (Q_OS_WIN)
                 libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
+                libvlc_media_player_set_hwnd(_mp2, afficherVideo->winId());
 #elif defined (Q_OS_MAC)
-                libvlc_media_player_set_agl (_mp, ui->frameFlux->winId());
+                libvlc_media_player_set_agl(_mp, ui->frameFlux->winId());
+                libvlc_media_player_set_agl(_mp2, afficherVideo->winId());
 #elif defined (Q_OS_LINUX)
                 const int windid = ui->frameFlux->winId();
                 libvlc_media_player_set_xwindow(mp, windid);
+                windid = afficherVideo->winId());
+                libvlc_media_player_set_xwindow(mp2, windid);
 #else
 #endif
-
                 libvlc_media_player_play(_mp);
+                libvlc_media_player_play(_mp2);
             }
         }
     } catch (PreviSatException &e) {
@@ -5603,12 +5630,19 @@ void PreviSat::on_muetVideo_clicked()
     QStyle * const style = QApplication::style();
 
     /* Corps de la methode */
-    ui->actionMuetVideo->setIcon((muet) ? style->standardIcon(QStyle::SP_MediaVolumeMuted) : style->standardIcon(QStyle::SP_MediaVolume));
+    ui->actionMuetVideo->setIcon((muet) ? style->standardIcon(QStyle::SP_MediaVolumeMuted) :
+                                          style->standardIcon(QStyle::SP_MediaVolume));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     libvlc_audio_toggle_mute(_mp);
+    libvlc_audio_toggle_mute(_mp2);
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_agrandirVideo_clicked()
+{
+    afficherVideo->showMaximized();
 }
 
 void PreviSat::on_fermerVideo_clicked()
@@ -5617,9 +5651,11 @@ void PreviSat::on_fermerVideo_clicked()
 
         // Arret de la lecture
         libvlc_media_player_stop(_mp);
+        libvlc_media_player_stop(_mp2);
 
         // Liberation du lecteur
         libvlc_media_player_release(_mp);
+        libvlc_media_player_release(_mp2);
         libvlc_release(_vlcinstance);
 
         ui->frameCtrlVideo->setVisible(false);
@@ -5629,6 +5665,7 @@ void PreviSat::on_fermerVideo_clicked()
         _isPlaying = false;
         _m = NULL;
         _mp = NULL;
+        _mp2 = NULL;
         _vlcinstance = NULL;
     }
 }
@@ -8058,8 +8095,10 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         const int nrdmax = (ui->numeroNORADCreerTLE->currentIndex() == 0) ? 99999 : qMax(ui->noradMin->value(), ui->noradMax->value());
 
         // Ascension droite du noeud ascendant
-        const double ascmin = (ui->ADNoeudAscendantCreerTLE->currentIndex() == 0) ? 0. : qMin(ui->ADNAMin->value(), ui->ADNAMax->value());
-        const double ascmax = (ui->ADNoeudAscendantCreerTLE->currentIndex() == 0) ? T360 : qMax(ui->ADNAMin->value(), ui->ADNAMax->value());
+        const double ascmin = (ui->ADNoeudAscendantCreerTLE->currentIndex() == 0) ? 0. : qMin(ui->ADNAMin->value(),
+                                                                                              ui->ADNAMax->value());
+        const double ascmax = (ui->ADNoeudAscendantCreerTLE->currentIndex() == 0) ? T360 : qMax(ui->ADNAMin->value(),
+                                                                                                ui->ADNAMax->value());
 
         // Excentricite
         double exmin = 0.;
@@ -8358,8 +8397,8 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Date et heure initiales
         const Date date1(ui->dateInitialePrev->date().year(), ui->dateInitialePrev->date().month(), ui->dateInitialePrev->date().day(),
-                         ui->dateInitialePrev->time().hour(), ui->dateInitialePrev->time().minute(), ui->dateInitialePrev->time().second(),
-                         offset1);
+                         ui->dateInitialePrev->time().hour(), ui->dateInitialePrev->time().minute(),
+                         ui->dateInitialePrev->time().second(), offset1);
 
         // Jour julien initial
         double jj1 = date1.getJourJulien() - offset1;
@@ -8509,6 +8548,7 @@ void PreviSat::on_afficherPrev_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
     afficherResultats->show(ficRes);
+    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -8545,8 +8585,10 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
 
             if (index == ui->fichierTLEIri->count() - 1) {
 
-                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), settings.value("fichier/iridium", dirTle).toString(),
-                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                                     settings.value("fichier/iridium", dirTle).toString(),
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
+                                                                        "Tous les fichiers (*)"));
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLEIri->currentText().isEmpty())
@@ -8839,7 +8881,8 @@ void PreviSat::on_afficherIri_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
     afficherResultats->show(ficRes);
-    afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
+    afficherResultats->resize(1210, afficherResultats->height());
+    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -9053,6 +9096,7 @@ void PreviSat::on_afficherEvt_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
     afficherResultats->show(ficRes);
+    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -9315,7 +9359,8 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(ficRes);
-    afficherResultats->setGeometry(afficherResultats->x(), afficherResultats->y(), 1210, afficherResultats->height());
+    afficherResultats->resize(1210, afficherResultats->height());
+    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
