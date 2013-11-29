@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >
+ * >    29 novembre 2013
  *
  */
 
@@ -51,7 +51,7 @@ class Apropos : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Apropos(QWidget *parent = 0);
+    explicit Apropos(QWidget *fenetreParent = 0);
     ~Apropos();
 
 private slots:

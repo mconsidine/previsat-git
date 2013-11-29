@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -51,6 +51,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include "ui_afficher.h"
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "afficher.h"
 
@@ -59,8 +60,8 @@ static QString dirTmp;
 static QString prev;
 static QSettings settings("Astropedia", "previsat");
 
-Afficher::Afficher(QWidget *parent) :
-    QMainWindow(parent),
+Afficher::Afficher(QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     ui(new Ui::Afficher)
 {
     ui->setupUi(this);
@@ -86,25 +87,25 @@ Afficher::Afficher(QWidget *parent) :
         Afficher::resize(xAff, yAff);
     }
 
-    QFont font;
+    QFont police;
 
 #if defined (Q_OS_WIN)
-    font.setFamily("MS Shell Dlg 2");
-    font.setPointSize(8);
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
-    font.setFamily("Sans Serif");
-    font.setPointSize(7);
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
-    font.setFamily("Marion");
-    font.setPointSize(11);
+    police.setFamily("Marion");
+    police.setPointSize(11);
 #else
 #endif
 
-    Afficher::setFont(font);
-    QStyle * const style = QApplication::style();
-    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+    Afficher::setFont(police);
+    QStyle * const styleBouton = QApplication::style();
+    ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
 
     if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
 
@@ -163,14 +164,15 @@ void Afficher::show(const QString &fic)
     prev = "";
 }
 
-void Afficher::closeEvent(QCloseEvent *)
+void Afficher::closeEvent(QCloseEvent *evt)
 {
+    Q_UNUSED(evt);
     ui->fichier->clear();
 }
 
-void Afficher::resizeEvent(QResizeEvent *event)
+void Afficher::resizeEvent(QResizeEvent *evt)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(evt);
     ui->fichier->setGeometry(0, 0, Afficher::width(), Afficher::height() - ui->barreOutils->height());
 }
 

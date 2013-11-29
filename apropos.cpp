@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er novembre 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -45,34 +45,35 @@
 #endif
 #include <QDate>
 #include <QSettings>
+#pragma GCC diagnostic warning "-Wshadow"
 #include "apropos.h"
 #include "ui_apropos.h"
 
 static QSettings settings("Astropedia", "previsat");
 
-Apropos::Apropos(QWidget *parent) :
-    QMainWindow(parent),
+Apropos::Apropos(QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     ui(new Ui::Apropos)
 {
     ui->setupUi(this);
 
-    QFont font;
+    QFont police;
 
 #if defined (Q_OS_WIN)
-    font.setFamily("MS Shell Dlg 2");
-    font.setPointSize(8);
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
-    font.setFamily("Sans Serif");
-    font.setPointSize(7);
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
-    font.setFamily("Marion");
-    font.setPointSize(11);
+    police.setFamily("Marion");
+    police.setPointSize(11);
 #else
 #endif
 
-    Apropos::setFont(font);
+    Apropos::setFont(police);
     const QString titre = tr("À propos de %1 %2");
     setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
