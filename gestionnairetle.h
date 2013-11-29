@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >
+ * >    29 novembre 2013
  *
  */
 
@@ -54,21 +54,21 @@ class GestionnaireTLE : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GestionnaireTLE(QWidget *parent = 0);
+    explicit GestionnaireTLE(QWidget *fenetreParent = 0);
     ~GestionnaireTLE();
 
 private slots:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *evt);
     void on_fermer_clicked();
     void on_actionCreer_un_groupe_activated();
     void on_actionSupprimerGroupe_activated();
-    void on_listeGroupeTLE_customContextMenuRequested(const QPoint &pos);
+    void on_listeGroupeTLE_customContextMenuRequested(const QPoint &position);
     void on_listeGroupeTLE_currentRowChanged(int currentRow);
     void on_valider_clicked();
     void on_annuler_clicked();
     void on_actionAjouter_des_fichiers_activated();
     void on_actionSupprimer_activated();
-    void on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos);
+    void on_listeFichiersTLE_customContextMenuRequested(const QPoint &position);
     void on_MajAutoGroupe_toggled(bool checked);
 
 private:

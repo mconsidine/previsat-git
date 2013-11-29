@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >
+ * >    29 novembre 2013
  *
  */
 
@@ -52,7 +52,7 @@ class Telecharger : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Telecharger(const int idirHttp, QWidget *parent = 0);
+    explicit Telecharger(const int idirHttp, QWidget *fenetreParent = 0);
     void AjoutFichier(const QUrl &url);
     ~Telecharger();
 

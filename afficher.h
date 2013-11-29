@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    19 janvier 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -51,7 +51,7 @@ class Afficher : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Afficher(QWidget *parent = 0);
+    explicit Afficher(QWidget *fenetreParent = 0);
     void show(const QString &fic);
     ~Afficher();
 
@@ -60,8 +60,8 @@ private:
     QString _fichier;
 
 private slots:
-    void closeEvent(QCloseEvent *);
-    void resizeEvent(QResizeEvent *);
+    void closeEvent(QCloseEvent *evt);
+    void resizeEvent(QResizeEvent * evt);
     void on_actionEnregistrer_activated();
 };
 

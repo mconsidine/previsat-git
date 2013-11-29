@@ -57,7 +57,7 @@ class PreviSat : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit PreviSat(QWidget *parent = 0);
+    explicit PreviSat(QWidget *fenetreParent = 0);
     void ChargementConfig();
     void ChargementTLE();
     void MAJTLE();
@@ -126,12 +126,12 @@ private slots:
     void EcritureFichier();
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
 
-    void closeEvent(QCloseEvent *event);
-    void resizeEvent(QResizeEvent *);
-    void keyPressEvent(QKeyEvent *event);
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
+    void closeEvent(QCloseEvent *evt);
+    void resizeEvent(QResizeEvent *evt);
+    void keyPressEvent(QKeyEvent *evt);
+    void mousePressEvent(QMouseEvent *evt);
+    void mouseMoveEvent(QMouseEvent *evt);
+    void mouseDoubleClickEvent(QMouseEvent *evt);
 
     void on_maximise_clicked();
     void on_affichageCiel_clicked();
@@ -166,7 +166,7 @@ private slots:
     void on_actionNouveau_fichier_TLE_activated();
     void on_actionFichier_TLE_existant_activated();
     void on_liste1_clicked(const QModelIndex &index);
-    void on_liste1_customContextMenuRequested(const QPoint &pos);
+    void on_liste1_customContextMenuRequested(const QPoint &position);
     void on_liste1_entered(const QModelIndex &index);
 
     // Gestion de l'onglet General
@@ -224,11 +224,11 @@ private slots:
     void on_validerCategorie_clicked();
     void on_actionRenommerCategorie_activated();
     void on_fichiersObs_currentRowChanged(int currentRow);
-    void on_fichiersObs_customContextMenuRequested(const QPoint &pos);
+    void on_fichiersObs_customContextMenuRequested(const QPoint &position);
     void on_lieuxObs_currentRowChanged(int currentRow);
-    void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
+    void on_lieuxObs_customContextMenuRequested(const QPoint &position);
     void on_selecLieux_currentRowChanged(int currentRow);
-    void on_selecLieux_customContextMenuRequested(const QPoint &pos);
+    void on_selecLieux_customContextMenuRequested(const QPoint &position);
     void on_actionCreer_un_nouveau_lieu_activated();
     void on_actionAjouter_Mes_Preferes_activated();
     void on_actionModifier_coordonnees_activated();
@@ -252,7 +252,7 @@ private slots:
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
     void on_gestionnaireMajTLE_clicked();
-    void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
+    void on_compteRenduMaj_customContextMenuRequested(const QPoint &position);
     void on_actionCopier_dans_le_presse_papier_activated();
 
     // Extraction d'un fichier TLE
@@ -267,7 +267,7 @@ private slots:
 
     // Calcul des previsions de passage
     void on_effacerHeuresPrev_clicked();
-    void on_liste2_customContextMenuRequested(const QPoint &pos);
+    void on_liste2_customContextMenuRequested(const QPoint &position);
     void on_liste2_entered(const QModelIndex &index);
     void on_actionTous_activated();
     void on_actionAucun_activated();
@@ -291,7 +291,7 @@ private slots:
 
     // Calcul des evenements orbitaux
     void on_effacerHeuresEvt_clicked();
-    void on_liste3_customContextMenuRequested(const QPoint &pos);
+    void on_liste3_customContextMenuRequested(const QPoint &position);
     void on_liste3_entered(const QModelIndex &index);
     void on_parametrageDefautEvt_clicked();
     void on_calculsEvt_clicked();

@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    1er novembre 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -49,6 +49,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include "ui_gestionnairetle.h"
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "gestionnairetle.h"
 #include "previsat.h"
@@ -62,29 +63,29 @@ static QString dirTmp;
 static QString localePrevisat;
 static QSettings settings("Astropedia", "previsat");
 
-GestionnaireTLE::GestionnaireTLE(QWidget *parent) :
-    QMainWindow(parent),
+GestionnaireTLE::GestionnaireTLE(QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     ui(new Ui::GestionnaireTLE)
 {
     ui->setupUi(this);
 
-    QFont font;
+    QFont police;
 
 #if defined (Q_OS_WIN)
-    font.setFamily("MS Shell Dlg 2");
-    font.setPointSize(8);
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
-    font.setFamily("Sans Serif");
-    font.setPointSize(7);
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
-    font.setFamily("Marion");
-    font.setPointSize(11);
+    police.setFamily("Marion");
+    police.setPointSize(11);
 #else
 #endif
 
-    GestionnaireTLE::setFont(font);
+    GestionnaireTLE::setFont(police);
     load();
 }
 
@@ -93,9 +94,9 @@ GestionnaireTLE::~GestionnaireTLE()
     delete ui;
 }
 
-void GestionnaireTLE::closeEvent(QCloseEvent *event)
+void GestionnaireTLE::closeEvent(QCloseEvent *evt)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(evt);
     on_fermer_clicked();
 }
 
@@ -235,14 +236,14 @@ void GestionnaireTLE::on_actionSupprimerGroupe_activated()
     return;
 }
 
-void GestionnaireTLE::on_listeGroupeTLE_customContextMenuRequested(const QPoint &pos)
+void GestionnaireTLE::on_listeGroupeTLE_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    ui->listeGroupeTLE->setCurrentRow(ui->listeGroupeTLE->indexAt(pos).row());
+    ui->listeGroupeTLE->setCurrentRow(ui->listeGroupeTLE->indexAt(position).row());
     ui->actionSupprimerGroupe->setVisible(ui->listeGroupeTLE->currentRow() >= 0);
     ui->menuContextuelGroupe->exec(QCursor::pos());
 
@@ -438,7 +439,7 @@ void GestionnaireTLE::on_actionSupprimer_activated()
     return;
 }
 
-void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoint &pos)
+void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
@@ -446,7 +447,7 @@ void GestionnaireTLE::on_listeFichiersTLE_customContextMenuRequested(const QPoin
 
     /* Corps de la methode */
     ui->groupe->setVisible(false);
-    ui->listeFichiersTLE->setCurrentRow(ui->listeFichiersTLE->indexAt(pos).row());
+    ui->listeFichiersTLE->setCurrentRow(ui->listeFichiersTLE->indexAt(position).row());
     ui->actionSupprimer->setVisible(ui->listeFichiersTLE->currentRow() >= 0);
     ui->menuContextuelFichiersTLE->exec(QCursor::pos());
 

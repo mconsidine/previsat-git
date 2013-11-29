@@ -60,6 +60,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QUrl>
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
@@ -226,8 +227,8 @@ QLabel *modeFonctionnement;
 QLabel *stsDate;
 QLabel *stsHeure;
 
-PreviSat::PreviSat(QWidget *parent) :
-    QMainWindow(parent),
+PreviSat::PreviSat(QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     ui(new Ui::PreviSat)
 {
     ui->setupUi(this);
@@ -270,7 +271,7 @@ void PreviSat::ChargementConfig()
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
-    QFont font;
+    QFont police;
 
 #if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
@@ -278,8 +279,8 @@ void PreviSat::ChargementConfig()
             QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
 
-    font.setFamily("MS Shell Dlg 2");
-    font.setPointSize(8);
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
     dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
@@ -287,8 +288,8 @@ void PreviSat::ChargementConfig()
             QCoreApplication::applicationName();
     dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
 
-    font.setFamily("Sans Serif");
-    font.setPointSize(7);
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
     dirDat = dirExe + QDir::separator() + "data";
@@ -296,8 +297,8 @@ void PreviSat::ChargementConfig()
             QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
 
-    font.setFamily("Marion");
-    font.setPointSize(11);
+    police.setFamily("Marion");
+    police.setPointSize(11);
 
 #else
     dirDat = dirExe + QDir::separator() + "data";
@@ -312,7 +313,7 @@ void PreviSat::ChargementConfig()
     dirMap = dirDat + QDir::separator() + "map";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
-    PreviSat::setFont(font);
+    PreviSat::setFont(police);
 
     chronometre = new QTimer(this);
 
@@ -463,17 +464,17 @@ void PreviSat::ChargementConfig()
     settings.setValue("affichage/flagIntensiteVision", false);
 
     // Affichage au demarrage
-    QStyle * const style = QApplication::style();
-    ui->actionOuvrir_fichier_TLE->setIcon(style->standardIcon(QStyle::SP_DirOpenIcon));
-    ui->actionEnregistrer->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+    QStyle * const styleIcones = QApplication::style();
+    ui->actionOuvrir_fichier_TLE->setIcon(styleIcones->standardIcon(QStyle::SP_DirOpenIcon));
+    ui->actionEnregistrer->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
 
-    ui->actionFermerVideo->setIcon(style->standardIcon(QStyle::SP_TitleBarCloseButton));
+    ui->actionFermerVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarCloseButton));
     ui->fermerVideo->setDefaultAction(ui->actionFermerVideo);
 
-    ui->actionAgrandirVideo->setIcon(style->standardIcon(QStyle::SP_TitleBarMaxButton));
+    ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarMaxButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
-    ui->actionMuetVideo->setIcon(style->standardIcon(QStyle::SP_MediaVolumeMuted));
+    ui->actionMuetVideo->setIcon(styleIcones->standardIcon(QStyle::SP_MediaVolumeMuted));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     ui->frameCtrlVideo->setVisible(false);
     ui->fluxVideo->raise();
@@ -612,52 +613,52 @@ void PreviSat::ChargementConfig()
     // Menus
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
-    ui->menuAjouter_selection_dans->setFont(font);
-    ui->menuContextuelCategorie->setFont(font);
-    ui->menuContextuelCompteRenduMaj->setFont(font);
-    ui->menuContextuelLieux->setFont(font);
-    ui->menuContextuelLieuxSelec->setFont(font);
-    ui->menuContextuelListe1->setFont(font);
-    ui->menuContextuelListes->setFont(font);
+    ui->menuAjouter_selection_dans->setFont(police);
+    ui->menuContextuelCategorie->setFont(police);
+    ui->menuContextuelCompteRenduMaj->setFont(police);
+    ui->menuContextuelLieux->setFont(police);
+    ui->menuContextuelLieuxSelec->setFont(police);
+    ui->menuContextuelListe1->setFont(police);
+    ui->menuContextuelListes->setFont(police);
 
     // Barre de statut
     messagesStatut = new QLabel("", this);
-    messagesStatut->setFont(font);
+    messagesStatut->setFont(police);
     messagesStatut->setFrameStyle(QFrame::NoFrame);
     messagesStatut->setIndent(3);
     messagesStatut->setMinimumSize(398, 0);
     messagesStatut->setToolTip(tr("Messages"));
 
     messagesStatut2 = new QLabel("", this);
-    messagesStatut2->setFont(font);
+    messagesStatut2->setFont(police);
     messagesStatut2->setFrameStyle(QFrame::NoFrame);
     messagesStatut2->setFixedWidth(140);
     messagesStatut2->setAlignment(Qt::AlignCenter);
     messagesStatut2->setVisible(false);
 
     messagesStatut3 = new QLabel("", this);
-    messagesStatut3->setFont(font);
+    messagesStatut3->setFont(police);
     messagesStatut3->setFrameStyle(QFrame::NoFrame);
     messagesStatut3->setFixedWidth(140);
     messagesStatut3->setAlignment(Qt::AlignCenter);
     messagesStatut3->setVisible(false);
 
     modeFonctionnement = new QLabel("", this);
-    modeFonctionnement->setFont(font);
+    modeFonctionnement->setFont(police);
     modeFonctionnement->setFrameStyle(QFrame::NoFrame);
     modeFonctionnement->setFixedWidth(110);
     modeFonctionnement->setAlignment(Qt::AlignCenter);
     modeFonctionnement->setToolTip(tr("Mode de fonctionnement"));
 
     stsDate = new QLabel("", this);
-    stsDate->setFont(font);
+    stsDate->setFont(police);
     stsDate->setFrameStyle(QFrame::NoFrame);
     stsDate->setFixedWidth(90);
     stsDate->setAlignment(Qt::AlignCenter);
     stsDate->setToolTip(tr("Date"));
 
     stsHeure = new QLabel("", this);
-    stsHeure->setFont(font);
+    stsHeure->setFont(police);
     stsHeure->setFrameStyle(QFrame::NoFrame);
     stsHeure->setFixedWidth(77);
     stsHeure->setAlignment(Qt::AlignCenter);
@@ -684,8 +685,8 @@ void PreviSat::ChargementConfig()
         ui->ajdfic->setCurrentIndex(0);
     }
 
-    QResizeEvent *event = NULL;
-    resizeEvent(event);
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     /* Retour */
     return;
@@ -1193,7 +1194,7 @@ void PreviSat::AffichageDonnees()
             // Temps ecoule depuis l'epoque
             chaine = tr("%1 jours");
             QBrush brush;
-            QPalette palette;
+            QPalette paletteFond;
             brush.setStyle(Qt::SolidPattern);
 
             // Indicateur de l'age du TLE
@@ -1207,8 +1208,8 @@ void PreviSat::AffichageDonnees()
                 brush.setColor(QColor("forestgreen"));
             }
 
-            palette.setBrush(QPalette::WindowText, brush);
-            ui->ageTLE->setPalette(palette);
+            paletteFond.setBrush(QPalette::WindowText, brush);
+            ui->ageTLE->setPalette(paletteFond);
             ui->ageTLE->setText(chaine.arg(satellites.at(0).getAgeTLE(), 0, 'f', 2));
 
             // Longitude/latitude/altitude
@@ -1815,7 +1816,7 @@ void PreviSat::AffichageCourbes() const
     QPen crayon(Qt::white);
 
     /* Corps de la methode */
-    QRect rect;
+    QRect rectangle;
     const QString nomMap = (ui->listeMap->currentIndex() == 0) ?
                 ":/resources/map.png" : ficMap.at(ui->listeMap->currentIndex()-1);
     scene->addPixmap(QPixmap(nomMap).scaled(ui->carte->size()));
@@ -1842,22 +1843,22 @@ void PreviSat::AffichageCourbes() const
             scene->addLine(0, hcarte2, lcarte, hcarte2, QPen(Qt::white));
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
-            QPen style(Qt::lightGray);
+            QPen stylo(Qt::lightGray);
             const int tablat[] = { hcarte / 6, hcarte / 3, (int) (hcarte / 1.5), (int) (hcarte / 1.2) };
             const int tablon[] = { lcarte / 12, lcarte / 6, (int) (lcarte * 0.25), lcarte / 3, (int) (lcarte / 2.4),
                                    (int) (7. * lcarte / 12.), (int) (lcarte / 1.5), (int) (lcarte * 0.75), (int) (lcarte / 1.2),
                                    (int) (11. * lcarte / 12.) };
 
             for(int j=0; j<4; j++)
-                scene->addLine(0, tablat[j], lcarte, tablat[j], style);
+                scene->addLine(0, tablat[j], lcarte, tablat[j], stylo);
 
             for(int j=0; j<10; j++)
-                scene->addLine(tablon[j], 0, tablon[j], hcarte, style);
+                scene->addLine(tablon[j], 0, tablon[j], hcarte, stylo);
 
             // Tropiques
-            style.setStyle(Qt::DashLine);
-            scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, style);
-            scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, style);
+            stylo.setStyle(Qt::DashLine);
+            scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
+            scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
 
             if (!ui->carte->isHidden()) {
                 ui->frameLat->setVisible(true);
@@ -1889,8 +1890,8 @@ void PreviSat::AffichageCourbes() const
         const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
 
         if (ui->affsoleil->isChecked()) {
-            rect = QRect(lsol - 7, bsol - 7, 15, 15);
-            scene->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
+            scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
         }
 
         // Zone d'ombre
@@ -2122,9 +2123,9 @@ void PreviSat::AffichageCourbes() const
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
-                rect = QRect(lsat - 3, bsat - 3, 6, 6);
+                rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
-                scene->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
+                scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
 
                 // Nom des satellites
                 if (ui->affnomsat->isChecked()) {
@@ -2150,12 +2151,12 @@ void PreviSat::AffichageCourbes() const
     } else {
 
         // Affichage de la carte du ciel
-        rect = QRect(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
-        scene3->setSceneRect(rect);
+        rectangle = QRect(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
+        scene3->setSceneRect(rectangle);
 
         scene3->setBackgroundBrush(QBrush(PreviSat::palette().background().color()));
         const QPen pen(bru, Qt::SolidPattern);
-        scene3->addEllipse(rect, pen, bru);
+        scene3->addEllipse(rectangle, pen, bru);
         const int lciel = qRound(0.5 * ui->ciel->width());
         const int hciel = qRound(0.5 * ui->ciel->height());
 
@@ -2231,8 +2232,8 @@ void PreviSat::AffichageCourbes() const
                 const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
                 const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
 
-                rect = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1., bstr-1., 2.5, 3.5);
-                scene3->addEllipse(rect, QPen(Qt::NoPen), bru2);
+                rectangle = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1., bstr-1., 2.5, 3.5);
+                scene3->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
 
                 // Nom des etoiles les plus brillantes
                 if (ui->affetoiles->isChecked()) {
@@ -2277,8 +2278,8 @@ void PreviSat::AffichageCourbes() const
                                                 cos(planetes.at(iplanete).getAzimut()));
 
                         const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
-                        rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                        scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
+                        rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
+                        scene3->addEllipse(rectangle, QPen(couleurPlanetes[iplanete]), bru3);
 
                         if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
                                 ui->affplanetes->checkState() == Qt::Checked) {
@@ -2353,8 +2354,8 @@ void PreviSat::AffichageCourbes() const
                 const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
                 const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
 
-                rect = QRect(lsol - 7, bsol - 7, 15, 15);
-                scene3->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+                rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
+                scene3->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
             }
         }
 
@@ -2373,8 +2374,8 @@ void PreviSat::AffichageCourbes() const
                                                 cos(planetes.at(iplanete).getAzimut()));
 
                         const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
-                        rect = QRect(lpla - 2, bpla - 2, 4, 4);
-                        scene3->addEllipse(rect, QPen(couleurPlanetes[iplanete]), bru3);
+                        rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
+                        scene3->addEllipse(rectangle, QPen(couleurPlanetes[iplanete]), bru3);
 
                         if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
                                 ui->affplanetes->checkState() == Qt::Checked) {
@@ -2450,9 +2451,9 @@ void PreviSat::AffichageCourbes() const
                 const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
                                         cos(satellites.at(isat).getAzimut()));
 
-                rect = QRect(lsat - 3, bsat - 3, 6, 6);
+                rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
-                scene3->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
+                scene3->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
 
@@ -2478,11 +2479,11 @@ void PreviSat::AffichageCourbes() const
         htr = true;
 
         // Dessin du fond du radar
-        rect = QRect(0, 0, 200, 200);
+        rectangle = QRect(0, 0, 200, 200);
 
         scene2->setBackgroundBrush(QBrush(ui->frameZone->palette().background().color()));
         const QPen pen(bru, Qt::SolidPattern);
-        scene2->addEllipse(rect, pen, bru);
+        scene2->addEllipse(rectangle, pen, bru);
 
         // Dessin des cercles concentriques
         scene2->addEllipse(33, 33, 133, 133, QPen(Qt::gray));
@@ -2523,8 +2524,8 @@ void PreviSat::AffichageCourbes() const
             const int lsol = qRound(100. - 100. * xf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
             const int bsol = qRound(100. - 100. * yf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
 
-            rect = QRect(lsol - 7, bsol - 7, 15, 15);
-            scene2->addEllipse(rect, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
+            scene2->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
         }
 
         if (ui->afflune->isChecked() && lune.isVisible()) {
@@ -2551,9 +2552,9 @@ void PreviSat::AffichageCourbes() const
                 const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
                                         cos(satellites.at(isat).getAzimut()));
 
-                rect = QRect(lsat - 3, bsat - 3, 6, 6);
+                rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
-                scene2->addEllipse(rect, noir, QBrush(col, Qt::SolidPattern));
+                scene2->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
 
@@ -2957,7 +2958,7 @@ void PreviSat::CalculAgeTLETransitISS() const
 
         const QString chaine = tr("%1 jours");
         QBrush brush;
-        QPalette palette;
+        QPalette paletteTLE;
         brush.setStyle(Qt::SolidPattern);
 
         // Indicateur de l'age du TLE
@@ -2971,8 +2972,8 @@ void PreviSat::CalculAgeTLETransitISS() const
             brush.setColor(QColor("forestgreen"));
         }
 
-        palette.setBrush(QPalette::WindowText, brush);
-        ui->ageTLETransit->setPalette(palette);
+        paletteTLE.setBrush(QPalette::WindowText, brush);
+        ui->ageTLETransit->setPalette(paletteTLE);
         ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
     }
 
@@ -4540,11 +4541,12 @@ void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
 /*
  * Fin de l'application
  */
-void PreviSat::closeEvent(QCloseEvent *)
+void PreviSat::closeEvent(QCloseEvent *evt)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
+    Q_UNUSED(evt);
 
     /* Corps de la methode */
     const QDir di = QDir(dirTmp);
@@ -4650,12 +4652,12 @@ void PreviSat::closeEvent(QCloseEvent *)
 /*
  * Redimensionnement de la fenetre
  */
-void PreviSat::resizeEvent(QResizeEvent *event)
+void PreviSat::resizeEvent(QResizeEvent *evt)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(event);
+    Q_UNUSED(evt);
 
     /* Corps de la methode */
     if (ui->frameCarte->height() >= PreviSat::height())
@@ -4737,7 +4739,7 @@ void PreviSat::resizeEvent(QResizeEvent *event)
 /*
  * Appui sur une touche
  */
-void PreviSat::keyPressEvent(QKeyEvent *event)
+void PreviSat::keyPressEvent(QKeyEvent *evt)
 {
     /* Declarations des variables locales */
 
@@ -4764,7 +4766,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
 #endif
 
     /* Corps de la methode */
-    if (event->key() == Qt::Key_F8) {
+    if (evt->key() == Qt::Key_F8) {
 
         // Capture de la fenetre
         chronometre->stop();
@@ -4784,7 +4786,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
         }
         chronometre->start();
 
-    } else if (event->key() == Qt::Key_F10) {
+    } else if (evt->key() == Qt::Key_F10) {
 
         // Bascule temps reel / mode manuel
         if (ui->tempsReel->isChecked()) {
@@ -4807,12 +4809,12 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
             }
         }
 
-    } else if (event->key() == etape_av || event->key() == etape_ap) {
+    } else if (evt->key() == etape_av || evt->key() == etape_ap) {
 
         // Etape precedente/suivante (mode manuel)
         if (!ui->modeManuel->isChecked())
             ui->modeManuel->setChecked(true);
-        const int sgn = (event->key() == etape_av) ? -1 : 1;
+        const int sgn = (evt->key() == etape_av) ? -1 : 1;
 
         const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.getJourJulien() +
                                                                 sgn * ui->pasManuel->currentText().toDouble() *
@@ -4829,7 +4831,7 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
             ui->dateHeure3->setFocus();
         }
     } else {
-        QMainWindow::keyPressEvent(event);
+        QMainWindow::keyPressEvent(evt);
     }
 
     /* Retour */
@@ -4840,27 +4842,27 @@ void PreviSat::keyPressEvent(QKeyEvent *event)
 /*
  * Clic avec la souris
  */
-void PreviSat::mousePressEvent(QMouseEvent *event)
+void PreviSat::mousePressEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    if (event->button() == Qt::LeftButton) {
+    if (evt->button() == Qt::LeftButton) {
 
         // Selection du satellite sur la carte du monde
         if (!ui->carte->isHidden()) {
 
-            const int x = event->x() - 6;
-            const int y = event->y() - 6;
+            const int xCur = evt->x() - 6;
+            const int yCur = evt->y() - 6;
             for (int isat=0; isat<nbSat; isat++) {
 
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
                 // Distance au carre du curseur au satellite
-                const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
+                const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
 
                 // Le curseur est au-dessus d'un satellite
                 if (dt <= 16) {
@@ -4894,10 +4896,10 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
         // Selection du satellite sur le radar
         if (!ui->radar->isHidden()) {
 
-            const int x = event->x() - ui->frameZone->x() - ui->radar->x() - 100;
-            const int y = event->y() - ui->frameListe->height() - ui->radar->y() - 100;
+            const int xCur = evt->x() - ui->frameZone->x() - ui->radar->x() - 100;
+            const int yCur = evt->y() - ui->frameListe->height() - ui->radar->y() - 100;
 
-            if (x * x + y * y < 10000 && htr) {
+            if (xCur * xCur + yCur * yCur < 10000 && htr) {
 
                 const int xf = (ui->affinvew->isChecked()) ? 1 : -1;
                 const int yf = (ui->affinvns->isChecked()) ? -1 : 1;
@@ -4910,7 +4912,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
                                             cos(satellites.at(isat).getAzimut()));
 
                     // Distance au carre du satellite au curseur
-                    const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
+                    const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
 
                     // Le curseur est au dessus d'un satellite
                     if (dt <= 16) {
@@ -4946,8 +4948,8 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 
             const int lciel = qRound(0.5 * ui->ciel->width());
             const int hciel = qRound(0.5 * ui->ciel->height());
-            const int x1 = event->x() - ui->ciel->x() - lciel;
-            const int y1 = event->y() - ui->ciel->y() - hciel;
+            const int x1 = evt->x() - ui->ciel->x() - lciel;
+            const int y1 = evt->y() - ui->ciel->y() - hciel;
 
             if (x1 * x1 + y1 * y1 < hciel * lciel) {
 
@@ -5015,7 +5017,7 @@ void PreviSat::mousePressEvent(QMouseEvent *event)
 /*
  * Deplacement de la souris sur les elements graphiques
  */
-void PreviSat::mouseMoveEvent(QMouseEvent *event)
+void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
 
@@ -5032,17 +5034,17 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
         // Deplacement de la souris sur la carte du monde
         if (!ui->carte->isHidden()) {
 
-            const int x = event->x() - 6;
-            const int y = event->y() - 6;
+            const int xCur = evt->x() - 6;
+            const int yCur = evt->y() - 6;
 
-            if (x > 0 && x < ui->carte->width() - 1 && y > 0 && y < ui->carte->height() - 1) {
+            if (xCur > 0 && xCur < ui->carte->width() - 1 && yCur > 0 && yCur < ui->carte->height() - 1) {
 
                 // Longitude
-                const double lo0 = 180. - x / DEG2PXHZ;
+                const double lo0 = 180. - xCur / DEG2PXHZ;
                 const QString ews = (lo0 < 0.) ? tr("Est") : tr("Ouest");
 
                 // Latitude
-                const double la0 = 90. - y / DEG2PXVT;
+                const double la0 = 90. - yCur / DEG2PXVT;
                 const QString nss = (la0 < 0.) ? tr("Sud") : tr("Nord");
 
                 const QString msg = " : %1° %2";
@@ -5057,7 +5059,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                     const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur au satellite
-                    const int dt = (x - lsat) * (x - lsat) + (y - bsat) * (y - bsat);
+                    const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
 
                     // Le curseur est au-dessus d'un satellite
                     if (dt <= 16 && !satellites.at(isat).isIeralt()) {
@@ -5079,7 +5081,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                     const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur au Soleil
-                    const int dt = (x - lsol) * (x - lsol) + (y - bsol) * (y - bsol);
+                    const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
 
                     // Le curseur est au-dessus du Soleil
                     if (dt <= 81) {
@@ -5098,7 +5100,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
                     const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur a la Lune
-                    const int dt = (x - llun) * (x - llun) + (y - blun) * (y - blun);
+                    const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
 
                     //Le curseur est au-dessus de la Lune
                     if (dt <= 81) {
@@ -5118,11 +5120,11 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
             const int x0 = ui->frameZone->x() + ui->radar->x();
             const int y0 = ui->frameListe->height() + ui->radar->y();
 
-            if (event->x() > x0 + 1 && event->x() < x0 + ui->radar->width() - 1 &&
-                    event->y() > y0 + 1 && event->y() < y0 + ui->radar->height() - 1) {
+            if (evt->x() > x0 + 1 && evt->x() < x0 + ui->radar->width() - 1 &&
+                    evt->y() > y0 + 1 && evt->y() < y0 + ui->radar->height() - 1) {
 
-                const int x1 = event->x() - x0 - 100;
-                const int y1 = event->y() - y0 - 100;
+                const int x1 = evt->x() - x0 - 100;
+                const int y1 = evt->y() - y0 - 100;
 
                 if (x1 * x1 + y1 * y1 < 10000 && htr) {
 
@@ -5211,8 +5213,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
 
             const int lciel = qRound(0.5 * ui->ciel->width());
             const int hciel = qRound(0.5 * ui->ciel->height());
-            const int x1 = event->x() - ui->ciel->x() - lciel;
-            const int y1 = event->y() - ui->ciel->y() - hciel;
+            const int x1 = evt->x() - ui->ciel->x() - lciel;
+            const int y1 = evt->y() - ui->ciel->y() - hciel;
 
             if (x1 * x1 + y1 * y1 < hciel * lciel && htr) {
 
@@ -5351,7 +5353,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *event)
 /*
  * Double-clic sur l'interface
  */
-void PreviSat::mouseDoubleClickEvent(QMouseEvent *event)
+void PreviSat::mouseDoubleClickEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
 
@@ -5369,19 +5371,19 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *event)
     }
 
     if (!ui->carte->isHidden()) {
-        const int x = event->x();
-        const int y = event->y();
-        if (x > 6 && x < 6 + ui->carte->width() && y > 6 && y < 6 + ui->carte->height())
+        const int xCur = evt->x();
+        const int yCur = evt->y();
+        if (xCur > 6 && xCur < 6 + ui->carte->width() && yCur > 6 && yCur < 6 + ui->carte->height())
             on_maximise_clicked();
     }
 
     if (!ui->ciel->isHidden()) {
-        const int x = event->x() - ui->ciel->x();
-        const int y = event->y() - ui->ciel->y();
+        const int xCur = evt->x() - ui->ciel->x();
+        const int yCur = evt->y() - ui->ciel->y();
         const int x0 = qRound(0.5 * ui->ciel->width());
         const int y0 = qRound(0.5 * ui->ciel->height());
 
-        if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= x0 * y0)
+        if ((xCur - x0) * (xCur - x0) + (yCur - y0) * (yCur - y0) <= x0 * y0)
             on_maximise_clicked();
     }
 
@@ -5424,8 +5426,8 @@ void PreviSat::on_maximise_clicked()
         ui->maximise->setToolTip(tr("Agrandir"));
     }
 
-    QResizeEvent *event = NULL;
-    resizeEvent(event);
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     /* Retour */
     return;
@@ -5463,8 +5465,8 @@ void PreviSat::on_affichageCiel_clicked()
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
 
-    QResizeEvent *event = NULL;
-    resizeEvent(event);
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     /* Retour */
     return;
@@ -5528,8 +5530,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
     CalculsAffichage();
 
-    QResizeEvent *event = NULL;
-    resizeEvent(event);
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     /* Retour */
     return;
@@ -5627,11 +5629,11 @@ void PreviSat::on_muetVideo_clicked()
 
     /* Initialisations */
     const bool muet = (bool) libvlc_audio_get_mute(_mp);
-    QStyle * const style = QApplication::style();
+    QStyle * const styleBouton = QApplication::style();
 
     /* Corps de la methode */
-    ui->actionMuetVideo->setIcon((muet) ? style->standardIcon(QStyle::SP_MediaVolumeMuted) :
-                                          style->standardIcon(QStyle::SP_MediaVolume));
+    ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted) :
+                                          styleBouton->standardIcon(QStyle::SP_MediaVolume));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     libvlc_audio_toggle_mute(_mp);
     libvlc_audio_toggle_mute(_mp2);
@@ -5785,8 +5787,8 @@ void PreviSat::on_actionImprimer_carte_activated()
 
         const QPixmap pixmap = QPixmap::grabWidget((ui->carte->isVisible()) ? ui->carte : ui->ciel);
         const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ? pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
-        const int x = (pixscl.width() == pixmap.width()) ? printer.pageRect().width() / 2 - pixscl.width() / 2 : 50;
-        p.drawPixmap(x, 50, pixscl);
+        const int xPrt = (pixscl.width() == pixmap.width()) ? printer.pageRect().width() / 2 - pixscl.width() / 2 : 50;
+        p.drawPixmap(xPrt, 50, pixscl);
         p.end();
     }
 
@@ -6381,12 +6383,12 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     return;
 }
 
-void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_liste1_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
 
     /* Corps de la methode */
     if (ui->liste1->currentRow() >= 0)
@@ -7185,12 +7187,12 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
     return;
 }
 
-void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
 
     /* Corps de la methode */
     ui->actionSupprimerCategorie->setVisible(ui->fichiersObs->currentRow() > 0);
@@ -7206,14 +7208,14 @@ void PreviSat::on_lieuxObs_currentRowChanged(int currentRow)
     AfficherLieuSelectionne(currentRow);
 }
 
-void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->lieuxObs->indexAt(pos).row() < 0) {
+    if (ui->lieuxObs->indexAt(position).row() < 0) {
         ui->actionRenommerLieu->setVisible(false);
         ui->actionModifier_coordonnees->setVisible(false);
         ui->actionSupprimerLieu->setVisible(false);
@@ -7238,9 +7240,9 @@ void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
     AfficherLieuSelectionne(currentRow);
 }
 
-void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
     if (ui->selecLieux->count() > 1)
         ui->menuContextuelLieuxSelec->exec(QCursor::pos());
 }
@@ -7943,9 +7945,9 @@ void PreviSat::on_gestionnaireMajTLE_clicked()
     return;
 }
 
-void PreviSat::on_compteRenduMaj_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_compteRenduMaj_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
     ui->menuContextuelCompteRenduMaj->exec(QCursor::pos());
 }
 
@@ -8243,9 +8245,9 @@ void PreviSat::on_effacerHeuresPrev_clicked()
     return;
 }
 
-void PreviSat::on_liste2_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_liste2_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
     if (ui->liste2->currentRow() >= 0)
         ui->menuContextuelListes->exec(QCursor::pos());
 }
@@ -8906,12 +8908,12 @@ void PreviSat::on_effacerHeuresEvt_clicked()
     return;
 }
 
-void PreviSat::on_liste3_customContextMenuRequested(const QPoint &pos)
+void PreviSat::on_liste3_customContextMenuRequested(const QPoint &position)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(pos);
+    Q_UNUSED(position);
 
     /* Corps de la methode */
     if (ui->liste3->currentRow() >= 0)

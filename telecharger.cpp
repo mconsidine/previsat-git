@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er novembre 2013
+ * >    29 novembre 2013
  *
  */
 
@@ -52,6 +52,7 @@
 #include <QSettings>
 #include <QTextStream>
 #include <QTimer>
+#pragma GCC diagnostic warning "-Wshadow"
 #include "telecharger.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -71,8 +72,8 @@ static QSettings settings("Astropedia", "previsat");
 static const QString httpDirList1 = settings.value("fichier/dirHttpList1").toString();
 static const QString httpDirList2 = settings.value("fichier/dirHttpList2").toString();
 
-Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
-    QMainWindow(parent),
+Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     ui(new Ui::Telecharger)
 {
     ui->setupUi(this);
@@ -80,27 +81,27 @@ Telecharger::Telecharger(const int idirHttp, QWidget *parent) :
     dirHttp = idirHttp;
     const QString dirExe = QCoreApplication::applicationDirPath();
 
-    QFont font;
+    QFont police;
 
 #if defined (Q_OS_WIN)
     const QString dirDat = dirExe + QDir::separator() + "data";
-    font.setFamily("MS Shell Dlg 2");
-    font.setPointSize(8);
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
     const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-    font.setFamily("Sans Serif");
-    font.setPointSize(7);
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
     const QString dirDat = dirExe + QDir::separator() + "data";
-    font.setFamily("Marion");
-    font.setPointSize(11);
+    police.setFamily("Marion");
+    police.setPointSize(11);
 #else
     const QString dirDat = dirExe + QDir::separator() + "data";
 #endif
 
-    Telecharger::setFont(font);
+    Telecharger::setFont(police);
 
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
