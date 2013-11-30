@@ -5642,7 +5642,7 @@ void PreviSat::on_fluxVideo_clicked()
                 afficherVideo->resize(640, 360);
                 const QString msg = "%1 %2 - ISS Live";
                 afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
-                const QShortcut * const shortcut = new QShortcut(QKeySequence("F4"), afficherVideo);
+                const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F4), afficherVideo);
                 connect(shortcut, SIGNAL(activated()), this, SLOT(CaptureVideo()));
 
 #if defined (Q_OS_WIN)
@@ -5652,10 +5652,10 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_agl(_mp, ui->frameFlux->winId());
                 libvlc_media_player_set_agl(_mp2, afficherVideo->winId());
 #elif defined (Q_OS_LINUX)
-                const int windid = ui->frameFlux->winId();
-                libvlc_media_player_set_xwindow(mp, windid);
+                int windid = ui->frameFlux->winId();
+                libvlc_media_player_set_xwindow(_mp, windid);
                 windid = afficherVideo->winId();
-                libvlc_media_player_set_xwindow(mp2, windid);
+                libvlc_media_player_set_xwindow(_mp2, windid);
 #else
 #endif
                 libvlc_media_player_play(_mp);
