@@ -33,14 +33,14 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    23 novembre 2013
+# >    30 novembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.3
 VERSION = 3.3.0.1
 ANNEES_DEV = 2005-2013
-VLC_DIR = ./vlc
-ZLIB_DIR = ./zlib
+VLC_DIR = $$PWD/vlc
+ZLIB_DIR = $$PWD/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
@@ -56,12 +56,18 @@ CONFIG(debug, debug|release){
 }
 
 win32 {
-    LIBS = zlibwapi.dll -L. -lvlc
+    LIBS += zlibwapi.dll -L. -lvlc
     RC_FILE = icone.rc
 }
 
+linux {
+    LIBS += -L. -lvlc
+}
+
 mac {
-    LIBS = /usr/lib/libz.dylib
+    LIBS += $$PWD/libz.dylib \
+            $$PWD/libvlc.dylib \
+            $$PWD/libvlccore.dylib
     ICON = resources/icone.icns
 }
 
@@ -72,7 +78,8 @@ ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
            APPVER_MAJ=\"$${VER_MAJSTR}\" \
            APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
-INCLUDEPATH += $$VLC_DIR $$ZLIB_DIR
+INCLUDEPATH += $$VLC_DIR \
+               $$ZLIB_DIR
 
 SOURCES += main.cpp\
     previsat.cpp \
