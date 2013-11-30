@@ -56,6 +56,7 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QSettings>
+#include <QShortcut>
 #include <QSound>
 #include <QTextStream>
 #include <QTimer>
@@ -240,6 +241,10 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
 PreviSat::~PreviSat()
 {
     on_fermerVideo_clicked();
+    if (afficherResultats != NULL)
+        afficherResultats->close();
+    if (afficherVideo != NULL)
+        afficherVideo->close();
     delete ui;
 }
 
@@ -4830,6 +4835,10 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             ui->dateHeure3->setDateTime(date.ToQDateTime(1));
             ui->dateHeure3->setFocus();
         }
+    } else if (evt->key() == Qt::Key_F4) {
+
+        CaptureVideo();
+
     } else {
         QMainWindow::keyPressEvent(evt);
     }
@@ -5391,6 +5400,41 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *evt)
     return;
 }
 
+void PreviSat::CaptureVideo()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->frameCtrlVideo->isVisible()) {
+
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+#else
+    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+#endif
+        const Date maintenant = Date(offsetUTC);
+        const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "ISS_live_" +
+                maintenant.ToShortDateAMJ(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
+                ui->tuc->text().remove(" ").remove(":");
+
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
+                                                         tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;" \
+                                                            "Tous les fichiers (*)"));
+
+        if (!fic.isEmpty()) {
+            libvlc_video_take_snapshot(_mp, 0, fic.toAscii(), ui->frameFlux->width(), ui->frameFlux->height());
+            const QFileInfo fi(fic);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+
 /*
  * Minimisation/maximisation de la carte du monde ou de la carte du ciel
  */
@@ -5594,10 +5638,12 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_media(_mp, _m);
                 libvlc_media_player_set_media(_mp2, _m);
 
-                afficherVideo = new QMainWindow;
+                afficherVideo = new QMainWindow(this);
                 afficherVideo->resize(640, 360);
                 const QString msg = "%1 %2 - ISS Live";
                 afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+                const QShortcut * const shortcut = new QShortcut(QKeySequence("F4"), afficherVideo);
+                connect(shortcut, SIGNAL(activated()), this, SLOT(CaptureVideo()));
 
 #if defined (Q_OS_WIN)
                 libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
@@ -5608,7 +5654,7 @@ void PreviSat::on_fluxVideo_clicked()
 #elif defined (Q_OS_LINUX)
                 const int windid = ui->frameFlux->winId();
                 libvlc_media_player_set_xwindow(mp, windid);
-                windid = afficherVideo->winId());
+                windid = afficherVideo->winId();
                 libvlc_media_player_set_xwindow(mp2, windid);
 #else
 #endif
@@ -8550,7 +8596,6 @@ void PreviSat::on_afficherPrev_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
     afficherResultats->show(ficRes);
-    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -8884,7 +8929,6 @@ void PreviSat::on_afficherIri_clicked()
     afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
     afficherResultats->show(ficRes);
     afficherResultats->resize(1210, afficherResultats->height());
-    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -9098,7 +9142,6 @@ void PreviSat::on_afficherEvt_clicked()
     afficherResultats = new Afficher;
     afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
     afficherResultats->show(ficRes);
-    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;
@@ -9362,7 +9405,6 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(ficRes);
     afficherResultats->resize(1210, afficherResultats->height());
-    afficherResultats->setAttribute(Qt::WA_DeleteOnClose);
 
     /* Retour */
     return;

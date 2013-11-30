@@ -47,7 +47,7 @@
 #include <QModelIndex>
 #include <QtNetwork>
 #include "vlc.h"
-
+#include <QMessageBox>
 namespace Ui {
 class PreviSat;
 }
@@ -132,6 +132,7 @@ private slots:
     void mousePressEvent(QMouseEvent *evt);
     void mouseMoveEvent(QMouseEvent *evt);
     void mouseDoubleClickEvent(QMouseEvent *evt);
+    void CaptureVideo();
 
     void on_maximise_clicked();
     void on_affichageCiel_clicked();
