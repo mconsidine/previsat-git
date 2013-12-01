@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -197,7 +197,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 }
 
                                 // Calcul de la date calendaire
-                                const double offset = Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
+                                const double offset = (conditions.getEcart()) ?
+                                            conditions.getOffset() :
+                                            Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
                                 const Date date2 = Date(date.getJourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite

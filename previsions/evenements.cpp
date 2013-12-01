@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -128,7 +128,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = { list1.at(1), list2.at(1), list3.at(1) };
                     const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") :
                                                                 QObject::tr("Noeud Descendant - PSO = 180°");
-                    CalculEvt(xtab, ytab, 0., typeNoeud, sat);
+                    CalculEvt(xtab, ytab, 0., typeNoeud, conditions, sat);
                     j++;
                 }
             }
@@ -148,7 +148,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                             list3.at(4) - list3.at(5) - list3.at(3) };
 
                     const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
-                    CalculEvt(xtab, ytab1, 0., typeOmbre, sat);
+                    CalculEvt(xtab, ytab1, 0., typeOmbre, conditions, sat);
 
                     // Calcul du passage lumiere/penombre
                     const double ytab2[] = { list1.at(4) + list1.at(5) - list1.at(3),
@@ -157,7 +157,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
                     const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ?
                                 QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
-                    CalculEvt(xtab, ytab2, 0., typePenombre, sat);
+                    CalculEvt(xtab, ytab2, 0., typePenombre, conditions, sat);
                     k++;
                 }
             }
@@ -217,7 +217,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double ytab[] = { list1.at(6), list2.at(6), list3.at(6) };
                     const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Transition jour -> nuit") :
                                                                QObject::tr("Transition nuit -> jour");
-                    CalculEvt(xtab, ytab, 0., typeTrans, sat);
+                    CalculEvt(xtab, ytab, 0., typeTrans, conditions, sat);
                     l++;
                 }
             }
@@ -235,7 +235,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         apassPso = true;
                         const double ytab[] = { list1.at(7), list2.at(7), list3.at(7) };
                         const QString typePso = QObject::tr("Passage à PSO =") + " " + QString::number(noeud * RAD2DEG) + "°";
-                        CalculEvt(xtab, ytab, noeud, typePso, sat);
+                        CalculEvt(xtab, ytab, noeud, typePso, conditions, sat);
                         m++;
                     }
                 }
@@ -356,7 +356,8 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
     return;
 }
 
-void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, Satellite &sat)
+void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, const Conditions &conditions,
+                           Satellite &sat)
 {
     /* Declarations des variables locales */
 
@@ -365,7 +366,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
 
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);
-    const double offset = Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
+    const double offset = (conditions.getEcart()) ? conditions.getOffset() : Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
     const Date date = Date(datp + offset + EPS_DATES, offset);
 
     // Calcul de la position du satellite pour la date calculee

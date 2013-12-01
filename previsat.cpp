@@ -8443,8 +8443,9 @@ void PreviSat::on_calculsPrev_clicked()
         ui->afficherPrev->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
+        const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialePrev->date().year(), ui->dateInitialePrev->date().month(), ui->dateInitialePrev->date().day(),
@@ -8551,7 +8552,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecl, ext, crep, haut, pas0, jj1, jj2, mag, nomfic, ficRes, unite, listeSat);
+        const Conditions conditions(ecart, ecl, ext, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -8746,8 +8747,9 @@ void PreviSat::on_calculsIri_clicked()
         ui->afficherIri->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeIri->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleIri->dateTime());
+        const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
@@ -8882,7 +8884,7 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ext, crep, haut, nbl, chr, ang0, jj1, jj2, mgn1, mgn2, fi.absoluteFilePath(),
+        const Conditions conditions(ecart, ext, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
                                     ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
@@ -9023,8 +9025,9 @@ void PreviSat::on_calculsEvt_clicked()
         ui->afficherEvt->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeEvt->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleEvt->dateTime());
+        const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
@@ -9097,8 +9100,7 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, jj1, jj2, nomfic, ficRes, unite,
-                                    listeSat);
+        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, jj1, jj2, offset1, nomfic, ficRes, unite, listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -9269,14 +9271,14 @@ void PreviSat::on_calculsTransit_clicked()
         ui->afficherTransit->setVisible(false);
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(ui->dateInitialeTransit->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(ui->dateFinaleTransit->dateTime());
+        const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeTransit->date().year(), ui->dateInitialeTransit->date().month(),
                          ui->dateInitialeTransit->date().day(), ui->dateInitialeTransit->time().hour(),
-                         ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(),
-                         offset1);
+                         ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(), offset1);
 
         // Jour julien initial
         double jj1 = date1.getJourJulien() - offset1;
@@ -9284,8 +9286,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Date et heure finales
         const Date date2(ui->dateFinaleTransit->date().year(), ui->dateFinaleTransit->date().month(),
                          ui->dateFinaleTransit->date().day(), ui->dateFinaleTransit->time().hour(),
-                         ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(),
-                         offset2);
+                         ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(), offset2);
 
         // Jour julien final
         double jj2 = date2.getJourJulien() - offset2;
@@ -9357,7 +9358,7 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        const Conditions conditions(calcLune, calcSol, haut, ageTLE, elong, jj1, jj2, fi.absoluteFilePath(), ficRes,
+        const Conditions conditions(calcLune, calcSol, ecart, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
                                     unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 

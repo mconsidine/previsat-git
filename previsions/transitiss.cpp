@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -255,7 +255,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Ecriture du resultat
 
                                 // Date calendaire
-                                const double offset = Date::CalculOffsetUTC(Date(dates[j].getJourJulienUTC(), 0.).ToQDateTime(1));
+                                const double offset = (conditions.getEcart()) ?
+                                            conditions.getOffset() :
+                                            Date::CalculOffsetUTC(Date(dates[j].getJourJulienUTC(), 0.).ToQDateTime(1));
                                 const Date date3 = Date(dates[j].getJourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
