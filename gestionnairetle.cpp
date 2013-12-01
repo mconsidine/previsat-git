@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -85,7 +85,7 @@ GestionnaireTLE::GestionnaireTLE(QWidget *fenetreParent) :
 #else
 #endif
 
-    GestionnaireTLE::setFont(police);
+    setFont(police);
     load();
 }
 

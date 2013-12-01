@@ -39,8 +39,8 @@
 VER_MAJ = 3.3
 VERSION = 3.3.0.1
 ANNEES_DEV = 2005-2013
-VLC_DIR = $$PWD/vlc
-ZLIB_DIR = $$PWD/zlib
+VLC_DIR = $$PWD/inc/vlc
+ZLIB_DIR = $$PWD/inc/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
@@ -60,14 +60,14 @@ win32 {
     RC_FILE = icone.rc
 }
 
-linux {
+linux-g++ {
     LIBS += -L. -lvlc
 }
 
 mac {
-    LIBS += $$PWD/libz.dylib \
-            $$PWD/libvlc.dylib \
-            $$PWD/libvlccore.dylib
+    LIBS += $$PWD/lib/libz.dylib \
+            $$PWD/lib/libvlc.dylib \
+            $$PWD/lib/libvlccore.dylib
     ICON = resources/icone.icns
 }
 

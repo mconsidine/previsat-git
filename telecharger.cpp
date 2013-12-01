@@ -36,13 +36,12 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
-#pragma GCC diagnostic ignored "-Wmissing-noreturn"
 #endif
 #include <QDesktopServices>
 #include <QDir>
@@ -101,7 +100,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     const QString dirDat = dirExe + QDir::separator() + "data";
 #endif
 
-    Telecharger::setFont(police);
+    setFont(police);
 
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
@@ -168,7 +167,7 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
 
     /* Corps de la methode */
     const QString msg = tr("Erreur lors du téléchargement du fichier :\n%1");
-    throw PreviSatException(msg.arg(rep->errorString()), WARNING);
+    Messages::Afficher(msg.arg(rep->errorString()), WARNING);
 
     /* Retour */
     return;
