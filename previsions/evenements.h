@@ -33,7 +33,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -77,7 +77,8 @@ private:
 
     /* Methodes privees */
     static void CalculEphemerides(const Conditions &conditions);
-    static void CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, Satellite &sat);
+    static void CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, const Conditions &conditions,
+                          Satellite &sat);
 
 };
 

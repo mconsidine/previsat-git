@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -825,7 +825,8 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     /* Corps de la methode */
 
     // Date calendaire
-    const double offset = Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
+    const double offset = (conditions.getEcart()) ? conditions.getOffset() :
+                                                    Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
     const Date date3 = Date(date.getJourJulienUTC() + offset + EPS_DATES, 0., true);
 
     // Coordonnees topocentriques
