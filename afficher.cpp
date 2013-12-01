@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -68,23 +68,23 @@ Afficher::Afficher(QWidget *fenetreParent) :
 
     const int xmax = QApplication::desktop()->availableGeometry().width();
     const int ymax = QApplication::desktop()->availableGeometry().height();
-    int xAff = Afficher::width();
-    int yAff = Afficher::height();
+    int xAff = width();
+    int yAff = height();
 
-    if (Afficher::x() < 0 || Afficher::y() < 0)
-        Afficher::move(0, 0);
+    if (x() < 0 || y() < 0)
+        move(0, 0);
 
     // Redimensionnement de la fenetre si necessaire
     if (xAff > xmax)
         xAff = xmax;
     if (yAff > ymax)
         yAff = ymax;
-    if (xAff < Afficher::width() || yAff < Afficher::height()) {
-        if (xmax < Afficher::minimumWidth())
-            Afficher::setMinimumWidth(xmax);
-        if (ymax < Afficher::minimumHeight())
-            Afficher::setMinimumHeight(ymax);
-        Afficher::resize(xAff, yAff);
+    if (xAff < width() || yAff < height()) {
+        if (xmax < minimumWidth())
+            setMinimumWidth(xmax);
+        if (ymax < minimumHeight())
+            setMinimumHeight(ymax);
+        resize(xAff, yAff);
     }
 
     QFont police;
@@ -103,7 +103,7 @@ Afficher::Afficher(QWidget *fenetreParent) :
 #else
 #endif
 
-    Afficher::setFont(police);
+    setFont(police);
     QStyle * const styleBouton = QApplication::style();
     ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
 
@@ -173,7 +173,7 @@ void Afficher::closeEvent(QCloseEvent *evt)
 void Afficher::resizeEvent(QResizeEvent *evt)
 {
     Q_UNUSED(evt);
-    ui->fichier->setGeometry(0, 0, Afficher::width(), Afficher::height() - ui->barreOutils->height());
+    ui->fichier->setGeometry(0, 0, width(), height() - ui->barreOutils->height());
 }
 
 void Afficher::on_actionEnregistrer_activated()

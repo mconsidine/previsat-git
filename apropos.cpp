@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    1er decembre 2013
  *
  */
 
@@ -73,13 +73,13 @@ Apropos::Apropos(QWidget *fenetreParent) :
 #else
 #endif
 
-    Apropos::setFont(police);
+    setFont(police);
     const QString titre = tr("À propos de %1 %2");
     setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(ui->imagePreviSat->rect());
-    scene->setBackgroundBrush(QBrush(Apropos::palette().background().color()));
+    scene->setBackgroundBrush(QBrush(palette().background().color()));
     scene->addPixmap(QPixmap(":/resources/apropos.png").scaled(ui->imagePreviSat->size()));
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
