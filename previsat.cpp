@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    4 decembre 2013
  *
  */
 
@@ -451,6 +451,7 @@ void PreviSat::ChargementConfig()
     ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
     ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
     ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+    ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
 
     if (settings.value("affichage/utc", false).toBool())
         ui->utc->setChecked(true);
@@ -689,6 +690,8 @@ void PreviSat::ChargementConfig()
         ui->fichiersObs->setCurrentRow(0);
         ui->ajdfic->setCurrentIndex(0);
     }
+
+    ui->frameCarte->resize(ui->frameCarte->minimumSize());
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -4602,6 +4605,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
     settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
+    settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
@@ -4672,10 +4676,18 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
             ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
         ui->frameCarte->resize(ui->frameCarteListe->width() - ui->frameListe->width() - 5, ui->frameCarte->height());
 
-    ui->carte->resize(ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
+    if (ui->proportionsCarte->isChecked()) {
+        const int href = 2 * (ui->frameCarte->height() - 26);
+        const int lref = ui->frameCarte->width() - 50;
+        const int lc = qMin(href, lref);
+        const int hc = lc * 0.5;
+        ui->carte->setGeometry(0.5 * (ui->frameCarte->width() - lc) - 19, 6, lc, hc);
+    } else {
+        ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
+    }
     ui->frameCarte2->setGeometry(ui->carte->geometry());
-    ui->maximise->move(11 + ui->carte->width(), 5);
-    ui->affichageCiel->move(11 + ui->carte->width(), 32);
+    ui->maximise->move(5 + ui->carte->x() + ui->carte->width(), 5);
+    ui->affichageCiel->move(5 + ui->carte->x() + ui->carte->width(), 32);
 
     const int hcarte = ui->carte->height() - 3;
     const int lcarte = ui->carte->width() - 3;
@@ -4692,7 +4704,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->NN->move(5, hcarte / 2.4 - 1);
     ui->N30->move(5, hcarte / 3. - 1);
     ui->N60->move(5, hcarte / 6. - 1);
-    ui->frameLat->setGeometry(7 + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
+    ui->frameLat->setGeometry(1 + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
     ui->W150->move(lcarte / 12. - 8, 0);
     ui->W120->move(lcarte / 6. - 8, 0);
@@ -4707,7 +4719,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->E90->move(lcarte * 0.75 - 5, 0);
     ui->E120->move(lcarte / 1.2 - 8, 0);
     ui->E150->move(lcarte * 11. / 12. - 8, 0);
-    ui->frameLon->setGeometry(6, 7 + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
+    ui->frameLon->setGeometry(ui->carte->x(), 1 + ui->carte->y() + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
     const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() * 0.5 - 411;
     ui->onglets->move(xOng, 0);
