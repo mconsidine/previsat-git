@@ -489,6 +489,9 @@ void PreviSat::ChargementConfig()
     ui->frameCtrlVideo->setVisible(false);
     ui->fluxVideo->raise();
 
+    ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
+    ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
+
     ui->ciel->setVisible(false);
     ui->nord->setVisible(false);
     ui->sud->setVisible(false);
