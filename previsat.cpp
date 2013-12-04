@@ -240,11 +240,15 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
 
 PreviSat::~PreviSat()
 {
-    on_fermerVideo_clicked();
+    if (_isPlaying)
+        on_fermerVideo_clicked();
+
     if (afficherResultats != NULL)
         afficherResultats->close();
+
     if (afficherVideo != NULL)
         afficherVideo->close();
+
     delete ui;
 }
 
@@ -5569,7 +5573,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
     } else {
 
-        if (_isPlaying)
+        if (_isPlaying || _mp != NULL)
             on_fermerVideo_clicked();
 
         ui->fluxVideo->setVisible(false);
@@ -5710,8 +5714,6 @@ void PreviSat::on_agrandirVideo_clicked()
 
 void PreviSat::on_fermerVideo_clicked()
 {
-    if (_isPlaying) {
-
         // Arret de la lecture
         libvlc_media_player_stop(_mp);
         libvlc_media_player_stop(_mp2);
@@ -5730,7 +5732,6 @@ void PreviSat::on_fermerVideo_clicked()
         _mp = NULL;
         _mp2 = NULL;
         _vlcinstance = NULL;
-    }
 }
 
 
