@@ -11242,6 +11242,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>271</width>
+            <height>220</height>
+           </size>
+          </property>
           <property name="font">
            <font/>
           </property>
