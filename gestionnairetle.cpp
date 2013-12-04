@@ -96,7 +96,7 @@ GestionnaireTLE::~GestionnaireTLE()
 
 void GestionnaireTLE::closeEvent(QCloseEvent *evt)
 {
-    Q_UNUSED(evt);
+    Q_UNUSED(evt)
     on_fermer_clicked();
 }
 
@@ -460,7 +460,7 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(checked);
+    Q_UNUSED(checked)
 
     /* Corps de la methode */
     if (init) {

@@ -210,6 +210,7 @@ private slots:
     void on_intensiteVision_valueChanged(int value);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
+    void on_proportionsCarte_stateChanged(int arg1);
     void on_typeParametres_currentIndexChanged(int index);
     void on_heureLegale_toggled(bool checked);
     void on_utc_toggled(bool checked);

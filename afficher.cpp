@@ -166,13 +166,13 @@ void Afficher::show(const QString &fic)
 
 void Afficher::closeEvent(QCloseEvent *evt)
 {
-    Q_UNUSED(evt);
+    Q_UNUSED(evt)
     ui->fichier->clear();
 }
 
 void Afficher::resizeEvent(QResizeEvent *evt)
 {
-    Q_UNUSED(evt);
+    Q_UNUSED(evt)
     ui->fichier->setGeometry(0, 0, width(), height() - ui->barreOutils->height());
 }
 
