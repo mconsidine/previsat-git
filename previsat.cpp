@@ -4561,7 +4561,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(evt);
+    Q_UNUSED(evt)
 
     /* Corps de la methode */
     const QDir di = QDir(dirTmp);
@@ -4673,7 +4673,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(evt);
+    Q_UNUSED(evt)
 
     /* Corps de la methode */
     if (ui->frameCarte->height() >= height())
@@ -5991,7 +5991,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
 
 void PreviSat::on_actionFichier_d_aide_activated(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     on_directHelp_clicked();
 }
 
@@ -6136,7 +6136,7 @@ void PreviSat::on_actionA_propos_activated(int arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     Apropos * const apropos = new Apropos;
@@ -6358,7 +6358,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(index);
+    Q_UNUSED(index)
     QFile fi(nomfic);
     if (!fi.exists()) {
         const QString msg = tr("Le fichier %1 n'existe pas");
@@ -6453,7 +6453,7 @@ void PreviSat::on_liste1_customContextMenuRequested(const QPoint &position)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(position);
+    Q_UNUSED(position)
 
     /* Corps de la methode */
     if (ui->liste1->currentRow() >= 0)
@@ -6745,13 +6745,13 @@ void PreviSat::on_backward_clicked()
  */
 void PreviSat::on_affsoleil_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affnuit_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
@@ -6773,91 +6773,91 @@ void PreviSat::on_intensiteOmbre_valueChanged(int value)
 
 void PreviSat::on_affgrille_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_afflune_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affphaselune_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_rotationLune_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affnomsat_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affvisib_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_afftraj_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_nombreTrajectoires_valueChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affradar_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affinvns_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affinvew_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affnomlieu_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affnotif_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_calJulien_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affcoord_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     if (messagesStatut2 != NULL)
         messagesStatut2->setVisible(false);
     if (messagesStatut2 != NULL)
@@ -6867,37 +6867,37 @@ void PreviSat::on_affcoord_stateChanged(int arg1)
 
 void PreviSat::on_extinctionAtmospherique_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affetoiles_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affconst_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_magnitudeEtoiles_valueChanged(double arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affSAA_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
 void PreviSat::on_affplanetes_stateChanged(int arg1)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
     ModificationOption();
 }
 
@@ -6919,19 +6919,26 @@ void PreviSat::on_intensiteVision_valueChanged(int value)
 
 void PreviSat::on_unitesKm_toggled(bool checked)
 {
-    Q_UNUSED(checked);
+    Q_UNUSED(checked)
     ModificationOption();
 }
 
 void PreviSat::on_unitesMi_toggled(bool checked)
 {
-    Q_UNUSED(checked);
+    Q_UNUSED(checked)
     ModificationOption();
+}
+
+void PreviSat::on_proportionsCarte_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 }
 
 void PreviSat::on_typeParametres_currentIndexChanged(int index)
 {
-    Q_UNUSED(index);
+    Q_UNUSED(index)
     if (ui->typeParametres->isVisible())
         AffichageElementsOsculateurs();
 }
@@ -7024,7 +7031,7 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     if (ui->utcAuto->isChecked()) {
@@ -7086,7 +7093,7 @@ void PreviSat::on_actionCreer_une_categorie_activated(int arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     ui->nouvelleCategorie->setVisible(true);
@@ -7104,7 +7111,7 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
@@ -7134,7 +7141,7 @@ void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1);
+    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     Telecharger * const telecharger = new Telecharger(1);
@@ -7257,7 +7264,7 @@ void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &position)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(position);
+    Q_UNUSED(position)
 
     /* Corps de la methode */
     ui->actionSupprimerCategorie->setVisible(ui->fichiersObs->currentRow() > 0);
@@ -7307,7 +7314,7 @@ void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
 
 void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(position);
+    Q_UNUSED(position)
     if (ui->selecLieux->count() > 1)
         ui->menuContextuelLieuxSelec->exec(QCursor::pos());
 }
@@ -7813,7 +7820,7 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
  */
 void PreviSat::on_groupeTLE_currentIndexChanged(int index)
 {
-    Q_UNUSED(index);
+    Q_UNUSED(index)
     ui->majMaintenant->setFocus();
 }
 
@@ -8012,7 +8019,7 @@ void PreviSat::on_gestionnaireMajTLE_clicked()
 
 void PreviSat::on_compteRenduMaj_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(position);
+    Q_UNUSED(position)
     ui->menuContextuelCompteRenduMaj->exec(QCursor::pos());
 }
 
@@ -8312,7 +8319,7 @@ void PreviSat::on_effacerHeuresPrev_clicked()
 
 void PreviSat::on_liste2_customContextMenuRequested(const QPoint &position)
 {
-    Q_UNUSED(position);
+    Q_UNUSED(position)
     if (ui->liste2->currentRow() >= 0)
         ui->menuContextuelListes->exec(QCursor::pos());
 }
@@ -8978,7 +8985,7 @@ void PreviSat::on_liste3_customContextMenuRequested(const QPoint &position)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(position);
+    Q_UNUSED(position)
 
     /* Corps de la methode */
     if (ui->liste3->currentRow() >= 0)
