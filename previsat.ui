@@ -81,7 +81,7 @@
          <property name="minimumSize">
           <size>
            <width>835</width>
-           <height>0</height>
+           <height>426</height>
           </size>
          </property>
          <property name="font">
@@ -7594,9 +7594,6 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="text">
-               <string notr="true">&lt;</string>
-              </property>
               <property name="flat">
                <bool>true</bool>
               </property>
@@ -7706,9 +7703,6 @@
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
-              </property>
-              <property name="text">
-               <string notr="true">&gt;</string>
               </property>
               <property name="flat">
                <bool>true</bool>
@@ -8196,8 +8190,8 @@
                <widget class="QCheckBox" name="extinctionAtmospherique">
                 <property name="geometry">
                  <rect>
-                  <x>490</x>
-                  <y>124</y>
+                  <x>240</x>
+                  <y>308</y>
                   <width>251</width>
                   <height>17</height>
                  </rect>
@@ -8721,6 +8715,22 @@
                 </property>
                 <property name="text">
                  <string>Vérification des mises à jour au démarrage</string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="proportionsCarte">
+                <property name="geometry">
+                 <rect>
+                  <x>490</x>
+                  <y>124</y>
+                  <width>251</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font/>
+                </property>
+                <property name="text">
+                 <string>Garder les proportions de la carte du monde</string>
                 </property>
                </widget>
               </widget>
