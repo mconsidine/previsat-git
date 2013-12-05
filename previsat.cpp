@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2013
+ * >    5 decembre 2013
  *
  */
 
@@ -698,11 +698,6 @@ void PreviSat::ChargementConfig()
         ui->ajdfic->setCurrentIndex(0);
     }
 
-    ui->frameCarte->resize(ui->frameCarte->minimumSize());
-
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
-
     /* Retour */
     return;
 }
@@ -788,6 +783,7 @@ void PreviSat::ChargementTLE()
 
             // Recuperation des donnees satellites
             Satellite::LectureDonnees(listeTLE, tles, satellites);
+            Satellite::initCalcul = false;
 
         } else {
             nbSat = 0;
@@ -866,11 +862,13 @@ void PreviSat::DemarrageApplication()
     /* Initialisations */
     const int xmax = QApplication::desktop()->availableGeometry().width();
     const int ymax = QApplication::desktop()->availableGeometry().height() - messagesStatut->height() - 10;
-    int xPrevi = width();
-    int yPrevi = height();
+    int xPrevi = settings.value("affichage/largeur", 1068).toInt();
+    int yPrevi = settings.value("affichage/hauteur", 690).toInt();
 
     /* Corps de la methode */
     move(0, 0);
+    ui->frameCarte->resize(ui->frameCarte->minimumSize());
+    resize(xPrevi, yPrevi);
 
     // Redimensionnement de la fenetre si necessaire
     if (xPrevi > xmax)
@@ -888,6 +886,11 @@ void PreviSat::DemarrageApplication()
         scrollArea->setWidgetResizable(true);
         setCentralWidget(scrollArea);
     }
+
+    ui->frameCarteListe->resize(size());
+
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
@@ -4613,6 +4616,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
+    settings.setValue("affichage/largeur", width());
+    settings.setValue("affichage/hauteur", height());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
@@ -5609,7 +5614,6 @@ void PreviSat::on_fluxVideo_clicked()
     QString video;
 
     /* Initialisations */
-    resize(qMax(width(), qMin(1188, QApplication::desktop()->availableGeometry().width())), height());
 
     /* Corps de la methode */
     try {
