@@ -5448,7 +5448,10 @@ void PreviSat::CaptureVideo()
                                                             "Tous les fichiers (*)"));
 
         if (!fic.isEmpty()) {
-            libvlc_video_take_snapshot(_mp, 0, fic.toAscii(), ui->frameFlux->width(), ui->frameFlux->height());
+            if (afficherVideo->isVisible())
+                libvlc_video_take_snapshot(_mp2, 0, fic.toAscii(), afficherVideo->width(), afficherVideo->height());
+            else
+                libvlc_video_take_snapshot(_mp, 0, fic.toAscii(), ui->frameFlux->width(), ui->frameFlux->height());
             const QFileInfo fi(fic);
             settings.setValue("fichier/sauvegarde", fi.absolutePath());
         }
@@ -5649,7 +5652,8 @@ void PreviSat::on_fluxVideo_clicked()
                 ui->lbl_video->raise();
 
                 // Preparation de la commande VLC
-                const char * const vlc_args[] = { "-I", "-qqq", "--no-file-logging", "--no-video-title", "dummy", "--ignore-config" };
+                const char * const vlc_args[] = { "dummy", "-I", "--ignore-config", "-qqq", "--no-file-logging", "--no-osd",
+                                                  "--no-snapshot-preview", "--no-video-title" };
 
                 // Creation d'une nouvelle instance libvlc
                 _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
