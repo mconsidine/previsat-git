@@ -317,7 +317,7 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
     const Vecteur3D rho = soleil.getPosition() - _position;
     _rayonApparentSoleil = asin(RAYON_SOLAIRE / rho.Norme());
 
-    _elongation = soleil.getPosition().Angle((-_position));
+    _elongation = soleil.getPosition().Angle(-_position);
 
     // Test si le satellite est en phase d'eclipse
     _eclipse = (_rayonApparentTerre > _rayonApparentSoleil
@@ -1299,7 +1299,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
         sat.CalculSatelliteEclipse(soleil);
 
         QVector<double> list;
-        list << lon << lat << ((sat._eclipse) ? 1. : 0.);
+        list << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC();
         _traceAuSol.append(list);
     }
 
