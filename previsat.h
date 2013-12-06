@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    7 decembre 2013
  *
  */
 
@@ -90,6 +90,7 @@ private:
 
     // Calculs
     bool CalculAOS() const;
+    void CalculDN() const;
     void CalculAgeTLETransitISS() const;
     void EnchainementCalculs() const;
     void MajWebTLE();

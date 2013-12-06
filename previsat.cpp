@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 decembre 2013
+ * >    7 decembre 2013
  *
  */
 
@@ -109,7 +109,9 @@ static bool info;
 static bool notif;
 static bool old;
 static bool acalcAOS;
+static bool acalcDN;
 static bool isAOS;
+static bool isEcl;
 static int ind;
 static int idxf;
 static int idxfi;
@@ -139,6 +141,7 @@ static Date dateCourante;
 static double offsetUTC;
 static QDateTime tim;
 static Date dateAOS;
+static Date dateEcl;
 
 // Lieux d'observation
 static int selec;
@@ -268,6 +271,7 @@ void PreviSat::ChargementConfig()
     _isPlaying = false;
     info = true;
     acalcAOS = true;
+    acalcDN = true;
     htSat = 0.;
     old = false;
     selec = -1;
@@ -591,7 +595,6 @@ void PreviSat::ChargementConfig()
     ui->actionModifier_coordonnees->setIcon(QIcon(":/resources/editer.png"));
     ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
 
-
     ui->numeroNORADCreerTLE->setCurrentIndex(0);
     ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
     ui->excentriciteCreerTLE->setCurrentIndex(0);
@@ -898,6 +901,9 @@ void PreviSat::DemarrageApplication()
     Constellation::CalculConstellations(observateurs.at(0), constellations);
     LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
+    // Affichage du Wall Command Center
+    ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
+    isEcl = satellites.at(0).isEclipse();
 
     // Demarrage du temps reel
     chronometre->setInterval(200);
@@ -1377,6 +1383,37 @@ void PreviSat::AffichageDonnees()
                 ui->lbl_prochainAOS->setVisible(false);
                 ui->dateAOS->setVisible(false);
             }
+
+            // Calcul de la prochaine transition J/N
+            if (!(isEcl && satellites.at(0).isEclipse()))
+                acalcDN = true;
+
+            if (acalcDN) {
+                CalculDN();
+                isEcl = satellites.at(0).isEclipse();
+            }
+
+            chaine = "D/N : %1";
+            const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
+            const Date delaiEcl = Date(dateEcl.getJourJulienUTC() - dateCrt.getJourJulienUTC() - 0.5, 0.);
+            const QString cDelai = delaiEcl.ToShortDate(COURT).mid(12, 7);
+            ui->nextTransitionISS->setText(chaine.arg(cDelai));
+        }
+
+        /*
+         * Donnees ISS sur le Wall Command Center
+         */
+        if (ui->frameCoordISS->isVisible()) {
+            chaine = "LAT = %1";
+            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "ALT = %1";
+            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() / 1.852, 0, 'f', 1));
+            chaine = "LON = %1";
+            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "INC = %1";
+            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+            chaine = "ORB = %1";
+            ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
         }
 
 
@@ -2957,6 +2994,70 @@ bool PreviSat::CalculAOS() const
     return (res);
 }
 
+void PreviSat::CalculDN() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    // Parcours du tableau "trace au sol"
+    int i = 0;
+    const double dn = (satellites.at(0).isEclipse()) ? 1. : 0.;
+    QListIterator<QVector<double> > it(satellites.at(0).getTraceAuSol());
+    while (it.hasNext()) {
+        const QVector<double> list = it.next();
+        if (list.at(3) >= dateCourante.getJourJulienUTC()) {
+            if (fabs(dn - list.at(2)) > EPSDBL100) {
+                it.toBack();
+            } else {
+                i++;
+            }
+        }
+    }
+
+    /* Corps de la methode */
+    double ecl[3], jjm[3];
+    Satellite satellite(satellites.at(0).getTle());
+    double t_ecl = satellites.at(0).getTraceAuSol().at(i).at(3);
+    double periode = t_ecl - satellites.at(0).getTraceAuSol().at(i-1).at(3);
+
+    bool afin = false;
+    while (!afin) {
+
+        jjm[0] = t_ecl - periode;
+        jjm[1] = t_ecl;
+        jjm[2] = t_ecl + periode;
+
+        for(int j=0; j<3; j++) {
+
+            const Date date = Date(jjm[j], 0., false);
+
+            // Position du satellite
+            satellite.CalculPosVit(date);
+
+            // Position du Soleil
+            soleil.CalculPosition(date);
+
+            // Conditions d'eclipse du satellite
+            satellite.CalculSatelliteEclipse(soleil);
+            ecl[j] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
+        }
+
+        double tdn;
+        if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
+            tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
+        periode *= 0.5;
+        if (fabs(tdn - t_ecl) < 1.e-5)
+            afin = true;
+        t_ecl = tdn;
+    }
+    dateEcl = Date(t_ecl + offsetUTC, offsetUTC);
+
+    acalcDN = false;
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::CalculAgeTLETransitISS() const
 {
     /* Declarations des variables locales */
@@ -2965,7 +3066,6 @@ void PreviSat::CalculAgeTLETransitISS() const
     const int nbt = TLE::VerifieFichier(ficTLETransit.at(ui->fichierTLETransit->currentIndex()), false);
 
     /* Corps de la methode */
-
     if (nbt > 0) {
 
         // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
@@ -4618,6 +4718,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
     settings.setValue("affichage/largeur", width());
     settings.setValue("affichage/hauteur", height());
+    settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
+
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
@@ -4698,6 +4800,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     }
     ui->frameCarte2->setGeometry(ui->carte->geometry());
+    if (ui->frameCoordISS->isVisible())
+        ui->frameCoordISS->move(ui->carte->pos());
     ui->maximise->move(5 + ui->carte->x() + ui->carte->width(), 5);
     ui->affichageCiel->move(5 + ui->carte->x() + ui->carte->width(), 32);
 
@@ -4922,6 +5026,9 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
                     acalcAOS = true;
 
                     CalculsAffichage();
+
+                    ui->frameCoordISS->setVisible(ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544");
+
                 }
             }
         }
@@ -5067,8 +5174,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
         // Deplacement de la souris sur la carte du monde
         if (!ui->carte->isHidden()) {
 
-            const int xCur = evt->x() - 6;
-            const int yCur = evt->y() - 6;
+            const int xCur = evt->x() - ui->carte->x();
+            const int yCur = evt->y() - ui->carte->y();
 
             if (xCur > 0 && xCur < ui->carte->width() - 1 && yCur > 0 && yCur < ui->carte->height() - 1) {
 
@@ -5434,9 +5541,9 @@ void PreviSat::CaptureVideo()
     if (ui->frameCtrlVideo->isVisible()) {
 
 #if defined (Q_OS_WIN)
-    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
+        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
 #else
-    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
+        const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
 #endif
         const Date maintenant = Date(offsetUTC);
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "ISS_live_" +
@@ -5574,7 +5681,6 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->coordGeo4->setVisible(false);
         ui->radar->setVisible(false);
         ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
-        ui->fluxVideo->setVisible(true);
         ui->frameFlux->setFrameShape(QFrame::StyledPanel);
         ui->frameFlux->setFrameShadow(QFrame::Sunken);
 
@@ -5587,7 +5693,6 @@ void PreviSat::on_mccISS_toggled(bool checked)
         if (_isPlaying || _mp != NULL)
             on_fermerVideo_clicked();
 
-        ui->fluxVideo->setVisible(false);
         ui->frameFlux->setFrameShape(QFrame::NoFrame);
         ui->frameFlux->setFrameShadow(QFrame::Plain);
         ui->fluxVideo->raise();
@@ -5601,8 +5706,12 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->frameZone->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     }
+    ui->fluxVideo->setVisible(checked);
+    if (satellites.at(0).getTle().getNorad() == "25544")
+        ui->frameCoordISS->setVisible(checked);
 
-    CalculsAffichage();
+    if (Satellite::initCalcul)
+        CalculsAffichage();
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -5668,7 +5777,7 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_media(_mp, _m);
                 libvlc_media_player_set_media(_mp2, _m);
 
-                afficherVideo = new QMainWindow(this);
+                afficherVideo = new QMainWindow;
                 afficherVideo->resize(640, 360);
                 const QString msg = "%1 %2 - ISS Live";
                 afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
@@ -5725,24 +5834,24 @@ void PreviSat::on_agrandirVideo_clicked()
 
 void PreviSat::on_fermerVideo_clicked()
 {
-        // Arret de la lecture
-        libvlc_media_player_stop(_mp);
-        libvlc_media_player_stop(_mp2);
+    // Arret de la lecture
+    libvlc_media_player_stop(_mp);
+    libvlc_media_player_stop(_mp2);
 
-        // Liberation du lecteur
-        libvlc_media_player_release(_mp);
-        libvlc_media_player_release(_mp2);
-        libvlc_release(_vlcinstance);
+    // Liberation du lecteur
+    libvlc_media_player_release(_mp);
+    libvlc_media_player_release(_mp2);
+    libvlc_release(_vlcinstance);
 
-        ui->frameCtrlVideo->setVisible(false);
-        ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
-        ui->fluxVideo->raise();
+    ui->frameCtrlVideo->setVisible(false);
+    ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
+    ui->fluxVideo->raise();
 
-        _isPlaying = false;
-        _m = NULL;
-        _mp = NULL;
-        _mp2 = NULL;
-        _vlcinstance = NULL;
+    _isPlaying = false;
+    _m = NULL;
+    _mp = NULL;
+    _mp2 = NULL;
+    _vlcinstance = NULL;
 }
 
 
