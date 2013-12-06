@@ -903,6 +903,7 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
+    ui->frameCoordISS->setVisible(ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544");
     isEcl = satellites.at(0).isEclipse();
 
     // Demarrage du temps reel
@@ -1403,18 +1404,16 @@ void PreviSat::AffichageDonnees()
         /*
          * Donnees ISS sur le Wall Command Center
          */
-        if (ui->frameCoordISS->isVisible()) {
-            chaine = "LAT = %1";
-            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "ALT = %1";
-            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() / 1.852, 0, 'f', 1));
-            chaine = "LON = %1";
-            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "INC = %1";
-            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-            chaine = "ORB = %1";
-            ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
-        }
+        chaine = "LAT = %1";
+        ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+        chaine = "ALT = %1";
+        ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() / 1.852, 0, 'f', 1));
+        chaine = "LON = %1";
+        ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+        chaine = "INC = %1";
+        ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+        chaine = "ORB = %1";
+        ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
 
 
         /*
@@ -3042,7 +3041,7 @@ void PreviSat::CalculDN() const
             ecl[j] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
         }
 
-        double tdn;
+        double tdn = t_ecl;
         if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
             tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
         periode *= 0.5;
@@ -4991,8 +4990,8 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
         // Selection du satellite sur la carte du monde
         if (!ui->carte->isHidden()) {
 
-            const int xCur = evt->x() - 6;
-            const int yCur = evt->y() - 6;
+            const int xCur = evt->x() - ui->carte->x();
+            const int yCur = evt->y() - ui->carte->y();
             for (int isat=0; isat<nbSat; isat++) {
 
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
@@ -5513,7 +5512,8 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *evt)
     if (!ui->carte->isHidden()) {
         const int xCur = evt->x();
         const int yCur = evt->y();
-        if (xCur > 6 && xCur < 6 + ui->carte->width() && yCur > 6 && yCur < 6 + ui->carte->height())
+        if (xCur > ui->carte->x() && xCur < ui->carte->x() + ui->carte->width() &&
+                yCur > ui->carte->y() && yCur < ui->carte->y() + ui->carte->height())
             on_maximise_clicked();
     }
 
