@@ -903,10 +903,13 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
-    ui->frameCoordISS->setVisible(ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544");
+    const bool affWCC = ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544";
+    ui->frameCoordISS->setVisible(affWCC);
+    ui->gmt->setVisible(affWCC);
     isEcl = satellites.at(0).isEclipse();
     ui->betaISS->setVisible(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
+    ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
 
 
     // Demarrage du temps reel
@@ -1407,19 +1410,28 @@ void PreviSat::AffichageDonnees()
         /*
          * Donnees ISS sur le Wall Command Center
          */
-        chaine = "LAT = %1";
-        ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-        chaine = "ALT = %1";
-        ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() / 1.852, 0, 'f', 1));
-        chaine = "LON = %1";
-        ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-        chaine = "INC = %1";
-        ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-        chaine = "ORB = %1";
-        ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
-        if (ui->betaISS->isVisible()) {
+        if (ui->mccISS->isChecked()) {
+
+            chaine = "LAT = %1";
+            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "ALT = %1";
+            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() / 1.852, 0, 'f', 1));
+            chaine = "LON = %1";
+            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "INC = %1";
+            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+            chaine = "ORB = %1";
+            ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
             chaine = "BETA = %1";
             ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
+
+            chaine = "GMT = %1/%2 :%3";
+            const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
+            const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
+            const int numJour = (int) jourDsAnnee;
+            const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
+            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
+            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
         }
 
 
@@ -3052,7 +3064,7 @@ void PreviSat::CalculDN() const
         if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
             tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
         periode *= 0.5;
-        if (fabs(tdn - t_ecl) < 1.e-5)
+        if (fabs(tdn - t_ecl) < 1.e-6)
             afin = true;
         t_ecl = tdn;
     }
@@ -4725,6 +4737,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/largeur", width());
     settings.setValue("affichage/hauteur", height());
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
+    settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
+    settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
 
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
@@ -4808,6 +4822,10 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->frameCarte2->setGeometry(ui->carte->geometry());
     if (ui->frameCoordISS->isVisible())
         ui->frameCoordISS->move(ui->carte->pos());
+
+    ui->gmt->adjustSize();
+    ui->gmt->move(0.5 * (ui->carte->width() - ui->gmt->width()), 40);
+
     ui->maximise->move(5 + ui->carte->x() + ui->carte->width(), 5);
     ui->affichageCiel->move(5 + ui->carte->x() + ui->carte->width(), 32);
 
@@ -5033,8 +5051,9 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                     CalculsAffichage();
 
-                    ui->frameCoordISS->setVisible(ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544");
-
+                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544";
+                    ui->frameCoordISS->setVisible(affWCC);
+                    ui->gmt->setVisible(affWCC);
                 }
             }
         }
@@ -5714,8 +5733,10 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     }
     ui->fluxVideo->setVisible(checked);
-    if (satellites.at(0).getTle().getNorad() == "25544")
+    if (satellites.at(0).getTle().getNorad() == "25544") {
         ui->frameCoordISS->setVisible(checked);
+        ui->gmt->setVisible(checked);
+    }
 
     if (Satellite::initCalcul)
         CalculsAffichage();
@@ -7206,6 +7227,11 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_styleWCC_toggled(bool checked)
+{
+    ui->styleWCC->setText((checked) ? tr("Style \"Wall Command Center\" activé") : tr("Style \"PreviSat\" activé"));
 }
 
 void PreviSat::on_affBetaWCC_toggled(bool checked)
