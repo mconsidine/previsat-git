@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2013
+ * >    7 decembre 2013
  *
  */
 
@@ -77,6 +77,7 @@ public:
     bool isEclipse() const;
     bool isIeralt() const;
     double getAgeTLE() const;
+    double getBeta() const;
     double getElongation() const;
     double getFractionIlluminee() const;
     double getMagnitude() const;
@@ -341,6 +342,7 @@ private:
     char _methMagnitude;
     int _nbOrbites;
     double _ageTLE;
+    double _beta;
     double _elongation;
     double _fractionIlluminee;
     double _magnitude;
@@ -366,6 +368,7 @@ private:
     void Dpper();
     void Dsinit(const double tc);
     void Dspace(const double tc);
+    void CalculBeta(const Soleil &soleil);
     void CalculTracesAuSol(const Date &date, const int nbOrbites);
     void CalculTraceCiel(const Date &date, Observateur observateur);
 

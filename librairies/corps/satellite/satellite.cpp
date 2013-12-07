@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 novembre 2013
+ * >    7 decembre 2013
  *
  */
 
@@ -455,6 +455,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
             // Calcul de la trajectoire
             satellites[isat].CalculTracesAuSol(date, nbTracesAuSol);
+
+            // Calcul de l'angle beta
+            satellites[isat].CalculBeta(soleil);
         }
     }
 
@@ -1253,6 +1256,23 @@ void Satellite::Dspace(const double tc) {
 }
 
 /*
+ * Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
+ */
+void Satellite::CalculBeta(const Soleil &soleil)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const Vecteur3D w = _position ^ _vitesse;
+
+    /* Corps de la methode */
+    _beta = PI_SUR_DEUX - soleil.getPosition().Angle(w);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Calcul de la trajectoire du satellite
  */
 void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
@@ -1372,6 +1392,11 @@ bool Satellite::isIeralt() const
 double Satellite::getAgeTLE() const
 {
     return _ageTLE;
+}
+
+double Satellite::getBeta() const
+{
+    return _beta;
 }
 
 double Satellite::getElongation() const
