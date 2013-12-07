@@ -1142,8 +1142,8 @@ void PreviSat::AffichageDonnees()
     QString chaine2;
 
     /* Initialisations */
-    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
-    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("mi/s");
+    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("nmi/s");
 
     /* Corps de la methode */
     if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
@@ -1646,7 +1646,7 @@ void PreviSat::AffichageElementsOsculateurs() const
     QString chaine, chaine2;
 
     /* Initialisations */
-    const QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+    const QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
     /* Corps de la methode */
     chaine = "%1 " + unite1;
@@ -8683,7 +8683,7 @@ void PreviSat::on_calculsPrev_clicked()
             di.mkpath(dirTmp);
 
         // Unite pour les distances
-        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsPrev->setVisible(false);
@@ -8962,7 +8962,7 @@ void PreviSat::on_calculsIri_clicked()
             di.mkpath(dirTmp);
 
         // Unite pour les distances
-        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         // Lecture du fichier de statut des satellites Iridium
         QStringList tabStsIri;
@@ -9231,7 +9231,7 @@ void PreviSat::on_calculsEvt_clicked()
             di.mkpath(dirTmp);
 
         // Unite pour les distances
-        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsEvt->setVisible(false);
@@ -9465,7 +9465,7 @@ void PreviSat::on_calculsTransit_clicked()
             di.mkpath(dirTmp);
 
         // Unite pour les distances
-        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("mi");
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         const QStringList listeTLEs("25544");
         QVector<TLE> tabtle;
