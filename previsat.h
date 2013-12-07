@@ -219,6 +219,8 @@ private slots:
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
 
+    void on_affBetaWCC_toggled(bool checked);
+
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
     void on_actionSupprimerCategorie_activated(int arg1);
