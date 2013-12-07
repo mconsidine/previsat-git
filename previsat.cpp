@@ -905,6 +905,9 @@ void PreviSat::DemarrageApplication()
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
     ui->frameCoordISS->setVisible(ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544");
     isEcl = satellites.at(0).isEclipse();
+    ui->betaISS->setVisible(false);
+    ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
+
 
     // Demarrage du temps reel
     chronometre->setInterval(200);
@@ -1414,6 +1417,10 @@ void PreviSat::AffichageDonnees()
         ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
         chaine = "ORB = %1";
         ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
+        if (ui->betaISS->isVisible()) {
+            chaine = "BETA = %1";
+            ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
+        }
 
 
         /*
@@ -7199,6 +7206,23 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_affBetaWCC_toggled(bool checked)
+{
+    if (checked) {
+        ui->inclinaisonISS->move(5, 45);
+        ui->orbiteISS->move(105, 0);
+        ui->nextTransitionISS->move(105, 15);
+        ui->betaISS->move(105, 30);
+        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 67);
+    } else {
+        ui->inclinaisonISS->move(105, 0);
+        ui->nextTransitionISS->move(105, 15);
+        ui->orbiteISS->move(105, 30);
+        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 52);
+    }
+    ui->betaISS->setVisible(checked);
 }
 
 
