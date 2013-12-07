@@ -273,7 +273,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Altitude du satellite et distance a l'observateur
                                 double distance = sat.getDistance();
-                                if (conditions.getUnite() == QObject::tr("mi")) {
+                                if (conditions.getUnite() == QObject::tr("nmi")) {
                                     altitude *= MILE_PAR_KM;
                                     distance *= MILE_PAR_KM;
                                 }

@@ -191,7 +191,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const QString fmt = "%1  %2°  %3° %4  %5° %6  %7 %8 %9 (%10 %9)";
                     double rayonVecteur = minmax[1];
                     double altitude = minmax[1] - RAYON_TERRESTRE;
-                    if (conditions.getUnite() == QObject::tr("mi")) {
+                    if (conditions.getUnite() == QObject::tr("nmi")) {
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
