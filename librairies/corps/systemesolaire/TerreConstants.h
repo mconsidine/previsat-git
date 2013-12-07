@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    7 decembre 2013
  *
  */
 
@@ -70,8 +70,8 @@ static const double APLA = 1. / 298.26;
 static const double E2 = APLA * (2. - APLA);
 static const double G2 = (1. - APLA) * (1. - APLA);
 
-// Nombre de miles par kilometre
-static const double MILE_PAR_KM = 1. / 1.609344;
+// Nombre de miles nautiques par kilometre
+static const double MILE_PAR_KM = 1. / 1.852;
 
 // Nombre de pieds par metre
 static const double PIED_PAR_METRE = 1. / 0.3048;
