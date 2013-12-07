@@ -2609,14 +2609,24 @@ The directory containing the observation sites does not exist</translation>
         <translation>Error occured while decompressing file %1</translation>
     </message>
     <message>
+        <location filename="previsat.cpp" line="1145"/>
+        <location filename="previsat.cpp" line="1649"/>
+        <location filename="previsat.cpp" line="8686"/>
+        <location filename="previsat.cpp" line="8965"/>
+        <location filename="previsat.cpp" line="9234"/>
+        <location filename="previsat.cpp" line="9468"/>
+        <source>nmi</source>
+        <translation>nmi</translation>
+    </message>
+    <message>
         <location filename="previsat.cpp" line="1146"/>
         <source>km/s</source>
         <translation>km/s</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="1146"/>
-        <source>mi/s</source>
-        <translation>mi/s</translation>
+        <source>nmi/s</source>
+        <translation>nmi/s</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="1366"/>
@@ -2935,16 +2945,6 @@ The file %1 does not contain the TLE of ISS</translation>
         <location filename="previsat.cpp" line="9468"/>
         <source>km</source>
         <translation>km</translation>
-    </message>
-    <message>
-        <location filename="previsat.cpp" line="1145"/>
-        <location filename="previsat.cpp" line="1649"/>
-        <location filename="previsat.cpp" line="8686"/>
-        <location filename="previsat.cpp" line="8965"/>
-        <location filename="previsat.cpp" line="9234"/>
-        <location filename="previsat.cpp" line="9468"/>
-        <source>mi</source>
-        <translation>mi</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="8688"/>

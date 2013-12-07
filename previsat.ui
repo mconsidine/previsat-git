@@ -770,8 +770,8 @@
            <rect>
             <x>6</x>
             <y>6</y>
-            <width>231</width>
-            <height>61</height>
+            <width>200</width>
+            <height>52</height>
            </rect>
           </property>
           <property name="palette">
@@ -1212,7 +1212,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1228,14 +1228,14 @@
            <property name="geometry">
             <rect>
              <x>5</x>
-             <y>18</y>
+             <y>15</y>
              <width>111</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1251,14 +1251,14 @@
            <property name="geometry">
             <rect>
              <x>5</x>
-             <y>36</y>
+             <y>30</y>
              <width>111</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1273,7 +1273,7 @@
           <widget class="QLabel" name="inclinaisonISS">
            <property name="geometry">
             <rect>
-             <x>120</x>
+             <x>105</x>
              <y>0</y>
              <width>101</width>
              <height>21</height>
@@ -1281,7 +1281,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1296,15 +1296,15 @@
           <widget class="QLabel" name="nextTransitionISS">
            <property name="geometry">
             <rect>
-             <x>120</x>
-             <y>18</y>
+             <x>105</x>
+             <y>15</y>
              <width>111</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1319,15 +1319,15 @@
           <widget class="QLabel" name="orbiteISS">
            <property name="geometry">
             <rect>
-             <x>120</x>
-             <y>36</y>
+             <x>105</x>
+             <y>30</y>
              <width>111</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -8574,7 +8574,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-174</y>
                  <width>784</width>
                  <height>360</height>
                 </rect>
