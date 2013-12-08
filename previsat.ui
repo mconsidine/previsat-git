@@ -8738,7 +8738,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-174</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>360</height>
                 </rect>
@@ -9489,8 +9489,8 @@
              <widget class="QCheckBox" name="affBetaWCC">
               <property name="geometry">
                <rect>
-                <x>10</x>
-                <y>40</y>
+                <x>12</x>
+                <y>33</y>
                 <width>151</width>
                 <height>17</height>
                </rect>
@@ -9499,12 +9499,12 @@
                <string>Affichage de l'angle beta</string>
               </property>
              </widget>
-             <widget class="QPushButton" name="styleWCC">
+             <widget class="QCheckBox" name="styleWCC">
               <property name="geometry">
                <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>191</width>
+                <x>12</x>
+                <y>9</y>
+                <width>171</width>
                 <height>23</height>
                </rect>
               </property>
@@ -9512,7 +9512,7 @@
                <bool>true</bool>
               </property>
               <property name="text">
-               <string>Style &quot;PreviSat&quot; activé</string>
+               <string>Style &quot;Wall Command Center&quot;</string>
               </property>
               <property name="checkable">
                <bool>true</bool>

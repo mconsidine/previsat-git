@@ -1913,7 +1913,8 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            scene->addLine(0, hcarte2, lcarte, hcarte2, QPen(Qt::white));
+            const QPen pen = QPen((ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? Qt::red : Qt::white);
+            scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
             QPen stylo(Qt::lightGray);
@@ -2130,7 +2131,8 @@ void PreviSat::AffichageCourbes() const
                             ils = j;
                         }
 
-                        crayon = (satellites.at(0).getTraceAuSol().at(j).at(2) == 0) ? bleuClair : crimson;
+                        crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ?
+                                    Qt::white : (satellites.at(0).getTraceAuSol().at(j).at(2) == 0) ? bleuClair : crimson;
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
                         if (ils == j) {
@@ -4089,7 +4091,7 @@ void PreviSat::ModificationOption()
         ui->selecLieux->setCurrentRow(-1);
     }
 
-    if (ui->zoneAffichage->isVisible()) {
+    if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -7231,7 +7233,8 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
 
 void PreviSat::on_styleWCC_toggled(bool checked)
 {
-    ui->styleWCC->setText((checked) ? tr("Style \"Wall Command Center\" activé") : tr("Style \"PreviSat\" activé"));
+    Q_UNUSED(checked)
+    ModificationOption();
 }
 
 void PreviSat::on_affBetaWCC_toggled(bool checked)
