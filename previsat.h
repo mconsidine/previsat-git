@@ -33,13 +33,15 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #ifndef PREVISAT_H
 #define PREVISAT_H
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QComboBox>
 #include <QKeyEvent>
 #include <QListWidget>
@@ -47,7 +49,7 @@
 #include <QModelIndex>
 #include <QtNetwork>
 #include "vlc.h"
-#include <QMessageBox>
+
 namespace Ui {
 class PreviSat;
 }

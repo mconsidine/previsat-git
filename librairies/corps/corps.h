@@ -33,13 +33,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2013
+ * >    17 decembre 2013
  *
  */
 
 #ifndef CORPS_H
 #define CORPS_H
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QList>
 #include <QPointF>
 #include <QVector>

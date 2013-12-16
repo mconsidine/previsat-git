@@ -36,14 +36,16 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
@@ -51,6 +53,8 @@
 #include "ui_gestionnairetle.h"
 #pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #include "gestionnairetle.h"
 #include "previsat.h"
 #include "librairies/exceptions/previsatexception.h"

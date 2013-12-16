@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2013
+ * >    17 decembre 2013
  *
  */
 
@@ -991,7 +991,7 @@ void Satellite::Dsinit(const double tc) {
     if (_sat.inclm < 0.052359877 || _sat.inclm > PI - 0.052359877)
         shs = 0.;
 
-    if (_sat.sinim != 0.)
+    if (fabs(_sat.sinim) > EPSDBL100)
         shs /= _sat.sinim;
 
     const double sgs = sghs - _sat.cosim * shs;
@@ -1008,7 +1008,7 @@ void Satellite::Dsinit(const double tc) {
 
     _sat.domdt = sgs + sghl;
     _sat.dnodt = shs;
-    if (_sat.sinim != 0.) {
+    if (fabs(_sat.sinim) > EPSDBL100) {
         _sat.domdt -= (_sat.cosim / _sat.sinim * shll);
         _sat.dnodt += (shll / _sat.sinim);
     }
@@ -1181,7 +1181,7 @@ void Satellite::Dspace(const double tc) {
     if (_sat.irez != 0) {
         double ft = 0.;
 
-        if (_sat.atime == 0. || _sat.t * _sat.atime <= 0. || fabs(_sat.t) < fabs(_sat.atime)) {
+        if (fabs(_sat.atime) <= EPSDBL100 || _sat.t * _sat.atime <= 0. || fabs(_sat.t) < fabs(_sat.atime)) {
             _sat.atime = 0.;
             _sat.xni = _sat.no;
             _sat.xli = _sat.xlamo;

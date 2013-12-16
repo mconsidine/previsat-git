@@ -40,7 +40,11 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMessageBox>
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #include "messages.h"
 
 /*

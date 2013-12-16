@@ -36,18 +36,22 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QDate>
 #include <QSettings>
-#pragma GCC diagnostic warning "-Wshadow"
 #include "apropos.h"
 #include "ui_apropos.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wshadow"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 
 static QSettings settings("Astropedia", "previsat");
 

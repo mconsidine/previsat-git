@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    7 decembre 2013
+# >    17 decembre 2013
 
 #-------------------------------------------------
 VER_MAJ = 3.3
@@ -52,7 +52,7 @@ TEMPLATE = app
 ICON = resources/icone.ico
 
 CONFIG(debug, debug|release){
-    QMAKE_CXXFLAGS += -Wmissing-declarations
+    QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -Wmissing-declarations
 }
 
 win32 {

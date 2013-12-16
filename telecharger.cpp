@@ -36,13 +36,15 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
@@ -52,6 +54,8 @@
 #include <QTextStream>
 #include <QTimer>
 #pragma GCC diagnostic warning "-Wshadow"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #include "telecharger.h"
 #include "librairies/exceptions/messages.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -211,8 +215,8 @@ void Telecharger::ProgressionTelechargement(qint64 recu, qint64 total) const
 
     /* Corps de la methode */
     if (total != -1) {
-        ui->barreProgression->setRange(0, total);
-        ui->barreProgression->setValue(recu);
+        ui->barreProgression->setRange(0, (int) total);
+        ui->barreProgression->setValue((int) recu);
     }
 
     /* Retour */
