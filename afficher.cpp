@@ -36,14 +36,16 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QDir>
@@ -51,9 +53,11 @@
 #include <QFileDialog>
 #include <QSettings>
 #include "ui_afficher.h"
+#include "afficher.h"
 #pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
-#include "afficher.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 
 static QString dirOut;
 static QString dirTmp;

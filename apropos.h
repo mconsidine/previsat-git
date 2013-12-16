@@ -33,13 +33,15 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #ifndef APROPOS_H
 #define APROPOS_H
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
 
 namespace Ui {

@@ -33,13 +33,15 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    29 novembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #ifndef GESTIONNAIRETLE_H
 #define GESTIONNAIRETLE_H
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
 #include <QtNetwork>
 #include "librairies/corps/satellite/satellite.h"

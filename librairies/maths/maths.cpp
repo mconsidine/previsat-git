@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    17 decembre 2013
  *
  */
 
@@ -169,13 +169,13 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     }
     double y = fabs(xval) + EPSDBL100;
 
-    double degr = nbDeg;
+    int degr = nbDeg;
     if (degr < 0)
         degr = 0;
     if (degr > 2 && (typeAngle == HEURE1 || typeAngle == HEURE2))
         degr = 2;
 
-    double dec = nbDecimales;
+    int dec = nbDecimales;
     if (dec < 0)
         dec = 0;
 

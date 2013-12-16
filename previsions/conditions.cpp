@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    17 decembre 2013
  *
  */
 
@@ -344,7 +344,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     if (conditions._ecart) {
         if (fabs(conditions._offset) > EPSDBL100) {
             QTime heur;
-            heur = heur.addSecs(conditions._offset * NB_SEC_PAR_JOUR + EPS_DATES);
+            heur = heur.addSecs((int) (conditions._offset * NB_SEC_PAR_JOUR + EPS_DATES));
             chaine = chaine.append((conditions._offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }

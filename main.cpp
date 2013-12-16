@@ -36,10 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 septembre 2013
+ * >    17 decembre 2013
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -48,6 +50,8 @@
 #include <QtGui/QApplication>
 #include <QTranslator>
 #include "previsat.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 
 int main(int argc, char *argv[])
 {

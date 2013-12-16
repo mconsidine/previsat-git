@@ -36,14 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2013
+ * >    17 decembre 2013
  *
  */
 
 #if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QClipboard>
 #include <QtCore/qmath.h>
 #include <QDesktopServices>
@@ -88,6 +90,8 @@
 #include "zlib.h"
 #include "previsat.h"
 #include "ui_previsat.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 
 // Repertoires
 static QString dirCoo;
@@ -1186,7 +1190,7 @@ void PreviSat::AffichageDonnees()
         QString chaine = dateCourante.ToLongDate().append("  ");
         if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
             QTime heur;
-            heur = heur.addSecs(fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES);
+            heur = heur.addSecs((int) (fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
             QString chaineUTC = tr("UTC").append((dateCourante.getOffsetUTC() > 0.) ? " + " : " - ").
                     append(heur.toString("hh:mm"));
             chaine = chaine.append(chaineUTC);
@@ -2104,7 +2108,7 @@ void PreviSat::AffichageCourbes() const
             if (j == 0 || ui->affnomlieu->checkState() == Qt::Checked) {
 
                 QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(observateurs.at(j).getNomlieu());
-                const int lng = txtObs->boundingRect().width();
+                const int lng = (int) txtObs->boundingRect().width();
                 const int xnobs = (lobs + 4 + lng > lcarte) ? lobs - lng - 1 : lobs + 4;
                 const int ynobs = (bobs + 9 > hcarte) ? bobs - 12 : bobs;
 
@@ -2137,7 +2141,7 @@ void PreviSat::AffichageCourbes() const
                         }
 
                         crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ?
-                                    Qt::white : (satellites.at(0).getTraceAuSol().at(j).at(2) == 0) ? bleuClair : crimson;
+                                    Qt::white : (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
                         if (ils == j) {
@@ -2213,7 +2217,7 @@ void PreviSat::AffichageCourbes() const
                     if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
                             ui->affnomsat->checkState() == Qt::Checked) {
                         QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
-                        const int lng = txtSat->boundingRect().width();
+                        const int lng = (int) txtSat->boundingRect().width();
                         const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
                         const int ynsat = (bsat + 9 > hcarte) ? bsat - 12 : bsat;
 
@@ -2286,7 +2290,7 @@ void PreviSat::AffichageCourbes() const
                             const int bst = hciel - bcst;
 
                             QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.getNom());
-                            const int lng = txtCst->boundingRect().width();
+                            const int lng = (int) txtCst->boundingRect().width();
 
                             const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
                             const int yncst = (bcst + 9 > ui->ciel->height()) ? bcst - 10 : bcst + 1;
@@ -2325,7 +2329,7 @@ void PreviSat::AffichageCourbes() const
                                 const int bst = hciel - bstr;
                                 const QString nomstr = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
                                 QGraphicsSimpleTextItem * const txtStr = new QGraphicsSimpleTextItem(nomstr);
-                                const int lng = txtStr->boundingRect().width();
+                                const int lng = (int) txtStr->boundingRect().width();
 
                                 const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
                                 const int ynstr = (bstr + 9 > ui->ciel->height()) ? bstr - 10 : bstr + 1;
@@ -2367,7 +2371,7 @@ void PreviSat::AffichageCourbes() const
                             const int bpl = hciel - bpla;
                             const QString nompla = planetes.at(iplanete).getNom();
                             QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
-                            const int lng = txtPla->boundingRect().width();
+                            const int lng = (int) txtPla->boundingRect().width();
 
                             const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
                             const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
@@ -2463,7 +2467,7 @@ void PreviSat::AffichageCourbes() const
                             const int bpl = hciel - bpla;
                             const QString nompla = planetes.at(iplanete).getNom();
                             QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
-                            const int lng = txtPla->boundingRect().width();
+                            const int lng = (int) txtPla->boundingRect().width();
 
                             const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
                             const int ynpla = (bpla + 9 > ui->ciel->height()) ? bpla - 10 : bpla + 2;
@@ -2513,7 +2517,7 @@ void PreviSat::AffichageCourbes() const
                         const double ht2 = trace.at(i).at(0);
                         const double az2 = trace.at(i).at(1);
 
-                        crayon = (trace.at(i).at(2) == 0) ? bleuClair : crimson;
+                        crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ? bleuClair : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
@@ -4360,7 +4364,7 @@ void PreviSat::GestionTempsReel()
         stsHeure->setToolTip(tr("Jour"));
     } else {
         stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
-        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), date1.getSecondes()).toString("hh:mm:ss"));
+        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), (int) date1.getSecondes()).toString("hh:mm:ss"));
         stsDate->setToolTip(tr("Date"));
         stsHeure->setToolTip(tr("Heure"));
     }
@@ -4368,7 +4372,7 @@ void PreviSat::GestionTempsReel()
     // Lancement des calculs
     if (ui->tempsReel->isChecked() && tim.secsTo(QDateTime::currentDateTimeUtc()) >= pas1) {
 
-        tim = (tim.addSecs(pas1) <= QDateTime::currentDateTimeUtc()) ? tim.addSecs(pas1) : QDateTime::currentDateTimeUtc();
+        tim = (tim.addSecs((int) pas1) <= QDateTime::currentDateTimeUtc()) ? tim.addSecs((int) pas1) : QDateTime::currentDateTimeUtc();
 
         // Date actuelle
         dateCourante = Date(offsetUTC);
@@ -4680,8 +4684,8 @@ void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
 
     /* Corps de la methode */
     if (total != -1) {
-        ui->barreProgression->setRange(0, total);
-        ui->barreProgression->setValue(recu);
+        ui->barreProgression->setRange(0, (int) total);
+        ui->barreProgression->setValue((int) recu);
     }
 
     /* Retour */
@@ -4829,8 +4833,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         const int href = 2 * (ui->frameCarte->height() - 26);
         const int lref = ui->frameCarte->width() - 50;
         const int lc = qMin(href, lref);
-        const int hc = lc * 0.5;
-        ui->carte->setGeometry(0.5 * (ui->frameCarte->width() - lc) - 19, 6, lc, hc);
+        const int hc = lc / 2;
+        ui->carte->setGeometry((ui->frameCarte->width() - lc) / 2 - 19, 6, lc, hc);
     } else {
         ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     }
@@ -4839,7 +4843,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         ui->frameCoordISS->move(ui->carte->pos());
 
     ui->gmt->adjustSize();
-    ui->gmt->move(0.5 * (ui->carte->width() - ui->gmt->width()), 40);
+    ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, 40);
 
     ui->maximise->move(5 + ui->carte->x() + ui->carte->width(), 5);
     ui->affichageCiel->move(5 + ui->carte->x() + ui->carte->width(), 32);
@@ -4852,39 +4856,39 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     ui->liste1->resize(200, hcarte - 147);
 
-    ui->S60->move(5, hcarte / 1.2 - 1);
-    ui->S30->move(5, hcarte / 1.5 - 1);
-    ui->SS->move(5, hcarte * 7. / 12. - 1);
-    ui->N0->move(5, hcarte * 0.5 - 1);
-    ui->NN->move(5, hcarte / 2.4 - 1);
-    ui->N30->move(5, hcarte / 3. - 1);
-    ui->N60->move(5, hcarte / 6. - 1);
+    ui->S60->move(5, (int) (hcarte / 1.2) - 1);
+    ui->S30->move(5, (int) (hcarte / 1.5) - 1);
+    ui->SS->move(5, (int) (hcarte * 7. / 12.) - 1);
+    ui->N0->move(5, (int) (hcarte * 0.5) - 1);
+    ui->NN->move(5, (int) (hcarte / 2.4) - 1);
+    ui->N30->move(5, (int) (hcarte / 3.) - 1);
+    ui->N60->move(5, (int) (hcarte / 6.) - 1);
     ui->frameLat->setGeometry(1 + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
-    ui->W150->move(lcarte / 12. - 8, 0);
-    ui->W120->move(lcarte / 6. - 8, 0);
-    ui->W90->move(lcarte / 4. - 5, 0);
-    ui->W60->move(lcarte / 3. - 5, 0);
-    ui->W30->move(lcarte / 2.4 - 5, 0);
-    ui->WW->move(lcarte * 11. / 24. - 2, 0);
-    ui->W0->move(lcarte * 0.5 - 2, 0);
-    ui->EE->move(lcarte * 13. / 24. - 2, 0);
-    ui->E30->move(lcarte * 7. / 12. - 5, 0);
-    ui->E60->move(lcarte / 1.5 - 5, 0);
-    ui->E90->move(lcarte * 0.75 - 5, 0);
-    ui->E120->move(lcarte / 1.2 - 8, 0);
-    ui->E150->move(lcarte * 11. / 12. - 8, 0);
+    ui->W150->move((int) (lcarte / 12.) - 8, 0);
+    ui->W120->move((int) (lcarte / 6.) - 8, 0);
+    ui->W90->move((int) (lcarte / 4.) - 5, 0);
+    ui->W60->move((int) (lcarte / 3.) - 5, 0);
+    ui->W30->move((int) (lcarte / 2.4) - 5, 0);
+    ui->WW->move((int) (lcarte * 11. / 24.) - 2, 0);
+    ui->W0->move((int) (lcarte * 0.5) - 2, 0);
+    ui->EE->move((int) (lcarte * 13. / 24.) - 2, 0);
+    ui->E30->move((int) (lcarte * 7. / 12.) - 5, 0);
+    ui->E60->move((int) (lcarte / 1.5) - 5, 0);
+    ui->E90->move((int) (lcarte * 0.75) - 5, 0);
+    ui->E120->move((int) (lcarte / 1.2) - 8, 0);
+    ui->E150->move((int) (lcarte * 11. / 12.) - 8, 0);
     ui->frameLon->setGeometry(ui->carte->x(), 1 + ui->carte->y() + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
-    const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() * 0.5 - 411;
+    const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() / 2 - 411;
     ui->onglets->move(xOng, 0);
 
     ui->frameZone->resize(width() - ui->onglets->width(), ui->frameZone->height());
     ui->frameZoneVideo->resize(ui->frameZone->width() - 18, ui->frameZone->height() - 24);
     ui->frameFlux->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
     ui->frameCtrlVideo->move(ui->frameZoneVideo->width() - ui->frameCtrlVideo->width() + 2, 0);
-    ui->fluxVideo->move(0.5 * (ui->frameFlux->width() - ui->fluxVideo->width()),
-                        0.5 * (ui->frameFlux->height() - ui->fluxVideo->height()));
+    ui->fluxVideo->move((ui->frameFlux->width() - ui->fluxVideo->width()) / 2,
+                        (ui->frameFlux->height() - ui->fluxVideo->height()) / 2);
     ui->lbl_video->move(ui->fluxVideo->pos());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
@@ -7176,7 +7180,7 @@ void PreviSat::on_updown_valueChanged(int arg1)
 
     /* Corps de la methode */
     QTime heur;
-    heur = heur.addSecs(fabs(arg1 * NB_SEC_PAR_MIN));
+    heur = heur.addSecs((int) fabs(arg1 * NB_SEC_PAR_MIN));
     const QString sgn = (arg1 >= 0) ? " + " : " - ";
     ui->tuc->setText(tr("UTC") + sgn + heur.toString("hh:mm"));
     offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
@@ -8728,7 +8732,7 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatPrev->currentIndex() == 5) ?
-                    fabs(ui->valHauteurSatPrev->text().toInt()) : 5 * ui->hauteurSatPrev->currentIndex();
+                    (int) fabs(ui->valHauteurSatPrev->text().toInt()) : 5 * ui->hauteurSatPrev->currentIndex();
 
         // Hauteur maximale du Soleil
         int crep = 0;
@@ -8996,7 +9000,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatIri->currentIndex() == 5) ?
-                    fabs(ui->valHauteurSatIri->text().toInt()) : 5 * ui->hauteurSatIri->currentIndex();
+                    (int) fabs(ui->valHauteurSatIri->text().toInt()) : 5 * ui->hauteurSatIri->currentIndex();
 
         // Hauteur maximale du Soleil
         int crep = 0;
@@ -9523,7 +9527,7 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatTransit->currentIndex() == 5) ?
-                    fabs(ui->valHauteurSatTransit->text().toInt()) : 5 * ui->hauteurSatTransit->currentIndex();
+                    (int) fabs(ui->valHauteurSatTransit->text().toInt()) : 5 * ui->hauteurSatTransit->currentIndex();
 
         // Elongation maximale
         const double elong = ui->elongationMaxCorps->value();
