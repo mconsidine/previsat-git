@@ -552,7 +552,7 @@ void Satellite::SGP4Init()
     _sat.mo = DEG2RAD * _tle.getMo();
     _sat.no = _tle.getNo() * DEUX_PI * NB_JOUR_PAR_MIN;
     if (_sat.no < EPSDBL100) {
-	    const QString msg = QObject::tr("Nombre de révolutions par jour négatif\nSatellite %1 (numéro NORAD %2)");
+        const QString msg = QObject::tr("Nombre de révolutions par jour négatif\nSatellite %1 (numéro NORAD %2)");
         throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
     }
 
@@ -702,7 +702,7 @@ void Satellite::SGP4Init()
         }
         _sat.init = true;
     } else {
-	    const QString msg = QObject::tr("Valeurs numériques du TLE incorrectes\nSatellite %1 (numéro NORAD %2)");
+        const QString msg = QObject::tr("Valeurs numériques du TLE incorrectes\nSatellite %1 (numéro NORAD %2)");
         throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
     }
 
@@ -1289,7 +1289,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satell
 
     /* Corps de la methode */
     double lat1 = satellite.getLatitude();
-    int i = 1;
+    int i = -1;
     bool atrouve = false;
     while (!atrouve) {
 
