@@ -121,6 +121,7 @@ static int idxf;
 static int idxfi;
 static int idxft;
 static int nbSat;
+static int nbOrbISS;
 static double azimAOS;
 static double htSat;
 static QString ctypeAOS;
@@ -1422,7 +1423,7 @@ void PreviSat::AffichageDonnees()
                     Satellite sat(tles.at(0));
                     sat.CalculPosVit(date0h);
                     sat.CalculElementsOsculateurs(date0h);
-                    int nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+                    nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
                     if (nbOrbISS == 0) {
                         date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
                         sat.CalculPosVit(date0h);
@@ -2138,7 +2139,9 @@ void PreviSat::AffichageCourbes() const
 
                     const QColor bleuClair(173, 216, 230);
 
+                    int nbOrb = nbOrbISS;
                     for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
+
                         double lsat2 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
                         double bsat2 = satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT;
                         int ils = 99999;
@@ -2156,26 +2159,44 @@ void PreviSat::AffichageCourbes() const
                             if (satellites.at(0).getTle().getNorad() == "25544") {
 
                                 crayon = QPen(Qt::white);
+
+                                if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
+                                        satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
+
+                                    QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(nbOrb));
+                                    const int lng = (int) txtOrb->boundingRect().width();
+                                    const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng : lsat2 - lng;
+
+                                    txtOrb->setBrush(Qt::white);
+                                    txtOrb->setPos(xnorb, hcarte2 - 15.);
+                                    scene->addItem(txtOrb);
+
+                                    const double jj = satellites.at(0).getTraceAuSol().at(j).at(3);
+                                    if ((jj - (int) jj) > 0.5 && nbOrb >= 14)
+                                        nbOrb = 0;
+                                    nbOrb++;
+                                }
+
                                 if (fabs(satellites.at(0).getTraceAuSol().at(j).at(2) -
                                          satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
 
                                     QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
 
                                     QLineF lig1 = lig.normalVector();
-                                    lig1.setLength(10.);
+                                    lig1.setLength(8.);
 
                                     QLineF lig2 = QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
-                                    lig2.setLength(10.);
+                                    lig2.setLength(8.);
 
                                     lig = QLineF(lig1.p2(), lig1.p1());
                                     QLineF lig3 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
                                                 QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx())) : lig.normalVector();
-                                    lig3.setLength(4.);
+                                    lig3.setLength(3.);
 
                                     lig = QLineF(lig2.p2(), lig2.p1());
                                     QLineF lig4 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
                                                 lig.normalVector() : QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
-                                    lig4.setLength(4.);
+                                    lig4.setLength(3.);
 
                                     scene->addLine(lig1, crayon);
                                     scene->addLine(lig2, crayon);
@@ -3082,20 +3103,18 @@ void PreviSat::CalculDN() const
     while (it.hasNext()) {
         const QVector<double> list = it.next();
         if (list.at(3) >= dateCourante.getJourJulienUTC()) {
-            if (fabs(dn - list.at(2)) > EPSDBL100) {
+            if (fabs(dn - list.at(2)) > EPSDBL100)
                 it.toBack();
-            } else {
-                i++;
-            }
         }
+        i++;
     }
 
     /* Corps de la methode */
     if (i < satellites.at(0).getTraceAuSol().size()) {
         double ecl[3], jjm[3];
         Satellite satellite(satellites.at(0).getTle());
-        double t_ecl = satellites.at(0).getTraceAuSol().at(i).at(3);
-        double periode = t_ecl - satellites.at(0).getTraceAuSol().at(i-1).at(3);
+        double t_ecl = satellites.at(0).getTraceAuSol().at(i-1).at(3);
+        double periode = t_ecl - satellites.at(0).getTraceAuSol().at(i-2).at(3);
 
         bool afin = false;
         while (!afin) {
