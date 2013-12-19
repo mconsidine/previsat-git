@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    19 decembre 2013
  *
  */
 
@@ -915,7 +915,6 @@ void PreviSat::DemarrageApplication()
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
 
-
     // Demarrage du temps reel
     chronometre->setInterval(200);
     connect(chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
@@ -943,7 +942,7 @@ QString PreviSat::DeterminationLocale()
     /* Corps de la methode */
     localePreviSat = QLocale::system().name().section('_', 0, 0);
     QDir di(QCoreApplication::applicationDirPath());
-    foreach(QString fic,  di.entryList(filtre, QDir::Files)) {
+    foreach(QString fic, di.entryList(filtre, QDir::Files)) {
         if (fic == QCoreApplication::applicationName() + "_" + localePreviSat + ".qm")
             atrouveLocale = true;
     }
@@ -1418,28 +1417,40 @@ void PreviSat::AffichageDonnees()
                     const Date delaiEcl = Date(delai - 0.5, 0.);
                     const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "-:--:--";
                     ui->nextTransitionISS->setText(chaine.arg(cDelai));
+
+                    Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
+                    Satellite sat(tles.at(0));
+                    sat.CalculPosVit(date0h);
+                    sat.CalculElementsOsculateurs(date0h);
+                    int nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+                    if (nbOrbISS == 0) {
+                        date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
+                        sat.CalculPosVit(date0h);
+                        sat.CalculElementsOsculateurs(date0h);
+                        nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+                    }
+
+                    chaine = "LAT = %1";
+                    ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+                    chaine = "ALT = %1";
+                    ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
+                    chaine = "LON = %1";
+                    ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+                    chaine = "INC = %1";
+                    ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+                    chaine = "ORB = %1";
+                    ui->orbiteISS->setText(chaine.arg(nbOrbISS));
+                    chaine = "BETA = %1";
+                    ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
+
+                    chaine = "GMT = %1/%2 :%3";
+                    const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
+                    const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
+                    const int numJour = (int) jourDsAnnee;
+                    const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
+                    const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
+                    ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
                 }
-
-                chaine = "LAT = %1";
-                ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-                chaine = "ALT = %1";
-                ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
-                chaine = "LON = %1";
-                ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-                chaine = "INC = %1";
-                ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-                chaine = "ORB = %1";
-                ui->orbiteISS->setText(chaine.arg(ui->nbOrbitesSat->text()));
-                chaine = "BETA = %1";
-                ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
-
-                chaine = "GMT = %1/%2 :%3";
-                const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
-                const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
-                const int numJour = (int) jourDsAnnee;
-                const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
-                const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
-                ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
             }
         }
 
@@ -2122,14 +2133,14 @@ void PreviSat::AffichageCourbes() const
         if (ui->afftraj->isChecked()) {
             if (nbSat > 0) {
                 if (!satellites.at(0).isIeralt()) {
-                    int lsat1 = qRound(satellites.at(0).getTraceAuSol().at(0).at(0) * DEG2PXHZ);
-                    int bsat1 = qRound(satellites.at(0).getTraceAuSol().at(0).at(1) * DEG2PXVT);
+                    double lsat1 = satellites.at(0).getTraceAuSol().at(0).at(0) * DEG2PXHZ;
+                    double bsat1 = satellites.at(0).getTraceAuSol().at(0).at(1) * DEG2PXVT;
 
                     const QColor bleuClair(173, 216, 230);
 
                     for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
-                        int lsat2 = qRound(satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ);
-                        int bsat2 = qRound(satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT);
+                        double lsat2 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
+                        double bsat2 = satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT;
                         int ils = 99999;
 
                         if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -2140,8 +2151,44 @@ void PreviSat::AffichageCourbes() const
                             ils = j;
                         }
 
-                        crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ?
-                                    Qt::white : (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                        if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+
+                            if (satellites.at(0).getTle().getNorad() == "25544") {
+
+                                crayon = QPen(Qt::white);
+                                if (fabs(satellites.at(0).getTraceAuSol().at(j).at(2) -
+                                         satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
+
+                                    QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
+
+                                    QLineF lig1 = lig.normalVector();
+                                    lig1.setLength(10.);
+
+                                    QLineF lig2 = QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
+                                    lig2.setLength(10.);
+
+                                    lig = QLineF(lig1.p2(), lig1.p1());
+                                    QLineF lig3 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
+                                                QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx())) : lig.normalVector();
+                                    lig3.setLength(4.);
+
+                                    lig = QLineF(lig2.p2(), lig2.p1());
+                                    QLineF lig4 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
+                                                lig.normalVector() : QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
+                                    lig4.setLength(4.);
+
+                                    scene->addLine(lig1, crayon);
+                                    scene->addLine(lig2, crayon);
+                                    scene->addLine(lig3, crayon);
+                                    scene->addLine(lig4, crayon);
+
+                                }
+                            } else {
+                                crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                            }
+                        } else {
+                            crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                        }
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
                         if (ils == j) {
@@ -2150,8 +2197,8 @@ void PreviSat::AffichageCourbes() const
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
                             ils = 0;
                         }
-                        lsat1 = qRound(satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ);
-                        bsat1 = qRound(satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT);
+                        lsat1 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
+                        bsat1 = satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT;
                     }
                 }
             }
@@ -3141,8 +3188,12 @@ void PreviSat::EnchainementCalculs() const
     /* Declarations des variables locales */
 
     /* Initialisations */
+    // Calculs specifiques lors de l'affichage du Wall Command Center
+    const bool mcc = ui->mccISS->isChecked();
+
     // Nombre de traces au sol a afficher
-    const int nbTraces = (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
+    const int nbTraces = (mcc && satellites.at(0).getTle().getNorad() == "25544") ?
+                3 : (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
 
     // Prise en compte de l'extinction atmospherique
     const bool extinction = ui->extinctionAtmospherique->isChecked();
@@ -3235,7 +3286,7 @@ void PreviSat::EnchainementCalculs() const
         if (nbSat > 0) {
 
             Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
-                                                   traceCiel, satellites);
+                                                   traceCiel, mcc, satellites);
 
             for (int i=0; i<nbSat; i++) {
                 if (satellites[i].isVisible() && !bipSat[i]) {
