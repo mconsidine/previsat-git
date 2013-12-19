@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2013
+ * >    19 decembre 2013
  *
  */
 
@@ -70,7 +70,7 @@ public:
     void CalculElementsOsculateurs(const Date &date);
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, QList<Satellite> &satellites);
+                                            const bool traceCiel, const bool mcc, QList<Satellite> &satellites);
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
@@ -369,6 +369,7 @@ private:
     void Dsinit(const double tc);
     void Dspace(const double tc);
     void CalculBeta(const Soleil &soleil);
+    Date CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite);
     void CalculTracesAuSol(const Date &date, const int nbOrbites);
     void CalculTraceCiel(const Date &date, Observateur observateur);
 

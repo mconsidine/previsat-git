@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    19 decembre 2013
  *
  */
 
@@ -412,7 +412,7 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
  */
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, QList<Satellite> &satellites)
+                                            const bool traceCiel, const bool mcc, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -453,8 +453,11 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul des elements osculateurs et du nombre d'orbites
             satellites[isat].CalculElementsOsculateurs(date);
 
+            const Date dateInit = (mcc && satellites.at(isat).getTle().getNorad() == "25544") ?
+                        satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)) : date;
+
             // Calcul de la trajectoire
-            satellites[isat].CalculTracesAuSol(date, nbTracesAuSol);
+            satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol);
 
             // Calcul de l'angle beta
             satellites[isat].CalculBeta(soleil);
@@ -1270,6 +1273,52 @@ void Satellite::CalculBeta(const Soleil &soleil)
 
     /* Retour */
     return;
+}
+
+/*
+ * Calcul de la date du noeud ascendant precedent a la date donnee
+ */
+Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite)
+{
+    /* Declarations des variables locales */
+    Date j0 = date;
+    Satellite sat = Satellite(_tle);
+
+    /* Initialisations */
+    const double st = 1. / (_tle.getNo() * T360);
+
+    /* Corps de la methode */
+    double lat1 = satellite.getLatitude();
+    int i = 1;
+    bool atrouve = false;
+    while (!atrouve) {
+
+        j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+
+        // Position du satellite
+        sat.CalculPosVit(j0);
+
+        // Latitude
+        const Vecteur3D position = sat._position;
+        const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+        double lat = atan(position.getZ() / r);
+        double phi = DEUX_PI;
+        while (fabs(lat - phi) > 1.e-7) {
+            phi = lat;
+            const double sph = sin(phi);
+            const double ct = 1. / sqrt(1. - E2 * sph * sph);
+            lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
+        }
+
+        if (lat1 > 0. && lat < 0.)
+            atrouve = true;
+        lat1 = lat;
+
+        i--;
+    }
+
+    /* Retour */
+    return (j0);
 }
 
 /*
