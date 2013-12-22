@@ -2096,6 +2096,32 @@ void PreviSat::AffichageCourbes() const
             }
         }
 
+        // Affichage de la ZOE et de la SAA pour le Wall Command Center
+        if (ui->mccISS->isChecked()) {
+
+            // Zone Of Exclusion (ZOE)
+            QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
+            const double xnZOE = 246. * DEG2PXHZ;
+            const double ynZOE = 52. * DEG2PXVT;
+
+            txtZOE->setBrush(Qt::black);
+            const QFont policeZOE(PreviSat::font().family(), 14);
+            txtZOE->setFont(policeZOE);
+            txtZOE->setPos(xnZOE, ynZOE);
+            scene->addItem(txtZOE);
+
+            // South Atlantic Anomaly (SAA)
+            QGraphicsSimpleTextItem * const txtSAA = new QGraphicsSimpleTextItem("SAA");
+            const double xnSAA = 150. * DEG2PXHZ;
+            const double ynSAA = 125. * DEG2PXVT;
+
+            txtSAA->setBrush(Qt::white);
+            const QFont policeSAA(PreviSat::font().family(), 11);
+            txtSAA->setFont(policeSAA);
+            txtSAA->setPos(xnSAA, ynSAA);
+            scene->addItem(txtSAA);
+        }
+
         // Affichage de la Lune
         if (ui->afflune->isChecked()) {
 
@@ -2163,9 +2189,9 @@ void PreviSat::AffichageCourbes() const
 
                         if (ui->mccISS->isChecked()) {
 
-                            // Affichage du numero d'orbite
                             if (satellites.at(0).getTle().getNorad() == "25544") {
 
+                                // Affichage du numero d'orbite
                                 if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
                                         satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
 
@@ -2191,13 +2217,14 @@ void PreviSat::AffichageCourbes() const
                                     if (satellites.at(0).getTle().getNorad() == "25544")
                                         crayon = QPen(Qt::white, 2);
 
+                                    // Affichage des crochets des transitions jour/nuit
                                     const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
                                     if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
 
                                         const double ang = -lig.angle();
 
-                                        QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem((ecl > EPSDBL100) ?
-                                                                                                                 "]" : "[");
+                                        QGraphicsSimpleTextItem * const txtOmb =
+                                                new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "]" : "[");
 
                                         const QFont policeOmb(PreviSat::font().family(), 14, 2);
                                         txtOmb->setFont(policeOmb);
@@ -2229,17 +2256,17 @@ void PreviSat::AffichageCourbes() const
             if (ui->affvisib->isChecked()) {
                 const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
-                crayon = QPen(Qt::white);
+                crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? QPen(Qt::white, 2) : QPen(Qt::white);
                 for(int isat=0; isat<nbMax2; isat++) {
 
                     if (!satellites.at(isat).isIeralt()) {
 
-                        int lsat1 = qRound(satellites.at(isat).getZone().at(0).x() * DEG2PXHZ);
-                        int bsat1 = qRound(satellites.at(isat).getZone().at(0).y() * DEG2PXVT + 1);
+                        double lsat1 = satellites.at(isat).getZone().at(0).x() * DEG2PXHZ;
+                        double bsat1 = satellites.at(isat).getZone().at(0).y() * DEG2PXVT + 1;
 
                         for(int j=1; j<361; j++) {
-                            int lsat2 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                            int bsat2 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1);
+                            double lsat2 = satellites.at(isat).getZone().at(j).x() * DEG2PXHZ;
+                            double bsat2 = satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1;
                             int ils = 99999;
 
                             if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -2258,8 +2285,8 @@ void PreviSat::AffichageCourbes() const
                                 scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
                                 ils = 0;
                             }
-                            lsat1 = qRound(satellites.at(isat).getZone().at(j).x() * DEG2PXHZ);
-                            bsat1 = qRound(satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1);
+                            lsat1 = satellites.at(isat).getZone().at(j).x() * DEG2PXHZ;
+                            bsat1 = satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1;
                         }
                     }
                 }
