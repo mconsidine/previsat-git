@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2013
+ * >    22 decembre 2013
  *
  */
 
@@ -235,6 +235,9 @@ QLabel *messagesStatut3;
 QLabel *modeFonctionnement;
 QLabel *stsDate;
 QLabel *stsHeure;
+
+// Etat video Live ISS
+static bool iEtatVideo;
 
 PreviSat::PreviSat(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
@@ -2154,11 +2157,14 @@ void PreviSat::AffichageCourbes() const
                             ils = j;
                         }
 
+                        const QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
+
+                        crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
                         if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
                             if (satellites.at(0).getTle().getNorad() == "25544") {
 
-                                crayon = QPen(Qt::white);
+                                crayon = QPen(Qt::white, 2);
 
                                 if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
                                         satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
@@ -2172,45 +2178,28 @@ void PreviSat::AffichageCourbes() const
                                     scene->addItem(txtOrb);
 
                                     const double jj = satellites.at(0).getTraceAuSol().at(j).at(3);
-                                    if ((jj - (int) jj) > 0.5 && nbOrb >= 14)
+                                    if ((jj - (int) jj) > 0.5 - offsetUTC && nbOrb >= 14)
                                         nbOrb = 0;
                                     nbOrb++;
                                 }
 
-                                if (fabs(satellites.at(0).getTraceAuSol().at(j).at(2) -
-                                         satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
+                                const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
+                                if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
 
-                                    QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
+                                    const double ang = lig.angle();
 
-                                    QLineF lig1 = lig.normalVector();
-                                    lig1.setLength(8.);
+                                    QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem((ecl) ? "[" : "]");
 
-                                    QLineF lig2 = QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
-                                    lig2.setLength(8.);
-
-                                    lig = QLineF(lig1.p2(), lig1.p1());
-                                    QLineF lig3 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
-                                                QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx())) : lig.normalVector();
-                                    lig3.setLength(3.);
-
-                                    lig = QLineF(lig2.p2(), lig2.p1());
-                                    QLineF lig4 = (satellites.at(0).getTraceAuSol().at(j).at(2) > EPSDBL100) ?
-                                                lig.normalVector() : QLineF(lig.p1(), lig.p1() + QPointF(-lig.dy(), lig.dx()));
-                                    lig4.setLength(3.);
-
-                                    scene->addLine(lig1, crayon);
-                                    scene->addLine(lig2, crayon);
-                                    scene->addLine(lig3, crayon);
-                                    scene->addLine(lig4, crayon);
-
+                                    const QFont policeOmb(PreviSat::font().family(), 14, 2);
+                                    txtOmb->setFont(policeOmb);
+                                    txtOmb->setBrush(Qt::white);
+                                    txtOmb->setPos(lsat2, bsat2 + 14);
+                                    txtOmb->setRotation(-ang);
+                                    scene->addItem(txtOmb);
                                 }
-                            } else {
-                                crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
                             }
-                        } else {
-                            crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
                         }
-                        scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+                        scene->addLine(lig, crayon);
 
                         if (ils == j) {
                             lsat1 -= lcarte;
@@ -2384,7 +2373,7 @@ void PreviSat::AffichageCourbes() const
                 const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
                 const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
 
-                rectangle = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1., bstr-1., 2.5, 3.5);
+                rectangle = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
                 scene3->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
 
                 // Nom des etoiles les plus brillantes
@@ -3225,6 +3214,7 @@ void PreviSat::EnchainementCalculs() const
 
     /* Corps de la methode */
     try {
+
         /*
          * Calcul de la position de l'observateur
          */
@@ -5745,6 +5735,10 @@ void PreviSat::on_affichageCiel_clicked()
         ui->sud->setVisible(false);
         ui->est->setVisible(false);
         ui->ouest->setVisible(false);
+        if (ui->mccISS->isChecked()) {
+            ui->frameCoordISS->setVisible(true);
+            ui->gmt->setVisible(true);
+        }
         ui->affichageCiel->setToolTip(tr("Carte du ciel"));
     } else {
         ui->carte->setVisible(false);
@@ -5755,6 +5749,8 @@ void PreviSat::on_affichageCiel_clicked()
         ui->sud->setVisible(true);
         ui->est->setVisible(true);
         ui->ouest->setVisible(true);
+        ui->frameCoordISS->setVisible(false);
+        ui->gmt->setVisible(false);
         ui->affichageCiel->setToolTip(tr("Carte du monde"));
     }
 
@@ -5899,10 +5895,15 @@ void PreviSat::on_fluxVideo_clicked()
 
                 afficherVideo = new QMainWindow;
                 afficherVideo->resize(640, 360);
+
                 const QString msg = "%1 %2 - ISS Live";
                 afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+
                 const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F4), afficherVideo);
                 connect(shortcut, SIGNAL(activated()), this, SLOT(CaptureVideo()));
+
+                const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
+                connect(shortcut2, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
 
 #if defined (Q_OS_WIN)
                 libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
@@ -5974,6 +5975,20 @@ void PreviSat::on_fermerVideo_clicked()
     _vlcinstance = NULL;
 }
 
+void PreviSat::VideoPleinEcran()
+{
+    if (afficherVideo->isFullScreen()) {
+
+        if (iEtatVideo)
+            afficherVideo->showMaximized();
+        else
+            afficherVideo->showNormal();
+
+    } else {
+        iEtatVideo = afficherVideo->isMaximized();
+        afficherVideo->showFullScreen();
+    }
+}
 
 void PreviSat::on_directHelp_clicked()
 {
