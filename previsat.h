@@ -147,6 +147,7 @@ private slots:
     void on_muetVideo_clicked();
     void on_agrandirVideo_clicked();
     void on_fermerVideo_clicked();
+    void VideoPleinEcran();
 
     void on_directHelp_clicked();
 
