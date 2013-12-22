@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2013
+ * >    22 decembre 2013
  *
  */
 
@@ -454,7 +454,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             satellites[isat].CalculElementsOsculateurs(date);
 
             const Date dateInit = (mcc && satellites.at(isat).getTle().getNorad() == "25544") ?
-                        satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)) : date;
+                        satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)) : Date(date.getJourJulienUTC(), 0., false);
 
             // Calcul de la trajectoire
             satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol);
