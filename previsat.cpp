@@ -2160,21 +2160,24 @@ void PreviSat::AffichageCourbes() const
                         const QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
 
                         crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
-                        if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
+                        if (ui->mccISS->isChecked()) {
+
+                            // Affichage du numero d'orbite
                             if (satellites.at(0).getTle().getNorad() == "25544") {
-
-                                crayon = QPen(Qt::white, 2);
 
                                 if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
                                         satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
 
                                     QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(nbOrb));
+
+                                    const QFont policeOrb(PreviSat::font().family(), 10, 2);
+                                    txtOrb->setFont(policeOrb);
+                                    txtOrb->setBrush(Qt::white);
+
                                     const int lng = (int) txtOrb->boundingRect().width();
                                     const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng : lsat2 - lng;
-
-                                    txtOrb->setBrush(Qt::white);
-                                    txtOrb->setPos(xnorb, hcarte2 - 15.);
+                                    txtOrb->setPos(xnorb, hcarte2 - 18);
                                     scene->addItem(txtOrb);
 
                                     const double jj = satellites.at(0).getTraceAuSol().at(j).at(3);
@@ -2183,19 +2186,26 @@ void PreviSat::AffichageCourbes() const
                                     nbOrb++;
                                 }
 
-                                const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
-                                if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
+                                if (ui->styleWCC->isChecked()) {
 
-                                    const double ang = lig.angle();
+                                    if (satellites.at(0).getTle().getNorad() == "25544")
+                                        crayon = QPen(Qt::white, 2);
 
-                                    QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem((ecl) ? "[" : "]");
+                                    const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
+                                    if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
 
-                                    const QFont policeOmb(PreviSat::font().family(), 14, 2);
-                                    txtOmb->setFont(policeOmb);
-                                    txtOmb->setBrush(Qt::white);
-                                    txtOmb->setPos(lsat2, bsat2 + 14);
-                                    txtOmb->setRotation(-ang);
-                                    scene->addItem(txtOmb);
+                                        const double ang = -lig.angle();
+
+                                        QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem((ecl > EPSDBL100) ?
+                                                                                                                 "]" : "[");
+
+                                        const QFont policeOmb(PreviSat::font().family(), 14, 2);
+                                        txtOmb->setFont(policeOmb);
+                                        txtOmb->setBrush(Qt::white);
+                                        txtOmb->setPos(lsat1, bsat1 + 15);
+                                        txtOmb->setRotation(ang);
+                                        scene->addItem(txtOmb);
+                                    }
                                 }
                             }
                         }
@@ -2204,7 +2214,7 @@ void PreviSat::AffichageCourbes() const
                         if (ils == j) {
                             lsat1 -= lcarte;
                             lsat2 -= lcarte;
-                            scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+                            scene->addLine(lig, crayon);
                             ils = 0;
                         }
                         lsat1 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
