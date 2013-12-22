@@ -454,7 +454,8 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             satellites[isat].CalculElementsOsculateurs(date);
 
             const Date dateInit = (mcc && satellites.at(isat).getTle().getNorad() == "25544") ?
-                        satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)) : Date(date.getJourJulienUTC(), 0., false);
+                        Date(satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)).getJourJulienUTC() - EPS_DATES, 0.,
+                             false) : Date(date.getJourJulienUTC(), 0., false);
 
             // Calcul de la trajectoire
             satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol);
@@ -1317,8 +1318,46 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satell
         i--;
     }
 
+    double jjm[3], lati[3];
+    bool afin = false;
+    double jj0 = j0.getJourJulienUTC();
+    double periode = st;
+    while (!afin) {
+
+        jjm[0] = jj0 - periode;
+        jjm[1] = jj0;
+        jjm[2] = jj0 + periode;
+
+        for(int j=0; j<3; j++) {
+
+            j0 = Date(jjm[j], 0., false);
+
+            // Position du satellite
+            sat.CalculPosVit(j0);
+
+            // Latitude
+            const Vecteur3D position = sat._position;
+            const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+            double lat = atan(position.getZ() / r);
+            double phi = DEUX_PI;
+            while (fabs(lat - phi) > 1.e-7) {
+                phi = lat;
+                const double sph = sin(phi);
+                const double ct = 1. / sqrt(1. - E2 * sph * sph);
+                lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
+            }
+            lati[j] = lat;
+        }
+
+        const double t_noeudAsc = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
+        if (fabs(jj0 - t_noeudAsc) < EPS_DATES)
+            afin = true;
+        jj0 = t_noeudAsc;
+        periode *= 0.5;
+    }
+
     /* Retour */
-    return (j0);
+    return (Date(jj0, 0., false));
 }
 
 /*
