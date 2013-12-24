@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2013
+ * >    24 decembre 2013
  *
  */
 
@@ -87,6 +87,7 @@ private:
     void AffichageCourbes() const;
     void AffichageGroupesTLE() const;
     void AffichageLieuObs() const;
+    void AffichageSatellite(const int isat, const int lsat, const int bsat, const int lcarte, const int hcarte) const;
     void AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const;
     void CalculsAffichage();
 

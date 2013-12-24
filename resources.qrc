@@ -48,5 +48,7 @@
         <file>resources/pref.png</file>
         <file>resources/editer.png</file>
         <file>resources/NASA.bmp</file>
+        <file>resources/icones/25544.png</file>
+        <file>resources/icones/20580.png</file>
     </qresource>
 </RCC>
