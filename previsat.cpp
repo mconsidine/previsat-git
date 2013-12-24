@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 decembre 2013
+ * >    24 decembre 2013
  *
  */
 
@@ -185,6 +185,11 @@ static const double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., 
                                       { -70., -45.5 }, { -75., -43.5 }, { -80., -42. }, { -85., -38.5 }, { -90., -36. },
                                       { -95., -33. }, { -96.5, -29. } };
 
+// SAA pour la visualisation Wall Command Center
+static const double tabSAA_ISS[16][2] = { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 },
+                                         { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 }, { 2.5, -53. }, { 42., -53. },
+                                         { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 },
+                                         { 55.5, -17.3 } };
 
 // Ecliptique
 static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 },
@@ -900,9 +905,6 @@ void PreviSat::DemarrageApplication()
 
     ui->frameCarteListe->resize(size());
 
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
-
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
     Etoile::CalculPositionEtoiles(observateurs.at(0), etoiles);
@@ -912,12 +914,16 @@ void PreviSat::DemarrageApplication()
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
     const bool affWCC = ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544";
+    ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
     isEcl = satellites.at(0).isEclipse();
     ui->betaISS->setVisible(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
+
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
 
     // Demarrage du temps reel
     chronometre->setInterval(200);
@@ -1937,30 +1943,84 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            const QPen pen = QPen((ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? Qt::red : Qt::white);
+            const QPen pen = QPen((ui->mccISS->isChecked() && ui->styleWCC->isChecked() &&
+                                   satellites.at(0).getTle().getNorad() == "25544") ? Qt::red : Qt::white);
             scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
             QPen stylo(Qt::lightGray);
-            const int tablat[] = { hcarte / 6, hcarte / 3, (int) (hcarte / 1.5), (int) (hcarte / 1.2) };
-            const int tablon[] = { lcarte / 12, lcarte / 6, (int) (lcarte * 0.25), lcarte / 3, (int) (lcarte / 2.4),
-                                   (int) (7. * lcarte / 12.), (int) (lcarte / 1.5), (int) (lcarte * 0.75), (int) (lcarte / 1.2),
-                                   (int) (11. * lcarte / 12.) };
+            QList<int> tabLat, tabLon;
 
-            for(int j=0; j<4; j++)
-                scene->addLine(0, tablat[j], lcarte, tablat[j], stylo);
+            if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+                tabLat << hcarte / 12 << hcarte / 6 << (int) (hcarte * 0.25) << hcarte / 3 << (int) (hcarte / 2.4) <<
+                          (int) (7. * hcarte / 12.) << (int) (hcarte / 1.5) << (int) (hcarte * 0.75) << (int) (hcarte / 1.2) <<
+                          (int) (11. * hcarte / 12.);
+                tabLon << lcarte / 24 << lcarte / 12 << lcarte / 8 << lcarte / 6 << (int) (lcarte / 4.8) << (int) (lcarte * 0.25) <<
+                          (int) (7. * lcarte / 24.) << lcarte / 3 << (int) (3. * lcarte / 8.) << (int) (lcarte / 2.4) <<
+                          (int) (11. * lcarte / 24.) << (int) (13. * lcarte / 24.) << (int) (7. * lcarte / 12.) <<
+                          (int) (15. * lcarte / 24.) << (int) (lcarte / 1.5) << (int) (17. * lcarte / 24.) << (int) (lcarte * 0.75) <<
+                          (int) (19. * lcarte / 24.) << (int) (lcarte / 1.2) << (int) (21. * lcarte / 24.) <<
+                          (int) (11. * lcarte / 12.) << (int) (23. * lcarte / 24.);
 
-            for(int j=0; j<10; j++)
-                scene->addLine(tablon[j], 0, tablon[j], hcarte, stylo);
+                ui->W150->setText("-150");
+                ui->W120->setText("-120");
+                ui->W90->setText("-90");
+                ui->W60->setText("-60");
+                ui->W30->setText("-30");
 
-            // Tropiques
-            stylo.setStyle(Qt::DashLine);
-            scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
-            scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
+                ui->S30->setText("-30");
+                ui->S60->setText("-60");
+
+            } else {
+                tabLat << hcarte / 6 << hcarte / 3 << (int) (hcarte / 1.5) << (int) (hcarte / 1.2);
+                tabLon << lcarte / 12 << lcarte / 6 << (int) (lcarte * 0.25) << lcarte / 3 << (int) (lcarte / 2.4)
+                              << (int) (7. * lcarte / 12.) << (int) (lcarte / 1.5) << (int) (lcarte * 0.75) << (int) (lcarte / 1.2) <<
+                              (int) (11. * lcarte / 12.);
+
+                ui->W150->setText("150");
+                ui->W120->setText("120");
+                ui->W90->setText("90");
+                ui->W60->setText("60");
+                ui->W30->setText("30");
+
+                ui->S30->setText("30");
+                ui->S60->setText("60");
+
+                // Tropiques
+                stylo.setStyle(Qt::DashLine);
+                scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
+                scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
+            }
+
+            const int dec1 = (ui->styleWCC->isChecked()) ? 12 : 8;
+            const int dec2 = (ui->styleWCC->isChecked()) ? 9 : 5;
+            ui->W150->move((int) (lcarte / 12.) - dec1, 0);
+            ui->W120->move((int) (lcarte / 6.) - dec1, 0);
+            ui->W90->move((int) (lcarte / 4.) - dec2, 0);
+            ui->W60->move((int) (lcarte / 3.) - dec2, 0);
+            ui->W30->move((int) (lcarte / 2.4) - dec2, 0);
+
+            stylo.setStyle(Qt::SolidLine);
+            for(int j=0; j<tabLat.size(); j++)
+                scene->addLine(0, tabLat.at(j), lcarte, tabLat.at(j), stylo);
+
+            for(int j=0; j<tabLon.size(); j++)
+                scene->addLine(tabLon.at(j), 0, tabLon.at(j), hcarte, stylo);
 
             if (!ui->carte->isHidden()) {
                 ui->frameLat->setVisible(true);
                 ui->frameLon->setVisible(true);
+                if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+                    ui->NN->setVisible(false);
+                    ui->SS->setVisible(false);
+                    ui->EE->setVisible(false);
+                    ui->WW->setVisible(false);
+                } else {
+                    ui->NN->setVisible(true);
+                    ui->SS->setVisible(true);
+                    ui->EE->setVisible(true);
+                    ui->WW->setVisible(true);
+                }
             }
         } else {
             ui->frameLat->setVisible(false);
@@ -1968,7 +2028,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la SAA
-        if (ui->affSAA->isChecked()) {
+        if (ui->affSAA->isChecked() && !ui->mccISS->isChecked()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
             QVector<QPoint> zoneSAA;
@@ -2097,7 +2157,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
-        if (ui->mccISS->isChecked()) {
+        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544") {
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -2120,6 +2180,18 @@ void PreviSat::AffichageCourbes() const
             txtSAA->setFont(policeSAA);
             txtSAA->setPos(xnSAA, ynSAA);
             scene->addItem(txtSAA);
+
+            // Dessin du contour de la SAA
+            QVector<QPoint> zoneSAA_ISS;
+            zoneSAA_ISS.resize(16);
+
+            for(int i=0; i<zoneSAA_ISS.size(); i++) {
+                zoneSAA_ISS[i].setX(qRound((180. - tabSAA_ISS[i][0]) * DEG2PXHZ));
+                zoneSAA_ISS[i].setY(qRound((90. - tabSAA_ISS[i][1]) * DEG2PXVT));
+            }
+
+            const QPolygonF poly1(zoneSAA_ISS);
+            scene->addPolygon(poly1, QPen(Qt::white, 2));
         }
 
         // Affichage de la Lune
@@ -2256,7 +2328,8 @@ void PreviSat::AffichageCourbes() const
             if (ui->affvisib->isChecked()) {
                 const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
-                crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? QPen(Qt::white, 2) : QPen(Qt::white);
+                crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked() && satellites.at(0).getTle().getNorad() == "25544") ?
+                            QPen(Qt::white, 2) : QPen(Qt::white);
                 for(int isat=0; isat<nbMax2; isat++) {
 
                     if (!satellites.at(isat).isIeralt()) {
@@ -2301,27 +2374,36 @@ void PreviSat::AffichageCourbes() const
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
-                rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
-                scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
+                if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
-                // Nom des satellites
-                if (ui->affnomsat->isChecked()) {
+                    const QString nomIcone = ":/resources/icones/%1.png";
+                    const int norad = satellites.at(isat).getTle().getNorad().toInt();
 
-                    if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
-                            ui->affnomsat->checkState() == Qt::Checked) {
-                        QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
-                        const int lng = (int) txtSat->boundingRect().width();
-                        const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
-                        const int ynsat = (bsat + 9 > hcarte) ? bsat - 12 : bsat;
+                    QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(nomIcone.arg(norad)));
 
-                        txtSat->setBrush(Qt::white);
-                        txtSat->setPos(xnsat, ynsat);
-                        scene->addItem(txtSat);
+                    switch (norad) {
+
+                    // HST
+                    case 20580:
+                        pm->setPos(lsat - 35, bsat - 35);
+                        break;
+
+                    // ISS
+                    case 25544:
+                        pm->setPos(lsat - 39, bsat - 48);
+                        break;
+
+                    default:
+
+                        AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
+                        break;
                     }
+                } else {
+                    AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
                 }
             }
         }
+
         ui->carte->setScene(scene);
         QGraphicsView view(scene);
         view.setRenderHints(QPainter::Antialiasing);
@@ -2841,6 +2923,32 @@ void PreviSat::AffichageLieuObs() const
 
     /* Retour */
     return;
+}
+
+void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat, const int lcarte, const int hcarte) const
+{
+    // Dessin du satellite
+    const QColor crimson(220, 20, 60);
+    const QPen noir(Qt::black);
+    const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+    const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+    scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
+
+    // Nom des satellites
+    if (ui->affnomsat->isChecked()) {
+
+        if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
+                ui->affnomsat->checkState() == Qt::Checked) {
+            QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
+            const int lng = (int) txtSat->boundingRect().width();
+            const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
+            const int ynsat = (bsat + 9 > hcarte) ? bsat - 12 : bsat;
+
+            txtSat->setBrush(Qt::white);
+            txtSat->setPos(xnsat, ynsat);
+            scene->addItem(txtSat);
+        }
+    }
 }
 
 /*
@@ -4962,11 +5070,13 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->N60->move(5, (int) (hcarte / 6.) - 1);
     ui->frameLat->setGeometry(1 + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
-    ui->W150->move((int) (lcarte / 12.) - 8, 0);
-    ui->W120->move((int) (lcarte / 6.) - 8, 0);
-    ui->W90->move((int) (lcarte / 4.) - 5, 0);
-    ui->W60->move((int) (lcarte / 3.) - 5, 0);
-    ui->W30->move((int) (lcarte / 2.4) - 5, 0);
+    const int dec1 = (ui->styleWCC->isChecked()) ? 12 : 8;
+    const int dec2 = (ui->styleWCC->isChecked()) ? 9 : 5;
+    ui->W150->move((int) (lcarte / 12.) - dec1, 0);
+    ui->W120->move((int) (lcarte / 6.) - dec1, 0);
+    ui->W90->move((int) (lcarte / 4.) - dec2, 0);
+    ui->W60->move((int) (lcarte / 3.) - dec2, 0);
+    ui->W30->move((int) (lcarte / 2.4) - dec2, 0);
     ui->WW->move((int) (lcarte * 11. / 24.) - 2, 0);
     ui->W0->move((int) (lcarte * 0.5) - 2, 0);
     ui->EE->move((int) (lcarte * 13. / 24.) - 2, 0);
