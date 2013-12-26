@@ -187,9 +187,9 @@ static const double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., 
 
 // SAA pour la visualisation Wall Command Center
 static const double tabSAA_ISS[16][2] = { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 },
-                                         { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 }, { 2.5, -53. }, { 42., -53. },
-                                         { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 },
-                                         { 55.5, -17.3 } };
+                                          { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 }, { 2.5, -53. }, { 42., -53. },
+                                          { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 },
+                                          { 55.5, -17.3 } };
 
 // Ecliptique
 static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 },
@@ -904,6 +904,8 @@ void PreviSat::DemarrageApplication()
     }
 
     ui->frameCarteListe->resize(size());
+    if (settings.value("affichage/affMax", false).toBool())
+        on_maximise_clicked();
 
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
@@ -1158,7 +1160,7 @@ void PreviSat::InitFicTLE() const
 void PreviSat::AffichageDonnees()
 {
     /* Declarations des variables locales */
-    QString chaine2;
+    QString chaine, chaine2;
 
     /* Initialisations */
     QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
@@ -1196,7 +1198,7 @@ void PreviSat::AffichageDonnees()
         /*
          * Affichage des donnees sur l'onglet General
          */
-        QString chaine = dateCourante.ToLongDate().append("  ");
+        chaine = dateCourante.ToLongDate().append("  ");
         if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
             QTime heur;
             heur = heur.addSecs((int) (fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
@@ -1402,65 +1404,6 @@ void PreviSat::AffichageDonnees()
             } else {
                 ui->lbl_prochainAOS->setVisible(false);
                 ui->dateAOS->setVisible(false);
-            }
-
-
-            /*
-             * Donnees ISS sur le Wall Command Center
-             */
-            if (ui->mccISS->isChecked()) {
-
-                // Calcul de la prochaine transition J/N
-                if (satellites.at(0).getTle().getNorad() == "25544") {
-
-                    if (!(isEcl && satellites.at(0).isEclipse()))
-                        acalcDN = true;
-
-                    if (acalcDN) {
-                        CalculDN();
-                        isEcl = satellites.at(0).isEclipse();
-                    }
-
-                    chaine = "D/N : %1";
-                    const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
-                    const double delai = dateEcl.getJourJulienUTC() - dateCrt.getJourJulienUTC();
-                    const Date delaiEcl = Date(delai - 0.5, 0.);
-                    const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "-:--:--";
-                    ui->nextTransitionISS->setText(chaine.arg(cDelai));
-
-                    Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
-                    Satellite sat(tles.at(0));
-                    sat.CalculPosVit(date0h);
-                    sat.CalculElementsOsculateurs(date0h);
-                    nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-                    if (nbOrbISS == 0) {
-                        date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
-                        sat.CalculPosVit(date0h);
-                        sat.CalculElementsOsculateurs(date0h);
-                        nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-                    }
-
-                    chaine = "LAT = %1";
-                    ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-                    chaine = "ALT = %1";
-                    ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
-                    chaine = "LON = %1";
-                    ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-                    chaine = "INC = %1";
-                    ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-                    chaine = "ORB = %1";
-                    ui->orbiteISS->setText(chaine.arg(nbOrbISS));
-                    chaine = "BETA = %1";
-                    ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
-
-                    chaine = "GMT = %1/%2 :%3";
-                    const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
-                    const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
-                    const int numJour = (int) jourDsAnnee;
-                    const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
-                    const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
-                    ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
-                }
             }
         }
 
@@ -1672,6 +1615,65 @@ void PreviSat::AffichageDonnees()
                 ui->categorieOrbite->setText(satellites.at(0).getCategorieOrbite());
                 ui->pays->setText(satellites.at(0).getPays());
             }
+        }
+    }
+
+
+    /*
+     * Donnees ISS sur le Wall Command Center
+     */
+    if (ui->mccISS->isChecked()) {
+
+        // Calcul de la prochaine transition J/N
+        if (satellites.at(0).getTle().getNorad() == "25544") {
+
+            if (!(isEcl && satellites.at(0).isEclipse()))
+                acalcDN = true;
+
+            if (acalcDN) {
+                CalculDN();
+                isEcl = satellites.at(0).isEclipse();
+            }
+
+            chaine = "D/N : %1";
+            const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
+            const double delai = dateEcl.getJourJulienUTC() - dateCrt.getJourJulienUTC();
+            const Date delaiEcl = Date(delai - 0.5, 0.);
+            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "-:--:--";
+            ui->nextTransitionISS->setText(chaine.arg(cDelai));
+
+            Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
+            Satellite sat(tles.at(0));
+            sat.CalculPosVit(date0h);
+            sat.CalculElementsOsculateurs(date0h);
+            nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+            if (nbOrbISS == 0) {
+                date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
+                sat.CalculPosVit(date0h);
+                sat.CalculElementsOsculateurs(date0h);
+                nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+            }
+
+            chaine = "LAT = %1";
+            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "ALT = %1";
+            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
+            chaine = "LON = %1";
+            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "INC = %1";
+            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+            chaine = "ORB = %1";
+            ui->orbiteISS->setText(chaine.arg(nbOrbISS));
+            chaine = "BETA = %1";
+            ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
+
+            chaine = "GMT = %1/%2 :%3";
+            const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
+            const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
+            const int numJour = (int) jourDsAnnee;
+            const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
+            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
+            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
         }
     }
 
@@ -1974,8 +1976,8 @@ void PreviSat::AffichageCourbes() const
             } else {
                 tabLat << hcarte / 6 << hcarte / 3 << (int) (hcarte / 1.5) << (int) (hcarte / 1.2);
                 tabLon << lcarte / 12 << lcarte / 6 << (int) (lcarte * 0.25) << lcarte / 3 << (int) (lcarte / 2.4)
-                              << (int) (7. * lcarte / 12.) << (int) (lcarte / 1.5) << (int) (lcarte * 0.75) << (int) (lcarte / 1.2) <<
-                              (int) (11. * lcarte / 12.);
+                       << (int) (7. * lcarte / 12.) << (int) (lcarte / 1.5) << (int) (lcarte * 0.75) << (int) (lcarte / 1.2) <<
+                          (int) (11. * lcarte / 12.);
 
                 ui->W150->setText("150");
                 ui->W120->setText("120");
@@ -2388,7 +2390,7 @@ void PreviSat::AffichageCourbes() const
                         pm->setPos(lsat - 35, bsat - 35);
                         break;
 
-                    // ISS
+                        // ISS
                     case 25544:
                         pm->setPos(lsat - 39, bsat - 48);
                         break;
@@ -4960,6 +4962,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
     settings.setValue("affichage/largeur", width());
     settings.setValue("affichage/hauteur", height());
+    settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
     settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
