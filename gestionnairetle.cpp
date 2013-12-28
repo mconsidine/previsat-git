@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    28 decembre 2013
  *
  */
 
@@ -117,6 +117,14 @@ void GestionnaireTLE::load()
     ui->listeFichiersTLE->clear();
     ui->nbJoursAgeMaxTLE->setValue(settings.value("temps/ageMax", 15).toInt());
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
+
+    const QIcon ajout(":/resources/ajout.png");
+    ui->actionAjouter_des_fichiers->setIcon(ajout);
+    ui->actionCreer_un_groupe->setIcon(ajout);
+
+    const QIcon suppr(":/resources/suppr.png");
+    ui->actionSupprimer->setIcon(suppr);
+    ui->actionSupprimerGroupe->setIcon(suppr);
 
     if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
 
