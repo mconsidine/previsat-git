@@ -2358,50 +2358,35 @@ void PreviSat::AffichageCourbes() const
 
                     if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
+                        crayon = QPen(Qt::white, 2);
                         if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) {
+
                             const int numeroTDRS = satellites.at(isat).getTle().getNom().section(" ", 1).toInt();
 
-                            int i = 0;
+                            int r, v, b;
                             QString nomTDRS;
                             QStringListIterator it(tabTDRS);
                             while (it.hasNext()) {
+
                                 const QString ligne = it.next().trimmed();
                                 if (ligne.section(" ", 0, 0).toInt() == numeroTDRS) {
-                                    nomTDRS = ligne.section(" ", 1);
-                                    it.toBack();
+
+                                    nomTDRS = ligne.section(" ", 1, 1);
+                                    r = ligne.section(" ", 2, 2).toInt();
+                                    v = ligne.section(" ", 3, 3).toInt();
+                                    b = ligne.section(" ", 4, 4).toInt();
+
+                                    // Affichage du nom du satellite TDRS
+                                    QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
+                                    const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
+                                    const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                                    crayon = QPen(QColor(r, v, b), 2);
+                                    txtSat->setBrush(QColor(r, v, b));
+                                    txtSat->setPos(lsat - 16, bsat + 17);
+                                    scene->addItem(txtSat);
                                 }
-                                i++;
                             }
-
-                            if (nomTDRS.isEmpty())
-                                i = 0;
-
-                            switch (i) {
-                            case 1:
-                                crayon = QPen(Qt::cyan, 2);
-                                break;
-                            case 2:
-                                crayon = QPen(Qt::yellow, 2);
-                                break;
-                            case 3:
-                                crayon = QPen(Qt::green, 2);
-                                break;
-                            default:
-                                crayon = QPen(Qt::white, 2);
-                                break;
-                            }
-
-                            // Affichage du nom du satellite TDRS
-                            QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
-                            const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                            const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
-
-                            txtSat->setBrush(crayon.color());
-                            txtSat->setPos(lsat - 16, bsat + 17);
-                            scene->addItem(txtSat);
-
-                        } else {
-                            crayon = QPen(Qt::white, 2);
                         }
                     } else {
                         crayon = QPen(Qt::white);
