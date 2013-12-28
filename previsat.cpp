@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 decembre 2013
+ * >    28 decembre 2013
  *
  */
 
@@ -1624,9 +1624,9 @@ void PreviSat::AffichageDonnees()
      */
     if (ui->mccISS->isChecked()) {
 
-        // Calcul de la prochaine transition J/N
         if (satellites.at(0).getTle().getNorad() == "25544") {
 
+            // Calcul de la prochaine transition J/N
             if (!(isEcl && satellites.at(0).isEclipse()))
                 acalcDN = true;
 
@@ -1639,21 +1639,20 @@ void PreviSat::AffichageDonnees()
             const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
             const double delai = dateEcl.getJourJulienUTC() - dateCrt.getJourJulienUTC();
             const Date delaiEcl = Date(delai - 0.5, 0.);
-            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "-:--:--";
+            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "0:00:00";
             ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
+            // Calcul du nombre d'orbites dans le jour
             Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
             Satellite sat(tles.at(0));
             sat.CalculPosVit(date0h);
             sat.CalculElementsOsculateurs(date0h);
             nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-            if (nbOrbISS == 0) {
-                date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
-                sat.CalculPosVit(date0h);
-                sat.CalculElementsOsculateurs(date0h);
-                nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-            }
 
+            if (nbOrbISS == 0 || nbOrbISS > 15)
+                nbOrbISS = 1;
+
+            // Affichage des donnees du blackboard
             chaine = "LAT = %1";
             ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
             chaine = "ALT = %1";
@@ -1667,13 +1666,14 @@ void PreviSat::AffichageDonnees()
             chaine = "BETA = %1";
             ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
 
+            // Calcul et affichage du jour et de l'heure GMT
             chaine = "GMT = %1/%2 :%3";
             const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
             const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
             const int numJour = (int) jourDsAnnee;
             const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
-            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure);
-            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.0005);
+            ui->gmt->setText(chaine.arg(numJour, 1, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
         }
     }
 
@@ -2049,9 +2049,17 @@ void PreviSat::AffichageCourbes() const
         const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
         const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
 
-        if (ui->affsoleil->isChecked()) {
-            rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
-            scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+        if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+
+            const QString iconeSoleil = ":/resources/icones/soleil.png";
+            QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
+            pm->setPos(lsol - 15, bsol - 10);
+
+        } else {
+            if (ui->affsoleil->isChecked()) {
+                rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
+                scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            }
         }
 
         // Zone d'ombre
@@ -2163,13 +2171,15 @@ void PreviSat::AffichageCourbes() const
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
-            const double xnZOE = 246. * DEG2PXHZ;
-            const double ynZOE = 52. * DEG2PXVT;
+            const double xnZOE = 252. * DEG2PXHZ;
+            const double ynZOE = 66. * DEG2PXVT;
 
             txtZOE->setBrush(Qt::black);
             const QFont policeZOE(PreviSat::font().family(), 14);
             txtZOE->setFont(policeZOE);
-            txtZOE->setPos(xnZOE, ynZOE);
+            const int htt = (int) txtZOE->boundingRect().height();
+
+            txtZOE->setPos(xnZOE, ynZOE - htt);
             scene->addItem(txtZOE);
 
             // South Atlantic Anomaly (SAA)
@@ -2199,15 +2209,17 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la Lune
         if (ui->afflune->isChecked()) {
 
-            const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
-            const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
+            if (!(ui->mccISS->isChecked() && ui->styleWCC->isChecked())) {
+                const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
+                const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
 
-            QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
-            QTransform transform;
-            transform.translate(llun - 7, blun - 7);
-            if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
-                transform.rotate(180.);
-            lun->setTransform(transform);
+                QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
+                QTransform transform;
+                transform.translate(llun - 7, blun - 7);
+                if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+                    transform.rotate(180.);
+                lun->setTransform(transform);
+            }
         }
 
         // Lieux d'observation
@@ -2280,8 +2292,7 @@ void PreviSat::AffichageCourbes() const
                                     txtOrb->setPos(xnorb, hcarte2 - 18);
                                     scene->addItem(txtOrb);
 
-                                    const double jj = satellites.at(0).getTraceAuSol().at(j).at(3);
-                                    if ((jj - (int) jj) > 0.5 - offsetUTC && nbOrb >= 14)
+                                    if (nbOrb > 14)
                                         nbOrb = 0;
                                     nbOrb++;
                                 }
@@ -5938,6 +5949,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     /* Corps de la methode */
     if (checked) {
 
+        // Affichage du bouton pour activer le flux video
         ui->frameRadar->setVisible(false);
         ui->coordGeo1->setVisible(false);
         ui->coordGeo2->setVisible(false);
@@ -5954,6 +5966,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
     } else {
 
+        // Fermeture de la video
         if (_isPlaying || _mp != NULL)
             on_fermerVideo_clicked();
 
@@ -5971,6 +5984,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     }
     ui->fluxVideo->setVisible(checked);
+
+    // Affichage du blackboard
     if (satellites.at(0).getTle().getNorad() == "25544") {
         ui->frameCoordISS->setVisible(checked);
         ui->gmt->setVisible(checked);
@@ -6049,6 +6064,7 @@ void PreviSat::on_fluxVideo_clicked()
                 const QString msg = "%1 %2 - ISS Live";
                 afficherVideo->setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
+                // Definition de raccourcis
                 const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F4), afficherVideo);
                 connect(shortcut, SIGNAL(activated()), this, SLOT(CaptureVideo()));
 
@@ -6068,7 +6084,14 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_xwindow(_mp2, windid);
 #else
 #endif
+
+                // Lecture de la video
                 libvlc_media_player_play(_mp);
+                const bool muet = settings.value("affichage/muetVideo", false).toBool();
+                libvlc_audio_set_mute(_mp, (muet) ? 1 : 0);
+                QStyle * const styleBouton = QApplication::style();
+                ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolume) :
+                                                      styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted));
                 libvlc_audio_set_mute(_mp2, 1);
                 libvlc_media_player_play(_mp2);
             }
@@ -6093,6 +6116,7 @@ void PreviSat::on_muetVideo_clicked()
                                           styleBouton->standardIcon(QStyle::SP_MediaVolume));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     libvlc_audio_toggle_mute(_mp);
+    settings.setValue("affichage/muetVideo", muet);
 
     /* Retour */
     return;
@@ -6105,7 +6129,13 @@ void PreviSat::on_agrandirVideo_clicked()
 
 void PreviSat::on_fermerVideo_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     // Arret de la lecture
+    settings.setValue("affichage/muetVideo", (bool) libvlc_audio_get_mute(_mp));
     libvlc_media_player_stop(_mp);
     libvlc_media_player_stop(_mp2);
 
@@ -6123,10 +6153,18 @@ void PreviSat::on_fermerVideo_clicked()
     _mp = NULL;
     _mp2 = NULL;
     _vlcinstance = NULL;
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::VideoPleinEcran()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (afficherVideo->isFullScreen()) {
 
         if (iEtatVideo)
@@ -6138,6 +6176,9 @@ void PreviSat::VideoPleinEcran()
         iEtatVideo = afficherVideo->isMaximized();
         afficherVideo->showFullScreen();
     }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_directHelp_clicked()
