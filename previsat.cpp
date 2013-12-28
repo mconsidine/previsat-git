@@ -2363,18 +2363,16 @@ void PreviSat::AffichageCourbes() const
 
                             const int numeroTDRS = satellites.at(isat).getTle().getNom().section(" ", 1).toInt();
 
-                            int r, v, b;
-                            QString nomTDRS;
                             QStringListIterator it(tabTDRS);
                             while (it.hasNext()) {
 
                                 const QString ligne = it.next().trimmed();
                                 if (ligne.section(" ", 0, 0).toInt() == numeroTDRS) {
 
-                                    nomTDRS = ligne.section(" ", 1, 1);
-                                    r = ligne.section(" ", 2, 2).toInt();
-                                    v = ligne.section(" ", 3, 3).toInt();
-                                    b = ligne.section(" ", 4, 4).toInt();
+                                    const QString nomTDRS = ligne.section(" ", 1, 1);
+                                    const int r = ligne.section(" ", 2, 2).toInt();
+                                    const int v = ligne.section(" ", 3, 3).toInt();
+                                    const int b = ligne.section(" ", 4, 4).toInt();
 
                                     // Affichage du nom du satellite TDRS
                                     QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
@@ -2382,7 +2380,7 @@ void PreviSat::AffichageCourbes() const
                                     const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
                                     crayon = QPen(QColor(r, v, b), 2);
-                                    txtSat->setBrush(QColor(r, v, b));
+                                    txtSat->setBrush(crayon.color());
                                     txtSat->setPos(lsat - 16, bsat + 17);
                                     scene->addItem(txtSat);
                                 }
