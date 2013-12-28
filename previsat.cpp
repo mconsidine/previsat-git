@@ -1636,8 +1636,7 @@ void PreviSat::AffichageDonnees()
             }
 
             chaine = "D/N : %1";
-            const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
-            const double delai = dateEcl.getJourJulienUTC() - dateCrt.getJourJulienUTC();
+            const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
             const Date delaiEcl = Date(delai - 0.5, 0.);
             const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "0:00:00";
             ui->nextTransitionISS->setText(chaine.arg(cDelai));
@@ -2304,17 +2303,17 @@ void PreviSat::AffichageCourbes() const
 
                                     // Affichage des crochets des transitions jour/nuit
                                     const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
-                                    if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j-1).at(2)) > EPSDBL100) {
+                                    if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j+1).at(2)) > EPSDBL100) {
 
                                         const double ang = -lig.angle();
 
                                         QGraphicsSimpleTextItem * const txtOmb =
-                                                new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "]" : "[");
+                                                new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "[" : "]");
 
                                         const QFont policeOmb(PreviSat::font().family(), 14, 2);
                                         txtOmb->setFont(policeOmb);
                                         txtOmb->setBrush(Qt::white);
-                                        txtOmb->setPos(lsat1, bsat1 + 15);
+                                        txtOmb->setPos(lsat1 - 2, bsat1 + 15);
                                         txtOmb->setRotation(ang);
                                         scene->addItem(txtOmb);
                                     }
