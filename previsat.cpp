@@ -1642,7 +1642,7 @@ void PreviSat::AffichageDonnees()
             ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
             // Calcul du nombre d'orbites dans le jour
-            Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
+            const Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
             Satellite sat(tles.at(0));
             sat.CalculPosVit(date0h);
             sat.CalculElementsOsculateurs(date0h);
@@ -2067,6 +2067,8 @@ void PreviSat::AffichageCourbes() const
             int jmin = 0;
             int xmin = ui->carte->width() - 3;
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, (int) (2.55 * ui->intensiteOmbre->value())));
+            const QPen stylo((ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? QPen(QColor::fromRgb(102, 50, 16), 2) :
+                                                                                      QPen(Qt::NoBrush, 0));
 
             QVector<QPoint> zone;
             zone.resize(361);
@@ -2096,12 +2098,12 @@ void PreviSat::AffichageCourbes() const
                         zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
                         zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
-                    zone[0] = QPoint(ui->carte->width() - 1, 0);
-                    zone[1] = QPoint(ui->carte->width() - 1, hcarte + 2);
-                    zone[2] = QPoint(ui->carte->width() - 1, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
+                    zone[0] = QPoint(ui->carte->width(), 0);
+                    zone[1] = QPoint(ui->carte->width(), ui->carte->height());
+                    zone[2] = QPoint(ui->carte->width(), 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
 
                     zone[363] = QPoint(0, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
-                    zone[364] = QPoint(0, hcarte + 2);
+                    zone[364] = QPoint(0, ui->carte->height());
                     zone[365] = QPoint(0, 0);
 
                 } else {
@@ -2114,14 +2116,14 @@ void PreviSat::AffichageCourbes() const
                     zone[0] = QPoint(0, 0);
                     zone[1] = QPoint(0, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
 
-                    zone[362] = QPoint(ui->carte->width() - 1, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
-                    zone[363] = QPoint(ui->carte->width() - 1, 0);
-                    zone[364] = QPoint(ui->carte->width() - 1, hcarte + 2);
-                    zone[365] = QPoint(0, hcarte + 2);
+                    zone[362] = QPoint(ui->carte->width(), 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
+                    zone[363] = QPoint(ui->carte->width(), 0);
+                    zone[364] = QPoint(ui->carte->width(), ui->carte->height());
+                    zone[365] = QPoint(0, ui->carte->height());
                 }
 
                 const QPolygonF poly(zone);
-                scene->addPolygon(poly, QPen(Qt::NoBrush, 0), alpha);
+                scene->addPolygon(poly, stylo, alpha);
 
             } else {
 
@@ -2139,28 +2141,28 @@ void PreviSat::AffichageCourbes() const
 
                     zone1[0] = QPoint(0, 0);
                     zone1[1] = QPoint(x1, 0);
-                    zone1[2] = QPoint(x1, hcarte + 2);
-                    zone1[3] = QPoint(0, hcarte + 2);
+                    zone1[2] = QPoint(x1, ui->carte->height());
+                    zone1[3] = QPoint(0, ui->carte->height());
 
                     zone2[0] = QPoint(ui->carte->width() - 1, 0);
                     zone2[1] = QPoint(x2, 0);
-                    zone2[2] = QPoint(x2, hcarte + 2);
-                    zone2[3] = QPoint(lcarte + 1, hcarte + 2);
+                    zone2[2] = QPoint(x2, ui->carte->height());
+                    zone2[3] = QPoint(ui->carte->width() + 1, ui->carte->height());
 
                     const QPolygonF poly1(zone1);
                     const QPolygonF poly2(zone2);
-                    scene->addPolygon(poly1, QPen(Qt::NoBrush, 0), alpha);
-                    scene->addPolygon(poly2, QPen(Qt::NoBrush, 0), alpha);
+                    scene->addPolygon(poly1, stylo, alpha);
+                    scene->addPolygon(poly2, stylo, alpha);
 
                 } else {
 
                     zone1[0] = QPoint(x1, 0);
-                    zone1[1] = QPoint(x1, hcarte + 2);
-                    zone1[2] = QPoint(x2, hcarte + 2);
+                    zone1[1] = QPoint(x1, ui->carte->height());
+                    zone1[2] = QPoint(x2, ui->carte->height());
                     zone1[3] = QPoint(x2, 0);
 
                     const QPolygonF poly1(zone1);
-                    scene->addPolygon(poly1, QPen(Qt::NoBrush, 0), alpha);
+                    scene->addPolygon(poly1, stylo, alpha);
                 }
             }
         }
