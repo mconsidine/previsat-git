@@ -2389,21 +2389,19 @@ void PreviSat::AffichageCourbes() const
 
                 if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
+                    // Affichage de l'icone du satellite
                     const QString nomIcone = ":/resources/icones/%1.png";
                     const int norad = satellites.at(isat).getTle().getNorad().toInt();
 
-                    QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(nomIcone.arg(norad)));
+                    QPixmap img(nomIcone.arg(norad));
+                    img = img.scaled(qMin(lcarte / 12, img.width()), qMin(hcarte / 6, img.height()));
+                    QGraphicsPixmapItem *pm = scene->addPixmap(img);
 
                     switch (norad) {
 
-                    // HST
                     case 20580:
-                        pm->setPos(lsat - 35, bsat - 35);
-                        break;
-
-                        // ISS
                     case 25544:
-                        pm->setPos(lsat - 39, bsat - 48);
+                        pm->setPos(lsat - img.width() / 2, bsat - img.height() / 2);
                         break;
 
                     default:
