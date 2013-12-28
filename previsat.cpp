@@ -138,6 +138,7 @@ static QStringList ficTLEIri;
 static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
 static QStringList tabStatutIridium;
+static QStringList tabTDRS;
 
 static QString ficRes;
 
@@ -365,7 +366,7 @@ void PreviSat::ChargementConfig()
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
                               "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live.asx");
+                              "ISS-Live.asx" << "tdrs.sat");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -589,6 +590,17 @@ void PreviSat::ChargementConfig()
         ui->statutIridium->setItem(i, 1, item3);
     }
     ui->statutIridium->sortItems(0);
+
+    // Satellites TDRS
+    QFile fichier(dirDat + QDir::separator() + "tdrs.sat");
+    fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fichier);
+
+    while (!flux.atEnd()) {
+        const QString ligne = flux.readLine();
+        tabTDRS.append(ligne);
+    }
+    fichier.close();
 
     ui->coordonnees->setVisible(false);
     ui->nouveauLieu->setVisible(false);
@@ -2342,9 +2354,58 @@ void PreviSat::AffichageCourbes() const
             if (ui->affvisib->isChecked()) {
                 const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
-                crayon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked() && satellites.at(0).getTle().getNorad() == "25544") ?
-                            QPen(Qt::white, 2) : QPen(Qt::white);
                 for(int isat=0; isat<nbMax2; isat++) {
+
+                    if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+
+                        if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) {
+                            const int numeroTDRS = satellites.at(isat).getTle().getNom().section(" ", 1).toInt();
+
+                            int i = 0;
+                            QString nomTDRS;
+                            QStringListIterator it(tabTDRS);
+                            while (it.hasNext()) {
+                                const QString ligne = it.next().trimmed();
+                                if (ligne.section(" ", 0, 0).toInt() == numeroTDRS) {
+                                    nomTDRS = ligne.section(" ", 1);
+                                    it.toBack();
+                                }
+                                i++;
+                            }
+
+                            if (nomTDRS.isEmpty())
+                                i = 0;
+
+                            switch (i) {
+                            case 1:
+                                crayon = QPen(Qt::cyan, 2);
+                                break;
+                            case 2:
+                                crayon = QPen(Qt::yellow, 2);
+                                break;
+                            case 3:
+                                crayon = QPen(Qt::green, 2);
+                                break;
+                            default:
+                                crayon = QPen(Qt::white, 2);
+                                break;
+                            }
+
+                            // Affichage du nom du satellite TDRS
+                            QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
+                            const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
+                            const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                            txtSat->setBrush(crayon.color());
+                            txtSat->setPos(lsat - 16, bsat + 17);
+                            scene->addItem(txtSat);
+
+                        } else {
+                            crayon = QPen(Qt::white, 2);
+                        }
+                    } else {
+                        crayon = QPen(Qt::white);
+                    }
 
                     if (!satellites.at(isat).isIeralt()) {
 
@@ -2394,8 +2455,10 @@ void PreviSat::AffichageCourbes() const
                     const QString nomIcone = ":/resources/icones/%1.png";
                     const int norad = satellites.at(isat).getTle().getNorad().toInt();
 
-                    QPixmap img(nomIcone.arg(norad));
-                    img = img.scaled(qMin(lcarte / 12, img.width()), qMin(hcarte / 6, img.height()));
+                    QPixmap img((satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) ? nomIcone.arg("TDRS") :
+                                                                                                       nomIcone.arg(norad));
+                    if (!img.isNull())
+                        img = img.scaled(qMin(lcarte / 12, img.width()), qMin(hcarte / 6, img.height()));
                     QGraphicsPixmapItem *pm = scene->addPixmap(img);
 
                     switch (norad) {
@@ -2407,7 +2470,10 @@ void PreviSat::AffichageCourbes() const
 
                     default:
 
-                        AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
+                        if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs"))
+                            pm->setPos(lsat - img.width() / 2, bsat - img.height() / 2);
+                        else
+                            AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
                         break;
                     }
                 } else {
@@ -2939,6 +3005,11 @@ void PreviSat::AffichageLieuObs() const
 
 void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat, const int lcarte, const int hcarte) const
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     // Dessin du satellite
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
@@ -2961,6 +3032,9 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
             scene->addItem(txtSat);
         }
     }
+
+    /* Retour */
+    return;
 }
 
 /*
