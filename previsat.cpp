@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 decembre 2013
+ * >    29 decembre 2013
  *
  */
 
@@ -155,6 +155,9 @@ static QList<Observateur> observateurs;
 static QStringList ficObs;
 static QStringList listeObs;
 static QStringList mapObs;
+
+// Stations
+static QList<Observateur> stations;
 
 // Cartes du monde
 static int selec2;
@@ -366,7 +369,7 @@ void PreviSat::ChargementConfig()
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
                               "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live.asx" << "tdrs.sat");
+                              "ISS-Live.asx" << "stations.sta" << "tdrs.sat");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -601,6 +604,30 @@ void PreviSat::ChargementConfig()
         tabTDRS.append(ligne);
     }
     fichier.close();
+
+    // Stations
+    QFile ficSta(dirDat + QDir::separator() + "stations.sta");
+    ficSta.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux2(&ficSta);
+
+    int ista = 1;
+    while (!flux2.atEnd()) {
+        const QStringList ligne = flux2.readLine().split(" ");
+
+        const double lo = ligne.at(0).toDouble();
+        const double la = ligne.at(1).toDouble();
+        const double alt = ligne.at(2).toDouble();
+        const QString nomSta = ligne.at(3);
+        const QString nomlieu = ligne.at(4);
+        stations.append(Observateur(nomSta, lo, la, alt));
+
+        const QString nomStation = "%1 (%2)";
+        QListWidgetItem * const elem = new QListWidgetItem(nomStation.arg(nomlieu).arg(nomSta) , ui->listeStations);
+        elem->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + QString::number(ista), Qt::Checked)
+                                                          .toUInt())) ? Qt::Checked : Qt::Unchecked);
+        ista++;
+    }
+    ficSta.close();
 
     ui->coordonnees->setVisible(false);
     ui->nouveauLieu->setVisible(false);
@@ -2219,22 +2246,6 @@ void PreviSat::AffichageCourbes() const
             scene->addPolygon(poly1, QPen(Qt::white, 2));
         }
 
-        // Affichage de la Lune
-        if (ui->afflune->isChecked()) {
-
-            if (!(ui->mccISS->isChecked() && ui->styleWCC->isChecked())) {
-                const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
-                const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
-
-                QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
-                QTransform transform;
-                transform.translate(llun - 7, blun - 7);
-                if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
-                    transform.rotate(180.);
-                lun->setTransform(transform);
-            }
-        }
-
         // Lieux d'observation
         const int nbMax = (ui->affnomlieu->checkState() == Qt::Unchecked) ? 0 : ui->lieuxObservation1->count() - 1;
         for(int j=nbMax; j>=0; j--) {
@@ -2255,6 +2266,83 @@ void PreviSat::AffichageCourbes() const
                 txtObs->setBrush(Qt::white);
                 txtObs->setPos(xnobs, ynobs);
                 scene->addItem(txtObs);
+            }
+        }
+
+        // Stations
+        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544") {
+
+            crayon = QPen(Qt::yellow);
+            for(int j=0; j<ui->listeStations->count(); j++) {
+
+                if (ui->listeStations->item(j)->checkState() == Qt::Checked) {
+
+                    const int lsta = qRound((180. - stations.at(j).getLongitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsta = qRound((90. - stations.at(j).getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                    scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
+                    scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
+
+                    QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(stations.at(j).getNomlieu());
+                    const int lng = (int) txtSta->boundingRect().width();
+                    const int xnsta = (lsta + 4 + lng > lcarte) ? lsta - lng - 1 : lsta + 4;
+                    const int ynsta = (bsta + 9 > hcarte) ? bsta - 12 : bsta;
+
+                    txtSta->setBrush(Qt::yellow);
+                    txtSta->setPos(xnsta, ynsta);
+                    scene->addItem(txtSta);
+
+                    if (!satellites.at(0).isIeralt()) {
+
+                        QPen crayon2 = QPen(Qt::yellow, 2);
+                        Satellite sat = satellites.at(0);
+                        sat.CalculZoneVisibilite2(stations.at(j));
+
+                        double lsat1 = sat.getZone().at(0).x() * DEG2PXHZ;
+                        double bsat1 = sat.getZone().at(0).y() * DEG2PXVT + 1;
+
+                        for(int k=1; k<361; k++) {
+                            double lsat2 = sat.getZone().at(k).x() * DEG2PXHZ;
+                            double bsat2 = sat.getZone().at(k).y() * DEG2PXVT + 1;
+                            int ils = 99999;
+
+                            if (fabs(lsat2 - lsat1) > lcarte2) {
+                                if (lsat2 < lsat1)
+                                    lsat2 += lcarte;
+                                else
+                                    lsat1 += lcarte;
+                                ils = k;
+                            }
+
+                            scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
+
+                            if (ils == k) {
+                                lsat1 -= lcarte + 1;
+                                lsat2 -= lcarte + 1;
+                                scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
+                                ils = 0;
+                            }
+                            lsat1 = sat.getZone().at(k).x() * DEG2PXHZ;
+                            bsat1 = sat.getZone().at(k).y() * DEG2PXVT + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Affichage de la Lune
+        if (ui->afflune->isChecked()) {
+
+            if (!(ui->mccISS->isChecked() && ui->styleWCC->isChecked())) {
+                const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
+                const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
+
+                QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
+                QTransform transform;
+                transform.translate(llun - 7, blun - 7);
+                if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+                    transform.rotate(180.);
+                lun->setTransform(transform);
             }
         }
 
@@ -5033,7 +5121,12 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
     settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
-
+    settings.setValue("affichage/station1", ui->listeStations->item(0)->checkState());
+    settings.setValue("affichage/station2", ui->listeStations->item(1)->checkState());
+    settings.setValue("affichage/station3", ui->listeStations->item(2)->checkState());
+    settings.setValue("affichage/station4", ui->listeStations->item(3)->checkState());
+    settings.setValue("affichage/station5", ui->listeStations->item(4)->checkState());
+    settings.setValue("affichage/station6", ui->listeStations->item(5)->checkState());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");

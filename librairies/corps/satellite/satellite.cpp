@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 decembre 2013
+ * >    29 decembre 2013
  *
  */
 
@@ -355,6 +355,21 @@ void Satellite::CalculMagnitude(const Observateur &observateur, const bool extin
             }
         }
     }
+
+    /* Retour */
+    return;
+}
+
+void Satellite::CalculZoneVisibilite2(const Observateur &station)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _longitude = station.getLongitude();
+    _latitude = station.getLatitude();
+
+    /* Corps de la methode */
+    CalculZoneVisibilite();
 
     /* Retour */
     return;
