@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2013
+ * >    29 decembre 2013
  *
  */
 
@@ -66,6 +66,7 @@ public:
     void CalculPosVit(const Date &date);
     void CalculSatelliteEclipse(const Soleil &soleil);
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
+    void CalculZoneVisibilite2(const Observateur &station);
     double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,

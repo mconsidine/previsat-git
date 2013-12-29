@@ -9489,8 +9489,8 @@
              <widget class="QCheckBox" name="affBetaWCC">
               <property name="geometry">
                <rect>
-                <x>12</x>
-                <y>33</y>
+                <x>230</x>
+                <y>49</y>
                 <width>151</width>
                 <height>17</height>
                </rect>
@@ -9502,8 +9502,8 @@
              <widget class="QCheckBox" name="styleWCC">
               <property name="geometry">
                <rect>
-                <x>12</x>
-                <y>9</y>
+                <x>230</x>
+                <y>25</y>
                 <width>171</width>
                 <height>23</height>
                </rect>
@@ -9519,6 +9519,29 @@
               </property>
               <property name="checked">
                <bool>false</bool>
+              </property>
+             </widget>
+             <widget class="QListWidget" name="listeStations">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>200</width>
+                <height>101</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>10</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Stations :</string>
               </property>
              </widget>
             </widget>
