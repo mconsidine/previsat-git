@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2013
+ * >    30 decembre 2013
  *
  */
 
@@ -954,13 +954,16 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
-    const bool affWCC = ui->mccISS->isChecked() && tles.at(0).getNorad() == "25544";
+    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty();
     ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
     isEcl = satellites.at(0).isEclipse();
+
     ui->betaISS->setVisible(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
+    ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
+    ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
 
     QResizeEvent *evt = NULL;
@@ -1661,58 +1664,55 @@ void PreviSat::AffichageDonnees()
     /*
      * Donnees ISS sur le Wall Command Center
      */
-    if (ui->mccISS->isChecked()) {
+    if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
 
-        if (satellites.at(0).getTle().getNorad() == "25544") {
+        // Calcul de la prochaine transition J/N
+        if (!(isEcl && satellites.at(0).isEclipse()))
+            acalcDN = true;
 
-            // Calcul de la prochaine transition J/N
-            if (!(isEcl && satellites.at(0).isEclipse()))
-                acalcDN = true;
-
-            if (acalcDN) {
-                CalculDN();
-                isEcl = satellites.at(0).isEclipse();
-            }
-
-            chaine = "D/N : %1";
-            const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
-            const Date delaiEcl = Date(delai - 0.5, 0.);
-            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "0:00:00";
-            ui->nextTransitionISS->setText(chaine.arg(cDelai));
-
-            // Calcul du nombre d'orbites dans le jour
-            const Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
-            Satellite sat(tles.at(0));
-            sat.CalculPosVit(date0h);
-            sat.CalculElementsOsculateurs(date0h);
-            nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-
-            if (nbOrbISS == 0 || nbOrbISS > 15)
-                nbOrbISS = 1;
-
-            // Affichage des donnees du blackboard
-            chaine = "LAT = %1";
-            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "ALT = %1";
-            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
-            chaine = "LON = %1";
-            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "INC = %1";
-            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-            chaine = "ORB = %1";
-            ui->orbiteISS->setText(chaine.arg(nbOrbISS));
-            chaine = "BETA = %1";
-            ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
-
-            // Calcul et affichage du jour et de l'heure GMT
-            chaine = "GMT = %1/%2 :%3";
-            const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
-            const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
-            const int numJour = (int) jourDsAnnee;
-            const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
-            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.0005);
-            ui->gmt->setText(chaine.arg(numJour, 1, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+        if (acalcDN) {
+            CalculDN();
+            isEcl = satellites.at(0).isEclipse();
         }
+
+        chaine = "D/N : %1";
+        const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
+        const Date delaiEcl = Date(delai - 0.5, 0.);
+        const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "0:00:00";
+        ui->nextTransitionISS->setText(chaine.arg(cDelai));
+
+        // Calcul du nombre d'orbites dans le jour
+        const Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
+        Satellite sat(tles.at(0));
+        sat.CalculPosVit(date0h);
+        sat.CalculElementsOsculateurs(date0h);
+        nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
+
+        if (nbOrbISS == 0 || nbOrbISS > 15)
+            nbOrbISS = 1;
+
+        // Affichage des donnees du blackboard
+        chaine = "LAT = %1";
+        ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
+        chaine = "ALT = %1";
+        ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
+        chaine = "LON = %1";
+        ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
+        chaine = "INC = %1";
+        ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
+        chaine = "ORB = %1";
+        ui->orbiteISS->setText(chaine.arg(nbOrbISS));
+        chaine = "BETA = %1";
+        ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
+
+        // Calcul et affichage du jour et de l'heure GMT
+        chaine = "GMT = %1/%2 :%3";
+        const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
+        const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
+        const int numJour = (int) jourDsAnnee;
+        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
+        const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.0005);
+        ui->gmt->setText(chaine.arg(numJour, 1, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
     }
 
     if (scene != NULL)
@@ -2207,7 +2207,8 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
-        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544") {
+        if (ui->affSAA_ZOE->isChecked() && ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty()
+                && !l2.isEmpty()) {
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -2270,7 +2271,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Stations
-        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544") {
+        if (ui->mccISS->isChecked()) {
 
             crayon = QPen(Qt::yellow);
             for(int j=0; j<ui->listeStations->count(); j++) {
@@ -2292,7 +2293,8 @@ void PreviSat::AffichageCourbes() const
                     txtSta->setPos(xnsta, ynsta);
                     scene->addItem(txtSta);
 
-                    if (!satellites.at(0).isIeralt()) {
+                    if (ui->affCerclesAcq->isChecked() && !satellites.at(0).isIeralt() &&
+                            satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
 
                         QPen crayon2 = QPen(Qt::yellow, 2);
                         Satellite sat = satellites.at(0);
@@ -5118,8 +5120,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/largeur", width());
     settings.setValue("affichage/hauteur", height());
     settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
+
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
     settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
+    settings.setValue("affichage/affCerclesAcq", ui->affCerclesAcq->isChecked());
+    settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
     settings.setValue("affichage/station1", ui->listeStations->item(0)->checkState());
     settings.setValue("affichage/station2", ui->listeStations->item(1)->checkState());
@@ -5441,7 +5446,8 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                     CalculsAffichage();
 
-                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544";
+                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() &&
+                            !l2.isEmpty();
                     ui->frameCoordISS->setVisible(affWCC);
                     ui->gmt->setVisible(affWCC);
                 }
@@ -6135,9 +6141,12 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->fluxVideo->setVisible(checked);
 
     // Affichage du blackboard
-    if (satellites.at(0).getTle().getNorad() == "25544") {
-        ui->frameCoordISS->setVisible(checked);
-        ui->gmt->setVisible(checked);
+    if (satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+        ui->frameCoordISS->setVisible(true);
+        ui->gmt->setVisible(true);
+    } else {
+        ui->frameCoordISS->setVisible(false);
+        ui->gmt->setVisible(false);
     }
 
     if (Satellite::initCalcul)
@@ -6443,7 +6452,8 @@ void PreviSat::on_actionImprimer_carte_activated()
         QPainter p(&printer);
 
         const QPixmap pixmap = QPixmap::grabWidget((ui->carte->isVisible()) ? ui->carte : ui->ciel);
-        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ? pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
+        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ?
+                    pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
         const int xPrt = (pixscl.width() == pixmap.width()) ? printer.pageRect().width() / 2 - pixscl.width() / 2 : 50;
         p.drawPixmap(xPrt, 50, pixscl);
         p.end();
@@ -7031,7 +7041,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
             l2 = "";
         }
 
-        if (satellites.at(0).getTle().getNorad() == "25544") {
+        if (satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
         } else {
@@ -7687,12 +7697,6 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
     return;
 }
 
-void PreviSat::on_styleWCC_toggled(bool checked)
-{
-    Q_UNUSED(checked)
-    ModificationOption();
-}
-
 void PreviSat::on_affBetaWCC_toggled(bool checked)
 {
     if (checked) {
@@ -7708,6 +7712,31 @@ void PreviSat::on_affBetaWCC_toggled(bool checked)
         ui->frameCoordISS->resize(ui->frameCoordISS->width(), 52);
     }
     ui->betaISS->setVisible(checked);
+}
+
+void PreviSat::on_affCerclesAcq_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ModificationOption();
+}
+
+
+void PreviSat::on_affSAA_ZOE_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ModificationOption();
+}
+
+void PreviSat::on_listeStations_clicked(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    ModificationOption();
+}
+
+void PreviSat::on_styleWCC_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    ModificationOption();
 }
 
 
@@ -7923,7 +7952,8 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
         ui->actionModifier_coordonnees->setVisible(true);
         ui->actionSupprimerLieu->setVisible(true);
         const QFileInfo fi(dirCoo + QDir::separator() + "aapreferes");
-        ui->actionAjouter_Mes_Preferes->setVisible(fi.exists() ? ui->fichiersObs->currentRow() > 0 : ui->fichiersObs->currentRow() >= 0);
+        ui->actionAjouter_Mes_Preferes->setVisible(fi.exists() ? ui->fichiersObs->currentRow() > 0 :
+                                                                 ui->fichiersObs->currentRow() >= 0);
     }
     ui->actionCreer_un_nouveau_lieu->setVisible(ui->fichiersObs->count() > 0);
 
@@ -8345,7 +8375,8 @@ void PreviSat::on_supprLieu_clicked()
  */
 void PreviSat::on_barreMenu_pressed()
 {
-    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) || ui->onglets->currentIndex() < 1);
+    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) ||
+                                      ui->onglets->currentIndex() < 1);
 }
 
 void PreviSat::on_onglets_currentChanged(QWidget *arg1)
@@ -8828,7 +8859,8 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 
         // Argument du perigee
         const double argmin = (ui->argumentPerigeeCreerTLE->currentIndex() == 0) ? 0. : qMin(ui->argMin->value(), ui->argMax->value());
-        const double argmax = (ui->argumentPerigeeCreerTLE->currentIndex() == 0) ? T360 : qMax(ui->argMin->value(), ui->argMax->value());
+        const double argmax = (ui->argumentPerigeeCreerTLE->currentIndex() == 0) ?
+                    T360 : qMax(ui->argMin->value(), ui->argMax->value());
 
         // Magnitude maximale
         const double mgmax = qMin((double) ui->magnitudeMaxCreerTLE->value(), 99.);
@@ -9478,7 +9510,8 @@ void PreviSat::on_calculsIri_clicked()
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
         if (nb == 0)
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"), WARNING);
+                                       "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"),
+                                    WARNING);
 
         // Creation de la liste de satellites
         int i = 0;

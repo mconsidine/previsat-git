@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 decembre 2013
+ * >    30 decembre 2013
  *
  */
 
@@ -223,8 +223,11 @@ private slots:
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
 
-    void on_styleWCC_toggled(bool checked);
     void on_affBetaWCC_toggled(bool checked);
+    void on_affCerclesAcq_toggled(bool checked);
+    void on_affSAA_ZOE_toggled(bool checked);
+    void on_listeStations_clicked(const QModelIndex &index);
+    void on_styleWCC_toggled(bool checked);
 
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
