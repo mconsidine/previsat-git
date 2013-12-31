@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2013
+ * >    31 decembre 2013
  *
  */
 
@@ -3672,21 +3672,6 @@ void PreviSat::MajWebTLE()
 
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-    }
-
-    // Mise a jour du fichier courant
-    if (!atrouve) {
-
-        const QFile fi(nomfic);
-        const QUrl url(adresseCelestrakNorad + fi.fileName());
-        AjoutFichier(url);
-
-        if (downQueue.isEmpty()) {
-            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-        } else {
-            settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
-        }
-        atrouve = false;
     }
 
     /* Retour */
