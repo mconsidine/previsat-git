@@ -9527,8 +9527,11 @@
                 <x>10</x>
                 <y>30</y>
                 <width>200</width>
-                <height>101</height>
+                <height>151</height>
                </rect>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
              <widget class="QLabel" name="label">
