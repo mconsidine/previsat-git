@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2013  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2014  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    1er janvier 2014
  *
  */
 
@@ -103,8 +103,12 @@ Apropos::Apropos(QWidget *fenetreParent) :
         ui->imagePreviSat->setBackgroundBrush(alpha);
     }
 
+    const QString informations = "Copyright © %1 %2";
+    ui->informationsCopyright->setText(informations.arg(QCoreApplication::organizationName()).arg(QString(APP_ANNEES_DEV)));
+
     const QString logiciel = "%1 %2";
     ui->nomLogiciel->setText(logiciel.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).
                                arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).
