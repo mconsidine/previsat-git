@@ -1,6 +1,6 @@
 /*
  *     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
- *     Copyright (C) 2005-2013  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2014  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 decembre 2013
+ * >    1er janvier 2014
  *
  */
 
@@ -1712,7 +1712,7 @@ void PreviSat::AffichageDonnees()
         const int numJour = (int) jourDsAnnee;
         const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
         const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.0005);
-        ui->gmt->setText(chaine.arg(numJour, 1, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+        ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
     }
 
     if (scene != NULL)
@@ -2137,13 +2137,13 @@ void PreviSat::AffichageCourbes() const
                         zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
                         zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
-                    zone[0] = QPoint(ui->carte->width(), 0);
+                    zone[0] = QPoint(ui->carte->width(), -1);
                     zone[1] = QPoint(ui->carte->width(), ui->carte->height());
                     zone[2] = QPoint(ui->carte->width(), 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
 
-                    zone[363] = QPoint(0, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
-                    zone[364] = QPoint(0, ui->carte->height());
-                    zone[365] = QPoint(0, 0);
+                    zone[363] = QPoint(-1, 1 + qRound(0.5 * (zone[3].y() + zone[362].y())));
+                    zone[364] = QPoint(-1, ui->carte->height());
+                    zone[365] = QPoint(-1, -1);
 
                 } else {
 
@@ -2152,13 +2152,13 @@ void PreviSat::AffichageCourbes() const
                         zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
 
-                    zone[0] = QPoint(0, 0);
-                    zone[1] = QPoint(0, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
+                    zone[0] = QPoint(-1, -1);
+                    zone[1] = QPoint(-1, 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
 
                     zone[362] = QPoint(ui->carte->width(), 1 + qRound(0.5 * (zone[2].y() + zone[361].y())));
-                    zone[363] = QPoint(ui->carte->width(), 0);
+                    zone[363] = QPoint(ui->carte->width(), -1);
                     zone[364] = QPoint(ui->carte->width(), ui->carte->height());
-                    zone[365] = QPoint(0, ui->carte->height());
+                    zone[365] = QPoint(-1, ui->carte->height());
                 }
 
                 const QPolygonF poly(zone);
@@ -2178,13 +2178,13 @@ void PreviSat::AffichageCourbes() const
 
                     zone2.resize(4);
 
-                    zone1[0] = QPoint(0, 0);
-                    zone1[1] = QPoint(x1, 0);
+                    zone1[0] = QPoint(-1, -1);
+                    zone1[1] = QPoint(x1, -1);
                     zone1[2] = QPoint(x1, ui->carte->height());
-                    zone1[3] = QPoint(0, ui->carte->height());
+                    zone1[3] = QPoint(-1, ui->carte->height());
 
-                    zone2[0] = QPoint(ui->carte->width() - 1, 0);
-                    zone2[1] = QPoint(x2, 0);
+                    zone2[0] = QPoint(ui->carte->width() - 1, -1);
+                    zone2[1] = QPoint(x2, -1);
                     zone2[2] = QPoint(x2, ui->carte->height());
                     zone2[3] = QPoint(ui->carte->width() + 1, ui->carte->height());
 
@@ -2195,10 +2195,10 @@ void PreviSat::AffichageCourbes() const
 
                 } else {
 
-                    zone1[0] = QPoint(x1, 0);
+                    zone1[0] = QPoint(x1, -1);
                     zone1[1] = QPoint(x1, ui->carte->height());
                     zone1[2] = QPoint(x2, ui->carte->height());
-                    zone1[3] = QPoint(x2, 0);
+                    zone1[3] = QPoint(x2, -1);
 
                     const QPolygonF poly1(zone1);
                     scene->addPolygon(poly1, stylo, alpha);
@@ -2296,7 +2296,7 @@ void PreviSat::AffichageCourbes() const
                     if (ui->affCerclesAcq->isChecked() && !satellites.at(0).isIeralt() &&
                             satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
 
-                        QPen crayon2 = QPen(Qt::yellow, 2);
+                        const QPen crayon2 = (ui->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = satellites.at(0);
                         sat.CalculZoneVisibilite2(stations.at(j));
 
@@ -5111,12 +5111,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affCerclesAcq", ui->affCerclesAcq->isChecked());
     settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
-    settings.setValue("affichage/station1", ui->listeStations->item(0)->checkState());
-    settings.setValue("affichage/station2", ui->listeStations->item(1)->checkState());
-    settings.setValue("affichage/station3", ui->listeStations->item(2)->checkState());
-    settings.setValue("affichage/station4", ui->listeStations->item(3)->checkState());
-    settings.setValue("affichage/station5", ui->listeStations->item(4)->checkState());
-    settings.setValue("affichage/station6", ui->listeStations->item(5)->checkState());
+    for(int i=0; i<ui->listeStations->count(); i++)
+        settings.setValue("affichage/station" + QString::number(i), ui->listeStations->item(i)->checkState());
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
@@ -6126,7 +6122,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->fluxVideo->setVisible(checked);
 
     // Affichage du blackboard
-    if (satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+    if (checked && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
         ui->frameCoordISS->setVisible(true);
         ui->gmt->setVisible(true);
     } else {
