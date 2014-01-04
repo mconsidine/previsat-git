@@ -2087,14 +2087,14 @@ void PreviSat::AffichageCourbes() const
         const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
         const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
 
-        if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+        if (ui->affsoleil->isChecked()) {
+            if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
 
-            const QString iconeSoleil = ":/resources/icones/soleil.png";
-            QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
-            pm->setPos(lsol - 15, bsol - 10);
+                const QString iconeSoleil = ":/resources/icones/soleil.png";
+                QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
+                pm->setPos(lsol - 15, bsol - 10);
 
-        } else {
-            if (ui->affsoleil->isChecked()) {
+            } else {
                 rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
                 scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
             }
