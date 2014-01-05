@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er janvier 2014
+ * >    5 janvier 2014
  *
  */
 
@@ -2409,7 +2409,7 @@ void PreviSat::AffichageCourbes() const
                                     const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
                                     if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j+1).at(2)) > EPSDBL100) {
 
-                                        const double ang = -lig.angle();
+                                        const double ang = fmod(-fabs(lig.angle()), T360);
 
                                         QGraphicsSimpleTextItem * const txtOmb =
                                                 new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "[" : "]");
@@ -2417,7 +2417,14 @@ void PreviSat::AffichageCourbes() const
                                         const QFont policeOmb(PreviSat::font().family(), 14, 2);
                                         txtOmb->setFont(policeOmb);
                                         txtOmb->setBrush(Qt::white);
-                                        txtOmb->setPos(lsat1 - 2, bsat1 + 15);
+
+                                        const double ca = cos(ang * DEG2RAD);
+                                        const double sa = sin(ang * DEG2RAD);
+                                        const double fact = (ecl > EPSDBL100) ? 4. : 2.;
+                                        const double xnc = lsat2 - fact * ca + 14. * sa;
+                                        const double ync = bsat2 - fact * sa - 13. * ca;
+
+                                        txtOmb->setPos(xnc, ync);
                                         txtOmb->setRotation(ang);
                                         scene->addItem(txtOmb);
                                     }
