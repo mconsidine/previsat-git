@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2013
+ * >    8 janvier 2014
  *
  */
 
@@ -87,8 +87,8 @@ public:
     char getMethod() const;
     int getNbOrbites() const;
     bool isPenombre() const;
-    double getRayonApparentSoleil() const;
-    double getRayonApparentTerre() const;
+    double getRayonOmbre() const;
+    double getRayonPenombre() const;
     double getSection() const;
     double getT1() const;
     double getT2() const;
@@ -348,8 +348,8 @@ private:
     double _fractionIlluminee;
     double _magnitude;
     double _magnitudeStandard;
-    double _rayonApparentSoleil;
-    double _rayonApparentTerre;
+    double _rayonOmbre;
+    double _rayonPenombre;
     double _section;
     double _t1;
     double _t2;

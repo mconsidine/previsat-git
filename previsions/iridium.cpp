@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    8 janvier 2014
  *
  */
 
@@ -713,7 +713,7 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
 
         // Conditions d'eclipse du satellite
         satellite.CalculSatelliteEclipse(soleil);
-        ecl[i] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
+        ecl[i] = satellite.getRayonOmbre() - satellite.getElongation();
 
         // Angle de reflexion
         ang[i] = AngleReflexion(satellite, soleil);
