@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2013
+ * >    8 janvier 2014
  *
  */
 
@@ -67,8 +67,8 @@ Satellite::Satellite()
     _fractionIlluminee = 0.;
     _magnitude = 99.;
     _magnitudeStandard = 99.;
-    _rayonApparentSoleil = 0.;
-    _rayonApparentTerre = 0.;
+    _rayonOmbre = 0.;
+    _rayonPenombre = 0.;
     _section = 0.;
     _t1 = 0.;
     _t2 = 0.;
@@ -308,24 +308,34 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const double rs = 1. / soleil.getPosition().Norme();
+    const double ro = 1. / _position.Norme();
+    const double tanlat = _position.getZ() / sqrt(_position.getX() * _position.getX() + _position.getY() * _position.getY());
+    const double u = atan(tanlat / (1. - APLA));
+    const double cu = cos(u);
+    const double su = sin(u);
+    const double r = RAYON_TERRESTRE * sqrt(cu * cu + G2 * su * su);
 
     /* Corps de la methode */
-    _rayonApparentTerre = asin(RAYON_TERRESTRE / _position.Norme());
-    if (std::isnan(_rayonApparentTerre))
-        _rayonApparentTerre = PI_SUR_DEUX;
+    double psat = asin(r * ro);
+    if (std::isnan(psat))
+        psat = PI_SUR_DEUX;
+    const double rsol = asin(RAYON_SOLAIRE * rs);
+    const double psol = asin(RAYON_TERRESTRE * rs);
 
-    const Vecteur3D rho = soleil.getPosition() - _position;
-    _rayonApparentSoleil = asin(RAYON_SOLAIRE / rho.Norme());
+    // Rayon de l'ombre de la Terre avec prise en compte de la refraction
+    _rayonOmbre = psol + psat - rsol - 1.14925 * DEG2RAD;
 
-    _elongation = soleil.getPosition().Angle(-_position);
+    // Rayon de la penombre de la Terre
+    _rayonPenombre = psol + 1.01 * psat + rsol;
+
+    _elongation = _position.Angle(-soleil.getPosition());
 
     // Test si le satellite est en phase d'eclipse
-    _eclipse = (_rayonApparentTerre > _rayonApparentSoleil
-                && _elongation < _rayonApparentTerre - _rayonApparentSoleil);
+    _eclipse = (_elongation < _rayonOmbre);
 
     // Test si le satellite est dans la penombre
-    _penombre = (_eclipse || (fabs(_rayonApparentTerre - _rayonApparentSoleil) < _elongation
-                              && _elongation < _rayonApparentTerre + _rayonApparentSoleil));
+    _penombre = (_eclipse || _elongation < _rayonPenombre);
 
     /* Retour */
     return;
@@ -1542,14 +1552,14 @@ bool Satellite::isPenombre() const
     return _penombre;
 }
 
-double Satellite::getRayonApparentSoleil() const
+double Satellite::getRayonOmbre() const
 {
-    return _rayonApparentSoleil;
+    return _rayonOmbre;
 }
 
-double Satellite::getRayonApparentTerre() const
+double Satellite::getRayonPenombre() const
 {
-    return _rayonApparentTerre;
+    return _rayonPenombre;
 }
 
 double Satellite::getSection() const

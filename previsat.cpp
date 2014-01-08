@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 janvier 2014
+ * >    8 janvier 2014
  *
  */
 
@@ -960,7 +960,7 @@ void PreviSat::DemarrageApplication()
     ui->gmt->setVisible(affWCC);
     isEcl = satellites.at(0).isEclipse();
 
-    ui->betaISS->setVisible(false);
+    on_affBetaWCC_toggled(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
     ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
     ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
@@ -2244,7 +2244,7 @@ void PreviSat::AffichageCourbes() const
             }
 
             const QPolygonF poly1(zoneSAA_ISS);
-            scene->addPolygon(poly1, QPen(Qt::white, 2));
+            scene->addPolygon(poly1, QPen(Qt::white, (ui->styleWCC->isChecked()) ? 2 : 1));
         }
 
         // Lieux d'observation
@@ -3435,7 +3435,7 @@ void PreviSat::CalculDN() const
 
                 // Conditions d'eclipse du satellite
                 satellite.CalculSatelliteEclipse(soleil);
-                ecl[j] = satellite.getRayonApparentTerre() - satellite.getRayonApparentSoleil() - satellite.getElongation();
+                ecl[j] = satellite.getRayonOmbre() - satellite.getElongation();
             }
 
             double tdn = t_ecl;
@@ -5199,12 +5199,10 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     } else {
         ui->carte->setGeometry(6, 6, ui->frameCarte->width() - 47, ui->frameCarte->height() - 23);
     }
+
     ui->frameCarte2->setGeometry(ui->carte->geometry());
     if (ui->frameCoordISS->isVisible())
         ui->frameCoordISS->move(ui->carte->pos());
-
-    ui->gmt->adjustSize();
-    ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, 40);
 
     ui->maximise->move(5 + ui->carte->x() + ui->carte->width(), 5);
     ui->affichageCiel->move(5 + ui->carte->x() + ui->carte->width(), 32);
@@ -5214,6 +5212,9 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     DEG2PXHZ = lcarte / T360;
     DEG2PXVT = hcarte * 2. / T360;
+
+    ui->gmt->adjustSize();
+    ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, (int) (15. * DEG2PXVT));
 
     ui->liste1->resize(200, hcarte - 147);
 
@@ -7689,14 +7690,14 @@ void PreviSat::on_affBetaWCC_toggled(bool checked)
 {
     if (checked) {
         ui->inclinaisonISS->move(5, 45);
-        ui->nextTransitionISS->move(105, 0);
-        ui->orbiteISS->move(105, 15);
-        ui->betaISS->move(105, 30);
+        ui->nextTransitionISS->move(120, 0);
+        ui->orbiteISS->move(120, 15);
+        ui->betaISS->move(120, 30);
         ui->frameCoordISS->resize(ui->frameCoordISS->width(), 67);
     } else {
-        ui->inclinaisonISS->move(105, 0);
-        ui->nextTransitionISS->move(105, 15);
-        ui->orbiteISS->move(105, 30);
+        ui->inclinaisonISS->move(120, 0);
+        ui->nextTransitionISS->move(120, 15);
+        ui->orbiteISS->move(120, 30);
         ui->frameCoordISS->resize(ui->frameCoordISS->width(), 52);
     }
     ui->betaISS->setVisible(checked);

@@ -768,7 +768,7 @@
            <property name="geometry">
             <rect>
              <x>340</x>
-             <y>40</y>
+             <y>30</y>
              <width>151</width>
              <height>16</height>
             </rect>
@@ -911,8 +911,8 @@
            <rect>
             <x>6</x>
             <y>6</y>
-            <width>200</width>
-            <height>52</height>
+            <width>234</width>
+            <height>67</height>
            </rect>
           </property>
           <property name="palette">
@@ -1347,13 +1347,13 @@
             <rect>
              <x>5</x>
              <y>0</y>
-             <width>95</width>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1370,13 +1370,13 @@
             <rect>
              <x>5</x>
              <y>15</y>
-             <width>95</width>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1393,13 +1393,13 @@
             <rect>
              <x>5</x>
              <y>30</y>
-             <width>95</width>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1414,15 +1414,15 @@
           <widget class="QLabel" name="inclinaisonISS">
            <property name="geometry">
             <rect>
-             <x>105</x>
+             <x>120</x>
              <y>0</y>
-             <width>95</width>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1437,15 +1437,15 @@
           <widget class="QLabel" name="nextTransitionISS">
            <property name="geometry">
             <rect>
-             <x>105</x>
+             <x>120</x>
              <y>15</y>
-             <width>95</width>
+             <width>112</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1460,15 +1460,15 @@
           <widget class="QLabel" name="orbiteISS">
            <property name="geometry">
             <rect>
-             <x>105</x>
+             <x>120</x>
              <y>30</y>
-             <width>95</width>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1483,15 +1483,15 @@
           <widget class="QLabel" name="betaISS">
            <property name="geometry">
             <rect>
-             <x>40</x>
-             <y>40</y>
-             <width>95</width>
+             <x>5</x>
+             <y>45</y>
+             <width>108</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>11</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1503,6 +1503,14 @@
             <string>BETA = 75.3</string>
            </property>
           </widget>
+          <zorder>latitudeISS</zorder>
+          <zorder>altitudeISS</zorder>
+          <zorder>longitudeISS</zorder>
+          <zorder>inclinaisonISS</zorder>
+          <zorder>nextTransitionISS</zorder>
+          <zorder>orbiteISS</zorder>
+          <zorder>betaISS</zorder>
+          <zorder>frameCarte2</zorder>
          </widget>
          <zorder>frameLat</zorder>
          <zorder>carte</zorder>
