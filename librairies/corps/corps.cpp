@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    11 janvier 2014
  *
  */
 
@@ -50,7 +50,10 @@
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 
 static bool _initCst = false;
+static bool _initTab = false;
 static QString _tabConst[358];
+static double _caz[360];
+static double _saz[360];
 static double _tabCstCoord[358][3];
 
 /*
@@ -272,44 +275,44 @@ void Corps::CalculCoordTerrestres(const Date &date)
 /*
  * Calcul de la zone de visibilite
  */
-void Corps::CalculZoneVisibilite()
+void Corps::CalculZoneVisibilite(const double beta)
 {
     /* Declarations des variables locales */
-    double lo1;
 
     /* Initialisations */
-    double lo0 = _longitude;
-    if (lo0 > 0.)
-        lo0 -= DEUX_PI;
-    const double cl0 = cos(_latitude);
-    const double sl0 = sin(_latitude);
-    double beta = acos((RAYON_TERRESTRE - 15.) / _position.Norme());
-    if (std::isnan(beta))
-        beta = 0.;
-    const double cb = cos(beta);
-    const double sb = sin(beta);
+    const double srad = beta + REFRACTION_HZ;
+    const double cla = cos(_latitude);
+    const double sla = sin(_latitude);
+    const double clo = cos(_longitude);
+    const double slo = sin(_longitude);
+    const double cra = cos(srad);
+    const double sra = sin(srad);
+    if (!_initTab) {
+
+        for(int i=0; i<360; i++) {
+            const double az = i * DEG2RAD;
+            _caz[i] = cos(az);
+            _saz[i] = sin(az);
+        }
+        _initTab = true;
+    }
 
     /* Corps de la methode */
     _zone.clear();
     for(int i=0; i<360; i++) {
 
-        const double az = DEG2RAD * i;
-        const double la1 = asin(sl0 * cb + cos(az) * sb * cl0);
+        const double z1 = sra * _caz[i];
 
-        if (i == 0 && beta > PI_SUR_DEUX - _latitude) {
-            lo1 = lo0 + PI;
-        } else {
-            if (i == 180 && beta > PI_SUR_DEUX + _latitude) {
-                lo1 = lo0 + PI;
-            } else {
-                const double numden = (cb - sl0 * sin(la1)) / (cl0 * cos(la1));
-                if (fabs(numden > 1.)) {
-                    lo1 = lo0;
-                } else {
-                    lo1 = (i <= 180) ? lo0 + acos(numden) : lo0 - acos(numden);
-                }
-            }
-        }
+        const double x2 = cra * cla - z1 * sla;
+        const double y2 = sra * _saz[i];
+        const double z2 = cra * sla + z1 * cla;
+
+        const double x3 = x2 * clo - y2 * slo;
+        const double y3 = x2 * slo + y2 * clo;
+
+        const double lo1 = atan2(y3, x3);
+        const double la1 = asin(z2);
+
         const QPointF pt(fmod(PI - lo1, DEUX_PI) * RAD2DEG, (PI_SUR_DEUX - la1) * RAD2DEG);
         _zone.append(pt);
     }

@@ -379,7 +379,8 @@ void Satellite::CalculZoneVisibilite2(const Observateur &station)
     _latitude = station.getLatitude();
 
     /* Corps de la methode */
-    CalculZoneVisibilite();
+    const double beta = acos(RAYON_TERRESTRE / _position.Norme());
+    CalculZoneVisibilite(beta);
 
     /* Retour */
     return;
@@ -460,8 +461,11 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         satellites[isat]._ieralt = (satellites[isat].getAltitude() < 0.);
 
         // Calcul de la zone de visibilite du satellite
-        if (visibilite)
-            satellites[isat].CalculZoneVisibilite();
+        if (visibilite) {
+            const double beta = (mcc && satellites[isat]._tle.getNom().toLower().startsWith("tdrs")) ?
+                        PI_SUR_DEUX + 8.7 * DEG2RAD : acos(RAYON_TERRESTRE / satellites[isat]._position.Norme());
+            satellites[isat].CalculZoneVisibilite(beta);
+        }
 
         // Calcul de la trajectoire dans le ciel
         if (traceCiel)
