@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2014
+ * >    11 janvier 2014
  *
  */
 
@@ -3546,7 +3546,8 @@ void PreviSat::EnchainementCalculs() const
             soleil.CalculCoordTerrestres(observateurs.at(0));
 
             // Zone d'ombre
-            soleil.CalculZoneVisibilite();
+            const double beta = acos(RAYON_TERRESTRE / soleil.getDistance());
+            soleil.CalculZoneVisibilite(beta);
 
             if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
                 // Coordonnees equatoriales
@@ -7030,7 +7031,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
             l2 = "";
         }
 
-        if (satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
         } else {

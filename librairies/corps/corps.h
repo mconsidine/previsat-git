@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    11 janvier 2014
  *
  */
 
@@ -67,7 +67,7 @@ public:
     void CalculCoordHoriz2(const Observateur &observateur);
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
-    void CalculZoneVisibilite();
+    void CalculZoneVisibilite(const double beta);
     Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
 
     /* Accesseurs */
