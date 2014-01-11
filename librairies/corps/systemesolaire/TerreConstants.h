@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2013
+ * >    11 lanvier 2014
  *
  */
 
@@ -69,6 +69,9 @@ static const double OMEGA = DEUX_PI * OMEGA0 * NB_JOUR_PAR_SEC;
 static const double APLA = 1. / 298.26;
 static const double E2 = APLA * (2. - APLA);
 static const double G2 = (1. - APLA) * (1. - APLA);
+
+// Refraction totale a l'horizon (rad)
+static const double REFRACTION_HZ = 1.14925 * DEG2RAD;
 
 // Nombre de miles nautiques par kilometre
 static const double MILE_PAR_KM = 1. / 1.852;

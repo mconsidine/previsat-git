@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2014
+ * >    11 janvier 2014
  *
  */
 
@@ -324,7 +324,7 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
     const double psol = asin(RAYON_TERRESTRE * rs);
 
     // Rayon de l'ombre de la Terre avec prise en compte de la refraction
-    _rayonOmbre = psol + psat - rsol - 1.14925 * DEG2RAD;
+    _rayonOmbre = psol + psat - rsol - REFRACTION_HZ;
 
     // Rayon de la penombre de la Terre
     _rayonPenombre = psol + 1.01 * psat + rsol;
