@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    12 janvier 2014
  *
  */
 
@@ -263,7 +263,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         magn = "";
     }
     donneesSatellites.close();
-    tabtle.resize(jmax);
+    if (listeSatellites.size() == 0)
+        tabtle.clear();
+    else
+        tabtle.resize(jmax);
 
     /* Corps de la methode */
     try {
