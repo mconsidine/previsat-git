@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2014
+ * >    12 janvier 2014
  *
  */
 
@@ -471,7 +471,7 @@ void PreviSat::ChargementConfig()
     ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
     ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
-    ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 1).toUInt());
+    ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
     ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
     ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
@@ -923,7 +923,10 @@ void PreviSat::DemarrageApplication()
     /* Corps de la methode */
     move(0, 0);
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
-    resize(xPrevi, yPrevi);
+    if (settings.value("affichage/fenetreMax", false).toBool())
+        showMaximized();
+    else
+        resize(xPrevi, yPrevi);
 
     // Redimensionnement de la fenetre si necessaire
     if (xPrevi > xmax)
@@ -942,7 +945,6 @@ void PreviSat::DemarrageApplication()
         setCentralWidget(scrollArea);
     }
 
-    ui->frameCarteListe->resize(size());
     if (settings.value("affichage/affMax", false).toBool())
         on_maximise_clicked();
 
@@ -5112,6 +5114,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
     settings.setValue("affichage/largeur", width());
     settings.setValue("affichage/hauteur", height());
+    settings.setValue("affichage/fenetreMax", isMaximized());
     settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
 
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
@@ -6832,12 +6835,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     listeSat.sort();
 
     /* Corps de la methode */
-#if defined (Q_OS_WIN)
-    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
-#else
-    const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
-#endif
-    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomRepDefaut,
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), dirTle,
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
 
     QFile fichier(fic);
@@ -6856,8 +6854,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
     }
     fichier.close();
 
-    const QFileInfo fi(fic);
-    settings.setValue("fichier/sauvegarde", fi.absolutePath());
+    InitFicTLE();
 
     const QString msg = tr("Fichier %1 créé");
     messagesStatut->setText(msg.arg(fichier.fileName()));
@@ -6927,14 +6924,17 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         for(int j=0; j<nsat; j++) {
             for(int i=0; i<nsat; i++) {
                 if (tabtle.at(i).getNorad() == listeSat.at(j)) {
-                    flux2 << tles.at(i).getNom()    << endl <<
-                             tles.at(i).getLigne1() << endl <<
-                             tles.at(i).getLigne2() << endl;
+                    flux2 << tabtle.at(i).getNom()    << endl <<
+                             tabtle.at(i).getLigne1() << endl <<
+                             tabtle.at(i).getLigne2() << endl;
                     break;
                 }
             }
         }
         fichier.close();
+
+        QFile fi2(ficTmp);
+        fi2.remove();
 
         const QString msg = tr("Fichier %1 augmenté de nouveaux satellites");
         messagesStatut->setText(msg.arg(fichier.fileName()));
@@ -8097,7 +8097,7 @@ void PreviSat::on_actionModifier_coordonnees_activated()
     QTextStream flux2(&sw);
     while (!flux.atEnd()) {
         const QString ligne2 = flux.readLine();
-        if (ligne != ligne2)
+        if (ligne.mid(34).trimmed() != ligne2.mid(34).trimmed())
             flux2 << ligne2 << endl;
     }
     sw.close();
@@ -8159,7 +8159,7 @@ void PreviSat::on_validerObs_clicked()
             QTextStream flux(&fi);
             while (!flux.atEnd()) {
                 const QString ligne = flux.readLine();
-                if (ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed()) {
+                if (ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed() && ui->ajdfic->isVisible()) {
                     const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
                     throw PreviSatException(msg.arg(ui->ajdfic->currentText()), WARNING);
                 }
