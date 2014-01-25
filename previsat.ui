@@ -9542,7 +9542,7 @@
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="lbl_stations">
               <property name="geometry">
                <rect>
                 <x>20</x>

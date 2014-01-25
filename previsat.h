@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2013
+ * >    25 janvier 2014
  *
  */
 
@@ -48,6 +48,7 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QtNetwork>
+#include "librairies/dates/date.h"
 #include "vlc.h"
 
 namespace Ui {
@@ -95,6 +96,7 @@ private:
     bool CalculAOS() const;
     void CalculDN() const;
     void CalculAgeTLETransitISS() const;
+    int CalculNumeroOrbiteISS(const Date &date) const;
     void EnchainementCalculs() const;
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
