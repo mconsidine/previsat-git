@@ -51,6 +51,12 @@
         <file>resources/icones/25544.png</file>
         <file>resources/icones/20580.png</file>
         <file>resources/icones/soleil.png</file>
-        <file>resources/icones/TDRS.png</file>
+        <file>resources/icones/tdrs.png</file>
+        <file>resources/icones/37375.png</file>
+        <file>resources/icones/atv.png</file>
+        <file>resources/icones/dragon2.png</file>
+        <file>resources/icones/progress.png</file>
+        <file>resources/icones/saliout.png</file>
+        <file>resources/icones/soyuz.png</file>
     </qresource>
 </RCC>
