@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    17 janvier 2014
  *
  */
 
@@ -101,13 +101,14 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         const double v = vitesse.Norme();
         const double temp2 = 1. / p;
         const double v2 = v * v;
+        const double v2t = v2 * temp1;
         const double rv = position * vitesse;
 
         // Demi-grand axe
-        _demiGrandAxe = 1. / (2. * temp2 - v2 * temp1);
+        _demiGrandAxe = 1. / (2. * temp2 - v2t);
 
         // Excentricite
-        const Vecteur3D exc = (position * (v2 * temp1 - temp2)) - (vitesse * (rv * temp1));
+        const Vecteur3D exc = (position * (v2t - temp2)) - (vitesse * (rv * temp1));
         _excentricite = exc.Norme();
 
         // Inclinaison
@@ -117,14 +118,15 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
         // Ascension droite du noeud ascendant
         const Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
-        const double ca = n.getX() / n.Norme();
+        const double nn = n.Norme();
+        const double ca = n.getX() / nn;
         _ascDroiteNA = acos(ca);
         if (n.getY() < 0.)
             _ascDroiteNA = DEUX_PI - _ascDroiteNA;
 
         // Argument du perigee
         const double ne = n * exc;
-        _argumentPerigee = acos(ne / (n.Norme() * _excentricite));
+        _argumentPerigee = acos(ne / (nn * _excentricite));
         if (exc.getZ() < 0.)
             _argumentPerigee = DEUX_PI - _argumentPerigee;
 
@@ -144,9 +146,10 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         if (_anomalieMoyenne < 0.)
             _anomalieMoyenne += DEUX_PI;
 
+        const double e2 = _excentricite * _excentricite;
         const double alpha = _demiGrandAxe / RAYON_TERRESTRE;
         const double alpha2 = alpha * alpha;
-        const double beta = 1. - _excentricite * _excentricite;
+        const double beta = 1. - e2;
         const double gamma = 1. + _excentricite * cos(_argumentPerigee);
         const double gamma2 = gamma * gamma;
         const double temp3 = sin(_inclinaison);
@@ -172,7 +175,6 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
 
         const double se = rv / sqrt(GE * _demiGrandAxe);
         const double ce = p * v2 / GE - 1.;
-        const double e2 = _excentricite * _excentricite;
         const double tmp0 = sqrt(1. - e2);
         const double f = ce - e2;
         const double g = tmp0 * se;
