@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 janvier 2014
+ * >    25 janvier 2014
  *
  */
 
@@ -121,7 +121,6 @@ static int idxf;
 static int idxfi;
 static int idxft;
 static int nbSat;
-static int nbOrbISS;
 static double azimAOS;
 static double htSat;
 static QString ctypeAOS;
@@ -945,6 +944,7 @@ void PreviSat::DemarrageApplication()
         setCentralWidget(scrollArea);
     }
 
+    ui->frameCarteListe->resize(ui->frameCarte->size());
     if (settings.value("affichage/affMax", false).toBool())
         on_maximise_clicked();
 
@@ -1242,17 +1242,22 @@ void PreviSat::AffichageDonnees()
         /*
          * Affichage des donnees sur l'onglet General
          */
-        chaine = dateCourante.ToLongDate().append("  ");
+        QString chaineUTC = tr("UTC");
+        Date date;
+
         if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
             QTime heur;
             heur = heur.addSecs((int) (fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
-            QString chaineUTC = tr("UTC").append((dateCourante.getOffsetUTC() > 0.) ? " + " : " - ").
-                    append(heur.toString("hh:mm"));
-            chaine = chaine.append(chaineUTC);
+            chaineUTC = chaineUTC.append((dateCourante.getOffsetUTC() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
             ui->utcManuel->setText(chaineUTC);
+            date = dateCourante;
         } else {
-            ui->utcManuel->setText(tr("UTC"));
+            ui->utcManuel->setText(chaineUTC);
+            date = Date(dateCourante.getJourJulienUTC(), 0., true);
         }
+
+        chaine = date.ToLongDate().append("  ");
+        chaine = chaine.append(chaineUTC);
         ui->dateHeure1->setText(chaine);
         ui->dateHeure2->setText(chaine);
 
@@ -1684,14 +1689,7 @@ void PreviSat::AffichageDonnees()
         ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
         // Calcul du nombre d'orbites dans le jour
-        const Date date0h((int) (dateCourante.getJourJulienUTC() - 0.5) + 0.5, 0., false);
-        Satellite sat(tles.at(0));
-        sat.CalculPosVit(date0h);
-        sat.CalculElementsOsculateurs(date0h);
-        nbOrbISS = satellites.at(0).getNbOrbites() - sat.getNbOrbites();
-
-        if (nbOrbISS == 0 || nbOrbISS > 15)
-            nbOrbISS = 1;
+        const int nbOrbISS = CalculNumeroOrbiteISS(dateCourante);
 
         // Affichage des donnees du blackboard
         chaine = "LAT = %1";
@@ -1712,8 +1710,8 @@ void PreviSat::AffichageDonnees()
         const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
         const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
         const int numJour = (int) jourDsAnnee;
-        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour));
-        const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.0005);
+        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.005);
+        const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.005);
         ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
     }
 
@@ -2288,8 +2286,8 @@ void PreviSat::AffichageCourbes() const
 
                     QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(stations.at(j).getNomlieu());
                     const int lng = (int) txtSta->boundingRect().width();
-                    const int xnsta = (lsta + 4 + lng > lcarte) ? lsta - lng - 1 : lsta + 4;
-                    const int ynsta = (bsta + 9 > hcarte) ? bsta - 12 : bsta;
+                    const int xnsta = lsta - lng / 2 + 1;
+                    const int ynsta = (bsta > 16) ? bsta - 16 : bsta + 3;
 
                     txtSta->setBrush(Qt::yellow);
                     txtSta->setPos(xnsta, ynsta);
@@ -2359,7 +2357,6 @@ void PreviSat::AffichageCourbes() const
 
                     const QColor bleuClair(173, 216, 230);
 
-                    int nbOrb = nbOrbISS;
                     for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
 
                         double lsat2 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
@@ -2386,6 +2383,8 @@ void PreviSat::AffichageCourbes() const
                                 if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
                                         satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
 
+                                    const Date dateISS(Date(satellites.at(0).getTraceAuSol().at(j+1).at(3), 0., false));
+                                    const int nbOrb = CalculNumeroOrbiteISS(dateISS);
                                     QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(nbOrb));
 
                                     const QFont policeOrb(PreviSat::font().family(), 10, 2);
@@ -2393,13 +2392,9 @@ void PreviSat::AffichageCourbes() const
                                     txtOrb->setBrush(Qt::white);
 
                                     const int lng = (int) txtOrb->boundingRect().width();
-                                    const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng : lsat2 - lng;
+                                    const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng - 8 : lsat2 - lng;
                                     txtOrb->setPos(xnorb, hcarte2 - 18);
                                     scene->addItem(txtOrb);
-
-                                    if (nbOrb > 14)
-                                        nbOrb = 0;
-                                    nbOrb++;
                                 }
 
                                 if (ui->styleWCC->isChecked()) {
@@ -3498,6 +3493,37 @@ void PreviSat::CalculAgeTLETransitISS() const
 
     /* Retour */
     return;
+}
+
+int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
+{
+    /* Declarations des variables locales */
+    Satellite sat(tles.at(0));
+
+    /* Initialisations */
+    int numOrbite = 0;
+
+    /* Corps de la methode */
+    sat.CalculPosVit(date);
+    sat.CalculElementsOsculateurs(date);
+    const int nbOrb = sat.getNbOrbites();
+
+    Date date0h((int) (date.getJourJulienUTC() - 0.5) + 0.5, 0., false);
+
+    sat.CalculPosVit(date0h);
+    sat.CalculElementsOsculateurs(date0h);
+
+    numOrbite = nbOrb - sat.getNbOrbites();
+
+    if (numOrbite == 0) {
+        date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
+        sat.CalculPosVit(date0h);
+        sat.CalculElementsOsculateurs(date0h);
+        numOrbite = nbOrb - sat.getNbOrbites();
+    }
+
+    /* Retour */
+    return (numOrbite);
 }
 
 
@@ -4763,7 +4789,7 @@ void PreviSat::GestionTempsReel()
                 if (!ui->play->isEnabled() || !ui->forward->isEnabled())
                     jd += pas1;
 
-                dateCourante = Date(jd + EPS_DATES, dateCourante.getOffsetUTC());
+                dateCourante = Date(jd + EPS_DATES, offsetUTC);
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
@@ -6711,9 +6737,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
 
 void PreviSat::on_actionRapport_de_bug_activated()
 {
-    const QString adresse = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
-    if (!adresse.isEmpty())
-        QDesktopServices::openUrl(QUrl(adresse + "rapport.html"));
+    QDesktopServices::openUrl(QUrl(QCoreApplication::organizationDomain() + "rapport.html"));
 }
 
 void PreviSat::on_actionWww_celestrak_com_activated()
@@ -7166,6 +7190,8 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         ui->pasReel->setVisible(true);
         ui->secondes->setVisible(true);
         ui->frameSimu->setVisible(false);
+        acalcAOS = true;
+        acalcDN = true;
     }
 
     /* Retour */
@@ -7196,6 +7222,8 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->frameSimu->setVisible(true);
         ui->pasManuel->setFocus();
         htSat = 0.;
+        acalcAOS = true;
+        acalcDN = true;
     }
 
     /* Retour */
@@ -7210,7 +7238,7 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
+                        date.time().hour(), date.time().minute(), date.time().second(), offsetUTC);
 
     if (ui->modeManuel->isChecked()) {
         info = true;
@@ -7239,7 +7267,7 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
+                        date.time().hour(), date.time().minute(), date.time().second(), offsetUTC);
 
     ui->dateHeure3->setDateTime(date);
 

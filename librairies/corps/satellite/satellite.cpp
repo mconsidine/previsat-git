@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2014
+ * >    25 janvier 2014
  *
  */
 
@@ -1435,8 +1435,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
         // Conditions d'eclipse
         sat.CalculSatelliteEclipse(soleil);
 
-        QVector<double> list;
-        list << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC();
+        QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC());
         _traceAuSol.append(list);
     }
 
