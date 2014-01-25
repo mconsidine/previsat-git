@@ -209,6 +209,7 @@ private slots:
     void on_calJulien_stateChanged(int arg1);
     void on_affcoord_stateChanged(int arg1);
     void on_extinctionAtmospherique_stateChanged(int arg1);
+    void on_refractionPourEclipses_stateChanged(int arg1);
     void on_affetoiles_stateChanged(int arg1);
     void on_affconst_stateChanged(int arg1);
     void on_magnitudeEtoiles_valueChanged(double arg1);

@@ -467,6 +467,7 @@ void PreviSat::ChargementConfig()
     ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
     ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
     ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
+    ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
     ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
     ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
@@ -3424,7 +3425,7 @@ void PreviSat::CalculDN() const
                 soleil.CalculPosition(date);
 
                 // Conditions d'eclipse du satellite
-                satellite.CalculSatelliteEclipse(soleil);
+                satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
                 ecl[j] = satellite.getRayonOmbre() - satellite.getElongation();
             }
 
@@ -3531,6 +3532,9 @@ void PreviSat::EnchainementCalculs() const
     // Calculs specifiques lors de l'affichage du Wall Command Center
     const bool mcc = ui->mccISS->isChecked();
 
+    // Prise en compte de la refraction atmospherique
+    const bool refraction = ui->refractionPourEclipses->isChecked();
+
     // Nombre de traces au sol a afficher
     const int nbTraces = (mcc && satellites.at(0).getTle().getNorad() == "25544") ?
                 3 : (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
@@ -3628,7 +3632,7 @@ void PreviSat::EnchainementCalculs() const
         if (nbSat > 0) {
 
             Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
-                                                   traceCiel, mcc, satellites);
+                                                   traceCiel, mcc, refraction, satellites);
 
             for (int i=0; i<nbSat; i++) {
                 if (satellites[i].isVisible() && !bipSat[i]) {
@@ -5124,6 +5128,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/utcAuto", ui->utcAuto->isChecked());
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
     settings.setValue("affichage/utc", ui->utc->isChecked());
@@ -7495,6 +7500,12 @@ void PreviSat::on_extinctionAtmospherique_stateChanged(int arg1)
     ModificationOption();
 }
 
+void PreviSat::on_refractionPourEclipses_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
 void PreviSat::on_affetoiles_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
@@ -9215,6 +9226,9 @@ void PreviSat::on_calculsPrev_clicked()
         // Prise en compte de l'extinction atmospherique
         const bool ext = ui->extinctionAtmospherique->isChecked();
 
+        // Prise en compte de la refraction atmospherique
+        const bool refr = ui->refractionPourEclipses->isChecked();
+
         // Liste des numeros NORAD
         QStringList listeSat;
         for (int i=0; i<ui->liste2->count(); i++) {
@@ -9244,7 +9258,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecart, ecl, ext, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
+        const Conditions conditions(ecart, ecl, ext, refr, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -9501,6 +9515,9 @@ void PreviSat::on_calculsIri_clicked()
         // Prise en compte de l'extinction atmospherique
         const bool ext = ui->extinctionAtmospherique->isChecked();
 
+        // Prise en compte de la refraction atmospherique
+        const bool refr = ui->refractionPourEclipses->isChecked();
+
         // Nom du fichier resultat
         const QString chaine = tr("iridiums") + "_%1_%2.txt";
         ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
@@ -9577,7 +9594,7 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecart, ext, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
+        const Conditions conditions(ecart, ext, refr, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
                                     ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
@@ -9764,6 +9781,9 @@ void PreviSat::on_calculsEvt_clicked()
         if (!eve)
             throw PreviSatException(tr("Aucun évènement sélectionné"), WARNING);
 
+        // Prise en compte de la refraction atmospherique
+        const bool refr = ui->refractionPourEclipses->isChecked();
+
         // Liste des numeros NORAD
         QStringList listeSat;
         for (int i=0; i<ui->liste3->count(); i++) {
@@ -9793,7 +9813,7 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, jj1, jj2, offset1, nomfic, ficRes, unite, listeSat);
+        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, jj1, jj2, offset1, nomfic, ficRes, unite, listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -10005,6 +10025,9 @@ void PreviSat::on_calculsTransit_clicked()
         const bool calcSol = ui->soleilTransit->isChecked();
         const bool calcLune = ui->luneTransit->isChecked();
 
+        // Prise en compte de la refraction atmospherique
+        const bool refr = ui->refractionPourEclipses->isChecked();
+
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
         ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
@@ -10051,7 +10074,7 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        const Conditions conditions(calcLune, calcSol, ecart, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
+        const Conditions conditions(calcLune, calcSol, ecart, refr, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
                                     unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 

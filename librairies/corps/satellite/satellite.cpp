@@ -303,7 +303,7 @@ void Satellite::CalculPosVit(const Date &date)
 /*
  * Determination de la condition d'eclipse du satellite
  */
-void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
+void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const bool refraction)
 {
     /* Declarations des variables locales */
 
@@ -323,8 +323,12 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil)
     const double rsol = asin(RAYON_SOLAIRE * rs);
     const double psol = asin(RAYON_TERRESTRE * rs);
 
-    // Rayon de l'ombre de la Terre avec prise en compte de la refraction
-    _rayonOmbre = psol + psat - rsol - REFRACTION_HZ;
+    // Rayon de l'ombre de la Terre
+    _rayonOmbre = psol + psat - rsol;
+
+    // Prise en compte de la refraction atmospherique
+    if (refraction)
+        _rayonOmbre -= REFRACTION_HZ;
 
     // Rayon de la penombre de la Terre
     _rayonPenombre = psol + 1.01 * psat + rsol;
@@ -438,7 +442,7 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
  */
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, const bool mcc, QList<Satellite> &satellites)
+                                            const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -454,7 +458,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         satellites[isat].CalculCoordHoriz(observateur);
 
         // Calcul des conditions d'eclipse
-        satellites[isat].CalculSatelliteEclipse(soleil);
+        satellites[isat].CalculSatelliteEclipse(soleil, refraction);
 
         // Calcul des coordonnees terrestres
         satellites[isat].CalculCoordTerrestres(observateur);
@@ -469,7 +473,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul de la trajectoire dans le ciel
         if (traceCiel)
-            satellites[isat].CalculTraceCiel(date, observateur);
+            satellites[isat].CalculTraceCiel(date, refraction, observateur);
 
         if (isat == 0) {
 
@@ -487,7 +491,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
                              false) : Date(date.getJourJulienUTC(), 0., false);
 
             // Calcul de la trajectoire
-            satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol);
+            satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, refraction);
 
             // Calcul de l'angle beta
             satellites[isat].CalculBeta(soleil);
@@ -1392,7 +1396,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satell
 /*
  * Calcul de la trajectoire du satellite
  */
-void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
+void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction)
 {
     /* Declarations des variables locales */
     Satellite sat = Satellite(_tle);
@@ -1433,9 +1437,9 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
         soleil.CalculPosition(date);
 
         // Conditions d'eclipse
-        sat.CalculSatelliteEclipse(soleil);
+        sat.CalculSatelliteEclipse(soleil, refraction);
 
-        QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC());
+        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC());
         _traceAuSol.append(list);
     }
 
@@ -1446,7 +1450,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites)
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
+void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur observateur)
 {
     /* Declarations des variables locales */
     Satellite sat = Satellite(_tle);
@@ -1478,10 +1482,9 @@ void Satellite::CalculTraceCiel(const Date &date, Observateur observateur)
             soleil.CalculPosition(j0);
 
             // Conditions d'eclipse
-            sat.CalculSatelliteEclipse(soleil);
+            sat.CalculSatelliteEclipse(soleil, refraction);
 
-            QVector<double> list;
-            list << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.);
+            const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.));
             _traceCiel.append(list);
 
         } else {

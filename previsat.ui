@@ -1503,14 +1503,6 @@
             <string>BETA = 75.3</string>
            </property>
           </widget>
-          <zorder>latitudeISS</zorder>
-          <zorder>altitudeISS</zorder>
-          <zorder>longitudeISS</zorder>
-          <zorder>inclinaisonISS</zorder>
-          <zorder>nextTransitionISS</zorder>
-          <zorder>orbiteISS</zorder>
-          <zorder>betaISS</zorder>
-          <zorder>frameCarte2</zorder>
          </widget>
          <zorder>frameLat</zorder>
          <zorder>carte</zorder>
@@ -8746,7 +8738,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-174</y>
                  <width>784</width>
                  <height>360</height>
                 </rect>
@@ -8939,7 +8931,7 @@
                 <property name="geometry">
                  <rect>
                   <x>240</x>
-                  <y>308</y>
+                  <y>284</y>
                   <width>251</width>
                   <height>17</height>
                  </rect>
@@ -9453,7 +9445,7 @@
                 <property name="geometry">
                  <rect>
                   <x>240</x>
-                  <y>284</y>
+                  <y>332</y>
                   <width>241</width>
                   <height>17</height>
                  </rect>
@@ -9479,6 +9471,22 @@
                 </property>
                 <property name="text">
                  <string>Garder les proportions de la carte du monde</string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="refractionPourEclipses">
+                <property name="geometry">
+                 <rect>
+                  <x>240</x>
+                  <y>308</y>
+                  <width>271</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font/>
+                </property>
+                <property name="text">
+                 <string>Prise en compte de la réfraction pour les éclipses</string>
                 </property>
                </widget>
               </widget>
