@@ -2532,26 +2532,19 @@ void PreviSat::AffichageCourbes() const
                     const QString nomIcone = ":/resources/icones/%1.png";
                     const int norad = satellites.at(isat).getTle().getNorad().toInt();
 
-                    QPixmap img((satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) ? nomIcone.arg("TDRS") :
-                                                                                                       nomIcone.arg(norad));
-                    if (!img.isNull())
+                    QPixmap img(nomIcone.arg(norad));
+
+                    if (img.isNull()) {
+                        const QString nomsatm = satellites.at(isat).getTle().getNom().toLower().section(" ", 0, 0);
+                        img = QPixmap(nomIcone.arg(nomsatm));
+                    }
+
+                    if (img.isNull()) {
+                        AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
+                    } else {
                         img = img.scaled(qMin(lcarte / 12, img.width()), qMin(hcarte / 6, img.height()));
-                    QGraphicsPixmapItem *pm = scene->addPixmap(img);
-
-                    switch (norad) {
-
-                    case 20580:
-                    case 25544:
+                        QGraphicsPixmapItem *pm = scene->addPixmap(img);
                         pm->setPos(lsat - img.width() / 2, bsat - img.height() / 2);
-                        break;
-
-                    default:
-
-                        if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs"))
-                            pm->setPos(lsat - img.width() / 2, bsat - img.height() / 2);
-                        else
-                            AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
-                        break;
                     }
                 } else {
                     AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
