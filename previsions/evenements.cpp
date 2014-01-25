@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2014
+ * >    25 janvier 2014
  *
  */
 
@@ -325,7 +325,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
 
             // Position du satellite
             sat.CalculPosVit(date);
-            sat.CalculSatelliteEclipse(soleil);
+            sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
             sat.CalculElementsOsculateurs(date);
 
             // Sauvegarde des donnees

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2014
+ * >    25 janvier 2014
  *
  */
 
@@ -64,14 +64,14 @@ public:
 
     /* Methodes publiques */
     void CalculPosVit(const Date &date);
-    void CalculSatelliteEclipse(const Soleil &soleil);
+    void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
     void CalculZoneVisibilite2(const Observateur &station);
     double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, const bool mcc, QList<Satellite> &satellites);
+                                            const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites);
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
@@ -371,8 +371,8 @@ private:
     void Dspace(const double tc);
     void CalculBeta(const Soleil &soleil);
     Date CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite);
-    void CalculTracesAuSol(const Date &date, const int nbOrbites);
-    void CalculTraceCiel(const Date &date, Observateur observateur);
+    void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
+    void CalculTraceCiel(const Date &date, const bool refraction, Observateur observateur);
 
 };
 

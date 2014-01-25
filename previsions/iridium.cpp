@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2014
+ * >    25 janvier 2014
  *
  */
 
@@ -147,7 +147,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                 double temp = -DATE_INFINIE;
 
                 // Determination de la condition d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil);
+                sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                 // Le satellite n'est pas eclipse
                 if (!sat.isEclipse()) {
@@ -204,7 +204,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                         soleil.CalculPosition(date0);
 
                         // Condition d'eclipse du satellite
-                        sat.CalculSatelliteEclipse(soleil);
+                        sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                         if (sat.isEclipse() || sat.getHauteur() < conditions.getHaut())
                             jj0 = jj2 + PAS0;
@@ -348,7 +348,7 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
                     soleil.CalculCoordHoriz(observateur);
 
                     // Condition d'eclipse du satellite
-                    sat.CalculSatelliteEclipse(soleil);
+                    sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                     // Angle de reflexion
                     const double angref = AngleReflexion(sat, soleil);
@@ -712,7 +712,7 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
         soleil.CalculPosition(date);
 
         // Conditions d'eclipse du satellite
-        satellite.CalculSatelliteEclipse(soleil);
+        satellite.CalculSatelliteEclipse(soleil, conditions.getRefr());
         ecl[i] = satellite.getRayonOmbre() - satellite.getElongation();
 
         // Angle de reflexion

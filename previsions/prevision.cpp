@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    25 janvier 2014
  *
  */
 
@@ -136,7 +136,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             if (sat.getHauteur() >= conditions.getHaut()) {
 
                 // Conditions d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil);
+                sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                 // Le satellite n'est pas eclipse
                 if (!sat.isEclipse() || !conditions.getEcl()) {
@@ -264,7 +264,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 if (sat.getHauteur() < conditions.getHaut()) {
                                     afin = true;
                                 } else {
-                                    sat.CalculSatelliteEclipse(soleil);
+                                    sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
                                     sat.CalculMagnitude(observateur, conditions.getExt());
                                     sat.CalculCoordEquat(observateur);
                                 }

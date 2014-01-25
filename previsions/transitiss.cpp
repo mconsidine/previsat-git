@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    25 janvier 2014
  *
  */
 
@@ -215,7 +215,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.getDistance());
 
                         const bool itr = (ang <= rayonApparent);
-                        sat.CalculSatelliteEclipse(soleil);
+                        sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                         if (itr || (!itr && !sat.isEclipse())) {
 
@@ -250,7 +250,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);
                                 soleil.CalculCoordHoriz(observateur);
-                                sat.CalculSatelliteEclipse(soleil);
+                                sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
 
                                 // Ecriture du resultat
 

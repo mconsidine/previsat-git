@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    25 janvier 2014
  *
  */
 
@@ -52,22 +52,22 @@ public:
     Conditions();
 
     // Constructeur pour le calcul des previsions de passages
-    Conditions(const bool ecart, const bool ecl, const bool ext, const int crep, const int haut, const int pas0, const double jj1,
-               const double jj2, const double offset, const double mgn1, const QString &fic, const QString &out, const QString &unite,
-               const QStringList &listeSatellites);
+    Conditions(const bool ecart, const bool ecl, const bool ext, const bool refr, const int crep, const int haut, const int pas0,
+               const double jj1, const double jj2, const double offset, const double mgn1, const QString &fic, const QString &out,
+               const QString &unite, const QStringList &listeSatellites);
 
     // Constructeur pour le calcul des flashs Iridium
-    Conditions(const bool ecart, const bool ext, const int crep, const int haut, const int nbl, const char chr, const double ang0,
-               const double jj1, const double jj2, const double offset, const double mgn1, const double mgn2, const QString &fic,
-               const QString &out, const QString &unite, const QStringList &tabStsIri, const QVector<TLE> &tabtle);
+    Conditions(const bool ecart, const bool ext, const bool refr, const int crep, const int haut, const int nbl, const char chr,
+               const double ang0, const double jj1, const double jj2, const double offset, const double mgn1, const double mgn2,
+               const QString &fic, const QString &out, const QString &unite, const QStringList &tabStsIri, const QVector<TLE> &tabtle);
 
     // Constructeur pour le calcul des evenements orbitaux
     Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso, const bool atransJn,
-               const bool ecart, const double jj1, const double jj2, const double offset, const QString &fic, const QString &out,
-               const QString &unite, const QStringList &listeSatellites);
+               const bool ecart, const bool refr, const double jj1, const double jj2, const double offset, const QString &fic,
+               const QString &out, const QString &unite, const QStringList &listeSatellites);
 
     // Constructeur pour le calcul des transits ISS
-    Conditions(const bool acalcLune, const bool acalcSoleil, const bool ecart, const int haut, const double ageTLE,
+    Conditions(const bool acalcLune, const bool acalcSoleil, const bool ecart, const bool refr, const int haut, const double ageTLE,
                const double seuilConjonction, const double jj1, const double jj2, const double offset, const QString &fic,
                const QString &out, const QString &unite);
     ~Conditions();
@@ -84,6 +84,7 @@ public:
     bool getEcart() const;
     bool getEcl() const;
     bool getExt() const;
+    bool getRefr() const;
     double getCrep() const;
     double getHaut() const;
     double getPas0() const;
@@ -133,6 +134,7 @@ private:
     bool _ecart;
     bool _ecl;
     bool _ext;
+    bool _refr;
     double _crep;
     double _haut;
     double _pas0;
