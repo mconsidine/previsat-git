@@ -1504,10 +1504,10 @@
            </property>
           </widget>
          </widget>
-         <zorder>frameLat</zorder>
          <zorder>carte</zorder>
          <zorder>frameCoordISS</zorder>
          <zorder>frameLon</zorder>
+         <zorder>frameLat</zorder>
          <zorder>ciel</zorder>
          <zorder>nord</zorder>
          <zorder>sud</zorder>
@@ -1974,7 +1974,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -7997,7 +7997,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -8738,7 +8738,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-174</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>360</height>
                 </rect>
@@ -9605,6 +9605,72 @@
               </property>
               <property name="checked">
                <bool>false</bool>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_coulGMT">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>120</y>
+                <width>141</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Choix de la couleur de GMT :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="coulGMT">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>116</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Rouge</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blanc</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QComboBox" name="coulZOE">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>140</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Noir</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blanc</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLabel" name="lbl_coulZOE">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>144</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Choix de la couleur de la ZOE :</string>
               </property>
              </widget>
             </widget>

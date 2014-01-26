@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    26 janvier 2014
  *
  */
 
@@ -968,6 +968,8 @@ void PreviSat::DemarrageApplication()
     ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
     ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
+    ui->coulGMT->setCurrentIndex(settings.value("affichage/coulGMT", 0).toInt());
+    ui->coulZOE->setCurrentIndex(settings.value("affichage/coulZOE", 0).toInt());
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -1713,6 +1715,9 @@ void PreviSat::AffichageDonnees()
         const int numJour = (int) jourDsAnnee;
         const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.005);
         const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.005);
+        QPalette coul;
+        coul.setColor(QPalette::WindowText, (ui->coulGMT->currentIndex() == 0) ? Qt::red : Qt::white);
+        ui->gmt->setPalette(coul);
         ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
     }
 
@@ -2009,8 +2014,18 @@ void PreviSat::AffichageCourbes() const
                 ui->W60->setText("-60");
                 ui->W30->setText("-30");
 
+                QPalette coul;
+                coul.setColor(QPalette::WindowText, Qt::white);
+                ui->N60->setPalette(coul);
+                ui->N30->setPalette(coul);
+                ui->N0->setPalette(coul);
+                ui->S30->setPalette(coul);
+                ui->S60->setPalette(coul);
                 ui->S30->setText("-30");
                 ui->S60->setText("-60");
+                ui->N60->setAlignment(Qt::AlignRight);
+                ui->N30->setAlignment(Qt::AlignRight);
+                ui->N0->setAlignment(Qt::AlignRight);
 
             } else {
                 tabLat << hcarte / 6 << hcarte / 3 << (int) (hcarte / 1.5) << (int) (hcarte / 1.2);
@@ -2024,8 +2039,18 @@ void PreviSat::AffichageCourbes() const
                 ui->W60->setText("60");
                 ui->W30->setText("30");
 
+                QPalette coul;
+                coul.setColor(QPalette::WindowText, Qt::black);
+                ui->N60->setPalette(coul);
+                ui->N30->setPalette(coul);
+                ui->N0->setPalette(coul);
+                ui->S30->setPalette(coul);
+                ui->S60->setPalette(coul);
                 ui->S30->setText("30");
                 ui->S60->setText("60");
+                ui->N60->setAlignment(Qt::AlignLeft);
+                ui->N30->setAlignment(Qt::AlignLeft);
+                ui->N0->setAlignment(Qt::AlignLeft);
 
                 // Tropiques
                 stylo.setStyle(Qt::DashLine);
@@ -2216,7 +2241,7 @@ void PreviSat::AffichageCourbes() const
             const double xnZOE = 252. * DEG2PXHZ;
             const double ynZOE = 66. * DEG2PXVT;
 
-            txtZOE->setBrush(Qt::black);
+            txtZOE->setBrush((ui->coulZOE->currentIndex() == 0) ? Qt::black : Qt::white);
             const QFont policeZOE(PreviSat::font().family(), 14);
             txtZOE->setFont(policeZOE);
             const int htt = (int) txtZOE->boundingRect().height();
@@ -5146,6 +5171,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affCerclesAcq", ui->affCerclesAcq->isChecked());
     settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
+    settings.setValue("affichage/coulGMT", ui->coulGMT->currentIndex());
+    settings.setValue("affichage/coulZOE", ui->coulGMT->currentIndex());
+
     for(int i=0; i<ui->listeStations->count(); i++)
         settings.setValue("affichage/station" + QString::number(i), ui->listeStations->item(i)->checkState());
 
@@ -5253,7 +5281,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->NN->move(5, (int) (hcarte / 2.4) - 1);
     ui->N30->move(5, (int) (hcarte / 3.) - 1);
     ui->N60->move(5, (int) (hcarte / 6.) - 1);
-    ui->frameLat->setGeometry(1 + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
+    const int xLat = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? -20 : 1 + ui->carte->x();
+    ui->frameLat->setGeometry(xLat + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
     const int dec1 = (ui->styleWCC->isChecked()) ? 12 : 8;
     const int dec2 = (ui->styleWCC->isChecked()) ? 9 : 5;
@@ -5270,7 +5299,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->E90->move((int) (lcarte * 0.75) - 5, 0);
     ui->E120->move((int) (lcarte / 1.2) - 8, 0);
     ui->E150->move((int) (lcarte * 11. / 12.) - 8, 0);
-    ui->frameLon->setGeometry(ui->carte->x(), 1 + ui->carte->y() + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
+    const int yLon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? -10 : 1 + ui->carte->y();
+    ui->frameLon->setGeometry(ui->carte->x(), yLon + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
     const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() / 2 - 411;
     ui->onglets->move(xOng, 0);
@@ -7758,6 +7788,20 @@ void PreviSat::on_listeStations_clicked(const QModelIndex &index)
 void PreviSat::on_styleWCC_toggled(bool checked)
 {
     Q_UNUSED(checked)
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
+    ModificationOption();
+}
+
+void PreviSat::on_coulGMT_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    ModificationOption();
+}
+
+void PreviSat::on_coulZOE_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
     ModificationOption();
 }
 

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    26 janvier 2014
  *
  */
 
@@ -231,6 +231,8 @@ private slots:
     void on_affSAA_ZOE_toggled(bool checked);
     void on_listeStations_clicked(const QModelIndex &index);
     void on_styleWCC_toggled(bool checked);
+    void on_coulGMT_currentIndexChanged(int index);
+    void on_coulZOE_currentIndexChanged(int index);
 
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
