@@ -4782,7 +4782,7 @@ void PreviSat::GestionTempsReel()
         tim = (tim.addSecs((int) pas1) <= QDateTime::currentDateTimeUtc()) ? tim.addSecs((int) pas1) : QDateTime::currentDateTimeUtc();
 
         // Date actuelle
-        dateCourante = Date(offsetUTC);
+        dateCourante = Date(dateCourante.getOffsetUTC());
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -4811,7 +4811,7 @@ void PreviSat::GestionTempsReel()
                 if (!ui->play->isEnabled() || !ui->forward->isEnabled())
                     jd += pas1;
 
-                dateCourante = Date(jd + EPS_DATES, offsetUTC);
+                dateCourante = Date(jd + EPS_DATES, dateCourante.getOffsetUTC());
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
@@ -7266,7 +7266,7 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), offsetUTC);
+                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
     if (ui->modeManuel->isChecked()) {
         info = true;
@@ -7295,7 +7295,7 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), offsetUTC);
+                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
     ui->dateHeure3->setDateTime(date);
 
