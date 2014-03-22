@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    31 aout 2013
+ * >    22 mars 2014
  *
  */
 
@@ -56,7 +56,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void CalculFlashsIridium(const Conditions &conditions, Observateur &observateur);
+    static void CalculFlashsIridium(const Conditions &conditions, Observateur &observateur, QStringList &result);
     static int LectureStatutIridium(const char ope, QStringList &tabStsIri);
     static void FinTraitement();
     static double CalculMagnitudeIridium(const bool extinction, const Satellite &satellite, const Soleil &soleil,

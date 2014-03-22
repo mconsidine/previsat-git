@@ -33,7 +33,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >
+ * >    22 mars 2014
  *
  */
 
@@ -55,15 +55,16 @@ public:
     };
 
     ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions);
-    ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &observateur);
+    ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &obs);
     void run();
 
     TypeCalcul getTypeCalcul() const;
+    Observateur getObservateur() const;
+    QStringList getRes();
 
 private:
     TypeCalcul _typeCalcul;
     Conditions _conditions;
-    Observateur _observateur;
 };
 
 #endif // THREADCALCULS_H

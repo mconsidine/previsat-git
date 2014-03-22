@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    22 mars 2014
  *
  */
 
@@ -49,7 +49,7 @@
 #include <QTextStream>
 #include "ligneconstellation.h"
 
-bool LigneConstellation::_initLig = false;
+bool LigneConstellation::initLig = false;
 QList<QVector<int> > LigneConstellation::_tabLigCst;
 
 /*
@@ -90,9 +90,9 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (!_initLig) {
+    if (!initLig) {
         InitTabLignesCst();
-        _initLig = true;
+        initLig = true;
     }
 
     /* Corps de la methode */

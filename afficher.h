@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    22 mars 2014
  *
  */
 
@@ -43,6 +43,11 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
+#include <QTableWidgetItem>
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
+#include "librairies/observateur/observateur.h"
+#include "previsions/conditions.h"
 
 namespace Ui {
     class Afficher;
@@ -53,18 +58,22 @@ class Afficher : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Afficher(QWidget *fenetreParent = 0);
+    explicit Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, QWidget *fenetreParent = 0);
     void show(const QString &fic);
     ~Afficher();
 
 private:
     Ui::Afficher *ui;
     QString _fichier;
+    void load();
+    void loadMap(const int i);
+    void loadSky(const int j);
 
 private slots:
     void closeEvent(QCloseEvent *evt);
     void resizeEvent(QResizeEvent * evt);
     void on_actionEnregistrer_activated();
+    void on_listePrevisions_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 #endif // AFFICHER_H

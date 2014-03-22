@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 janvier 2014
+ * >    22 mars 2014
  *
  */
 
@@ -229,6 +229,7 @@ static Afficher *afficherResultats;
 static QMainWindow *afficherVideo;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
+static Conditions conditions;
 
 // Interface graphique
 QPalette paletteDefaut;
@@ -1713,8 +1714,8 @@ void PreviSat::AffichageDonnees()
         const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
         const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
         const int numJour = (int) jourDsAnnee;
-        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.005);
-        const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.005);
+        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
+        const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.00005);
         QPalette coul;
         coul.setColor(QPalette::WindowText, (ui->coulGMT->currentIndex() == 0) ? Qt::red : Qt::white);
         ui->gmt->setPalette(coul);
@@ -2413,7 +2414,8 @@ void PreviSat::AffichageCourbes() const
                                     const int nbOrb = CalculNumeroOrbiteISS(dateISS);
                                     QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(nbOrb));
 
-                                    const QFont policeOrb(PreviSat::font().family(), 10, 2);
+                                    const QFont policeOrb(PreviSat::font().family(), 10, (ui->styleWCC->isChecked()) ?
+                                                              QFont::Bold : QFont::Normal);
                                     txtOrb->setFont(policeOrb);
                                     txtOrb->setBrush(Qt::white);
 
@@ -2437,7 +2439,7 @@ void PreviSat::AffichageCourbes() const
                                         QGraphicsSimpleTextItem * const txtOmb =
                                                 new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "[" : "]");
 
-                                        const QFont policeOmb(PreviSat::font().family(), 14, 2);
+                                        const QFont policeOmb(PreviSat::font().family(), 14);
                                         txtOmb->setFont(policeOmb);
                                         txtOmb->setBrush(Qt::white);
 
@@ -3596,7 +3598,7 @@ void PreviSat::EnchainementCalculs() const
             soleil.CalculCoordTerrestres(observateurs.at(0));
 
             // Zone d'ombre
-            const double beta = acos(RAYON_TERRESTRE / soleil.getDistance());
+            const double beta = acos((RAYON_TERRESTRE - 15.) / soleil.getDistance()) - REFRACTION_HZ;
             soleil.CalculZoneVisibilite(beta);
 
             if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
@@ -5154,6 +5156,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
     settings.setValue("affichage/utc", ui->utc->isChecked());
@@ -9302,7 +9305,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecart, ecl, ext, refr, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
+        conditions = Conditions(ecart, ecl, ext, refr, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -9347,9 +9350,11 @@ void PreviSat::on_afficherPrev_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    afficherResultats = new Afficher;
+    QStringList result = threadCalculs->getRes();
+    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
     afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
     afficherResultats->show(ficRes);
+    result.clear();
 
     /* Retour */
     return;
@@ -9638,7 +9643,7 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(ecart, ext, refr, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
+        conditions = Conditions(ecart, ext, refr, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
                                     ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
@@ -9684,10 +9689,11 @@ void PreviSat::on_afficherIri_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    afficherResultats = new Afficher;
+    QStringList result = threadCalculs->getRes();
+    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
     afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
     afficherResultats->show(ficRes);
-    afficherResultats->resize(1210, afficherResultats->height());
+    result.clear();
 
     /* Retour */
     return;
@@ -9857,7 +9863,8 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        const Conditions conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, jj1, jj2, offset1, nomfic, ficRes, unite, listeSat);
+        conditions = Conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, jj1, jj2, offset1, nomfic, ficRes, unite,
+                                listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -9901,9 +9908,11 @@ void PreviSat::on_afficherEvt_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    afficherResultats = new Afficher;
+    QStringList result = threadCalculs->getRes();
+    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
     afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
     afficherResultats->show(ficRes);
+    result.clear();
 
     /* Retour */
     return;
@@ -10118,8 +10127,8 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        const Conditions conditions(calcLune, calcSol, ecart, refr, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
-                                    unite);
+        conditions = Conditions(calcLune, calcSol, ecart, refr, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
+                                unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::TRANSITS, conditions, obser);
@@ -10165,10 +10174,12 @@ void PreviSat::on_afficherTransit_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    afficherResultats = new Afficher;
+    QStringList result = threadCalculs->getRes();
+    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(ficRes);
     afficherResultats->resize(1210, afficherResultats->height());
+    result.clear();
 
     /* Retour */
     return;

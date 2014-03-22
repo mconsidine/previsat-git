@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    22 mars 2014
  *
  */
 
@@ -47,7 +47,7 @@
 #include "etoile.h"
 #include "librairies/maths/mathConstants.h"
 
-bool Etoile::_initStar = false;
+bool Etoile::initStar = false;
 
 /*
  * Constructeurs
@@ -86,9 +86,9 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (!_initStar) {
+    if (!initStar) {
         InitTabEtoiles(etoiles);
-        _initStar = true;
+        initStar = true;
     }
 
     /* Corps de la methode */

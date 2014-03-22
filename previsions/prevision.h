@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    22 mars 2014
  *
  */
 
@@ -55,7 +55,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void CalculPassages(const Conditions &conditions, Observateur &observateur);
+    static void CalculPassages(const Conditions &conditions, Observateur &observateur, QStringList &res);
     static void FinTraitement();
 
     /* Accesseurs */
