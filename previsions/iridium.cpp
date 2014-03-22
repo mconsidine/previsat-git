@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    22 mars 2014
  *
  */
 
@@ -53,7 +53,7 @@
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;
-static const double PAS1 = 20. * NB_JOUR_PAR_SEC;
+static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT1 = 2. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
@@ -85,13 +85,14 @@ static QList<QVector<double > > tabEphem;
 /*
  * Calcul des flashs Iridium
  */
-void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &observateur)
+void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &observateur, QStringList &result)
 {
     /* Declarations des variables locales */
     QString ligne;
     QTime tps;
 
     /* Initialisations */
+    result.clear();
     tabtle = conditions.getTabtle();
     QVectorIterator<TLE> it1(tabtle);
     while (it1.hasNext()) {
@@ -163,9 +164,9 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                         const double angref = AngleReflexion(sat, soleil);
                         const double pas = (angref < 0.5) ? PAS1 : PAS0;
 
-                        if (angref <= 0.2) {
+                        if (angref <= 0.3) {
 
-						    double jjm[3];
+                            double jjm[3];
                             jjm[0] = jj0 - NB_JOUR_PAR_MIN;
                             jjm[1] = jj0;
                             jjm[2] = jj0 + NB_JOUR_PAR_MIN;
@@ -237,7 +238,10 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     QTextStream flux(&fichier);
 
     if (res.count() > 0) {
-        flux << QObject::tr("Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max") << endl;
+
+        ligne = QObject::tr("Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
+        result.append(ligne.mid(4));
+        flux << ligne << endl;
 
         int i = 0;
         while (i < res.count()) {
@@ -246,12 +250,16 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
             QString flash;
             if (conditions.getNbl() == 1) {
-                flash = ligne.mid(ligne.length() - 4) + ligne.mid(0, ligne.length() - 4).remove(119, 1);
+                flash = ligne.mid(ligne.length() - 9, 4) + ligne.mid(0, ligne.length() - 9).remove(119, 1);
             } else {
-                flash = ligne.mid(120, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(288, 4) + ligne.mid(124, 119) +
-                        ligne.mid(244, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(412, 4) + ligne.mid(292, 119);
+                flash = ligne.mid(164, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(332, 4) + ligne.mid(168, 119) +
+                        ligne.mid(288, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(500, 4) + ligne.mid(336, 119);
             }
 
+            result.append(ligne.mid(0, 168) + ligne.right(5));
+            result.append(ligne.mid(168, 168) + ligne.right(5));
+            result.append(ligne.mid(336));
+            result.append("");
             flux << flash.trimmed() << endl << endl;
             i++;
         }
@@ -380,8 +388,8 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
                                                       soleil, sat);
 
                     flash.append(ligne);
-                } // fin for
-                res.append(flash);
+                }
+                res.append(flash + sat.getTle().getNorad());
             }
         }
     }
@@ -857,42 +865,38 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
             arg(azs).arg(hts).arg(i);
 
     // Recherche des coordonnees geographiques ou se produit le maximum du flash
-    QString max;
-    if (i == conditions.getNbl() / 2) {
+    QString max(44, ' ');
+    const Vecteur3D direction = _PR.Transposee() * _solsat;
+    obsmax = Observateur::CalculIntersectionEllipsoide(date, sat.getPosition(), direction);
+    if (!obsmax.getNomlieu().isEmpty()) {
 
-        const Vecteur3D direction = _PR.Transposee() * _solsat;
-        obsmax = Observateur::CalculIntersectionEllipsoide(date, sat.getPosition(), direction);
-        if (!obsmax.getNomlieu().isEmpty()) {
+        obsmax.CalculPosVit(date);
+        sat.CalculCoordHoriz(obsmax, false);
 
-            obsmax.CalculPosVit(date);
-            sat.CalculCoordHoriz(obsmax, false);
+        // Distance entre les 2 lieux d'observation
+        const double distanceObs = observateur.CalculDistance(obsmax);
+        double diff = obsmax.getLongitude() - observateur.getLongitude();
+        if (fabs(diff) > PI)
+            diff -= Maths::sgn(diff) * PI;
+        const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
 
-            // Distance entre les 2 lieux d'observation
-            const double distanceObs = observateur.CalculDistance(obsmax);
-            double diff = obsmax.getLongitude() - observateur.getLongitude();
-            if (fabs(diff) > PI)
-                diff -= Maths::sgn(diff) * PI;
-            const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
+        // Angle de reflexion pour le lieu du maximum
+        const double angRefMax = AngleReflexion(sat, soleil);
 
-            // Angle de reflexion pour le lieu du maximum
-            const double angRefMax = AngleReflexion(sat, soleil);
+        // Magnitude du flash
+        const double magFlashMax = MagnitudeFlash(conditions.getExt(), angRefMax, obsmax, soleil, sat);
 
-            // Magnitude du flash
-            const double magFlashMax = MagnitudeFlash(conditions.getExt(), angRefMax, obsmax, soleil, sat);
+        const QString ew = (obsmax.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
+        const QString ns = (obsmax.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
 
-            const QString ew = (obsmax.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-            const QString ns = (obsmax.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
-
-            // Ecriture de la chaine de caracteres
-            const QString fmt2 = "   %1 %2  %3 %4  %5 %6    %7%8%9";
-            max = fmt2.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
-                    arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
-                    arg(dir).arg((magFlashMax >= 0.) ? "+" : "-").arg(fabs(magFlashMax), 2, 'f', 1).
-                    arg((sat.isPenombre()) ? "*" : " ");
-        }
-    } else {
-        max = "";
+        // Ecriture de la chaine de caracteres
+        const QString fmt2 = "   %1 %2  %3 %4  %5 %6    %7%8%9";
+        max = fmt2.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
+                arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
+                arg(dir).arg((magFlashMax >= 0.) ? "+" : "-").arg(fabs(magFlashMax), 2, 'f', 1).
+                arg((sat.isPenombre()) ? "*" : " ");
     }
+
     result = result.arg(max);
 
     // Numero Iridium

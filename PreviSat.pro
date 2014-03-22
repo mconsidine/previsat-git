@@ -33,18 +33,18 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    8 janvier 2014
+# >    22 mars 2014
 
 #-------------------------------------------------
 VER_MAJ = 3.3
-VERSION = 3.3.0.5
+VERSION = 3.3.0.6
 ANNEES_DEV = 2005-2014
 VLC_DIR = $$PWD/inc/vlc
 ZLIB_DIR = $$PWD/inc/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
-QT += core gui network
+QT += core gui network webkit
 
 TARGET = PreviSat
 TEMPLATE = app

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    22 mars 2014
  *
  */
 
@@ -56,6 +56,7 @@ public:
     /* Constantes publiques */
 
     /* Variables publiques */
+    static bool initStar;
 
     /* Methodes publiques */
     static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
@@ -79,7 +80,6 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    static bool _initStar;
     double _magnitude;
     QString _nom;
 

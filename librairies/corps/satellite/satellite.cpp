@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    22 mars 2014
  *
  */
 
@@ -472,8 +472,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         }
 
         // Calcul de la trajectoire dans le ciel
-        if (traceCiel)
-            satellites[isat].CalculTraceCiel(date, refraction, observateur);
+        if (traceCiel) {
+            Observateur obs(observateur);
+            satellites[isat].CalculTraceCiel(date, refraction, obs);
+        }
 
         if (isat == 0) {
 
@@ -1450,7 +1452,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur observateur)
+void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur &observateur)
 {
     /* Declarations des variables locales */
     Satellite sat = Satellite(_tle);
@@ -1484,11 +1486,13 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
             // Conditions d'eclipse
             sat.CalculSatelliteEclipse(soleil, refraction);
 
-            const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.));
+            const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.) <<
+                                       j0.getJourJulienUTC());
             _traceCiel.append(list);
 
         } else {
-            afin = true;
+            if (i > 0)
+                afin = true;
         }
         i++;
     }

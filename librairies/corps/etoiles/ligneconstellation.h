@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    22 mars 2014
  *
  */
 
@@ -54,6 +54,7 @@ public:
     /* Constantes publiques */
 
     /* Variables publiques */
+    static bool initLig;
 
     /* Methodes publiques */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
@@ -80,7 +81,6 @@ private:
 
     /* Variables privees */
     bool _dessin;
-    static bool _initLig;
     Etoile _etoile1;
     Etoile _etoile2;
     static QList<QVector<int> > _tabLigCst;

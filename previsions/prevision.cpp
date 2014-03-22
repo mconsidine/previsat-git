@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    22 mars 2014
  *
  */
 
@@ -56,7 +56,7 @@ static QList<QVector<double > > tabEphem;
 /*
  * Calcul des previsions de passage
  */
-void Prevision::CalculPassages(const Conditions &conditions, Observateur &observateur)
+void Prevision::CalculPassages(const Conditions &conditions, Observateur &observateur, QStringList &res)
 {
     /* Declarations des variables locales */
     bool pass;
@@ -66,7 +66,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
     /* Initialisations */
     pass = false;
-    const QString fmt = "%1 %2 %3 %4 %5  %6 %7%8 %9 %10  %11";
+    const QString fmt = "%1 %2 %3 %4 %5  %6 %7%8 %9 %10  %11%12";
 
     // Creation de la liste de TLE
     TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
@@ -84,17 +84,13 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     Conditions::EcrireEntete(observateur, conditions, tabtle, false);
 
     /* Corps de la methode */
+    res.clear();
     tps.start();
 
     // Calcul des ephemerides du Soleil et du lieu d'observation
     CalculEphemSoleilObservateur(conditions, observateur);
 
     QListIterator<QVector<double> > it3(tabEphem);
-
-    // Ouverture du fichier de resultat
-    QFile fichier(conditions.getOut());
-    fichier.open(QIODevice::Append | QIODevice::Text);
-    QTextStream flux(&fichier);
 
     // Boucle sur les satellites
     QListIterator<Satellite> it2(sats);
@@ -183,16 +179,16 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                     const QString nomsat = sat.getTle().getNom();
 
                                     if (nomsat.toLower() == "iss") {
-                                        flux << "ISS" << endl;
+                                        res.append("ISS");
                                     } else {
                                         ligne = nomsat;
                                         if (nomsat.contains("R/B") || nomsat.contains(" DEB"))
                                             ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).
                                                     arg(sat.getTle().getNorad());
-                                        flux << ligne << endl;
+                                        res.append(ligne);
                                     }
 
-                                    flux << QObject::tr("   Date     Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil") << endl;
+                                    res.append(QObject::tr("   Date     Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
                                     ent = 1;
                                 }
 
@@ -237,14 +233,14 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 const QString result(fmt.arg(date2.ToShortDateAMJ(COURT)).arg(az).arg(ht).arg(ad).arg(de).
                                         arg(sat.getConstellation()).arg(magn).arg(altitude, 8, 'f', 1).
-                                        arg(distance, 9, 'f', 1).arg(azs).arg(hts));
+                                        arg(distance, 9, 'f', 1).arg(azs).arg(hts).arg(sat.getTle().getNorad()));
 
-                                flux << result << endl;
+                                res.append(result);
                                 pass = true;
                             } else {
                                 if (pass) {
                                     pass = false;
-                                    flux << endl;
+                                    res.append("");
                                 }
                             }
 
@@ -274,7 +270,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         ent = 2;
                         if (pass) {
                             pass = false;
-                            flux << endl;
+                            res.append("");
                         }
                         date = Date(date.getJourJulienUTC() + periode, 0., false);
 
@@ -293,6 +289,20 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
         }
     }
     int fin = tps.elapsed();
+
+    // Ouverture du fichier de resultat
+    QFile fichier(conditions.getOut());
+    fichier.open(QIODevice::Append | QIODevice::Text);
+    QTextStream flux(&fichier);
+
+    if (res.count() > 0) {
+        int i = 0;
+        while (i < res.count()) {
+            const QString lig = res.at(i);
+            flux << ((lig.startsWith(' ')) ? lig : lig.mid(0, 119)) << endl;
+            i++;
+        }
+    }
 
     flux << endl;
     ligne = QObject::tr("Temps écoulé : %1s");

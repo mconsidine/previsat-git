@@ -36,7 +36,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >
+ * >    22 mars 2014
  *
  */
 
@@ -46,28 +46,31 @@
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
 
+static Observateur observateur;
+static QStringList res;
+
 ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions)
 {
     _typeCalcul = typeCalcul;
     _conditions = conditions;
 }
 
-ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &observateur)
+ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &obs)
 {
     _typeCalcul = typeCalcul;
     _conditions = conditions;
-    _observateur = observateur;
+    observateur = obs;
 }
 
 void ThreadCalculs::run()
 {
     switch (_typeCalcul) {
     case PREVISION:
-        Prevision::CalculPassages(_conditions, _observateur);
+        Prevision::CalculPassages(_conditions, observateur, res);
         break;
 
     case IRIDIUM:
-        Iridium::CalculFlashsIridium(_conditions, _observateur);
+        Iridium::CalculFlashsIridium(_conditions, observateur, res);
         break;
 
     case EVENEMENTS:
@@ -75,7 +78,7 @@ void ThreadCalculs::run()
         break;
 
     case TRANSITS:
-        TransitISS::CalculTransitsISS(_conditions, _observateur);
+        TransitISS::CalculTransitsISS(_conditions, observateur);
 
     default:
         break;
@@ -85,4 +88,14 @@ void ThreadCalculs::run()
 ThreadCalculs::TypeCalcul ThreadCalculs::getTypeCalcul() const
 {
     return _typeCalcul;
+}
+
+Observateur ThreadCalculs::getObservateur() const
+{
+    return observateur;
+}
+
+QStringList ThreadCalculs::getRes()
+{
+    return res;
 }
