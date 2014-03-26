@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    25 mars 2014
  *
  */
 
@@ -63,7 +63,7 @@ static QVector<QList<QVector<double> > > tabEphem;
 /*
  * Calcul des transits ISS devant la Lune et/ou le Soleil
  */
-void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &observateur)
+void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &observateur, QStringList &result)
 {
     /* Declarations des variables locales */
     double rayon = 0.;
@@ -85,6 +85,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     Conditions::EcrireEntete(observateur, conditions, tabtle, true);
 
     /* Corps de la methode */
+    result.clear();
     tps.start();
     Satellite sat = Satellite(tabtle.at(0));
 
@@ -98,8 +99,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         QListIterator<QVector<double> > it2(it1.next());
 
         while (it2.hasNext()) {
-            const QVector<double> list = it2.next();
 
+            const QVector<double> list = it2.next();
             Date date = Date(list.at(0), 0., false);
 
             // Donnees liees au lieu d'observation
@@ -282,7 +283,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                QString result = fmt.arg(date3.ToShortDateAMJ(LONG)).arg(az).arg(ht).arg(ad).arg(de).
+                                QString resultat = fmt.arg(date3.ToShortDateAMJ(LONG)).arg(az).arg(ht).arg(ad).arg(de).
                                         arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
@@ -291,48 +292,43 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
                                 // Recherche du maximum (transit ou conjonction)
-                                QString max;
-                                if (j == 1) {
+                                QString max(44, ' ');
+                                const Vecteur3D direction = corps.getDist() - sat.getDist();
+                                Observateur obsmin =
+                                        Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
 
-                                    const Vecteur3D direction = corps.getDist() - sat.getDist();
-                                    Observateur obsmin =
-                                            Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
+                                if (!obsmin.getNomlieu().isEmpty()) {
+                                    obsmin.CalculPosVit(dates[j]);
+                                    sat.CalculCoordHoriz(obsmin, false);
 
-                                    if (!obsmin.getNomlieu().isEmpty()) {
-                                        obsmin.CalculPosVit(dates[j]);
-                                        sat.CalculCoordHoriz(obsmin, false);
-
-                                        if (typeCorps == 1) {
-                                            soleil.CalculPosition(dates[j]);
-                                            corps.setPosition(soleil.getPosition());
-                                            rayon = RAYON_SOLAIRE;
-                                        }
-                                        if (typeCorps == 2) {
-                                            lune.CalculPosition(dates[j]);
-                                            corps.setPosition(lune.getPosition());
-                                            rayon = RAYON_LUNAIRE;
-                                        }
-                                        corps.CalculCoordHoriz(obsmin, false);
-
-                                        const double distanceObs = observateur.CalculDistance(obsmin);
-                                        double diff = obsmin.getLongitude() - observateur.getLongitude();
-                                        if (fabs(diff) > PI)
-                                            diff -= Maths::sgn(diff) * PI;
-                                        const QString dir = (diff > 0.) ? QObject::tr("(W)") : QObject::tr("(E)");
-
-                                        const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-                                        const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
-
-                                        // Ecriture de la chaine de caracteres
-                                        const QString fmt2 = "   %1 %2  %3 %4  %5 %6";
-                                        max = fmt2.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
-                                                arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
-                                                arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
+                                    if (typeCorps == 1) {
+                                        soleil.CalculPosition(dates[j]);
+                                        corps.setPosition(soleil.getPosition());
+                                        rayon = RAYON_SOLAIRE;
                                     }
-                                } else {
-                                    max = "";
+                                    if (typeCorps == 2) {
+                                        lune.CalculPosition(dates[j]);
+                                        corps.setPosition(lune.getPosition());
+                                        rayon = RAYON_LUNAIRE;
+                                    }
+                                    corps.CalculCoordHoriz(obsmin, false);
+
+                                    const double distanceObs = observateur.CalculDistance(obsmin);
+                                    double diff = obsmin.getLongitude() - observateur.getLongitude();
+                                    if (fabs(diff) > PI)
+                                        diff -= Maths::sgn(diff) * PI;
+                                    const QString dir = (diff > 0.) ? QObject::tr("(W)") : QObject::tr("(E)");
+
+                                    const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
+                                    const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+
+                                    // Ecriture de la chaine de caracteres
+                                    const QString fmt2 = "   %1 %2  %3 %4  %5 %6";
+                                    max = fmt2.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
+                                            arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                            arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
                                 }
-                                res.append(result.arg(max));
+                                res.append(resultat.arg(max));
                             }
                         }
                     }
@@ -363,22 +359,29 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     fichier.open(QIODevice::Append | QIODevice::Text);
     QTextStream flux(&fichier);
 
-    if (res.size() > 0)
-        flux << QObject::tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance") << endl;
+    QString ligne;
+    if (res.size() > 0) {
 
-    int i = 0;
-    while (i < res.count()) {
-        for (int k=0; k<3; k++) {
-            flux << res.at(i) << endl;
-            i++;
-        }
-        flux << endl;
-    }
-    if (res.count() > 0)
-        if (!res.at(res.count() - 1).isEmpty())
+        ligne = QObject::tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance");
+        result.append(ligne);
+        flux << ligne << endl;
+
+        int i = 0;
+        while (i < res.count()) {
+            for (int k=0; k<3; k++) {
+                flux << res.at(i).trimmed() << endl;
+                result.append(res.at(i));
+                i++;
+            }
             flux << endl;
+            result.append("");
+        }
+        if (res.count() > 0)
+            if (!res.at(res.count() - 1).isEmpty())
+                flux << endl;
+    }
 
-    QString ligne = QObject::tr("Temps écoulé : %1s");
+    ligne = QObject::tr("Temps écoulé : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
@@ -672,7 +675,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
     }
 
     if (itransit) {
-    
+
         double rayon;
         if (typeCorps == 1)
             rayon = RAYON_SOLAIRE;

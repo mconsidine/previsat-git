@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2014
+ * >    25 mars 2014
  *
  */
 
@@ -252,7 +252,7 @@ Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const bool 
     _ecl = false;
     _ext = false;
     _chr = ' ';
-    _nbl = 0;
+    _nbl = -1;
     _ang0 = 0.;
     _crep = 0.;
     _mgn1 = 99.;
