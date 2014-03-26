@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    25 mars 2014
  *
  */
 
@@ -1461,7 +1461,8 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
     /* Initialisations */
     bool afin = false;
     int i = 0;
-    const double st = 1. / (_tle.getNo() * T360);
+    const double step = 1. / (_tle.getNo() * T360);
+    const double st = (step < NB_JOUR_PAR_MIN) ? 10. * NB_JOUR_PAR_SEC : NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
     _traceCiel.clear();

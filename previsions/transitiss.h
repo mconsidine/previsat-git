@@ -33,7 +33,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2012
+ * >    25 mars 2014
  *
  */
 
@@ -54,7 +54,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void CalculTransitsISS(const Conditions &conditions, Observateur &observateur);
+    static void CalculTransitsISS(const Conditions &conditions, Observateur &observateur, QStringList &result);
     static void FinTraitement();
 
     /* Accesseurs */

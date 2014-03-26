@@ -36,7 +36,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    22 mars 2014
+ * >    25 mars 2014
  *
  */
 
@@ -78,7 +78,7 @@ void ThreadCalculs::run()
         break;
 
     case TRANSITS:
-        TransitISS::CalculTransitsISS(_conditions, observateur);
+        TransitISS::CalculTransitsISS(_conditions, observateur, res);
 
     default:
         break;

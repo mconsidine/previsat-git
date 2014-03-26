@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    25 mars 2014
  *
  */
 
@@ -208,6 +208,18 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     police.setWeight(QFont::Bold);
     ui->listePrevisions->horizontalHeader()->setFont(police);
+    if (cond.getNbl() == 0)
+        ui->ongletsResultats->setTabText(1, tr("Prévisions de passage"));
+    else
+        ui->ongletsResultats->setTabText(1, tr("Flashs Iridium"));
+
+    if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
+        ui->ongletsResultats->removeTab(1);
+        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+    }
+
+    if (cond.getAcalcLune() || cond.getAcalcSol())
+        ui->ongletsResultats->setTabText(1, tr("Transits ISS"));
 
     Etoile::initStar = false;
     LigneConstellation::initLig = false;
@@ -229,9 +241,14 @@ void Afficher::load()
     int iht = 0;
     int ihtsol = 0;
     int j = 0;
+
     QString fmt = "%1@%2@%3@%4";
     tablonlat.clear();
     tabres.clear();
+    if (cond.getNbl() < 0) {
+        ui->listePrevisions->horizontalHeaderItem(3)->setText(tr("Angle"));
+        ui->listePrevisions->horizontalHeaderItem(4)->setText(tr("Type"));
+    }
 
     /* Corps de la methode */
     QStringListIterator it(res);
@@ -242,7 +259,8 @@ void Afficher::load()
         // Nom du satellite et debut du passage
         if (ligne.length() < 60) {
             nomsat = ligne;
-            ligne = it.next();
+            if (it.hasNext())
+                ligne = it.next();
         }
 
         if (ligne.contains(tr("Date"))) {
@@ -250,84 +268,109 @@ void Afficher::load()
             iht = ligne.indexOf(tr("Hauteur Sat")) + 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
             ihtsol = ligne.indexOf(tr("Haut Soleil"));
-            ligne = it.next();
+            if (it.hasNext())
+                ligne = it.next();
         }
 
-        if (cond.getNbl() != 0) {
+        if (cond.getNbl() > 0) {
             const QString fmt2 = "  %1 %2  ";
             nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(164, 4).trimmed());
         }
 
-        QString debut = ligne;
+        if (cond.getNbl() < 0)
+            nomsat = "ISS";
 
-        // Maximums et fin du passage
-        QString maxMag = debut;
-        QString maxHt = debut;
-        QString fin = debut;
+        if (!ligne.contains(tr("Date"))) {
 
-        bool afin = false;
-        while (!afin) {
-            ligne = it.next();
-            if (ligne.isEmpty()) {
-                afin = true;
-            } else {
-                // Magnitude max
-                if (ligne.mid(imagn+1, 4) != "----")
-                    if (ligne.mid(imagn, 5).toDouble() <= maxMag.mid(imagn, 5).toDouble() || maxMag.mid(imagn+1, 4) == "----")
-                        maxMag = ligne;
+            QString debut = ligne;
 
-                // Hauteur max
-                if (QString::compare(ligne.mid(iht, 9), maxHt.mid(iht, 9)) > 0)
-                    maxHt = ligne;
+            // Maximums et fin du passage
+            QString maxMag = debut;
+            QString maxHt = debut;
+            QString fin = debut;
 
-                fin = ligne;
+            bool afin = false;
+            while (!afin) {
+                ligne = it.next();
+                if (ligne.isEmpty()) {
+                    afin = true;
+                } else {
+                    if (cond.getNbl() >= 0) {
+
+                        // Magnitude max
+                        if (ligne.mid(imagn+1, 4) != "----")
+                            if (ligne.mid(imagn, 5).toDouble() <= maxMag.mid(imagn, 5).toDouble() || maxMag.mid(imagn+1, 4) == "----")
+                                maxMag = ligne;
+
+                        // Hauteur max
+                        if (QString::compare(ligne.mid(iht, 9), maxHt.mid(iht, 9)) > 0)
+                            maxHt = ligne;
+                    } else {
+                        // Angle minimum
+                        if (ligne.mid(71, 4).toDouble() <= maxHt.mid(71, 4).toDouble())
+                            maxHt = ligne;
+                    }
+
+                    fin = ligne;
+                }
             }
-        }
 
-        // Ajout d'une ligne dans le tableau des resultats
-        ui->listePrevisions->insertRow(j);
-        ui->listePrevisions->setRowHeight(j, 16);
+            // Ajout d'une ligne dans le tableau des resultats
+            ui->listePrevisions->insertRow(j);
+            ui->listePrevisions->setRowHeight(j, 16);
 
-        const int lngDate = (cond.getNbl() == 0) ? 19 : 21;
-        const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) << maxHt.mid(iht, 9) <<
-                                maxMag.mid(imagn, 5) << maxHt.mid(ihtsol, 10));
-        for(int k=0; k<items.count(); k++) {
-            QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
-            item->setTextAlignment(Qt::AlignCenter);
-            ui->listePrevisions->setItem(j, k, item);
-            if ((k > 0 && cond.getNbl() == 0) || (k >= 0 && cond.getNbl() != 0))
-                ui->listePrevisions->resizeColumnToContents(k);
-        }
-        tabres.append(fmt.arg(debut.right(5)).arg(debut.mid(idate, lngDate)).arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
+            const int lngDate = (cond.getNbl() == 0) ? 19 : 21;
+            const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
+                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 9) : maxHt.mid(71, 4)) <<
+                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 5) : debut.mid(78, 1)) << maxHt.mid(ihtsol, 10));
+            for(int k=0; k<items.count(); k++) {
+                QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
+                item->setTextAlignment(Qt::AlignCenter);
+                ui->listePrevisions->setItem(j, k, item);
+                if ((k > 0 && cond.getNbl() == 0) || (k >= 0 && cond.getNbl() != 0))
+                    ui->listePrevisions->resizeColumnToContents(k);
+            }
+            tabres.append(fmt.arg((cond.getNbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
+                          .arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
 
-        // Dans le cas des flashs Iridium, determination de la ligne ou se produit le maximum
-        if (cond.getNbl() != 0) {
+            // Dans le cas des flashs Iridium ou des transits ISS, determination de la ligne ou se produit le maximum
+            if (cond.getNbl() != 0) {
 
-            if (debut.mid(120, 44).trimmed().isEmpty() && fin.mid(120, 44).trimmed().isEmpty()) {
-                tablonlat.append("0. 0. 0. 0.");
-            } else {
-
-                bool tst = debut.mid(120, 44).trimmed().isEmpty();
-                const QString deb = (tst) ? maxMag : debut;
-                tst = fin.mid(120, 44).trimmed().isEmpty();
-                const QString end = (tst) ? maxMag : fin;
-
-                if (deb == end) {
+                const int debt = (cond.getNbl() > 0) ? 120 : 127;
+                if (debut.mid(debt, 44).trimmed().isEmpty() && fin.mid(debt, 44).trimmed().isEmpty()) {
                     tablonlat.append("0. 0. 0. 0.");
                 } else {
 
-                    // Longitudes et latitudes ou passe le maximum
-                    const QString lon1 = ((deb.mid(132, 1) == tr("W")) ? "-" : "+") + QString::number(deb.mid(123, 8).toDouble());
-                    const QString lat1 = ((deb.mid(143, 1) == tr("S")) ? "-" : "+") + QString::number(deb.mid(135, 7).toDouble());
-                    const QString lon2 = ((end.mid(132, 1) == tr("W")) ? "-" : "+") + QString::number(end.mid(123, 8).toDouble());
-                    const QString lat2 = ((end.mid(143, 1) == tr("S")) ? "-" : "+") + QString::number(end.mid(135, 7).toDouble());
-                    const QString fmtll = "%1 %2 %3 %4";
-                    tablonlat.append(fmtll.arg(lon1).arg(lat1).arg(lon2).arg(lat2));
+                    bool tst = debut.mid(120, 44).trimmed().isEmpty();
+                    const QString deb = (tst) ? maxMag : debut;
+                    tst = fin.mid(120, 44).trimmed().isEmpty();
+                    const QString end = (tst) ? maxMag : fin;
+
+                    if (deb == end) {
+                        tablonlat.append("0. 0. 0. 0.");
+                    } else {
+
+                        // Longitudes et latitudes ou passe le maximum
+                        const int deb1 = (cond.getNbl() > 0) ? 123 : 130;
+                        const int deb2 = (cond.getNbl() > 0) ? 135 : 142;
+                        const QString lon1 = ((deb.mid(deb1 + 9, 1) == tr("W")) ? "-" : "+") +
+                                QString::number(deb.mid(deb1, 8).toDouble());
+                        const QString lat1 = ((deb.mid(deb2 + 9, 1) == tr("S")) ? "-" : "+") +
+                                QString::number(deb.mid(deb2, 7).toDouble());
+                        const QString lon2 = ((end.mid(deb1 + 9, 1) == tr("W")) ? "-" : "+") +
+                                QString::number(end.mid(deb1, 8).toDouble());
+                        const QString lat2 = ((end.mid(deb2 + 9, 1) == tr("S")) ? "-" : "+") +
+                                QString::number(end.mid(deb2, 7).toDouble());
+                        const QString fmtll = "%1 %2 %3 %4";
+                        tablonlat.append(fmtll.arg(lon1).arg(lat1).arg(lon2).arg(lat2));
+                    }
                 }
             }
+            j++;
         }
-        j++;
     }
+    if (tabres.isEmpty())
+        ui->ongletsResultats->removeTab(1);
     ui->listePrevisions->horizontalHeader()->setStretchLastSection(true);
     ui->listePrevisions->setAlternatingRowColors(true);
     ui->listePrevisions->setFocus();
@@ -354,8 +397,8 @@ void Afficher::load()
         map0 = map0.replace("NOMLIEU_CENTRE", obs.getNomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat);
 
         ui->frame->setVisible(true);
+        ui->listePrevisions->selectRow(0);
     }
-    ui->listePrevisions->selectRow(0);
 
     /* Retour */
     return;
@@ -415,9 +458,8 @@ void Afficher::on_actionEnregistrer_activated()
     const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
 
     /* Corps de la methode */
-    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."),
-                                                         nomRepDefaut + QDir::separator() + nomFicDefaut,
-                                                         tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut + QDir::separator() +
+                                                         nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
         QFile fi(fichier);
         if (fi.exists())
@@ -894,7 +936,7 @@ void Afficher::loadSky(const int j)
 
             // Determination des dates a afficher sur la carte du ciel
             Date dateTrace(trace.at(i).at(3) + offset, offset);
-            if (cond.getNbl() == 0) {
+            if (cond.getNbl() <= 0) {
                 if (dateTrace.getMinutes() != min) {
                     aecr = true;
                     min = dateTrace.getMinutes();
@@ -926,7 +968,7 @@ void Afficher::loadSky(const int j)
                     ang -= 180.;
                 if (ang > 90. && ang < 180.)
                     ang -= 180.;
-                const int ilg = (cond.getNbl() == 0) ? 8 : 10;
+                const int ilg = (cond.getNbl() <= 0) ? 5 : 10;
                 QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(dateTrace.ToShortDate(LONG).mid(11, ilg));
                 txtTrace->setBrush(bru2);
 

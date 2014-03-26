@@ -75,50 +75,70 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="239"/>
-        <location filename="afficher.cpp" line="240"/>
+        <location filename="afficher.cpp" line="212"/>
+        <source>Prévisions de passage</source>
+        <translation>Predictions of passes</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="214"/>
+        <source>Flashs Iridium</source>
+        <translation>Iridium flares</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="217"/>
+        <source>Transits ISS</source>
+        <translation>ISS transits</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="221"/>
+        <source>Évènements orbitaux</source>
+        <translation>Orbital events</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="260"/>
+        <location filename="afficher.cpp" line="261"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="241"/>
+        <location filename="afficher.cpp" line="262"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elevation</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="242"/>
+        <location filename="afficher.cpp" line="263"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="243"/>
+        <location filename="afficher.cpp" line="264"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="249"/>
+        <location filename="afficher.cpp" line="270"/>
         <source>Iridium</source>
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="305"/>
-        <location filename="afficher.cpp" line="307"/>
+        <location filename="afficher.cpp" line="332"/>
+        <location filename="afficher.cpp" line="334"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="306"/>
-        <location filename="afficher.cpp" line="308"/>
+        <location filename="afficher.cpp" line="333"/>
+        <location filename="afficher.cpp" line="335"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="388"/>
+        <location filename="afficher.cpp" line="430"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="390"/>
+        <location filename="afficher.cpp" line="432"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>

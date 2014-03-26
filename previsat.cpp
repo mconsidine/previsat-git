@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    25 mars 2014
  *
  */
 
@@ -369,7 +369,7 @@ void PreviSat::ChargementConfig()
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
                               "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live.asx" << "stations.sta" << "tdrs.sat");
+                              "ISS-Live.asx" << "resultat.map" << "stations.sta" << "tdrs.sat");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -10178,7 +10178,6 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
     afficherResultats->setWindowTitle(tr("Transits ISS"));
     afficherResultats->show(ficRes);
-    afficherResultats->resize(1210, afficherResultats->height());
     result.clear();
 
     /* Retour */
