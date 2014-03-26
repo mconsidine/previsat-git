@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    25 mars 2014
+ * >    26 mars 2014
  *
  */
 
@@ -369,7 +369,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         int i = 0;
         while (i < res.count()) {
             for (int k=0; k<3; k++) {
-                flux << res.at(i).trimmed() << endl;
+                flux << ((k%2 == 0) ? res.at(i).mid(0, 127) : res.at(i).trimmed()) << endl;
                 result.append(res.at(i));
                 i++;
             }
