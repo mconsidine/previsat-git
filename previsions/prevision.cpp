@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 avril 2014
  *
  */
 
 #include <QFile>
+#include <QSettings>
 #include <QTime>
 #include <QTextStream>
 #include "prevision.h"
@@ -52,6 +53,9 @@
 static QVector<TLE> tabtle;
 static QList<Satellite> sats;
 static QList<QVector<double > > tabEphem;
+
+static QSettings settings("Astropedia", "previsat");
+static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des previsions de passage
@@ -66,7 +70,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
     /* Initialisations */
     pass = false;
-    const QString fmt = "%1 %2 %3 %4 %5  %6 %7%8 %9 %10  %11%12";
+    const QString fmt = "%1%2 %3 %4 %5  %6 %7%8 %9 %10  %11%12";
 
     // Creation de la liste de TLE
     TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
@@ -188,7 +192,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                         res.append(ligne);
                                     }
 
-                                    res.append(QObject::tr("   Date     Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
+                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
                                     ent = 1;
                                 }
 
@@ -231,7 +235,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                const QString result(fmt.arg(date2.ToShortDateAMJ(COURT)).arg(az).arg(ht).arg(ad).arg(de).
+                                const QString result(fmt.arg(date2.ToShortDateAMJ(COURT, sys)).arg(az).arg(ht).arg(ad).arg(de).
                                         arg(sat.getConstellation()).arg(magn).arg(altitude, 8, 'f', 1).
                                         arg(distance, 9, 'f', 1).arg(azs).arg(hts).arg(sat.getTle().getNorad()));
 

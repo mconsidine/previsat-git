@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 avril 2014
  *
  */
 
@@ -74,6 +74,7 @@ private slots:
     void resizeEvent(QResizeEvent * evt);
     void on_actionEnregistrer_activated();
     void on_listePrevisions_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void on_ongletsResultats_currentChanged(int index);
 };
 
 #endif // AFFICHER_H

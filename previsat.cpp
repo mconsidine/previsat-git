@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mars 2014
+ * >    3 avril 2014
  *
  */
 
@@ -488,6 +488,11 @@ void PreviSat::ChargementConfig()
         ui->unitesKm->setChecked(true);
     else
         ui->unitesMi->setChecked(true);
+
+    if (settings.value("affichage/systemeHoraire", true).toBool())
+        ui->syst24h->setChecked(true);
+    else
+        ui->syst12h->setChecked(true);
 
     if (settings.value("fichier/sauvegarde").toString().isEmpty())
         settings.setValue("fichier/sauvegarde", dirOut);
@@ -1260,7 +1265,7 @@ void PreviSat::AffichageDonnees()
             date = Date(dateCourante.getJourJulienUTC(), 0., true);
         }
 
-        chaine = date.ToLongDate().append("  ");
+        chaine = date.ToLongDate((ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H).append("  ");
         chaine = chaine.append(chaineUTC);
         ui->dateHeure1->setText(chaine);
         ui->dateHeure2->setText(chaine);
@@ -1445,11 +1450,11 @@ void PreviSat::AffichageDonnees()
                 const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
                 const Date delaiAOS = Date(dateAOS.getJourJulienUTC() - dateCrt.getJourJulienUTC() - 0.5, 0.);
                 const QString cDelai = (delaiAOS.getHeure() > 0) ?
-                            delaiAOS.ToShortDate(COURT).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                            delaiAOS.ToShortDate(COURT).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+                            delaiAOS.ToShortDate(COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
+                            delaiAOS.ToShortDate(COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
 
-                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT)).arg(cDelai).
-                                     arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
+                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                                     arg(cDelai).arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
 
                 ui->lbl_prochainAOS->setVisible(true);
                 ui->dateAOS->setVisible(true);
@@ -1559,7 +1564,8 @@ void PreviSat::AffichageDonnees()
                 ui->cospar->setText(l1.mid(9, 8).trimmed());
 
                 // Epoque du TLE
-                ui->epoque->setText(tles.at(0).getEpoque().ToShortDate(COURT));
+                ui->epoque->setText(tles.at(0).getEpoque().
+                                    ToShortDate(COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)));
 
                 // Nombre d'orbites a l'epoque
                 ui->nbOrbitesEpoque->setText(l2.mid(63, 5).trimmed());
@@ -1664,7 +1670,7 @@ void PreviSat::AffichageDonnees()
                 const int mois_lct = satellites.at(0).getDateLancement().mid(5, 2).toInt();
                 const double jour_lct = satellites.at(0).getDateLancement().mid(8, 2).toDouble();
                 const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
-                ui->dateLancement->setText(date_lct.ToShortDate(COURT).left(10));
+                ui->dateLancement->setText(date_lct.ToShortDate(COURT, SYSTEME_24H).left(10));
                 ui->categorieOrbite->setText(satellites.at(0).getCategorieOrbite());
                 ui->pays->setText(satellites.at(0).getPays());
             }
@@ -1689,7 +1695,7 @@ void PreviSat::AffichageDonnees()
         chaine = "D/N : %1";
         const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
         const Date delaiEcl = Date(delai - 0.5, 0.);
-        const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT).mid(12, 7) : "0:00:00";
+        const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
         ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
         // Calcul du nombre d'orbites dans le jour
@@ -4515,6 +4521,11 @@ void PreviSat::ModificationOption()
         ui->selecLieux->setCurrentRow(-1);
     }
 
+    ui->afficherPrev->setVisible(false);
+    ui->afficherIri->setVisible(false);
+    ui->afficherEvt->setVisible(false);
+    ui->afficherTransit->setVisible(false);
+
     if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
 
         // Enchainement de l'ensemble des calculs
@@ -5161,6 +5172,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
+    settings.setValue("affichage/systemeHoraire", ui->syst24h->isChecked());
     settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
@@ -5374,7 +5386,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
 
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "previsat_" +
-                dateCourante.ToShortDateAMJ(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
+                dateCourante.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
 
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
@@ -6021,7 +6033,7 @@ void PreviSat::CaptureVideo()
 #endif
         const Date maintenant = Date(offsetUTC);
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "ISS_live_" +
-                maintenant.ToShortDateAMJ(COURT).remove("/").remove(":").replace(" ", "_") + "_" +
+                maintenant.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
 
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
@@ -7597,6 +7609,24 @@ void PreviSat::on_unitesMi_toggled(bool checked)
     ModificationOption();
 }
 
+void PreviSat::on_syst24h_toggled(bool checked)
+{
+    if (checked) {
+        ui->amPrev1->setVisible(false);
+        ui->amPrev2->setVisible(false);
+    }
+    ModificationOption();
+}
+
+void PreviSat::on_syst12h_toggled(bool checked)
+{
+    if (checked) {
+        ui->amPrev1->setVisible(true);
+        ui->amPrev2->setVisible(true);
+    }
+    ModificationOption();
+}
+
 void PreviSat::on_proportionsCarte_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
@@ -8456,6 +8486,7 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     if (messagesStatut != NULL)
         messagesStatut->setText("");
     ui->compteRenduMaj->setVisible(false);
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
     if (arg1 == ui->osculateurs) {
@@ -8465,7 +8496,9 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     } else if (arg1 == ui->previsions) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialePrev->setDisplayFormat(fmt);
         ui->dateFinalePrev->setDateTime(ui->dateInitialePrev->dateTime().addDays(7));
+        ui->dateFinalePrev->setDisplayFormat(fmt);
 
         ui->afficherPrev->setDefault(false);
         ui->calculsPrev->setDefault(true);
@@ -8474,7 +8507,9 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     } else if (arg1 == ui->iridium) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialeIri->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeIri->setDisplayFormat(fmt);
         ui->dateFinaleIri->setDateTime(ui->dateInitialeIri->dateTime().addDays(7));
+        ui->dateFinaleIri->setDisplayFormat(fmt);
 
         ui->afficherIri->setDefault(false);
         ui->calculsIri->setDefault(true);
@@ -8511,12 +8546,15 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
     if (arg1 == ui->evenementsOrbitaux) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeEvt->setDisplayFormat(fmt);
         ui->dateFinaleEvt->setDateTime(ui->dateInitialeEvt->dateTime().addDays(7));
+        ui->dateFinaleEvt->setDisplayFormat(fmt);
 
         ui->afficherEvt->setDefault(false);
         ui->calculsEvt->setDefault(true);
@@ -8525,7 +8563,9 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
     } else if (arg1 == ui->transitsISS) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeTransit->setDisplayFormat(fmt);
         ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(7));
+        ui->dateFinaleTransit->setDisplayFormat(fmt);
 
         ui->afficherTransit->setDefault(false);
         ui->calculsTransit->setDefault(true);
@@ -9030,6 +9070,18 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 /*
  * Calcul des previsions de passage
  */
+void PreviSat::on_dateInitialePrev_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amPrev1->setText(date.toString(fmt).right(2));
+}
+
+void PreviSat::on_dateFinalePrev_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amPrev2->setText(date.toString(fmt).right(2));
+}
+
 void PreviSat::on_effacerHeuresPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -9276,6 +9328,9 @@ void PreviSat::on_calculsPrev_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte du systeme horaire
+        const bool syst = ui->syst24h->isChecked();
+
         // Liste des numeros NORAD
         QStringList listeSat;
         for (int i=0; i<ui->liste2->count(); i++) {
@@ -9285,8 +9340,8 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("previsions") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi(ficRes);
         if (fi.exists())
@@ -9305,7 +9360,7 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ecl, ext, refr, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
+        conditions = Conditions(ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -9364,6 +9419,18 @@ void PreviSat::on_afficherPrev_clicked()
 /*
  * Calcul des flashs Iridium
  */
+void PreviSat::on_dateInitialeIri_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amIri1->setText(date.toString(fmt).right(2));
+}
+
+void PreviSat::on_dateFinaleIri_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amIri2->setText(date.toString(fmt).right(2));
+}
+
 void PreviSat::on_effacerHeuresIri_clicked()
 {
     /* Declarations des variables locales */
@@ -9567,10 +9634,13 @@ void PreviSat::on_calculsIri_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte du systeme horaire
+        const bool syst = ui->syst24h->isChecked();
+
         // Nom du fichier resultat
         const QString chaine = tr("iridiums") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -9643,8 +9713,8 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ext, refr, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(),
-                                    ficRes, unite, tabStsIri, tabtle2);
+        conditions = Conditions(ecart, ext, refr, syst, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2,
+                                fi.absoluteFilePath(), ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::IRIDIUM, conditions, obser);
@@ -9703,6 +9773,18 @@ void PreviSat::on_afficherIri_clicked()
 /*
  * Calcul des evenements orbitaux
  */
+void PreviSat::on_dateInitialeEvt_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amEve1->setText(date.toString(fmt).right(2));
+}
+
+void PreviSat::on_dateFinaleEvt_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amEve2->setText(date.toString(fmt).right(2));
+}
+
 void PreviSat::on_effacerHeuresEvt_clicked()
 {
     /* Declarations des variables locales */
@@ -9834,6 +9916,9 @@ void PreviSat::on_calculsEvt_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte du systeme horaire
+        const bool syst = ui->syst24h->isChecked();
+
         // Liste des numeros NORAD
         QStringList listeSat;
         for (int i=0; i<ui->liste3->count(); i++) {
@@ -9843,8 +9928,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("evenements") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -9863,7 +9948,7 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, jj1, jj2, offset1, nomfic, ficRes, unite,
+        conditions = Conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, syst, jj1, jj2, offset1, nomfic, ficRes, unite,
                                 listeSat);
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
@@ -9922,6 +10007,18 @@ void PreviSat::on_afficherEvt_clicked()
 /*
  * Calcul des transits ISS
  */
+void PreviSat::on_dateInitialeTransit_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amTrs1->setText(date.toString(fmt).right(2));
+}
+
+void PreviSat::on_dateFinaleTransit_dateTimeChanged(const QDateTime &date)
+{
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->amTrs2->setText(date.toString(fmt).right(2));
+}
+
 void PreviSat::on_effacerHeuresTransit_clicked()
 {
     /* Declarations des variables locales */
@@ -10081,10 +10178,13 @@ void PreviSat::on_calculsTransit_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte du systeme horaire
+        const bool syst = ui->syst24h->isChecked();
+
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -10127,8 +10227,8 @@ void PreviSat::on_calculsTransit_clicked()
         ui->annulerTransit->setFocus();
 
         // Lancement des calculs
-        conditions = Conditions(calcLune, calcSol, ecart, refr, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(), ficRes,
-                                unite);
+        conditions = Conditions(calcLune, calcSol, ecart, refr, syst, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(),
+                                ficRes, unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::TRANSITS, conditions, obser);

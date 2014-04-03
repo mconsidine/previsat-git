@@ -36,12 +36,13 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    26 janvier 2014
+ * >    3 avril 2014
  *
  */
 
 #include <QCoreApplication>
 #include <QFile>
+#include <QSettings>
 #include <QTextStream>
 #include <QTime>
 #include "evenements.h"
@@ -56,6 +57,9 @@ static QVector<TLE> tabtle;
 static QList<Satellite> sats;
 static QList<QList<QVector<double > > > tabEphem;
 
+static QSettings settings("Astropedia", "previsat");
+static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
+
 /*
  * Calcul des evenements orbitaux
  */
@@ -65,6 +69,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     QTime tps;
     
     /* Initialisations */
+
     // Creation de la liste de TLE
     TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
     
@@ -205,7 +210,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+                    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, sys)).arg(pso, 6, 'f', 2, QChar('0')).
                             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -276,7 +281,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             if (nom.contains("R/B") || nom.contains(" DEB"))
                 nom = nom.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.getTle().getNorad());
             flux << nom << endl;
-            flux << QObject::tr("   Date     Heure      PSO    Longitude  Latitude  Évènements") << endl;
+            flux << QObject::tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
             
             while (i < res.count()) {
                 if (i > 0 && res.at(i).mid(0, 10) != res.at(i-1).mid(0, 10))
@@ -388,7 +393,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
             Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
     
     // Ecriture de la ligne de resultat
-    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT)).arg(pso, 6, 'f', 2, QChar('0')).
+    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, sys)).arg(pso, 6, 'f', 2, QChar('0')).
             arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).

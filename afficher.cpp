@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    25 mars 2014
+ * >    3 avril 2014
  *
  */
 
@@ -274,7 +274,7 @@ void Afficher::load()
 
         if (cond.getNbl() > 0) {
             const QString fmt2 = "  %1 %2  ";
-            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(164, 4).trimmed());
+            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(165, 4).trimmed());
         }
 
         if (cond.getNbl() < 0)
@@ -307,7 +307,7 @@ void Afficher::load()
                             maxHt = ligne;
                     } else {
                         // Angle minimum
-                        if (ligne.mid(71, 4).toDouble() <= maxHt.mid(71, 4).toDouble())
+                        if (ligne.mid(71, 5).toDouble() <= maxHt.mid(71, 5).toDouble())
                             maxHt = ligne;
                     }
 
@@ -319,10 +319,10 @@ void Afficher::load()
             ui->listePrevisions->insertRow(j);
             ui->listePrevisions->setRowHeight(j, 16);
 
-            const int lngDate = (cond.getNbl() == 0) ? 19 : 21;
+            const int lngDate = (cond.getNbl() == 0) ? 20 : 22;
             const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
-                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 9) : maxHt.mid(71, 4)) <<
-                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 5) : debut.mid(78, 1)) << maxHt.mid(ihtsol, 10));
+                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 9) : maxHt.mid(71, 5)) <<
+                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 5) : debut.mid(79, 1)) << maxHt.mid(ihtsol, 10));
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
                 item->setTextAlignment(Qt::AlignCenter);
@@ -373,7 +373,6 @@ void Afficher::load()
         ui->ongletsResultats->removeTab(1);
     ui->listePrevisions->horizontalHeader()->setStretchLastSection(true);
     ui->listePrevisions->setAlternatingRowColors(true);
-    ui->listePrevisions->setFocus();
 
     if (cond.getNbl() == 0) {
         // Masquage de la map
@@ -397,8 +396,9 @@ void Afficher::load()
         map0 = map0.replace("NOMLIEU_CENTRE", obs.getNomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat);
 
         ui->frame->setVisible(true);
-        ui->listePrevisions->selectRow(0);
     }
+    ui->listePrevisions->selectRow(0);
+    ui->listePrevisions->setFocus();
 
     /* Retour */
     return;
@@ -441,8 +441,8 @@ void Afficher::closeEvent(QCloseEvent *evt)
 void Afficher::resizeEvent(QResizeEvent *evt)
 {
     Q_UNUSED(evt)
-    ui->fichier->setGeometry(0, 0, width(), height() - ui->barreOutils->height());
     ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
+    ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
 }
 
 void Afficher::on_actionEnregistrer_activated()
@@ -602,7 +602,7 @@ void Afficher::loadSky(const int j)
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
     // Position du satellite
-    sat.CalculTraceCiel(dateInit, refraction, obs);
+    sat.CalculTraceCiel(dateInit, refraction, obs, 1);
 
     // Preparations pour l'affichage de la carte du ciel
     // Phase de la Lune
@@ -936,12 +936,13 @@ void Afficher::loadSky(const int j)
 
             // Determination des dates a afficher sur la carte du ciel
             Date dateTrace(trace.at(i).at(3) + offset, offset);
-            if (cond.getNbl() <= 0) {
-                if (dateTrace.getMinutes() != min) {
-                    aecr = true;
-                    min = dateTrace.getMinutes();
-                }
-            } else {
+            if (dateTrace.getMinutes() != min) {
+                aecr = true;
+                min = dateTrace.getMinutes();
+            }
+
+            if (cond.getNbl() > 0) {
+
                 if (dateTrace.getJourJulienUTC() > dateDeb.getJourJulienUTC() && !adeb) {
                     dateTrace = dateDeb;
                     adeb = true;
@@ -964,12 +965,15 @@ void Afficher::loadSky(const int j)
 
                 aecr = false;
                 double ang = Maths::modulo(-fabs(lig.angle() + 90.), T360);
-                if (ang > 180.)
+                if (ang >= 180.)
                     ang -= 180.;
-                if (ang > 90. && ang < 180.)
+                if (ang > 90. && ang <= 180.)
                     ang -= 180.;
-                const int ilg = (cond.getNbl() <= 0) ? 5 : 10;
-                QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(dateTrace.ToShortDate(LONG).mid(11, ilg));
+
+                const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
+                QString sdate = dateTrace.ToShortDate(COURT, sys);
+                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) : sdate.mid(11, 5) + sdate.right(1);
+                QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
                 txtTrace->setBrush(bru2);
 
                 const double ca = cos(ang * DEG2RAD);
@@ -1015,4 +1019,10 @@ void Afficher::on_listePrevisions_currentCellChanged(int currentRow, int current
     if (cond.getNbl() != 0)
         loadMap(currentRow);
     loadSky(currentRow);
+}
+
+void Afficher::on_ongletsResultats_currentChanged(int index)
+{
+    Q_UNUSED(index)
+    ui->listePrevisions->setFocus();
 }

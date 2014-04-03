@@ -10,6 +10,12 @@
     <height>720</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1275</width>
+    <height>720</height>
+   </size>
+  </property>
   <property name="font">
    <font/>
   </property>
@@ -34,7 +40,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="fichier_txt">
      <attribute name="title">
@@ -116,6 +122,9 @@
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
@@ -153,7 +162,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Magnitude Max</string>
+        <string>Magn Max</string>
        </property>
       </column>
       <column>
