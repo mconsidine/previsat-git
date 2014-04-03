@@ -48,6 +48,11 @@ enum DateFormat {
     LONG
 };
 
+enum DateSysteme {
+    SYSTEME_24H,
+    SYSTEME_12H
+};
+
 static const int AN2000 = 2000;
 
 static const double EPS_DATES = 1.e-7;
