@@ -2331,7 +2331,7 @@ void PreviSat::AffichageCourbes() const
 
                         const QPen crayon2 = (ui->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = satellites.at(0);
-                        sat.CalculZoneVisibilite2(stations.at(j));
+                        sat.CalculCercleAcquisition(stations.at(j));
 
                         double lsat1 = sat.getZone().at(0).x() * DEG2PXHZ;
                         double bsat1 = sat.getZone().at(0).y() * DEG2PXVT + 1;

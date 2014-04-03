@@ -30,7 +30,7 @@
 
 		var marker = new L.marker([LATITUDE_CENTRE, LONGITUDE_CENTRE]).addTo(map);
         
-           		var popup = L.popup({ closeButton: false });
+        var popup = L.popup({ closeButton: false });
 
         marker.on('mouseover', function onShowPopup(e) {
         			popup
@@ -38,6 +38,8 @@
 				.setContent("NOMLIEU_CENTRE<br />" + e.latlng.toString())
 				.openOn(map);
         });
+        
+        L.control.scale().addTo(map);
         
         if (LONGITUDE1 != 0. && LATITUDE1 != 0. && LONGITUDE2 != 0. && LATITUDE2 != 0.) {
             L.polygon([
