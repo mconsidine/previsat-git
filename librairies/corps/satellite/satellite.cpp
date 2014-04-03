@@ -374,7 +374,7 @@ void Satellite::CalculMagnitude(const Observateur &observateur, const bool extin
     return;
 }
 
-void Satellite::CalculZoneVisibilite2(const Observateur &station)
+void Satellite::CalculCercleAcquisition(const Observateur &station)
 {
     /* Declarations des variables locales */
 
