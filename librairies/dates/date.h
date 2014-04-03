@@ -65,9 +65,9 @@ public:
     /* Methodes publiques */
     static double CalculOffsetUTC(const QDateTime &date);
     QDateTime ToQDateTime(const int type) const;
-    QString ToShortDate(const DateFormat &format) const;
-    QString ToShortDateAMJ(const DateFormat &format) const;
-    QString ToLongDate() const;
+    QString ToShortDate(const DateFormat &format, const DateSysteme &systeme) const;
+    QString ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const;
+    QString ToLongDate(const DateSysteme &systeme) const;
 
     /* Accesseurs */
     int getAnnee() const;
