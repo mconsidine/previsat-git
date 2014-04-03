@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 avril 2014
  *
  */
 
@@ -45,6 +45,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
+#include <QSettings>
 #include <QTextStream>
 #include <QTime>
 #include "iridium.h"
@@ -81,6 +82,9 @@ static QStringList res;
 static QList<Satellite> sats;
 static QVector<TLE> tabtle;
 static QList<QVector<double > > tabEphem;
+
+static QSettings settings("Astropedia", "previsat");
+static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des flashs Iridium
@@ -239,7 +243,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
     if (res.count() > 0) {
 
-        ligne = QObject::tr("Ir     Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
+        ligne = QObject::tr("Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
         result.append(ligne.mid(4));
         flux << ligne << endl;
 
@@ -252,13 +256,15 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
             if (conditions.getNbl() == 1) {
                 flash = ligne.mid(ligne.length() - 9, 4) + ligne.mid(0, ligne.length() - 9).remove(119, 1);
             } else {
-                flash = ligne.mid(164, 4) + ligne.mid(0, 119) + "\n" + ligne.mid(332, 4) + ligne.mid(168, 119) +
-                        ligne.mid(288, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(500, 4) + ligne.mid(336, 119);
+                flash = ligne.mid(165, 4) + ligne.mid(0, 120) + "\n" + ligne.mid(334, 4) + ligne.mid(169, 120) +
+                        ligne.mid(290, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(503, 4) + ligne.mid(338, 120);
             }
 
-            result.append(ligne.mid(0, 168) + ligne.right(5));
-            result.append(ligne.mid(168, 168) + ligne.right(5));
-            result.append(ligne.mid(336));
+            result.append(ligne.mid(0, 169) + ligne.right(5));
+            if (conditions.getNbl() == 3) {
+                result.append(ligne.mid(169, 168) + ligne.right(5));
+                result.append(ligne.mid(338));
+            }
             result.append("");
             flux << flash.trimmed() << endl << endl;
             i++;
@@ -860,7 +866,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
     const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-    QString result = fmt.arg(date3.ToShortDateAMJ(LONG)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
+    QString result = fmt.arg(date3.ToShortDateAMJ(LONG, sys)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
             arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).
             arg(azs).arg(hts).arg(i);
 

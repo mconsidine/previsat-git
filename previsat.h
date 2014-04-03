@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 janvier 2014
+ * >    3 avril 2014
  *
  */
 
@@ -218,6 +218,8 @@ private slots:
     void on_intensiteVision_valueChanged(int value);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
+    void on_syst24h_toggled(bool checked);
+    void on_syst12h_toggled(bool checked);
     void on_proportionsCarte_stateChanged(int arg1);
     void on_typeParametres_currentIndexChanged(int index);
     void on_heureLegale_toggled(bool checked);
@@ -284,6 +286,8 @@ private slots:
     void on_rechercheCreerTLE_clicked();
 
     // Calcul des previsions de passage
+    void on_dateInitialePrev_dateTimeChanged(const QDateTime &date);
+    void on_dateFinalePrev_dateTimeChanged(const QDateTime &date);
     void on_effacerHeuresPrev_clicked();
     void on_liste2_customContextMenuRequested(const QPoint &position);
     void on_liste2_entered(const QModelIndex &index);
@@ -298,6 +302,8 @@ private slots:
     void on_afficherPrev_clicked();
 
     // Calcul des flashs Iridium
+    void on_dateInitialeIri_dateTimeChanged(const QDateTime &date);
+    void on_dateFinaleIri_dateTimeChanged(const QDateTime &date);
     void on_effacerHeuresIri_clicked();
     void on_fichierTLEIri_currentIndexChanged(int index);
     void on_hauteurSatIri_currentIndexChanged(int index);
@@ -308,6 +314,8 @@ private slots:
     void on_afficherIri_clicked();
 
     // Calcul des evenements orbitaux
+    void on_dateInitialeEvt_dateTimeChanged(const QDateTime &date);
+    void on_dateFinaleEvt_dateTimeChanged(const QDateTime &date);
     void on_effacerHeuresEvt_clicked();
     void on_liste3_customContextMenuRequested(const QPoint &position);
     void on_liste3_entered(const QModelIndex &index);
@@ -317,6 +325,8 @@ private slots:
     void on_afficherEvt_clicked();
 
     // Calcul des transits ISS
+    void on_dateInitialeTransit_dateTimeChanged(const QDateTime &date);
+    void on_dateFinaleTransit_dateTimeChanged(const QDateTime &date);
     void on_effacerHeuresTransit_clicked();
     void on_fichierTLETransit_currentIndexChanged(int index);
     void on_hauteurSatTransit_currentIndexChanged(int index);
