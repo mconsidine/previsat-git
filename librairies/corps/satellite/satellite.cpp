@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mars 2014
+ * >    3 avril 2014
  *
  */
 
@@ -587,11 +587,6 @@ void Satellite::SGP4Init()
     _sat.inclo = DEG2RAD * _tle.getInclo();
     _sat.mo = DEG2RAD * _tle.getMo();
     _sat.no = _tle.getNo() * DEUX_PI * NB_JOUR_PAR_MIN;
-    if (_sat.no < EPSDBL100) {
-        const QString msg = QObject::tr("Nombre de révolutions par jour négatif\nSatellite %1 (numéro NORAD %2)");
-        throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
-    }
-
     _sat.omegao = DEG2RAD * _tle.getOmegao();
 
     const double ss = 78. / RAYON_TERRESTRE + 1.;
@@ -632,10 +627,6 @@ void Satellite::SGP4Init()
         sfour = ss;
         qzms24 = qzms2t;
 
-        if (_sat.rp < 1.) {
-            const QString msg = QObject::tr("TLE contenant des valeurs aboutissant à une altitude négative\nSatellite %1 (numéro NORAD %2)");
-            throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
-        }
         const double perige = (_sat.rp - 1.) * RAYON_TERRESTRE;
         if (perige < 156.) {
             sfour = perige - 78.;
@@ -737,9 +728,6 @@ void Satellite::SGP4Init()
                                 cc1sq * (2. * _sat.d2 + cc1sq));
         }
         _sat.init = true;
-    } else {
-        const QString msg = QObject::tr("Valeurs numériques du TLE incorrectes\nSatellite %1 (numéro NORAD %2)");
-        throw PreviSatException(msg.arg(_tle.getNom()).arg(_tle.getNorad()), WARNING);
     }
 
     /* Retour */
@@ -1452,7 +1440,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur &observateur)
+void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur &observateur, const int sec)
 {
     /* Declarations des variables locales */
     Satellite sat = Satellite(_tle);
@@ -1462,7 +1450,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
     bool afin = false;
     int i = 0;
     const double step = 1. / (_tle.getNo() * T360);
-    const double st = (step < NB_JOUR_PAR_MIN) ? 10. * NB_JOUR_PAR_SEC : NB_JOUR_PAR_MIN;
+    const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
 
     /* Corps de la methode */
     _traceCiel.clear();
@@ -1479,7 +1467,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
         // Coordonnees horizontales
         sat.CalculCoordHoriz(observateur);
 
-        if (sat._hauteur >= 0. && i < 360) {
+        if (sat._hauteur >= 0. && i < 86400) {
 
             // Position du Soleil
             soleil.CalculPosition(j0);
