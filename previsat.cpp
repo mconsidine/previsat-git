@@ -552,6 +552,8 @@ void PreviSat::ChargementConfig()
     ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
     ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
     ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isVisible());
+    ui->amPrev1->setVisible(ui->syst12h->isChecked());
+    ui->amPrev2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatPrev->setVisible(false);
     ui->valHauteurSoleilPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
@@ -566,6 +568,8 @@ void PreviSat::ChargementConfig()
     ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
     ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 4.).toDouble());
     ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
+    ui->amIri1->setVisible(ui->syst12h->isChecked());
+    ui->amIri2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setVisible(false);
@@ -673,6 +677,8 @@ void PreviSat::ChargementConfig()
     ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
     ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
+    ui->amEve1->setVisible(ui->syst12h->isChecked());
+    ui->amEve2->setVisible(ui->syst12h->isChecked());
     ui->afficherEvt->setVisible(false);
     ui->annulerEvt->setVisible(false);
 
@@ -680,6 +686,8 @@ void PreviSat::ChargementConfig()
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
+    ui->amTrs1->setVisible(ui->syst12h->isChecked());
+    ui->amTrs2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatTransit->setVisible(false);
     ui->afficherTransit->setVisible(false);
     ui->annulerTransit->setVisible(false);
@@ -7614,6 +7622,15 @@ void PreviSat::on_syst24h_toggled(bool checked)
     if (checked) {
         ui->amPrev1->setVisible(false);
         ui->amPrev2->setVisible(false);
+
+        ui->amIri1->setVisible(false);
+        ui->amIri2->setVisible(false);
+
+        ui->amEve1->setVisible(false);
+        ui->amEve2->setVisible(false);
+
+        ui->amTrs1->setVisible(false);
+        ui->amTrs2->setVisible(false);
     }
     ModificationOption();
 }
@@ -7621,8 +7638,31 @@ void PreviSat::on_syst24h_toggled(bool checked)
 void PreviSat::on_syst12h_toggled(bool checked)
 {
     if (checked) {
+
+        const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+        ui->amPrev1->setText(ui->dateInitialePrev->dateTime().toString(fmt).right(2));
+        ui->amPrev2->setText(ui->dateFinalePrev->dateTime().toString(fmt).right(2));
+
+        ui->amIri1->setText(ui->dateInitialeIri->dateTime().toString(fmt).right(2));
+        ui->amIri2->setText(ui->dateFinaleIri->dateTime().toString(fmt).right(2));
+
+        ui->amEve1->setText(ui->dateInitialeEvt->dateTime().toString(fmt).right(2));
+        ui->amEve2->setText(ui->dateFinaleEvt->dateTime().toString(fmt).right(2));
+
+        ui->amTrs1->setText(ui->dateInitialeTransit->dateTime().toString(fmt).right(2));
+        ui->amTrs2->setText(ui->dateFinaleTransit->dateTime().toString(fmt).right(2));
+
         ui->amPrev1->setVisible(true);
         ui->amPrev2->setVisible(true);
+
+        ui->amIri1->setVisible(true);
+        ui->amIri2->setVisible(true);
+
+        ui->amEve1->setVisible(true);
+        ui->amEve2->setVisible(true);
+
+        ui->amTrs1->setVisible(true);
+        ui->amTrs2->setVisible(true);
     }
     ModificationOption();
 }
