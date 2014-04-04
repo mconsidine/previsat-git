@@ -132,26 +132,31 @@
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="356"/>
-        <location filename="afficher.cpp" line="360"/>
+        <location filename="afficher.cpp" line="355"/>
+        <location filename="afficher.cpp" line="359"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="358"/>
-        <location filename="afficher.cpp" line="362"/>
+        <location filename="afficher.cpp" line="357"/>
+        <location filename="afficher.cpp" line="361"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="461"/>
+        <location filename="afficher.cpp" line="462"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="462"/>
+        <location filename="afficher.cpp" line="463"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="984"/>
+        <source>Flash Iridium</source>
+        <translation>Iridium flare</translation>
     </message>
 </context>
 <context>

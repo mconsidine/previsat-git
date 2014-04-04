@@ -310,7 +310,6 @@ void Afficher::load()
                         if (ligne.mid(71, 5).toDouble() <= maxHt.mid(71, 5).toDouble())
                             maxHt = ligne;
                     }
-
                     fin = ligne;
                 }
             }
@@ -397,6 +396,7 @@ void Afficher::load()
 
         ui->frame->setVisible(true);
     }
+    ui->ongletsResultats->setCurrentIndex(settings.value("affichage/ongletPrevisions", 0).toInt());
     ui->listePrevisions->selectRow(0);
     ui->listePrevisions->setFocus();
 
@@ -435,6 +435,7 @@ void Afficher::show(const QString &fic)
 void Afficher::closeEvent(QCloseEvent *evt)
 {
     Q_UNUSED(evt)
+    settings.setValue("affichage/ongletPrevisions", ui->ongletsResultats->currentIndex());
     ui->fichier->clear();
 }
 
@@ -930,8 +931,7 @@ void Afficher::loadSky(const int j)
         bool aecr = false;
         bool adeb = false;
         bool amax = false;
-        bool afin = false;
-        int min = 0;
+        int min = -1;
         for(int i=1; i<trace.size(); i++) {
 
             const double ht2 = trace.at(i).at(0);
@@ -953,53 +953,53 @@ void Afficher::loadSky(const int j)
 
             if (cond.getNbl() > 0) {
 
-                if (dateTrace.getJourJulienUTC() > dateDeb.getJourJulienUTC() && !adeb) {
-                    dateTrace = dateDeb;
+                if (dateTrace.getJourJulienUTC() > dateMax.getJourJulienUTC() && !adeb) {
                     adeb = true;
-                    aecr = true;
-                }
-                if (dateTrace.getJourJulienUTC() > dateMax.getJourJulienUTC() && !amax) {
-                    dateTrace = dateMax;
                     amax = true;
                     aecr = true;
                 }
-                if (dateTrace.getJourJulienUTC() > dateFin.getJourJulienUTC() && !afin) {
-                    dateTrace = dateFin;
-                    afin = true;
-                    aecr = true;
+                if (dateTrace.getJourJulienUTC() >= dateDeb.getJourJulienUTC() &&
+                        dateTrace.getJourJulienUTC() <= dateFin.getJourJulienUTC()) {
+                    crayon = QPen(crayon.color(), 4);
                 }
             }
 
-            // Affichage de la date
+            // Affichage de l'heure
             if (aecr) {
 
                 aecr = false;
-                double ang = Maths::modulo(-fabs(lig.angle() + 90.), T360);
-                if (ang >= 180.)
-                    ang -= 180.;
-                if (ang > 90. && ang <= 180.)
-                    ang -= 180.;
+                const double ht3 = (i + 10 < trace.size()) ? trace.at(i+10).at(0) : trace.at(i-10).at(0);
+                const double az3 = (i + 10 < trace.size()) ? trace.at(i+10).at(1) : trace.at(i-10).at(1);
+                const int lsat3 = qRound(lciel - lciel * (1. - ht3 * DEUX_SUR_PI) * sin(az3));
+                const int bsat3 = qRound(lciel - lciel * (1. - ht3 * DEUX_SUR_PI) * cos(az3));
 
-                const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
-                QString sdate = dateTrace.ToShortDate(COURT, sys);
-                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+                // Dessin d'une petite ligne correspondant a la date
+                QLineF lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
+                lig2.setLength(4);
+                sceneSky->addLine(lig2, QPen(bru2, 1.));
+
+                QString sdate;
+                if (amax) {
+                    amax = false;
+                    sdate = tr("Flash Iridium");
+                } else {
+                    const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
+                    sdate = dateTrace.ToShortDate(COURT, sys);
+                    sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+                }
+
                 QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
                 txtTrace->setBrush(bru2);
 
+                const double ang = -lig2.angle();
                 const double ca = cos(ang * DEG2RAD);
                 const double sa = sin(ang * DEG2RAD);
-                const double xnc = lsat2 + 4. * ca + 11. * sa;
-                const double ync = bsat2 + 4. * sa - 11. * ca;
+                const double xnc = lsat2 + 6. * ca + 11. * sa;
+                const double ync = bsat2 + 6. * sa - 11. * ca;
 
                 txtTrace->setPos(xnc, ync);
                 txtTrace->setRotation(ang);
-
                 sceneSky->addItem(txtTrace);
-
-                // Dessin d'une petite ligne correspondant a la date
-                QLineF lig2 = lig.normalVector();
-                lig2.setLength(4);
-                sceneSky->addLine(lig2, QPen(bru2, 1.));
             }
 
             sceneSky->addLine(lig, crayon);
