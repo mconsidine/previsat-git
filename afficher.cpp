@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    4 avril 2014
  *
  */
 
@@ -529,8 +529,18 @@ void Afficher::loadSky(const int j)
     // Date de debut du passage
     QString date = tab.at(1);
     QStringList deb = date.replace("/", " ").replace(":", " ").split(" ");
-    const Date dateI(deb.at(0).toInt(), deb.at(1).toInt(), deb.at(2).toInt(), deb.at(3).toInt(), deb.at(4).toInt(),
-                     deb.at(5).toDouble(), 0.);
+
+    int heure = deb.at(3).toInt();
+    if (date.right(1).contains(QRegExp("[a-z]"))) {
+        if (date.right(1) == "p") {
+            heure += 12;
+        } else {
+            if (heure == 12)
+                heure = 0;
+        }
+    }
+    const Date dateI(deb.at(0).toInt(), deb.at(1).toInt(), deb.at(2).toInt(), heure, deb.at(4).toInt(),
+                     deb.at(5).left(2).toDouble(), 0.);
     double offset = (cond.getEcart()) ? cond.getOffset() : Date::CalculOffsetUTC(Date(dateI.getJourJulienUTC(), 0.).ToQDateTime(1));
     Date dateDeb(dateI.getJourJulienUTC(), offset);
 
@@ -972,7 +982,7 @@ void Afficher::loadSky(const int j)
 
                 const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
                 QString sdate = dateTrace.ToShortDate(COURT, sys);
-                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) : sdate.mid(11, 5) + sdate.right(1);
+                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
                 QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
                 txtTrace->setBrush(bru2);
 
