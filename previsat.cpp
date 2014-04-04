@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    4 avril 2014
  *
  */
 
@@ -4520,7 +4520,7 @@ void PreviSat::ModificationOption()
     ui->intensiteOmbre->setEnabled(ui->affnuit->isChecked());
     ui->nombreTrajectoires->setEnabled(ui->afftraj->isChecked());
 
-    if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus()) {
+    if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
         info = true;
         acalcAOS = true;
         acalcDN = true;
