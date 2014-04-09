@@ -21,6 +21,20 @@
 	<script src="http://leafletjs.com/dist/leaflet.js"></script>
 	<script>
 
+        function toSexagesimal(dec) {
+        
+            var tmp = (dec + 1.e-9).toString().split('.');
+
+			var deg = Math.abs(tmp[0]);
+			var min = ('0.' + tmp[1]) * 60;
+			var sec = min.toString().split('.');
+
+			min = Math.floor(min);
+			sec = (('0.' + sec[1]) * 60).toFixed(0);
+            
+            return (deg + '° ' + ((min < 10) ? '0' + min : min) + "' " + ((sec < 10) ? '0' + sec : sec) + '"');
+        }
+        
 		var map = L.map('map').setView([LATITUDE_CENTRE, LONGITUDE_CENTRE], 9);
 
         L.tileLayer('http://{s}.tile.cloudmade.com/fff48d9e907d44b89c237cf77d2607ec/997/256/{z}/{x}/{y}.png', {
@@ -30,12 +44,19 @@
 
 		var marker = new L.marker([LATITUDE_CENTRE, LONGITUDE_CENTRE]).addTo(map);
         
-        var popup = L.popup({ closeButton: false });
+        var popup = L.popup();
 
         marker.on('mouseover', function onShowPopup(e) {
         			popup
 				.setLatLng(e.latlng)
-				.setContent("NOMLIEU_CENTRE<br />" + e.latlng.toString())
+				.setContent("NOMLIEU_CENTRE<br />CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat))
+				.openOn(map);
+        });
+        
+        map.on('click', function(e) {
+        			popup
+				.setLatLng(e.latlng)
+				.setContent("CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat))
 				.openOn(map);
         });
         
