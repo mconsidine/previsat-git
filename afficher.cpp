@@ -392,7 +392,8 @@ void Afficher::load()
 
         const QString lon(QString::number(-obs.getLongitude() * RAD2DEG));
         const QString lat(QString::number(obs.getLatitude() * RAD2DEG));
-        map0 = map0.replace("NOMLIEU_CENTRE", obs.getNomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat);
+        map0 = map0.replace("NOMLIEU_CENTRE", obs.getNomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
+                replace("CHAINE_LONGITUDE", tr("Longitude")).replace("CHAINE_LATITUDE", tr("Latitude"));
 
         ui->frame->setVisible(true);
     }
