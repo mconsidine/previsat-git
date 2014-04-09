@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    9 avril 2014
  *
  */
 
@@ -82,9 +82,6 @@ static QStringList res;
 static QList<Satellite> sats;
 static QVector<TLE> tabtle;
 static QList<QVector<double > > tabEphem;
-
-static QSettings settings("Astropedia", "previsat");
-static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des flashs Iridium
@@ -243,7 +240,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
     if (res.count() > 0) {
 
-        ligne = QObject::tr("Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
+        ligne = QObject::tr("Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist" \
+                            "  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
         result.append(ligne.mid(4));
         flux << ligne << endl;
 
@@ -866,9 +864,9 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
     const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-    QString result = fmt.arg(date3.ToShortDateAMJ(LONG, sys)).arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).
-            arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).
-            arg(azs).arg(hts).arg(i);
+    QString result = fmt.arg(date3.ToShortDateAMJ(LONG, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).arg(az).arg(ht).arg(ad).
+            arg(de).arg(sat.getConstellation()).arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).
+            arg(distance, 6, 'f', 1).arg(azs).arg(hts).arg(i);
 
     // Recherche des coordonnees geographiques ou se produit le maximum du flash
     QString max(44, ' ');
