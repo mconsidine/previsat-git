@@ -245,6 +245,7 @@ double Date::CalculOffsetUTC(const QDateTime &date)
     /* Retour */
     return (date.secsTo(utc) * NB_JOUR_PAR_SEC);
 }
+
 /*
  * Conversion de la date en QDateTime
  */

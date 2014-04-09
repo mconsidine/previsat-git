@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 avril 2014
+ * >    9 avril 2014
  *
  */
 
@@ -897,24 +897,26 @@ void PreviSat::MAJTLE()
     AffichageGroupesTLE();
 
     // Mise a jour des TLE si necessaire
-    if (listeGroupeMaj.count() > 0) {
+    if (!amajPrevi) {
+        if (listeGroupeMaj.count() > 0) {
 
-        const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
-        if (ageMaxTLE) {
-            const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
-            const int ageMax = settings.value("temps/ageMax", 15).toInt();
-            if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax ||
-                    (dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
+            const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
+            if (ageMaxTLE) {
+                const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
+                const int ageMax = settings.value("temps/ageMax", 15).toInt();
+                if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax ||
+                        (dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
+                    MajWebTLE();
+                    settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+                }
+            } else {
+                messagesStatut->setText(tr("Mise à jour automatique des TLE"));
                 MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
             }
         } else {
-            messagesStatut->setText(tr("Mise à jour automatique des TLE"));
-            MajWebTLE();
-            settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+            VerifAgeTLE();
         }
-    } else {
-        VerifAgeTLE();
     }
 
     /* Retour */
@@ -3857,7 +3859,7 @@ void PreviSat::VerifMAJPreviSat()
                         anew = true;
                 }
                 if (anew) {
-                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, "de " + QCoreApplication::applicationName());
+                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, tr("de ") + QCoreApplication::applicationName());
                     settings.setValue("fichier/majPrevi", "1");
                 } else {
                     ui->actionTelecharger_la_mise_a_jour->setVisible(false);
@@ -3883,7 +3885,7 @@ void PreviSat::VerifMAJPreviSat()
                         anew = true;
                 }
                 if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
-                    MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, "des fichiers internes");
+                    MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, tr("des fichiers internes"));
                     settings.setValue("fichier/majPrevi", "1");
                 } else {
                     ui->actionMettre_jour_fichiers_internes->setVisible(false);
@@ -6726,7 +6728,7 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 #else
                     const QString dirHttpSetup = dirHttpPrevi + "autre/";
 #endif
-                    const QString fichier = dirHttpSetup + fic;
+                    const QString fichier = dirHttpSetup + fic + ".gz";
                     TelechargementFichier(fichier, false);
 
                     if (downQueue.isEmpty())
@@ -9610,8 +9612,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
-        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
-        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialeIri->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinaleIri->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
@@ -9908,8 +9910,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
-        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
-        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialeEvt->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinaleEvt->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
@@ -10175,8 +10177,8 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
-        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialePrev->dateTime());
-        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinalePrev->dateTime());
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialeTransit->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinaleTransit->dateTime());
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeTransit->date().year(), ui->dateInitialeTransit->date().month(),
