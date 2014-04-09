@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    9 avril 2014
  *
  */
 
@@ -53,16 +53,13 @@
 #include "librairies/corps/systemesolaire/lune.h"
 
 // Pas de calcul ou d'interpolation
-static const double PAS0 = 2. * NB_JOUR_PAR_MIN;
+static const double PAS0 = NB_JOUR_PAR_MIN;
 static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 
 static QStringList res;
 static QVector<TLE> tabtle;
 static QVector<QList<QVector<double> > > tabEphem;
-
-static QSettings settings("Astropedia", "previsat");
-static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des transits ISS devant la Lune et/ou le Soleil
@@ -287,8 +284,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                QString resultat = fmt.arg(date3.ToShortDateAMJ(LONG, sys)).arg(az).arg(ht).arg(ad).arg(de).
-                                        arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
+                                QString resultat = fmt.
+                                        arg(date3.ToShortDateAMJ(LONG, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
+                                        arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
                                         arg((sat.isEclipse()) ? QObject::tr("Omb") : (sat.isPenombre()) ?
@@ -366,7 +364,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     QString ligne;
     if (res.size() > 0) {
 
-        ligne = QObject::tr("   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance");
+        ligne = QObject::tr("   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist" \
+                            "  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance");
         result.append(ligne);
         flux << ligne << endl;
 

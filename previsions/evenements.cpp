@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    9 avril 2014
  *
  */
 
@@ -56,9 +56,6 @@ static QStringList res;
 static QVector<TLE> tabtle;
 static QList<Satellite> sats;
 static QList<QList<QVector<double > > > tabEphem;
-
-static QSettings settings("Astropedia", "previsat");
-static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des evenements orbitaux
@@ -210,8 +207,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, sys)).arg(pso, 6, 'f', 2, QChar('0')).
-                            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+                    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
+                            arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
                             arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).
@@ -393,8 +390,8 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
             Maths::modulo(sat.getElements().getAnomalieVraie() + sat.getElements().getArgumentPerigee(), DEUX_PI);
     
     // Ecriture de la ligne de resultat
-    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, sys)).arg(pso, 6, 'f', 2, QChar('0')).
-            arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
+    const QString ligne = fmt.arg(date.ToShortDateAMJ(COURT, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
+            arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.getLongitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
             arg((sat.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
             arg(fabs(sat.getLatitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
             arg((sat.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S")).arg(typeEvt);

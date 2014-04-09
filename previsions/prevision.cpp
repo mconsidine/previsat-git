@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    9 avril 2014
  *
  */
 
@@ -53,9 +53,6 @@
 static QVector<TLE> tabtle;
 static QList<Satellite> sats;
 static QList<QVector<double > > tabEphem;
-
-static QSettings settings("Astropedia", "previsat");
-static const DateSysteme sys = (settings.value("affichage/systemeHoraire", true).toBool()) ? SYSTEME_24H : SYSTEME_12H;
 
 /*
  * Calcul des previsions de passage
@@ -192,7 +189,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                         res.append(ligne);
                                     }
 
-                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
+                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn" \
+                                                           "  Altitude  Distance  Az Soleil   Haut Soleil"));
                                     ent = 1;
                                 }
 
@@ -235,9 +233,11 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
                                 const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
 
-                                const QString result(fmt.arg(date2.ToShortDateAMJ(COURT, sys)).arg(az).arg(ht).arg(ad).arg(de).
-                                        arg(sat.getConstellation()).arg(magn).arg(altitude, 8, 'f', 1).
-                                        arg(distance, 9, 'f', 1).arg(azs).arg(hts).arg(sat.getTle().getNorad()));
+                                const QString result(fmt.arg(date2.
+                                                             ToShortDateAMJ(COURT, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
+                                                     arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).arg(magn).
+                                                     arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1).arg(azs).arg(hts).arg(sat.getTle().
+                                                                                                                             getNorad()));
 
                                 res.append(result);
                                 pass = true;
