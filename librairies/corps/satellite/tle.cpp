@@ -117,7 +117,7 @@ TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
     // Moyen mouvement
     _no = _ligne2.mid(52, 11).toDouble();
 
-    // Inclinaison
+    // Nombre d'orbites a l'epoque
     _nbOrbites = _ligne2.mid(63, 5).toInt();
 
     /* Retour */
