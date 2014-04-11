@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    4 avril 2014
+ * >    11 avril 2014
  *
  */
 
@@ -979,28 +979,33 @@ void Afficher::loadSky(const int j)
                 lig2.setLength(4);
                 sceneSky->addLine(lig2, QPen(bru2, 1.));
 
-                QString sdate;
+                QString sdate = "";
                 if (amax) {
                     amax = false;
                     sdate = tr("Flash Iridium");
                 } else {
-                    const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
-                    sdate = dateTrace.ToShortDate(COURT, sys);
-                    sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+                    if (dateTrace.getJourJulienUTC() < dateDeb.getJourJulienUTC() ||
+                            dateTrace.getJourJulienUTC() > dateFin.getJourJulienUTC()) {
+                        const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
+                        sdate = dateTrace.ToShortDate(COURT, sys);
+                        sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+                    }
                 }
 
-                QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
-                txtTrace->setBrush(bru2);
+                if (!sdate.isEmpty()) {
+                    QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
+                    txtTrace->setBrush(bru2);
 
-                const double ang = -lig2.angle();
-                const double ca = cos(ang * DEG2RAD);
-                const double sa = sin(ang * DEG2RAD);
-                const double xnc = lsat2 + 6. * ca + 11. * sa;
-                const double ync = bsat2 + 6. * sa - 11. * ca;
+                    const double ang = -lig2.angle();
+                    const double ca = cos(ang * DEG2RAD);
+                    const double sa = sin(ang * DEG2RAD);
+                    const double xnc = lsat2 + 6. * ca + 11. * sa;
+                    const double ync = bsat2 + 6. * sa - 11. * ca;
 
-                txtTrace->setPos(xnc, ync);
-                txtTrace->setRotation(ang);
-                sceneSky->addItem(txtTrace);
+                    txtTrace->setPos(xnc, ync);
+                    txtTrace->setRotation(ang);
+                    sceneSky->addItem(txtTrace);
+                }
             }
 
             sceneSky->addLine(lig, crayon);
