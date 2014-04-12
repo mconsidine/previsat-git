@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    3 avril 2014
+# >    12 avril 2014
 
 #-------------------------------------------------
 VER_MAJ = 3.3
@@ -66,8 +66,8 @@ linux-g++ {
 
 mac {
     LIBS += $$PWD/lib/libz.dylib \
-            $$PWD/lib/libvlc.dylib \
-            $$PWD/lib/libvlccore.dylib
+            $$PWD/lib/libvlc.5.dylib \
+            $$PWD/lib/libvlccore.7.dylib
     ICON = resources/icone.icns
 }
 
