@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 avril 2014
+ * >    12 avril 2014
  *
  */
 
@@ -311,6 +311,8 @@ void PreviSat::ChargementConfig()
 
     police.setFamily("MS Shell Dlg 2");
     police.setPointSize(8);
+    setFont(police);
+    QFont police2(police.family(), 11, QFont::Bold);
 
 #elif defined (Q_OS_LINUX)
     dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
@@ -320,6 +322,9 @@ void PreviSat::ChargementConfig()
 
     police.setFamily("Sans Serif");
     police.setPointSize(7);
+    setFont(police);
+
+    QFont police2(police.family(), 10, QFont::Bold);
 
 #elif defined (Q_OS_MAC)
     dirDat = dirExe + QDir::separator() + "data";
@@ -329,21 +334,32 @@ void PreviSat::ChargementConfig()
 
     police.setFamily("Marion");
     police.setPointSize(11);
+    setFont(police);
+
+    QFont police2(police.family(), 14, QFont::Bold);
 
 #else
     dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
             QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
+    QFont police2(police.family(), 11, QFont::Bold);
 #endif
+
+    ui->altitudeISS->setFont(police2);
+    ui->betaISS->setFont(police2);
+    ui->gmt->setFont(police2);
+    ui->inclinaisonISS->setFont(police2);
+    ui->latitudeISS->setFont(police2);
+    ui->longitudeISS->setFont(police2);
+    ui->nextTransitionISS->setFont(police2);
+    ui->orbiteISS->setFont(police2);
 
     dirOut = QDir::convertSeparators(dirOut);
     dirTle = QDir::convertSeparators(dirTle);
     dirCoo = dirDat + QDir::separator() + "coordonnees";
     dirMap = dirDat + QDir::separator() + "map";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-
-    setFont(police);
 
     chronometre = new QTimer(this);
 
@@ -2451,20 +2467,26 @@ void PreviSat::AffichageCourbes() const
                                     if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j+1).at(2)) > EPSDBL100) {
 
                                         const double ang = fmod(-fabs(lig.angle()), T360);
+                                        const double ca = cos(ang * DEG2RAD);
+                                        const double sa = sin(ang * DEG2RAD);
+
+#if defined (Q_OS_MAC)
+                                        const QFont policeOmb(PreviSat::font().family(), 24);
+                                        const double fact = (ecl > EPSDBL100) ? 3. : 1.;
+                                        const double xnc = lsat2 - fact * ca + 10. * sa;
+                                        const double ync = bsat2 - fact * sa - 10. * ca;
+#else
+                                        const QFont policeOmb(PreviSat::font().family(), 14);
+                                        const double fact = (ecl > EPSDBL100) ? 4. : 2.;
+                                        const double xnc = lsat2 - fact * ca + 14. * sa;
+                                        const double ync = bsat2 - fact * sa - 13. * ca;
+#endif
 
                                         QGraphicsSimpleTextItem * const txtOmb =
                                                 new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "[" : "]");
 
-                                        const QFont policeOmb(PreviSat::font().family(), 14);
                                         txtOmb->setFont(policeOmb);
                                         txtOmb->setBrush(Qt::white);
-
-                                        const double ca = cos(ang * DEG2RAD);
-                                        const double sa = sin(ang * DEG2RAD);
-                                        const double fact = (ecl > EPSDBL100) ? 4. : 2.;
-                                        const double xnc = lsat2 - fact * ca + 14. * sa;
-                                        const double ync = bsat2 - fact * sa - 13. * ca;
-
                                         txtOmb->setPos(xnc, ync);
                                         txtOmb->setRotation(ang);
                                         scene->addItem(txtOmb);
