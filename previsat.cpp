@@ -6330,9 +6330,9 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_agl(_mp, ui->frameFlux->winId());
                 libvlc_media_player_set_agl(_mp2, afficherVideo->winId());
 #elif defined (Q_OS_LINUX)
-                int windid = ui->frameFlux->winId();
+                unsigned int windid = (unsigned int) ui->frameFlux->winId();
                 libvlc_media_player_set_xwindow(_mp, windid);
-                windid = afficherVideo->winId();
+                windid = (unsigned int) afficherVideo->winId();
                 libvlc_media_player_set_xwindow(_mp2, windid);
 #else
 #endif
@@ -6770,7 +6770,8 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
         // Lancement de la mise a jour
 #if defined (Q_OS_WIN)
 #else
-        (void) system(qPrintable("chmod +x " + fic));
+        const int res = system(qPrintable("chmod +x " + fic));
+        Q_UNUSED(res)
 #endif
 
         QProcess proc;
