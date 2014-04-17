@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    9 avril 2014
+ * >    17 avril 2014
  *
  */
 
@@ -316,10 +316,16 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     corps.CalculCoordHoriz(obsmin, false);
 
                                     const double distanceObs = observateur.CalculDistance(obsmin);
-                                    double diff = obsmin.getLongitude() - observateur.getLongitude();
-                                    if (fabs(diff) > PI)
+                                    double diff1 = obsmin.getLongitude() - observateur.getLongitude();
+                                    double diff2 = obsmin.getLatitude() - observateur.getLatitude();
+                                    double diff = qMin(diff1, diff2);
+                                    if (fabs(diff) > PI) {
                                         diff -= Maths::sgn(diff) * PI;
-                                    const QString dir = (diff > 0.) ? QObject::tr("(W)") : QObject::tr("(E)");
+                                        diff1 -= Maths::sgn(diff1) * PI;
+                                        diff2 -= Maths::sgn(diff2) * PI;
+                                    }
+                                    const QString dir = (diff1 < diff2) ? ((diff > 0.) ? QObject::tr("(W)") : QObject::tr("(E)")) :
+                                                                          ((diff > 0.) ? QObject::tr("(N)") : QObject::tr("(S)"));
 
                                     const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
                                     const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");

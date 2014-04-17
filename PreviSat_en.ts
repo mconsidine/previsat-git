@@ -132,39 +132,39 @@
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="355"/>
-        <location filename="afficher.cpp" line="359"/>
+        <location filename="afficher.cpp" line="353"/>
+        <location filename="afficher.cpp" line="357"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="357"/>
-        <location filename="afficher.cpp" line="361"/>
+        <location filename="afficher.cpp" line="355"/>
+        <location filename="afficher.cpp" line="359"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="396"/>
+        <location filename="afficher.cpp" line="394"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="396"/>
+        <location filename="afficher.cpp" line="394"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="463"/>
+        <location filename="afficher.cpp" line="461"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="464"/>
+        <location filename="afficher.cpp" line="462"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="985"/>
+        <location filename="afficher.cpp" line="983"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
@@ -3562,7 +3562,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
         <location filename="previsions/iridium.cpp" line="893"/>
-        <location filename="previsions/transitiss.cpp" line="324"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>W</source>
         <translation>W</translation>
     </message>
@@ -3570,7 +3570,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
         <location filename="previsions/iridium.cpp" line="893"/>
-        <location filename="previsions/transitiss.cpp" line="324"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>E</source>
         <translation>E</translation>
     </message>
@@ -3578,7 +3578,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
         <location filename="previsions/iridium.cpp" line="894"/>
-        <location filename="previsions/transitiss.cpp" line="325"/>
+        <location filename="previsions/transitiss.cpp" line="331"/>
         <source>N</source>
         <translation>N</translation>
     </message>
@@ -3587,7 +3587,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="397"/>
         <location filename="previsions/iridium.cpp" line="894"/>
         <location filename="previsions/transitiss.cpp" line="291"/>
-        <location filename="previsions/transitiss.cpp" line="325"/>
+        <location filename="previsions/transitiss.cpp" line="331"/>
         <source>S</source>
         <translation>S</translation>
     </message>
@@ -3652,7 +3652,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="295"/>
         <location filename="previsions/iridium.cpp" line="272"/>
         <location filename="previsions/prevision.cpp" line="312"/>
-        <location filename="previsions/transitiss.cpp" line="387"/>
+        <location filename="previsions/transitiss.cpp" line="393"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
@@ -3668,13 +3668,13 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/iridium.cpp" line="885"/>
-        <location filename="previsions/transitiss.cpp" line="322"/>
+        <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
         <location filename="previsions/iridium.cpp" line="885"/>
-        <location filename="previsions/transitiss.cpp" line="322"/>
+        <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
@@ -3709,7 +3709,17 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Ill</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="367"/>
+        <location filename="previsions/transitiss.cpp" line="328"/>
+        <source>(N)</source>
+        <translation>(N)</translation>
+    </message>
+    <message>
+        <location filename="previsions/transitiss.cpp" line="328"/>
+        <source>(S)</source>
+        <translation>(S)</translation>
+    </message>
+    <message>
+        <location filename="previsions/transitiss.cpp" line="373"/>
         <source>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance</source>
         <translation>   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat     Range</translation>
     </message>
