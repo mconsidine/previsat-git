@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 avril 2014
+ * >    17 avril 2014
  *
  */
 
@@ -291,7 +291,7 @@ void Afficher::load()
 
             bool afin = false;
             while (!afin) {
-                ligne = it.next();
+                ligne = it.next().toLatin1();
                 if (ligne.isEmpty()) {
                     afin = true;
                 } else {
@@ -335,14 +335,14 @@ void Afficher::load()
             // Dans le cas des flashs Iridium ou des transits ISS, determination de la ligne ou se produit le maximum
             if (cond.getNbl() != 0) {
 
-                const int debt = (cond.getNbl() > 0) ? 120 : 127;
+                const int debt = (cond.getNbl() > 0) ? 121 : 128;
                 if (debut.mid(debt, 44).trimmed().isEmpty() && fin.mid(debt, 44).trimmed().isEmpty()) {
                     tablonlat.append("0. 0. 0. 0.");
                 } else {
 
-                    bool tst = debut.mid(120, 44).trimmed().isEmpty();
+                    bool tst = debut.mid(debt, 44).trimmed().isEmpty();
                     const QString deb = (tst) ? maxMag : debut;
-                    tst = fin.mid(120, 44).trimmed().isEmpty();
+                    tst = fin.mid(debt, 44).trimmed().isEmpty();
                     const QString end = (tst) ? maxMag : fin;
 
                     if (deb == end) {
@@ -350,16 +350,14 @@ void Afficher::load()
                     } else {
 
                         // Longitudes et latitudes ou passe le maximum
-                        const int deb1 = (cond.getNbl() > 0) ? 123 : 130;
-                        const int deb2 = (cond.getNbl() > 0) ? 135 : 142;
-                        const QString lon1 = ((deb.mid(deb1 + 9, 1) == tr("W")) ? "-" : "+") +
-                                QString::number(deb.mid(deb1, 8).toDouble());
-                        const QString lat1 = ((deb.mid(deb2 + 9, 1) == tr("S")) ? "-" : "+") +
-                                QString::number(deb.mid(deb2, 7).toDouble());
-                        const QString lon2 = ((end.mid(deb1 + 9, 1) == tr("W")) ? "-" : "+") +
-                                QString::number(end.mid(deb1, 8).toDouble());
-                        const QString lat2 = ((end.mid(deb2 + 9, 1) == tr("S")) ? "-" : "+") +
-                                QString::number(end.mid(deb2, 7).toDouble());
+                        const QString lon1 = ((deb.mid(debt + 12, 1) == tr("W")) ? "-" : "+") +
+                                QString::number(deb.mid(debt + 3, 8).toDouble());
+                        const QString lat1 = ((deb.mid(debt + 23, 1) == tr("S")) ? "-" : "+") +
+                                QString::number(deb.mid(debt + 15, 7).toDouble());
+                        const QString lon2 = ((end.mid(debt + 12, 1) == tr("W")) ? "-" : "+") +
+                                QString::number(end.mid(debt + 3, 8).toDouble());
+                        const QString lat2 = ((end.mid(debt + 23, 1) == tr("S")) ? "-" : "+") +
+                                QString::number(end.mid(debt + 15, 7).toDouble());
                         const QString fmtll = "%1 %2 %3 %4";
                         tablonlat.append(fmtll.arg(lon1).arg(lat1).arg(lon2).arg(lat2));
                     }
