@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    12 avril 2014
+# >    16 avril 2014
 
 #-------------------------------------------------
 VER_MAJ = 3.3
@@ -51,23 +51,22 @@ TEMPLATE = app
 
 ICON = resources/icone.ico
 
-CONFIG(debug, debug|release){
+CONFIG(debug, debug|release) {
     QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -Wmissing-declarations
+    mac {
+        QMAKE_CXXFLAGS += -O
+        QMAKE_CXXFLAGS -= -Wmissing-declarations
+    }
 }
 
+LIBS += -L. -lvlc
 win32 {
-    LIBS += zlibwapi.dll -L. -lvlc
+    LIBS += zlibwapi.dll
     RC_FILE = icone.rc
 }
 
-linux-g++ {
-    LIBS += -L. -lvlc
-}
-
 mac {
-    LIBS += $$PWD/lib/libz.dylib \
-            $$PWD/lib/libvlc.5.dylib \
-            $$PWD/lib/libvlccore.7.dylib
+    LIBS += -L$$PWD/lib -lz
     ICON = resources/icone.icns
 }
 

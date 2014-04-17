@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 avril 2014
+ * >    17 avril 2014
  *
  */
 
@@ -6327,8 +6327,8 @@ void PreviSat::on_fluxVideo_clicked()
                 libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
                 libvlc_media_player_set_hwnd(_mp2, afficherVideo->winId());
 #elif defined (Q_OS_MAC)
-                libvlc_media_player_set_agl(_mp, ui->frameFlux->winId());
-                libvlc_media_player_set_agl(_mp2, afficherVideo->winId());
+                libvlc_media_player_set_nsobject(_mp, (void *) ui->frameFlux->winId());
+                libvlc_media_player_set_nsobject(_mp2, (void *) afficherVideo->winId());
 #elif defined (Q_OS_LINUX)
                 unsigned int windid = (unsigned int) ui->frameFlux->winId();
                 libvlc_media_player_set_xwindow(_mp, windid);
