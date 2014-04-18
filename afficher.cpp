@@ -266,9 +266,9 @@ void Afficher::load()
 
         if (ligne.contains(tr("Date"))) {
             idate = (cond.getNbl() == 0) ? ligne.indexOf(tr("Date")) - 3 : 0;
-            iht = ligne.indexOf(tr("Hauteur Sat")) + 1;
+            iht = ligne.indexOf(tr("Hauteur Sat")) - 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
-            ihtsol = ligne.indexOf(tr("Haut Soleil"));
+            ihtsol = ligne.indexOf(tr("Haut Soleil")) - 1;
             if (it.hasNext())
                 ligne = it.next();
         }
@@ -321,8 +321,9 @@ void Afficher::load()
 
             const int lngDate = (cond.getNbl() == 0) ? 20 : 22;
             const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
-                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 9) : maxHt.mid(71, 5)) <<
-                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 5) : debut.mid(79, 1)) << maxHt.mid(ihtsol, 10));
+                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
+                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 5) : debut.mid(79, 1)) <<
+                                    maxHt.mid(ihtsol, 11).trimmed().left(10));
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
                 item->setTextAlignment(Qt::AlignCenter);

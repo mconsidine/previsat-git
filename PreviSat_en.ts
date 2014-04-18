@@ -114,7 +114,7 @@
     <message>
         <location filename="afficher.cpp" line="269"/>
         <source>Hauteur Sat</source>
-        <translation>Sat Elevation</translation>
+        <translation>Sat Elev</translation>
     </message>
     <message>
         <location filename="afficher.cpp" line="270"/>
@@ -132,39 +132,39 @@
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="354"/>
-        <location filename="afficher.cpp" line="358"/>
+        <location filename="afficher.cpp" line="355"/>
+        <location filename="afficher.cpp" line="359"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="356"/>
-        <location filename="afficher.cpp" line="360"/>
+        <location filename="afficher.cpp" line="357"/>
+        <location filename="afficher.cpp" line="361"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="395"/>
+        <location filename="afficher.cpp" line="396"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="395"/>
+        <location filename="afficher.cpp" line="396"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="462"/>
+        <location filename="afficher.cpp" line="463"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="463"/>
+        <location filename="afficher.cpp" line="464"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="984"/>
+        <location filename="afficher.cpp" line="985"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
@@ -1642,7 +1642,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="10024"/>
         <source>Choix de la couleur de GMT :</source>
-        <translation>Set the  color of GMT :</translation>
+        <translation>Set the color of GMT :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="10038"/>
@@ -3796,7 +3796,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/prevision.cpp" line="192"/>
         <source>   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil   Haut Soleil</source>
-        <translation>   Date      Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat  Const Magn  Altitude     Range   Sun Azim    Sun Elev</translation>
+        <translation>   Date      Hour   Sat Azimuth  Sat Elev    RA Sat    Decl Sat  Const Magn  Altitude     Range   Sun Azim    Sun Elev</translation>
     </message>
 </context>
 <context>
