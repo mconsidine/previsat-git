@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    17 avril 2014
+ * >    18 avril 2014
  *
  */
 
@@ -173,6 +173,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
         this->setPalette(paletteWin);
         ui->fichier->setPalette(palList);
+        ui->listePrevisions->setPalette(palList);
     }
 
 #if defined (Q_OS_WIN)
