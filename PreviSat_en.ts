@@ -132,39 +132,39 @@
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="355"/>
-        <location filename="afficher.cpp" line="359"/>
+        <location filename="afficher.cpp" line="358"/>
+        <location filename="afficher.cpp" line="362"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="357"/>
-        <location filename="afficher.cpp" line="361"/>
+        <location filename="afficher.cpp" line="360"/>
+        <location filename="afficher.cpp" line="364"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="396"/>
+        <location filename="afficher.cpp" line="399"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="396"/>
+        <location filename="afficher.cpp" line="399"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="463"/>
+        <location filename="afficher.cpp" line="466"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="464"/>
+        <location filename="afficher.cpp" line="467"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="985"/>
+        <location filename="afficher.cpp" line="988"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
