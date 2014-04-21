@@ -202,30 +202,40 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirOut = QDir::convertSeparators(dirOut);
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
-    res = result;
-    result.clear();
-    cond = conditions;
-    obs = observateur;
+    if (!result.isEmpty()) {
 
-    police.setWeight(QFont::Bold);
-    ui->listePrevisions->horizontalHeader()->setFont(police);
-    if (cond.getNbl() == 0)
-        ui->ongletsResultats->setTabText(1, tr("Prévisions de passage"));
-    else
-        ui->ongletsResultats->setTabText(1, tr("Flashs Iridium"));
+        const int ind = (result.size() > 2000) ? 0 : 1;
 
-    if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
-        ui->ongletsResultats->removeTab(1);
-        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+        if (ind == 1) {
+            res = result;
+        } else {
+            ui->ongletsResultats->removeTab(1);
+        }
+        result.clear();
+        cond = conditions;
+        obs = observateur;
+
+        police.setWeight(QFont::Bold);
+        ui->listePrevisions->horizontalHeader()->setFont(police);
+        if (cond.getNbl() == 0)
+            ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
+        else
+            ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
+
+        if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
+            ui->ongletsResultats->removeTab(1);
+            ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+        }
+
+        if (cond.getAcalcLune() || cond.getAcalcSol())
+            ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
+
+        if (ind == 1) {
+            Etoile::initStar = false;
+            LigneConstellation::initLig = false;
+            load();
+        }
     }
-
-    if (cond.getAcalcLune() || cond.getAcalcSol())
-        ui->ongletsResultats->setTabText(1, tr("Transits ISS"));
-
-    Etoile::initStar = false;
-    LigneConstellation::initLig = false;
-
-    load();
 
     /* Retour */
     return;
