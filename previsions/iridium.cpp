@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    9 avril 2014
+ * >    21 avril 2014
  *
  */
 
@@ -241,27 +241,27 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     if (res.count() > 0) {
 
         ligne = QObject::tr("Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist" \
-                            "  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max");
+                            "  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max");
         result.append(ligne.mid(4));
         flux << ligne << endl;
 
         int i = 0;
         while (i < res.count()) {
 
-            ligne = res.at(i);
+            ligne = res.at(i).toLatin1();
 
             QString flash;
             if (conditions.getNbl() == 1) {
                 flash = ligne.mid(ligne.length() - 9, 4) + ligne.mid(0, ligne.length() - 9).remove(119, 1);
             } else {
-                flash = ligne.mid(165, 4) + ligne.mid(0, 120) + "\n" + ligne.mid(334, 4) + ligne.mid(169, 120) +
-                        ligne.mid(290, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(503, 4) + ligne.mid(338, 120);
+                flash = ligne.mid(166, 4) + ligne.mid(0, 120) + "\n" + ligne.mid(336, 4) + ligne.mid(170, 120) +
+                        ligne.mid(291, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(506, 4) + ligne.mid(340, 120);
             }
 
-            result.append(ligne.mid(0, 169) + ligne.right(5));
+            result.append((ligne.mid(0, 170) + ligne.right(5)).trimmed());
             if (conditions.getNbl() == 3) {
-                result.append(ligne.mid(169, 168) + ligne.right(5));
-                result.append(ligne.mid(338));
+                result.append((ligne.mid(170, 170) + ligne.right(5)).trimmed());
+                result.append(ligne.mid(340).trimmed());
             }
             result.append("");
             flux << flash.trimmed() << endl << endl;
@@ -869,7 +869,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
             arg(distance, 6, 'f', 1).arg(azs).arg(hts).arg(i);
 
     // Recherche des coordonnees geographiques ou se produit le maximum du flash
-    QString max(44, ' ');
+    QString max(45, ' ');
     const Vecteur3D direction = _PR.Transposee() * _solsat;
     obsmax = Observateur::CalculIntersectionEllipsoide(date, sat.getPosition(), direction);
     if (!obsmax.getNomlieu().isEmpty()) {
@@ -889,23 +889,28 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
 
         // Magnitude du flash
         const double magFlashMax = MagnitudeFlash(conditions.getExt(), angRefMax, obsmax, soleil, sat);
+        QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
+                QString((sat.isPenombre()) ? "*" : " ");
+        while (mags.length() < 6)
+            mags += " ";
 
         const QString ew = (obsmax.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
         const QString ns = (obsmax.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
 
         // Ecriture de la chaine de caracteres
-        const QString fmt2 = "   %1 %2  %3 %4  %5 %6    %7%8%9";
+        const QString fmt2 = "   %1 %2  %3 %4  %5 %6   %7";
         max = fmt2.arg(fabs(obsmax.getLongitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew).
-                arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 5, 'f', 1).
-                arg(dir).arg((magFlashMax >= 0.) ? "+" : "-").arg(fabs(magFlashMax), 2, 'f', 1).
-                arg((sat.isPenombre()) ? "*" : " ");
+                arg(fabs(obsmax.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns).arg(distanceObs, 6, 'f', 1).arg(dir).arg(mags);
     }
 
     result = result.arg(max);
 
     // Numero Iridium
-    result = result.append(sts.mid(0, 3));
-    result = (sts.length() == 9) ? result.append(" ") : result.trimmed().append("? ");
+    QString num = sts.mid(0, 4).trimmed() + ((sts.length() == 9) ? " " : "?");
+    while (num.length() < 4)
+        num += " ";
+
+    result = result.append(num);
 
     /* Retour */
     return (result);

@@ -3561,7 +3561,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="893"/>
+        <location filename="previsions/iridium.cpp" line="897"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>W</source>
         <translation>W</translation>
@@ -3569,7 +3569,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="893"/>
+        <location filename="previsions/iridium.cpp" line="897"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>E</source>
         <translation>E</translation>
@@ -3577,7 +3577,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="894"/>
+        <location filename="previsions/iridium.cpp" line="898"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>N</source>
         <translation>N</translation>
@@ -3585,7 +3585,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="894"/>
+        <location filename="previsions/iridium.cpp" line="898"/>
         <location filename="previsions/transitiss.cpp" line="291"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>S</source>
@@ -3663,8 +3663,8 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/iridium.cpp" line="243"/>
-        <source>Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Distance  Magn Max</source>
-        <translation>Ir     Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat     Range    Max Magn</translation>
+        <source>Ir     Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max</source>
+        <translation>Ir     Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
         <location filename="previsions/iridium.cpp" line="885"/>

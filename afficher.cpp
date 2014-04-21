@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    18 avril 2014
+ * >    21 avril 2014
  *
  */
 
@@ -275,7 +275,7 @@ void Afficher::load()
 
         if (cond.getNbl() > 0) {
             const QString fmt2 = "  %1 %2  ";
-            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(165, 4).trimmed());
+            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 4).trimmed());
         }
 
         if (cond.getNbl() < 0)
