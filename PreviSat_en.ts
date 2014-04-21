@@ -3461,7 +3461,7 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="206"/>
-        <location filename="previsions/iridium.cpp" line="858"/>
+        <location filename="previsions/iridium.cpp" line="849"/>
         <location filename="previsions/prevision.cpp" line="227"/>
         <location filename="previsions/transitiss.cpp" line="278"/>
         <source>nmi</source>
@@ -3561,7 +3561,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="897"/>
+        <location filename="previsions/iridium.cpp" line="888"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>W</source>
         <translation>W</translation>
@@ -3569,7 +3569,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="897"/>
+        <location filename="previsions/iridium.cpp" line="888"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>E</source>
         <translation>E</translation>
@@ -3577,7 +3577,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="898"/>
+        <location filename="previsions/iridium.cpp" line="889"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>N</source>
         <translation>N</translation>
@@ -3585,7 +3585,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="898"/>
+        <location filename="previsions/iridium.cpp" line="889"/>
         <location filename="previsions/transitiss.cpp" line="291"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>S</source>
@@ -3650,7 +3650,7 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="295"/>
-        <location filename="previsions/iridium.cpp" line="272"/>
+        <location filename="previsions/iridium.cpp" line="267"/>
         <location filename="previsions/prevision.cpp" line="312"/>
         <location filename="previsions/transitiss.cpp" line="393"/>
         <source>Temps écoulé : %1s</source>
@@ -3667,13 +3667,13 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Ir     Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="885"/>
+        <location filename="previsions/iridium.cpp" line="876"/>
         <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="885"/>
+        <location filename="previsions/iridium.cpp" line="876"/>
         <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(E)</source>
         <translation>(E)</translation>

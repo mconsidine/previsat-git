@@ -250,20 +250,15 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
             ligne = res.at(i).toLatin1();
 
-            QString flash;
-            if (conditions.getNbl() == 1) {
-                flash = ligne.mid(ligne.length() - 9, 4) + ligne.mid(0, ligne.length() - 9).remove(119, 1);
-            } else {
-                flash = ligne.mid(166, 4) + ligne.mid(0, 120) + "\n" + ligne.mid(336, 4) + ligne.mid(170, 120) +
-                        ligne.mid(291, 44).remove(QRegExp("\\s+$")) + "\n" + ligne.mid(506, 4) + ligne.mid(340, 120);
-            }
+            const QString flashMax = ligne.mid(336, 4) + ligne.mid(170, 120) + ligne.mid(291, 44).remove(QRegExp("\\s+$"));
+            const QString flash = (conditions.getNbl() == 1) ? flashMax : ligne.mid(166, 4) + ligne.mid(0, 120) + "\n" +
+                                                               flashMax + "\n" + ligne.mid(506, 4) + ligne.mid(340, 120);
 
             result.append((ligne.mid(0, 170) + ligne.right(5)).trimmed());
-            if (conditions.getNbl() == 3) {
-                result.append((ligne.mid(170, 170) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(340).trimmed());
-            }
+            result.append((ligne.mid(170, 170) + ligne.right(5)).trimmed());
+            result.append(ligne.mid(340).trimmed());
             result.append("");
+
             flux << flash.trimmed() << endl << endl;
             i++;
         }
@@ -335,19 +330,19 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
         if (mag <= mgn0) {
 
-            Date dates[conditions.getNbl()];
+            Date dates[3];
 
             // Calcul des limites du flash
             CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
 
-            if (dates[conditions.getNbl() / 2].getJourJulienUTC() < DATE_INFINIE) {
+            if (dates[1].getJourJulienUTC() < DATE_INFINIE) {
 
                 temp = minmax[0];
 
                 // Calcul des valeurs exactes pour les differentes dates
                 _pan = -1;
                 QString flash = "";
-                for(int i=0; i<conditions.getNbl(); i++) {
+                for(int i=0; i<3; i++) {
 
                     observateur.CalculPosVit(dates[i]);
 
@@ -367,9 +362,6 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
                     // Magnitude du flash
                     mag = MagnitudeFlash(conditions.getExt(), angref, observateur, soleil, sat);
-
-                    if (conditions.getNbl() == 1)
-                        AngleReflexion(sat, soleil);
 
                     // Ascension droite/declinaison/constellation
                     sat.CalculCoordEquat(observateur);
@@ -684,13 +676,12 @@ void Iridium::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, c
         if (dateMax > dateSup)
             dateMax = dateSup;
 
-        lim[conditions.getNbl() / 2] = Date(dateMax, 0., false);
-        if (conditions.getNbl() == 3) {
-            lim[0] = Date(dateInf, 0., false);
-            lim[2] = Date(dateSup, 0., false);
-        }
+        lim[0] = Date(dateInf, 0., false);
+        lim[1] = Date(dateMax, 0., false);
+        lim[2] = Date(dateSup, 0., false);
+
     } else {
-        lim[conditions.getNbl() / 2] = Date(DATE_INFINIE, 0., false);
+        lim[1] = Date(DATE_INFINIE, 0., false);
     }
 
     /* Retour */
