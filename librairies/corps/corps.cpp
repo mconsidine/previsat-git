@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2014
+ * >    21 avril 2014
  *
  */
 
@@ -156,7 +156,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
 
     // Prise en compte de la refraction atmospherique
     const double htd = RAD2DEG * ht;
-    const double refraction = DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11))));
+    const double refraction = (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
 
     _hauteur = ht + refraction;
 
@@ -210,7 +210,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
 
         // Prise en compte de la refraction atmospherique
         const double htd = ht * RAD2DEG;
-        const double refraction = DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11))));
+        const double refraction = (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
 
         _hauteur = ht + refraction;
         if (_hauteur >= 0.) {
