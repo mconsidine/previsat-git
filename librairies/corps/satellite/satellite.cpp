@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -1440,10 +1440,9 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observateur &observateur, const int sec)
+void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec)
 {
     /* Declarations des variables locales */
-    Satellite sat = Satellite(_tle);
     Soleil soleil;
 
     /* Initialisations */
@@ -1451,6 +1450,8 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
     int i = 0;
     const double step = 1. / (_tle.getNo() * T360);
     const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
+    Satellite sat = Satellite(_tle);
+    Observateur obs = observateur;
 
     /* Corps de la methode */
     _traceCiel.clear();
@@ -1462,10 +1463,10 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, Observa
         sat.CalculPosVit(j0);
 
         // Position de l'observateur
-        observateur.CalculPosVit(j0);
+        obs.CalculPosVit(j0);
 
         // Coordonnees horizontales
-        sat.CalculCoordHoriz(observateur);
+        sat.CalculCoordHoriz(obs);
 
         if (sat._hauteur >= 0. && i < 86400) {
 

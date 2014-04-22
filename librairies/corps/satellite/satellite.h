@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -66,7 +66,7 @@ public:
     void CalculPosVit(const Date &date);
     void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
-    void CalculTraceCiel(const Date &date, const bool refraction, Observateur &observateur, const int sec = 0);
+    void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
     void CalculCercleAcquisition(const Observateur &station);
     double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
