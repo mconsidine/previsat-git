@@ -33,7 +33,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    22 avril 2014
  *
  */
 
@@ -56,6 +56,7 @@ public:
     /* Constantes publiques */
 
     /* Variables publiques */
+    static bool initCst;
 
     /* Methodes publiques */
     static void CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations);
@@ -78,7 +79,6 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    static bool _initCst;
     QString _nom;
 
     /* Methodes privees */
