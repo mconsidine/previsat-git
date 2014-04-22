@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -41,8 +41,8 @@
 #define CONDITIONS_H
 
 #include <string>
-#include "librairies/observateur/observateur.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/observateur/observateur.h"
 
 class Conditions
 {

@@ -45,9 +45,9 @@
 #include <QDir>
 #include <QTextStream>
 #include "satellite.h"
-#include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/SoleilConstants.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
 
 static const double J3SJ2 = J3 / J2;
 static const double RPTIM = OMEGA * NB_SEC_PAR_MIN;

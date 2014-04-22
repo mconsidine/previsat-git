@@ -33,14 +33,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    22 avril 2014
  *
  */
 
 #ifndef LIGNECONSTELLATION_H
 #define LIGNECONSTELLATION_H
 
-#include "librairies/corps/etoiles/etoile.h"
+#include "etoile.h"
 
 class LigneConstellation
 {

@@ -33,17 +33,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    22 avril 2014
  *
  */
 
 #ifndef OBSERVATEUR_H
 #define OBSERVATEUR_H
 
+#include "librairies/corps/systemesolaire/TerreConstants.h"
 #include "librairies/maths/mathConstants.h"
 #include "librairies/maths/matrice.h"
 #include "librairies/dates/date.h"
-#include "librairies/corps/systemesolaire/TerreConstants.h"
 
 class Observateur
 {

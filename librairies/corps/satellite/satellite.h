@@ -42,10 +42,9 @@
 
 #include <QList>
 #include <QVector>
+#include "elementsosculateurs.h"
 #include "tle.h"
 #include "librairies/corps/corps.h"
-#include "librairies/corps/satellite/elementsosculateurs.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 
 class Satellite : public Corps

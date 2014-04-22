@@ -33,14 +33,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    22 avril 2014
  *
  */
 
 #ifndef MATRICE_H
 #define MATRICE_H
 
-#include "librairies/maths/vecteur3d.h"
+#include "vecteur3d.h"
 
 class Matrice
 {

@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    21 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -49,8 +49,8 @@
 #include <QTextStream>
 #include <QTime>
 #include "iridium.h"
-#include "librairies/maths/maths.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/maths/maths.h"
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;

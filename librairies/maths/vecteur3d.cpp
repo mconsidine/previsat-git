@@ -36,13 +36,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    22 avril 2014
  *
  */
 
 #include <cmath>
+#include "mathConstants.h"
 #include "vecteur3d.h"
-#include "librairies/maths/mathConstants.h"
 
 /* Constructeurs */
 /*
