@@ -33,7 +33,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    4 septembre 2012
+ * >    22 avril 2014
  *
  */
 
@@ -41,8 +41,8 @@
 #define PLANETE_H
 
 #include "librairies/corps/corps.h"
-#include "librairies/corps/systemesolaire/soleil.h"
 #include "planeteConstants.h"
+#include "soleil.h"
 
 class Planete : public Corps
 {

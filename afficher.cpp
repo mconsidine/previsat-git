@@ -69,8 +69,6 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
 
-#include <QMessageBox>
-
 static QString dirDat;
 static QString dirOut;
 static QString dirTmp;

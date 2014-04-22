@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    17 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -45,12 +45,12 @@
 #include <QTextStream>
 #include <QTime>
 #include "transitiss.h"
-#include "librairies/dates/date.h"
-#include "librairies/maths/maths.h"
-#include "librairies/exceptions/messages.h"
-#include "librairies/exceptions/previsatexception.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
+#include "librairies/dates/date.h"
+#include "librairies/exceptions/messages.h"
+#include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;

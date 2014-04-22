@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -46,8 +46,8 @@
 #include <QTextStream>
 #include <cmath>
 #include "corps.h"
-#include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
+#include "librairies/maths/maths.h"
 
 static bool _initCst = false;
 static bool _initTab = false;

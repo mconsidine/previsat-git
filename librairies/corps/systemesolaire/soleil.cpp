@@ -36,13 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    22 avril 2014
  *
  */
 
 #include "soleil.h"
 #include "librairies/maths/maths.h"
-#include "librairies/corps/systemesolaire/SoleilConstants.h"
 
 static const double ax = 1.000001018;
 

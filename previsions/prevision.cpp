@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -45,10 +45,10 @@
 #include <QTime>
 #include <QTextStream>
 #include "prevision.h"
-#include "librairies/maths/maths.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
+#include "librairies/maths/maths.h"
 
 static QVector<TLE> tabtle;
 static QList<Satellite> sats;

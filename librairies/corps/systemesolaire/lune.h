@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    22 avril 2014
  *
  */
 
@@ -41,8 +41,8 @@
 #define LUNE_H
 
 #include "librairies/corps/corps.h"
-#include "librairies/corps/systemesolaire/soleil.h"
-#include "librairies/corps/systemesolaire/LuneConstants.h"
+#include "LuneConstants.h"
+#include "soleil.h"
 
 class Lune : public Corps
 {
