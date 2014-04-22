@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    21 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -231,6 +231,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
             ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
 
         if (ind == 1) {
+            Constellation::initCst = false;
             Etoile::initStar = false;
             LigneConstellation::initLig = false;
             load();
@@ -621,7 +622,7 @@ void Afficher::loadSky(const int j)
 
     // Position des etoiles
     Etoile::CalculPositionEtoiles(obs, etoiles);
-    if (affconst)
+    if (affconst == Qt::Checked)
         Constellation::CalculConstellations(obs, constellations);
     if (affconst != Qt::Unchecked)
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
@@ -674,6 +675,7 @@ void Afficher::loadSky(const int j)
         bru = QBrush(QColor::fromRgb(red, green, blue));
     }
 
+    const QColor bleuClair(173, 216, 230);
     const QColor crimson(220, 20, 60);
     QPen crayon(Qt::white);
 
@@ -707,9 +709,8 @@ void Afficher::loadSky(const int j)
                 const int bstr2 = qRound(hciel - hciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
                                          cos(lig.getEtoile2().getAzimut()));
 
-                QColor col;
-                col.setNamedColor("deepskyblue");
-                crayon = QPen(col);
+                crayon = QPen((soleil.getHauteur() > -0.08) ?
+                                  bleuClair : (soleil.getHauteur() > -0.16) ? QColor(Qt::cyan) : QColor("deepskyblue"));
                 if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                     sceneSky->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
             }
@@ -940,8 +941,6 @@ void Afficher::loadSky(const int j)
         int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
         int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
 
-        const QColor bleuClair(173, 216, 230);
-
         bool aecr = false;
         bool adeb = false;
         bool amax = false;
@@ -951,7 +950,8 @@ void Afficher::loadSky(const int j)
             const double ht2 = trace.at(i).at(0);
             const double az2 = trace.at(i).at(1);
 
-            crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ? QPen(bleuClair, 1) : QPen(crimson, 1);
+            crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
+                        (soleil.getHauteur() > -0.08 ) ? QPen(QColor("deepskyblue"), 1) : QPen(bleuClair, 1) : QPen(crimson, 1);
 
             const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
             const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
