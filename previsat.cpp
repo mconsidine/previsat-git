@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 avril 2014
+ * >    22 avril 2014
  *
  */
 
@@ -2627,8 +2627,9 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la carte du ciel
         rectangle = QRect(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
         scene3->setSceneRect(rectangle);
-
         scene3->setBackgroundBrush(QBrush(palette().background().color()));
+
+        const QColor bleuClair(173, 216, 230);
         const QPen pen(bru, Qt::SolidPattern);
         scene3->addEllipse(rectangle, pen, bru);
         const int lciel = qRound(0.5 * ui->ciel->width());
@@ -2654,9 +2655,8 @@ void PreviSat::AffichageCourbes() const
                     const int bstr2 = qRound(hciel - hciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
                                              cos(lig.getEtoile2().getAzimut()));
 
-                    QColor col;
-                    col.setNamedColor("deepskyblue");
-                    crayon = QPen(col);
+                    crayon = QPen((soleil.getHauteur() > -0.08) ?
+                                      bleuClair : (soleil.getHauteur() > -0.16) ? QColor(Qt::cyan) : QColor("deepskyblue"));
                     if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                         scene3->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
                 }
@@ -2900,14 +2900,13 @@ void PreviSat::AffichageCourbes() const
                     int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
                     int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
 
-                    const QColor bleuClair(173, 216, 230);
-
                     for(int i=1; i<trace.size(); i++) {
 
                         const double ht2 = trace.at(i).at(0);
                         const double az2 = trace.at(i).at(1);
 
-                        crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                        crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
+                                    (soleil.getHauteur() > -0.08 ) ? QPen(QColor("deepskyblue")) : bleuClair : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
