@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    22 avril 2014
  *
  */
 
@@ -47,7 +47,7 @@
 #include <QTextStream>
 #include "constellation.h"
 
-bool Constellation::_initCst = false;
+bool Constellation::initCst = false;
 
 /*
  * Constructeurs
@@ -86,9 +86,9 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (!_initCst) {
+    if (!initCst) {
         InitTabCst(constellations);
-        _initCst = true;
+        initCst = true;
     }
 
     /* Corps de la methode */
