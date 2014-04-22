@@ -708,7 +708,8 @@ void Afficher::loadSky(const int j)
                                          cos(lig.getEtoile2().getAzimut()));
 
                 crayon = QPen((soleil.getHauteur() > -0.08) ?
-                                  bleuClair : (soleil.getHauteur() > -0.16) ? QColor(Qt::cyan) : QColor("deepskyblue"));
+                                  bleuClair : (soleil.getHauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
+
                 if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                     sceneSky->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
             }
