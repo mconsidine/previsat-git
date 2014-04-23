@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    23 avril 2014
  *
  */
 
@@ -2907,7 +2907,8 @@ void PreviSat::AffichageCourbes() const
                         const double az2 = trace.at(i).at(1);
 
                         crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
-                                    (soleil.getHauteur() > -0.08 ) ? QPen(QColor("deepskyblue")) : bleuClair : crimson;
+                                    ((soleil.getHauteur() > -0.08) ? bleuClair : ((soleil.getHauteur() > -0.12) ?
+                                                                         QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
