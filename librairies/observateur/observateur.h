@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    23 avril 2014
  *
  */
 
@@ -63,6 +63,7 @@ public:
     /* Methodes publiques */
     void CalculPosVit(const Date &date);
     static double CalculTempsSideralGreenwich(const Date &date);
+    double CalculCap(const Observateur &lieuDistant);
     double CalculDistance(const Observateur &observateur) const;
     static Observateur CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction);
 

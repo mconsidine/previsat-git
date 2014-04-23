@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    23 avril 2014
  *
  */
 
@@ -316,16 +316,17 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     corps.CalculCoordHoriz(obsmin, false);
 
                                     const double distanceObs = observateur.CalculDistance(obsmin);
-                                    double diff1 = obsmin.getLongitude() - observateur.getLongitude();
-                                    double diff2 = obsmin.getLatitude() - observateur.getLatitude();
-                                    double diff = qMin(diff1, diff2);
-                                    if (fabs(diff) > PI) {
-                                        diff -= Maths::sgn(diff) * PI;
-                                        diff1 -= Maths::sgn(diff1) * PI;
-                                        diff2 -= Maths::sgn(diff2) * PI;
-                                    }
-                                    const QString dir = (diff1 < diff2) ? ((diff > 0.) ? QObject::tr("(W)") : QObject::tr("(E)")) :
-                                                                          ((diff > 0.) ? QObject::tr("(N)") : QObject::tr("(S)"));
+                                    const double cap = observateur.CalculCap(obsmin) * RAD2DEG;
+
+                                    QString dir;
+                                    if (cap >= 315. || cap < 45.)
+                                        dir = QObject::tr("(N)");
+                                    if (cap >= 45. && cap < 135.)
+                                        dir = QObject::tr("(E)");
+                                    if (cap >= 135. && cap < 225.)
+                                        dir = QObject::tr("(S)");
+                                    if (cap >= 225. && cap < 315.)
+                                        dir = QObject::tr("(W)");
 
                                     const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
                                     const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
