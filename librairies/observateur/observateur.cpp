@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    19 octobre 2013
+ * >    23 avril 2014
  *
  */
 
@@ -225,6 +225,32 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Retour */
     return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + 0.000387933 * tu2 -
                                     tu2 * tu / 38710000., T360));
+}
+
+double Observateur::CalculCap(const Observateur &lieuDistant)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    double cap = 0.;
+
+    /* Corps de la methode */
+    if (_coslat < EPSDBL100) {
+        cap = (_latitude > 0.) ? PI : 0.;
+    } else {
+
+        if (lieuDistant._coslat < EPSDBL100) {
+            cap = (lieuDistant._latitude > 0.) ? 0. : PI;
+        } else {
+
+            const double num = sin(_longitude - lieuDistant._longitude) * lieuDistant._coslat;
+            const double den = _coslat * lieuDistant._sinlat - _sinlat * lieuDistant._coslat * cos(_longitude - lieuDistant._longitude);
+            cap = Maths::modulo(atan2(num, den), DEUX_PI);
+        }
+    }
+
+    /* Retour */
+    return (cap);
 }
 
 /*
