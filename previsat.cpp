@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 avril 2014
+ * >    24 avril 2014
  *
  */
 
@@ -989,7 +989,8 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
-    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty();
+    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
+            !ui->ciel->isVisible();
     ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
@@ -1707,7 +1708,8 @@ void PreviSat::AffichageDonnees()
     /*
      * Donnees ISS sur le Wall Command Center
      */
-    if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+    if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
+            !ui->ciel->isVisible()) {
 
         // Calcul de la prochaine transition J/N
         if (!(isEcl && satellites.at(0).isEclipse()))
@@ -2267,7 +2269,7 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
         if (ui->affSAA_ZOE->isChecked() && ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty()
-                && !l2.isEmpty()) {
+                && !l2.isEmpty() && !ui->ciel->isVisible()) {
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -2352,8 +2354,8 @@ void PreviSat::AffichageCourbes() const
                     txtSta->setPos(xnsta, ynsta);
                     scene->addItem(txtSta);
 
-                    if (ui->affCerclesAcq->isChecked() && !satellites.at(0).isIeralt() &&
-                            satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+                    if (ui->affCerclesAcq->isChecked() && !satellites.at(0).isIeralt() && !l1.isEmpty() && !l2.isEmpty() &&
+                            satellites.at(0).getTle().getNorad() == "25544" && !ui->ciel->isVisible()) {
 
                         const QPen crayon2 = (ui->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = satellites.at(0);
@@ -3350,8 +3352,8 @@ bool PreviSat::CalculAOS() const
     double incl = sat.getTle().getInclo() * DEG2RAD;
     if (incl >= PI_SUR_DEUX)
         incl = PI - incl;
-    res = (incl + acos(RAYON_TERRESTRE / sat.getElements().getApogee())
-           > fabs(obs.getLatitude()) && fabs(sat.getTle().getNo() - 1.0027) > 2.e-4);
+    res = (incl + acos(RAYON_TERRESTRE / sat.getElements().getApogee()) > fabs(obs.getLatitude()) &&
+           fabs(sat.getTle().getNo() - 1.0027) > 2.e-4);
 
     if (res) {
 
@@ -5542,7 +5544,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
                     CalculsAffichage();
 
                     const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() &&
-                            !l2.isEmpty();
+                            !l2.isEmpty() && !ui->ciel->isVisible();
                     ui->frameCoordISS->setVisible(affWCC);
                     ui->gmt->setVisible(affWCC);
                 }
@@ -6236,7 +6238,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->fluxVideo->setVisible(checked);
 
     // Affichage du blackboard
-    if (checked && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+    if (checked && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
         ui->frameCoordISS->setVisible(true);
         ui->gmt->setVisible(true);
     } else {
@@ -7132,7 +7134,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
             l2 = "";
         }
 
-        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty()) {
+        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
+                !ui->ciel->isVisible()) {
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
         } else {
