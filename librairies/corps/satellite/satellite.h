@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    24 avril 2014
  *
  */
 
@@ -62,16 +62,18 @@ public:
     static bool initCalcul;
 
     /* Methodes publiques */
-    void CalculPosVit(const Date &date);
-    void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
-    void CalculMagnitude(const Observateur &observateur, const bool extinction);
-    void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
     void CalculCercleAcquisition(const Observateur &station);
-    double ExtinctionAtmospherique(const Observateur &observateur);
     void CalculElementsOsculateurs(const Date &date);
+    void CalculMagnitude(const Observateur &observateur, const bool extinction);
+    void CalculPosVit(const Date &date);
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
                                             const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites);
+    void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
+    void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
+    double ExtinctionAtmospherique(const Observateur &observateur);
+    bool hasAOS(const Observateur &observateur) const;
+    bool isGeo() const;
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
@@ -364,14 +366,14 @@ private:
     QList<QVector<double> > _traceCiel;
 
     /* Methodes privees */
-    void SGP4Init();
-    void Dscom(const double tc);
-    void Dpper();
-    void Dsinit(const double tc);
-    void Dspace(const double tc);
     void CalculBeta(const Soleil &soleil);
     Date CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite);
     void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
+    void Dpper();
+    void Dscom(const double tc);
+    void Dsinit(const double tc);
+    void Dspace(const double tc);
+    void SGP4Init();
 
 };
 
