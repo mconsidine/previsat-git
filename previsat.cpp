@@ -3342,19 +3342,12 @@ bool PreviSat::CalculAOS() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool res = false;
     ctypeAOS = tr("AOS");
     Satellite sat = satellites.at(0);
     Observateur obs = observateurs.at(0);
+    bool res = sat.hasAOS(obs);
 
     /* Corps de la methode */
-    // Determination s'il y a possibilite d'AOS/LOS pour le satellite
-    double incl = sat.getTle().getInclo() * DEG2RAD;
-    if (incl >= PI_SUR_DEUX)
-        incl = PI - incl;
-    res = (incl + acos(RAYON_TERRESTRE / sat.getElements().getApogee()) > fabs(obs.getLatitude()) &&
-           fabs(sat.getTle().getNo() - 1.0027) > 2.e-4);
-
     if (res) {
 
         // Calcul du prochain AOS ou LOS
