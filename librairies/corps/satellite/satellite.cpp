@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    24 avril 2014
  *
  */
 
@@ -1446,45 +1446,55 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
     Soleil soleil;
 
     /* Initialisations */
-    bool afin = false;
-    int i = 0;
-    const double step = 1. / (_tle.getNo() * T360);
-    const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
-    Satellite sat = Satellite(_tle);
-    Observateur obs = observateur;
+    bool res = false;
+    _traceCiel.clear();
+    double incl = _tle.getInclo() * DEG2RAD;
+    if (incl >= PI_SUR_DEUX)
+        incl = PI - incl;
+    res = (incl + acos(RAYON_TERRESTRE / _elements.getApogee()) > fabs(observateur.getLatitude()) &&
+           fabs(_tle.getNo() - 1.0027) > 2.e-4);
 
     /* Corps de la methode */
-    _traceCiel.clear();
-    while (!afin) {
+    if (res) {
 
-        const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+        bool afin = false;
+        int i = 0;
+        const double step = 1. / (_tle.getNo() * T360);
+        const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
+        Satellite sat = Satellite(_tle);
+        Observateur obs = observateur;
 
-        // Position du satellite
-        sat.CalculPosVit(j0);
+        while (!afin) {
 
-        // Position de l'observateur
-        obs.CalculPosVit(j0);
+            const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
 
-        // Coordonnees horizontales
-        sat.CalculCoordHoriz(obs);
+            // Position du satellite
+            sat.CalculPosVit(j0);
 
-        if (sat._hauteur >= 0. && i < 86400) {
+            // Position de l'observateur
+            obs.CalculPosVit(j0);
 
-            // Position du Soleil
-            soleil.CalculPosition(j0);
+            // Coordonnees horizontales
+            sat.CalculCoordHoriz(obs);
 
-            // Conditions d'eclipse
-            sat.CalculSatelliteEclipse(soleil, refraction);
+            if (sat._hauteur >= 0. && i < 86400) {
 
-            const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.) <<
-                                       j0.getJourJulienUTC());
-            _traceCiel.append(list);
+                // Position du Soleil
+                soleil.CalculPosition(j0);
 
-        } else {
-            if (i > 0)
-                afin = true;
+                // Conditions d'eclipse
+                sat.CalculSatelliteEclipse(soleil, refraction);
+
+                const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.) <<
+                                           j0.getJourJulienUTC());
+                _traceCiel.append(list);
+
+            } else {
+                if (i > 0)
+                    afin = true;
+            }
+            i++;
         }
-        i++;
     }
 
     /* Retour */
