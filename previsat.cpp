@@ -2011,6 +2011,7 @@ void PreviSat::AffichageCourbes() const
         const int lcarte = ui->carte->width() - 3;
         const int hcarte2 = qRound(hcarte * 0.5);
         const int lcarte2 = qRound(lcarte * 0.5);
+        const bool mcc = ui->mccISS->isChecked() && ui->styleWCC->isChecked();
 
         // Affichage du filtre de la carte en mode vision nocturne
         const QBrush alphaNuit = (ui->actionVision_nocturne->isChecked()) ? QBrush(QColor::fromRgb(128, 0, 0, 128)) :
@@ -2024,15 +2025,14 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            const QPen pen = QPen((ui->mccISS->isChecked() && ui->styleWCC->isChecked() &&
-                                   satellites.at(0).getTle().getNorad() == "25544") ? Qt::red : Qt::white);
+            const QPen pen = QPen((mcc && satellites.at(0).getTle().getNorad() == "25544") ? Qt::red : Qt::white);
             scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
             QPen stylo(Qt::lightGray);
             QList<int> tabLat, tabLon;
 
-            if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+            if (mcc) {
                 tabLat << hcarte / 12 << hcarte / 6 << (int) (hcarte * 0.25) << hcarte / 3 << (int) (hcarte / 2.4) <<
                           (int) (7. * hcarte / 12.) << (int) (hcarte / 1.5) << (int) (hcarte * 0.75) << (int) (hcarte / 1.2) <<
                           (int) (11. * hcarte / 12.);
@@ -2093,8 +2093,8 @@ void PreviSat::AffichageCourbes() const
                 scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
             }
 
-            const int dec1 = (ui->styleWCC->isChecked()) ? 12 : 8;
-            const int dec2 = (ui->styleWCC->isChecked()) ? 9 : 5;
+            const int dec1 = (mcc) ? 12 : 8;
+            const int dec2 = (mcc) ? 9 : 5;
             ui->W150->move((int) (lcarte / 12.) - dec1, 0);
             ui->W120->move((int) (lcarte / 6.) - dec1, 0);
             ui->W90->move((int) (lcarte / 4.) - dec2, 0);
@@ -2111,7 +2111,7 @@ void PreviSat::AffichageCourbes() const
             if (!ui->carte->isHidden()) {
                 ui->frameLat->setVisible(true);
                 ui->frameLon->setVisible(true);
-                if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+                if (mcc) {
                     ui->NN->setVisible(false);
                     ui->SS->setVisible(false);
                     ui->EE->setVisible(false);
@@ -2149,7 +2149,7 @@ void PreviSat::AffichageCourbes() const
         const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
 
         if (ui->affsoleil->isChecked()) {
-            if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+            if (mcc) {
 
                 const QString iconeSoleil = ":/resources/icones/soleil.png";
                 QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
@@ -2167,8 +2167,7 @@ void PreviSat::AffichageCourbes() const
             int jmin = 0;
             int xmin = ui->carte->width() - 3;
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, (int) (2.55 * ui->intensiteOmbre->value())));
-            const QPen stylo((ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? QPen(QColor::fromRgb(102, 50, 16), 2) :
-                                                                                      QPen(Qt::NoBrush, 0));
+            const QPen stylo((mcc) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::NoBrush, 0));
 
             QVector<QPoint> zone;
             zone.resize(361);
@@ -2396,7 +2395,7 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la Lune
         if (ui->afflune->isChecked()) {
 
-            if (!(ui->mccISS->isChecked() && ui->styleWCC->isChecked())) {
+            if (!mcc) {
                 const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
 
@@ -2518,7 +2517,7 @@ void PreviSat::AffichageCourbes() const
 
                 for(int isat=0; isat<nbMax2; isat++) {
 
-                    if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+                    if (mcc) {
 
                         crayon = QPen(Qt::white, 2);
                         if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) {
@@ -2594,7 +2593,7 @@ void PreviSat::AffichageCourbes() const
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
-                if (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) {
+                if (mcc) {
 
                     // Affichage de l'icone du satellite
                     const QString nomIcone = ":/resources/icones/%1.png";
@@ -5280,6 +5279,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     /* Initialisations */
     Q_UNUSED(evt)
+    const bool wcc = ui->mccISS->isChecked() && ui->styleWCC->isChecked();
 
     /* Corps de la methode */
     if (ui->frameCarte->height() >= height())
@@ -5324,11 +5324,11 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->NN->move(5, (int) (hcarte / 2.4) - 1);
     ui->N30->move(5, (int) (hcarte / 3.) - 1);
     ui->N60->move(5, (int) (hcarte / 6.) - 1);
-    const int xLat = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? -20 : 1 + ui->carte->x();
+    const int xLat = (wcc) ? -20 : 1 + ui->carte->x();
     ui->frameLat->setGeometry(xLat + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
-    const int dec1 = (ui->styleWCC->isChecked()) ? 12 : 8;
-    const int dec2 = (ui->styleWCC->isChecked()) ? 9 : 5;
+    const int dec1 = (wcc) ? 12 : 8;
+    const int dec2 = (wcc) ? 9 : 5;
     ui->W150->move((int) (lcarte / 12.) - dec1, 0);
     ui->W120->move((int) (lcarte / 6.) - dec1, 0);
     ui->W90->move((int) (lcarte / 4.) - dec2, 0);
@@ -5342,7 +5342,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->E90->move((int) (lcarte * 0.75) - 5, 0);
     ui->E120->move((int) (lcarte / 1.2) - 8, 0);
     ui->E150->move((int) (lcarte * 11. / 12.) - 8, 0);
-    const int yLon = (ui->mccISS->isChecked() && ui->styleWCC->isChecked()) ? -10 : 1 + ui->carte->y();
+    const int yLon = (wcc) ? -10 : 1 + ui->carte->y();
     ui->frameLon->setGeometry(ui->carte->x(), yLon + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 
     const int xOng = (ui->mccISS->isChecked()) ? 6 : ui->frameCarte->width() / 2 - 411;
