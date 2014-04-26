@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 avril 2014
+ * >    26 avril 2014
  *
  */
 
@@ -527,7 +527,7 @@ void PreviSat::ChargementConfig()
     ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarMaxButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
-    ui->actionMuetVideo->setIcon(styleIcones->standardIcon(QStyle::SP_MediaVolumeMuted));
+    ui->actionMuetVideo->setIcon(styleIcones->standardIcon(QStyle::SP_MediaVolume));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     ui->frameCtrlVideo->setVisible(false);
     ui->fluxVideo->raise();
@@ -6116,6 +6116,8 @@ void PreviSat::on_maximise_clicked()
                                height() - ui->frameOngletsZone->height() - 23);
         ui->maximise->setIcon(QIcon(":/resources/maxi.png"));
         ui->maximise->setToolTip(tr("Agrandir"));
+
+        EnchainementCalculs();
     }
 
     QResizeEvent *evt = NULL;
@@ -6338,8 +6340,8 @@ void PreviSat::on_fluxVideo_clicked()
                 const bool muet = settings.value("affichage/muetVideo", false).toBool();
                 libvlc_audio_set_mute(_mp, (muet) ? 1 : 0);
                 QStyle * const styleBouton = QApplication::style();
-                ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolume) :
-                                                      styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted));
+                ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted) :
+                                                      styleBouton->standardIcon(QStyle::SP_MediaVolume));
                 libvlc_audio_set_mute(_mp2, 1);
                 libvlc_media_player_play(_mp2);
             }
@@ -6360,8 +6362,8 @@ void PreviSat::on_muetVideo_clicked()
     QStyle * const styleBouton = QApplication::style();
 
     /* Corps de la methode */
-    ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted) :
-                                          styleBouton->standardIcon(QStyle::SP_MediaVolume));
+    ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolume) :
+                                          styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted));
     ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     libvlc_audio_toggle_mute(_mp);
     settings.setValue("affichage/muetVideo", muet);
