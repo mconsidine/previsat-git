@@ -668,7 +668,11 @@ void PreviSat::ChargementConfig()
 
     const QIcon ajout(":/resources/ajout.png");
     ui->actionCreer_une_categorie->setIcon(ajout);
+    ui->creationCategorie->setIcon(ajout);
+    ui->creationCategorie->setToolTip(tr("Créer une catégorie"));
     ui->actionCreer_un_nouveau_lieu->setIcon(ajout);
+    ui->creationLieu->setIcon(ajout);
+    ui->creationLieu->setToolTip(tr("Créer un nouveau lieu"));
 
     ui->actionModifier_coordonnees->setIcon(QIcon(":/resources/editer.png"));
     ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
@@ -7924,6 +7928,11 @@ void PreviSat::on_actionCreer_une_categorie_activated(int arg1)
     return;
 }
 
+void PreviSat::on_creationCategorie_clicked()
+{
+    on_actionCreer_une_categorie_activated(0);
+}
+
 void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
 {
     /* Declarations des variables locales */
@@ -8161,6 +8170,11 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_creationLieu_clicked()
+{
+    on_actionCreer_un_nouveau_lieu_activated();
 }
 
 void PreviSat::on_actionAjouter_Mes_Preferes_activated()

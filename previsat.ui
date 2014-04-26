@@ -2240,7 +2240,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8367,7 +8367,7 @@
                <rect>
                 <x>189</x>
                 <y>0</y>
-                <width>141</width>
+                <width>131</width>
                 <height>16</height>
                </rect>
               </property>
@@ -8382,7 +8382,7 @@
               <property name="geometry">
                <rect>
                 <x>552</x>
-                <y>18</y>
+                <y>20</y>
                 <width>201</width>
                 <height>151</height>
                </rect>
@@ -8670,7 +8670,7 @@
               <property name="geometry">
                <rect>
                 <x>348</x>
-                <y>117</y>
+                <y>118</y>
                 <width>19</width>
                 <height>23</height>
                </rect>
@@ -8692,7 +8692,7 @@
               <property name="geometry">
                <rect>
                 <x>177</x>
-                <y>18</y>
+                <y>20</y>
                 <width>171</width>
                 <height>157</height>
                </rect>
@@ -8721,7 +8721,7 @@
                <rect>
                 <x>12</x>
                 <y>0</y>
-                <width>141</width>
+                <width>131</width>
                 <height>16</height>
                </rect>
               </property>
@@ -8736,7 +8736,7 @@
               <property name="geometry">
                <rect>
                 <x>367</x>
-                <y>18</y>
+                <y>20</y>
                 <width>171</width>
                 <height>157</height>
                </rect>
@@ -8755,7 +8755,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>18</y>
+                <y>20</y>
                 <width>171</width>
                 <height>157</height>
                </rect>
@@ -8780,7 +8780,7 @@
               <property name="geometry">
                <rect>
                 <x>348</x>
-                <y>49</y>
+                <y>55</y>
                 <width>19</width>
                 <height>23</height>
                </rect>
@@ -8802,7 +8802,7 @@
               <property name="geometry">
                <rect>
                 <x>552</x>
-                <y>18</y>
+                <y>20</y>
                 <width>161</width>
                 <height>80</height>
                </rect>
@@ -8930,7 +8930,7 @@
               <property name="geometry">
                <rect>
                 <x>552</x>
-                <y>18</y>
+                <y>20</y>
                 <width>141</width>
                 <height>80</height>
                </rect>
@@ -9017,6 +9017,50 @@
               </property>
               <property name="text">
                <string>Lieux sélectionnés :</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="creationLieu">
+              <property name="geometry">
+               <rect>
+                <x>332</x>
+                <y>0</y>
+                <width>19</width>
+                <height>19</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="creationCategorie">
+              <property name="geometry">
+               <rect>
+                <x>155</x>
+                <y>0</y>
+                <width>19</width>
+                <height>19</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </widget>
