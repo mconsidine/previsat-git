@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    26 avril 2014
  *
  */
 
@@ -238,6 +238,7 @@ private slots:
 
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
+    void on_creationCategorie_clicked();
     void on_actionSupprimerCategorie_activated(int arg1);
     void on_actionTelechargerCategorie_activated(int arg1);
     void on_annulerCategorie_clicked();
@@ -250,6 +251,7 @@ private slots:
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_selecLieux_customContextMenuRequested(const QPoint &position);
     void on_actionCreer_un_nouveau_lieu_activated();
+    void on_creationLieu_clicked();
     void on_actionAjouter_Mes_Preferes_activated();
     void on_actionModifier_coordonnees_activated();
     void on_validerObs_clicked();
