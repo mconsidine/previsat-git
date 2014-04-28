@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 avril 2014
+ * >    28 avril 2014
  *
  */
 
@@ -4815,7 +4815,8 @@ void PreviSat::GestionTempsReel()
         stsHeure->setToolTip(tr("Jour"));
     } else {
         stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
-        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), (int) date1.getSecondes()).toString("hh:mm:ss"));
+        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), (int) date1.getSecondes()).
+                          toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
         stsDate->setToolTip(tr("Date"));
         stsHeure->setToolTip(tr("Heure"));
     }
