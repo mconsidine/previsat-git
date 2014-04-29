@@ -2240,7 +2240,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -3918,7 +3918,7 @@
              </date>
             </property>
             <property name="displayFormat">
-             <string>dddd dd MMMM yyyy  HH:mm:ss</string>
+             <string>dddd dd MMMM yyyy  hh:mm:ss</string>
             </property>
             <property name="calendarPopup">
              <bool>true</bool>
@@ -4906,7 +4906,7 @@
              </date>
             </property>
             <property name="displayFormat">
-             <string>dddd dd MMMM yyyy  HH:mm:ss </string>
+             <string>dddd dd MMMM yyyy  hh:mm:ss</string>
             </property>
             <property name="calendarPopup">
              <bool>true</bool>
@@ -7543,44 +7543,6 @@
              <string>Paramétrage par défaut</string>
             </property>
            </widget>
-           <widget class="QLabel" name="amPrev1">
-            <property name="geometry">
-             <rect>
-              <x>190</x>
-              <y>10</y>
-              <width>21</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>am</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="amPrev2">
-            <property name="geometry">
-             <rect>
-              <x>190</x>
-              <y>34</y>
-              <width>21</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>am</string>
-            </property>
-           </widget>
           </widget>
           <widget class="QWidget" name="iridium">
            <property name="font">
@@ -8242,44 +8204,6 @@
              </property>
             </column>
            </widget>
-           <widget class="QLabel" name="amIri1">
-            <property name="geometry">
-             <rect>
-              <x>190</x>
-              <y>10</y>
-              <width>21</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>am</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="amIri2">
-            <property name="geometry">
-             <rect>
-              <x>190</x>
-              <y>34</y>
-              <width>21</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>am</string>
-            </property>
-           </widget>
            <zorder>annulerIri</zorder>
            <zorder>lbl_dateInitialeIri</zorder>
            <zorder>dateFinaleIri</zorder>
@@ -8309,8 +8233,6 @@
            <zorder>parametrageDefautIri</zorder>
            <zorder>fichierTLEIri</zorder>
            <zorder>statutIridium</zorder>
-           <zorder>amIri1</zorder>
-           <zorder>amIri2</zorder>
           </widget>
           <widget class="QWidget" name="options">
            <property name="font">
@@ -11865,44 +11787,6 @@
                <string>Paramétrage par défaut</string>
               </property>
              </widget>
-             <widget class="QLabel" name="amEve1">
-              <property name="geometry">
-               <rect>
-                <x>190</x>
-                <y>14</y>
-                <width>21</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>am</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="amEve2">
-              <property name="geometry">
-               <rect>
-                <x>190</x>
-                <y>38</y>
-                <width>21</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>am</string>
-              </property>
-             </widget>
             </widget>
             <widget class="QWidget" name="transitsISS">
              <property name="font">
@@ -12390,44 +12274,6 @@
               </property>
               <property name="text">
                <string>-360.3 jours</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="amTrs1">
-              <property name="geometry">
-               <rect>
-                <x>190</x>
-                <y>14</y>
-                <width>21</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>am</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="amTrs2">
-              <property name="geometry">
-               <rect>
-                <x>190</x>
-                <y>38</y>
-                <width>21</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>am</string>
               </property>
              </widget>
             </widget>

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 avril 2014
+ * >    29 avril 2014
  *
  */
 
@@ -568,8 +568,6 @@ void PreviSat::ChargementConfig()
     ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
     ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
     ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isVisible());
-    ui->amPrev1->setVisible(ui->syst12h->isChecked());
-    ui->amPrev2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatPrev->setVisible(false);
     ui->valHauteurSoleilPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
@@ -584,8 +582,6 @@ void PreviSat::ChargementConfig()
     ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
     ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 4.).toDouble());
     ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
-    ui->amIri1->setVisible(ui->syst12h->isChecked());
-    ui->amIri2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setVisible(false);
@@ -697,8 +693,6 @@ void PreviSat::ChargementConfig()
     ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
     ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
-    ui->amEve1->setVisible(ui->syst12h->isChecked());
-    ui->amEve2->setVisible(ui->syst12h->isChecked());
     ui->afficherEvt->setVisible(false);
     ui->annulerEvt->setVisible(false);
 
@@ -706,8 +700,6 @@ void PreviSat::ChargementConfig()
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
-    ui->amTrs1->setVisible(ui->syst12h->isChecked());
-    ui->amTrs2->setVisible(ui->syst12h->isChecked());
     ui->valHauteurSatTransit->setVisible(false);
     ui->afficherTransit->setVisible(false);
     ui->annulerTransit->setVisible(false);
@@ -7286,6 +7278,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
 
     /* Corps de la methode */
     if (checked) {
+
         ui->pasReel->setVisible(false);
         ui->secondes->setVisible(false);
         on_pasManuel_currentIndexChanged(ui->pasManuel->currentIndex());
@@ -7301,6 +7294,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->utcManuel2->setVisible(true);
         ui->frameSimu->setVisible(true);
         ui->pasManuel->setFocus();
+
         htSat = 0.;
         acalcAOS = true;
         acalcDN = true;
@@ -7315,6 +7309,8 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->dateHeure3->setDisplayFormat(fmt);
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
@@ -7344,12 +7340,14 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
                         date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
     ui->dateHeure3->setDateTime(date);
+    ui->dateHeure4->setDisplayFormat(fmt);
 
     /* Retour */
     return;
@@ -7648,51 +7646,13 @@ void PreviSat::on_unitesMi_toggled(bool checked)
 
 void PreviSat::on_syst24h_toggled(bool checked)
 {
-    if (checked) {
-        ui->amPrev1->setVisible(false);
-        ui->amPrev2->setVisible(false);
-
-        ui->amIri1->setVisible(false);
-        ui->amIri2->setVisible(false);
-
-        ui->amEve1->setVisible(false);
-        ui->amEve2->setVisible(false);
-
-        ui->amTrs1->setVisible(false);
-        ui->amTrs2->setVisible(false);
-    }
+    Q_UNUSED(checked)
     ModificationOption();
 }
 
 void PreviSat::on_syst12h_toggled(bool checked)
 {
-    if (checked) {
-
-        const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-        ui->amPrev1->setText(ui->dateInitialePrev->dateTime().toString(fmt).right(2));
-        ui->amPrev2->setText(ui->dateFinalePrev->dateTime().toString(fmt).right(2));
-
-        ui->amIri1->setText(ui->dateInitialeIri->dateTime().toString(fmt).right(2));
-        ui->amIri2->setText(ui->dateFinaleIri->dateTime().toString(fmt).right(2));
-
-        ui->amEve1->setText(ui->dateInitialeEvt->dateTime().toString(fmt).right(2));
-        ui->amEve2->setText(ui->dateFinaleEvt->dateTime().toString(fmt).right(2));
-
-        ui->amTrs1->setText(ui->dateInitialeTransit->dateTime().toString(fmt).right(2));
-        ui->amTrs2->setText(ui->dateFinaleTransit->dateTime().toString(fmt).right(2));
-
-        ui->amPrev1->setVisible(true);
-        ui->amPrev2->setVisible(true);
-
-        ui->amIri1->setVisible(true);
-        ui->amIri2->setVisible(true);
-
-        ui->amEve1->setVisible(true);
-        ui->amEve2->setVisible(true);
-
-        ui->amTrs1->setVisible(true);
-        ui->amTrs2->setVisible(true);
-    }
+    Q_UNUSED(checked)
     ModificationOption();
 }
 
@@ -9149,18 +9109,6 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 /*
  * Calcul des previsions de passage
  */
-void PreviSat::on_dateInitialePrev_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amPrev1->setText(date.toString(fmt).right(2));
-}
-
-void PreviSat::on_dateFinalePrev_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amPrev2->setText(date.toString(fmt).right(2));
-}
-
 void PreviSat::on_effacerHeuresPrev_clicked()
 {
     /* Declarations des variables locales */
@@ -9498,18 +9446,6 @@ void PreviSat::on_afficherPrev_clicked()
 /*
  * Calcul des flashs Iridium
  */
-void PreviSat::on_dateInitialeIri_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amIri1->setText(date.toString(fmt).right(2));
-}
-
-void PreviSat::on_dateFinaleIri_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amIri2->setText(date.toString(fmt).right(2));
-}
-
 void PreviSat::on_effacerHeuresIri_clicked()
 {
     /* Declarations des variables locales */
@@ -9852,18 +9788,6 @@ void PreviSat::on_afficherIri_clicked()
 /*
  * Calcul des evenements orbitaux
  */
-void PreviSat::on_dateInitialeEvt_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amEve1->setText(date.toString(fmt).right(2));
-}
-
-void PreviSat::on_dateFinaleEvt_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amEve2->setText(date.toString(fmt).right(2));
-}
-
 void PreviSat::on_effacerHeuresEvt_clicked()
 {
     /* Declarations des variables locales */
@@ -10086,18 +10010,6 @@ void PreviSat::on_afficherEvt_clicked()
 /*
  * Calcul des transits ISS
  */
-void PreviSat::on_dateInitialeTransit_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amTrs1->setText(date.toString(fmt).right(2));
-}
-
-void PreviSat::on_dateFinaleTransit_dateTimeChanged(const QDateTime &date)
-{
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->amTrs2->setText(date.toString(fmt).right(2));
-}
-
 void PreviSat::on_effacerHeuresTransit_clicked()
 {
     /* Declarations des variables locales */
