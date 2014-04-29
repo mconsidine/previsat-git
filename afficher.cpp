@@ -27,7 +27,7 @@
  * >    QMainWindow
  *
  * Description
- * >    Fenetre d'affichage des resultats ou du fichier d'aide
+ * >    Fenetre d'affichage des resultats
  *
  * Auteur
  * >    Astropedia
@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    23 avril 2014
+ * >    29 avril 2014
  *
  */
 
@@ -105,6 +105,7 @@ static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6
                                              { 24., 0. } };
 
 QGraphicsScene *sceneSky;
+QScrollArea *scrollAreaRes;
 
 Afficher::Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
@@ -137,6 +138,10 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         if (ymax < minimumHeight())
             setMinimumHeight(ymax);
         resize(xAff, yAff);
+        scrollAreaRes = new QScrollArea(this);
+        scrollAreaRes->setWidget(centralWidget());
+        scrollAreaRes->setWidgetResizable(true);
+        setCentralWidget(scrollAreaRes);
     }
 
     QFont police;
@@ -200,40 +205,37 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirOut = QDir::convertSeparators(dirOut);
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
-    if (!result.isEmpty()) {
+    const int ind = (result.size() > 2000 || result.isEmpty()) ? 0 : 1;
 
-        const int ind = (result.size() > 2000) ? 0 : 1;
+    if (ind == 1) {
+        res = result;
+    } else {
+        ui->ongletsResultats->removeTab(1);
+    }
+    result.clear();
+    cond = conditions;
+    obs = observateur;
 
-        if (ind == 1) {
-            res = result;
-        } else {
-            ui->ongletsResultats->removeTab(1);
-        }
-        result.clear();
-        cond = conditions;
-        obs = observateur;
+    police.setWeight(QFont::Bold);
+    ui->listePrevisions->horizontalHeader()->setFont(police);
+    if (cond.getNbl() == 0)
+        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
+    else
+        ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
 
-        police.setWeight(QFont::Bold);
-        ui->listePrevisions->horizontalHeader()->setFont(police);
-        if (cond.getNbl() == 0)
-            ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
-        else
-            ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
+    if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
+        ui->ongletsResultats->removeTab(1);
+        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+    }
 
-        if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
-            ui->ongletsResultats->removeTab(1);
-            ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
-        }
+    if (cond.getAcalcLune() || cond.getAcalcSol())
+        ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
 
-        if (cond.getAcalcLune() || cond.getAcalcSol())
-            ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
-
-        if (ind == 1) {
-            Constellation::initCst = false;
-            Etoile::initStar = false;
-            LigneConstellation::initLig = false;
-            load();
-        }
+    if (ind == 1) {
+        Constellation::initCst = false;
+        Etoile::initStar = false;
+        LigneConstellation::initLig = false;
+        load();
     }
 
     /* Retour */
@@ -951,7 +953,7 @@ void Afficher::loadSky(const int j)
 
             crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
                         ((soleil.getHauteur() > -0.08) ? bleuClair : ((soleil.getHauteur() > -0.12) ?
-                                                             QColor("deepskyblue") : QColor("cyan"))) : crimson;
+                                                                          QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
             const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
             const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
