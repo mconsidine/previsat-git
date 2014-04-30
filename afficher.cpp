@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    29 avril 2014
+ * >    30 avril 2014
  *
  */
 
@@ -238,6 +238,9 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         load();
     }
 
+    QResizeEvent *evt = NULL;
+    resizeEvent(evt);
+
     /* Retour */
     return;
 }
@@ -390,7 +393,7 @@ void Afficher::load()
     if (cond.getNbl() == 0) {
         // Masquage de la map
         ui->frame->setVisible(false);
-        ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 58);
+        ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 4);
     } else {
 
         // Affichage de la map
@@ -457,8 +460,15 @@ void Afficher::closeEvent(QCloseEvent *evt)
 void Afficher::resizeEvent(QResizeEvent *evt)
 {
     Q_UNUSED(evt)
-    ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
-    ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
+    if (baseSize() == size()) {
+        ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
+        ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
+        ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
+    } else {
+        ui->ongletsResultats->resize(baseSize());
+        ui->fichier->resize(baseSize().width() - 4, baseSize().height());
+        ui->previsions->resize(baseSize());
+    }
 }
 
 void Afficher::on_actionEnregistrer_activated()
