@@ -4,73 +4,73 @@
 <context>
     <name>Afficher</name>
     <message>
-        <location filename="afficher.ui" line="47"/>
+        <location filename="afficher.ui" line="59"/>
         <source>Fichier texte</source>
         <translation>Text file</translation>
     </message>
     <message utf8="true">
-        <location filename="afficher.ui" line="77"/>
+        <location filename="afficher.ui" line="89"/>
         <source>Prévisions</source>
         <translation>Predictions</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="145"/>
+        <location filename="afficher.ui" line="157"/>
         <source>Satellite</source>
         <translation>Satellite</translation>
     </message>
     <message utf8="true">
-        <location filename="afficher.ui" line="150"/>
+        <location filename="afficher.ui" line="162"/>
         <source>Date de début</source>
         <translation>Start date</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="155"/>
+        <location filename="afficher.ui" line="167"/>
         <source>Date de fin</source>
         <translation>Finish date</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="160"/>
+        <location filename="afficher.ui" line="172"/>
         <source>Hauteur Max</source>
         <translation>Max Elevation</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="165"/>
+        <location filename="afficher.ui" line="177"/>
         <source>Magn Max</source>
         <translation>Max Magn</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="170"/>
+        <location filename="afficher.ui" line="182"/>
         <source>Hauteur Soleil</source>
         <translation>Sun Elevation</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="200"/>
+        <location filename="afficher.ui" line="212"/>
         <source>about:blank</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="221"/>
+        <location filename="afficher.ui" line="233"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="243"/>
+        <location filename="afficher.ui" line="255"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="265"/>
+        <location filename="afficher.ui" line="277"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="287"/>
+        <location filename="afficher.ui" line="299"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="afficher.ui" line="316"/>
-        <location filename="afficher.ui" line="319"/>
+        <location filename="afficher.ui" line="328"/>
+        <location filename="afficher.ui" line="331"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
@@ -95,76 +95,76 @@
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="261"/>
+        <location filename="afficher.cpp" line="264"/>
         <source>Angle</source>
         <translation>Angle</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="262"/>
+        <location filename="afficher.cpp" line="265"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="278"/>
-        <location filename="afficher.cpp" line="279"/>
-        <location filename="afficher.cpp" line="295"/>
+        <location filename="afficher.cpp" line="281"/>
+        <location filename="afficher.cpp" line="282"/>
+        <location filename="afficher.cpp" line="298"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="280"/>
+        <location filename="afficher.cpp" line="283"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="281"/>
+        <location filename="afficher.cpp" line="284"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="282"/>
+        <location filename="afficher.cpp" line="285"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="289"/>
+        <location filename="afficher.cpp" line="292"/>
         <source>Iridium</source>
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="369"/>
-        <location filename="afficher.cpp" line="373"/>
+        <location filename="afficher.cpp" line="372"/>
+        <location filename="afficher.cpp" line="376"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="371"/>
-        <location filename="afficher.cpp" line="375"/>
+        <location filename="afficher.cpp" line="374"/>
+        <location filename="afficher.cpp" line="378"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="410"/>
+        <location filename="afficher.cpp" line="413"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="410"/>
+        <location filename="afficher.cpp" line="413"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="477"/>
+        <location filename="afficher.cpp" line="487"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="478"/>
+        <location filename="afficher.cpp" line="488"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1000"/>
+        <location filename="afficher.cpp" line="1010"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
