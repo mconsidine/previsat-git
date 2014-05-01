@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 avril 2014
+ * >    1er mai 2014
  *
  */
 
@@ -193,6 +193,9 @@ static const double tabSAA_ISS[16][2] = { { 55.5, -17.3 }, { 47., -17.3 }, { 34.
                                           { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 }, { 2.5, -53. }, { 42., -53. },
                                           { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 },
                                           { 55.5, -17.3 } };
+
+// Couleurs GMT
+static const QColor cgmt[3] = { Qt::red, Qt::white, Qt::cyan };
 
 // Ecliptique
 static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 },
@@ -1746,8 +1749,9 @@ void PreviSat::AffichageDonnees()
         const int numJour = (int) jourDsAnnee;
         const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
         const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.00005);
+
         QPalette coul;
-        coul.setColor(QPalette::WindowText, (ui->coulGMT->currentIndex() == 0) ? Qt::red : Qt::white);
+        coul.setColor(QPalette::WindowText, cgmt[ui->coulGMT->currentIndex()]);
         ui->gmt->setPalette(coul);
         ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
     }
@@ -2905,7 +2909,7 @@ void PreviSat::AffichageCourbes() const
 
                         crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
                                     ((soleil.getHauteur() > -0.08) ? bleuClair : ((soleil.getHauteur() > -0.12) ?
-                                                                         QColor("deepskyblue") : QColor("cyan"))) : crimson;
+                                                                                      QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
