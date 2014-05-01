@@ -993,6 +993,7 @@ void PreviSat::DemarrageApplication()
     ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
+    ui->frameLat2->setVisible(affWCC);
     isEcl = satellites.at(0).isEclipse();
 
     on_affBetaWCC_toggled(false);
@@ -2116,11 +2117,13 @@ void PreviSat::AffichageCourbes() const
                     ui->SS->setVisible(false);
                     ui->EE->setVisible(false);
                     ui->WW->setVisible(false);
+                    ui->frameLat2->setVisible(true);
                 } else {
                     ui->NN->setVisible(true);
                     ui->SS->setVisible(true);
                     ui->EE->setVisible(true);
                     ui->WW->setVisible(true);
+                    ui->frameLat2->setVisible(false);
                 }
             }
         } else {
@@ -5325,8 +5328,17 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->NN->move(5, (int) (hcarte / 2.4) - 1);
     ui->N30->move(5, (int) (hcarte / 3.) - 1);
     ui->N60->move(5, (int) (hcarte / 6.) - 1);
-    const int xLat = (wcc) ? -20 : 1 + ui->carte->x();
-    ui->frameLat->setGeometry(xLat + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
+    const int xLat = (wcc) ? -26 : 1;
+    ui->frameLat->setGeometry(xLat + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
+
+    if (wcc) {
+        ui->frameLat2->setGeometry(5, 0, ui->frameLat->width(), ui->carte->height());
+        ui->S60b->move(5, ui->S60->y());
+        ui->S30b->move(5, ui->S30->y());
+        ui->N0b->move(5, ui->N0->y());
+        ui->N30b->move(5, ui->N30->y());
+        ui->N60b->move(5, ui->N60->y());
+    }
 
     const int dec1 = (wcc) ? 12 : 8;
     const int dec2 = (wcc) ? 9 : 5;
@@ -6236,9 +6248,11 @@ void PreviSat::on_mccISS_toggled(bool checked)
     // Affichage du blackboard
     if (checked && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
         ui->frameCoordISS->setVisible(true);
+        ui->frameLat2->setVisible(true);
         ui->gmt->setVisible(true);
     } else {
         ui->frameCoordISS->setVisible(false);
+        ui->frameLat2->setVisible(false);
         ui->gmt->setVisible(false);
     }
 
