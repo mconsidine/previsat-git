@@ -10009,6 +10009,11 @@
                 <string>Blanc</string>
                </property>
               </item>
+              <item>
+               <property name="text">
+                <string>Cyan</string>
+               </property>
+              </item>
              </widget>
              <widget class="QComboBox" name="coulZOE">
               <property name="geometry">
