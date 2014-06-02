@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 avril 2014
+ * >    2 juin 2014
  *
  */
 
@@ -424,7 +424,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             satellites[isat].CalculElementsOsculateurs(date);
 
             const Date dateInit = (mcc && satellites.at(isat).getTle().getNorad() == "25544") ?
-                        Date(satellites[isat].CalculDateNoeudAscPrec(date, satellites.at(isat)).getJourJulienUTC() - EPS_DATES, 0.,
+                        Date(satellites[isat].CalculDateNoeudAscPrec(date).getJourJulienUTC() - EPS_DATES, 0.,
                              false) : Date(date.getJourJulienUTC(), 0., false);
 
             // Calcul de la trajectoire
@@ -685,7 +685,7 @@ void Satellite::CalculBeta(const Soleil &soleil)
 /*
  * Calcul de la date du noeud ascendant precedent a la date donnee
  */
-Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite)
+Date Satellite::CalculDateNoeudAscPrec(const Date &date)
 {
     /* Declarations des variables locales */
     Date j0 = date;
@@ -695,7 +695,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date, const Satellite &satell
     const double st = 1. / (_tle.getNo() * T360);
 
     /* Corps de la methode */
-    double lat1 = satellite.getLatitude();
+    double lat1 = _latitude;
     int i = -1;
     bool atrouve = false;
     while (!atrouve) {

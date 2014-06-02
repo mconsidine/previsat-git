@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 avril 2014
+ * >    1er juin 2014
  *
  */
 
@@ -367,7 +367,7 @@ private:
 
     /* Methodes privees */
     void CalculBeta(const Soleil &soleil);
-    Date CalculDateNoeudAscPrec(const Date &date, const Satellite &satellite);
+    Date CalculDateNoeudAscPrec(const Date &date);
     void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
     void Dpper();
     void Dscom(const double tc);
