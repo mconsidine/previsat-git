@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    30 avril 2014
+ * >    7 juin 2014
  *
  */
 
@@ -413,7 +413,9 @@ void Afficher::load()
                 replace("CHAINE_LONGITUDE", tr("Longitude")).replace("CHAINE_LATITUDE", tr("Latitude"));
 
         ui->frame->setVisible(true);
+        ui->webView->setContextMenuPolicy(Qt::CustomContextMenu);
     }
+
     ui->ongletsResultats->setCurrentIndex(settings.value("affichage/ongletPrevisions", 0).toInt());
     ui->listePrevisions->selectRow(0);
     ui->listePrevisions->setFocus();
@@ -463,7 +465,8 @@ void Afficher::resizeEvent(QResizeEvent *evt)
     if (baseSize() == size()) {
         ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
         ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
-        ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
+        if (cond.getNbl() == 0)
+            ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
     } else {
         ui->ongletsResultats->resize(baseSize());
         ui->fichier->resize(baseSize().width() - 4, baseSize().height());
