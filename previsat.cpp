@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mai 2014
+ * >    7 juin 2014
  *
  */
 
@@ -306,6 +306,8 @@ void PreviSat::ChargementConfig()
     dirExe = QCoreApplication::applicationDirPath();
     QFont police;
 
+    ui->policeWCC->clear();
+
 #if defined (Q_OS_WIN)
     dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
@@ -315,7 +317,9 @@ void PreviSat::ChargementConfig()
     police.setFamily("MS Shell Dlg 2");
     police.setPointSize(8);
     setFont(police);
-    QFont police2(police.family(), 11, QFont::Bold);
+
+    ui->policeWCC->addItem("Lucida Console");
+    ui->policeWCC->addItem("MS Shell Dlg 2");
 
 #elif defined (Q_OS_LINUX)
     dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
@@ -327,7 +331,8 @@ void PreviSat::ChargementConfig()
     police.setPointSize(7);
     setFont(police);
 
-    QFont police2(police.family(), 10, QFont::Bold);
+    ui->policeWCC->addItem("FreeSans");
+    ui->policeWCC->addItem("Sans Serif");
 
 #elif defined (Q_OS_MAC)
     dirDat = dirExe + QDir::separator() + "data";
@@ -339,24 +344,17 @@ void PreviSat::ChargementConfig()
     police.setPointSize(11);
     setFont(police);
 
-    QFont police2(police.family(), 14, QFont::Bold);
+    ui->policeWCC->addItem("Lucida Grande");
+    ui->policeWCC->addItem("Marion");
 
 #else
     dirDat = dirExe + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
             QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
     dirTle = dirExe + QDir::separator() + "tle";
-    QFont police2(police.family(), 11, QFont::Bold);
 #endif
 
-    ui->altitudeISS->setFont(police2);
-    ui->betaISS->setFont(police2);
-    ui->gmt->setFont(police2);
-    ui->inclinaisonISS->setFont(police2);
-    ui->latitudeISS->setFont(police2);
-    ui->longitudeISS->setFont(police2);
-    ui->nextTransitionISS->setFont(police2);
-    ui->orbiteISS->setFont(police2);
+    ui->policeWCC->setCurrentIndex(settings.value("affichage/policeWCC", 0).toInt());
 
     dirOut = QDir::convertSeparators(dirOut);
     dirTle = QDir::convertSeparators(dirTle);
@@ -496,7 +494,6 @@ void PreviSat::ChargementConfig()
     ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
     ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
     ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
-    ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
 
     if (settings.value("affichage/utc", false).toBool())
         ui->utc->setChecked(true);
@@ -635,7 +632,7 @@ void PreviSat::ChargementConfig()
     ficSta.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux2(&ficSta);
 
-    int ista = 1;
+    int ista = 0;
     while (!flux2.atEnd()) {
         const QStringList ligne = flux2.readLine().split(" ");
 
@@ -948,12 +945,15 @@ void PreviSat::DemarrageApplication()
     /* Initialisations */
     const int xmax = QApplication::desktop()->availableGeometry().width();
     const int ymax = QApplication::desktop()->availableGeometry().height() - messagesStatut->height() - 10;
-    int xPrevi = settings.value("affichage/largeur", 1068).toInt();
-    int yPrevi = settings.value("affichage/hauteur", 690).toInt();
+    const int w = settings.value("affichage/largeur", 1068).toInt();
+    const int h = settings.value("affichage/hauteur", 690).toInt();
+    int xPrevi = qMax(w, width());
+    int yPrevi = qMax(h, height());
 
     /* Corps de la methode */
     move(0, 0);
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
+    ui->frameCarteListe->resize(ui->frameCarte->size());
     if (settings.value("affichage/fenetreMax", false).toBool())
         showMaximized();
     else
@@ -976,7 +976,6 @@ void PreviSat::DemarrageApplication()
         setCentralWidget(scrollArea);
     }
 
-    ui->frameCarteListe->resize(ui->frameCarte->size());
     if (settings.value("affichage/affMax", false).toBool())
         on_maximise_clicked();
 
@@ -997,12 +996,17 @@ void PreviSat::DemarrageApplication()
     isEcl = satellites.at(0).isEclipse();
 
     on_affBetaWCC_toggled(false);
+    on_affNbOrbWCC_toggled(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
     ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
+    ui->affNbOrbWCC->setChecked(settings.value("affichage/affNbOrbWCC", true).toBool());
     ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
     ui->coulGMT->setCurrentIndex(settings.value("affichage/coulGMT", 0).toInt());
     ui->coulZOE->setCurrentIndex(settings.value("affichage/coulZOE", 0).toInt());
+
+    ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
+    ui->frameCarteListe->resize(width(), ui->frameCarteListe->height());
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -1726,9 +1730,6 @@ void PreviSat::AffichageDonnees()
         const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
         ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
-        // Calcul du nombre d'orbites dans le jour
-        const int nbOrbISS = CalculNumeroOrbiteISS(dateCourante);
-
         // Affichage des donnees du blackboard
         chaine = "LAT = %1";
         ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
@@ -1739,7 +1740,7 @@ void PreviSat::AffichageDonnees()
         chaine = "INC = %1";
         ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
         chaine = "ORB = %1";
-        ui->orbiteISS->setText(chaine.arg(nbOrbISS));
+        ui->orbiteISS->setText(chaine.arg(satellites.at(0).getNbOrbites()));
         chaine = "BETA = %1";
         ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
 
@@ -2279,7 +2280,7 @@ void PreviSat::AffichageCourbes() const
             const double ynZOE = 66. * DEG2PXVT;
 
             txtZOE->setBrush((ui->coulZOE->currentIndex() == 0) ? Qt::black : Qt::white);
-            const QFont policeZOE(PreviSat::font().family(), 14);
+            const QFont policeZOE(ui->policeWCC->currentText(), 14);
             txtZOE->setFont(policeZOE);
             const int htt = (int) txtZOE->boundingRect().height();
 
@@ -2292,7 +2293,7 @@ void PreviSat::AffichageCourbes() const
             const double ynSAA = 125. * DEG2PXVT;
 
             txtSAA->setBrush(Qt::white);
-            const QFont policeSAA(PreviSat::font().family(), 11);
+            const QFont policeSAA(ui->policeWCC->currentText(), 11);
             txtSAA->setFont(policeSAA);
             txtSAA->setPos(xnSAA, ynSAA);
             scene->addItem(txtSAA);
@@ -2348,6 +2349,9 @@ void PreviSat::AffichageCourbes() const
                     scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
 
                     QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(stations.at(j).getNomlieu());
+                    const QFont policeSta(ui->policeWCC->currentText(), 10);
+                    txtSta->setFont(policeSta);
+
                     const int lng = (int) txtSta->boundingRect().width();
                     const int xnsta = lsta - lng / 2 + 1;
                     const int ynsta = (bsta > 16) ? bsta - 16 : bsta + 3;
@@ -2442,25 +2446,6 @@ void PreviSat::AffichageCourbes() const
 
                             if (satellites.at(0).getTle().getNorad() == "25544") {
 
-                                // Affichage du numero d'orbite
-                                if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
-                                        satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90.) {
-
-                                    const Date dateISS(Date(satellites.at(0).getTraceAuSol().at(j+1).at(3), 0., false));
-                                    const int nbOrb = CalculNumeroOrbiteISS(dateISS);
-                                    QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(nbOrb));
-
-                                    const QFont policeOrb(PreviSat::font().family(), 10, (ui->styleWCC->isChecked()) ?
-                                                              QFont::Bold : QFont::Normal);
-                                    txtOrb->setFont(policeOrb);
-                                    txtOrb->setBrush(Qt::white);
-
-                                    const int lng = (int) txtOrb->boundingRect().width();
-                                    const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng - 8 : lsat2 - lng;
-                                    txtOrb->setPos(xnorb, hcarte2 - 18);
-                                    scene->addItem(txtOrb);
-                                }
-
                                 if (ui->styleWCC->isChecked()) {
 
                                     if (satellites.at(0).getTle().getNorad() == "25544")
@@ -2540,12 +2525,18 @@ void PreviSat::AffichageCourbes() const
 
                                     // Affichage du nom du satellite TDRS
                                     QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
+                                    const QFont policeSat(ui->policeWCC->currentText(), 10);
+                                    txtSat->setFont(policeSat);
+
                                     const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                                     const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
                                     crayon = QPen(QColor(r, v, b), 2);
                                     txtSat->setBrush(crayon.color());
-                                    txtSat->setPos(lsat - 16, bsat + 17);
+
+                                    const int lng = (int) txtSat->boundingRect().width();
+                                    const int xnsat = lsat - lng / 2 + 1;
+                                    txtSat->setPos(xnsat, bsat + 17);
                                     scene->addItem(txtSat);
                                 }
                             }
@@ -2911,8 +2902,9 @@ void PreviSat::AffichageCourbes() const
                         const double az2 = trace.at(i).at(1);
 
                         crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
-                                    ((soleil.getHauteur() > -0.08) ? bleuClair : ((soleil.getHauteur() > -0.12) ?
-                                                                                      QColor("deepskyblue") : QColor("cyan"))) : crimson;
+                                    ((soleil.getHauteur() > -0.08) ?
+                                         bleuClair : ((soleil.getHauteur() > -0.12) ?
+                                                          QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
@@ -3551,38 +3543,6 @@ void PreviSat::CalculAgeTLETransitISS() const
     /* Retour */
     return;
 }
-
-int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
-{
-    /* Declarations des variables locales */
-    Satellite sat(tles.at(0));
-
-    /* Initialisations */
-    int numOrbite = 0;
-
-    /* Corps de la methode */
-    sat.CalculPosVit(date);
-    sat.CalculElementsOsculateurs(date);
-    const int nbOrb = sat.getNbOrbites();
-
-    Date date0h((int) (date.getJourJulienUTC() - 0.5) + 0.5, 0., false);
-
-    sat.CalculPosVit(date0h);
-    sat.CalculElementsOsculateurs(date0h);
-
-    numOrbite = nbOrb - sat.getNbOrbites();
-
-    if (numOrbite == 0) {
-        date0h = Date(date0h.getJourJulienUTC() - 1., 0., false);
-        sat.CalculPosVit(date0h);
-        sat.CalculElementsOsculateurs(date0h);
-        numOrbite = nbOrb - sat.getNbOrbites();
-    }
-
-    /* Retour */
-    return (numOrbite);
-}
-
 
 /*
  * Enchainement des calculs
@@ -4542,6 +4502,10 @@ void PreviSat::ModificationOption()
     ui->intensiteOmbre->setEnabled(ui->affnuit->isChecked());
     ui->nombreTrajectoires->setEnabled(ui->afftraj->isChecked());
 
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->dateHeure3->setDisplayFormat(fmt);
+    ui->dateHeure4->setDisplayFormat(fmt);
+
     if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
         info = true;
         acalcAOS = true;
@@ -4860,10 +4824,14 @@ void PreviSat::GestionTempsReel()
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
-                if (ui->dateHeure4->isVisible())
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+                if (ui->dateHeure4->isVisible()) {
+                    ui->dateHeure4->setDisplayFormat(fmt);
                     ui->dateHeure4->setDateTime(dateCourante.ToQDateTime(1));
-                else
+                } else {
+                    ui->dateHeure3->setDisplayFormat(fmt);
                     ui->dateHeure3->setDateTime(dateCourante.ToQDateTime(1));
+                }
             }
         }
     }
@@ -4906,7 +4874,7 @@ void PreviSat::CalculsTermines()
             ui->afficherIri->setVisible(true);
             ui->afficherIri->setDefault(true);
             ui->afficherIri->setFocus();
-            settings.setValue("fichier/iridium", QDir::convertSeparators(ui->fichierTLEIri->currentText()));
+            settings.setValue("fichier/iridium", QDir::convertSeparators(ficTLEIri.at(ui->fichierTLEIri->currentIndex())));
         }
         break;
 
@@ -4929,7 +4897,8 @@ void PreviSat::CalculsTermines()
             ui->afficherTransit->setVisible(true);
             ui->afficherTransit->setDefault(true);
             ui->afficherTransit->setFocus();
-            settings.setValue("fichier/fichierTLETransit", QDir::convertSeparators(ui->fichierTLETransit->currentText()));
+            settings.setValue("fichier/fichierTLETransit",
+                              QDir::convertSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
         }
 
     default:
@@ -5215,10 +5184,12 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
     settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
     settings.setValue("affichage/affCerclesAcq", ui->affCerclesAcq->isChecked());
+    settings.setValue("affichage/affNbOrbWCC", ui->affNbOrbWCC->isChecked());
     settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", ui->coulGMT->currentIndex());
     settings.setValue("affichage/coulZOE", ui->coulGMT->currentIndex());
+    settings.setValue("affichage/policeWCC", ui->policeWCC->currentIndex());
 
     for(int i=0; i<ui->listeStations->count(); i++)
         settings.setValue("affichage/station" + QString::number(i), ui->listeStations->item(i)->checkState());
@@ -5317,7 +5288,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     DEG2PXVT = hcarte * 2. / T360;
 
     ui->gmt->adjustSize();
-    ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, (int) (15. * DEG2PXVT));
+    ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, (int) (15. * DEG2PXVT) + 2);
 
     ui->liste1->resize(200, hcarte - 147);
 
@@ -5332,7 +5303,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->frameLat->setGeometry(xLat + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
     if (wcc) {
-        ui->frameLat2->setGeometry(5, 0, ui->frameLat->width(), ui->carte->height());
+        ui->frameLat2->setGeometry(ui->carte->x(), 0, ui->frameLat->width(), ui->carte->height());
         ui->S60b->move(5, ui->S60->y());
         ui->S30b->move(5, ui->S30->y());
         ui->N0b->move(5, ui->N0->y());
@@ -5398,6 +5369,8 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+
 #if defined (Q_OS_WIN)
     const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
     const Qt::Key etape_av = Qt::Key_F11;
@@ -5456,8 +5429,10 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             const Date date = Date(dateCourante.getJourJulien() + EPS_DATES, 0.);
 
             if (ui->dateHeure4->isVisible()) {
+                ui->dateHeure4->setDisplayFormat(fmt);
                 ui->dateHeure4->setDateTime(date.ToQDateTime(1));
             } else {
+                ui->dateHeure3->setDisplayFormat(fmt);
                 ui->dateHeure3->setDateTime(date.ToQDateTime(1));
                 ui->dateHeure3->setFocus();
             }
@@ -5479,8 +5454,10 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
         const Date date = Date(jd + EPS_DATES, 0.);
 
         if (ui->dateHeure4->isVisible()) {
+            ui->dateHeure4->setDisplayFormat(fmt);
             ui->dateHeure4->setDateTime(date.ToQDateTime(1));
         } else {
+            ui->dateHeure3->setDisplayFormat(fmt);
             ui->dateHeure3->setDateTime(date.ToQDateTime(1));
             ui->dateHeure3->setFocus();
         }
@@ -6713,19 +6690,19 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 {
 
 #if defined (Q_OS_WIN)
-    const QString fic = "setup.exe";
+    const QString fic = "maj.exe";
 #else
-    const QString fic = "setup";
+    const QString fic = "maj";
 #endif
     QFile fi(dirExe + QDir::separator() + fic);
     if (fi.exists()) {
 
-        // Verification de la version du setup
-        const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed() + "setup/";
+        // Verification de la version du programme de mise a jour
+        const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed() + "maj/";
 
         if (!dirHttpPrevi.isEmpty()) {
 
-            const QString fich = "versionSetup";
+            const QString fich = "versionMaj";
             amajDeb = true;
             amajPrevi = true;
             dirDwn = dirTmp;
@@ -6757,13 +6734,13 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
                 if (anew) {
 
 #if defined (Q_OS_WIN)
-                    const QString dirHttpSetup = dirHttpPrevi + "Windows/";
+                    const QString dirHttpMaj = dirHttpPrevi + "Windows/";
 #elif defined (Q_OS_LINUX)
-                    const QString dirHttpSetup = dirHttpPrevi + "Linux/";
+                    const QString dirHttpMaj = dirHttpPrevi + "Linux/";
 #else
-                    const QString dirHttpSetup = dirHttpPrevi + "autre/";
+                    const QString dirHttpMaj = dirHttpPrevi + "autre/";
 #endif
-                    const QString fichier = dirHttpSetup + fic + ".gz";
+                    const QString fichier = dirHttpMaj + fic + ".gz";
                     TelechargementFichier(fichier, false);
 
                     if (downQueue.isEmpty())
@@ -6775,7 +6752,7 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
                         fi.remove();
                         fi3.rename(nvNom);
                     }
-                    settings.setValue("fichier/versionSetup", ligne);
+                    settings.setValue("fichier/versionMaj", ligne);
                 }
             }
         }
@@ -7297,14 +7274,17 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     /* Corps de la methode */
     if (checked) {
 
+        const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
         ui->pasReel->setVisible(false);
         ui->secondes->setVisible(false);
         on_pasManuel_currentIndexChanged(ui->pasManuel->currentIndex());
         ui->pasManuel->setVisible(true);
         ui->valManuel->setVisible(true);
         ui->dateHeure3->setDateTime(QDateTime::currentDateTime());
+        ui->dateHeure3->setDisplayFormat(fmt);
         ui->dateHeure3->setVisible(true);
         ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
+        ui->dateHeure4->setDisplayFormat(fmt);
         ui->dateHeure4->setVisible(true);
         ui->dateHeure1->setVisible(false);
         ui->dateHeure2->setVisible(false);
@@ -7327,8 +7307,6 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->dateHeure3->setDisplayFormat(fmt);
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
@@ -7358,14 +7336,12 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
                         date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
 
     ui->dateHeure3->setDateTime(date);
-    ui->dateHeure4->setDisplayFormat(fmt);
 
     /* Retour */
     return;
@@ -7832,16 +7808,21 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
 void PreviSat::on_affBetaWCC_toggled(bool checked)
 {
     if (checked) {
-        ui->inclinaisonISS->move(5, 45);
-        ui->nextTransitionISS->move(120, 0);
-        ui->orbiteISS->move(120, 15);
-        ui->betaISS->move(120, 30);
-        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 67);
+        if (ui->orbiteISS->isVisible()) {
+            ui->inclinaisonISS->move(5, 39);
+            ui->nextTransitionISS->move(112, 0);
+            ui->orbiteISS->move(112, 13);
+            ui->frameCoordISS->resize(ui->frameCoordISS->width(), 59);
+        } else {
+            ui->frameCoordISS->resize(ui->frameCoordISS->width(), 46);
+        }
+        ui->betaISS->move(112, 26);
+
     } else {
-        ui->inclinaisonISS->move(120, 0);
-        ui->nextTransitionISS->move(120, 15);
-        ui->orbiteISS->move(120, 30);
-        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 52);
+        ui->inclinaisonISS->move(112, 0);
+        ui->nextTransitionISS->move(112, 13);
+        ui->orbiteISS->move(112, 26);
+        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 46);
     }
     ui->betaISS->setVisible(checked);
 }
@@ -7852,6 +7833,26 @@ void PreviSat::on_affCerclesAcq_toggled(bool checked)
     ModificationOption();
 }
 
+void PreviSat::on_affNbOrbWCC_toggled(bool checked)
+{
+    if (ui->affBetaWCC->isChecked()) {
+        if (checked) {
+            ui->inclinaisonISS->move(5, 39);
+            ui->nextTransitionISS->move(112, 0);
+            ui->orbiteISS->move(112, 13);
+            ui->frameCoordISS->resize(ui->frameCoordISS->width(), 59);
+        } else {
+            ui->inclinaisonISS->move(112, 0);
+            ui->nextTransitionISS->move(112, 13);
+            ui->frameCoordISS->resize(ui->frameCoordISS->width(), 46);
+        }
+        ui->betaISS->move(112, 26);
+    } else {
+        ui->betaISS->move(112, 26);
+        ui->frameCoordISS->resize(ui->frameCoordISS->width(), 46);
+    }
+    ui->orbiteISS->setVisible(checked);
+}
 
 void PreviSat::on_affSAA_ZOE_toggled(bool checked)
 {
@@ -7882,6 +7883,41 @@ void PreviSat::on_coulGMT_currentIndexChanged(int index)
 void PreviSat::on_coulZOE_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
+    ModificationOption();
+}
+
+void PreviSat::on_policeWCC_currentIndexChanged(int index)
+{
+#if defined (Q_OS_WIN)
+    const int taille = 10;
+    QFont police(ui->policeWCC->itemText(index), taille, ((ui->policeWCC->currentIndex() == 0) ? QFont::Normal : QFont::Bold));
+
+#elif defined (Q_OS_LINUX)
+    const int taille = 11;
+    QFont police(ui->policeWCC->itemText(index), taille);
+
+#elif defined (Q_OS_MAC)
+    const int taille = 13;
+    QFont police(ui->policeWCC->itemText(index), taille, ((ui->policeWCC->currentIndex() == 0) ? QFont::Normal : QFont::Bold));
+
+#else
+    const int taille = 11;
+    QFont police(ui->policeWCC->itemText(index), taille);
+#endif
+
+    ui->altitudeISS->setFont(police);
+    ui->betaISS->setFont(police);
+    ui->inclinaisonISS->setFont(police);
+    ui->latitudeISS->setFont(police);
+    ui->longitudeISS->setFont(police);
+    ui->nextTransitionISS->setFont(police);
+    ui->orbiteISS->setFont(police);
+
+    police.setPointSize(11);
+    police.setBold(true);
+    ui->gmt->setFont(police);
+    ui->gmt->adjustSize();
+
     ModificationOption();
 }
 
@@ -8547,8 +8583,10 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
 
     /* Corps de la methode */
     if (arg1 == ui->osculateurs) {
-        if (ui->modeManuel->isChecked())
+        if (ui->modeManuel->isChecked()) {
+            ui->dateHeure4->setDisplayFormat(fmt);
             ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
+        }
 
     } else if (arg1 == ui->previsions) {
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
@@ -9506,13 +9544,17 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
                     idxfi = index;
                 }
             } else {
-                ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
-                ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
-                AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
-                idxfi = index;
+                if (!ficTLEIri.isEmpty()) {
+                    ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
+                    idxfi = index;
+                }
             }
-            const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
-            ui->fichierTLEIri->setToolTip((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
+            if (!ficTLEIri.isEmpty()) {
+                const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
+                ui->fichierTLEIri->setToolTip((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
+            }
         }
 
     } catch (PreviSatException &e) {
@@ -9591,7 +9633,7 @@ void PreviSat::on_calculsIri_clicked()
     ui->afficherTransit->setVisible(false);
 
     try {
-        if (ui->fichierTLEIri->currentText().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
+        if (ui->fichierTLEIri->currentText().trimmed().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
             throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
         const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
@@ -10070,14 +10112,18 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                     idxft = index;
                 }
             } else {
-                ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
-                ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
-                AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
-                idxft = index;
+                if (!ficTLETransit.isEmpty()) {
+                    ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
+                    idxft = index;
+                }
             }
-            const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
-            ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
-            CalculAgeTLETransitISS();
+            if (!ficTLETransit.isEmpty()) {
+                const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
+                ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
+                CalculAgeTLETransitISS();
+            }
         }
 
     } catch (PreviSatException &e) {
@@ -10131,7 +10177,7 @@ void PreviSat::on_calculsTransit_clicked()
     ui->afficherEvt->setVisible(false);
 
     try {
-        if (ui->fichierTLETransit->currentText().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
+        if (ui->fichierTLETransit->currentText().trimmed().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
             throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
         const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
