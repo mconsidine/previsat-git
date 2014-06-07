@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 avril 2014
+ * >    1er juin 2014
  *
  */
 
@@ -96,7 +96,6 @@ private:
     bool CalculAOS() const;
     void CalculDN() const;
     void CalculAgeTLETransitISS() const;
-    int CalculNumeroOrbiteISS(const Date &date) const;
     void EnchainementCalculs() const;
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
@@ -230,11 +229,13 @@ private slots:
 
     void on_affBetaWCC_toggled(bool checked);
     void on_affCerclesAcq_toggled(bool checked);
+    void on_affNbOrbWCC_toggled(bool checked);
     void on_affSAA_ZOE_toggled(bool checked);
     void on_listeStations_clicked(const QModelIndex &index);
     void on_styleWCC_toggled(bool checked);
     void on_coulGMT_currentIndexChanged(int index);
     void on_coulZOE_currentIndexChanged(int index);
+    void on_policeWCC_currentIndexChanged(int index);
 
     // Gestion des lieux d'observation
     void on_actionCreer_une_categorie_activated(int arg1);
