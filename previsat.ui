@@ -12833,9 +12833,9 @@
           <widget class="QFrame" name="frameCtrlVideo">
            <property name="geometry">
             <rect>
-             <x>202</x>
+             <x>72</x>
              <y>0</y>
-             <width>71</width>
+             <width>201</width>
              <height>20</height>
             </rect>
            </property>
@@ -12845,7 +12845,7 @@
            <widget class="QToolButton" name="fermerVideo">
             <property name="geometry">
              <rect>
-              <x>50</x>
+              <x>180</x>
               <y>0</y>
               <width>20</width>
               <height>20</height>
@@ -12858,7 +12858,7 @@
            <widget class="QToolButton" name="agrandirVideo">
             <property name="geometry">
              <rect>
-              <x>31</x>
+              <x>161</x>
               <y>0</y>
               <width>20</width>
               <height>20</height>
@@ -12871,7 +12871,7 @@
            <widget class="QToolButton" name="muetVideo">
             <property name="geometry">
              <rect>
-              <x>12</x>
+              <x>142</x>
               <y>0</y>
               <width>20</width>
               <height>20</height>
@@ -12879,6 +12879,35 @@
             </property>
             <property name="mouseTracking">
              <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="chaine">
+            <property name="geometry">
+             <rect>
+              <x>85</x>
+              <y>2</y>
+              <width>42</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>3</number>
+            </property>
+           </widget>
+           <widget class="QLabel" name="lbl_chaine">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>4</y>
+              <width>46</width>
+              <height>13</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Chaîne :</string>
             </property>
            </widget>
           </widget>
@@ -12954,6 +12983,61 @@ le flux vidéo</string>
            </property>
           </widget>
          </widget>
+         <widget class="QWebView" name="fluxVideoHtml">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>20</y>
+            <width>271</width>
+            <height>220</height>
+           </rect>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>240</red>
+                <green>240</green>
+                <blue>240</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="url">
+           <url>
+            <string>about:blank</string>
+           </url>
+          </property>
+          <property name="renderHints">
+           <set>QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
+          </property>
+         </widget>
          <zorder>frameZoneVideo</zorder>
          <zorder>radar</zorder>
          <zorder>frameRadar</zorder>
@@ -12962,6 +13046,7 @@ le flux vidéo</string>
          <zorder>coordGeo1</zorder>
          <zorder>coordGeo2</zorder>
          <zorder>frameFlux</zorder>
+         <zorder>fluxVideoHtml</zorder>
         </widget>
        </item>
       </layout>
@@ -13282,14 +13367,7 @@ le flux vidéo</string>
     <string>Supprimer</string>
    </property>
   </action>
-  <action name="actionMuetVideo">
-   <property name="text">
-    <string>Muet</string>
-   </property>
-   <property name="toolTip">
-    <string>Muet</string>
-   </property>
-  </action>
+  <action name="actionMuetVideo"/>
   <action name="actionAgrandirVideo">
    <property name="text">
     <string>Agrandir</string>
@@ -13308,6 +13386,13 @@ le flux vidéo</string>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>dateHeure3</tabstop>
   <tabstop>lieuxObservation1</tabstop>

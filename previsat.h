@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er juin 2014
+ * >    5 juillet 2014
  *
  */
 
@@ -145,10 +145,13 @@ private slots:
     void on_pasManuel_currentIndexChanged(int index);
 
     void on_mccISS_toggled(bool checked);
+    void on_chaine_valueChanged(int arg1);
     void on_fluxVideo_clicked();
     void on_muetVideo_clicked();
     void on_agrandirVideo_clicked();
     void on_fermerVideo_clicked();
+    void StopVideoHttp();
+    void StopVideoVlc();
     void VideoPleinEcran();
 
     void on_directHelp_clicked();
