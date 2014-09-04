@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 juillet 2014
+ * >    4 septembre 2014
  *
  */
 
@@ -1699,14 +1699,23 @@ void PreviSat::AffichageDonnees()
                 ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
                 info = false;
 
-                // Date de lancement/Categorie de l'orbite/Pays ou organisation
-                const int annee_lct = satellites.at(0).getDateLancement().mid(0, 4).toInt();
-                const int mois_lct = satellites.at(0).getDateLancement().mid(5, 2).toInt();
-                const double jour_lct = satellites.at(0).getDateLancement().mid(8, 2).toDouble();
-                const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
-                ui->dateLancement->setText(date_lct.ToShortDate(COURT, SYSTEME_24H).left(10));
-                ui->categorieOrbite->setText(satellites.at(0).getCategorieOrbite());
-                ui->pays->setText(satellites.at(0).getPays());
+                // Date de lancement
+                if (satellites.at(0).getDateLancement().length() > 0) {
+                    const int annee_lct = satellites.at(0).getDateLancement().mid(0, 4).toInt();
+                    const int mois_lct = satellites.at(0).getDateLancement().mid(5, 2).toInt();
+                    const double jour_lct = satellites.at(0).getDateLancement().mid(8, 2).toDouble();
+                    const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
+                    ui->dateLancement->setText(date_lct.ToShortDate(COURT, SYSTEME_24H).left(10));
+                } else {
+                    ui->dateLancement->setText(tr("Non connue"));
+                }
+
+                // Categorie de l'orbite
+                ui->categorieOrbite->setText((satellites.at(0).getCategorieOrbite().isEmpty()) ?
+                                                 tr("Indéterminée") : satellites.at(0).getCategorieOrbite());
+
+                // Pays ou organisation
+                ui->pays->setText((satellites.at(0).getPays().isEmpty()) ? tr("Indéterminé") : satellites.at(0).getPays());
             }
         }
     }
