@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 juin 2014
+ * >    4 septembre 2014
  *
  */
 
@@ -643,6 +643,17 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
             const QString ligne = flux.readLine();
             const QString norad = ligne.mid(0, 5);
             for(int isat=0; isat<nb; isat++) {
+
+                satellites[isat]._t1 = 0.;
+                satellites[isat]._t2 = 0.;
+                satellites[isat]._t3 = 0.;
+                satellites[isat]._magnitudeStandard = 0.;
+                satellites[isat]._methMagnitude = ' ';
+                satellites[isat]._section = 0.;
+                satellites[isat]._dateLancement = "";
+                satellites[isat]._categorieOrbite = "";
+                satellites[isat]._pays = "";
+
                 if (listeSatellites.at(isat) == norad) {
                     satellites[isat]._t1 = ligne.mid(6, 5).toDouble();
                     satellites[isat]._t2 = ligne.mid(12, 4).toDouble();
