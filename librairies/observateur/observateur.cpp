@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    23 avril 2014
+ * >    7 septembre 2014
  *
  */
 
@@ -227,6 +227,9 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
                                     tu2 * tu / 38710000., T360));
 }
 
+/*
+ * Calcul du cap d'un lieu d'observation par rapport a un autre
+ */
 double Observateur::CalculCap(const Observateur &lieuDistant)
 {
     /* Declarations des variables locales */
@@ -254,8 +257,8 @@ double Observateur::CalculCap(const Observateur &lieuDistant)
 }
 
 /*
- * Calcul de la distance entre 2 lieux d'observation (mesuree le long de la surface terrestre),
- * mais sans tenir compte de l'altitude
+ * Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre en tenant compte de l'applatissement
+ * du globe terrestre, mais sans prise en compte de l'altitude
  * Astronomical Algorithms 2nd edition de Jean Meeus, p85
  */
 double Observateur::CalculDistance(const Observateur &observateur) const
@@ -297,24 +300,24 @@ double Observateur::CalculDistance(const Observateur &observateur) const
 }
 
 /*
- * Calcul du lieu d'observation qui est l'intersection d'un vecteur et de l'ellipsoide terrestre
+ * Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant vers la Terre et de l'ellipsoide terrestre
  */
 Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction)
 {
     /* Declarations des variables locales */
-    double lat, lon;
-    QString nom = "";
-    Vecteur3D dir = direction.Normalise();
 
     /* Initialisations */
-    lon = 0.;
-    lat = 0.;
+    QString nom = "";
+    double lon = 0.;
+    double lat = 0.;
+
     const double x = origine.getX();
     const double y = origine.getY();
     const double z = origine.getZ();
     const double z2 = z * z;
     const double r2 = x * x + y * y;
 
+    const Vecteur3D dir = direction.Normalise();
     const double dx = dir.getX();
     const double dy = dir.getY();
     const double dz = dir.getZ();
@@ -350,10 +353,8 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, Vecteur3
         nom = "INTERSECT";
     }
 
-    Observateur res = Observateur(nom, lon, lat, 0.);
-
     /* Retour */
-    return (res);
+    return (Observateur(nom, lon, lat, 0.));
 }
 
 /* Accesseurs */
