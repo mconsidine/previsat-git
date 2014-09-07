@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    16 avril 2014
+# >    7 septembre 2014
 
 #-------------------------------------------------
 VER_MAJ = 3.3
-VERSION = 3.3.0.7
+VERSION = 3.3.1.4
 ANNEES_DEV = 2005-2014
 VLC_DIR = $$PWD/inc/vlc
 ZLIB_DIR = $$PWD/inc/zlib
