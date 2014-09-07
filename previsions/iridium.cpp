@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    7 septembre 2014
  *
  */
 
@@ -493,28 +493,32 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         const Matrice R(v1, v2, v3);
 
         // Matrice produit P x R
-        Matrice pr = P * R;
-        _PR = pr.Transposee();
+        Matrice tmp = P * R;
+        const Matrice PR = tmp.Transposee();
 
         // Position observateur dans le repere panneau
-        Vecteur3D obsat = _PR * (-satellite.getDist());
+        Vecteur3D obsat = PR * (-satellite.getDist());
 
         // Position Soleil dans le repere panneau
-        _solsat = _PR * (soleil.getPosition() - satellite.getPosition());
+        Vecteur3D solsat = PR * (soleil.getPosition() - satellite.getPosition());
 
         // Position du reflet du Soleil
-        _solsat = Vecteur3D(_solsat.getX(), -_solsat.getY(), -_solsat.getZ());
+        solsat = Vecteur3D(solsat.getX(), -solsat.getY(), -solsat.getZ());
 
         // Angle de reflexion
-        const double temp = obsat.Angle(_solsat);
+        const double temp = obsat.Angle(solsat);
         if (_pan == -1) {
             if (temp < ang) {
                 ang = temp;
                 j = i;
                 _mir = LISTE_MIR[i];
+                _PR = PR;
+                _solsat = solsat;
             }
         } else {
             ang = temp;
+            _PR = PR;
+            _solsat = solsat;
         }
     }
 

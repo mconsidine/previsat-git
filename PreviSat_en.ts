@@ -75,96 +75,96 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="222"/>
+        <location filename="afficher.cpp" line="224"/>
         <source>Prévisions de passage</source>
         <translation>Predictions of passes</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="224"/>
+        <location filename="afficher.cpp" line="226"/>
         <source>Flashs Iridium</source>
         <translation>Iridium flares</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="232"/>
+        <location filename="afficher.cpp" line="234"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="228"/>
+        <location filename="afficher.cpp" line="230"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="264"/>
+        <location filename="afficher.cpp" line="266"/>
         <source>Angle</source>
         <translation>Angle</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="265"/>
+        <location filename="afficher.cpp" line="267"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="281"/>
-        <location filename="afficher.cpp" line="282"/>
-        <location filename="afficher.cpp" line="298"/>
+        <location filename="afficher.cpp" line="283"/>
+        <location filename="afficher.cpp" line="284"/>
+        <location filename="afficher.cpp" line="300"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="283"/>
+        <location filename="afficher.cpp" line="285"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="284"/>
+        <location filename="afficher.cpp" line="286"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="285"/>
+        <location filename="afficher.cpp" line="287"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="292"/>
+        <location filename="afficher.cpp" line="294"/>
         <source>Iridium</source>
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="372"/>
-        <location filename="afficher.cpp" line="376"/>
+        <location filename="afficher.cpp" line="374"/>
+        <location filename="afficher.cpp" line="378"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="374"/>
-        <location filename="afficher.cpp" line="378"/>
+        <location filename="afficher.cpp" line="376"/>
+        <location filename="afficher.cpp" line="380"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="413"/>
+        <location filename="afficher.cpp" line="415"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="413"/>
+        <location filename="afficher.cpp" line="415"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="490"/>
+        <location filename="afficher.cpp" line="492"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="491"/>
+        <location filename="afficher.cpp" line="493"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1013"/>
+        <location filename="afficher.cpp" line="1015"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
@@ -3507,7 +3507,7 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="206"/>
-        <location filename="previsions/iridium.cpp" line="849"/>
+        <location filename="previsions/iridium.cpp" line="853"/>
         <location filename="previsions/prevision.cpp" line="227"/>
         <location filename="previsions/transitiss.cpp" line="278"/>
         <source>nmi</source>
@@ -3607,7 +3607,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="888"/>
+        <location filename="previsions/iridium.cpp" line="892"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>W</source>
         <translation>W</translation>
@@ -3615,7 +3615,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="212"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/iridium.cpp" line="888"/>
+        <location filename="previsions/iridium.cpp" line="892"/>
         <location filename="previsions/transitiss.cpp" line="331"/>
         <source>E</source>
         <translation>E</translation>
@@ -3623,7 +3623,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="889"/>
+        <location filename="previsions/iridium.cpp" line="893"/>
         <location filename="previsions/transitiss.cpp" line="332"/>
         <source>N</source>
         <translation>N</translation>
@@ -3631,7 +3631,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="214"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/iridium.cpp" line="889"/>
+        <location filename="previsions/iridium.cpp" line="893"/>
         <location filename="previsions/transitiss.cpp" line="291"/>
         <location filename="previsions/transitiss.cpp" line="332"/>
         <source>S</source>
@@ -3713,13 +3713,13 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Ir     Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="876"/>
+        <location filename="previsions/iridium.cpp" line="880"/>
         <location filename="previsions/transitiss.cpp" line="329"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/iridium.cpp" line="876"/>
+        <location filename="previsions/iridium.cpp" line="880"/>
         <location filename="previsions/transitiss.cpp" line="325"/>
         <source>(E)</source>
         <translation>(E)</translation>
