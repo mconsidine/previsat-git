@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    7 juin 2014
+ * >    7 septembre 2014
  *
  */
 
@@ -143,6 +143,8 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         scrollAreaRes->setWidgetResizable(true);
         setCentralWidget(scrollAreaRes);
     }
+    if (conditions.getNbl() != 0)
+        setMaximumSize(minimumSize());
 
     QFont police;
 
