@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 septembre 2014
+ * >    14 septembre 2014
  *
  */
 
@@ -8704,12 +8704,14 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
 
     /* Corps de la methode */
     if (arg1 == ui->osculateurs) {
+
         if (ui->modeManuel->isChecked()) {
-            ui->dateHeure4->setDisplayFormat(fmt);
+            ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
             ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
         }
 
     } else if (arg1 == ui->previsions) {
+
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
         ui->dateInitialePrev->setDisplayFormat(fmt);
@@ -8721,6 +8723,7 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
         ui->calculsPrev->setFocus();
 
     } else if (arg1 == ui->iridium) {
+
         const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
         ui->dateInitialeIri->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeIri->setDisplayFormat(fmt);
