@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 juillet 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -49,7 +49,6 @@
 #include <QModelIndex>
 #include <QtNetwork>
 #include "librairies/dates/date.h"
-#include "vlc.h"
 
 namespace Ui {
 class PreviSat;
@@ -71,11 +70,6 @@ public:
 
 private:
     Ui::PreviSat *ui;
-
-    bool _isPlaying;
-    libvlc_instance_t *_vlcinstance;
-    libvlc_media_player_t *_mp, *_mp2;
-    libvlc_media_t *_m;
 
     // Initialisation
     void InitFicObs(const bool alarm) const;
@@ -137,7 +131,6 @@ private slots:
     void mousePressEvent(QMouseEvent *evt);
     void mouseMoveEvent(QMouseEvent *evt);
     void mouseDoubleClickEvent(QMouseEvent *evt);
-    void CaptureVideo();
 
     void on_maximise_clicked();
     void on_affichageCiel_clicked();
@@ -147,11 +140,9 @@ private slots:
     void on_mccISS_toggled(bool checked);
     void on_chaine_valueChanged(int arg1);
     void on_fluxVideo_clicked();
-    void on_muetVideo_clicked();
     void on_agrandirVideo_clicked();
     void on_fermerVideo_clicked();
     void StopVideoHttp();
-    void StopVideoVlc();
     void VideoPleinEcran();
 
     void on_directHelp_clicked();

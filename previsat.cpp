@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 septembre 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -265,9 +265,6 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
 
 PreviSat::~PreviSat()
 {
-    if (_isPlaying)
-        on_fermerVideo_clicked();
-
     if (afficherResultats != NULL)
         afficherResultats->close();
 
@@ -290,7 +287,6 @@ void PreviSat::ChargementConfig()
     QDir di;
 
     /* Initialisations */
-    _isPlaying = false;
     info = true;
     acalcAOS = true;
     acalcDN = true;
@@ -300,9 +296,6 @@ void PreviSat::ChargementConfig()
     selec2 = 0;
     paletteDefaut = palette();
     tim = QDateTime();
-    _m = NULL;
-    _mp = NULL;
-    _vlcinstance = NULL;
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -388,7 +381,7 @@ void PreviSat::ChargementConfig()
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
                               "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live.asx" << "ISS-Live1.html" << "ISS-Live2.html" << "resultat.map" << "stations.sta" << "tdrs.sat");
+                              "ISS-Live1.html" << "ISS-Live2.html" << "resultat.map" << "stations.sta" << "tdrs.sat");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -529,8 +522,6 @@ void PreviSat::ChargementConfig()
     ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarMaxButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
-    ui->actionMuetVideo->setIcon(styleIcones->standardIcon(QStyle::SP_MediaVolume));
-    ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
     ui->frameCtrlVideo->setVisible(false);
     ui->fluxVideoHtml->setVisible(false);
     ui->fluxVideo->raise();
@@ -4848,15 +4839,7 @@ void PreviSat::GestionTempsReel()
         }
     }
 
-    if (_mp == NULL) {
-        if (ui->chaine->value() > 1 && ui->fluxVideoHtml->isVisible())
-            ui->frameCtrlVideo->setVisible(true);
-    } else {
-        if (!_isPlaying)
-            _isPlaying = (bool) libvlc_media_player_is_playing(_mp);
-        if (ui->chaine->value() == 1)
-            ui->frameCtrlVideo->setVisible(_isPlaying);
-    }
+    ui->frameCtrlVideo->setVisible(ui->fluxVideoHtml->isVisible());
 
     /* Retour */
     return;
@@ -5351,11 +5334,10 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     ui->frameZone->resize(width() - ui->onglets->width(), ui->frameZone->height());
     ui->frameZoneVideo->resize(ui->frameZone->width() - 18, ui->frameZone->height() - 24);
-    ui->frameFlux->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
-    ui->fluxVideoHtml->resize(ui->frameFlux->size());
+    ui->fluxVideoHtml->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
     ui->frameCtrlVideo->move(ui->frameZoneVideo->width() - ui->frameCtrlVideo->width() + 2, 0);
-    ui->fluxVideo->move((ui->frameFlux->width() - ui->fluxVideo->width()) / 2,
-                        (ui->frameFlux->height() - ui->fluxVideo->height()) / 2);
+    ui->fluxVideo->move((ui->fluxVideoHtml->width() - ui->fluxVideo->width()) / 2,
+                        (ui->fluxVideoHtml->height() - ui->fluxVideo->height()) / 2);
     ui->lbl_video->move(ui->fluxVideo->pos());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
@@ -5479,9 +5461,6 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             ui->dateHeure3->setDateTime(date.ToQDateTime(1));
             ui->dateHeure3->setFocus();
         }
-    } else if (evt->key() == Qt::Key_F4) {
-
-        CaptureVideo();
 
     } else {
         QMainWindow::keyPressEvent(evt);
@@ -6053,53 +6032,6 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *evt)
     return;
 }
 
-void PreviSat::CaptureVideo()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-        if (ui->frameCtrlVideo->isVisible()) {
-            if (ui->chaine->value() == 1) {
-
-#if defined (Q_OS_WIN)
-                const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString().replace(QDir::separator(), "\\");
-#else
-                const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
-#endif
-                const Date maintenant = Date(offsetUTC);
-                const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "ISS_live_" +
-                        maintenant.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
-                        ui->tuc->text().remove(" ").remove(":");
-
-                const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
-                                                                 tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;" \
-                                                                    "Fichiers BMP (*.bmp);;Tous les fichiers (*)"));
-
-                if (!fic.isEmpty()) {
-                    if (_isPlaying) {
-                        if (afficherVideo->isVisible()) {
-                            libvlc_video_take_snapshot(_mp2, 0, fic.toAscii(), afficherVideo->width(), afficherVideo->height());
-                        } else {
-                            libvlc_video_take_snapshot(_mp, 0, fic.toAscii(), ui->frameFlux->width(), ui->frameFlux->height());
-                        }
-                    }
-                    const QFileInfo fi(fic);
-                    settings.setValue("fichier/sauvegarde", fi.absolutePath());
-                }
-            } else {
-                throw PreviSatException(tr("Capture de la vidéo impossible"), WARNING);
-            }
-        }
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
 
 /*
  * Minimisation/maximisation de la carte du monde ou de la carte du ciel
@@ -6222,8 +6154,6 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->coordGeo4->setVisible(false);
         ui->radar->setVisible(false);
         ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
-        ui->frameFlux->setFrameShape(QFrame::StyledPanel);
-        ui->frameFlux->setFrameShadow(QFrame::Sunken);
 
         ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -6232,11 +6162,6 @@ void PreviSat::on_mccISS_toggled(bool checked)
     } else {
 
         // Fermeture de la video
-        if (_isPlaying || _mp != NULL)
-            on_fermerVideo_clicked();
-
-        ui->frameFlux->setFrameShape(QFrame::NoFrame);
-        ui->frameFlux->setFrameShadow(QFrame::Plain);
         ui->fluxVideo->raise();
         ui->frameRadar->setVisible(true);
         ui->coordGeo1->setVisible(true);
@@ -6282,37 +6207,13 @@ void PreviSat::on_chaine_valueChanged(int arg1)
 void PreviSat::on_fluxVideo_clicked()
 {
     /* Declarations des variables locales */
-    QString fic, video;
 
     /* Initialisations */
 
     /* Corps de la methode */
     try {
 
-        if (ui->chaine->value() == 1) {
-
-            fic = dirDat + QDir::separator() + "ISS-Live.asx";
-
-            // Recuperation de l'adresse du flux video
-            QFile fi(fic);
-            if (fi.exists()) {
-                fi.open(QIODevice::ReadOnly | QIODevice::Text);
-
-                bool atrouveFlux = false;
-                QTextStream flux(&fi);
-                while (!atrouveFlux) {
-                    const QString ligne = flux.readLine();
-                    if (ligne.contains("mms")) {
-                        atrouveFlux = true;
-                        const QStringList balise = ligne.split("\"", QString::SkipEmptyParts);
-                        video = balise.at(balise.size()-2);
-                    }
-                }
-                fi.close();
-            }
-        } else {
-            fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value() - 1);
-        }
+        const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
 
         // Verification de la connexion
         QTcpSocket socket;
@@ -6323,6 +6224,7 @@ void PreviSat::on_fluxVideo_clicked()
 
         setCursor(Qt::ArrowCursor);
         ui->fluxVideo->setText(tr("Veuillez patienter..."));
+        ui->fluxVideo->repaint();
         ui->lbl_video->raise();
 
         // Definition de la fenetre separee
@@ -6331,116 +6233,37 @@ void PreviSat::on_fluxVideo_clicked()
         afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
         // Definition de raccourcis
-        QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F4), afficherVideo);
-        connect(shortcut, SIGNAL(activated()), this, SLOT(CaptureVideo()));
-
-        const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
-        connect(shortcut2, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
+        const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
+        connect(shortcut, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
 
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-        if (video.isEmpty()) {
+        // Chargement de la video
+        QUrl url(fic);
+        url.setScheme("");
+        ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+        ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+        ui->fluxVideoHtml->load(url);
+        ui->fluxVideoHtml->show();
+        ui->fluxVideoHtml->setVisible(true);
+        ui->fluxVideoHtml->raise();
+        ui->fluxVideo->setVisible(false);
+        ui->lbl_video->setVisible(false);
 
-            StopVideoVlc();
+        view = new QWebView;
+        view->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        view->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+        view->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+        QPalette pal;
+        pal.setColor(QPalette::Base, Qt::black);
+        view->page()->setPalette(pal);
 
-            // Chargement de la video
-            ui->muetVideo->setVisible(false);
-            QUrl url(fic);
-            url.setScheme("");
-            ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-            ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-            ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-            ui->fluxVideoHtml->load(url);
-            ui->fluxVideoHtml->show();
-            ui->fluxVideoHtml->setVisible(true);
-            ui->fluxVideoHtml->raise();
-            ui->fluxVideo->setVisible(false);
-            ui->lbl_video->setVisible(false);
+        view->load(fic);
+        afficherVideo->setCentralWidget(view);
 
-            view = new QWebView;
-            view->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-            view->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-            view->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-            QPalette pal;
-            pal.setColor(QPalette::Base, Qt::black);
-            view->page()->setPalette(pal);
-
-            view->load(fic);
-            afficherVideo->setCentralWidget(view);
-
-        } else {
-
-            ui->muetVideo->setVisible(true);
-            ui->fluxVideo->setVisible(true);
-            ui->lbl_video->setVisible(true);
-            StopVideoHttp();
-
-            // Preparation de la commande VLC
-            const char * const vlc_args[] = { "dummy", "-I", "--ignore-config", "-qqq", "--no-file-logging", "--no-osd",
-                                              "--no-snapshot-preview", "--no-video-title" };
-
-            // Creation d'une nouvelle instance libvlc
-            _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
-
-            // Creation d'un environnement media player
-            _mp = libvlc_media_player_new(_vlcinstance);
-            _mp2 = libvlc_media_player_new(_vlcinstance);
-
-            // Creation d'un nouveau descripteur media LibVLC
-            _m = libvlc_media_new_location(_vlcinstance, video.toAscii());
-
-            libvlc_media_player_set_media(_mp, _m);
-            libvlc_media_player_set_media(_mp2, _m);
-
-#if defined (Q_OS_WIN)
-            libvlc_media_player_set_hwnd(_mp, ui->frameFlux->winId());
-            libvlc_media_player_set_hwnd(_mp2, afficherVideo->winId());
-#elif defined (Q_OS_MAC)
-            libvlc_media_player_set_nsobject(_mp, (void *) ui->frameFlux->winId());
-            libvlc_media_player_set_nsobject(_mp2, (void *) afficherVideo->winId());
-#elif defined (Q_OS_LINUX)
-            unsigned int windid = (unsigned int) ui->frameFlux->winId();
-            libvlc_media_player_set_xwindow(_mp, windid);
-            windid = (unsigned int) afficherVideo->winId();
-            libvlc_media_player_set_xwindow(_mp2, windid);
-#else
-#endif
-
-            // Lecture de la video
-            libvlc_media_player_play(_mp);
-            const bool muet = settings.value("affichage/muetVideo", false).toBool();
-            libvlc_audio_set_mute(_mp, (muet) ? 1 : 0);
-            QStyle * const styleBouton = QApplication::style();
-            ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted) :
-                                                  styleBouton->standardIcon(QStyle::SP_MediaVolume));
-            ui->muetVideo->setToolTip((muet) ? tr("Son") : tr("Muet"));
-
-            libvlc_audio_set_mute(_mp2, 1);
-            libvlc_media_player_play(_mp2);
-        }
     } catch (PreviSatException &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_muetVideo_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const bool muet = (bool) libvlc_audio_get_mute(_mp);
-    QStyle * const styleBouton = QApplication::style();
-
-    /* Corps de la methode */
-    ui->actionMuetVideo->setIcon((muet) ? styleBouton->standardIcon(QStyle::SP_MediaVolume) :
-                                          styleBouton->standardIcon(QStyle::SP_MediaVolumeMuted));
-    ui->muetVideo->setDefaultAction(ui->actionMuetVideo);
-    ui->muetVideo->setToolTip((muet) ? tr("Muet") : tr("Son"));
-
-    libvlc_audio_toggle_mute(_mp);
-    settings.setValue("affichage/muetVideo", muet);
 
     /* Retour */
     return;
@@ -6458,12 +6281,13 @@ void PreviSat::on_fermerVideo_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    StopVideoVlc();
     StopVideoHttp();
 
     ui->frameCtrlVideo->setVisible(false);
     ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
     ui->fluxVideo->raise();
+    ui->fluxVideo->setVisible(true);
+    ui->lbl_video->setVisible(true);
 
     /* Retour */
     return;
@@ -6485,36 +6309,6 @@ void PreviSat::StopVideoHttp()
         view->settings()->clearMemoryCaches();
         view->setUrl(QUrl("blank.html"));
         view->reload();
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::StopVideoVlc()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (_isPlaying && _mp != NULL) {
-
-        // Arret de la lecture
-        settings.setValue("affichage/muetVideo", (bool) libvlc_audio_get_mute(_mp));
-        libvlc_media_player_stop(_mp);
-        libvlc_media_player_stop(_mp2);
-
-        // Liberation du lecteur
-        libvlc_media_player_release(_mp);
-        libvlc_media_player_release(_mp2);
-        libvlc_release(_vlcinstance);
-
-        _isPlaying = false;
-        _m = NULL;
-        _mp = NULL;
-        _mp2 = NULL;
-        _vlcinstance = NULL;
     }
 
     /* Retour */

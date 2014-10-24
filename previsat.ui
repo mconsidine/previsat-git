@@ -12868,19 +12868,6 @@
              <bool>true</bool>
             </property>
            </widget>
-           <widget class="QToolButton" name="muetVideo">
-            <property name="geometry">
-             <rect>
-              <x>142</x>
-              <y>0</y>
-              <width>20</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-           </widget>
            <widget class="QSpinBox" name="chaine">
             <property name="geometry">
              <rect>
@@ -12894,7 +12881,7 @@
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>3</number>
+             <number>2</number>
             </property>
            </widget>
            <widget class="QLabel" name="lbl_chaine">
@@ -12910,77 +12897,6 @@
              <string>Chaîne :</string>
             </property>
            </widget>
-          </widget>
-         </widget>
-         <widget class="QFrame" name="frameFlux">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>20</y>
-            <width>271</width>
-            <height>220</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>271</width>
-            <height>220</height>
-           </size>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <widget class="QLabel" name="lbl_video">
-           <property name="geometry">
-            <rect>
-             <x>68</x>
-             <y>29</y>
-             <width>135</width>
-             <height>161</height>
-            </rect>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="fluxVideo">
-           <property name="geometry">
-            <rect>
-             <x>68</x>
-             <y>29</y>
-             <width>135</width>
-             <height>161</height>
-            </rect>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Cliquer pour activer
-le flux vidéo</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/resources/NASA.bmp</normaloff>:/resources/NASA.bmp</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>135</width>
-             <height>120</height>
-            </size>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
           </widget>
          </widget>
          <widget class="QWebView" name="fluxVideoHtml">
@@ -13038,6 +12954,49 @@ le flux vidéo</string>
            <set>QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
           </property>
          </widget>
+         <widget class="QToolButton" name="fluxVideo">
+          <property name="geometry">
+           <rect>
+            <x>68</x>
+            <y>49</y>
+            <width>135</width>
+            <height>161</height>
+           </rect>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Cliquer pour activer
+le flux vidéo</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/resources/NASA.bmp</normaloff>:/resources/NASA.bmp</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>135</width>
+            <height>120</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextUnderIcon</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_video">
+          <property name="geometry">
+           <rect>
+            <x>68</x>
+            <y>49</y>
+            <width>135</width>
+            <height>161</height>
+           </rect>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+         </widget>
          <zorder>frameZoneVideo</zorder>
          <zorder>radar</zorder>
          <zorder>frameRadar</zorder>
@@ -13045,8 +13004,9 @@ le flux vidéo</string>
          <zorder>coordGeo4</zorder>
          <zorder>coordGeo1</zorder>
          <zorder>coordGeo2</zorder>
-         <zorder>frameFlux</zorder>
          <zorder>fluxVideoHtml</zorder>
+         <zorder>fluxVideo</zorder>
+         <zorder>lbl_video</zorder>
         </widget>
        </item>
       </layout>
