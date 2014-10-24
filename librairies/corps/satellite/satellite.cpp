@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 septembre 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -347,11 +347,11 @@ void Satellite::CalculPosVit(const Date &date)
             const double cnod = cos(xnode);
             const double cosi = cos(xinc);
 
-            const Vecteur3D mm = Vecteur3D(-snod * cosi, cnod * cosi, sin(xinc));
+            const Vecteur3D mm(-snod * cosi, cnod * cosi, sin(xinc));
             const Vecteur3D mm1 = mm * sinsu;
             const Vecteur3D mm2 = mm * cossu;
 
-            const Vecteur3D nn = Vecteur3D(cnod, snod, 0.);
+            const Vecteur3D nn(cnod, snod, 0.);
             const Vecteur3D nn1 = nn * (-cossu);
             const Vecteur3D nn2 = nn * sinsu;
 
@@ -792,7 +792,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
     _traceAuSol.clear();
     for (int i=0; i<360 * nbOrbites; i++) {
 
-        const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+        const Date j0(date.getJourJulienUTC() + i * st, 0., false);
 
         // Position du satellite
         sat.CalculPosVit(j0);

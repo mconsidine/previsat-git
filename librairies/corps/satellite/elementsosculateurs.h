@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 novembre 2012
+ * >    24 octobre 2014
  *
  */
 
@@ -56,7 +56,7 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    void CalculElementsOsculateurs(Vecteur3D &position, Vecteur3D &vitesse);
+    void CalculElementsOsculateurs(const Vecteur3D &position, const Vecteur3D &vitesse);
 
     /* Accesseurs */
     double getAnomalieExcentrique() const;

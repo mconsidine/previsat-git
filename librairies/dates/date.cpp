@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    24 octobre 2014
  *
  */
 
@@ -243,7 +243,7 @@ double Date::CalculOffsetUTC(const QDateTime &date)
     /* Corps de la methode */
 
     /* Retour */
-    return (date.secsTo(utc) * NB_JOUR_PAR_SEC);
+    return ((double) date.secsTo(utc) * NB_JOUR_PAR_SEC);
 }
 
 /*
@@ -274,7 +274,7 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
 
     /* Corps de la methode */
     const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    Date date2 = Date(jjsec, _offsetUTC);
+    Date date2(jjsec, _offsetUTC);
 
     int heure = date2._heure;
     QString sys = " ";
@@ -303,7 +303,7 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
 
     /* Corps de la methode */
     const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    Date date = Date(jjsec, _offsetUTC);
+    const Date date(jjsec, _offsetUTC);
     int heure = date._heure;
     QString sys = " ";
 
