@@ -33,13 +33,12 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    14 septembre 2014
+# >    24 octobre 2014
 
 #-------------------------------------------------
-VER_MAJ = 3.3
-VERSION = 3.3.1.5
+VER_MAJ = 3.4
+VERSION = 3.4.0.1
 ANNEES_DEV = 2005-2014
-VLC_DIR = $$PWD/inc/vlc
 ZLIB_DIR = $$PWD/inc/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
@@ -59,7 +58,7 @@ CONFIG(debug, debug|release) {
     }
 }
 
-LIBS += -L. -lvlc
+LIBS += -L.
 win32 {
     LIBS += zlibwapi.dll
     RC_FILE = icone.rc
@@ -77,8 +76,7 @@ ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
            APPVER_MAJ=\"$${VER_MAJSTR}\" \
            APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
-INCLUDEPATH += $$VLC_DIR \
-               $$ZLIB_DIR
+INCLUDEPATH += $$ZLIB_DIR
 
 SOURCES += main.cpp\
     previsat.cpp \
@@ -145,7 +143,6 @@ HEADERS += previsat.h \
     previsions/iridium.h \
     previsions/prevision.h \
     previsions/transitiss.h \
-    $$VLC_DIR/vlc.h \
     $$ZLIB_DIR/zlib.h
 
 FORMS += previsat.ui \
