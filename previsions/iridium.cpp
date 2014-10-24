@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -125,19 +125,19 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
         while (it2.hasNext()) {
 
             const QVector<double> list = it2.next();
-            Date date = Date(list.at(0), 0., false);
+            Date date(list.at(0), 0., false);
 
             // Donnees liees au lieu d'observation
-            const Vecteur3D obsPos = Vecteur3D(list.at(1), list.at(2), list.at(3));
-            const Vecteur3D v1 = Vecteur3D(list.at(4), list.at(5), list.at(6));
-            const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
-            const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
-            const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Vecteur3D obsPos(list.at(1), list.at(2), list.at(3));
+            const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
+            const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
+            const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
+            const Matrice mat(v1, v2, v3);
+            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
 
             // Position ECI du Soleil
-            const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
-            Soleil soleil = Soleil(solPos);
+            const Vecteur3D solPos(list.at(13), list.at(14), list.at(15));
+            Soleil soleil(solPos);
 
             // Position du satellite
             sat.CalculPosVit(date);
@@ -194,7 +194,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
                         } // fin if (angref <= 0.2)
 
                         jj0 += pas;
-                        const Date date0 = Date(jj0, 0., false);
+                        const Date date0(jj0, 0., false);
 
                         observateur.CalculPosVit(date0);
 
@@ -406,7 +406,7 @@ void Iridium::CalculEphemSoleilObservateur(const Conditions &conditions, Observa
     /* Initialisations */
 
     /* Corps de la methode */
-    Date date = Date(conditions.getJj1(), 0., false);
+    Date date(conditions.getJj1(), 0., false);
     do {
 
         // Position ECI de l'observateur
@@ -467,7 +467,7 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     const Vecteur3D zz = xx ^ yy;
 
     // Matrice de passage ECI geocentrique -> ECI satellite
-    const Matrice P = Matrice(xx, yy, zz);
+    const Matrice P(xx, yy, zz);
 
     int imin, imax;
     if (_pan == -1) {
@@ -497,7 +497,7 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         const Matrice PR = tmp.Transposee();
 
         // Position observateur dans le repere panneau
-        Vecteur3D obsat = PR * (-satellite.getDist());
+        const Vecteur3D obsat = PR * (-satellite.getDist());
 
         // Position Soleil dans le repere panneau
         Vecteur3D solsat = PR * (soleil.getPosition() - satellite.getPosition());
@@ -543,7 +543,7 @@ void Iridium::CalculAngleMin(const double jjm[], Satellite &satellite, Observate
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        const Date date = Date(jjm[i], 0., false);
+        const Date date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -706,7 +706,7 @@ void Iridium::LimiteFlash(const double mgn0, const double jjm[], const Condition
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        const Date date = Date(jjm[i], 0., false);
+        const Date date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -834,7 +834,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
     // Date calendaire
     const double offset = (conditions.getEcart()) ? conditions.getOffset() :
                                                     Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
-    const Date date3 = Date(date.getJourJulienUTC() + offset + EPS_DATES, 0., true);
+    const Date date3(date.getJourJulienUTC() + offset + EPS_DATES, 0., true);
 
     // Coordonnees topocentriques
     const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);

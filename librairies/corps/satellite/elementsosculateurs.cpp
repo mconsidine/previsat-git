@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 janvier 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -88,7 +88,7 @@ ElementsOsculateurs::~ElementsOsculateurs()
  * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
  * Trajectoires spatiales, O. Zarrouati
  */
-void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur3D &vitesse)
+void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, const Vecteur3D &vitesse)
 {
     /* Declarations des variables locales */
 
@@ -112,12 +112,12 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         _excentricite = exc.Norme();
 
         // Inclinaison
-        Vecteur3D h = position ^ vitesse;
+        const Vecteur3D h = position ^ vitesse;
         const double ci = h.getZ() / h.Norme();
         _inclinaison = acos(ci);
 
         // Ascension droite du noeud ascendant
-        const Vecteur3D n = Vecteur3D(-h.getY(), h.getX(), 0.);
+        const Vecteur3D n(-h.getY(), h.getX(), 0.);
         const double nn = n.Norme();
         const double ca = n.getX() / nn;
         _ascDroiteNA = acos(ca);
@@ -187,8 +187,8 @@ void ElementsOsculateurs::CalculElementsOsculateurs(Vecteur3D &position, Vecteur
         _exCirc = _exCEq * ca + _eyCEq * sa;
         _eyCirc = _eyCEq * ca - _exCEq * sa;
 
-        const Vecteur3D r = Vecteur3D(ca, sa, 0.);
-        const Vecteur3D s = Vecteur3D(-ci * sa, ci * ca, sin(_inclinaison));
+        const Vecteur3D r(ca, sa, 0.);
+        const Vecteur3D s(-ci * sa, ci * ca, sin(_inclinaison));
 
         const double xr = position * r;
         const double xs = position * s;

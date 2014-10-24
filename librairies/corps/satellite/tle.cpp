@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    25 octobre 2014
  *
  */
 
@@ -90,7 +90,7 @@ TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
     an = _ligne1.mid(18, 2).toInt();
     const double jrs = _ligne1.mid(20, 12).toDouble();
     an = (an < 57) ? an + AN2000 : an + 1900;
-    const Date date = Date(an, 1, 1., 0.);
+    const Date date(an, 1, 1., 0.);
     _epoque = Date(date.getJourJulien() + jrs - 1., 0., true);
 
     // Coefficient pseudo-balistique

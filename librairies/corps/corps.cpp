@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -49,12 +49,13 @@
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 #include "librairies/maths/maths.h"
 
+#define MAX_CONST 358
 static bool _initCst = false;
 static bool _initTab = false;
-static QString _tabConst[358];
+static QString _tabConst[MAX_CONST];
 static double _caz[360];
 static double _saz[360];
-static double _tabCstCoord[358][3];
+static double _tabCstCoord[MAX_CONST][3];
 
 /*
  * Constructeur par defaut
@@ -122,7 +123,8 @@ void Corps::CalculCoordEquat(const Observateur &observateur)
         _initCst = true;
     }
 
-    while (!atrouve) {
+    _constellation = "";
+    while (!atrouve && i < MAX_CONST) {
         if (_declinaison >= _tabCstCoord[i][2]) {
             if (_ascensionDroite < _tabCstCoord[i][1]) {
                 if (_ascensionDroite >= _tabCstCoord[i][0]) {
@@ -474,7 +476,7 @@ Vecteur3D Corps::getPosition() const
     return _position;
 }
 
-void Corps::setPosition(Vecteur3D position)
+void Corps::setPosition(const Vecteur3D &position)
 {
     _position = position;
 }

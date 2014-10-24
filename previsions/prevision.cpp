@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -109,19 +109,19 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
         while (it3.hasNext()) {
 
             const QVector<double> list = it3.next();
-            Date date = Date(list.at(0), 0., false);
+            Date date(list.at(0), 0., false);
 
             // Donnees liees au lieu d'observation
-            const Vecteur3D obsPos = Vecteur3D(list.at(1), list.at(2), list.at(3));
-            const Vecteur3D v1 = Vecteur3D(list.at(4), list.at(5), list.at(6));
-            const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
-            const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
-            const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Vecteur3D obsPos(list.at(1), list.at(2), list.at(3));
+            const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
+            const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
+            const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
+            const Matrice mat(v1, v2, v3);
+            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
 
             // Position ECI du Soleil
-            const Vecteur3D solPos = Vecteur3D(list.at(13), list.at(14), list.at(15));
-            Soleil soleil = Soleil(solPos);
+            const Vecteur3D solPos(list.at(13), list.at(14), list.at(15));
+            Soleil soleil(solPos);
 
             // Position ECI du satellite
             sat.CalculPosVit(date);
@@ -198,7 +198,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const double offset = (conditions.getEcart()) ?
                                             conditions.getOffset() :
                                             Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date2 = Date(date.getJourJulien() + offset + EPS_DATES, 0.);
+                                const Date date2(date.getJourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
                                 const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
@@ -341,7 +341,7 @@ void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Obser
     const double pas = NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
-    Date date = Date(conditions.getJj1(), 0., false);
+    Date date(conditions.getJj1(), 0., false);
     do {
 
         // Position ECI de l'observateur

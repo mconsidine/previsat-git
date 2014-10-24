@@ -1261,7 +1261,7 @@ void PreviSat::AffichageDonnees()
             const QString msg = "%1 %2";
             setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
-            if (ui->onglets->count() == 7) {
+            if (ui->onglets->count() == 7 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
                 ui->onglets->removeTab(1);
                 ui->onglets->removeTab(1);
             }
@@ -1729,7 +1729,7 @@ void PreviSat::AffichageDonnees()
 
         chaine = "D/N : %1";
         const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
-        const Date delaiEcl = Date(delai - 0.5, 0.);
+        const Date delaiEcl(delai - 0.5, 0.);
         const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
         ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
@@ -2784,7 +2784,7 @@ void PreviSat::AffichageCourbes() const
                 const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
                 const double de1 = tabEcliptique[0][1] * DEG2RAD;
                 const double cd1 = cos(de1);
-                const Vecteur3D vec = Vecteur3D(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+                const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
                 const Vecteur3D vec1 = observateurs.at(0).getRotHz() * vec;
 
                 double ht1 = asin(vec1.getZ());
@@ -2800,7 +2800,7 @@ void PreviSat::AffichageCourbes() const
                     const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
                     const double de2 = tabEcliptique[i][1] * DEG2RAD;
                     const double cd2 = cos(de2);
-                    const Vecteur3D vec0 = Vecteur3D(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+                    const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
                     const Vecteur3D vec2 = observateurs.at(0).getRotHz() * vec0;
 
                     const double ht2 = asin(vec2.getZ());
@@ -3366,7 +3366,7 @@ bool PreviSat::CalculAOS() const
 
             for(int i=0; i<3; i++) {
 
-                const Date date = Date(jjm[i], 0., false);
+                const Date date(jjm[i], 0., false);
 
                 obs.CalculPosVit(date);
 
@@ -3397,7 +3397,7 @@ bool PreviSat::CalculAOS() const
 
                     for(int i=0; i<3; i++) {
 
-                        const Date date = Date(jjm[i], 0., false);
+                        const Date date(jjm[i], 0., false);
 
                         obs.CalculPosVit(date);
 
@@ -3474,7 +3474,7 @@ void PreviSat::CalculDN() const
 
             for(int j=0; j<3; j++) {
 
-                const Date date = Date(jjm[j], 0., false);
+                const Date date(jjm[j], 0., false);
 
                 // Position du satellite
                 satellite.CalculPosVit(date);
@@ -3541,6 +3541,11 @@ void PreviSat::CalculAgeTLETransitISS() const
         paletteTLE.setBrush(QPalette::WindowText, brush);
         ui->ageTLETransit->setPalette(paletteTLE);
         ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
+        ui->lbl_ageTLETransit->setVisible(true);
+        ui->ageTLETransit->setVisible(true);
+    } else {
+        ui->lbl_ageTLETransit->setVisible(false);
+        ui->ageTLETransit->setVisible(false);
     }
 
     /* Retour */
@@ -5426,7 +5431,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             // Date actuelle
             dateCourante = Date(offsetUTC);
 
-            const Date date = Date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+            const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
 
             if (ui->dateHeure4->isVisible()) {
                 ui->dateHeure4->setDisplayFormat(fmt);
@@ -5451,7 +5456,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
                                                                 dateCourante.getJourJulien() + sgn * ui->pasManuel->currentText().
                                                                 toDouble();
 
-        const Date date = Date(jd + EPS_DATES, 0.);
+        const Date date(jd + EPS_DATES, 0.);
 
         if (ui->dateHeure4->isVisible()) {
             ui->dateHeure4->setDisplayFormat(fmt);
@@ -5867,8 +5872,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
                     az += DEUX_PI;
 
                 const double ch = cos(ht);
-                const Vecteur3D vec1 = Vecteur3D(-cos(az) * ch, sin(az) * ch, sin(ht));
-                const Vecteur3D vec2 = Vecteur3D(observateurs.at(0).getRotHz().Transposee() * vec1);
+                const Vecteur3D vec1(-cos(az) * ch, sin(az) * ch, sin(ht));
+                const Vecteur3D vec2(observateurs.at(0).getRotHz().Transposee() * vec1);
 
                 // Declinaison
                 const double dec = asin(vec2.getZ());
@@ -7676,7 +7681,7 @@ void PreviSat::on_utcAuto_stateChanged(int arg1)
         QDateTime dateUTC(dateLocale);
         dateUTC.setTimeSpec(Qt::UTC);
 
-        const int ecart = (int) (dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
+        const int ecart = (int) ((double) dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
         ui->updown->setValue(ecart);
 
         offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
@@ -9240,7 +9245,7 @@ void PreviSat::on_calculsPrev_clicked()
 
     try {
         const int nsat = getListeItemChecked(ui->liste2);
-        if (nsat == 0)
+        if (nsat == 0 && ui->liste2->count() > 0)
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
         ui->afficherPrev->setVisible(false);
@@ -9842,7 +9847,7 @@ void PreviSat::on_calculsEvt_clicked()
 
     try {
         const int nsat = getListeItemChecked(ui->liste3);
-        if (nsat == 0)
+        if (nsat == 0 && ui->liste3->count() > 0)
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
         ui->afficherEvt->setVisible(false);

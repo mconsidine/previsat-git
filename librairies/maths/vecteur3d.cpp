@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -140,7 +140,7 @@ double Vecteur3D::Norme() const
 /*
  * Calcul de l'angle entre 2 vecteurs
  */
-double Vecteur3D::Angle(const Vecteur3D &vecteur)
+double Vecteur3D::Angle(const Vecteur3D &vecteur) const
 {
     /* Declarations des variables locales */
 
@@ -159,7 +159,7 @@ double Vecteur3D::Angle(const Vecteur3D &vecteur)
 /*
  * Calcul du vecteur 3D unitaire
  */
-Vecteur3D Vecteur3D::Normalise()
+Vecteur3D Vecteur3D::Normalise() const
 {
     /* Declarations des variables locales */
 

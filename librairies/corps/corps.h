@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -88,7 +88,7 @@ public:
     QVector<QPointF> getZone() const;
 
     /* Modificateurs */
-    void setPosition(Vecteur3D position);
+    void setPosition(const Vecteur3D &position);
 
 
 protected:

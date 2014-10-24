@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    7 septembre 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -575,7 +575,7 @@ void Afficher::loadSky(const int j)
     double offset = (cond.getEcart()) ? cond.getOffset() : Date::CalculOffsetUTC(Date(dateI.getJourJulienUTC(), 0.).ToQDateTime(1));
     Date dateDeb(dateI.getJourJulienUTC(), offset);
 
-    Date dateInit = Date(dateDeb, offset);
+    Date dateInit(dateDeb, offset);
     bool atrouve = false;
     while (!atrouve) {
         obs.CalculPosVit(dateInit);
@@ -848,7 +848,7 @@ void Afficher::loadSky(const int j)
         const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
         const double de1 = tabEcliptique[0][1] * DEG2RAD;
         const double cd1 = cos(de1);
-        const Vecteur3D vec = Vecteur3D(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+        const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
         const Vecteur3D vec1 = obs.getRotHz() * vec;
 
         double ht1 = asin(vec1.getZ());
@@ -864,7 +864,7 @@ void Afficher::loadSky(const int j)
             const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
             const double de2 = tabEcliptique[i][1] * DEG2RAD;
             const double cd2 = cos(de2);
-            const Vecteur3D vec0 = Vecteur3D(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+            const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
             const Vecteur3D vec2 = obs.getRotHz() * vec0;
 
             const double ht2 = asin(vec2.getZ());

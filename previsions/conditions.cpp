@@ -302,7 +302,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     /* Corps de la methode */
     const double offset = (conditions._ecart) ? conditions._offset :
                                                 Date::CalculOffsetUTC(Date(conditions._jj1, 0.).ToQDateTime(1).toLocalTime());
-    const Date date = Date(conditions._jj1 + offset + EPS_DATES, 0.);
+    const Date date(conditions._jj1 + offset + EPS_DATES, 0.);
 
     // Calcul de l'age des TLE
     if (tabtle.size() == 1) {

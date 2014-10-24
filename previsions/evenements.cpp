@@ -186,7 +186,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     Maths::CalculExtremumInterpolation3(xtab, ytab, minmax);
                     const double offset = (conditions.getEcart()) ?
                                 conditions.getOffset() : Date::CalculOffsetUTC(Date(minmax[0], 0.).ToQDateTime(1));
-                    const Date date = Date(minmax[0] + offset + EPS_DATES, offset);
+                    const Date date(minmax[0] + offset + EPS_DATES, offset);
                     
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
@@ -327,7 +327,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
         
         tab.clear();
         Satellite sat = it1.next();
-        Date date = Date(conditions.getJj1(), 0., false);
+        Date date(conditions.getJj1(), 0., false);
         
         do {
             
@@ -378,7 +378,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);
     const double offset = (conditions.getEcart()) ? conditions.getOffset() : Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
-    const Date date = Date(datp + offset + EPS_DATES, offset);
+    const Date date(datp + offset + EPS_DATES, offset);
     
     // Calcul de la position du satellite pour la date calculee
     sat.CalculPosVit(date);

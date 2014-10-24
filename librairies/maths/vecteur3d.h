@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2013
+ * >    25 octobre 2013
  *
  */
 
@@ -57,8 +57,8 @@ public:
     /* Methodes publiques */
     bool isNul() const;
     double Norme() const;
-    double Angle(const Vecteur3D &vecteur);
-    Vecteur3D Normalise();
+    double Angle(const Vecteur3D &vecteur) const;
+    Vecteur3D Normalise() const;
 
     friend inline Vecteur3D operator - (const Vecteur3D &vecteur);
     friend inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);

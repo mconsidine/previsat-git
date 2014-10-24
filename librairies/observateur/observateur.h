@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 avril 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -65,7 +65,7 @@ public:
     static double CalculTempsSideralGreenwich(const Date &date);
     double CalculCap(const Observateur &lieuDistant);
     double CalculDistance(const Observateur &observateur) const;
-    static Observateur CalculIntersectionEllipsoide(const Date &date, Vecteur3D origine, Vecteur3D direction);
+    static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D origine, const Vecteur3D direction);
 
     /* Accesseurs */
     double getAaer() const;

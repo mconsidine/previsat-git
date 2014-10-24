@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    7 juin 2014
+ * >    24 octobre 2014
  *
  */
 
@@ -102,15 +102,15 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         while (it2.hasNext()) {
 
             const QVector<double> list = it2.next();
-            Date date = Date(list.at(0), 0., false);
+            Date date(list.at(0), 0., false);
 
             // Donnees liees au lieu d'observation
-            const Vecteur3D obsPos = Vecteur3D(list.at(1), list.at(2), list.at(3));
-            const Vecteur3D v1 = Vecteur3D(list.at(4), list.at(5), list.at(6));
-            const Vecteur3D v2 = Vecteur3D(list.at(7), list.at(8), list.at(9));
-            const Vecteur3D v3 = Vecteur3D(list.at(10), list.at(11), list.at(12));
-            const Matrice mat = Matrice(v1, v2, v3);
-            const Observateur obs = Observateur(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Vecteur3D obsPos(list.at(1), list.at(2), list.at(3));
+            const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
+            const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
+            const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
+            const Matrice mat(v1, v2, v3);
+            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
 
             Corps corps;
             corps.setPosition(Vecteur3D(list.at(13), list.at(14), list.at(15)));
@@ -129,7 +129,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 ang0 = PI;
 
                 do {
-                    const Date date0 = Date(jj0, 0., false);
+                    const Date date0(jj0, 0., false);
 
                     observateur.CalculPosVit(date0);
 
@@ -185,7 +185,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         it++;
                     }
 
-                    Date date2 = Date(minmax[0], 0., false);
+                    Date date2(minmax[0], 0., false);
 
                     observateur.CalculPosVit(date2);
 
@@ -260,7 +260,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 const double offset = (conditions.getEcart()) ?
                                             conditions.getOffset() :
                                             Date::CalculOffsetUTC(Date(dates[j].getJourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date3 = Date(dates[j].getJourJulien() + offset + EPS_DATES, 0.);
+                                const Date date3(dates[j].getJourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
                                 const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
@@ -426,7 +426,7 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
 
     /* Corps de la methode */
     // Ephemerides du Soleil
-    Date date = Date(conditions.getJj1(), 0., false);
+    Date date(conditions.getJj1(), 0., false);
     if (conditions.getAcalcSol()) {
         do {
 
@@ -552,7 +552,7 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        const Date date = Date(jjm[i], 0., false);
+        const Date date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
@@ -662,7 +662,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
     /* Corps de la methode */
     for (int i=0; i<3; i++) {
 
-        const Date date = Date(jjm[i], 0., false);
+        const Date date(jjm[i], 0., false);
 
         observateur.CalculPosVit(date);
 
