@@ -3873,7 +3873,10 @@ void PreviSat::VerifMAJPreviSat()
 
                 const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
 
-                const QStringList fichiers(QStringList () << "donnees.sat" << "iridium.sts");
+                const QStringList fichiers(QStringList () <<  "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" <<
+                                           "iridium.sts" << "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" <<
+                                           "resultat.map" << "stations.sta" << "tdrs.sat");
+
                 dirDwn = dirDat;
 
                 for(int i=0; i<fichiers.size(); i++) {
@@ -6791,89 +6794,7 @@ void PreviSat::on_actionAstropedia_free_fr_activated()
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
 {
-
-#if defined (Q_OS_WIN)
-    const QString fic = "maj.exe";
-#else
-    const QString fic = "maj";
-#endif
-    QFile fi(dirExe + QDir::separator() + fic);
-    if (fi.exists()) {
-
-        // Verification de la version du programme de mise a jour
-        const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed() + "maj/";
-
-        if (!dirHttpPrevi.isEmpty()) {
-
-            const QString fich = "versionMaj";
-            amajDeb = true;
-            amajPrevi = true;
-            dirDwn = dirTmp;
-
-            const QString ficMaj = dirHttpPrevi + fich;
-            TelechargementFichier(ficMaj, false);
-
-            QString ligne;
-            QFile fi2(dirDwn + QDir::separator() + fich);
-
-            if (fi2.exists()) {
-
-                fi2.open(QIODevice::ReadOnly | QIODevice::Text);
-                QTextStream flux(&fi2);
-                ligne = flux.readLine();
-                fi2.close();
-            }
-
-            if (!ligne.isEmpty()) {
-
-                bool anew = false;
-                const QStringList newVersion = ligne.split(".");
-                const QStringList oldVersion = settings.value("fichier/versionSetup", "1.0.0.0").toString().split(".");
-
-                for(int i=0; i<oldVersion.count()-1; i++) {
-                    if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
-                        anew = true;
-                }
-                if (anew) {
-
-#if defined (Q_OS_WIN)
-                    const QString dirHttpMaj = dirHttpPrevi + "Windows/";
-#elif defined (Q_OS_LINUX)
-                    const QString dirHttpMaj = dirHttpPrevi + "Linux/";
-#else
-                    const QString dirHttpMaj = dirHttpPrevi + "autre/";
-#endif
-                    const QString fichier = dirHttpMaj + fic + ".gz";
-                    TelechargementFichier(fichier, false);
-
-                    if (downQueue.isEmpty())
-                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-
-                    QFile fi3(dirDwn + QDir::separator() + fic + ".gz");
-                    if (fi3.exists()) {
-                        const QString nvNom = dirExe + QDir::separator() + fic;
-                        fi.remove();
-                        fi3.rename(nvNom);
-                    }
-                    settings.setValue("fichier/versionMaj", ligne);
-                }
-            }
-        }
-
-        // Lancement de la mise a jour
-#if defined (Q_OS_WIN)
-#else
-        const int res = system(qPrintable("chmod +x " + fic));
-        Q_UNUSED(res)
-#endif
-
-        QProcess proc;
-        proc.startDetached(fic);
-        settings.setValue("fichier/majPrevi", "0");
-        exit(0);
-    } else {
-        QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/"));
-    }
+    QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/files/latest/download"));
 }
 
 void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
@@ -6887,7 +6808,9 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
 
     /* Corps de la methode */
-    const QStringList listeFic(QStringList () << "donnees.sat" << "iridium.sts");
+    const QStringList listeFic(QStringList () << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
+                               "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" <<
+                               "stations.sta" << "tdrs.sat");
 
     foreach(QString fic, listeFic) {
         QString ficMaj = dirHttpPrevi + fic;
