@@ -81,6 +81,8 @@
 		    mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
 		    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
 
+        var langue = getLocalLanguage();
+
         var clouds = L.OWM.clouds({opacity: 0.8});
     	var OWM_API_KEY = '06aac0fd4ba239a20d824ef89602f311';
 	    var city = L.OWM.current({intervall: 15, imageLoadingUrl: 'http://astropedia.free.fr/previsat/html/owmloading.gif', lang: langue, minZoom: 5,
@@ -90,8 +92,6 @@
 		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
 		    layers: [mapquest, clouds, city]
 	    });
-
-        var langue = getLocalLanguage();
 
         var overlayMaps = {};
 	    overlayMaps[traduction('Nuages', langue)] = clouds;
