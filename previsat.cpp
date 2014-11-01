@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    1er novembre 2014
  *
  */
 
@@ -231,6 +231,7 @@ static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
 static QMainWindow *afficherVideo;
+static QMainWindow *afficherMeteo;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
@@ -249,9 +250,16 @@ QLabel *modeFonctionnement;
 QLabel *stsDate;
 QLabel *stsHeure;
 
+// Meteo
+QWebView *viewMeteo;
+
+// Meteo bases NASA
+static bool iEtatMeteo;
+QWebView *viewMeteoNASA;
+
 // Etat video Live ISS
 static bool iEtatVideo;
-QWebView *view;
+QWebView *viewLiveISS;
 
 PreviSat::PreviSat(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
@@ -267,6 +275,9 @@ PreviSat::~PreviSat()
 {
     if (afficherResultats != NULL)
         afficherResultats->close();
+
+    if (afficherMeteo != NULL)
+        afficherMeteo->close();
 
     if (afficherVideo != NULL)
         afficherVideo->close();
@@ -381,7 +392,8 @@ void PreviSat::ChargementConfig()
     // Verification de la presence des fichiers du repertoire data
     const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
                               "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live1.html" << "ISS-Live2.html" << "resultat.map" << "stations.sta" << "tdrs.sat");
+                              "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" <<
+                              "stations.sta" << "tdrs.sat");
 
     QStringListIterator it1(ficdata);
     while (it1.hasNext()) {
@@ -5193,7 +5205,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", ui->coulGMT->currentIndex());
-    settings.setValue("affichage/coulZOE", ui->coulGMT->currentIndex());
+    settings.setValue("affichage/coulZOE", ui->coulZOE->currentIndex());
     settings.setValue("affichage/policeWCC", ui->policeWCC->currentIndex());
 
     for(int i=0; i<ui->listeStations->count(); i++)
@@ -5341,8 +5353,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->frameZoneVideo->resize(ui->frameZone->width() - 18, ui->frameZone->height() - 24);
     ui->fluxVideoHtml->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
     ui->frameCtrlVideo->move(ui->frameZoneVideo->width() - ui->frameCtrlVideo->width() + 2, 0);
-    ui->fluxVideo->move((ui->fluxVideoHtml->width() - ui->fluxVideo->width()) / 2,
-                        (ui->fluxVideoHtml->height() - ui->fluxVideo->height()) / 2);
+    ui->fluxVideo->move((ui->frameZoneVideo->width() - ui->fluxVideo->width()) / 2,
+                        (ui->frameZone->height() - ui->fluxVideo->height()) / 2);
     ui->lbl_video->move(ui->fluxVideo->pos());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
@@ -6142,6 +6154,177 @@ void PreviSat::on_pasManuel_currentIndexChanged(int index)
 }
 
 
+void PreviSat::on_meteo_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    if (afficherMeteo != NULL)
+        afficherMeteo->close();
+
+    /* Corps de la methode */
+    afficherMeteo = new QMainWindow;
+    afficherMeteo->resize(720, 540);
+
+    const int xmax = QApplication::desktop()->availableGeometry().width();
+    const int ymax = QApplication::desktop()->availableGeometry().height() - 40;
+    int xAff = afficherMeteo->width();
+    int yAff = afficherMeteo->height();
+
+    if (afficherMeteo->x() < 0 || afficherMeteo->y() < 0)
+        afficherMeteo->move(0, 0);
+
+    // Redimensionnement de la fenetre si necessaire
+    if (xAff > xmax)
+        xAff = xmax;
+    if (yAff > ymax)
+        yAff = ymax;
+
+    if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height())
+        afficherMeteo->resize(xAff, yAff);
+
+    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+
+    viewMeteo = new QWebView;
+    viewMeteo->settings()->setObjectCacheCapacities(0, 0, 0);
+    viewMeteo->triggerPageAction(QWebPage::ReloadAndBypassCache);
+
+    // Definition de raccourcis
+    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F5), afficherMeteo);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(ActualiseMeteo()));
+
+    const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherMeteo);
+    connect(shortcut2, SIGNAL(activated()), this, SLOT(MeteoPleinEcran()));
+
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+
+    // Affichage de la map
+    QString map0;
+    const QString fic = dirDat + QDir::separator() + "meteo.map";
+    QFile fi(fic);
+
+    if (fi.exists()) {
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+        map0 = flux.readAll();
+    }
+    fi.close();
+
+    const QString lon(QString::number(-observateurs.at(0).getLongitude() * RAD2DEG));
+    const QString lat(QString::number(observateurs.at(0).getLatitude() * RAD2DEG));
+    map0 = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat);
+
+    QFile fi2(dirTmp + QDir::separator() + "meteo.html");
+    fi2.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream flux(&fi2);
+    flux << map0;
+    fi2.close();
+
+    // Chargement de la meteo
+    QUrl url(fi2.fileName());
+    url.setScheme("");
+
+    viewMeteo->load(url);
+    afficherMeteo->setCentralWidget(viewMeteo);
+    afficherMeteo->showNormal();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_meteoBasesNASA_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */    
+    if (afficherMeteo != NULL)
+        afficherMeteo->close();
+
+    /* Corps de la methode */
+    afficherMeteo = new QMainWindow;
+    afficherMeteo->resize(1280, 960);
+
+    const int xmax = QApplication::desktop()->availableGeometry().width();
+    const int ymax = QApplication::desktop()->availableGeometry().height() - 40;
+    int xAff = afficherMeteo->width();
+    int yAff = afficherMeteo->height();
+
+    if (afficherMeteo->x() < 0 || afficherMeteo->y() < 0)
+        afficherMeteo->move(0, 0);
+
+    // Redimensionnement de la fenetre si necessaire
+    if (xAff > xmax)
+        xAff = xmax;
+    if (yAff > ymax)
+        yAff = ymax;
+
+    if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height())
+        afficherMeteo->resize(xAff, yAff);
+
+    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo des bases de la NASA").arg(QCoreApplication::applicationName())
+                                  .arg(QString(APPVER_MAJ)));
+
+    viewMeteoNASA = new QWebView;
+    viewMeteoNASA->settings()->setObjectCacheCapacities(0, 0, 0);
+    viewMeteoNASA->triggerPageAction(QWebPage::ReloadAndBypassCache);
+
+    // Definition de raccourcis
+    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F5), afficherMeteo);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(ActualiseMeteoNASA()));
+
+    const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherMeteo);
+    connect(shortcut2, SIGNAL(activated()), this, SLOT(MeteoPleinEcran()));
+
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+
+    // Chargement de la meteo
+    const QString fic("file:///" + dirDat + QDir::separator() + "meteoNASA.html");
+    QUrl url(fic);
+    url.setScheme("");
+
+    viewMeteoNASA->load(url);
+    afficherMeteo->setCentralWidget(viewMeteoNASA);
+    afficherMeteo->showNormal();
+
+    /* Retour */
+    return;
+}
+
+
+void PreviSat::ActualiseMeteo()
+{
+    viewMeteo->reload();
+}
+
+void PreviSat::ActualiseMeteoNASA()
+{
+    viewMeteoNASA->reload();
+}
+
+void PreviSat::MeteoPleinEcran()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (afficherMeteo->isFullScreen()) {
+
+        if (iEtatMeteo)
+            afficherMeteo->showMaximized();
+        else
+            afficherMeteo->showNormal();
+
+    } else {
+        iEtatMeteo = afficherMeteo->isMaximized();
+        afficherMeteo->showFullScreen();
+    }
+
+    /* Retour */
+    return;
+}
+
+
 void PreviSat::on_mccISS_toggled(bool checked)
 {
     /* Declarations des variables locales */
@@ -6256,16 +6439,16 @@ void PreviSat::on_fluxVideo_clicked()
         ui->fluxVideo->setVisible(false);
         ui->lbl_video->setVisible(false);
 
-        view = new QWebView;
-        view->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        view->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-        view->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+        viewLiveISS = new QWebView;
+        viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
         QPalette pal;
         pal.setColor(QPalette::Base, Qt::black);
-        view->page()->setPalette(pal);
+        viewLiveISS->page()->setPalette(pal);
 
-        view->load(fic);
-        afficherVideo->setCentralWidget(view);
+        viewLiveISS->load(url);
+        afficherVideo->setCentralWidget(viewLiveISS);
 
     } catch (PreviSatException &e) {
     }
@@ -6310,10 +6493,10 @@ void PreviSat::StopVideoHttp()
     ui->fluxVideoHtml->reload();
     ui->fluxVideoHtml->setVisible(false);
 
-    if (view != NULL) {
-        view->settings()->clearMemoryCaches();
-        view->setUrl(QUrl("blank.html"));
-        view->reload();
+    if (viewLiveISS != NULL) {
+        viewLiveISS->settings()->clearMemoryCaches();
+        viewLiveISS->setUrl(QUrl("blank.html"));
+        viewLiveISS->reload();
     }
 
     /* Retour */

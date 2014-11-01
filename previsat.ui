@@ -903,7 +903,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>GMT = 000/00 :00</string>
+            <string>GMT = 000/00:00</string>
            </property>
           </widget>
          </widget>
@@ -2209,6 +2209,44 @@
             <string>ISS Live</string>
            </property>
           </widget>
+          <widget class="QToolButton" name="meteoBasesNASA">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>62</y>
+             <width>63</width>
+             <height>24</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font/>
+           </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Météo bases NASA</string>
+           </property>
+           <property name="text">
+            <string>NASA</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/resources/meteo.png</normaloff>:/resources/meteo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
          </widget>
          <widget class="QLabel" name="secondes">
           <property name="geometry">
@@ -2453,6 +2491,47 @@
            <bool>true</bool>
           </property>
          </widget>
+         <widget class="QPushButton" name="meteo">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>70</y>
+            <width>20</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Météo</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/resources/meteo.png</normaloff>:/resources/meteo.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
          <zorder>secondes</zorder>
@@ -2463,6 +2542,7 @@
          <zorder>liste1</zorder>
          <zorder>directHelp</zorder>
          <zorder>listeFichiersTLE</zorder>
+         <zorder>meteo</zorder>
         </widget>
        </item>
       </layout>

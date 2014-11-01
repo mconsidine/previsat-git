@@ -58,5 +58,6 @@
         <file>resources/icones/progress.png</file>
         <file>resources/icones/saliout.png</file>
         <file>resources/icones/soyuz.png</file>
+        <file>resources/meteo.png</file>
     </qresource>
 </RCC>
