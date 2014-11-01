@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    1er novembre 2014
  *
  */
 
@@ -136,6 +136,12 @@ private slots:
     void on_affichageCiel_clicked();
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
+
+    void on_meteo_clicked();
+    void on_meteoBasesNASA_clicked();
+    void MeteoPleinEcran();
+    void ActualiseMeteo();
+    void ActualiseMeteoNASA();
 
     void on_mccISS_toggled(bool checked);
     void on_chaine_valueChanged(int arg1);
