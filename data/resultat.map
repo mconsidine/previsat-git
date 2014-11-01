@@ -45,15 +45,15 @@
             return (((dec < 0.) ? '-' : '+') + deg + '° ' + ((min < 10) ? '0' + min : min) + "' " + ((sec < 10) ? '0' + sec : sec) + '"');
         }
 
-        var map = L.map('map').setView([LATITUDE_CENTRE, LONGITUDE_CENTRE], 9);
+	    var mapquestUrl = "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
+		    mapquestSubDomains = ["otile1","otile2","otile3","otile4"],
+		    mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
+		    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
 
-        L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a>OpenStreetMap</a> contributors, ' +
-                '<a>CC-BY-SA</a>, ' +
-                'Imagery © <a>Mapbox</a>',
-            id: 'astropedia.ie3phjed'
-        }).addTo(map);
+        map = L.map('map', {
+		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
+		    layers: [mapquest]
+	    });
 
         var marker = new L.marker([LATITUDE_CENTRE, LONGITUDE_CENTRE]).addTo(map);
 
