@@ -960,7 +960,7 @@ void PreviSat::DemarrageApplication()
     move(0, 0);
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
     ui->frameCarteListe->resize(ui->frameCarte->size());
-    if (settings.value("affichage/fenetreMax", false).toBool())
+    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi < xmax && yPrevi < ymax)
         showMaximized();
     else
         resize(xPrevi, yPrevi);
@@ -6189,6 +6189,8 @@ void PreviSat::on_meteo_clicked()
     afficherMeteo->setWindowTitle(QString("%1 %2 - Météo").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     viewMeteo = new QWebView;
+    viewMeteo->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    viewMeteo->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     viewMeteo->settings()->setObjectCacheCapacities(0, 0, 0);
     viewMeteo->triggerPageAction(QWebPage::ReloadAndBypassCache);
 
@@ -6268,6 +6270,8 @@ void PreviSat::on_meteoBasesNASA_clicked()
                                   .arg(QString(APPVER_MAJ)));
 
     viewMeteoNASA = new QWebView;
+    viewMeteoNASA->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    viewMeteoNASA->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
     viewMeteoNASA->settings()->setObjectCacheCapacities(0, 0, 0);
     viewMeteoNASA->triggerPageAction(QWebPage::ReloadAndBypassCache);
 
