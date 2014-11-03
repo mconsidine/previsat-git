@@ -50,7 +50,7 @@
 		    mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
 		    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
 
-        map = L.map('map', {
+        var map = L.map('map', {
 		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
 		    layers: [mapquest]
 	    });

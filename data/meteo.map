@@ -20,6 +20,7 @@
 
     <script src="http://leafletjs.com/dist/leaflet.js"></script>
     <script src="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.css" />
     <script>
 
         function getLocalLanguage() {
