@@ -78,7 +78,6 @@
                     snow: 'Neige',
                     temp: 'Température',
                     windspeed: 'Vitesse du vent',
-                    pressure: 'Pression de l\'air',
                     presscont: 'Isobares'
                 }
             };
@@ -99,11 +98,9 @@
 
         var langue = getLocalLanguage();
 
-        var clouds = L.OWM.clouds({opacity: 0.8});
-        var precipitation = L.OWM.precipitation( {opacity: 0.5} );
-        var rain = L.OWM.rain({opacity: 0.5});
+        var clouds = L.OWM.clouds({opacity: 0.8, legendImagePath: 'http://astropedia.free.fr/previsat/html/NT2.png'});
+        var raincls = L.OWM.rainClassic({opacity: 0.5});
         var snow = L.OWM.snow({opacity: 0.5});
-        var pressure = L.OWM.pressure({opacity: 0.4});
         var pressurecntr = L.OWM.pressureContour({opacity: 0.5});
         var temp = L.OWM.temperature({opacity: 0.5});
         var wind = L.OWM.wind({opacity: 0.5});
@@ -118,14 +115,12 @@
         });
 
         var overlayMaps = {};
-        overlayMaps[traduction('clouds', langue)] = clouds;
         overlayMaps[traduction('city', langue)] = city;
-        overlayMaps[traduction('precipitation', langue)] = precipitation;
-        overlayMaps[traduction('rain', langue)] = rain;
+        overlayMaps[traduction('clouds', langue)] = clouds;
+        overlayMaps[traduction('rain', langue)] = raincls;
         overlayMaps[traduction('snow', langue)] = snow;
         overlayMaps[traduction('temp', langue)] = temp;
         overlayMaps[traduction('windspeed', langue)] = wind;
-        overlayMaps[traduction('pressure', langue)] = pressure;
         overlayMaps[traduction('presscont', langue)] = pressurecntr;
 
         var layerControl = L.control.layers("", overlayMaps, {collapsed: false}).addTo(map);
