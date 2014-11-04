@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 novembre 2014
  *
  */
 
@@ -223,8 +223,8 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Corps de la methode */
 
     /* Retour */
-    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + 0.000387933 * tu2 -
-                                    tu2 * tu / 38710000., T360));
+    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + tu2 * (0.000387933 -
+                                    tu / 38710000.), T360));
 }
 
 /*
@@ -271,18 +271,18 @@ double Observateur::CalculDistance(const Observateur &observateur) const
     const double l = 0.5 * (_longitude - observateur._longitude);
 
     const double sf = sin(f);
-    const double sf2 = sf * sf;
     const double cf = cos(f);
+    const double sf2 = sf * sf;
     const double cf2 = cf * cf;
 
     const double sg = sin(g);
-    const double sg2 = sg * sg;
     const double cg = cos(g);
+    const double sg2 = sg * sg;
     const double cg2 = cg * cg;
 
     const double sl = sin(l);
-    const double sl2 = sl * sl;
     const double cl = cos(l);
+    const double sl2 = sl * sl;
     const double cl2 = cl * cl;
 
     /* Corps de la methode */
@@ -290,13 +290,13 @@ double Observateur::CalculDistance(const Observateur &observateur) const
     const double c = cg2 * cl2 + sf2 * sl2;
 
     const double om = atan(sqrt(s / c));
-    const double r = sqrt(s * c) / om;
+    const double r3 = 3. * sqrt(s * c) / om;
     const double d = 2. * om * RAYON_TERRESTRE;
-    const double h1 = 0.5 * (3. * r - 1.) / c;
-    const double h2 = 0.5 * (3. * r + 1.) / s;
+    const double h1 = 0.5 * (r3 - 1.) / c;
+    const double h2 = 0.5 * (r3 + 1.) / s;
 
     /* Retour */
-    return (d * (1. + APLA * h1 * sf2 * cg2 - APLA * h2 * cf2 * sg2));
+    return (d * (1. + APLA * (h1 * sf2 * cg2 - h2 * cf2 * sg2)));
 }
 
 /*

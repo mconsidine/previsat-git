@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    3 novembre 2014
  *
  */
 
@@ -121,47 +121,41 @@ void Lune::CalculPosition(const Date &date)
     double l0 = 0.;
     double r0 = 0.;
     const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
-    const double t2 = t * t;
-    const double t3 = t2 * t;
-    const double t4 = t3 * t;
 
     // Longitude moyenne de la Lune
-    const double ll = DEG2RAD * Maths::modulo(218.3164477 + 481267.88123421 * t - 0.0015786 * t2 + t3 / 538841. -
-                                              t4 / 65194000., T360);
+    const double ll = DEG2RAD * Maths::modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * (1. / 538841. -
+                                              t / 65194000.))), T360);
 
     // Elongation moyenne de la Lune
-    coef[0] = DEG2RAD * Maths::modulo(297.8501921 + 445267.1114034 * t - 0.0018819 * t2 + t3 / 545868. -
-                                      t4 / 113065000., T360);
+    coef[0] = DEG2RAD * Maths::modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * (1. / 545868. -
+                                      t / 113065000.))), T360);
 
     // Anomalie moyenne du Soleil
-    coef[1] = DEG2RAD * Maths::modulo(357.5291092 + 35999.0502909 * t - 0.0001536 * t2 + t3 / 24490000., T360);
+    coef[1] = DEG2RAD * Maths::modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t / 24490000.)), T360);
 
     // Anomalie moyenne de la Lune
-    coef[2] = DEG2RAD * Maths::modulo(134.9633964 + 477198.8675055 * t + 0.0087414 * t2 + t3 / 69699. -
-                                      t4 / 14712000., T360);
+    coef[2] = DEG2RAD * Maths::modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * (1. / 69699. -
+                                      t / 14712000.))), T360);
 
     // Argument de latitude de la Lune
-    coef[3] = DEG2RAD * Maths::modulo(93.272095 + 483202.0175233 * t - 0.0036539 * t2 - t3 / 3526000. +
-                                      t4 / 863310000., T360);
+    coef[3] = DEG2RAD * Maths::modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * (1. / 3526000. +
+                                      t / 863310000.))), T360);
 
-    coef[4] = 1. - 0.002516 * t - 0.0000074 * t2;
+    coef[4] = 1. - t * (0.002516 + 0.0000074 * t);
 
     /* Corps de la methode */
     for (int i=0; i<60; i++) {
 
         double ang1 = 0.;
         double ang2 = 0.;
-        double fact1 = 1.;
-        double fact2 = 1.;
 
         for (int j=0; j<4; j++) {
             ang1 += coef[j] * _tabCoef1[i][j];
             ang2 += coef[j] * _tabCoef2[i][j];
         }
-        if (_tabCoef1[i][1] != 0)
-            fact1 = pow(coef[4], fabs(_tabCoef1[i][1]));
-        if (_tabCoef2[i][1] != 0)
-            fact2 = pow(coef[4], fabs(_tabCoef2[i][1]));
+
+        const double fact1 = (_tabCoef1[i][1] == 0) ? 1. : pow(coef[4], fabs(_tabCoef1[i][1]));
+        const double fact2 = (_tabCoef2[i][1] == 0) ? 1. : pow(coef[4], fabs(_tabCoef2[i][1]));
 
         // Termes en longitude
         l0 += _tabLon[i] * fact1 * sin(ang1);
@@ -182,8 +176,9 @@ void Lune::CalculPosition(const Date &date)
             115. * sin(ll + coef[2]);
 
     // Coordonnees ecliptiques en repere spherique
-    const double lv = ll + DEG2RAD * l0 * 1.e-6;
-    const double bt = DEG2RAD * b0 * 1.e-6;
+    const double temp = DEG2RAD * 1.e-6;
+    const double lv = ll + temp * l0;
+    const double bt = temp * b0;
     const double rp = 385000.56 + r0 * 1.e-3;
     const Vecteur3D pos(lv, bt, rp);
 
