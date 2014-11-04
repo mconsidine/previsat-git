@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 novembre 2014
  *
  */
 
@@ -333,19 +333,19 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
 
     /* Initialisations */
     const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
-    const double t2 = t * t;
 
     /* Corps de la methode */
-    const double obliquite = ARCSEC2RAD * (84381.448 - 46.815 * t - 0.00059 * t2 + 0.001813 * t * t2);
+    const double om = DEG2RAD * Maths::modulo(125.04 - 1934.136 * t, T360);
+    const double x = vecteur.getX() - DEG2RAD * 0.00478 * sin(om);
+    const double obliquite = ARCSEC2RAD * (84381.448 - t * (46.815 - t * (0.00059 - 0.001813 * t)));
     const double cb = cos(vecteur.getY());
     const double sb = sin(vecteur.getY());
     const double ce = cos(obliquite);
     const double se = sin(obliquite);
-    const double xx = vecteur.getZ() * cb * sin(vecteur.getX());
+    const double xx = vecteur.getZ() * cb * sin(x);
 
     /* Retour */
-    return Vecteur3D(vecteur.getZ() * cb * cos(vecteur.getX()), xx * ce - vecteur.getZ() * se * sb,
-                     xx * se + vecteur.getZ() * ce * sb);
+    return Vecteur3D(vecteur.getZ() * cb * cos(x), xx * ce - vecteur.getZ() * se * sb, xx * se + vecteur.getZ() * ce * sb);
 }
 
 /*

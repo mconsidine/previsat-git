@@ -3421,42 +3421,42 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Deletion of the TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="217"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="212"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="220"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="215"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="220"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="215"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="223"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="218"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="223"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="218"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="226"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="221"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="226"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="221"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning decrescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="229"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="224"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>

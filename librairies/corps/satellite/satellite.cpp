@@ -158,6 +158,8 @@ void Satellite::CalculMagnitude(const Observateur &observateur, const bool extin
         // Magnitude
         if (_magnitudeStandard < 99.) {
             _magnitude = _magnitudeStandard - 15.75 + 2.5 * log10(_distance * _distance / _fractionIlluminee);
+
+            // Prise en compte de l'extinction atmospherique
             if (extinction) {
                 _magnitude += ExtinctionAtmospherique(observateur);
             }

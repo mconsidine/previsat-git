@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 novembre 2014
  *
  */
 
@@ -167,8 +167,9 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
         _ix = -d * hn.getY();
         _iy = d * hn.getX();
 
-        const double cl = (position.getX() - d * position.getZ() * hn.getX()) / p;
-        const double sl = (position.getY() - d * position.getZ() * hn.getY()) / p;
+        const double temp4 = d * position.getZ();
+        const double cl = (position.getX() - temp4 * hn.getX()) / p;
+        const double sl = (position.getY() - temp4 * hn.getY()) / p;
         _argumentLongitudeVraie = atan2(sl, cl);
         if (_argumentLongitudeVraie < 0.)
             _argumentLongitudeVraie += DEUX_PI;
@@ -194,7 +195,8 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
         const double xs = position * s;
 
         const double bt = 1. / (1. + tmp0);
-        const double ae = atan2(xs / _demiGrandAxe + _eyCirc - se * bt * _exCirc, xr / _demiGrandAxe + _exCirc - se * bt * _eyCirc);
+        const double temp5 = se * bt;
+        const double ae = atan2(xs / _demiGrandAxe + _eyCirc - temp5 * _exCirc, xr / _demiGrandAxe + _exCirc - temp5 * _eyCirc);
         _pso = ae - _exCirc * sin(ae) + _eyCirc * cos(ae);
         if (_pso < 0.)
             _pso += DEUX_PI;
