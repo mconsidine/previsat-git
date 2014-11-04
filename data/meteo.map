@@ -59,12 +59,27 @@
             var listeMots = {
                 en: {
                     clouds: 'Clouds',
-                    city: 'Cities'
+                    city: 'Cities',
+                    precipitation: 'Precipitation',
+                    rain: 'Rain',
+                    snow: 'Snow',
+                    temp: 'Temperature',
+                    windspeed: 'Wind Speed',
+                    pressure: 'Pressure',
+                    presscont: 'Pressure Contour'
                 },
 
                 fr: {
                     clouds: 'Nuages',
-                    city: 'Villes'
+                    city: 'Villes',
+                    clouds: 'Nuages',
+                    precipitation: 'Précipitations',
+                    rain: 'Pluie',
+                    snow: 'Neige',
+                    temp: 'Température',
+                    windspeed: 'Vitesse du vent',
+                    pressure: 'Pression de l\'air',
+                    presscont: 'Isobares'
                 }
             };
 
@@ -77,31 +92,43 @@
 
         var map;
 
-	    var mapquestUrl = "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
-		    mapquestSubDomains = ["otile1","otile2","otile3","otile4"],
-		    mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
-		    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
+        var mapquestUrl = "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
+            mapquestSubDomains = ["otile1","otile2","otile3","otile4"],
+            mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
+            mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
 
         var langue = getLocalLanguage();
 
         var clouds = L.OWM.clouds({opacity: 0.8});
-    	var OWM_API_KEY = '06aac0fd4ba239a20d824ef89602f311';
-	    var city = L.OWM.current({intervall: 15, imageLoadingUrl: 'http://astropedia.free.fr/previsat/html/owmloading.gif', lang: langue, minZoom: 5,
-			appId: OWM_API_KEY});
+        var precipitation = L.OWM.precipitation( {opacity: 0.5} );
+        var rain = L.OWM.rain({opacity: 0.5});
+        var snow = L.OWM.snow({opacity: 0.5});
+        var pressure = L.OWM.pressure({opacity: 0.4});
+        var pressurecntr = L.OWM.pressureContour({opacity: 0.5});
+        var temp = L.OWM.temperature({opacity: 0.5});
+        var wind = L.OWM.wind({opacity: 0.5});
+
+        var OWM_API_KEY = '06aac0fd4ba239a20d824ef89602f311';
+        var city = L.OWM.current({intervall: 15, imageLoadingUrl: 'http://astropedia.free.fr/previsat/html/owmloading.gif', lang: langue, minZoom: 5,
+            appId: OWM_API_KEY});
 
         map = L.map('map', {
-		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
-		    layers: [mapquest, clouds, city]
-	    });
+            center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
+            layers: [mapquest, clouds, city]
+        });
 
         var overlayMaps = {};
-	    overlayMaps[traduction('Nuages', langue)] = clouds;
-	    overlayMaps[traduction('Villes', langue)] = city;
+        overlayMaps[traduction('clouds', langue)] = clouds;
+        overlayMaps[traduction('city', langue)] = city;
+        overlayMaps[traduction('precipitation', langue)] = precipitation;
+        overlayMaps[traduction('rain', langue)] = rain;
+        overlayMaps[traduction('snow', langue)] = snow;
+        overlayMaps[traduction('temp', langue)] = temp;
+        overlayMaps[traduction('windspeed', langue)] = wind;
+        overlayMaps[traduction('pressure', langue)] = pressure;
+        overlayMaps[traduction('presscont', langue)] = pressurecntr;
 
-        var baseMaps = {
-		    "Mapquest Open": mapquest
-	    };
-	    var layerControl = L.control.layers("", overlayMaps, {collapsed: false}).addTo(map);
+        var layerControl = L.control.layers("", overlayMaps, {collapsed: false}).addTo(map);
 
     </script>
 </body>
