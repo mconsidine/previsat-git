@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er novembre 2014
+ * >    7 novembre 2014
  *
  */
 
@@ -8662,7 +8662,14 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
 
-        CalculAgeTLETransitISS();
+        if (ficTLETransit.isEmpty()) {
+            ui->ageTLETransit->setVisible(false);
+            ui->lbl_ageTLETransit->setVisible(false);
+        } else {
+            CalculAgeTLETransitISS();
+            ui->ageTLETransit->setVisible(true);
+            ui->lbl_ageTLETransit->setVisible(true);
+        }
     }
 
     /* Retour */
@@ -8699,7 +8706,14 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
 
-        CalculAgeTLETransitISS();
+        if (ficTLETransit.isEmpty()) {
+            ui->ageTLETransit->setVisible(false);
+            ui->lbl_ageTLETransit->setVisible(false);
+        } else {
+            CalculAgeTLETransitISS();
+            ui->ageTLETransit->setVisible(true);
+            ui->lbl_ageTLETransit->setVisible(true);
+        }
 
     } else {
     }
@@ -10152,10 +10166,16 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                     idxft = index;
                 }
             }
-            if (!ficTLETransit.isEmpty()) {
+
+            if (ficTLETransit.isEmpty()) {
+                ui->ageTLETransit->setVisible(false);
+                ui->lbl_ageTLETransit->setVisible(false);
+            } else {
                 const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
                 ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
                 CalculAgeTLETransitISS();
+                ui->ageTLETransit->setVisible(true);
+                ui->lbl_ageTLETransit->setVisible(true);
             }
         }
 
