@@ -60,20 +60,16 @@
                 en: {
                     clouds: 'Clouds',
                     city: 'Cities',
-                    precipitation: 'Precipitation',
                     rain: 'Rain',
                     snow: 'Snow',
                     temp: 'Temperature',
                     windspeed: 'Wind Speed',
-                    pressure: 'Pressure',
                     presscont: 'Pressure Contour'
                 },
 
                 fr: {
                     clouds: 'Nuages',
                     city: 'Villes',
-                    clouds: 'Nuages',
-                    precipitation: 'Précipitations',
                     rain: 'Pluie',
                     snow: 'Neige',
                     temp: 'Température',
