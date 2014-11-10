@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    24 octobre 2014
+# >    9 novembre 2014
 
 #-------------------------------------------------
 VER_MAJ = 3.4
-VERSION = 3.4.0.4
+VERSION = 3.4.0.5
 ANNEES_DEV = 2005-2014
 ZLIB_DIR = $$PWD/inc/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -65,7 +65,7 @@ win32 {
 }
 
 mac {
-    LIBS += -L$$PWD/lib -lz
+    LIBS += -lz
     ICON = resources/icone.icns
 }
 
