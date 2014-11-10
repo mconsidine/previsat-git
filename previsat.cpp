@@ -535,6 +535,8 @@ void PreviSat::ChargementConfig()
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
     ui->frameCtrlVideo->setVisible(false);
+    ui->lbl_chaine->setVisible(false);
+    ui->chaine->setVisible(false);
     ui->fluxVideoHtml->setVisible(false);
     ui->fluxVideo->raise();
 
@@ -999,8 +1001,13 @@ void PreviSat::DemarrageApplication()
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
     ui->frameLat2->setVisible(affWCC);
-    isEcl = false;
 
+#if defined (Q_OS_MAC)
+    ui->lbl_chaine->setVisible(ui->mccISS->isChecked());
+    ui->chaine->setVisible(ui->mccISS->isChecked());
+#endif
+
+    isEcl = false;
     on_affBetaWCC_toggled(false);
     on_affNbOrbWCC_toggled(false);
     ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
@@ -4862,7 +4869,11 @@ void PreviSat::GestionTempsReel()
         }
     }
 
+#ifndef Q_OS_MAC
+    ui->lbl_chaine->setVisible(ui->fluxVideoHtml->isVisible());
+    ui->chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->frameCtrlVideo->setVisible(ui->fluxVideoHtml->isVisible());
+#endif
 
     /* Retour */
     return;
@@ -6421,6 +6432,13 @@ void PreviSat::on_fluxVideo_clicked()
                                        "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
 
         setCursor(Qt::ArrowCursor);
+
+#if defined (Q_OS_MAC)
+        ui->lbl_chaine->setVisible(true);
+        ui->chaine->setVisible(true);
+        QDesktopServices::openUrl(QUrl(fic));
+#else
+
         ui->fluxVideo->setText(tr("Veuillez patienter..."));
         ui->fluxVideo->repaint();
         ui->lbl_video->raise();
@@ -6439,6 +6457,7 @@ void PreviSat::on_fluxVideo_clicked()
         // Chargement de la video
         QUrl url(fic);
         url.setScheme("");
+        ui->fluxVideoHtml->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
         ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
         ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
         ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
@@ -6450,6 +6469,7 @@ void PreviSat::on_fluxVideo_clicked()
         ui->lbl_video->setVisible(false);
 
         viewLiveISS = new QWebView;
+        viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
         viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
         viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
         viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
@@ -6459,6 +6479,7 @@ void PreviSat::on_fluxVideo_clicked()
 
         viewLiveISS->load(url);
         afficherVideo->setCentralWidget(viewLiveISS);
+#endif
 
     } catch (PreviSatException &e) {
     }
@@ -6482,6 +6503,8 @@ void PreviSat::on_fermerVideo_clicked()
     StopVideoHttp();
 
     ui->frameCtrlVideo->setVisible(false);
+    ui->lbl_chaine->setVisible(false);
+    ui->chaine->setVisible(false);
     ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
     ui->fluxVideo->raise();
     ui->fluxVideo->setVisible(true);
@@ -6498,13 +6521,17 @@ void PreviSat::StopVideoHttp()
     /* Initialisations */
 
     /* Corps de la methode */
-    ui->fluxVideoHtml->settings()->clearMemoryCaches();
+    ui->fluxVideoHtml->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, false);
+    ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
+    ui->fluxVideoHtml->page()->settings()->clearMemoryCaches();
     ui->fluxVideoHtml->setUrl(QUrl("blank.html"));
     ui->fluxVideoHtml->reload();
     ui->fluxVideoHtml->setVisible(false);
 
     if (viewLiveISS != NULL) {
-        viewLiveISS->settings()->clearMemoryCaches();
+        viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, false);
+        viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
+        viewLiveISS->page()->settings()->clearMemoryCaches();
         viewLiveISS->setUrl(QUrl("blank.html"));
         viewLiveISS->reload();
     }
@@ -6607,6 +6634,7 @@ void PreviSat::on_actionEnregistrer_activated()
 #endif
         const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
                                                              tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+
         if (!fichier.isEmpty()) {
             switch (ui->onglets->currentIndex()) {
             case 0:
@@ -9009,8 +9037,10 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
 #else
     const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
 #endif
+
     QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut,
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+
     if (!fichier.isEmpty()) {
         fichier = QDir::convertSeparators(fichier);
         ui->nomFichierPerso->setText(fichier);

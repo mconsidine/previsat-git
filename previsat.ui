@@ -2513,7 +2513,7 @@
            <bool>true</bool>
           </property>
           <property name="toolTip">
-           <string>Météo</string>
+           <string>Météo du lieu d'observation</string>
           </property>
           <property name="text">
            <string/>
@@ -12948,35 +12948,35 @@
              <bool>true</bool>
             </property>
            </widget>
-           <widget class="QSpinBox" name="chaine">
-            <property name="geometry">
-             <rect>
-              <x>85</x>
-              <y>2</y>
-              <width>42</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>2</number>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_chaine">
-            <property name="geometry">
-             <rect>
-              <x>40</x>
-              <y>4</y>
-              <width>46</width>
-              <height>13</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Chaîne :</string>
-            </property>
-           </widget>
+          </widget>
+          <widget class="QLabel" name="lbl_chaine">
+           <property name="geometry">
+            <rect>
+             <x>95</x>
+             <y>4</y>
+             <width>46</width>
+             <height>13</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Chaîne :</string>
+           </property>
+          </widget>
+          <widget class="QSpinBox" name="chaine">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>2</y>
+             <width>42</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>2</number>
+           </property>
           </widget>
          </widget>
          <widget class="QWebView" name="fluxVideoHtml">
