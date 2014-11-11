@@ -20,107 +20,15 @@
 
     <script src="http://leafletjs.com/dist/leaflet.js"></script>
     <script src="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.js"></script>
+    <script src="http://astropedia.free.fr/previsat/html/map.js"></script>
     <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.css" />
+    <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/map.css" />
     <script>
-
-        function getLocalLanguage() {
-            var lang = null;
-
-            // 1. try to read URL parameter 'lang'
-            var qs = window.location.search;
-            if (qs) {
-                if (qs.substring(0, 1) == '?') {
-                    qs = qs.substring(1)
-                }
-                var params = qs.split('&')
-                for(var i = 0; i < params.length; i++) {
-                    var keyvalue = params[i].split('=');
-                    if (keyvalue[0] == 'lang') {
-                        lang = keyvalue[1];
-                        break;
-                    }
-                }
-            }
-
-            // 2. try to get browser or system language
-            if (!lang) {
-                var tmp = window.navigator.userLanguage || window.navigator.language;
-                lang = tmp.split('-')[0];
-            }
-
-            // Use only supported languages, defaults to 'en'
-            if (lang != 'en' && lang != 'fr') {
-                lang = 'en';
-            }
-            return lang;
-        }
-
-        function traduction(key, lang) {
-            var listeMots = {
-                en: {
-                    clouds: 'Clouds',
-                    city: 'Cities',
-                    rain: 'Rain',
-                    snow: 'Snow',
-                    temp: 'Temperature',
-                    windspeed: 'Wind Speed',
-                    presscont: 'Pressure Contour'
-                },
-
-                fr: {
-                    clouds: 'Nuages',
-                    city: 'Villes',
-                    rain: 'Pluie',
-                    snow: 'Neige',
-                    temp: 'Température',
-                    windspeed: 'Vitesse du vent',
-                    presscont: 'Isobares'
-                }
-            };
-
-            if (typeof listeMots[lang] != 'undefined'
-                    && typeof listeMots[lang][key] != 'undefined') {
-                return  listeMots[lang][key];
-            }
-            return key;
-        }
-
-        var map;
-
-        var mapquestUrl = "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
-            mapquestSubDomains = ["otile1","otile2","otile3","otile4"],
-            mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
-            mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
-
-        var langue = getLocalLanguage();
-
-        var clouds = L.OWM.clouds({opacity: 0.8, legendImagePath: 'http://astropedia.free.fr/previsat/html/NT2.png'});
-        var raincls = L.OWM.rainClassic({opacity: 0.5});
-        var snow = L.OWM.snow({opacity: 0.5});
-        var pressurecntr = L.OWM.pressureContour({opacity: 0.5});
-        var temp = L.OWM.temperature({opacity: 0.5});
-        var wind = L.OWM.wind({opacity: 0.5});
-
-        var OWM_API_KEY = '06aac0fd4ba239a20d824ef89602f311';
-        var city = L.OWM.current({intervall: 15, imageLoadingUrl: 'http://astropedia.free.fr/previsat/html/owmloading.gif', lang: langue, minZoom: 5,
-            appId: OWM_API_KEY});
-
-        map = L.map('map', {
-            center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
-            layers: [mapquest, clouds, city]
-        });
-
-        var overlayMaps = {};
-        overlayMaps[traduction('city', langue)] = city;
-        overlayMaps[traduction('clouds', langue)] = clouds;
-        overlayMaps[traduction('rain', langue)] = raincls;
-        overlayMaps[traduction('snow', langue)] = snow;
-        overlayMaps[traduction('temp', langue)] = temp;
-        overlayMaps[traduction('windspeed', langue)] = wind;
-        overlayMaps[traduction('presscont', langue)] = pressurecntr;
-
-        var layerControl = L.control.layers("", overlayMaps, {collapsed: false}).addTo(map);
-
+        var lon = LONGITUDE_CENTRE;
+        var lat = LATITUDE_CENTRE;
+        var uniteTemp = 'UNITE_TEMP';
+        var uniteVent = 'UNITE_VENT';
+        initMap(lon, lat, uniteTemp, uniteVent);
     </script>
 </body>
 </html>
