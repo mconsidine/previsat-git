@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 novembre 2014
+ * >    11 novembre 2014
  *
  */
 
@@ -3864,10 +3864,14 @@ void PreviSat::VerifMAJPreviSat()
                 const QStringList newVersion = ligne.split(".");
                 const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
 
-                for(int i=0; i<oldVersion.count()-1; i++) {
-                    if (oldVersion.at(i).toInt() < newVersion.at(i).toInt())
-                        anew = true;
+                int inew[4], iold[4];
+                for(int i=0; i<4; i++) {
+                    inew[i] = newVersion.at(i).toInt();
+                    iold[i] = oldVersion.at(i).toInt();
                 }
+
+                anew = std::lexicographical_compare(iold, iold + 4, inew, inew + 4);
+
                 if (anew) {
                     MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, tr("de ") + QCoreApplication::applicationName());
                     settings.setValue("fichier/majPrevi", "1");
@@ -3889,14 +3893,18 @@ void PreviSat::VerifMAJPreviSat()
 
                 dirDwn = dirDat;
 
+                QDateTime dateMax;
                 for(int i=0; i<fichiers.size(); i++) {
 
                     const QString fich = dirDat + QDir::separator() + fichiers.at(i);
                     const QFileInfo fi2(fich);
 
-                    if (fi2.lastModified() < dateHttp)
-                        anew = true;
+                    if (fi2.lastModified().date() > dateMax.date())
+                        dateMax.setDate(fi2.lastModified().date());
                 }
+
+                anew = (dateHttp > dateMax);
+
                 if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
                     MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, tr("des fichiers internes"));
                     settings.setValue("fichier/majPrevi", "1");
@@ -6231,7 +6239,9 @@ void PreviSat::on_meteo_clicked()
 
     const QString lon(QString::number(-observateurs.at(0).getLongitude() * RAD2DEG));
     const QString lat(QString::number(observateurs.at(0).getLatitude() * RAD2DEG));
-    map0 = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat);
+    map0 = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
+            .replace("UNITE_TEMP", (ui->unitesKm->isChecked()) ? "C" : "F")
+            .replace("UNITE_VENT", (ui->unitesKm->isChecked()) ? "kmh" : "mph");
 
     QFile fi2(dirTmp + QDir::separator() + "meteo.html");
     fi2.open(QIODevice::WriteOnly | QIODevice::Text);
