@@ -235,6 +235,7 @@ static QMainWindow *afficherMeteo;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
+static QStringList listeFicLocalData;
 
 // Interface graphique
 QPalette paletteDefaut;
@@ -307,6 +308,9 @@ void PreviSat::ChargementConfig()
     selec2 = 0;
     paletteDefaut = palette();
     tim = QDateTime();
+
+    listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" << "ISS-Live1.html"
+                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" << "stations.sta" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -962,6 +966,7 @@ void PreviSat::DemarrageApplication()
     move(0, 0);
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
     ui->frameCarteListe->resize(ui->frameCarte->size());
+
     if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi < xmax && yPrevi < ymax)
         showMaximized();
     else
@@ -3887,16 +3892,12 @@ void PreviSat::VerifMAJPreviSat()
 
                 const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
 
-                const QStringList fichiers(QStringList () <<  "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" <<
-                                           "iridium.sts" << "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" <<
-                                           "resultat.map" << "stations.sta" << "tdrs.sat");
-
                 dirDwn = dirDat;
 
                 QDateTime dateMax;
-                for(int i=0; i<fichiers.size(); i++) {
+                for(int i=0; i<listeFicLocalData.size(); i++) {
 
-                    const QString fich = dirDat + QDir::separator() + fichiers.at(i);
+                    const QString fich = dirDat + QDir::separator() + listeFicLocalData.at(i);
                     const QFileInfo fi2(fich);
 
                     if (fi2.lastModified().date() > dateMax.date())
@@ -6853,11 +6854,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
 
     /* Corps de la methode */
-    const QStringList listeFic(QStringList () << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                               "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" <<
-                               "stations.sta" << "tdrs.sat");
-
-    foreach(QString fic, listeFic) {
+    foreach(QString fic, listeFicLocalData) {
         QString ficMaj = dirHttpPrevi + fic;
         TelechargementFichier(ficMaj, false);
     }

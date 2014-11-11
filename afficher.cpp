@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    11 novembre 2014
  *
  */
 
@@ -125,6 +125,9 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     if (x() < 0 || y() < 0)
         move(0, 0);
+
+    if (!(xAff < xmax && yAff < ymax))
+        resize(xAff, yAff);
 
     // Redimensionnement de la fenetre si necessaire
     if (xAff > xmax)
