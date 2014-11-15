@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er juin 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -71,7 +71,6 @@ public:
                                             const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites);
     void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
     void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
-    double ExtinctionAtmospherique(const Observateur &observateur);
     bool hasAOS(const Observateur &observateur) const;
     bool isGeo() const;
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);

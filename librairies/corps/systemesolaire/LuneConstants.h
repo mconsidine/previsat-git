@@ -36,14 +36,29 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    14 novembre 2014
  *
  */
 
 #ifndef LUNECONSTANTS_H
 #define LUNECONSTANTS_H
 
+#include "librairies/maths/mathConstants.h"
+
 // Rayon equatorial lunaire (km)
 static const double RAYON_LUNAIRE = 1738.;
+
+// Pour le calcul de la magnitude
+static const double THETA = 20. * DEG2RAD;
+static const double B0 = 2.01;
+static const double H = 0.07;
+static const double P0 = 1.68;
+static const double W0 = 0.21;
+
+static const double GA = sqrt(1. - W0);
+static const double R0 = (1. - GA) / (1. + GA);
+static const double R2 = R0 * R0;
+static const double R0S2 = 0.5 * R0;
+static const double W0S8 = 0.125 * W0;
 
 #endif // LUNECONSTANTS_H

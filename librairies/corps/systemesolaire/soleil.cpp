@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -106,8 +106,8 @@ void Soleil::CalculPosition(const Date &date)
     _distanceUA = ax * (1. - e * cos(u));
 
     // Longitude apparente
-    const double lApp = lp + v - DEG2RAD * 0.00569;
-    const Vecteur3D pos(lApp, 0., _distanceUA);
+    _lonEcl = lp + v - DEG2RAD * 0.00569;
+    const Vecteur3D pos(_lonEcl, 0., _distanceUA);
 
     // Position cartesienne equatoriale
     _position = Sph2Cart(pos, date) * UA2KM;
