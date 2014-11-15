@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -325,6 +325,29 @@ void Corps::CalculZoneVisibilite(const double beta)
 }
 
 /*
+ * Determination de l'extinction atmospherique, issu de l'article
+ * "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
+ */
+double Corps::ExtinctionAtmospherique(const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    double corr = 0.;
+
+    /* Corps de la methode */
+    if (_hauteur >= 0.) {
+
+        const double cosz = cos(PI_SUR_DEUX - _hauteur);
+        const double x = 1. / (cosz + 0.025 * exp(-11. * cosz));
+        corr = x * (0.016 + observateur.getAray() + observateur.getAaer());
+    }
+
+    /* Retour */
+    return (corr);
+}
+
+/*
  * Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
  */
 Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
@@ -469,6 +492,11 @@ double Corps::getLatitude() const
 double Corps::getLongitude() const
 {
     return _longitude;
+}
+
+double Corps::getLonEcl() const
+{
+    return _lonEcl;
 }
 
 Vecteur3D Corps::getPosition() const

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -177,10 +177,10 @@ void Lune::CalculPosition(const Date &date)
 
     // Coordonnees ecliptiques en repere spherique
     const double temp = DEG2RAD * 1.e-6;
-    const double lv = ll + temp * l0;
-    const double bt = temp * b0;
+    _lonEcl = ll + temp * l0;
+    _latEcl = temp * b0;
     const double rp = 385000.56 + r0 * 1.e-3;
-    const Vecteur3D pos(lv, bt, rp);
+    const Vecteur3D pos(_lonEcl, _latEcl, rp);
 
     // Position cartesienne equatoriale
     _position = Sph2Cart(pos, date);
@@ -227,10 +227,68 @@ void Lune::CalculPhase(const Soleil &soleil)
     return;
 }
 
+void Lune::CalculMagnitude(const Soleil &soleil, const Observateur &observateur, const bool extinction)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double distance = _distance / UA2KM;
+    const double distsol = soleil.getDistanceUA();
+    const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.getLonEcl());
+    double angPha = fmod(atan(distsol * sqrt(1. - cospsi * cospsi) / (distance - distsol * cospsi)), PI);
+    if (angPha < 0.)
+        angPha += PI;
+
+    /* Corps de la methode */
+    const double cosang = cos(angPha);
+    const double angs2 = 0.5 * angPha;
+    const double tanAngs2 = tan(angs2);
+    const double b = B0 / (1. + tanAngs2 / H);
+
+    const double z = tan(THETA) * tanAngs2;
+    double fCorr = 1.;
+    if (angPha < 1.45) {
+        fCorr = (((((0.4619942495 * angPha - 1.9799023103) * angPha + 3.2706222793) * angPha - 2.3757732575) * angPha + 0.7066275224) *
+                 angPha - 0.2148362906) * angPha + 1.0037993467;
+    } else if (angPha >= 1.45 && angPha < 2.4) {
+        fCorr = (((((62.0366249494 * angPha - 685.3561374672) * angPha + 3125.5094770692) * angPha - 7538.4095328747) * angPha +
+                10151.6795059045) * angPha - 7242.8081201613) * angPha + 2140.9898221829;
+    } else if (angPha >= 2.4 && angPha < 2.88) {
+        fCorr = (((((-1.2780230784 * angPha + 20.9856806508) * angPha - 139.5520707759) * angPha + 474.9063054183) * angPha -
+                851.1923961614) * angPha + 720.4059560648) * angPha - 187.0773024225;
+    } else {
+        fCorr = (((((194.303476382 * angPha - 3472.9895343356) * angPha + 25865.444540608) * angPha - 102742.044141574) * angPha +
+                229573.277184166) * angPha - 273606.243897778) * angPha + 135882.646837775;
+    }
+
+    const double kappa = exp(-THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
+
+    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 / 6.;
+    const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
+    const double phi = (W0S8 * ((1. + b) * ppi - 1.) + R0S2 * (1. - R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
+                        DEUX_TIERS * R2 / PI * (sin(angPha) + (PI - angPha) * cosang)) / p;
+
+    const double dm = kappa * phi;
+
+    _magnitude = 0.21 + 5. * log10(distance * distsol) - 2.5 * log10(dm);
+
+    if (extinction)
+        _magnitude += ExtinctionAtmospherique(observateur);
+
+    /* Retour */
+    return;
+}
+
+
 /* Accesseurs */
 double Lune::getFractionIlluminee() const
 {
     return _fractionIlluminee;
+}
+
+double Lune::getMagnitude() const
+{
+    return _magnitude;
 }
 
 QString Lune::getPhase() const

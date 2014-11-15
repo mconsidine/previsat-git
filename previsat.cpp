@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 novembre 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -1559,6 +1559,10 @@ void PreviSat::AffichageDonnees()
         ui->illuminationLune->setText(chaine);
         ui->phaseLune->setText(lune.getPhase());
 
+        // Magnitude de la Lune
+        chaine = "%1";
+        chaine = chaine.arg(lune.getMagnitude(), 0, 'f', 2);
+        ui->magnitudeLune->setText(chaine);
 
         /*
          * Affichage des donnees sur l'onglet Elements Osculateurs
@@ -2157,8 +2161,10 @@ void PreviSat::AffichageCourbes() const
                     ui->frameLat2->setVisible(false);
                 }
             }
+
         } else {
             ui->frameLat->setVisible(false);
+            ui->frameLat2->setVisible(false);
             ui->frameLon->setVisible(false);
         }
 
@@ -3642,10 +3648,15 @@ void PreviSat::EnchainementCalculs() const
          * Position de la Lune
          */
         lune.CalculPosition(dateCourante);
+
+        // Calcul de la phase lunaire
         lune.CalculPhase(soleil);
 
         // Coordonnees topocentriques
         lune.CalculCoordHoriz(observateurs.at(0));
+
+        // Calcul de la magnitude de la Lune
+        lune.CalculMagnitude(soleil, observateurs.at(0), extinction);
 
         if (!ui->carte->isHidden()) {
 
@@ -4260,6 +4271,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
         flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
         flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
+        flux << tr("Magnitude :") + " " + ui->magnitudeLune->text() << endl;
 
         sw.close();
     } catch (PreviSatException &e) {
@@ -4789,6 +4801,32 @@ void PreviSat::GestionTempsReel()
     Date date1, date2;
 
     /* Initialisations */
+    if (afficherMeteo != NULL && !afficherMeteo->isVisible()) {
+
+        if (viewMeteo != NULL) {
+            viewMeteo->deleteLater();
+            viewMeteo = NULL;
+        }
+
+        if (viewMeteoNASA != NULL) {
+            viewMeteoNASA->deleteLater();
+            viewMeteoNASA = NULL;
+        }
+
+        afficherMeteo->deleteLater();
+        afficherMeteo = NULL;
+    }
+
+    if (afficherVideo != NULL && !afficherVideo->isVisible()) {
+
+        if (viewLiveISS != NULL) {
+            viewLiveISS->deleteLater();
+            viewLiveISS = NULL;
+        }
+
+        afficherVideo->deleteLater();
+        afficherVideo = NULL;
+    }
 
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
@@ -5283,6 +5321,15 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         settings.setValue("fichier/majPrevi", "0");
 
     EcritureListeRegistre();
+
+    if (afficherResultats != NULL)
+        afficherResultats->close();
+
+    if (afficherMeteo != NULL)
+        afficherMeteo->close();
+
+    if (afficherVideo != NULL)
+        afficherVideo->close();
 
     /* Retour */
     return;
@@ -6185,8 +6232,21 @@ void PreviSat::on_meteo_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherMeteo != NULL)
-        afficherMeteo->close();
+    if (afficherMeteo != NULL) {
+
+        if (viewMeteoNASA != NULL) {
+            viewMeteoNASA->deleteLater();
+            viewMeteoNASA = NULL;
+        }
+
+        if (viewMeteo != NULL) {
+            viewMeteo->deleteLater();
+            viewMeteo = NULL;
+        }
+
+        afficherMeteo->deleteLater();
+        afficherMeteo = NULL;
+    }
 
     /* Corps de la methode */
     afficherMeteo = new QMainWindow;
@@ -6267,8 +6327,21 @@ void PreviSat::on_meteoBasesNASA_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherMeteo != NULL)
-        afficherMeteo->close();
+    if (afficherMeteo != NULL) {
+
+        if (viewMeteoNASA != NULL) {
+            viewMeteoNASA->deleteLater();
+            viewMeteoNASA = NULL;
+        }
+
+        if (viewMeteo != NULL) {
+            viewMeteo->deleteLater();
+            viewMeteo = NULL;
+        }
+
+        afficherMeteo->deleteLater();
+        afficherMeteo = NULL;
+    }
 
     /* Corps de la methode */
     afficherMeteo = new QMainWindow;
@@ -9580,7 +9653,8 @@ void PreviSat::on_afficherPrev_clicked()
     /* Corps de la methode */
     QStringList result = threadCalculs->getRes();
     afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
-    afficherResultats->setWindowTitle(tr("Prévisions de passage des satellites"));
+    afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
+                                      tr("Prévisions de passage des satellites"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -9926,7 +10000,8 @@ void PreviSat::on_afficherIri_clicked()
     /* Corps de la methode */
     QStringList result = threadCalculs->getRes();
     afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
-    afficherResultats->setWindowTitle(tr("Prévisions des flashs Iridium"));
+    afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
+                                      tr("Prévisions des flashs Iridium"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -10151,7 +10226,8 @@ void PreviSat::on_afficherEvt_clicked()
     /* Corps de la methode */
     QStringList result = threadCalculs->getRes();
     afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
-    afficherResultats->setWindowTitle(tr("Évènements orbitaux"));
+    afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
+                                      tr("Évènements orbitaux"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -10430,7 +10506,8 @@ void PreviSat::on_afficherTransit_clicked()
     /* Corps de la methode */
     QStringList result = threadCalculs->getRes();
     afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
-    afficherResultats->setWindowTitle(tr("Transits ISS"));
+    afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
+                                      tr("Transits ISS"));
     afficherResultats->show(ficRes);
     result.clear();
 

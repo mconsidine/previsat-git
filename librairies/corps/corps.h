@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -68,6 +68,7 @@ public:
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
     void CalculZoneVisibilite(const double beta);
+    double ExtinctionAtmospherique(const Observateur &observateur);
     Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
 
     /* Accesseurs */
@@ -81,6 +82,7 @@ public:
     double getHauteur() const;
     double getLatitude() const;
     double getLongitude() const;
+    double getLonEcl() const;
     Vecteur3D getPosition() const;
     double getRangeRate() const;
     bool isVisible() const;
@@ -110,6 +112,10 @@ protected:
     double _longitude;
     double _latitude;
     double _altitude;
+
+    // Coordonnees ecliptiques
+    double _lonEcl;
+    double _latEcl;
 
     bool _visible;
     double _rangeRate;

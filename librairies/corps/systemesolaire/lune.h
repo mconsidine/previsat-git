@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    14 novembre 2014
  *
  */
 
@@ -59,9 +59,11 @@ public:
     /* Methodes publiques */
     void CalculPosition(const Date &date);
     void CalculPhase(const Soleil &soleil);
+    void CalculMagnitude(const Soleil &soleil, const Observateur &observateur, const bool extinction);
 
     /* Accesseurs */
     double getFractionIlluminee() const;
+    double getMagnitude() const;
     QString getPhase() const;
 
 
@@ -80,6 +82,7 @@ private:
 
     /* Variables privees */
     double _fractionIlluminee;
+    double _magnitude;
     QString _phase;
 
     /* Methodes privees */
