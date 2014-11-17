@@ -9356,7 +9356,7 @@
                <string>Lieux sélectionnés :</string>
               </property>
              </widget>
-             <widget class="QPushButton" name="creationLieu">
+             <widget class="QToolButton" name="creationLieu">
               <property name="geometry">
                <rect>
                 <x>332</x>
@@ -9374,11 +9374,11 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="flat">
+              <property name="autoRaise">
                <bool>true</bool>
               </property>
              </widget>
-             <widget class="QPushButton" name="creationCategorie">
+             <widget class="QToolButton" name="creationCategorie">
               <property name="geometry">
                <rect>
                 <x>155</x>
@@ -9396,7 +9396,7 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="flat">
+              <property name="autoRaise">
                <bool>true</bool>
               </property>
              </widget>
