@@ -29,8 +29,7 @@
    </size>
   </property>
   <property name="font">
-   <font>
-   </font>
+   <font/>
   </property>
   <property name="windowTitle">
    <string>Gestionnaire de téléchargement des TLE</string>
@@ -50,8 +49,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Groupe de TLE :</string>
@@ -67,8 +65,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="contextMenuPolicy">
      <enum>Qt::CustomContextMenu</enum>
@@ -87,8 +84,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Fichiers TLE :</string>
@@ -104,8 +100,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Mise à jour automatique du groupe</string>
@@ -121,8 +116,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -140,8 +134,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
      <property name="text">
       <string>Domaine :</string>
@@ -157,8 +150,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
     </widget>
     <widget class="QLineEdit" name="nomGroupe">
@@ -171,8 +163,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_nomGroupe">
@@ -185,8 +176,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
      <property name="text">
       <string>Nom du groupe :</string>
@@ -202,8 +192,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
      <property name="text">
       <string>Liste des fichiers TLE :</string>
@@ -219,8 +208,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
      <property name="text">
       <string>Valider</string>
@@ -236,8 +224,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
      <property name="text">
       <string>Annuler</string>
@@ -253,8 +240,7 @@
       </rect>
      </property>
      <property name="font">
-      <font>
-      </font>
+      <font/>
      </property>
     </widget>
    </widget>
@@ -268,8 +254,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Fermer</string>
@@ -285,8 +270,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="mouseTracking">
      <bool>true</bool>
@@ -308,8 +292,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Age maximal des TLE (en jours) :</string>
@@ -325,8 +308,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="minimum">
      <number>1</number>
@@ -336,6 +318,50 @@
     </property>
     <property name="value">
      <number>15</number>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="creationGroupe">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>10</y>
+      <width>19</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="ajoutFichiersTLE">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>10</y>
+      <width>19</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    28 decembre 2013
+ * >    17 novembre 2014
  *
  */
 
@@ -119,8 +119,13 @@ void GestionnaireTLE::load()
     ui->ageMaxTLE->setChecked(settings.value("temps/ageMaxTLE", true).toBool());
 
     const QIcon ajout(":/resources/ajout.png");
-    ui->actionAjouter_des_fichiers->setIcon(ajout);
     ui->actionCreer_un_groupe->setIcon(ajout);
+    ui->creationGroupe->setIcon(ajout);
+    ui->creationGroupe->setToolTip(tr("Créer un groupe de TLE"));
+
+    ui->actionAjouter_des_fichiers->setIcon(ajout);
+    ui->ajoutFichiersTLE->setIcon(ajout);
+    ui->ajoutFichiersTLE->setToolTip(tr("Ajouter des fichiers TLE"));
 
     const QIcon suppr(":/resources/suppr.png");
     ui->actionSupprimer->setIcon(suppr);
@@ -331,13 +336,18 @@ void GestionnaireTLE::on_valider_clicked()
         sr.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&sr);
         QStringList list;
+        bool ajout = false;
         while (!flux.atEnd()) {
             const QString ligne = flux.readLine();
-            if (ligne.mid(0, ligne.indexOf("#")) == groupeDomaine)
+            if (ligne.mid(0, ligne.indexOf("#")) == groupeDomaine) {
                 list.append(groupeDomaine + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + "#" + listeFics);
-            else
+                ajout = true;
+            } else {
                 list.append(ligne);
+            }
         }
+        if (!ajout)
+            list.append(groupeDomaine + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + "#" + listeFics);
         sr.close();
 
         QFile sw(ficTLE);
@@ -493,7 +503,7 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
         while (!flux.atEnd()) {
             QString ligne = flux.readLine();
             if (ligne.mid(0, adresse.length()) == adresse)
-                ligne = ligne.replace(ligne.mid(ligne.lastIndexOf("#") - 1, 1), (ui->MajAutoGroupe->isChecked()) ? "1" : "0");
+                ligne[ligne.indexOf("#") + 1] = (ui->MajAutoGroupe->isChecked()) ? '1' : '0';
             flux2 << ligne << endl;
         }
         sw.close();
@@ -505,4 +515,14 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
 
     /* Retour */
     return;
+}
+
+void GestionnaireTLE::on_creationGroupe_clicked()
+{
+    on_actionCreer_un_groupe_activated();
+}
+
+void GestionnaireTLE::on_ajoutFichiersTLE_clicked()
+{
+    on_actionAjouter_des_fichiers_activated();
 }
