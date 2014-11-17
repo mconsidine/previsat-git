@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    17 novembre 2014
  *
  */
 
@@ -72,6 +72,8 @@ private slots:
     void on_actionSupprimer_activated();
     void on_listeFichiersTLE_customContextMenuRequested(const QPoint &position);
     void on_MajAutoGroupe_toggled(bool checked);
+    void on_creationGroupe_clicked();
+    void on_ajoutFichiersTLE_clicked();
 
 private:
     Ui::GestionnaireTLE *ui;
