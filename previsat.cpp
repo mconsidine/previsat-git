@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    19 novembre 2014
  *
  */
 
@@ -2444,9 +2444,10 @@ void PreviSat::AffichageCourbes() const
 
                 QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
                 QTransform transform;
-                transform.translate(llun - 7, blun - 7);
+                transform.translate(llun, blun);
                 if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                     transform.rotate(180.);
+                transform.translate(-8, -8);
                 lun->setTransform(transform);
             }
         }
@@ -2913,9 +2914,10 @@ void PreviSat::AffichageCourbes() const
 
             QGraphicsPixmapItem * const lun = scene3->addPixmap(pixlun);
             QTransform transform;
-            transform.translate(llun - 7, blun - 7);
+            transform.translate(llun, blun);
             if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                 transform.rotate(180.);
+            transform.translate(-8, -8);
             lun->setTransform(transform);
         }
 
@@ -3043,9 +3045,10 @@ void PreviSat::AffichageCourbes() const
 
             QGraphicsPixmapItem * const lun = scene2->addPixmap(pixlun);
             QTransform transform;
-            transform.translate(llun - 7, blun - 7);
+            transform.translate(llun, blun);
             if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                 transform.rotate(180.);
+            transform.translate(-8, -8);
             lun->setTransform(transform);
         }
 
