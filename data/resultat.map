@@ -42,7 +42,7 @@
                 deg++;
             }
 
-            return (((dec < 0.) ? '-' : '+') + deg + '° ' + ((min < 10) ? '0' + min : min) + "' " + ((sec < 10) ? '0' + sec : sec) + '"');
+            return (deg + '° ' + ((min < 10) ? '0' + min : min) + "' " + ((sec < 10) ? '0' + sec : sec) + '"');
         }
 
 	    var mapquestUrl = "http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
@@ -62,14 +62,16 @@
         marker.on('mouseover', function onShowPopup(e) {
                     popup
                 .setLatLng(e.latlng)
-                .setContent("NOMLIEU_CENTRE<br />CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat))
+                .setContent("NOMLIEU_CENTRE<br />CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + ' ' + ((e.latlng.lng < 0.) ? 'W' : 'E') +
+                "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat) + ' ' + ((e.latlng.lat < 0.) ? 'S' : 'N'))
                 .openOn(map);
         });
 
         map.on('click', function(e) {
                     popup
                 .setLatLng(e.latlng)
-                .setContent("CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat))
+                .setContent("CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + ' ' + ((e.latlng.lng < 0.) ? 'W' : 'E') +
+                "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat) + ' ' + ((e.latlng.lat < 0.) ? 'S' : 'N'))
                 .openOn(map);
         });
 
