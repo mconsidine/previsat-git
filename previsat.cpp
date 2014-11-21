@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 novembre 2014
+ * >    21 novembre 2014
  *
  */
 
@@ -3659,7 +3659,7 @@ void PreviSat::EnchainementCalculs() const
         lune.CalculCoordHoriz(observateurs.at(0));
 
         // Calcul de la magnitude de la Lune
-        lune.CalculMagnitude(soleil, observateurs.at(0), extinction);
+        lune.CalculMagnitude(soleil);
 
         if (!ui->carte->isHidden()) {
 
