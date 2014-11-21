@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    21 novembre 2014
  *
  */
 
@@ -59,7 +59,7 @@ public:
     /* Methodes publiques */
     void CalculPosition(const Date &date);
     void CalculPhase(const Soleil &soleil);
-    void CalculMagnitude(const Soleil &soleil, const Observateur &observateur, const bool extinction);
+    void CalculMagnitude(const Soleil &soleil);
 
     /* Accesseurs */
     double getFractionIlluminee() const;

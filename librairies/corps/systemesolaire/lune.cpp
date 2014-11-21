@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    21 novembre 2014
  *
  */
 
@@ -227,7 +227,7 @@ void Lune::CalculPhase(const Soleil &soleil)
     return;
 }
 
-void Lune::CalculMagnitude(const Soleil &soleil, const Observateur &observateur, const bool extinction)
+void Lune::CalculMagnitude(const Soleil &soleil)
 {
     /* Declarations des variables locales */
 
@@ -271,9 +271,6 @@ void Lune::CalculMagnitude(const Soleil &soleil, const Observateur &observateur,
     const double dm = kappa * phi;
 
     _magnitude = 0.21 + 5. * log10(distance * distsol) - 2.5 * log10(dm);
-
-    if (extinction)
-        _magnitude += ExtinctionAtmospherique(observateur);
 
     /* Retour */
     return;
