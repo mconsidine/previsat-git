@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2014
+ * >    24 novembre 2014
  *
  */
 
@@ -967,7 +967,7 @@ void PreviSat::DemarrageApplication()
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
     ui->frameCarteListe->resize(ui->frameCarte->size());
 
-    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi < xmax && yPrevi < ymax)
+    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi <= xmax && yPrevi <= ymax)
         showMaximized();
     else
         resize(xPrevi, yPrevi);
@@ -2626,15 +2626,18 @@ void PreviSat::AffichageCourbes() const
 
                 if (mcc) {
 
-                    // Affichage de l'icone du satellite
+                    // Affichage de l'icone du satellite a partir du numero NORAD
                     const QString nomIcone = ":/resources/icones/%1.png";
                     const int norad = satellites.at(isat).getTle().getNorad().toInt();
 
                     QPixmap img(nomIcone.arg(norad));
 
                     if (img.isNull()) {
-                        const QString nomsatm = satellites.at(isat).getTle().getNom().toLower().section(" ", 0, 0);
-                        img = QPixmap(nomIcone.arg(nomsatm));
+
+                        // Affichage de l'icone du satellite a partir du nom du satellite
+                        const QString nomsatm = satellites.at(isat).getTle().getNom().toLower();
+                        if (!(nomsatm.contains(" deb") && nomsatm.contains("r/b")))
+                            img = QPixmap(nomIcone.arg(nomsatm.section(QRegExp("[^a-z0-9]"), 0, 0)));
                     }
 
                     if (img.isNull()) {
@@ -5402,6 +5405,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         ui->N0b->move(5, ui->N0->y());
         ui->N30b->move(5, ui->N30->y());
         ui->N60b->move(5, ui->N60->y());
+        ui->frameCoordISS->move(ui->carte->pos());
     }
 
     const int dec1 = (wcc) ? 12 : 8;
@@ -6468,6 +6472,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
         ui->frameZone->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        on_fermerVideo_clicked();
     }
     ui->fluxVideo->setVisible(checked);
 
@@ -9484,7 +9490,7 @@ void PreviSat::on_calculsPrev_clicked()
     ui->afficherTransit->setVisible(false);
 
     try {
-        if (ui->liste3->count() == 0)
+        if (ui->liste2->count() == 0)
             throw PreviSatException();
 
         const int nsat = getListeItemChecked(ui->liste2);
