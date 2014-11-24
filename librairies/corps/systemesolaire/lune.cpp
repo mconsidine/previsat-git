@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2014
+ * >    24 novembre 2014
  *
  */
 
@@ -233,7 +233,7 @@ void Lune::CalculMagnitude(const Soleil &soleil)
 
     /* Initialisations */
     const double distance = _distance / UA2KM;
-    const double distsol = soleil.getDistanceUA();
+    const double distsol = soleil.getDistance() / UA2KM;
     const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.getLonEcl());
     double angPha = fmod(atan(distsol * sqrt(1. - cospsi * cospsi) / (distance - distsol * cospsi)), PI);
     if (angPha < 0.)
