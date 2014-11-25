@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 novembre 2014
+ * >    25 novembre 2014
  *
  */
 
@@ -965,6 +965,7 @@ void PreviSat::DemarrageApplication()
     /* Corps de la methode */
     move(0, 0);
     ui->frameCarte->resize(ui->frameCarte->minimumSize());
+    ui->frameCarte->resize(width() - ui->frameListe->width(), height() - ui->frameOnglets->height() - 26);
     ui->frameCarteListe->resize(ui->frameCarte->size());
 
     if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi <= xmax && yPrevi <= ymax)
@@ -5436,6 +5437,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->fluxVideo->move((ui->frameZoneVideo->width() - ui->fluxVideo->width()) / 2,
                         (ui->frameZone->height() - ui->fluxVideo->height()) / 2);
     ui->lbl_video->move(ui->fluxVideo->pos());
+    ui->lbl_chaine->move((ui->frameZoneVideo->width() - ui->lbl_chaine->width() - ui->chaine->width()) / 2, ui->lbl_chaine->y());
+    ui->chaine->move(ui->lbl_chaine->x() + 45, ui->chaine->y());
 
     ui->ciel->setGeometry(qRound(0.5 * (ui->frameCarte->width() - ui->frameCarte->height() + 30)), 20,
                           ui->frameCarte->height() - 44, ui->frameCarte->height() - 44);
