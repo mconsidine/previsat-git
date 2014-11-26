@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 novembre 2014
+ * >    26 novembre 2014
  *
  */
 
@@ -8024,8 +8024,7 @@ void PreviSat::on_listeStations_clicked(const QModelIndex &index)
 void PreviSat::on_listeStations_customContextMenuRequested(const QPoint &position)
 {
     Q_UNUSED(position)
-    if (ui->listeStations->currentRow() >= 0)
-        ui->menuContextuelListes->exec(QCursor::pos());
+    ui->menuContextuelListes->exec(QCursor::pos());
 }
 
 void PreviSat::on_styleWCC_toggled(bool checked)
