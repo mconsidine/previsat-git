@@ -3979,6 +3979,7 @@ void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
     /* Corps de la methode */
     AjoutFichier(url);
 
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
     const QNetworkRequest requete(url);
     rep = mng.get(requete);
 
@@ -5029,6 +5030,7 @@ void PreviSat::TelechargementSuivant()
 
         if (ficDwn.open(QIODevice::WriteOnly)) {
 
+            QNetworkProxyFactory::setUseSystemConfiguration(true);
             const QNetworkRequest requete(url);
             if (!amajDeb)
                 rep = mng.get(requete);
@@ -8019,6 +8021,13 @@ void PreviSat::on_listeStations_clicked(const QModelIndex &index)
     ModificationOption();
 }
 
+void PreviSat::on_listeStations_customContextMenuRequested(const QPoint &position)
+{
+    Q_UNUSED(position)
+    if (ui->listeStations->currentRow() >= 0)
+        ui->menuContextuelListes->exec(QCursor::pos());
+}
+
 void PreviSat::on_styleWCC_toggled(bool checked)
 {
     Q_UNUSED(checked)
@@ -9396,6 +9405,12 @@ void PreviSat::on_actionTous_activated()
             ui->liste3->item(i)->setCheckState(Qt::Checked);
     }
 
+    if (ui->listeStations->hasFocus()) {
+        for(int i=0; i<ui->listeStations->count(); i++)
+            ui->listeStations->item(i)->setCheckState(Qt::Checked);
+        ModificationOption();
+    }
+
     /* Retour */
     return;
 }
@@ -9415,6 +9430,12 @@ void PreviSat::on_actionAucun_activated()
     if (ui->liste3->hasFocus()) {
         for(int i=0; i<ui->liste3->count(); i++)
             ui->liste3->item(i)->setCheckState(Qt::Unchecked);
+    }
+
+    if (ui->listeStations->hasFocus()) {
+        for(int i=0; i<ui->listeStations->count(); i++)
+            ui->listeStations->item(i)->setCheckState(Qt::Unchecked);
+        ModificationOption();
     }
 
     /* Retour */

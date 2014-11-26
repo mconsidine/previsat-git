@@ -325,8 +325,8 @@
      <rect>
       <x>190</x>
       <y>10</y>
-      <width>19</width>
-      <height>19</height>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">
@@ -347,8 +347,8 @@
      <rect>
       <x>400</x>
       <y>10</y>
-      <width>19</width>
-      <height>19</height>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">

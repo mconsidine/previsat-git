@@ -232,6 +232,7 @@ private slots:
     void on_affNbOrbWCC_toggled(bool checked);
     void on_affSAA_ZOE_toggled(bool checked);
     void on_listeStations_clicked(const QModelIndex &index);
+    void on_listeStations_customContextMenuRequested(const QPoint &position);
     void on_styleWCC_toggled(bool checked);
     void on_coulGMT_currentIndexChanged(int index);
     void on_coulZOE_currentIndexChanged(int index);
