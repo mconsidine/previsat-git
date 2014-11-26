@@ -124,7 +124,7 @@
            <set>QGraphicsView::CacheBackground</set>
           </property>
          </widget>
-         <widget class="QPushButton" name="maximise">
+         <widget class="QToolButton" name="maximise">
           <property name="geometry">
            <rect>
             <x>815</x>
@@ -158,7 +158,7 @@
           <property name="shortcut">
            <string notr="true">Ctrl+M</string>
           </property>
-          <property name="flat">
+          <property name="autoRaise">
            <bool>true</bool>
           </property>
          </widget>
@@ -705,7 +705,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
-         <widget class="QPushButton" name="affichageCiel">
+         <widget class="QToolButton" name="affichageCiel">
           <property name="geometry">
            <rect>
             <x>815</x>
@@ -739,7 +739,7 @@
           <property name="shortcut">
            <string notr="true">F9</string>
           </property>
-          <property name="flat">
+          <property name="autoRaise">
            <bool>true</bool>
           </property>
          </widget>
@@ -3659,7 +3659,7 @@
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-123</y>
+               <y>0</y>
                <width>198</width>
                <height>296</height>
               </rect>
@@ -9003,13 +9003,13 @@
                </property>
               </widget>
              </widget>
-             <widget class="QPushButton" name="supprLieu">
+             <widget class="QToolButton" name="supprLieu">
               <property name="geometry">
                <rect>
                 <x>348</x>
                 <y>118</y>
-                <width>19</width>
-                <height>23</height>
+                <width>20</width>
+                <height>22</height>
                </rect>
               </property>
               <property name="font">
@@ -9021,7 +9021,7 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="flat">
+              <property name="autoRaise">
                <bool>true</bool>
               </property>
              </widget>
@@ -9113,13 +9113,13 @@
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
-             <widget class="QPushButton" name="ajoutLieu">
+             <widget class="QToolButton" name="ajoutLieu">
               <property name="geometry">
                <rect>
                 <x>348</x>
                 <y>55</y>
-                <width>19</width>
-                <height>23</height>
+                <width>20</width>
+                <height>22</height>
                </rect>
               </property>
               <property name="font">
@@ -9131,7 +9131,7 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
-              <property name="flat">
+              <property name="autoRaise">
                <bool>true</bool>
               </property>
              </widget>
@@ -9359,10 +9359,10 @@
              <widget class="QToolButton" name="creationLieu">
               <property name="geometry">
                <rect>
-                <x>332</x>
+                <x>331</x>
                 <y>0</y>
-                <width>19</width>
-                <height>19</height>
+                <width>20</width>
+                <height>20</height>
                </rect>
               </property>
               <property name="font">
@@ -9381,10 +9381,10 @@
              <widget class="QToolButton" name="creationCategorie">
               <property name="geometry">
                <rect>
-                <x>155</x>
+                <x>154</x>
                 <y>0</y>
-                <width>19</width>
-                <height>19</height>
+                <width>20</width>
+                <height>20</height>
                </rect>
               </property>
               <property name="font">
@@ -9469,7 +9469,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-174</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>360</height>
                 </rect>
@@ -10330,6 +10330,9 @@
                 <width>200</width>
                 <height>151</height>
                </rect>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
