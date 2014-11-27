@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 novembre 2014
+ * >    27 novembre 2014
  *
  */
 
@@ -538,6 +538,8 @@ void PreviSat::ChargementConfig()
     ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarMaxButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
+    ui->gmt->setVisible(false);
+    ui->frameCoordISS->setVisible(false);
     ui->frameCtrlVideo->setVisible(false);
     ui->lbl_chaine->setVisible(false);
     ui->chaine->setVisible(false);
