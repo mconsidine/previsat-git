@@ -6496,8 +6496,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->gmt->setVisible(false);
     }
 
-    if (!satellites.isEmpty() && Satellite::initCalcul)
-        CalculsAffichage();
+    CalculsAffichage();
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -6819,6 +6818,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->liste1->setPalette(palList);
     ui->liste2->setPalette(palList);
     ui->liste3->setPalette(palList);
+    ui->listeStations->setPalette(palList);
 
     ui->dateHeure3->setPalette(palList);
     ui->dateHeure4->setPalette(palList);
