@@ -2273,7 +2273,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="13269"/>
-        <location filename="previsat.cpp" line="6697"/>
+        <location filename="previsat.cpp" line="6696"/>
         <location filename="previsat.cpp" line="7121"/>
         <location filename="previsat.cpp" line="8920"/>
         <location filename="previsat.cpp" line="8939"/>
@@ -2514,7 +2514,7 @@ The directory containing the observation sites does not exist</translation>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6699"/>
+        <location filename="previsat.cpp" line="6698"/>
         <location filename="previsat.cpp" line="8941"/>
         <location filename="previsat.cpp" line="9119"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)</source>
@@ -2531,13 +2531,13 @@ The directory containing the observation sites does not exist</translation>
         <translation>TLE file OK : %1 satellites</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6735"/>
+        <location filename="previsat.cpp" line="6734"/>
         <location filename="previsat.cpp" line="9143"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6736"/>
+        <location filename="previsat.cpp" line="6735"/>
         <location filename="previsat.cpp" line="9144"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
@@ -2703,22 +2703,22 @@ The directory containing the observation sites does not exist</translation>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6531"/>
+        <location filename="previsat.cpp" line="6530"/>
         <source>Impossible de lancer le flux vidéo : essayez de nouveau et/ou vérifiez votre connexion Internet</source>
         <translation>Impossible to launch the video stream : try again and/or check your Internet connexion</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6677"/>
+        <location filename="previsat.cpp" line="6676"/>
         <source>Impossible d&apos;ouvrir le fichier d&apos;aide %1</source>
         <translation>Impossible to open the help file %1</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6725"/>
+        <location filename="previsat.cpp" line="6724"/>
         <source>onglet_elements</source>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6726"/>
+        <location filename="previsat.cpp" line="6725"/>
         <source>onglet_informations</source>
         <translation>informations_tab</translation>
     </message>
@@ -3166,19 +3166,19 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="6463"/>
-        <location filename="previsat.cpp" line="6608"/>
+        <location filename="previsat.cpp" line="6607"/>
         <source>Cliquez ici pour activer
 le flux vidéo</source>
         <translation>Click here to activate
 the video stream</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6542"/>
+        <location filename="previsat.cpp" line="6541"/>
         <source>Veuillez patienter...</source>
         <translation>Please wait...</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="6725"/>
+        <location filename="previsat.cpp" line="6724"/>
         <source>onglet_general</source>
         <translation>main_tab</translation>
     </message>
