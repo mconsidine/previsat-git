@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 novembre 2014
+ * >    30 novembre 2014
  *
  */
 
@@ -4827,7 +4827,7 @@ void PreviSat::GestionTempsReel()
         afficherMeteo = NULL;
     }
 
-    if (afficherVideo != NULL && !afficherVideo->isVisible()) {
+    if (afficherVideo != NULL && !ui->fluxVideoHtml->isVisible()) {
 
         if (viewLiveISS != NULL) {
             viewLiveISS->deleteLater();
