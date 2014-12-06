@@ -5,3 +5,8 @@ communications@www.celestrak.com#0#geo.txt,intelsat.txt,gorizont.txt,raduga.txt,
 navigation@www.celestrak.com#0#gps-ops.txt,glo-ops.txt,galileo.txt,beidou.txt,sbas.txt,nnss.txt,musson.txt
 scientifique@www.celestrak.com#0#science.txt,geodetic.txt,engineering.txt,education.txt
 divers@www.celestrak.com#0#military.txt,radar.txt,cubesat.txt,other.txt
+commun@astropedia.free.fr#0#visible.txt,human-spaceflight.txt,special-interest.txt
+tous@astropedia.free.fr#0#amateur-spctrk.txt,bright-geo.txt,geo-spctrk.txt,human-spaceflight.txt,inmarsat.txt,intelsat-spctrk.txt,navigation.txt,special-interest.txt,visible.txt,weather-spctrk.txt
+geo@astropedia.free.fr#0#bright-geo.txt,geo-spctrk.txt
+communications@astropedia.free.fr#0#inmarsat.txt,intelsat-spctrk.txt
+navigation@astropedia.free.fr#0#navigation.txt
