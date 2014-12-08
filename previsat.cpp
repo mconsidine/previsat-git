@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 novembre 2014
+ * >    8 decembre 2014
  *
  */
 
@@ -6508,6 +6508,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
 void PreviSat::on_chaine_valueChanged(int arg1)
 {
     Q_UNUSED(arg1)
+    StopVideoHttp();
     if (ui->frameCtrlVideo->isVisible())
         on_fluxVideo_clicked();
 }
