@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 decembre 2014
+ * >    10 decembre 2014
  *
  */
 
@@ -2972,8 +2972,8 @@ void PreviSat::AffichageCourbes() const
             }
         }
 
-        scene3->addEllipse(-10, -10, ui->ciel->width() + 20, ui->ciel->height() + 20,
-                           QPen(QBrush(palette().background().color()), 20.6));
+        scene3->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
+                           QPen(QBrush(palette().background().color()), 40.6));
         scene3->addEllipse(0, 0, ui->ciel->width() - 1, ui->ciel->height() - 1, QPen(QBrush(Qt::gray), 2));
 
         ui->ciel->setScene(scene3);
@@ -6167,7 +6167,7 @@ void PreviSat::on_maximise_clicked()
         // Carte minimisee
         ui->frameListe->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
         ui->frameCarte->resize(ui->frameCarteListe->width() - ui->frameListe->width() - 5,
-                               height() - ui->frameOngletsZone->height() - 23);
+                               height() - ui->frameOngletsZone->height() - ((ui->ciel->isHidden()) ? 23 : 39));
         ui->maximise->setIcon(QIcon(":/resources/maxi.png"));
         ui->maximise->setToolTip(tr("Agrandir"));
 
