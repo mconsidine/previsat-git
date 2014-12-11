@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 decembre 2014
+ * >    11 decembre 2014
  *
  */
 
@@ -543,6 +543,7 @@ void PreviSat::ChargementConfig()
     ui->frameCtrlVideo->setVisible(false);
     ui->lbl_chaine->setVisible(false);
     ui->chaine->setVisible(false);
+    ui->chaine->setValue(settings.value("affichage/chaine", 1).toInt());
     ui->fluxVideoHtml->setVisible(false);
     ui->fluxVideo->raise();
 
@@ -5278,6 +5279,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affCerclesAcq", ui->affCerclesAcq->isChecked());
     settings.setValue("affichage/affNbOrbWCC", ui->affNbOrbWCC->isChecked());
     settings.setValue("affichage/affSAA_ZOE", ui->affSAA_ZOE->isChecked());
+    settings.setValue("affichage/chaine", ui->chaine->value());
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", ui->coulGMT->currentIndex());
     settings.setValue("affichage/coulZOE", ui->coulZOE->currentIndex());
