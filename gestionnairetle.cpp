@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    17 novembre 2014
+ * >    10 decembre 2014
  *
  */
 
@@ -302,7 +302,7 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
                         if (!item.isEmpty())
                             ui->listeFichiersTLE->addItem(item);
                     }
-                    ui->MajAutoGroupe->setChecked(ligne.mid(ligne.lastIndexOf("#") - 1, 1) == "1");
+                    ui->MajAutoGroupe->setChecked(settings.value("TLE/" + adresse, 0).toInt() == 1);
                 }
             }
             sr.close();
@@ -340,14 +340,17 @@ void GestionnaireTLE::on_valider_clicked()
         while (!flux.atEnd()) {
             const QString ligne = flux.readLine();
             if (ligne.mid(0, ligne.indexOf("#")) == groupeDomaine) {
-                list.append(groupeDomaine + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + "#" + listeFics);
+                list.append(groupeDomaine + "#0#" + listeFics);
+                settings.setValue("TLE/" + groupeDomaine, (ui->MajAutoGroupe->isChecked()) ? "1" : "0");
                 ajout = true;
             } else {
                 list.append(ligne);
             }
         }
-        if (!ajout)
-            list.append(groupeDomaine + "#" + ((ui->MajAutoGroupe->isChecked()) ? "1" : "0") + "#" + listeFics);
+        if (!ajout) {
+            list.append(groupeDomaine + "#0#" + listeFics);
+            settings.setValue("TLE/" + groupeDomaine, (ui->MajAutoGroupe->isChecked()) ? "1" : "0");
+        }
         sr.close();
 
         QFile sw(ficTLE);
@@ -485,33 +488,8 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
     Q_UNUSED(checked)
 
     /* Corps de la methode */
-    if (init) {
-        QDir di(dirTmp);
-        if (!di.exists())
-            di.mkpath(dirTmp);
-
-        QFile sr(ficTLE);
-        sr.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&sr);
-
-        QFile sw(dirTmp + QDir::separator() + "tmp.txt");
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux2(&sw);
-
-        const QString groupe = ui->listeGroupeTLE->currentItem()->text();
-        const QString adresse = groupe.toLower();
-        while (!flux.atEnd()) {
-            QString ligne = flux.readLine();
-            if (ligne.mid(0, adresse.length()) == adresse)
-                ligne[ligne.indexOf("#") + 1] = (ui->MajAutoGroupe->isChecked()) ? '1' : '0';
-            flux2 << ligne << endl;
-        }
-        sw.close();
-        sr.close();
-
-        sr.remove();
-        sw.rename(sr.fileName());
-    }
+    if (init)
+        settings.setValue("TLE/" + ui->listeGroupeTLE->currentItem()->text(), (checked) ? 1 : 0);
 
     /* Retour */
     return;

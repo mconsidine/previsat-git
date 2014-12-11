@@ -293,7 +293,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="gestionnairetle.cpp" line="224"/>
-        <location filename="gestionnairetle.cpp" line="424"/>
+        <location filename="gestionnairetle.cpp" line="427"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -308,7 +308,7 @@ PreviSat is free !</translation>
         <translation>The name of the group is not given</translation>
     </message>
     <message>
-        <location filename="gestionnairetle.cpp" line="423"/>
+        <location filename="gestionnairetle.cpp" line="426"/>
         <source>Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe &quot;%1&quot;?</source>
         <translation>Do you really want to remove this(these) file(s) from the &quot;%1&quot; group?</translation>
     </message>

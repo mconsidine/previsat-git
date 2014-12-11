@@ -3110,7 +3110,7 @@ void PreviSat::AffichageGroupesTLE() const
         nomGroupe[0] = nomGroupe[0].toUpper();
         ui->groupeTLE->addItem(nomGroupe);
 
-        if (ligne.at(1) == "1")
+        if (settings.value("TLE/" + nomGroupe, 0).toInt() == 1)
             listeGroupeMaj.append(ligne.at(0) + "#" + ligne.at(2));
     }
     fi.close();
