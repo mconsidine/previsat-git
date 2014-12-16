@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er novembre 2014
+ * >    16 decembre 2014
  *
  */
 
@@ -90,6 +90,7 @@ private:
     bool CalculAOS() const;
     void CalculDN() const;
     void CalculAgeTLETransitISS() const;
+    int CalculNumeroOrbiteISS(const Date &date) const;
     void EnchainementCalculs() const;
     void MajWebTLE();
     void AjoutFichier(const QUrl &url);
