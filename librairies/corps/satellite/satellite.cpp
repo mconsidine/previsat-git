@@ -139,16 +139,8 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
         sat.CalculPosVit(j0);
 
         // Latitude
-        const Vecteur3D position = sat._position;
-        const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-        double lat = atan(position.getZ() / r);
-        double phi = DEUX_PI;
-        while (fabs(lat - phi) > 1.e-7) {
-            phi = lat;
-            const double sph = sin(phi);
-            const double ct = 1. / sqrt(1. - E2 * sph * sph);
-            lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-        }
+        double ct, r0;
+        const double lat = sat.CalculLatitude(sat.getPosition(), r0, ct);
 
         if (lat1 > 0. && lat < 0.)
             atrouve = true;
@@ -175,17 +167,8 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
             sat.CalculPosVit(j0);
 
             // Latitude
-            const Vecteur3D position = sat._position;
-            const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-            double lat = atan(position.getZ() / r);
-            double phi = DEUX_PI;
-            while (fabs(lat - phi) > 1.e-7) {
-                phi = lat;
-                const double sph = sin(phi);
-                const double ct = 1. / sqrt(1. - E2 * sph * sph);
-                lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-            }
-            lati[j] = lat;
+            double ct, r0;
+            lati[j] = sat.CalculLatitude(sat.getPosition(), r0, ct);
         }
 
         const double t_noeudAsc = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
@@ -784,15 +767,8 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
             lon += T360;
 
         // Latitude
-        const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-        double lat = atan(position.getZ() / r);
-        double phi = DEUX_PI;
-        while (fabs(lat - phi) > 1.e-7) {
-            phi = lat;
-            const double sph = sin(phi);
-            const double ct = 1. / sqrt(1. - E2 * sph * sph);
-            lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-        }
+        double ct, r0;
+        double lat = sat.CalculLatitude(position, r0, ct);
         lat = RAD2DEG * (PI_SUR_DEUX - lat);
 
         // Position du Soleil

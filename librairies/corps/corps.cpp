@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    16 decembre 2014
  *
  */
 
@@ -50,12 +50,14 @@
 #include "librairies/maths/maths.h"
 
 #define MAX_CONST 358
+
 static bool _initCst = false;
 static bool _initTab = false;
 static QString _tabConst[MAX_CONST];
 static double _caz[360];
 static double _saz[360];
 static double _tabCstCoord[MAX_CONST][3];
+
 
 /*
  * Constructeur par defaut
@@ -275,6 +277,33 @@ void Corps::CalculCoordTerrestres(const Date &date)
 }
 
 /*
+ * Calcul de la latitude geodesique
+ */
+double Corps::CalculLatitude(const Vecteur3D &position, double &r0, double &ct) const
+{
+    /* Declarations des variables locales */
+    double lat;
+
+    /* Initialisations */
+    ct = 1.;
+    double latitude = PI;
+    const double re = RAYON_TERRESTRE * E2;
+
+    /* Corps de la methode */
+    r0 = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+    latitude = atan2(position.getZ(), r0);
+    do {
+        lat = latitude;
+        const double sph = sin(lat);
+        ct = 1. / sqrt(1. - E2 * sph * sph);
+        latitude = atan((position.getZ() + re * ct * sph) / r0);
+    } while (fabs(latitude - lat) > 1.e-7);
+
+    /* Retour */
+    return (latitude);
+}
+
+/*
  * Calcul de la zone de visibilite
  */
 void Corps::CalculZoneVisibilite(const double beta)
@@ -377,26 +406,17 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
 void Corps::CalculLatitudeAltitude()
 {
     /* Declarations des variables locales */
-    double lat;
 
     /* Initialisations */
-    double c = 1.;
-    _latitude = PI;
+    double ct = 1.;
+    double r0 = 0.;
 
     /* Corps de la methode */
-    // Latitude
-    const double r0 = sqrt(_position.getX() * _position.getX() + _position.getY() * _position.getY());
-    _latitude = atan2(_position.getZ(), r0);
-    do {
-        lat = _latitude;
-        const double sph = sin(lat);
-        c = 1. / sqrt(1. - E2 * sph * sph);
-        _latitude = atan((_position.getZ() + RAYON_TERRESTRE * c * E2 * sph) / r0);
-    } while (fabs(_latitude - lat) > 1.e-7);
+    _latitude = CalculLatitude(_position, r0, ct);
 
     // Altitude
     _altitude = (r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) :
-                               r0 / cos(_latitude) - RAYON_TERRESTRE * c;
+                               r0 / cos(_latitude) - RAYON_TERRESTRE * ct;
 
     /* Retour */
     return;
