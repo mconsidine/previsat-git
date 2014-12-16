@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    16 decembre 2014
  *
  */
 
@@ -63,6 +63,7 @@ public:
 
     /* Methodes publiques */
     void CalculCercleAcquisition(const Observateur &station);
+    Date CalculDateNoeudAscPrec(const Date &date);
     void CalculElementsOsculateurs(const Date &date);
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
     void CalculPosVit(const Date &date);
@@ -366,7 +367,6 @@ private:
 
     /* Methodes privees */
     void CalculBeta(const Soleil &soleil);
-    Date CalculDateNoeudAscPrec(const Date &date);
     void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
     void Dpper();
     void Dscom(const double tc);
