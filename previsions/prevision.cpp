@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    16 decembre 2014
  *
  */
 
@@ -162,17 +162,10 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                      sat.getMagnitudeStandard() > 98. || !conditions.getEcl())) {
 
                                 // Altitude du satellite
-                                double altitude, ct, lat, phi;
-                                const Vecteur3D position = sat.getPosition();
-                                const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-                                lat = atan((position.getZ() / r));
-                                do {
-                                    phi = lat;
-                                    const double sph = sin(phi);
-                                    ct = 1. / (sqrt(1. - E2 * sph * sph));
-                                    lat = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-                                } while (fabs(lat - phi) > 1.e-7);
-                                altitude = r / cos(lat) - RAYON_TERRESTRE * ct;
+                                double r0 = 0.;
+                                double ct = 1.;
+                                const double latitude = sat.CalculLatitude(sat.getPosition(), r0, ct);
+                                double altitude = r0 / cos(latitude) - RAYON_TERRESTRE * ct;
 
                                 // Ecriture du resultat
                                 if (ent == 0) {

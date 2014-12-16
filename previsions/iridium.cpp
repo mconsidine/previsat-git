@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    16 deccembre 2014
  *
  */
 
@@ -367,17 +367,10 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
                     sat.CalculCoordEquat(observateur);
 
                     // Altitude du satellite
-                    double altitude, ct, latitude, phi;
-                    const Vecteur3D position = sat.getPosition();
-                    const double r = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-                    latitude = atan(position.getZ() / r);
-                    do {
-                        phi = latitude;
-                        const double sph = sin(phi);
-                        ct = 1. / sqrt(1. - E2 * sph * sph);
-                        latitude = atan((position.getZ() + RAYON_TERRESTRE * ct * E2 * sph) / r);
-                    } while (fabs(latitude - phi) > 1.e-7);
-                    altitude = r / cos(latitude) - RAYON_TERRESTRE * ct;
+                    double r0 = 0.;
+                    double ct = 1.;
+                    const double latitude = sat.CalculLatitude(sat.getPosition(), r0, ct);
+                    const double altitude = r0 / cos(latitude) - RAYON_TERRESTRE * ct;
 
                     // Ecriture du flash
                     const QString ligne = EcrireFlash(dates[i], i, altitude, angref, mag, sts, conditions, observateur,
