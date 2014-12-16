@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 decembre 2014
+ * >    16 decembre 2014
  *
  */
 
@@ -1766,6 +1766,8 @@ void PreviSat::AffichageDonnees()
             const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
             ui->nextTransitionISS->setText(chaine.arg(cDelai));
 
+            const int numOrb = CalculNumeroOrbiteISS(dateCourante);
+
             // Affichage des donnees du blackboard
             chaine = "LAT = %1";
             ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
@@ -1776,7 +1778,7 @@ void PreviSat::AffichageDonnees()
             chaine = "INC = %1";
             ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
             chaine = "ORB = %1";
-            ui->orbiteISS->setText(chaine.arg(satellites.at(0).getNbOrbites()));
+            ui->orbiteISS->setText(chaine.arg(numOrb));
             chaine = "BETA = %1";
             ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
 
@@ -2465,6 +2467,7 @@ void PreviSat::AffichageCourbes() const
 
                     const QColor bleuClair(173, 216, 230);
 
+                    int nbOrb = 0;
                     for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
 
                         double lsat2 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
@@ -2486,6 +2489,26 @@ void PreviSat::AffichageCourbes() const
                         if (ui->mccISS->isChecked()) {
 
                             if (satellites.at(0).getTle().getNorad() == "25544") {
+
+                                // Affichage du numero d'orbite
+                                if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
+                                        satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90. && nbOrb < 3) {
+
+                                    nbOrb++;
+                                    const Date dateISS(Date(satellites.at(0).getTraceAuSol().at(j+1).at(3), 0., false));
+                                    const int numOrb = CalculNumeroOrbiteISS(dateISS);
+                                    QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
+
+                                    const QFont policeOrb(PreviSat::font().family(), 10, (ui->styleWCC->isChecked()) ?
+                                                              QFont::Bold : QFont::Normal);
+                                    txtOrb->setFont(policeOrb);
+                                    txtOrb->setBrush(Qt::white);
+
+                                    const int lng = (int) txtOrb->boundingRect().width();
+                                    const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng - 8 : lsat2 - lng;
+                                    txtOrb->setPos(xnorb, hcarte2 - 18);
+                                    scene->addItem(txtOrb);
+                                }
 
                                 if (ui->styleWCC->isChecked()) {
 
@@ -3343,6 +3366,49 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     /* Retour */
     return;
 }
+
+int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Satellite sat(tles.at(0));
+    int numOrbite = 0;
+
+    /* Corps de la methode */
+    sat.CalculPosVit(date);
+    sat.CalculElementsOsculateurs(date);
+    Date dateCalcul(date.getJourJulienUTC() + sat.getElements().getPeriode() * NB_JOUR_PAR_HEUR, 0., false);
+
+    sat.CalculPosVit(dateCalcul);
+    sat.CalculCoordTerrestres(dateCalcul);
+
+    Date dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
+    sat.CalculPosVit(dateNA);
+    sat.CalculCoordTerrestres(dateNA);
+    double lon1 = sat.getLongitude();
+
+    bool atrouveOrb = false;
+    while (!atrouveOrb) {
+
+        dateCalcul = Date(dateNA.getJourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
+        sat.CalculPosVit(dateCalcul);
+        sat.CalculCoordTerrestres(dateCalcul);
+
+        dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
+        sat.CalculPosVit(dateNA);
+        sat.CalculCoordTerrestres(dateNA);
+        double lon2 = sat.getLongitude();
+
+        atrouveOrb = (lon2 < 0. && lon1 > 0.);
+        numOrbite++;
+        lon1 = lon2;
+    }
+
+    /* Retour */
+    return (numOrbite);
+}
+
 
 /*
  * Enchainement des calculs et affichage
