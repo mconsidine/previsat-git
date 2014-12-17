@@ -36,13 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    12 decembre 2014
  *
  */
 
-#if defined QT_NO_DEBUG
 #pragma GCC diagnostic ignored "-Wshadow"
-#endif
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
@@ -62,6 +60,7 @@
 #include <QSound>
 #include <QTextStream>
 #include <QTimer>
+#include <QtWebKit>
 #include <QUrl>
 #include <QWebFrame>
 #pragma GCC diagnostic warning "-Wshadow"
@@ -261,6 +260,7 @@ QWebView *viewMeteoNASA;
 // Etat video Live ISS
 static bool iEtatVideo;
 QWebView *viewLiveISS;
+QWebView *viewLiveISSWin;
 
 PreviSat::PreviSat(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
@@ -3367,49 +3367,6 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     return;
 }
 
-int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    Satellite sat(tles.at(0));
-    int numOrbite = 0;
-
-    /* Corps de la methode */
-    sat.CalculPosVit(date);
-    sat.CalculElementsOsculateurs(date);
-    Date dateCalcul(date.getJourJulienUTC() + sat.getElements().getPeriode() * NB_JOUR_PAR_HEUR, 0., false);
-
-    sat.CalculPosVit(dateCalcul);
-    sat.CalculCoordTerrestres(dateCalcul);
-
-    Date dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
-    sat.CalculPosVit(dateNA);
-    sat.CalculCoordTerrestres(dateNA);
-    double lon1 = sat.getLongitude();
-
-    bool atrouveOrb = false;
-    while (!atrouveOrb) {
-
-        dateCalcul = Date(dateNA.getJourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
-        sat.CalculPosVit(dateCalcul);
-        sat.CalculCoordTerrestres(dateCalcul);
-
-        dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
-        sat.CalculPosVit(dateNA);
-        sat.CalculCoordTerrestres(dateNA);
-        double lon2 = sat.getLongitude();
-
-        atrouveOrb = (lon2 < 0. && lon1 > 0.);
-        numOrbite++;
-        lon1 = lon2;
-    }
-
-    /* Retour */
-    return (numOrbite);
-}
-
-
 /*
  * Enchainement des calculs et affichage
  */
@@ -3660,6 +3617,49 @@ void PreviSat::CalculAgeTLETransitISS() const
     /* Retour */
     return;
 }
+
+int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Satellite sat(tles.at(0));
+    int numOrbite = 0;
+
+    /* Corps de la methode */
+    sat.CalculPosVit(date);
+    sat.CalculElementsOsculateurs(date);
+    Date dateCalcul(date.getJourJulienUTC() + sat.getElements().getPeriode() * NB_JOUR_PAR_HEUR, 0., false);
+
+    sat.CalculPosVit(dateCalcul);
+    sat.CalculCoordTerrestres(dateCalcul);
+
+    Date dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
+    sat.CalculPosVit(dateNA);
+    sat.CalculCoordTerrestres(dateNA);
+    double lon1 = sat.getLongitude();
+
+    bool atrouveOrb = false;
+    while (!atrouveOrb) {
+
+        dateCalcul = Date(dateNA.getJourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
+        sat.CalculPosVit(dateCalcul);
+        sat.CalculCoordTerrestres(dateCalcul);
+
+        dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
+        sat.CalculPosVit(dateNA);
+        sat.CalculCoordTerrestres(dateNA);
+        double lon2 = sat.getLongitude();
+
+        atrouveOrb = (lon2 < 0. && lon1 > 0.);
+        numOrbite++;
+        lon1 = lon2;
+    }
+
+    /* Retour */
+    return (numOrbite);
+}
+
 
 /*
  * Enchainement des calculs
@@ -4894,15 +4894,15 @@ void PreviSat::GestionTempsReel()
         afficherMeteo = NULL;
     }
 
-    if (afficherVideo != NULL && !ui->fluxVideoHtml->isVisible()) {
+    if (afficherVideo != NULL && afficherVideo->isHidden()) {
 
-        if (viewLiveISS != NULL) {
-            viewLiveISS->deleteLater();
-            viewLiveISS = NULL;
-        }
-
+        StopVideoHttp();
         afficherVideo->deleteLater();
         afficherVideo = NULL;
+
+        ui->fluxVideoHtml->setVisible(true);
+        if (ui->frameCtrlVideo->isVisible())
+            on_fluxVideo_clicked();
     }
 
     /* Corps de la methode */
@@ -5505,10 +5505,13 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->frameZone->resize(width() - ui->onglets->width(), ui->frameZone->height());
     ui->frameZoneVideo->resize(ui->frameZone->width() - 18, ui->frameZone->height() - 24);
     ui->fluxVideoHtml->resize(ui->frameZoneVideo->width(), ui->frameZoneVideo->height() - 20);
+    if (viewLiveISSWin != NULL)
+        viewLiveISSWin->resize(ui->fluxVideoHtml->size());
     ui->frameCtrlVideo->move(ui->frameZoneVideo->width() - ui->frameCtrlVideo->width() + 2, 0);
     ui->fluxVideo->move((ui->frameZoneVideo->width() - ui->fluxVideo->width()) / 2,
                         (ui->frameZone->height() - ui->fluxVideo->height()) / 2);
-    ui->lbl_video->move(ui->fluxVideo->pos());
+    ui->lbl_video->move(ui->fluxVideoHtml->pos());
+    ui->lbl_video->resize(ui->fluxVideoHtml->size());
     ui->lbl_chaine->move((ui->frameZoneVideo->width() - ui->lbl_chaine->width() - ui->chaine->width()) / 2, ui->lbl_chaine->y());
     ui->chaine->move(ui->lbl_chaine->x() + 45, ui->chaine->y());
 
@@ -6611,42 +6614,28 @@ void PreviSat::on_fluxVideo_clicked()
         ui->fluxVideo->repaint();
         ui->lbl_video->raise();
 
-        // Definition de la fenetre separee
-        afficherVideo = new QMainWindow;
-        afficherVideo->resize(640, 360);
-        afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
-
-        // Definition de raccourcis
-        const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
-        connect(shortcut, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
-
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
         // Chargement de la video
         QUrl url(fic);
         url.setScheme("");
-        ui->fluxVideoHtml->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-        ui->fluxVideoHtml->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-        ui->fluxVideoHtml->load(url);
-        ui->fluxVideoHtml->show();
+
+        viewLiveISSWin = new QWebView(ui->fluxVideoHtml);
+        viewLiveISSWin->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        viewLiveISSWin->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        viewLiveISSWin->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+        viewLiveISSWin->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+        QPalette pal;
+        pal.setColor(QPalette::Base, Qt::black);
+        viewLiveISSWin->page()->setPalette(pal);
+        viewLiveISSWin->resize(ui->fluxVideoHtml->size());
+
+        viewLiveISSWin->load(url);
+        viewLiveISSWin->show();
         ui->fluxVideoHtml->setVisible(true);
-        ui->fluxVideoHtml->raise();
         ui->fluxVideo->setVisible(false);
         ui->lbl_video->setVisible(false);
 
-        viewLiveISS = new QWebView;
-        viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-        QPalette pal;
-        pal.setColor(QPalette::Base, Qt::black);
-        viewLiveISS->page()->setPalette(pal);
-
-        viewLiveISS->load(url);
-        afficherVideo->setCentralWidget(viewLiveISS);
 #endif
 
     } catch (PreviSatException &e) {
@@ -6658,7 +6647,44 @@ void PreviSat::on_fluxVideo_clicked()
 
 void PreviSat::on_agrandirVideo_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    StopVideoHttp();
+
+    // Definition de la fenetre separee
+    afficherVideo = new QMainWindow;
+    afficherVideo->resize(640, 360);
+    afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+
+    // Definition de raccourcis
+    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
+
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+
+    // Chargement de la video
+    const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
+    QUrl url(fic);
+    url.setScheme("");
+
+    viewLiveISS = new QWebView;
+    viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+    viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+    QPalette pal;
+    pal.setColor(QPalette::Base, Qt::black);
+    viewLiveISS->page()->setPalette(pal);
+
+    viewLiveISS->load(url);
+    afficherVideo->setCentralWidget(viewLiveISS);
     afficherVideo->showMaximized();
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_fermerVideo_clicked()
@@ -6670,11 +6696,15 @@ void PreviSat::on_fermerVideo_clicked()
     /* Corps de la methode */
     StopVideoHttp();
 
+    ui->fluxVideoHtml->setVisible(false);
     ui->frameCtrlVideo->setVisible(false);
     ui->lbl_chaine->setVisible(false);
     ui->chaine->setVisible(false);
     ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
     ui->fluxVideo->raise();
+    QPalette pal;
+    pal.setColor(QPalette::Base, palette().background().color());
+    ui->lbl_video->setPalette(pal);
     ui->fluxVideo->setVisible(true);
     ui->lbl_video->setVisible(true);
 
@@ -6689,19 +6719,20 @@ void PreviSat::StopVideoHttp()
     /* Initialisations */
 
     /* Corps de la methode */
-    ui->fluxVideoHtml->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, false);
-    ui->fluxVideoHtml->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
-    ui->fluxVideoHtml->page()->settings()->clearMemoryCaches();
-    ui->fluxVideoHtml->setUrl(QUrl("blank.html"));
-    ui->fluxVideoHtml->reload();
-    ui->fluxVideoHtml->setVisible(false);
+    if (viewLiveISSWin != NULL) {
+        viewLiveISSWin->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, false);
+        viewLiveISSWin->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
+        viewLiveISSWin->page()->settings()->clearMemoryCaches();
+        viewLiveISSWin->deleteLater();
+        viewLiveISSWin = NULL;
+    }
 
     if (viewLiveISS != NULL) {
         viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, false);
         viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
         viewLiveISS->page()->settings()->clearMemoryCaches();
-        viewLiveISS->setUrl(QUrl("blank.html"));
-        viewLiveISS->reload();
+        viewLiveISS->deleteLater();
+        viewLiveISS = NULL;
     }
 
     /* Retour */
@@ -6730,6 +6761,7 @@ void PreviSat::VideoPleinEcran()
     /* Retour */
     return;
 }
+
 
 void PreviSat::on_directHelp_clicked()
 {
