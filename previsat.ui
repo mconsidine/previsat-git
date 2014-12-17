@@ -13019,61 +13019,95 @@
             <number>2</number>
            </property>
           </widget>
-         </widget>
-         <widget class="QWebView" name="fluxVideoHtml">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>20</y>
-            <width>271</width>
-            <height>220</height>
-           </rect>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>0</red>
-                <green>0</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>0</red>
-                <green>0</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>240</red>
-                <green>240</green>
-                <blue>240</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="url">
-           <url>
-            <string>about:blank</string>
-           </url>
-          </property>
-          <property name="renderHints">
-           <set>QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
-          </property>
+          <widget class="QFrame" name="fluxVideoHtml">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>20</y>
+             <width>271</width>
+             <height>220</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>255</red>
+                 <green>255</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>0</red>
+                 <green>0</green>
+                 <blue>0</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>255</red>
+                 <green>255</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>0</red>
+                 <green>0</green>
+                 <blue>0</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>0</red>
+                 <green>0</green>
+                 <blue>0</blue>
+                </color>
+               </brush>
+              </colorrole>
+              <colorrole role="Window">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>0</red>
+                 <green>0</green>
+                 <blue>0</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </disabled>
+            </palette>
+           </property>
+           <property name="font">
+            <font/>
+           </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="autoFillBackground">
+            <bool>true</bool>
+           </property>
+          </widget>
          </widget>
          <widget class="QToolButton" name="fluxVideo">
           <property name="geometry">
@@ -13125,7 +13159,6 @@ le flux vidéo</string>
          <zorder>coordGeo4</zorder>
          <zorder>coordGeo1</zorder>
          <zorder>coordGeo2</zorder>
-         <zorder>fluxVideoHtml</zorder>
          <zorder>fluxVideo</zorder>
          <zorder>lbl_video</zorder>
         </widget>
@@ -13467,13 +13500,6 @@ le flux vidéo</string>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>dateHeure3</tabstop>
   <tabstop>lieuxObservation1</tabstop>
