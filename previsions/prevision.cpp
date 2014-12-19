@@ -163,7 +163,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 // Altitude du satellite
                                 sat.CalculLatitude(sat.getPosition());
-                                double altitude = sat.CalculAltitude();
+                                double altitude = sat.CalculAltitude(sat.getPosition());
 
                                 // Ecriture du resultat
                                 if (ent == 0) {

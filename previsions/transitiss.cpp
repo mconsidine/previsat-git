@@ -239,7 +239,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Altitude du satellite
                                 const Vecteur3D position = sat.getPosition();
                                 sat.CalculLatitude(position);
-                                double altitude = sat.CalculAltitude();
+                                double altitude = sat.CalculAltitude(sat.getPosition());
 
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);

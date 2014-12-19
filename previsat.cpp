@@ -4352,7 +4352,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
         flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
         flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
-        flux << tr("Magnitude :") + " " + ui->magnitudeLune->text() << endl;
+        flux << tr("Magnitude    :") + " " + ui->magnitudeLune->text() << endl;
 
         sw.close();
     } catch (PreviSatException &e) {

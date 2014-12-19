@@ -368,7 +368,7 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
 
                     // Altitude du satellite
                     sat.CalculLatitude(sat.getPosition());
-                    const double altitude = sat.CalculAltitude();
+                    const double altitude = sat.CalculAltitude(sat.getPosition());
 
                     // Ecriture du flash
                     const QString ligne = EcrireFlash(dates[i], i, altitude, angref, mag, sts, conditions, observateur,

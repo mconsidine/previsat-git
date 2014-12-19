@@ -67,7 +67,7 @@ public:
     void CalculCoordHoriz2(const Observateur &observateur);
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
-    double CalculAltitude();
+    double CalculAltitude(const Vecteur3D &position);
     double CalculLatitude(const Vecteur3D &position);
     void CalculZoneVisibilite(const double beta);
     double ExtinctionAtmospherique(const Observateur &observateur);
