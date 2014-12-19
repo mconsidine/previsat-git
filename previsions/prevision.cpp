@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -162,10 +162,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                      sat.getMagnitudeStandard() > 98. || !conditions.getEcl())) {
 
                                 // Altitude du satellite
-                                double r0 = 0.;
-                                double ct = 1.;
-                                const double latitude = sat.CalculLatitude(sat.getPosition(), r0, ct);
-                                double altitude = r0 / cos(latitude) - RAYON_TERRESTRE * ct;
+                                sat.CalculLatitude(sat.getPosition());
+                                double altitude = sat.CalculAltitude();
 
                                 // Ecriture du resultat
                                 if (ent == 0) {

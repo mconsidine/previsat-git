@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -276,27 +276,39 @@ void Corps::CalculCoordTerrestres(const Date &date)
     return;
 }
 
+double Corps::CalculAltitude()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return ((_r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
+}
+
 /*
  * Calcul de la latitude geodesique
  */
-double Corps::CalculLatitude(const Vecteur3D &position, double &r0, double &ct) const
+double Corps::CalculLatitude(const Vecteur3D &position)
 {
     /* Declarations des variables locales */
     double lat;
 
     /* Initialisations */
-    ct = 1.;
+    _ct = 1.;
     double latitude = PI;
     const double re = RAYON_TERRESTRE * E2;
 
     /* Corps de la methode */
-    r0 = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-    latitude = atan2(position.getZ(), r0);
+    _r0 = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
+    latitude = atan2(position.getZ(), _r0);
     do {
         lat = latitude;
         const double sph = sin(lat);
-        ct = 1. / sqrt(1. - E2 * sph * sph);
-        latitude = atan((position.getZ() + re * ct * sph) / r0);
+        _ct = 1. / sqrt(1. - E2 * sph * sph);
+        latitude = atan((position.getZ() + re * _ct * sph) / _r0);
     } while (fabs(latitude - lat) > 1.e-7);
 
     /* Retour */
@@ -408,15 +420,13 @@ void Corps::CalculLatitudeAltitude()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double ct = 1.;
-    double r0 = 0.;
 
     /* Corps de la methode */
-    _latitude = CalculLatitude(_position, r0, ct);
+    // Latitude
+    _latitude = CalculLatitude(_position);
 
     // Altitude
-    _altitude = (r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) :
-                               r0 / cos(_latitude) - RAYON_TERRESTRE * ct;
+    _altitude = CalculAltitude();
 
     /* Retour */
     return;
