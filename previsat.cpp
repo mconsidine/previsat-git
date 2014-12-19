@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -480,6 +480,7 @@ void PreviSat::ChargementConfig()
     ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
     ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
     ui->affgrille->setChecked(settings.value("affichage/affgrille", true).toBool());
+    ui->afficone->setChecked(settings.value("affichage/afficone", false).toBool());
     ui->affinvew->setChecked(settings.value("affichage/affinvew", false).toBool());
     ui->affinvns->setChecked(settings.value("affichage/affinvns", false).toBool());
     ui->afflune->setChecked(settings.value("affichage/afflune", true).toBool());
@@ -2651,7 +2652,7 @@ void PreviSat::AffichageCourbes() const
                 const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
                 const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
 
-                if (mcc) {
+                if (mcc || ui->afficone->isChecked()) {
 
                     // Affichage de l'icone du satellite a partir du numero NORAD
                     const QString nomIcone = ":/resources/icones/%1.png";
@@ -3618,6 +3619,9 @@ void PreviSat::CalculAgeTLETransitISS() const
     return;
 }
 
+/*
+ * Calcul du numero d'orbite de l'ISS
+ */
 int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
 {
     /* Declarations des variables locales */
@@ -5304,6 +5308,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/groupeTLE", ui->groupeTLE->currentIndex());
     settings.setValue("affichage/affcoord", ui->affcoord->isChecked());
     settings.setValue("affichage/affgrille", ui->affgrille->isChecked());
+    settings.setValue("affichage/afficone", ui->afficone->isChecked());
     settings.setValue("affichage/affinvew", ui->affinvew->isChecked());
     settings.setValue("affichage/affinvns", ui->affinvns->isChecked());
     settings.setValue("affichage/afflune", ui->afflune->isChecked());
@@ -7781,6 +7786,13 @@ void PreviSat::on_nombreTrajectoires_valueChanged(int arg1)
 }
 
 void PreviSat::on_affradar_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
+
+void PreviSat::on_afficone_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     ModificationOption();
