@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -237,11 +237,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 sat.CalculCoordEquat(observateur);
 
                                 // Altitude du satellite
-                                double r0 = 0.;
-                                double ct = 1.;
                                 const Vecteur3D position = sat.getPosition();
-                                const double latitude = sat.CalculLatitude(position, r0, ct);
-                                double altitude = r0 / cos(latitude) - RAYON_TERRESTRE * ct;
+                                sat.CalculLatitude(position);
+                                double altitude = sat.CalculAltitude();
 
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);

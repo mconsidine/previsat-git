@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -67,7 +67,8 @@ public:
     void CalculCoordHoriz2(const Observateur &observateur);
     void CalculCoordTerrestres(const Observateur &observateur);
     void CalculCoordTerrestres(const Date &date);
-    double CalculLatitude(const Vecteur3D &position, double &r0, double &ct) const;
+    double CalculAltitude();
+    double CalculLatitude(const Vecteur3D &position);
     void CalculZoneVisibilite(const double beta);
     double ExtinctionAtmospherique(const Observateur &observateur);
     Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
@@ -128,6 +129,9 @@ protected:
 
     // Zone de visibilite
     QVector<QPointF> _zone;
+
+    double _r0;
+    double _ct;
 
     /* Methodes protegees */
 

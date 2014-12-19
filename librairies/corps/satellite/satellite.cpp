@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -139,8 +139,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
         sat.CalculPosVit(j0);
 
         // Latitude
-        double ct, r0;
-        const double lat = sat.CalculLatitude(sat.getPosition(), r0, ct);
+        const double lat = sat.CalculLatitude(sat.getPosition());
 
         if (lat1 > 0. && lat < 0.)
             atrouve = true;
@@ -167,8 +166,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
             sat.CalculPosVit(j0);
 
             // Latitude
-            double ct, r0;
-            lati[j] = sat.CalculLatitude(sat.getPosition(), r0, ct);
+            lati[j] = sat.CalculLatitude(sat.getPosition());
         }
 
         const double t_noeudAsc = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
@@ -767,8 +765,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
             lon += T360;
 
         // Latitude
-        double ct, r0;
-        double lat = sat.CalculLatitude(position, r0, ct);
+        double lat = sat.CalculLatitude(position);
         lat = RAD2DEG * (PI_SUR_DEUX - lat);
 
         // Position du Soleil
