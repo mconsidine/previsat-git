@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    19 decembre 2014
  *
  */
 
@@ -202,6 +202,7 @@ private slots:
     void on_afftraj_stateChanged(int arg1);
     void on_nombreTrajectoires_valueChanged(int arg1);
     void on_affradar_stateChanged(int arg1);
+    void on_afficone_stateChanged(int arg1);
     void on_affinvns_stateChanged(int arg1);
     void on_affinvew_stateChanged(int arg1);
     void on_affnomlieu_stateChanged(int arg1);

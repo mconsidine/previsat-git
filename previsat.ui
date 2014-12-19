@@ -2617,7 +2617,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8684,7 +8684,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -10273,6 +10273,22 @@
                   <bool>false</bool>
                  </property>
                 </widget>
+               </widget>
+               <widget class="QCheckBox" name="afficone">
+                <property name="geometry">
+                 <rect>
+                  <x>620</x>
+                  <y>9</y>
+                  <width>124</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font/>
+                </property>
+                <property name="text">
+                 <string>Icône des satellites</string>
+                </property>
                </widget>
               </widget>
              </widget>
