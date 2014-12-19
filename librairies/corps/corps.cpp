@@ -276,7 +276,7 @@ void Corps::CalculCoordTerrestres(const Date &date)
     return;
 }
 
-double Corps::CalculAltitude()
+double Corps::CalculAltitude(const Vecteur3D &position)
 {
     /* Declarations des variables locales */
 
@@ -285,7 +285,7 @@ double Corps::CalculAltitude()
     /* Corps de la methode */
 
     /* Retour */
-    return ((_r0 < 1.e-3) ? fabs(_position.getZ()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
+    return ((_r0 < 1.e-3) ? fabs(position.getZ()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
 }
 
 /*
@@ -298,21 +298,21 @@ double Corps::CalculLatitude(const Vecteur3D &position)
 
     /* Initialisations */
     _ct = 1.;
-    double latitude = PI;
-    const double re = RAYON_TERRESTRE * E2;
+    _latitude = PI;
+    const double re2 = RAYON_TERRESTRE * E2;
 
     /* Corps de la methode */
     _r0 = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-    latitude = atan2(position.getZ(), _r0);
+    _latitude = atan2(position.getZ(), _r0);
     do {
-        lat = latitude;
+        lat = _latitude;
         const double sph = sin(lat);
         _ct = 1. / sqrt(1. - E2 * sph * sph);
-        latitude = atan((position.getZ() + re * _ct * sph) / _r0);
-    } while (fabs(latitude - lat) > 1.e-7);
+        _latitude = atan((position.getZ() + re2 * _ct * sph) / _r0);
+    } while (fabs(_latitude - lat) > 1.e-7);
 
     /* Retour */
-    return (latitude);
+    return (_latitude);
 }
 
 /*
@@ -423,10 +423,10 @@ void Corps::CalculLatitudeAltitude()
 
     /* Corps de la methode */
     // Latitude
-    _latitude = CalculLatitude(_position);
+    CalculLatitude(_position);
 
     // Altitude
-    _altitude = CalculAltitude();
+    _altitude = CalculAltitude(_position);
 
     /* Retour */
     return;

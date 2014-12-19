@@ -1248,7 +1248,6 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="4283"/>
-        <location filename="previsat.cpp" line="4355"/>
         <source>Magnitude :</source>
         <translation>Magnitude :</translation>
     </message>
@@ -1629,7 +1628,7 @@ PreviSat is free !</translation>
     <message utf8="true">
         <location filename="previsat.ui" line="10290"/>
         <source>Icône des satellites</source>
-        <translation type="unfinished">Satellite icons</translation>
+        <translation>Satellite icons</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="10316"/>
@@ -3041,6 +3040,12 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="4323"/>
         <source>Vitesse orbitale   : %1%2  	Orbite n°%3</source>
         <translation>Orbital velocity : %1%2	Orbit #%3</translation>
+    </message>
+    <message>
+        <location filename="previsat.cpp" line="4355"/>
+        <source>Magnitude    :</source>
+        <oldsource>Magnitude  :</oldsource>
+        <translation>Magnitude    :</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="4395"/>
