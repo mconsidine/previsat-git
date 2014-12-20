@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    20 decembre 2014
  *
  */
 
@@ -6657,36 +6657,39 @@ void PreviSat::on_agrandirVideo_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    StopVideoHttp();
+    if (afficherVideo == NULL) {
 
-    // Definition de la fenetre separee
-    afficherVideo = new QMainWindow;
-    afficherVideo->resize(640, 360);
-    afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+        StopVideoHttp();
 
-    // Definition de raccourcis
-    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
+        // Definition de la fenetre separee
+        afficherVideo = new QMainWindow;
+        afficherVideo->resize(640, 360);
+        afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
+        // Definition de raccourcis
+        const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
+        connect(shortcut, SIGNAL(activated()), this, SLOT(VideoPleinEcran()));
 
-    // Chargement de la video
-    const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
-    QUrl url(fic);
-    url.setScheme("");
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-    viewLiveISS = new QWebView;
-    viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-    viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-    QPalette pal;
-    pal.setColor(QPalette::Base, Qt::black);
-    viewLiveISS->page()->setPalette(pal);
+        // Chargement de la video
+        const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
+        QUrl url(fic);
+        url.setScheme("");
 
-    viewLiveISS->load(url);
-    afficherVideo->setCentralWidget(viewLiveISS);
-    afficherVideo->showMaximized();
+        viewLiveISS = new QWebView;
+        viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        viewLiveISS->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+        viewLiveISS->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+        QPalette pal;
+        pal.setColor(QPalette::Base, Qt::black);
+        viewLiveISS->page()->setPalette(pal);
+
+        viewLiveISS->load(url);
+        afficherVideo->setCentralWidget(viewLiveISS);
+        afficherVideo->showMaximized();
+    }
 
     /* Retour */
     return;
@@ -6738,6 +6741,9 @@ void PreviSat::StopVideoHttp()
         viewLiveISS->page()->settings()->clearMemoryCaches();
         viewLiveISS->deleteLater();
         viewLiveISS = NULL;
+
+        afficherVideo->deleteLater();
+        afficherVideo = NULL;
     }
 
     /* Retour */
