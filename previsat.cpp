@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 decembre 2014
+ * >    3 janvier 2015
  *
  */
 
@@ -650,7 +650,7 @@ void PreviSat::ChargementConfig()
 
     int ista = 0;
     while (!flux2.atEnd()) {
-        const QStringList ligne = flux2.readLine().split(" ");
+        const QStringList ligne = flux2.readLine().split(" ", QString::SkipEmptyParts);
 
         const double lo = ligne.at(0).toDouble();
         const double la = ligne.at(1).toDouble();
@@ -7056,7 +7056,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
 
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
-        QString ficMaj = dirHttpPrevi + fic;
+        QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
         TelechargementFichier(ficMaj, false);
     }
 
