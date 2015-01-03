@@ -3153,7 +3153,7 @@ void PreviSat::AffichageLieuObs() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    listeObs = settings.value("observateur/lieu", "Paris#-002.348640000&+48.853390000&30").toString().split("$");
+    listeObs = settings.value("observateur/lieu", "Paris #-002.348640000&+48.853390000&30").toString().split("$");
 
     /* Corps de la methode */
     ui->lieuxObservation1->clear();
@@ -7471,6 +7471,7 @@ void PreviSat::on_lieuxObservation1_currentIndexChanged(int index)
             nomlieu += listeObs.at(i);
         }
         settings.setValue("observateur/lieu", nomlieu);
+        acalcAOS = true;
 
         AffichageLieuObs();
 
