@@ -1,6 +1,6 @@
 #
 #     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
-#     Copyright (C) 2005-2014  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+#     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    16 decembre 2014
+# >    3 janvier 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.4
-VERSION = 3.4.2.4
-ANNEES_DEV = 2005-2014
+VERSION = 3.4.3.1
+ANNEES_DEV = 2005-2015
 ZLIB_DIR = $$PWD/inc/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
@@ -60,7 +60,7 @@ CONFIG(debug, debug|release) {
 
 LIBS += -L.
 win32 {
-    LIBS += zlibwapi.dll
+    LIBS += zlib.dll
     RC_FILE = icone.rc
 }
 

@@ -115,7 +115,7 @@
      </rect>
     </property>
     <property name="text">
-     <string notr="true">Copyright © Astropedia 2005-2014</string>
+     <string notr="true">Copyright © Astropedia 2005-2015</string>
     </property>
    </widget>
    <widget class="QLabel" name="siteInternet">
@@ -158,7 +158,7 @@
     </property>
     <property name="text">
      <string>PreviSat est un logiciel de calcul de la position des satellites artificiels.
-Il permet d'afficher la position des satellites à tout instant (en temps réel ou en mode manuel), d'effectuer les prévisions de passage pour n'importe quel lieu d'observation, et également de déterminer très rapidement les flashs Iridium.
+Il permet d'afficher la position des satellites �  tout instant (en temps réel ou en mode manuel), d'effectuer les prévisions de passage pour n'importe quel lieu d'observation, et également de déterminer très rapidement les flashs Iridium.
 
 PreviSat est entièrement gratuit!</string>
     </property>
