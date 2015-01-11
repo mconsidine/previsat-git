@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 janvier 2015
+ * >    11 janvier 2015
  *
  */
 
@@ -8365,14 +8365,28 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
     QFile fi(ficObs.at(selec));
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux (&fi);
+
     while (!flux.atEnd()) {
         QString ligne = "";
         do {
             ligne = flux.readLine();
         } while (ligne.isEmpty());
         mapObs.append(ligne.mid(34).trimmed() + " #" + ligne.mid(0, 33).replace(" ", "&"));
+        for (int i=0; i<listeObs.size(); i++) {
+            if (mapObs.last().mid(0, mapObs.last().indexOf("#")) == listeObs.at(i).mid(0, listeObs.at(i).indexOf("#")))
+                if (mapObs.last() != listeObs.at(i))
+                    listeObs[i] = mapObs.last();
+        }
     }
     mapObs.sort();
+
+    QString nomlieu = "";
+    for(int i=0; i<listeObs.count(); i++) {
+        if (i > 0)
+            nomlieu += "$";
+        nomlieu += listeObs.at(i);
+    }
+    settings.setValue("observateur/lieu", nomlieu);
 
     int i = 0;
     while (i < mapObs.length()) {
@@ -8659,6 +8673,7 @@ void PreviSat::on_validerObs_clicked()
             fi.close();
 
             on_fichiersObs_currentRowChanged(0);
+            AffichageLieuObs();
             ui->nouveauLieu->setVisible(false);
             selec = -1;
         }
