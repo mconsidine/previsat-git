@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2015
+ * >    7 fevrier 2015
  *
  */
 
@@ -8455,7 +8455,7 @@ void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
 void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &position)
 {
     Q_UNUSED(position)
-    if (ui->selecLieux->count() > 1)
+    if (ui->selecLieux->count() > 1 && ui->selecLieux->indexAt(position).row() >= 0)
         ui->menuContextuelLieuxSelec->exec(QCursor::pos());
 }
 
