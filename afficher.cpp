@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    16 novembre 2014
+ * >    23 mars 2015
  *
  */
 
@@ -945,9 +945,10 @@ void Afficher::loadSky(const int j)
 
         QGraphicsPixmapItem * const lun = sceneSky->addPixmap(pixlun);
         QTransform transform;
-        transform.translate(llun - 7, blun - 7);
+        transform.translate(llun, blun);
         if (rotationLune && obs.getLatitude() < 0.)
             transform.rotate(180.);
+        transform.translate(-7, -7);
         lun->setTransform(transform);
     }
 
