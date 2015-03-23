@@ -75,7 +75,7 @@
                 .openOn(map);
         });
 
-        L.control.scale().addTo(map);
+        L.control.scale({ position: 'topright' }).addTo(map);
 
         if (LONGITUDE1 != 0. && LATITUDE1 != 0. && LONGITUDE2 != 0. && LATITUDE2 != 0.) {
             L.polygon([
