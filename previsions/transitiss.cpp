@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    23 mars 2015
  *
  */
 
@@ -227,6 +227,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                            conditions.getSeuilConjonction(), dates);
 
                             // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
+                            QString transit = "";
                             for (int j=0; j<3; j++) {
 
                                 observateur.CalculPosVit(dates[j]);
@@ -329,8 +330,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                             arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
                                             arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
                                 }
-                                res.append(resultat.arg(max));
+                                transit.append(resultat.arg(max));
                             }
+                            res.append(transit);
                         }
                     }
                     date = Date(jj2, 0., false);
@@ -370,13 +372,20 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
         int i = 0;
         while (i < res.count()) {
-            for (int k=0; k<3; k++) {
-                flux << ((k%2 == 0) ? res.at(i).mid(0, 128) : res.at(i).trimmed()) << endl;
-                result.append(res.at(i));
-                i++;
-            }
+
+            const QString ligne = res.at(i).toLatin1();
+            const QString ligne1 = ligne.mid(0, 128);
+            const QString ligne2 = ligne.mid(163, 163);
+            const QString ligne3 = ligne.mid(326, 128);
+            const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
+            flux << transit << endl;
             flux << endl;
+
+            result.append(ligne1);
+            result.append(ligne2);
+            result.append(ligne3);
             result.append("");
+            i++;
         }
         if (res.count() > 0)
             if (!res.at(res.count() - 1).isEmpty())
