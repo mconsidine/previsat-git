@@ -2463,7 +2463,7 @@ void PreviSat::AffichageCourbes() const
                 transform.translate(llun, blun);
                 if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                     transform.rotate(180.);
-                transform.translate(-8, -8);
+                transform.translate(-7, -7);
                 lun->setTransform(transform);
             }
         }
@@ -2957,7 +2957,7 @@ void PreviSat::AffichageCourbes() const
             transform.translate(llun, blun);
             if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                 transform.rotate(180.);
-            transform.translate(-8, -8);
+            transform.translate(-7, -7);
             lun->setTransform(transform);
         }
 
@@ -3088,7 +3088,7 @@ void PreviSat::AffichageCourbes() const
             transform.translate(llun, blun);
             if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
                 transform.rotate(180.);
-            transform.translate(-8, -8);
+            transform.translate(-7, -7);
             lun->setTransform(transform);
         }
 
