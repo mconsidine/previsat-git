@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 fevrier 2015
+ * >    23 mars 2015
  *
  */
 
@@ -1795,7 +1795,16 @@ void PreviSat::AffichageDonnees()
             coul.setColor(QPalette::WindowText, cgmt[ui->coulGMT->currentIndex()]);
             ui->gmt->setPalette(coul);
             ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+            ui->frameCoordISS->setVisible(true);
+            ui->gmt->setVisible(true);
+
+        } else {
+            ui->frameCoordISS->setVisible(false);
+            ui->gmt->setVisible(false);
         }
+    } else {
+        ui->frameCoordISS->setVisible(false);
+        ui->gmt->setVisible(false);
     }
 
     if (scene != NULL)
