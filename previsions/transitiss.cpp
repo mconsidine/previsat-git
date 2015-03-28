@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    23 mars 2015
+ * >    24 mars 2015
  *
  */
 
@@ -373,10 +373,10 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         int i = 0;
         while (i < res.count()) {
 
-            const QString ligne = res.at(i).toLatin1();
-            const QString ligne1 = ligne.mid(0, 128);
-            const QString ligne2 = ligne.mid(163, 163);
-            const QString ligne3 = ligne.mid(326, 128);
+            const QString ligne0 = res.at(i).toLatin1();
+            const QString ligne1 = ligne0.mid(0, 128);
+            const QString ligne2 = ligne0.mid(163, 163);
+            const QString ligne3 = ligne0.mid(326, 128);
             const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
             flux << transit << endl;
             flux << endl;
