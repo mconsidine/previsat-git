@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    23 mars 2015
+ * >    30 mars 2015
  *
  */
 
@@ -287,7 +287,7 @@ void Afficher::load()
             idate = (cond.getNbl() == 0) ? ligne.indexOf(tr("Date")) - 3 : 0;
             iht = ligne.indexOf(tr("Hauteur Sat")) - 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
-            ihtsol = ligne.indexOf(tr("Haut Soleil")) - 1;
+            ihtsol = ligne.indexOf(tr("Haut Soleil"));
             if (it.hasNext())
                 ligne = it.next();
         }
