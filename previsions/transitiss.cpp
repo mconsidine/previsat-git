@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    24 mars 2015
+ * >    30 mars 2015
  *
  */
 
@@ -287,7 +287,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
                                 // Recherche du maximum (transit ou conjonction)
-                                QString max(44, ' ');
+                                QString max(35, ' ');
                                 const Vecteur3D direction = corps.getDist() - sat.getDist();
                                 Observateur obsmin =
                                         Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
@@ -373,12 +373,12 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         int i = 0;
         while (i < res.count()) {
 
-            const QString ligne0 = res.at(i).toLatin1();
-            const QString ligne1 = ligne0.mid(0, 128);
-            const QString ligne2 = ligne0.mid(163, 163);
-            const QString ligne3 = ligne0.mid(326, 128);
+            const QString ligne0 = res.at(i);
+            const QString ligne1 = ligne0.mid(0, 163).trimmed();
+            const QString ligne2 = ligne0.mid(163, 163).trimmed();
+            const QString ligne3 = ligne0.mid(326, 163).trimmed();
             const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
-            flux << transit << endl;
+            flux << transit.toLatin1() << endl;
             flux << endl;
 
             result.append(ligne1);
