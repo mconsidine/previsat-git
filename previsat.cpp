@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 mars 2015
+ * >    2 avril 2015
  *
  */
 
@@ -7066,7 +7066,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
         QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
-        TelechargementFichier(ficMaj, false);
+        TelechargementFichier(ficMaj, true);
     }
 
     QFile fi(dirTmp + QDir::separator() + "majFicInt");

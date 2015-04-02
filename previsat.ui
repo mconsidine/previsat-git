@@ -916,6 +916,12 @@
             <height>59</height>
            </rect>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>223</width>
+            <height>46</height>
+           </size>
+          </property>
           <property name="palette">
            <palette>
             <active>
