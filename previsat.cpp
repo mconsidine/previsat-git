@@ -214,6 +214,7 @@ static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6
 static QSettings settings("Astropedia", "previsat");
 
 // Telechargement
+static bool aclickFicMaj;
 static bool amajDeb;
 static bool amajPrevi;
 static bool atrouve;
@@ -302,6 +303,7 @@ void PreviSat::ChargementConfig()
     info = true;
     acalcAOS = true;
     acalcDN = true;
+    aclickFicMaj = true;
     htSat = 0.;
     old = false;
     selec = -1;
@@ -4042,6 +4044,7 @@ void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
             ui->actionTelecharger_la_mise_a_jour->setVisible(false);
         }
         if (action == ui->actionMettre_jour_fichiers_internes) {
+            aclickFicMaj = false;
             on_actionMettre_jour_fichiers_internes_activated();
             ui->actionMettre_jour_fichiers_internes->setVisible(false);
         }
@@ -5493,6 +5496,63 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         ui->N30b->move(5, ui->N30->y());
         ui->N60b->move(5, ui->N60->y());
         ui->frameCoordISS->move(ui->carte->pos());
+        const bool chk = ui->affBetaWCC->isChecked() && ui->affNbOrbWCC->isChecked();
+        QFont police(ui->policeWCC->currentText());
+
+#if defined (Q_OS_WIN)
+    const int taille = 10;
+
+#elif defined (Q_OS_LINUX)
+    const int taille = 11;
+
+#elif defined (Q_OS_MAC)
+    const int taille = 13;
+
+#else
+    const int taille = 11;
+#endif
+
+        if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+
+            const int w = qMax(ui->frameCoordISS->minimumWidth(), (int) (lcarte * 0.25) + 1);
+            const int h = qMax(ui->frameCoordISS->minimumHeight(), hcarte / 8 + 1);
+            ui->frameCoordISS->resize(w, h);
+
+            const int h2 = (int) ((chk) ? 0.23 * h : 0.32 * h);
+            const int h3 = 2 * h2;
+            const int h4 = 3 * h2;
+            const int w2 = w / 2;
+
+            police.setPointSize((chk) ? taille : taille + 1);
+
+            ui->altitudeISS->move(5, h2);
+            ui->longitudeISS->move(5, h3);
+
+            ui->inclinaisonISS->move((chk) ? QPoint(5, h4) : QPoint(w2, 0));
+            ui->nextTransitionISS->move((chk) ? QPoint(w2, 0) : QPoint(w2, h2));
+            ui->orbiteISS->move((chk) ? QPoint(w2, h2) : QPoint(w2, h3));
+            ui->betaISS->move(w2, h3);
+
+        } else {
+
+            police.setPointSize(taille);
+            ui->frameCoordISS->resize(ui->frameCoordISS->minimumWidth(), (chk) ? 59 : 46);
+            ui->altitudeISS->move(5, 13);
+            ui->longitudeISS->move(5, 26);
+
+            ui->inclinaisonISS->move((chk) ? QPoint(5, 39) : QPoint(112, 0));
+            ui->nextTransitionISS->move((chk) ? QPoint(112, 0) : QPoint(112, 13));
+            ui->orbiteISS->move((chk) ? QPoint(112, 13) : QPoint(112, 26));
+            ui->betaISS->move(112, 26);
+        }
+
+        ui->altitudeISS->setFont(police);
+        ui->betaISS->setFont(police);
+        ui->inclinaisonISS->setFont(police);
+        ui->latitudeISS->setFont(police);
+        ui->longitudeISS->setFont(police);
+        ui->nextTransitionISS->setFont(police);
+        ui->orbiteISS->setFont(police);
     }
 
     const int dec1 = (wcc) ? 12 : 8;
@@ -7066,7 +7126,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
         QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
-        TelechargementFichier(ficMaj, true);
+        TelechargementFichier(ficMaj, aclickFicMaj);
     }
 
     QFile fi(dirTmp + QDir::separator() + "majFicInt");
