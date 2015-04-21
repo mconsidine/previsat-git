@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2015
+ * >    21 avril 2015
  *
  */
 
@@ -2601,7 +2601,7 @@ void PreviSat::AffichageCourbes() const
 
                                     // Affichage du nom du satellite TDRS
                                     QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
-                                    const QFont policeSat(ui->policeWCC->currentText(), 10);
+                                    const QFont policeSat(ui->policeWCC->currentText(), 11);
                                     txtSat->setFont(policeSat);
 
                                     const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
@@ -2612,7 +2612,7 @@ void PreviSat::AffichageCourbes() const
 
                                     const int lng = (int) txtSat->boundingRect().width();
                                     const int xnsat = lsat - lng / 2 + 1;
-                                    txtSat->setPos(xnsat, bsat + 17);
+                                    txtSat->setPos(xnsat, bsat + 19);
                                     scene->addItem(txtSat);
                                 }
                             }
@@ -5512,6 +5512,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     const int taille = 11;
 #endif
 
+        int w2 = 0;
         if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
 
             const int w = qMax(ui->frameCoordISS->minimumWidth(), (int) (lcarte * 0.25) + 1);
@@ -5521,9 +5522,9 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
             const int h2 = (int) ((chk) ? 0.23 * h : 0.32 * h);
             const int h3 = 2 * h2;
             const int h4 = 3 * h2;
-            const int w2 = w / 2;
+            w2 = w / 2;
 
-            police.setPointSize((chk) ? taille : taille + 1);
+            police.setPointSize((chk) ? taille : taille + (int) (h * 0.125) - 7);
 
             ui->altitudeISS->move(5, h2);
             ui->longitudeISS->move(5, h3);
@@ -5537,6 +5538,8 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
             police.setPointSize(taille);
             ui->frameCoordISS->resize(ui->frameCoordISS->minimumWidth(), (chk) ? 59 : 46);
+            w2 = ui->frameCoordISS->width() / 2;
+
             ui->altitudeISS->move(5, 13);
             ui->longitudeISS->move(5, 26);
 
@@ -5545,6 +5548,14 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
             ui->orbiteISS->move((chk) ? QPoint(112, 13) : QPoint(112, 26));
             ui->betaISS->move(112, 26);
         }
+
+        ui->latitudeISS->resize(w2, ui->latitudeISS->height());
+        ui->altitudeISS->resize(w2, ui->altitudeISS->height());
+        ui->longitudeISS->resize(w2, ui->longitudeISS->height());
+        ui->inclinaisonISS->resize(w2, ui->inclinaisonISS->height());
+        ui->nextTransitionISS->resize(w2, ui->nextTransitionISS->height());
+        ui->orbiteISS->resize(w2, ui->orbiteISS->height());
+        ui->betaISS->resize(w2, ui->betaISS->height());
 
         ui->altitudeISS->setFont(police);
         ui->betaISS->setFont(police);
