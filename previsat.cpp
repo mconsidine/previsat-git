@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 avril 2015
+ * >    6 mai 2015
  *
  */
 
@@ -3999,11 +3999,13 @@ void PreviSat::VerifMAJPreviSat()
                 QDateTime dateMax;
                 for(int i=0; i<listeFicLocalData.size(); i++) {
 
-                    const QString fich = dirDat + QDir::separator() + listeFicLocalData.at(i);
-                    const QFileInfo fi2(fich);
+                    if (!listeFicLocalData.at(i).startsWith("gestionnaireTLE_")) {
+                        const QString fich = dirDat + QDir::separator() + listeFicLocalData.at(i);
+                        const QFileInfo fi2(fich);
 
-                    if (fi2.lastModified().date() > dateMax.date())
-                        dateMax.setDate(fi2.lastModified().date());
+                        if (fi2.lastModified().date() > dateMax.date())
+                            dateMax.setDate(fi2.lastModified().date());
+                    }
                 }
 
                 anew = (dateHttp > dateMax);
@@ -5500,16 +5502,16 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         QFont police(ui->policeWCC->currentText());
 
 #if defined (Q_OS_WIN)
-    const int taille = 10;
+        const int taille = 10;
 
 #elif defined (Q_OS_LINUX)
-    const int taille = 11;
+        const int taille = 11;
 
 #elif defined (Q_OS_MAC)
-    const int taille = 13;
+        const int taille = 13;
 
 #else
-    const int taille = 11;
+        const int taille = 11;
 #endif
 
         int w2 = 0;
@@ -7136,8 +7138,10 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
 
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
-        QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
-        TelechargementFichier(ficMaj, aclickFicMaj);
+        if (!fic.startsWith("gestionnaireTLE_")) {
+            const QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
+            TelechargementFichier(ficMaj, aclickFicMaj);
+        }
     }
 
     QFile fi(dirTmp + QDir::separator() + "majFicInt");
