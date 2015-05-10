@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 mai 2015
+ * >    10 mai 2015
  *
  */
 
@@ -3939,6 +3939,7 @@ void PreviSat::VerifMAJPreviSat()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    bool anewVersion = false;
     const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", QCoreApplication::organizationDomain() + "previsat/Qt/").
             toString().trimmed();
 
@@ -3965,7 +3966,6 @@ void PreviSat::VerifMAJPreviSat()
 
         if (!ligne.isEmpty()) {
 
-            bool anew = false;
             if (fic == "versionPreviSat") {
 
                 const QStringList newVersion = ligne.split(".");
@@ -3977,16 +3977,16 @@ void PreviSat::VerifMAJPreviSat()
                     iold[i] = oldVersion.at(i).toInt();
                 }
 
-                anew = std::lexicographical_compare(iold, iold + 4, inew, inew + 4);
+                anewVersion = std::lexicographical_compare(iold, iold + 4, inew, inew + 4);
 
-                if (anew) {
+                if (anewVersion) {
                     MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, tr("de ") + QCoreApplication::applicationName());
                     settings.setValue("fichier/majPrevi", "1");
                 } else {
                     ui->actionTelecharger_la_mise_a_jour->setVisible(false);
                 }
 
-            } else if (fic == "majFicInt") {
+            } else if (fic == "majFicInt" && !anewVersion) {
 
                 const int an = ligne.mid(0, 4).toInt();
                 const int mo = ligne.mid(5, 2).toInt();
@@ -4008,7 +4008,7 @@ void PreviSat::VerifMAJPreviSat()
                     }
                 }
 
-                anew = (dateHttp > dateMax);
+                const bool anew = (dateHttp > dateMax);
 
                 if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
                     MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, tr("des fichiers internes"));
