@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 mai 2015
+ * >    11 mai 2015
  *
  */
 
@@ -5490,7 +5490,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     const int xLat = (wcc) ? -26 : 1;
     ui->frameLat->setGeometry(xLat + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
-    if (wcc) {
+    if (ui->mccISS->isChecked()) {
         ui->frameLat2->setGeometry(ui->carte->x(), 0, ui->frameLat->width(), ui->carte->height());
         ui->S60b->move(5, ui->S60->y());
         ui->S30b->move(5, ui->S30->y());
