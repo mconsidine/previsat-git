@@ -3848,6 +3848,8 @@ void PreviSat::MajWebTLE()
 
         if (adresse.contains("celestrak"))
             adresse = adresseCelestrakNorad;
+        if (adresse.contains("astropedia"))
+            adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
         if (!adresse.startsWith("http://"))
             adresse.insert(0, "http://");
         if (!adresse.endsWith("/"))
@@ -3915,12 +3917,12 @@ void PreviSat::VerifAgeTLE()
                     atrouve = true;
                     aupdnow = false;
                     dirDwn = dirTle;
-                    const QString ficMaj = adresseCelestrakNorad + fi.fileName();
+                    const QString adresse = (fi.fileName().contains("spctrk")) ?
+                                QCoreApplication::organizationDomain() + "previsat/tle/" : adresseCelestrakNorad;
+                    const QString ficMaj = adresse + fi.fileName();
                     TelechargementFichier(ficMaj, false);
 
                     settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
-                } else {
-                    QDesktopServices::openUrl(QUrl(adresseCelestrakNorad));
                 }
             }
             old = true;
@@ -9111,6 +9113,8 @@ void PreviSat::on_majMaintenant_clicked()
             QString adresse = ligne.at(0).split("@").at(1);
             if (adresse.contains("celestrak"))
                 adresse = adresseCelestrakNorad;
+            if (adresse.contains("astropedia"))
+                adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
             if (!adresse.startsWith("http://"))
                 adresse.insert(0, "http://");
             if (!adresse.endsWith("/"))
