@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mai 2015
+ * >    14 mai 2015
  *
  */
 
@@ -538,7 +538,7 @@ void PreviSat::ChargementConfig()
     ui->actionFermerVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarCloseButton));
     ui->fermerVideo->setDefaultAction(ui->actionFermerVideo);
 
-    ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarMaxButton));
+    ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarNormalButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
 
     ui->gmt->setVisible(false);
