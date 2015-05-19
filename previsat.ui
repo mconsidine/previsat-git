@@ -13506,10 +13506,10 @@ le flux vidéo</string>
   <action name="actionMuetVideo"/>
   <action name="actionAgrandirVideo">
    <property name="text">
-    <string>Agrandir</string>
+    <string>Fenêtre séparée</string>
    </property>
    <property name="toolTip">
-    <string>Agrandir</string>
+    <string>Fenêtre séparée</string>
    </property>
   </action>
   <action name="actionFermerVideo">

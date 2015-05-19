@@ -1111,8 +1111,6 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="149"/>
-        <location filename="previsat.ui" line="13509"/>
-        <location filename="previsat.ui" line="13512"/>
         <location filename="previsat.cpp" line="6332"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
@@ -1745,6 +1743,12 @@ the video stream</translation>
         <location filename="previsat.ui" line="13495"/>
         <source>Mettre à jour les fichiers internes</source>
         <translation>Update internal files</translation>
+    </message>
+    <message utf8="true">
+        <location filename="previsat.ui" line="13509"/>
+        <location filename="previsat.ui" line="13512"/>
+        <source>Fenêtre séparée</source>
+        <translation>Separate window</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="13517"/>
