@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 mai 2015
+ * >    19 mai 2015
  *
  */
 
@@ -454,8 +454,8 @@ void PreviSat::ChargementConfig()
         ui->fichierTLEIri->addItem(fi.fileName());
         ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLEIri.append(QDir::convertSeparators(nomFicIri));
-        idxfi = 0;
     }
+    idxfi = 0;
     if (ficTLEIri.isEmpty())
         ui->fichierTLEIri->addItem("");
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
@@ -468,8 +468,8 @@ void PreviSat::ChargementConfig()
         ui->fichierTLETransit->addItem(fit.fileName());
         ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
         ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
-        idxft = 0;
     }
+    idxft = 0;
     if (ficTLETransit.isEmpty())
         ui->fichierTLETransit->addItem("");
     ui->fichierTLETransit->addItem(tr("Parcourir..."));
@@ -3589,7 +3589,8 @@ void PreviSat::CalculAgeTLETransitISS() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const int nbt = TLE::VerifieFichier(ficTLETransit.at(ui->fichierTLETransit->currentIndex()), false);
+    const QString fichier = ficTLETransit.at(idxft);
+    const int nbt = TLE::VerifieFichier(fichier, false);
 
     /* Corps de la methode */
     if (nbt > 0) {
@@ -3597,7 +3598,7 @@ void PreviSat::CalculAgeTLETransitISS() const
         // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
         const QStringList iss("25544");
         QVector<TLE> tleISS;
-        TLE::LectureFichier(ficTLETransit.at(ui->fichierTLETransit->currentIndex()), iss, tleISS);
+        TLE::LectureFichier(fichier, iss, tleISS);
         const double ageISS = dateCourante.getJourJulienUTC() - tleISS.at(0).getEpoque().getJourJulienUTC();
 
         const QString chaine = tr("%1 jours");
@@ -9960,20 +9961,23 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
                         ui->fichierTLEIri->setCurrentIndex(idxfi);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLEIri, ficTLEIri);
+                    const int idx = qMax(ficTLEIri.size() - 1, 0);
                     ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
-                    idxfi = index;
+                    ui->fichierTLEIri->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    idxfi = idx;
                 }
             } else {
                 if (!ficTLEIri.isEmpty()) {
+                    const int idx = qMax(index - 1, 0);
                     ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLEIri->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(idx, Qt::gray, Qt::BackgroundRole);
                     AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
-                    idxfi = index;
+                    idxfi = idx;
                 }
             }
             if (!ficTLEIri.isEmpty()) {
-                const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
+                const QFileInfo fi(ficTLEIri.at(idxfi));
+                ui->fichierTLEIri->setCurrentIndex(idxfi);
                 ui->fichierTLEIri->setToolTip((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
             }
         }
@@ -10533,16 +10537,18 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                         ui->fichierTLETransit->setCurrentIndex(idxft);
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
+                    const int idx = qMax(ficTLETransit.size() - 1, 0);
                     ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
-                    idxft = index;
+                    ui->fichierTLETransit->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    idxft = idx;
                 }
             } else {
                 if (!ficTLETransit.isEmpty()) {
+                    const int idx = qMax(index - 1, 0);
                     ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(index, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(idx, Qt::gray, Qt::BackgroundRole);
                     AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
-                    idxft = index;
+                    idxft = idx;
                 }
             }
 
@@ -10550,7 +10556,8 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                 ui->ageTLETransit->setVisible(false);
                 ui->lbl_ageTLETransit->setVisible(false);
             } else {
-                const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
+                const QFileInfo fi(ficTLETransit.at(idxft));
+                ui->fichierTLETransit->setCurrentIndex(idxft);
                 ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
                 CalculAgeTLETransitISS();
                 ui->ageTLETransit->setVisible(true);
