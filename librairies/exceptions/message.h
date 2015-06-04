@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    messages.h
+ * >    message.h
  *
  * Localisation
  * >    librairies.exceptions
@@ -33,17 +33,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    3 juin 2015
  *
  */
 
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef MESSAGE_H
+#define MESSAGE_H
 
 #include <QString>
-#include "messagesConstants.h"
+#include "messageConstants.h"
 
-class Messages
+class Message
 {
 public:
 
@@ -54,6 +54,11 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief Afficher Affichage d'un message dans une boite de message
+     * @param message Message a afficher
+     * @param ierr Type de message (ERREUR, INFO, WARNING)
+     */
     static void Afficher(const QString &message, const MessageType ierr);
 
     /* Accesseurs */
@@ -76,6 +81,7 @@ private:
 
     /* Methodes privees */
 
+
 };
 
-#endif // MESSAGES_H
+#endif // MESSAGE_H

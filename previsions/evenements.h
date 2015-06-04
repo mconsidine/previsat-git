@@ -33,7 +33,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2013
+ * >    3 juin 2015
  *
  */
 
@@ -54,7 +54,15 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculEvenements Calcul des evenements orbitaux
+     * @param conditions conditions d'observation
+     */
     static void CalculEvenements(const Conditions &conditions);
+
+    /**
+     * @brief FinTraitement Finalisation du traitement (liberation memoire)
+     */
     static void FinTraitement();
 
     /* Accesseurs */
@@ -76,9 +84,23 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
+    /**
+     * @brief CalculEphemerides Calcul des ephemerides du satellite
+     * @param conditions conditions d'observation
+     */
     static void CalculEphemerides(const Conditions &conditions);
-    static void CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt, const Conditions &conditions,
-                          Satellite &sat);
+
+    /**
+     * @brief CalculEvt Calcul des caracteristiques de l'evenement
+     * @param xtab tableau de dates
+     * @param ytab tableau des donnees caracterisant l'evenement
+     * @param yval valeur de la donnee pour l'evenement
+     * @param typeEvt type d'evenement
+     * @param conditions conditions d'observation
+     * @param sat satellite
+     */
+    static void CalculEvt(const double xtab[3], const double ytab[3], const double yval, const QString &typeEvt,
+                          const Conditions &conditions, Satellite &sat);
 
 };
 

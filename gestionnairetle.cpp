@@ -36,25 +36,23 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    10 decembre 2014
+ * >    3 juin 2015
  *
  */
 
-#if defined QT_NO_DEBUG
-#pragma GCC diagnostic ignored "-Wshadow"
-#endif
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QDesktopServices>
 #include <QDir>
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMessageBox>
 #include <QTextStream>
 #include "ui_gestionnairetle.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-conversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "gestionnairetle.h"
 #include "previsat.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -62,7 +60,7 @@
 static bool init;
 static int selec;
 static QString ficTLE;
-static QString dirDat;
+static QString dirLocalData;
 static QString dirTmp;
 static QString localePrevisat;
 static QSettings settings("Astropedia", "previsat");
@@ -121,7 +119,7 @@ void GestionnaireTLE::load()
     const QIcon ajout(":/resources/ajout.png");
     ui->actionCreer_un_groupe->setIcon(ajout);
     ui->creationGroupe->setIcon(ajout);
-    ui->creationGroupe->setToolTip(tr("Créer un groupe de TLE"));
+    ui->creationGroupe->setToolTip(tr("CrÃ©er un groupe de TLE"));
 
     ui->actionAjouter_des_fichiers->setIcon(ajout);
     ui->ajoutFichiersTLE->setIcon(ajout);
@@ -150,17 +148,10 @@ void GestionnaireTLE::load()
         ui->nbJoursAgeMaxTLE->setPalette(palList);
     }
 
-    const QString dirExe = QCoreApplication::applicationDirPath();
-#if defined (Q_OS_WIN)
-    dirDat = dirExe + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    dirDat = dirExe + QDir::separator() + "data";
-#endif
+    dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(), QStandardPaths::LocateDirectory) + "data";
 
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-    ficTLE = dirDat + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+    ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
     /* Corps de la methode */
     QFile fi(ficTLE);
@@ -189,7 +180,7 @@ void GestionnaireTLE::on_fermer_clicked()
     close();
 }
 
-void GestionnaireTLE::on_actionCreer_un_groupe_activated()
+void GestionnaireTLE::on_actionCreer_un_groupe_triggered()
 {
     /* Declarations des variables locales */
 
@@ -209,7 +200,7 @@ void GestionnaireTLE::on_actionCreer_un_groupe_activated()
     return;
 }
 
-void GestionnaireTLE::on_actionSupprimerGroupe_activated()
+void GestionnaireTLE::on_actionSupprimerGroupe_triggered()
 {
     /* Declarations des variables locales */
 
@@ -324,10 +315,10 @@ void GestionnaireTLE::on_valider_clicked()
     /* Corps de la methode */
     try {
         if (ui->domaine->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du domaine n'est pas spÃ©cifiÃ©"), WARNING);
 
         if (ui->nomGroupe->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du groupe n'est pas spÃ©cifiÃ©"), WARNING);
 
         const QString groupeDomaine = ui->nomGroupe->text().toLower().trimmed() + "@" + ui->domaine->text().trimmed();
         const QString listeFics = ui->listeFichiers->document()->toPlainText().replace("\n", ",");
@@ -388,7 +379,7 @@ void GestionnaireTLE::on_annuler_clicked()
     return;
 }
 
-void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
+void GestionnaireTLE::on_actionAjouter_des_fichiers_triggered()
 {
     /* Declarations des variables locales */
 
@@ -415,7 +406,7 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_activated()
     return;
 }
 
-void GestionnaireTLE::on_actionSupprimer_activated()
+void GestionnaireTLE::on_actionSupprimer_triggered()
 {
     /* Declarations des variables locales */
 
@@ -497,10 +488,10 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
 
 void GestionnaireTLE::on_creationGroupe_clicked()
 {
-    on_actionCreer_un_groupe_activated();
+    on_actionCreer_un_groupe_triggered();
 }
 
 void GestionnaireTLE::on_ajoutFichiersTLE_clicked()
 {
-    on_actionAjouter_des_fichiers_activated();
+    on_actionAjouter_des_fichiers_triggered();
 }

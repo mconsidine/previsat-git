@@ -36,11 +36,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 juin 2015
  *
  */
 
 #include <stdio.h>
+#include "message.h"
 #include "previsatexception.h"
 
 /*
@@ -59,7 +60,7 @@ PreviSatException::PreviSatException(const int ierr) throw()
 PreviSatException::PreviSatException(const QString &message, const MessageType ierr) throw()
 {
     _ierr = ierr;
-    Messages::Afficher(message, ierr);
+    Message::Afficher(message, ierr);
 }
 
 /*

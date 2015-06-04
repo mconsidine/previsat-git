@@ -36,12 +36,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 juin 2015
  *
  */
 
 #include <cmath>
-#include "mathConstants.h"
+#include "mathsConstants.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "vecteur3d.h"
 
 /* Constructeurs */
@@ -84,16 +85,16 @@ Vecteur3D::Vecteur3D(const Vecteur3D &vecteur)
 /*
  * Constructeur a partir de 3 nombres reels
  */
-Vecteur3D::Vecteur3D(const double x, const double y, const double z)
+Vecteur3D::Vecteur3D(const double xval, const double yval, const double zval)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _x = x;
-    _y = y;
-    _z = z;
+    _x = xval;
+    _y = yval;
+    _z = zval;
 
     /* Retour */
     return;
@@ -142,50 +143,60 @@ double Vecteur3D::Norme() const
  */
 double Vecteur3D::Angle(const Vecteur3D &vecteur) const
 {
-    /* Declarations des variables locales */
+    try {
 
-    /* Initialisations */
+        /* Declarations des variables locales */
 
-    /* Corps de la methode */
-    const double norme1 = Norme();
-    const double norme2 = vecteur.Norme();
-    const double cosang = (*this) * vecteur / (norme1 * norme2);
-    const double res = (cosang < 1.) ? acos(cosang) : (fabs(cosang - 1.) < EPSDBL) ? 0. : -1.;
+        /* Initialisations */
 
-    /* Retour */
-    return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : res);
+        /* Corps de la methode */
+        const double norme1 = Norme();
+        const double norme2 = vecteur.Norme();
+        const double cosang = (*this) * vecteur / (norme1 * norme2);
+        const double res = (cosang < 1.) ? acos(cosang) : (fabs(cosang - 1.) < EPSDBL) ? 0. : -1.;
+
+        /* Retour */
+        return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : res);
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
 }
 
-/*
- * Calcul du vecteur 3D unitaire
- */
+
 Vecteur3D Vecteur3D::Normalise() const
 {
-    /* Declarations des variables locales */
+    try {
 
-    /* Initialisations */
-    const double norme = Norme();
-    const double val = (norme < EPSDBL100) ? 1. : 1. / norme;
+        /* Declarations des variables locales */
 
-    /* Corps de la methode */
+        /* Initialisations */
+        const double norme = Norme();
+        const double val = (norme < EPSDBL100) ? 1. : 1. / norme;
 
-    /* Retour */
-    return ((*this) * val);
+        /* Corps de la methode */
+
+        /* Retour */
+        return ((*this) * val);
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
 }
 
 
 /* Accesseurs */
-double Vecteur3D::getX() const
+double Vecteur3D::x() const
 {
     return _x;
 }
 
-double Vecteur3D::getY() const
+double Vecteur3D::y() const
 {
     return _y;
 }
 
-double Vecteur3D::getZ() const
+double Vecteur3D::z() const
 {
     return _z;
 }

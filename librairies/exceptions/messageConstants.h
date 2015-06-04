@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    messages.cpp
+ * >    messageConstants.h
  *
  * Localisation
  * >    librairies.exceptions
@@ -27,53 +27,32 @@
  * >
  *
  * Description
- * >    Affichage d'un message
+ * >     Constantes liees aux boites de messages
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    11 juillet 2011
+ * >    1er septembre 2012
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    3 juin 2015
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#include <QMessageBox>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
-#include "messages.h"
+#ifndef MESSAGECONSTANTS_H
+#define MESSAGECONSTANTS_H
 
-/*
- * Affichage d'une boite de message
- */
-void Messages::Afficher(const QString &message, const MessageType ierr)
-{
-    /* Declarations des variables locales */
+/* Enumerations */
+enum MessageType {
 
-    /* Initialisations */
+    ERREUR = -1,
+    INFO = 0,
+    WARNING = 1
+};
 
-    /* Corps de la methode */
-    switch (ierr) {
+/* Declaration des constantes */
 
-    case INFO:
-        QMessageBox::information(0, QObject::tr("Information"), message);
-        break;
 
-    case WARNING:
-        QMessageBox::warning(0, QObject::tr("Avertissement"), message);
-        break;
+#endif // MESSAGECONSTANTS_H
 
-    case ERREUR:
-        QMessageBox::critical(0, QObject::tr("Erreur"), message);
-
-    default:
-        break;
-    }
-
-    /* Retour */
-    return;
-}

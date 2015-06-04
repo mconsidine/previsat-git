@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -48,7 +48,11 @@ class ElementsOsculateurs
 public:
 
     /* Constructeurs */
+    /**
+     * @brief ElementsOsculateurs Constructeur par defaut
+     */
     ElementsOsculateurs();
+
     ~ElementsOsculateurs();
 
     /* Constantes publiques */
@@ -56,28 +60,35 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculElementsOsculateurs Calcul des elements osculateurs pour une orbite elliptique
+     * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
+     * Trajectoires spatiales, O. Zarrouati
+     * @param position vecteur position
+     * @param vitesse vecteur vitesse
+     */
     void CalculElementsOsculateurs(const Vecteur3D &position, const Vecteur3D &vitesse);
 
     /* Accesseurs */
-    double getAnomalieExcentrique() const;
-    double getAnomalieMoyenne() const;
-    double getAnomalieVraie() const;
-    double getApogee() const;
-    double getArgumentPerigee() const;
-    double getAscensionDroiteNA() const;
-    double getDemiGrandAxe() const;
-    double getExcentricite() const;
-    double getExCEq() const;
-    double getExCirc() const;
-    double getEyCEq() const;
-    double getEyCirc() const;
-    double getInclinaison() const;
-    double getIx() const;
-    double getIy() const;
-    double getArgumentLongitudeVraie() const;
-    double getPerigee() const;
-    double getPeriode() const;
-    double getPso() const;
+    double anomalieExcentrique() const;
+    double anomalieMoyenne() const;
+    double anomalieVraie() const;
+    double apogee() const;
+    double argumentLongitudeVraie() const;
+    double argumentPerigee() const;
+    double ascensionDroiteNA() const;
+    double demiGrandAxe() const;
+    double excentricite() const;
+    double exCEq() const;
+    double exCirc() const;
+    double eyCEq() const;
+    double eyCirc() const;
+    double inclinaison() const;
+    double ix() const;
+    double iy() const;
+    double perigee() const;
+    double periode() const;
+    double pso() const;
 
 protected:
 

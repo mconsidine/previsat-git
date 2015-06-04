@@ -36,19 +36,21 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    30 mars 2015
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QFile>
 #include <QSettings>
 #include <QTextStream>
 #include <QTime>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "transitiss.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/dates/date.h"
-#include "librairies/exceptions/messages.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 
@@ -78,9 +80,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     const QStringList listeTLE("25544");
 
     // Lecture du TLE
-    TLE::LectureFichier(conditions.getFic(), listeTLE, tabtle);
+    TLE::LectureFichier(conditions.fic(), listeTLE, tabtle);
 
-    const double periode = 1. / tabtle.at(0).getNo() - temps1;
+    const double periode = 1. / tabtle.at(0).no() - temps1;
 
     // Ecriture de l'entete
     Conditions::EcrireEntete(observateur, conditions, tabtle, true);
@@ -109,8 +111,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
             const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
-            const Matrice mat(v1, v2, v3);
-            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Matrice3D mat(v1, v2, v3);
+            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.aaer(), observateur.aray());
 
             Corps corps;
             corps.setPosition(Vecteur3D(list.at(13), list.at(14), list.at(15)));
@@ -120,11 +122,11 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             sat.CalculPosVit(date);
             sat.CalculCoordHoriz(obs, false);
 
-            if (sat.getHauteur() >= conditions.getHaut()) {
+            if (sat.hauteur() >= conditions.haut()) {
 
                 double ang, ang0, jj0, jj2;
 
-                jj0 = date.getJourJulienUTC() - PAS0;
+                jj0 = date.jourJulienUTC() - PAS0;
                 jj2 = jj0 + temps1;
                 ang0 = PI;
 
@@ -140,24 +142,24 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     // Position du corps (Soleil ou Lune)
                     if (typeCorps == 1) {
                         soleil.CalculPosition(date0);
-                        corps.setPosition(soleil.getPosition());
+                        corps.setPosition(soleil.position());
                     }
                     if (typeCorps == 2) {
                         lune.CalculPosition(date0);
-                        corps.setPosition(lune.getPosition());
+                        corps.setPosition(lune.position());
                     }
                     corps.CalculCoordHoriz(observateur, false);
 
                     // Calcul de l'angle ISS - observateur - corps
-                    ang = corps.getDist().Angle(sat.getDist());
+                    ang = corps.dist().Angle(sat.dist());
                     if (ang < ang0)
                         ang0 = ang;
 
                     jj0 += PAS1;
-                } while (jj0 <= jj2 && ang < ang0 + EPSDBL100 && sat.getHauteur() >= 0.);
+                } while (jj0 <= jj2 && ang < ang0 + EPSDBL100 && sat.hauteur() >= 0.);
 
                 // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
-                if (jj0 <= jj2 - PAS1 && ang0 < conditions.getSeuilConjonction() + DEG2RAD) {
+                if (jj0 <= jj2 - PAS1 && ang0 < conditions.seuilConjonction() + DEG2RAD) {
 
                     int it;
                     double jjm[3], minmax[2];
@@ -193,38 +195,38 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     sat.CalculPosVit(date2);
                     sat.CalculCoordHoriz(observateur, false);
 
-                    if (sat.getHauteur() >= conditions.getHaut() && minmax[1] <= conditions.getSeuilConjonction()) {
+                    if (sat.hauteur() >= conditions.haut() && minmax[1] <= conditions.seuilConjonction()) {
 
                         Date dates[3];
 
                         // Position du corps (Soleil ou Lune)
                         soleil.CalculPosition(date2);
                         if (typeCorps == 1) {
-                            corps.setPosition(soleil.getPosition());
+                            corps.setPosition(soleil.position());
                             rayon = RAYON_SOLAIRE;
                         }
                         if (typeCorps == 2) {
                             lune.CalculPosition(date2);
-                            corps.setPosition(lune.getPosition());
+                            corps.setPosition(lune.position());
                             rayon = RAYON_LUNAIRE;
                         }
                         corps.CalculCoordHoriz(observateur, false);
 
                         // Angle de separation
-                        ang = corps.getDist().Angle(sat.getDist());
+                        ang = corps.dist().Angle(sat.dist());
 
                         // Rayon apparent du corps
-                        const double rayonApparent = asin(rayon / corps.getDistance());
+                        const double rayonApparent = asin(rayon / corps.distance());
 
                         const bool itr = (ang <= rayonApparent);
-                        sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
+                        sat.CalculSatelliteEclipse(soleil, conditions.refr());
 
                         if (itr || (!itr && !sat.isEclipse())) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[1] = date2;
                             CalculElements(sat, observateur, minmax[0], typeCorps, itr,
-                                           conditions.getSeuilConjonction(), dates);
+                                           conditions.seuilConjonction(), dates);
 
                             // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
                             QString transit = "";
@@ -238,48 +240,48 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 sat.CalculCoordEquat(observateur);
 
                                 // Altitude du satellite
-                                const Vecteur3D position = sat.getPosition();
+                                const Vecteur3D position = sat.position();
                                 sat.CalculLatitude(position);
-                                double altitude = sat.CalculAltitude(sat.getPosition());
+                                double altitude = sat.CalculAltitude(sat.position());
 
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);
                                 soleil.CalculCoordHoriz(observateur);
-                                sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
+                                sat.CalculSatelliteEclipse(soleil, conditions.refr());
 
                                 // Ecriture du resultat
 
                                 // Date calendaire
-                                const double offset = (conditions.getEcart()) ?
-                                            conditions.getOffset() :
-                                            Date::CalculOffsetUTC(Date(dates[j].getJourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date3(dates[j].getJourJulien() + offset + EPS_DATES, 0.);
+                                const double offset = (conditions.ecart()) ?
+                                            conditions.offset() :
+                                            Date::CalculOffsetUTC(Date(dates[j].jourJulienUTC(), 0.).ToQDateTime(1));
+                                const Date date3(dates[j].jourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
-                                const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
-                                const QString ht = Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0,  false, false);
+                                const QString az = Maths::ToSexagesimal(sat.azimut(), DEGRE, 3, 0, false, false);
+                                const QString ht = Maths::ToSexagesimal(sat.hauteur(), DEGRE, 2, 0,  false, false);
 
                                 // Coordonnees equatoriales du satellite
-                                const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false);
-                                const QString de = Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false);
+                                const QString ad = Maths::ToSexagesimal(sat.ascensionDroite(), HEURE1, 2, 0, false, false);
+                                const QString de = Maths::ToSexagesimal(sat.declinaison(), DEGRE, 2, 0, true, false);
 
                                 // Distance angulaire
-                                ang = corps.getDist().Angle(sat.getDist()) * RAD2DEG;
+                                ang = corps.dist().Angle(sat.dist()) * RAD2DEG;
 
                                 // Altitude du satellite et distance a l'observateur
-                                double distance = sat.getDistance();
-                                if (conditions.getUnite() == QObject::tr("nmi")) {
+                                double distance = sat.distance();
+                                if (conditions.unite() == QObject::tr("nmi")) {
                                     altitude *= MILE_PAR_KM;
                                     distance *= MILE_PAR_KM;
                                 }
 
                                 // Coordonnees topocentriques du Soleil
-                                const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
-                                const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
+                                const QString azs = Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, false);
+                                const QString hts = Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, false);
 
                                 QString resultat = fmt.
-                                        arg(date3.ToShortDateAMJ(LONG, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
-                                        arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).arg(ang, 5, 'f', 2).
+                                        arg(date3.ToShortDateAMJ(FORMAT_LONG, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
+                                        arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
                                         arg((sat.isEclipse()) ? QObject::tr("Omb") : (sat.isPenombre()) ?
@@ -288,22 +290,22 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Recherche du maximum (transit ou conjonction)
                                 QString max(35, ' ');
-                                const Vecteur3D direction = corps.getDist() - sat.getDist();
+                                const Vecteur3D direction = corps.dist() - sat.dist();
                                 Observateur obsmin =
                                         Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
 
-                                if (!obsmin.getNomlieu().isEmpty()) {
+                                if (!obsmin.nomlieu().isEmpty()) {
                                     obsmin.CalculPosVit(dates[j]);
                                     sat.CalculCoordHoriz(obsmin, false);
 
                                     if (typeCorps == 1) {
                                         soleil.CalculPosition(dates[j]);
-                                        corps.setPosition(soleil.getPosition());
+                                        corps.setPosition(soleil.position());
                                         rayon = RAYON_SOLAIRE;
                                     }
                                     if (typeCorps == 2) {
                                         lune.CalculPosition(dates[j]);
-                                        corps.setPosition(lune.getPosition());
+                                        corps.setPosition(lune.position());
                                         rayon = RAYON_LUNAIRE;
                                     }
                                     corps.CalculCoordHoriz(obsmin, false);
@@ -321,13 +323,13 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     if (cap >= 225. && cap < 315.)
                                         dir = QObject::tr("(W)");
 
-                                    const QString ew = (obsmin.getLongitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-                                    const QString ns = (obsmin.getLatitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+                                    const QString ew = (obsmin.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
+                                    const QString ns = (obsmin.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
 
                                     // Ecriture de la chaine de caracteres
                                     const QString fmt2 = "   %1 %2  %3 %4  %5 %6";
-                                    max = fmt2.arg(fabs(obsmin.getLongitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
-                                            arg(ew).arg(fabs(obsmin.getLatitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
+                                    max = fmt2.arg(fabs(obsmin.longitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
+                                            arg(ew).arg(fabs(obsmin.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
                                             arg(ns).arg(distanceObs, 5, 'f', 1).arg(dir);
                                 }
                                 transit.append(resultat.arg(max));
@@ -337,16 +339,16 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     }
                     date = Date(jj2, 0., false);
                 } else {
-                    if (sat.getHauteur() < conditions.getHaut())
-                        date = Date(date.getJourJulienUTC() + periode, 0., false);
+                    if (sat.hauteur() < conditions.haut())
+                        date = Date(date.jourJulienUTC() + periode, 0., false);
                 }
-                date = Date(date.getJourJulienUTC() + PAS0, 0., false);
+                date = Date(date.jourJulienUTC() + PAS0, 0., false);
 
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
                 bool atrouve = false;
                 while (it2.hasNext() && !atrouve) {
                     const double jj = it2.next().at(0);
-                    if (jj >= date.getJourJulienUTC()) {
+                    if (jj >= date.jourJulienUTC()) {
                         atrouve = true;
                         it2.previous();
                     }
@@ -358,7 +360,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
     // Ecriture des resultats dans le fichier de previsions
     res.sort();
-    QFile fichier(conditions.getOut());
+    QFile fichier(conditions.out());
     fichier.open(QIODevice::Append | QIODevice::Text);
     QTextStream flux(&fichier);
 
@@ -378,7 +380,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             const QString ligne2 = ligne0.mid(163, 163).trimmed();
             const QString ligne3 = ligne0.mid(326, 163).trimmed();
             const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
-            flux << transit.toLatin1() << endl;
+            flux << transit << endl;
             flux << endl;
 
             result.append(ligne1);
@@ -392,7 +394,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 flux << endl;
     }
 
-    ligne = QObject::tr("Temps écoulé : %1s");
+    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
@@ -407,133 +409,6 @@ void TransitISS::FinTraitement()
     res.clear();
     tabtle.clear();
     tabEphem.clear();
-}
-
-/*
- * Calcul des ephemerides du Soleil et de la Lune
- */
-void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur)
-{
-    /* Declarations des variables locales */
-    bool lvis, svis;
-    Soleil soleil;
-    Lune lune;
-    QVector<double> tab;
-    QList<QVector<double> > tabEphemLune, tabEphemSoleil;
-
-    /* Initialisations */
-    lvis = false;
-    svis = false;
-
-    /* Corps de la methode */
-    // Ephemerides du Soleil
-    Date date(conditions.getJj1(), 0., false);
-    if (conditions.getAcalcSol()) {
-        do {
-
-            // Position ECI de l'observateur
-            observateur.CalculPosVit(date);
-
-            // Position du Soleil
-            soleil.CalculPosition(date);
-            soleil.CalculCoordHoriz(observateur, false);
-
-            if (soleil.getHauteur() >= conditions.getHaut()) {
-
-                svis = true;
-                tab.clear();
-
-                // Remplissage du tableau d'ephemerides
-                tab.append(date.getJourJulienUTC());
-
-                tab.append(observateur.getPosition().getX());
-                tab.append(observateur.getPosition().getY());
-                tab.append(observateur.getPosition().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur1().getX());
-                tab.push_back(observateur.getRotHz().getVecteur1().getY());
-                tab.push_back(observateur.getRotHz().getVecteur1().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur2().getX());
-                tab.push_back(observateur.getRotHz().getVecteur2().getY());
-                tab.push_back(observateur.getRotHz().getVecteur2().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur3().getX());
-                tab.push_back(observateur.getRotHz().getVecteur3().getY());
-                tab.push_back(observateur.getRotHz().getVecteur3().getZ());
-
-                tab.append(soleil.getPosition().getX());
-                tab.append(soleil.getPosition().getY());
-                tab.append(soleil.getPosition().getZ());
-                tab.append(1);
-
-                tabEphemSoleil.append(tab);
-            } else {
-                if (svis) {
-                    svis = false;
-                    date = Date(date.getJourJulienUTC() + 0.375, 0., false);
-                }
-            }
-
-            date = Date(date.getJourJulienUTC() + PAS0, 0., false);
-        } while (date.getJourJulienUTC() <= conditions.getJj2());
-    }
-
-    // Ephemerides de la Lune
-    date = Date(conditions.getJj1(), 0., false);
-    if (conditions.getAcalcLune()) {
-        do {
-
-            // Position ECI de l'observateur
-            observateur.CalculPosVit(date);
-
-            // Position du Soleil
-            lune.CalculPosition(date);
-            lune.CalculCoordHoriz(observateur, false);
-
-            if (lune.getHauteur() >= conditions.getHaut()) {
-
-                lvis = true;
-                tab.clear();
-
-                // Remplissage du tableau d'ephemerides
-                tab.append(date.getJourJulienUTC());
-
-                tab.append(observateur.getPosition().getX());
-                tab.append(observateur.getPosition().getY());
-                tab.append(observateur.getPosition().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur1().getX());
-                tab.push_back(observateur.getRotHz().getVecteur1().getY());
-                tab.push_back(observateur.getRotHz().getVecteur1().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur2().getX());
-                tab.push_back(observateur.getRotHz().getVecteur2().getY());
-                tab.push_back(observateur.getRotHz().getVecteur2().getZ());
-                tab.push_back(observateur.getRotHz().getVecteur3().getX());
-                tab.push_back(observateur.getRotHz().getVecteur3().getY());
-                tab.push_back(observateur.getRotHz().getVecteur3().getZ());
-
-                tab.append(lune.getPosition().getX());
-                tab.append(lune.getPosition().getY());
-                tab.append(lune.getPosition().getZ());
-                tab.append(2);
-
-                tabEphemLune.append(tab);
-            } else {
-                if (lvis) {
-                    lvis = false;
-                    date = Date(date.getJourJulienUTC() + 0.375, 0., false);
-                }
-            }
-
-            date = Date(date.getJourJulienUTC() + PAS0, 0., false);
-        } while (date.getJourJulienUTC() <= conditions.getJj2());
-    }
-    tabEphem.append(tabEphemSoleil);
-    tabEphem.append(tabEphemLune);
-
-    tab.clear();
-    tabEphemLune.clear();
-    tabEphemSoleil.clear();
-
-    /* Retour */
-    return;
 }
 
 /*
@@ -564,15 +439,15 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
         // Position du corps
         if (typeCorps == 1) {
             soleil.CalculPosition(date);
-            corps.setPosition(soleil.getPosition());
+            corps.setPosition(soleil.position());
         }
         if (typeCorps == 2) {
             lune.CalculPosition(date);
-            corps.setPosition(lune.getPosition());
+            corps.setPosition(lune.position());
         }
         corps.CalculCoordHoriz(observateur, false);
 
-        angle[i] = corps.getDist().Angle(satellite.getDist());
+        angle[i] = corps.dist().Angle(satellite.dist());
     }
 
     Maths::CalculExtremumInterpolation3(jjm, angle, minmax);
@@ -581,6 +456,65 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     /* Retour */
     return;
 }
+
+/*
+ * Calcul de la date d'une borne du transit ou conjonction
+ */
+void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
+                            const bool itransit, const double seuilConjonction, double &dateInter)
+{
+    /* Declarations des variables locales */
+    double dist;
+    double angle[3];
+    Corps corps;
+    Soleil soleil;
+    Lune lune;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    for (int i=0; i<3; i++) {
+
+        const Date date(jjm[i], 0., false);
+
+        observateur.CalculPosVit(date);
+
+        // Position de l'ISS
+        satellite.CalculPosVit(date);
+        satellite.CalculCoordHoriz(observateur, false);
+
+        // Position du corps
+        if (typeCorps == 1) {
+            soleil.CalculPosition(date);
+            corps.setPosition(soleil.position());
+        }
+        if (typeCorps == 2) {
+            lune.CalculPosition(date);
+            corps.setPosition(lune.position());
+        }
+        corps.CalculCoordHoriz(observateur, false);
+
+        angle[i] = corps.dist().Angle(satellite.dist());
+    }
+
+    if (itransit) {
+
+        double rayon;
+        if (typeCorps == 1)
+            rayon = RAYON_SOLAIRE;
+        if (typeCorps == 2)
+            rayon = RAYON_LUNAIRE;
+
+        dist = asin(rayon / corps.distance());
+    } else {
+        dist = seuilConjonction;
+    }
+    dateInter = Maths::CalculValeurXInterpolation3(jjm, angle, dist, EPS_DATES);
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Calcul des elements du transit ou de la conjonction
@@ -646,58 +580,127 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 }
 
 /*
- * Calcul de la date d'une borne du transit ou conjonction
+ * Calcul des ephemerides du Soleil et de la Lune
  */
-void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
-                            const bool itransit, const double seuilConjonction, double &dateInter)
+void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    double dist;
-    double angle[3];
-    Corps corps;
+    bool lvis, svis;
     Soleil soleil;
     Lune lune;
+    QVector<double> tab;
+    QList<QVector<double> > tabEphemLune, tabEphemSoleil;
 
     /* Initialisations */
+    lvis = false;
+    svis = false;
 
     /* Corps de la methode */
-    for (int i=0; i<3; i++) {
+    // Ephemerides du Soleil
+    Date date(conditions.jj1(), 0., false);
+    if (conditions.acalcSol()) {
+        do {
 
-        const Date date(jjm[i], 0., false);
+            // Position ECI de l'observateur
+            observateur.CalculPosVit(date);
 
-        observateur.CalculPosVit(date);
-
-        // Position de l'ISS
-        satellite.CalculPosVit(date);
-        satellite.CalculCoordHoriz(observateur, false);
-
-        // Position du corps
-        if (typeCorps == 1) {
+            // Position du Soleil
             soleil.CalculPosition(date);
-            corps.setPosition(soleil.getPosition());
-        }
-        if (typeCorps == 2) {
+            soleil.CalculCoordHoriz(observateur, false);
+
+            if (soleil.hauteur() >= conditions.haut()) {
+
+                svis = true;
+                tab.clear();
+
+                // Remplissage du tableau d'ephemerides
+                tab.append(date.jourJulienUTC());
+
+                tab.append(observateur.position().x());
+                tab.append(observateur.position().y());
+                tab.append(observateur.position().z());
+                tab.push_back(observateur.rotHz().vecteur1().x());
+                tab.push_back(observateur.rotHz().vecteur1().y());
+                tab.push_back(observateur.rotHz().vecteur1().z());
+                tab.push_back(observateur.rotHz().vecteur2().x());
+                tab.push_back(observateur.rotHz().vecteur2().y());
+                tab.push_back(observateur.rotHz().vecteur2().z());
+                tab.push_back(observateur.rotHz().vecteur3().x());
+                tab.push_back(observateur.rotHz().vecteur3().y());
+                tab.push_back(observateur.rotHz().vecteur3().z());
+
+                tab.append(soleil.position().x());
+                tab.append(soleil.position().y());
+                tab.append(soleil.position().z());
+                tab.append(1);
+
+                tabEphemSoleil.append(tab);
+            } else {
+                if (svis) {
+                    svis = false;
+                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
+                }
+            }
+
+            date = Date(date.jourJulienUTC() + PAS0, 0., false);
+        } while (date.jourJulienUTC() <= conditions.jj2());
+    }
+
+    // Ephemerides de la Lune
+    date = Date(conditions.jj1(), 0., false);
+    if (conditions.acalcLune()) {
+        do {
+
+            // Position ECI de l'observateur
+            observateur.CalculPosVit(date);
+
+            // Position du Soleil
             lune.CalculPosition(date);
-            corps.setPosition(lune.getPosition());
-        }
-        corps.CalculCoordHoriz(observateur, false);
+            lune.CalculCoordHoriz(observateur, false);
 
-        angle[i] = corps.getDist().Angle(satellite.getDist());
+            if (lune.hauteur() >= conditions.haut()) {
+
+                lvis = true;
+                tab.clear();
+
+                // Remplissage du tableau d'ephemerides
+                tab.append(date.jourJulienUTC());
+
+                tab.append(observateur.position().x());
+                tab.append(observateur.position().y());
+                tab.append(observateur.position().z());
+                tab.push_back(observateur.rotHz().vecteur1().x());
+                tab.push_back(observateur.rotHz().vecteur1().y());
+                tab.push_back(observateur.rotHz().vecteur1().z());
+                tab.push_back(observateur.rotHz().vecteur2().x());
+                tab.push_back(observateur.rotHz().vecteur2().y());
+                tab.push_back(observateur.rotHz().vecteur2().z());
+                tab.push_back(observateur.rotHz().vecteur3().x());
+                tab.push_back(observateur.rotHz().vecteur3().y());
+                tab.push_back(observateur.rotHz().vecteur3().z());
+
+                tab.append(lune.position().x());
+                tab.append(lune.position().y());
+                tab.append(lune.position().z());
+                tab.append(2);
+
+                tabEphemLune.append(tab);
+            } else {
+                if (lvis) {
+                    lvis = false;
+                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
+                }
+            }
+
+            date = Date(date.jourJulienUTC() + PAS0, 0., false);
+        } while (date.jourJulienUTC() <= conditions.jj2());
     }
+    tabEphem.append(tabEphemSoleil);
+    tabEphem.append(tabEphemLune);
 
-    if (itransit) {
-
-        double rayon;
-        if (typeCorps == 1)
-            rayon = RAYON_SOLAIRE;
-        if (typeCorps == 2)
-            rayon = RAYON_LUNAIRE;
-
-        dist = asin(rayon / corps.getDistance());
-    } else {
-        dist = seuilConjonction;
-    }
-    dateInter = Maths::CalculValeurXInterpolation3(jjm, angle, dist, EPS_DATES);
+    tab.clear();
+    tabEphemLune.clear();
+    tabEphemSoleil.clear();
 
     /* Retour */
     return;

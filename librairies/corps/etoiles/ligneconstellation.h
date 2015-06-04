@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    3 juin 2015
  *
  */
 
@@ -47,8 +47,18 @@ class LigneConstellation
 public:
 
     /* Constructeurs */
+    /**
+     * @brief LigneConstellation Constructeur par defaut
+     */
     LigneConstellation();
-    LigneConstellation(const Etoile &etoile1, const Etoile &etoile2);
+
+    /**
+     * @brief LigneConstellation Defiinition a partie de 2 etoiles
+     * @param star1 etoile 1
+     * @param star2 etoile 2
+     */
+    LigneConstellation(const Etoile &star1, const Etoile &star2);
+
     ~LigneConstellation();
 
     /* Constantes publiques */
@@ -57,12 +67,17 @@ public:
     static bool initLig;
 
     /* Methodes publiques */
+    /**
+     * @brief CalculLignesCst Calcul des lignes de constellations
+     * @param etoiles tableau d'etoiles
+     * @param lignesCst tableau des constellations
+     */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
 
     /* Accesseurs */
     bool isDessin() const;
-    Etoile getEtoile1() const;
-    Etoile getEtoile2() const;
+    Etoile etoile1() const;
+    Etoile etoile2() const;
 
 
 protected:
@@ -77,7 +92,6 @@ protected:
 private:
 
     /* Constantes privees */
-    //static const int TABMAX = 646;
 
     /* Variables privees */
     bool _dessin;

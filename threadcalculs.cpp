@@ -36,7 +36,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    25 mars 2014
+ * >    3 juin 2015
  *
  */
 
@@ -46,31 +46,32 @@
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
 
-static Observateur observateur;
-static QStringList res;
+static Observateur observ;
+static QStringList result;
 
-ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions)
+ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond)
 {
-    _typeCalcul = typeCalcul;
-    _conditions = conditions;
+    _typeCalcul = typeCalc;
+    _conditions = cond;
 }
 
-ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &obs)
+ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond, const Observateur &obs)
 {
-    _typeCalcul = typeCalcul;
-    _conditions = conditions;
-    observateur = obs;
+    _typeCalcul = typeCalc;
+    _conditions = cond;
+    observ = obs;
 }
 
 void ThreadCalculs::run()
 {
     switch (_typeCalcul) {
     case PREVISION:
-        Prevision::CalculPassages(_conditions, observateur, res);
+        Prevision::CalculPassages(_conditions, observ, result
+                                  );
         break;
 
     case IRIDIUM:
-        Iridium::CalculFlashsIridium(_conditions, observateur, res);
+        Iridium::CalculFlashsIridium(_conditions, observ, result);
         break;
 
     case EVENEMENTS:
@@ -78,24 +79,24 @@ void ThreadCalculs::run()
         break;
 
     case TRANSITS:
-        TransitISS::CalculTransitsISS(_conditions, observateur, res);
+        TransitISS::CalculTransitsISS(_conditions, observ, result);
 
     default:
         break;
     }
 }
 
-ThreadCalculs::TypeCalcul ThreadCalculs::getTypeCalcul() const
+ThreadCalculs::TypeCalcul ThreadCalculs::typeCalcul() const
 {
     return _typeCalcul;
 }
 
-Observateur ThreadCalculs::getObservateur() const
+Observateur ThreadCalculs::observateur() const
 {
-    return observateur;
+    return observ;
 }
 
-QStringList ThreadCalculs::getRes()
+QStringList ThreadCalculs::res()
 {
-    return res;
+    return result;
 }

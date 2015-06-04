@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2014
+ * >    3 juin 2015
  *
  */
 
@@ -49,28 +49,105 @@ class Conditions
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Conditions Constructeur par defaut
+     */
     Conditions();
 
-    // Constructeur pour le calcul des previsions de passages
-    Conditions(const bool ecart, const bool ecl, const bool ext, const bool refr, const bool syst, const int crep, const int haut,
-               const int pas0, const double jj1, const double jj2, const double offset, const double mgn1, const QString &fic,
-               const QString &out, const QString &unite, const QStringList &listeSatellites);
+    /**
+     * @brief Conditions Constructeur pour le calcul des previsions de passages
+     * @param pecEcart Prise en compte de l'ecart heure legale - UTC
+     * @param eclipse Prise en compte de l'etat d'eclipse du satellite
+     * @param extinction Prise en compte de l'extinction atmospherique
+     * @param refraction Prise en compte de la refraction
+     * @param systeme systeme horaire
+     * @param crepuscule valeur de la hauteur du Soleil
+     * @param haut hauteur minimale du satellite
+     * @param pas0 pas de generation des previsions
+     * @param jj1 jour julien initial
+     * @param jj2 jour julien final
+     * @param offset ecart heure legale - UTC
+     * @param mgn1 magnitude limite
+     * @param fic fichier de TLE
+     * @param out fichier de previsions
+     * @param unite unite de distance
+     * @param listeSat liste des satellites
+     */
+    Conditions(const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction, const bool systeme,
+               const int crepuscule, const int haut, const int pas0, const double jj1, const double jj2, const double offset,
+               const double mgn1, const QString &fic, const QString &out, const QString &unite, const QStringList &listeSat);
 
-    // Constructeur pour le calcul des flashs Iridium
-    Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const int crep, const int haut, const int nbl,
-               const char chr, const double ang0, const double jj1, const double jj2, const double offset, const double mgn1,
-               const double mgn2, const QString &fic, const QString &out, const QString &unite, const QStringList &tabStsIri,
-               const QVector<TLE> &tabtle);
+    /**
+     * @brief Conditions Constructeur pour le calcul des flashs Iridium
+     * @param ecart Prise en compte de l'ecart heure legale - UTC
+     * @param ext Prise en compte de l'extinction atmospherique
+     * @param refr Prise en compte de la refraction
+     * @param syst systeme horaire
+     * @param crepuscule valeur de la hauteur du Soleil
+     * @param hauteur hauteur minimale du satellite
+     * @param nbLig nombre de lignes pour l'ecriture du flash
+     * @param chrono tri par ordre chronologique
+     * @param angle0 angle maximal de reflexion
+     * @param jourJulien1 jour julien initial
+     * @param jourJulien2 jour julien final
+     * @param offsetUTC ecart heure legale - UTC
+     * @param magn1 magnitude limite (nuit)
+     * @param magn2 magnitude limite (jour)
+     * @param ficEnt fichier de TLE
+     * @param ficOut fichier de previsions
+     * @param unit unite de distance
+     * @param tabStsIridium tableau de statut des Iridium
+     * @param tabTLEIri tableau des TLE des satellites Iridium
+     */
+    Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const int crepuscule, const int hauteur,
+               const int nbLig, const char chrono, const double angle0, const double jourJulien1, const double jourJulien2,
+               const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt, const QString &ficOut,
+               const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri);
 
-    // Constructeur pour le calcul des evenements orbitaux
-    Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso, const bool atransJn,
-               const bool ecart, const bool refr, const bool syst, const double jj1, const double jj2, const double offset,
-               const QString &fic, const QString &out, const QString &unite, const QStringList &listeSatellites);
+    /**
+     * @brief Conditions Constructeur pour le calcul des evenements orbitaux
+     * @param apassageApogee Calcul des passages aux perigees/apogees
+     * @param apassageNoeuds Calcul des passages aux noeuds
+     * @param apassageOmbre Calcul des passages ombre/penombre/lumiere
+     * @param apassagePso Calcul des passages aux PSO 0° et 180°
+     * @param atransitionJn Calcul des passages aux transitions jour/nuit
+     * @param pecEcart Prise en compte de l'ecart heure legale - UTC
+     * @param refraction Prise en compte de la refraction
+     * @param systeme systeme horaire
+     * @param jourJulien1 jour julien initial
+     * @param jourJulien2 jour julien final
+     * @param offsetUTC ecart heure legale - UTC
+     * @param ficEnt fichier de TLE
+     * @param ficOut fichier de previsions
+     * @param unit unite de distance
+     * @param listeSat liste des satellites
+     */
+    Conditions(const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre, const bool apassagePso,
+               const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme, const double jourJulien1,
+               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit,
+               const QStringList &listeSat);
 
-    // Constructeur pour le calcul des transits ISS
-    Conditions(const bool acalcLune, const bool acalcSoleil, const bool ecart, const bool refr, const bool syst, const int haut,
-               const double ageTLE, const double seuilConjonction, const double jj1, const double jj2, const double offset,
-               const QString &fic, const QString &out, const QString &unite);
+    /**
+     * @brief Conditions Constructeur pour le calcul des transits ISS
+     * @param acalculLune Calcul des transits/conjonctions avec la Lune
+     * @param acalculSoleil Calcul des transits/conjonctions avec le Soleil
+     * @param pecEcart Prise en compte de l'ecart heure legale - UTC
+     * @param refraction Prise en compte de la refraction
+     * @param systeme systeme horaire
+     * @param hauteur hauteur minimale du satellite
+     * @param age age du TLE
+     * @param seuilConj seuil maximal de conjonction
+     * @param jourJulien1 jour julien initial
+     * @param jourJulien2 jour julien final
+     * @param offsetUTC ecart heure legale - UTC
+     * @param ficEnt fichier de TLE
+     * @param ficOut fichier de previsions
+     * @param unit unite de distance
+     */
+    Conditions(const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction, const bool systeme,
+               const int hauteur, const double age, const double seuilConj, const double jourJulien1, const double jourJulien2,
+               const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit);
+
     ~Conditions();
 
     /* Constantes publiques */
@@ -78,45 +155,51 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    static void EcrireEntete(const Observateur &observateur, const Conditions &conditions, QVector<TLE> &tabtle,
-                             const bool itransit);
+    /**
+     * @brief EcrireEntete Ecriture de l'entete du fichier de previsions
+     * @param observateur observateur
+     * @param conditions conditions d'observation
+     * @param tabtle tableau de TLE
+     * @param itransit car du calcul des transits ISS
+     */
+    static void EcrireEntete(const Observateur &observateur, const Conditions &conditions, QVector<TLE> &tabtle, const bool itransit);
 
     /* Accesseurs */
-    bool getEcart() const;
-    bool getEcl() const;
-    bool getExt() const;
-    bool getRefr() const;
-    bool getSyst() const;
-    double getCrep() const;
-    double getHaut() const;
-    double getPas0() const;
-    double getJj1() const;
-    double getJj2() const;
-    double getOffset() const;
-    double getMgn1() const;
-    QString getFic() const;
-    QString getOut() const;
-    QString getUnite() const;
-    QStringList getListeSatellites() const;
+    bool ecart() const;
+    bool ecl() const;
+    bool ext() const;
+    bool refr() const;
+    bool syst() const;
+    double crep() const;
+    double haut() const;
+    double pas0() const;
+    double jj1() const;
+    double jj2() const;
+    double offset() const;
+    double mgn1() const;
+    QString fic() const;
+    QString out() const;
+    QString unite() const;
+    QStringList listeSatellites() const;
 
-    int getNbl() const;
-    char getChr() const;
-    char getOpe() const;
-    double getAng0() const;
-    double getMgn2() const;
-    QStringList getTabStsIri() const;
-    QVector<TLE> getTabtle() const;
+    int nbl() const;
+    char chr() const;
+    char ope() const;
+    double ang0() const;
+    double mgn2() const;
+    QStringList tabStsIri() const;
+    QVector<TLE> tabtle() const;
 
-    bool getApassApogee() const;
-    bool getApassNoeuds() const;
-    bool getApassOmbre() const;
-    bool getApassPso() const;
-    bool getAtransJn() const;
+    bool apassApogee() const;
+    bool apassNoeuds() const;
+    bool apassOmbre() const;
+    bool apassPso() const;
+    bool atransJn() const;
 
-    bool getAcalcLune() const;
-    bool getAcalcSol() const;
-    double getAgeTLE() const;
-    double getSeuilConjonction() const;
+    bool acalcLune() const;
+    bool acalcSol() const;
+    double ageTLE() const;
+    double seuilConjonction() const;
 
 protected:
 

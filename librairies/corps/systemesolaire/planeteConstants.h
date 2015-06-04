@@ -36,13 +36,14 @@
  * >    21 juillet 2012
  *
  * Date de revision
- * >
+ * >    3 juin 2015
  *
  */
 
 #ifndef PLANETECONSTANTS_H
 #define PLANETECONSTANTS_H
 
+/* Enumerations */
 enum IndicePlanete {
     MERCURE = 0,
     VENUS   = 1,
@@ -53,4 +54,8 @@ enum IndicePlanete {
     NEPTUNE = 6
 };
 
+/* Declaration des constantes */
+
+
 #endif // PLANETECONSTANTS_H
+

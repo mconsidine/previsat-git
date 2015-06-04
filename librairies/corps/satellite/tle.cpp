@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -68,10 +68,7 @@ TLE::TLE()
     _omegao = 0.;
 }
 
-/*
- * Constructeur a partir des 2 lignes du TLE
- */
-TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
+TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
 {
     /* Declarations des variables locales */
     int an;
@@ -79,9 +76,9 @@ TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ligne0 = ligne0;
-    _ligne1 = ligne1;
-    _ligne2 = ligne2;
+    _ligne0 = lig0;
+    _ligne1 = lig1;
+    _ligne2 = lig2;
 
     // Numero NORAD
     _norad = _ligne1.mid(2, 5);
@@ -91,7 +88,7 @@ TLE::TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2)
     const double jrs = _ligne1.mid(20, 12).toDouble();
     an = (an < 57) ? an + AN2000 : an + 1900;
     const Date date(an, 1, 1., 0.);
-    _epoque = Date(date.getJourJulien() + jrs - 1., 0., true);
+    _epoque = Date(date.jourJulien() + jrs - 1., 0., true);
 
     // Coefficient pseudo-balistique
     _bstar = _ligne1.mid(53, 6).toDouble();
@@ -194,33 +191,33 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
             const int ierr = QString(e.what()).toInt();
             switch (ierr) {
             case 1:
-                msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
+                msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numÃ©ro NORAD : %2) est incorrecte");
                 msg = msg.arg(nomsat).arg(li2.mid(1, 6).trimmed());
                 break;
 
             case 2:
-                msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects");
+                msg = QObject::tr("Les numÃ©ros de ligne du TLE du satellite %1 (numÃ©ro NORAD : %2 ) sont incorrects");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 3:
-                msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2");
+                msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numÃ©ro NORAD : %2");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 4:
-                msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2");
+                msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numÃ©ro NORAD : %2");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 5:
-                msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)");
+                msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numÃ©ros NORAD diffÃ©rents (%2 et %3)");
                 msg = msg.arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
                 break;
 
             case 6:
             case 7:
-                msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numéro NORAD : %3");
+                msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numÃ©ro NORAD : %3");
                 msg = msg.arg(ierr - 5).arg(nomsat).arg(li1.mid(2, 5));
                 break;
 
@@ -246,15 +243,11 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     QString magn;
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
+                                                        QStandardPaths::LocateDirectory) + "data";
+
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
-    const QString fic = dirDat + QDir::separator() + "donnees.sat";
+    const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
 
     QFile donneesSatellites(fic);
     if (donneesSatellites.exists()) {
@@ -357,7 +350,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
-        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
 
     // Lecture du TLE
@@ -366,7 +359,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les TLE recents
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
-        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);
 
     // Lecture du TLE
@@ -400,7 +393,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
 
         if (norad1 == norad2) {
 
-            if (tleOld.at(isat)._epoque.getJourJulienUTC() < tleNew.at(j)._epoque.getJourJulienUTC()) {
+            if (tleOld.at(isat)._epoque.jourJulienUTC() < tleNew.at(j)._epoque.jourJulienUTC()) {
                 tleOld[isat] = tleNew[j];
                 tleOld[isat]._ligne0 = (tleNew.at(j)._nom == norad2) ? tleOld.at(isat)._ligne0 : tleNew.at(j)._ligne0;
                 nbMaj++;
@@ -417,7 +410,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE anciens
                     // Demande d'ajout
                     if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
+                        const QString message = QObject::tr("Le satellite %1 (numÃ©ro NORAD : %2) n'existe pas dans le fichier Ã  mettre Ã  jour.\nVoulez-vous ajouter ce TLE dans le fichier Ã  mettre Ã  jour ?");
                         res1 = QMessageBox::question(0, QObject::tr("Ajout du nouveau TLE"),
                                                      message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad),
                                                      QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
@@ -434,7 +427,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE recents
                     // Demande de suppression
                     if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
+                        const QString message = QObject::tr("Le satellite %1 (numÃ©ro NORAD : %2) n'existe pas dans le fichier de TLE rÃ©cents.\nVoulez-vous supprimer ce TLE du fichier Ã  mettre Ã  jour ?");
                         res2 = QMessageBox::question(0, QObject::tr("Suppression du TLE"),
                                                      message.arg(tleOld.at(isat)._nom).arg(tleOld.at(isat)._norad),
                                                      QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
@@ -570,67 +563,67 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2)
 }
 
 /* Accesseurs */
-double TLE::getArgpo() const
+double TLE::argpo() const
 {
     return _argpo;
 }
 
-double TLE::getBstar() const
+double TLE::bstar() const
 {
     return _bstar;
 }
 
-double TLE::getEcco() const
+double TLE::ecco() const
 {
     return _ecco;
 }
 
-Date TLE::getEpoque() const
+Date TLE::epoque() const
 {
     return _epoque;
 }
 
-double TLE::getInclo() const
+double TLE::inclo() const
 {
     return _inclo;
 }
 
-QString TLE::getLigne1() const
+QString TLE::ligne1() const
 {
     return _ligne1;
 }
 
-QString TLE::getLigne2() const
+QString TLE::ligne2() const
 {
     return _ligne2;
 }
 
-double TLE::getMo() const
+double TLE::mo() const
 {
     return _mo;
 }
 
-int TLE::getNbOrbites() const
+int TLE::nbOrbites() const
 {
     return _nbOrbites;
 }
 
-double TLE::getNo() const
+double TLE::no() const
 {
     return _no;
 }
 
-QString TLE::getNom() const
+QString TLE::nom() const
 {
     return _nom;
 }
 
-QString TLE::getNorad() const
+QString TLE::norad() const
 {
     return _norad;
 }
 
-double TLE::getOmegao() const
+double TLE::omegao() const
 {
     return _omegao;
 }

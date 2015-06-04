@@ -18,16 +18,16 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    mathConstants.h
+ * >    message.cpp
  *
  * Localisation
- * >    librairies.maths
+ * >    librairies.exceptions
  *
  * Heritage
  * >
  *
  * Description
- * >     Constantes mathematiques
+ * >    Affichage d'un message
  *
  * Auteur
  * >    Astropedia
@@ -36,43 +36,41 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 juin 2015
  *
  */
 
-#ifndef MATHCONSTANTS_H
-#define MATHCONSTANTS_H
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#include <QMessageBox>
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
+#include "message.h"
 
-enum AngleFormatType {
-    DEGRE,
-    HEURE1,
-    HEURE2,
-    RADIAN,
-    ARCSEC,
-    NO_TYPE
-};
+void Message::Afficher(const QString &message, const MessageType ierr)
+{
+    /* Declarations des variables locales */
 
-static const double EPSDBL = 1.e-12;
-static const double EPSDBL100 = 1.e-10;
+    /* Initialisations */
 
-static const double PI = 3.14159265358979323846264;
-static const double DEUX_PI = 2. * PI;
-static const double PI_SUR_DEUX = 0.5 * PI;
-static const double DEUX_TIERS = 2. / 3.;
+    /* Corps de la methode */
+    switch (ierr) {
 
-static const double T360 = 360.;
-static const double ARCMIN_PAR_DEG = 60.;
-static const double ARCSEC_PAR_MIN = 60.;
-static const double ARCSEC_PAR_DEG = 3600.;
+    case INFO:
+        QMessageBox::information(0, QObject::tr("Information"), message);
+        break;
 
-static const double DEG2RAD = PI / 180.;
-static const double ARCSEC2RAD = PI / 648000.;
-static const double HEUR2RAD = PI / 12.;
+    case WARNING:
+        QMessageBox::warning(0, QObject::tr("Avertissement"), message);
+        break;
 
-static const double DEUX_SUR_PI = 1. / PI_SUR_DEUX;
-static const double DEG_PAR_ARCMIN = 1. / ARCMIN_PAR_DEG;
-static const double DEG_PAR_ARCSEC = 1. / ARCSEC_PAR_DEG;
-static const double RAD2DEG = 1. / DEG2RAD;
-static const double RAD2HEUR = 1. / HEUR2RAD;
+    case ERREUR:
+        QMessageBox::critical(0, QObject::tr("Erreur"), message);
 
-#endif // MATHCONSTANTS_H
+    default:
+        break;
+    }
+
+    /* Retour */
+    return;
+}

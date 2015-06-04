@@ -36,8 +36,8 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >
- * >    5 septembre 2013
+ * >    3 juin 2015
+ * 
  */
 
 #include <QStringList>
@@ -116,7 +116,7 @@ Planete::Planete(const int iplanete)
 {
     _iplanete = iplanete;
     if (!_init)
-        nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
+        nomPlanetes << QObject::tr("Mercure") << QObject::tr("VÃ©nus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
                        QObject::tr("Saturne") << QObject::tr("Uranus") << QObject::tr("Neptune");
     _init = true;
     for(int i=0; i<6; i++)
@@ -131,7 +131,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Vecteur3D solpos = soleil.getPosition() * (1. / UA2KM);
+    const Vecteur3D solpos = soleil.position() * (1. / UA2KM);
 
     /* Corps de la methode */
     // Calcul des elements orbitaux
@@ -150,7 +150,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     _distance = _dist.Norme();
 
     // Prise en compte de l'aberration
-    const double jj2 = date.getJourJulienUTC() - 0.0057755183 * _distance;
+    const double jj2 = date.jourJulienUTC() - 0.0057755183 * _distance;
     const Date date2(jj2, 0., false);
 
     CalculElements(date2);
@@ -171,7 +171,7 @@ void Planete::CalculElements(const Date &date)
 
     /* Initialisations */
     tu[0] = 1.;
-    tu[1] = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    tu[1] = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
     tu[2] = tu[1] * tu[1];
     tu[3] = tu[2] * tu[1];
 
@@ -242,7 +242,7 @@ void Planete::CalculCoordonneesSpheriques()
 }
 
 /* Accesseurs */
-QString Planete::getNom() const
+QString Planete::nom() const
 {
     return (nomPlanetes.at(_iplanete));
 }

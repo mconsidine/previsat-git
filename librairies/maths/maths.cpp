@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    3 juin 2015
  *
  */
 
@@ -45,49 +45,6 @@
 #include "maths.h"
 
 /* Methodes */
-/*
- * Arrondi avec n decimales
- */
-double Maths::arrondi(const double x, const int n)
-{
-    /* Declarations des variables locales */
-    double res;
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (n < 0) {
-        res = x;
-    } else {
-
-        const double y = fabs(x);
-        const double p = pow(10., n);
-        res = sgn(x) * floor(p * y + 0.5) / p;
-    }
-
-    /* Retour */
-    return (res);
-}
-
-/*
- * Signe d'un nombre reel
- */
-int Maths::sgn(const double x)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return ((x > 0.) ? 1 : (x < 0.) ? -1 : 0);
-}
-
-/*
- * Calcul d'un extremum par interpolation a l'ordre 3,
- * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-25
- */
 void Maths::CalculExtremumInterpolation3(const double xtab[], const double ytab[], double extremum[])
 {
     /* Declarations des variables locales */
@@ -105,10 +62,6 @@ void Maths::CalculExtremumInterpolation3(const double xtab[], const double ytab[
     return;
 }
 
-/*
- * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
- * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-27
- */
 double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab[], const double yval,
                                           const double epsilon)
 {
@@ -141,9 +94,6 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
     return (xtab[1] + n0 * (xtab[1] - xtab[0]));
 }
 
-/*
- * Conversion d'un angle sous forme decimale en chaine de caracteres formattee
- */
 QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales,
                              const bool signe, const bool espace)
 {
@@ -183,8 +133,8 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     const bool tst2 = (typeAngle == HEURE1);
     const QChar chr = QChar('0');
     const QString esp = (espace && typeAngle != HEURE2) ? " " : "";
-    const QString signe0 = (Maths::sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
-    const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h") : ":";
+    const QString signe0 = (sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
+    const QString unite1 = (tst1) ? "Â°" : (tst2) ? QObject::tr("h") : ":";
     const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":";
     const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s") : "";
 
@@ -192,7 +142,7 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     int deg = (int) y;
     int min = (int) (ARCMIN_PAR_DEG * (y - deg));
     double sec = ARCSEC_PAR_DEG * (y - deg) - ARCMIN_PAR_DEG * min;
-    if (fabs(Maths::arrondi(sec, dec) - ARCSEC_PAR_MIN) < EPSDBL100) {
+    if (fabs(arrondi(sec, dec) - ARCSEC_PAR_MIN) < EPSDBL100) {
         sec = 0.;
         min++;
     }

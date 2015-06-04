@@ -40,7 +40,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -67,7 +76,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -2578,7 +2596,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -2623,7 +2650,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -7914,7 +7941,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>###; </string>
+             <string>###</string>
             </property>
             <property name="text">
              <string/>
@@ -7939,7 +7966,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>99; </string>
+             <string>99</string>
             </property>
             <property name="text">
              <string/>
@@ -8527,7 +8554,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>###; </string>
+             <string>###</string>
             </property>
             <property name="text">
              <string/>
@@ -8549,7 +8576,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>99; </string>
+             <string>99</string>
             </property>
             <property name="text">
              <string/>
@@ -8690,7 +8717,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -8794,7 +8821,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">999°99'99&quot;; </string>
+                <string notr="true">999°99'99&quot;</string>
                </property>
                <property name="text">
                 <string notr="true">000°00'00&quot;</string>
@@ -8858,7 +8885,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">99°99'99&quot;; </string>
+                <string notr="true">99°99'99&quot;</string>
                </property>
                <property name="text">
                 <string notr="true">00°00'00&quot;</string>
@@ -8922,7 +8949,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">####; </string>
+                <string notr="true">####</string>
                </property>
                <property name="text">
                 <string notr="true">0000</string>
@@ -11306,7 +11333,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999; </string>
+                <string>9.9999999</string>
                </property>
                <property name="text">
                 <string>0.0000000</string>
@@ -11325,7 +11352,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999; </string>
+                <string>9.9999999</string>
                </property>
                <property name="text">
                 <string>1.0000000</string>
@@ -11702,7 +11729,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999; </string>
+               <string>99.999999999</string>
               </property>
               <property name="text">
                <string>18.000000000</string>
@@ -11737,7 +11764,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999; </string>
+               <string>99.999999999</string>
               </property>
               <property name="text">
                <string>00.000000000</string>
@@ -12523,7 +12550,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99; </string>
+               <string>99</string>
               </property>
               <property name="text">
                <string/>
@@ -13522,6 +13549,13 @@ le flux vidéo</string>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>dateHeure3</tabstop>
   <tabstop>lieuxObservation1</tabstop>

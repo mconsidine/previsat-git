@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2013
+ * >    3 juin 2015
  *
  */
 
@@ -49,8 +49,19 @@ class TLE
 public:
 
     /* Constructeurs */
+    /**
+     * @brief TLE Constructeur par defaut
+     */
     TLE();
-    TLE(const QString &ligne0, const QString &ligne1, const QString &ligne2);
+
+    /**
+     * @brief TLE Definition a partir des composantes du TLE
+     * @param lig0 ligne 0 du TLE (nom du satellite)
+     * @param lig1 ligne 1 du TLE
+     * @param lig2 ligne 2 du TLE
+     */
+    TLE(const QString &lig0, const QString &lig1, const QString &lig2);
+
     ~TLE();
 
     /* Constantes publiques */
@@ -58,24 +69,45 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief VerifieFichier Verification du fichier TLE
+     * @param nomFichier nom du fichier TLE
+     * @param alarm affichage d'une boite de message
+     * @return nombre de satellites dans le fichier
+     */
     static int VerifieFichier(const QString &nomFichier, const bool alarm);
+
+    /**
+     * @brief LectureFichier Lecture du fichier TLE
+     * @param nomFichier nom du fichier TLE
+     * @param listeSatellites liste des numeros NORAD
+     * @param tabtle tableau de TLE
+     */
     static void LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, QVector<TLE> &tabtle);
+
+    /**
+     * @brief MiseAJourFichier Mise a jour du fichier TLE
+     * @param ficOld fichier avec les anciens TLE
+     * @param ficNew fichier avec les nouveaux TLE
+     * @param affMsg affichage des messages
+     * @param compteRendu compte rendu de mise a jour
+     */
     static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
 
     /* Accesseurs */
-    double getArgpo() const;
-    double getBstar() const;
-    double getEcco() const;
-    Date getEpoque() const;
-    double getInclo() const;
-    QString getLigne1() const;
-    QString getLigne2() const;
-    double getMo() const;
-    int getNbOrbites() const;
-    double getNo() const;
-    QString getNom() const;
-    QString getNorad() const;
-    double getOmegao() const;
+    double argpo() const;
+    double bstar() const;
+    double ecco() const;
+    Date epoque() const;
+    double inclo() const;
+    QString ligne1() const;
+    QString ligne2() const;
+    double mo() const;
+    int nbOrbites() const;
+    double no() const;
+    QString nom() const;
+    QString norad() const;
+    double omegao() const;
 
 
 protected:
@@ -109,7 +141,18 @@ private:
     QString _norad;
 
     /* Methodes privees */
+    /**
+     * @brief CheckSum Verification du checksum d'une ligne de TLE
+     * @param ligne ligne d'un TLE
+     * @return vrai si le checksum est correct
+     */
     static bool CheckSum(const QString &ligne);
+
+    /**
+     * @brief VerifieLignes Verification des lignes d'un TLE
+     * @param li1 ligne 1 du TLE
+     * @param li2 ligne 2 du TLE
+     */
     static void VerifieLignes(const QString &li1, const QString &li2);
 
 };

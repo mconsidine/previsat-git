@@ -36,15 +36,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
 #include <cmath>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "corps.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 #include "librairies/maths/maths.h"
@@ -82,6 +84,11 @@ Corps::Corps()
 
     _visible = false;
     _rangeRate = 0.;
+    
+    _lonEcl = 0.;
+    _latEcl = 0.;
+    _ct = 0.;
+    _r0 = 0.;
 
     /* Retour */
     return;
@@ -108,14 +115,14 @@ void Corps::CalculCoordEquat(const Observateur &observateur)
     int i = 0;
     const double ch = cos(_hauteur);
     const Vecteur3D vec1 = Vecteur3D(-cos(_azimut) * ch, sin(_azimut) * ch, sin(_hauteur));
-    const Vecteur3D vec2 = Vecteur3D(observateur.getRotHz().Transposee() * vec1);
+    const Vecteur3D vec2 = Vecteur3D(observateur.rotHz().Transposee() * vec1);
 
     /* Corps de la methode */
     // Declinaison
-    _declinaison = asin(vec2.getZ());
+    _declinaison = asin(vec2.z());
 
     // Ascension droite
-    _ascensionDroite = atan2(vec2.getY(), vec2.getX());
+    _ascensionDroite = atan2(vec2.y(), vec2.x());
     if (_ascensionDroite < 0.)
         _ascensionDroite += DEUX_PI;
 
@@ -150,13 +157,13 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _dist = _position - observateur.getPosition();
+    _dist = _position - observateur.position();
     _distance = _dist.Norme();
-    const Vecteur3D vec = observateur.getRotHz() * _dist;
+    const Vecteur3D vec = observateur.rotHz() * _dist;
 
     /* Corps de la methode */
     // Hauteur
-    const double ht = asin(vec.getZ() / _distance);
+    const double ht = asin(vec.z() / _distance);
 
     // Prise en compte de la refraction atmospherique
     const double htd = RAD2DEG * ht;
@@ -176,11 +183,11 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
     if (acalc) {
 
         // Azimut
-        _azimut = atan2(vec.getY(), -vec.getX());
+        _azimut = atan2(vec.y(), -vec.x());
         if (_azimut < 0.)
             _azimut += DEUX_PI;
 
-        const Vecteur3D distp = _vitesse - observateur.getVitesse();
+        const Vecteur3D distp = _vitesse - observateur.vitesse();
 
         // Taux de variation de la distance a l'observateur
         _rangeRate = _dist * distp /_distance;
@@ -204,11 +211,11 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
         const double cd = cos(_declinaison);
         _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
     }
-    const Vecteur3D vec2 = observateur.getRotHz() * _vec1;
+    const Vecteur3D vec2 = observateur.rotHz() * _vec1;
 
     /* Corps de la methode */
     // Hauteur
-    const double ht = asin(vec2.getZ());
+    const double ht = asin(vec2.z());
 
     if (ht > -DEG2RAD) {
 
@@ -219,7 +226,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
         _hauteur = ht + refraction;
         if (_hauteur >= 0.) {
             // Azimut
-            _azimut = atan2(vec2.getY(), -vec2.getX());
+            _azimut = atan2(vec2.y(), -vec2.x());
             if (_azimut < 0.)
                 _azimut += DEUX_PI;
             _visible = true;
@@ -244,9 +251,9 @@ void Corps::CalculCoordTerrestres(const Observateur &observateur)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(observateur.getTempsSideralGreenwich() - atan2(_position.getY(), _position.getX()), DEUX_PI);
+    _longitude = modulo(observateur.tempsSideralGreenwich() - atan2(_position.y(), _position.x()), DEUX_PI);
     if (fabs(_longitude) > PI)
-        _longitude -= Maths::sgn(_longitude) * DEUX_PI;
+        _longitude -= sgn(_longitude) * DEUX_PI;
 
     CalculLatitudeAltitude();
 
@@ -265,10 +272,10 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = Maths::modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.getY(), _position.getX()),
+    _longitude = modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.y(), _position.x()),
                                DEUX_PI);
     if (fabs(_longitude) > PI)
-        _longitude -= Maths::sgn(_longitude) * DEUX_PI;
+        _longitude -= sgn(_longitude) * DEUX_PI;
 
     CalculLatitudeAltitude();
 
@@ -276,7 +283,7 @@ void Corps::CalculCoordTerrestres(const Date &date)
     return;
 }
 
-double Corps::CalculAltitude(const Vecteur3D &position)
+double Corps::CalculAltitude(const Vecteur3D &pos)
 {
     /* Declarations des variables locales */
 
@@ -285,13 +292,13 @@ double Corps::CalculAltitude(const Vecteur3D &position)
     /* Corps de la methode */
 
     /* Retour */
-    return ((_r0 < 1.e-3) ? fabs(position.getZ()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
+    return ((_r0 < 1.e-3) ? fabs(pos.z()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
 }
 
 /*
  * Calcul de la latitude geodesique
  */
-double Corps::CalculLatitude(const Vecteur3D &position)
+double Corps::CalculLatitude(const Vecteur3D &pos)
 {
     /* Declarations des variables locales */
     double lat;
@@ -302,13 +309,13 @@ double Corps::CalculLatitude(const Vecteur3D &position)
     const double re2 = RAYON_TERRESTRE * E2;
 
     /* Corps de la methode */
-    _r0 = sqrt(position.getX() * position.getX() + position.getY() * position.getY());
-    _latitude = atan2(position.getZ(), _r0);
+    _r0 = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
+    _latitude = atan2(pos.z(), _r0);
     do {
         lat = _latitude;
         const double sph = sin(lat);
         _ct = 1. / sqrt(1. - E2 * sph * sph);
-        _latitude = atan((position.getZ() + re2 * _ct * sph) / _r0);
+        _latitude = atan((pos.z() + re2 * _ct * sph) / _r0);
     } while (fabs(_latitude - lat) > 1.e-7);
 
     /* Retour */
@@ -381,7 +388,7 @@ double Corps::ExtinctionAtmospherique(const Observateur &observateur)
 
         const double cosz = cos(PI_SUR_DEUX - _hauteur);
         const double x = 1. / (cosz + 0.025 * exp(-11. * cosz));
-        corr = x * (0.016 + observateur.getAray() + observateur.getAaer());
+        corr = x * (0.016 + observateur.aray() + observateur.aaer());
     }
 
     /* Retour */
@@ -396,20 +403,20 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
-    const double om = DEG2RAD * Maths::modulo(125.04 - 1934.136 * t, T360);
-    const double x = vecteur.getX() - DEG2RAD * 0.00478 * sin(om);
+    const double om = DEG2RAD * modulo(125.04 - 1934.136 * t, T360);
+    const double x = vecteur.x() - DEG2RAD * 0.00478 * sin(om);
     const double obliquite = ARCSEC2RAD * (84381.448 - t * (46.815 - t * (0.00059 - 0.001813 * t)));
-    const double cb = cos(vecteur.getY());
-    const double sb = sin(vecteur.getY());
+    const double cb = cos(vecteur.y());
+    const double sb = sin(vecteur.y());
     const double ce = cos(obliquite);
     const double se = sin(obliquite);
-    const double xx = vecteur.getZ() * cb * sin(x);
+    const double xx = vecteur.z() * cb * sin(x);
 
     /* Retour */
-    return Vecteur3D(vecteur.getZ() * cb * cos(x), xx * ce - vecteur.getZ() * se * sb, xx * se + vecteur.getZ() * ce * sb);
+    return Vecteur3D(vecteur.z() * cb * cos(x), xx * ce - vecteur.z() * se * sb, xx * se + vecteur.z() * ce * sb);
 }
 
 /*
@@ -440,16 +447,13 @@ void Corps::InitTabConstellations()
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
+                                                               QStandardPaths::LocateDirectory);
+    const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
+            QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
 
     /* Corps de la methode */
-    const QString fic = dirDat + QDir::separator() + "constellations.cst";
+    const QString fic = dirCommonData + QDir::separator() + "constellations.cst";
     QFile fi(fic);
     if (fi.exists()) {
 
@@ -474,72 +478,72 @@ void Corps::InitTabConstellations()
 }
 
 /* Accesseurs */
-double Corps::getAltitude() const
+double Corps::altitude() const
 {
     return _altitude;
 }
 
-double Corps::getAscensionDroite() const
+double Corps::ascensionDroite() const
 {
     return _ascensionDroite;
 }
 
-double Corps::getAzimut() const
+double Corps::azimut() const
 {
     return _azimut;
 }
 
-QString Corps::getConstellation() const
+QString Corps::constellation() const
 {
     return _constellation;
 }
 
-double Corps::getDeclinaison() const
+double Corps::declinaison() const
 {
     return _declinaison;
 }
 
-Vecteur3D Corps::getDist() const
+Vecteur3D Corps::dist() const
 {
     return _dist;
 }
 
-double Corps::getDistance() const
+double Corps::distance() const
 {
     return _distance;
 }
 
-double Corps::getHauteur() const
+double Corps::hauteur() const
 {
     return _hauteur;
 }
 
-double Corps::getLatitude() const
+double Corps::latitude() const
 {
     return _latitude;
 }
 
-double Corps::getLongitude() const
+double Corps::longitude() const
 {
     return _longitude;
 }
 
-double Corps::getLonEcl() const
+double Corps::lonEcl() const
 {
     return _lonEcl;
 }
 
-Vecteur3D Corps::getPosition() const
+Vecteur3D Corps::position() const
 {
     return _position;
 }
 
-void Corps::setPosition(const Vecteur3D &position)
+void Corps::setPosition(const Vecteur3D &pos)
 {
-    _position = position;
+    _position = pos;
 }
 
-double Corps::getRangeRate() const
+double Corps::rangeRate() const
 {
     return _rangeRate;
 }
@@ -549,12 +553,12 @@ bool Corps::isVisible() const
     return _visible;
 }
 
-Vecteur3D Corps::getVitesse() const
+Vecteur3D Corps::vitesse() const
 {
     return _vitesse;
 }
 
-QVector<QPointF> Corps::getZone() const
+QVector<QPointF> Corps::zone() const
 {
     return _zone;
 }

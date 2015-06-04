@@ -37,13 +37,16 @@
 
 #-------------------------------------------------
 VER_MAJ = 3.4
-VERSION = 3.4.5.7
+VERSION = 3.4.5.8
 ANNEES_DEV = 2005-2015
-ZLIB_DIR = $$PWD/inc/zlib
+ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
 
+
 QT += core gui network webkit
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport webkitwidgets widgets
 
 TARGET = PreviSat
 TEMPLATE = app
@@ -60,12 +63,11 @@ CONFIG(debug, debug|release) {
 
 LIBS += -L.
 win32 {
-    LIBS += zlib.dll
+    LIBS += $$ZLIB_DIR/lib/zlib.dll
     RC_FILE = icone.rc
 }
 
 mac {
-    LIBS += -lz
     ICON = resources/icone.icns
 }
 
@@ -75,83 +77,88 @@ ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
 
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
            APPVER_MAJ=\"$${VER_MAJSTR}\" \
-           APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
+           APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\" \
+           _LARGEFILE64_SOURCE=1 \
+           _FILE_OFFSET_BITS=64 \
+           _LFS64_LARGEFILE=
+
 INCLUDEPATH += $$ZLIB_DIR
 
-SOURCES += main.cpp\
-    previsat.cpp \
-    afficher.cpp \
-    apropos.cpp \
-    gestionnairetle.cpp \
-    telecharger.cpp \
-    threadcalculs.cpp \
-    librairies/corps/corps.cpp \
-    librairies/corps/etoiles/constellation.cpp \
-    librairies/corps/etoiles/etoile.cpp \
-    librairies/corps/etoiles/ligneconstellation.cpp \
+
+SOURCES += main.cpp                                    \
+    previsat.cpp                                       \
+    afficher.cpp                                       \
+    apropos.cpp                                        \
+    gestionnairetle.cpp                                \
+    telecharger.cpp                                    \
+    threadcalculs.cpp                                  \
+    librairies/corps/corps.cpp                         \
+    librairies/corps/etoiles/constellation.cpp         \
+    librairies/corps/etoiles/etoile.cpp                \
+    librairies/corps/etoiles/ligneconstellation.cpp    \
     librairies/corps/satellite/elementsosculateurs.cpp \
-    librairies/corps/satellite/satellite.cpp \
-    librairies/corps/satellite/tle.cpp \
-    librairies/corps/systemesolaire/lune.cpp \
-    librairies/corps/systemesolaire/planete.cpp \
-    librairies/corps/systemesolaire/soleil.cpp \
-    librairies/dates/date.cpp \
-    librairies/exceptions/previsatexception.cpp \
-    librairies/exceptions/messages.cpp \
-    librairies/maths/maths.cpp \
-    librairies/maths/matrice.cpp \
-    librairies/maths/vecteur3d.cpp \
-    librairies/observateur/observateur.cpp \
-    previsions/conditions.cpp \
-    previsions/evenements.cpp \
-    previsions/iridium.cpp \
-    previsions/prevision.cpp \
+    librairies/corps/satellite/satellite.cpp           \
+    librairies/corps/satellite/tle.cpp                 \
+    librairies/corps/systemesolaire/lune.cpp           \
+    librairies/corps/systemesolaire/planete.cpp        \
+    librairies/corps/systemesolaire/soleil.cpp         \
+    librairies/dates/date.cpp                          \
+    librairies/exceptions/message.cpp                  \
+    librairies/exceptions/previsatexception.cpp        \
+    librairies/maths/maths.cpp                         \
+    librairies/maths/matrice3d.cpp                     \
+    librairies/maths/vecteur3d.cpp                     \
+    librairies/observateur/observateur.cpp             \
+    previsions/conditions.cpp                          \
+    previsions/evenements.cpp                          \
+    previsions/iridium.cpp                             \
+    previsions/prevision.cpp                           \
     previsions/transitiss.cpp
 
-HEADERS += previsat.h \
-    afficher.h \
-    apropos.h \
-    gestionnairetle.h \
-    telecharger.h \
-    threadcalculs.h \
-    librairies/corps/corps.h \
-    librairies/corps/etoiles/constellation.h \
-    librairies/corps/etoiles/etoile.h \
-    librairies/corps/etoiles/ligneconstellation.h \
-    librairies/corps/satellite/elementsosculateurs.h \
-    librairies/corps/satellite/satellite.h \
-    librairies/corps/satellite/tle.h \
-    librairies/corps/systemesolaire/lune.h \
-    librairies/corps/systemesolaire/LuneConstants.h \
-    librairies/corps/systemesolaire/planete.h \
+HEADERS += previsat.h                                  \
+    afficher.h                                         \
+    apropos.h                                          \
+    gestionnairetle.h                                  \
+    telecharger.h                                      \
+    threadcalculs.h                                    \
+    librairies/corps/corps.h                           \
+    librairies/corps/etoiles/constellation.h           \
+    librairies/corps/etoiles/etoile.h                  \
+    librairies/corps/etoiles/ligneconstellation.h      \
+    librairies/corps/satellite/elementsosculateurs.h   \
+    librairies/corps/satellite/satellite.h             \
+    librairies/corps/satellite/tle.h                   \
+    librairies/corps/systemesolaire/lune.h             \
+    librairies/corps/systemesolaire/LuneConstants.h    \
+    librairies/corps/systemesolaire/planete.h          \
     librairies/corps/systemesolaire/planeteConstants.h \
-    librairies/corps/systemesolaire/soleil.h \
-    librairies/corps/systemesolaire/SoleilConstants.h \
-    librairies/corps/systemesolaire/TerreConstants.h \
-    librairies/dates/date.h \
-    librairies/dates/dateConstants.h \
-    librairies/exceptions/messages.h \
-    librairies/exceptions/messagesConstants.h \
-    librairies/exceptions/previsatexception.h \
-    librairies/maths/mathConstants.h \
-    librairies/maths/maths.h \
-    librairies/maths/matrice.h \
-    librairies/maths/vecteur3d.h \
-    librairies/observateur/observateur.h \
-    previsions/conditions.h \
-    previsions/evenements.h \
-    previsions/iridium.h \
-    previsions/prevision.h \
-    previsions/transitiss.h \
-    $$ZLIB_DIR/zlib.h
+    librairies/corps/systemesolaire/soleil.h           \
+    librairies/corps/systemesolaire/SoleilConstants.h  \
+    librairies/corps/systemesolaire/TerreConstants.h   \
+    librairies/dates/date.h                            \
+    librairies/dates/dateConstants.h                   \
+    librairies/exceptions/message.h                    \
+    librairies/exceptions/messageConstants.h           \
+    librairies/exceptions/previsatexception.h          \
+    librairies/maths/maths.h                           \
+    librairies/maths/mathsConstants.h                  \
+    librairies/maths/matrice3d.h                       \
+    librairies/maths/vecteur3d.h                       \
+    librairies/observateur/observateur.h               \
+    previsions/conditions.h                            \
+    previsions/evenements.h                            \
+    previsions/iridium.h                               \
+    previsions/prevision.h                             \
+    previsions/transitiss.h                            \
+    $$ZLIB_DIR/inc/zlib.h
+
 
 FORMS += previsat.ui \
     afficher.ui \
-    apropos.ui \
     gestionnairetle.ui \
+    apropos.ui \
     telecharger.ui
 
 OTHER_FILES += icone.rc
 
-RESOURCES += \
-    resources.qrc
+RESOURCES += resources.qrc

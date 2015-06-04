@@ -36,14 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QFile>
 #include <QSettings>
 #include <QTime>
 #include <QTextStream>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include "prevision.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
@@ -70,7 +72,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     const QString fmt = "%1%2 %3 %4 %5  %6 %7%8 %9 %10  %11%12";
 
     // Creation de la liste de TLE
-    TLE::LectureFichier(conditions.getFic(), conditions.getListeSatellites(), tabtle);
+    TLE::LectureFichier(conditions.fic(), conditions.listeSatellites(), tabtle);
 
     // Creation du tableau de satellites
     QVectorIterator<TLE> it1(tabtle);
@@ -79,7 +81,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     }
 
     // Lecture des donnees satellite (magnitude standard)
-    Satellite::LectureDonnees(conditions.getListeSatellites(), tabtle, sats);
+    Satellite::LectureDonnees(conditions.listeSatellites(), tabtle, sats);
 
     // Ecriture de l'entete du fichier de previsions
     Conditions::EcrireEntete(observateur, conditions, tabtle, false);
@@ -100,8 +102,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
         Satellite sat = it2.next();
         int ent = 0;
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.getTle().getNo()),
-                                                     DEUX_TIERS) * (1. - sat.getTle().getEcco());
+        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.tle().no()),
+                                                     DEUX_TIERS) * (1. - sat.tle().ecco());
         const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides du Soleil
@@ -116,8 +118,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
             const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
             const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
-            const Matrice mat(v1, v2, v3);
-            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.getAaer(), observateur.getAray());
+            const Matrice3D mat(v1, v2, v3);
+            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.aaer(), observateur.aray());
 
             // Position ECI du Soleil
             const Vecteur3D solPos(list.at(13), list.at(14), list.at(15));
@@ -130,20 +132,20 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             sat.CalculCoordHoriz(obs, false);
 
             // Le satellite a une hauteur superieure a celle specifiee
-            if (sat.getHauteur() >= conditions.getHaut()) {
+            if (sat.hauteur() >= conditions.haut()) {
 
                 // Conditions d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
+                sat.CalculSatelliteEclipse(soleil, conditions.refr());
 
                 // Le satellite n'est pas eclipse
-                if (!sat.isEclipse() || !conditions.getEcl()) {
+                if (!sat.isEclipse() || !conditions.ecl()) {
 
                     // Magnitude du satellite
-                    sat.CalculMagnitude(obs, conditions.getExt());
+                    sat.CalculMagnitude(obs, conditions.ext());
 
                     // Toutes les conditions sont remplies
-                    if (sat.getMagnitude() < conditions.getMgn1() ||
-                            (sat.getMagnitudeStandard() > 98. && conditions.getMgn1() > 98.) || !conditions.getEcl()) {
+                    if (sat.magnitude() < conditions.mgn1() ||
+                            (sat.magnitudeStandard() > 98. && conditions.mgn1() > 98.) || !conditions.ecl()) {
 
                         if (ent == 2)
                             ent = 1;
@@ -157,53 +159,53 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         bool afin = false;
                         while (!afin) {
 
-                            if ((!sat.isEclipse() || !conditions.getEcl()) &&
-                                    (sat.getMagnitude() < conditions.getMgn1() ||
-                                     sat.getMagnitudeStandard() > 98. || !conditions.getEcl())) {
+                            if ((!sat.isEclipse() || !conditions.ecl()) &&
+                                    (sat.magnitude() < conditions.mgn1() ||
+                                     sat.magnitudeStandard() > 98. || !conditions.ecl())) {
 
                                 // Altitude du satellite
-                                sat.CalculLatitude(sat.getPosition());
-                                double altitude = sat.CalculAltitude(sat.getPosition());
+                                sat.CalculLatitude(sat.position());
+                                double altitude = sat.CalculAltitude(sat.position());
 
                                 // Ecriture du resultat
                                 if (ent == 0) {
 
-                                    const QString nomsat = sat.getTle().getNom();
+                                    const QString nomsat = sat.tle().nom();
 
                                     if (nomsat.toLower() == "iss") {
                                         res.append("ISS");
                                     } else {
                                         ligne = nomsat;
                                         if (nomsat.contains("R/B") || nomsat.contains(" DEB"))
-                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).
-                                                    arg(sat.getTle().getNorad());
+                                            ligne = ligne.append(QObject::tr("  (numÃ©ro NORAD : %1)")).
+                                                    arg(sat.tle().norad());
                                         res.append(ligne);
                                     }
 
-                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn" \
-                                                           "  Altitude  Distance  Az Soleil   Haut Soleil"));
+                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const" \
+                                                           " Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
                                     ent = 1;
                                 }
 
                                 // Calcul de la date calendaire
-                                const double offset = (conditions.getEcart()) ?
-                                            conditions.getOffset() :
-                                            Date::CalculOffsetUTC(Date(date.getJourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date2(date.getJourJulien() + offset + EPS_DATES, 0.);
+                                const double offset = (conditions.ecart()) ?
+                                            conditions.offset() :
+                                            Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
+                                const Date date2(date.jourJulien() + offset + EPS_DATES, 0.);
 
                                 // Coordonnees topocentriques du satellite
-                                const QString az = Maths::ToSexagesimal(sat.getAzimut(), DEGRE, 3, 0, false, false);
-                                const QString ht = Maths::ToSexagesimal(sat.getHauteur(), DEGRE, 2, 0, false, false);;
+                                const QString az = Maths::ToSexagesimal(sat.azimut(), DEGRE, 3, 0, false, false);
+                                const QString ht = Maths::ToSexagesimal(sat.hauteur(), DEGRE, 2, 0, false, false);;
 
                                 // Coordonnees equatoriales du satellite
-                                const QString ad = Maths::ToSexagesimal(sat.getAscensionDroite(), HEURE1, 2, 0, false, false);
-                                const QString de = Maths::ToSexagesimal(sat.getDeclinaison(), DEGRE, 2, 0, true, false);
+                                const QString ad = Maths::ToSexagesimal(sat.ascensionDroite(), HEURE1, 2, 0, false, false);
+                                const QString de = Maths::ToSexagesimal(sat.declinaison(), DEGRE, 2, 0, true, false);
 
                                 // Magnitude
-                                const double mag = sat.getMagnitude();
+                                const double mag = sat.magnitude();
                                 QString magn;
                                 if (mag > 98.) {
-                                    magn = (conditions.getEcl() || sat.getMagnitudeStandard() > 98.) ?
+                                    magn = (conditions.ecl() || sat.magnitudeStandard() > 98.) ?
                                                 " ????  " : " ----  ";
                                 } else {
                                     const QString fmagn = "%1%2%3%4";
@@ -214,21 +216,21 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 }
 
                                 // Altitude du satellite et distance a l'observateur
-                                double distance = sat.getDistance();
-                                if (conditions.getUnite() == QObject::tr("nmi")) {
+                                double distance = sat.distance();
+                                if (conditions.unite() == QObject::tr("nmi")) {
                                     altitude *= MILE_PAR_KM;
                                     distance *= MILE_PAR_KM;
                                 }
 
                                 // Coordonnees topocentriques du Soleil
-                                const QString azs = Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, false);
-                                const QString hts = Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, false);
+                                const QString azs = Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, false);
+                                const QString hts = Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, false);
 
-                                const QString result(fmt.arg(date2.
-                                                             ToShortDateAMJ(COURT, (conditions.getSyst()) ? SYSTEME_24H : SYSTEME_12H)).
-                                                     arg(az).arg(ht).arg(ad).arg(de).arg(sat.getConstellation()).arg(magn).
-                                                     arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1).arg(azs).arg(hts).arg(sat.getTle().
-                                                                                                                             getNorad()));
+                                const QString result
+                                        (fmt.arg(date2.ToShortDateAMJ(FORMAT_COURT, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
+                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(magn).
+                                         arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1).arg(azs).arg(hts).
+                                         arg(sat.tle().norad()));
 
                                 res.append(result);
                                 pass = true;
@@ -240,23 +242,23 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                             }
 
                             // Calcul pour le pas suivant
-                            date = Date(date.getJourJulienUTC() + conditions.getPas0(), 0., false);
+                            date = Date(date.jourJulienUTC() + conditions.pas0(), 0., false);
                             observateur.CalculPosVit(date);
                             soleil.CalculPosition(date);
                             soleil.CalculCoordHoriz(observateur);
 
-                            if (soleil.getHauteur() > conditions.getCrep() ||
-                                    date.getJourJulienUTC() > conditions.getJj2() + conditions.getPas0()) {
+                            if (soleil.hauteur() > conditions.crep() ||
+                                    date.jourJulienUTC() > conditions.jj2() + conditions.pas0()) {
                                 afin = true;
                             } else {
 
                                 sat.CalculPosVit(date);
                                 sat.CalculCoordHoriz(observateur);
-                                if (sat.getHauteur() < conditions.getHaut()) {
+                                if (sat.hauteur() < conditions.haut()) {
                                     afin = true;
                                 } else {
-                                    sat.CalculSatelliteEclipse(soleil, conditions.getRefr());
-                                    sat.CalculMagnitude(observateur, conditions.getExt());
+                                    sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                                    sat.CalculMagnitude(observateur, conditions.ext());
                                     sat.CalculCoordEquat(observateur);
                                 }
                             }
@@ -267,13 +269,13 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                             pass = false;
                             res.append("");
                         }
-                        date = Date(date.getJourJulienUTC() + periode, 0., false);
+                        date = Date(date.jourJulienUTC() + periode, 0., false);
 
                         // Recherche de la nouvelle date dans le tableau d'ephemerides
                         bool atrouve = false;
                         while (it3.hasNext() && !atrouve) {
                             const double jj = it3.next().at(0);
-                            if (jj >= date.getJourJulienUTC()) {
+                            if (jj >= date.jourJulienUTC()) {
                                 atrouve = true;
                                 it3.previous();
                             }
@@ -286,7 +288,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     int fin = tps.elapsed();
 
     // Ouverture du fichier de resultat
-    QFile fichier(conditions.getOut());
+    QFile fichier(conditions.out());
     fichier.open(QIODevice::Append | QIODevice::Text);
     QTextStream flux(&fichier);
 
@@ -300,7 +302,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     }
 
     flux << endl;
-    ligne = QObject::tr("Temps écoulé : %1s");
+    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
@@ -332,7 +334,7 @@ void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Obser
     const double pas = NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
-    Date date(conditions.getJj1(), 0., false);
+    Date date(conditions.jj1(), 0., false);
     do {
 
         // Position ECI de l'observateur
@@ -344,43 +346,43 @@ void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Obser
         // Position topocentrique du Soleil
         soleil.CalculCoordHoriz(observateur, false);
 
-        if (soleil.getHauteur() <= conditions.getCrep()) {
+        if (soleil.hauteur() <= conditions.crep()) {
 
             svis = false;
             tab.clear();
 
             // Remplissage du tableau d'ephemerides
-            tab.push_back(date.getJourJulienUTC());
+            tab.push_back(date.jourJulienUTC());
 
-            tab.push_back(observateur.getPosition().getX());
-            tab.push_back(observateur.getPosition().getY());
-            tab.push_back(observateur.getPosition().getZ());
-            tab.push_back(observateur.getRotHz().getVecteur1().getX());
-            tab.push_back(observateur.getRotHz().getVecteur1().getY());
-            tab.push_back(observateur.getRotHz().getVecteur1().getZ());
-            tab.push_back(observateur.getRotHz().getVecteur2().getX());
-            tab.push_back(observateur.getRotHz().getVecteur2().getY());
-            tab.push_back(observateur.getRotHz().getVecteur2().getZ());
-            tab.push_back(observateur.getRotHz().getVecteur3().getX());
-            tab.push_back(observateur.getRotHz().getVecteur3().getY());
-            tab.push_back(observateur.getRotHz().getVecteur3().getZ());
+            tab.push_back(observateur.position().x());
+            tab.push_back(observateur.position().y());
+            tab.push_back(observateur.position().z());
+            tab.push_back(observateur.rotHz().vecteur1().x());
+            tab.push_back(observateur.rotHz().vecteur1().y());
+            tab.push_back(observateur.rotHz().vecteur1().z());
+            tab.push_back(observateur.rotHz().vecteur2().x());
+            tab.push_back(observateur.rotHz().vecteur2().y());
+            tab.push_back(observateur.rotHz().vecteur2().z());
+            tab.push_back(observateur.rotHz().vecteur3().x());
+            tab.push_back(observateur.rotHz().vecteur3().y());
+            tab.push_back(observateur.rotHz().vecteur3().z());
 
-            tab.push_back(soleil.getPosition().getX());
-            tab.push_back(soleil.getPosition().getY());
-            tab.push_back(soleil.getPosition().getZ());
+            tab.push_back(soleil.position().x());
+            tab.push_back(soleil.position().y());
+            tab.push_back(soleil.position().z());
 
             tabEphem.append(tab);
 
         } else {
             if (!svis) {
                 svis = true;
-                if (conditions.getCrep() <= EPSDBL100)
-                    date = Date(date.getJourJulienUTC() + 0.375, 0., false);
+                if (conditions.crep() <= EPSDBL100)
+                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
             }
         }
 
-        date = Date(date.getJourJulienUTC() + pas, 0., false);
-    } while (date.getJourJulienUTC() <= conditions.getJj2());
+        date = Date(date.jourJulienUTC() + pas, 0., false);
+    } while (date.jourJulienUTC() <= conditions.jj2());
 
     tab.clear();
 

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -49,7 +49,11 @@ class Lune : public Corps
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Lune Constructeur par defaut
+     */
     Lune();
+
     ~Lune();
 
     /* Constantes publiques */
@@ -57,14 +61,29 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPosition Calcul de la position de la Lune avec le modele simplifie issu de
+     * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
+     * @param date date
+     */
     void CalculPosition(const Date &date);
+
+    /**
+     * @brief CalculPhase Calcul de la phase de la Lune
+     * @param soleil
+     */
     void CalculPhase(const Soleil &soleil);
+
+    /**
+     * @brief CalculMagnitude Calcul de la magnitude visuelle de la Lune
+     * @param soleil Soleil
+     */
     void CalculMagnitude(const Soleil &soleil);
 
     /* Accesseurs */
-    double getFractionIlluminee() const;
-    double getMagnitude() const;
-    QString getPhase() const;
+    double fractionIlluminee() const;
+    double magnitude() const;
+    QString phase() const;
 
 
 protected:
@@ -86,6 +105,7 @@ private:
     QString _phase;
 
     /* Methodes privees */
+
 
 };
 

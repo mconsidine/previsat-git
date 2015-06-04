@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    matrice.cpp
+ * >    matrice3d.cpp
  *
  * Localisation
  * >    librairies.maths
@@ -36,16 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2013
+ * >    3 juin 2015
  *
  */
 
-#include "matrice.h"
+#include "matrice3d.h"
 
 /*
  * Constructeur par defaut
  */
-Matrice::Matrice()
+Matrice3D::Matrice3D()
 {
     /* Declarations des variables locales */
 
@@ -58,9 +58,9 @@ Matrice::Matrice()
 }
 
 /*
- * Constructeur a partir d'une matrice
+ * Constructeur a partir d'une Matrice3D
  */
-Matrice::Matrice(const Matrice &matrice)
+Matrice3D::Matrice3D(const Matrice3D &matrice)
 {
     /* Declarations des variables locales */
 
@@ -78,16 +78,16 @@ Matrice::Matrice(const Matrice &matrice)
 /*
  * Constructeur a partir de 3 vecteurs colonnes
  */
-Matrice::Matrice(const Vecteur3D &vecteur1, const Vecteur3D &vecteur2, const Vecteur3D &vecteur3)
+Matrice3D::Matrice3D(const Vecteur3D &vect1, const Vecteur3D &vect2, const Vecteur3D &vect3)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _vecteur1 = vecteur1;
-    _vecteur2 = vecteur2;
-    _vecteur3 = vecteur3;
+    _vecteur1 = vect1;
+    _vecteur2 = vect2;
+    _vecteur3 = vect3;
 
     /* Retour */
     return;
@@ -96,41 +96,43 @@ Matrice::Matrice(const Vecteur3D &vecteur1, const Vecteur3D &vecteur2, const Vec
 /*
  * Destructeur
  */
-Matrice::~Matrice()
+Matrice3D::~Matrice3D()
 {
 }
 
 /*
- * Calcul de la matrice transposee
+ * Calcul de la Matrice3D transposee
  */
-Matrice Matrice::Transposee()
+Matrice3D Matrice3D::Transposee()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    const Vecteur3D l(_vecteur1.getX(), _vecteur2.getX(), _vecteur3.getX());
-    const Vecteur3D m(_vecteur1.getY(), _vecteur2.getY(), _vecteur3.getY());
-    const Vecteur3D n(_vecteur1.getZ(), _vecteur2.getZ(), _vecteur3.getZ());
+    const Vecteur3D l(_vecteur1.x(), _vecteur2.x(), _vecteur3.x());
+    const Vecteur3D m(_vecteur1.y(), _vecteur2.y(), _vecteur3.y());
+    const Vecteur3D n(_vecteur1.z(), _vecteur2.z(), _vecteur3.z());
 
     /* Retour */
-    return (Matrice(l, m, n));
+    return (Matrice3D(l, m, n));
 }
 
 
 /* Accesseurs */
-Vecteur3D Matrice::getVecteur1() const
+Vecteur3D Matrice3D::vecteur1() const
 {
     return _vecteur1;
 }
 
-Vecteur3D Matrice::getVecteur2() const
+Vecteur3D Matrice3D::vecteur2() const
 {
     return _vecteur2;
 }
 
-Vecteur3D Matrice::getVecteur3() const
+Vecteur3D Matrice3D::vecteur3() const
 {
     return _vecteur3;
 }
+
+

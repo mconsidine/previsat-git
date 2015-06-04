@@ -36,13 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 juin 2015
  *
  */
 
 #ifndef SOLEILCONSTANTS_H
 #define SOLEILCONSTANTS_H
 
+/* Enumerations */
+
+/* Declaration des constantes */
 // Rayon equatorial solaire (km)
 static const double RAYON_SOLAIRE = 696000.;
 

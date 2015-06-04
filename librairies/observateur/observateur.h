@@ -33,27 +33,54 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 juin 2015
  *
  */
 
 #ifndef OBSERVATEUR_H
 #define OBSERVATEUR_H
 
-#include "librairies/corps/systemesolaire/TerreConstants.h"
-#include "librairies/maths/mathConstants.h"
-#include "librairies/maths/matrice.h"
 #include "librairies/dates/date.h"
+#include "librairies/corps/systemesolaire/TerreConstants.h"
+#include "librairies/maths/mathsConstants.h"
+#include "librairies/maths/matrice3d.h"
 
 class Observateur
 {
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Observateur Constructeur par defaut
+     */
     Observateur();
-    Observateur(const QString &nomlieu, const double longitude, const double latitude, const double altitude);
+
+    /**
+     * @brief Observateur Constructeur a partir des coordonnees geographiques d'un lieu d'observation
+     * @param nom nom du lieu d'observation
+     * @param lon longitude en degres (negative a l'est)
+     * @param lat latitude en degres (negative au sud)
+     * @param alt altitude en metres
+     */
+    Observateur(const QString &nom, const double lon, const double lat, const double alt);
+
+    /**
+     * @brief Observateur Definition a partir d'un objet Observateur
+     * @param observateur lieu d'observation
+     */
     Observateur(const Observateur &observateur);
-    Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz, const double aaer, const double aray);
+
+    /**
+     * @brief Observateur Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
+     * (pour le calcul des previsions)
+     * @param pos position de l'observateur
+     * @param vit vitesse de l'observateur
+     * @param matRotHz matrice de rotation pour le calcul des coordonnees horizontales
+     * @param aaerVal aray
+     * @param arayVal aaer
+     */
+    Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal, const double arayVal);
+
     ~Observateur();
 
     /* Constantes publiques */
@@ -61,23 +88,57 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPosVit Calcul de la position et de la vitesse du lieu d'observation
+     * @param date date
+     */
     void CalculPosVit(const Date &date);
+
+    /**
+     * @brief CalculTempsSideralGreenwich Calcul du temps sideral de Greenwich
+     * D'apres la formule donnee dans l'Astronomical Algorithms 2nd edition de Jean Meeus, p88
+     * @param date date
+     * @return temps sideral de Greenwich
+     */
     static double CalculTempsSideralGreenwich(const Date &date);
+
+    /**
+     * @brief CalculCap Calcul du cap d'un lieu d'observation par rapport a un autre
+     * @param lieuDistant lieu distant
+     * @return valeur du cap
+     */
     double CalculCap(const Observateur &lieuDistant);
+
+    /**
+     * @brief CalculDistance Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre
+     * en tenant compte de l'applatissement du globe terrestre, mais sans prise en compte de l'altitude
+     * Astronomical Algorithms 2nd edition de Jean Meeus, p85
+     * @param observateur lieu d'observation distant
+     * @return distance entre les 2 lieux d'observation
+     */
     double CalculDistance(const Observateur &observateur) const;
+
+    /**
+     * @brief CalculIntersectionEllipsoide Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant
+     * vers la Terre et de l'ellipsoide terrestre
+     * @param date date
+     * @param origine vecteur origine
+     * @param direction direction du vecteur vers l'ellipsoide
+     * @return lieu pointe par le vecteur
+     */
     static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D origine, const Vecteur3D direction);
 
     /* Accesseurs */
-    double getAaer() const;
-    double getAltitude() const;
-    double getAray() const;
-    double getLatitude() const;
-    double getLongitude() const;
-    QString getNomlieu() const;
-    Vecteur3D getPosition() const;
-    Matrice getRotHz() const;
-    double getTempsSideralGreenwich() const;
-    Vecteur3D getVitesse() const;
+    double aaer() const;
+    double altitude() const;
+    double aray() const;
+    double latitude() const;
+    double longitude() const;
+    QString nomlieu() const;
+    Vecteur3D position() const;
+    Matrice3D rotHz() const;
+    double tempsSideralGreenwich() const;
+    Vecteur3D vitesse() const;
 
 
 protected:
@@ -113,7 +174,7 @@ private:
     Vecteur3D _position;
     Vecteur3D _vitesse;
 
-    Matrice _rotHz;
+    Matrice3D _rotHz;
 
     /* Methodes privees */
 

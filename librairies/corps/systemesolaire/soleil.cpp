@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -50,15 +50,15 @@ Soleil::Soleil()
     _distanceUA = 0.;
 }
 
-Soleil::Soleil(const Vecteur3D &position)
+Soleil::Soleil(const Vecteur3D &pos)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _position = position;
-    _distanceUA = position.Norme();
+    _position = pos;
+    _distanceUA = pos.Norme();
 
     /* Retour */
     return;
@@ -77,14 +77,14 @@ void Soleil::CalculPosition(const Date &date)
     double u1;
 
     /* Initialisations */
-    const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double tu = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
     // Longitude moyenne
-    const double ls = DEG2RAD * Maths::modulo(280.466457 + tu * (36000.7698278 + 0.00030322 * tu), T360);
+    const double ls = DEG2RAD * modulo(280.466457 + tu * (36000.7698278 + 0.00030322 * tu), T360);
 
     // Longitude du perihelie
-    const double lp = DEG2RAD * Maths::modulo(282.937348 + tu * (1.7195366 + 0.00045688 * tu), T360);
+    const double lp = DEG2RAD * modulo(282.937348 + tu * (1.7195366 + 0.00045688 * tu), T360);
 
     // Excentricite
     const double e = 0.016708634 - tu * (4.2037e-5 + 1.267e-7 * tu);
@@ -117,7 +117,7 @@ void Soleil::CalculPosition(const Date &date)
 }
 
 /* Accesseurs */
-double Soleil::getDistanceUA() const
+double Soleil::distanceUA() const
 {
     return _distanceUA;
 }

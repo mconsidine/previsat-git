@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 juin 2015
  *
  */
 
@@ -49,8 +49,20 @@ class Etoile : public Corps
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Etoile Constructeur par defaut
+     */
     Etoile();
-    Etoile(const QString &nom, const double ascensionDroite, const double declinaison, const double magnitude);
+
+    /**
+     * @brief Etoile Definition d'un objet Etoile a partir de ses composantes
+     * @param nomEtoile nom de l'etoile
+     * @param ascDroite ascension droite (heures)
+     * @param decl declinaison (degres)
+     * @param mag magnitude
+     */
+    Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag);
+
     ~Etoile();
 
     /* Constantes publiques */
@@ -59,11 +71,16 @@ public:
     static bool initStar;
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPositionEtoiles Calcul de la position des etoiles
+     * @param observateur observateur
+     * @param etoiles tableau d'etoiles
+     */
     static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
 
     /* Accesseurs */
-    double getMagnitude() const;
-    QString getNom() const;
+    double magnitude() const;
+    QString nom() const;
 
 
 protected:
@@ -84,6 +101,10 @@ private:
     QString _nom;
 
     /* Methodes privees */
+    /**
+     * @brief InitTabEtoiles Lecture du fichier d'etoiles
+     * @param etoiles tableau d'etoiles
+     */
     static void InitTabEtoiles(QList<Etoile> &etoiles);
 
 };

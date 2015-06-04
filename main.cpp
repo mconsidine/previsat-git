@@ -36,22 +36,19 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#include <QLibraryInfo>
-#include <QLocale>
+#include "previsat.h"
+#include <QApplication>
 #include <QMessageBox>
 #include <QSharedMemory>
 #include <QSplashScreen>
-#include <QtGui/QApplication>
 #include <QTranslator>
-#include "previsat.h"
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
 
 int main(int argc, char *argv[])
 {
@@ -81,7 +78,7 @@ int main(int argc, char *argv[])
     if (!mem.create(sizeof(pid))) {
         if (mem.error() == QSharedMemory::AlreadyExists) {
             if (mem.attach(QSharedMemory::ReadOnly)) {
-                const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
+                const QString msg = QObject::tr("Une instance de %1 est dÃ©jÃ  ouverte");
                 QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
                 return 1;
             }
@@ -110,11 +107,11 @@ int main(int argc, char *argv[])
     a.processEvents();
     w.ChargementTLE();
 
-    splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
+    splash->showMessage(QObject::tr("Mise Ã  jour des TLE...") + "     ", alignement, Qt::white);
     a.processEvents();
     w.MAJTLE();
 
-    splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+    splash->showMessage(QObject::tr("DÃ©marrage de l'application...") + "     ", alignement, Qt::white);
     a.processEvents();
     w.DemarrageApplication();
 
@@ -124,4 +121,5 @@ int main(int argc, char *argv[])
 
     /* Retour */
     return a.exec();
+
 }

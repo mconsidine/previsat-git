@@ -36,14 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "satellite.h"
 #include "librairies/corps/systemesolaire/SoleilConstants.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -63,6 +65,7 @@ Satellite::Satellite()
     _methMagnitude = 'v';
     _nbOrbites = 0;
     _ageTLE = 0.;
+    _beta = 0.;
     _elongation = 0.;
     _fractionIlluminee = 0.;
     _magnitude = 99.;
@@ -76,14 +79,14 @@ Satellite::Satellite()
     _sat = SatVariables();
 }
 
-Satellite::Satellite(const TLE &tle)
+Satellite::Satellite(const TLE &xtle)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _tle = tle;
+    _tle = xtle;
     SGP4Init();
 
     /* Retour */
@@ -104,12 +107,12 @@ void Satellite::CalculCercleAcquisition(const Observateur &station)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _longitude = station.getLongitude();
-    _latitude = station.getLatitude();
+    _longitude = station.longitude();
+    _latitude = station.latitude();
 
     /* Corps de la methode */
-    const double beta = acos(RAYON_TERRESTRE / _position.Norme());
-    CalculZoneVisibilite(beta);
+    const double angleBeta = acos(RAYON_TERRESTRE / _position.Norme());
+    CalculZoneVisibilite(angleBeta);
 
     /* Retour */
     return;
@@ -125,7 +128,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
     Satellite sat = Satellite(_tle);
 
     /* Initialisations */
-    const double st = 1. / (_tle.getNo() * T360);
+    const double st = 1. / (_tle.no() * T360);
 
     /* Corps de la methode */
     double lat1 = _latitude;
@@ -133,13 +136,13 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
     bool atrouve = false;
     while (!atrouve) {
 
-        j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+        j0 = Date(date.jourJulienUTC() + i * st, 0., false);
 
         // Position du satellite
         sat.CalculPosVit(j0);
 
         // Latitude
-        const double lat = sat.CalculLatitude(sat.getPosition());
+        const double lat = sat.CalculLatitude(sat.position());
 
         if (lat1 > 0. && lat < 0.)
             atrouve = true;
@@ -150,7 +153,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
 
     double jjm[3], lati[3];
     bool afin = false;
-    double jj0 = j0.getJourJulienUTC();
+    double jj0 = j0.jourJulienUTC();
     double periode = st;
     while (!afin) {
 
@@ -166,7 +169,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
             sat.CalculPosVit(j0);
 
             // Latitude
-            lati[j] = sat.CalculLatitude(sat.getPosition());
+            lati[j] = sat.CalculLatitude(sat.position());
         }
 
         const double t_noeudAsc = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
@@ -193,12 +196,10 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
     _elements.CalculElementsOsculateurs(_position, _vitesse);
 
     // Nombre d'orbites
-    _ageTLE = date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC();
-    _nbOrbites = _tle.getNbOrbites() +
-            (int) (floor((_tle.getNo() + _ageTLE * _tle.getBstar()) * _ageTLE +
-                         Maths::modulo(_tle.getOmegao() + _tle.getMo(), DEUX_PI) / T360 -
-                         Maths::modulo(_elements.getArgumentPerigee() + _elements.getAnomalieVraie(),
-                                       DEUX_PI) / DEUX_PI + 0.5));
+    _ageTLE = date.jourJulienUTC() - _tle.epoque().jourJulienUTC();
+    _nbOrbites = _tle.nbOrbites() +
+            (int) (floor((_tle.no() + _ageTLE * _tle.bstar()) * _ageTLE + modulo(_tle.omegao() + _tle.mo(), DEUX_PI) / T360 -
+                         modulo(_elements.argumentPerigee() + _elements.anomalieVraie(), DEUX_PI) / DEUX_PI + 0.5));
 
     /* Retour */
     return;
@@ -246,7 +247,7 @@ void Satellite::CalculPosVit(const Date &date)
     /* Initialisations */
 
     // Calcul du temps ecoule depuis l'epoque (en minutes)
-    const double tsince = NB_MIN_PAR_JOUR * (date.getJourJulienUTC() - _tle.getEpoque().getJourJulienUTC());
+    const double tsince = NB_MIN_PAR_JOUR * (date.jourJulienUTC() - _tle.epoque().jourJulienUTC());
 
     /* Corps de la methode */
     try {
@@ -265,11 +266,11 @@ void Satellite::CalculPosVit(const Date &date)
         const double nodedf = _sat.omegao + _sat.nodedot * _sat.t;
         _sat.argpm = argpdf;
         _sat.mm = xmdf;
-        const double t2 = _sat.t * _sat.t;
-        _sat.nodem = nodedf + _sat.nodecf * t2;
+        const double tt2 = _sat.t * _sat.t;
+        _sat.nodem = nodedf + _sat.nodecf * tt2;
         tempa = 1. - _sat.cc1 * _sat.t;
         tempe = _sat.bstar * _sat.cc4 * _sat.t;
-        templ = _sat.t2cof * t2;
+        templ = _sat.t2cof * tt2;
 
         if (!_sat.isimp) {
 
@@ -278,11 +279,11 @@ void Satellite::CalculPosVit(const Date &date)
             temp = delomg + delm;
             _sat.mm = xmdf + temp;
             _sat.argpm = argpdf - temp;
-            const double t3 = t2 * _sat.t;
-            const double t4 = t3 * _sat.t;
-            tempa += -_sat.d2 * t2 - _sat.d3 * t3 - _sat.d4 * t4;
+            const double tt3 = tt2 * _sat.t;
+            const double t4 = tt3 * _sat.t;
+            tempa += -_sat.d2 * tt2 - _sat.d3 * tt3 - _sat.d4 * t4;
             tempe += _sat.bstar * _sat.cc5 * (sin(_sat.mm) - _sat.sinmao);
-            templ += _sat.t3cof * t3 + t4 * (_sat.t4cof + _sat.t * _sat.t5cof);
+            templ += _sat.t3cof * tt3 + t4 * (_sat.t4cof + _sat.t * _sat.t5cof);
         }
 
         _sat.nm = _sat.no;
@@ -464,11 +465,11 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul des coordonnees terrestres
         satellites[isat].CalculCoordTerrestres(observateur);
-        satellites[isat]._ieralt = (satellites[isat].getAltitude() < 0.);
+        satellites[isat]._ieralt = (satellites[isat].altitude() < 0.);
 
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
-            const double beta = (mcc && satellites[isat]._tle.getNom().toLower().startsWith("tdrs")) ?
+            const double beta = (mcc && satellites[isat]._tle.nom().toLower().startsWith("tdrs")) ?
                         PI_SUR_DEUX + 8.7 * DEG2RAD : acos(RAYON_TERRESTRE / satellites[isat]._position.Norme());
             satellites[isat].CalculZoneVisibilite(beta);
         }
@@ -490,9 +491,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul des elements osculateurs et du nombre d'orbites
             satellites[isat].CalculElementsOsculateurs(date);
 
-            const Date dateInit = (mcc && satellites.at(isat).getTle().getNorad() == "25544") ?
-                        Date(satellites[isat].CalculDateNoeudAscPrec(date).getJourJulienUTC() - EPS_DATES, 0.,
-                             false) : Date(date.getJourJulienUTC(), 0., false);
+            const Date dateInit = (mcc && satellites.at(isat).tle().norad() == "25544") ?
+                        Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
+                             false) : Date(date.jourJulienUTC(), 0., false);
 
             // Calcul de la trajectoire
             satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, refraction);
@@ -514,9 +515,9 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const bool refracti
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double rs = 1. / soleil.getPosition().Norme();
+    const double rs = 1. / soleil.position().Norme();
     const double ro = 1. / _position.Norme();
-    const double tanlat = _position.getZ() / sqrt(_position.getX() * _position.getX() + _position.getY() * _position.getY());
+    const double tanlat = _position.z() / sqrt(_position.x() * _position.x() + _position.y() * _position.y());
     const double u = atan(tanlat / (1. - APLA));
     const double cu = cos(u);
     const double su = sin(u);
@@ -539,7 +540,7 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const bool refracti
     // Rayon de la penombre de la Terre
     _rayonPenombre = psol + 1.01 * psat + rsol;
 
-    _elongation = _position.Angle(-soleil.getPosition());
+    _elongation = _position.Angle(-soleil.position());
 
     // Test si le satellite est en phase d'eclipse
     _eclipse = (_elongation < _rayonOmbre);
@@ -561,7 +562,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
 
     /* Initialisations */
     _traceCiel.clear();
-    if (_elements.getDemiGrandAxe() < EPSDBL100)
+    if (_elements.demiGrandAxe() < EPSDBL100)
         CalculElementsOsculateurs(date);
 
     /* Corps de la methode */
@@ -569,14 +570,14 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
 
         bool afin = false;
         int i = 0;
-        const double step = 1. / (_tle.getNo() * T360);
+        const double step = 1. / (_tle.no() * T360);
         const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
         Satellite sat = Satellite(_tle);
         Observateur obs = observateur;
 
         while (!afin) {
 
-            const Date j0 = Date(date.getJourJulienUTC() + i * st, 0., false);
+            const Date j0 = Date(date.jourJulienUTC() + i * st, 0., false);
 
             // Position du satellite
             sat.CalculPosVit(j0);
@@ -596,7 +597,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
                 sat.CalculSatelliteEclipse(soleil, refraction);
 
                 const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.) <<
-                                           j0.getJourJulienUTC());
+                                           j0.jourJulienUTC());
                 _traceCiel.append(list);
 
             } else {
@@ -619,14 +620,14 @@ bool Satellite::hasAOS(const Observateur &observateur) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double incl = _tle.getInclo() * DEG2RAD;
+    double incl = _tle.inclo() * DEG2RAD;
     if (incl >= PI_SUR_DEUX)
         incl = PI - incl;
 
     /* Corps de la methode */
 
     /* Retour */
-    return (incl + acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _elements.getApogee())) > fabs(observateur.getLatitude()) && !isGeo());
+    return (incl + acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _elements.apogee())) > fabs(observateur.latitude()) && !isGeo());
 }
 
 /*
@@ -641,7 +642,7 @@ bool Satellite::isGeo() const
     /* Corps de la methode */
 
     /* Retour */
-    return (fabs(_tle.getNo() - 1.0027) < 2.e-4);
+    return (fabs(_tle.no() - 1.0027) < 2.e-4);
 }
 
 /*
@@ -652,13 +653,8 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
+                                                        QStandardPaths::LocateDirectory) + "data";
     const int nb = listeSatellites.size();
 
     if (!Satellite::initCalcul) {
@@ -683,7 +679,7 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
     }
 
     /* Corps de la methode */
-    const QString fic = dirDat + QDir::separator() + "donnees.sat";
+    const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
     QFile fi(fic);
     if (fi.exists()) {
 
@@ -702,7 +698,7 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
                     satellites[isat]._t2 = ligne.mid(12, 4).toDouble();
                     satellites[isat]._t3 = ligne.mid(17, 4).toDouble();
                     satellites[isat]._magnitudeStandard = ligne.mid(22, 4).toDouble();
-                    satellites[isat]._methMagnitude = ligne.at(27).toAscii();
+                    satellites[isat]._methMagnitude = ligne.at(27).toLatin1();
                     satellites[isat]._section = ligne.mid(29, 6).toDouble();
                     satellites[isat]._dateLancement = ligne.mid(36, 10);
                     satellites[isat]._categorieOrbite = ligne.mid(47, 6).trimmed();
@@ -730,7 +726,7 @@ void Satellite::CalculBeta(const Soleil &soleil)
     const Vecteur3D w = _position ^ _vitesse;
 
     /* Corps de la methode */
-    _beta = PI_SUR_DEUX - soleil.getPosition().Angle(w);
+    _beta = PI_SUR_DEUX - soleil.position().Angle(w);
 
     /* Retour */
     return;
@@ -739,33 +735,32 @@ void Satellite::CalculBeta(const Soleil &soleil)
 /*
  * Calcul de la trace au sol du satellite
  */
-void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction)
+void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool refraction)
 {
     /* Declarations des variables locales */
     Satellite sat = Satellite(_tle);
     Soleil soleil;
 
     /* Initialisations */
-    const double st = 1. / (_tle.getNo() * T360);
+    const double st = 1. / (_tle.no() * T360);
 
     /* Corps de la methode */
     _traceAuSol.clear();
-    for (int i=0; i<360 * nbOrbites; i++) {
+    for (int i=0; i<360 * nbOrb; i++) {
 
-        const Date j0(date.getJourJulienUTC() + i * st, 0., false);
+        const Date j0(date.jourJulienUTC() + i * st, 0., false);
 
         // Position du satellite
         sat.CalculPosVit(j0);
 
         // Longitude
-        const Vecteur3D position = sat._position;
-        double lon = RAD2DEG * Maths::modulo(PI + atan2(position.getY(), position.getX()) -
-                                             Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
+        const Vecteur3D pos = sat._position;
+        double lon = RAD2DEG * modulo(PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
         if (lon < 0.)
             lon += T360;
 
         // Latitude
-        double lat = sat.CalculLatitude(position);
+        double lat = sat.CalculLatitude(pos);
         lat = RAD2DEG * (PI_SUR_DEUX - lat);
 
         // Position du Soleil
@@ -774,7 +769,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrbites, const b
         // Conditions d'eclipse
         sat.CalculSatelliteEclipse(soleil, refraction);
 
-        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.getJourJulienUTC());
+        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.jourJulienUTC());
         _traceAuSol.append(list);
     }
 
@@ -901,7 +896,7 @@ void Satellite::Dscom(const double tc) {
     _sat.rtemsq = sqrt(betasq);
 
     // Initialisation des termes luni-solaires
-    _sat.day = _sat.epoque.getJourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
+    _sat.day = _sat.epoque.jourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
     const double xnodce = fmod(4.523602 - 0.00092422029 * _sat.day, DEUX_PI);
     const double stem = sin(xnodce);
     const double ctem = cos(xnodce);
@@ -1341,14 +1336,14 @@ void Satellite::SGP4Init()
 
     /* Corps de la methode */
     // Recuperation des elements du TLE et formattage
-    _sat.argpo = DEG2RAD * _tle.getArgpo();
-    _sat.bstar = _tle.getBstar();
-    _sat.ecco = _tle.getEcco();
-    _sat.epoque = _tle.getEpoque();
-    _sat.inclo = DEG2RAD * _tle.getInclo();
-    _sat.mo = DEG2RAD * _tle.getMo();
-    _sat.no = _tle.getNo() * DEUX_PI * NB_JOUR_PAR_MIN;
-    _sat.omegao = DEG2RAD * _tle.getOmegao();
+    _sat.argpo = DEG2RAD * _tle.argpo();
+    _sat.bstar = _tle.bstar();
+    _sat.ecco = _tle.ecco();
+    _sat.epoque = _tle.epoque();
+    _sat.inclo = DEG2RAD * _tle.inclo();
+    _sat.mo = DEG2RAD * _tle.mo();
+    _sat.no = _tle.no() * DEUX_PI * NB_JOUR_PAR_MIN;
+    _sat.omegao = DEG2RAD * _tle.omegao();
 
     const double ss = 78. / RAYON_TERRESTRE + 1.;
     const double qzms2t = pow((120. - 78.) / RAYON_TERRESTRE, 4.);
@@ -1507,47 +1502,47 @@ bool Satellite::isIeralt() const
     return _ieralt;
 }
 
-double Satellite::getAgeTLE() const
+double Satellite::ageTLE() const
 {
     return _ageTLE;
 }
 
-double Satellite::getBeta() const
+double Satellite::beta() const
 {
     return _beta;
 }
 
-double Satellite::getElongation() const
+double Satellite::elongation() const
 {
     return _elongation;
 }
 
-double Satellite::getFractionIlluminee() const
+double Satellite::fractionIlluminee() const
 {
     return _fractionIlluminee;
 }
 
-double Satellite::getMagnitude() const
+double Satellite::magnitude() const
 {
     return _magnitude;
 }
 
-double Satellite::getMagnitudeStandard() const
+double Satellite::magnitudeStandard() const
 {
     return _magnitudeStandard;
 }
 
-char Satellite::getMethMagnitude() const
+char Satellite::methMagnitude() const
 {
     return _methMagnitude;
 }
 
-char Satellite::getMethod() const
+char Satellite::method() const
 {
     return _sat.method;
 }
 
-int Satellite::getNbOrbites() const
+int Satellite::nbOrbites() const
 {
     return _nbOrbites;
 }
@@ -1557,67 +1552,67 @@ bool Satellite::isPenombre() const
     return _penombre;
 }
 
-double Satellite::getRayonOmbre() const
+double Satellite::rayonOmbre() const
 {
     return _rayonOmbre;
 }
 
-double Satellite::getRayonPenombre() const
+double Satellite::rayonPenombre() const
 {
     return _rayonPenombre;
 }
 
-double Satellite::getSection() const
+double Satellite::section() const
 {
     return _section;
 }
 
-double Satellite::getT1() const
+double Satellite::t1() const
 {
     return _t1;
 }
 
-double Satellite::getT2() const
+double Satellite::t2() const
 {
     return _t2;
 }
 
-double Satellite::getT3() const
+double Satellite::t3() const
 {
     return _t3;
 }
 
-TLE Satellite::getTle() const
+TLE Satellite::tle() const
 {
     return _tle;
 }
 
-QString Satellite::getDateLancement() const
+QString Satellite::dateLancement() const
 {
     return _dateLancement;
 }
 
-QString Satellite::getCategorieOrbite() const
+QString Satellite::categorieOrbite() const
 {
     return _categorieOrbite;
 }
 
-QString Satellite::getPays() const
+QString Satellite::pays() const
 {
     return _pays;
 }
 
-ElementsOsculateurs Satellite::getElements() const
+ElementsOsculateurs Satellite::elements() const
 {
     return _elements;
 }
 
-QList<QVector<double> > Satellite::getTraceAuSol() const
+QList<QVector<double> > Satellite::traceAuSol() const
 {
     return _traceAuSol;
 }
 
-QList<QVector<double> > Satellite::getTraceCiel() const
+QList<QVector<double> > Satellite::traceCiel() const
 {
     return _traceCiel;
 }

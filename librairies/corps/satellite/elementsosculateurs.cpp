@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -113,21 +113,21 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
 
         // Inclinaison
         const Vecteur3D h = position ^ vitesse;
-        const double cosincl = h.getZ() / h.Norme();
+        const double cosincl = h.z() / h.Norme();
         _inclinaison = acos(cosincl);
 
         // Ascension droite du noeud ascendant
-        const Vecteur3D n(-h.getY(), h.getX(), 0.);
+        const Vecteur3D n(-h.y(), h.x(), 0.);
         const double nn = n.Norme();
-        const double cosasc = n.getX() / nn;
+        const double cosasc = n.x() / nn;
         _ascDroiteNA = acos(cosasc);
-        if (n.getY() < 0.)
+        if (n.y() < 0.)
             _ascDroiteNA = DEUX_PI - _ascDroiteNA;
 
         // Argument du perigee
         const double ne = n * exc;
         _argumentPerigee = acos(ne / (nn * _excentricite));
-        if (exc.getZ() < 0.)
+        if (exc.z() < 0.)
             _argumentPerigee = DEUX_PI - _argumentPerigee;
 
         // Anomalie vraie
@@ -166,13 +166,13 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
 
         // Calcul des parametres adaptes
         const Vecteur3D hn = h.Normalise();
-        const double d = 1. / (1. + hn.getZ());
-        _ix = -d * hn.getY();
-        _iy = d * hn.getX();
+        const double d = 1. / (1. + hn.z());
+        _ix = -d * hn.y();
+        _iy = d * hn.x();
 
-        const double temp4 = d * position.getZ();
-        const double cl = (position.getX() - temp4 * hn.getX()) * x1sp;
-        const double sl = (position.getY() - temp4 * hn.getY()) * x1sp;
+        const double temp4 = d * position.z();
+        const double cl = (position.x() - temp4 * hn.x()) * x1sp;
+        const double sl = (position.y() - temp4 * hn.y()) * x1sp;
         _argumentLongitudeVraie = atan2(sl, cl);
         if (_argumentLongitudeVraie < 0.)
             _argumentLongitudeVraie += DEUX_PI;
@@ -209,97 +209,97 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
 }
 
 /* Accesseurs */
-double ElementsOsculateurs::getAnomalieExcentrique() const
+double ElementsOsculateurs::anomalieExcentrique() const
 {
     return _anomalieExcentrique;
 }
 
-double ElementsOsculateurs::getAnomalieMoyenne() const
+double ElementsOsculateurs::anomalieMoyenne() const
 {
     return _anomalieMoyenne;
 }
 
-double ElementsOsculateurs::getAnomalieVraie() const
+double ElementsOsculateurs::anomalieVraie() const
 {
     return _anomalieVraie;
 }
 
-double ElementsOsculateurs::getApogee() const
+double ElementsOsculateurs::apogee() const
 {
     return _apogee;
 }
 
-double ElementsOsculateurs::getArgumentPerigee() const
-{
-    return _argumentPerigee;
-}
-
-double ElementsOsculateurs::getAscensionDroiteNA() const
-{
-    return _ascDroiteNA;
-}
-
-double ElementsOsculateurs::getDemiGrandAxe() const
-{
-    return _demiGrandAxe;
-}
-
-double ElementsOsculateurs::getExcentricite() const
-{
-    return _excentricite;
-}
-
-double ElementsOsculateurs::getExCEq() const
-{
-    return _exCEq;
-}
-
-double ElementsOsculateurs::getExCirc() const
-{
-    return _exCirc;
-}
-
-double ElementsOsculateurs::getEyCEq() const
-{
-    return _eyCEq;
-}
-
-double ElementsOsculateurs::getEyCirc() const
-{
-    return _eyCirc;
-}
-
-double ElementsOsculateurs::getInclinaison() const
-{
-    return _inclinaison;
-}
-
-double ElementsOsculateurs::getIx() const
-{
-    return _ix;
-}
-
-double ElementsOsculateurs::getIy() const
-{
-    return _iy;
-}
-
-double ElementsOsculateurs::getArgumentLongitudeVraie() const
+double ElementsOsculateurs::argumentLongitudeVraie() const
 {
     return _argumentLongitudeVraie;
 }
 
-double ElementsOsculateurs::getPerigee() const
+double ElementsOsculateurs::argumentPerigee() const
+{
+    return _argumentPerigee;
+}
+
+double ElementsOsculateurs::ascensionDroiteNA() const
+{
+    return _ascDroiteNA;
+}
+
+double ElementsOsculateurs::demiGrandAxe() const
+{
+    return _demiGrandAxe;
+}
+
+double ElementsOsculateurs::excentricite() const
+{
+    return _excentricite;
+}
+
+double ElementsOsculateurs::exCEq() const
+{
+    return _exCEq;
+}
+
+double ElementsOsculateurs::exCirc() const
+{
+    return _exCirc;
+}
+
+double ElementsOsculateurs::eyCEq() const
+{
+    return _eyCEq;
+}
+
+double ElementsOsculateurs::eyCirc() const
+{
+    return _eyCirc;
+}
+
+double ElementsOsculateurs::inclinaison() const
+{
+    return _inclinaison;
+}
+
+double ElementsOsculateurs::ix() const
+{
+    return _ix;
+}
+
+double ElementsOsculateurs::iy() const
+{
+    return _iy;
+}
+
+double ElementsOsculateurs::perigee() const
 {
     return _perigee;
 }
 
-double ElementsOsculateurs::getPeriode() const
+double ElementsOsculateurs::periode() const
 {
     return _periode;
 }
 
-double ElementsOsculateurs::getPso() const
+double ElementsOsculateurs::pso() const
 {
     return _pso;
 }

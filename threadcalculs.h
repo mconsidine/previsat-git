@@ -33,7 +33,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 juin 2015
  *
  */
 
@@ -54,13 +54,13 @@ public:
         TRANSITS
     };
 
-    ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions);
-    ThreadCalculs(const TypeCalcul typeCalcul, const Conditions &conditions, const Observateur &obs);
+    ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond);
+    ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond, const Observateur &obs);
     void run();
 
-    TypeCalcul getTypeCalcul() const;
-    Observateur getObservateur() const;
-    QStringList getRes();
+    TypeCalcul typeCalcul() const;
+    Observateur observateur() const;
+    QStringList res();
 
 private:
     TypeCalcul _typeCalcul;

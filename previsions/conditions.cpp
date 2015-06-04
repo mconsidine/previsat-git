@@ -36,13 +36,15 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 avril 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "conditions.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
@@ -80,6 +82,7 @@ Conditions::Conditions()
     _haut = 0.;
     _mgn1 = 99.;
     _mgn2 = 99.;
+    _offset = 0.;
     _pas0 = 0.;
     _seuilConjonction = 0.;
 
@@ -92,31 +95,32 @@ Conditions::Conditions()
     return;
 }
 
-Conditions::Conditions(const bool ecart, const bool ecl, const bool ext, const bool refr, const bool syst, const int crep, const int haut,
-                       const int pas0, const double jj1, const double jj2, const double offset, const double mgn1, const QString &fic,
-                       const QString &out, const QString &unite, const QStringList &listeSatellites)
+Conditions::Conditions(const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction, const bool systeme,
+                       const int crepuscule, const int hauteur, const int pas, const double jourJulien1, const double jourJulien2,
+                       const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
+                       const QStringList &listeSat)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ecart = ecart;
-    _ecl = ecl;
-    _ext = ext;
-    _refr = refr;
-    _syst = syst;
-    _crep = crep * DEG2RAD;
-    _haut = haut * DEG2RAD;
-    _pas0 = pas0 * NB_JOUR_PAR_SEC;
-    _jj1 = jj1;
-    _jj2 = jj2;
-    _offset = offset;
-    _mgn1 = mgn1;
-    _fic = fic;
-    _out = out;
-    _unite = unite;
-    _listeSatellites = listeSatellites;
+    _ecart = pecEcart;
+    _ecl = eclipse;
+    _ext = extinction;
+    _refr = refraction;
+    _syst = systeme;
+    _crep = crepuscule * DEG2RAD;
+    _haut = hauteur * DEG2RAD;
+    _pas0 = pas * NB_JOUR_PAR_SEC;
+    _jj1 = jourJulien1;
+    _jj2 = jourJulien2;
+    _offset = offsetUTC;
+    _mgn1 = magn1;
+    _fic = ficEnt;
+    _out = ficOut;
+    _unite = unit;
+    _listeSatellites = listeSat;
 
     _acalcLune = false;
     _acalcSol = false;
@@ -136,35 +140,35 @@ Conditions::Conditions(const bool ecart, const bool ecl, const bool ext, const b
     return;
 }
 
-Conditions::Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const int crep, const int haut, const int nbl,
-                       const char chr, const double ang0, const double jj1, const double jj2, const double offset, const double mgn1,
-                       const double mgn2, const QString &fic, const QString &out, const QString &unite, const QStringList &tabStsIri,
-                       const QVector<TLE> &tabtle)
+Conditions::Conditions(const bool pecEcart, const bool extinction, const bool refraction, const bool systeme, const int crepuscule,
+                       const int hauteur, const int nbLig, const char chrono, const double angle0, const double jourJulien1,
+                       const double jourJulien2, const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt,
+                       const QString &ficOut, const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ecart = ecart;
-    _ext = ext;
-    _refr = refr;
-    _syst = syst;
-    _crep = crep * DEG2RAD;
-    _haut = haut * DEG2RAD;
-    _nbl = nbl;
-    _chr = chr;
-    _ang0 = ang0 * DEG2RAD;
-    _jj1 = jj1;
-    _jj2 = jj2;
-    _offset = offset;
-    _mgn1 = mgn1;
-    _mgn2 = mgn2;
-    _fic = fic;
-    _out = out;
-    _unite = unite;
-    _tabStsIri = tabStsIri;
-    _tabtle = tabtle;
+    _ecart = pecEcart;
+    _ext = extinction;
+    _refr = refraction;
+    _syst = systeme;
+    _crep = crepuscule * DEG2RAD;
+    _haut = hauteur * DEG2RAD;
+    _nbl = nbLig;
+    _chr = chrono;
+    _ang0 = angle0 * DEG2RAD;
+    _jj1 = jourJulien1;
+    _jj2 = jourJulien2;
+    _offset = offsetUTC;
+    _mgn1 = magn1;
+    _mgn2 = magn2;
+    _fic = ficEnt;
+    _out = ficOut;
+    _unite = unit;
+    _tabStsIri = tabStsIridium;
+    _tabtle = tabTLEIri;
 
     _acalcLune = false;
     _acalcSol = false;
@@ -182,30 +186,31 @@ Conditions::Conditions(const bool ecart, const bool ext, const bool refr, const 
     return;
 }
 
-Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const bool apassOmbre, const bool apassPso, const bool atransJn,
-                       const bool ecart, const bool refr, const bool syst, const double jj1, const double jj2, const double offset,
-                       const QString &fic, const QString &out, const QString &unite, const QStringList &listeSatellites)
+Conditions::Conditions(const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre, const bool apassagePso,
+                       const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
+                       const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
+                       const QString &ficOut, const QString &unit, const QStringList &listeSat)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _apassApogee = apassApogee;
-    _apassNoeuds = apassNoeuds;
-    _apassOmbre = apassOmbre;
-    _apassPso = apassPso;
-    _atransJn = atransJn;
-    _ecart = ecart;
-    _refr = refr;
-    _syst = syst;
-    _jj1 = jj1;
-    _jj2 = jj2;
-    _offset = offset;
-    _fic = fic;
-    _out = out;
-    _unite = unite;
-    _listeSatellites = listeSatellites;
+    _apassApogee = apassageApogee;
+    _apassNoeuds = apassageNoeuds;
+    _apassOmbre = apassageOmbre;
+    _apassPso = apassagePso;
+    _atransJn = atransitionJn;
+    _ecart = pecEcart;
+    _refr = refraction;
+    _syst = systeme;
+    _jj1 = jourJulien1;
+    _jj2 = jourJulien2;
+    _offset = offsetUTC;
+    _fic = ficEnt;
+    _out = ficOut;
+    _unite = unit;
+    _listeSatellites = listeSat;
 
     _acalcLune = false;
     _acalcSol = false;
@@ -226,29 +231,30 @@ Conditions::Conditions(const bool apassApogee, const bool apassNoeuds, const boo
     return;
 }
 
-Conditions::Conditions(const bool acalcLune, const bool acalcSoleil, const bool ecart, const bool refr, const bool syst,
-                       const int haut, const double ageTLE, const double seuilConjonction, const double jj1, const double jj2,
-                       const double offset, const QString &fic, const QString &out, const QString &unite)
+Conditions::Conditions(const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction, const bool systeme,
+                       const int hauteur, const double age, const double seuilConj, const double jourJulien1,
+                       const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
+                       const QString &unit)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _acalcLune = acalcLune;
-    _acalcSol = acalcSoleil;
-    _ecart = ecart;
-    _refr = refr;
-    _syst = syst;
-    _haut = haut * DEG2RAD;
-    _ageTLE = ageTLE;
-    _seuilConjonction = seuilConjonction * DEG2RAD;
-    _jj1 = jj1;
-    _jj2 = jj2;
-    _offset = offset;
-    _fic = fic;
-    _out = out;
-    _unite = unite;
+    _acalcLune = acalculLune;
+    _acalcSol = acalculSoleil;
+    _ecart = pecEcart;
+    _refr = refraction;
+    _syst = systeme;
+    _haut = hauteur * DEG2RAD;
+    _ageTLE = age;
+    _seuilConjonction = seuilConj * DEG2RAD;
+    _jj1 = jourJulien1;
+    _jj2 = jourJulien2;
+    _offset = offsetUTC;
+    _fic = ficEnt;
+    _out = ficOut;
+    _unite = unit;
 
     _apassApogee = false;
     _apassNoeuds = false;
@@ -286,18 +292,18 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     /* Initialisations */
     QString ligne1 = "";
-    const QString lon = Maths::ToSexagesimal(fabs(observateur.getLongitude()), DEGRE, 3, 0, false, false);
-    const QString ew = (observateur.getLongitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
+    const QString lon = Maths::ToSexagesimal(fabs(observateur.longitude()), DEGRE, 3, 0, false, false);
+    const QString ew = (observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
-    const QString lat = Maths::ToSexagesimal(fabs(observateur.getLatitude()), DEGRE, 2, 0, false, false);
-    const QString ns = (observateur.getLatitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
+    const QString lat = Maths::ToSexagesimal(fabs(observateur.latitude()), DEGRE, 2, 0, false, false);
+    const QString ns = (observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
-    const double alt = (conditions._unite == QObject::tr("km")) ? observateur.getAltitude() :
-                                                                  observateur.getAltitude() * PIED_PAR_METRE;
+    const double alt = (conditions._unite == QObject::tr("km")) ? observateur.altitude() :
+                                                                  observateur.altitude() * PIED_PAR_METRE;
 
     const QString unit = (conditions._unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
     const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
-    const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
+    const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1Â°");
 
     /* Corps de la methode */
     const double offset = (conditions._ecart) ? conditions._offset :
@@ -307,8 +313,8 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     // Calcul de l'age des TLE
     if (tabtle.size() == 1) {
         ligne1 = QObject::tr("Age du TLE                : %1 jours (au %2)");
-        ligne1 = ligne1.arg(fabs(conditions._jj1 - tabtle.at(0).getEpoque().getJourJulienUTC()), 4, 'f', 2).
-                arg(date.ToShortDate(COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed());
+        ligne1 = ligne1.arg(fabs(conditions._jj1 - tabtle.at(0).epoque().jourJulienUTC()), 4, 'f', 2).
+                arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed());
 
     } else {
         double tlemin = -DATE_INFINIE;
@@ -317,7 +323,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
         QVectorIterator<TLE> it(tabtle);
         while (it.hasNext()) {
             const TLE tle = it.next();
-            const double epok = tle.getEpoque().getJourJulienUTC();
+            const double epok = tle.epoque().jourJulienUTC();
             if (epok > tlemin)
                 tlemin = epok;
             if (epok < tlemax)
@@ -332,9 +338,9 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             }
         }
 
-        ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
+        ligne1 = QObject::tr("Age du TLE le plus rÃ©cent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
         ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).
-                arg(date.ToShortDate(COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed()).
+                arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed()).
                 arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
     }
 
@@ -347,7 +353,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
     QString ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
-    ligne2 = ligne2.arg(observateur.getNomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
+    ligne2 = ligne2.arg(observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;
 
 
@@ -360,17 +366,17 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             chaine = chaine.append((conditions._offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }
-    flux << QString((conditions._ecart) ? ligne2.arg(chaine) : ligne2.arg(QObject::tr("Heure légale"))) << endl;
+    flux << QString((conditions._ecart) ? ligne2.arg(chaine) : ligne2.arg(QObject::tr("Heure lÃ©gale"))) << endl;
 
     if (itransit) {
         flux << (cond1 + cond2).arg(conditions._haut * RAD2DEG) << endl;
 
     } else {
-        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) << endl;
+        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1Â°").arg(conditions._crep * RAD2DEG) << endl;
         flux << QString(cond1.size(), ' ') << cond2.arg(conditions._haut * RAD2DEG) << endl;
     }
 
-    flux << QObject::tr("Unité de distance         : %1").arg(conditions._unite) << endl << endl;
+    flux << QObject::tr("UnitÃ© de distance         : %1").arg(conditions._unite) << endl << endl;
     flux << ligne1 << endl << endl << endl;
     fichier.close();
 
@@ -379,159 +385,159 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 }
 
 /* Accesseurs */
-bool Conditions::getEcart() const
+bool Conditions::ecart() const
 {
     return _ecart;
 }
 
-bool Conditions::getEcl() const
+bool Conditions::ecl() const
 {
     return _ecl;
 }
 
-bool Conditions::getExt() const
+bool Conditions::ext() const
 {
     return _ext;
 }
 
-bool Conditions::getRefr() const
+bool Conditions::refr() const
 {
     return _refr;
 }
 
-bool Conditions::getSyst() const
+bool Conditions::syst() const
 {
     return _syst;
 }
 
-double Conditions::getCrep() const
+double Conditions::crep() const
 {
     return _crep;
 }
 
-double Conditions::getHaut() const
+double Conditions::haut() const
 {
     return _haut;
 }
 
-double Conditions::getPas0() const
+double Conditions::pas0() const
 {
     return _pas0;
 }
 
-double Conditions::getJj1() const
+double Conditions::jj1() const
 {
     return _jj1;
 }
 
-double Conditions::getJj2() const
+double Conditions::jj2() const
 {
     return _jj2;
 }
 
-double Conditions::getOffset() const
+double Conditions::offset() const
 {
     return _offset;
 }
 
-double Conditions::getMgn1() const
+double Conditions::mgn1() const
 {
     return _mgn1;
 }
 
-QString Conditions::getFic() const
+QString Conditions::fic() const
 {
     return _fic;
 }
 
-QString Conditions::getOut() const
+QString Conditions::out() const
 {
     return _out;
 }
 
-QString Conditions::getUnite() const
+QString Conditions::unite() const
 {
     return _unite;
 }
 
-QStringList Conditions::getListeSatellites() const
+QStringList Conditions::listeSatellites() const
 {
     return _listeSatellites;
 }
 
 
-int Conditions::getNbl() const
+int Conditions::nbl() const
 {
     return _nbl;
 }
 
-char Conditions::getChr() const
+char Conditions::chr() const
 {
     return _chr;
 }
 
-double Conditions::getAng0() const
+double Conditions::ang0() const
 {
     return _ang0;
 }
 
-double Conditions::getMgn2() const
+double Conditions::mgn2() const
 {
     return _mgn2;
 }
 
-QStringList Conditions::getTabStsIri() const
+QStringList Conditions::tabStsIri() const
 {
     return _tabStsIri;
 }
 
-QVector<TLE> Conditions::getTabtle() const
+QVector<TLE> Conditions::tabtle() const
 {
     return _tabtle;
 }
 
-bool Conditions::getApassApogee() const
+bool Conditions::apassApogee() const
 {
     return _apassApogee;
 }
 
-bool Conditions::getApassNoeuds() const
+bool Conditions::apassNoeuds() const
 {
     return _apassNoeuds;
 }
 
-bool Conditions::getApassOmbre() const
+bool Conditions::apassOmbre() const
 {
     return _apassOmbre;
 }
 
-bool Conditions::getApassPso() const
+bool Conditions::apassPso() const
 {
     return _apassPso;
 }
 
-bool Conditions::getAtransJn() const
+bool Conditions::atransJn() const
 {
     return _atransJn;
 }
 
 
-bool Conditions::getAcalcLune() const
+bool Conditions::acalcLune() const
 {
     return _acalcLune;
 }
 
-bool Conditions::getAcalcSol() const
+bool Conditions::acalcSol() const
 {
     return _acalcSol;
 }
 
-double Conditions::getAgeTLE() const
+double Conditions::ageTLE() const
 {
     return _ageTLE;
 }
 
-double Conditions::getSeuilConjonction() const
+double Conditions::seuilConjonction() const
 {
     return _seuilConjonction;
 }
