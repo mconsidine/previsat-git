@@ -36,16 +36,18 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "etoile.h"
-#include "librairies/maths/mathConstants.h"
+#include "librairies/maths/mathsConstants.h"
 
 bool Etoile::initStar = false;
 
@@ -57,17 +59,17 @@ Etoile::Etoile()
     _magnitude = 0.;
 }
 
-Etoile::Etoile(const QString &nom, const double ascensionDroite, const double declinaison, const double magnitude)
+Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nom = nom;
-    _ascensionDroite = ascensionDroite * HEUR2RAD;
-    _declinaison = declinaison * DEG2RAD;
-    _magnitude = magnitude;
+    _nom = nomEtoile;
+    _ascensionDroite = ascDroite * HEUR2RAD;
+    _declinaison = decl * DEG2RAD;
+    _magnitude = mag;
 
     /* Retour */
     return;
@@ -107,17 +109,14 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
+                                                               QStandardPaths::LocateDirectory);
+    const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
+            QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
 
     /* Corps de la methode */
     etoiles.clear();
-    const QString fic = dirDat + QDir::separator() + "etoiles.str";
+    const QString fic = dirCommonData + QDir::separator() + "etoiles.str";
     QFile fi(fic);
     if (fi.exists()) {
 
@@ -158,12 +157,12 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 }
 
 /* Accesseurs */
-double Etoile::getMagnitude() const
+double Etoile::magnitude() const
 {
     return (_magnitude);
 }
 
-QString Etoile::getNom() const
+QString Etoile::nom() const
 {
     return (_nom);
 }

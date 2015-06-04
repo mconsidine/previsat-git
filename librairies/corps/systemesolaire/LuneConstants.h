@@ -36,15 +36,18 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 novembre 2014
+ * >    3 juin 2015
  *
  */
 
 #ifndef LUNECONSTANTS_H
 #define LUNECONSTANTS_H
 
-#include "librairies/maths/mathConstants.h"
+#include "librairies/maths/mathsConstants.h"
 
+/* Enumerations */
+
+/* Declaration des constantes */
 // Rayon equatorial lunaire (km)
 static const double RAYON_LUNAIRE = 1738.;
 

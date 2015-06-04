@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -72,7 +72,7 @@ Observateur::Observateur()
 /*
  * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
  */
-Observateur::Observateur(const QString &nomlieu, const double longitude, const double latitude, const double altitude)
+Observateur::Observateur(const QString &nom, const double lon, const double lat, const double alt)
 {
     /* Declarations des variables locales */
 
@@ -80,10 +80,10 @@ Observateur::Observateur(const QString &nomlieu, const double longitude, const d
     _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
-    _nomlieu = nomlieu;
-    _longitude = DEG2RAD * longitude;
-    _latitude = DEG2RAD * latitude;
-    _altitude = altitude * 1.e-3;
+    _nomlieu = nom;
+    _longitude = DEG2RAD * lon;
+    _latitude = DEG2RAD * lat;
+    _altitude = alt * 1.e-3;
 
     _coslat = cos(_latitude);
     _sinlat = sin(_latitude);
@@ -141,8 +141,8 @@ Observateur::Observateur(const Observateur &observateur)
  * Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
  * (pour le calcul des previsions)
  */
-Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, const Matrice &rotHz, const double aaer,
-                         const double aray)
+Observateur::Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal,
+                         const double arayVal)
 {
     /* Declarations des variables locales */
 
@@ -157,11 +157,11 @@ Observateur::Observateur(const Vecteur3D &position, const Vecteur3D &vitesse, co
     _rayon = 0.;
     _posZ = 0.;
     _tempsSideralGreenwich = 0.;
-    _position = position;
-    _vitesse = vitesse;
-    _rotHz = rotHz;
-    _aaer = aaer;
-    _aray = aray;
+    _position = pos;
+    _vitesse = vit;
+    _rotHz = matRotHz;
+    _aaer = aaerVal;
+    _aray = arayVal;
 
     /* Retour */
     return;
@@ -196,13 +196,13 @@ void Observateur::CalculPosVit(const Date &date)
     _position = Vecteur3D(_rayon * costsl, _rayon * sintsl, _posZ);
 
     // Vitesse de l'observateur
-    _vitesse = Vecteur3D(-OMEGA * _position.getY(), OMEGA * _position.getX(), 0.);
+    _vitesse = Vecteur3D(-OMEGA * _position.y(), OMEGA * _position.x(), 0.);
 
     // Matrice utile pour le calcul des coordonnees horizontales
     const Vecteur3D v1(_sinlat * costsl, -sintsl, _coslat * costsl);
     const Vecteur3D v2(_sinlat * sintsl, costsl, _coslat * sintsl);
     const Vecteur3D v3(-_coslat, 0., _sinlat);
-    _rotHz = Matrice(v1, v2, v3);
+    _rotHz = Matrice3D(v1, v2, v3);
 
     /* Retour */
     return;
@@ -217,14 +217,13 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double tu = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double tu = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
     const double tu2 = tu * tu;
 
     /* Corps de la methode */
 
     /* Retour */
-    return (DEG2RAD * Maths::modulo(280.46061837 + 360.98564736629 * date.getJourJulienUTC() + tu2 * (0.000387933 -
-                                    tu / 38710000.), T360));
+    return (DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu / 38710000.), T360));
 }
 
 /*
@@ -248,7 +247,7 @@ double Observateur::CalculCap(const Observateur &lieuDistant)
 
             const double num = sin(_longitude - lieuDistant._longitude) * lieuDistant._coslat;
             const double den = _coslat * lieuDistant._sinlat - _sinlat * lieuDistant._coslat * cos(_longitude - lieuDistant._longitude);
-            cap = Maths::modulo(atan2(num, den), DEUX_PI);
+            cap = modulo(atan2(num, den), DEUX_PI);
         }
     }
 
@@ -311,16 +310,16 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
     double lon = 0.;
     double lat = 0.;
 
-    const double x = origine.getX();
-    const double y = origine.getY();
-    const double z = origine.getZ();
+    const double x = origine.x();
+    const double y = origine.y();
+    const double z = origine.z();
     const double z2 = z * z;
     const double r2 = x * x + y * y;
 
     const Vecteur3D dir = direction.Normalise();
-    const double dx = dir.getX();
-    const double dy = dir.getY();
-    const double dz = dir.getZ();
+    const double dx = dir.x();
+    const double dy = dir.y();
+    const double dz = dir.z();
     const double cz2 = dx * dx + dy * dy;
 
     /* Corps de la methode */
@@ -341,14 +340,13 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
         const double tsg = CalculTempsSideralGreenwich(date);
 
         // Longitude
-        lon = Maths::modulo(tsg - atan2(intersection.getY(), intersection.getX()), DEUX_PI);
+        lon = modulo(tsg - atan2(intersection.y(), intersection.x()), DEUX_PI);
         if (fabs(lon) > PI)
-            lon -= Maths::sgn(lon) * DEUX_PI;
+            lon -= sgn(lon) * DEUX_PI;
         lon *= RAD2DEG;
 
         // Latitude
-        lat = RAD2DEG * atan2(intersection.getZ(), G2 * sqrt(intersection.getX() * intersection.getX() +
-                                                             intersection.getY() * intersection.getY()));
+        lat = RAD2DEG * atan2(intersection.z(), G2 * sqrt(intersection.x() * intersection.x() + intersection.y() * intersection.y()));
 
         nom = "INTERSECT";
     }
@@ -358,52 +356,52 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
 }
 
 /* Accesseurs */
-double Observateur::getAaer() const
+double Observateur::aaer() const
 {
     return _aaer;
 }
 
-double Observateur::getAltitude() const
+double Observateur::altitude() const
 {
     return _altitude;
 }
 
-double Observateur::getAray() const
+double Observateur::aray() const
 {
     return _aray;
 }
 
-double Observateur::getLatitude() const
+double Observateur::latitude() const
 {
     return _latitude;
 }
 
-double Observateur::getLongitude() const
+double Observateur::longitude() const
 {
     return _longitude;
 }
 
-QString Observateur::getNomlieu() const
+QString Observateur::nomlieu() const
 {
     return _nomlieu;
 }
 
-Vecteur3D Observateur::getPosition() const
+Vecteur3D Observateur::position() const
 {
     return _position;
 }
 
-Matrice Observateur::getRotHz() const
+Matrice3D Observateur::rotHz() const
 {
     return _rotHz;
 }
 
-double Observateur::getTempsSideralGreenwich() const
+double Observateur::tempsSideralGreenwich() const
 {
     return _tempsSideralGreenwich;
 }
 
-Vecteur3D Observateur::getVitesse() const
+Vecteur3D Observateur::vitesse() const
 {
     return _vitesse;
 }

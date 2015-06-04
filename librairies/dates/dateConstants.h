@@ -36,16 +36,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2013
+ * >    3 juin 2015
  *
  */
 
 #ifndef DATECONSTANTS_H
 #define DATECONSTANTS_H
 
+/* Enumerations */
 enum DateFormat {
-    COURT,
-    LONG
+    FORMAT_COURT,
+    FORMAT_LONG
 };
 
 enum DateSysteme {
@@ -53,6 +54,7 @@ enum DateSysteme {
     SYSTEME_12H
 };
 
+/* Declaration des constantes */
 static const int AN2000 = 2000;
 
 static const double EPS_DATES = 1.e-7;

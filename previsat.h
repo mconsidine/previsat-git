@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 decembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -42,13 +42,13 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
 #include <QComboBox>
-#include <QKeyEvent>
 #include <QListWidget>
 #include <QMainWindow>
-#include <QModelIndex>
-#include <QtNetwork>
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #include "librairies/dates/date.h"
+
 
 namespace Ui {
 class PreviSat;
@@ -60,10 +60,34 @@ class PreviSat : public QMainWindow
 
 public:
     explicit PreviSat(QWidget *fenetreParent = 0);
+
+    /*******************
+     * Initialisations *
+     ******************/
+    /**
+     * @brief ChargementConfig Chargement de la configuration
+     */
     void ChargementConfig();
+
+    /**
+     * @brief ChargementTLE Chargement du fichier TLE par defaut
+     */
     void ChargementTLE();
+
+    /**
+     * @brief MAJTLE Mise a jour des TLE lors du demarrage
+     */
     void MAJTLE();
+
+    /**
+     * @brief DemarrageApplication Demarrage de l'application apres le chargement de la configuration
+     */
     void DemarrageApplication();
+
+    /**
+     * @brief DeterminationLocale Determination de la locale
+     * @return locale
+     */
     static QString DeterminationLocale();
 
     ~PreviSat();
@@ -71,60 +95,267 @@ public:
 private:
     Ui::PreviSat *ui;
 
-    // Initialisation
-    void InitFicObs(const bool alarm) const;
-    void InitFicTLE() const;
+    /*******************
+     * Initialisations *
+     ******************/
+    /**
+     * @brief InitFicMap Chargement de la liste de cartes du monde
+     * @param majAff mise a jour de l'affichage
+     */
     void InitFicMap(const bool majAff) const;
 
-    // Affichage
-    void AffichageDonnees();
-    void AffichageElementsOsculateurs() const;
+    void InitFicObs(const bool alarm) const;
+
+    /**
+     * @brief InitFicTLE Chargement de la liste de fichiers TLE
+     */
+    void InitFicTLE() const;
+
+
+    /**************
+     * Affichages *
+     *************/
+    /**
+     * @brief AffichageCourbes Affichage des elements graphiques
+     */
     void AffichageCourbes() const;
+
+    /**
+     * @brief AffichageDonnees Affichage des donnees numeriques
+     */
+    void AffichageDonnees();
+
+    /**
+     * @brief AffichageElementsOsculateurs Affichage des elements osculateurs
+     */
+    void AffichageElementsOsculateurs() const;
+
+    /**
+     * @brief AffichageGroupesTLE Affichage des groupes de TLE
+     */
     void AffichageGroupesTLE() const;
+
+    /**
+     * @brief AffichageLieuObs Affichage du lieu d'observation sur l'interface graphique
+     */
     void AffichageLieuObs() const;
+
+    /**
+     * @brief AffichageSatellite Affichage d'un satellite sur la carte du monde
+     * @param isat indice du satellite
+     * @param lsat longitude du satellite
+     * @param bsat latitude du satellite
+     * @param lcarte longueur de la carte
+     * @param hcarte hauteur de la carte
+     */
     void AffichageSatellite(const int isat, const int lsat, const int bsat, const int lcarte, const int hcarte) const;
+
+    /**
+     * @brief AfficherListeSatellites Affichage des noms des satellites dans les listes
+     * @param fichier fichier TLE
+     * @param listeSat liste des satellites
+     */
     void AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const;
+
+    /**
+     * @brief CalculsAffichage Enchainement des calculs et affichage
+     */
     void CalculsAffichage();
 
-    // Calculs
+
+    /***********
+     * Calculs *
+     **********/
+    /**
+     * @brief CalculAOS Calcul du prochain AOS/LOS
+     * @return vrai si le satellite peut se lever et se coucher dans le ciel de l'observateur
+     */
     bool CalculAOS() const;
-    void CalculDN() const;
+
+    /**
+     * @brief CalculAgeTLETransitISS Calcul de l'age du TLE de l'ISS pour le calcul des transits
+     */
     void CalculAgeTLETransitISS() const;
+
+    /**
+     * @brief CalculDN Calcul de la prochaine date d'eclipse de l'ISS
+     */
+    void CalculDN() const;
+
+    /**
+     * @brief CalculNumeroOrbiteISS Calcul du numero d'orbite de l'ISS
+     * @param date date
+     * @return numero d'orbite de l'ISS
+     */
     int CalculNumeroOrbiteISS(const Date &date) const;
+
+    /**
+     * @brief EnchainementCalculs Enchainement des calculs
+     */
     void EnchainementCalculs() const;
-    void MajWebTLE();
+
+
+    /******************************
+     * Telechargement de fichiers *
+     *****************************/
+    /**
+     * @brief AjoutFichier Ajout d'un fichier dans la liste de fichiers a telecharger
+     * @param url adresse du fichier
+     */
     void AjoutFichier(const QUrl &url);
-    void VerifAgeTLE();
-    void VerifMAJPreviSat();
+
+    /**
+     * @brief MajWebTLE Mise a jour automatique des TLE
+     */
+    void MajWebTLE();
+
+    /**
+     * @brief MiseAJourFichiers Mise a jour des fichiers internes et du logiciel
+     * @param action type de mise a jour
+     * @param typeMAJ nom de la mise a jour
+     */
     void MiseAJourFichiers(QAction *action, const QString &typeMAJ);
+
+    /**
+     * @brief TelechargementFichier Telechargement d'un fichier
+     * @param ficHttp adresse du fichier
+     * @param async vrai si le telechargement doit s'effectuer de maniere asynchrone
+     */
     void TelechargementFichier(const QString &ficHttp, const bool async);
 
-    // Interface
-    void OuvertureFichierTLE(const QString &fichier);
+    /**
+     * @brief VerifAgeTLE Verification de l'age d'un TLE
+     */
+    void VerifAgeTLE();
+
+    /**
+     * @brief VerifMAJPreviSat Verification des mises a jour (logiciel, fichiers internes)
+     */
+    void VerifMAJPreviSat();
+
+
+    /*************
+     * Interface *
+     *************/
+    /**
+     * @brief AffichageListeFichiersTLE Affichage des fichiers TLE dans les listes deroulantes
+     * @param fichier fichier TLE
+     * @param comboBox liste deroulante
+     * @param listeFicTLEs liste des fichiers TLE
+     */
     void AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLEs);
-    void SauveOngletGeneral(const QString &fic) const;
-    void SauveOngletElementsOsculateurs(const QString &fic) const;
-    void SauveOngletInformations(const QString &fic) const;
-    void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
-    void ModificationOption();
+
+    /**
+     * @brief AfficherLieuSelectionne Affichage des donnees du lieu selectionne lorsqu'on clique sur son nom
+     * @param index indice du lieu dans la liste
+     */
     void AfficherLieuSelectionne(const int index);
+
+    /**
+     * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
+     * @param compteRendu compte-rendu
+     * @param aecr ecriture du compte-rendu
+     */
+    void EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr);
+
+    /**
+     * @brief getListeItemChecked Compte du nombre de satellites coches dans une liste
+     * @param listWidget liste
+     * @return nombre de satellites coches
+     */
     int getListeItemChecked(const QListWidget *listWidget) const;
 
-    // Systeme
-    void EcritureListeRegistre() const;
+    /**
+     * @brief ModificationOption Modification d'une option d'affichage
+     */
+    void ModificationOption();
+
+    /**
+     * @brief OuvertureFichierTLE Ouverture d'un fichier TLE
+     * @param fichier nom du fichier
+     */
+    void OuvertureFichierTLE(const QString &fichier);
+
+    /**
+     * @brief SauveOngletElementsOsculateurs Sauvegarde des donnees de l'onglet Elements osculateurs
+     * @param fic nom du fichier
+     */
+    void SauveOngletElementsOsculateurs(const QString &fic) const;
+
+    /**
+     * @brief SauveOngletGeneral Sauvegarde des donnees de l'onglet General
+     * @param fic nom du fichier
+     */
+    void SauveOngletGeneral(const QString &fic) const;
+
+    /**
+     * @brief SauveOngletInformations Sauvegarde des donnees de l'onglet Informations
+     * @param fic nom du fichier
+     */
+    void SauveOngletInformations(const QString &fic) const;
+
+
+    /***********
+     * Systeme *
+     **********/
+    /**
+     * @brief DecompressionFichierGz Decompression d'un fichier TLE au format gz
+     * @param fichierGz fichier gz
+     * @param fichierDecompresse fichier decompresse
+     * @return
+     */
     bool DecompressionFichierGz(const QString &fichierGz, const QString &fichierDecompresse) const;
+
+    /**
+     * @brief EcritureListeRegistre Ecriture de la liste de satellites dans la base de registre
+     */
+    void EcritureListeRegistre() const;
+
 
 signals:
     void TelechargementFini();
 
+
 private slots:
 
-    void GestionTempsReel();
+    /***********
+     * Calculs *
+     **********/
+    /**
+     * @brief CalculsTermines Fin des calculs de previsions
+     */
     void CalculsTermines();
-    void TelechargementSuivant();
-    void FinEnregistrementFichier();
+
+    /**
+     * @brief GestionTempsReel Gestion du temps reel
+     */
+    void GestionTempsReel();
+
+
+    /******************************
+     * Telechargement de fichiers *
+     *****************************/
+    /**
+     * @brief EcritureFichier Ecriture du fichier telecharge
+     */
     void EcritureFichier();
+
+    /**
+     * @brief FinEnregistrementFichier Gestion de l'enregistrement des fichiers telecharges
+     */
+    void FinEnregistrementFichier();
+
+    /**
+     * @brief ProgressionTelechargement Progression du telechargement
+     * @param recu nombre d'octets recus
+     * @param total nombre d'octets total
+     */
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
+
+    /**
+     * @brief TelechargementSuivant Demarrage du telechargement suivant
+     */
+    void TelechargementSuivant();
 
     void closeEvent(QCloseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
@@ -155,24 +386,24 @@ private slots:
     void on_directHelp_clicked();
 
     // Menu deroulant
-    void on_actionOuvrir_fichier_TLE_activated();
-    void on_actionEnregistrer_activated();
-    void on_actionImprimer_carte_activated();
+    void on_actionOuvrir_fichier_TLE_triggered();
+    void on_actionEnregistrer_triggered();
+    void on_actionImprimer_carte_triggered();
     void on_actionVision_nocturne_toggled(bool arg1);
-    void on_actionFichier_d_aide_activated(int arg1);
-    void on_actionAstropedia_free_fr_activated();
-    void on_actionTelecharger_la_mise_a_jour_activated();
-    void on_actionMettre_jour_fichiers_internes_activated();
-    void on_actionRapport_de_bug_activated();
-    void on_actionWww_celestrak_com_activated();
-    void on_actionWww_space_track_org_activated();
-    void on_actionA_propos_activated(int arg1);
+    void on_actionFichier_d_aide_triggered();
+    void on_actionAstropedia_free_fr_triggered();
+    void on_actionTelecharger_la_mise_a_jour_triggered();
+    void on_actionMettre_jour_fichiers_internes_triggered();
+    void on_actionRapport_de_bug_triggered();
+    void on_actionWww_celestrak_com_triggered();
+    void on_actionWww_space_track_org_triggered();
+    void on_actionA_propos_triggered();
 
     // Gestion de la liste principale de satellites
     void on_listeFichiersTLE_currentIndexChanged(int index);
-    void on_actionDefinir_par_defaut_activated();
-    void on_actionNouveau_fichier_TLE_activated();
-    void on_actionFichier_TLE_existant_activated();
+    void on_actionDefinir_par_defaut_triggered();
+    void on_actionNouveau_fichier_TLE_triggered();
+    void on_actionFichier_TLE_existant_triggered();
     void on_liste1_clicked(const QModelIndex &index);
     void on_liste1_customContextMenuRequested(const QPoint &position);
     void on_liste1_entered(const QModelIndex &index);
@@ -241,35 +472,35 @@ private slots:
     void on_policeWCC_currentIndexChanged(int index);
 
     // Gestion des lieux d'observation
-    void on_actionCreer_une_categorie_activated(int arg1);
+    void on_actionCreer_une_categorie_triggered();
     void on_creationCategorie_clicked();
-    void on_actionSupprimerCategorie_activated(int arg1);
-    void on_actionTelechargerCategorie_activated(int arg1);
+    void on_actionSupprimerCategorie_triggered();
+    void on_actionTelechargerCategorie_triggered();
     void on_annulerCategorie_clicked();
     void on_validerCategorie_clicked();
-    void on_actionRenommerCategorie_activated();
+    void on_actionRenommerCategorie_triggered();
     void on_fichiersObs_currentRowChanged(int currentRow);
     void on_fichiersObs_customContextMenuRequested(const QPoint &position);
     void on_lieuxObs_currentRowChanged(int currentRow);
     void on_lieuxObs_customContextMenuRequested(const QPoint &position);
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_selecLieux_customContextMenuRequested(const QPoint &position);
-    void on_actionCreer_un_nouveau_lieu_activated();
+    void on_actionCreer_un_nouveau_lieu_triggered();
     void on_creationLieu_clicked();
-    void on_actionAjouter_Mes_Preferes_activated();
-    void on_actionModifier_coordonnees_activated();
+    void on_actionAjouter_Mes_Preferes_triggered();
+    void on_actionModifier_coordonnees_triggered();
     void on_validerObs_clicked();
     void on_annulerObs_clicked();
-    void on_actionRenommerLieu_activated();
-    void on_actionSupprimerLieu_activated();
-    void on_actionSupprimerLieuSelec_activated();
+    void on_actionRenommerLieu_triggered();
+    void on_actionSupprimerLieu_triggered();
+    void on_actionSupprimerLieuSelec_triggered();
     void on_ajoutLieu_clicked();
     void on_supprLieu_clicked();
 
     // Gestion des onglets
     void on_barreMenu_pressed();
-    void on_onglets_currentChanged(QWidget *arg1);
-    void on_ongletsOutils_currentChanged(QWidget *arg1);
+    void on_onglets_currentChanged(int index);
+    void on_ongletsOutils_currentChanged(int index);
 
     // Mise a jour des TLE
     void on_groupeTLE_currentIndexChanged(int index);
@@ -279,7 +510,7 @@ private slots:
     void on_mettreAJourTLE_clicked();
     void on_gestionnaireMajTLE_clicked();
     void on_compteRenduMaj_customContextMenuRequested(const QPoint &position);
-    void on_actionCopier_dans_le_presse_papier_activated();
+    void on_actionCopier_dans_le_presse_papier_triggered();
 
     // Extraction d'un fichier TLE
     void on_numeroNORADCreerTLE_currentIndexChanged(int index);
@@ -295,8 +526,8 @@ private slots:
     void on_effacerHeuresPrev_clicked();
     void on_liste2_customContextMenuRequested(const QPoint &position);
     void on_liste2_entered(const QModelIndex &index);
-    void on_actionTous_activated();
-    void on_actionAucun_activated();
+    void on_actionTous_triggered();
+    void on_actionAucun_triggered();
     void on_hauteurSatPrev_currentIndexChanged(int index);
     void on_hauteurSoleilPrev_currentIndexChanged(int index);
     void on_magnitudeMaxPrev_toggled(bool checked);

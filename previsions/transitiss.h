@@ -33,7 +33,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    25 mars 2014
+ * >    3 juin 2015
  *
  */
 
@@ -54,7 +54,17 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculTransitsISS Calcul des transits ISS devant la Lune et/ou le Soleil
+     * @param conditions conditions d'observation
+     * @param observateur observateur
+     * @param result tableau de resultats
+     */
     static void CalculTransitsISS(const Conditions &conditions, Observateur &observateur, QStringList &result);
+
+    /**
+     * @brief FinTraitement Finalisation du traitement (liberation memoire)
+     */
     static void FinTraitement();
 
     /* Accesseurs */
@@ -76,14 +86,49 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
-    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur);
+    /**
+     * @brief CalculAngleMin Calcul de l'angle minimum
+     * @param satellite satellite
+     * @param observateur observateur
+     * @param jjm tableau de dates
+     * @param typeCorps type de corps
+     * @param minmax date et angle minimum
+     */
     static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
                                double minmax[]);
-    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,
-                               const bool itransit, const double seuilConjonction, Date dates[]);
+
+    /**
+     * @brief CalculDate Calcul de la date d'une borne du transit ou conjonction
+     * @param satellite satellite
+     * @param observateur observateur
+     * @param jjm tableau de dates
+     * @param typeCorps type de corps
+     * @param itransit cas d'un transit
+     * @param seuilConjonction seuil de conjonction
+     * @param dateInter date interpolee
+     */
     static void CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
                            const bool itransit, const double seuilConjonction, double &dateInter);
 
+    /**
+     * @brief CalculElements Calcul des elements du transit ou de la conjonction
+     * @param satellite satellite
+     * @param observateur observateur
+     * @param jmax date du maximum
+     * @param typeCorps type de corps
+     * @param itransit cas d'un transit
+     * @param seuilConjonction seuil de conjonction
+     * @param dates tableau de dates
+     */
+    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,
+                               const bool itransit, const double seuilConjonction, Date dates[]);
+
+    /**
+     * @brief CalculEphemSoleilLune Calcul des ephemerides du Soleil et de la Lune
+     * @param conditions conditions d'observation
+     * @param observateur observateur
+     */
+    static void CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur);
 
 };
 

@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    17 novembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -44,6 +44,8 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
 #include <QtNetwork>
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 
@@ -62,14 +64,14 @@ public:
 private slots:
     void closeEvent(QCloseEvent *evt);
     void on_fermer_clicked();
-    void on_actionCreer_un_groupe_activated();
-    void on_actionSupprimerGroupe_activated();
+    void on_actionCreer_un_groupe_triggered();
+    void on_actionSupprimerGroupe_triggered();
     void on_listeGroupeTLE_customContextMenuRequested(const QPoint &position);
     void on_listeGroupeTLE_currentRowChanged(int currentRow);
     void on_valider_clicked();
     void on_annuler_clicked();
-    void on_actionAjouter_des_fichiers_activated();
-    void on_actionSupprimer_activated();
+    void on_actionAjouter_des_fichiers_triggered();
+    void on_actionSupprimer_triggered();
     void on_listeFichiersTLE_customContextMenuRequested(const QPoint &position);
     void on_MajAutoGroupe_toggled(bool checked);
     void on_creationGroupe_clicked();

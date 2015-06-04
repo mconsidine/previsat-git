@@ -36,47 +36,45 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 mai 2015
+ * >    3 juin 2015
  *
  */
 
-#pragma GCC diagnostic ignored "-Wshadow"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QClipboard>
-#include <QtCore/qmath.h>
 #include <QDesktopServices>
+#include <QSound>
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wundef"
 #include <QDesktopWidget>
-#include <QDir>
 #include <QFileDialog>
-#include <QGraphicsTextItem>
+#include <QGraphicsPixmapItem>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QSettings>
 #include <QShortcut>
-#include <QSound>
-#include <QTextStream>
-#include <QTimer>
-#include <QtWebKit>
-#include <QUrl>
+#include <QtNetwork>
 #include <QWebFrame>
-#pragma GCC diagnostic warning "-Wshadow"
+#include <QWebView>
+#include "ui_previsat.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-conversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
-#include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/planete.h"
-#include "librairies/dates/date.h"
-#include "librairies/exceptions/messages.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
-#include "librairies/observateur/observateur.h"
 #include "previsions/conditions.h"
 #include "previsions/evenements.h"
 #include "previsions/iridium.h"
@@ -85,17 +83,16 @@
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
+#include "previsat.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
 #include "zlib.h"
-#include "previsat.h"
-#include "ui_previsat.h"
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
+
 
 // Repertoires
-static QString dirCoo;
-static QString dirDat;
+static QString dirCoord;
+static QString dirCommonData;
+static QString dirLocalData;
 static QString dirExe;
 static QString dirMap;
 static QString dirOut;
@@ -171,8 +168,8 @@ static QList<Etoile> etoiles;
 static QList<Constellation> constellations;
 static QList<LigneConstellation> lignesCst;
 static QList<Planete> planetes;
-static const QList<QColor> couleurPlanetes(QList<QColor> () << Qt::gray << Qt::white << Qt::red << QColor("orange") << Qt::darkYellow <<
-                                           Qt::green << Qt::blue);
+static const QList<QColor> couleurPlanetes(QList<QColor> () << Qt::gray << Qt::white << Qt::red << QColor("orange") <<
+                                           Qt::darkYellow << Qt::green << Qt::blue);
 
 // SAA
 static const double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. },
@@ -263,6 +260,7 @@ static bool iEtatVideo;
 QWebView *viewLiveISS;
 QWebView *viewLiveISSWin;
 
+
 PreviSat::PreviSat(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
     ui(new Ui::PreviSat)
@@ -273,29 +271,9 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
     ui->ongletsOutils->setCurrentIndex(0);
 }
 
-PreviSat::~PreviSat()
-{
-    if (afficherResultats != NULL)
-        afficherResultats->close();
-
-    if (afficherMeteo != NULL)
-        afficherMeteo->close();
-
-    if (afficherVideo != NULL)
-        afficherVideo->close();
-
-    delete ui;
-}
-
-/*******************
- * Initialisations *
- ******************/
-
-/*
- * Chargement de la configuration
- */
 void PreviSat::ChargementConfig()
 {
+
     /* Declarations des variables locales */
     QDir di;
 
@@ -320,11 +298,17 @@ void PreviSat::ChargementConfig()
 
     ui->policeWCC->clear();
 
+    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
+                                                                  QStandardPaths::LocateDirectory);
+
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + dirAstr + QDir::separator() + "data";
+    dirLocalData = listeGenericDir.at(0) + dirAstr + QDir::separator() + "data";
+    dirTle = QDir::toNativeSeparators(listeGenericDir.at(0) + dirAstr + QDir::separator() + "tle");
+
 #if defined (Q_OS_WIN)
-    dirDat = dirExe + QDir::separator() + "data";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
-            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    dirTle = dirExe + QDir::separator() + "tle";
+    dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
+            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
 
     police.setFamily("MS Shell Dlg 2");
     police.setPointSize(8);
@@ -334,10 +318,8 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("MS Shell Dlg 2");
 
 #elif defined (Q_OS_LINUX)
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
-            QCoreApplication::applicationName();
-    dirTle = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "tle";
+    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(),
+                                    QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
 
     police.setFamily("Sans Serif");
     police.setPointSize(7);
@@ -347,10 +329,8 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Sans Serif");
 
 #elif defined (Q_OS_MAC)
-    dirDat = dirExe + QDir::separator() + "data";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
-            QCoreApplication::applicationName();
-    dirTle = dirExe + QDir::separator() + "tle";
+    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(),
+                                    QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
 
     police.setFamily("Marion");
     police.setPointSize(11);
@@ -360,19 +340,16 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Marion");
 
 #else
-    dirDat = dirExe + QDir::separator() + "data";
-    dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() +
-            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    dirTle = dirExe + QDir::separator() + "tle";
+    dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
+            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
 #endif
 
     ui->policeWCC->setCurrentIndex(settings.value("affichage/policeWCC", 0).toInt());
 
-    dirOut = QDir::convertSeparators(dirOut);
-    dirTle = QDir::convertSeparators(dirTle);
-    dirCoo = dirDat + QDir::separator() + "coordonnees";
-    dirMap = dirDat + QDir::separator() + "map";
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+    dirCoord = dirLocalData + QDir::separator() + "coordonnees";
+    dirMap = dirLocalData + QDir::separator() + "map";
+    dirOut = QDir::toNativeSeparators(dirOut);
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
     chronometre = new QTimer(this);
 
@@ -380,12 +357,15 @@ void PreviSat::ChargementConfig()
     DeterminationLocale();
 
     // Verification et creation des arborescences
-    di = QDir(dirDat);
-    if (!di.exists()) {
-        const QString message = tr("Erreur rencontrée lors de l'initialisation\n" \
-                                   "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
-        Messages::Afficher(message.arg(QDir::convertSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
-        exit(1);
+    const QStringList listeDirDat(QStringList () << dirCommonData << dirLocalData);
+    foreach(QString dirDat, listeDirDat) {
+        di = QDir(dirDat);
+        if (!di.exists()) {
+            const QString message = tr("Erreur rencontrÃ©e lors de l'initialisation\n" \
+                                       "Le rÃ©pertoire %1 n'existe pas, veuillez rÃ©installer %2");
+            Message::Afficher(message.arg(QDir::toNativeSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
+            exit(1);
+        }
     }
 
     const QStringList listeDir(QStringList () << dirMap << dirOut << dirTle << dirTmp);
@@ -396,17 +376,25 @@ void PreviSat::ChargementConfig()
     }
 
     // Verification de la presence des fichiers du repertoire data
-    const QStringList ficdata(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
-                              "donnees.sat" << "etoiles.str" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" <<
-                              "ISS-Live1.html" << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" <<
-                              "stations.sta" << "tdrs.sat");
+    const QStringList ficCommonData(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
+                                    "etoiles.str");
 
-    QStringListIterator it1(ficdata);
+    QStringListIterator it1(ficCommonData);
     while (it1.hasNext()) {
-        const QFile fi(dirDat + QDir::separator() + it1.next());
+        const QFile fi(dirCommonData + QDir::separator() + it1.next());
         if (!fi.exists()) {
-            const QString message = tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
-            Messages::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+            const QString message = tr("Le fichier %1 n'existe pas, veuillez rÃ©installer %2");
+            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+            exit(1);
+        }
+    }
+
+    QStringListIterator it2(listeFicLocalData);
+    while (it2.hasNext()) {
+        const QFile fi(dirLocalData + QDir::separator() + it2.next());
+        if (!fi.exists()) {
+            const QString message = tr("Le fichier %1 n'existe pas, veuillez rÃ©installer %2");
+            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
         }
     }
@@ -430,12 +418,12 @@ void PreviSat::ChargementConfig()
     on_pasManuel_currentIndexChanged(0);
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
-    nomfic = settings.value("fichier/nom", QDir::convertSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
+    nomfic = settings.value("fichier/nom", QDir::toNativeSeparators(dirTle + QDir::separator() + "visual.txt")).toString();
 
     QStringListIterator it(liste.split("$"));
     while (it.hasNext()) {
         const QString ficTLEs = it.next();
-        const QString baseFicTLE = QDir::convertSeparators(ficTLEs.split("#").at(0));
+        const QString baseFicTLE = QDir::toNativeSeparators(ficTLEs.split("#").at(0));
         if (nomfic == dirTle + QDir::separator() + baseFicTLE || nomfic == baseFicTLE)
             listeTLE = ficTLEs.split("#").at(1).split("&");
     }
@@ -452,8 +440,8 @@ void PreviSat::ChargementConfig()
     const QFileInfo fi(nomFicIri);
     if (fi.exists()) {
         ui->fichierTLEIri->addItem(fi.fileName());
-        ui->fichierTLEIri->setItemData(0, Qt::gray, Qt::BackgroundRole);
-        ficTLEIri.append(QDir::convertSeparators(nomFicIri));
+        ui->fichierTLEIri->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
+        ficTLEIri.append(QDir::toNativeSeparators(nomFicIri));
     }
     idxfi = 0;
     if (ficTLEIri.isEmpty())
@@ -466,8 +454,8 @@ void PreviSat::ChargementConfig()
     const QFileInfo fit(nomFicTransit);
     if (fit.exists()) {
         ui->fichierTLETransit->addItem(fit.fileName());
-        ui->fichierTLETransit->setItemData(0, Qt::gray, Qt::BackgroundRole);
-        ficTLETransit.append(QDir::convertSeparators(nomFicTransit));
+        ui->fichierTLETransit->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
+        ficTLETransit.append(QDir::toNativeSeparators(nomFicTransit));
     }
     idxft = 0;
     if (ficTLETransit.isEmpty())
@@ -605,7 +593,7 @@ void PreviSat::ChargementConfig()
     ui->afficherIri->setVisible(false);
     ui->annulerIri->setVisible(false);
     ui->statutIridium->setColumnWidth(0, 80);
-    ui->statutIridium->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+    ui->statutIridium->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
 
     // Affichage du statut des satellites Iridium
     const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
@@ -619,7 +607,7 @@ void PreviSat::ChargementConfig()
 
         const QString iri = "Iridium %1";
         QTableWidgetItem * const item2 = new QTableWidgetItem(iri.arg(item.mid(0, 4).toInt(), 2, 10, QChar('0')));
-        const QString norad = tr("%1 (numéro NORAD : %2)");
+        const QString norad = tr("%1 (numÃ©ro NORAD : %2)");
         item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
@@ -627,15 +615,15 @@ void PreviSat::ChargementConfig()
                                                                                                                      "green"));
         item3->setBackgroundColor(sts);
         item3->setToolTip((tabStatutIridium.at(i).contains("T")) ?
-                              tr("Satellite non opérationnel") :
-                              ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de réserve") : tr("Satellite opérationnel")));
+                              tr("Satellite non opÃ©rationnel") :
+                              ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de rÃ©serve") : tr("Satellite opÃ©rationnel")));
         ui->statutIridium->setItem(i, 0, item2);
         ui->statutIridium->setItem(i, 1, item3);
     }
     ui->statutIridium->sortItems(0);
 
     // Satellites TDRS
-    QFile fichier(dirDat + QDir::separator() + "tdrs.sat");
+    QFile fichier(dirLocalData + QDir::separator() + "tdrs.sat");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
@@ -646,7 +634,7 @@ void PreviSat::ChargementConfig()
     fichier.close();
 
     // Stations
-    QFile ficSta(dirDat + QDir::separator() + "stations.sta");
+    QFile ficSta(dirLocalData + QDir::separator() + "stations.sta");
     ficSta.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux2(&ficSta);
 
@@ -683,10 +671,10 @@ void PreviSat::ChargementConfig()
     const QIcon ajout(":/resources/ajout.png");
     ui->actionCreer_une_categorie->setIcon(ajout);
     ui->creationCategorie->setIcon(ajout);
-    ui->creationCategorie->setToolTip(tr("Créer une catégorie"));
+    ui->creationCategorie->setToolTip(tr("CrÃ©er une catÃ©gorie"));
     ui->actionCreer_un_nouveau_lieu->setIcon(ajout);
     ui->creationLieu->setIcon(ajout);
-    ui->creationLieu->setToolTip(tr("Créer un nouveau lieu"));
+    ui->creationLieu->setToolTip(tr("CrÃ©er un nouveau lieu"));
 
     ui->actionModifier_coordonnees->setIcon(QIcon(":/resources/editer.png"));
     ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
@@ -801,9 +789,6 @@ void PreviSat::ChargementConfig()
     return;
 }
 
-/*
- * Chargement du fichier TLE par defaut
- */
 void PreviSat::ChargementTLE()
 {
     /* Declarations des variables locales */
@@ -838,7 +823,7 @@ void PreviSat::ChargementTLE()
                     ficgz = nomfic;
                     nomfic = fic;
                 } else {
-                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                     throw PreviSatException(msg.arg(nomfic), WARNING);
                 }
             }
@@ -856,10 +841,10 @@ void PreviSat::ChargementTLE()
             QVectorIterator<TLE> it2(tles);
             while (it2.hasNext()) {
                 const TLE tle = it2.next();
-                if (tle.getNorad().isEmpty()) {
+                if (tle.norad().isEmpty()) {
                     tles.remove(i);
                 } else {
-                    listeTLE.append(tles.at(i).getNorad());
+                    listeTLE.append(tles.at(i).norad());
                     bipSat.append(false);
                     i++;
                 }
@@ -902,9 +887,6 @@ void PreviSat::ChargementTLE()
     return;
 }
 
-/*
- * Mise a jour des TLE lors du demarrage
- */
 void PreviSat::MAJTLE()
 {
     /* Declarations des variables locales */
@@ -917,7 +899,7 @@ void PreviSat::MAJTLE()
     // Determination automatique de l'ecart heure locale - UTC
     const double ecart = Date::CalculOffsetUTC(QDateTime::currentDateTime());
     offsetUTC = (ui->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
-    ui->updown->setValue(Maths::sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
+    ui->updown->setValue(sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
     offsetUTC = (ui->heureLegale->isChecked()) ? ui->updown->value() * NB_JOUR_PAR_MIN : 0.;
 
     // Date et heure locales
@@ -934,15 +916,15 @@ void PreviSat::MAJTLE()
             if (ageMaxTLE) {
                 const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
                 const int ageMax = settings.value("temps/ageMax", 15).toInt();
-                if (fabs(dateCourante.getJourJulienUTC() - lastUpdate) > ageMax ||
-                        (dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
+                if (fabs(dateCourante.jourJulienUTC() - lastUpdate) > ageMax ||
+                        (dateCourante.jourJulienUTC() - tles.at(0).epoque().jourJulienUTC()) > ageMax) {
                     MajWebTLE();
-                    settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+                    settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
                 }
             } else {
-                messagesStatut->setText(tr("Mise à jour automatique des TLE"));
+                messagesStatut->setText(tr("Mise Ã  jour automatique des TLE"));
                 MajWebTLE();
-                settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+                settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
             }
         } else {
             VerifAgeTLE();
@@ -953,9 +935,6 @@ void PreviSat::MAJTLE()
     return;
 }
 
-/*
- * Demarrage de l'application apres le chargement de la configuration
- */
 void PreviSat::DemarrageApplication()
 {
     /* Declarations des variables locales */
@@ -1007,7 +986,7 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
-    const bool affWCC = ui->mccISS->isChecked() && !satellites.isEmpty() && satellites.at(0).getTle().getNorad() == "25544" &&
+    const bool affWCC = ui->mccISS->isChecked() && !satellites.isEmpty() && satellites.at(0).tle().norad() == "25544" &&
             !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible();
     ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
@@ -1049,9 +1028,6 @@ void PreviSat::DemarrageApplication()
     return;
 }
 
-/*
- * Determination de la locale
- */
 QString PreviSat::DeterminationLocale()
 {
     /* Declarations des variables locales */
@@ -1073,6 +1049,62 @@ QString PreviSat::DeterminationLocale()
 
     /* Retour */
     return (localePreviSat);
+
+}
+
+PreviSat::~PreviSat()
+{
+    if (afficherResultats != NULL)
+        afficherResultats->close();
+
+    if (afficherMeteo != NULL)
+        afficherMeteo->close();
+
+    if (afficherVideo != NULL)
+        afficherVideo->close();
+
+    delete ui;
+}
+
+
+/*******************
+ * Initialisations *
+ ******************/
+/*
+ * Chargement de la liste de cartes du monde
+ */
+void PreviSat::InitFicMap(const bool majAff) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDir di(dirMap);
+    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
+
+    /* Corps de la methode */
+    ui->listeMap->clear();
+    ui->listeMap->addItem(tr("* DÃ©faut"));
+    ui->listeMap->setCurrentIndex(0);
+
+    if (di.entryList(filtres, QDir::Files).count() == 0) {
+        ui->listeMap->addItem(tr("TÃ©lÃ©charger..."));
+    } else {
+
+        foreach(QString fic, di.entryList(filtres, QDir::Files)) {
+
+            const QString file = dirMap + QDir::separator() + fic;
+            ficMap.append(file);
+            ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
+            if (settings.value("fichier/listeMap", "").toString() == file)
+                ui->listeMap->setCurrentIndex(ficMap.indexOf(file)+1);
+        }
+        ui->listeMap->addItem(tr("TÃ©lÃ©charger..."));
+        if (ui->listeMap->currentIndex() > 0 && majAff)
+            AffichageCourbes();
+    }
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -1089,14 +1121,14 @@ void PreviSat::InitFicObs(const bool alarm) const
     ui->ajdfic->clear();
 
     // Repertoire contenant les fichiers de lieux d'observation
-    const QDir di = QDir(dirCoo);
+    const QDir di = QDir(dirCoord);
     if (di.exists()) {
 
         // Nombre de fichiers contenus dans le repertoire 'coordonnees'
         if (di.entryList(QDir::Files).count() == 0) {
             if (alarm)
-                Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
-                                      "Il n'existe aucun fichier de lieux d'observation"), WARNING);
+                Message::Afficher(tr("Erreur rencontrÃ©e lors de l'initialisation\n" \
+                                     "Il n'existe aucun fichier de lieux d'observation"), WARNING);
         } else {
 
             // Liste de fichiers de lieux d'observation
@@ -1105,7 +1137,7 @@ void PreviSat::InitFicObs(const bool alarm) const
 
                 try {
                     // Verification que le fichier est un fichier de lieux d'observation
-                    const QString file = dirCoo + QDir::separator() + fic;
+                    const QString file = dirCoord + QDir::separator() + fic;
                     QFile fi(file);
                     if (fi.exists()) {
 
@@ -1127,8 +1159,8 @@ void PreviSat::InitFicObs(const bool alarm) const
 
                     ficObs.append(file);
                     if (fic == "aapreferes") {
-                        ui->fichiersObs->addItem(tr("Mes Préférés"));
-                        ui->ajdfic->addItem(tr("Mes Préférés"));
+                        ui->fichiersObs->addItem(tr("Mes PrÃ©fÃ©rÃ©s"));
+                        ui->ajdfic->addItem(tr("Mes PrÃ©fÃ©rÃ©s"));
                     } else {
                         fic[0] = fic.at(0).toUpper();
                         ui->fichiersObs->addItem(fic);
@@ -1139,50 +1171,13 @@ void PreviSat::InitFicObs(const bool alarm) const
             }
             if (ficObs.count() == 0)
                 if (alarm)
-                    Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
-                                          "Il n'existe aucun fichier de lieux d'observation"), WARNING);
+                    Message::Afficher(tr("Erreur rencontrÃ©e lors de l'initialisation\n" \
+                                         "Il n'existe aucun fichier de lieux d'observation"), WARNING);
         }
     } else {
         if (alarm)
-            Messages::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
-                                  "Le répertoire contenant les fichiers de lieux d'observation n'existe pas"), WARNING);
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Chargement de la liste de cartes du monde
- */
-void PreviSat::InitFicMap(const bool majAff) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QDir di(dirMap);
-    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
-
-    /* Corps de la methode */
-    ui->listeMap->clear();
-    ui->listeMap->addItem(tr("* Défaut"));
-    ui->listeMap->setCurrentIndex(0);
-
-    if (di.entryList(filtres, QDir::Files).count() == 0) {
-        ui->listeMap->addItem(tr("Télécharger..."));
-    } else {
-
-        foreach(QString fic, di.entryList(filtres, QDir::Files)) {
-
-            const QString file = dirMap + QDir::separator() + fic;
-            ficMap.append(file);
-            ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
-            if (settings.value("fichier/listeMap", "").toString() == file)
-                ui->listeMap->setCurrentIndex(ficMap.indexOf(file)+1);
-        }
-        ui->listeMap->addItem(tr("Télécharger..."));
-        if (ui->listeMap->currentIndex() > 0 && majAff)
-            AffichageCourbes();
+            Message::Afficher(tr("Erreur rencontrÃ©e lors de l'initialisation\n" \
+                                 "Le rÃ©pertoire contenant les fichiers de lieux d'observation n'existe pas"), WARNING);
     }
 
     /* Retour */
@@ -1210,16 +1205,16 @@ void PreviSat::InitFicTLE() const
 
             foreach(QString fic, di.entryList(filtres, QDir::Files)) {
 
-                const QString file = QDir::convertSeparators(dirTle + QDir::separator() + fic);
+                const QString file = QDir::toNativeSeparators(dirTle + QDir::separator() + fic);
                 if (TLE::VerifieFichier(file, false) > 0) {
 
                     ficTLE.append(file);
                     const int idx = ficTLE.indexOf(file);
                     ui->listeFichiersTLE->addItem(fic);
 
-                    if (QDir::convertSeparators(nomfic) == QDir::convertSeparators(file)) {
+                    if (QDir::toNativeSeparators(nomfic) == QDir::toNativeSeparators(file)) {
                         ui->listeFichiersTLE->setCurrentIndex(idx);
-                        ui->listeFichiersTLE->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                        ui->listeFichiersTLE->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                         idxf = idx;
                         aNomficTrouve = true;
                     }
@@ -1240,7 +1235,7 @@ void PreviSat::InitFicTLE() const
 
                     ui->listeFichiersTLE->addItem(fic.mid(fic.lastIndexOf(QDir::separator()) + 1));
                     ui->listeFichiersTLE->setCurrentIndex(idx);
-                    ui->listeFichiersTLE->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    ui->listeFichiersTLE->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                     idxf = idx;
                 }
             }
@@ -1262,714 +1257,6 @@ void PreviSat::InitFicTLE() const
 /**************
  * Affichages *
  *************/
-
-/*
- * Affichage des donnees numeriques
- */
-void PreviSat::AffichageDonnees()
-{
-    /* Declarations des variables locales */
-    QString chaine, chaine2;
-
-    /* Initialisations */
-    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
-    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("nmi/s");
-
-    /* Corps de la methode */
-    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-        // Affichage maximise : on ne reactualise pas l'affichage des donnees numeriques
-    } else {
-
-        if (satellites.isEmpty()) {
-            l1 = "";
-            l2 = "";
-        }
-
-        if (l1.isEmpty() && l2.isEmpty()) {
-
-            // Cas ou aucun satellite n'est selectionne dans la liste de satellites
-            ui->satellite->setVisible(false);
-            const QString msg = "%1 %2";
-            setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
-
-            if (ui->onglets->count() == 7 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
-                ui->onglets->removeTab(1);
-                ui->onglets->removeTab(1);
-            }
-        } else {
-            ui->satellite->setVisible(true);
-            if (ui->onglets->count() < 7) {
-                ui->onglets->insertTab(1, ui->osculateurs, tr("Éléments osculateurs"));
-                ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
-            }
-        }
-
-        /*
-         * Affichage des donnees sur l'onglet General
-         */
-        QString chaineUTC = tr("UTC");
-        Date date;
-
-        if (fabs(dateCourante.getOffsetUTC()) > EPSDBL100) {
-            QTime heur;
-            heur = heur.addSecs((int) (fabs(dateCourante.getOffsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
-            chaineUTC = chaineUTC.append((dateCourante.getOffsetUTC() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
-            ui->utcManuel->setText(chaineUTC);
-            date = dateCourante;
-        } else {
-            ui->utcManuel->setText(chaineUTC);
-            date = Date(dateCourante.getJourJulienUTC(), 0., true);
-        }
-
-        chaine = date.ToLongDate((ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H).append("  ");
-        chaine = chaine.append(chaineUTC);
-        ui->dateHeure1->setText(chaine);
-        ui->dateHeure2->setText(chaine);
-
-        // Conditions d'observation
-        const double ht = soleil.getHauteur() * RAD2DEG;
-        if (ht >= 0.)
-            chaine = tr("Jour");
-        else if (ht >= -6.)
-            chaine = tr("Crépuscule civil");
-        else if (ht >= -12.)
-            chaine = tr("Crépuscule nautique");
-        else if (ht >= -18.)
-            chaine = tr("Crépuscule astronomique");
-        else
-            chaine = tr("Nuit");
-        ui->conditionsObservation->setText(chaine);
-
-
-        /*
-         * Affichage des donnees relatives au satellite par defaut
-         */
-        if (!l1.isEmpty() && !l2.isEmpty()) {
-
-            // Nom
-            ui->nomsat1->setText(nom);
-            const QString msg = "%1 %2 - %3";
-            setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(nom));
-
-            // Temps ecoule depuis l'epoque
-            chaine = tr("%1 jours");
-            QBrush brush;
-            QPalette paletteFond;
-            brush.setStyle(Qt::SolidPattern);
-
-            // Indicateur de l'age du TLE
-            if (fabs(satellites.at(0).getAgeTLE()) > 15.) {
-                brush.setColor(Qt::red);
-            } else if (fabs(satellites.at(0).getAgeTLE()) > 10.) {
-                brush.setColor(QColor("orange"));
-            } else if (fabs(satellites.at(0).getAgeTLE()) > 5.) {
-                brush.setColor(Qt::darkYellow);
-            } else {
-                brush.setColor(QColor("forestgreen"));
-            }
-
-            paletteFond.setBrush(QPalette::WindowText, brush);
-            ui->ageTLE->setPalette(paletteFond);
-            ui->ageTLE->setText(chaine.arg(satellites.at(0).getAgeTLE(), 0, 'f', 2));
-
-            // Longitude/latitude/altitude
-            const QString ews = (satellites.at(0).getLongitude() > 0.) ? tr("Ouest") : tr("Est");
-            ui->longitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLongitude()), DEGRE, 3, 0, false,
-                                                           true).append(" ").append(ews));
-            const QString nss = (satellites.at(0).getLatitude() > 0.) ? tr("Nord") : tr("Sud");
-            ui->latitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).getLatitude()), DEGRE, 2, 0, false,
-                                                          true).append(" ").append(nss));
-            chaine = "%1 " + unite1;
-            if (ui->unitesKm->isChecked()) {
-                chaine = chaine.arg(satellites.at(0).getAltitude(), 0, 'f', 1);
-                ui->altitudeSat->setText(chaine);
-            } else {
-                chaine = chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1);
-                ui->altitudeSat->setText(chaine);
-            }
-
-            // Hauteur/azimut/distance
-            ui->hauteurSat->setText(Maths::ToSexagesimal(satellites.at(0).getHauteur(), DEGRE, 2, 0, true, true));
-            ui->azimutSat->setText(Maths::ToSexagesimal(satellites.at(0).getAzimut(), DEGRE, 3, 0, false, true));
-            chaine = "%1 " + unite1;
-            if (ui->unitesKm->isChecked()) {
-                chaine = chaine.arg(satellites.at(0).getDistance(), 0, 'f', 1);
-                ui->distanceSat->setText(chaine);
-            } else {
-                chaine = chaine.arg(satellites.at(0).getDistance() * MILE_PAR_KM, 0, 'f', 1);
-                ui->distanceSat->setText(chaine);
-            }
-
-            // Ascension droite/declinaison/constellation
-            ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellites.at(0).getAscensionDroite(), HEURE1, 2, 0,
-                                                                 false, true).trimmed());
-            ui->declinaisonSat->setText(Maths::ToSexagesimal(satellites.at(0).getDeclinaison(), DEGRE, 2, 0, true,
-                                                             true).trimmed());
-            ui->constellationSat->setText(satellites.at(0).getConstellation());
-
-            // Direction/vitesse/range rate
-            ui->directionSat->setText((satellites.at(0).getVitesse().getZ() > 0.) ? tr("Ascendant") : tr("Descendant"));
-            chaine = "%1 " + unite2;
-            if (ui->unitesKm->isChecked()) {
-                chaine = chaine.arg(satellites.at(0).getVitesse().Norme(), 0, 'f', 3);
-                ui->vitesseSat->setText(chaine);
-
-                chaine = "%1%2 " + unite2;
-                chaine = chaine.arg((satellites.at(0).getRangeRate() >= 0.) ? "+" : "-").
-                        arg(fabs(satellites.at(0).getRangeRate()), 0, 'f', 3);
-                ui->rangeRate->setText(chaine);
-
-            } else {
-                chaine = chaine.arg(satellites.at(0).getVitesse().Norme() * MILE_PAR_KM, 0, 'f', 3);
-                ui->vitesseSat->setText(chaine);
-
-                chaine = "%1%2 " + unite2;
-                chaine = chaine.arg((satellites.at(0).getRangeRate() >= 0.) ? "+" : "-").
-                        arg(fabs(satellites.at(0).getRangeRate() * MILE_PAR_KM), 0, 'f', 3);
-                ui->rangeRate->setText(chaine);
-            }
-
-            // Magnitude/Illumination
-            const double fractionilluminee = 100. * satellites.at(0).getFractionIlluminee();
-            if (satellites.at(0).getMagnitudeStandard() > 98.) {
-
-                // Magnitude standand inconnue
-                if (satellites.at(0).isEclipse()) {
-                    ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
-                } else {
-                    chaine = tr("Illumination : %1%");
-                    chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
-                    if (satellites.at(0).isPenombre())
-                        chaine = chaine.append(" ").append(tr("Pénombre"));
-                    ui->magnitudeSat->setText(chaine);
-                }
-            } else {
-
-                // Satellite au dessus de l'horizon
-                if (satellites.at(0).isVisible()) {
-
-                    // Satellite eclipse
-                    if (satellites.at(0).isEclipse()) {
-                        ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
-                    } else {
-                        chaine = tr("Magnitude (Illumination) : %1%2");
-                        double magnitude = satellites.at(0).getMagnitude();
-
-                        // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
-                        if (tabStatutIridium.join("").contains(satellites.at(0).getTle().getNorad())) {
-                            const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
-                                                                               satellites.at(0), soleil, observateurs.at(0));
-                            magnitude = qMin(magnitude, mag);
-                        }
-
-                        chaine = chaine.arg((magnitude >= 0.) ? "+" : "-").arg(fabs(magnitude), 0, 'f', 1);
-                        if (satellites.at(0).isPenombre())
-                            chaine = chaine.append("*");
-                        chaine = chaine.append((" (%1%)"));
-                        chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
-                        ui->magnitudeSat->setText(chaine);
-                    }
-                } else {
-                    chaine = tr("Satellite non visible");
-                    if (satellites.at(0).isEclipse()) {
-                        chaine = tr("Satellite non visible (Ombre)");
-                    } else {
-                        if (satellites.at(0).isPenombre())
-                            chaine = chaine.append(" : ").append(tr("Pénombre"));
-                        chaine = chaine.append(" (%1%)");
-                        chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
-                    }
-                    ui->magnitudeSat->setText(chaine);
-                }
-            }
-
-            // Nombre d'orbites du satellite
-            chaine = "%1";
-            ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).getNbOrbites()));
-
-            // Prochain AOS/LOS
-            if (htSat * satellites.at(0).getHauteur() <= 0.)
-                acalcAOS = true;
-
-            if (acalcAOS) {
-                isAOS = CalculAOS();
-                htSat = satellites.at(0).getHauteur();
-            }
-            if (isAOS) {
-
-                // Type d'evenement (AOS ou LOS)
-                chaine = tr("Prochain %1 :");
-                ui->lbl_prochainAOS->setText(chaine.arg(ctypeAOS));
-
-                // Delai de l'evenement
-                chaine = tr("%1 (dans %2). Azimut : %3");
-                const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
-                const Date delaiAOS = Date(dateAOS.getJourJulienUTC() - dateCrt.getJourJulienUTC() - 0.5, 0.);
-                const QString cDelai = (delaiAOS.getHeure() > 0) ?
-                            delaiAOS.ToShortDate(COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                            delaiAOS.ToShortDate(COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
-
-                ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
-                                     arg(cDelai).arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
-
-                ui->lbl_prochainAOS->setVisible(true);
-                ui->dateAOS->setVisible(true);
-
-            } else {
-                ui->lbl_prochainAOS->setVisible(false);
-                ui->dateAOS->setVisible(false);
-            }
-        }
-
-
-        /*
-         * Donnees relatives au Soleil
-         */
-        // Hauteur/azimut/distance
-        ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.getHauteur(), DEGRE, 2, 0, true, true));
-        ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.getAzimut(), DEGRE, 3, 0, false, true));
-        chaine = "%1 " + tr("UA");
-        chaine = chaine.arg(soleil.getDistanceUA(), 0, 'f', 3);
-        ui->distanceSoleil->setText(chaine);
-
-        // Ascension droite/declinaison/constellation
-        ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.getAscensionDroite(), HEURE1, 2, 0, false,
-                                                                true).trimmed());
-        ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.getDeclinaison(), DEGRE, 2, 0, true, true).trimmed());
-        ui->constellationSoleil->setText(soleil.getConstellation());
-
-
-        /*
-         * Donnees relatives a la Lune
-         */
-        // Hauteur/azimut/distance
-        ui->hauteurLune->setText(Maths::ToSexagesimal(lune.getHauteur(), DEGRE, 2, 0, true, true));
-        ui->azimutLune->setText(Maths::ToSexagesimal(lune.getAzimut(), DEGRE, 3, 0, false, true));
-        chaine = "%1 " + unite1;
-        if (ui->unitesKm->isChecked()) {
-            chaine = chaine.arg(lune.getDistance(), 0, 'f', 0);
-            ui->distanceLune->setText(chaine);
-        } else {
-            chaine = chaine.arg(lune.getDistance() * MILE_PAR_KM, 0, 'f', 0);
-            ui->distanceLune->setText(chaine);
-        }
-
-        // Ascension droite/declinaison/constellation
-        ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.getAscensionDroite(), HEURE1, 2, 0, false,
-                                                              true).trimmed());
-        ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.getDeclinaison(), DEGRE, 2, 0, true, true).trimmed());
-        ui->constellationLune->setText(lune.getConstellation());
-
-        // Illumination/Phase
-        chaine = "%1%";
-        chaine = chaine.arg(lune.getFractionIlluminee() * 100., 0, 'f', 0);
-        ui->illuminationLune->setText(chaine);
-        ui->phaseLune->setText(lune.getPhase());
-
-        // Magnitude de la Lune
-        chaine = "%1";
-        chaine = chaine.arg(lune.getMagnitude(), 0, 'f', 2);
-        ui->magnitudeLune->setText(chaine);
-
-        /*
-         * Affichage des donnees sur l'onglet Elements Osculateurs
-         */
-        ui->utcManuel2->setText(ui->utcManuel->text());
-        if (!l1.isEmpty() && !l2.isEmpty()) {
-
-            ui->nomsat2->setText(nom);
-            ui->ligne1->setText(l1);
-            ui->ligne2->setText(l2);
-
-            // Vecteur d'etat
-            // Position
-            Vecteur3D vect = (ui->unitesKm->isChecked()) ? satellites.at(0).getPosition() :
-                                                           satellites.at(0).getPosition() * MILE_PAR_KM;
-            chaine2 = "%1%2 " + unite1;
-            chaine = chaine2.arg((vect.getX() >= 0.) ? "+" : "-").arg(fabs(vect.getX()), 0, 'f', 3);
-            ui->xsat->setText(chaine);
-            chaine = chaine2.arg((vect.getY() >= 0.) ? "+" : "-").arg(fabs(vect.getY()), 0, 'f', 3);
-            ui->ysat->setText(chaine);
-            chaine = chaine2.arg((vect.getZ() >= 0.) ? "+" : "-").arg(fabs(vect.getZ()), 0, 'f', 3);
-            ui->zsat->setText(chaine);
-
-            // Vitesse
-            vect = (ui->unitesKm->isChecked()) ? satellites.at(0).getVitesse() :
-                                                 satellites.at(0).getVitesse() * MILE_PAR_KM;
-            chaine2 = "%1%2 " + unite2;
-            chaine = chaine2.arg((vect.getX() >= 0.) ? "+" : "-").arg(fabs(vect.getX()), 0, 'f', 6);
-            ui->vxsat->setText(chaine);
-            chaine = chaine2.arg((vect.getY() >= 0.) ? "+" : "-").arg(fabs(vect.getY()), 0, 'f', 6);
-            ui->vysat->setText(chaine);
-            chaine = chaine2.arg((vect.getZ() >= 0.) ? "+" : "-").arg(fabs(vect.getZ()), 0, 'f', 6);
-            ui->vzsat->setText(chaine);
-
-            // Elements osculateurs
-            AffichageElementsOsculateurs();
-
-            if (info) {
-                // Affichage des donnees sur l'onglet Informations satellite
-
-                // Nom du satellite
-                ui->nomsat3->setText(nom);
-
-                // Lignes du TLE
-                ui->line1->setText(ui->ligne1->text());
-                ui->line2->setText(ui->ligne2->text());
-
-                // Numero NORAD
-                ui->norad->setText(l1.mid(2, 5));
-
-                // Designation COSPAR
-                ui->cospar->setText(l1.mid(9, 8).trimmed());
-
-                // Epoque du TLE
-                ui->epoque->setText(tles.at(0).getEpoque().
-                                    ToShortDate(COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)));
-
-                // Nombre d'orbites a l'epoque
-                ui->nbOrbitesEpoque->setText(l2.mid(63, 5).trimmed());
-
-                // Anomalie moyenne
-                ui->anomalieMoy->setText(l2.mid(43, 8).append("°"));
-
-                // Inclinaison
-                ui->inclinaisonMoy->setText(l2.mid(8, 8).append("°"));
-
-                // Excentricite
-                ui->excentriciteMoy->setText("0." + l2.mid(26, 7));
-
-                // Ascension droite du noeud ascendant
-                ui->ADNoeudAscendantMoy->setText(l2.mid(17, 8).append("°"));
-
-                // Argument du perigee
-                ui->argumentPerigeeMoy->setText(l2.mid(34, 8).append("°"));
-
-                // Nombre de revolutions par jour
-                ui->nbRev->setText(l2.mid(52, 11));
-
-                // (derivee de nbRev) / 2
-                chaine2 = "%1";
-                chaine = chaine2.arg(QString(l1.mid(33, 1).trimmed() + "0" + l1.mid(34, 9)).toDouble(), 0, 'f', 8);
-                ui->nbRev2->setText(chaine);
-
-                // (derivee seconde de nbRev) / 6
-                chaine = chaine2.arg(QString(l1.mid(44, 1) + "0." + l1.mid(45, 5)).toDouble() *
-                                     pow(10., QString(l1.mid(50, 2)).toDouble()), 0, 'f', 8);
-                ui->nbRev3->setText(chaine);
-
-                // Coefficient pseudo-balistique
-                chaine = chaine2.arg(QString(l1.mid(53, 1) + "0." + l1.mid(54, 5)).toDouble() *
-                                     pow(10., QString(l1.mid(59, 2)).toDouble()));
-                ui->bstar->setText(chaine);
-
-                // Magnitude standard/maximale
-                if (satellites.at(0).getMagnitudeStandard() > 98.) {
-                    ui->magnitudeStdMax->setText("?/?");
-                } else {
-
-                    // Estimation de la magnitude maximale
-                    const double xval = satellites.at(0).getMagnitudeStandard() - 15.75 + 5. *
-                            log10(1.45 * (satellites.at(0).getElements().getDemiGrandAxe() *
-                                          (1. - satellites.at(0).getElements().getExcentricite()) - RAYON_TERRESTRE));
-                    chaine = "%1%2%3/%4%5";
-                    chaine = chaine.arg((satellites.at(0).getMagnitudeStandard() >= 0.) ? "+" : "-").
-                            arg(fabs(satellites.at(0).getMagnitudeStandard()), 0, 'f', 1).
-                            arg(satellites.at(0).getMethMagnitude()).arg((xval >= 0.) ? "+" : "-").
-                            arg(fabs(xval), 0, 'f', 1);
-                    ui->magnitudeStdMax->setText(chaine);
-                }
-
-                // Modele orbital
-                chaine = (satellites.at(0).getMethod() == 'd') ? tr("SGP4 (DS)") : tr("SGP4 (NE)");
-                ui->modele->setText(chaine);
-
-                // Dimensions du satellite
-                double t1 = satellites.at(0).getT1();
-                double t2 = satellites.at(0).getT2();
-                double t3 = satellites.at(0).getT3();
-                double section = satellites.at(0).getSection();
-                unite1 = tr("m");
-                if (ui->unitesMi->isChecked()) {
-                    t1 *= PIED_PAR_METRE;
-                    t2 *= PIED_PAR_METRE;
-                    t3 *= PIED_PAR_METRE;
-                    section = Maths::arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
-                    unite1 = tr("ft");
-                }
-
-                chaine2 = "%1 " + unite1;
-                if (fabs(t2) < EPSDBL100 && fabs(t3) < EPSDBL100)
-                    chaine = tr("Sphérique. R=").append(chaine2.arg(t1, 0, 'f', 1));
-                if (fabs(t2) >= EPSDBL100 && fabs(t3) < EPSDBL100)
-                    chaine = tr("Cylindrique. L=").append(chaine2.arg(t1, 0, 'f', 1)).
-                            append(tr(", R=")).append(chaine2.arg(t2, 0, 'f', 1));
-                if (fabs(t2) >= EPSDBL100 && fabs(t3) >= EPSDBL100) {
-                    chaine = tr("Boîte.").append(" %1 x %2 x %3 ").append(unite1);
-                    chaine = chaine.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1);
-                }
-                if (fabs(t1) < EPSDBL100)
-                    chaine = tr("Inconnues");
-
-                if (fabs(section) > EPSDBL100) {
-                    chaine = chaine + " / %1 " + unite1;
-                    chaine = chaine.arg(section, 0, 'f', 2);
-                    ui->sq->setVisible(true);
-                } else {
-                    ui->sq->setVisible(false);
-                }
-
-                ui->dimensions->setText(chaine);
-                ui->dimensions->adjustSize();
-                ui->dimensions->setFixedHeight(16);
-                ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
-                info = false;
-
-                // Date de lancement
-                if (satellites.at(0).getDateLancement().length() > 0) {
-                    const int annee_lct = satellites.at(0).getDateLancement().mid(0, 4).toInt();
-                    const int mois_lct = satellites.at(0).getDateLancement().mid(5, 2).toInt();
-                    const double jour_lct = satellites.at(0).getDateLancement().mid(8, 2).toDouble();
-                    const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
-                    ui->dateLancement->setText(date_lct.ToShortDate(COURT, SYSTEME_24H).left(10));
-                } else {
-                    ui->dateLancement->setText(tr("Non connue"));
-                }
-
-                // Categorie de l'orbite
-                ui->categorieOrbite->setText((satellites.at(0).getCategorieOrbite().isEmpty()) ?
-                                                 tr("Indéterminée") : satellites.at(0).getCategorieOrbite());
-
-                // Pays ou organisation
-                ui->pays->setText((satellites.at(0).getPays().isEmpty()) ? tr("Indéterminé") : satellites.at(0).getPays());
-            }
-        }
-    }
-
-
-    /*
-     * Donnees ISS sur le Wall Command Center
-     */
-    if (!satellites.isEmpty()) {
-        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
-                !ui->ciel->isVisible()) {
-
-            // Calcul de la prochaine transition J/N
-            if (!(isEcl && satellites.at(0).isEclipse()))
-                acalcDN = true;
-
-            if (acalcDN) {
-                CalculDN();
-                isEcl = satellites.at(0).isEclipse();
-            }
-
-            chaine = "D/N : %1";
-            const double delai = dateEcl.getJourJulienUTC() - dateCourante.getJourJulienUTC();
-            const Date delaiEcl(delai - 0.5, 0.);
-            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
-            ui->nextTransitionISS->setText(chaine.arg(cDelai));
-
-            const int numOrb = CalculNumeroOrbiteISS(dateCourante);
-
-            // Affichage des donnees du blackboard
-            chaine = "LAT = %1";
-            ui->latitudeISS->setText(chaine.arg(satellites.at(0).getLatitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "ALT = %1";
-            ui->altitudeISS->setText(chaine.arg(satellites.at(0).getAltitude() * MILE_PAR_KM, 0, 'f', 1));
-            chaine = "LON = %1";
-            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).getLongitude() * RAD2DEG, 0, 'f', 1));
-            chaine = "INC = %1";
-            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 1));
-            chaine = "ORB = %1";
-            ui->orbiteISS->setText(chaine.arg(numOrb));
-            chaine = "BETA = %1";
-            ui->betaISS->setText(chaine.arg(satellites.at(0).getBeta() * RAD2DEG, 0, 'f', 1));
-
-            // Calcul et affichage du jour et de l'heure GMT
-            chaine = "GMT = %1/%2:%3";
-            const Date date2 = Date(dateCourante.getAnnee(), 1, 1., 0.);
-            const double jourDsAnnee = dateCourante.getJourJulienUTC() - date2.getJourJulienUTC() + 1.;
-            const int numJour = (int) jourDsAnnee;
-            const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
-            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.00005);
-
-            QPalette coul;
-            coul.setColor(QPalette::WindowText, cgmt[ui->coulGMT->currentIndex()]);
-            ui->gmt->setPalette(coul);
-            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
-            ui->frameCoordISS->setVisible(true);
-            ui->gmt->setVisible(true);
-
-        } else {
-            ui->frameCoordISS->setVisible(false);
-            ui->gmt->setVisible(false);
-        }
-    } else {
-        ui->frameCoordISS->setVisible(false);
-        ui->gmt->setVisible(false);
-    }
-
-    if (scene != NULL)
-        scene->deleteLater();
-    if (scene2 != NULL)
-        scene2->deleteLater();
-    if (scene3 != NULL)
-        scene3->deleteLater();
-
-    /* Retour */
-    return;
-}
-
-/*
- * Affichage des elements osculateurs
- */
-void PreviSat::AffichageElementsOsculateurs() const
-{
-    /* Declarations des variables locales */
-    QString chaine, chaine2;
-
-    /* Initialisations */
-    const QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
-
-    /* Corps de la methode */
-    chaine = "%1 " + unite1;
-    double xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getDemiGrandAxe() :
-                                                satellites.at(0).getElements().getDemiGrandAxe() * MILE_PAR_KM;
-    chaine = chaine.arg(xval, 0, 'f', 1);
-    if (ui->typeParametres->currentIndex() == 2)
-        ui->demiGrandAxe->move(330, 103);
-    else
-        ui->demiGrandAxe->move(303, 103);
-    ui->demiGrandAxe->setText(chaine);
-
-    ui->frameCirculaire->setVisible(false);
-    ui->frameCirculaireEquatorial->setVisible(false);
-    ui->frameEquatorial->setVisible(false);
-    ui->frameKeplerien->setVisible(false);
-
-    switch (ui->typeParametres->currentIndex()) {
-    case 0:
-        // Parametres kepleriens
-        ui->frameKeplerien->setVisible(true);
-
-        chaine = "%1";
-        chaine = chaine.arg(satellites.at(0).getElements().getExcentricite(), 0, 'f', 7);
-        ui->excentricite->setText(chaine);
-
-        chaine2 = "%1°";
-        chaine = chaine2.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 4);
-        ui->inclinaison->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getAscensionDroiteNA() * RAD2DEG, 0, 'f', 4);
-        ui->ADNoeudAscendant->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentPerigee() * RAD2DEG, 0, 'f', 4);
-        ui->argumentPerigee->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
-        ui->anomalieMoyenne->setText(chaine);
-        break;
-
-    case 1:
-        // Parametres circulaires
-        ui->frameCirculaire->setVisible(true);
-
-        chaine2 = "%1";
-        chaine = chaine2.arg(satellites.at(0).getElements().getExCirc(), 0, 'f', 7);
-        ui->ex1->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getEyCirc(), 0, 'f', 7);
-        ui->ey1->setText(chaine);
-
-        chaine2 = "%1°";
-        chaine = chaine2.arg(satellites.at(0).getElements().getInclinaison() * RAD2DEG, 0, 'f', 4);
-        ui->inclinaison2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getAscensionDroiteNA() * RAD2DEG, 0, 'f', 4);
-        ui->ADNoeudAscendant2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getPso() * RAD2DEG, 0, 'f', 4);
-        ui->positionSurOrbite->setText(chaine);
-        break;
-
-    case 2:
-        // Parametres equatoriaux
-        ui->frameEquatorial->setVisible(true);
-
-        chaine2 = "%1";
-        chaine = chaine2.arg(satellites.at(0).getElements().getExcentricite(), 0, 'f', 7);
-        ui->excentricite2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getIx(), 0, 'f', 7);
-        ui->ix1->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getIy(), 0, 'f', 7);
-        ui->iy1->setText(chaine);
-
-        chaine2 = "%1°";
-        chaine = chaine2.arg((satellites.at(0).getElements().getAscensionDroiteNA() + satellites.at(0).getElements().
-                              getArgumentPerigee()) * RAD2DEG, 0, 'f', 4);
-        ui->longitudePerigee->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieMoyenne() * RAD2DEG, 0, 'f', 4);
-        ui->anomalieMoyenne2->setText(chaine);
-        break;
-
-    case 3:
-        // Parametres circulaires equatoriaux
-        ui->frameCirculaireEquatorial->setVisible(true);
-
-        chaine2 = "%1";
-        chaine = chaine2.arg(satellites.at(0).getElements().getExCEq(), 0, 'f', 7);
-        ui->ex2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getEyCEq(), 0, 'f', 7);
-        ui->ey2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getIx(), 0, 'f', 7);
-        ui->ix2->setText(chaine);
-
-        chaine = chaine2.arg(satellites.at(0).getElements().getIy(), 0, 'f', 7);
-        ui->iy2->setText(chaine);
-
-        chaine2 = "%1°";
-        chaine = chaine2.arg(satellites.at(0).getElements().getArgumentLongitudeVraie() * RAD2DEG, 0, 'f', 4);
-        ui->argumentLongitudeVraie2->setText(chaine);
-        break;
-
-    default:
-        break;
-    }
-
-    chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieVraie() * RAD2DEG, 0, 'f', 4);
-    ui->anomalieVraie->setText(chaine);
-
-    chaine = chaine2.arg(satellites.at(0).getElements().getAnomalieExcentrique() * RAD2DEG, 0, 'f', 4);
-    ui->anomalieExcentrique->setText(chaine);
-
-    chaine = "±" + chaine2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites.at(0).getAltitude())) *
-                               RAD2DEG, 0, 'f', 2);
-    ui->champDeVue->setText(chaine);
-
-    // Apogee/perigee/periode orbitale
-    chaine2 = "%2 %1 (%3 %1)";
-    chaine2 = chaine2.arg(unite1);
-    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getApogee() :
-                                         satellites.at(0).getElements().getApogee() * MILE_PAR_KM;
-    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
-    ui->apogee->setText(chaine);
-
-    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).getElements().getPerigee() :
-                                         satellites.at(0).getElements().getPerigee() * MILE_PAR_KM;
-    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
-    ui->perigee->setText(chaine);
-
-    ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).getElements().getPeriode() * HEUR2RAD, HEURE1, 1, 0, false, true));
-
-    /* Retour */
-    return;
-}
-
 /*
  * Affichage des elements graphiques
  */
@@ -1997,15 +1284,15 @@ void PreviSat::AffichageCourbes() const
     // Notification sonore
     if (notif && ui->affnotif->isChecked()) {
         if (ui->tempsReel->isChecked())
-            QSound::play(dirDat + QDir::separator() + "chimes.wav");
+            QSound::play(dirCommonData + QDir::separator() + "chimes.wav");
         notif = false;
     }
 
     // Phase de la Lune
     if (ui->affphaselune->isChecked()) {
 
-        const double ll = atan2(lune.getPosition().getY(), lune.getPosition().getX());
-        const double ls = atan2(soleil.getPosition().getY(), soleil.getPosition().getX());
+        const double ll = atan2(lune.position().y(), lune.position().x());
+        const double ls = atan2(soleil.position().y(), soleil.position().x());
 
         double diff = (ll - ls) * RAD2DEG;
         if (diff < 0.)
@@ -2025,7 +1312,7 @@ void PreviSat::AffichageCourbes() const
     QBrush bru(Qt::black);
     if (!ui->ciel->isHidden() || ui->affradar->isChecked()) {
 
-        const double hts = soleil.getHauteur() * RAD2DEG;
+        const double hts = soleil.hauteur() * RAD2DEG;
         if (hts >= 0.) {
             // Jour
             bru = QBrush(QColor::fromRgb(213, 255, 254));
@@ -2078,8 +1365,7 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).getTle().getNorad() == "25544") ?
-                                      Qt::red : Qt::white);
+            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == "25544") ? Qt::red : Qt::white);
             scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
@@ -2203,8 +1489,8 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage du Soleil
-        const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
-        const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
+        const int lsol = qRound((180. - soleil.longitude() * RAD2DEG) * DEG2PXHZ);
+        const int bsol = qRound((90. - soleil.latitude() * RAD2DEG) * DEG2PXVT);
 
         if (ui->affsoleil->isChecked()) {
             if (mcc) {
@@ -2230,10 +1516,10 @@ void PreviSat::AffichageCourbes() const
             QVector<QPoint> zone;
             zone.resize(361);
             for(int j=0; j<361; j++) {
-                zone[j].setX(qRound(soleil.getZone().at(j).x() * DEG2PXHZ));
-                zone[j].setY(qRound(soleil.getZone().at(j).y() * DEG2PXVT));
+                zone[j].setX(qRound(soleil.zone().at(j).x() * DEG2PXHZ));
+                zone[j].setY(qRound(soleil.zone().at(j).y() * DEG2PXVT));
 
-                if (soleil.getLatitude() < 0.) {
+                if (soleil.latitude() < 0.) {
                     if (zone[j].x() <= xmin) {
                         xmin = zone[j].x();
                         jmin = j;
@@ -2246,14 +1532,14 @@ void PreviSat::AffichageCourbes() const
                 }
             }
 
-            if (fabs(soleil.getLatitude()) > 0.002449 * DEG2RAD) {
+            if (fabs(soleil.latitude()) > 0.002449 * DEG2RAD) {
 
                 zone.resize(366);
-                if (soleil.getLatitude() < 0.) {
+                if (soleil.latitude() < 0.) {
 
                     for(int j=3; j<363; j++) {
-                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
-                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
+                        zone[j].setX(qRound(soleil.zone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
+                        zone[j].setY(qRound(soleil.zone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
                     zone[0] = QPoint(ui->carte->width(), -1);
                     zone[1] = QPoint(ui->carte->width(), ui->carte->height());
@@ -2266,8 +1552,8 @@ void PreviSat::AffichageCourbes() const
                 } else {
 
                     for(int j=2; j<362; j++) {
-                        zone[j].setX(qRound(soleil.getZone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
-                        zone[j].setY(qRound(soleil.getZone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
+                        zone[j].setX(qRound(soleil.zone().at((j+jmin-2)%360).x() * DEG2PXHZ)+1);
+                        zone[j].setY(qRound(soleil.zone().at((j+jmin-2)%360).y() * DEG2PXVT)+1);
                     }
 
                     zone[0] = QPoint(-1, -1);
@@ -2286,8 +1572,8 @@ void PreviSat::AffichageCourbes() const
 
                 QVector<QPoint> zone1;
                 zone1.resize(4);
-                const int x1 = qRound(qMin(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ) + 1;
-                const int x2 = qRound(qMax(soleil.getZone().at(90).x(), soleil.getZone().at(270).x()) * DEG2PXHZ) + 1;
+                const int x1 = qRound(qMin(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ) + 1;
+                const int x2 = qRound(qMax(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ) + 1;
 
                 zone1.resize(4);
                 if (lsol > lcarte / 4 && lsol < (3 * lcarte) / 4) {
@@ -2326,7 +1612,7 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
         if (ui->affSAA_ZOE->isChecked() && ui->mccISS->isChecked() && !satellites.isEmpty() &&
-                satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
+                satellites.at(0).tle().norad() == "25544" && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -2369,15 +1655,15 @@ void PreviSat::AffichageCourbes() const
         const int nbMax = (ui->affnomlieu->checkState() == Qt::Unchecked) ? 0 : ui->lieuxObservation1->count() - 1;
         for(int j=nbMax; j>=0; j--) {
 
-            const int lobs = qRound((180. - observateurs.at(j).getLongitude() * RAD2DEG) * DEG2PXHZ);
-            const int bobs = qRound((90. - observateurs.at(j).getLatitude() * RAD2DEG) * DEG2PXVT);
+            const int lobs = qRound((180. - observateurs.at(j).longitude() * RAD2DEG) * DEG2PXHZ);
+            const int bobs = qRound((90. - observateurs.at(j).latitude() * RAD2DEG) * DEG2PXVT);
 
             scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
             scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
 
             if (j == 0 || ui->affnomlieu->checkState() == Qt::Checked) {
 
-                QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(observateurs.at(j).getNomlieu());
+                QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(observateurs.at(j).nomlieu());
                 const int lng = (int) txtObs->boundingRect().width();
                 const int xnobs = (lobs + 4 + lng > lcarte) ? lobs - lng - 1 : lobs + 4;
                 const int ynobs = (bobs + 9 > hcarte) ? bobs - 12 : bobs;
@@ -2396,13 +1682,13 @@ void PreviSat::AffichageCourbes() const
 
                 if (ui->listeStations->item(j)->checkState() == Qt::Checked) {
 
-                    const int lsta = qRound((180. - stations.at(j).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                    const int bsta = qRound((90. - stations.at(j).getLatitude() * RAD2DEG) * DEG2PXVT);
+                    const int lsta = qRound((180. - stations.at(j).longitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsta = qRound((90. - stations.at(j).latitude() * RAD2DEG) * DEG2PXVT);
 
                     scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
                     scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
 
-                    QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(stations.at(j).getNomlieu());
+                    QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(stations.at(j).nomlieu());
                     const QFont policeSta(ui->policeWCC->currentText(), 10);
                     txtSta->setFont(policeSta);
 
@@ -2415,18 +1701,18 @@ void PreviSat::AffichageCourbes() const
                     scene->addItem(txtSta);
 
                     if (ui->affCerclesAcq->isChecked() && !satellites.isEmpty() && !satellites.at(0).isIeralt() && !l1.isEmpty() &&
-                            !l2.isEmpty() && satellites.at(0).getTle().getNorad() == "25544" && !ui->ciel->isVisible()) {
+                            !l2.isEmpty() && satellites.at(0).tle().norad() == "25544" && !ui->ciel->isVisible()) {
 
                         const QPen crayon2 = (ui->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = satellites.at(0);
                         sat.CalculCercleAcquisition(stations.at(j));
 
-                        double lsat1 = sat.getZone().at(0).x() * DEG2PXHZ;
-                        double bsat1 = sat.getZone().at(0).y() * DEG2PXVT + 1;
+                        double lsat1 = sat.zone().at(0).x() * DEG2PXHZ;
+                        double bsat1 = sat.zone().at(0).y() * DEG2PXVT + 1;
 
                         for(int k=1; k<361; k++) {
-                            double lsat2 = sat.getZone().at(k).x() * DEG2PXHZ;
-                            double bsat2 = sat.getZone().at(k).y() * DEG2PXVT + 1;
+                            double lsat2 = sat.zone().at(k).x() * DEG2PXHZ;
+                            double bsat2 = sat.zone().at(k).y() * DEG2PXVT + 1;
                             int ils = 99999;
 
                             if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -2445,8 +1731,8 @@ void PreviSat::AffichageCourbes() const
                                 scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
                                 ils = 0;
                             }
-                            lsat1 = sat.getZone().at(k).x() * DEG2PXHZ;
-                            bsat1 = sat.getZone().at(k).y() * DEG2PXVT + 1;
+                            lsat1 = sat.zone().at(k).x() * DEG2PXHZ;
+                            bsat1 = sat.zone().at(k).y() * DEG2PXVT + 1;
                         }
                     }
                 }
@@ -2457,13 +1743,13 @@ void PreviSat::AffichageCourbes() const
         if (ui->afflune->isChecked()) {
 
             if (!mcc) {
-                const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
-                const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
+                const int llun = qRound((180. - lune.longitude() * RAD2DEG) * DEG2PXHZ);
+                const int blun = qRound((90. - lune.latitude() * RAD2DEG) * DEG2PXVT);
 
                 QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
                 QTransform transform;
                 transform.translate(llun, blun);
-                if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+                if (ui->rotationLune->isChecked() && observateurs.at(0).latitude() < 0.)
                     transform.rotate(180.);
                 transform.translate(-7, -7);
                 lun->setTransform(transform);
@@ -2474,16 +1760,16 @@ void PreviSat::AffichageCourbes() const
         if (ui->afftraj->isChecked()) {
             if (nbSat > 0) {
                 if (!satellites.at(0).isIeralt()) {
-                    double lsat1 = satellites.at(0).getTraceAuSol().at(0).at(0) * DEG2PXHZ;
-                    double bsat1 = satellites.at(0).getTraceAuSol().at(0).at(1) * DEG2PXVT;
+                    double lsat1 = satellites.at(0).traceAuSol().at(0).at(0) * DEG2PXHZ;
+                    double bsat1 = satellites.at(0).traceAuSol().at(0).at(1) * DEG2PXVT;
 
                     const QColor bleuClair(173, 216, 230);
 
                     int nbOrb = 0;
-                    for(int j=1; j<satellites.at(0).getTraceAuSol().size()-1; j++) {
+                    for(int j=1; j<satellites.at(0).traceAuSol().size()-1; j++) {
 
-                        double lsat2 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
-                        double bsat2 = satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT;
+                        double lsat2 = satellites.at(0).traceAuSol().at(j).at(0) * DEG2PXHZ;
+                        double bsat2 = satellites.at(0).traceAuSol().at(j).at(1) * DEG2PXVT;
                         int ils = 99999;
 
                         if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -2496,18 +1782,18 @@ void PreviSat::AffichageCourbes() const
 
                         const QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
 
-                        crayon = (fabs(satellites.at(0).getTraceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                        crayon = (fabs(satellites.at(0).traceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
 
                         if (ui->mccISS->isChecked()) {
 
-                            if (satellites.at(0).getTle().getNorad() == "25544") {
+                            if (satellites.at(0).tle().norad() == "25544") {
 
                                 // Affichage du numero d'orbite
-                                if (satellites.at(0).getTraceAuSol().at(j).at(1) < 90. &&
-                                        satellites.at(0).getTraceAuSol().at(j-1).at(1) > 90. && nbOrb < 3) {
+                                if (satellites.at(0).traceAuSol().at(j).at(1) < 90. &&
+                                        satellites.at(0).traceAuSol().at(j-1).at(1) > 90. && nbOrb < 3) {
 
                                     nbOrb++;
-                                    const Date dateISS(Date(satellites.at(0).getTraceAuSol().at(j+1).at(3), 0., false));
+                                    const Date dateISS(Date(satellites.at(0).traceAuSol().at(j+1).at(3), 0., false));
                                     const int numOrb = CalculNumeroOrbiteISS(dateISS);
                                     QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
 
@@ -2524,12 +1810,12 @@ void PreviSat::AffichageCourbes() const
 
                                 if (ui->styleWCC->isChecked()) {
 
-                                    if (satellites.at(0).getTle().getNorad() == "25544")
+                                    if (satellites.at(0).tle().norad() == "25544")
                                         crayon = QPen(Qt::white, 2);
 
                                     // Affichage des crochets des transitions jour/nuit
-                                    const double ecl = satellites.at(0).getTraceAuSol().at(j).at(2);
-                                    if (fabs(ecl - satellites.at(0).getTraceAuSol().at(j+1).at(2)) > EPSDBL100) {
+                                    const double ecl = satellites.at(0).traceAuSol().at(j).at(2);
+                                    if (fabs(ecl - satellites.at(0).traceAuSol().at(j+1).at(2)) > EPSDBL100) {
 
                                         const double ang = fmod(-fabs(lig.angle()), T360);
                                         const double ca = cos(ang * DEG2RAD);
@@ -2567,8 +1853,8 @@ void PreviSat::AffichageCourbes() const
                             scene->addLine(lig, crayon);
                             ils = 0;
                         }
-                        lsat1 = satellites.at(0).getTraceAuSol().at(j).at(0) * DEG2PXHZ;
-                        bsat1 = satellites.at(0).getTraceAuSol().at(j).at(1) * DEG2PXVT;
+                        lsat1 = satellites.at(0).traceAuSol().at(j).at(0) * DEG2PXHZ;
+                        bsat1 = satellites.at(0).traceAuSol().at(j).at(1) * DEG2PXVT;
                     }
                 }
             }
@@ -2584,9 +1870,9 @@ void PreviSat::AffichageCourbes() const
                     if (mcc) {
 
                         crayon = QPen(Qt::white, 2);
-                        if (satellites.at(isat).getTle().getNom().toLower().startsWith("tdrs")) {
+                        if (satellites.at(isat).tle().nom().toLower().startsWith("tdrs")) {
 
-                            const int numeroTDRS = satellites.at(isat).getTle().getNom().section(" ", 1).toInt();
+                            const int numeroTDRS = satellites.at(isat).tle().nom().section(" ", 1).toInt();
 
                             QStringListIterator it(tabTDRS);
                             while (it.hasNext()) {
@@ -2604,8 +1890,8 @@ void PreviSat::AffichageCourbes() const
                                     const QFont policeSat(ui->policeWCC->currentText(), 11);
                                     txtSat->setFont(policeSat);
 
-                                    const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                                    const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+                                    const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                                    const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                                     crayon = QPen(QColor(r, v, b), 2);
                                     txtSat->setBrush(crayon.color());
@@ -2623,12 +1909,12 @@ void PreviSat::AffichageCourbes() const
 
                     if (!satellites.at(isat).isIeralt()) {
 
-                        double lsat1 = satellites.at(isat).getZone().at(0).x() * DEG2PXHZ;
-                        double bsat1 = satellites.at(isat).getZone().at(0).y() * DEG2PXVT + 1;
+                        double lsat1 = satellites.at(isat).zone().at(0).x() * DEG2PXHZ;
+                        double bsat1 = satellites.at(isat).zone().at(0).y() * DEG2PXVT + 1;
 
                         for(int j=1; j<361; j++) {
-                            double lsat2 = satellites.at(isat).getZone().at(j).x() * DEG2PXHZ;
-                            double bsat2 = satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1;
+                            double lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ;
+                            double bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
                             int ils = 99999;
 
                             if (fabs(lsat2 - lsat1) > lcarte2) {
@@ -2647,8 +1933,8 @@ void PreviSat::AffichageCourbes() const
                                 scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
                                 ils = 0;
                             }
-                            lsat1 = satellites.at(isat).getZone().at(j).x() * DEG2PXHZ;
-                            bsat1 = satellites.at(isat).getZone().at(j).y() * DEG2PXVT + 1;
+                            lsat1 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ;
+                            bsat1 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
                         }
                     }
                 }
@@ -2660,21 +1946,21 @@ void PreviSat::AffichageCourbes() const
             // Dessin des satellites
             if (!satellites.at(isat).isIeralt()) {
 
-                const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+                const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                 if (mcc || ui->afficone->isChecked()) {
 
                     // Affichage de l'icone du satellite a partir du numero NORAD
                     const QString nomIcone = ":/resources/icones/%1.png";
-                    const int norad = satellites.at(isat).getTle().getNorad().toInt();
+                    const int norad = satellites.at(isat).tle().norad().toInt();
 
                     QPixmap img(nomIcone.arg(norad));
 
                     if (img.isNull()) {
 
                         // Affichage de l'icone du satellite a partir du nom du satellite
-                        const QString nomsatm = satellites.at(isat).getTle().getNom().toLower();
+                        const QString nomsatm = satellites.at(isat).tle().nom().toLower();
                         if (!(nomsatm.contains(" deb") && nomsatm.contains("r/b")))
                             img = QPixmap(nomIcone.arg(nomsatm.section(QRegExp("[^a-z0-9]"), 0, 0)));
                     }
@@ -2719,18 +2005,18 @@ void PreviSat::AffichageCourbes() const
                 if (lig.isDessin()) {
 
                     // Calcul des coordonnees radar des etoiles pour le dessin de la constellation
-                    const int lstr1 = qRound(lciel - lciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
-                                             sin(lig.getEtoile1().getAzimut()));
-                    const int bstr1 = qRound(hciel - hciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
-                                             cos(lig.getEtoile1().getAzimut()));
+                    const int lstr1 = qRound(lciel - lciel * (1. - lig.etoile1().hauteur() * DEUX_SUR_PI) *
+                                             sin(lig.etoile1().azimut()));
+                    const int bstr1 = qRound(hciel - hciel * (1. - lig.etoile1().hauteur() * DEUX_SUR_PI) *
+                                             cos(lig.etoile1().azimut()));
 
-                    const int lstr2 = qRound(lciel - lciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
-                                             sin(lig.getEtoile2().getAzimut()));
-                    const int bstr2 = qRound(hciel - hciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
-                                             cos(lig.getEtoile2().getAzimut()));
+                    const int lstr2 = qRound(lciel - lciel * (1. - lig.etoile2().hauteur() * DEUX_SUR_PI) *
+                                             sin(lig.etoile2().azimut()));
+                    const int bstr2 = qRound(hciel - hciel * (1. - lig.etoile2().hauteur() * DEUX_SUR_PI) *
+                                             cos(lig.etoile2().azimut()));
 
-                    crayon = QPen((soleil.getHauteur() > -0.08) ?
-                                      bleuClair : (soleil.getHauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
+                    crayon = QPen((soleil.hauteur() > -0.08) ?
+                                      bleuClair : (soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
 
                     if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                         scene3->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
@@ -2748,13 +2034,13 @@ void PreviSat::AffichageCourbes() const
                         if (cst.isVisible()) {
 
                             // Calcul des coordonnees radar du label
-                            const int lcst = qRound(lciel - lciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * sin(cst.getAzimut()));
-                            const int bcst = qRound(hciel - hciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * cos(cst.getAzimut()));
+                            const int lcst = qRound(lciel - lciel * (1. - cst.hauteur() * DEUX_SUR_PI) * sin(cst.azimut()));
+                            const int bcst = qRound(hciel - hciel * (1. - cst.hauteur() * DEUX_SUR_PI) * cos(cst.azimut()));
 
                             const int lst = lcst - lciel;
                             const int bst = hciel - bcst;
 
-                            QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.getNom());
+                            QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
                             const int lng = (int) txtCst->boundingRect().width();
 
                             const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
@@ -2771,28 +2057,28 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage des etoiles
-        const QBrush bru2 = (soleil.getHauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
+        const QBrush bru2 = (soleil.hauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
         QListIterator<Etoile> it1(etoiles);
         while (it1.hasNext()) {
 
             const Etoile etoile = it1.next();
-            if (etoile.isVisible() && etoile.getMagnitude() <= ui->magnitudeEtoiles->value()) {
+            if (etoile.isVisible() && etoile.magnitude() <= ui->magnitudeEtoiles->value()) {
 
-                const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
-                const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
+                const int lstr = qRound(lciel - lciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * sin(etoile.azimut()));
+                const int bstr = qRound(hciel - hciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * cos(etoile.azimut()));
 
-                rectangle = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
+                rectangle = (etoile.magnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
                 scene3->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
 
                 // Nom des etoiles les plus brillantes
                 if (ui->affetoiles->isChecked()) {
                     if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-                        if (!etoile.getNom().isEmpty() && etoile.getNom().at(0).isUpper()) {
-                            if (etoile.getMagnitude() < ui->magnitudeEtoiles->value() - 1.9) {
+                        if (!etoile.nom().isEmpty() && etoile.nom().at(0).isUpper()) {
+                            if (etoile.magnitude() < ui->magnitudeEtoiles->value() - 1.9) {
 
                                 const int lst = lstr - lciel;
                                 const int bst = hciel - bstr;
-                                const QString nomstr = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
+                                const QString nomstr = etoile.nom().mid(0, 1) + etoile.nom().mid(1).toLower();
                                 QGraphicsSimpleTextItem * const txtStr = new QGraphicsSimpleTextItem(nomstr);
                                 const int lng = (int) txtStr->boundingRect().width();
 
@@ -2816,15 +2102,15 @@ void PreviSat::AffichageCourbes() const
             // Calcul des coordonnees radar des planetes
             for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-                if (planetes.at(iplanete).getHauteur() >= 0.) {
+                if (planetes.at(iplanete).hauteur() >= 0.) {
 
-                    if (((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).getDistance() > soleil.getDistance()) ||
+                    if (((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).distance() > soleil.distance()) ||
                             iplanete >= MARS) {
 
-                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                sin(planetes.at(iplanete).getAzimut()));
-                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                cos(planetes.at(iplanete).getAzimut()));
+                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(iplanete).azimut()));
+                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(iplanete).azimut()));
 
                         const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                         rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -2834,7 +2120,7 @@ void PreviSat::AffichageCourbes() const
                                 ui->affplanetes->checkState() == Qt::Checked) {
                             const int lpl = lpla - lciel;
                             const int bpl = hciel - bpla;
-                            const QString nompla = planetes.at(iplanete).getNom();
+                            const QString nompla = planetes.at(iplanete).nom();
                             QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
                             const int lng = (int) txtPla->boundingRect().width();
 
@@ -2861,10 +2147,10 @@ void PreviSat::AffichageCourbes() const
                 const double de1 = tabEcliptique[0][1] * DEG2RAD;
                 const double cd1 = cos(de1);
                 const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-                const Vecteur3D vec1 = observateurs.at(0).getRotHz() * vec;
+                const Vecteur3D vec1 = observateurs.at(0).rotHz() * vec;
 
-                double ht1 = asin(vec1.getZ());
-                double az1 = atan2(vec1.getY(), -vec1.getX());
+                double ht1 = asin(vec1.z());
+                double az1 = atan2(vec1.y(), -vec1.x());
                 if (az1 < 0.)
                     az1 += DEUX_PI;
 
@@ -2877,11 +2163,11 @@ void PreviSat::AffichageCourbes() const
                     const double de2 = tabEcliptique[i][1] * DEG2RAD;
                     const double cd2 = cos(de2);
                     const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-                    const Vecteur3D vec2 = observateurs.at(0).getRotHz() * vec0;
+                    const Vecteur3D vec2 = observateurs.at(0).rotHz() * vec0;
 
-                    const double ht2 = asin(vec2.getZ());
+                    const double ht2 = asin(vec2.z());
 
-                    double az2 = atan2(vec2.getY(), -vec2.getX());
+                    double az2 = atan2(vec2.y(), -vec2.x());
                     if (az2 < 0.)
                         az2 += DEUX_PI;
 
@@ -2900,8 +2186,8 @@ void PreviSat::AffichageCourbes() const
             if (soleil.isVisible()) {
 
                 // Calcul des coordonnees radar du Soleil
-                const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-                const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+                const int lsol = qRound(lciel - lciel * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
+                const int bsol = qRound(hciel - hciel * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
 
                 rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
                 scene3->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
@@ -2913,14 +2199,14 @@ void PreviSat::AffichageCourbes() const
             // Calcul des coordonnees radar des planetes Mercure et Venus
             for(int iplanete=MERCURE; iplanete<=VENUS; iplanete++) {
 
-                if (planetes.at(iplanete).getHauteur() >= 0.) {
+                if (planetes.at(iplanete).hauteur() >= 0.) {
 
-                    if (planetes.at(iplanete).getDistance() < soleil.getDistance()) {
+                    if (planetes.at(iplanete).distance() < soleil.distance()) {
 
-                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                sin(planetes.at(iplanete).getAzimut()));
-                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                                cos(planetes.at(iplanete).getAzimut()));
+                        const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(iplanete).azimut()));
+                        const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(iplanete).azimut()));
 
                         const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                         rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -2930,7 +2216,7 @@ void PreviSat::AffichageCourbes() const
                                 ui->affplanetes->checkState() == Qt::Checked) {
                             const int lpl = lpla - lciel;
                             const int bpl = hciel - bpla;
-                            const QString nompla = planetes.at(iplanete).getNom();
+                            const QString nompla = planetes.at(iplanete).nom();
                             QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
                             const int lng = (int) txtPla->boundingRect().width();
 
@@ -2951,13 +2237,13 @@ void PreviSat::AffichageCourbes() const
         if (ui->afflune->isChecked() && lune.isVisible()) {
 
             // Calcul des coordonnees radar de la Lune
-            const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
-            const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+            const int llun = qRound(lciel - lciel * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
+            const int blun = qRound(hciel - hciel * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
             QGraphicsPixmapItem * const lun = scene3->addPixmap(pixlun);
             QTransform transform;
             transform.translate(llun, blun);
-            if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+            if (ui->rotationLune->isChecked() && observateurs.at(0).latitude() < 0.)
                 transform.rotate(180.);
             transform.translate(-7, -7);
             lun->setTransform(transform);
@@ -2968,9 +2254,9 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Affichage de la trace dans le ciel
-                if (satellites.at(isat).getTraceCiel().size() > 0) {
+                if (satellites.at(isat).traceCiel().size() > 0) {
 
-                    const QList<QVector<double> > trace = satellites.at(isat).getTraceCiel();
+                    const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
                     const double ht1 = trace.at(0).at(0);
                     const double az1 = trace.at(0).at(1);
                     int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
@@ -2982,8 +2268,8 @@ void PreviSat::AffichageCourbes() const
                         const double az2 = trace.at(i).at(1);
 
                         crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
-                                    ((soleil.getHauteur() > -0.08) ?
-                                         bleuClair : ((soleil.getHauteur() > -0.12) ?
+                                    ((soleil.hauteur() > -0.08) ?
+                                         bleuClair : ((soleil.hauteur() > -0.12) ?
                                                           QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
@@ -2997,10 +2283,10 @@ void PreviSat::AffichageCourbes() const
                 }
 
                 // Calcul des coordonnees radar du satellite
-                const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                        sin(satellites.at(isat).getAzimut()));
-                const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                        cos(satellites.at(isat).getAzimut()));
+                const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                        sin(satellites.at(isat).azimut()));
+                const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                        cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
@@ -3072,8 +2358,8 @@ void PreviSat::AffichageCourbes() const
         if (ui->affsoleil->isChecked() && soleil.isVisible()) {
 
             // Calcul des coordonnees radar du Soleil
-            const int lsol = qRound(100. - 100. * xf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-            const int bsol = qRound(100. - 100. * yf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+            const int lsol = qRound(100. - 100. * xf * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
+            const int bsol = qRound(100. - 100. * yf * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
 
             rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
             scene2->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
@@ -3082,13 +2368,13 @@ void PreviSat::AffichageCourbes() const
         if (ui->afflune->isChecked() && lune.isVisible()) {
 
             // Calcul des coordonnees radar de la Lune
-            const int llun = qRound(100. - 100. * xf * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
-            const int blun = qRound(100. - 100. * yf * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+            const int llun = qRound(100. - 100. * xf * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
+            const int blun = qRound(100. - 100. * yf * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
             QGraphicsPixmapItem * const lun = scene2->addPixmap(pixlun);
             QTransform transform;
             transform.translate(llun, blun);
-            if (ui->rotationLune->isChecked() && observateurs.at(0).getLatitude() < 0.)
+            if (ui->rotationLune->isChecked() && observateurs.at(0).latitude() < 0.)
                 transform.rotate(180.);
             transform.translate(-7, -7);
             lun->setTransform(transform);
@@ -3099,10 +2385,10 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Calcul des coordonnees radar du satellite
-                const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                        sin(satellites.at(isat).getAzimut()));
-                const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                        cos(satellites.at(isat).getAzimut()));
+                const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                        sin(satellites.at(isat).azimut()));
+                const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                        cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
                 const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
@@ -3127,6 +2413,716 @@ void PreviSat::AffichageCourbes() const
 }
 
 /*
+ * Affichage des donnees numeriques
+ */
+void PreviSat::AffichageDonnees()
+{
+    /* Declarations des variables locales */
+    QString chaine, chaine2;
+
+    /* Initialisations */
+    QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("nmi/s");
+
+    /* Corps de la methode */
+    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+        // Affichage maximise : on ne reactualise pas l'affichage des donnees numeriques
+    } else {
+
+        if (satellites.isEmpty()) {
+            l1 = "";
+            l2 = "";
+        }
+
+        if (l1.isEmpty() && l2.isEmpty()) {
+
+            // Cas ou aucun satellite n'est selectionne dans la liste de satellites
+            ui->satellite->setVisible(false);
+            const QString msg = "%1 %2";
+            setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+
+            if (ui->onglets->count() == 7 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
+                ui->onglets->removeTab(1);
+                ui->onglets->removeTab(1);
+            }
+        } else {
+            ui->satellite->setVisible(true);
+            if (ui->onglets->count() < 7) {
+                ui->onglets->insertTab(1, ui->osculateurs, tr("Ã‰lÃ©ments osculateurs"));
+                ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
+            }
+        }
+
+        /*
+         * Affichage des donnees sur l'onglet General
+         */
+        QString chaineUTC = tr("UTC");
+        Date date;
+
+        if (fabs(dateCourante.offsetUTC()) > EPSDBL100) {
+            QTime heur(0, 0);
+            heur = heur.addSecs((int) (fabs(dateCourante.offsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
+            chaineUTC = chaineUTC.append((dateCourante.offsetUTC() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
+            ui->utcManuel->setText(chaineUTC);
+            date = dateCourante;
+        } else {
+            ui->utcManuel->setText(chaineUTC);
+            date = Date(dateCourante.jourJulienUTC(), 0., true);
+        }
+
+        chaine = date.ToLongDate((ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H).append("  ");
+        chaine = chaine.append(chaineUTC);
+        ui->dateHeure1->setText(chaine);
+        ui->dateHeure2->setText(chaine);
+
+        // Conditions d'observation
+        const double ht = soleil.hauteur() * RAD2DEG;
+        if (ht >= 0.)
+            chaine = tr("Jour");
+        else if (ht >= -6.)
+            chaine = tr("CrÃ©puscule civil");
+        else if (ht >= -12.)
+            chaine = tr("CrÃ©puscule nautique");
+        else if (ht >= -18.)
+            chaine = tr("CrÃ©puscule astronomique");
+        else
+            chaine = tr("Nuit");
+        ui->conditionsObservation->setText(chaine);
+
+
+        /*
+         * Affichage des donnees relatives au satellite par defaut
+         */
+        if (!l1.isEmpty() && !l2.isEmpty()) {
+
+            // Nom
+            ui->nomsat1->setText(nom);
+            const QString msg = "%1 %2 - %3";
+            setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(nom));
+
+            // Temps ecoule depuis l'epoque
+            chaine = tr("%1 jours");
+            QBrush brush;
+            QPalette paletteFond;
+            brush.setStyle(Qt::SolidPattern);
+
+            // Indicateur de l'age du TLE
+            if (fabs(satellites.at(0).ageTLE()) > 15.) {
+                brush.setColor(Qt::red);
+            } else if (fabs(satellites.at(0).ageTLE()) > 10.) {
+                brush.setColor(QColor("orange"));
+            } else if (fabs(satellites.at(0).ageTLE()) > 5.) {
+                brush.setColor(Qt::darkYellow);
+            } else {
+                brush.setColor(QColor("forestgreen"));
+            }
+
+            paletteFond.setBrush(QPalette::WindowText, brush);
+            ui->ageTLE->setPalette(paletteFond);
+            ui->ageTLE->setText(chaine.arg(satellites.at(0).ageTLE(), 0, 'f', 2));
+
+            // Longitude/latitude/altitude
+            const QString ews = (satellites.at(0).longitude() > 0.) ? tr("Ouest") : tr("Est");
+            ui->longitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).longitude()), DEGRE, 3, 0, false,
+                                                           true).append(" ").append(ews));
+            const QString nss = (satellites.at(0).latitude() > 0.) ? tr("Nord") : tr("Sud");
+            ui->latitudeSat->setText(Maths::ToSexagesimal(fabs(satellites.at(0).latitude()), DEGRE, 2, 0, false,
+                                                          true).append(" ").append(nss));
+            chaine = "%1 " + unite1;
+            if (ui->unitesKm->isChecked()) {
+                chaine = chaine.arg(satellites.at(0).altitude(), 0, 'f', 1);
+                ui->altitudeSat->setText(chaine);
+            } else {
+                chaine = chaine.arg(satellites.at(0).altitude() * MILE_PAR_KM, 0, 'f', 1);
+                ui->altitudeSat->setText(chaine);
+            }
+
+            // Hauteur/azimut/distance
+            ui->hauteurSat->setText(Maths::ToSexagesimal(satellites.at(0).hauteur(), DEGRE, 2, 0, true, true));
+            ui->azimutSat->setText(Maths::ToSexagesimal(satellites.at(0).azimut(), DEGRE, 3, 0, false, true));
+            chaine = "%1 " + unite1;
+            if (ui->unitesKm->isChecked()) {
+                chaine = chaine.arg(satellites.at(0).distance(), 0, 'f', 1);
+                ui->distanceSat->setText(chaine);
+            } else {
+                chaine = chaine.arg(satellites.at(0).distance() * MILE_PAR_KM, 0, 'f', 1);
+                ui->distanceSat->setText(chaine);
+            }
+
+            // Ascension droite/declinaison/constellation
+            ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellites.at(0).ascensionDroite(), HEURE1, 2, 0,
+                                                                 false, true).trimmed());
+            ui->declinaisonSat->setText(Maths::ToSexagesimal(satellites.at(0).declinaison(), DEGRE, 2, 0, true,
+                                                             true).trimmed());
+            ui->constellationSat->setText(satellites.at(0).constellation());
+
+            // Direction/vitesse/range rate
+            ui->directionSat->setText((satellites.at(0).vitesse().z() > 0.) ? tr("Ascendant") : tr("Descendant"));
+            chaine = "%1 " + unite2;
+            if (ui->unitesKm->isChecked()) {
+                chaine = chaine.arg(satellites.at(0).vitesse().Norme(), 0, 'f', 3);
+                ui->vitesseSat->setText(chaine);
+
+                chaine = "%1%2 " + unite2;
+                chaine = chaine.arg((satellites.at(0).rangeRate() >= 0.) ? "+" : "-").
+                        arg(fabs(satellites.at(0).rangeRate()), 0, 'f', 3);
+                ui->rangeRate->setText(chaine);
+
+            } else {
+                chaine = chaine.arg(satellites.at(0).vitesse().Norme() * MILE_PAR_KM, 0, 'f', 3);
+                ui->vitesseSat->setText(chaine);
+
+                chaine = "%1%2 " + unite2;
+                chaine = chaine.arg((satellites.at(0).rangeRate() >= 0.) ? "+" : "-").
+                        arg(fabs(satellites.at(0).rangeRate() * MILE_PAR_KM), 0, 'f', 3);
+                ui->rangeRate->setText(chaine);
+            }
+
+            // Magnitude/Illumination
+            const double fractionilluminee = 100. * satellites.at(0).fractionIlluminee();
+            if (satellites.at(0).magnitudeStandard() > 98.) {
+
+                // Magnitude standand inconnue
+                if (satellites.at(0).isEclipse()) {
+                    ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
+                } else {
+                    chaine = tr("Illumination : %1%");
+                    chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
+                    if (satellites.at(0).isPenombre())
+                        chaine = chaine.append(" ").append(tr("PÃ©nombre"));
+                    ui->magnitudeSat->setText(chaine);
+                }
+            } else {
+
+                // Satellite au dessus de l'horizon
+                if (satellites.at(0).isVisible()) {
+
+                    // Satellite eclipse
+                    if (satellites.at(0).isEclipse()) {
+                        ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
+                    } else {
+                        chaine = tr("Magnitude (Illumination) : %1%2");
+                        double magnitude = satellites.at(0).magnitude();
+
+                        // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
+                        if (tabStatutIridium.join("").contains(satellites.at(0).tle().norad())) {
+                            const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
+                                                                               satellites.at(0), soleil, observateurs.at(0));
+                            magnitude = qMin(magnitude, mag);
+                        }
+
+                        chaine = chaine.arg((magnitude >= 0.) ? "+" : "-").arg(fabs(magnitude), 0, 'f', 1);
+                        if (satellites.at(0).isPenombre())
+                            chaine = chaine.append("*");
+                        chaine = chaine.append((" (%1%)"));
+                        chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
+                        ui->magnitudeSat->setText(chaine);
+                    }
+                } else {
+                    chaine = tr("Satellite non visible");
+                    if (satellites.at(0).isEclipse()) {
+                        chaine = tr("Satellite non visible (Ombre)");
+                    } else {
+                        if (satellites.at(0).isPenombre())
+                            chaine = chaine.append(" : ").append(tr("PÃ©nombre"));
+                        chaine = chaine.append(" (%1%)");
+                        chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
+                    }
+                    ui->magnitudeSat->setText(chaine);
+                }
+            }
+
+            // Nombre d'orbites du satellite
+            chaine = "%1";
+            ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).nbOrbites()));
+
+            // Prochain AOS/LOS
+            if (htSat * satellites.at(0).hauteur() <= 0.)
+                acalcAOS = true;
+
+            if (acalcAOS) {
+                isAOS = CalculAOS();
+                htSat = satellites.at(0).hauteur();
+            }
+            if (isAOS) {
+
+                // Type d'evenement (AOS ou LOS)
+                chaine = tr("Prochain %1 :");
+                ui->lbl_prochainAOS->setText(chaine.arg(ctypeAOS));
+
+                // Delai de l'evenement
+                chaine = tr("%1 (dans %2). Azimut : %3");
+                const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
+                const Date delaiAOS = Date(dateAOS.jourJulienUTC() - dateCrt.jourJulienUTC() - 0.5, 0.);
+                const QString cDelai = (delaiAOS.heure() > 0) ?
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).
+                            append(tr("min")) :
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).
+                            append(tr("s"));
+
+                ui->dateAOS->setText(chaine.arg(dateAOS.
+                                                ToShortDate(FORMAT_COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                                     arg(cDelai).arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
+
+                ui->lbl_prochainAOS->setVisible(true);
+                ui->dateAOS->setVisible(true);
+
+            } else {
+                ui->lbl_prochainAOS->setVisible(false);
+                ui->dateAOS->setVisible(false);
+            }
+        }
+
+
+        /*
+         * Donnees relatives au Soleil
+         */
+        // Hauteur/azimut/distance
+        ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, true));
+        ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, true));
+        chaine = "%1 " + tr("UA");
+        chaine = chaine.arg(soleil.distanceUA(), 0, 'f', 3);
+        ui->distanceSoleil->setText(chaine);
+
+        // Ascension droite/declinaison/constellation
+        ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.ascensionDroite(), HEURE1, 2, 0, false,
+                                                                true).trimmed());
+        ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.declinaison(), DEGRE, 2, 0, true, true).trimmed());
+        ui->constellationSoleil->setText(soleil.constellation());
+
+
+        /*
+         * Donnees relatives a la Lune
+         */
+        // Hauteur/azimut/distance
+        ui->hauteurLune->setText(Maths::ToSexagesimal(lune.hauteur(), DEGRE, 2, 0, true, true));
+        ui->azimutLune->setText(Maths::ToSexagesimal(lune.azimut(), DEGRE, 3, 0, false, true));
+        chaine = "%1 " + unite1;
+        if (ui->unitesKm->isChecked()) {
+            chaine = chaine.arg(lune.distance(), 0, 'f', 0);
+            ui->distanceLune->setText(chaine);
+        } else {
+            chaine = chaine.arg(lune.distance() * MILE_PAR_KM, 0, 'f', 0);
+            ui->distanceLune->setText(chaine);
+        }
+
+        // Ascension droite/declinaison/constellation
+        ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), HEURE1, 2, 0, false,
+                                                              true).trimmed());
+        ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.declinaison(), DEGRE, 2, 0, true, true).trimmed());
+        ui->constellationLune->setText(lune.constellation());
+
+        // Illumination/Phase
+        chaine = "%1%";
+        chaine = chaine.arg(lune.fractionIlluminee() * 100., 0, 'f', 0);
+        ui->illuminationLune->setText(chaine);
+        ui->phaseLune->setText(lune.phase());
+
+        // Magnitude de la Lune
+        chaine = "%1";
+        chaine = chaine.arg(lune.magnitude(), 0, 'f', 2);
+        ui->magnitudeLune->setText(chaine);
+
+        /*
+         * Affichage des donnees sur l'onglet Elements Osculateurs
+         */
+        ui->utcManuel2->setText(ui->utcManuel->text());
+        if (!l1.isEmpty() && !l2.isEmpty()) {
+
+            ui->nomsat2->setText(nom);
+            ui->ligne1->setText(l1);
+            ui->ligne2->setText(l2);
+
+            // Vecteur d'etat
+            // Position
+            Vecteur3D vect = (ui->unitesKm->isChecked()) ? satellites.at(0).position() :
+                                                           satellites.at(0).position() * MILE_PAR_KM;
+            chaine2 = "%1%2 " + unite1;
+            chaine = chaine2.arg((vect.x() >= 0.) ? "+" : "-").arg(fabs(vect.x()), 0, 'f', 3);
+            ui->xsat->setText(chaine);
+            chaine = chaine2.arg((vect.y() >= 0.) ? "+" : "-").arg(fabs(vect.y()), 0, 'f', 3);
+            ui->ysat->setText(chaine);
+            chaine = chaine2.arg((vect.z() >= 0.) ? "+" : "-").arg(fabs(vect.z()), 0, 'f', 3);
+            ui->zsat->setText(chaine);
+
+            // Vitesse
+            vect = (ui->unitesKm->isChecked()) ? satellites.at(0).vitesse() :
+                                                 satellites.at(0).vitesse() * MILE_PAR_KM;
+            chaine2 = "%1%2 " + unite2;
+            chaine = chaine2.arg((vect.x() >= 0.) ? "+" : "-").arg(fabs(vect.x()), 0, 'f', 6);
+            ui->vxsat->setText(chaine);
+            chaine = chaine2.arg((vect.y() >= 0.) ? "+" : "-").arg(fabs(vect.y()), 0, 'f', 6);
+            ui->vysat->setText(chaine);
+            chaine = chaine2.arg((vect.z() >= 0.) ? "+" : "-").arg(fabs(vect.z()), 0, 'f', 6);
+            ui->vzsat->setText(chaine);
+
+            // Elements osculateurs
+            AffichageElementsOsculateurs();
+
+            if (info) {
+                // Affichage des donnees sur l'onglet Informations satellite
+
+                // Nom du satellite
+                ui->nomsat3->setText(nom);
+
+                // Lignes du TLE
+                ui->line1->setText(ui->ligne1->text());
+                ui->line2->setText(ui->ligne2->text());
+
+                // Numero NORAD
+                ui->norad->setText(l1.mid(2, 5));
+
+                // Designation COSPAR
+                ui->cospar->setText(l1.mid(9, 8).trimmed());
+
+                // Epoque du TLE
+                ui->epoque->setText(tles.at(0).epoque().
+                                    ToShortDate(FORMAT_COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)));
+
+                // Nombre d'orbites a l'epoque
+                ui->nbOrbitesEpoque->setText(l2.mid(63, 5).trimmed());
+
+                // Anomalie moyenne
+                ui->anomalieMoy->setText(l2.mid(43, 8).append("Â°"));
+
+                // Inclinaison
+                ui->inclinaisonMoy->setText(l2.mid(8, 8).append("Â°"));
+
+                // Excentricite
+                ui->excentriciteMoy->setText("0." + l2.mid(26, 7));
+
+                // Ascension droite du noeud ascendant
+                ui->ADNoeudAscendantMoy->setText(l2.mid(17, 8).append("Â°"));
+
+                // Argument du perigee
+                ui->argumentPerigeeMoy->setText(l2.mid(34, 8).append("Â°"));
+
+                // Nombre de revolutions par jour
+                ui->nbRev->setText(l2.mid(52, 11));
+
+                // (derivee de nbRev) / 2
+                chaine2 = "%1";
+                chaine = chaine2.arg(QString(l1.mid(33, 1).trimmed() + "0" + l1.mid(34, 9)).toDouble(), 0, 'f', 8);
+                ui->nbRev2->setText(chaine);
+
+                // (derivee seconde de nbRev) / 6
+                chaine = chaine2.arg(QString(l1.mid(44, 1) + "0." + l1.mid(45, 5)).toDouble() *
+                                     pow(10., QString(l1.mid(50, 2)).toDouble()), 0, 'f', 8);
+                ui->nbRev3->setText(chaine);
+
+                // Coefficient pseudo-balistique
+                chaine = chaine2.arg(QString(l1.mid(53, 1) + "0." + l1.mid(54, 5)).toDouble() *
+                                     pow(10., QString(l1.mid(59, 2)).toDouble()));
+                ui->bstar->setText(chaine);
+
+                // Magnitude standard/maximale
+                if (satellites.at(0).magnitudeStandard() > 98.) {
+                    ui->magnitudeStdMax->setText("?/?");
+                } else {
+
+                    // Estimation de la magnitude maximale
+                    const double xval = satellites.at(0).magnitudeStandard() - 15.75 + 5. *
+                            log10(1.45 * (satellites.at(0).elements().demiGrandAxe() *
+                                          (1. - satellites.at(0).elements().excentricite()) - RAYON_TERRESTRE));
+                    chaine = "%1%2%3/%4%5";
+                    chaine = chaine.arg((satellites.at(0).magnitudeStandard() >= 0.) ? "+" : "-").
+                            arg(fabs(satellites.at(0).magnitudeStandard()), 0, 'f', 1).
+                            arg(satellites.at(0).methMagnitude()).arg((xval >= 0.) ? "+" : "-").
+                            arg(fabs(xval), 0, 'f', 1);
+                    ui->magnitudeStdMax->setText(chaine);
+                }
+
+                // Modele orbital
+                chaine = (satellites.at(0).method() == 'd') ? tr("SGP4 (DS)") : tr("SGP4 (NE)");
+                ui->modele->setText(chaine);
+
+                // Dimensions du satellite
+                double t1 = satellites.at(0).t1();
+                double t2 = satellites.at(0).t2();
+                double t3 = satellites.at(0).t3();
+                double section = satellites.at(0).section();
+                unite1 = tr("m");
+                if (ui->unitesMi->isChecked()) {
+                    t1 *= PIED_PAR_METRE;
+                    t2 *= PIED_PAR_METRE;
+                    t3 *= PIED_PAR_METRE;
+                    section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
+                    unite1 = tr("ft");
+                }
+
+                chaine2 = "%1 " + unite1;
+                if (fabs(t2) < EPSDBL100 && fabs(t3) < EPSDBL100)
+                    chaine = tr("SphÃ©rique. R=").append(chaine2.arg(t1, 0, 'f', 1));
+                if (fabs(t2) >= EPSDBL100 && fabs(t3) < EPSDBL100)
+                    chaine = tr("Cylindrique. L=").append(chaine2.arg(t1, 0, 'f', 1)).
+                            append(tr(", R=")).append(chaine2.arg(t2, 0, 'f', 1));
+                if (fabs(t2) >= EPSDBL100 && fabs(t3) >= EPSDBL100) {
+                    chaine = tr("BoÃ®te.").append(" %1 x %2 x %3 ").append(unite1);
+                    chaine = chaine.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1);
+                }
+                if (fabs(t1) < EPSDBL100)
+                    chaine = tr("Inconnues");
+
+                if (fabs(section) > EPSDBL100) {
+                    chaine = chaine + " / %1 " + unite1;
+                    chaine = chaine.arg(section, 0, 'f', 2);
+                    ui->sq->setVisible(true);
+                } else {
+                    ui->sq->setVisible(false);
+                }
+
+                ui->dimensions->setText(chaine);
+                ui->dimensions->adjustSize();
+                ui->dimensions->setFixedHeight(16);
+                ui->sq->move(ui->dimensions->x() + ui->dimensions->width() + 1, ui->sq->y());
+                info = false;
+
+                // Date de lancement
+                if (satellites.at(0).dateLancement().length() > 0) {
+                    const int annee_lct = satellites.at(0).dateLancement().mid(0, 4).toInt();
+                    const int mois_lct = satellites.at(0).dateLancement().mid(5, 2).toInt();
+                    const double jour_lct = satellites.at(0).dateLancement().mid(8, 2).toDouble();
+                    const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
+                    ui->dateLancement->setText(date_lct.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
+                } else {
+                    ui->dateLancement->setText(tr("Non connue"));
+                }
+
+                // Categorie de l'orbite
+                ui->categorieOrbite->setText((satellites.at(0).categorieOrbite().isEmpty()) ?
+                                                 tr("IndÃ©terminÃ©e") : satellites.at(0).categorieOrbite());
+
+                // Pays ou organisation
+                ui->pays->setText((satellites.at(0).pays().isEmpty()) ? tr("IndÃ©terminÃ©") : satellites.at(0).pays());
+            }
+        }
+    }
+
+
+    /*
+     * Donnees ISS sur le Wall Command Center
+     */
+    if (!satellites.isEmpty()) {
+        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
+                !ui->ciel->isVisible()) {
+
+            // Calcul de la prochaine transition J/N
+            if (!(isEcl && satellites.at(0).isEclipse()))
+                acalcDN = true;
+
+            if (acalcDN) {
+                CalculDN();
+                isEcl = satellites.at(0).isEclipse();
+            }
+
+            chaine = "D/N : %1";
+            const double delai = dateEcl.jourJulienUTC() - dateCourante.jourJulienUTC();
+            const Date delaiEcl(delai - 0.5, 0.);
+            const QString cDelai = (delai >= 0.) ? delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(12, 7) : "0:00:00";
+            ui->nextTransitionISS->setText(chaine.arg(cDelai));
+
+            const int numOrb = CalculNumeroOrbiteISS(dateCourante);
+
+            // Affichage des donnees du blackboard
+            chaine = "LAT = %1";
+            ui->latitudeISS->setText(chaine.arg(satellites.at(0).latitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "ALT = %1";
+            ui->altitudeISS->setText(chaine.arg(satellites.at(0).altitude() * MILE_PAR_KM, 0, 'f', 1));
+            chaine = "LON = %1";
+            ui->longitudeISS->setText(chaine.arg(-satellites.at(0).longitude() * RAD2DEG, 0, 'f', 1));
+            chaine = "INC = %1";
+            ui->inclinaisonISS->setText(chaine.arg(satellites.at(0).elements().inclinaison() * RAD2DEG, 0, 'f', 1));
+            chaine = "ORB = %1";
+            ui->orbiteISS->setText(chaine.arg(numOrb));
+            chaine = "BETA = %1";
+            ui->betaISS->setText(chaine.arg(satellites.at(0).beta() * RAD2DEG, 0, 'f', 1));
+
+            // Calcul et affichage du jour et de l'heure GMT
+            chaine = "GMT = %1/%2:%3";
+            const Date date2 = Date(dateCourante.annee(), 1, 1., 0.);
+            const double jourDsAnnee = dateCourante.jourJulienUTC() - date2.jourJulienUTC() + 1.;
+            const int numJour = (int) jourDsAnnee;
+            const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
+            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.00005);
+
+            QPalette coul;
+            coul.setColor(QPalette::WindowText, cgmt[ui->coulGMT->currentIndex()]);
+            ui->gmt->setPalette(coul);
+            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+            ui->frameCoordISS->setVisible(true);
+            ui->gmt->setVisible(true);
+
+        } else {
+            ui->frameCoordISS->setVisible(false);
+            ui->gmt->setVisible(false);
+        }
+    } else {
+        ui->frameCoordISS->setVisible(false);
+        ui->gmt->setVisible(false);
+    }
+
+    if (scene != NULL)
+        scene->deleteLater();
+    if (scene2 != NULL)
+        scene2->deleteLater();
+    if (scene3 != NULL)
+        scene3->deleteLater();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des elements osculateurs
+ */
+void PreviSat::AffichageElementsOsculateurs() const
+{
+    /* Declarations des variables locales */
+    QString chaine, chaine2;
+
+    /* Initialisations */
+    const QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+
+    /* Corps de la methode */
+    chaine = "%1 " + unite1;
+    double xval = satellites.at(0).elements().demiGrandAxe() * ((ui->unitesKm->isChecked()) ? 1. : MILE_PAR_KM);
+
+    chaine = chaine.arg(xval, 0, 'f', 1);
+    if (ui->typeParametres->currentIndex() == 2)
+        ui->demiGrandAxe->move(330, 103);
+    else
+        ui->demiGrandAxe->move(303, 103);
+    ui->demiGrandAxe->setText(chaine);
+
+    ui->frameCirculaire->setVisible(false);
+    ui->frameCirculaireEquatorial->setVisible(false);
+    ui->frameEquatorial->setVisible(false);
+    ui->frameKeplerien->setVisible(false);
+
+    switch (ui->typeParametres->currentIndex()) {
+    case 0:
+        // Parametres kepleriens
+        ui->frameKeplerien->setVisible(true);
+
+        chaine = "%1";
+        chaine = chaine.arg(satellites.at(0).elements().excentricite(), 0, 'f', 7);
+        ui->excentricite->setText(chaine);
+
+        chaine2 = "%1Â°";
+        chaine = chaine2.arg(satellites.at(0).elements().inclinaison() * RAD2DEG, 0, 'f', 4);
+        ui->inclinaison->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().ascensionDroiteNA() * RAD2DEG, 0, 'f', 4);
+        ui->ADNoeudAscendant->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().argumentPerigee() * RAD2DEG, 0, 'f', 4);
+        ui->argumentPerigee->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4);
+        ui->anomalieMoyenne->setText(chaine);
+        break;
+
+    case 1:
+        // Parametres circulaires
+        ui->frameCirculaire->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).elements().exCirc(), 0, 'f', 7);
+        ui->ex1->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().eyCirc(), 0, 'f', 7);
+        ui->ey1->setText(chaine);
+
+        chaine2 = "%1Â°";
+        chaine = chaine2.arg(satellites.at(0).elements().inclinaison() * RAD2DEG, 0, 'f', 4);
+        ui->inclinaison2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().ascensionDroiteNA() * RAD2DEG, 0, 'f', 4);
+        ui->ADNoeudAscendant2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().pso() * RAD2DEG, 0, 'f', 4);
+        ui->positionSurOrbite->setText(chaine);
+        break;
+
+    case 2:
+        // Parametres equatoriaux
+        ui->frameEquatorial->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).elements().excentricite(), 0, 'f', 7);
+        ui->excentricite2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().ix(), 0, 'f', 7);
+        ui->ix1->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().iy(), 0, 'f', 7);
+        ui->iy1->setText(chaine);
+
+        chaine2 = "%1Â°";
+        chaine = chaine2.arg((satellites.at(0).elements().ascensionDroiteNA() + satellites.at(0).elements().
+                              argumentPerigee()) * RAD2DEG, 0, 'f', 4);
+        ui->longitudePerigee->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4);
+        ui->anomalieMoyenne2->setText(chaine);
+        break;
+
+    case 3:
+        // Parametres circulaires equatoriaux
+        ui->frameCirculaireEquatorial->setVisible(true);
+
+        chaine2 = "%1";
+        chaine = chaine2.arg(satellites.at(0).elements().exCEq(), 0, 'f', 7);
+        ui->ex2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().eyCEq(), 0, 'f', 7);
+        ui->ey2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().ix(), 0, 'f', 7);
+        ui->ix2->setText(chaine);
+
+        chaine = chaine2.arg(satellites.at(0).elements().iy(), 0, 'f', 7);
+        ui->iy2->setText(chaine);
+
+        chaine2 = "%1Â°";
+        chaine = chaine2.arg(satellites.at(0).elements().argumentLongitudeVraie() * RAD2DEG, 0, 'f', 4);
+        ui->argumentLongitudeVraie2->setText(chaine);
+        break;
+
+    default:
+        break;
+    }
+
+    chaine = chaine2.arg(satellites.at(0).elements().anomalieVraie() * RAD2DEG, 0, 'f', 4);
+    ui->anomalieVraie->setText(chaine);
+
+    chaine = chaine2.arg(satellites.at(0).elements().anomalieExcentrique() * RAD2DEG, 0, 'f', 4);
+    ui->anomalieExcentrique->setText(chaine);
+
+    chaine = "Â±" + chaine2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites.at(0).altitude())) *
+                               RAD2DEG, 0, 'f', 2);
+    ui->champDeVue->setText(chaine);
+
+    // Apogee/perigee/periode orbitale
+    chaine2 = "%2 %1 (%3 %1)";
+    chaine2 = chaine2.arg(unite1);
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().apogee() :
+                                         satellites.at(0).elements().apogee() * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    ui->apogee->setText(chaine);
+
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().perigee() :
+                                         satellites.at(0).elements().perigee() * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    ui->perigee->setText(chaine);
+
+    ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
+
+    /* Retour */
+    return;
+}
+
+/*
  * Affichage des groupes de TLE
  */
 void PreviSat::AffichageGroupesTLE() const
@@ -3136,7 +3132,7 @@ void PreviSat::AffichageGroupesTLE() const
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
+    QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
@@ -3236,7 +3232,7 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
 
         if ((ui->affnomsat->checkState() == Qt::PartiallyChecked && isat == 0) ||
                 ui->affnomsat->checkState() == Qt::Checked) {
-            QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(tles.at(isat).getNom());
+            QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(tles.at(isat).nom());
             const int lng = (int) txtSat->boundingRect().width();
             const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
             const int ynsat = (bsat + 9 > hcarte) ? bsat - 12 : bsat;
@@ -3262,7 +3258,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     /* Initialisations */
     nbSat = 0;
     QString nomsat = "---";
-    QFile donneesSatellites(dirDat + QDir::separator() + "donnees.sat");
+    QFile donneesSatellites(dirLocalData + QDir::separator() + "donnees.sat");
     if (donneesSatellites.exists()) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
@@ -3428,11 +3424,11 @@ bool PreviSat::CalculAOS() const
         // Calcul du prochain AOS ou LOS
         double jjm[3], ht[3];
         double periode = NB_JOUR_PAR_MIN;
-        if (sat.getHauteur() >= 0.)
+        if (sat.hauteur() >= 0.)
             ctypeAOS = tr("LOS");
 
         double tAOS = 0.;
-        double t_ht = dateCourante.getJourJulienUTC();
+        double t_ht = dateCourante.jourJulienUTC();
 
         bool afin = false;
         int iter = 0;
@@ -3450,7 +3446,7 @@ bool PreviSat::CalculAOS() const
 
                 sat.CalculPosVit(date);
                 sat.CalculCoordHoriz(obs, false, false);
-                ht[i] = sat.getHauteur();
+                ht[i] = sat.hauteur();
             }
 
             const bool atst1 = ht[0] * ht[1] < 0.;
@@ -3482,7 +3478,7 @@ bool PreviSat::CalculAOS() const
                         // Position du satellite
                         sat.CalculPosVit(date);
                         sat.CalculCoordHoriz(obs, true, false);
-                        ht[i] = sat.getHauteur();
+                        ht[i] = sat.hauteur();
                     }
 
                     t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
@@ -3498,7 +3494,7 @@ bool PreviSat::CalculAOS() const
                 // Position du satellite
                 sat.CalculPosVit(dateAOS);
                 sat.CalculCoordHoriz(obs, true, false);
-                azimAOS = sat.getAzimut();
+                azimAOS = sat.azimut();
                 afin = true;
             } else {
                 t_ht += periode;
@@ -3518,72 +3514,6 @@ bool PreviSat::CalculAOS() const
     return (res);
 }
 
-void PreviSat::CalculDN() const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    // Parcours du tableau "trace au sol"
-    int i = 0;
-    const double dn = (satellites.at(0).isEclipse()) ? 1. : 0.;
-    QListIterator<QVector<double> > it(satellites.at(0).getTraceAuSol());
-    while (it.hasNext()) {
-        const QVector<double> list = it.next();
-        if (list.at(3) >= dateCourante.getJourJulienUTC()) {
-            if (fabs(dn - list.at(2)) > EPSDBL100)
-                it.toBack();
-        }
-        i++;
-    }
-
-    /* Corps de la methode */
-    if (i < satellites.at(0).getTraceAuSol().size()) {
-        double ecl[3], jjm[3];
-        Satellite satellite(satellites.at(0).getTle());
-        double t_ecl = satellites.at(0).getTraceAuSol().at(i-1).at(3);
-        double periode = t_ecl - satellites.at(0).getTraceAuSol().at(i-2).at(3);
-
-        bool afin = false;
-        while (!afin) {
-
-            jjm[0] = t_ecl - periode;
-            jjm[1] = t_ecl;
-            jjm[2] = t_ecl + periode;
-
-            for(int j=0; j<3; j++) {
-
-                const Date date(jjm[j], 0., false);
-
-                // Position du satellite
-                satellite.CalculPosVit(date);
-
-                // Position du Soleil
-                soleil.CalculPosition(date);
-
-                // Conditions d'eclipse du satellite
-                satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
-                ecl[j] = satellite.getRayonOmbre() - satellite.getElongation();
-            }
-
-            double tdn = t_ecl;
-            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
-                tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
-            periode *= 0.5;
-            if (fabs(tdn - t_ecl) < 1.e-6)
-                afin = true;
-            t_ecl = tdn;
-        }
-        dateEcl = Date(t_ecl + offsetUTC, offsetUTC);
-    } else {
-        dateEcl = Date(dateCourante.getJourJulienUTC() - 10., 0.);
-    }
-
-    acalcDN = false;
-
-    /* Retour */
-    return;
-}
-
 void PreviSat::CalculAgeTLETransitISS() const
 {
     /* Declarations des variables locales */
@@ -3599,7 +3529,7 @@ void PreviSat::CalculAgeTLETransitISS() const
         const QStringList iss("25544");
         QVector<TLE> tleISS;
         TLE::LectureFichier(fichier, iss, tleISS);
-        const double ageISS = dateCourante.getJourJulienUTC() - tleISS.at(0).getEpoque().getJourJulienUTC();
+        const double ageISS = dateCourante.jourJulienUTC() - tleISS.at(0).epoque().jourJulienUTC();
 
         const QString chaine = tr("%1 jours");
         QBrush brush;
@@ -3631,6 +3561,72 @@ void PreviSat::CalculAgeTLETransitISS() const
     return;
 }
 
+void PreviSat::CalculDN() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    // Parcours du tableau "trace au sol"
+    int i = 0;
+    const double dn = (satellites.at(0).isEclipse()) ? 1. : 0.;
+    QListIterator<QVector<double> > it(satellites.at(0).traceAuSol());
+    while (it.hasNext()) {
+        const QVector<double> list = it.next();
+        if (list.at(3) >= dateCourante.jourJulienUTC()) {
+            if (fabs(dn - list.at(2)) > EPSDBL100)
+                it.toBack();
+        }
+        i++;
+    }
+
+    /* Corps de la methode */
+    if (i < satellites.at(0).traceAuSol().size()) {
+        double ecl[3], jjm[3];
+        Satellite satellite(satellites.at(0).tle());
+        double t_ecl = satellites.at(0).traceAuSol().at(i-1).at(3);
+        double periode = t_ecl - satellites.at(0).traceAuSol().at(i-2).at(3);
+
+        bool afin = false;
+        while (!afin) {
+
+            jjm[0] = t_ecl - periode;
+            jjm[1] = t_ecl;
+            jjm[2] = t_ecl + periode;
+
+            for(int j=0; j<3; j++) {
+
+                const Date date(jjm[j], 0., false);
+
+                // Position du satellite
+                satellite.CalculPosVit(date);
+
+                // Position du Soleil
+                soleil.CalculPosition(date);
+
+                // Conditions d'eclipse du satellite
+                satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
+                ecl[j] = satellite.rayonOmbre() - satellite.elongation();
+            }
+
+            double tdn = t_ecl;
+            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
+                tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
+            periode *= 0.5;
+            if (fabs(tdn - t_ecl) < 1.e-6)
+                afin = true;
+            t_ecl = tdn;
+        }
+        dateEcl = Date(t_ecl + offsetUTC, offsetUTC);
+    } else {
+        dateEcl = Date(dateCourante.jourJulienUTC() - 10., 0.);
+    }
+
+    acalcDN = false;
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul du numero d'orbite de l'ISS
  */
@@ -3645,7 +3641,7 @@ int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
     /* Corps de la methode */
     sat.CalculPosVit(date);
     sat.CalculElementsOsculateurs(date);
-    Date dateCalcul(date.getJourJulienUTC() + sat.getElements().getPeriode() * NB_JOUR_PAR_HEUR, 0., false);
+    Date dateCalcul(date.jourJulienUTC() + sat.elements().periode() * NB_JOUR_PAR_HEUR, 0., false);
 
     sat.CalculPosVit(dateCalcul);
     sat.CalculCoordTerrestres(dateCalcul);
@@ -3653,19 +3649,19 @@ int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
     Date dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
     sat.CalculPosVit(dateNA);
     sat.CalculCoordTerrestres(dateNA);
-    double lon1 = sat.getLongitude();
+    double lon1 = sat.longitude();
 
     bool atrouveOrb = false;
     while (!atrouveOrb) {
 
-        dateCalcul = Date(dateNA.getJourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
+        dateCalcul = Date(dateNA.jourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
         sat.CalculPosVit(dateCalcul);
         sat.CalculCoordTerrestres(dateCalcul);
 
         dateNA = sat.CalculDateNoeudAscPrec(dateCalcul);
         sat.CalculPosVit(dateNA);
         sat.CalculCoordTerrestres(dateNA);
-        double lon2 = sat.getLongitude();
+        double lon2 = sat.longitude();
 
         atrouveOrb = (lon2 < 0. && lon1 > 0.);
         numOrbite++;
@@ -3675,7 +3671,6 @@ int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
     /* Retour */
     return (numOrbite);
 }
-
 
 /*
  * Enchainement des calculs
@@ -3692,7 +3687,7 @@ void PreviSat::EnchainementCalculs() const
     const bool refraction = ui->refractionPourEclipses->isChecked();
 
     // Nombre de traces au sol a afficher
-    const int nbTraces = (satellites.isEmpty()) ? 0 : (mcc && satellites.at(0).getTle().getNorad() == "25544") ?
+    const int nbTraces = (satellites.isEmpty()) ? 0 : (mcc && satellites.at(0).tle().norad() == "25544") ?
                                                       3 : (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
 
     // Prise en compte de l'extinction atmospherique
@@ -3727,7 +3722,7 @@ void PreviSat::EnchainementCalculs() const
             soleil.CalculCoordTerrestres(observateurs.at(0));
 
             // Zone d'ombre
-            const double beta = acos((RAYON_TERRESTRE - 15.) / soleil.getDistance()) - REFRACTION_HZ;
+            const double beta = acos((RAYON_TERRESTRE - 15.) / soleil.distance()) - REFRACTION_HZ;
             soleil.CalculZoneVisibilite(beta);
 
             if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored)
@@ -3804,23 +3799,42 @@ void PreviSat::EnchainementCalculs() const
 
             if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
                 chronometre->stop();
-                const QString msg = tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
-                Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
+                const QString msg = tr("Erreur rencontrÃ©e lors de l'exÃ©cution\n" \
+                                       "La position du satellite %1 (numÃ©ro NORAD : %2) ne peut pas Ãªtre calculÃ©e (altitude nÃ©gative)");
+                Message::Afficher(msg.arg(tles.at(0).nom()).arg(tles.at(0).norad()), WARNING);
                 chronometre->start();
                 l1 = "";
                 l2 = "";
             }
 
             if (ui->onglets->count() < 7 && !satellites[0].isIeralt()) {
-                l1 = tles.at(0).getLigne1();
-                l2 = tles.at(0).getLigne2();
+                l1 = tles.at(0).ligne1();
+                l2 = tles.at(0).ligne2();
             }
         }
         Satellite::initCalcul = true;
 
     } catch (PreviSatException &e) {
     }
+
+    /* Retour */
+    return;
+}
+
+
+/******************************
+ * Telechargement de fichiers *
+ *****************************/
+void PreviSat::AjoutFichier(const QUrl &url)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty())
+        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
+    downQueue.enqueue(url);
 
     /* Retour */
     return;
@@ -3859,7 +3873,7 @@ void PreviSat::MajWebTLE()
         foreach(QString file, listeTLEs) {
 
             const QString ficMaj = adresse + file;
-            const QString fic = QDir::convertSeparators(dirTle + QDir::separator() + file);
+            const QString fic = QDir::toNativeSeparators(dirTle + QDir::separator() + file);
             if (fic == nomfic)
                 atrouve = true;
 
@@ -3874,21 +3888,64 @@ void PreviSat::MajWebTLE()
     return;
 }
 
-void PreviSat::AjoutFichier(const QUrl &url)
+void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    if (downQueue.isEmpty())
-        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
-    downQueue.enqueue(url);
+    action->setVisible(true);
+
+    const QString msg = tr("Une mise Ã  jour %1 est disponible. Souhaitez-vous la tÃ©lÃ©charger?");
+
+    const int res = QMessageBox::question(0, tr("Information"), msg.arg(typeMAJ), QMessageBox::Yes | QMessageBox::No,
+                                          QMessageBox::Yes);
+
+    if (res == QMessageBox::Yes) {
+        if (action == ui->actionTelecharger_la_mise_a_jour) {
+            on_actionTelecharger_la_mise_a_jour_triggered();
+            ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+        }
+        if (action == ui->actionMettre_jour_fichiers_internes) {
+            aclickFicMaj = false;
+            on_actionMettre_jour_fichiers_internes_triggered();
+            ui->actionMettre_jour_fichiers_internes->setVisible(false);
+        }
+    }
 
     /* Retour */
     return;
 }
 
+void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QUrl url(ficHttp);
+
+    /* Corps de la methode */
+    AjoutFichier(url);
+
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+    const QNetworkRequest requete(url);
+    rep = mng.get(requete);
+
+    if (!async) {
+
+        // Creation d'une boucle pour rendre le telechargement synchrone
+        QEventLoop loop;
+        connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
+        loop.exec();
+    }
+
+    if (downQueue.isEmpty())
+        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+    /* Retour */
+    return;
+}
 
 /*
  * Verification de l'age d'un TLE
@@ -3903,8 +3960,8 @@ void PreviSat::VerifAgeTLE()
     if (tles.count() > 0) {
 
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
-        if (fabs(dateCourante.getJourJulienUTC() - tles.at(0).getEpoque().getJourJulienUTC()) > ageMax) {
-            const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
+        if (fabs(dateCourante.jourJulienUTC() - tles.at(0).epoque().jourJulienUTC()) > ageMax) {
+            const QString msg = tr("Les Ã©lÃ©ments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre Ã  jour?");
             const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax), QMessageBox::Yes | QMessageBox::No,
                                                   QMessageBox::Yes);
 
@@ -3923,7 +3980,7 @@ void PreviSat::VerifAgeTLE()
                     const QString ficMaj = adresse + fi.fileName();
                     TelechargementFichier(ficMaj, false);
 
-                    settings.setValue("temps/lastUpdate", dateCourante.getJourJulienUTC());
+                    settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
                 }
             }
             old = true;
@@ -3997,13 +4054,13 @@ void PreviSat::VerifMAJPreviSat()
 
                 const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
 
-                dirDwn = dirDat;
+                dirDwn = dirLocalData;
 
                 QDateTime dateMax;
                 for(int i=0; i<listeFicLocalData.size(); i++) {
 
                     if (!listeFicLocalData.at(i).startsWith("gestionnaireTLE_")) {
-                        const QString fich = dirDat + QDir::separator() + listeFicLocalData.at(i);
+                        const QString fich = dirLocalData + QDir::separator() + listeFicLocalData.at(i);
                         const QFileInfo fi2(fich);
 
                         if (fi2.lastModified().date() > dateMax.date())
@@ -4029,69 +4086,220 @@ void PreviSat::VerifMAJPreviSat()
     return;
 }
 
-void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    action->setVisible(true);
-
-    const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
-
-    const int res = QMessageBox::question(0, tr("Information"), msg.arg(typeMAJ), QMessageBox::Yes | QMessageBox::No,
-                                          QMessageBox::Yes);
-
-    if (res == QMessageBox::Yes) {
-        if (action == ui->actionTelecharger_la_mise_a_jour) {
-            on_actionTelecharger_la_mise_a_jour_activated();
-            ui->actionTelecharger_la_mise_a_jour->setVisible(false);
-        }
-        if (action == ui->actionMettre_jour_fichiers_internes) {
-            aclickFicMaj = false;
-            on_actionMettre_jour_fichiers_internes_activated();
-            ui->actionMettre_jour_fichiers_internes->setVisible(false);
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QUrl url(ficHttp);
-
-    /* Corps de la methode */
-    AjoutFichier(url);
-
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-    const QNetworkRequest requete(url);
-    rep = mng.get(requete);
-
-    if (!async) {
-
-        // Creation d'une boucle pour rendre le telechargement synchrone
-        QEventLoop loop;
-        connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
-        loop.exec();
-    }
-
-    if (downQueue.isEmpty())
-        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
-
-    /* Retour */
-    return;
-}
-
 
 /*************
  * Interface *
- ************/
+ *************/
+void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLEs)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+        const QFileInfo fi(fichier);
+        if (listeFicTLEs.contains(QDir::toNativeSeparators(fi.absoluteFilePath()))) {
+            comboBox->setCurrentIndex(listeFicTLEs.indexOf(QDir::toNativeSeparators(fi.filePath())));
+        } else {
+            listeFicTLEs.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+            if (comboBox->itemText(0).isEmpty()) {
+                comboBox->setItemText(0, fi.fileName());
+            } else {
+                comboBox->removeItem(comboBox->count() - 1);
+                comboBox->addItem(QDir::toNativeSeparators(fi.fileName()));
+                comboBox->setCurrentIndex(comboBox->count() - 1);
+                comboBox->addItem(tr("Parcourir..."));
+            }
+        }
+        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::AfficherLieuSelectionne(const int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString nomlieu = "";
+
+    /* Corps de la methode */
+    ui->nouveauLieu->setVisible(false);
+    ui->nouvelleCategorie->setVisible(false);
+    messagesStatut->setText("");
+
+    // Recuperation du lieu d'observation de la liste
+    if (ui->lieuxObs->hasFocus() && index >= 0) {
+        nomlieu = mapObs.at(index);
+        ui->selecLieux->setCurrentRow(-1);
+    }
+    if (ui->selecLieux->hasFocus() && index >= 0) {
+        nomlieu = listeObs.at(index);
+        ui->lieuxObs->setCurrentRow(-1);
+    }
+
+    if (!nomlieu.isEmpty()) {
+
+        ui->coordonnees->setVisible(true);
+
+        // Longitude/Latitude/Altitude
+        const QStringList lieu = nomlieu.split("#");
+        const QStringList coord = lieu.at(1).split("&");
+        const double lo = coord.at(0).toDouble();
+        const double la = coord.at(1).toDouble();
+        const int atd = coord.at(2).toInt();
+
+        const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
+        const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
+
+        // Affichage des coordonnees du lieu d'observation
+        ui->nLieu->setText(tr("Lieu :") + " " + lieu.at(0).trimmed());
+        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), NO_TYPE, 3, 0, false, true) + " " + ew);
+        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), NO_TYPE, 2, 0, false, true) + " " + ns);
+        const QString msg = "%1 ";
+        ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
+                                                             msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
+    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
+    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
+    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
+    const QString fic = compteRendu.at(compteRendu.count()-5);
+
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
+    QString msgcpt = tr("TLE du satellite %1 (%2) non rÃ©actualisÃ©");
+    if (nbmaj < nbold && nbmaj > 0) {
+        for(int i=0; i<compteRendu.count()-5; i++) {
+            const QString nomsat = compteRendu.at(i).split("#").at(0);
+            const QString norad = compteRendu.at(i).split("#").at(1);
+            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
+        }
+
+        msgcpt = tr("%1 TLE(s) sur %2 mis Ã  jour");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+    }
+
+    if (nbmaj == nbold && nbold != 0) {
+        msgcpt = tr("Mise Ã  jour de tous les TLE effectuÃ©e (fichier de %1 satellite(s))");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
+    }
+
+    if (nbmaj == 0 && nbold != 0)
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis Ã  jour") + "\n");
+
+    if (nbsup > 0) {
+        msgcpt = tr("Nombre de TLE(s) supprimÃ©s : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
+    }
+
+    if (nbadd > 0) {
+        msgcpt = tr("Nombre de TLE(s) ajoutÃ©s : %1");
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
+    }
+    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+
+    aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Compte du nombre de satellites coches dans une liste
+ */
+int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    int k = 0;
+    for (int i=0; i<listWidget->count(); i++) {
+        if (listWidget->item(i)->checkState() == Qt::Checked)
+            k++;
+    }
+
+    /* Retour */
+    return (k);
+}
+
+void PreviSat::ModificationOption()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->affradar->isChecked() || ui->affradar->checkState() == Qt::PartiallyChecked) {
+        ui->affinvew->setEnabled(true);
+        ui->affinvns->setEnabled(true);
+    } else {
+        ui->affinvew->setEnabled(false);
+        ui->affinvns->setEnabled(false);
+    }
+
+    if (ui->afflune->isChecked()) {
+        ui->affphaselune->setEnabled(true);
+        ui->rotationLune->setEnabled(true);
+    } else {
+        ui->affphaselune->setEnabled(false);
+        ui->rotationLune->setEnabled(false);
+    }
+
+    ui->intensiteOmbre->setEnabled(ui->affnuit->isChecked());
+    ui->nombreTrajectoires->setEnabled(ui->afftraj->isChecked());
+
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
+    ui->dateHeure3->setDisplayFormat(fmt);
+    ui->dateHeure4->setDisplayFormat(fmt);
+
+    if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
+        info = true;
+        acalcAOS = true;
+        acalcDN = true;
+        AffichageLieuObs();
+        ui->lieuxObs->setCurrentRow(-1);
+        ui->selecLieux->setCurrentRow(-1);
+    }
+
+    ui->afficherPrev->setVisible(false);
+    ui->afficherIri->setVisible(false);
+    ui->afficherEvt->setVisible(false);
+    ui->afficherTransit->setVisible(false);
+
+    if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
+
+        // Enchainement de l'ensemble des calculs
+        EnchainementCalculs();
+
+        // Affichage des donnees numeriques
+        AffichageDonnees();
+
+        // Affichage des elements graphiques
+        AffichageCourbes();
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Ouverture d'un fichier TLE
  */
@@ -4120,14 +4328,14 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
                 nsat = TLE::VerifieFichier(fic, false);
                 if (nsat == 0) {
-                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                     throw PreviSatException(msg.arg(fichier), WARNING);
                 }
                 ficgz = fich;
                 fich = fic;
                 agz = true;
             } else {
-                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                 throw PreviSatException(msg.arg(fich), WARNING);
             }
         }
@@ -4147,8 +4355,8 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
             settings.setValue("fichier/nom", nomfic);
         settings.setValue("fichier/repTLE", fi.absolutePath());
 
-        if (QDir::convertSeparators(fi.absolutePath()) == dirTle) {
-            ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(QDir::convertSeparators(fi.filePath())));
+        if (QDir::toNativeSeparators(fi.absolutePath()) == dirTle) {
+            ui->listeFichiersTLE->setCurrentIndex(ficTLE.indexOf(QDir::toNativeSeparators(fi.filePath())));
 
             QStringListIterator it(liste.split("$"));
             while (it.hasNext()) {
@@ -4168,7 +4376,7 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                     ui->listeFichiersTLE->setItemText(0, fi.fileName());
                 } else {
                     ui->listeFichiersTLE->removeItem(ui->listeFichiersTLE->count() - 1);
-                    ui->listeFichiersTLE->addItem(QDir::convertSeparators(fi.fileName()));
+                    ui->listeFichiersTLE->addItem(QDir::toNativeSeparators(fi.fileName()));
                     ui->listeFichiersTLE->addItem(tr("Parcourir..."));
                 }
                 ficTLE.append(fi.absoluteFilePath());
@@ -4256,129 +4464,6 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
     return;
 }
 
-void PreviSat::AffichageListeFichiersTLE(const QString &fichier, QComboBox *comboBox, QStringList &listeFicTLEs)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-        const QFileInfo fi(fichier);
-        if (listeFicTLEs.contains(QDir::convertSeparators(fi.absoluteFilePath()))) {
-            comboBox->setCurrentIndex(listeFicTLEs.indexOf(QDir::convertSeparators(fi.filePath())));
-        } else {
-            listeFicTLEs.append(QDir::convertSeparators(fi.absoluteFilePath()));
-            if (comboBox->itemText(0).isEmpty()) {
-                comboBox->setItemText(0, fi.fileName());
-            } else {
-                comboBox->removeItem(comboBox->count() - 1);
-                comboBox->addItem(QDir::convertSeparators(fi.fileName()));
-                comboBox->setCurrentIndex(comboBox->count() - 1);
-                comboBox->addItem(tr("Parcourir..."));
-            }
-        }
-        on_actionVision_nocturne_toggled(ui->actionVision_nocturne->isChecked());
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Sauvegarde des donnees de l'onglet General
- */
-void PreviSat::SauveOngletGeneral(const QString &fic) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-        QFile sw(fic);
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
-        if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
-            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
-        }
-        QTextStream flux(&sw);
-
-        const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
-                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
-        flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
-
-        flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
-        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3");
-        flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl;
-        chaine = tr("Conditions : %1");
-        flux << chaine.arg(ui->conditionsObservation->text()) << endl << endl << endl;
-
-        if (ui->onglets->count() == 7) {
-
-            // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
-
-            chaine = tr("Longitude : %1\tHauteur    : %2\tAscension droite :  %3");
-            flux << chaine.arg(ui->longitudeSat->text().trimmed()).arg(ui->hauteurSat->text())
-                    .arg(ui->ascensionDroiteSat->text().trimmed()) << endl;
-
-            chaine = tr("Latitude  :  %1\tAzimut (N) : %2\tDéclinaison      : %3");
-            flux << chaine.arg(ui->latitudeSat->text().trimmed()).arg(ui->azimutSat->text().trimmed())
-                    .arg(ui->declinaisonSat->text()) << endl;
-
-            chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
-            flux << chaine.arg(ui->altitudeSat->text()).arg(QString(13 - ui->altitudeSat->text().length(), QChar(' ')))
-                    .arg(ui->distanceSat->text()).arg(QString(13 - ui->distanceSat->text().length(), QChar(' ')))
-                    .arg(ui->constellationSat->text()) << endl << endl;
-
-            chaine = tr("Direction          : %1  \t%2");
-            flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
-
-            chaine = tr("Vitesse orbitale   : %1%2  \tOrbite n°%3");
-            flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
-                    .arg(ui->nbOrbitesSat->text()) << endl;
-
-            chaine = tr("Variation distance : %1  \t%2 %3");
-            flux << chaine.arg(ui->rangeRate->text()).arg(ui->lbl_prochainAOS->text()).arg(ui->dateAOS->text())
-                 << endl << endl << endl;
-        }
-
-        // Donnees sur le Soleil
-        flux << tr("Coordonnées du Soleil :") << endl;
-        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
-        flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
-
-        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
-        flux << chaine.arg(ui->azimutSoleil->text().trimmed()).arg(ui->declinaisonSoleil->text()) << endl;
-
-        chaine = tr("Distance   : %1   \tConstellation    : %2");
-        flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
-
-        // Donnees sur la Lune
-        flux << tr("Coordonnées de la Lune :") << endl;
-        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
-        flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
-
-        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
-        flux << chaine.arg(ui->azimutLune->text().trimmed()).arg(ui->declinaisonLune->text()) << endl;
-
-        chaine = tr("Distance   : %1  \tConstellation    : %2");
-        flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
-        flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
-        flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
-        flux << tr("Magnitude    :") + " " + ui->magnitudeLune->text() << endl;
-
-        sw.close();
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
 /*
  * Sauvegarde des donnees de l'onglet Elements osculateurs
  */
@@ -4393,7 +4478,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         QFile sw(fic);
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("ProblÃ¨me de droits d'Ã©criture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -4408,7 +4493,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << ui->ligne1->text() << endl;
         flux << ui->ligne2->text() << endl << endl;
 
-        flux << tr("Vecteur d'état (ECI) :") << endl;
+        flux << tr("Vecteur d'Ã©tat (ECI) :") << endl;
         QString chaine = tr("x : %1%2\tvx : %3");
         flux << chaine.arg(QString(13 - ui->xsat->text().length(), QChar(' '))).arg(ui->xsat->text()).
                 arg(ui->vxsat->text()) << endl;
@@ -4422,7 +4507,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
                 arg(ui->vzsat->text()) << endl << endl;
 
 
-        flux << tr("Éléments osculateurs :") << endl;
+        flux << tr("Ã‰lÃ©ments osculateurs :") << endl;
         switch (ui->typeParametres->currentIndex()) {
 
         case 0:
@@ -4432,7 +4517,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
                     arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0'))).
                     arg(ui->ADNoeudAscendant->text()) << endl;
 
-            chaine = tr("Excentricité   : %1\tArgument du périgée                 : %2%3");
+            chaine = tr("ExcentricitÃ©   : %1\tArgument du pÃ©rigÃ©e                 : %2%3");
             flux << chaine.arg(ui->excentricite->text()).
                     arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0'))).
                     arg(ui->argumentPerigee->text()) << endl;
@@ -4465,10 +4550,10 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
             chaine = tr("Demi-grand axe       : %1\tIx               : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité         : %1\tIy               : %2");
+            chaine = tr("ExcentricitÃ©         : %1\tIy               : %2");
             flux << chaine.arg(ui->excentricite2->text()).arg(ui->iy1->text()) << endl;
 
-            chaine = tr("Longitude du périgée : %1%2\tAnomalie moyenne : %3%4");
+            chaine = tr("Longitude du pÃ©rigÃ©e : %1%2\tAnomalie moyenne : %3%4");
             flux << chaine.arg(QString(9 - ui->longitudePerigee->text().length(), QChar('0'))).
                     arg(ui->longitudePerigee->text()).
                     arg(QString(9 - ui->anomalieMoyenne2->text().length(), QChar('0'))).
@@ -4492,16 +4577,109 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
             break;
         }
 
-        chaine = tr("Anomalie vraie       : %1%2\tApogée  (Altitude) : %3");
+        chaine = tr("Anomalie vraie       : %1%2\tApogÃ©e  (Altitude) : %3");
         flux << chaine.arg(QString(9 - ui->anomalieVraie->text().length(), QChar('0'))).arg(ui->anomalieVraie->text())
                 .arg(ui->apogee->text()) << endl;
 
-        chaine = tr("Anomalie excentrique : %1%2\tPérigée (Altitude) : %3");
+        chaine = tr("Anomalie excentrique : %1%2\tPÃ©rigÃ©e (Altitude) : %3");
         flux << chaine.arg(QString(9 - ui->anomalieExcentrique->text().length(), QChar('0')))
                 .arg(ui->anomalieExcentrique->text()).arg(ui->perigee->text()) << endl;
 
-        chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
+        chaine = tr("Champ de vue         : %1  \tPÃ©riode orbitale   : %2");
         flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl;
+
+        sw.close();
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Sauvegarde des donnees de l'onglet General
+ */
+void PreviSat::SauveOngletGeneral(const QString &fic) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+        QFile sw(fic);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (!sw.isWritable()) {
+            const QString msg = tr("ProblÃ¨me de droits d'Ã©criture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+        flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
+
+        flux << tr("Lieu d'observation :") << " " << ui->lieuxObservation1->currentText() << endl;
+        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3");
+        flux << chaine.arg(ui->longitudeObs->text()).arg(ui->latitudeObs->text()).arg(ui->altitudeObs->text()) << endl;
+        chaine = tr("Conditions : %1");
+        flux << chaine.arg(ui->conditionsObservation->text()) << endl << endl << endl;
+
+        if (ui->onglets->count() == 7) {
+
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
+
+            chaine = tr("Longitude : %1\tHauteur    : %2\tAscension droite :  %3");
+            flux << chaine.arg(ui->longitudeSat->text().trimmed()).arg(ui->hauteurSat->text())
+                    .arg(ui->ascensionDroiteSat->text().trimmed()) << endl;
+
+            chaine = tr("Latitude  :  %1\tAzimut (N) : %2\tDÃ©clinaison      : %3");
+            flux << chaine.arg(ui->latitudeSat->text().trimmed()).arg(ui->azimutSat->text().trimmed())
+                    .arg(ui->declinaisonSat->text()) << endl;
+
+            chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
+            flux << chaine.arg(ui->altitudeSat->text()).arg(QString(13 - ui->altitudeSat->text().length(), QChar(' ')))
+                    .arg(ui->distanceSat->text()).arg(QString(13 - ui->distanceSat->text().length(), QChar(' ')))
+                    .arg(ui->constellationSat->text()) << endl << endl;
+
+            chaine = tr("Direction          : %1  \t%2");
+            flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
+
+            chaine = tr("Vitesse orbitale   : %1%2  \tOrbite nÂ°%3");
+            flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
+                    .arg(ui->nbOrbitesSat->text()) << endl;
+
+            chaine = tr("Variation distance : %1  \t%2 %3");
+            flux << chaine.arg(ui->rangeRate->text()).arg(ui->lbl_prochainAOS->text()).arg(ui->dateAOS->text())
+                 << endl << endl << endl;
+        }
+
+        // Donnees sur le Soleil
+        flux << tr("CoordonnÃ©es du Soleil :") << endl;
+        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
+
+        chaine = tr("Azimut (N) : %1\tDÃ©clinaison      : %2");
+        flux << chaine.arg(ui->azimutSoleil->text().trimmed()).arg(ui->declinaisonSoleil->text()) << endl;
+
+        chaine = tr("Distance   : %1   \tConstellation    : %2");
+        flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
+
+        // Donnees sur la Lune
+        flux << tr("CoordonnÃ©es de la Lune :") << endl;
+        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
+
+        chaine = tr("Azimut (N) : %1\tDÃ©clinaison      : %2");
+        flux << chaine.arg(ui->azimutLune->text().trimmed()).arg(ui->declinaisonLune->text()) << endl;
+
+        chaine = tr("Distance   : %1  \tConstellation    : %2");
+        flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
+        flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
+        flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
+        flux << tr("Magnitude    :") + " " + ui->magnitudeLune->text() << endl;
 
         sw.close();
     } catch (PreviSatException &e) {
@@ -4525,7 +4703,7 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         QFile sw(fic);
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("ProblÃ¨me de droits d'Ã©criture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -4539,18 +4717,18 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         flux << ui->line1->text() << endl;
         flux << ui->line2->text() << endl << endl;
 
-        QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
+        QString chaine = tr("NumÃ©ro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
         flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()).arg(ui->dateLancement->text()) << endl;
 
-        chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2\t Catégorie d'orbite : %4");
+        chaine = tr("DÃ©signation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2\t CatÃ©gorie d'orbite : %4");
         flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()).
                 arg(ui->categorieOrbite->text()) << endl;
 
-        chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3\t Pays/Organisation  : %4");
+        chaine = tr("Ã‰poque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3\t Pays/Organisation  : %4");
         flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()).
                 arg(ui->pays->text()) << endl;
 
-        chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
+        chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites Ã  l'Ã©poque : %2");
         flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
 
         chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
@@ -4562,10 +4740,10 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         flux << chaine.arg(QString(9 - ui->ADNoeudAscendantMoy->text().trimmed().length(), QChar('0')))
                 .arg(ui->ADNoeudAscendantMoy->text().trimmed()).arg(ui->magnitudeStdMax->text()) << endl;
 
-        chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+        chaine = tr("ExcentricitÃ©            : %1\t\tModÃ¨le orbital        : %2");
         flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
 
-        chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3^2");
+        chaine = tr("Argument du pÃ©rigÃ©e     : %1%2\t\tDimensions/Section    : %3^2");
         flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
                 .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text()) << endl;
         sw.close();
@@ -4577,190 +4755,39 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
     return;
 }
 
-void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
-    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
-    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
-    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
-    const QString fic = compteRendu.at(compteRendu.count()-5);
-
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
-    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
-    if (nbmaj < nbold && nbmaj > 0) {
-        for(int i=0; i<compteRendu.count()-5; i++) {
-            const QString nomsat = compteRendu.at(i).split("#").at(0);
-            const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
-        }
-
-        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
-    }
-
-    if (nbmaj == nbold && nbold != 0) {
-        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
-    }
-
-    if (nbmaj == 0 && nbold != 0)
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis à jour") + "\n");
-
-    if (nbsup > 0) {
-        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
-    }
-
-    if (nbadd > 0) {
-        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
-    }
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
-
-    aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::ModificationOption()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->affradar->isChecked() || ui->affradar->checkState() == Qt::PartiallyChecked) {
-        ui->affinvew->setEnabled(true);
-        ui->affinvns->setEnabled(true);
-    } else {
-        ui->affinvew->setEnabled(false);
-        ui->affinvns->setEnabled(false);
-    }
-
-    if (ui->afflune->isChecked()) {
-        ui->affphaselune->setEnabled(true);
-        ui->rotationLune->setEnabled(true);
-    } else {
-        ui->affphaselune->setEnabled(false);
-        ui->rotationLune->setEnabled(false);
-    }
-
-    ui->intensiteOmbre->setEnabled(ui->affnuit->isChecked());
-    ui->nombreTrajectoires->setEnabled(ui->afftraj->isChecked());
-
-    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
-    ui->dateHeure3->setDisplayFormat(fmt);
-    ui->dateHeure4->setDisplayFormat(fmt);
-
-    if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
-        info = true;
-        acalcAOS = true;
-        acalcDN = true;
-        AffichageLieuObs();
-        ui->lieuxObs->setCurrentRow(-1);
-        ui->selecLieux->setCurrentRow(-1);
-    }
-
-    ui->afficherPrev->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    ui->afficherEvt->setVisible(false);
-    ui->afficherTransit->setVisible(false);
-
-    if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
-
-        // Enchainement de l'ensemble des calculs
-        EnchainementCalculs();
-
-        // Affichage des donnees numeriques
-        AffichageDonnees();
-
-        // Affichage des elements graphiques
-        AffichageCourbes();
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::AfficherLieuSelectionne(const int index)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    QString nomlieu = "";
-
-    /* Corps de la methode */
-    ui->nouveauLieu->setVisible(false);
-    ui->nouvelleCategorie->setVisible(false);
-    messagesStatut->setText("");
-
-    // Recuperation du lieu d'observation de la liste
-    if (ui->lieuxObs->hasFocus() && index >= 0) {
-        nomlieu = mapObs.at(index);
-        ui->selecLieux->setCurrentRow(-1);
-    }
-    if (ui->selecLieux->hasFocus() && index >= 0) {
-        nomlieu = listeObs.at(index);
-        ui->lieuxObs->setCurrentRow(-1);
-    }
-
-    if (!nomlieu.isEmpty()) {
-
-        ui->coordonnees->setVisible(true);
-
-        // Longitude/Latitude/Altitude
-        const QStringList lieu = nomlieu.split("#");
-        const QStringList coord = lieu.at(1).split("&");
-        const double lo = coord.at(0).toDouble();
-        const double la = coord.at(1).toDouble();
-        const int atd = coord.at(2).toInt();
-
-        const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
-        const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
-
-        // Affichage des coordonnees du lieu d'observation
-        ui->nLieu->setText(tr("Lieu :") + " " + lieu.at(0).trimmed());
-        ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lo), NO_TYPE, 3, 0, false, true) + " " + ew);
-        ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), NO_TYPE, 2, 0, false, true) + " " + ns);
-        const QString msg = "%1 ";
-        ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
-                                                             msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Compte du nombre de satellites coches dans une liste
- */
-int PreviSat::getListeItemChecked(const QListWidget *listWidget) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    int k = 0;
-    for (int i=0; i<listWidget->count(); i++) {
-        if (listWidget->item(i)->checkState() == Qt::Checked)
-            k++;
-    }
-
-    /* Retour */
-    return (k);
-}
-
 
 /***********
  * Systeme *
  **********/
+bool PreviSat::DecompressionFichierGz(const QString &fichierGz, const QString &fichierDecompresse) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool res = false;
+
+    /* Corps de la methode */
+    gzFile fichGz = gzopen(fichierGz.toStdString().c_str(), "rb");
+    if (fichGz == NULL) {
+        res = false;
+    } else {
+
+        QFile fichDec(fichierDecompresse);
+        fichDec.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux(&fichDec);
+
+        char buffer[8192];
+        while (gzgets(fichGz, buffer, 8192) != NULL)
+            flux << buffer;
+        gzclose(fichGz);
+        fichDec.close();
+        res = true;
+    }
+
+    /* Retour */
+    return (res);
+}
+
 void PreviSat::EcritureListeRegistre() const
 {
     /* Declarations des variables locales */
@@ -4780,22 +4807,22 @@ void PreviSat::EcritureListeRegistre() const
             // Recuperation des TLE de la liste
             TLE::LectureFichier(nomfic, listeTLE, tles);
             for (int i=0; i<nbSat; i++)
-                if (tles.at(i).getNorad().isEmpty())
+                if (tles.at(i).norad().isEmpty())
                     throw PreviSatException();
-            nom = tles.at(0).getNom();
-            l1 = tles.at(0).getLigne1();
-            l2 = tles.at(0).getLigne2();
+            nom = tles.at(0).nom();
+            l1 = tles.at(0).ligne1();
+            l2 = tles.at(0).ligne2();
 
             // Recuperation des donnees satellites
             Satellite::LectureDonnees(listeTLE, tles, satellites);
 
-            if (tles.at(0).getNom().isEmpty())
+            if (tles.at(0).nom().isEmpty())
                 settings.setValue("TLE/nom", nom);
             else
-                settings.setValue("TLE/nom", tles.at(0).getNom());
+                settings.setValue("TLE/nom", tles.at(0).nom());
 
-            settings.setValue("TLE/l1", tles.at(0).getLigne1());
-            settings.setValue("TLE/l2", tles.at(0).getLigne2());
+            settings.setValue("TLE/l1", tles.at(0).ligne1());
+            settings.setValue("TLE/l2", tles.at(0).ligne2());
             settings.setValue("TLE/nbsat", nbSat);
         }
 
@@ -4859,35 +4886,71 @@ void PreviSat::EcritureListeRegistre() const
     return;
 }
 
-bool PreviSat::DecompressionFichierGz(const QString &fichierGz, const QString &fichierDecompresse) const
+
+void PreviSat::CalculsTermines()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool res = false;
 
     /* Corps de la methode */
-    gzFile fichGz = gzopen(fichierGz.toStdString().c_str(), "rb");
-    if (fichGz == NULL) {
-        res = false;
-    } else {
+    const QFileInfo fi(ficRes);
+    switch (threadCalculs->typeCalcul()) {
+    case ThreadCalculs::PREVISION:
+        ui->annulerPrev->setVisible(false);
+        ui->calculsPrev->setVisible(true);
+        if (fi.exists()) {
+            ui->calculsPrev->setDefault(false);
+            ui->afficherPrev->setVisible(true);
+            ui->afficherPrev->setDefault(true);
+            ui->afficherPrev->setFocus();
+        }
+        break;
 
-        QFile fichDec(fichierDecompresse);
-        fichDec.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux(&fichDec);
+    case ThreadCalculs::IRIDIUM:
+        ui->annulerIri->setVisible(false);
+        ui->calculsIri->setVisible(true);
+        if (fi.exists()) {
+            ui->calculsIri->setDefault(false);
+            ui->afficherIri->setVisible(true);
+            ui->afficherIri->setDefault(true);
+            ui->afficherIri->setFocus();
+            settings.setValue("fichier/iridium", QDir::toNativeSeparators(ficTLEIri.at(ui->fichierTLEIri->currentIndex())));
+        }
+        break;
 
-        char buffer[8192];
-        while (gzgets(fichGz, buffer, 8192) != NULL)
-            flux << buffer;
-        gzclose(fichGz);
-        fichDec.close();
-        res = true;
+    case ThreadCalculs::EVENEMENTS:
+        ui->annulerEvt->setVisible(false);
+        ui->calculsEvt->setVisible(true);
+        if (fi.exists()) {
+            ui->calculsEvt->setDefault(false);
+            ui->afficherEvt->setVisible(true);
+            ui->afficherEvt->setDefault(true);
+            ui->afficherEvt->setFocus();
+        }
+        break;
+
+    case ThreadCalculs::TRANSITS:
+        ui->annulerTransit->setVisible(false);
+        ui->calculsTransit->setVisible(true);
+        if (fi.exists()) {
+            ui->calculsTransit->setDefault(false);
+            ui->afficherTransit->setVisible(true);
+            ui->afficherTransit->setDefault(true);
+            ui->afficherTransit->setFocus();
+            settings.setValue("fichier/fichierTLETransit",
+                              QDir::toNativeSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
+        }
+
+    default:
+        break;
     }
+    threadCalculs->deleteLater();
+    messagesStatut->setText((fi.exists()) ? tr("TerminÃ© !") : "");
 
     /* Retour */
-    return (res);
+    return;
 }
-
 
 /*
  * Gestion du temps reel
@@ -4928,11 +4991,11 @@ void PreviSat::GestionTempsReel()
 
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
-        modeFonctionnement->setText(tr("Temps réel"));
+        modeFonctionnement->setText(tr("Temps rÃ©el"));
         const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
         offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
-        ui->updown->setValue(Maths::sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
-        date1 = Date(dateCourante.getOffsetUTC());
+        ui->updown->setValue(sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
+        date1 = Date(dateCourante.offsetUTC());
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
     } else {
@@ -4948,15 +5011,15 @@ void PreviSat::GestionTempsReel()
     }
 
     // Affichage du jour julien
-    date2 = Date(date1.getAnnee(), 1, 1., 0.);
+    date2 = Date(date1.annee(), 1, 1., 0.);
     if (ui->calJulien->isChecked()) {
-        stsDate->setText(QString::number(date1.getJourJulien() + TJ2000, 'f', 5));
-        stsHeure->setText(QString::number(date1.getJourJulien() - date2.getJourJulien() + 1., 'f', 5));
+        stsDate->setText(QString::number(date1.jourJulien() + TJ2000, 'f', 5));
+        stsHeure->setText(QString::number(date1.jourJulien() - date2.jourJulien() + 1., 'f', 5));
         stsDate->setToolTip(tr("Jour julien"));
         stsHeure->setToolTip(tr("Jour"));
     } else {
-        stsDate->setText(QDate(date1.getAnnee(), date1.getMois(), date1.getJour()).toString(tr("dd/MM/yyyy")));
-        stsHeure->setText(QTime(date1.getHeure(), date1.getMinutes(), (int) date1.getSecondes()).
+        stsDate->setText(QDate(date1.annee(), date1.mois(), date1.jour()).toString(tr("dd/MM/yyyy")));
+        stsHeure->setText(QTime(date1.heure(), date1.minutes(), (int) date1.secondes()).
                           toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
         stsDate->setToolTip(tr("Date"));
         stsHeure->setToolTip(tr("Heure"));
@@ -4968,7 +5031,7 @@ void PreviSat::GestionTempsReel()
         tim = (tim.addSecs((int) pas1) <= QDateTime::currentDateTimeUtc()) ? tim.addSecs((int) pas1) : QDateTime::currentDateTimeUtc();
 
         // Date actuelle
-        dateCourante = Date(dateCourante.getOffsetUTC());
+        dateCourante = Date(dateCourante.offsetUTC());
 
         // Enchainement de l'ensemble des calculs
         EnchainementCalculs();
@@ -4980,7 +5043,7 @@ void PreviSat::GestionTempsReel()
         AffichageCourbes();
     }
 
-    if (ui->modeManuel->isChecked() && fabs(tim.secsTo(QDateTime::currentDateTimeUtc()) >= pas2)) {
+    if (ui->modeManuel->isChecked() && fabs(fabs((double) tim.secsTo(QDateTime::currentDateTimeUtc()) - pas2)) > -EPSDBL100) {
 
         tim = QDateTime::currentDateTimeUtc();
         info = true;
@@ -4991,13 +5054,13 @@ void PreviSat::GestionTempsReel()
 
             if (!ui->pasManuel->view()->isVisible()) {
 
-                double jd = dateCourante.getJourJulien();
+                double jd = dateCourante.jourJulien();
                 if (!ui->rewind->isEnabled() || !ui->backward->isEnabled())
                     jd -= pas1;
                 if (!ui->play->isEnabled() || !ui->forward->isEnabled())
                     jd += pas1;
 
-                dateCourante = Date(jd + EPS_DATES, dateCourante.getOffsetUTC());
+                dateCourante = Date(jd + EPS_DATES, dateCourante.offsetUTC());
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
@@ -5024,119 +5087,13 @@ void PreviSat::GestionTempsReel()
     return;
 }
 
-void PreviSat::CalculsTermines()
+
+/******************************
+ * Telechargement de fichiers *
+ *****************************/
+void PreviSat::EcritureFichier()
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QFileInfo fi(ficRes);
-    switch (threadCalculs->getTypeCalcul()) {
-    case ThreadCalculs::PREVISION:
-        ui->annulerPrev->setVisible(false);
-        ui->calculsPrev->setVisible(true);
-        if (fi.exists()) {
-            ui->calculsPrev->setDefault(false);
-            ui->afficherPrev->setVisible(true);
-            ui->afficherPrev->setDefault(true);
-            ui->afficherPrev->setFocus();
-        }
-        break;
-
-    case ThreadCalculs::IRIDIUM:
-        ui->annulerIri->setVisible(false);
-        ui->calculsIri->setVisible(true);
-        if (fi.exists()) {
-            ui->calculsIri->setDefault(false);
-            ui->afficherIri->setVisible(true);
-            ui->afficherIri->setDefault(true);
-            ui->afficherIri->setFocus();
-            settings.setValue("fichier/iridium", QDir::convertSeparators(ficTLEIri.at(ui->fichierTLEIri->currentIndex())));
-        }
-        break;
-
-    case ThreadCalculs::EVENEMENTS:
-        ui->annulerEvt->setVisible(false);
-        ui->calculsEvt->setVisible(true);
-        if (fi.exists()) {
-            ui->calculsEvt->setDefault(false);
-            ui->afficherEvt->setVisible(true);
-            ui->afficherEvt->setDefault(true);
-            ui->afficherEvt->setFocus();
-        }
-        break;
-
-    case ThreadCalculs::TRANSITS:
-        ui->annulerTransit->setVisible(false);
-        ui->calculsTransit->setVisible(true);
-        if (fi.exists()) {
-            ui->calculsTransit->setDefault(false);
-            ui->afficherTransit->setVisible(true);
-            ui->afficherTransit->setDefault(true);
-            ui->afficherTransit->setFocus();
-            settings.setValue("fichier/fichierTLETransit",
-                              QDir::convertSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
-        }
-
-    default:
-        break;
-    }
-    threadCalculs->deleteLater();
-    messagesStatut->setText((fi.exists()) ? tr("Terminé !") : "");
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::TelechargementSuivant()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty()) {
-        emit TelechargementFini();
-
-        atrouve = false;
-        aupdnow = false;
-        ui->majMaintenant->setEnabled(true);
-        ui->frameBarreProgression->setVisible(false);
-        ui->affichageMsgMAJ->setVisible(true);
-        messagesStatut->setText(tr("Terminé !"));
-    } else {
-
-        const QUrl url = downQueue.dequeue();
-
-        const QString fic = QFileInfo(url.path()).fileName();
-        ui->fichierTelechargement->setText(fic);
-        if (ui->miseAJourTLE->isVisible()) {
-            ui->barreProgression->setValue(0);
-            ui->frameBarreProgression->setVisible(true);
-            ui->compteRenduMaj->setVisible(true);
-        }
-        ficDwn.setFileName(dirDwn + QDir::separator() + fic);
-
-        if (ficDwn.open(QIODevice::WriteOnly)) {
-
-            QNetworkProxyFactory::setUseSystemConfiguration(true);
-            const QNetworkRequest requete(url);
-            if (!amajDeb)
-                rep = mng.get(requete);
-
-            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
-            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
-            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
-
-        } else {
-            const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-            messagesStatut->setText(msg.arg(ficDwn.fileName()));
-        }
-    }
-
-    /* Retour */
-    return;
+    ficDwn.write(rep->readAll());
 }
 
 void PreviSat::FinEnregistrementFichier()
@@ -5168,10 +5125,10 @@ void PreviSat::FinEnregistrementFichier()
             if (fd.exists())
                 fd.remove();
 
-            QString msg = tr("Erreur lors du téléchargement du fichier %1");
+            QString msg = tr("Erreur lors du tÃ©lÃ©chargement du fichier %1");
             if (rep->error())
                 msg += " : " + rep->errorString();
-            Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+            Message::Afficher(msg.arg(ff.fileName()), WARNING);
             ui->compteRenduMaj->setVisible(false);
 
         } else {
@@ -5179,12 +5136,12 @@ void PreviSat::FinEnregistrementFichier()
             // Mise a jour des TLE
             if (atrouve) {
 
-                if (QDir::convertSeparators(ficDwn.fileName()) == nomfic) {
+                if (QDir::toNativeSeparators(ficDwn.fileName()) == nomfic) {
 
                     const int nb = TLE::VerifieFichier(nomfic, false);
                     if (nb == 0) {
-                        const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                        Messages::Afficher(msg.arg(nomfic), WARNING);
+                        const QString msg = tr("Erreur lors du tÃ©lÃ©chargement du fichier %1");
+                        Message::Afficher(msg.arg(nomfic), WARNING);
                         ui->compteRenduMaj->setVisible(false);
                     } else {
 
@@ -5207,9 +5164,9 @@ void PreviSat::FinEnregistrementFichier()
             // Mise a jour des fichiers TLE selectionnes
             if (aupdnow) {
 
-                QString fichierALire = QDir::convertSeparators(ficDwn.fileName());
+                QString fichierALire = QDir::toNativeSeparators(ficDwn.fileName());
                 QFileInfo ff(fichierALire);
-                QString fichierAMettreAJour = QDir::convertSeparators(dirTle + QDir::separator() + ff.fileName());
+                QString fichierAMettreAJour = QDir::toNativeSeparators(dirTle + QDir::separator() + ff.fileName());
 
                 QFile fi(fichierAMettreAJour);
                 if (fi.exists()) {
@@ -5236,8 +5193,8 @@ void PreviSat::FinEnregistrementFichier()
 
                     const int nb = TLE::VerifieFichier(nomfic, false);
                     if (nb == 0) {
-                        const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                        Messages::Afficher(msg.arg(ff.fileName()), WARNING);
+                        const QString msg = tr("Erreur lors du tÃ©lÃ©chargement du fichier %1");
+                        Message::Afficher(msg.arg(ff.fileName()), WARNING);
                     } else {
 
                         // Recuperation des TLE de la liste
@@ -5271,11 +5228,6 @@ void PreviSat::FinEnregistrementFichier()
     return;
 }
 
-void PreviSat::EcritureFichier()
-{
-    ficDwn.write(rep->readAll());
-}
-
 void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
 {
     /* Declarations des variables locales */
@@ -5286,6 +5238,56 @@ void PreviSat::ProgressionTelechargement(qint64 recu, qint64 total) const
     if (total != -1) {
         ui->barreProgression->setRange(0, (int) total);
         ui->barreProgression->setValue((int) recu);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::TelechargementSuivant()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (downQueue.isEmpty()) {
+        emit TelechargementFini();
+
+        atrouve = false;
+        aupdnow = false;
+        ui->majMaintenant->setEnabled(true);
+        ui->frameBarreProgression->setVisible(false);
+        ui->affichageMsgMAJ->setVisible(true);
+        messagesStatut->setText(tr("TerminÃ© !"));
+    } else {
+
+        const QUrl url = downQueue.dequeue();
+
+        const QString fic = QFileInfo(url.path()).fileName();
+        ui->fichierTelechargement->setText(fic);
+        if (ui->miseAJourTLE->isVisible()) {
+            ui->barreProgression->setValue(0);
+            ui->frameBarreProgression->setVisible(true);
+            ui->compteRenduMaj->setVisible(true);
+        }
+        ficDwn.setFileName(dirDwn + QDir::separator() + fic);
+
+        if (ficDwn.open(QIODevice::WriteOnly)) {
+
+            QNetworkProxyFactory::setUseSystemConfiguration(true);
+            const QNetworkRequest requete(url);
+            if (!amajDeb)
+                rep = mng.get(requete);
+
+            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
+            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
+            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
+
+        } else {
+            const QString msg = tr("Erreur lors du tÃ©lÃ©chargement du fichier %1");
+            messagesStatut->setText(msg.arg(ficDwn.fileName()));
+        }
     }
 
     /* Retour */
@@ -5378,7 +5380,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
-    settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::convertSeparators(nomfic) : QDir::convertSeparators(ficgz));
+    settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::toNativeSeparators(nomfic) : QDir::toNativeSeparators(ficgz));
     settings.setValue("fichier/iridium", (ficTLEIri.count() > 0) ? ficTLEIri.at(0) : "");
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", ui->fichierALire->text());
@@ -5665,7 +5667,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
         const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
 
         const QString nomFicDefaut = nomRepDefaut + QDir::separator() + "previsat_" +
-                dateCourante.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
+                dateCourante.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
                 ui->tuc->text().remove(" ").remove(":");
 
         const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
@@ -5691,7 +5693,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             // Date actuelle
             dateCourante = Date(offsetUTC);
 
-            const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+            const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
 
             if (ui->dateHeure4->isVisible()) {
                 ui->dateHeure4->setDisplayFormat(fmt);
@@ -5710,10 +5712,10 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             ui->modeManuel->setChecked(true);
         const int sgn = (evt->key() == etape_av) ? -1 : 1;
 
-        const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.getJourJulien() +
+        const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.jourJulien() +
                                                                 sgn * ui->pasManuel->currentText().toDouble() *
                                                                 qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
-                                                                dateCourante.getJourJulien() + sgn * ui->pasManuel->currentText().
+                                                                dateCourante.jourJulien() + sgn * ui->pasManuel->currentText().
                                                                 toDouble();
 
         const Date date(jd + EPS_DATES, 0.);
@@ -5755,8 +5757,8 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
             const int yCur = evt->y() - ui->carte->y();
             for (int isat=0; isat<nbSat; isat++) {
 
-                const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+                const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                 // Distance au carre du curseur au satellite
                 const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -5788,7 +5790,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                     CalculsAffichage();
 
-                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() &&
+                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).tle().norad() == "25544" && !l1.isEmpty() &&
                             !l2.isEmpty() && !ui->ciel->isVisible();
                     ui->frameCoordISS->setVisible(affWCC);
                     ui->gmt->setVisible(affWCC);
@@ -5809,10 +5811,10 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                 for(int isat=0; isat<nbSat; isat++) {
 
-                    const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            sin(satellites.at(isat).getAzimut()));
-                    const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            cos(satellites.at(isat).getAzimut()));
+                    const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            sin(satellites.at(isat).azimut()));
+                    const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            cos(satellites.at(isat).azimut()));
 
                     // Distance au carre du satellite au curseur
                     const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -5859,10 +5861,10 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                 for(int isat=0; isat<nbSat; isat++) {
 
-                    const int lsat = qRound(-0.5 * ui->ciel->width() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            sin(satellites.at(isat).getAzimut()));
-                    const int bsat = qRound(-0.5 * ui->ciel->height() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            cos(satellites.at(isat).getAzimut()));
+                    const int lsat = qRound(-0.5 * ui->ciel->width() * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            sin(satellites.at(isat).azimut()));
+                    const int bsat = qRound(-0.5 * ui->ciel->height() * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            cos(satellites.at(isat).azimut()));
 
                     // Distance au carre du satellite au curseur
                     const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
@@ -5952,7 +5954,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
                 const double la0 = 90. - yCur / DEG2PXVT;
                 const QString nss = (la0 < 0.) ? tr("Sud") : tr("Nord");
 
-                const QString msg = " : %1° %2";
+                const QString msg = " : %1Â° %2";
                 messagesStatut2->setText(tr("Longitude") + msg.arg(fabs(lo0), 6, 'f', 2, QChar('0')).arg(ews));
                 messagesStatut3->setText(tr("Latitude") + msg.arg(fabs(la0), 5, 'f', 2, QChar('0')).arg(nss));
                 messagesStatut2->setVisible(true);
@@ -5960,16 +5962,16 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 for(int isat=0; isat<nbSat; isat++) {
 
-                    const int lsat = qRound((180. - satellites.at(isat).getLongitude() * RAD2DEG) * DEG2PXHZ);
-                    const int bsat = qRound((90. - satellites.at(isat).getLatitude() * RAD2DEG) * DEG2PXVT);
+                    const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur au satellite
                     const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
 
                     // Le curseur est au-dessus d'un satellite
                     if (dt <= 16 && !satellites.at(isat).isIeralt()) {
-                        const QString msg2 = tr("%1 (numéro NORAD : %2)");
-                        messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                        const QString msg2 = tr("%1 (numÃ©ro NORAD : %2)");
+                        messagesStatut->setText(msg2.arg(tles.at(isat).nom()).arg(tles.at(isat).norad()));
                         setToolTip(messagesStatut->text());
                         setCursor(Qt::CrossCursor);
                         break;
@@ -5982,8 +5984,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 if (ui->affsoleil->isChecked()) {
 
-                    const int lsol = qRound((180. - soleil.getLongitude() * RAD2DEG) * DEG2PXHZ);
-                    const int bsol = qRound((90. - soleil.getLatitude() * RAD2DEG) * DEG2PXVT);
+                    const int lsol = qRound((180. - soleil.longitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsol = qRound((90. - soleil.latitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur au Soleil
                     const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
@@ -6001,8 +6003,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 if (ui->afflune->isChecked()) {
 
-                    const int llun = qRound((180. - lune.getLongitude() * RAD2DEG) * DEG2PXHZ);
-                    const int blun = qRound((90. - lune.getLatitude() * RAD2DEG) * DEG2PXVT);
+                    const int llun = qRound((180. - lune.longitude() * RAD2DEG) * DEG2PXHZ);
+                    const int blun = qRound((90. - lune.latitude() * RAD2DEG) * DEG2PXVT);
 
                     // Distance au carre du curseur a la Lune
                     const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
@@ -6044,7 +6046,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
                     if (az < 0.)
                         az += T360;
 
-                    const QString msg = " : %1°";
+                    const QString msg = " : %1Â°";
                     messagesStatut2->setText(tr("Azimut") + msg.arg(fabs(az), 6, 'f', 2, QChar('0')));
                     messagesStatut3->setText(tr("Hauteur") + msg.arg(fabs(ht), 5, 'f', 2, QChar('0')));
                     messagesStatut2->setVisible(true);
@@ -6052,17 +6054,17 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                     for(int isat=0; isat<nbSat; isat++) {
 
-                        const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                                sin(satellites.at(isat).getAzimut()));
-                        const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                                cos(satellites.at(isat).getAzimut()));
+                        const int lsat = qRound(-100. * xf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                                sin(satellites.at(isat).azimut()));
+                        const int bsat = qRound(-100. * yf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                                cos(satellites.at(isat).azimut()));
 
                         const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
                         // Le curseur est au-dessus du satellite
                         if (dt <= 16 && !satellites.at(isat).isIeralt()) {
-                            QString msg2 = tr("%1 (numéro NORAD : %2)");
-                            messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                            QString msg2 = tr("%1 (numÃ©ro NORAD : %2)");
+                            messagesStatut->setText(msg2.arg(tles.at(isat).nom()).arg(tles.at(isat).norad()));
                             setToolTip(messagesStatut->text());
                             setCursor(Qt::CrossCursor);
                             break;
@@ -6076,8 +6078,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
                     // Soleil
                     if (ui->affsoleil->isChecked()) {
 
-                        const int lsol = qRound(-100. * xf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-                        const int bsol = qRound(-100. * yf * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+                        const int lsol = qRound(-100. * xf * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
+                        const int bsol = qRound(-100. * yf * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
 
                         const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
 
@@ -6095,8 +6097,8 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
                     // Lune
                     if (ui->afflune->isChecked()) {
 
-                        const int llun = qRound(-100. * xf * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
-                        const int blun = qRound(-100. * yf * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+                        const int llun = qRound(-100. * xf * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
+                        const int blun = qRound(-100. * yf * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
                         const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
 
@@ -6133,36 +6135,36 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 const double ch = cos(ht);
                 const Vecteur3D vec1(-cos(az) * ch, sin(az) * ch, sin(ht));
-                const Vecteur3D vec2(observateurs.at(0).getRotHz().Transposee() * vec1);
+                const Vecteur3D vec2(observateurs.at(0).rotHz().Transposee() * vec1);
 
                 // Declinaison
-                const double dec = asin(vec2.getZ());
+                const double dec = asin(vec2.z());
 
                 // Ascension droite
-                double ad = atan2(vec2.getY(), vec2.getX());
+                double ad = atan2(vec2.y(), vec2.x());
                 if (ad < 0.)
                     ad += DEUX_PI;
 
                 messagesStatut2->setText(tr("Ascension droite :") + " " +
                                          Maths::ToSexagesimal(ad, HEURE1, 2, 0, false, false).mid(0, 7));
-                messagesStatut3->setText(tr("Déclinaison :") + " " +
+                messagesStatut3->setText(tr("DÃ©clinaison :") + " " +
                                          Maths::ToSexagesimal(dec, DEGRE, 2, 0, true, false).mid(0, 7));
                 messagesStatut2->setVisible(true);
                 messagesStatut3->setVisible(true);
 
                 for(int isat=0; isat<nbSat; isat++) {
 
-                    const int lsat = qRound(-0.5 * ui->ciel->width() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            sin(satellites.at(isat).getAzimut()));
-                    const int bsat = qRound(-0.5 * ui->ciel->height() * (1. - satellites.at(isat).getHauteur() * DEUX_SUR_PI) *
-                                            cos(satellites.at(isat).getAzimut()));
+                    const int lsat = qRound(-0.5 * ui->ciel->width() * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            sin(satellites.at(isat).azimut()));
+                    const int bsat = qRound(-0.5 * ui->ciel->height() * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
+                                            cos(satellites.at(isat).azimut()));
 
                     // Distance au carre du satellite au curseur
                     const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
                     if (dt <= 16 && !satellites.at(isat).isIeralt()) {
-                        QString msg2 = tr("%1 (numéro NORAD : %2)");
-                        messagesStatut->setText(msg2.arg(tles.at(isat).getNom()).arg(tles.at(isat).getNorad()));
+                        QString msg2 = tr("%1 (numÃ©ro NORAD : %2)");
+                        messagesStatut->setText(msg2.arg(tles.at(isat).nom()).arg(tles.at(isat).norad()));
                         setToolTip(messagesStatut->text());
                         setCursor(Qt::CrossCursor);
                         break;
@@ -6177,21 +6179,21 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                     for(int ipla=MERCURE; ipla<=NEPTUNE; ipla++) {
 
-                        const int lpla = qRound(-0.5 * ui->ciel->width() * (1. - planetes.at(ipla).getHauteur() * DEUX_SUR_PI) *
-                                                sin(planetes.at(ipla).getAzimut()));
-                        const int bpla = qRound(-0.5 * ui->ciel->height() * (1. - planetes.at(ipla).getHauteur() * DEUX_SUR_PI) *
-                                                cos(planetes.at(ipla).getAzimut()));
+                        const int lpla = qRound(-0.5 * ui->ciel->width() * (1. - planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
+                                                sin(planetes.at(ipla).azimut()));
+                        const int bpla = qRound(-0.5 * ui->ciel->height() * (1. - planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
+                                                cos(planetes.at(ipla).azimut()));
 
                         // Distance au carre du Soleil au curseur
                         const int dt = (x1 - lpla) * (x1 - lpla) + (y1 - bpla) * (y1 - bpla);
 
                         // Le curseur est au-dessus d'une planete
                         if (dt <= 16) {
-                            messagesStatut->setText(planetes.at(ipla).getNom());
+                            messagesStatut->setText(planetes.at(ipla).nom());
                             setToolTip(messagesStatut->text());
                             setCursor(Qt::CrossCursor);
                         } else {
-                            if (messagesStatut->text().contains(planetes.at(ipla).getNom()))
+                            if (messagesStatut->text().contains(planetes.at(ipla).nom()))
                                 messagesStatut->setText("");
                         }
                     }
@@ -6199,10 +6201,10 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 if (ui->affsoleil->isChecked()) {
 
-                    const int lsol = qRound(-0.5 * ui->ciel->width() * (1. - soleil.getHauteur() * DEUX_SUR_PI) *
-                                            sin(soleil.getAzimut()));
-                    const int bsol = qRound(-0.5 * ui->ciel->height() * (1. - soleil.getHauteur() * DEUX_SUR_PI) *
-                                            cos(soleil.getAzimut()));
+                    const int lsol = qRound(-0.5 * ui->ciel->width() * (1. - soleil.hauteur() * DEUX_SUR_PI) *
+                                            sin(soleil.azimut()));
+                    const int bsol = qRound(-0.5 * ui->ciel->height() * (1. - soleil.hauteur() * DEUX_SUR_PI) *
+                                            cos(soleil.azimut()));
 
                     // Distance au carre du Soleil au curseur
                     const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
@@ -6220,10 +6222,10 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
                 if (ui->afflune->isChecked()) {
 
-                    const int llun = qRound(-0.5 * ui->ciel->width() * (1. - lune.getHauteur() * DEUX_SUR_PI) *
-                                            sin(lune.getAzimut()));
-                    const int blun = qRound(-0.5 * ui->ciel->height() * (1. - lune.getHauteur() * DEUX_SUR_PI) *
-                                            cos(lune.getAzimut()));
+                    const int llun = qRound(-0.5 * ui->ciel->width() * (1. - lune.hauteur() * DEUX_SUR_PI) *
+                                            sin(lune.azimut()));
+                    const int blun = qRound(-0.5 * ui->ciel->height() * (1. - lune.hauteur() * DEUX_SUR_PI) *
+                                            cos(lune.azimut()));
 
                     // Distance au carre de la Lune au curseur
                     const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
@@ -6244,7 +6246,7 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
 
     if (ui->listeFichiersTLE->underMouse()) {
         const QFileInfo fi(nomfic);
-        if (QDir::convertSeparators(fi.absolutePath()) != dirTle)
+        if (QDir::toNativeSeparators(fi.absolutePath()) != dirTle)
             ui->listeFichiersTLE->setToolTip(nomfic);
     }
 
@@ -6322,7 +6324,7 @@ void PreviSat::on_maximise_clicked()
         ui->frameListe->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred));
         ui->frameCarte->resize(width(), height() - 23);
         ui->maximise->setIcon(QIcon(":/resources/mini.png"));
-        ui->maximise->setToolTip(tr("Réduire"));
+        ui->maximise->setToolTip(tr("RÃ©duire"));
     } else {
 
         // Carte minimisee
@@ -6444,11 +6446,13 @@ void PreviSat::on_meteo_clicked()
     if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height())
         afficherMeteo->resize(xAff, yAff);
 
-    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+    afficherMeteo->setWindowTitle(QString("%1 %2 - MÃ©tÃ©o").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     viewMeteo = new QWebView;
     viewMeteo->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
     viewMeteo->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+    viewMeteo->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    viewMeteo->settings()->globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     viewMeteo->settings()->setObjectCacheCapacities(0, 0, 0);
     viewMeteo->triggerPageAction(QWebPage::ReloadAndBypassCache);
 
@@ -6463,7 +6467,7 @@ void PreviSat::on_meteo_clicked()
 
     // Affichage de la map
     QString map0;
-    const QString fic = dirDat + QDir::separator() + "meteo.map";
+    const QString fic = dirLocalData + QDir::separator() + "meteo.map";
     QFile fi(fic);
 
     if (fi.exists()) {
@@ -6473,8 +6477,8 @@ void PreviSat::on_meteo_clicked()
     }
     fi.close();
 
-    const QString lon(QString::number(-observateurs.at(0).getLongitude() * RAD2DEG));
-    const QString lat(QString::number(observateurs.at(0).getLatitude() * RAD2DEG));
+    const QString lon(QString::number(-observateurs.at(0).longitude() * RAD2DEG));
+    const QString lat(QString::number(observateurs.at(0).latitude() * RAD2DEG));
     map0 = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
             .replace("UNITE_TEMP", (ui->unitesKm->isChecked()) ? "C" : "F")
             .replace("UNITE_VENT", (ui->unitesKm->isChecked()) ? "kmh" : "mph");
@@ -6486,8 +6490,7 @@ void PreviSat::on_meteo_clicked()
     fi2.close();
 
     // Chargement de la meteo
-    QUrl url(fi2.fileName());
-    url.setScheme("");
+    const QUrl url("file:///" + fi2.fileName());
 
     viewMeteo->load(url);
     afficherMeteo->setCentralWidget(viewMeteo);
@@ -6539,7 +6542,7 @@ void PreviSat::on_meteoBasesNASA_clicked()
     if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height())
         afficherMeteo->resize(xAff, yAff);
 
-    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo des bases de la NASA").arg(QCoreApplication::applicationName())
+    afficherMeteo->setWindowTitle(QString("%1 %2 - MÃ©tÃ©o des bases de la NASA").arg(QCoreApplication::applicationName())
                                   .arg(QString(APPVER_MAJ)));
 
     viewMeteoNASA = new QWebView;
@@ -6558,9 +6561,8 @@ void PreviSat::on_meteoBasesNASA_clicked()
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
     // Chargement de la meteo
-    const QString fic("file:///" + dirDat + QDir::separator() + "meteoNASA.html");
-    QUrl url(fic);
-    url.setScheme("");
+    const QString fic("file:///" + dirLocalData + QDir::separator() + "meteoNASA.html");
+    const QUrl url(fic);
 
     viewMeteoNASA->load(url);
     afficherMeteo->setCentralWidget(viewMeteoNASA);
@@ -6621,7 +6623,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->coordGeo3->setVisible(false);
         ui->coordGeo4->setVisible(false);
         ui->radar->setVisible(false);
-        ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
+        ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidÃ©o"));
 
         ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -6646,7 +6648,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->fluxVideo->setVisible(checked);
 
     // Affichage du blackboard
-    const bool tstSat = (satellites.isEmpty()) ? false : satellites.at(0).getTle().getNorad() == "25544";
+    const bool tstSat = (satellites.isEmpty()) ? false : satellites.at(0).tle().norad() == "25544";
     if (checked && tstSat && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
         ui->frameCoordISS->setVisible(true);
         ui->frameLat2->setVisible(true);
@@ -6683,14 +6685,14 @@ void PreviSat::on_fluxVideo_clicked()
     /* Corps de la methode */
     try {
 
-        const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
+        const QString fic = QString("file:///" + dirLocalData + "/ISS-Live%1.html").arg(ui->chaine->value()).replace("\\", "/");
 
         // Verification de la connexion
         QTcpSocket socket;
         socket.connectToHost(QCoreApplication::organizationDomain().remove("http://").remove("/"), 80);
         if (!socket.waitForConnected(1000))
-            throw PreviSatException(tr("Impossible de lancer le flux vidéo : " \
-                                       "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
+            throw PreviSatException(tr("Impossible de lancer le flux vidÃ©o : " \
+                                       "essayez de nouveau et/ou vÃ©rifiez votre connexion Internet"), WARNING);
 
         setCursor(Qt::ArrowCursor);
 
@@ -6707,8 +6709,7 @@ void PreviSat::on_fluxVideo_clicked()
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
         // Chargement de la video
-        QUrl url(fic);
-        url.setScheme("");
+        const QUrl url(fic);
 
         viewLiveISSWin = new QWebView(ui->fluxVideoHtml);
         viewLiveISSWin->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -6758,9 +6759,8 @@ void PreviSat::on_agrandirVideo_clicked()
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
         // Chargement de la video
-        const QString fic = ("file:///" + dirDat + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
-        QUrl url(fic);
-        url.setScheme("");
+        const QString fic = ("file:///" + dirLocalData + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
+        const QUrl url(fic);
 
         viewLiveISS = new QWebView;
         viewLiveISS->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -6793,7 +6793,7 @@ void PreviSat::on_fermerVideo_clicked()
     ui->frameCtrlVideo->setVisible(false);
     ui->lbl_chaine->setVisible(false);
     ui->chaine->setVisible(false);
-    ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
+    ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidÃ©o"));
     ui->fluxVideo->raise();
     QPalette pal;
     pal.setColor(QPalette::Base, palette().background().color());
@@ -6871,7 +6871,7 @@ void PreviSat::on_directHelp_clicked()
                                    arg(QCoreApplication::applicationName()).arg(localePreviSat))) {
         const QFileInfo fi(aide);
         const QString msg = tr("Impossible d'ouvrir le fichier d'aide %1");
-        Messages::Afficher(msg.arg(fi.fileName()), WARNING);
+        Message::Afficher(msg.arg(fi.fileName()), WARNING);
     }
 
     /* Retour */
@@ -6882,7 +6882,7 @@ void PreviSat::on_directHelp_clicked()
 /*
  * Menu deroulant
  */
-void PreviSat::on_actionOuvrir_fichier_TLE_activated()
+void PreviSat::on_actionOuvrir_fichier_TLE_triggered()
 {
     /* Declarations des variables locales */
 
@@ -6909,7 +6909,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_activated()
     return;
 }
 
-void PreviSat::on_actionEnregistrer_activated()
+void PreviSat::on_actionEnregistrer_triggered()
 {
     /* Declarations des variables locales */
 
@@ -6958,7 +6958,7 @@ void PreviSat::on_actionEnregistrer_activated()
     return;
 }
 
-void PreviSat::on_actionImprimer_carte_activated()
+void PreviSat::on_actionImprimer_carte_triggered()
 {
     /* Declarations des variables locales */
     QPrinter printer;
@@ -7113,28 +7113,27 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     return;
 }
 
-void PreviSat::on_actionFichier_d_aide_activated(int arg1)
+void PreviSat::on_actionFichier_d_aide_triggered()
 {
-    Q_UNUSED(arg1)
     on_directHelp_clicked();
 }
 
-void PreviSat::on_actionAstropedia_free_fr_activated()
+void PreviSat::on_actionAstropedia_free_fr_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/"));
 }
 
-void PreviSat::on_actionTelecharger_la_mise_a_jour_activated()
+void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://sourceforge.net/projects/previsat/files/latest/download"));
 }
 
-void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
+void PreviSat::on_actionMettre_jour_fichiers_internes_triggered()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    dirDwn = dirDat;
+    dirDwn = dirLocalData;
     atrouve = false;
     aupdnow = false;
     const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
@@ -7157,27 +7156,26 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_activated()
     return;
 }
 
-void PreviSat::on_actionRapport_de_bug_activated()
+void PreviSat::on_actionRapport_de_bug_triggered()
 {
     QDesktopServices::openUrl(QUrl(QCoreApplication::organizationDomain() + "rapport.html"));
 }
 
-void PreviSat::on_actionWww_celestrak_com_activated()
+void PreviSat::on_actionWww_celestrak_com_triggered()
 {
     QDesktopServices::openUrl(QUrl(adresseCelestrak));
 }
 
-void PreviSat::on_actionWww_space_track_org_activated()
+void PreviSat::on_actionWww_space_track_org_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://www.space-track.org"));
 }
 
-void PreviSat::on_actionA_propos_activated(int arg1)
+void PreviSat::on_actionA_propos_triggered()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     Apropos * const apropos = new Apropos;
@@ -7202,10 +7200,10 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     if (ui->listeFichiersTLE->itemText(ui->listeFichiersTLE->count() - 1) == tr("Parcourir...")) {
 
         if (index == ui->listeFichiersTLE->count() - 1) {
-            on_actionOuvrir_fichier_TLE_activated();
+            on_actionOuvrir_fichier_TLE_triggered();
         } else {
-            ui->listeFichiersTLE->setItemData(idxf, Qt::white, Qt::BackgroundRole);
-            ui->listeFichiersTLE->setItemData(index, Qt::gray, Qt::BackgroundRole);
+            ui->listeFichiersTLE->setItemData(idxf, QColor(Qt::white), Qt::BackgroundRole);
+            ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
             OuvertureFichierTLE(ficTLE.at(index));
             idxf = index;
         }
@@ -7215,7 +7213,7 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     return;
 }
 
-void PreviSat::on_actionDefinir_par_defaut_activated()
+void PreviSat::on_actionDefinir_par_defaut_triggered()
 {
     /* Declarations des variables locales */
 
@@ -7272,7 +7270,7 @@ void PreviSat::on_actionDefinir_par_defaut_activated()
     return;
 }
 
-void PreviSat::on_actionNouveau_fichier_TLE_activated()
+void PreviSat::on_actionNouveau_fichier_TLE_triggered()
 {
     /* Declarations des variables locales */
 
@@ -7290,10 +7288,10 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
 
     for(int j=0; j<nbSat; j++) {
         for(int i=0; i<nbSat; i++) {
-            if (tles.at(i).getNorad() == listeSat.at(j)) {
-                flux << tles.at(i).getNom()    << endl <<
-                        tles.at(i).getLigne1() << endl <<
-                        tles.at(i).getLigne2() << endl;
+            if (tles.at(i).norad() == listeSat.at(j)) {
+                flux << tles.at(i).nom()    << endl <<
+                        tles.at(i).ligne1() << endl <<
+                        tles.at(i).ligne2() << endl;
                 break;
             }
         }
@@ -7302,13 +7300,13 @@ void PreviSat::on_actionNouveau_fichier_TLE_activated()
 
     InitFicTLE();
 
-    const QString msg = tr("Fichier %1 créé");
+    const QString msg = tr("Fichier %1 crÃ©Ã©");
     messagesStatut->setText(msg.arg(fichier.fileName()));
 
     /* Retour */
     return;
 }
-void PreviSat::on_actionFichier_TLE_existant_activated()
+void PreviSat::on_actionFichier_TLE_existant_triggered()
 {
     /* Declarations des variables locales */
 
@@ -7338,15 +7336,15 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         for(int i=0; i<listeTLE.size(); i++) {
             bool atrouve2 = false;
             for(int j=0; j<nsat; j++) {
-                if (listeTLE.at(i) == tabtle.at(j).getNorad()) {
+                if (listeTLE.at(i) == tabtle.at(j).norad()) {
                     atrouve2 = true;
                     break;
                 }
             }
             if (!atrouve2) {
-                flux << tles.at(i).getNom()    << endl <<
-                        tles.at(i).getLigne1() << endl <<
-                        tles.at(i).getLigne2() << endl;
+                flux << tles.at(i).nom()    << endl <<
+                        tles.at(i).ligne1() << endl <<
+                        tles.at(i).ligne2() << endl;
             }
         }
         fichier.close();
@@ -7360,7 +7358,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         tabtle.resize(nsat);
         TLE::LectureFichier(ficTmp, listeSat, tabtle);
         for(int i=0; i<nsat; i++)
-            listeSat.append(tabtle.at(i).getNorad());
+            listeSat.append(tabtle.at(i).norad());
 
         listeSat.sort();
 
@@ -7369,10 +7367,10 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
 
         for(int j=0; j<nsat; j++) {
             for(int i=0; i<nsat; i++) {
-                if (tabtle.at(i).getNorad() == listeSat.at(j)) {
-                    flux2 << tabtle.at(i).getNom()    << endl <<
-                             tabtle.at(i).getLigne1() << endl <<
-                             tabtle.at(i).getLigne2() << endl;
+                if (tabtle.at(i).norad() == listeSat.at(j)) {
+                    flux2 << tabtle.at(i).nom()    << endl <<
+                             tabtle.at(i).ligne1() << endl <<
+                             tabtle.at(i).ligne2() << endl;
                     break;
                 }
             }
@@ -7382,7 +7380,7 @@ void PreviSat::on_actionFichier_TLE_existant_activated()
         QFile fi2(ficTmp);
         fi2.remove();
 
-        const QString msg = tr("Fichier %1 augmenté de nouveaux satellites");
+        const QString msg = tr("Fichier %1 augmentÃ© de nouveaux satellites");
         messagesStatut->setText(msg.arg(fichier.fileName()));
 
     } catch (PreviSatException &e) {
@@ -7401,7 +7399,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
     QFile fi(nomfic);
     if (!fi.exists()) {
         const QString msg = tr("Le fichier %1 n'existe pas");
-        Messages::Afficher(msg.arg(nomfic), WARNING);
+        Message::Afficher(msg.arg(nomfic), WARNING);
 
         // Remplissage du premier element du tableau de TLE avec le satellite en memoire
         nbSat = 0;
@@ -7469,15 +7467,15 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
 
         if (satellites.at(0).isIeralt() && ui->liste1->currentItem()->checkState() == Qt::Checked) {
             chronometre->stop();
-            const QString msg = tr("Erreur rencontrée lors de l'exécution\n" \
-                                   "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
-            Messages::Afficher(msg.arg(tles.at(0).getNom()).arg(tles.at(0).getNorad()), WARNING);
+            const QString msg = tr("Erreur rencontrÃ©e lors de l'exÃ©cution\n" \
+                                   "La position du satellite %1 (numÃ©ro NORAD : %2) ne peut pas Ãªtre calculÃ©e (altitude nÃ©gative)");
+            Message::Afficher(msg.arg(tles.at(0).nom()).arg(tles.at(0).norad()), WARNING);
             chronometre->start();
             l1 = "";
             l2 = "";
         }
 
-        if (ui->mccISS->isChecked() && satellites.at(0).getTle().getNorad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
+        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == "25544" && !l1.isEmpty() && !l2.isEmpty() &&
                 !ui->ciel->isVisible()) {
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
@@ -7525,7 +7523,7 @@ void PreviSat::on_liste1_entered(const QModelIndex &index)
     const QString nomsat = sat.at(0).trimmed();
     const QString norad = sat.at(1);
     if (nomsat != norad) {
-        const QString msg = tr("%1 (numéro NORAD : %2)");
+        const QString msg = tr("%1 (numÃ©ro NORAD : %2)");
         ui->liste1->setToolTip(msg.arg(nomsat).arg(norad));
         messagesStatut->setText(ui->liste1->toolTip());
     }
@@ -7667,7 +7665,7 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
+                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.offsetUTC());
 
     if (ui->modeManuel->isChecked()) {
         info = true;
@@ -7696,7 +7694,7 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
 
     /* Corps de la methode */
     dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.getOffsetUTC());
+                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.offsetUTC());
 
     ui->dateHeure3->setDateTime(date);
 
@@ -8295,12 +8293,11 @@ void PreviSat::on_policeWCC_currentIndexChanged(int index)
 /*
  * Gestion des lieux d'observation
  */
-void PreviSat::on_actionCreer_une_categorie_activated(int arg1)
+void PreviSat::on_actionCreer_une_categorie_triggered()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     ui->nouvelleCategorie->setVisible(true);
@@ -8315,32 +8312,31 @@ void PreviSat::on_actionCreer_une_categorie_activated(int arg1)
 
 void PreviSat::on_creationCategorie_clicked()
 {
-    on_actionCreer_une_categorie_activated(0);
+    on_actionCreer_une_categorie_triggered();
 }
 
-void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
+void PreviSat::on_actionSupprimerCategorie_triggered()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
     const QString categorie = ui->fichiersObs->currentItem()->text();
-    QString msg = tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?");
+    QString msg = tr("Voulez-vous vraiment supprimer la catÃ©gorie \"%1\"?");
     const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(categorie), QMessageBox::Yes | QMessageBox::No,
                                           QMessageBox::No);
 
     if (res == QMessageBox::No) {
         messagesStatut->setText("");
     } else {
-        QFile fi(dirCoo + QDir::separator() + fic);
+        QFile fi(dirCoord + QDir::separator() + fic);
         fi.remove();
         ui->lieuxObs->clear();
         InitFicObs(false);
         ui->fichiersObs->setCurrentRow(0);
-        msg = tr("La catégorie \"%1\" a été supprimée");
+        msg = tr("La catÃ©gorie \"%1\" a Ã©tÃ© supprimÃ©e");
         messagesStatut->setText(msg.arg(categorie));
     }
 
@@ -8348,12 +8344,11 @@ void PreviSat::on_actionSupprimerCategorie_activated(int arg1)
     return;
 }
 
-void PreviSat::on_actionTelechargerCategorie_activated(int arg1)
+void PreviSat::on_actionTelechargerCategorie_triggered()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(arg1)
 
     /* Corps de la methode */
     Telecharger * const telecharger = new Telecharger(1);
@@ -8377,7 +8372,7 @@ void PreviSat::on_validerCategorie_clicked()
 
     /* Corps de la methode */
     if (ui->nvCategorie->text().trimmed().isEmpty()) {
-        Messages::Afficher(tr("Le nom de la catégorie n'est pas spécifié"), WARNING);
+        Message::Afficher(tr("Le nom de la catÃ©gorie n'est pas spÃ©cifiÃ©"), WARNING);
     } else {
         int cpt = 0;
         for(int i=0; i<ui->fichiersObs->count(); i++) {
@@ -8385,11 +8380,11 @@ void PreviSat::on_validerCategorie_clicked()
                 cpt++;
         }
         if (cpt == 0) {
-            QDir di(dirCoo);
+            QDir di(dirCoord);
             if (!di.exists())
-                di.mkdir(dirCoo);
+                di.mkdir(dirCoord);
 
-            QFile fi(dirCoo + QDir::separator() + ui->nvCategorie->text().toLower());
+            QFile fi(dirCoord + QDir::separator() + ui->nvCategorie->text().toLower());
             fi.open(QIODevice::WriteOnly | QIODevice::Text);
             fi.write("");
             fi.close();
@@ -8397,11 +8392,11 @@ void PreviSat::on_validerCategorie_clicked()
 
             if (ui->fichiersObs->count() > 0)
                 ui->fichiersObs->setCurrentRow(0);
-            messagesStatut->setText(tr("La nouvelle catégorie de lieux d'observation a été créée"));
+            messagesStatut->setText(tr("La nouvelle catÃ©gorie de lieux d'observation a Ã©tÃ© crÃ©Ã©e"));
             ui->nouvelleCategorie->setVisible(false);
 
         } else {
-            Messages::Afficher(tr("La catégorie spécifiée existe déjà"), WARNING);
+            Message::Afficher(tr("La catÃ©gorie spÃ©cifiÃ©e existe dÃ©jÃ "), WARNING);
         }
     }
 
@@ -8409,7 +8404,7 @@ void PreviSat::on_validerCategorie_clicked()
     return;
 }
 
-void PreviSat::on_actionRenommerCategorie_activated()
+void PreviSat::on_actionRenommerCategorie_triggered()
 {
     /* Declarations des variables locales */
     bool ok;
@@ -8417,12 +8412,12 @@ void PreviSat::on_actionRenommerCategorie_activated()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString nvNomCateg = QInputDialog::getText(0, tr("Catégorie"), tr("Nouveau nom de la catégorie :"),
+    const QString nvNomCateg = QInputDialog::getText(0, tr("CatÃ©gorie"), tr("Nouveau nom de la catÃ©gorie :"),
                                                      QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), &ok);
 
     if (ok && !nvNomCateg.trimmed().isEmpty()) {
-        QFile fi(dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text().toLower());
-        fi.rename(dirCoo + QDir::separator() + nvNomCateg.trimmed().toLower());
+        QFile fi(dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text().toLower());
+        fi.rename(dirCoord + QDir::separator() + nvNomCateg.trimmed().toLower());
         InitFicObs(false);
     }
 
@@ -8522,7 +8517,7 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
         ui->actionRenommerLieu->setVisible(true);
         ui->actionModifier_coordonnees->setVisible(true);
         ui->actionSupprimerLieu->setVisible(true);
-        const QFileInfo fi(dirCoo + QDir::separator() + "aapreferes");
+        const QFileInfo fi(dirCoord + QDir::separator() + "aapreferes");
         ui->actionAjouter_Mes_Preferes->setVisible(fi.exists() ? ui->fichiersObs->currentRow() > 0 :
                                                                  ui->fichiersObs->currentRow() >= 0);
     }
@@ -8546,7 +8541,7 @@ void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &position)
         ui->menuContextuelLieuxSelec->exec(QCursor::pos());
 }
 
-void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
+void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
 {
     /* Declarations des variables locales */
 
@@ -8557,8 +8552,8 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
     ui->nouveauLieu->setVisible(true);
     ui->coordonnees->setVisible(false);
     ui->nvLieu->setText("");
-    ui->nvLongitude->setText("000°00'00\"");
-    ui->nvLatitude->setText("000°00'00\"");
+    ui->nvLongitude->setText("000Â°00'00\"");
+    ui->nvLatitude->setText("000Â°00'00\"");
     ui->nvAltitude->setText("0000");
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->lbl_ajouterDans->setVisible(true);
@@ -8573,10 +8568,10 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_activated()
 
 void PreviSat::on_creationLieu_clicked()
 {
-    on_actionCreer_un_nouveau_lieu_activated();
+    on_actionCreer_un_nouveau_lieu_triggered();
 }
 
-void PreviSat::on_actionAjouter_Mes_Preferes_activated()
+void PreviSat::on_actionAjouter_Mes_Preferes_triggered()
 {
     /* Declarations des variables locales */
 
@@ -8584,7 +8579,7 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
     QString fic = ficObs.at(0);
     if (!fic.contains("aapreferes")) {
         // Le fichier aapreferes n'existe pas, on le cree
-        ficObs.insert(0, dirCoo + QDir::separator() + "aapreferes");
+        ficObs.insert(0, dirCoord + QDir::separator() + "aapreferes");
         fic = ficObs.at(0);
 
         QFile fi(fic);
@@ -8609,8 +8604,8 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
     }
 
     if (atrouve2) {
-        const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
-        Messages::Afficher(msg.arg(nomlieu.split("#").at(0)), WARNING);
+        const QString msg = tr("Le lieu d'observation \"%1\" fait dÃ©jÃ  partie de \"Mes PrÃ©fÃ©rÃ©s\"");
+        Message::Afficher(msg.arg(nomlieu.split("#").at(0)), WARNING);
     } else {
 
         const QStringList lieux = nomlieu.split("#");
@@ -8626,7 +8621,7 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
         flux2 << ligne << endl;
         fich.close();
 
-        const QString msg = tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"");
+        const QString msg = tr("Le lieu d'observation \"%1\" a Ã©tÃ© ajoutÃ© dans la catÃ©gorie \"Mes PrÃ©fÃ©rÃ©s\"");
         messagesStatut->setText(msg.arg(lieu.at(0).toUpper() + lieu.mid(1)));
     }
 
@@ -8634,7 +8629,7 @@ void PreviSat::on_actionAjouter_Mes_Preferes_activated()
     return;
 }
 
-void PreviSat::on_actionModifier_coordonnees_activated()
+void PreviSat::on_actionModifier_coordonnees_triggered()
 {
     /* Declarations des variables locales */
 
@@ -8670,8 +8665,8 @@ void PreviSat::on_actionModifier_coordonnees_activated()
             arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0')).arg(lieu.at(0)).trimmed();
 
     const QString fic = (ui->fichiersObs->currentRow() == 0) ?
-                dirCoo + QDir::separator() + "aapreferes" :
-                dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text();
+                dirCoord + QDir::separator() + "aapreferes" :
+                dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text();
 
     QFile sr(fic);
     sr.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -8709,7 +8704,7 @@ void PreviSat::on_validerObs_clicked()
     try {
         QString nomlieu = ui->nvLieu->text().trimmed();
         if (nomlieu.isEmpty()) {
-            throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spÃ©cifiÃ©"), WARNING);
         } else {
 
             nomlieu[0] = nomlieu.at(0).toUpper();
@@ -8746,7 +8741,7 @@ void PreviSat::on_validerObs_clicked()
             while (!flux.atEnd()) {
                 const QString ligne = flux.readLine();
                 if (ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed() && ui->ajdfic->isVisible()) {
-                    const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
+                    const QString msg = tr("Le lieu existe dÃ©jÃ  dans la catÃ©gorie \"%1\"");
                     throw PreviSatException(msg.arg(ui->ajdfic->currentText()), WARNING);
                 }
             }
@@ -8776,7 +8771,7 @@ void PreviSat::on_annulerObs_clicked()
     ui->nouveauLieu->setVisible(false);
 }
 
-void PreviSat::on_actionRenommerLieu_activated()
+void PreviSat::on_actionRenommerLieu_triggered()
 {
     /* Declarations des variables locales */
     bool ok;
@@ -8790,8 +8785,8 @@ void PreviSat::on_actionRenommerLieu_activated()
     if (ok && !nvNomLieu.trimmed().isEmpty()) {
 
         const QString fic = (ui->fichiersObs->currentRow() == 0) ?
-                    dirCoo + QDir::separator() + "aapreferes" :
-                    dirCoo + QDir::separator() + ui->fichiersObs->currentItem()->text();
+                    dirCoord + QDir::separator() + "aapreferes" :
+                    dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text();
 
         QFile sr(fic);
         sr.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -8820,7 +8815,7 @@ void PreviSat::on_actionRenommerLieu_activated()
     return;
 }
 
-void PreviSat::on_actionSupprimerLieu_activated()
+void PreviSat::on_actionSupprimerLieu_triggered()
 {
     /* Declarations des variables locales */
 
@@ -8829,7 +8824,7 @@ void PreviSat::on_actionSupprimerLieu_activated()
     /* Corps de la methode */
     const QString fic = ficObs.at(ui->fichiersObs->currentRow());
     const QString nomlieu = ui->lieuxObs->currentItem()->text();
-    const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catégorie \"%2\"?");
+    const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catÃ©gorie \"%2\"?");
     const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()),
                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
@@ -8865,7 +8860,7 @@ void PreviSat::on_actionSupprimerLieu_activated()
         sw.rename(fic);
         on_fichiersObs_currentRowChanged(0);
         selec = -1;
-        const QString msg3 = tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"");
+        const QString msg3 = tr("Le lieu d'observation \"%1\" a Ã©tÃ© supprimÃ© de la catÃ©gorie \"%2\"");
         messagesStatut->setText(msg3.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()));
     } else {
         messagesStatut->setText("");
@@ -8875,7 +8870,7 @@ void PreviSat::on_actionSupprimerLieu_activated()
     return;
 }
 
-void PreviSat::on_actionSupprimerLieuSelec_activated()
+void PreviSat::on_actionSupprimerLieuSelec_triggered()
 {
     on_supprLieu_clicked();
 }
@@ -8891,7 +8886,7 @@ void PreviSat::on_ajoutLieu_clicked()
         if (ui->lieuxObs->currentRow() >= 0) {
             for(int i=0; i<ui->selecLieux->count(); i++) {
                 if (ui->selecLieux->item(i)->text() == ui->lieuxObs->currentItem()->text()) {
-                    messagesStatut->setText(tr("Lieu d'observation déjà sélectionné"));
+                    messagesStatut->setText(tr("Lieu d'observation dÃ©jÃ  sÃ©lectionnÃ©"));
                     throw PreviSatException();
                 }
             }
@@ -8956,7 +8951,7 @@ void PreviSat::on_barreMenu_pressed()
                                       ui->onglets->currentIndex() < 1);
 }
 
-void PreviSat::on_onglets_currentChanged(QWidget *arg1)
+void PreviSat::on_onglets_currentChanged(int index)
 {
     /* Declarations des variables locales */
 
@@ -8967,16 +8962,16 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
-    if (arg1 == ui->osculateurs) {
+    if (index == ui->onglets->indexOf(ui->osculateurs)) {
 
         if (ui->modeManuel->isChecked()) {
             ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
             ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
         }
 
-    } else if (arg1 == ui->previsions) {
+    } else if (index == ui->onglets->indexOf(ui->previsions)) {
 
-        const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
         ui->dateInitialePrev->setDisplayFormat(fmt);
         ui->dateFinalePrev->setDateTime(ui->dateInitialePrev->dateTime().addDays(7));
@@ -8986,9 +8981,9 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
         ui->calculsPrev->setDefault(true);
         ui->calculsPrev->setFocus();
 
-    } else if (arg1 == ui->iridium) {
+    } else if (index == ui->onglets->indexOf(ui->iridium)) {
 
-        const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeIri->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeIri->setDisplayFormat(fmt);
         ui->dateFinaleIri->setDateTime(ui->dateInitialeIri->dateTime().addDays(7));
@@ -9031,7 +9026,7 @@ void PreviSat::on_onglets_currentChanged(QWidget *arg1)
     return;
 }
 
-void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
+void PreviSat::on_ongletsOutils_currentChanged(int index)
 {
     /* Declarations des variables locales */
 
@@ -9039,8 +9034,8 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
     const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
-    if (arg1 == ui->evenementsOrbitaux) {
-        const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+    if (index == ui->ongletsOutils->indexOf(ui->evenementsOrbitaux)) {
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeEvt->setDisplayFormat(fmt);
         ui->dateFinaleEvt->setDateTime(ui->dateInitialeEvt->dateTime().addDays(7));
@@ -9050,8 +9045,8 @@ void PreviSat::on_ongletsOutils_currentChanged(QWidget *arg1)
         ui->calculsEvt->setDefault(true);
         ui->calculsEvt->setFocus();
 
-    } else if (arg1 == ui->transitsISS) {
-        const Date date(dateCourante.getJourJulien() + EPS_DATES, 0.);
+    } else if (index == ui->ongletsOutils->indexOf(ui->transitsISS)) {
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeTransit->setDisplayFormat(fmt);
         ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(7));
@@ -9101,7 +9096,7 @@ void PreviSat::on_majMaintenant_clicked()
 
     /* Corps de la methode */
     // Telechargement des fichiers
-    QFile fi(dirDat + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
+    QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
@@ -9145,7 +9140,7 @@ void PreviSat::on_parcourirMaj1_clicked()
                                                    settings.value("fichier/fichierMaj", dirTle).toString(),
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
+        fichier = QDir::toNativeSeparators(fichier);
         ui->fichierAMettreAJour->setText(fichier);
     }
 
@@ -9165,7 +9160,7 @@ void PreviSat::on_parcourirMaj2_clicked()
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
                                                       "Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
+        fichier = QDir::toNativeSeparators(fichier);
         ui->fichierALire->setText(fichier);
     }
 
@@ -9187,10 +9182,10 @@ void PreviSat::on_mettreAJourTLE_clicked()
     try {
         bool agz = false;
         if (ui->fichierAMettreAJour->text().isEmpty())
-            throw PreviSatException(tr("Le nom du fichier à mettre à jour n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier Ã  mettre Ã  jour n'est pas spÃ©cifiÃ©"), WARNING);
 
         if (ui->fichierALire->text().isEmpty())
-            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier Ã  lire n'est pas spÃ©cifiÃ©"), WARNING);
 
         // Fichier a lire au format gz
         QFileInfo fi(ui->fichierALire->text());
@@ -9204,16 +9199,16 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
                 const int nsat = TLE::VerifieFichier(fic, false);
                 if (nsat == 0) {
-                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                     throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
                 }
                 agz = true;
             } else {
-                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                 throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
             }
         } else {
-            fic = QDir::convertSeparators(fi.absoluteFilePath());
+            fic = QDir::toNativeSeparators(fi.absoluteFilePath());
         }
 
         const QStringList listeFic(QStringList () << ui->fichierAMettreAJour->text() << fic);
@@ -9237,7 +9232,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
             fich.remove();
         }
 
-        messagesStatut->setText(tr("Terminé !"));
+        messagesStatut->setText(tr("TerminÃ© !"));
         ui->compteRenduMaj->setVisible(true);
 
         if (nomfic == ui->fichierAMettreAJour->text().trimmed() && aecr) {
@@ -9245,8 +9240,8 @@ void PreviSat::on_mettreAJourTLE_clicked()
             // Recuperation des TLE de la liste
             TLE::LectureFichier(nomfic, listeTLE, tles);
 
-            l1 = tles.at(0).getLigne1();
-            l2 = tles.at(0).getLigne2();
+            l1 = tles.at(0).ligne1();
+            l2 = tles.at(0).ligne2();
 
             if (nbSat > 0) {
 
@@ -9288,7 +9283,7 @@ void PreviSat::on_compteRenduMaj_customContextMenuRequested(const QPoint &positi
     ui->menuContextuelCompteRenduMaj->exec(QCursor::pos());
 }
 
-void PreviSat::on_actionCopier_dans_le_presse_papier_activated()
+void PreviSat::on_actionCopier_dans_le_presse_papier_triggered()
 {
     /* Declarations des variables locales */
 
@@ -9343,7 +9338,7 @@ void PreviSat::on_parcourir1CreerTLE_clicked()
                                                    tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
                                                       "Tous les fichiers (*)"));
     if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
+        fichier = QDir::toNativeSeparators(fichier);
         ui->fichierALireCreerTLE->setText(fichier);
     }
 
@@ -9368,7 +9363,7 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
                                                    tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
 
     if (!fichier.isEmpty()) {
-        fichier = QDir::convertSeparators(fichier);
+        fichier = QDir::toNativeSeparators(fichier);
         ui->nomFichierPerso->setText(fichier);
 
         const QFileInfo fi(fichier);
@@ -9389,10 +9384,10 @@ void PreviSat::on_rechercheCreerTLE_clicked()
     /* Corps de la methode */
     try {
         if (ui->fichierALireCreerTLE->text().isEmpty())
-            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier Ã  lire n'est pas spÃ©cifiÃ©"), WARNING);
 
         if (ui->nomFichierPerso->text().isEmpty())
-            throw PreviSatException(tr("Le nom du fichier personnel n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier personnel n'est pas spÃ©cifiÃ©"), WARNING);
 
         // Fichier a lire
         QString ficlu = ui->fichierALireCreerTLE->text();
@@ -9409,12 +9404,12 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 
                     const int nsat = TLE::VerifieFichier(fic, false);
                     if (nsat == 0) {
-                        const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                        const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                         throw PreviSatException(msg.arg(ficlu), WARNING);
                     }
                     ficlu = fic;
                 } else {
-                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    const QString msg = tr("Erreur rencontrÃ©e lors de la dÃ©compression du fichier %1");
                     throw PreviSatException(msg.arg(ficlu), WARNING);
                 }
             }
@@ -9479,7 +9474,7 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         // Verification du fichier TLE
         const int nbs = TLE::VerifieFichier(ficlu, false);
         if (nbs == 0) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier %1");
+            const QString msg = tr("Erreur rencontrÃ©e lors du chargement du fichier %1");
             throw PreviSatException(msg.arg(ficlu), WARNING);
         }
 
@@ -9492,7 +9487,7 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         QVectorIterator<TLE> it(tabtle);
         while (it.hasNext()) {
             const TLE tle = it.next();
-            listeSat.append(tle.getNorad());
+            listeSat.append(tle.norad());
             sats.append(Satellite(tle));
         }
 
@@ -9502,7 +9497,7 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         QFile sw(ui->nomFichierPerso->text());
         sw.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
+            const QString msg = tr("ProblÃ¨me de droits d'Ã©criture du fichier %1");
             throw PreviSatException(msg.arg(sw.fileName()), WARNING);
         }
         QTextStream flux(&sw);
@@ -9510,33 +9505,33 @@ void PreviSat::on_rechercheCreerTLE_clicked()
         for(int isat=0; isat<nbs; isat++) {
 
             // Numero NORAD
-            const int norad = tabtle.at(isat).getNorad().toInt();
+            const int norad = tabtle.at(isat).norad().toInt();
             bool aecr = (norad >= nrdmin && norad <= nrdmax);
 
             // Ascension droite du noeud ascendant
-            aecr = aecr && (tabtle.at(isat).getOmegao() >= ascmin && tabtle.at(isat).getOmegao() <= ascmax);
+            aecr = aecr && (tabtle.at(isat).omegao() >= ascmin && tabtle.at(isat).omegao() <= ascmax);
 
             // Excentricite
-            aecr = aecr && (tabtle.at(isat).getEcco() >= exmin && tabtle.at(isat).getEcco() <= exmax);
+            aecr = aecr && (tabtle.at(isat).ecco() >= exmin && tabtle.at(isat).ecco() <= exmax);
 
             // Inclinaison
-            aecr = aecr && ((tabtle.at(isat).getInclo() >= imin1 && tabtle.at(isat).getInclo() <= imax1) ||
-                            (tabtle.at(isat).getInclo() >= imin2 && tabtle.at(isat).getInclo() <= imax2 &&
+            aecr = aecr && ((tabtle.at(isat).inclo() >= imin1 && tabtle.at(isat).inclo() <= imax1) ||
+                            (tabtle.at(isat).inclo() >= imin2 && tabtle.at(isat).inclo() <= imax2 &&
                              ui->inclinaisonCreerTLE->currentIndex() == 1));
 
             // Moyen mouvement
-            aecr = aecr && (tabtle.at(isat).getNo() >= nbrevmin && tabtle.at(isat).getNo() <= nbrevmax);
+            aecr = aecr && (tabtle.at(isat).no() >= nbrevmin && tabtle.at(isat).no() <= nbrevmax);
 
             // Argument du perigee
-            aecr = aecr && (tabtle.at(isat).getArgpo() >= argmin && tabtle.at(isat).getArgpo() <= argmax);
+            aecr = aecr && (tabtle.at(isat).argpo() >= argmin && tabtle.at(isat).argpo() <= argmax);
 
             // Magnitude
             double mag;
-            if (sats.at(isat).getMagnitudeStandard() < 98.9) {
-                const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).getNo() * DEUX_PI *
+            if (sats.at(isat).magnitudeStandard() < 98.9) {
+                const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).no() * DEUX_PI *
                                                                NB_JOUR_PAR_MIN), DEUX_TIERS);
-                mag = sats.at(isat).getMagnitudeStandard() - 15.75 + 5. *
-                        log10(1.45 * (ax * 1. - tabtle.at(isat).getEcco()));
+                mag = sats.at(isat).magnitudeStandard() - 15.75 + 5. *
+                        log10(1.45 * (ax * 1. - tabtle.at(isat).ecco()));
             } else {
                 mag = -10.;
             }
@@ -9544,15 +9539,15 @@ void PreviSat::on_rechercheCreerTLE_clicked()
 
             // Ecriture du TLE
             if (aecr) {
-                if (tabtle.at(isat).getNom() != tabtle.at(isat).getNorad())
-                    flux << tabtle.at(isat).getNom() << endl;
-                flux << tabtle.at(isat).getLigne1() << endl;
-                flux << tabtle.at(isat).getLigne2() << endl;
+                if (tabtle.at(isat).nom() != tabtle.at(isat).norad())
+                    flux << tabtle.at(isat).nom() << endl;
+                flux << tabtle.at(isat).ligne1() << endl;
+                flux << tabtle.at(isat).ligne2() << endl;
             }
         }
         sw.close();
         if (sw.size() > 0) {
-            const QString msg = tr("Fichier %1 écrit");
+            const QString msg = tr("Fichier %1 Ã©crit");
             messagesStatut->setText(msg.arg(sw.fileName()));
         }
         sats.clear();
@@ -9605,7 +9600,7 @@ void PreviSat::on_liste2_entered(const QModelIndex &index)
     const QString nomsat = sat.at(0).trimmed();
     const QString norad = sat.at(1);
     if (nomsat != norad) {
-        const QString msg = tr("%1 (numéro NORAD : %2)");
+        const QString msg = tr("%1 (numÃ©ro NORAD : %2)");
         ui->liste2->setToolTip(msg.arg(nomsat).arg(norad));
     }
 
@@ -9613,7 +9608,7 @@ void PreviSat::on_liste2_entered(const QModelIndex &index)
     return;
 }
 
-void PreviSat::on_actionTous_activated()
+void PreviSat::on_actionTous_triggered()
 {
     /* Declarations des variables locales */
 
@@ -9640,7 +9635,7 @@ void PreviSat::on_actionTous_activated()
     return;
 }
 
-void PreviSat::on_actionAucun_activated()
+void PreviSat::on_actionAucun_triggered()
 {
     /* Declarations des variables locales */
 
@@ -9712,7 +9707,7 @@ void PreviSat::on_magnitudeMaxPrev_toggled(bool checked)
 
 void PreviSat::on_parametrageDefautPrev_clicked()
 {
-    on_onglets_currentChanged(ui->previsions);
+    on_onglets_currentChanged(ui->onglets->indexOf(ui->previsions));
     ui->pasGeneration->setCurrentIndex(5);
     ui->lieuxObservation2->setCurrentIndex(0);
     ui->hauteurSatPrev->setCurrentIndex(0);
@@ -9744,7 +9739,7 @@ void PreviSat::on_calculsPrev_clicked()
 
         const int nsat = getListeItemChecked(ui->liste2);
         if (nsat == 0 && ui->liste2->count() > 0)
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+            throw PreviSatException(tr("Aucun satellite n'est sÃ©lectionnÃ© dans la liste"), WARNING);
 
         ui->afficherPrev->setVisible(false);
 
@@ -9759,7 +9754,7 @@ void PreviSat::on_calculsPrev_clicked()
                          ui->dateInitialePrev->time().second(), offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - offset1;
+        double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinalePrev->date().year(), ui->dateFinalePrev->date().month(), ui->dateFinalePrev->date().day(),
@@ -9767,7 +9762,7 @@ void PreviSat::on_calculsPrev_clicked()
                          offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - offset2;
+        double jj2 = date2.jourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -9844,8 +9839,8 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("previsions") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi(ficRes);
         if (fi.exists())
@@ -9893,7 +9888,7 @@ void PreviSat::on_annulerPrev_clicked()
 
     ui->annulerPrev->setVisible(false);
     ui->afficherPrev->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
+    messagesStatut->setText(tr("Annulation du calcul des prÃ©visions de passage"));
     QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
@@ -9909,10 +9904,10 @@ void PreviSat::on_afficherPrev_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QStringList result = threadCalculs->getRes();
-    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
+    QStringList result = threadCalculs->res();
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
-                                      tr("Prévisions de passage des satellites"));
+                                      tr("PrÃ©visions de passage des satellites"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -9962,15 +9957,15 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLEIri, ficTLEIri);
                     const int idx = qMax(ficTLEIri.size() - 1, 0);
-                    ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLEIri->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(idxfi, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                     idxfi = idx;
                 }
             } else {
                 if (!ficTLEIri.isEmpty()) {
                     const int idx = qMax(index - 1, 0);
-                    ui->fichierTLEIri->setItemData(idxfi, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLEIri->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(idxfi, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLEIri->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                     AffichageListeFichiersTLE(ficTLEIri.at(index), ui->fichierTLEIri, ficTLEIri);
                     idxfi = idx;
                 }
@@ -9978,7 +9973,7 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
             if (!ficTLEIri.isEmpty()) {
                 const QFileInfo fi(ficTLEIri.at(idxfi));
                 ui->fichierTLEIri->setCurrentIndex(idxfi);
-                ui->fichierTLEIri->setToolTip((QDir::convertSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
+                ui->fichierTLEIri->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
             }
         }
 
@@ -10029,7 +10024,7 @@ void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
 
 void PreviSat::on_parametrageDefautIri_clicked()
 {
-    on_onglets_currentChanged(ui->iridium);
+    on_onglets_currentChanged(ui->onglets->indexOf(ui->iridium));
     ui->hauteurSatIri->setCurrentIndex(2);
     ui->hauteurSoleilIri->setCurrentIndex(1);
     ui->valHauteurSatIri->setVisible(false);
@@ -10059,7 +10054,7 @@ void PreviSat::on_calculsIri_clicked()
 
     try {
         if (ui->fichierTLEIri->currentText().trimmed().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
-            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spÃ©cifiÃ©"), WARNING);
 
         const QFileInfo fi(ficTLEIri.at(ui->fichierTLEIri->currentIndex()));
         if (!fi.exists()) {
@@ -10079,7 +10074,7 @@ void PreviSat::on_calculsIri_clicked()
                          offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - offset1;
+        double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleIri->date().year(), ui->dateFinaleIri->date().month(), ui->dateFinaleIri->date().day(),
@@ -10087,7 +10082,7 @@ void PreviSat::on_calculsIri_clicked()
                          offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - offset2;
+        double jj2 = date2.jourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -10139,8 +10134,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("iridiums") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -10156,7 +10151,7 @@ void PreviSat::on_calculsIri_clicked()
         QStringList tabStsIri;
         const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
         if (nb == 0)
-            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
+            throw PreviSatException(tr("Erreur rencontrÃ©e lors de l'exÃ©cution\n" \
                                        "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"),
                                     WARNING);
 
@@ -10176,7 +10171,7 @@ void PreviSat::on_calculsIri_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            const QString msg = tr("Erreur rencontrÃ©e lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
@@ -10192,10 +10187,10 @@ void PreviSat::on_calculsIri_clicked()
         QVector<TLE> tabtle2;
         while (it2.hasNext()) {
             const TLE tle = it2.next();
-            if (tle.getNorad().isEmpty()) {
+            if (tle.norad().isEmpty()) {
                 tabStsIri.removeAt(i);
             } else {
-                listeSatellites.append(tle.getNorad());
+                listeSatellites.append(tle.norad());
                 tabtle2.append(tle);
                 i++;
             }
@@ -10203,8 +10198,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Il n'y a aucun satellite Iridium dans le fichier TLE
         if (listeSatellites.size() == 0)
-            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite Iridium n'a été trouvé dans le fichier TLE"), WARNING);
+            throw PreviSatException(tr("Erreur rencontrÃ©e lors de l'exÃ©cution\n" \
+                                       "Aucun satellite Iridium n'a Ã©tÃ© trouvÃ© dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsIri->setVisible(false);
@@ -10259,10 +10254,10 @@ void PreviSat::on_afficherIri_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QStringList result = threadCalculs->getRes();
-    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
+    QStringList result = threadCalculs->res();
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
-                                      tr("Prévisions des flashs Iridium"));
+                                      tr("PrÃ©visions des flashs Iridium"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -10316,7 +10311,7 @@ void PreviSat::on_liste3_entered(const QModelIndex &index)
     const QString nomsat = sat.at(0).trimmed();
     const QString norad = sat.at(1);
     if (nomsat != norad) {
-        const QString msg = tr("%1 (numéro NORAD : %2)");
+        const QString msg = tr("%1 (numÃ©ro NORAD : %2)");
         ui->liste3->setToolTip(msg.arg(nomsat).arg(norad));
     }
 
@@ -10326,7 +10321,7 @@ void PreviSat::on_liste3_entered(const QModelIndex &index)
 
 void PreviSat::on_parametrageDefautEvt_clicked()
 {
-    on_ongletsOutils_currentChanged(ui->evenementsOrbitaux);
+    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->evenementsOrbitaux));
     ui->passageApogee->setChecked(true);
     ui->passageNoeuds->setChecked(true);
     ui->passageOmbre->setChecked(true);
@@ -10354,7 +10349,7 @@ void PreviSat::on_calculsEvt_clicked()
 
         const int nsat = getListeItemChecked(ui->liste3);
         if (nsat == 0 && ui->liste3->count() > 0)
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+            throw PreviSatException(tr("Aucun satellite n'est sÃ©lectionnÃ© dans la liste"), WARNING);
 
         ui->afficherEvt->setVisible(false);
 
@@ -10369,7 +10364,7 @@ void PreviSat::on_calculsEvt_clicked()
                          offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - offset1;
+        double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleEvt->date().year(), ui->dateFinaleEvt->date().month(), ui->dateFinaleEvt->date().day(),
@@ -10377,7 +10372,7 @@ void PreviSat::on_calculsEvt_clicked()
                          offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - offset2;
+        double jj2 = date2.jourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -10403,7 +10398,7 @@ void PreviSat::on_calculsEvt_clicked()
 
         const bool eve = noeuds || ombre || apogee || jourNuit || quadr;
         if (!eve)
-            throw PreviSatException(tr("Aucun évènement sélectionné"), WARNING);
+            throw PreviSatException(tr("Aucun Ã©vÃ¨nement sÃ©lectionnÃ©"), WARNING);
 
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
@@ -10420,8 +10415,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("evenements") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -10469,7 +10464,7 @@ void PreviSat::on_annulerEvt_clicked()
 
     ui->annulerEvt->setVisible(false);
     ui->afficherEvt->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des évènements orbitaux"));
+    messagesStatut->setText(tr("Annulation du calcul des Ã©vÃ¨nements orbitaux"));
     QFile fi(ficRes);
     if (fi.exists())
         fi.remove();
@@ -10485,10 +10480,10 @@ void PreviSat::on_afficherEvt_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QStringList result = threadCalculs->getRes();
-    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
+    QStringList result = threadCalculs->res();
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
-                                      tr("Évènements orbitaux"));
+                                      tr("Ã‰vÃ¨nements orbitaux"));
     afficherResultats->show(ficRes);
     result.clear();
 
@@ -10538,15 +10533,15 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
                 } else {
                     AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
                     const int idx = qMax(ficTLETransit.size() - 1, 0);
-                    ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(idxft, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                     idxft = idx;
                 }
             } else {
                 if (!ficTLETransit.isEmpty()) {
                     const int idx = qMax(index - 1, 0);
-                    ui->fichierTLETransit->setItemData(idxft, Qt::white, Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(idx, Qt::gray, Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(idxft, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLETransit->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
                     AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
                     idxft = idx;
                 }
@@ -10558,7 +10553,7 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
             } else {
                 const QFileInfo fi(ficTLETransit.at(idxft));
                 ui->fichierTLETransit->setCurrentIndex(idxft);
-                ui->fichierTLETransit->setToolTip((QDir::convertSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
+                ui->fichierTLETransit->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
                 CalculAgeTLETransitISS();
                 ui->ageTLETransit->setVisible(true);
                 ui->lbl_ageTLETransit->setVisible(true);
@@ -10593,7 +10588,7 @@ void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
 
 void PreviSat::on_parametrageDefautTransit_clicked()
 {
-    on_ongletsOutils_currentChanged(ui->transitsISS);
+    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->transitsISS));
     ui->hauteurSatTransit->setCurrentIndex(1);
     ui->valHauteurSatTransit->setVisible(false);
     ui->lieuxObservation4->setCurrentIndex(0);
@@ -10617,7 +10612,7 @@ void PreviSat::on_calculsTransit_clicked()
 
     try {
         if (ui->fichierTLETransit->currentText().trimmed().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
-            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spÃ©cifiÃ©"), WARNING);
 
         const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
         if (!fi.exists()) {
@@ -10638,7 +10633,7 @@ void PreviSat::on_calculsTransit_clicked()
                          ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(), offset1);
 
         // Jour julien initial
-        double jj1 = date1.getJourJulien() - offset1;
+        double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleTransit->date().year(), ui->dateFinaleTransit->date().month(),
@@ -10646,7 +10641,7 @@ void PreviSat::on_calculsTransit_clicked()
                          ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(), offset2);
 
         // Jour julien final
-        double jj2 = date2.getJourJulien() - offset2;
+        double jj2 = date2.jourJulien() - offset2;
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (jj1 > jj2) {
@@ -10677,8 +10672,8 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
-        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
         QFile fi2(ficRes);
         if (fi2.exists())
@@ -10695,24 +10690,24 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Verification du fichier TLE
         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+            const QString msg = tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
                                    "Le fichier %1 n'est pas un TLE");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
         // Lecture du TLE
         TLE::LectureFichier(fi.absoluteFilePath(), listeTLEs, tabtle);
-        if (tabtle.at(0).getNorad().isEmpty()) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+        if (tabtle.at(0).norad().isEmpty()) {
+            const QString msg = tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
         // Age du TLE
-        const double age = fabs(jj1 - tabtle.at(0).getEpoque().getJourJulienUTC());
+        const double age = fabs(jj1 - tabtle.at(0).epoque().jourJulienUTC());
         if (age > ageTLE + 0.05) {
-            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-            Messages::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+            const QString msg = tr("L'Ã¢ge du TLE de l'ISS (%1 jours) est supÃ©rieur Ã  %2 jours");
+            Message::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
@@ -10768,8 +10763,8 @@ void PreviSat::on_afficherTransit_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    QStringList result = threadCalculs->getRes();
-    afficherResultats = new Afficher(conditions, threadCalculs->getObservateur(), result);
+    QStringList result = threadCalculs->res();
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
                                       tr("Transits ISS"));
     afficherResultats->show(ficRes);

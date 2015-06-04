@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 juin 2015
  *
  */
 
@@ -55,7 +55,17 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPassages Calcul des previsions de passage
+     * @param conditions conditions d'observation
+     * @param observateur observateur
+     * @param res tableau des resultats
+     */
     static void CalculPassages(const Conditions &conditions, Observateur &observateur, QStringList &res);
+
+    /**
+     * @brief FinTraitement Finalisation du traitement (liberation memoire)
+     */
     static void FinTraitement();
 
     /* Accesseurs */
@@ -77,6 +87,11 @@ private:
     /* Variables privees */
 
     /* Methodes privees */
+    /**
+     * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
+     * @param conditions conditions d'observation
+     * @param observateur observateur
+     */
     static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur);
 
 };

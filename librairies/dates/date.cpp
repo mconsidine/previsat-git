@@ -36,13 +36,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2014
+ * >    3 juin 2015
  *
  */
 
 #include <cmath>
 #include <ctime>
 #include <fstream>
+#include <QObject>
 #include "date.h"
 #include "librairies/maths/maths.h"
 
@@ -72,7 +73,7 @@ Date::Date()
 /*
  * Constructeur par defaut : obtention de la date systeme
  */
-Date::Date(const double offsetUTC)
+Date::Date(const double offset)
 {
     /* Declarations des variables locales */
 
@@ -88,7 +89,7 @@ Date::Date(const double offsetUTC)
     _minutes = dateSysteme.time().minute();
     _secondes = dateSysteme.time().second();
 
-    _offsetUTC = offsetUTC;
+    _offsetUTC = offset;
 
     CalculJourJulien();
 
@@ -99,7 +100,7 @@ Date::Date(const double offsetUTC)
 /*
  * Constructeur a partir d'une date
  */
-Date::Date(const Date &date, const double offsetUTC)
+Date::Date(const Date &date, const double offset)
 {
     /* Declarations des variables locales */
 
@@ -113,9 +114,9 @@ Date::Date(const Date &date, const double offsetUTC)
     _minutes = date._minutes;
     _secondes = date._secondes;
 
-    _offsetUTC = offsetUTC;
+    _offsetUTC = offset;
     _jourJulien = date._jourJulien;
-    _jourJulienUTC = _jourJulien - offsetUTC;
+    _jourJulienUTC = _jourJulien - offset;
 
     /* Retour */
     return;
@@ -124,7 +125,7 @@ Date::Date(const Date &date, const double offsetUTC)
 /*
  * Constructeur a partir d'un jour julien 2000
  */
-Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
+Date::Date(const double jourJulien2000, const double offset, const bool acalc)
 {
     /* Declarations des variables locales */
 
@@ -134,7 +135,7 @@ Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
     if (acalc) {
 
         int a;
-        const double j1 = jourJulien + 0.5;
+        const double j1 = jourJulien2000 + 0.5;
         int z = (int) floor(j1);
         const double f = j1 - z;
         z += (int) (TJ2000 + EPSDBL100);
@@ -161,8 +162,8 @@ Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
         _secondes = NB_SEC_PAR_JOUR * (j0 - _jour) - NB_SEC_PAR_HEUR * _heure - NB_SEC_PAR_MIN * _minutes;
     }
 
-    _offsetUTC = offsetUTC;
-    _jourJulien = jourJulien;
+    _offsetUTC = offset;
+    _jourJulien = jourJulien2000;
     _jourJulienUTC = _jourJulien - _offsetUTC;
 
     /* Retour */
@@ -172,21 +173,21 @@ Date::Date(const double jourJulien, const double offsetUTC, const bool acalc)
 /*
  * Constructeur a partir d'une date calendaire, ou le jour est exprime sous forme decimale
  */
-Date::Date(const int annee, const int mois, const double xjour, const double offsetUTC)
+Date::Date(const int an, const int mo, const double xjour, const double offset)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _annee = annee;
-    _mois = mois;
+    _annee = an;
+    _mois = mo;
     _jour = (int) floor(xjour);
     _heure = (int) floor(NB_HEUR_PAR_JOUR * (xjour - _jour));
     _minutes = (int) floor(NB_MIN_PAR_JOUR * (xjour - _jour) - NB_MIN_PAR_HEUR * _heure);
     _secondes = NB_SEC_PAR_JOUR * (xjour - _jour) - NB_SEC_PAR_HEUR * _heure - NB_SEC_PAR_MIN * _minutes;
 
-    _offsetUTC = offsetUTC;
+    _offsetUTC = offset;
 
     CalculJourJulien();
 
@@ -197,22 +198,21 @@ Date::Date(const int annee, const int mois, const double xjour, const double off
 /*
  * Constructeur a partir d'une date calendaire
  */
-Date::Date(const int annee, const int mois, const int jour, const int heure, const int minutes,
-           const double secondes, const double offsetUTC)
+Date::Date(const int an, const int mo, const int j, const int h, const int min, const double sec, const double offset)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _annee = annee;
-    _mois = mois;
-    _jour = jour;
-    _heure = heure;
-    _minutes = minutes;
-    _secondes = secondes;
+    _annee = an;
+    _mois = mo;
+    _jour = j;
+    _heure = h;
+    _minutes = min;
+    _secondes = sec;
 
-    _offsetUTC = offsetUTC;
+    _offsetUTC = offset;
 
     CalculJourJulien();
 
@@ -268,24 +268,24 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
 
     /* Initialisations */
     const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(0, 0, 0));
-    const int fmt = (format == COURT) ? 0 : 1;
+    const int fmt = (format == FORMAT_COURT) ? 0 : 1;
     const double tmp = floor(_jourJulien);
     const QString chaine = " %1:%2:%3%4";
 
     /* Corps de la methode */
-    const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     Date date2(jjsec, _offsetUTC);
 
-    int heure = date2._heure;
+    int hr = date2._heure;
     QString sys = " ";
     if (systeme == SYSTEME_12H) {
-        heure = date2._heure%12;
-        sys = (heure >= 0 && date2._heure < 12) ? "a" : "p";
-        if (heure == 0)
-            heure = 12;
+        hr = date2._heure%12;
+        sys = (hr >= 0 && date2._heure < 12) ? "a" : "p";
+        if (hr == 0)
+            hr = 12;
     }
 
-    const QString res = date.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(heure, 2, 10, QChar('0')).
+    const QString res = date.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
                         arg(date2._minutes, 2, 10, QChar('0')).arg(date2._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')).arg(sys);
 
     /* Retour */
@@ -297,26 +297,26 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const int fmt = (format == COURT) ? 0 : 1;
+    const int fmt = (format == FORMAT_COURT) ? 0 : 1;
     const double tmp = floor(_jourJulien);
     QString res = "%1/%2/%3 %4:%5:%6%7";
 
     /* Corps de la methode */
-    const double jjsec = Maths::arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     const Date date(jjsec, _offsetUTC);
-    int heure = date._heure;
+    int hr = date._heure;
     QString sys = " ";
 
     if (systeme == SYSTEME_12H) {
-        heure = date._heure%12;
-        sys = (heure >= 0 && date._heure < 12) ? "a" : "p";
-        if (heure == 0)
-            heure = 12;
+        hr = date._heure%12;
+        sys = (hr >= 0 && date._heure < 12) ? "a" : "p";
+        if (hr == 0)
+            hr = 12;
     }
 
     /* Retour */
     return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
-            arg(date._jour, 2, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).
+            arg(date._jour, 2, 10, QChar('0')).arg(hr, 2, 10, QChar('0')).
             arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')).arg(sys));
 }
 
@@ -369,47 +369,47 @@ void Date::CalculJourJulien()
 }
 
 /* Accesseurs */
-int Date::getAnnee() const
+int Date::annee() const
 {
     return _annee;
 }
 
-int Date::getHeure() const
+int Date::heure() const
 {
     return _heure;
 }
 
-int Date::getJour() const
+int Date::jour() const
 {
     return _jour;
 }
 
-double Date::getJourJulien() const
+double Date::jourJulien() const
 {
     return _jourJulien;
 }
 
-double Date::getJourJulienUTC() const
+double Date::jourJulienUTC() const
 {
     return _jourJulienUTC;
 }
 
-int Date::getMinutes() const
+int Date::minutes() const
 {
     return _minutes;
 }
 
-int Date::getMois() const
+int Date::mois() const
 {
     return _mois;
 }
 
-double Date::getOffsetUTC() const
+double Date::offsetUTC() const
 {
     return _offsetUTC;
 }
 
-double Date::getSecondes() const
+double Date::secondes() const
 {
     return _secondes;
 }

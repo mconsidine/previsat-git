@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    17 decembre 2013
+ * >    3 juin 2015
  *
  */
 
@@ -43,6 +43,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
+#pragma GCC diagnostic warning "-Wfloat-equal"
 
 namespace Ui {
     class Apropos;

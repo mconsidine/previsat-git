@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 novembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -97,6 +97,7 @@ Lune::Lune()
 
     /* Corps du constructeur */
     _fractionIlluminee = 0.;
+    _magnitude = 99.;
 
     /* Retour */
     return;
@@ -120,26 +121,22 @@ void Lune::CalculPosition(const Date &date)
     double b0 = 0.;
     double l0 = 0.;
     double r0 = 0.;
-    const double t = date.getJourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
 
     // Longitude moyenne de la Lune
-    const double ll = DEG2RAD * Maths::modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * (1. / 538841. -
-                                              t / 65194000.))), T360);
+    const double ll = DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * (1. / 538841. - t / 65194000.))), T360);
 
     // Elongation moyenne de la Lune
-    coef[0] = DEG2RAD * Maths::modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * (1. / 545868. -
-                                      t / 113065000.))), T360);
+    coef[0] = DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * (1. / 545868. - t / 113065000.))), T360);
 
     // Anomalie moyenne du Soleil
-    coef[1] = DEG2RAD * Maths::modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t / 24490000.)), T360);
+    coef[1] = DEG2RAD * modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t / 24490000.)), T360);
 
     // Anomalie moyenne de la Lune
-    coef[2] = DEG2RAD * Maths::modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * (1. / 69699. -
-                                      t / 14712000.))), T360);
+    coef[2] = DEG2RAD * modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * (1. / 69699. - t / 14712000.))), T360);
 
     // Argument de latitude de la Lune
-    coef[3] = DEG2RAD * Maths::modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * (1. / 3526000. +
-                                      t / 863310000.))), T360);
+    coef[3] = DEG2RAD * modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * (1. / 3526000. + t / 863310000.))), T360);
 
     coef[4] = 1. - t * (0.002516 + 0.0000074 * t);
 
@@ -168,9 +165,9 @@ void Lune::CalculPosition(const Date &date)
     }
 
     // Principaux termes planetaires
-    const double a1 = DEG2RAD * Maths::modulo(119.75 + 131.849 * t, T360);
-    const double a2 = DEG2RAD * Maths::modulo(53.09 + 479264.29 * t, T360);
-    const double a3 = DEG2RAD * Maths::modulo(313.45 + 481266.484 * t, T360);
+    const double a1 = DEG2RAD * modulo(119.75 + 131.849 * t, T360);
+    const double a2 = DEG2RAD * modulo(53.09 + 479264.29 * t, T360);
+    const double a3 = DEG2RAD * modulo(313.45 + 481266.484 * t, T360);
     l0 += 3958. * sin(a1) + 1962. * sin(ll - coef[3]) + 318. * sin(a2);
     b0 += -2235. * sin(ll) + 382. * sin(a3) + 175. * (sin(a1 - coef[3]) + sin(a1 + coef[3])) + 127. * sin(ll - coef[2]) -
             115. * sin(ll + coef[2]);
@@ -200,9 +197,9 @@ void Lune::CalculPhase(const Soleil &soleil)
 
     /* Corps de la methode */
     // Elongation (ou angle de phase)
-    const double elongation = soleil.getPosition().Angle(-_position);
+    const double elongation = soleil.position().Angle(-_position);
 
-    const bool sgn = ((soleil.getPosition() ^ _position) * w > 0.);
+    const bool sgn = ((soleil.position() ^ _position) * w > 0.);
 
     // Fraction illuminee
     _fractionIlluminee = 0.5 * (1. + cos(elongation));
@@ -218,7 +215,7 @@ void Lune::CalculPhase(const Soleil &soleil)
         _phase = (sgn) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
 
     if (_fractionIlluminee >= 0.69 && _fractionIlluminee < 0.97)
-        _phase = (sgn) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
+        _phase = (sgn) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse dÃ©croissante");
 
     if (_fractionIlluminee >= 0.97)
         _phase = QObject::tr("Pleine Lune");
@@ -232,10 +229,10 @@ void Lune::CalculMagnitude(const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double distance = _distance / UA2KM;
-    const double distsol = soleil.getDistance() / UA2KM;
-    const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.getLonEcl());
-    double angPha = fmod(atan(distsol * sqrt(1. - cospsi * cospsi) / (distance - distsol * cospsi)), PI);
+    const double distlune = _distance / UA2KM;
+    const double distsol = soleil.distance() / UA2KM;
+    const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
+    double angPha = fmod(atan(distsol * sqrt(1. - cospsi * cospsi) / (distlune - distsol * cospsi)), PI);
     if (angPha < 0.)
         angPha += PI;
 
@@ -270,7 +267,7 @@ void Lune::CalculMagnitude(const Soleil &soleil)
 
     const double dm = kappa * phi;
 
-    _magnitude = 0.21 + 5. * log10(distance * distsol) - 2.5 * log10(dm);
+    _magnitude = 0.21 + 5. * log10(distlune * distsol) - 2.5 * log10(dm);
 
     /* Retour */
     return;
@@ -278,17 +275,17 @@ void Lune::CalculMagnitude(const Soleil &soleil)
 
 
 /* Accesseurs */
-double Lune::getFractionIlluminee() const
+double Lune::fractionIlluminee() const
 {
     return _fractionIlluminee;
 }
 
-double Lune::getMagnitude() const
+double Lune::magnitude() const
 {
     return _magnitude;
 }
 
-QString Lune::getPhase() const
+QString Lune::phase() const
 {
     return _phase;
 }

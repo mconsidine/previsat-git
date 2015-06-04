@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2012
+ * >    3 juin 2015
  *
  */
 
@@ -42,7 +42,7 @@
 
 #include <QString>
 #include <exception>
-#include "messages.h"
+#include "messageConstants.h"
 
 class PreviSatException : public std::exception
 {
@@ -80,6 +80,7 @@ private:
     int _ierr;
 
     /* Methodes privees */
+
 
 };
 

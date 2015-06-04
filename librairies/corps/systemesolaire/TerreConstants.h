@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 lanvier 2014
+ * >    3 juin 2015
  *
  */
 
@@ -44,9 +44,12 @@
 #define TERRECONSTANTS_H
 
 #include <cmath>
-#include "librairies/maths/mathConstants.h"
+#include "librairies/maths/mathsConstants.h"
 #include "librairies/dates/dateConstants.h"
 
+/* Enumerations */
+
+/* Declaration des constantes */
 // Rayon equatorial terrestre (km)
 static const double RAYON_TERRESTRE = 6378.135;
 
@@ -79,4 +82,5 @@ static const double MILE_PAR_KM = 1. / 1.852;
 // Nombre de pieds par metre
 static const double PIED_PAR_METRE = 1. / 0.3048;
 
-#endif // TERRECONSTANTS_H
+#endif // TERRECONST
+

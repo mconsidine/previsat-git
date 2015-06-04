@@ -33,7 +33,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    22 avril 2014
+ * >    3 juin 2015
  *
  */
 
@@ -49,8 +49,19 @@ class Constellation : public Corps
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Constellation Constructeur par defaut
+     */
     Constellation();
-    Constellation(const QString &nom, const double ascensionDroite, const double declinaison);
+
+    /**
+     * @brief Constellation Definition a partir des composantes
+     * @param nomConst nom de la constellation
+     * @param ascDroite ascension droite moyenne de la constellation
+     * @param decl declinaison myenne de la declinaison
+     */
+    Constellation(const QString &nomConst, const double ascDroite, const double decl);
+
     ~Constellation();
 
     /* Constantes publiques */
@@ -59,10 +70,15 @@ public:
     static bool initCst;
 
     /* Methodes publiques */
+    /**
+     * @brief CalculConstellations Calcul des positions des noms des constellations pour la carte du ciel
+     * @param observateur observateur
+     * @param constellations tableau des constellations
+     */
     static void CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations);
 
     /* Accesseurs */
-    QString getNom() const;
+    QString nom() const;
 
 
 protected:
@@ -82,6 +98,10 @@ private:
     QString _nom;
 
     /* Methodes privees */
+    /**
+     * @brief InitTabCst Lecture du fichier de constellations
+     * @param constellations tableau de constellations
+     */
     static void InitTabCst(QList<Constellation> &constellations);
 
 };

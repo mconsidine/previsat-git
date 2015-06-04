@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2014
+ * >    3 juin 2015
  *
  */
 
@@ -52,8 +52,17 @@ class Satellite : public Corps
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Satellite Constructeur par defaut
+     */
     Satellite();
-    Satellite(const TLE &tle);
+
+    /**
+     * @brief Satellite Constructeur a partir d'un TLE
+     * @param xtle tle
+     */
+    Satellite(const TLE &xtle);
+
     ~Satellite();
 
     /* Constantes publiques */
@@ -62,47 +71,120 @@ public:
     static bool initCalcul;
 
     /* Methodes publiques */
+    /**
+     * @brief CalculCercleAcquisition Calcul du cercle d'acquisition d'une station
+     * @param station sation
+     */
     void CalculCercleAcquisition(const Observateur &station);
+
+    /**
+     * @brief CalculDateNoeudAscPrec Calcul de la date du noeud ascedant precedent a la date donnee
+     * @param date date
+     * @return date du noeud ascendant precedent
+     */
     Date CalculDateNoeudAscPrec(const Date &date);
+
+    /**
+     * @brief CalculElementsOsculateurs Calcul des elements osculateurs et du numero d'orbite
+     * @param date date
+     */
     void CalculElementsOsculateurs(const Date &date);
+
+    /**
+     * @brief CalculMagnitude Calcul de la magnitude visuelle du satellite
+     * @param observateur observateur
+     * @param extinction prise en compte de l'extinction atmospherique
+     */
     void CalculMagnitude(const Observateur &observateur, const bool extinction);
+
+    /**
+     * @brief CalculPosVit Calcul de la position et de la vitesse du satellite
+     * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 1" de David Vallado (2006)
+     * @param date date
+     */
     void CalculPosVit(const Date &date);
+
+    /**
+     * @brief CalculPosVitListeSatellites Calcul de la position d'une liste de satellites
+     * @param date date
+     * @param observateur observateur
+     * @param soleil Soleil
+     * @param nbTracesAuSol nombre de traces au sol
+     * @param visibilite Calcul de la zone de visibilite des satellites
+     * @param extinction Prise en compte de l'extinction atmospherique
+     * @param traceCiel Calcul de la trace du satellite dans le ciel de l'observateur
+     * @param mcc Calcul des cercles des satellites TDRS
+     * @param refraction Prise en compte de la refraction atmospherique
+     * @param satellites liste de satellites
+     */
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
                                             const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites);
+
+    /**
+     * @brief CalculSatelliteEclipse Determination de la condition d'eclipse du satellite
+     * @param soleil Soleil
+     * @param refraction Prise en compte de la refraction atmospherique
+     */
     void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
+
+    /**
+     * @brief CalculTraceCiel Calcul de la trace dans le ciel
+     * @param date date
+     * @param refraction Prise en compte de la refraction atmospherique
+     * @param observateur observateur
+     * @param sec parametre pour les satellites geostationnaires
+     */
     void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
+
+    /**
+     * @brief hasAOS Determination si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
+     * @param observateur observateur
+     * @return vrai si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
+     */
     bool hasAOS(const Observateur &observateur) const;
+
+    /**
+     * @brief isGeo Determination si le satellite est geosynchrone
+     * @return vrai si le satellite est geosynchrone
+     */
     bool isGeo() const;
+
+    /**
+     * @brief LectureDonnees Lecture du fichier de donnees des satellites
+     * @param listeSatellites liste des numeros NORAD
+     * @param tabtle tableau des TLE correspondants
+     * @param satellites liste de satellites
+     */
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
     bool isEclipse() const;
     bool isIeralt() const;
-    double getAgeTLE() const;
-    double getBeta() const;
-    double getElongation() const;
-    double getFractionIlluminee() const;
-    double getMagnitude() const;
-    double getMagnitudeStandard() const;
-    char getMethMagnitude() const;
-    char getMethod() const;
-    int getNbOrbites() const;
+    double ageTLE() const;
+    double beta() const;
+    double elongation() const;
+    double fractionIlluminee() const;
+    double magnitude() const;
+    double magnitudeStandard() const;
+    char methMagnitude() const;
+    char method() const;
+    int nbOrbites() const;
     bool isPenombre() const;
-    double getRayonOmbre() const;
-    double getRayonPenombre() const;
-    double getSection() const;
-    double getT1() const;
-    double getT2() const;
-    double getT3() const;
-    QString getDateLancement() const;
-    QString getCategorieOrbite() const;
-    QString getPays() const;
+    double rayonOmbre() const;
+    double rayonPenombre() const;
+    double section() const;
+    double t1() const;
+    double t2() const;
+    double t3() const;
+    QString dateLancement() const;
+    QString categorieOrbite() const;
+    QString pays() const;
 
-    TLE getTle() const;
-    ElementsOsculateurs getElements() const;
-    QList<QVector<double> > getTraceAuSol() const;
-    QList<QVector<double> > getTraceCiel() const;
+    TLE tle() const;
+    ElementsOsculateurs elements() const;
+    QList<QVector<double> > traceAuSol() const;
+    QList<QVector<double> > traceCiel() const;
 
 
 protected:
@@ -366,12 +448,46 @@ private:
     QList<QVector<double> > _traceCiel;
 
     /* Methodes privees */
+    /**
+     * @brief CalculBeta Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
+     * @param soleil Soleil
+     */
     void CalculBeta(const Soleil &soleil);
+
+    /**
+     * @brief CalculTracesAuSol Calcul de la trace au sol du satellite
+     * @param date date
+     * @param nbOrbites nombre de traces au sol
+     * @param refraction prise en compte de la refraction atmospherique
+     */
     void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
+
+    /**
+     * @brief Dpper Modele haute orbite
+     */
     void Dpper();
+
+    /**
+     * @brief Dscom Modele haute orbite
+     * @param tc date
+     */
     void Dscom(const double tc);
+
+    /**
+     * @brief Dsinit Modele haute orbite
+     * @param tc date
+     */
     void Dsinit(const double tc);
+
+    /**
+     * @brief Dspace Modele haute orbite
+     * @param tc date
+     */
     void Dspace(const double tc);
+
+    /**
+     * @brief SGP4Init Initialisation du modele SGP4
+     */
     void SGP4Init();
 
 };

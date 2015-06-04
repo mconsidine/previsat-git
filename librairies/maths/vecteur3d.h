@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2013
+ * >    3 juin 2015
  *
  */
 
@@ -45,9 +45,25 @@ class Vecteur3D
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Vecteur3D Constructeur par defaut : creation d'un vecteur nul
+     */
     Vecteur3D();
+
+    /**
+     * @brief Vecteur3D Constructeur a partir d'un objet Vecteur3d
+     * @param vecteur vecteur 3D
+     */
     Vecteur3D(const Vecteur3D &vecteur);
-    Vecteur3D(const double x, const double y, const double z);
+
+    /**
+     * @brief Vecteur3D Constructeur a partir des composantes du vecteur
+     * @param xval Composante x
+     * @param yval Composante y
+     * @param zval Composante z
+     */
+    Vecteur3D(const double xval, const double yval, const double zval);
+
     ~Vecteur3D();
 
     /* Constantes publiques */
@@ -55,22 +71,82 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
-    bool isNul() const;
-    double Norme() const;
+    /**
+     * @brief Angle Calcul de l'angle entre 2 vecteurs
+     * @param vecteur vecteur
+     * @return angle entre les deux vecteurs
+     */
     double Angle(const Vecteur3D &vecteur) const;
+
+    /**
+     * @brief Normalise Determination du vecteur unitaire
+     * @return vecteur unitaire
+     */
     Vecteur3D Normalise() const;
 
+    /**
+     * @brief isNul Verifie si le vecteur est nul
+     * @return vrai si le vecteur est nul
+     */
+    bool isNul() const;
+
+    /**
+     * @brief Norme Calcul de la norme du vecteur 3D
+     * @return norme
+     */
+    double Norme() const;
+
+    /**
+     * @brief operator - Oppose du vecteur 3D
+     * @param vecteur vecteur
+     * @return Oppose du vecteur 3D
+     */
     friend inline Vecteur3D operator - (const Vecteur3D &vecteur);
+
+    /**
+     * @brief operator + Somme de deux vecteurs 3D
+     * @param vecteur1 vecteur1
+     * @param vecteur2 vecteur2
+     * @return Somme de deux vecteurs 3D
+     */
     friend inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+
+    /**
+     * @brief operator - Difference de deux vecteurs 3D
+     * @param vecteur1 vecteur1
+     * @param vecteur2 vecteur2
+     * @return Difference de deux vecteurs 3D
+     */
     friend inline Vecteur3D operator - (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+
+    /**
+     * @brief operator * Produit d'un vecteur 3D par un scalaire
+     * @param vecteur1 vecteur
+     * @param scalaire grandeur scalaire
+     * @return Produit d'un vecteur 3D par un scalaire
+     */
     friend inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire);
+
+    /**
+     * @brief operator * Produit scalaire de deux vecteurs 3D
+     * @param vecteur1 vecteur1
+     * @param vecteur2 vecteur2
+     * @return Produit scalaire de deux vecteurs 3D
+     */
     friend inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+
+    /**
+     * @brief operator ^ Produit vectoriel de deux vecteurs 3D
+     * @param vecteur1 vecteur1
+     * @param vecteur2 vecteur2
+     * @return Produit vectoriel de deux vecteurs 3D
+     */
     friend inline Vecteur3D operator ^ (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
 
     /* Accesseurs */
-    double getX() const;
-    double getY() const;
-    double getZ() const;
+    double x() const;
+    double y() const;
+    double z() const;
 
 
 protected:
@@ -94,6 +170,7 @@ private:
     /* Methodes privees */
 
 };
+
 
 /*
  * Oppose du vecteur

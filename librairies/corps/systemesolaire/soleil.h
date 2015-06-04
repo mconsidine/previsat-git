@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >
+ * >    3 juin 2015
  *
  */
 
@@ -48,8 +48,17 @@ class Soleil : public Corps
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Soleil Constructeur par defaut
+     */
     Soleil();
-    Soleil(const Vecteur3D &position);
+
+    /**
+     * @brief Soleil Constructeur a partir du vecteur position
+     * @param pos vecteur position du Soleil
+     */
+    Soleil(const Vecteur3D &pos);
+
     ~Soleil();
 
     /* Constantes publiques */
@@ -57,10 +66,15 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPosition Calcul de la position du Soleil a partir du modele simplifie
+     * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
+     * @param date date
+     */
     void CalculPosition(const Date &date);
 
     /* Accesseurs */
-    double getDistanceUA() const;
+    double distanceUA() const;
 
 
 protected:
@@ -80,6 +94,7 @@ private:
     double _distanceUA;
 
     /* Methodes privees */
+
 
 };
 

@@ -33,7 +33,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    22 avril 2014
+ * >    3 juin 2015
  *
  */
 
@@ -46,10 +46,13 @@
 
 class Planete : public Corps
 {
-
 public:
 
     /* Constructeurs */
+    /**
+     * @brief Planete Constructeur avec l'identifiant de la planete
+     * @param iplanete indice de la planete
+     */
     Planete(const int iplanete);
 
     /* Constantes publiques */
@@ -57,10 +60,15 @@ public:
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief CalculPosition Calcul de la position d'une planete
+     * @param date date
+     * @param soleil soleil
+     */
     void CalculPosition(const Date &date, const Soleil &soleil);
 
     /* Accesseurs */
-    QString getNom() const;
+    QString nom() const;
 
 
 protected:
@@ -84,8 +92,17 @@ private:
     QString _nom;
 
     /* Methodes privees */
+    /**
+     * @brief CalculElements Calcul des elements orbitaux moyens d'une planete
+     * @param date date
+     */
     void CalculElements(const Date &date);
+
+    /**
+     * @brief CalculCoordonneesSpheriques Calcul des coordonnees spheriques ecliptiques d'une planete
+     */
     void CalculCoordonneesSpheriques();
+
 
 };
 

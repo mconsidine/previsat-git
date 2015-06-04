@@ -36,22 +36,23 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    20 mai 2015
+ * >    3 juin 2015
  *
  */
 
-#if defined QT_NO_DEBUG
-#pragma GCC diagnostic ignored "-Wshadow"
-#endif
-#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDesktopServices>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
-#include <QDesktopServices>
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopWidget>
+#include <QGraphicsSimpleTextItem>
+#include "ui_afficher.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
-#include <QGraphicsSimpleTextItem>
 #include <QSettings>
 #include <QTextStream>
 #include "librairies/corps/etoiles/constellation.h"
@@ -62,14 +63,9 @@
 #include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/maths/maths.h"
-#include "ui_afficher.h"
 #include "afficher.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
 
-static QString dirDat;
+static QString dirLocalData;
 static QString dirOut;
 static QString dirTmp;
 static QString map0;
@@ -184,31 +180,31 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         ui->listePrevisions->setPalette(palList);
     }
 
+    dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(), QStandardPaths::LocateDirectory) + "data";
+
 #if defined (Q_OS_WIN)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
-                            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() +
-                            QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
+                            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName()).toString();
 
 #elif defined (Q_OS_LINUX)
-    dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
-                            QDir::separator() + QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
+                            QCoreApplication::applicationName()).toString();
 
 #elif defined (Q_OS_MAC)
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
-                            QDir::separator() + QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
+                            QCoreApplication::applicationName()).toString();
 
 #else
-    dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
-                            QDir::separator() + QCoreApplication::organizationName() + QDir::separator() +
-                            QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
+                            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName()).toString();
 #endif
 
-    dirOut = QDir::convertSeparators(dirOut);
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+    dirOut = QDir::toNativeSeparators(dirOut);
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
     const int ind = (result.size() > 2000 || result.isEmpty()) ? 0 : 1;
 
@@ -223,17 +219,17 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     police.setWeight(QFont::Bold);
     ui->listePrevisions->horizontalHeader()->setFont(police);
-    if (cond.getNbl() == 0)
-        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
+    if (cond.nbl() == 0)
+        ui->ongletsResultats->setTabText(ind, tr("PrÃ©visions de passage"));
     else
         ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
 
-    if (cond.getApassApogee() || cond.getApassNoeuds() || cond.getApassOmbre() || cond.getApassPso() || cond.getAtransJn()) {
+    if (cond.apassApogee() || cond.apassNoeuds() || cond.apassOmbre() || cond.apassPso() || cond.atransJn()) {
         ui->ongletsResultats->removeTab(1);
-        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+        ui->ongletsResultats->setTabText(0, tr("Ã‰vÃ¨nements orbitaux"));
     }
 
-    if (cond.getAcalcLune() || cond.getAcalcSol())
+    if (cond.acalcLune() || cond.acalcSol())
         ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
 
     if (ind == 1) {
@@ -265,7 +261,7 @@ void Afficher::load()
     QString fmt = "%1@%2@%3@%4";
     tablonlat.clear();
     tabres.clear();
-    if (cond.getNbl() < 0) {
+    if (cond.nbl() < 0) {
         ui->listePrevisions->horizontalHeaderItem(3)->setText(tr("Angle"));
         ui->listePrevisions->horizontalHeaderItem(4)->setText(tr("Type"));
     }
@@ -284,7 +280,7 @@ void Afficher::load()
         }
 
         if (ligne.contains(tr("Date"))) {
-            idate = (cond.getNbl() == 0) ? ligne.indexOf(tr("Date")) - 3 : 0;
+            idate = (cond.nbl() == 0) ? ligne.indexOf(tr("Date")) - 3 : 0;
             iht = ligne.indexOf(tr("Hauteur Sat")) - 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
             ihtsol = ligne.indexOf(tr("Haut Soleil"));
@@ -292,12 +288,12 @@ void Afficher::load()
                 ligne = it.next();
         }
 
-        if (cond.getNbl() > 0) {
+        if (cond.nbl() > 0) {
             const QString fmt2 = "  %1 %2  ";
             nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 4).trimmed());
         }
 
-        if (cond.getNbl() < 0)
+        if (cond.nbl() < 0)
             nomsat = "ISS";
 
         if (!ligne.contains(tr("Date"))) {
@@ -311,11 +307,11 @@ void Afficher::load()
 
             bool afin = false;
             while (!afin) {
-                ligne = it.next().toLatin1();
+                ligne = it.next();
                 if (ligne.isEmpty()) {
                     afin = true;
                 } else {
-                    if (cond.getNbl() >= 0) {
+                    if (cond.nbl() >= 0) {
 
                         // Magnitude max
                         if (ligne.mid(imagn+1, 4) != "----")
@@ -338,10 +334,10 @@ void Afficher::load()
             ui->listePrevisions->insertRow(j);
             ui->listePrevisions->setRowHeight(j, 16);
 
-            const int lngDate = (cond.getNbl() == 0) ? 20 : 22;
+            const int lngDate = (cond.nbl() == 0) ? 20 : 22;
             const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
-                                    ((cond.getNbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
-                                    ((cond.getNbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
+                                    ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
+                                    ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
                                     maxHt.mid(ihtsol, 11).trimmed().left(10));
 
             for(int k=0; k<items.count(); k++) {
@@ -350,16 +346,16 @@ void Afficher::load()
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
                 ui->listePrevisions->setItem(j, k, item);
-                if ((k > 0 && cond.getNbl() == 0) || (k >= 0 && cond.getNbl() != 0))
+                if ((k > 0 && cond.nbl() == 0) || (k >= 0 && cond.nbl() != 0))
                     ui->listePrevisions->resizeColumnToContents(k);
             }
-            tabres.append(fmt.arg((cond.getNbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
+            tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
                           .arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
 
             // Dans le cas des flashs Iridium ou des transits ISS, determination de la ligne ou se produit le maximum
-            if (cond.getNbl() != 0) {
+            if (cond.nbl() != 0) {
 
-                const int debt = (cond.getNbl() > 0) ? 121 : 128;
+                const int debt = (cond.nbl() > 0) ? 121 : 128;
                 if (debut.mid(debt, 44).trimmed().isEmpty() && fin.mid(debt, 44).trimmed().isEmpty()) {
                     tablonlat.append("0. 0. 0. 0.");
                 } else {
@@ -395,14 +391,14 @@ void Afficher::load()
     ui->listePrevisions->horizontalHeader()->setStretchLastSection(true);
     ui->listePrevisions->setAlternatingRowColors(true);
 
-    if (cond.getNbl() == 0) {
+    if (cond.nbl() == 0) {
         // Masquage de la map
         ui->frame->setVisible(false);
         ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 4);
     } else {
 
         // Affichage de la map
-        const QString fic = dirDat + QDir::separator() + "resultat.map";
+        const QString fic = dirLocalData + QDir::separator() + "resultat.map";
         QFile fi(fic);
 
         if (fi.exists()) {
@@ -412,9 +408,9 @@ void Afficher::load()
         }
         fi.close();
 
-        const QString lon(QString::number(-obs.getLongitude() * RAD2DEG));
-        const QString lat(QString::number(obs.getLatitude() * RAD2DEG));
-        map0 = map0.replace("NOMLIEU_CENTRE", obs.getNomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
+        const QString lon(QString::number(-obs.longitude() * RAD2DEG));
+        const QString lat(QString::number(obs.latitude() * RAD2DEG));
+        map0 = map0.replace("NOMLIEU_CENTRE", obs.nomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
                 replace("CHAINE_LONGITUDE", tr("Longitude")).replace("CHAINE_LATITUDE", tr("Latitude"));
 
         ui->frame->setVisible(true);
@@ -445,7 +441,7 @@ void Afficher::show(const QString &fic)
     QFile fi(_fichier);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
 #if defined (Q_OS_WIN)
-    prev = fi.readAll();
+    prev = QString::fromLatin1(fi.readAll());
 #else
     prev = fi.trUtf8(fi.readAll());
 #endif
@@ -470,7 +466,7 @@ void Afficher::resizeEvent(QResizeEvent *evt)
     if (baseSize() == size()) {
         ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
         ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
-        if (cond.getNbl() == 0)
+        if (cond.nbl() == 0)
             ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
     } else {
         ui->ongletsResultats->resize(baseSize());
@@ -479,7 +475,7 @@ void Afficher::resizeEvent(QResizeEvent *evt)
     }
 }
 
-void Afficher::on_actionEnregistrer_activated()
+void Afficher::on_actionEnregistrer_triggered()
 {
     /* Declarations des variables locales */
 
@@ -528,8 +524,7 @@ void Afficher::loadMap(const int i)
     fi.close();
 
     // Chargement de la map
-    QUrl url(fi.fileName());
-    url.setScheme("");
+    const QUrl url("file:///" + fi.fileName());
     ui->webView->load(url);
 
     /* Retour */
@@ -557,7 +552,7 @@ void Afficher::loadSky(const int j)
 
     const QStringList listeTLEs(tab.at(0));
     QVector<TLE> tabtle;
-    TLE::LectureFichier(cond.getFic(), listeTLEs, tabtle);
+    TLE::LectureFichier(cond.fic(), listeTLEs, tabtle);
     Satellite sat(tabtle.at(0));
 
     // Date de debut du passage
@@ -575,8 +570,8 @@ void Afficher::loadSky(const int j)
     }
     const Date dateI(deb.at(0).toInt(), deb.at(1).toInt(), deb.at(2).toInt(), heure, deb.at(4).toInt(),
                      deb.at(5).left(2).toDouble(), 0.);
-    double offset = (cond.getEcart()) ? cond.getOffset() : Date::CalculOffsetUTC(Date(dateI.getJourJulienUTC(), 0.).ToQDateTime(1));
-    Date dateDeb(dateI.getJourJulienUTC(), offset);
+    double offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateI.jourJulienUTC(), 0.).ToQDateTime(1));
+    Date dateDeb(dateI.jourJulienUTC(), offset);
 
     Date dateInit(dateDeb, offset);
     bool atrouve = false;
@@ -585,32 +580,32 @@ void Afficher::loadSky(const int j)
 
         sat.CalculPosVit(dateInit);
         sat.CalculCoordHoriz(obs, false);
-        if (sat.getHauteur() < 0.) {
+        if (sat.hauteur() < 0.) {
             atrouve = true;
         } else {
-            dateInit = Date(dateInit.getJourJulien() - NB_JOUR_PAR_SEC * 10., offset);
+            dateInit = Date(dateInit.jourJulien() - NB_JOUR_PAR_SEC * 10., offset);
         }
     }
-    dateInit = Date(dateInit.getJourJulien() + NB_JOUR_PAR_SEC * 10., offset);
+    dateInit = Date(dateInit.jourJulien() + NB_JOUR_PAR_SEC * 10., offset);
 
     Date dateMax, dateFin;
-    if (cond.getNbl() == 3) {
+    if (cond.nbl() == 3) {
 
         date = tab.at(2);
         QStringList max = date.replace("/", " ").replace(":", " ").split(" ");
         const Date dateM(max.at(0).toInt(), max.at(1).toInt(), max.at(2).toInt(), max.at(3).toInt(), max.at(4).toInt(),
                          max.at(5).toDouble(), 0.);
-        offset = (cond.getEcart()) ? cond.getOffset() :
-                                     Date::CalculOffsetUTC(Date(dateM.getJourJulienUTC(), 0.).ToQDateTime(1));
-        dateMax = Date(dateM.getJourJulienUTC(), offset);
+        offset = (cond.ecart()) ? cond.offset() :
+                                     Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
+        dateMax = Date(dateM.jourJulienUTC(), offset);
 
         date = tab.at(3);
         QStringList fin = date.replace("/", " ").replace(":", " ").split(" ");
         const Date dateF(fin.at(0).toInt(), fin.at(1).toInt(), fin.at(2).toInt(), fin.at(3).toInt(), fin.at(4).toInt(),
                          fin.at(5).toDouble(), 0.);
-        offset = (cond.getEcart()) ? cond.getOffset() :
-                                     Date::CalculOffsetUTC(Date(dateF.getJourJulienUTC(), 0.).ToQDateTime(1));
-        dateFin = Date(dateF.getJourJulienUTC(), offset);
+        offset = (cond.ecart()) ? cond.offset() :
+                                     Date::CalculOffsetUTC(Date(dateF.jourJulienUTC(), 0.).ToQDateTime(1));
+        dateFin = Date(dateF.jourJulienUTC(), offset);
     }
 
     /* Corps de la methode */
@@ -652,8 +647,8 @@ void Afficher::loadSky(const int j)
     // Phase de la Lune
     if (affphaselune) {
 
-        const double ll = atan2(lune.getPosition().getY(), lune.getPosition().getX());
-        const double ls = atan2(soleil.getPosition().getY(), soleil.getPosition().getX());
+        const double ll = atan2(lune.position().y(), lune.position().x());
+        const double ls = atan2(soleil.position().y(), soleil.position().x());
 
         double diff = (ll - ls) * RAD2DEG;
         if (diff < 0.)
@@ -671,7 +666,7 @@ void Afficher::loadSky(const int j)
 
     // Couleur du ciel
     QBrush bru(Qt::black);
-    const double hts = soleil.getHauteur() * RAD2DEG;
+    const double hts = soleil.hauteur() * RAD2DEG;
     if (hts >= 0.) {
         // Jour
         bru = QBrush(QColor::fromRgb(213, 255, 254));
@@ -717,18 +712,18 @@ void Afficher::loadSky(const int j)
             if (lig.isDessin()) {
 
                 // Calcul des coordonnees radar des etoiles pour le dessin de la constellation
-                const int lstr1 = qRound(lciel - lciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
-                                         sin(lig.getEtoile1().getAzimut()));
-                const int bstr1 = qRound(hciel - hciel * (1. - lig.getEtoile1().getHauteur() * DEUX_SUR_PI) *
-                                         cos(lig.getEtoile1().getAzimut()));
+                const int lstr1 = qRound(lciel - lciel * (1. - lig.etoile1().hauteur() * DEUX_SUR_PI) *
+                                         sin(lig.etoile1().azimut()));
+                const int bstr1 = qRound(hciel - hciel * (1. - lig.etoile1().hauteur() * DEUX_SUR_PI) *
+                                         cos(lig.etoile1().azimut()));
 
-                const int lstr2 = qRound(lciel - lciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
-                                         sin(lig.getEtoile2().getAzimut()));
-                const int bstr2 = qRound(hciel - hciel * (1. - lig.getEtoile2().getHauteur() * DEUX_SUR_PI) *
-                                         cos(lig.getEtoile2().getAzimut()));
+                const int lstr2 = qRound(lciel - lciel * (1. - lig.etoile2().hauteur() * DEUX_SUR_PI) *
+                                         sin(lig.etoile2().azimut()));
+                const int bstr2 = qRound(hciel - hciel * (1. - lig.etoile2().hauteur() * DEUX_SUR_PI) *
+                                         cos(lig.etoile2().azimut()));
 
-                crayon = QPen((soleil.getHauteur() > -0.08) ?
-                                  bleuClair : (soleil.getHauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
+                crayon = QPen((soleil.hauteur() > -0.08) ?
+                                  bleuClair : (soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
 
                 if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
                     sceneSky->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
@@ -745,13 +740,13 @@ void Afficher::loadSky(const int j)
                 if (cst.isVisible()) {
 
                     // Calcul des coordonnees radar du label
-                    const int lcst = qRound(lciel - lciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * sin(cst.getAzimut()));
-                    const int bcst = qRound(hciel - hciel * (1. - cst.getHauteur() * DEUX_SUR_PI) * cos(cst.getAzimut()));
+                    const int lcst = qRound(lciel - lciel * (1. - cst.hauteur() * DEUX_SUR_PI) * sin(cst.azimut()));
+                    const int bcst = qRound(hciel - hciel * (1. - cst.hauteur() * DEUX_SUR_PI) * cos(cst.azimut()));
 
                     const int lst = lcst - lciel;
                     const int bst = hciel - bcst;
 
-                    QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.getNom());
+                    QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
                     const int lng = (int) txtCst->boundingRect().width();
 
                     const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
@@ -767,27 +762,27 @@ void Afficher::loadSky(const int j)
     }
 
     // Affichage des etoiles
-    const QBrush bru2 = (soleil.getHauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
+    const QBrush bru2 = (soleil.hauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
     QListIterator<Etoile> it1(etoiles);
     while (it1.hasNext()) {
 
         const Etoile etoile = it1.next();
-        if (etoile.isVisible() && etoile.getMagnitude() <= magnitudeEtoiles) {
+        if (etoile.isVisible() && etoile.magnitude() <= magnitudeEtoiles) {
 
-            const int lstr = qRound(lciel - lciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * sin(etoile.getAzimut()));
-            const int bstr = qRound(hciel - hciel * (1. - etoile.getHauteur() * DEUX_SUR_PI) * cos(etoile.getAzimut()));
+            const int lstr = qRound(lciel - lciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * sin(etoile.azimut()));
+            const int bstr = qRound(hciel - hciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * cos(etoile.azimut()));
 
-            rectangle = (etoile.getMagnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
+            rectangle = (etoile.magnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
             sceneSky->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
 
             // Nom des etoiles les plus brillantes
             if (affetoiles) {
-                if (!etoile.getNom().isEmpty() && etoile.getNom().at(0).isUpper()) {
-                    if (etoile.getMagnitude() < magnitudeEtoiles - 1.9) {
+                if (!etoile.nom().isEmpty() && etoile.nom().at(0).isUpper()) {
+                    if (etoile.magnitude() < magnitudeEtoiles - 1.9) {
 
                         const int lst = lstr - lciel;
                         const int bst = hciel - bstr;
-                        const QString nomstr = etoile.getNom().mid(0, 1) + etoile.getNom().mid(1).toLower();
+                        const QString nomstr = etoile.nom().mid(0, 1) + etoile.nom().mid(1).toLower();
                         QGraphicsSimpleTextItem * const txtStr = new QGraphicsSimpleTextItem(nomstr);
                         const int lng = (int) txtStr->boundingRect().width();
 
@@ -810,15 +805,15 @@ void Afficher::loadSky(const int j)
         // Calcul des coordonnees radar des planetes
         for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-            if (planetes.at(iplanete).getHauteur() >= 0.) {
+            if (planetes.at(iplanete).hauteur() >= 0.) {
 
-                if (((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).getDistance() > soleil.getDistance()) ||
+                if (((iplanete == MERCURE || iplanete == VENUS) && planetes.at(iplanete).distance() > soleil.distance()) ||
                         iplanete >= MARS) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            sin(planetes.at(iplanete).getAzimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            cos(planetes.at(iplanete).getAzimut()));
+                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                            sin(planetes.at(iplanete).azimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                            cos(planetes.at(iplanete).azimut()));
 
                     const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -827,7 +822,7 @@ void Afficher::loadSky(const int j)
                     if (affplanetes == Qt::Checked) {
                         const int lpl = lpla - lciel;
                         const int bpl = hciel - bpla;
-                        const QString nompla = planetes.at(iplanete).getNom();
+                        const QString nompla = planetes.at(iplanete).nom();
                         QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = (int) txtPla->boundingRect().width();
 
@@ -852,10 +847,10 @@ void Afficher::loadSky(const int j)
         const double de1 = tabEcliptique[0][1] * DEG2RAD;
         const double cd1 = cos(de1);
         const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-        const Vecteur3D vec1 = obs.getRotHz() * vec;
+        const Vecteur3D vec1 = obs.rotHz() * vec;
 
-        double ht1 = asin(vec1.getZ());
-        double az1 = atan2(vec1.getY(), -vec1.getX());
+        double ht1 = asin(vec1.z());
+        double az1 = atan2(vec1.y(), -vec1.x());
         if (az1 < 0.)
             az1 += DEUX_PI;
 
@@ -868,11 +863,11 @@ void Afficher::loadSky(const int j)
             const double de2 = tabEcliptique[i][1] * DEG2RAD;
             const double cd2 = cos(de2);
             const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-            const Vecteur3D vec2 = obs.getRotHz() * vec0;
+            const Vecteur3D vec2 = obs.rotHz() * vec0;
 
-            const double ht2 = asin(vec2.getZ());
+            const double ht2 = asin(vec2.z());
 
-            double az2 = atan2(vec2.getY(), -vec2.getX());
+            double az2 = atan2(vec2.y(), -vec2.x());
             if (az2 < 0.)
                 az2 += DEUX_PI;
 
@@ -890,8 +885,8 @@ void Afficher::loadSky(const int j)
         if (soleil.isVisible()) {
 
             // Calcul des coordonnees radar du Soleil
-            const int lsol = qRound(lciel - lciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * sin(soleil.getAzimut()));
-            const int bsol = qRound(hciel - hciel * (1. - soleil.getHauteur() * DEUX_SUR_PI) * cos(soleil.getAzimut()));
+            const int lsol = qRound(lciel - lciel * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
+            const int bsol = qRound(hciel - hciel * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
 
             rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
             sceneSky->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
@@ -903,14 +898,14 @@ void Afficher::loadSky(const int j)
         // Calcul des coordonnees radar des planetes Mercure et Venus
         for(int iplanete=MERCURE; iplanete<=VENUS; iplanete++) {
 
-            if (planetes.at(iplanete).getHauteur() >= 0.) {
+            if (planetes.at(iplanete).hauteur() >= 0.) {
 
-                if (planetes.at(iplanete).getDistance() < soleil.getDistance()) {
+                if (planetes.at(iplanete).distance() < soleil.distance()) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            sin(planetes.at(iplanete).getAzimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).getHauteur() * DEUX_SUR_PI) *
-                                            cos(planetes.at(iplanete).getAzimut()));
+                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                            sin(planetes.at(iplanete).azimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) *
+                                            cos(planetes.at(iplanete).azimut()));
 
                     const QBrush bru3(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -919,7 +914,7 @@ void Afficher::loadSky(const int j)
                     if (affplanetes == Qt::Checked) {
                         const int lpl = lpla - lciel;
                         const int bpl = hciel - bpla;
-                        const QString nompla = planetes.at(iplanete).getNom();
+                        const QString nompla = planetes.at(iplanete).nom();
                         QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = (int) txtPla->boundingRect().width();
 
@@ -940,22 +935,22 @@ void Afficher::loadSky(const int j)
     if (afflune && lune.isVisible()) {
 
         // Calcul des coordonnees radar de la Lune
-        const int llun = qRound(lciel - lciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * sin(lune.getAzimut()));
-        const int blun = qRound(hciel - hciel * (1. - lune.getHauteur() * DEUX_SUR_PI) * cos(lune.getAzimut()));
+        const int llun = qRound(lciel - lciel * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
+        const int blun = qRound(hciel - hciel * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
         QGraphicsPixmapItem * const lun = sceneSky->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
-        if (rotationLune && obs.getLatitude() < 0.)
+        if (rotationLune && obs.latitude() < 0.)
             transform.rotate(180.);
         transform.translate(-7, -7);
         lun->setTransform(transform);
     }
 
     // Affichage de la trace dans le ciel
-    if (sat.getTraceCiel().size() > 0) {
+    if (sat.traceCiel().size() > 0) {
 
-        const QList<QVector<double> > trace = sat.getTraceCiel();
+        const QList<QVector<double> > trace = sat.traceCiel();
         const double ht1 = trace.at(0).at(0);
         const double az1 = trace.at(0).at(1);
         int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
@@ -971,7 +966,7 @@ void Afficher::loadSky(const int j)
             const double az2 = trace.at(i).at(1);
 
             crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
-                        ((soleil.getHauteur() > -0.08) ? bleuClair : ((soleil.getHauteur() > -0.12) ?
+                        ((soleil.hauteur() > -0.08) ? bleuClair : ((soleil.hauteur() > -0.12) ?
                                                                           QColor("deepskyblue") : QColor("cyan"))) : crimson;
 
             const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
@@ -981,20 +976,20 @@ void Afficher::loadSky(const int j)
 
             // Determination des dates a afficher sur la carte du ciel
             Date dateTrace(trace.at(i).at(3) + offset, offset);
-            if (dateTrace.getMinutes() != min) {
+            if (dateTrace.minutes() != min) {
                 aecr = true;
-                min = dateTrace.getMinutes();
+                min = dateTrace.minutes();
             }
 
-            if (cond.getNbl() > 0) {
+            if (cond.nbl() > 0) {
 
-                if (dateTrace.getJourJulienUTC() > dateMax.getJourJulienUTC() && !adeb) {
+                if (dateTrace.jourJulienUTC() > dateMax.jourJulienUTC() && !adeb) {
                     adeb = true;
                     amax = true;
                     aecr = true;
                 }
-                if (dateTrace.getJourJulienUTC() >= dateDeb.getJourJulienUTC() &&
-                        dateTrace.getJourJulienUTC() <= dateFin.getJourJulienUTC()) {
+                if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
+                        dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
                     crayon = QPen(crayon.color(), 4);
                 }
             }
@@ -1018,10 +1013,10 @@ void Afficher::loadSky(const int j)
                     amax = false;
                     sdate = tr("Flash Iridium");
                 } else {
-                    if (dateTrace.getJourJulienUTC() < dateDeb.getJourJulienUTC() ||
-                            dateTrace.getJourJulienUTC() > dateFin.getJourJulienUTC()) {
-                        const DateSysteme sys = (cond.getSyst()) ? SYSTEME_24H : SYSTEME_12H;
-                        sdate = dateTrace.ToShortDate(COURT, sys);
+                    if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
+                            dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
+                        const DateSysteme sys = (cond.syst()) ? SYSTEME_24H : SYSTEME_12H;
+                        sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
                         sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
                     }
                 }
@@ -1066,7 +1061,7 @@ void Afficher::on_listePrevisions_currentCellChanged(int currentRow, int current
     Q_UNUSED(currentColumn)
     Q_UNUSED(previousRow)
     Q_UNUSED(previousColumn)
-    if (cond.getNbl() != 0)
+    if (cond.nbl() != 0)
         loadMap(currentRow);
     loadSky(currentRow);
 }

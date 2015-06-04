@@ -36,15 +36,17 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    22 avril 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "constellation.h"
 
 bool Constellation::initCst = false;
@@ -56,16 +58,16 @@ Constellation::Constellation()
 {
 }
 
-Constellation::Constellation(const QString &nom, const double ascensionDroite, const double declinaison)
+Constellation::Constellation(const QString &nomConst, const double ascDroite, const double decl)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nom = nom;
-    _ascensionDroite = ascensionDroite * HEUR2RAD;
-    _declinaison = declinaison * DEG2RAD;
+    _nom = nomConst;
+    _ascensionDroite = ascDroite * HEUR2RAD;
+    _declinaison = decl * DEG2RAD;
 
     /* Retour */
     return;
@@ -107,16 +109,13 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
+                                                               QStandardPaths::LocateDirectory);
+    const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
+            QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
 
     /* Corps de la methode */
-    const QString fic = dirDat + QDir::separator() + "constlabel.cst";
+    const QString fic = dirCommonData + QDir::separator() + "constlabel.cst";
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
@@ -134,7 +133,7 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
 }
 
 /* Accesseurs */
-QString Constellation::getNom() const
+QString Constellation::nom() const
 {
     return _nom;
 }

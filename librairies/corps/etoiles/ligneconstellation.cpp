@@ -36,10 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2014
+ * >    3 juin 2015
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
@@ -47,6 +48,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "ligneconstellation.h"
 
 bool LigneConstellation::initLig = false;
@@ -60,15 +62,15 @@ LigneConstellation::LigneConstellation()
     _dessin = false;
 }
 
-LigneConstellation::LigneConstellation(const Etoile &etoile1, const Etoile &etoile2)
+LigneConstellation::LigneConstellation(const Etoile &star1, const Etoile &star2)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _etoile1 = etoile1;
-    _etoile2 = etoile2;
+    _etoile1 = star1;
+    _etoile2 = star2;
     _dessin = _etoile1.isVisible() && _etoile2.isVisible();
 
     /* Retour */
@@ -115,16 +117,13 @@ void LigneConstellation::InitTabLignesCst()
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if defined (Q_OS_WIN)
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#elif defined (Q_OS_LINUX)
-    const QString dirDat = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#else
-    const QString dirDat = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-#endif
+    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
+                                                               QStandardPaths::LocateDirectory);
+    const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
+            QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
 
     /* Corps de la methode */
-    const QString ficLig = dirDat + QDir::separator() + "constlines.cst";
+    const QString ficLig = dirCommonData + QDir::separator() + "constlines.cst";
     QFile fichier(ficLig);
     if (fichier.exists()) {
 
@@ -154,12 +153,12 @@ bool LigneConstellation::isDessin() const
     return (_dessin);
 }
 
-Etoile LigneConstellation::getEtoile1() const
+Etoile LigneConstellation::etoile1() const
 {
     return (_etoile1);
 }
 
-Etoile LigneConstellation::getEtoile2() const
+Etoile LigneConstellation::etoile2() const
 {
     return (_etoile2);
 }

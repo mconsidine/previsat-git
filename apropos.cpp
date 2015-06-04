@@ -36,22 +36,16 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    1er janvier 2014
+ * >    3 juin 2015
  *
  */
 
-#if defined QT_NO_DEBUG
-#pragma GCC diagnostic ignored "-Wshadow"
-#endif
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QDate>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QSettings>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "ui_apropos.h"
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wfloat-equal"
 
 static QSettings settings("Astropedia", "previsat");
 
@@ -78,7 +72,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
 #endif
 
     setFont(police);
-    const QString titre = tr("À propos de %1 %2");
+    const QString titre = tr("Ã€ propos de %1 %2");
     setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     QGraphicsScene * const scene = new QGraphicsScene;
@@ -103,7 +97,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
         ui->imagePreviSat->setBackgroundBrush(alpha);
     }
 
-    const QString informations = "Copyright © %1 %2";
+    const QString informations = "Copyright Â© %1 %2";
     ui->informationsCopyright->setText(informations.arg(QCoreApplication::organizationName()).arg(QString(APP_ANNEES_DEV)));
 
     const QString logiciel = "%1 %2";
