@@ -36,7 +36,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    6 juin 2015
  *
  */
 
@@ -66,8 +66,7 @@ void ThreadCalculs::run()
 {
     switch (_typeCalcul) {
     case PREVISION:
-        Prevision::CalculPassages(_conditions, observ, result
-                                  );
+        Prevision::CalculPassages(_conditions, observ, result);
         break;
 
     case IRIDIUM:
