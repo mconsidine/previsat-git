@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    6 juin 2015
  *
  */
 
@@ -305,6 +305,7 @@ void PreviSat::ChargementConfig()
     dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + dirAstr + QDir::separator() + "data";
     dirLocalData = listeGenericDir.at(0) + dirAstr + QDir::separator() + "data";
     dirTle = QDir::toNativeSeparators(listeGenericDir.at(0) + dirAstr + QDir::separator() + "tle");
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
 #if defined (Q_OS_WIN)
     dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
@@ -318,8 +319,12 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("MS Shell Dlg 2");
 
 #elif defined (Q_OS_LINUX)
-    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(),
-                                    QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
+    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
+            QCoreApplication::applicationName();
+
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = QStandardPaths::locateAll(QStandardPaths::GenericCacheLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+                dirAstr;
 
     police.setFamily("Sans Serif");
     police.setPointSize(7);
@@ -329,8 +334,8 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Sans Serif");
 
 #elif defined (Q_OS_MAC)
-    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(),
-                                    QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
+    dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
+            QCoreApplication::applicationName();
 
     police.setFamily("Marion");
     police.setPointSize(11);
@@ -349,7 +354,6 @@ void PreviSat::ChargementConfig()
     dirCoord = dirLocalData + QDir::separator() + "coordonnees";
     dirMap = dirLocalData + QDir::separator() + "map";
     dirOut = QDir::toNativeSeparators(dirOut);
-    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
     chronometre = new QTimer(this);
 
@@ -3799,8 +3803,8 @@ void PreviSat::EnchainementCalculs() const
 
             if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
                 chronometre->stop();
-                const QString msg = tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "La position du satellite %1 (numéro NORAD : %2) ne peut pas être calculée (altitude négative)");
+                const QString msg = tr("Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) " \
+                                       "ne peut pas être calculée (altitude négative)");
                 Message::Afficher(msg.arg(tles.at(0).nom()).arg(tles.at(0).norad()), WARNING);
                 chronometre->start();
                 l1 = "";
@@ -9859,7 +9863,8 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite, listeSat);
+        conditions = Conditions(ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite,
+                                listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
@@ -10070,8 +10075,8 @@ void PreviSat::on_calculsIri_clicked()
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
-                         ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(), ui->dateInitialeIri->time().second(),
-                         offset1);
+                         ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(),
+                         ui->dateInitialeIri->time().second(), offset1);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
@@ -10360,8 +10365,8 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
-                         ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(), ui->dateInitialeEvt->time().second(),
-                         offset1);
+                         ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(),
+                         ui->dateInitialeEvt->time().second(), offset1);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
@@ -10553,7 +10558,8 @@ void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
             } else {
                 const QFileInfo fi(ficTLETransit.at(idxft));
                 ui->fichierTLETransit->setCurrentIndex(idxft);
-                ui->fichierTLETransit->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) != dirTle) ? "" : fi.absoluteFilePath());
+                ui->fichierTLETransit->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) != dirTle) ?
+                                                      "" : fi.absoluteFilePath());
                 CalculAgeTLETransitISS();
                 ui->ageTLETransit->setVisible(true);
                 ui->lbl_ageTLETransit->setVisible(true);

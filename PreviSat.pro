@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    20 mai 2015
+# >    6 juin 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.4
@@ -61,9 +61,8 @@ CONFIG(debug, debug|release) {
     }
 }
 
-LIBS += -L.
+LIBS += -L$$ZLIB_DIR/lib -lz
 win32 {
-    LIBS += $$ZLIB_DIR/lib/zlib.dll
     RC_FILE = icone.rc
 }
 
