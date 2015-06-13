@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    12 juin 2015
  *
  */
 
@@ -212,7 +212,12 @@ void GestionnaireTLE::on_actionSupprimerGroupe_triggered()
     /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer le groupe \"%1\"?");
-    const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
+    QMessageBox msgbox(tr("Information"), msg.arg(groupe), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                       QMessageBox::No, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
 
     if (res == QMessageBox::Yes) {
 
@@ -415,7 +420,13 @@ void GestionnaireTLE::on_actionSupprimer_triggered()
     /* Corps de la methode */
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe \"%1\"?");
-    const int res = QMessageBox::question(this, tr("Information"), msg.arg(groupe), QMessageBox::Yes | QMessageBox::No);
+
+    QMessageBox msgbox(tr("Information"), msg.arg(groupe), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                       QMessageBox::No, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
 
     if (res == QMessageBox::Yes) {
 

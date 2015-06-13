@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -121,7 +121,7 @@ void Lune::CalculPosition(const Date &date)
     double b0 = 0.;
     double l0 = 0.;
     double r0 = 0.;
-    const double t = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
 
     // Longitude moyenne de la Lune
     const double ll = DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * (1. / 538841. - t / 65194000.))), T360);
@@ -199,7 +199,7 @@ void Lune::CalculPhase(const Soleil &soleil)
     // Elongation (ou angle de phase)
     const double elongation = soleil.position().Angle(-_position);
 
-    const bool sgn = ((soleil.position() ^ _position) * w > 0.);
+    const bool sgns = ((soleil.position() ^ _position) * w > 0.);
 
     // Fraction illuminee
     _fractionIlluminee = 0.5 * (1. + cos(elongation));
@@ -209,13 +209,13 @@ void Lune::CalculPhase(const Soleil &soleil)
         _phase = QObject::tr("Nouvelle Lune");
 
     if (_fractionIlluminee >= 0.03 && _fractionIlluminee < 0.31)
-        _phase = (sgn) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
+        _phase = (sgns) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
 
     if (_fractionIlluminee >= 0.31 && _fractionIlluminee < 0.69)
-        _phase = (sgn) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
+        _phase = (sgns) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
 
     if (_fractionIlluminee >= 0.69 && _fractionIlluminee < 0.97)
-        _phase = (sgn) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
+        _phase = (sgns) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
 
     if (_fractionIlluminee >= 0.97)
         _phase = QObject::tr("Pleine Lune");

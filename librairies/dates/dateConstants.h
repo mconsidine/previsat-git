@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -70,6 +70,9 @@ static const double NB_SEC_PAR_JOUR = 86400.;
 
 static const double NB_JOURS_PAR_ANJ = 365.25;
 static const double NB_JOURS_PAR_SIECJ = 36525.;
+
+// Ecart constant TAI-TT (en secondes)
+static const double NB_SEC_TT_TAI = 32.184;
 
 static const double NB_JOUR_PAR_HEUR = 1. / NB_HEUR_PAR_JOUR;
 static const double NB_JOUR_PAR_MIN = 1. / NB_MIN_PAR_JOUR;

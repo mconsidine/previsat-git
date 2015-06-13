@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -453,6 +453,7 @@ private slots:
     void on_syst24h_toggled(bool checked);
     void on_syst12h_toggled(bool checked);
     void on_proportionsCarte_stateChanged(int arg1);
+    void on_typeRepere_currentIndexChanged(int index);
     void on_typeParametres_currentIndexChanged(int index);
     void on_heureLegale_toggled(bool checked);
     void on_utc_toggled(bool checked);
@@ -533,7 +534,6 @@ private slots:
     void on_magnitudeMaxPrev_toggled(bool checked);
     void on_parametrageDefautPrev_clicked();
     void on_calculsPrev_clicked();
-    void on_annulerPrev_clicked();
     void on_afficherPrev_clicked();
 
     // Calcul des flashs Iridium
@@ -543,7 +543,6 @@ private slots:
     void on_hauteurSoleilIri_currentIndexChanged(int index);
     void on_parametrageDefautIri_clicked();
     void on_calculsIri_clicked();
-    void on_annulerIri_clicked();
     void on_afficherIri_clicked();
 
     // Calcul des evenements orbitaux
@@ -552,7 +551,6 @@ private slots:
     void on_liste3_entered(const QModelIndex &index);
     void on_parametrageDefautEvt_clicked();
     void on_calculsEvt_clicked();
-    void on_annulerEvt_clicked();
     void on_afficherEvt_clicked();
 
     // Calcul des transits ISS
@@ -561,7 +559,6 @@ private slots:
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_parametrageDefautTransit_clicked();
     void on_calculsTransit_clicked();
-    void on_annulerTransit_clicked();
     void on_afficherTransit_clicked();
 
 };

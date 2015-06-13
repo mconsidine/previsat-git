@@ -36,16 +36,26 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
 #include <cmath>
 #include <ctime>
 #include <fstream>
+#include <QDir>
 #include <QObject>
+#include <QStandardPaths>
+#pragma GCC diagnostic ignored "-Wconversion"
+#include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "date.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
+
+bool Date::_init = false;
+QList<QList<double> > Date::_ecartsTAI_UTC;
+
 
 /* Constructeurs */
 Date::Date()
@@ -63,8 +73,11 @@ Date::Date()
     _secondes = 0.;
 
     _jourJulien = 0.;
+    _jourJulienTT = 0.;
     _jourJulienUTC = 0.;
     _offsetUTC = 0.;
+
+    _deltaAT = 0.;
 
     /* Retour */
     return;
@@ -117,6 +130,8 @@ Date::Date(const Date &date, const double offset)
     _offsetUTC = offset;
     _jourJulien = date._jourJulien;
     _jourJulienUTC = _jourJulien - offset;
+    getDeltaAT();
+    _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
     /* Retour */
     return;
@@ -165,6 +180,8 @@ Date::Date(const double jourJulien2000, const double offset, const bool acalc)
     _offsetUTC = offset;
     _jourJulien = jourJulien2000;
     _jourJulienUTC = _jourJulien - _offsetUTC;
+    getDeltaAT();
+    _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
     /* Retour */
     return;
@@ -363,10 +380,142 @@ void Date::CalculJourJulien()
 
     _jourJulien = floor(NB_JOURS_PAR_ANJ * d) + floor(30.6001 * (n + 1)) + xj + b - 50.5;
     _jourJulienUTC = _jourJulien - _offsetUTC;
+    getDeltaAT();
+    _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
     /* Retour */
     return;
 }
+
+void Date::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+        const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
+                                                            QStandardPaths::LocateDirectory) + "data";
+        const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
+
+        QFile fi(fic);
+        if (fi.exists()) {
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+
+            _ecartsTAI_UTC.clear();
+            while (!flux.atEnd()) {
+                const QString ligne = flux.readLine();
+                if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+                    const QList<double> list(QList<double> () << ligne.mid(0, 10).toDouble() << ligne.mid(11, 5).toDouble());
+                    _ecartsTAI_UTC.append(list);
+                }
+            }
+            _init = true;
+        } else {
+            throw PreviSatException(QObject::tr("Fichier %1 absent").arg(QDir::toNativeSeparators(fic)), WARNING);
+        }
+        fi.close();
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Date::getDeltaAT()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _deltaAT = 0.;
+
+    /* Corps de la methode */
+    try {
+
+        if (_ecartsTAI_UTC.count() == 0)
+            Initialisation();
+
+        if (_jourJulienUTC < _ecartsTAI_UTC.at(0).at(0) - TJ2000) {
+
+            const double mjd = _jourJulienUTC + 51544.5;
+
+            if (mjd >= 37300. && mjd < 37512.) {
+                // Intervalle 01/01/1961 - 01/08/1961
+                _deltaAT = 1.422818 + (mjd - 37300.) * 0.001296;
+
+            } else if (mjd >= 37512. && mjd < 37665.) {
+                // Intervalle 01/08/1961 - 01/01/1962
+                _deltaAT = 1.372818 + (mjd - 37300.) * 0.001296;
+
+            } else if (mjd >= 37665. && mjd < 38334.) {
+                // Intervalle 01/01/1962 - 01/11/1963
+                _deltaAT = 1.845858 + (mjd - 37665.) * 0.0011232;
+
+            } else if (mjd >= 38334. && mjd < 38395.) {
+                // Intervalle 01/11/1963 - 01/01/1964
+                _deltaAT = 1.945858 + (mjd - 37665.) * 0.0011232;
+
+            } else if (mjd >= 38395. && mjd < 38486.) {
+                // Intervalle 01/01/1964 - 01/04/1964
+                _deltaAT = 3.240130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 38486. && mjd < 38639.) {
+                // Intervalle 01/04/1964 - 01/09/1964
+                _deltaAT = 3.340130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 38639. && mjd < 38761.) {
+                // Intervalle 01/09/1964 - 01/01/1965
+                _deltaAT = 3.440130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 38761. && mjd < 38820.) {
+                // Intervalle 01/01/1965 - 01/03/1965
+                _deltaAT = 3.540130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 38820. && mjd < 38942.) {
+                // Intervalle 01/03/1965 - 01/07/1965
+                _deltaAT = 3.640130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 38942. && mjd < 39004.) {
+                // Intervalle 01/07/1965 - 01/09/1965
+                _deltaAT = 3.740130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 39004. && mjd < 39126.) {
+                // Intervalle 01/09/1965 - 01/01/1966
+                _deltaAT = 3.840130 + (mjd - 38761.) * 0.001296;
+
+            } else if (mjd >= 39126. && mjd < 39887.) {
+                // Intervalle 01/01/1966 - 01/02/1968
+                _deltaAT = 4.313170 + (mjd - 39126.) * 0.002592;
+
+            } else if (mjd >= 39887. && mjd < 41317.) {
+                // Intervalle 01/02/1968 - 01/01/1972
+                _deltaAT = 4.213170 + (mjd - 39126.) * 0.002592;
+
+            } else {
+                _deltaAT = 0.;
+            }
+        } else {
+
+            // Dates ulterieures au 1er janvier 1972
+            QListIterator<QList<double> > it(_ecartsTAI_UTC);
+            while (it.hasNext()) {
+                const QList<double> list = it.next();
+                if (_jourJulienUTC >= list.at(0) - TJ2000)
+                    _deltaAT = list.at(1);
+            }
+        }
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /* Accesseurs */
 int Date::annee() const
@@ -387,6 +536,11 @@ int Date::jour() const
 double Date::jourJulien() const
 {
     return _jourJulien;
+}
+
+double Date::jourJulienTT() const
+{
+    return _jourJulienTT;
 }
 
 double Date::jourJulienUTC() const

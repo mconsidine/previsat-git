@@ -36,7 +36,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  * 
  */
 
@@ -150,7 +150,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     _distance = _dist.Norme();
 
     // Prise en compte de l'aberration
-    const double jj2 = date.jourJulienUTC() - 0.0057755183 * _distance;
+    const double jj2 = date.jourJulienTT() - 0.0057755183 * _distance;
     const Date date2(jj2, 0., false);
 
     CalculElements(date2);
@@ -167,20 +167,20 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
 void Planete::CalculElements(const Date &date)
 {
     /* Declarations des variables locales */
-    double tu[4];
+    double tt[4];
 
     /* Initialisations */
-    tu[0] = 1.;
-    tu[1] = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
-    tu[2] = tu[1] * tu[1];
-    tu[3] = tu[2] * tu[1];
+    tt[0] = 1.;
+    tt[1] = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
+    tt[2] = tt[1] * tt[1];
+    tt[3] = tt[2] * tt[1];
 
     /* Corps de la methode */
     // Calcul des elements orbitaux
     for(int i=0; i<6; i++) {
         _elem[i] = 0.;
         for(int j=0; j<4; j++)
-            _elem[i] += _tabPlanetes[_iplanete][i][j] * tu[j];
+            _elem[i] += _tabPlanetes[_iplanete][i][j] * tt[j];
     }
 
     // Reduction des elements

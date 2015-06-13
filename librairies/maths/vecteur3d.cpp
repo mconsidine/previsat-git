@@ -36,12 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
 #include <cmath>
-#include "mathsConstants.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "vecteur3d.h"
 
@@ -109,6 +108,31 @@ Vecteur3D::~Vecteur3D()
 
 /* Methodes */
 /*
+ * Calcul de l'angle entre 2 vecteurs
+ */
+double Vecteur3D::Angle(const Vecteur3D &vecteur) const
+{
+    try {
+
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps de la methode */
+        const double norme1 = Norme();
+        const double norme2 = vecteur.Norme();
+        const double cosang = (*this) * vecteur / (norme1 * norme2);
+        const double res = (cosang < 1.) ? acos(cosang) : (fabs(cosang - 1.) < EPSDBL) ? 0. : -1.;
+
+        /* Retour */
+        return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : res);
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+}
+
+/*
  * Test si un vecteur est nul
  */
 bool Vecteur3D::isNul() const
@@ -138,32 +162,6 @@ double Vecteur3D::Norme() const
     return (sqrt(_x * _x + _y * _y + _z * _z));
 }
 
-/*
- * Calcul de l'angle entre 2 vecteurs
- */
-double Vecteur3D::Angle(const Vecteur3D &vecteur) const
-{
-    try {
-
-        /* Declarations des variables locales */
-
-        /* Initialisations */
-
-        /* Corps de la methode */
-        const double norme1 = Norme();
-        const double norme2 = vecteur.Norme();
-        const double cosang = (*this) * vecteur / (norme1 * norme2);
-        const double res = (cosang < 1.) ? acos(cosang) : (fabs(cosang - 1.) < EPSDBL) ? 0. : -1.;
-
-        /* Retour */
-        return ((norme1 < EPSDBL || norme2 < EPSDBL) ? 0. : res);
-
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
-    }
-}
-
-
 Vecteur3D Vecteur3D::Normalise() const
 {
     try {
@@ -182,6 +180,41 @@ Vecteur3D Vecteur3D::Normalise() const
     } catch (PreviSatException &e) {
         throw PreviSatException();
     }
+}
+
+Vecteur3D Vecteur3D::Rotation(AxeType axe, double angle) const
+{
+    /* Declarations des variables locales */
+    Vecteur3D vecteur;
+
+    /* Initialisations */
+    const double cosang = cos(angle);
+    const double sinang = sin(angle);
+
+    /* Corps de la methode */
+    switch (axe) {
+
+    case AXE_X:
+
+        vecteur = Vecteur3D(_x, _y * cosang + _z * sinang, -_y * sinang + _z * cosang);
+        break;
+
+    case AXE_Y:
+
+        vecteur = Vecteur3D(_x * cosang - _z * sinang, _y, _x * sinang + _z * cosang);
+        break;
+
+    case AXE_Z:
+
+        vecteur = Vecteur3D(_x * cosang + _y * sinang, -_x * sinang + _y * cosang, _z);
+        break;
+
+    default:
+        break;
+    }
+
+    /* Retour */
+    return (vecteur);
 }
 
 

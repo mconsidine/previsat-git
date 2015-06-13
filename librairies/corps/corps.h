@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -68,6 +68,13 @@ public:
 
     /* Methodes publiques */
     /**
+     * @brief CalculAltitude Calcul de l'altitude du corps
+     * @param pos position cartesienne du corps
+     * @return altitude (km)
+     */
+    double CalculAltitude(const Vecteur3D &pos);
+
+    /**
      * @brief CalculCoordEquat Calcul des coordonnees equatoriales
      * @param observateur observateur
      */
@@ -100,18 +107,19 @@ public:
     void CalculCoordTerrestres(const Date &date);
 
     /**
-     * @brief CalculAltitude Calcul de l'altitude du corps
-     * @param pos position cartesienne du corps
-     * @return altitude (km)
-     */
-    double CalculAltitude(const Vecteur3D &pos);
-
-    /**
      * @brief CalculLatitude Calcul de la latitude geodesique du corps
      * @param pos position cartesienne du corps
      * @return latitude (radian)
      */
     double CalculLatitude(const Vecteur3D &pos);
+
+    /**
+     * @brief CalculPosVitECEF Calcul de la position et de la vitesse dans le repere ECEF
+     * @param date date
+     * @param positionECEF position dans le repere ECEF
+     * @param vitesseECEF vitesse dans le repere ECEF
+     */
+    void CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const;
 
     /**
      * @brief CalculZoneVisibilite Calcul de la zone de visibilite du corps

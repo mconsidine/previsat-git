@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -103,6 +103,18 @@ Corps::~Corps()
 
 
 /* Methodes */
+double Corps::CalculAltitude(const Vecteur3D &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return ((_r0 < 1.e-3) ? fabs(pos.z()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
+}
+
 /*
  * Calcul des coordonnees equatoriales
  */
@@ -283,18 +295,6 @@ void Corps::CalculCoordTerrestres(const Date &date)
     return;
 }
 
-double Corps::CalculAltitude(const Vecteur3D &pos)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return ((_r0 < 1.e-3) ? fabs(pos.z()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
-}
-
 /*
  * Calcul de la latitude geodesique
  */
@@ -320,6 +320,22 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
 
     /* Retour */
     return (_latitude);
+}
+
+void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double gmst = Observateur::CalculTempsSideralGreenwich(date);
+    const Vecteur3D omegaTerre(0., 0., OMEGA);
+
+    /* Corps de la methode */
+    positionECEF = _position.Rotation(AXE_Z, gmst);
+    vitesseECEF = _vitesse.Rotation(AXE_Z, gmst) - (omegaTerre ^ positionECEF);
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -403,12 +419,12 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double t = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
     const double om = DEG2RAD * modulo(125.04 - 1934.136 * t, T360);
     const double x = vecteur.x() - DEG2RAD * 0.00478 * sin(om);
-    const double obliquite = ARCSEC2RAD * (84381.448 - t * (46.815 - t * (0.00059 - 0.001813 * t)));
+    const double obliquite = ARCSEC2RAD * (84381.448 + t * (-46.815 + t * (-0.00059 + 0.001813 * t)));
     const double cb = cos(vecteur.y());
     const double sb = sin(vecteur.y());
     const double ce = cos(obliquite);
