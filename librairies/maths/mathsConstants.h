@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -51,6 +51,12 @@ enum AngleFormatType {
     RADIAN,
     ARCSEC,
     NO_TYPE
+};
+
+enum AxeType {
+    AXE_X,
+    AXE_Y,
+    AXE_Z
 };
 
 /* Declaration des constantes */

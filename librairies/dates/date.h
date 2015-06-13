@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -148,6 +148,7 @@ public:
     int minutes() const;
     int mois() const;
     double jourJulien() const;
+    double jourJulienTT() const;
     double jourJulienUTC() const;
     double offsetUTC() const;
     double secondes() const;
@@ -167,6 +168,8 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
+    static bool _init;
+
     int _annee;
     int _mois;
     int _jour;
@@ -175,14 +178,31 @@ private:
     double _secondes;
 
     double _jourJulien;
+    double _jourJulienTT;
     double _jourJulienUTC;
     double _offsetUTC;
+
+    // Ecart TAI-UTC (en secondes)
+    double _deltaAT;
+
+    // Table des ecarts TAI-UTC
+    static QList<QList<double> > _ecartsTAI_UTC;
 
     /* Methodes privees */
     /**
      * @brief CalculJourJulien Calcul du jour julien 2000 (pour des dates du calendrier gregorien)
      */
     void CalculJourJulien();
+
+    /**
+     * @brief Initialisation Lecture du fichier taiutc.dat
+     */
+    void Initialisation();
+
+    /**
+     * @brief getDeltaAT Obtention de l'ecart TAI-UTC
+     */
+    void getDeltaAT();
 
 };
 

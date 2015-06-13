@@ -33,12 +33,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
 #ifndef VECTEUR3D_H
 #define VECTEUR3D_H
+
+#include "mathsConstants.h"
 
 class Vecteur3D
 {
@@ -92,9 +94,17 @@ public:
 
     /**
      * @brief Norme Calcul de la norme du vecteur 3D
-     * @return norme
+     * @return norme du vecteur
      */
     double Norme() const;
+
+    /**
+     * @brief Rotation Rotation d'un vecteur autour d'un axe
+     * @param axe axe (AXE_X, AXE_Y ou AXE_Z)
+     * @param angle angle de rotation (rad)
+     * @return vecteur issu de la rotation
+     */
+    Vecteur3D Rotation(AxeType axe, double angle) const;
 
     /**
      * @brief operator - Oppose du vecteur 3D

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    12 juin 2015
  *
  */
 
@@ -410,11 +410,21 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE anciens
                     // Demande d'ajout
                     if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
-                        res1 = QMessageBox::question(0, QObject::tr("Ajout du nouveau TLE"),
-                                                     message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad),
-                                                     QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
-                                                     QMessageBox::NoToAll, QMessageBox::No);
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
+                                                            "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier " \
+                                                            "à mettre à jour ?");
+
+                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
+                                           message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad), QMessageBox::Yes |
+                                           QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
+
+                        msgbox.setDefaultButton(QMessageBox::No);
+                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
+                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
+                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
+                        msgbox.exec();
+                        res1 = msgbox.result();
                     }
                     if (res1 == QMessageBox::Yes || res1 == QMessageBox::YesToAll) {
                         tleOld.insert(isat, tleNew.at(j));
@@ -427,11 +437,20 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE recents
                     // Demande de suppression
                     if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
-                        res2 = QMessageBox::question(0, QObject::tr("Suppression du TLE"),
-                                                     message.arg(tleOld.at(isat)._nom).arg(tleOld.at(isat)._norad),
-                                                     QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No |
-                                                     QMessageBox::NoToAll, QMessageBox::No);
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
+                                                            "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
+
+                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
+                                           message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad), QMessageBox::Yes |
+                                           QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
+
+                        msgbox.setDefaultButton(QMessageBox::No);
+                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
+                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
+                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
+                        msgbox.exec();
+                        res2 = msgbox.result();
                     }
                     if (res2 == QMessageBox::Yes || res2 == QMessageBox::YesToAll) {
                         tleOld.remove(isat);

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -138,11 +138,11 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
                 const double ad3 = ligne.mid(4, 4).toDouble();
                 ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
 
-                const int sgn = (ligne.at(9) == '-') ? -1 : 1;
+                const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
                 const int de1 = ligne.mid(10, 2).toInt();
                 const int de2 = ligne.mid(12, 2).toInt();
                 const int de3 = ligne.mid(14, 2).toInt();
-                dec = sgn * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
+                dec = sgnd * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
 
                 mag = ligne.mid(31, 5).toDouble();
                 nom = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";

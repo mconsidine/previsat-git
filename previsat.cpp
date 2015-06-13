@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -290,7 +290,8 @@ void PreviSat::ChargementConfig()
     tim = QDateTime();
 
     listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" << "ISS-Live1.html"
-                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" << "stations.sta" << "tdrs.sat";
+                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" << "stations.sta" << "taiutc.dat"
+                      << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -497,6 +498,7 @@ void PreviSat::ChargementConfig()
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
+    ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
     ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
     ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
     ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
@@ -580,8 +582,7 @@ void PreviSat::ChargementConfig()
     ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isVisible());
     ui->valHauteurSatPrev->setVisible(false);
     ui->valHauteurSoleilPrev->setVisible(false);
-    ui->afficherPrev->setVisible(false);
-    ui->annulerPrev->setVisible(false);
+    ui->afficherPrev->setEnabled(false);
 
     ui->hauteurSatIri->setCurrentIndex(settings.value("previsions/hauteurSatIri", 2).toInt());
     ui->hauteurSoleilIri->setCurrentIndex(settings.value("previsions/hauteurSoleilIri", 1).toInt());
@@ -594,8 +595,7 @@ void PreviSat::ChargementConfig()
     ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    ui->annulerIri->setVisible(false);
+    ui->afficherIri->setEnabled(false);
     ui->statutIridium->setColumnWidth(0, 80);
     ui->statutIridium->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
 
@@ -703,16 +703,14 @@ void PreviSat::ChargementConfig()
     ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
     ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
-    ui->afficherEvt->setVisible(false);
-    ui->annulerEvt->setVisible(false);
+    ui->afficherEvt->setEnabled(false);
 
     ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
     ui->valHauteurSatTransit->setVisible(false);
-    ui->afficherTransit->setVisible(false);
-    ui->annulerTransit->setVisible(false);
+    ui->afficherTransit->setEnabled(false);
 
     // Menus
     ui->barreMenu->setMenu(ui->menuPrincipal);
@@ -1053,7 +1051,6 @@ QString PreviSat::DeterminationLocale()
 
     /* Retour */
     return (localePreviSat);
-
 }
 
 PreviSat::~PreviSat()
@@ -2737,29 +2734,6 @@ void PreviSat::AffichageDonnees()
             ui->ligne1->setText(l1);
             ui->ligne2->setText(l2);
 
-            // Vecteur d'etat
-            // Position
-            Vecteur3D vect = (ui->unitesKm->isChecked()) ? satellites.at(0).position() :
-                                                           satellites.at(0).position() * MILE_PAR_KM;
-            chaine2 = "%1%2 " + unite1;
-            chaine = chaine2.arg((vect.x() >= 0.) ? "+" : "-").arg(fabs(vect.x()), 0, 'f', 3);
-            ui->xsat->setText(chaine);
-            chaine = chaine2.arg((vect.y() >= 0.) ? "+" : "-").arg(fabs(vect.y()), 0, 'f', 3);
-            ui->ysat->setText(chaine);
-            chaine = chaine2.arg((vect.z() >= 0.) ? "+" : "-").arg(fabs(vect.z()), 0, 'f', 3);
-            ui->zsat->setText(chaine);
-
-            // Vitesse
-            vect = (ui->unitesKm->isChecked()) ? satellites.at(0).vitesse() :
-                                                 satellites.at(0).vitesse() * MILE_PAR_KM;
-            chaine2 = "%1%2 " + unite2;
-            chaine = chaine2.arg((vect.x() >= 0.) ? "+" : "-").arg(fabs(vect.x()), 0, 'f', 6);
-            ui->vxsat->setText(chaine);
-            chaine = chaine2.arg((vect.y() >= 0.) ? "+" : "-").arg(fabs(vect.y()), 0, 'f', 6);
-            ui->vysat->setText(chaine);
-            chaine = chaine2.arg((vect.z() >= 0.) ? "+" : "-").arg(fabs(vect.z()), 0, 'f', 6);
-            ui->vzsat->setText(chaine);
-
             // Elements osculateurs
             AffichageElementsOsculateurs();
 
@@ -2986,8 +2960,41 @@ void PreviSat::AffichageElementsOsculateurs() const
 
     /* Initialisations */
     const QString unite1 = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+    const QString unite2 = (ui->unitesKm->isChecked()) ? tr("km/s") : tr("nmi/s");
 
     /* Corps de la methode */
+    // Vecteur d'etat
+    Vecteur3D position, vitesse;
+    if (ui->typeRepere->currentIndex() == 0) {
+        position = satellites.at(0).position();
+        vitesse = satellites.at(0).vitesse();
+    } else {
+        satellites.at(0).CalculPosVitECEF(dateCourante, position, vitesse);
+    }
+
+    if (ui->unitesMi->isChecked()) {
+        position = position * MILE_PAR_KM;
+        vitesse = vitesse * MILE_PAR_KM;
+    }
+
+    // Position
+    chaine2 = "%1%2 " + unite1;
+    chaine = chaine2.arg((position.x() >= 0.) ? "+" : "-").arg(fabs(position.x()), 0, 'f', 3);
+    ui->xsat->setText(chaine);
+    chaine = chaine2.arg((position.y() >= 0.) ? "+" : "-").arg(fabs(position.y()), 0, 'f', 3);
+    ui->ysat->setText(chaine);
+    chaine = chaine2.arg((position.z() >= 0.) ? "+" : "-").arg(fabs(position.z()), 0, 'f', 3);
+    ui->zsat->setText(chaine);
+
+    // Vitesse
+    chaine2 = "%1%2 " + unite2;
+    chaine = chaine2.arg((vitesse.x() >= 0.) ? "+" : "-").arg(fabs(vitesse.x()), 0, 'f', 6);
+    ui->vxsat->setText(chaine);
+    chaine = chaine2.arg((vitesse.y() >= 0.) ? "+" : "-").arg(fabs(vitesse.y()), 0, 'f', 6);
+    ui->vysat->setText(chaine);
+    chaine = chaine2.arg((vitesse.z() >= 0.) ? "+" : "-").arg(fabs(vitesse.z()), 0, 'f', 6);
+    ui->vzsat->setText(chaine);
+
     chaine = "%1 " + unite1;
     double xval = satellites.at(0).elements().demiGrandAxe() * ((ui->unitesKm->isChecked()) ? 1. : MILE_PAR_KM);
 
@@ -3903,8 +3910,12 @@ void PreviSat::MiseAJourFichiers(QAction *action, const QString &typeMAJ)
 
     const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
 
-    const int res = QMessageBox::question(0, tr("Information"), msg.arg(typeMAJ), QMessageBox::Yes | QMessageBox::No,
-                                          QMessageBox::Yes);
+    QMessageBox msgbox(tr("Information"), msg.arg(typeMAJ), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                       QMessageBox::No, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
 
     if (res == QMessageBox::Yes) {
         if (action == ui->actionTelecharger_la_mise_a_jour) {
@@ -3966,8 +3977,13 @@ void PreviSat::VerifAgeTLE()
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
         if (fabs(dateCourante.jourJulienUTC() - tles.at(0).epoque().jourJulienUTC()) > ageMax) {
             const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
-            const int res = QMessageBox::question(this, tr("Information"), msg.arg(ageMax), QMessageBox::Yes | QMessageBox::No,
-                                                  QMessageBox::Yes);
+
+            QMessageBox msgbox(tr("Information"), msg.arg(ageMax), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                               QMessageBox::No, QMessageBox::NoButton, this);
+            msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+            msgbox.setButtonText(QMessageBox::No, tr("Non"));
+            msgbox.exec();
+            const int res = msgbox.result();
 
             if (res == QMessageBox::Yes) {
 
@@ -4283,10 +4299,10 @@ void PreviSat::ModificationOption()
         ui->selecLieux->setCurrentRow(-1);
     }
 
-    ui->afficherPrev->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    ui->afficherEvt->setVisible(false);
-    ui->afficherTransit->setVisible(false);
+    ui->afficherPrev->setEnabled(false);
+    ui->afficherIri->setEnabled(false);
+    ui->afficherEvt->setEnabled(false);
+    ui->afficherTransit->setEnabled(false);
 
     if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
 
@@ -4497,7 +4513,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << ui->ligne1->text() << endl;
         flux << ui->ligne2->text() << endl << endl;
 
-        flux << tr("Vecteur d'état (ECI) :") << endl;
+        flux << tr("Vecteur d'état") << " (" << ui->typeRepere->currentText() << ") :" << endl;
         QString chaine = tr("x : %1%2\tvx : %3");
         flux << chaine.arg(QString(13 - ui->xsat->text().length(), QChar(' '))).arg(ui->xsat->text()).
                 arg(ui->vxsat->text()) << endl;
@@ -4901,22 +4917,20 @@ void PreviSat::CalculsTermines()
     const QFileInfo fi(ficRes);
     switch (threadCalculs->typeCalcul()) {
     case ThreadCalculs::PREVISION:
-        ui->annulerPrev->setVisible(false);
-        ui->calculsPrev->setVisible(true);
+        ui->calculsPrev->setEnabled(true);
         if (fi.exists()) {
             ui->calculsPrev->setDefault(false);
-            ui->afficherPrev->setVisible(true);
+            ui->afficherPrev->setEnabled(true);
             ui->afficherPrev->setDefault(true);
             ui->afficherPrev->setFocus();
         }
         break;
 
     case ThreadCalculs::IRIDIUM:
-        ui->annulerIri->setVisible(false);
-        ui->calculsIri->setVisible(true);
+        ui->calculsIri->setEnabled(true);
         if (fi.exists()) {
             ui->calculsIri->setDefault(false);
-            ui->afficherIri->setVisible(true);
+            ui->afficherIri->setEnabled(true);
             ui->afficherIri->setDefault(true);
             ui->afficherIri->setFocus();
             settings.setValue("fichier/iridium", QDir::toNativeSeparators(ficTLEIri.at(ui->fichierTLEIri->currentIndex())));
@@ -4924,22 +4938,20 @@ void PreviSat::CalculsTermines()
         break;
 
     case ThreadCalculs::EVENEMENTS:
-        ui->annulerEvt->setVisible(false);
-        ui->calculsEvt->setVisible(true);
+        ui->calculsEvt->setEnabled(true);
         if (fi.exists()) {
             ui->calculsEvt->setDefault(false);
-            ui->afficherEvt->setVisible(true);
+            ui->afficherEvt->setEnabled(true);
             ui->afficherEvt->setDefault(true);
             ui->afficherEvt->setFocus();
         }
         break;
 
     case ThreadCalculs::TRANSITS:
-        ui->annulerTransit->setVisible(false);
-        ui->calculsTransit->setVisible(true);
+        ui->calculsTransit->setEnabled(true);
         if (fi.exists()) {
             ui->calculsTransit->setDefault(false);
-            ui->afficherTransit->setVisible(true);
+            ui->afficherTransit->setEnabled(true);
             ui->afficherTransit->setDefault(true);
             ui->afficherTransit->setFocus();
             settings.setValue("fichier/fichierTLETransit",
@@ -4998,7 +5010,8 @@ void PreviSat::GestionTempsReel()
         modeFonctionnement->setText(tr("Temps réel"));
         const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
         offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
-        ui->updown->setValue(sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
+        if (ui->heureLegale->isChecked())
+            ui->updown->setValue(sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
         date1 = Date(dateCourante.offsetUTC());
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
@@ -5360,6 +5373,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
     settings.setValue("affichage/systemeHoraire", ui->syst24h->isChecked());
+    settings.setValue("affichage/typeRepere", ui->typeRepere->currentIndex());
     settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
     settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
@@ -5714,12 +5728,12 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
         // Etape precedente/suivante (mode manuel)
         if (!ui->modeManuel->isChecked())
             ui->modeManuel->setChecked(true);
-        const int sgn = (evt->key() == etape_av) ? -1 : 1;
+        const int sgnk = (evt->key() == etape_av) ? -1 : 1;
 
         const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.jourJulien() +
-                                                                sgn * ui->pasManuel->currentText().toDouble() *
+                                                                sgnk * ui->pasManuel->currentText().toDouble() *
                                                                 qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
-                                                                dateCourante.jourJulien() + sgn * ui->pasManuel->currentText().
+                                                                dateCourante.jourJulien() + sgnk * ui->pasManuel->currentText().
                                                                 toDouble();
 
         const Date date(jd + EPS_DATES, 0.);
@@ -6383,8 +6397,8 @@ void PreviSat::on_affichageCiel_clicked()
         ui->affichageCiel->setToolTip(tr("Carte du monde"));
     }
 
-    // Enchainement de l'ensemble des calculs
-    EnchainementCalculs();
+    // Enchainement de l'ensemble des calculs et affichage
+    CalculsAffichage();
 
     QResizeEvent *evt = NULL;
     resizeEvent(evt);
@@ -8023,6 +8037,13 @@ void PreviSat::on_proportionsCarte_stateChanged(int arg1)
     resizeEvent(evt);
 }
 
+void PreviSat::on_typeRepere_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    if (ui->typeRepere->isVisible())
+        AffichageElementsOsculateurs();
+}
+
 void PreviSat::on_typeParametres_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
@@ -8088,13 +8109,14 @@ void PreviSat::on_updown_valueChanged(int arg1)
     /* Initialisations */
 
     /* Corps de la methode */
-    QTime heur;
+    QTime heur(0, 0);
     heur = heur.addSecs((int) fabs(arg1 * NB_SEC_PAR_MIN));
-    const QString sgn = (arg1 >= 0) ? " + " : " - ";
-    ui->tuc->setText(tr("UTC") + sgn + heur.toString("hh:mm"));
+    const QString sgnh = (arg1 >= 0) ? " + " : " - ";
+    ui->tuc->setText(tr("UTC") + sgnh + heur.toString("hh:mm"));
     offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
 
     if (ui->options->isVisible()) {
+
         if (ui->heureLegale->isChecked()) {
             dateCourante = Date(dateCourante, offsetUTC);
 
@@ -8329,8 +8351,13 @@ void PreviSat::on_actionSupprimerCategorie_triggered()
     const QString fic = ui->fichiersObs->currentItem()->text().toLower();
     const QString categorie = ui->fichiersObs->currentItem()->text();
     QString msg = tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?");
-    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(categorie), QMessageBox::Yes | QMessageBox::No,
-                                          QMessageBox::No);
+
+    QMessageBox msgbox(tr("Information"), msg.arg(categorie), QMessageBox::Question, QMessageBox::Yes,
+                       QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
 
     if (res == QMessageBox::No) {
         messagesStatut->setText("");
@@ -8562,7 +8589,7 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->lbl_ajouterDans->setVisible(true);
     ui->ajdfic->setVisible(true);
-    ui->ajdfic->setCurrentIndex(0);
+    ui->ajdfic->setCurrentIndex(ui->fichiersObs->currentRow());
     messagesStatut->setText("");
     ui->nvLieu->setFocus();
 
@@ -8829,8 +8856,13 @@ void PreviSat::on_actionSupprimerLieu_triggered()
     const QString fic = ficObs.at(ui->fichiersObs->currentRow());
     const QString nomlieu = ui->lieuxObs->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catégorie \"%2\"?");
-    const int res = QMessageBox::question(this, tr("Avertissement"), msg.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()),
-                                          QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+    QMessageBox msgbox(tr("Avertissement"), msg.arg(nomlieu).arg(ui->fichiersObs->currentItem()->text()), QMessageBox::Question,
+                       QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
 
     if (res == QMessageBox::Yes) {
 
@@ -9733,9 +9765,9 @@ void PreviSat::on_calculsPrev_clicked()
     messagesStatut->setText("");
 
     /* Corps de la methode */
-    ui->afficherIri->setVisible(false);
-    ui->afficherEvt->setVisible(false);
-    ui->afficherTransit->setVisible(false);
+    ui->afficherIri->setEnabled(false);
+    ui->afficherEvt->setEnabled(false);
+    ui->afficherTransit->setEnabled(false);
 
     try {
         if (ui->liste2->count() == 0)
@@ -9745,7 +9777,7 @@ void PreviSat::on_calculsPrev_clicked()
         if (nsat == 0 && ui->liste2->count() > 0)
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
-        ui->afficherPrev->setVisible(false);
+        ui->afficherPrev->setEnabled(false);
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
@@ -9857,9 +9889,7 @@ void PreviSat::on_calculsPrev_clicked()
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
-        ui->calculsPrev->setVisible(false);
-        ui->annulerPrev->setVisible(true);
-        ui->annulerPrev->setFocus();
+        ui->calculsPrev->setEnabled(false);
 
 
         // Lancement des calculs
@@ -9873,30 +9903,6 @@ void PreviSat::on_calculsPrev_clicked()
 
     } catch (PreviSatException &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_annulerPrev_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    // Trouver methode alternative a terminate
-    threadCalculs->terminate();
-    threadCalculs->wait();
-
-    Prevision::FinTraitement();
-
-    ui->annulerPrev->setVisible(false);
-    ui->afficherPrev->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des prévisions de passage"));
-    QFile fi(ficRes);
-    if (fi.exists())
-        fi.remove();
 
     /* Retour */
     return;
@@ -10053,9 +10059,9 @@ void PreviSat::on_calculsIri_clicked()
     messagesStatut->setText("");
 
     /* Corps de la methode */
-    ui->afficherPrev->setVisible(false);
-    ui->afficherEvt->setVisible(false);
-    ui->afficherTransit->setVisible(false);
+    ui->afficherPrev->setEnabled(false);
+    ui->afficherEvt->setEnabled(false);
+    ui->afficherTransit->setEnabled(false);
 
     try {
         if (ui->fichierTLEIri->currentText().trimmed().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
@@ -10066,7 +10072,7 @@ void PreviSat::on_calculsIri_clicked()
             ui->fichierTLEIri->removeItem(ui->fichierTLEIri->currentIndex());
             throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
         }
-        ui->afficherIri->setVisible(false);
+        ui->afficherIri->setEnabled(false);
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
@@ -10207,9 +10213,7 @@ void PreviSat::on_calculsIri_clicked()
                                        "Aucun satellite Iridium n'a été trouvé dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
-        ui->calculsIri->setVisible(false);
-        ui->annulerIri->setVisible(true);
-        ui->annulerIri->setFocus();
+        ui->calculsIri->setEnabled(false);
 
 
         // Lancement des calculs
@@ -10223,30 +10227,6 @@ void PreviSat::on_calculsIri_clicked()
 
     } catch (PreviSatException &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_annulerIri_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    // Trouver methode alternative a terminate
-    threadCalculs->terminate();
-    threadCalculs->wait();
-
-    Iridium::FinTraitement();
-
-    ui->annulerIri->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des flashs Iridium"));
-    QFile fi(ficRes);
-    if (fi.exists())
-        fi.remove();
 
     /* Retour */
     return;
@@ -10344,9 +10324,9 @@ void PreviSat::on_calculsEvt_clicked()
     messagesStatut->setText("");
 
     /* Corps de la methode */
-    ui->afficherPrev->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    ui->afficherTransit->setVisible(false);
+    ui->afficherPrev->setEnabled(false);
+    ui->afficherIri->setEnabled(false);
+    ui->afficherTransit->setEnabled(false);
 
     try {
         if (ui->liste3->count() == 0)
@@ -10356,7 +10336,7 @@ void PreviSat::on_calculsEvt_clicked()
         if (nsat == 0 && ui->liste3->count() > 0)
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
 
-        ui->afficherEvt->setVisible(false);
+        ui->afficherEvt->setEnabled(false);
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
@@ -10434,9 +10414,7 @@ void PreviSat::on_calculsEvt_clicked()
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
-        ui->calculsEvt->setVisible(false);
-        ui->annulerEvt->setVisible(true);
-        ui->annulerEvt->setFocus();
+        ui->calculsEvt->setEnabled(false);
 
 
         // Lancement des calculs
@@ -10449,30 +10427,6 @@ void PreviSat::on_calculsEvt_clicked()
 
     } catch (PreviSatException &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_annulerEvt_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    // Trouver methode alternative a terminate
-    threadCalculs->terminate();
-    threadCalculs->wait();
-
-    Evenements::FinTraitement();
-
-    ui->annulerEvt->setVisible(false);
-    ui->afficherEvt->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des évènements orbitaux"));
-    QFile fi(ficRes);
-    if (fi.exists())
-        fi.remove();
 
     /* Retour */
     return;
@@ -10612,9 +10566,9 @@ void PreviSat::on_calculsTransit_clicked()
     messagesStatut->setText("");
 
     /* Corps de la methode */
-    ui->afficherPrev->setVisible(false);
-    ui->afficherIri->setVisible(false);
-    ui->afficherEvt->setVisible(false);
+    ui->afficherPrev->setEnabled(false);
+    ui->afficherIri->setEnabled(false);
+    ui->afficherEvt->setEnabled(false);
 
     try {
         if (ui->fichierTLETransit->currentText().trimmed().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
@@ -10626,7 +10580,7 @@ void PreviSat::on_calculsTransit_clicked()
             throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
         }
 
-        ui->afficherTransit->setVisible(false);
+        ui->afficherTransit->setEnabled(false);
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
@@ -10717,9 +10671,8 @@ void PreviSat::on_calculsTransit_clicked()
         }
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
-        ui->calculsTransit->setVisible(false);
-        ui->annulerTransit->setVisible(true);
-        ui->annulerTransit->setFocus();
+        ui->calculsTransit->setEnabled(false);
+
 
         // Lancement des calculs
         conditions = Conditions(calcLune, calcSol, ecart, refr, syst, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(),
@@ -10732,31 +10685,6 @@ void PreviSat::on_calculsTransit_clicked()
 
     } catch (PreviSatException &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_annulerTransit_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    // Trouver methode alternative a terminate
-    threadCalculs->terminate();
-    threadCalculs->wait();
-
-    TransitISS::FinTraitement();
-
-    ui->calculsTransit->setDefault(true);
-    ui->annulerTransit->setVisible(false);
-    ui->afficherTransit->setVisible(false);
-    messagesStatut->setText(tr("Annulation du calcul des transits ISS"));
-    QFile fi(ficRes);
-    if (fi.exists())
-        fi.remove();
 
     /* Retour */
     return;

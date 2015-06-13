@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -77,17 +77,17 @@ void Soleil::CalculPosition(const Date &date)
     double u1;
 
     /* Initialisations */
-    const double tu = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
     // Longitude moyenne
-    const double ls = DEG2RAD * modulo(280.466457 + tu * (36000.7698278 + 0.00030322 * tu), T360);
+    const double ls = DEG2RAD * modulo(280.466457 + t * (36000.7698278 + 0.00030322 * t), T360);
 
     // Longitude du perihelie
-    const double lp = DEG2RAD * modulo(282.937348 + tu * (1.7195366 + 0.00045688 * tu), T360);
+    const double lp = DEG2RAD * modulo(282.937348 + t * (1.7195366 + 0.00045688 * t), T360);
 
     // Excentricite
-    const double e = 0.016708634 - tu * (4.2037e-5 + 1.267e-7 * tu);
+    const double e = 0.016708634 - t * (4.2037e-5 + 1.267e-7 * t);
 
     // Anomalie moyenne
     const double ms = ls - lp;
