@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
@@ -206,7 +206,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirOut = QDir::toNativeSeparators(dirOut);
     dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
-    const int ind = (result.size() > 2000 || result.isEmpty()) ? 0 : 1;
+    const int ind = (result.size() > 1000 || result.isEmpty()) ? 0 : 1;
 
     if (ind == 1) {
         res = result;

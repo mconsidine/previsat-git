@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    16 juin 2015
  *
  */
 
@@ -4962,6 +4962,7 @@ void PreviSat::CalculsTermines()
         break;
     }
     threadCalculs->deleteLater();
+    threadCalculs = NULL;
     messagesStatut->setText((fi.exists()) ? tr("Terminé !") : "");
 
     /* Retour */
@@ -9753,6 +9754,8 @@ void PreviSat::on_parametrageDefautPrev_clicked()
     ui->valMagnitudeMaxPrev->setVisible(false);
     ui->illuminationPrev->setChecked(true);
     ui->magnitudeMaxPrev->setChecked(false);
+    if (!ui->calculsPrev->isEnabled() && !ui->afficherPrev->isEnabled() && threadCalculs == NULL)
+        ui->calculsPrev->setEnabled(true);
 }
 
 void PreviSat::on_calculsPrev_clicked()
@@ -10047,6 +10050,8 @@ void PreviSat::on_parametrageDefautIri_clicked()
     ui->magnitudeMaxNuitIri->setValue(2.);
     ui->angleMaxReflexionIri->setValue(4.);
     ui->affichage3lignesIri->setChecked(true);
+    if (!ui->calculsIri->isEnabled() && ! ui->afficherIri->isEnabled() && threadCalculs == NULL)
+        ui->calculsIri->setEnabled(true);
 }
 
 void PreviSat::on_calculsIri_clicked()
@@ -10312,6 +10317,8 @@ void PreviSat::on_parametrageDefautEvt_clicked()
     ui->passageOmbre->setChecked(true);
     ui->passageQuadrangles->setChecked(true);
     ui->transitionJourNuit->setChecked(true);
+    if (!ui->calculsEvt->isEnabled() && ! ui->afficherEvt->isEnabled() && threadCalculs == NULL)
+        ui->calculsEvt->setEnabled(true);
 }
 
 void PreviSat::on_calculsEvt_clicked()
@@ -10554,6 +10561,8 @@ void PreviSat::on_parametrageDefautTransit_clicked()
     ui->lieuxObservation4->setCurrentIndex(0);
     ui->ageMaxTLETransit->setValue(2.);
     ui->elongationMaxCorps->setValue(5.);
+    if (!ui->calculsTransit->isEnabled() && ! ui->afficherTransit->isEnabled() && threadCalculs == NULL)
+        ui->calculsTransit->setEnabled(true);
 }
 
 void PreviSat::on_calculsTransit_clicked()
