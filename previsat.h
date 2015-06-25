@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    22 juin 2015
  *
  */
 
@@ -104,6 +104,10 @@ private:
      */
     void InitFicMap(const bool majAff) const;
 
+    /**
+     * @brief InitFicObs Chargement des fichiers d'observation
+     * @param alarm affichage d'un message d'avertissement
+     */
     void InitFicObs(const bool alarm) const;
 
     /**

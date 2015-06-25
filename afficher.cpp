@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    22 juin 2015
  *
  */
 
@@ -264,6 +264,8 @@ void Afficher::load()
     if (cond.nbl() < 0) {
         ui->listePrevisions->horizontalHeaderItem(3)->setText(tr("Angle"));
         ui->listePrevisions->horizontalHeaderItem(4)->setText(tr("Type"));
+    } else {
+        ui->listePrevisions->removeColumn(5);
     }
 
     /* Corps de la methode */
@@ -335,10 +337,13 @@ void Afficher::load()
             ui->listePrevisions->setRowHeight(j, 16);
 
             const int lngDate = (cond.nbl() == 0) ? 20 : 22;
-            const QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
-                                    ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
-                                    ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
-                                    maxHt.mid(ihtsol, 11).trimmed().left(10));
+            QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
+                              ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
+                              ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
+                              maxHt.mid(ihtsol, 11).trimmed().left(10));
+
+            if (cond.nbl() < 0)
+                items.insert(5, maxHt.mid(84, 1));
 
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
@@ -966,8 +971,9 @@ void Afficher::loadSky(const int j)
             const double az2 = trace.at(i).at(1);
 
             crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
-                        ((soleil.hauteur() > -0.08) ? bleuClair : ((soleil.hauteur() > -0.12) ?
-                                                                          QColor("deepskyblue") : QColor("cyan"))) : crimson;
+                        ((soleil.hauteur() > -0.08) ?
+                             bleuClair : ((soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor("cyan"))) :
+                        (fabs(trace.at(i).at(2) - 2.) <= EPSDBL100) ? Qt::green : crimson;
 
             const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
             const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 juin 2015
+ * >    25 juin 2015
  *
  */
 
@@ -644,6 +644,7 @@ void PreviSat::ChargementConfig()
 
     int ista = 0;
     while (!flux2.atEnd()) {
+
         const QStringList ligne = flux2.readLine().split(" ", QString::SkipEmptyParts);
 
         const double lo = ligne.at(0).toDouble();
@@ -1783,7 +1784,9 @@ void PreviSat::AffichageCourbes() const
 
                         const QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
 
-                        crayon = (fabs(satellites.at(0).traceAuSol().at(j).at(2)) <= EPSDBL100) ? bleuClair : crimson;
+                        crayon = (fabs(satellites.at(0).traceAuSol().at(j).at(2)) <= EPSDBL100) ?
+                                    bleuClair : (fabs(satellites.at(0).traceAuSol().at(j).at(2) - 2.) <= EPSDBL100) ?
+                                        Qt::green : crimson;
 
                         if (ui->mccISS->isChecked()) {
 
@@ -2270,8 +2273,8 @@ void PreviSat::AffichageCourbes() const
 
                         crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
                                     ((soleil.hauteur() > -0.08) ?
-                                         bleuClair : ((soleil.hauteur() > -0.12) ?
-                                                          QColor("deepskyblue") : QColor("cyan"))) : crimson;
+                                         bleuClair : ((soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor("cyan"))) :
+                                    (fabs(trace.at(i).at(2) - 2.) <= EPSDBL100) ? Qt::green : crimson;
 
                         const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                         const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
@@ -2290,7 +2293,8 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+                const QColor col = (satellites.at(isat).isEclipse()) ?
+                            crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
                 scene3->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -2392,7 +2396,8 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+                const QColor col = (satellites.at(isat).isEclipse()) ?
+                            crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
                 scene2->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -3235,7 +3240,7 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
     const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-    const QColor col = (satellites.at(isat).isEclipse()) ? crimson : Qt::yellow;
+    const QColor col = (satellites.at(isat).isEclipse()) ? crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
     scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
 
     // Nom des satellites

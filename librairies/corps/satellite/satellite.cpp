@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    25 juin 2015
  *
  */
 
@@ -596,8 +596,8 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
                 // Conditions d'eclipse
                 sat.CalculSatelliteEclipse(soleil, refraction);
 
-                const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut << ((sat._eclipse) ? 1. : 0.) <<
-                                           j0.jourJulienUTC());
+                const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut <<
+                                           ((sat._eclipse) ? 1. : (sat._penombre) ? 2. : 0.) << j0.jourJulienUTC());
                 _traceCiel.append(list);
 
             } else {
@@ -769,7 +769,8 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool 
         // Conditions d'eclipse
         sat.CalculSatelliteEclipse(soleil, refraction);
 
-        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : 0.) << j0.jourJulienUTC());
+        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : (sat._penombre) ? 2. : 0)
+                                   << j0.jourJulienUTC());
         _traceAuSol.append(list);
     }
 
