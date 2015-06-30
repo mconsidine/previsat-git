@@ -1819,7 +1819,7 @@ void PreviSat::AffichageCourbes() const
 
                                     // Affichage des crochets des transitions jour/nuit
                                     const double ecl = satellites.at(0).traceAuSol().at(j).at(2);
-                                    if (fabs(ecl - satellites.at(0).traceAuSol().at(j+1).at(2)) > EPSDBL100) {
+                                    if (fabs(ecl - satellites.at(0).traceAuSol().at(j+1).at(2)) > 1.5) {
 
                                         const double ang = fmod(-fabs(lig.angle()), T360);
                                         const double ca = cos(ang * DEG2RAD);
