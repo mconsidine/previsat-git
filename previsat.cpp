@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 juin 2015
+ * >    14 juillet 2015
  *
  */
 
@@ -1338,6 +1338,7 @@ void PreviSat::AffichageCourbes() const
     }
 
     const QColor crimson(220, 20, 60);
+    const QColor bleuClair(173, 216, 230);
     const QPen noir(Qt::black);
     QPen crayon(Qt::white);
 
@@ -1765,8 +1766,6 @@ void PreviSat::AffichageCourbes() const
                     double lsat1 = satellites.at(0).traceAuSol().at(0).at(0) * DEG2PXHZ;
                     double bsat1 = satellites.at(0).traceAuSol().at(0).at(1) * DEG2PXVT;
 
-                    const QColor bleuClair(173, 216, 230);
-
                     int nbOrb = 0;
                     for(int j=1; j<satellites.at(0).traceAuSol().size()-1; j++) {
 
@@ -1993,7 +1992,6 @@ void PreviSat::AffichageCourbes() const
         scene3->setSceneRect(rectangle);
         scene3->setBackgroundBrush(QBrush(palette().background().color()));
 
-        const QColor bleuClair(173, 216, 230);
         const QPen pen(bru, Qt::SolidPattern);
         scene3->addEllipse(rectangle, pen, bru);
         const int lciel = qRound(0.5 * ui->ciel->width());
@@ -2321,7 +2319,7 @@ void PreviSat::AffichageCourbes() const
         htr = true;
 
         // Dessin du fond du radar
-        rectangle = QRect(0, 0, 200, 200);
+        rectangle = QRect(0, 0, 201, 201);
 
         scene2->setBackgroundBrush(QBrush(ui->frameZone->palette().background().color()));
         const QPen pen(bru, Qt::SolidPattern);
@@ -2389,6 +2387,35 @@ void PreviSat::AffichageCourbes() const
 
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
+                // Affichage de la trace dans le ciel
+                if (satellites.at(isat).traceCiel().size() > 0) {
+
+                    const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
+                    const double ht1 = trace.at(0).at(0);
+                    const double az1 = trace.at(0).at(1);
+                    int lsat1 = qRound(100. - 100. * xf * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+                    int bsat1 = qRound(100. - 100. * yf * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+                    for(int i=1; i<trace.size(); i++) {
+
+                        const double ht2 = trace.at(i).at(0);
+                        const double az2 = trace.at(i).at(1);
+
+                        crayon = (fabs(trace.at(i).at(2)) <= EPSDBL100) ?
+                                    ((soleil.hauteur() > -0.08) ?
+                                         bleuClair : ((soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor("cyan"))) :
+                                    (fabs(trace.at(i).at(2) - 2.) <= EPSDBL100) ? Qt::green : crimson;
+
+                        const int lsat2 = qRound(100. - 100. * xf * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+                        const int bsat2 = qRound(100. - 100. * yf * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+
+                        scene2->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+
+                        lsat1 = lsat2;
+                        bsat1 = bsat2;
+                    }
+                }
+
                 // Calcul des coordonnees radar du satellite
                 const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) *
                                         sin(satellites.at(isat).azimut()));
@@ -2403,9 +2430,10 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Cercle exterieur du radar
-        scene2->addEllipse(-26, -26, 252, 252, QPen(QBrush(ui->frameZone->palette().background().color()), 54));
-        scene2->addEllipse(0, 0, 200, 200, QPen(QBrush(Qt::gray), 2.1));
+        scene2->addEllipse(-25, -25, 251, 251, QPen(QBrush(ui->frameZone->palette().background().color()), 52));
+        scene2->addEllipse(1, 1, 199, 199, QPen(QBrush(Qt::gray), 2.2));
         ui->radar->setScene(scene2);
+
     } else {
         ui->coordGeo1->setVisible(false);
         ui->coordGeo2->setVisible(false);
@@ -3713,7 +3741,7 @@ void PreviSat::EnchainementCalculs() const
     const bool visibilite = !ui->carte->isHidden();
 
     // Calcul de la trace dans le ciel
-    const bool traceCiel = (ui->afftraj->isChecked() && ui->ciel->isVisible());
+    const bool traceCiel = ui->afftraj->isChecked();
 
     /* Corps de la methode */
     try {
