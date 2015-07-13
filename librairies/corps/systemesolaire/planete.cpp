@@ -36,10 +36,11 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    14 juin 2015
+ * >    14 juillet 2015
  * 
  */
 
+#include <QObject>
 #include <QStringList>
 #include "planete.h"
 
