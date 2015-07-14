@@ -488,6 +488,7 @@ void PreviSat::ChargementConfig()
     ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
     ui->affSAA->setChecked(settings.value("affichage/affSAA", false).toBool());
     ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
+    ui->afftraceCiel->setChecked(settings.value("affichage/afftraceCiel", true).toBool());
     ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
     ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
     ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
@@ -2256,7 +2257,7 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Affichage de la trace dans le ciel
-                if (satellites.at(isat).traceCiel().size() > 0) {
+                if (ui->afftraceCiel->isChecked()) {
 
                     const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
                     const double ht1 = trace.at(0).at(0);
@@ -2388,7 +2389,7 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Affichage de la trace dans le ciel
-                if (satellites.at(isat).traceCiel().size() > 0) {
+                if (ui->afftraceCiel->isChecked()) {
 
                     const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
                     const double ht1 = trace.at(0).at(0);
@@ -3741,7 +3742,7 @@ void PreviSat::EnchainementCalculs() const
     const bool visibilite = !ui->carte->isHidden();
 
     // Calcul de la trace dans le ciel
-    const bool traceCiel = ui->afftraj->isChecked();
+    const bool traceCiel = ui->afftraceCiel->isChecked();
 
     /* Corps de la methode */
     try {
@@ -5391,7 +5392,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affradar", ui->affradar->checkState());
     settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
     settings.setValue("affichage/affsoleil", ui->affsoleil->isChecked());
-    settings.setValue("affichage/afftracesol", ui->afftraj->isChecked());
+    settings.setValue("affichage/afftraceCiel", ui->afftraceCiel->isChecked());
+    settings.setValue("affichage/afftraj", ui->afftraj->isChecked());
     settings.setValue("affichage/affconst", ui->affconst->checkState());
     settings.setValue("affichage/affetoiles", ui->affetoiles->isChecked());
     settings.setValue("affichage/nombreTrajectoires", ui->nombreTrajectoires->value());
@@ -7912,6 +7914,12 @@ void PreviSat::on_affnomsat_stateChanged(int arg1)
 }
 
 void PreviSat::on_affvisib_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
+void PreviSat::on_afftraceCiel_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     ModificationOption();
