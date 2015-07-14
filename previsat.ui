@@ -9471,9 +9471,9 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-10</y>
                  <width>784</width>
-                 <height>360</height>
+                 <height>500</height>
                 </rect>
                </property>
                <property name="font">
@@ -9482,268 +9482,557 @@
                <property name="mouseTracking">
                 <bool>true</bool>
                </property>
-               <widget class="QCheckBox" name="afflune">
+               <widget class="QGroupBox" name="grpSysteme">
                 <property name="geometry">
                  <rect>
-                  <x>240</x>
-                  <y>9</y>
-                  <width>70</width>
-                  <height>17</height>
+                  <x>10</x>
+                  <y>360</y>
+                  <width>751</width>
+                  <height>130</height>
                  </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Lune</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affphaselune">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>33</y>
-                  <width>118</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Phase de la Lune</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="rotationLune">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>57</y>
-                  <width>235</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Rotation de la Lune pour l'hémisphère Sud</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affnomsat">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>9</y>
-                  <width>124</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Nom des satellites</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affvisib">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>33</y>
-                  <width>112</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Zone de visibilité</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="afftraj">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>57</y>
-                  <width>85</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Trace au sol</string>
-                </property>
-               </widget>
-               <widget class="QSpinBox" name="nombreTrajectoires">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="geometry">
-                 <rect>
-                  <x>577</x>
-                  <y>54</y>
-                  <width>37</width>
-                  <height>22</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>5</number>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affnotif">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>124</y>
-                  <width>124</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Notification sonore</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="calJulien">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>148</y>
-                  <width>145</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Affichage du jour julien</string>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affnomlieu">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>100</y>
-                  <width>169</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Nom des lieux d'observation</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="extinctionAtmospherique">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>284</y>
-                  <width>251</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Prise en compte de l'extinction atmosphérique</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affcoord">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>100</y>
-                  <width>166</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Affichage des coordonnées</string>
-                </property>
-               </widget>
-               <widget class="QLabel" name="lbl_carteMonde">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>148</y>
-                  <width>91</width>
-                  <height>16</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Carte du monde :</string>
-                </property>
-               </widget>
-               <widget class="QComboBox" name="listeMap">
-                <property name="geometry">
-                 <rect>
-                  <x>577</x>
-                  <y>145</y>
-                  <width>151</width>
-                  <height>22</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-               </widget>
-               <widget class="QGroupBox" name="groupBoxUnites">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>189</y>
-                  <width>205</width>
-                  <height>70</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
                 </property>
                 <property name="title">
-                 <string>Unités</string>
+                 <string>Système</string>
                 </property>
-                <widget class="QRadioButton" name="unitesKm">
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+                <widget class="QGroupBox" name="groupBoxUnites">
                  <property name="geometry">
                   <rect>
-                   <x>6</x>
-                   <y>18</y>
+                   <x>10</x>
+                   <y>20</y>
+                   <width>205</width>
+                   <height>70</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="title">
+                  <string>Unités</string>
+                 </property>
+                 <widget class="QRadioButton" name="unitesKm">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>18</y>
+                    <width>124</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>Système métrique</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QRadioButton" name="unitesMi">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>42</y>
+                    <width>139</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>Système anglo-saxon</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </widget>
+                <widget class="QGroupBox" name="groupBoxOffsetUTC">
+                 <property name="geometry">
+                  <rect>
+                   <x>450</x>
+                   <y>20</y>
+                   <width>251</width>
+                   <height>70</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="title">
+                  <string>Écart Heure locale - UTC</string>
+                 </property>
+                 <widget class="QRadioButton" name="heureLegale">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>18</y>
+                    <width>91</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>Heure locale = </string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QRadioButton" name="utc">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>42</y>
+                    <width>196</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>Temps Universel Coordonné (UTC)</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                 <widget class="QSpinBox" name="updown">
+                  <property name="geometry">
+                   <rect>
+                    <x>168</x>
+                    <y>16</y>
+                    <width>18</width>
+                    <height>22</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="minimum">
+                   <number>-720</number>
+                  </property>
+                  <property name="maximum">
+                   <number>780</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>15</number>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="tuc">
+                  <property name="geometry">
+                   <rect>
+                    <x>98</x>
+                    <y>17</y>
+                    <width>71</width>
+                    <height>20</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>UTC + 02:00</string>
+                  </property>
+                  <property name="indent">
+                   <number>2</number>
+                  </property>
+                 </widget>
+                 <widget class="QCheckBox" name="utcAuto">
+                  <property name="geometry">
+                   <rect>
+                    <x>192</x>
+                    <y>19</y>
+                    <width>51</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>Auto</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </widget>
+                <widget class="QGroupBox" name="groupBoxAffichageHeure">
+                 <property name="geometry">
+                  <rect>
+                   <x>230</x>
+                   <y>20</y>
+                   <width>205</width>
+                   <height>70</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="title">
+                  <string>Système horaire</string>
+                 </property>
+                 <widget class="QRadioButton" name="syst24h">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>18</y>
+                    <width>124</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>24 heures</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QRadioButton" name="syst12h">
+                  <property name="geometry">
+                   <rect>
+                    <x>6</x>
+                    <y>42</y>
+                    <width>139</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font/>
+                  </property>
+                  <property name="text">
+                   <string>12 heures (AM/PM)</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </widget>
+                <widget class="QCheckBox" name="verifMAJ">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>100</y>
+                   <width>241</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Vérification des mises à jour au démarrage</string>
+                 </property>
+                </widget>
+               </widget>
+               <widget class="QGroupBox" name="grpAffichage">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>210</y>
+                  <width>751</width>
+                  <height>141</height>
+                 </rect>
+                </property>
+                <property name="title">
+                 <string>Affichage</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <widget class="QCheckBox" name="affgrille">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>20</y>
+                   <width>70</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Grille</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affinvew">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>68</y>
+                   <width>184</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Inversion Est/Ouest sur le radar</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affinvns">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>44</y>
+                   <width>181</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Inversion Nord/Sud sur le radar</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affcoord">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>100</y>
+                   <width>166</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Affichage des coordonnées</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affnomlieu">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>20</y>
+                   <width>169</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Nom des lieux d'observation</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="lbl_carteMonde">
+                 <property name="geometry">
+                  <rect>
+                   <x>13</x>
+                   <y>68</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Carte du monde :</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="proportionsCarte">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>44</y>
+                   <width>251</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Garder les proportions de la carte du monde</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affradar">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>20</y>
+                   <width>70</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Radar</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="calJulien">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>44</y>
+                   <width>145</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Affichage du jour julien</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="listeMap">
+                 <property name="geometry">
+                  <rect>
+                   <x>100</x>
+                   <y>66</y>
+                   <width>151</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                </widget>
+                <widget class="QSlider" name="intensiteVision">
+                 <property name="geometry">
+                  <rect>
+                   <x>400</x>
+                   <y>100</y>
+                   <width>100</width>
+                   <height>19</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="pageStep">
+                  <number>5</number>
+                 </property>
+                 <property name="value">
+                  <number>50</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="lbl_intensiteVision">
+                 <property name="geometry">
+                  <rect>
+                   <x>292</x>
+                   <y>100</y>
+                   <width>101</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Vision nocturne :</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affSAA">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>68</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Affichage de la SAA</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="refractionPourEclipses">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>120</y>
+                   <width>271</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Prise en compte de la réfraction pour les éclipses</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="extinctionAtmospherique">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>100</y>
+                   <width>251</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Prise en compte de l'extinction atmosphérique</string>
+                 </property>
+                </widget>
+               </widget>
+               <widget class="QGroupBox" name="grpSatellites">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>751</width>
+                  <height>91</height>
+                 </rect>
+                </property>
+                <property name="title">
+                 <string>Satellites</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <widget class="QCheckBox" name="affnomsat">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>20</y>
                    <width>124</width>
                    <height>17</height>
                   </rect>
@@ -9752,18 +10041,18 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Système métrique</string>
+                  <string>Nom des satellites</string>
                  </property>
-                 <property name="checked">
+                 <property name="tristate">
                   <bool>true</bool>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="unitesMi">
+                <widget class="QCheckBox" name="afficone">
                  <property name="geometry">
                   <rect>
-                   <x>6</x>
-                   <y>42</y>
-                   <width>139</width>
+                   <x>10</x>
+                   <y>44</y>
+                   <width>124</width>
                    <height>17</height>
                   </rect>
                  </property>
@@ -9771,34 +10060,15 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Système anglo-saxon</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
+                  <string>Icône des satellites</string>
                  </property>
                 </widget>
-               </widget>
-               <widget class="QGroupBox" name="groupBoxOffsetUTC">
-                <property name="geometry">
-                 <rect>
-                  <x>480</x>
-                  <y>189</y>
-                  <width>251</width>
-                  <height>70</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="title">
-                 <string>Écart Heure locale - UTC</string>
-                </property>
-                <widget class="QRadioButton" name="heureLegale">
+                <widget class="QCheckBox" name="affvisib">
                  <property name="geometry">
                   <rect>
-                   <x>6</x>
-                   <y>18</y>
-                   <width>91</width>
+                   <x>10</x>
+                   <y>68</y>
+                   <width>112</width>
                    <height>17</height>
                   </rect>
                  </property>
@@ -9806,18 +10076,18 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Heure locale = </string>
+                  <string>Zone de visibilité</string>
                  </property>
-                 <property name="checked">
+                 <property name="tristate">
                   <bool>true</bool>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="utc">
+                <widget class="QCheckBox" name="afftraj">
                  <property name="geometry">
                   <rect>
-                   <x>6</x>
-                   <y>42</y>
-                   <width>196</width>
+                   <x>290</x>
+                   <y>20</y>
+                   <width>85</width>
                    <height>17</height>
                   </rect>
                  </property>
@@ -9825,18 +10095,18 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Temps Universel Coordonné (UTC)</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
+                  <string>Trace au sol</string>
                  </property>
                 </widget>
-                <widget class="QSpinBox" name="updown">
+                <widget class="QSpinBox" name="nombreTrajectoires">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
-                   <x>168</x>
-                   <y>16</y>
-                   <width>18</width>
+                   <x>377</x>
+                   <y>17</y>
+                   <width>37</width>
                    <height>22</height>
                   </rect>
                  </property>
@@ -9844,404 +10114,17 @@
                   <font/>
                  </property>
                  <property name="minimum">
-                  <number>-720</number>
+                  <number>1</number>
                  </property>
                  <property name="maximum">
-                  <number>780</number>
-                 </property>
-                 <property name="singleStep">
-                  <number>15</number>
+                  <number>5</number>
                  </property>
                 </widget>
-                <widget class="QLabel" name="tuc">
+                <widget class="QCheckBox" name="affnotif">
                  <property name="geometry">
                   <rect>
-                   <x>98</x>
-                   <y>17</y>
-                   <width>71</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="font">
-                  <font/>
-                 </property>
-                 <property name="text">
-                  <string>UTC + 02:00</string>
-                 </property>
-                 <property name="indent">
-                  <number>2</number>
-                 </property>
-                </widget>
-                <widget class="QCheckBox" name="utcAuto">
-                 <property name="geometry">
-                  <rect>
-                   <x>192</x>
-                   <y>19</y>
-                   <width>51</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="font">
-                  <font/>
-                 </property>
-                 <property name="text">
-                  <string>Auto</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </widget>
-               <widget class="QCheckBox" name="affnuit">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>33</y>
-                  <width>94</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Zone d'ombre</string>
-                </property>
-               </widget>
-               <widget class="QSlider" name="intensiteOmbre">
-                <property name="geometry">
-                 <rect>
-                  <x>111</x>
-                  <y>33</y>
-                  <width>100</width>
-                  <height>19</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-                <property name="pageStep">
-                 <number>5</number>
-                </property>
-                <property name="value">
-                 <number>40</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affinvns">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>124</y>
-                  <width>181</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Inversion Nord/Sud sur le radar</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affgrille">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>57</y>
-                  <width>70</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Grille</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affradar">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>100</y>
-                  <width>70</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Radar</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affetoiles">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>192</y>
-                  <width>112</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Nom des étoiles</string>
-                </property>
-               </widget>
-               <widget class="QLabel" name="lbl_magnitudeLimite">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>240</y>
-                  <width>145</width>
-                  <height>16</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Magnitude limite des étoiles :</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affsoleil">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>9</y>
-                  <width>67</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Soleil</string>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affconst">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>216</y>
-                  <width>169</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Affichage des constellations</string>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affinvew">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>148</y>
-                  <width>184</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Inversion Est/Ouest sur le radar</string>
-                </property>
-               </widget>
-               <widget class="QDoubleSpinBox" name="magnitudeEtoiles">
-                <property name="geometry">
-                 <rect>
-                  <x>153</x>
-                  <y>237</y>
-                  <width>40</width>
-                  <height>22</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="decimals">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <double>6.000000000000000</double>
-                </property>
-                <property name="singleStep">
-                 <double>0.500000000000000</double>
-                </property>
-                <property name="value">
-                 <double>4.000000000000000</double>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affSAA">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>284</y>
-                  <width>121</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Affichage de la SAA</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="affplanetes">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>308</y>
-                  <width>141</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Affichage des planètes</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-                <property name="tristate">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QSlider" name="intensiteVision">
-                <property name="geometry">
-                 <rect>
-                  <x>120</x>
-                  <y>332</y>
-                  <width>100</width>
-                  <height>19</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-                <property name="pageStep">
-                 <number>5</number>
-                </property>
-                <property name="value">
-                 <number>50</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-               <widget class="QLabel" name="lbl_intensiteVision">
-                <property name="geometry">
-                 <rect>
-                  <x>12</x>
-                  <y>332</y>
-                  <width>101</width>
-                  <height>16</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Vision nocturne :</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="verifMAJ">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>332</y>
-                  <width>241</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Vérification des mises à jour au démarrage</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="proportionsCarte">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>124</y>
-                  <width>251</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Garder les proportions de la carte du monde</string>
-                </property>
-               </widget>
-               <widget class="QCheckBox" name="refractionPourEclipses">
-                <property name="geometry">
-                 <rect>
-                  <x>490</x>
-                  <y>308</y>
-                  <width>271</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="text">
-                 <string>Prise en compte de la réfraction pour les éclipses</string>
-                </property>
-               </widget>
-               <widget class="QGroupBox" name="groupBoxAffichageHeure">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>280</y>
-                  <width>205</width>
-                  <height>70</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font/>
-                </property>
-                <property name="title">
-                 <string>Système horaire</string>
-                </property>
-                <widget class="QRadioButton" name="syst24h">
-                 <property name="geometry">
-                  <rect>
-                   <x>6</x>
-                   <y>18</y>
+                   <x>290</x>
+                   <y>68</y>
                    <width>124</width>
                    <height>17</height>
                   </rect>
@@ -10250,18 +10133,15 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>24 heures</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                  <string>Notification sonore</string>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="syst12h">
+                <widget class="QCheckBox" name="afftraceCiel">
                  <property name="geometry">
                   <rect>
-                   <x>6</x>
-                   <y>42</y>
-                   <width>139</width>
+                   <x>290</x>
+                   <y>44</y>
+                   <width>124</width>
                    <height>17</height>
                   </rect>
                  </property>
@@ -10269,28 +10149,231 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>12 heures (AM/PM)</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
+                  <string>Trace dans le ciel</string>
                  </property>
                 </widget>
                </widget>
-               <widget class="QCheckBox" name="afficone">
+               <widget class="QGroupBox" name="grpSystemeSolaire">
                 <property name="geometry">
                  <rect>
-                  <x>620</x>
-                  <y>9</y>
-                  <width>124</width>
-                  <height>17</height>
+                  <x>10</x>
+                  <y>110</y>
+                  <width>751</width>
+                  <height>91</height>
                  </rect>
                 </property>
-                <property name="font">
-                 <font/>
+                <property name="title">
+                 <string>Système solaire, étoiles</string>
                 </property>
-                <property name="text">
-                 <string>Icône des satellites</string>
+                <property name="flat">
+                 <bool>true</bool>
                 </property>
+                <widget class="QSlider" name="intensiteOmbre">
+                 <property name="geometry">
+                  <rect>
+                   <x>109</x>
+                   <y>44</y>
+                   <width>100</width>
+                   <height>19</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="pageStep">
+                  <number>5</number>
+                 </property>
+                 <property name="value">
+                  <number>40</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affsoleil">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>20</y>
+                   <width>67</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Soleil</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affnuit">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>44</y>
+                   <width>94</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Zone d'ombre</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affphaselune">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>44</y>
+                   <width>118</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Phase de la Lune</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="rotationLune">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>68</y>
+                   <width>235</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Rotation de la Lune pour l'hémisphère Sud</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="afflune">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>20</y>
+                   <width>70</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Lune</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affplanetes">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>68</y>
+                   <width>141</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Affichage des planètes</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                 <property name="tristate">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QDoubleSpinBox" name="magnitudeEtoiles">
+                 <property name="geometry">
+                  <rect>
+                   <x>670</x>
+                   <y>65</y>
+                   <width>40</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <double>6.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.500000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>4.000000000000000</double>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affetoiles">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>20</y>
+                   <width>112</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Nom des étoiles</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="affconst">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>44</y>
+                   <width>169</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Affichage des constellations</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="lbl_magnitudeLimite">
+                 <property name="geometry">
+                  <rect>
+                   <x>530</x>
+                   <y>68</y>
+                   <width>145</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Magnitude limite des étoiles :</string>
+                 </property>
+                </widget>
                </widget>
               </widget>
              </widget>
@@ -13553,37 +13636,6 @@ le flux vidéo</string>
   <tabstop>ajdfic</tabstop>
   <tabstop>validerObs</tabstop>
   <tabstop>annulerObs</tabstop>
-  <tabstop>affsoleil</tabstop>
-  <tabstop>affnuit</tabstop>
-  <tabstop>intensiteOmbre</tabstop>
-  <tabstop>affgrille</tabstop>
-  <tabstop>afflune</tabstop>
-  <tabstop>affphaselune</tabstop>
-  <tabstop>rotationLune</tabstop>
-  <tabstop>affnomsat</tabstop>
-  <tabstop>affvisib</tabstop>
-  <tabstop>afftraj</tabstop>
-  <tabstop>nombreTrajectoires</tabstop>
-  <tabstop>affradar</tabstop>
-  <tabstop>affinvns</tabstop>
-  <tabstop>affinvew</tabstop>
-  <tabstop>affnomlieu</tabstop>
-  <tabstop>affnotif</tabstop>
-  <tabstop>calJulien</tabstop>
-  <tabstop>affcoord</tabstop>
-  <tabstop>extinctionAtmospherique</tabstop>
-  <tabstop>listeMap</tabstop>
-  <tabstop>affetoiles</tabstop>
-  <tabstop>affconst</tabstop>
-  <tabstop>magnitudeEtoiles</tabstop>
-  <tabstop>affSAA</tabstop>
-  <tabstop>affplanetes</tabstop>
-  <tabstop>unitesKm</tabstop>
-  <tabstop>unitesMi</tabstop>
-  <tabstop>heureLegale</tabstop>
-  <tabstop>updown</tabstop>
-  <tabstop>utcAuto</tabstop>
-  <tabstop>utc</tabstop>
   <tabstop>groupeTLE</tabstop>
   <tabstop>majMaintenant</tabstop>
   <tabstop>gestionnaireMajTLE</tabstop>

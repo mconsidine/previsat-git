@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 juin 2015
+ * >    14 juillet 2015
  *
  */
 
@@ -434,6 +434,7 @@ private slots:
     void on_rotationLune_stateChanged(int arg1);
     void on_affnomsat_stateChanged(int arg1);
     void on_affvisib_stateChanged(int arg1);
+    void on_afftraceCiel_stateChanged(int arg1);
     void on_afftraj_stateChanged(int arg1);
     void on_nombreTrajectoires_valueChanged(int arg1);
     void on_affradar_stateChanged(int arg1);
