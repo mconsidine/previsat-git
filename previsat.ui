@@ -9471,7 +9471,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-10</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>500</height>
                 </rect>
@@ -10771,64 +10771,6 @@
                <string>Paramétrage...</string>
               </property>
              </widget>
-             <widget class="QLabel" name="lbl_fichierALire">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>85</y>
-                <width>121</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Fichier TLE à lire :</string>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="fichierALire">
-              <property name="geometry">
-               <rect>
-                <x>130</x>
-                <y>83</y>
-                <width>190</width>
-                <height>20</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="parcourirMaj1">
-              <property name="geometry">
-               <rect>
-                <x>330</x>
-                <y>51</y>
-                <width>90</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Parcourir...</string>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="fichierAMettreAJour">
-              <property name="geometry">
-               <rect>
-                <x>130</x>
-                <y>53</y>
-                <width>190</width>
-                <height>20</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-             </widget>
              <widget class="QPlainTextEdit" name="compteRenduMaj">
               <property name="geometry">
                <rect>
@@ -10841,59 +10783,14 @@
               <property name="font">
                <font/>
               </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
               <property name="readOnly">
                <bool>true</bool>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="mettreAJourTLE">
-              <property name="geometry">
-               <rect>
-                <x>330</x>
-                <y>111</y>
-                <width>90</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Mettre à jour</string>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="parcourirMaj2">
-              <property name="geometry">
-               <rect>
-                <x>330</x>
-                <y>81</y>
-                <width>90</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Parcourir...</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="lbl_fichierAMettreAJour">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>55</y>
-                <width>121</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Fichier à mettre à jour :</string>
               </property>
              </widget>
              <widget class="QComboBox" name="affichageMsgMAJ">
@@ -10914,6 +10811,125 @@
                 <height>0</height>
                </size>
               </property>
+             </widget>
+             <widget class="QGroupBox" name="grpBoxMAJTLEmanuelle">
+              <property name="geometry">
+               <rect>
+                <x>4</x>
+                <y>44</y>
+                <width>421</width>
+                <height>136</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Mise à jour TLE manuelle</string>
+              </property>
+              <widget class="QPushButton" name="parcourirMaj2">
+               <property name="geometry">
+                <rect>
+                 <x>325</x>
+                 <y>56</y>
+                 <width>90</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>Parcourir...</string>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="fichierAMettreAJour">
+               <property name="geometry">
+                <rect>
+                 <x>128</x>
+                 <y>28</y>
+                 <width>190</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_fichierALire">
+               <property name="geometry">
+                <rect>
+                 <x>8</x>
+                 <y>60</y>
+                 <width>121</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>Fichier TLE à lire :</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="lbl_fichierAMettreAJour">
+               <property name="geometry">
+                <rect>
+                 <x>8</x>
+                 <y>30</y>
+                 <width>121</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>Fichier à mettre à jour :</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="mettreAJourTLE">
+               <property name="geometry">
+                <rect>
+                 <x>325</x>
+                 <y>86</y>
+                 <width>90</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>Mettre à jour</string>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="fichierALire">
+               <property name="geometry">
+                <rect>
+                 <x>128</x>
+                 <y>58</y>
+                 <width>190</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="parcourirMaj1">
+               <property name="geometry">
+                <rect>
+                 <x>325</x>
+                 <y>26</y>
+                 <width>90</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>Parcourir...</string>
+               </property>
+              </widget>
              </widget>
             </widget>
             <widget class="QWidget" name="extractionFichierTLE">
@@ -12652,7 +12668,7 @@
                <double>5.000000000000000</double>
               </property>
              </widget>
-             <widget class="QGroupBox" name="groupBox">
+             <widget class="QGroupBox" name="groupBoxChoixCorps">
               <property name="geometry">
                <rect>
                 <x>380</x>
@@ -13249,13 +13265,13 @@ le flux vidéo</string>
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>17</height>
+     <height>20</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>16777215</width>
-     <height>17</height>
+     <height>20</height>
     </size>
    </property>
    <property name="mouseTracking">
@@ -13639,11 +13655,6 @@ le flux vidéo</string>
   <tabstop>groupeTLE</tabstop>
   <tabstop>majMaintenant</tabstop>
   <tabstop>gestionnaireMajTLE</tabstop>
-  <tabstop>fichierAMettreAJour</tabstop>
-  <tabstop>parcourirMaj1</tabstop>
-  <tabstop>fichierALire</tabstop>
-  <tabstop>parcourirMaj2</tabstop>
-  <tabstop>mettreAJourTLE</tabstop>
   <tabstop>compteRenduMaj</tabstop>
   <tabstop>fichierALireCreerTLE</tabstop>
   <tabstop>parcourir1CreerTLE</tabstop>
