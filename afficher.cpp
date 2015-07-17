@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 juin 2015
+ * >    16 juillet 2015
  *
  */
 
@@ -965,6 +965,11 @@ void Afficher::loadSky(const int j)
         bool adeb = false;
         bool amax = false;
         int min = -1;
+        int lsat0 = 10000;
+        int bsat0 = 10000;
+        int lsat3 = 0;
+        int bsat3 = 0;
+
         for(int i=1; i<trace.size(); i++) {
 
             const double ht2 = trace.at(i).at(0);
@@ -982,9 +987,15 @@ void Afficher::loadSky(const int j)
 
             // Determination des dates a afficher sur la carte du ciel
             Date dateTrace(trace.at(i).at(3) + offset, offset);
-            if (dateTrace.minutes() != min) {
+            const double norm = sqrt((lsat1 - lsat0) * (lsat1 - lsat0) + (bsat1 - bsat0) * (bsat1 - bsat0));
+
+            if (dateTrace.minutes() != min && norm > 12.) {
                 aecr = true;
                 min = dateTrace.minutes();
+                lsat3 = (i == 1) ? lsat1 : lsat0;
+                bsat3 = (i == 1) ? bsat1 : bsat0;
+                lsat0 = lsat1;
+                bsat0 = bsat1;
             }
 
             if (cond.nbl() > 0) {
@@ -1004,10 +1015,6 @@ void Afficher::loadSky(const int j)
             if (aecr) {
 
                 aecr = false;
-                const double ht3 = (i + 10 < trace.size()) ? trace.at(i+10).at(0) : trace.at(i-10).at(0);
-                const double az3 = (i + 10 < trace.size()) ? trace.at(i+10).at(1) : trace.at(i-10).at(1);
-                const int lsat3 = qRound(lciel - lciel * (1. - ht3 * DEUX_SUR_PI) * sin(az3));
-                const int bsat3 = qRound(lciel - lciel * (1. - ht3 * DEUX_SUR_PI) * cos(az3));
 
                 // Dessin d'une petite ligne correspondant a la date
                 QLineF lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
