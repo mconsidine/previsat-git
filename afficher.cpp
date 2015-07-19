@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    16 juillet 2015
+ * >    19 juillet 2015
  *
  */
 
@@ -1058,8 +1058,8 @@ void Afficher::loadSky(const int j)
     }
 
     sceneSky->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
-                         QPen(QBrush(palette().background().color()), 40.6));
-    sceneSky->addEllipse(0, 0, ui->ciel->width() - 1, ui->ciel->height() - 1, QPen(QBrush(Qt::gray), 2));
+                       QPen(QBrush(palette().background().color()), 42));
+    sceneSky->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 2.2));
 
     ui->ciel->setScene(sceneSky);
     QGraphicsView view(sceneSky);
