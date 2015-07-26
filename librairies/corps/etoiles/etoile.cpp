@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    26 juillet 2015
  *
  */
 
@@ -109,10 +109,14 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
     /* Declarations des variables locales */
 
     /* Initialisations */
+#if defined (Q_OS_MAC)
+    const QString dirCommonData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
     const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
                                                                QStandardPaths::LocateDirectory);
     const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
             QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
+#endif
 
     /* Corps de la methode */
     etoiles.clear();

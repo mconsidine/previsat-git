@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    19 juillet 2015
+ * >    26 juillet 2015
  *
  */
 
@@ -196,6 +196,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirOut = settings.value("fichier/sauvegarde",
                             QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
                             QCoreApplication::applicationName()).toString();
+    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 
 #else
     dirOut = settings.value("fichier/sauvegarde",
@@ -1059,7 +1060,7 @@ void Afficher::loadSky(const int j)
 
     sceneSky->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
                        QPen(QBrush(palette().background().color()), 42));
-    sceneSky->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 2.2));
+    sceneSky->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 3));
 
     ui->ciel->setScene(sceneSky);
     QGraphicsView view(sceneSky);

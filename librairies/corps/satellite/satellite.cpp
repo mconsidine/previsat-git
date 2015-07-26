@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 juin 2015
+ * >    26 juillet 2015
  *
  */
 
@@ -653,8 +653,13 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
     /* Declarations des variables locales */
 
     /* Initialisations */
+#if defined (Q_OS_MAC)
+    const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
     const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
                                                         QStandardPaths::LocateDirectory) + "data";
+#endif
+
     const int nb = listeSatellites.size();
 
     if (!Satellite::initCalcul) {
