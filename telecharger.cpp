@@ -36,10 +36,11 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    26 juillet 2015
  *
  */
 
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
@@ -80,21 +81,29 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     dirHttp = idirHttp;
 
     QFont police;
+
+#if defined (Q_OS_WIN)
     const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
                                                         QStandardPaths::LocateDirectory) + "data";
 
-#if defined (Q_OS_WIN)
     police.setFamily("MS Shell Dlg 2");
     police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
+    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
+                                                        QStandardPaths::LocateDirectory) + "data";
+
     police.setFamily("Sans Serif");
     police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
+    const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+
     police.setFamily("Marion");
     police.setPointSize(11);
 #else
+    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
+                                                        QStandardPaths::LocateDirectory) + "data";
 #endif
 
     setFont(police);

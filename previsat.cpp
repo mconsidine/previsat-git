@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juillet 2015
+ * >    26 juillet 2015
  *
  */
 
@@ -335,9 +335,15 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Sans Serif");
 
 #elif defined (Q_OS_MAC)
+    dirCommonData = dirExe + QDir::separator() + "data";
+    dirLocalData = dirCommonData;
     dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
             QCoreApplication::applicationName();
-
+    dirTle = dirExe + QDir::separator() + "tle";
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = QStandardPaths::locateAll(QStandardPaths::GenericCacheLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+                dirAstr;
+                
     police.setFamily("Marion");
     police.setPointSize(11);
     setFont(police);
@@ -996,11 +1002,6 @@ void PreviSat::DemarrageApplication()
     ui->frameCoordISS->setVisible(affWCC);
     ui->gmt->setVisible(affWCC);
     ui->frameLat2->setVisible(affWCC);
-
-#if defined (Q_OS_MAC)
-    ui->lbl_chaine->setVisible(ui->mccISS->isChecked());
-    ui->chaine->setVisible(ui->mccISS->isChecked());
-#endif
 
     isEcl = false;
     on_affBetaWCC_toggled(false);
@@ -2300,7 +2301,7 @@ void PreviSat::AffichageCourbes() const
 
         scene3->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
                            QPen(QBrush(palette().background().color()), 42));
-        scene3->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 2.2));
+        scene3->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 3));
 
         ui->ciel->setScene(scene3);
         QGraphicsView view3(scene3);
@@ -2432,7 +2433,7 @@ void PreviSat::AffichageCourbes() const
 
         // Cercle exterieur du radar
         scene2->addEllipse(-25, -25, 250, 250, QPen(QBrush(ui->frameZone->palette().background().color()), 52));
-        scene2->addEllipse(1, 1, 199, 199, QPen(QBrush(Qt::gray), 2.2));
+        scene2->addEllipse(1, 1, 199, 199, QPen(QBrush(Qt::gray), 3));
         ui->radar->setScene(scene2);
 
     } else {
@@ -5129,11 +5130,9 @@ void PreviSat::GestionTempsReel()
         }
     }
 
-#ifndef Q_OS_MAC
     ui->lbl_chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->frameCtrlVideo->setVisible(ui->fluxVideoHtml->isVisible());
-#endif
 
     /* Retour */
     return;
@@ -6750,12 +6749,6 @@ void PreviSat::on_fluxVideo_clicked()
 
         setCursor(Qt::ArrowCursor);
 
-#if defined (Q_OS_MAC)
-        ui->lbl_chaine->setVisible(true);
-        ui->chaine->setVisible(true);
-        QDesktopServices::openUrl(QUrl(fic));
-#else
-
         ui->fluxVideo->setText(tr("Veuillez patienter..."));
         ui->fluxVideo->repaint();
         ui->lbl_video->raise();
@@ -6780,8 +6773,6 @@ void PreviSat::on_fluxVideo_clicked()
         ui->fluxVideoHtml->setVisible(true);
         ui->fluxVideo->setVisible(false);
         ui->lbl_video->setVisible(false);
-
-#endif
 
     } catch (PreviSatException &e) {
     }

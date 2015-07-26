@@ -36,10 +36,11 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    12 juin 2015
+ * >    26 juillet 2015
  *
  */
 
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -148,7 +149,11 @@ void GestionnaireTLE::load()
         ui->nbJoursAgeMaxTLE->setPalette(palList);
     }
 
+#if defined (Q_OS_MAC)
+    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
     dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(), QStandardPaths::LocateDirectory) + "data";
+#endif
 
     dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
     ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";

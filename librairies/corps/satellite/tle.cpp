@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 juin 2015
+ * >    26 juillet 2015
  *
  */
 
@@ -243,8 +243,12 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     QString magn;
 
     /* Initialisations */
+#if defined (Q_OS_MAC)
+    const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
     const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
                                                         QStandardPaths::LocateDirectory) + "data";
+#endif
 
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
     const QString fic = dirLocalData + QDir::separator() + "donnees.sat";

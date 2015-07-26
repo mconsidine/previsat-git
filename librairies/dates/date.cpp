@@ -36,13 +36,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    26 juillet 2015
  *
  */
 
 #include <cmath>
 #include <ctime>
 #include <fstream>
+#include <QCoreApplication>
 #include <QDir>
 #include <QObject>
 #include <QStandardPaths>
@@ -395,8 +396,13 @@ void Date::Initialisation()
 
     /* Corps de la methode */
     try {
+#if defined (Q_OS_MAC)
+        const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#else
         const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
                                                             QStandardPaths::LocateDirectory) + "data";
+#endif
+
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
 
         QFile fi(fic);
