@@ -36,7 +36,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    14 juillet 2015
+ * >    7 aout 2015
  * 
  */
 
@@ -117,7 +117,7 @@ Planete::Planete(const int iplanete)
 {
     _iplanete = iplanete;
     if (!_init)
-        nomPlanetes << QObject::tr("Mercure") << QObject::tr("VÃ©nus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
+        nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
                        QObject::tr("Saturne") << QObject::tr("Uranus") << QObject::tr("Neptune");
     _init = true;
     for(int i=0; i<6; i++)

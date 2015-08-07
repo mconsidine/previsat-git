@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -191,33 +191,33 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
             const int ierr = QString(e.what()).toInt();
             switch (ierr) {
             case 1:
-                msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numÃ©ro NORAD : %2) est incorrecte");
+                msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
                 msg = msg.arg(nomsat).arg(li2.mid(1, 6).trimmed());
                 break;
 
             case 2:
-                msg = QObject::tr("Les numÃ©ros de ligne du TLE du satellite %1 (numÃ©ro NORAD : %2 ) sont incorrects");
+                msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 3:
-                msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numÃ©ro NORAD : %2");
+                msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 4:
-                msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numÃ©ro NORAD : %2");
+                msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2");
                 msg = msg.arg(nomsat).arg(li2.mid(2, 5));
                 break;
 
             case 5:
-                msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numÃ©ros NORAD diffÃ©rents (%2 et %3)");
+                msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)");
                 msg = msg.arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
                 break;
 
             case 6:
             case 7:
-                msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numÃ©ro NORAD : %3");
+                msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numéro NORAD : %3");
                 msg = msg.arg(ierr - 5).arg(nomsat).arg(li1.mid(2, 5));
                 break;
 
@@ -246,8 +246,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 #if defined (Q_OS_MAC)
     const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                        QStandardPaths::LocateDirectory) + "data";
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
@@ -354,7 +353,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0)
-        throw PreviSatException(QObject::tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
 
     // Lecture du TLE
@@ -363,7 +362,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     // Verification du fichier contenant les TLE recents
     int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
-        throw PreviSatException(QObject::tr("Erreur rencontrÃ©e lors du chargement du fichier\n" \
+        throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);
 
     // Lecture du TLE
@@ -414,9 +413,9 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE anciens
                     // Demande d'ajout
                     if (res1 != QMessageBox::YesToAll && res1 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numÃ©ro NORAD : %2) n'existe pas dans le fichier " \
-                                                            "Ã  mettre Ã  jour.\nVoulez-vous ajouter ce TLE dans le fichier " \
-                                                            "Ã  mettre Ã  jour ?");
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
+                                                            "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier " \
+                                                            "à mettre à jour ?");
 
                         QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
                                            message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad), QMessageBox::Yes |
@@ -424,9 +423,9 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
 
                         msgbox.setDefaultButton(QMessageBox::No);
                         msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
-                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui Ã  tout"));
+                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
                         msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
-                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non Ã  tout"));
+                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
                         msgbox.exec();
                         res1 = msgbox.result();
                     }
@@ -441,8 +440,8 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     // TLE absent du fichier de TLE recents
                     // Demande de suppression
                     if (res2 != QMessageBox::YesToAll && res2 != QMessageBox::NoToAll) {
-                        const QString message = QObject::tr("Le satellite %1 (numÃ©ro NORAD : %2) n'existe pas dans le fichier de TLE " \
-                                                            "rÃ©cents.\nVoulez-vous supprimer ce TLE du fichier Ã  mettre Ã  jour ?");
+                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
+                                                            "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                         QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
                                            message.arg(tleNew.at(j)._nom).arg(tleNew.at(j)._norad), QMessageBox::Yes |
@@ -450,9 +449,9 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
 
                         msgbox.setDefaultButton(QMessageBox::No);
                         msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
-                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui Ã  tout"));
+                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
                         msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
-                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non Ã  tout"));
+                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
                         msgbox.exec();
                         res2 = msgbox.result();
                     }

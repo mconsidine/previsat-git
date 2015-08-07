@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    16 juillet 2015
+# >    7 aout 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.4
@@ -45,8 +45,6 @@ TRANSLATIONS = PreviSat_en.ts
 
 
 QT += core gui network webkit
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport webkitwidgets widgets
 
 TARGET = PreviSat
 TEMPLATE = app
@@ -76,12 +74,9 @@ ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
 
 DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
            APPVER_MAJ=\"$${VER_MAJSTR}\" \
-           APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\" \
-           _LARGEFILE64_SOURCE=1 \
-           _FILE_OFFSET_BITS=64 \
-           _LFS64_LARGEFILE=
+           APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\"
 
-INCLUDEPATH += $$ZLIB_DIR
+INCLUDEPATH += $$ZLIB_DIR/inc
 
 
 SOURCES += main.cpp                                    \

@@ -40,16 +40,7 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>0</number>
     </property>
     <item>
@@ -76,16 +67,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <item>
@@ -2596,16 +2578,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <item>
@@ -6235,9 +6208,6 @@
             <property name="font">
              <font/>
             </property>
-            <property name="currentText">
-             <string>ECI</string>
-            </property>
             <property name="iconSize">
              <size>
               <width>0</width>
@@ -7955,7 +7925,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>###</string>
+             <string>###; </string>
             </property>
             <property name="text">
              <string/>
@@ -7980,7 +7950,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>99</string>
+             <string>99; </string>
             </property>
             <property name="text">
              <string/>
@@ -8552,7 +8522,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>###</string>
+             <string>###; </string>
             </property>
             <property name="text">
              <string/>
@@ -8574,7 +8544,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>99</string>
+             <string>99; </string>
             </property>
             <property name="text">
              <string/>
@@ -8790,7 +8760,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">999°99'99&quot;</string>
+                <string notr="true">999°99'99&quot;; </string>
                </property>
                <property name="text">
                 <string notr="true">000°00'00&quot;</string>
@@ -8854,7 +8824,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">99°99'99&quot;</string>
+                <string notr="true">99°99'99&quot;; </string>
                </property>
                <property name="text">
                 <string notr="true">00°00'00&quot;</string>
@@ -8918,7 +8888,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">####</string>
+                <string notr="true">####; </string>
                </property>
                <property name="text">
                 <string notr="true">0000</string>
@@ -11401,7 +11371,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999</string>
+                <string>9.9999999; </string>
                </property>
                <property name="text">
                 <string>0.0000000</string>
@@ -11420,7 +11390,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999</string>
+                <string>9.9999999; </string>
                </property>
                <property name="text">
                 <string>1.0000000</string>
@@ -11797,7 +11767,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999</string>
+               <string>99.999999999; </string>
               </property>
               <property name="text">
                <string>18.000000000</string>
@@ -11832,7 +11802,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999</string>
+               <string>99.999999999; </string>
               </property>
               <property name="text">
                <string>00.000000000</string>
@@ -12602,7 +12572,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99</string>
+               <string>99; </string>
               </property>
               <property name="text">
                <string/>

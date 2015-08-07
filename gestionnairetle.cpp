@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -44,14 +44,12 @@
 #include <QDesktopServices>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-conversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMessageBox>
 #include <QTextStream>
 #include "ui_gestionnairetle.h"
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-conversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "gestionnairetle.h"
@@ -120,7 +118,7 @@ void GestionnaireTLE::load()
     const QIcon ajout(":/resources/ajout.png");
     ui->actionCreer_un_groupe->setIcon(ajout);
     ui->creationGroupe->setIcon(ajout);
-    ui->creationGroupe->setToolTip(tr("CrÃ©er un groupe de TLE"));
+    ui->creationGroupe->setToolTip(tr("Créer un groupe de TLE"));
 
     ui->actionAjouter_des_fichiers->setIcon(ajout);
     ui->ajoutFichiersTLE->setIcon(ajout);
@@ -152,10 +150,10 @@ void GestionnaireTLE::load()
 #if defined (Q_OS_MAC)
     dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(), QStandardPaths::LocateDirectory) + "data";
+    dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
-    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
     ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
     /* Corps de la methode */
@@ -325,10 +323,10 @@ void GestionnaireTLE::on_valider_clicked()
     /* Corps de la methode */
     try {
         if (ui->domaine->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du domaine n'est pas spÃ©cifiÃ©"), WARNING);
+            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), WARNING);
 
         if (ui->nomGroupe->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du groupe n'est pas spÃ©cifiÃ©"), WARNING);
+            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), WARNING);
 
         const QString groupeDomaine = ui->nomGroupe->text().toLower().trimmed() + "@" + ui->domaine->text().trimmed();
         const QString listeFics = ui->listeFichiers->document()->toPlainText().replace("\n", ",");

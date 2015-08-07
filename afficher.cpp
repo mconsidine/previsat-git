@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -180,32 +180,29 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         ui->listePrevisions->setPalette(palList);
     }
 
-    dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(), QStandardPaths::LocateDirectory) + "data";
+    dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
 
 #if defined (Q_OS_WIN)
-    dirOut = settings.value("fichier/sauvegarde",
-                            QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
-                            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + dirAstr).toString();
 
 #elif defined (Q_OS_LINUX)
-    dirOut = settings.value("fichier/sauvegarde",
-                            QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
-                            QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
 
 #elif defined (Q_OS_MAC)
-    dirOut = settings.value("fichier/sauvegarde",
-                            QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
-                            QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
     dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 
 #else
-    dirOut = settings.value("fichier/sauvegarde",
-                            QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
-                            QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName()).toString();
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + dirAstr).toString();
 #endif
 
     dirOut = QDir::toNativeSeparators(dirOut);
-    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     const int ind = (result.size() > 1000 || result.isEmpty()) ? 0 : 1;
 
@@ -221,13 +218,13 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     police.setWeight(QFont::Bold);
     ui->listePrevisions->horizontalHeader()->setFont(police);
     if (cond.nbl() == 0)
-        ui->ongletsResultats->setTabText(ind, tr("PrÃ©visions de passage"));
+        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
     else
         ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
 
     if (cond.apassApogee() || cond.apassNoeuds() || cond.apassOmbre() || cond.apassPso() || cond.atransJn()) {
         ui->ongletsResultats->removeTab(1);
-        ui->ongletsResultats->setTabText(0, tr("Ã‰vÃ¨nements orbitaux"));
+        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
     }
 
     if (cond.acalcLune() || cond.acalcSol())
@@ -416,7 +413,7 @@ void Afficher::load()
 
         const QString lon(QString::number(-obs.longitude() * RAD2DEG));
         const QString lat(QString::number(obs.latitude() * RAD2DEG));
-        map0 = map0.replace("NOMLIEU_CENTRE", obs.nomlieu()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
+        map0 = map0.replace("NOMLIEU_CENTRE", obs.nomlieu().toUtf8()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
                 replace("CHAINE_LONGITUDE", tr("Longitude")).replace("CHAINE_LATITUDE", tr("Latitude"));
 
         ui->frame->setVisible(true);

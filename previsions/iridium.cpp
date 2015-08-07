@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -266,7 +266,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
         }
     }
 
-    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
+    ligne = QObject::tr("Temps écoulé : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();
@@ -311,8 +311,7 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 #if defined (Q_OS_MAC)
     const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                        QStandardPaths::LocateDirectory) + "data";
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     int i = 0;
