@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -83,15 +83,13 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     QFont police;
 
 #if defined (Q_OS_WIN)
-    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                        QStandardPaths::LocateDirectory) + "data";
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 
     police.setFamily("MS Shell Dlg 2");
     police.setPointSize(8);
 
 #elif defined (Q_OS_LINUX)
-    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                        QStandardPaths::LocateDirectory) + "data";
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 
     police.setFamily("Sans Serif");
     police.setPointSize(7);
@@ -102,15 +100,14 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     police.setFamily("Marion");
     police.setPointSize(11);
 #else
-    const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                        QStandardPaths::LocateDirectory) + "data";
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     setFont(police);
 
     dirCoo = dirLocalData + QDir::separator() + "coordonnees";
     dirMap = dirLocalData + QDir::separator() + "map";
-    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     ui->listeLieuxObs->clear();
     ui->barreProgression->setVisible(false);
@@ -172,7 +169,7 @@ void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString msg = tr("Erreur lors du tÃ©lÃ©chargement du fichier :\n%1");
+    const QString msg = tr("Erreur lors du téléchargement du fichier :\n%1");
     Message::Afficher(msg.arg(rep->errorString()), WARNING);
 
     /* Retour */
@@ -288,7 +285,7 @@ void Telecharger::TelechargementSuivant()
         emit TelechargementFini();
         ui->barreProgression->setVisible(false);
 
-        const QString msg = tr("Veuillez redÃ©marrer %1 pour prendre en compte la mise Ã  jour");
+        const QString msg = tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour");
         QMessageBox::information(0, tr("Information"), msg.arg(QCoreApplication::applicationName()));
     } else {
 

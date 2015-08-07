@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    7 aout 2015
  *
  */
 
@@ -215,7 +215,7 @@ void Lune::CalculPhase(const Soleil &soleil)
         _phase = (sgns) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
 
     if (_fractionIlluminee >= 0.69 && _fractionIlluminee < 0.97)
-        _phase = (sgns) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse dÃ©croissante");
+        _phase = (sgns) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
 
     if (_fractionIlluminee >= 0.97)
         _phase = QObject::tr("Pleine Lune");

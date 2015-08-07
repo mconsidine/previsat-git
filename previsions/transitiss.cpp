@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    7 aout 2015
  *
  */
 
@@ -394,7 +394,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                 flux << endl;
     }
 
-    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
+    ligne = QObject::tr("Temps écoulé : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();

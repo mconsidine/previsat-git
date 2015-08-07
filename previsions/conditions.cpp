@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    7 aout 2015
  *
  */
 
@@ -303,7 +303,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     const QString unit = (conditions._unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
     const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
-    const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1Â°");
+    const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
 
     /* Corps de la methode */
     const double offset = (conditions._ecart) ? conditions._offset :
@@ -338,7 +338,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             }
         }
 
-        ligne1 = QObject::tr("Age du TLE le plus rÃ©cent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
+        ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
         ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).
                 arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed()).
                 arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
@@ -366,17 +366,17 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             chaine = chaine.append((conditions._offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }
-    flux << QString((conditions._ecart) ? ligne2.arg(chaine) : ligne2.arg(QObject::tr("Heure lÃ©gale"))) << endl;
+    flux << QString((conditions._ecart) ? ligne2.arg(chaine) : ligne2.arg(QObject::tr("Heure légale"))) << endl;
 
     if (itransit) {
         flux << (cond1 + cond2).arg(conditions._haut * RAD2DEG) << endl;
 
     } else {
-        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1Â°").arg(conditions._crep * RAD2DEG) << endl;
+        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(conditions._crep * RAD2DEG) << endl;
         flux << QString(cond1.size(), ' ') << cond2.arg(conditions._haut * RAD2DEG) << endl;
     }
 
-    flux << QObject::tr("UnitÃ© de distance         : %1").arg(conditions._unite) << endl << endl;
+    flux << QObject::tr("Unité de distance         : %1").arg(conditions._unite) << endl << endl;
     flux << ligne1 << endl << endl << endl;
     fichier.close();
 

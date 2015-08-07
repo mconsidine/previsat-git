@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    7 aout 2015
  *
  */
 
@@ -96,9 +96,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             chaine = chaine.append((conditions.offset() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }
-    flux << QString((conditions.ecart()) ? fuseau.arg(chaine) : fuseau.arg(QObject::tr("Heure lÃ©gale"))) << endl;
+    flux << QString((conditions.ecart()) ? fuseau.arg(chaine) : fuseau.arg(QObject::tr("Heure légale"))) << endl;
 
-    flux << QObject::tr("UnitÃ© de distance         : %1").arg(conditions.unite()) << endl << endl;
+    flux << QObject::tr("Unité de distance         : %1").arg(conditions.unite()) << endl << endl;
 
     /* Corps de la methode */
     tps.start();
@@ -139,8 +139,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     // Il y a passage a un noeud : calcul par interpolation de la date
                     apassNoeuds = true;
                     const double ytab[] = { list1.at(1), list2.at(1), list3.at(1) };
-                    const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0Â°") :
-                                                                QObject::tr("Noeud Descendant - PSO = 180Â°");
+                    const QString typeNoeud = (ytab[2] >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") :
+                                                                QObject::tr("Noeud Descendant - PSO = 180°");
                     CalculEvt(xtab, ytab, 0., typeNoeud, conditions, sat);
                     j++;
                 }
@@ -160,7 +160,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                              list2.at(4) - list2.at(3),
                                              list3.at(4) - list3.at(3) };
 
-                    const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("PÃ©nombre -> Ombre") : QObject::tr("Ombre -> PÃ©nombre");
+                    const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
                     CalculEvt(xtab, ytab1, 0., typeOmbre, conditions, sat);
 
                     // Calcul du passage lumiere/penombre
@@ -168,8 +168,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                                              list2.at(5) - list2.at(3),
                                              list3.at(5) - list3.at(3) };
 
-                    const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> PÃ©nombre")) ?
-                                QObject::tr("PÃ©nombre -> LumiÃ¨re") : QObject::tr("LumiÃ¨re -> PÃ©nombre");
+                    const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ?
+                                QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
                     CalculEvt(xtab, ytab2, 0., typePenombre, conditions, sat);
                     k++;
                 }
@@ -194,14 +194,14 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     sat.CalculPosVit(date);
                     sat.CalculCoordTerrestres(date);
 
-                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("PÃ©rigÃ©e :") : QObject::tr("ApogÃ©e :");
+                    const QString typeDist = (ytab[2] >= minmax[1]) ? QObject::tr("Périgée :") : QObject::tr("Apogée :");
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(date);
                     const double pso = RAD2DEG * modulo(sat.elements().anomalieVraie() + sat.elements().argumentPerigee(), DEUX_PI);
 
                     // Ecriture de la ligne de resultat
-                    const QString fmt = "%1  %2Â°  %3Â° %4  %5Â° %6  %7 %8 %9 (%10 %9)";
+                    const QString fmt = "%1  %2°  %3° %4  %5° %6  %7 %8 %9 (%10 %9)";
                     double rayonVecteur = minmax[1];
                     double altitude = minmax[1] - RAYON_TERRESTRE;
                     if (conditions.unite() == QObject::tr("nmi")) {
@@ -235,7 +235,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                 }
             }
 
-            // Recherche des passages a PSO=90Â° et PSO=270Â°
+            // Recherche des passages a PSO=90° et PSO=270°
             if (conditions.apassPso()) {
 
                 m = i;
@@ -247,7 +247,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         // Il y a une transition jour/nuit : calcul par interpolation de la date
                         apassPso = true;
                         const double ytab[] = { list1.at(7), list2.at(7), list3.at(7) };
-                        const QString typePso = QObject::tr("Passage Ã  PSO =") + " " + QString::number(noeud * RAD2DEG) + "Â°";
+                        const QString typePso = QObject::tr("Passage à PSO =") + " " + QString::number(noeud * RAD2DEG) + "°";
                         CalculEvt(xtab, ytab, noeud, typePso, conditions, sat);
                         m++;
                     }
@@ -277,9 +277,9 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
             QString nom = sat.tle().nom();
             if (nom.contains("R/B") || nom.contains(" DEB"))
-                nom = nom.append(QObject::tr("  (numÃ©ro NORAD : %1)")).arg(sat.tle().norad());
+                nom = nom.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.tle().norad());
             flux << nom << endl;
-            flux << QObject::tr("   Date      Heure      PSO    Longitude  Latitude  Ã‰vÃ¨nements") << endl;
+            flux << QObject::tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
 
             while (i < res.count()) {
                 if (i > 0 && res.at(i).mid(0, 10) != res.at(i-1).mid(0, 10))
@@ -293,7 +293,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     }
     int fin = tps.elapsed();
 
-    const QString temps = QObject::tr("Temps Ã©coulÃ© : %1s");
+    const QString temps = QObject::tr("Temps écoulé : %1s");
     flux << temps.arg(1.e-3 * fin, 0, 'f', 2) << endl;
     fichier.close();
     FinTraitement();
@@ -374,7 +374,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = "%1  %2Â°  %3Â° %4  %5Â° %6  %7";
+    const QString fmt = "%1  %2°  %3° %4  %5° %6  %7";
 
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -44,9 +44,9 @@
 #include <ctime>
 #include <fstream>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QObject>
-#include <QStandardPaths>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
@@ -399,8 +399,7 @@ void Date::Initialisation()
 #if defined (Q_OS_MAC)
         const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
-        const QString dirLocalData = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QString(),
-                                                            QStandardPaths::LocateDirectory) + "data";
+        const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";

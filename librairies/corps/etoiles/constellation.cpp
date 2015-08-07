@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    26 juillet 2015
+ * >    7 aout 2015
  *
  */
 
@@ -111,11 +111,10 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     /* Initialisations */
 #if defined (Q_OS_MAC)
     const QString dirCommonData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#elif defined (Q_OS_LINUX)
+    const QString dirCommonData = "/usr/share" + QDir::separator() + dirAstr;
 #else
-    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
-                                                               QStandardPaths::LocateDirectory);
-    const QString dirCommonData = listeGenericDir.at(listeGenericDir.size() - 1) + QCoreApplication::organizationName() +
-            QDir::separator() + QCoreApplication::applicationName() + QDir::separator() + "data";
+    const QString dirCommonData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */
