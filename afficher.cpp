@@ -577,37 +577,40 @@ void Afficher::loadSky(const int j)
     Date dateDeb(dateI.jourJulienUTC(), offset);
 
     Date dateInit(dateDeb, offset);
-    bool atrouve = false;
-    while (!atrouve) {
-        obs.CalculPosVit(dateInit);
-
-        sat.CalculPosVit(dateInit);
-        sat.CalculCoordHoriz(obs, false);
-        if (sat.hauteur() < 0.) {
-            atrouve = true;
-        } else {
-            dateInit = Date(dateInit.jourJulien() - NB_JOUR_PAR_SEC * 10., offset);
-        }
-    }
-    dateInit = Date(dateInit.jourJulien() + NB_JOUR_PAR_SEC * 10., offset);
-
     Date dateMax, dateFin;
-    if (cond.nbl() == 3) {
 
-        date = tab.at(2);
-        QStringList max = date.replace("/", " ").replace(":", " ").split(" ");
-        const Date dateM(max.at(0).toInt(), max.at(1).toInt(), max.at(2).toInt(), max.at(3).toInt(), max.at(4).toInt(),
-                         max.at(5).toDouble(), 0.);
-        offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
-        dateMax = Date(dateM.jourJulienUTC(), offset);
+    if (!sat.isGeo()) {
+        bool atrouve = false;
+        while (!atrouve) {
+            obs.CalculPosVit(dateInit);
 
-        date = tab.at(3);
-        QStringList fin = date.replace("/", " ").replace(":", " ").split(" ");
-        const Date dateF(fin.at(0).toInt(), fin.at(1).toInt(), fin.at(2).toInt(), fin.at(3).toInt(), fin.at(4).toInt(),
-                         fin.at(5).toDouble(), 0.);
-        offset = (cond.ecart()) ? cond.offset() :
-                                     Date::CalculOffsetUTC(Date(dateF.jourJulienUTC(), 0.).ToQDateTime(1));
-        dateFin = Date(dateF.jourJulienUTC(), offset);
+            sat.CalculPosVit(dateInit);
+            sat.CalculCoordHoriz(obs, false);
+            if (sat.hauteur() < 0.) {
+                atrouve = true;
+            } else {
+                dateInit = Date(dateInit.jourJulien() - NB_JOUR_PAR_SEC * 10., offset);
+            }
+        }
+        dateInit = Date(dateInit.jourJulien() + NB_JOUR_PAR_SEC * 10., offset);
+
+        if (cond.nbl() == 3) {
+
+            date = tab.at(2);
+            QStringList max = date.replace("/", " ").replace(":", " ").split(" ");
+            const Date dateM(max.at(0).toInt(), max.at(1).toInt(), max.at(2).toInt(), max.at(3).toInt(), max.at(4).toInt(),
+                             max.at(5).toDouble(), 0.);
+            offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
+            dateMax = Date(dateM.jourJulienUTC(), offset);
+
+            date = tab.at(3);
+            QStringList fin = date.replace("/", " ").replace(":", " ").split(" ");
+            const Date dateF(fin.at(0).toInt(), fin.at(1).toInt(), fin.at(2).toInt(), fin.at(3).toInt(), fin.at(4).toInt(),
+                             fin.at(5).toDouble(), 0.);
+            offset = (cond.ecart()) ? cond.offset() :
+                                      Date::CalculOffsetUTC(Date(dateF.jourJulienUTC(), 0.).ToQDateTime(1));
+            dateFin = Date(dateF.jourJulienUTC(), offset);
+        }
     }
 
     /* Corps de la methode */
@@ -1052,10 +1055,22 @@ void Afficher::loadSky(const int j)
             lsat1 = lsat2;
             bsat1 = bsat2;
         }
+    } else {
+
+        // Calcul des coordonnees radar du satellite
+        sat.CalculPosVit(dateInit);
+        sat.CalculCoordHoriz(obs);
+        const int lsat = qRound(lciel - lciel * (1. - sat.hauteur() * DEUX_SUR_PI) * sin(sat.azimut()));
+        const int bsat = qRound(hciel - hciel * (1. - sat.hauteur() * DEUX_SUR_PI) * cos(sat.azimut()));
+
+        rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+        const QPen noir(Qt::black);
+        const QColor col = (sat.isEclipse()) ? crimson : (sat.isPenombre()) ? Qt::green : Qt::yellow;
+        sceneSky->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
     }
 
     sceneSky->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
-                       QPen(QBrush(palette().background().color()), 42));
+                         QPen(QBrush(palette().background().color()), 42));
     sceneSky->addEllipse(1, 1, ui->ciel->width() - 3, ui->ciel->height() - 3, QPen(QBrush(Qt::gray), 3));
 
     ui->ciel->setScene(sceneSky);

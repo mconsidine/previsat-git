@@ -169,7 +169,7 @@
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1024"/>
+        <location filename="afficher.cpp" line="1027"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
