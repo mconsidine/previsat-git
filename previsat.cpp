@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 aout 2015
+ * >    12 aout 2015
  *
  */
 
@@ -1981,7 +1981,7 @@ void PreviSat::AffichageCourbes() const
     } else {
 
         // Affichage de la carte du ciel
-        rectangle = QRect(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
+        rectangle = QRect(2, 2, ui->ciel->width() - 4, ui->ciel->height() - 4);
         scene3->setSceneRect(rectangle);
         scene3->setBackgroundBrush(QBrush(palette().background().color()));
 
@@ -2312,7 +2312,7 @@ void PreviSat::AffichageCourbes() const
         htr = true;
 
         // Dessin du fond du radar
-        rectangle = QRect(0, 0, 201, 201);
+        rectangle = QRect(2, 2, 196, 196);
 
         scene2->setBackgroundBrush(QBrush(ui->frameZone->palette().background().color()));
         const QPen pen(bru, Qt::SolidPattern);

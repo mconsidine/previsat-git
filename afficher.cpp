@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 aout 2015
+ * >    12 aout 2015
  *
  */
 
@@ -598,8 +598,7 @@ void Afficher::loadSky(const int j)
         QStringList max = date.replace("/", " ").replace(":", " ").split(" ");
         const Date dateM(max.at(0).toInt(), max.at(1).toInt(), max.at(2).toInt(), max.at(3).toInt(), max.at(4).toInt(),
                          max.at(5).toDouble(), 0.);
-        offset = (cond.ecart()) ? cond.offset() :
-                                     Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
+        offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
         dateMax = Date(dateM.jourJulienUTC(), offset);
 
         date = tab.at(3);
@@ -696,7 +695,7 @@ void Afficher::loadSky(const int j)
     QPen crayon(Qt::white);
 
     // Affichage de la carte du ciel
-    QRect rectangle(0, 0, ui->ciel->width()-1, ui->ciel->height()-1);
+    QRect rectangle(2, 2, ui->ciel->width() - 4, ui->ciel->height() - 4);
     sceneSky->setSceneRect(rectangle);
 
     sceneSky->setBackgroundBrush(QBrush(palette().background().color()));
