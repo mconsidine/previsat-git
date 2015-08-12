@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    11 aout 2015
  *
  */
 
@@ -305,6 +305,7 @@ void PreviSat::ChargementConfig()
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
 #if defined (Q_OS_WIN)
+
     dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + dirAstr;
 
     police.setFamily("MS Shell Dlg 2");
@@ -328,6 +329,7 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Sans Serif");
 
 #elif defined (Q_OS_MAC)
+
     dirCommonData = dirExe + QDir::separator() + "data";
     dirLocalData = dirCommonData;
     dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
@@ -2247,9 +2249,9 @@ void PreviSat::AffichageCourbes() const
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
                 // Affichage de la trace dans le ciel
-                if (ui->afftraceCiel->isChecked()) {
+                const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
+                if (ui->afftraceCiel->isChecked() && trace.size() > 0) {
 
-                    const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
                     const double ht1 = trace.at(0).at(0);
                     const double az1 = trace.at(0).at(1);
                     int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
@@ -2290,7 +2292,7 @@ void PreviSat::AffichageCourbes() const
 
         scene3->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
                            QPen(QBrush(palette().background().color()), 42));
-        scene3->addEllipse(1, 1, ui->ciel->width() - 2, ui->ciel->height() - 2, QPen(QBrush(Qt::gray), 3));
+        scene3->addEllipse(1, 1, ui->ciel->width() - 3, ui->ciel->height() - 3, QPen(QBrush(Qt::gray), 3));
 
         ui->ciel->setScene(scene3);
         QGraphicsView view3(scene3);
@@ -2378,10 +2380,10 @@ void PreviSat::AffichageCourbes() const
 
             if (satellites.at(isat).isVisible() && !satellites.at(isat).isIeralt()) {
 
-                // Affichage de la trace dans le ciel
-                if (ui->afftraceCiel->isChecked()) {
+                // Affichage de la trace dans le radar
+                const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
+                if (ui->afftraceCiel->isChecked() && trace.size() > 0) {
 
-                    const QList<QVector<double> > trace = satellites.at(isat).traceCiel();
                     const double ht1 = trace.at(0).at(0);
                     const double az1 = trace.at(0).at(1);
                     int lsat1 = qRound(100. - 100. * xf * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
@@ -2422,7 +2424,7 @@ void PreviSat::AffichageCourbes() const
 
         // Cercle exterieur du radar
         scene2->addEllipse(-25, -25, 250, 250, QPen(QBrush(ui->frameZone->palette().background().color()), 52));
-        scene2->addEllipse(1, 1, 199, 199, QPen(QBrush(Qt::gray), 3));
+        scene2->addEllipse(1, 1, 197, 197, QPen(QBrush(Qt::gray), 3));
         ui->radar->setScene(scene2);
 
     } else {
