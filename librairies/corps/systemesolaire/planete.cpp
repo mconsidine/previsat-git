@@ -36,7 +36,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    7 aout 2015
+ * >    9 aout 2015
  * 
  */
 
@@ -50,12 +50,12 @@ static QStringList nomPlanetes;
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
     {
-        { 252.250906, 149474.0722491, 0.00030350, 0.000000018 }, // Longitude moyenne
-        { 0.387098310, 0., 0., 0. }, // Demi-grand axe
-        { 0.20563175, 0.000020407, -0.0000000283, -0.00000000018 }, //Excentricite
-        { 7.004986, 0.0018215, -0.00001810, 0.000000056 }, // Inclinaison
-        { 48.330893, 1.1861883, 0.00017542, 0.000000215 }, // Longitude du noeud ascendant
-        { 77.456119, 1.5564776, 0.00029544, 0.000000009 }  // Longitude du perihelie
+        { 252.250906, 149474.0722491, 0.00030350, 0.000000018 },    // Longitude moyenne
+        { 0.387098310, 0., 0., 0. },                                // Demi-grand axe
+        { 0.20563175, 0.000020407, -0.0000000283, -0.00000000018 }, // Excentricite
+        { 7.004986, 0.0018215, -0.00001810, 0.000000056 },          // Inclinaison
+        { 48.330893, 1.1861883, 0.00017542, 0.000000215 },          // Longitude du noeud ascendant
+        { 77.456119, 1.5564776, 0.00029544, 0.000000009 }           // Longitude du perihelie
     },
     // Venus
     {
@@ -202,14 +202,21 @@ void Planete::CalculCoordonneesSpheriques()
     double u1;
 
     /* Initialisations */
+    const double longMoy = _elem[0];
+    const double demiGrandAxe = _elem[1];
+    const double excentricite = _elem[2];
+    const double incl = _elem[3];
+    const double cosincl = cos(incl);
+    const double longNoeudAsc = _elem[4];
+    const double longPerihelie = _elem[5];
 
     /* Corps de la methode */
     // Anomalie moyenne
-    double na = atan(tan(_elem[5] - _elem[4]) / cos(_elem[3]));
-    if (cos(_elem[5] - _elem[4]) < 0.)
+    double na = atan(tan(longPerihelie - longNoeudAsc) / cosincl);
+    if (cos(longPerihelie - longNoeudAsc) < 0.)
         na += PI;
-    double nm = atan(tan(_elem[0] - _elem[4]) / cos(_elem[3]));
-    if (cos(_elem[0] - _elem[4] - nm) < 0.)
+    double nm = atan(tan(longMoy - longNoeudAsc) / cosincl);
+    if (cos(longMoy - longNoeudAsc - nm) < 0.)
         nm += PI;
     const double m = nm - na;
 
@@ -217,23 +224,23 @@ void Planete::CalculCoordonneesSpheriques()
     double u = m;
     do {
         u1 = u;
-        u = u1 + (m + _elem[2] * sin(u1) - u1) / (1. - _elem[2] * cos(u1));
+        u = u1 + (m + excentricite * sin(u1) - u1) / (1. - excentricite * cos(u1));
     } while (fabs(u - u1) > 1.e-9);
 
     // Anomalie vraie
-    const double v = 2. * atan(sqrt((1. + _elem[2]) / (1. - _elem[2])) * tan(0.5 * u));
+    const double v = 2. * atan(sqrt((1. + excentricite) / (1. - excentricite)) * tan(0.5 * u));
 
     // Longitude ecliptique vraie
-    double nl = atan(tan(na + v) * cos(_elem[3]));
+    double nl = atan(tan(na + v) * cosincl);
     if (cos(na + v - nl) < 0.)
         nl += PI;
-    const double l = _elem[4] + nl;
+    const double l = longNoeudAsc + nl;
 
     // Latitude ecliptique
-    const double b = atan(sin(nl) * tan(_elem[3]));
+    const double b = atan(sin(nl) * tan(incl));
 
     // Rayon vecteur
-    const double r = _elem[1] * (1. - _elem[2] * cos(u));
+    const double r = demiGrandAxe * (1. - excentricite * cos(u));
 
     // Position
     _positionSph = Vecteur3D(l, b, r);
