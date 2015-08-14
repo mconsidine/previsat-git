@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    14 aout 2015
  *
  */
 
@@ -470,7 +470,8 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
             const double beta = (mcc && satellites[isat]._tle.nom().toLower().startsWith("tdrs")) ?
-                        PI_SUR_DEUX + 8.7 * DEG2RAD : acos(RAYON_TERRESTRE / satellites[isat]._position.Norme());
+                        PI_SUR_DEUX + 8.7 * DEG2RAD :
+                        acos((RAYON_TERRESTRE - 15.) / satellites[isat]._position.Norme()) - REFRACTION_HZ;
             satellites[isat].CalculZoneVisibilite(beta);
         }
 

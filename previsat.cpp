@@ -2291,7 +2291,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         scene3->addEllipse(-20, -20, ui->ciel->width() + 40, ui->ciel->height() + 40,
-                           QPen(QBrush(palette().background().color()), 42));
+                           QPen(QBrush(palette().background().color()), 44));
         scene3->addEllipse(1, 1, ui->ciel->width() - 3, ui->ciel->height() - 3, QPen(QBrush(Qt::gray), 3));
 
         ui->ciel->setScene(scene3);
@@ -2423,7 +2423,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Cercle exterieur du radar
-        scene2->addEllipse(-25, -25, 250, 250, QPen(QBrush(ui->frameZone->palette().background().color()), 52));
+        scene2->addEllipse(-26, -26, 251, 251, QPen(QBrush(ui->frameZone->palette().background().color()), 56));
         scene2->addEllipse(1, 1, 197, 197, QPen(QBrush(Qt::gray), 3));
         ui->radar->setScene(scene2);
 
