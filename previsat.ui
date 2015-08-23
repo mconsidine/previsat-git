@@ -40,7 +40,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -67,7 +76,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -2110,8 +2128,8 @@
          <widget class="QComboBox" name="valManuel">
           <property name="geometry">
            <rect>
-            <x>90</x>
-            <y>105</y>
+            <x>80</x>
+            <y>80</y>
             <width>81</width>
             <height>22</height>
            </rect>
@@ -2146,10 +2164,10 @@
          <widget class="QGroupBox" name="mode">
           <property name="geometry">
            <rect>
-            <x>18</x>
+            <x>3</x>
             <y>6</y>
-            <width>176</width>
-            <height>91</height>
+            <width>191</width>
+            <height>68</height>
            </rect>
           </property>
           <property name="font">
@@ -2202,63 +2220,12 @@
             <string>Mode manuel</string>
            </property>
           </widget>
-          <widget class="QCheckBox" name="mccISS">
-           <property name="geometry">
-            <rect>
-             <x>6</x>
-             <y>65</y>
-             <width>161</width>
-             <height>17</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>ISS Live</string>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="meteoBasesNASA">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>62</y>
-             <width>63</width>
-             <height>24</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font/>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="toolTip">
-            <string>Météo bases NASA</string>
-           </property>
-           <property name="text">
-            <string>NASA</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/resources/meteo.png</normaloff>:/resources/meteo.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextBesideIcon</enum>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
          </widget>
          <widget class="QLabel" name="secondes">
           <property name="geometry">
            <rect>
-            <x>94</x>
-            <y>108</y>
+            <x>84</x>
+            <y>83</y>
             <width>71</width>
             <height>16</height>
            </rect>
@@ -2276,8 +2243,8 @@
          <widget class="QComboBox" name="pasManuel">
           <property name="geometry">
            <rect>
-            <x>40</x>
-            <y>105</y>
+            <x>30</x>
+            <y>80</y>
             <width>45</width>
             <height>22</height>
            </rect>
@@ -2322,7 +2289,7 @@
          <widget class="QLabel" name="lbl_nomFichierTLE">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>10</x>
             <y>134</y>
             <width>41</width>
             <height>16</height>
@@ -2341,8 +2308,8 @@
          <widget class="QComboBox" name="pasReel">
           <property name="geometry">
            <rect>
-            <x>40</x>
-            <y>105</y>
+            <x>30</x>
+            <y>80</y>
             <width>45</width>
             <height>22</height>
            </rect>
@@ -2387,9 +2354,9 @@
          <widget class="QListWidget" name="liste1">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>9</x>
             <y>156</y>
-            <width>200</width>
+            <width>211</width>
             <height>251</height>
            </rect>
           </property>
@@ -2419,7 +2386,7 @@
           <property name="geometry">
            <rect>
             <x>200</x>
-            <y>40</y>
+            <y>45</y>
             <width>21</width>
             <height>24</height>
            </rect>
@@ -2484,9 +2451,9 @@
          <widget class="QComboBox" name="listeFichiersTLE">
           <property name="geometry">
            <rect>
-            <x>60</x>
+            <x>50</x>
             <y>130</y>
-            <width>160</width>
+            <width>170</width>
             <height>22</height>
            </rect>
           </property>
@@ -2500,8 +2467,8 @@
          <widget class="QToolButton" name="meteo">
           <property name="geometry">
            <rect>
-            <x>198</x>
-            <y>68</y>
+            <x>190</x>
+            <y>106</y>
             <width>24</width>
             <height>24</height>
            </rect>
@@ -2538,6 +2505,57 @@
            <bool>true</bool>
           </property>
          </widget>
+         <widget class="QCheckBox" name="mccISS">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>110</y>
+            <width>91</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>ISS Live</string>
+          </property>
+         </widget>
+         <widget class="QToolButton" name="meteoBasesNASA">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>106</y>
+            <width>63</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Météo bases NASA</string>
+          </property>
+          <property name="text">
+           <string>NASA</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/resources/meteo.png</normaloff>:/resources/meteo.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
+         </widget>
          <zorder>valManuel</zorder>
          <zorder>mode</zorder>
          <zorder>secondes</zorder>
@@ -2549,6 +2567,8 @@
          <zorder>directHelp</zorder>
          <zorder>listeFichiersTLE</zorder>
          <zorder>meteo</zorder>
+         <zorder>mccISS</zorder>
+         <zorder>meteoBasesNASA</zorder>
         </widget>
        </item>
       </layout>
@@ -2578,7 +2598,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -7925,7 +7954,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>###; </string>
+             <string>###</string>
             </property>
             <property name="text">
              <string/>
@@ -7950,7 +7979,7 @@
              <bool>true</bool>
             </property>
             <property name="inputMask">
-             <string>99; </string>
+             <string>99</string>
             </property>
             <property name="text">
              <string/>
@@ -8522,7 +8551,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>###; </string>
+             <string>###</string>
             </property>
             <property name="text">
              <string/>
@@ -8544,7 +8573,7 @@
              <font/>
             </property>
             <property name="inputMask">
-             <string>99; </string>
+             <string>99</string>
             </property>
             <property name="text">
              <string/>
@@ -8760,7 +8789,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">999°99'99&quot;; </string>
+                <string notr="true">999°99'99&quot;</string>
                </property>
                <property name="text">
                 <string notr="true">000°00'00&quot;</string>
@@ -8824,7 +8853,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">99°99'99&quot;; </string>
+                <string notr="true">99°99'99&quot;</string>
                </property>
                <property name="text">
                 <string notr="true">00°00'00&quot;</string>
@@ -8888,7 +8917,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string notr="true">####; </string>
+                <string notr="true">####</string>
                </property>
                <property name="text">
                 <string notr="true">0000</string>
@@ -11371,7 +11400,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999; </string>
+                <string>9.9999999</string>
                </property>
                <property name="text">
                 <string>0.0000000</string>
@@ -11390,7 +11419,7 @@
                 <font/>
                </property>
                <property name="inputMask">
-                <string>9.9999999; </string>
+                <string>9.9999999</string>
                </property>
                <property name="text">
                 <string>1.0000000</string>
@@ -11767,7 +11796,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999; </string>
+               <string>99.999999999</string>
               </property>
               <property name="text">
                <string>18.000000000</string>
@@ -11802,7 +11831,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99.999999999; </string>
+               <string>99.999999999</string>
               </property>
               <property name="text">
                <string>00.000000000</string>
@@ -12572,7 +12601,7 @@
                <font/>
               </property>
               <property name="inputMask">
-               <string>99; </string>
+               <string>99</string>
               </property>
               <property name="text">
                <string/>
