@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 aout 2015
+ * >    15 aout 2015
  *
  */
 
@@ -5527,7 +5527,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->gmt->adjustSize();
     ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, (int) (15. * DEG2PXVT) + 2);
 
-    ui->liste1->resize(200, hcarte - 147);
+    ui->liste1->resize(211, hcarte - 147);
 
     ui->S60->move(5, (int) (hcarte / 1.2) - 1);
     ui->S30->move(5, (int) (hcarte / 1.5) - 1);
