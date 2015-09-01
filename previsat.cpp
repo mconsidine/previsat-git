@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 aout 2015
+ * >    1er septembre 2015
  *
  */
 
@@ -271,7 +271,6 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
 
 void PreviSat::ChargementConfig()
 {
-
     /* Declarations des variables locales */
     QDir di;
 
@@ -577,7 +576,7 @@ void PreviSat::ChargementConfig()
     ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
     ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
     ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
-    ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isVisible());
+    ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isChecked());
     ui->valHauteurSatPrev->setVisible(false);
     ui->valHauteurSoleilPrev->setVisible(false);
     ui->afficherPrev->setEnabled(false);
