@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er septembre 2015
+ * >    2 septembre 2015
  *
  */
 
@@ -2515,6 +2515,19 @@ void PreviSat::AffichageDonnees()
             chaine = tr("Nuit");
         ui->conditionsObservation->setText(chaine);
 
+        // Date de lancement
+        const int annee_lct = satellites.at(0).dateLancement().mid(0, 4).toInt();
+        const int mois_lct = satellites.at(0).dateLancement().mid(5, 2).toInt();
+        const double jour_lct = satellites.at(0).dateLancement().mid(8, 2).toDouble();
+        const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
+
+        // Nombre theorique d'orbites a l'epoque
+        const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
+                                                                    date_lct.jourJulienUTC()));
+        int resteOrb = nbOrbTheo%100000;
+        resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
+        const int deltaNbOrb = nbOrbTheo - resteOrb;
+
 
         /*
          * Affichage des donnees relatives au satellite par defaut
@@ -2660,7 +2673,7 @@ void PreviSat::AffichageDonnees()
 
             // Nombre d'orbites du satellite
             chaine = "%1";
-            ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).nbOrbites()));
+            ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).nbOrbites() + deltaNbOrb));
 
             // Prochain AOS/LOS
             if (htSat * satellites.at(0).hauteur() <= 0.)
@@ -2783,7 +2796,9 @@ void PreviSat::AffichageDonnees()
                                     ToShortDate(FORMAT_COURT, ((ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)));
 
                 // Nombre d'orbites a l'epoque
-                ui->nbOrbitesEpoque->setText(l2.mid(63, 5).trimmed());
+                chaine2 = "%1";
+                chaine = chaine2.arg(l2.mid(63, 5).trimmed().toInt() + deltaNbOrb);
+                ui->nbOrbitesEpoque->setText(chaine);
 
                 // Anomalie moyenne
                 ui->anomalieMoy->setText(l2.mid(43, 8).append("°"));
@@ -2882,10 +2897,6 @@ void PreviSat::AffichageDonnees()
 
                 // Date de lancement
                 if (satellites.at(0).dateLancement().length() > 0) {
-                    const int annee_lct = satellites.at(0).dateLancement().mid(0, 4).toInt();
-                    const int mois_lct = satellites.at(0).dateLancement().mid(5, 2).toInt();
-                    const double jour_lct = satellites.at(0).dateLancement().mid(8, 2).toDouble();
-                    const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
                     ui->dateLancement->setText(date_lct.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
                 } else {
                     ui->dateLancement->setText(tr("Non connue"));
