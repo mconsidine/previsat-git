@@ -63,7 +63,7 @@
                     popup
                 .setLatLng(e.latlng)
                 .setContent("NOMLIEU_CENTRE<br />CHAINE_LONGITUDE : " + toSexagesimal(e.latlng.lng) + ' ' + ((e.latlng.lng < 0.) ? 'W' : 'E') +
-                "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat) + ' ' + ((e.latlng.lat < 0.) ? 'S' : 'N'))
+                "<br />CHAINE_LATITUDE : " + toSexagesimal(e.latlng.lat) + ' ' + ((e.latlng.lat < 0.) ? 'S' : 'N') + "<br />CHAINE_ALTITUDE : ALTITUDE_CENTRE")
                 .openOn(map);
         });
 
