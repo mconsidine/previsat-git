@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    14 aout 2015
+ * >    2 septembre 2015
  *
  */
 
@@ -413,8 +413,12 @@ void Afficher::load()
 
         const QString lon(QString::number(-obs.longitude() * RAD2DEG));
         const QString lat(QString::number(obs.latitude() * RAD2DEG));
+        const QString unite((cond.unite() == tr("km")) ? tr("m") : tr("ft"));
+        const QString alt(QString::number((int) (obs.altitude() * 1000. * ((unite == tr("m")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
+                          " " + unite);
         map0 = map0.replace("NOMLIEU_CENTRE", obs.nomlieu().toUtf8()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
-                replace("CHAINE_LONGITUDE", tr("Longitude")).replace("CHAINE_LATITUDE", tr("Latitude"));
+                replace("ALTITUDE_CENTRE", alt).replace("CHAINE_LONGITUDE", tr("Longitude")).
+                replace("CHAINE_LATITUDE", tr("Latitude")).replace("CHAINE_ALTITUDE", tr("Altitude"));
 
         ui->frame->setVisible(true);
         ui->webView->setContextMenuPolicy(Qt::CustomContextMenu);
