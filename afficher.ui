@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1275</width>
-    <height>720</height>
+    <width>1280</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1275</width>
+    <width>1280</width>
     <height>720</height>
    </size>
   </property>
   <property name="baseSize">
    <size>
-    <width>1275</width>
+    <width>1280</width>
     <height>720</height>
    </size>
   </property>
@@ -35,7 +35,7 @@
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
     <size>
-     <width>1275</width>
+     <width>1280</width>
      <height>720</height>
     </size>
    </property>
@@ -44,7 +44,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1275</width>
+      <width>1287</width>
       <height>696</height>
      </rect>
     </property>
@@ -91,7 +91,7 @@
      <widget class="QGraphicsView" name="ciel">
       <property name="geometry">
        <rect>
-        <x>630</x>
+        <x>638</x>
         <y>20</y>
         <width>602</width>
         <height>602</height>
@@ -125,9 +125,9 @@
      <widget class="QTableWidget" name="listePrevisions">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>4</y>
-        <width>591</width>
+        <x>6</x>
+        <y>5</y>
+        <width>601</width>
         <height>318</height>
        </rect>
       </property>
@@ -191,9 +191,9 @@
      <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>321</y>
-        <width>591</width>
+        <x>6</x>
+        <y>322</y>
+        <width>601</width>
         <height>317</height>
        </rect>
       </property>
@@ -208,7 +208,7 @@
         <rect>
          <x>1</x>
          <y>1</y>
-         <width>589</width>
+         <width>599</width>
          <height>315</height>
         </rect>
        </property>
@@ -222,7 +222,7 @@
      <widget class="QLabel" name="nord">
       <property name="geometry">
        <rect>
-        <x>917</x>
+        <x>925</x>
         <y>4</y>
         <width>31</width>
         <height>16</height>
@@ -244,7 +244,7 @@
      <widget class="QLabel" name="sud">
       <property name="geometry">
        <rect>
-        <x>917</x>
+        <x>925</x>
         <y>623</y>
         <width>31</width>
         <height>16</height>
@@ -266,7 +266,7 @@
      <widget class="QLabel" name="est">
       <property name="geometry">
        <rect>
-        <x>595</x>
+        <x>603</x>
         <y>311</y>
         <width>31</width>
         <height>20</height>
@@ -288,7 +288,7 @@
      <widget class="QLabel" name="ouest">
       <property name="geometry">
        <rect>
-        <x>1235</x>
+        <x>1243</x>
         <y>311</y>
         <width>31</width>
         <height>16</height>

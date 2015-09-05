@@ -427,6 +427,7 @@ void Afficher::load()
     }
 
     ui->ongletsResultats->setCurrentIndex(settings.value("affichage/ongletPrevisions", 0).toInt());
+    ui->listePrevisions->horizontalHeader()->setHighlightSections(false);
     ui->listePrevisions->selectRow(0);
     ui->listePrevisions->setFocus();
 
@@ -478,9 +479,7 @@ void Afficher::resizeEvent(QResizeEvent *evt)
         if (cond.nbl() == 0)
             ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
     } else {
-        ui->ongletsResultats->resize(baseSize());
         ui->fichier->resize(baseSize().width() - 4, baseSize().height());
-        ui->previsions->resize(baseSize());
     }
 }
 
