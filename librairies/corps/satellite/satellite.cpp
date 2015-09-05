@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 aout 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -99,6 +99,23 @@ Satellite::~Satellite()
 }
 
 /* Methodes */
+/*
+ * Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
+ */
+void Satellite::CalculBeta(const Soleil &soleil)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const Vecteur3D w = _position ^ _vitesse;
+
+    /* Corps de la methode */
+    _beta = PI_SUR_DEUX - soleil.position().Angle(w);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul du cercle d'acquisition d'une station
  */
@@ -715,23 +732,6 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         }
     }
     fi.close();
-
-    /* Retour */
-    return;
-}
-
-/*
- * Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
- */
-void Satellite::CalculBeta(const Soleil &soleil)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const Vecteur3D w = _position ^ _vitesse;
-
-    /* Corps de la methode */
-    _beta = PI_SUR_DEUX - soleil.position().Angle(w);
 
     /* Retour */
     return;

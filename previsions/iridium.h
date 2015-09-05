@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -200,6 +200,9 @@ private:
      */
     static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
                                  Satellite &satellite);
+
+    static Matrice3D RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse, const double lacet,
+                                const double tangage, const int inpl);
 
 };
 

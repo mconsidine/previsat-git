@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -57,6 +57,8 @@ public:
      * @param matrice matrice
      */
     Matrice3D(const Matrice3D &matrice);
+
+    Matrice3D(const AxeType &axe, const double ang);
 
     /**
      * @brief Matrice3D Definition a partir des 3 vecteurs colonnes

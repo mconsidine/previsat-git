@@ -36,10 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    5 septembre 2015
  *
  */
 
+#include <cmath>
 #include "matrice3d.h"
 
 /*
@@ -70,6 +71,48 @@ Matrice3D::Matrice3D(const Matrice3D &matrice)
     _vecteur1 = matrice._vecteur1;
     _vecteur2 = matrice._vecteur2;
     _vecteur3 = matrice._vecteur3;
+
+    /* Retour */
+    return;
+}
+
+Matrice3D::Matrice3D(const AxeType &axe, const double ang)
+{
+    /* Declarations des variables locales */
+    Vecteur3D vec1, vec2, vec3;
+
+    /* Initialisations */
+    const double cosang = cos(ang);
+    const double sinang = sin(ang);
+
+    /* Corps du constructeur */
+    switch (axe) {
+
+    case AXE_X:
+        vec1 = Vecteur3D(1., 0., 0.);
+        vec2 = Vecteur3D(0., cosang, -sinang);
+        vec3 = Vecteur3D(0., sinang, cosang);
+        break;
+
+    case AXE_Y:
+        vec1 = Vecteur3D(cosang, 0., sinang);
+        vec2 = Vecteur3D(0., 1., 0.);
+        vec3 = Vecteur3D(-sinang, 0., cosang);
+        break;
+
+    case AXE_Z:
+        vec1 = Vecteur3D(cosang, -sinang, 0.);
+        vec2 = Vecteur3D(sinang, cosang, 0.);
+        vec3 = Vecteur3D(0., 0., 1.);
+        break;
+
+    default:
+        break;
+    }
+
+    _vecteur1 = vec1;
+    _vecteur2 = vec2;
+    _vecteur3 = vec3;
 
     /* Retour */
     return;

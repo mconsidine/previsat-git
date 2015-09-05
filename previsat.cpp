@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 septembre 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -584,8 +584,9 @@ void PreviSat::ChargementConfig()
     ui->hauteurSatIri->setCurrentIndex(settings.value("previsions/hauteurSatIri", 2).toInt());
     ui->hauteurSoleilIri->setCurrentIndex(settings.value("previsions/hauteurSoleilIri", 1).toInt());
     ui->lieuxObservation3->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
-    ui->satellitesOperationnels->setChecked(settings.value("previsions/satellitesOperationnels", true).toBool());
+    ui->satellitesOperationnels->setChecked(settings.value("previsions/satellitesOperationnels", false).toBool());
     ui->ordreChronologique->setChecked(settings.value("previsions/ordreChronologique", true).toBool());
+    ui->pecPanneauxSolaires->setChecked(settings.value("previsions/pecPanneauxSolaires", true).toBool());
     ui->magnitudeMaxJourIri->setValue(settings.value("previsions/magnitudeMaxJourIri", -4.).toDouble());
     ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
     ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 4.).toDouble());
@@ -612,12 +613,13 @@ void PreviSat::ChargementConfig()
         item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
         QTableWidgetItem * const item3 = new QTableWidgetItem;
         QColor sts;
-        sts.setNamedColor((tabStatutIridium.at(i).contains("T")) ? "red" : ((tabStatutIridium.at(i).contains("?")) ? "orange" :
-                                                                                                                     "green"));
+        const int ists = (tabStatutIridium.at(i).contains("T")) ? -1 : (tabStatutIridium.at(i).contains("?")) ? 0 : 1;
+        sts.setNamedColor((ists == -1) ? "red" : (ists == 0) ? "orange" : "green");
         item3->setBackgroundColor(sts);
-        item3->setToolTip((tabStatutIridium.at(i).contains("T")) ?
-                              tr("Satellite non opérationnel") :
-                              ((tabStatutIridium.at(i).contains("?")) ? tr("Satellite de réserve") : tr("Satellite opérationnel")));
+        item3->setTextAlignment(Qt::AlignCenter);
+        item3->setText((ists == -1) ? tr("Non op.") : (ists == 0) ? tr("Sp.") : tr("Op."));
+        item3->setToolTip((ists == -1) ? tr("Satellite non opérationnel") : ((ists == 0) ? tr("Satellite de réserve") :
+                                                                                           tr("Satellite opérationnel")));
         ui->statutIridium->setItem(i, 0, item2);
         ui->statutIridium->setItem(i, 1, item3);
     }
@@ -5457,6 +5459,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/lieuxObservation3", ui->lieuxObservation3->currentIndex());
     settings.setValue("previsions/satellitesOperationnels", ui->satellitesOperationnels->isChecked());
     settings.setValue("previsions/ordreChronologique", ui->ordreChronologique->isChecked());
+    settings.setValue("previsions/pecPanneauxSolaires", ui->pecPanneauxSolaires->isChecked());
     settings.setValue("previsions/magnitudeMaxJourIri", ui->magnitudeMaxJourIri->value());
     settings.setValue("previsions/magnitudeMaxNuitIri", ui->magnitudeMaxNuitIri->value());
     settings.setValue("previsions/angleMaxReflexionIri", ui->angleMaxReflexionIri->value());
@@ -10077,8 +10080,9 @@ void PreviSat::on_parametrageDefautIri_clicked()
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->lieuxObservation3->setCurrentIndex(0);
-    ui->satellitesOperationnels->setChecked(true);
+    ui->satellitesOperationnels->setChecked(false);
     ui->ordreChronologique->setChecked(true);
+    ui->pecPanneauxSolaires->setChecked(true);
     ui->magnitudeMaxJourIri->setValue(-4.);
     ui->magnitudeMaxNuitIri->setValue(2.);
     ui->angleMaxReflexionIri->setValue(4.);
@@ -10158,7 +10162,10 @@ void PreviSat::on_calculsIri_clicked()
         const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
 
         // Choix du tri par ordre chronologique
-        const char chr = (ui->ordreChronologique->isChecked()) ? 'o' : 'n';
+        const bool chr = (ui->ordreChronologique->isChecked());
+
+        // Prise en compte des panneaux solaires
+        const bool psol = (ui->pecPanneauxSolaires->isChecked());
 
         // Choix du nombre de lignes par flash
         const int nbl = (ui->affichage3lignesIri->isChecked()) ? 3 : 1;
@@ -10255,7 +10262,7 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ext, refr, syst, crep, haut, nbl, chr, ang0, jj1, jj2, offset1, mgn1, mgn2,
+        conditions = Conditions(ecart, ext, refr, syst, chr, psol, crep, haut, nbl, ang0, jj1, jj2, offset1, mgn1, mgn2,
                                 fi.absoluteFilePath(), ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
