@@ -8176,7 +8176,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>92</y>
+              <y>88</y>
               <width>101</width>
               <height>16</height>
              </rect>
@@ -8192,7 +8192,7 @@
             <property name="geometry">
              <rect>
               <x>110</x>
-              <y>88</y>
+              <y>84</y>
               <width>191</width>
               <height>22</height>
              </rect>
@@ -8205,7 +8205,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>124</y>
+              <y>116</y>
               <width>151</width>
               <height>16</height>
              </rect>
@@ -8221,7 +8221,7 @@
             <property name="geometry">
              <rect>
               <x>160</x>
-              <y>120</y>
+              <y>112</y>
               <width>141</width>
               <height>22</height>
              </rect>
@@ -8267,7 +8267,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>153</y>
+              <y>142</y>
               <width>241</width>
               <height>17</height>
              </rect>
@@ -8286,7 +8286,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>180</y>
+              <y>166</y>
               <width>201</width>
               <height>17</height>
              </rect>
@@ -8305,7 +8305,7 @@
             <property name="geometry">
              <rect>
               <x>350</x>
-              <y>94</y>
+              <y>88</y>
               <width>71</width>
               <height>16</height>
              </rect>
@@ -8321,7 +8321,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>10</y>
+              <y>6</y>
               <width>151</width>
               <height>71</height>
              </rect>
@@ -8564,7 +8564,7 @@
             <property name="geometry">
              <rect>
               <x>310</x>
-              <y>121</y>
+              <y>113</y>
               <width>31</width>
               <height>20</height>
              </rect>
@@ -8602,7 +8602,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>90</y>
+              <y>84</y>
               <width>151</width>
               <height>22</height>
              </rect>
@@ -8648,6 +8648,25 @@
               <string>Statut</string>
              </property>
             </column>
+           </widget>
+           <widget class="QCheckBox" name="pecPanneauxSolaires">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>190</y>
+              <width>231</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font/>
+            </property>
+            <property name="text">
+             <string>Inclure les flashs des panneaux solaires</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </widget>
           <widget class="QWidget" name="options">

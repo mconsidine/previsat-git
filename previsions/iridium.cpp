@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -62,23 +62,24 @@ static const double PAS_INT1 = 2. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 static const double TEMPS2 = 76. * NB_JOUR_PAR_MIN;
 
-// Donnees sur la geometrie des panneaux
+// Donnees sur la geometrie des MMA
 static const double AIRE_MMA = 1.88 * 0.86 * 1.e-6;
 static const double PHI = -40. * DEG2RAD;
 static const double COSPHI = cos(PHI);
 static const double SINPHI = sin(PHI);
 
 // Nom et numeros des panneaux
-static const QByteArray LISTE_MIR = QObject::tr("ADG").toLatin1();
-static const int LISTE_PAN[] = {0, 1, 2};
+static const QByteArray LISTE_MIR = QObject::tr("ADGS").toLatin1();
+static const int LISTE_PAN[] = { 0, 1, 2, 3 };
 
 // Pour le calcul de l'assombrissement sur le bord pour la magnitude du Soleil
-static const double TAB_INT[] = {0.3, 0.93, -0.23};
+static const double TAB_INT[] = { 0.3, 0.93, -0.23 };
 
 static char _mir;
 static int _pan;
-static Vecteur3D _solsat;
-static Matrice3D _PR;
+static bool _psol;
+static double _surf;
+static Vecteur3D _direction;
 
 static QStringList res;
 static QList<Satellite> sats;
@@ -95,6 +96,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     QTime tps;
 
     /* Initialisations */
+    _psol = conditions.psol();
     result.clear();
     tabtle = conditions.tabtle();
     QVectorIterator<TLE> it1(tabtle);
@@ -254,7 +256,7 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 
             const QString flashMax = ligne.mid(336, 4) + ligne.mid(170, 120) + ligne.mid(291, 44).remove(QRegExp("\\s+$"));
             const QString flash = (conditions.nbl() == 1) ? flashMax : ligne.mid(166, 4) + ligne.mid(0, 120) + "\n" +
-                                                               flashMax + "\n" + ligne.mid(506, 4) + ligne.mid(340, 120);
+                                                            flashMax + "\n" + ligne.mid(506, 4) + ligne.mid(340, 120);
 
             result.append((ligne.mid(0, 170) + ligne.right(5)).trimmed());
             result.append((ligne.mid(170, 170) + ligne.right(5)).trimmed());
@@ -283,6 +285,7 @@ double Iridium::CalculMagnitudeIridium(const bool extinction, const Satellite &s
 
     /* Initialisations */
     _pan = -1;
+    _psol = true;
     Satellite sat = satellite;
 
     /* Corps de la methode */
@@ -343,19 +346,12 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 {
     /* Declarations des variables locales */
+    int imin, imax;
 
     /* Initialisations */
     double ang = PI;
 
     /* Corps de la methode */
-    const Vecteur3D xx = satellite.vitesse().Normalise();
-    const Vecteur3D yy = satellite.position().Normalise() ^ xx;
-    const Vecteur3D zz = xx ^ yy;
-
-    // Matrice de passage ECI geocentrique -> ECI satellite
-    const Matrice3D P(xx, yy, zz);
-
-    int imin, imax;
     if (_pan == -1) {
         imin = 0;
         imax = 3;
@@ -364,47 +360,104 @@ double Iridium::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         imax = _pan + 1;
     }
 
+    // Angle de reflexion par les MMA
     int j = 0;
-    for (int i=imin; i<imax; i++) {
+    if (_pan < 3) {
 
-        const double psi = i * DEUX_TIERS * PI;
-        const double cospsi = cos(psi);
-        const double sinpsi = sin(psi);
+        const Vecteur3D xx = satellite.vitesse().Normalise();
+        const Vecteur3D yy = satellite.position().Normalise() ^ xx;
+        const Vecteur3D zz = xx ^ yy;
 
-        const Vecteur3D v1(COSPHI * cospsi, -COSPHI * sinpsi, SINPHI);
-        const Vecteur3D v2(sinpsi, cospsi, 0.);
-        const Vecteur3D v3(-SINPHI * cospsi, SINPHI * sinpsi, COSPHI);
+        // Matrice de passage ECI geocentrique -> ECI satellite
+        const Matrice3D P(xx, yy, zz);
 
-        // Matrice de rotation repere satellite -> repere panneau
-        const Matrice3D R(v1, v2, v3);
+        for (int i=imin; i<imax; i++) {
 
-        // Matrice produit P x R
-        Matrice3D tmp = P * R;
-        const Matrice3D PR = tmp.Transposee();
+            const double psi = i * DEUX_TIERS * PI;
+            const double cospsi = cos(psi);
+            const double sinpsi = sin(psi);
 
-        // Position observateur dans le repere panneau
-        const Vecteur3D obsat = PR * (-satellite.dist());
+            const Vecteur3D v1(COSPHI * cospsi, -COSPHI * sinpsi, SINPHI);
+            const Vecteur3D v2(sinpsi, cospsi, 0.);
+            const Vecteur3D v3(-SINPHI * cospsi, SINPHI * sinpsi, COSPHI);
 
-        // Position Soleil dans le repere panneau
-        Vecteur3D solsat = PR * (soleil.position() - satellite.position());
+            // Matrice de rotation repere satellite -> repere panneau
+            const Matrice3D R(v1, v2, v3);
 
-        // Position du reflet du Soleil
-        solsat = Vecteur3D(solsat.x(), -solsat.y(), -solsat.z());
+            // Matrice produit P x R
+            Matrice3D tmp = P * R;
+            Matrice3D PR = tmp.Transposee();
 
-        // Angle de reflexion
-        const double temp = obsat.Angle(solsat);
-        if (_pan == -1) {
-            if (temp < ang) {
+            // Position observateur dans le repere panneau
+            const Vecteur3D obsat = PR * (-satellite.dist());
+
+            // Position Soleil dans le repere panneau
+            Vecteur3D solsat = PR * (soleil.position() - satellite.position());
+
+            // Position du reflet du Soleil
+            solsat = Vecteur3D(solsat.x(), -solsat.y(), -solsat.z());
+
+            // Angle de reflexion
+            const double temp = obsat.Angle(solsat);
+            if (_pan == -1) {
+                if (temp < ang) {
+                    ang = temp;
+                    j = i;
+                    _mir = LISTE_MIR[i];
+                    _direction = PR.Transposee() * solsat;
+                }
+            } else {
                 ang = temp;
-                j = i;
-                _mir = LISTE_MIR[i];
-                _PR = PR;
-                _solsat = solsat;
+                _direction = PR.Transposee() * solsat;
             }
-        } else {
-            ang = temp;
-            _PR = PR;
-            _solsat = solsat;
+        }
+    }
+
+    // Angle de reflexion par le panneau solaire
+    if (_psol && (_pan == -1 || _pan == 3)) {
+
+        // Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
+        Satellite sat = satellite;
+        sat.CalculBeta(soleil);
+        const double beta = fabs(sat.beta() * RAD2DEG);
+
+        if (beta >= 40. && beta <= 65.) {
+
+            const Matrice3D matrice1 = RotationRV(satellite.position(), satellite.vitesse(), PI_SUR_DEUX, -PI_SUR_DEUX, 1);
+            const Vecteur3D vecteur1 = matrice1 * soleil.position();
+
+            double phi = atan2(vecteur1.y(), vecteur1.x());
+            if (phi < 0.)
+                phi += DEUX_PI;
+            const double theta = atan2(vecteur1.z(), sqrt(vecteur1.x() * vecteur1.x() + vecteur1.y() * vecteur1.y()));
+
+            const double rotAD = DEUX_PI - phi;
+            const double rotDec = (theta > 0.) ? -PHI : PHI;
+
+            const Matrice3D matrice2 = Matrice3D(AXE_Z, -rotAD) * matrice1;
+            Matrice3D matrice3 = Matrice3D(AXE_Y, -rotDec) * matrice2;
+            const Matrice3D matrice4 = matrice3.Transposee();
+
+            const Vecteur3D vecteur2 = matrice4.vecteur1();
+
+            const Vecteur3D solsat = soleil.position() - satellite.position();
+            _surf = vecteur2.Angle(solsat);
+
+            Matrice3D matrice5 = RotationRV(solsat, vecteur2, 0., 0., 0);
+            const Matrice3D matrice6(AXE_Z, -_surf);
+            const Vecteur3D vecteur3 = matrice6.vecteur1();
+            const Matrice3D matrice7 = matrice5.Transposee();
+            const Vecteur3D vecteur4 = matrice7 * vecteur3;
+
+            const Vecteur3D obsat = -satellite.dist();
+            const double tmp = vecteur4.Angle(obsat);
+
+            if (tmp < ang) {
+                ang = tmp;
+                j = 3;
+                _mir = LISTE_MIR[j];
+                _direction = vecteur4;
+            }
         }
     }
 
@@ -660,60 +713,66 @@ void Iridium::DeterminationFlash(const double minmax[], const QString &sts, cons
         soleil.CalculPosition(date);
         soleil.CalculCoordHoriz(observateur, false);
 
-        const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
+        // Angle de reflexion
+        const double ang = AngleReflexion(sat, soleil);
 
-        // Magnitude du flash
-        double mag = MagnitudeFlash(conditions.ext(), minmax[1], observateur, soleil, sat);
+        if (ang <= conditions.ang0()) {
 
-        if (mag <= mgn0) {
+            const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
 
-            Date dates[3];
+            // Magnitude du flash
+            double mag = MagnitudeFlash(conditions.ext(), minmax[1], observateur, soleil, sat);
 
-            // Calcul des limites du flash
-            CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
+            if (mag <= mgn0) {
 
-            if (dates[1].jourJulienUTC() < DATE_INFINIE) {
+                Date dates[3];
 
-                temp = minmax[0];
+                // Calcul des limites du flash
+                CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
 
-                // Calcul des valeurs exactes pour les differentes dates
-                _pan = -1;
-                QString flash = "";
-                for(int i=0; i<3; i++) {
+                if (dates[1].jourJulienUTC() < DATE_INFINIE) {
 
-                    observateur.CalculPosVit(dates[i]);
+                    temp = minmax[0];
 
-                    // Position du satellite
-                    sat.CalculPosVit(dates[i]);
-                    sat.CalculCoordHoriz(observateur);
+                    // Calcul des valeurs exactes pour les differentes dates
+                    _pan = -1;
+                    QString flash = "";
+                    for(int i=0; i<3; i++) {
 
-                    // Position du Soleil
-                    soleil.CalculPosition(dates[i]);
-                    soleil.CalculCoordHoriz(observateur);
+                        observateur.CalculPosVit(dates[i]);
 
-                    // Condition d'eclipse du satellite
-                    sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                        // Position du satellite
+                        sat.CalculPosVit(dates[i]);
+                        sat.CalculCoordHoriz(observateur);
 
-                    // Angle de reflexion
-                    const double angref = AngleReflexion(sat, soleil);
+                        // Position du Soleil
+                        soleil.CalculPosition(dates[i]);
+                        soleil.CalculCoordHoriz(observateur);
 
-                    // Magnitude du flash
-                    mag = MagnitudeFlash(conditions.ext(), angref, observateur, soleil, sat);
+                        // Condition d'eclipse du satellite
+                        sat.CalculSatelliteEclipse(soleil, conditions.refr());
 
-                    // Ascension droite/declinaison/constellation
-                    sat.CalculCoordEquat(observateur);
+                        // Angle de reflexion
+                        const double angref = AngleReflexion(sat, soleil);
 
-                    // Altitude du satellite
-                    sat.CalculLatitude(sat.position());
-                    const double altitude = sat.CalculAltitude(sat.position());
+                        // Magnitude du flash
+                        mag = MagnitudeFlash(conditions.ext(), angref, observateur, soleil, sat);
 
-                    // Ecriture du flash
-                    const QString ligne = EcrireFlash(dates[i], i, altitude, angref, mag, sts, conditions, observateur,
-                                                      soleil, sat);
+                        // Ascension droite/declinaison/constellation
+                        sat.CalculCoordEquat(observateur);
 
-                    flash.append(ligne);
+                        // Altitude du satellite
+                        sat.CalculLatitude(sat.position());
+                        const double altitude = sat.CalculAltitude(sat.position());
+
+                        // Ecriture du flash
+                        const QString ligne = EcrireFlash(dates[i], i, altitude, angref, mag, sts, conditions, observateur,
+                                                          soleil, sat);
+
+                        flash.append(ligne);
+                    }
+                    res.append(flash + sat.tle().norad());
                 }
-                res.append(flash + sat.tle().norad());
             }
         }
     }
@@ -740,7 +799,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
 
     // Date calendaire
     const double offset = (conditions.ecart()) ? conditions.offset() :
-                                                    Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
+                                                 Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
     const Date date3(date.jourJulienUTC() + offset + EPS_DATES, 0., true);
 
     // Coordonnees topocentriques
@@ -772,7 +831,7 @@ QString Iridium::EcrireFlash(const Date &date, const int i, const double alt, co
 
     // Recherche des coordonnees geographiques ou se produit le maximum du flash
     QString max(45, ' ');
-    const Vecteur3D direction = _PR.Transposee() * _solsat;
+    const Vecteur3D direction = _direction;
     obsmax = Observateur::CalculIntersectionEllipsoide(date, sat.position(), direction);
     if (!obsmax.nomlieu().isEmpty()) {
 
@@ -897,40 +956,59 @@ double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observa
 
     /* Initialisations */
     double magnitude = 99.;
-    const double omega = RAYON_SOLAIRE / (soleil.distanceUA() * UA2KM);
-    const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
-    const double aireProjetee = fabs(satellite.dist().x()) * invDist3 * AIRE_MMA;
 
     /* Corps de la methode */
-    if (angle < omega) {
-        // Reflexion speculaire
+    if ( _pan < 3) {
 
-        // Calcul de la magnitude du point du Soleil
-        const double cosAngle = cos(angle);
-        const double cosOmega = cos(omega);
-        const double cosPsi = sqrt((cosAngle * cosAngle - cosOmega * cosOmega)) / sin(omega);
-        double psiterm = 1.;
-        double intens = 0.;
-        for (int i=0; i<3; i++) {
-            intens += TAB_INT[i] * psiterm;
-            psiterm *= cosPsi;
+        // Calcul de la magnitude du flash produit par les MMA
+        const double omega = RAYON_SOLAIRE / (soleil.distanceUA() * UA2KM);
+        const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
+        const double aireProjetee = fabs(satellite.dist().x()) * invDist3 * AIRE_MMA;
+
+        if (angle < omega) {
+            // Reflexion speculaire
+
+            // Calcul de la magnitude du point du Soleil
+            const double cosAngle = cos(angle);
+            const double cosOmega = cos(omega);
+            const double cosPsi = sqrt((cosAngle * cosAngle - cosOmega * cosOmega)) / sin(omega);
+            double psiterm = 1.;
+            double intens = 0.;
+            for (int i=0; i<3; i++) {
+                intens += TAB_INT[i] * psiterm;
+                psiterm *= cosPsi;
+            }
+
+            const double magSol = MAGNITUDE_SOLEIL - 2.5 * log10(intens);
+
+            // Correction due a la surface eclairee
+            const double surface = PI * omega * omega;
+            const double magCorr = -2.5 * log10(aireProjetee / surface);
+
+            // Magnitude du flash
+            magnitude = magSol + magCorr;
+
+        } else {
+            // Reflexion non speculaire
+
+            // Magnitude standard (approche empirique)
+            const double magnitudeStandard = 3.2 * log(angle * RAD2DEG) - 2.450012;
+            magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
         }
-
-        const double magSol = MAGNITUDE_SOLEIL - 2.5 * log10(intens);
-
-        // Correction due a la surface eclairee
-        const double surface = PI * omega * omega;
-        const double magCorr = -2.5 * log10(aireProjetee / surface);
-
-        // Magnitude du flash
-        magnitude = magSol + magCorr;
-
     } else {
-        // Reflexion non speculaire
 
-        // Magnitude standard (approche empirique)
-        const double magnitudeStandard = 3.2 * log(angle * RAD2DEG) - 2.450012;
-        magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
+        // Calcul de la magnitude du flash produit par les panneaux solaires
+        magnitude = 5. * log10(satellite.distance()) - 14.4;
+
+        // Prise en compte de la surface illuminee
+        double cossurf = cos(_surf);
+        if (cossurf <= 0.) cossurf = 0.0001;
+        magnitude -= 2.5 * log10(cossurf);
+
+        // Prise en compte de l'angle de reflexion
+        const double angRefDeg = angle * RAD2DEG;
+        const double corrMag = (angRefDeg < 3.5) ? -3.867 + 0.993 * angRefDeg : -5.6415 + 1.5 * angRefDeg;
+        magnitude += corrMag - 0.7;
     }
 
     // Prise en compte de l'extinction atmospherique
@@ -939,4 +1017,59 @@ double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observa
 
     /* Retour */
     return (magnitude);
+}
+
+Matrice3D Iridium::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse, const double lacet,
+                              const double tangage, const int inpl)
+{
+    /* Declarations des variables locales */
+    Matrice3D matrice;
+
+    /* Initialisations */
+    const Vecteur3D w((position ^ vitesse).Normalise());
+
+    /* Corps de la methode */
+    const double alpha = atan2(w.y(), w.x()) + PI;
+    const Matrice3D matrice1(AXE_Z, alpha);
+
+    const double beta = -acos(w.z());
+    const Matrice3D matrice2(AXE_Y, beta);
+
+    // Conversion dans le plan de l'orbite
+    const Matrice3D matrice3 = matrice2 * matrice1;
+    const Vecteur3D vecteur1 = matrice3 * vitesse;
+
+    const double gamma = atan2(vecteur1.y(), vecteur1.x());
+    const Matrice3D matrice4(AXE_Z, gamma);
+    matrice = matrice4 * matrice3;
+
+    if (inpl != 0) {
+        const Matrice3D matrice5(AXE_X, PI_SUR_DEUX);
+        const Matrice3D matrice6 = matrice5 * matrice;
+        matrice = matrice6;
+
+        if (inpl == 2) {
+            const double delta = position.Angle(vitesse) - PI_SUR_DEUX;
+            const Matrice3D matrice7(AXE_Y, delta);
+            const Matrice3D matrice8 = matrice7 * matrice;
+            matrice = matrice8;
+        }
+    }
+
+    // Rotation en lacet
+    if (fabs(lacet) > EPSDBL100) {
+        const Matrice3D matrice9(AXE_Z, -lacet);
+        const Matrice3D matrice10 = matrice9 * matrice;
+        matrice = matrice10;
+    }
+
+    // Rotation en tangage
+    if (fabs(tangage) > EPSDBL100) {
+        const Matrice3D matrice11(AXE_Y, -tangage);
+        const Matrice3D matrice12 = matrice11 * matrice;
+        matrice = matrice12;
+    }
+
+    /* Retour */
+    return (matrice);
 }

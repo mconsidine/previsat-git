@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    2 septembre 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -262,9 +262,11 @@ void Afficher::load()
     if (cond.nbl() < 0) {
         ui->listePrevisions->horizontalHeaderItem(3)->setText(tr("Angle"));
         ui->listePrevisions->horizontalHeaderItem(4)->setText(tr("Type"));
-    } else {
-        ui->listePrevisions->removeColumn(5);
+        ui->listePrevisions->horizontalHeaderItem(5)->setText(tr("Corps"));
     }
+
+    if (cond.nbl() == 0)
+        ui->listePrevisions->removeColumn(5);
 
     /* Corps de la methode */
     QStringListIterator it(res);
@@ -338,10 +340,10 @@ void Afficher::load()
             QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
                               ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
                               ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
-                              maxHt.mid(ihtsol, 11).trimmed().left(10));
+                               maxHt.mid(ihtsol, 11).trimmed().left(10));
 
-            if (cond.nbl() < 0)
-                items.insert(5, maxHt.mid(84, 1));
+            if (cond.nbl() != 0)
+                items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 2, 1) : maxHt.mid(84, 1));
 
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));

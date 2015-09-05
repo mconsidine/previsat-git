@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -71,6 +71,12 @@ public:
     static bool initCalcul;
 
     /* Methodes publiques */
+    /**
+     * @brief CalculBeta Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
+     * @param soleil Soleil
+     */
+    void CalculBeta(const Soleil &soleil);
+
     /**
      * @brief CalculCercleAcquisition Calcul du cercle d'acquisition d'une station
      * @param station sation
@@ -448,12 +454,6 @@ private:
     QList<QVector<double> > _traceCiel;
 
     /* Methodes privees */
-    /**
-     * @brief CalculBeta Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
-     * @param soleil Soleil
-     */
-    void CalculBeta(const Soleil &soleil);
-
     /**
      * @brief CalculTracesAuSol Calcul de la trace au sol du satellite
      * @param date date

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -83,10 +83,11 @@ public:
      * @param ext Prise en compte de l'extinction atmospherique
      * @param refr Prise en compte de la refraction
      * @param syst systeme horaire
+     * @param chrono tri par ordre chronologique
+     * @param panSol prise en compte des panneaux solaires
      * @param crepuscule valeur de la hauteur du Soleil
      * @param hauteur hauteur minimale du satellite
      * @param nbLig nombre de lignes pour l'ecriture du flash
-     * @param chrono tri par ordre chronologique
      * @param angle0 angle maximal de reflexion
      * @param jourJulien1 jour julien initial
      * @param jourJulien2 jour julien final
@@ -99,10 +100,10 @@ public:
      * @param tabStsIridium tableau de statut des Iridium
      * @param tabTLEIri tableau des TLE des satellites Iridium
      */
-    Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const int crepuscule, const int hauteur,
-               const int nbLig, const char chrono, const double angle0, const double jourJulien1, const double jourJulien2,
-               const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt, const QString &ficOut,
-               const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri);
+    Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono, const bool panSol,
+               const int crepuscule, const int hauteur, const int nbLig, const double angle0, const double jourJulien1,
+               const double jourJulien2, const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt,
+               const QString &ficOut, const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri);
 
     /**
      * @brief Conditions Constructeur pour le calcul des evenements orbitaux
@@ -183,7 +184,8 @@ public:
     QStringList listeSatellites() const;
 
     int nbl() const;
-    char chr() const;
+    bool chr() const;
+    bool psol() const;
     char ope() const;
     double ang0() const;
     double mgn2() const;
@@ -235,7 +237,8 @@ private:
 
     // Pour le calcul des flashs Iridium
     int _nbl;
-    char _chr;
+    bool _chr;
+    bool _psol;
     double _ang0;
     double _mgn2;
     QStringList _tabStsIri;

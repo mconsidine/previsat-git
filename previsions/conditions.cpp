@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    5 septembre 2015
  *
  */
 
@@ -71,7 +71,8 @@ Conditions::Conditions()
     _ext = false;
     _refr = false;
     _syst = false;
-    _chr = ' ';
+    _chr = true;
+    _psol = true;
     _nbl = 0;
 
     _ageTLE = 0.;
@@ -140,10 +141,11 @@ Conditions::Conditions(const bool pecEcart, const bool eclipse, const bool extin
     return;
 }
 
-Conditions::Conditions(const bool pecEcart, const bool extinction, const bool refraction, const bool systeme, const int crepuscule,
-                       const int hauteur, const int nbLig, const char chrono, const double angle0, const double jourJulien1,
-                       const double jourJulien2, const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt,
-                       const QString &ficOut, const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri)
+Conditions::Conditions(const bool pecEcart, const bool extinction, const bool refraction, const bool systeme, const bool chrono,
+                       const bool panSol, const int crepuscule, const int hauteur, const int nbLig, const double angle0,
+                       const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1,
+                       const double magn2, const QString &ficEnt, const QString &ficOut, const QString &unit,
+                       const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri)
 {
     /* Declarations des variables locales */
 
@@ -158,6 +160,7 @@ Conditions::Conditions(const bool pecEcart, const bool extinction, const bool re
     _haut = hauteur * DEG2RAD;
     _nbl = nbLig;
     _chr = chrono;
+    _psol = panSol;
     _ang0 = angle0 * DEG2RAD;
     _jj1 = jourJulien1;
     _jj2 = jourJulien2;
@@ -471,9 +474,14 @@ int Conditions::nbl() const
     return _nbl;
 }
 
-char Conditions::chr() const
+bool Conditions::chr() const
 {
     return _chr;
+}
+
+bool Conditions::psol() const
+{
+    return _psol;
 }
 
 double Conditions::ang0() const
