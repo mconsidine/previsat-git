@@ -185,17 +185,17 @@
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="500"/>
+        <location filename="afficher.cpp" line="499"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="501"/>
+        <location filename="afficher.cpp" line="500"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1033"/>
+        <location filename="afficher.cpp" line="1032"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
