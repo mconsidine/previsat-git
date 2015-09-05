@@ -1,5 +1,5 @@
 #
-#     PreviSat, position of artificial satellites, prediction of their passes, Iridium flares
+#     PreviSat, Satellite tracking software
 #     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
 #
 #     This program is free software: you can redistribute it and/or modify
