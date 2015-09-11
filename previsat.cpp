@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    11 septembre 2015
  *
  */
 
@@ -943,7 +943,7 @@ void PreviSat::DemarrageApplication()
 
     /* Initialisations */
     const int xmax = QApplication::desktop()->availableGeometry().width();
-    const int ymax = QApplication::desktop()->availableGeometry().height() - messagesStatut->height() - 10;
+    const int ymax = QApplication::desktop()->availableGeometry().height() - messagesStatut->height() - 7;
     const int w = settings.value("affichage/largeur", 1068).toInt();
     const int h = settings.value("affichage/hauteur", 690).toInt();
     int xPrevi = qMax(w, width());
