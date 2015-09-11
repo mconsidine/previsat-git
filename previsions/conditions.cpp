@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    11 septembre 2015
  *
  */
 
@@ -333,7 +333,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
                 tlemax = epok;
         }
 
-        if (tlemax > conditions._jj1) {
+        if (tlemax > conditions._jj1 || tlemin > conditions._jj1) {
             if (tlemin > tlemax) {
                 const double tmp = tlemin;
                 tlemin = tlemax;
