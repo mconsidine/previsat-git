@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 septembre 2015
+ * >    12 septembre 2015
  *
  */
 
@@ -9176,10 +9176,10 @@ void PreviSat::on_majMaintenant_clicked()
     ui->affichageMsgMAJ->setVisible(false);
     ui->frameBarreProgression->setVisible(true);
     while (!flux.atEnd()) {
-        const QStringList ligne = flux.readLine().split("#");
+        const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
         if (ligne.at(0) == groupeTLE) {
 
-            QString adresse = ligne.at(0).split("@").at(1);
+            QString adresse = ligne.at(0).split("@", QString::SkipEmptyParts).at(1);
             if (adresse.contains("celestrak"))
                 adresse = adresseCelestrakNorad;
             if (adresse.contains("astropedia"))
@@ -9189,9 +9189,9 @@ void PreviSat::on_majMaintenant_clicked()
             if (!adresse.endsWith("/"))
                 adresse.append("/");
 
-            const QStringList listeTLEs = ligne.at(2).split(",");
+            const QStringList listeTLEs = ligne.at(2).split(",", QString::SkipEmptyParts);
             foreach(QString file, listeTLEs)
-                AjoutFichier(QUrl(adresse + file));
+                AjoutFichier(QUrl(adresse + file.trimmed()));
 
             if (downQueue.isEmpty())
                 QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
