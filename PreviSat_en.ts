@@ -324,19 +324,19 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="gestionnairetle.cpp" line="218"/>
-        <location filename="gestionnairetle.cpp" line="427"/>
+        <location filename="gestionnairetle.cpp" line="428"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
         <location filename="gestionnairetle.cpp" line="220"/>
-        <location filename="gestionnairetle.cpp" line="429"/>
+        <location filename="gestionnairetle.cpp" line="430"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
         <location filename="gestionnairetle.cpp" line="221"/>
-        <location filename="gestionnairetle.cpp" line="430"/>
+        <location filename="gestionnairetle.cpp" line="431"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
@@ -351,7 +351,7 @@ PreviSat is free !</translation>
         <translation>The name of the group is not given</translation>
     </message>
     <message>
-        <location filename="gestionnairetle.cpp" line="425"/>
+        <location filename="gestionnairetle.cpp" line="426"/>
         <source>Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe &quot;%1&quot;?</source>
         <translation>Do you really want to remove this(these) file(s) from the &quot;%1&quot; group?</translation>
     </message>

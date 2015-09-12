@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    7 aout 2015
+ * >    12 septembre 2015
  *
  */
 
@@ -162,7 +162,7 @@ void GestionnaireTLE::load()
     QTextStream flux(&fi);
 
     while (!flux.atEnd()) {
-        const QStringList ligne = flux.readLine().split("#");
+        const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
         QString nomGroupe = ligne.at(0);
         nomGroupe[0] = nomGroupe[0].toUpper();
         ui->listeGroupeTLE->addItem(nomGroupe);
@@ -293,11 +293,11 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
             while (!flux.atEnd()) {
                 const QString ligne = flux.readLine();
                 if (adresse == ligne.mid(0, ligne.lastIndexOf("#") - 2)) {
-                    QStringList listeTLE = ligne.split("#").at(2).split(",");
+                    QStringList listeTLE = ligne.split("#", QString::SkipEmptyParts).at(2).split(",", QString::SkipEmptyParts);
 
                     QStringListIterator it(listeTLE);
                     while (it.hasNext()) {
-                        const QString item = it.next();
+                        const QString item = it.next().trimmed();
                         if (!item.isEmpty())
                             ui->listeFichiersTLE->addItem(item);
                     }
@@ -404,7 +404,8 @@ void GestionnaireTLE::on_actionAjouter_des_fichiers_triggered()
 
     ui->listeFichiers->clear();
     for(int i=0; i<ui->listeFichiersTLE->count(); i++)
-        ui->listeFichiers->setPlainText(ui->listeFichiers->document()->toPlainText() + ui->listeFichiersTLE->item(i)->text() + "\n");
+        ui->listeFichiers->setPlainText(ui->listeFichiers->document()->toPlainText() +
+                                        ui->listeFichiersTLE->item(i)->text().trimmed() + "\n");
 
     ui->groupe->setVisible(true);
     ui->listeFichiers->moveCursor(QTextCursor::End);
