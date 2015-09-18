@@ -47,23 +47,16 @@
 class ThreadCalculs : public QThread
 {
 public:
-    enum TypeCalcul {
-        PREVISION,
-        IRIDIUM,
-        EVENEMENTS,
-        TRANSITS
-    };
 
-    ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond);
-    ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond, const Observateur &obs);
+    ThreadCalculs(const Conditions &cond);
+    ThreadCalculs(const Conditions &cond, const Observateur &obs);
     void run();
 
-    TypeCalcul typeCalcul() const;
     Observateur observateur() const;
     QStringList res();
+    TypeCalcul typeCalcul() const;
 
 private:
-    TypeCalcul _typeCalcul;
     Conditions _conditions;
 };
 

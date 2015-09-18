@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    5 septembre 2015
+# >    12 septembre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
-VERSION = 3.5.0.3
+VERSION = 3.5.0.4
 ANNEES_DEV = 2005-2015
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -105,7 +105,9 @@ SOURCES += main.cpp                                    \
     librairies/observateur/observateur.cpp             \
     previsions/conditions.cpp                          \
     previsions/evenements.cpp                          \
+    previsions/flashs.cpp                              \
     previsions/iridium.cpp                             \
+    previsions/metop.cpp                               \
     previsions/prevision.cpp                           \
     previsions/transitiss.cpp
 
@@ -141,8 +143,11 @@ HEADERS += previsat.h                                  \
     librairies/observateur/observateur.h               \
     previsions/conditions.h                            \
     previsions/evenements.h                            \
+    previsions/flashs.h                                \
     previsions/iridium.h                               \
+    previsions/metop.h                                 \
     previsions/prevision.h                             \
+    previsions/previsionsConstants.h                   \
     previsions/transitiss.h                            \
     $$ZLIB_DIR/inc/zlib.h
 

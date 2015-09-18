@@ -566,6 +566,14 @@ private slots:
     void on_calculsTransit_clicked();
     void on_afficherTransit_clicked();
 
+    // Calcul des flashs MetOp
+    void on_effacerHeuresMetOp_clicked();
+    void on_fichierTLEMetOp_currentIndexChanged(int index);
+    void on_hauteurSatMetOp_currentIndexChanged(int index);
+    void on_hauteurSoleilMetOp_currentIndexChanged(int index);
+    void on_parametrageDefautMetOp_clicked();
+    void on_calculsMetOp_clicked();
+    void on_afficherMetOp_clicked();
 };
 
 #endif // PREVISAT_H

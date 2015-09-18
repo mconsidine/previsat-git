@@ -43,28 +43,27 @@
 #include "threadcalculs.h"
 #include "previsions/evenements.h"
 #include "previsions/iridium.h"
+#include "previsions/metop.h"
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
 
 static Observateur observ;
 static QStringList result;
 
-ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond)
+ThreadCalculs::ThreadCalculs(const Conditions &cond)
 {
-    _typeCalcul = typeCalc;
     _conditions = cond;
 }
 
-ThreadCalculs::ThreadCalculs(const TypeCalcul typeCalc, const Conditions &cond, const Observateur &obs)
+ThreadCalculs::ThreadCalculs(const Conditions &cond, const Observateur &obs)
 {
-    _typeCalcul = typeCalc;
     _conditions = cond;
     observ = obs;
 }
 
 void ThreadCalculs::run()
 {
-    switch (_typeCalcul) {
+    switch (_conditions.typeCalcul()) {
     case PREVISION:
         Prevision::CalculPassages(_conditions, observ, result);
         break;
@@ -79,15 +78,20 @@ void ThreadCalculs::run()
 
     case TRANSITS:
         TransitISS::CalculTransitsISS(_conditions, observ, result);
+        break;
+
+    case METOP:
+        MetOp::CalculFlashsMetOp(_conditions, observ, result);
+        break;
 
     default:
         break;
     }
 }
 
-ThreadCalculs::TypeCalcul ThreadCalculs::typeCalcul() const
+TypeCalcul ThreadCalculs::typeCalcul() const
 {
-    return _typeCalcul;
+    return _conditions.typeCalcul();
 }
 
 Observateur ThreadCalculs::observateur() const
