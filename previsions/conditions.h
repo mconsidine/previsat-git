@@ -43,6 +43,8 @@
 #include <string>
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/observateur/observateur.h"
+#include "previsionsConstants.h"
+
 
 class Conditions
 {
@@ -56,6 +58,7 @@ public:
 
     /**
      * @brief Conditions Constructeur pour le calcul des previsions de passages
+     * @param typeCalc Type de calcul
      * @param pecEcart Prise en compte de l'ecart heure legale - UTC
      * @param eclipse Prise en compte de l'etat d'eclipse du satellite
      * @param extinction Prise en compte de l'extinction atmospherique
@@ -73,12 +76,14 @@ public:
      * @param unite unite de distance
      * @param listeSat liste des satellites
      */
-    Conditions(const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction, const bool systeme,
-               const int crepuscule, const int haut, const int pas0, const double jj1, const double jj2, const double offset,
-               const double mgn1, const QString &fic, const QString &out, const QString &unite, const QStringList &listeSat);
+    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction,
+               const bool systeme, const int crepuscule, const int haut, const int pas0, const double jj1, const double jj2,
+               const double offset, const double mgn1, const QString &fic, const QString &out, const QString &unite,
+               const QStringList &listeSat);
 
     /**
      * @brief Conditions Constructeur pour le calcul des flashs Iridium
+     * @param typeCalc Type de calcul
      * @param ecart Prise en compte de l'ecart heure legale - UTC
      * @param ext Prise en compte de l'extinction atmospherique
      * @param refr Prise en compte de la refraction
@@ -100,13 +105,15 @@ public:
      * @param tabStsIridium tableau de statut des Iridium
      * @param tabTLEIri tableau des TLE des satellites Iridium
      */
-    Conditions(const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono, const bool panSol,
-               const int crepuscule, const int hauteur, const int nbLig, const double angle0, const double jourJulien1,
-               const double jourJulien2, const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt,
-               const QString &ficOut, const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri);
+    Conditions(const TypeCalcul typeCalc, const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono,
+               const bool panSol, const int crepuscule, const int hauteur, const int nbLig, const double angle0,
+               const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1, const double magn2,
+               const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &tabStsIridium,
+               const QVector<TLE> &tabTLEIri);
 
     /**
      * @brief Conditions Constructeur pour le calcul des evenements orbitaux
+     * @param typeCalc Type de calcul
      * @param apassageApogee Calcul des passages aux perigees/apogees
      * @param apassageNoeuds Calcul des passages aux noeuds
      * @param apassageOmbre Calcul des passages ombre/penombre/lumiere
@@ -123,13 +130,14 @@ public:
      * @param unit unite de distance
      * @param listeSat liste des satellites
      */
-    Conditions(const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre, const bool apassagePso,
-               const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme, const double jourJulien1,
-               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit,
-               const QStringList &listeSat);
+    Conditions(const TypeCalcul typeCalc, const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre,
+               const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
+               const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
+               const QString &unit, const QStringList &listeSat);
 
     /**
      * @brief Conditions Constructeur pour le calcul des transits ISS
+     * @param typeCalc Type de calcul
      * @param acalculLune Calcul des transits/conjonctions avec la Lune
      * @param acalculSoleil Calcul des transits/conjonctions avec le Soleil
      * @param pecEcart Prise en compte de l'ecart heure legale - UTC
@@ -145,9 +153,35 @@ public:
      * @param ficOut fichier de previsions
      * @param unit unite de distance
      */
-    Conditions(const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction, const bool systeme,
-               const int hauteur, const double age, const double seuilConj, const double jourJulien1, const double jourJulien2,
-               const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit);
+    Conditions(const TypeCalcul typeCalc, const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction,
+               const bool systeme, const int hauteur, const double age, const double seuilConj, const double jourJulien1,
+               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit);
+
+    /**
+     * @brief Conditions Constructeur pour le calcul des flashs MetOp
+     * @param typeCalc Type de calcul
+     * @param ecart Prise en compte de l'ecart heure legale - UTC
+     * @param ext Prise en compte de l'extinction atmospherique
+     * @param refr Prise en compte de la refraction
+     * @param syst systeme horaire
+     * @param chrono tri par ordre chronologique
+     * @param crepuscule valeur de la hauteur du Soleil
+     * @param hauteur hauteur minimale du satellite
+     * @param nbLig nombre de lignes pour l'ecriture du flash
+     * @param jourJulien1 jour julien initial
+     * @param jourJulien2 jour julien final
+     * @param offsetUTC ecart heure legale - UTC
+     * @param magn1 magnitude limite
+     * @param ficEnt fichier de TLE
+     * @param ficOut fichier de previsions
+     * @param unit unite de distance
+     * @param tabStsMetOp tableau de statut des MetOp
+     * @param tabTLEMetOp tableau des TLE des satellites MetOp
+     */
+    Conditions(const TypeCalcul typeCalc, const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono,
+               const int crepuscule, const int hauteur, const int nbLig, const double jourJulien1, const double jourJulien2,
+               const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
+               const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp);
 
     ~Conditions();
 
@@ -182,6 +216,7 @@ public:
     QString out() const;
     QString unite() const;
     QStringList listeSatellites() const;
+    TypeCalcul typeCalcul() const;
 
     int nbl() const;
     bool chr() const;
@@ -189,7 +224,7 @@ public:
     char ope() const;
     double ang0() const;
     double mgn2() const;
-    QStringList tabStsIri() const;
+    QStringList tabSts() const;
     QVector<TLE> tabtle() const;
 
     bool apassApogee() const;
@@ -234,6 +269,7 @@ private:
     QString _out;
     QString _unite;
     QStringList _listeSatellites;
+    TypeCalcul _typeCalcul;
 
     // Pour le calcul des flashs Iridium
     int _nbl;
@@ -241,7 +277,7 @@ private:
     bool _psol;
     double _ang0;
     double _mgn2;
-    QStringList _tabStsIri;
+    QStringList _tabSts;
     QVector<TLE> _tabtle;
 
     // Pour le calcul des evenements orbitaux

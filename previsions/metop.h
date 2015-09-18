@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    iridium.h
+ * >    metop.h
  *
  * Localisation
  * >    previsions
@@ -30,15 +30,15 @@
  * >    Astropedia
  *
  * Date de creation
- * >    17 juillet 2011
+ * >    12 septembre 2015
  *
  * Date de revision
- * >    5 septembre 2015
+ * >
  *
  */
 
-#ifndef IRIDIUM_H
-#define IRIDIUM_H
+#ifndef METOP_H
+#define METOP_H
 
 #include "conditions.h"
 #include "flashs.h"
@@ -46,7 +46,8 @@
 #include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/observateur/observateur.h"
 
-class Iridium : public Flashs
+
+class MetOp : public Flashs
 {
 public:
 
@@ -66,43 +67,40 @@ public:
     static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
 
     /**
-     * @brief CalculFlashsIridium Calcul des flashs Iridium
+     * @brief CalculFlashsMetOp Calcul des flashs MetOp
      * @param conditions conditions d'observation
      * @param observateur observateur
      * @param result tableau de resultats
      */
-    static void CalculFlashsIridium(const Conditions &conditions, Observateur &observateur, QStringList &result);
+    static void CalculFlashsMetOp(const Conditions &conditions, Observateur &observateur, QStringList &result);
 
     /**
-     * @brief CalculMagnitudeIridium Calcul de la magnitude du flash Iridium
+     * @brief CalculMagnitudeMetOp Calcul de la magnitude du flash MetOp
      * @param extinction Prise en compte de l'extinction atmospherique
      * @param satellite satellite
      * @param soleil Soleil
      * @param observateur observateur
      * @return magnitude du flash
      */
-    static double CalculMagnitudeIridium(const bool extinction, const Satellite &satellite, const Soleil &soleil,
+    static double CalculMagnitudeMetOp(const bool extinction, const Satellite &satellite, const Soleil &soleil,
                                          const Observateur &observateur);
 
     /**
-     * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium
-     * @param ope prise en compte des satellites operationnels
-     * @param tabStsIri tableau de statut des satellites Iridium
-     * @return nombre de satellites Iridium contenus dans le fichier de statut
+     * @brief LectureStatutMetOp Lecture du fichier de statut des satellites MetOp
+     * @param tabStsMetOp tableau de statut des satellites MetOp
+     * @return nombre de satellites MetOp
      */
-    static int LectureStatutIridium(const char ope, QStringList &tabStsIri);
+    static int LectureStatutMetOp(QStringList &tabStsMetOp);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash
      * @param ext prise en compte de l'extinction atmospherique
      * @param angle angle de reflexion
      * @param observateur observateur
-     * @param soleil Soleil
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
-                                 Satellite &satellite);
+    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil, Satellite &satellite);
 
 
     /* Accesseurs */
@@ -128,4 +126,4 @@ private:
 
 };
 
-#endif // IRIDIUM_H
+#endif // METOP_H

@@ -76,6 +76,7 @@
 #include "previsions/conditions.h"
 #include "previsions/evenements.h"
 #include "previsions/iridium.h"
+#include "previsions/metop.h"
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
 #include "afficher.h"
@@ -114,8 +115,10 @@ static bool isEcl;
 static int ind;
 static int idxf;
 static int idxfi;
+static int idxfm;
 static int idxft;
 static int nbSat;
+static int deltaNbOrb;
 static double azimAOS;
 static double htSat;
 static QString ctypeAOS;
@@ -129,9 +132,11 @@ static QString liste;
 static QStringList listeTLE;
 static QStringList ficTLE;
 static QStringList ficTLEIri;
+static QStringList ficTLEMetOp;
 static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
 static QStringList tabStatutIridium;
+static QStringList tabStatutMetOp;
 static QStringList tabTDRS;
 
 static QString ficRes;
@@ -142,6 +147,7 @@ static double offsetUTC;
 static QDateTime tim;
 static Date dateAOS;
 static Date dateEcl;
+static Date date_lct;
 
 // Lieux d'observation
 static int selec;
@@ -283,6 +289,7 @@ void PreviSat::ChargementConfig()
     old = false;
     selec = -1;
     selec2 = 0;
+    deltaNbOrb = 0;
     paletteDefaut = palette();
     tim = QDateTime();
 
@@ -436,6 +443,7 @@ void PreviSat::ChargementConfig()
     ui->fichierALireCreerTLE->setText(settings.value("fichier/fichierALireCreerTLE", "").toString());
     ui->nomFichierPerso->setText(settings.value("fichier/nomFichierPerso", "").toString());
 
+    // Fichier flashs Iridium
     ficTLEIri.clear();
     const QString nomFicIri = settings.value("fichier/iridium", dirTle + QDir::separator() + "iridium.txt").toString().trimmed();
     const QFileInfo fi(nomFicIri);
@@ -449,6 +457,7 @@ void PreviSat::ChargementConfig()
         ui->fichierTLEIri->addItem("");
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
 
+    // Fichier transit ISS
     ficTLETransit.clear();
     const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().
             trimmed();
@@ -462,6 +471,21 @@ void PreviSat::ChargementConfig()
     if (ficTLETransit.isEmpty())
         ui->fichierTLETransit->addItem("");
     ui->fichierTLETransit->addItem(tr("Parcourir..."));
+
+    // Fichier flashs MetOp
+    ficTLEMetOp.clear();
+    const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() + "metop-spctrk.txt").toString().
+            trimmed();
+    const QFileInfo fim(nomFicMetOp);
+    if (fim.exists()) {
+        ui->fichierTLEMetOp->addItem(fim.fileName());
+        ui->fichierTLEMetOp->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
+        ficTLEMetOp.append(QDir::toNativeSeparators(nomFicMetOp));
+    }
+    idxfm = 0;
+    if (ficTLEMetOp.isEmpty())
+        ui->fichierTLEMetOp->addItem("");
+    ui->fichierTLEMetOp->addItem(tr("Parcourir..."));
 
     ui->affichageMsgMAJ->addItem(tr("Affichage des messages informatifs"));
     ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
@@ -584,12 +608,12 @@ void PreviSat::ChargementConfig()
     ui->hauteurSatIri->setCurrentIndex(settings.value("previsions/hauteurSatIri", 2).toInt());
     ui->hauteurSoleilIri->setCurrentIndex(settings.value("previsions/hauteurSoleilIri", 1).toInt());
     ui->lieuxObservation3->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
-    ui->satellitesOperationnels->setChecked(settings.value("previsions/satellitesOperationnels", false).toBool());
-    ui->ordreChronologique->setChecked(settings.value("previsions/ordreChronologique", true).toBool());
-    ui->pecPanneauxSolaires->setChecked(settings.value("previsions/pecPanneauxSolaires", true).toBool());
+    ui->satellitesOperationnelsIri->setChecked(settings.value("previsions/satellitesOperationnelsIri", false).toBool());
+    ui->ordreChronologiqueIri->setChecked(settings.value("previsions/ordreChronologiqueIri", true).toBool());
+    ui->pecPanneauxSolairesIri->setChecked(settings.value("previsions/pecPanneauxSolairesIri", true).toBool());
     ui->magnitudeMaxJourIri->setValue(settings.value("previsions/magnitudeMaxJourIri", -4.).toDouble());
     ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
-    ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 4.).toDouble());
+    ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 5.).toDouble());
     ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
@@ -598,7 +622,7 @@ void PreviSat::ChargementConfig()
     ui->statutIridium->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 
     // Affichage du statut des satellites Iridium
-    const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
+    const char ope = (ui->satellitesOperationnelsIri->isChecked()) ? 'o' : 'n';
     Iridium::LectureStatutIridium(ope, tabStatutIridium);
 
     for(int i=0; i<tabStatutIridium.count(); i++) {
@@ -711,6 +735,18 @@ void PreviSat::ChargementConfig()
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
     ui->valHauteurSatTransit->setVisible(false);
     ui->afficherTransit->setEnabled(false);
+
+    ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
+    ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
+    ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
+    ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
+    ui->affichage3lignesMetOp->setChecked(settings.value("previsions/affichage3lignesMetOp", true).toBool());
+    ui->valHauteurSatMetOp->setVisible(false);
+    ui->valHauteurSoleilMetOp->setVisible(false);
+    ui->afficherMetOp->setEnabled(false);
+    MetOp::LectureStatutMetOp(tabStatutMetOp);
+
 
     // Menus
     ui->barreMenu->setMenu(ui->menuPrincipal);
@@ -2517,18 +2553,22 @@ void PreviSat::AffichageDonnees()
             chaine = tr("Nuit");
         ui->conditionsObservation->setText(chaine);
 
-        // Date de lancement
-        const int annee_lct = satellites.at(0).dateLancement().mid(0, 4).toInt();
-        const int mois_lct = satellites.at(0).dateLancement().mid(5, 2).toInt();
-        const double jour_lct = satellites.at(0).dateLancement().mid(8, 2).toDouble();
-        const Date date_lct(annee_lct, mois_lct, jour_lct, offsetUTC);
+        if (info) {
 
-        // Nombre theorique d'orbites a l'epoque
-        const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
-                                                                    date_lct.jourJulienUTC()));
-        int resteOrb = nbOrbTheo%100000;
-        resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
-        const int deltaNbOrb = nbOrbTheo - resteOrb;
+            // Date de lancement
+            const QString dateLancement = satellites.at(0).dateLancement();
+            const int annee_lct = dateLancement.mid(0, 4).toInt();
+            const int mois_lct = dateLancement.mid(5, 2).toInt();
+            const double jour_lct = dateLancement.mid(8, 2).toDouble();
+            date_lct = Date(annee_lct, mois_lct, jour_lct, offsetUTC);
+
+            // Nombre theorique d'orbites a l'epoque
+            const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
+                                                                        date_lct.jourJulienUTC()));
+            int resteOrb = nbOrbTheo%100000;
+            resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
+            deltaNbOrb = nbOrbTheo - resteOrb;
+        }
 
 
         /*
@@ -2649,6 +2689,13 @@ void PreviSat::AffichageDonnees()
                         if (tabStatutIridium.join("").contains(satellites.at(0).tle().norad())) {
                             const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
                                                                                satellites.at(0), soleil, observateurs.at(0));
+                            magnitude = qMin(magnitude, mag);
+                        }
+
+                        // Le satellite est un MetOp, on calcule la veritable magnitude (flash)
+                        if (tabStatutMetOp.join("").contains(satellites.at(0).tle().norad())) {
+                            const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
+                                                                           satellites.at(0), soleil, observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
                         }
 
@@ -3216,7 +3263,9 @@ void PreviSat::AffichageLieuObs() const
     ui->lieuxObservation2->clear();
     ui->lieuxObservation3->clear();
     ui->lieuxObservation4->clear();
+    ui->lieuxObservation5->clear();
     ui->selecLieux->clear();
+
     observateurs.clear();
     QStringListIterator it(listeObs);
     while (it.hasNext()) {
@@ -3229,6 +3278,7 @@ void PreviSat::AffichageLieuObs() const
         ui->lieuxObservation2->addItem(nomlieu);
         ui->lieuxObservation3->addItem(nomlieu);
         ui->lieuxObservation4->addItem(nomlieu);
+        ui->lieuxObservation5->addItem(nomlieu);
         ui->selecLieux->addItem(nomlieu);
 
         // Longitude/Latitude/Altitude
@@ -3257,6 +3307,7 @@ void PreviSat::AffichageLieuObs() const
     ui->lieuxObservation2->setCurrentIndex(0);
     ui->lieuxObservation3->setCurrentIndex(0);
     ui->lieuxObservation4->setCurrentIndex(0);
+    ui->lieuxObservation5->setCurrentIndex(0);
 
     /* Retour */
     return;
@@ -4341,6 +4392,7 @@ void PreviSat::ModificationOption()
     ui->afficherIri->setEnabled(false);
     ui->afficherEvt->setEnabled(false);
     ui->afficherTransit->setEnabled(false);
+    ui->afficherMetOp->setEnabled(false);
 
     if (ui->zoneAffichage->isVisible() || ui->ongletsOptions->isVisible()) {
 
@@ -4954,7 +5006,8 @@ void PreviSat::CalculsTermines()
     /* Corps de la methode */
     const QFileInfo fi(ficRes);
     switch (threadCalculs->typeCalcul()) {
-    case ThreadCalculs::PREVISION:
+
+    case PREVISION:
         ui->calculsPrev->setEnabled(true);
         if (fi.exists()) {
             ui->calculsPrev->setDefault(false);
@@ -4964,7 +5017,8 @@ void PreviSat::CalculsTermines()
         }
         break;
 
-    case ThreadCalculs::IRIDIUM:
+    case IRIDIUM:
+
         ui->calculsIri->setEnabled(true);
         if (fi.exists()) {
             ui->calculsIri->setDefault(false);
@@ -4975,7 +5029,8 @@ void PreviSat::CalculsTermines()
         }
         break;
 
-    case ThreadCalculs::EVENEMENTS:
+    case EVENEMENTS:
+
         ui->calculsEvt->setEnabled(true);
         if (fi.exists()) {
             ui->calculsEvt->setDefault(false);
@@ -4985,7 +5040,8 @@ void PreviSat::CalculsTermines()
         }
         break;
 
-    case ThreadCalculs::TRANSITS:
+    case TRANSITS:
+
         ui->calculsTransit->setEnabled(true);
         if (fi.exists()) {
             ui->calculsTransit->setDefault(false);
@@ -4995,6 +5051,19 @@ void PreviSat::CalculsTermines()
             settings.setValue("fichier/fichierTLETransit",
                               QDir::toNativeSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
         }
+
+    case METOP:
+
+        ui->calculsMetOp->setEnabled(true);
+        if (fi.exists()) {
+            ui->calculsMetOp->setDefault(false);
+            ui->afficherMetOp->setEnabled(true);
+            ui->afficherMetOp->setDefault(true);
+            ui->afficherMetOp->setFocus();
+            settings.setValue("fichier/fichierTLEMetOp",
+                              QDir::toNativeSeparators(ficTLEMetOp.at(ui->fichierTLEMetOp->currentIndex())));
+        }
+        break;
 
     default:
         break;
@@ -5457,9 +5526,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/hauteurSoleilIri", (ui->hauteurSoleilIri->currentIndex() > 4) ?
                           1 : ui->hauteurSoleilIri->currentIndex());
     settings.setValue("previsions/lieuxObservation3", ui->lieuxObservation3->currentIndex());
-    settings.setValue("previsions/satellitesOperationnels", ui->satellitesOperationnels->isChecked());
-    settings.setValue("previsions/ordreChronologique", ui->ordreChronologique->isChecked());
-    settings.setValue("previsions/pecPanneauxSolaires", ui->pecPanneauxSolaires->isChecked());
+    settings.setValue("previsions/satellitesOperationnelsIri", ui->satellitesOperationnelsIri->isChecked());
+    settings.setValue("previsions/ordreChronologiqueIri", ui->ordreChronologiqueIri->isChecked());
+    settings.setValue("previsions/pecPanneauxSolairesIri", ui->pecPanneauxSolairesIri->isChecked());
     settings.setValue("previsions/magnitudeMaxJourIri", ui->magnitudeMaxJourIri->value());
     settings.setValue("previsions/magnitudeMaxNuitIri", ui->magnitudeMaxNuitIri->value());
     settings.setValue("previsions/angleMaxReflexionIri", ui->angleMaxReflexionIri->value());
@@ -5476,6 +5545,15 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
     settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
     settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
+
+    settings.setValue("previsions/hauteurSatMetOp",
+                      (ui->hauteurSatMetOp->currentIndex() > 4) ? 2 : ui->hauteurSatMetOp->currentIndex());
+    settings.setValue("previsions/hauteurSoleilMetOp",
+                      (ui->hauteurSoleilMetOp->currentIndex() > 4) ? 1 : ui->hauteurSoleilMetOp->currentIndex());
+    settings.setValue("previsions/lieuxObservation5", ui->lieuxObservation5->currentIndex());
+    settings.setValue("previsions/ordreChronologiqueMetOp", ui->ordreChronologiqueMetOp->isChecked());
+    settings.setValue("previsions/magnitudeMaxMetOp", ui->magnitudeMaxMetOp->value());
+    settings.setValue("previsions/affichage3lignesMetOp", ui->affichage3lignesMetOp->isChecked());
 
     if (!ui->verifMAJ->isChecked())
         settings.setValue("fichier/majPrevi", "0");
@@ -7155,6 +7233,16 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->hauteurSatTransit->setPalette(palList);
     ui->valHauteurSatTransit->setPalette(palList);
     ui->elongationMaxCorps->setPalette(palList);
+
+    ui->dateInitialeMetOp->setPalette(palList);
+    ui->dateFinaleMetOp->setPalette(palList);
+    ui->lieuxObservation5->setPalette(palList);
+    ui->hauteurSoleilMetOp->setPalette(palList);
+    ui->valHauteurSoleilMetOp->setPalette(palList);
+    ui->hauteurSatMetOp->setPalette(palList);
+    ui->valHauteurSatMetOp->setPalette(palList);
+    ui->fichierTLEMetOp->setPalette(palList);
+    ui->magnitudeMaxMetOp->setPalette(palList);
 
     AffichageCourbes();
 
@@ -9095,6 +9183,12 @@ void PreviSat::on_onglets_currentChanged(int index)
         }
     }
 
+    if (ui->flashsMetOp->isVisible()) {
+        ui->afficherMetOp->setDefault(false);
+        ui->calculsMetOp->setDefault(true);
+        ui->calculsMetOp->setFocus();
+    }
+
     /* Retour */
     return;
 }
@@ -9137,6 +9231,17 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
             ui->ageTLETransit->setVisible(true);
             ui->lbl_ageTLETransit->setVisible(true);
         }
+
+    } else  if (ui->flashsMetOp->isVisible()) {
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
+        ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeMetOp->setDisplayFormat(fmt);
+        ui->dateFinaleMetOp->setDateTime(ui->dateInitialeMetOp->dateTime().addDays(7));
+        ui->dateFinaleMetOp->setDisplayFormat(fmt);
+
+        ui->afficherMetOp->setDefault(false);
+        ui->calculsMetOp->setDefault(true);
+        ui->calculsMetOp->setFocus();
 
     } else {
     }
@@ -9780,6 +9885,11 @@ void PreviSat::on_magnitudeMaxPrev_toggled(bool checked)
 
 void PreviSat::on_parametrageDefautPrev_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     on_onglets_currentChanged(ui->onglets->indexOf(ui->previsions));
     ui->pasGeneration->setCurrentIndex(5);
     ui->lieuxObservation2->setCurrentIndex(0);
@@ -9792,6 +9902,9 @@ void PreviSat::on_parametrageDefautPrev_clicked()
     ui->magnitudeMaxPrev->setChecked(false);
     if (!ui->calculsPrev->isEnabled() && !ui->afficherPrev->isEnabled() && threadCalculs == NULL)
         ui->calculsPrev->setEnabled(true);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_calculsPrev_clicked()
@@ -9807,6 +9920,7 @@ void PreviSat::on_calculsPrev_clicked()
     ui->afficherIri->setEnabled(false);
     ui->afficherEvt->setEnabled(false);
     ui->afficherTransit->setEnabled(false);
+    ui->afficherMetOp->setEnabled(false);
 
     try {
         if (ui->liste2->count() == 0)
@@ -9932,11 +10046,11 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes, unite,
-                                listeSat);
+        conditions = Conditions(PREVISION, ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes,
+                                unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
-        threadCalculs = new ThreadCalculs(ThreadCalculs::PREVISION, conditions, obser);
+        threadCalculs = new ThreadCalculs(conditions, obser);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
         threadCalculs->start();
 
@@ -10074,21 +10188,29 @@ void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
 
 void PreviSat::on_parametrageDefautIri_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     on_onglets_currentChanged(ui->onglets->indexOf(ui->iridium));
     ui->hauteurSatIri->setCurrentIndex(2);
     ui->hauteurSoleilIri->setCurrentIndex(1);
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->lieuxObservation3->setCurrentIndex(0);
-    ui->satellitesOperationnels->setChecked(false);
-    ui->ordreChronologique->setChecked(true);
-    ui->pecPanneauxSolaires->setChecked(true);
+    ui->satellitesOperationnelsIri->setChecked(false);
+    ui->ordreChronologiqueIri->setChecked(true);
+    ui->pecPanneauxSolairesIri->setChecked(true);
     ui->magnitudeMaxJourIri->setValue(-4.);
     ui->magnitudeMaxNuitIri->setValue(2.);
-    ui->angleMaxReflexionIri->setValue(4.);
+    ui->angleMaxReflexionIri->setValue(5.);
     ui->affichage3lignesIri->setChecked(true);
     if (!ui->calculsIri->isEnabled() && ! ui->afficherIri->isEnabled() && threadCalculs == NULL)
         ui->calculsIri->setEnabled(true);
+    
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_calculsIri_clicked()
@@ -10104,6 +10226,7 @@ void PreviSat::on_calculsIri_clicked()
     ui->afficherPrev->setEnabled(false);
     ui->afficherEvt->setEnabled(false);
     ui->afficherTransit->setEnabled(false);
+    ui->afficherMetOp->setEnabled(false);
 
     try {
         if (ui->fichierTLEIri->currentText().trimmed().isEmpty() || ui->fichierTLEIri->currentText() == tr("Parcourir..."))
@@ -10159,13 +10282,13 @@ void PreviSat::on_calculsIri_clicked()
         }
 
         // Prise en compte des satellites operationnels uniquement
-        const char ope = (ui->satellitesOperationnels->isChecked()) ? 'o' : 'n';
+        const char ope = (ui->satellitesOperationnelsIri->isChecked()) ? 'o' : 'n';
 
         // Choix du tri par ordre chronologique
-        const bool chr = (ui->ordreChronologique->isChecked());
+        const bool chr = (ui->ordreChronologiqueIri->isChecked());
 
         // Prise en compte des panneaux solaires
-        const bool psol = (ui->pecPanneauxSolaires->isChecked());
+        const bool psol = (ui->pecPanneauxSolairesIri->isChecked());
 
         // Choix du nombre de lignes par flash
         const int nbl = (ui->affichage3lignesIri->isChecked()) ? 3 : 1;
@@ -10262,11 +10385,11 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(ecart, ext, refr, syst, chr, psol, crep, haut, nbl, ang0, jj1, jj2, offset1, mgn1, mgn2,
+        conditions = Conditions(IRIDIUM, ecart, ext, refr, syst, chr, psol, crep, haut, nbl, ang0, jj1, jj2, offset1, mgn1, mgn2,
                                 fi.absoluteFilePath(), ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
-        threadCalculs = new ThreadCalculs(ThreadCalculs::IRIDIUM, conditions, obser);
+        threadCalculs = new ThreadCalculs(conditions, obser);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
         threadCalculs->start();
 
@@ -10351,6 +10474,11 @@ void PreviSat::on_liste3_entered(const QModelIndex &index)
 
 void PreviSat::on_parametrageDefautEvt_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->evenementsOrbitaux));
     ui->passageApogee->setChecked(true);
     ui->passageNoeuds->setChecked(true);
@@ -10359,6 +10487,9 @@ void PreviSat::on_parametrageDefautEvt_clicked()
     ui->transitionJourNuit->setChecked(true);
     if (!ui->calculsEvt->isEnabled() && ! ui->afficherEvt->isEnabled() && threadCalculs == NULL)
         ui->calculsEvt->setEnabled(true);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_calculsEvt_clicked()
@@ -10374,6 +10505,7 @@ void PreviSat::on_calculsEvt_clicked()
     ui->afficherPrev->setEnabled(false);
     ui->afficherIri->setEnabled(false);
     ui->afficherTransit->setEnabled(false);
+    ui->afficherMetOp->setEnabled(false);
 
     try {
         if (ui->liste3->count() == 0)
@@ -10465,10 +10597,10 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, syst, jj1, jj2, offset1, nomfic, ficRes, unite,
-                                listeSat);
+        conditions = Conditions(EVENEMENTS, apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, syst, jj1, jj2, offset1, nomfic,
+                                ficRes, unite, listeSat);
 
-        threadCalculs = new ThreadCalculs(ThreadCalculs::EVENEMENTS, conditions);
+        threadCalculs = new ThreadCalculs(conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
         threadCalculs->start();
 
@@ -10595,6 +10727,11 @@ void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
 
 void PreviSat::on_parametrageDefautTransit_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->transitsISS));
     ui->hauteurSatTransit->setCurrentIndex(1);
     ui->valHauteurSatTransit->setVisible(false);
@@ -10603,6 +10740,9 @@ void PreviSat::on_parametrageDefautTransit_clicked()
     ui->elongationMaxCorps->setValue(5.);
     if (!ui->calculsTransit->isEnabled() && ! ui->afficherTransit->isEnabled() && threadCalculs == NULL)
         ui->calculsTransit->setEnabled(true);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_calculsTransit_clicked()
@@ -10618,6 +10758,7 @@ void PreviSat::on_calculsTransit_clicked()
     ui->afficherPrev->setEnabled(false);
     ui->afficherIri->setEnabled(false);
     ui->afficherEvt->setEnabled(false);
+    ui->afficherMetOp->setEnabled(false);
 
     try {
         if (ui->fichierTLETransit->currentText().trimmed().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
@@ -10724,11 +10865,11 @@ void PreviSat::on_calculsTransit_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(calcLune, calcSol, ecart, refr, syst, haut, ageTLE, elong, jj1, jj2, offset1, fi.absoluteFilePath(),
-                                ficRes, unite);
+        conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, syst, haut, ageTLE, elong, jj1, jj2, offset1,
+                                fi.absoluteFilePath(), ficRes, unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
-        threadCalculs = new ThreadCalculs(ThreadCalculs::TRANSITS, conditions, obser);
+        threadCalculs = new ThreadCalculs(conditions, obser);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
         threadCalculs->start();
 
@@ -10750,6 +10891,323 @@ void PreviSat::on_afficherTransit_clicked()
     afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
                                       tr("Transits ISS"));
+    afficherResultats->show(ficRes);
+    result.clear();
+
+    /* Retour */
+    return;
+}
+
+
+/*
+ * Calcul des flashs MetOp
+ */
+void PreviSat::on_effacerHeuresMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ui->dateInitialeMetOp->setTime(QTime(0, 0, 0));
+    ui->dateFinaleMetOp->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_fichierTLEMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->fichierTLEMetOp->setToolTip("");
+
+    /* Corps de la methode */
+    try {
+        if (ui->fichierTLEMetOp->itemText(ui->fichierTLEMetOp->count() - 1) == tr("Parcourir...")) {
+
+            if (index == ui->fichierTLEMetOp->count() - 1) {
+
+                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                                     settings.value("fichier/fichierTLEMetOp", dirTle).toString(),
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
+                                                                        "Tous les fichiers (*)"));
+
+                if (fichier.isEmpty()) {
+                    if (!ui->fichierTLEMetOp->currentText().isEmpty())
+                        ui->fichierTLEMetOp->setCurrentIndex(idxfi);
+                } else {
+                    AffichageListeFichiersTLE(fichier, ui->fichierTLEMetOp, ficTLEMetOp);
+                    const int idx = qMax(ficTLEMetOp.size() - 1, 0);
+                    ui->fichierTLEMetOp->setItemData(idxfm, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLEMetOp->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
+                    idxfm = idx;
+                }
+            } else {
+                if (!ficTLEMetOp.isEmpty()) {
+                    const int idx = qMax(index - 1, 0);
+                    ui->fichierTLEMetOp->setItemData(idxfm, QColor(Qt::white), Qt::BackgroundRole);
+                    ui->fichierTLEMetOp->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
+                    AffichageListeFichiersTLE(ficTLEMetOp.at(index), ui->fichierTLEMetOp, ficTLEMetOp);
+                    idxfm = idx;
+                }
+            }
+            if (!ficTLEMetOp.isEmpty()) {
+                const QFileInfo fi(ficTLEMetOp.at(idxfm));
+                ui->fichierTLEMetOp->setCurrentIndex(idxfm);
+                ui->fichierTLEMetOp->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) == dirTle) ? "" : fi.absoluteFilePath());
+            }
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_hauteurSatMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == ui->hauteurSatMetOp->count() - 1) {
+        ui->valHauteurSatMetOp->setVisible(true);
+        ui->valHauteurSatMetOp->setCursorPosition(0);
+        ui->valHauteurSatMetOp->setFocus();
+    } else {
+        ui->valHauteurSatMetOp->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_hauteurSoleilMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == ui->hauteurSoleilMetOp->count() - 1) {
+        ui->valHauteurSoleilMetOp->setVisible(true);
+        ui->valHauteurSoleilMetOp->setCursorPosition(0);
+        ui->valHauteurSoleilMetOp->setFocus();
+    } else {
+        ui->valHauteurSoleilMetOp->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_parametrageDefautMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->flashsMetOp));
+    ui->hauteurSatMetOp->setCurrentIndex(2);
+    ui->hauteurSoleilMetOp->setCurrentIndex(1);
+    ui->valHauteurSatMetOp->setVisible(false);
+    ui->valHauteurSoleilMetOp->setVisible(false);
+    ui->lieuxObservation5->setCurrentIndex(0);
+    ui->ordreChronologiqueMetOp->setChecked(true);
+    ui->magnitudeMaxMetOp->setValue(2.);
+    ui->affichage3lignesMetOp->setChecked(true);
+    if (!ui->calculsMetOp->isEnabled() && ! ui->afficherMetOp->isEnabled() && threadCalculs == NULL)
+        ui->calculsMetOp->setEnabled(true);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_calculsMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    if (afficherResultats != NULL)
+        afficherResultats->close();
+    messagesStatut->setText("");
+
+    /* Corps de la methode */
+    ui->afficherPrev->setEnabled(false);
+    ui->afficherIri->setEnabled(false);
+    ui->afficherEvt->setEnabled(false);
+    ui->afficherTransit->setEnabled(false);
+
+    try {
+        if (ui->fichierTLEMetOp->currentText().trimmed().isEmpty() || ui->fichierTLEMetOp->currentText() == tr("Parcourir..."))
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
+
+        const QFileInfo fi(ficTLEMetOp.at(ui->fichierTLEMetOp->currentIndex()));
+        if (!fi.exists()) {
+            ui->fichierTLEMetOp->removeItem(ui->fichierTLEMetOp->currentIndex());
+            throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
+        }
+        ui->afficherMetOp->setEnabled(false);
+
+        // Ecart heure locale - UTC
+        const bool ecart = (fabs(offsetUTC - Date::CalculOffsetUTC(dateCourante.ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateInitialeMetOp->dateTime());
+        const double offset2 = (ecart) ? offsetUTC : Date::CalculOffsetUTC(ui->dateFinaleMetOp->dateTime());
+
+        // Date et heure initiales
+        const Date date1(ui->dateInitialeMetOp->date().year(), ui->dateInitialeMetOp->date().month(),
+                         ui->dateInitialeMetOp->date().day(), ui->dateInitialeMetOp->time().hour(),
+                         ui->dateInitialeMetOp->time().minute(), ui->dateInitialeMetOp->time().second(), offset1);
+
+        // Jour julien initial
+        double jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(ui->dateFinaleMetOp->date().year(), ui->dateFinaleMetOp->date().month(),
+                         ui->dateFinaleMetOp->date().day(), ui->dateFinaleMetOp->time().hour(),
+                         ui->dateFinaleMetOp->time().minute(), ui->dateFinaleMetOp->time().second(), offset2);
+
+        // Jour julien final
+        double jj2 = date2.jourJulien() - offset2;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (jj1 > jj2) {
+            const double tmp = jj2;
+            jj2 = jj1;
+            jj1 = tmp;
+        }
+
+        // Hauteur minimale du satellite
+        const int haut = (ui->hauteurSatMetOp->currentIndex() == 5) ?
+                    (int) fabs(ui->valHauteurSatMetOp->text().toInt()) : 5 * ui->hauteurSatMetOp->currentIndex();
+
+        // Hauteur maximale du Soleil
+        int crep = 0;
+        if (ui->hauteurSoleilMetOp->currentIndex() <= 3) {
+            crep = -6 * ui->hauteurSoleilMetOp->currentIndex();
+        } else if (ui->hauteurSoleilMetOp->currentIndex() == 4) {
+            crep = 90;
+        } else if (ui->hauteurSoleilMetOp->currentIndex() == 5) {
+            crep = ui->valHauteurSoleilMetOp->text().toInt();
+        }
+
+        // Choix du tri par ordre chronologique
+        const bool chr = (ui->ordreChronologiqueMetOp->isChecked());
+
+        // Choix du nombre de lignes par flash
+        const int nbl = (ui->affichage3lignesMetOp->isChecked()) ? 3 : 1;
+
+        // Magnitude maximale (nuit)
+        const double mgn1 = ui->magnitudeMaxMetOp->value();
+
+        // Prise en compte de l'extinction atmospherique
+        const bool ext = ui->extinctionAtmospherique->isChecked();
+
+        // Prise en compte de la refraction atmospherique
+        const bool refr = ui->refractionPourEclipses->isChecked();
+
+        // Prise en compte du systeme horaire
+        const bool syst = ui->syst24h->isChecked();
+
+        // Nom du fichier resultat
+        const QString chaine = tr("metop") + "_%1_%2.txt";
+        ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+
+        QFile fi2(ficRes);
+        if (fi2.exists())
+            fi2.remove();
+        QDir di(dirTmp);
+        if (!di.exists())
+            di.mkpath(dirTmp);
+
+        // Unite pour les distances
+        const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+
+        // Lecture du fichier de statut des satellites MetOp
+        QStringList tabStsMetOp;
+        const int nb = MetOp::LectureStatutMetOp(tabStsMetOp);
+        if (nb == 0)
+            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
+                                       "Aucun satellite MetOp susceptible de produire des flashs dans le fichier de statut"),
+                                    WARNING);
+
+        // Creation de la liste de satellites
+        QStringList listeSatellites;
+        QStringListIterator it1(tabStsMetOp);
+        while (it1.hasNext()) {
+            const QString item = it1.next();
+            listeSatellites.append(item.mid(8, 5));
+        }
+
+        // Verification du fichier TLE
+        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+        }
+
+        QVector<TLE> tabtle;
+
+        // Lecture du fichier TLE
+        TLE::LectureFichier(fi.absoluteFilePath(), listeSatellites, tabtle);
+
+        // Mise a jour de la liste de satellites et creation du tableau de satellites
+        int i = 0;
+        listeSatellites.clear();
+        QVectorIterator<TLE> it2(tabtle);
+        QVector<TLE> tabtle2;
+        while (it2.hasNext()) {
+            const TLE tle = it2.next();
+            if (tle.norad().isEmpty()) {
+                tabStsMetOp.removeAt(i);
+            } else {
+                listeSatellites.append(tle.norad());
+                tabtle2.append(tle);
+                i++;
+            }
+        }
+
+        // Il n'y a aucun satellite MetOp dans le fichier TLE
+        if (listeSatellites.size() == 0)
+            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
+                                       "Aucun satellite MetOp n'a été trouvé dans le fichier TLE"), WARNING);
+
+        messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
+        ui->calculsMetOp->setEnabled(false);
+
+
+        // Lancement des calculs
+        conditions = Conditions(METOP, ecart, ext, refr, syst, chr, crep, haut, nbl, jj1, jj2, offset1, mgn1, fi.absoluteFilePath(),
+                                ficRes, unite, tabStsMetOp, tabtle2);
+        Observateur obser(observateurs.at(ui->lieuxObservation5->currentIndex()));
+
+        threadCalculs = new ThreadCalculs(conditions, obser);
+        connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
+        threadCalculs->start();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_afficherMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QStringList result = threadCalculs->res();
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
+    afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
+                                      tr("Prévisions des flashs MetOp"));
     afficherResultats->show(ficRes);
     result.clear();
 

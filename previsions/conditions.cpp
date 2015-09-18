@@ -74,7 +74,9 @@ Conditions::Conditions()
     _chr = true;
     _psol = true;
     _nbl = 0;
+    _typeCalcul = (TypeCalcul) 0;
 
+    _psol = false;
     _ageTLE = 0.;
     _ang0 = 0.;
     _crep = 0.;
@@ -96,10 +98,13 @@ Conditions::Conditions()
     return;
 }
 
-Conditions::Conditions(const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction, const bool systeme,
-                       const int crepuscule, const int hauteur, const int pas, const double jourJulien1, const double jourJulien2,
-                       const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
-                       const QStringList &listeSat)
+/*
+ * Previsions de passage
+ */
+Conditions::Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction,
+                       const bool systeme, const int crepuscule, const int hauteur, const int pas, const double jourJulien1,
+                       const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
+                       const QString &ficOut, const QString &unit, const QStringList &listeSat)
 {
     /* Declarations des variables locales */
 
@@ -122,7 +127,9 @@ Conditions::Conditions(const bool pecEcart, const bool eclipse, const bool extin
     _out = ficOut;
     _unite = unit;
     _listeSatellites = listeSat;
+    _typeCalcul = typeCalc;
 
+    _psol = false;
     _acalcLune = false;
     _acalcSol = false;
     _apassApogee = false;
@@ -141,10 +148,13 @@ Conditions::Conditions(const bool pecEcart, const bool eclipse, const bool extin
     return;
 }
 
-Conditions::Conditions(const bool pecEcart, const bool extinction, const bool refraction, const bool systeme, const bool chrono,
-                       const bool panSol, const int crepuscule, const int hauteur, const int nbLig, const double angle0,
-                       const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1,
-                       const double magn2, const QString &ficEnt, const QString &ficOut, const QString &unit,
+/*
+ * Flashs Iridium
+ */
+Conditions::Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
+                       const bool chrono, const bool panSol, const int crepuscule, const int hauteur, const int nbLig,
+                       const double angle0, const double jourJulien1, const double jourJulien2, const double offsetUTC,
+                       const double magn1, const double magn2, const QString &ficEnt, const QString &ficOut, const QString &unit,
                        const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri)
 {
     /* Declarations des variables locales */
@@ -170,8 +180,9 @@ Conditions::Conditions(const bool pecEcart, const bool extinction, const bool re
     _fic = ficEnt;
     _out = ficOut;
     _unite = unit;
-    _tabStsIri = tabStsIridium;
+    _tabSts = tabStsIridium;
     _tabtle = tabTLEIri;
+    _typeCalcul = typeCalc;
 
     _acalcLune = false;
     _acalcSol = false;
@@ -189,8 +200,11 @@ Conditions::Conditions(const bool pecEcart, const bool extinction, const bool re
     return;
 }
 
-Conditions::Conditions(const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre, const bool apassagePso,
-                       const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
+/*
+ * Evenements orbitaux
+ */
+Conditions::Conditions(const TypeCalcul typeCalc, const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre,
+                       const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
                        const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
                        const QString &ficOut, const QString &unit, const QStringList &listeSat)
 {
@@ -214,11 +228,13 @@ Conditions::Conditions(const bool apassageApogee, const bool apassageNoeuds, con
     _out = ficOut;
     _unite = unit;
     _listeSatellites = listeSat;
+    _typeCalcul = typeCalc;
 
     _acalcLune = false;
     _acalcSol = false;
     _ecl = false;
     _ext = false;
+    _psol = false;
     _chr = ' ';
     _nbl = 0;
     _ageTLE = 0.;
@@ -234,10 +250,13 @@ Conditions::Conditions(const bool apassageApogee, const bool apassageNoeuds, con
     return;
 }
 
-Conditions::Conditions(const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction, const bool systeme,
-                       const int hauteur, const double age, const double seuilConj, const double jourJulien1,
-                       const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
-                       const QString &unit)
+/*
+ * Transits ISS
+ */
+Conditions::Conditions(const TypeCalcul typeCalc, const bool acalculLune, const bool acalculSoleil, const bool pecEcart,
+                       const bool refraction, const bool systeme, const int hauteur, const double age, const double seuilConj,
+                       const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
+                       const QString &ficOut, const QString &unit)
 {
     /* Declarations des variables locales */
 
@@ -258,6 +277,7 @@ Conditions::Conditions(const bool acalculLune, const bool acalculSoleil, const b
     _fic = ficEnt;
     _out = ficOut;
     _unite = unit;
+    _typeCalcul = typeCalc;
 
     _apassApogee = false;
     _apassNoeuds = false;
@@ -266,6 +286,7 @@ Conditions::Conditions(const bool acalculLune, const bool acalculSoleil, const b
     _atransJn = false;
     _ecl = false;
     _ext = false;
+    _psol = false;
     _chr = ' ';
     _nbl = -1;
     _ang0 = 0.;
@@ -277,6 +298,58 @@ Conditions::Conditions(const bool acalculLune, const bool acalculSoleil, const b
     /* Retour */
     return;
 }
+
+/*
+ * Flashs MetOp
+ */
+Conditions::Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
+                       const bool chrono, const int crepuscule, const int hauteur, const int nbLig, const double jourJulien1,
+                       const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
+                       const QString &ficOut, const QString &unit, const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _ecart = pecEcart;
+    _ext = extinction;
+    _refr = refraction;
+    _syst = systeme;
+    _crep = crepuscule * DEG2RAD;
+    _haut = hauteur * DEG2RAD;
+    _nbl = nbLig;
+    _chr = chrono;
+    _ang0 = 9.99 * DEG2RAD;
+    _jj1 = jourJulien1;
+    _jj2 = jourJulien2;
+    _offset = offsetUTC;
+    _mgn1 = magn1;
+    _mgn2 = -99.;
+    _fic = ficEnt;
+    _out = ficOut;
+    _unite = unit;
+    _tabSts = tabStsMetOp;
+    _tabtle = tabTLEMetOp;
+    _typeCalcul = typeCalc;
+
+    _acalcLune = false;
+    _acalcSol = false;
+    _apassApogee = false;
+    _apassNoeuds = false;
+    _apassOmbre = false;
+    _apassPso = false;
+    _atransJn = false;
+    _ecl = false;
+    _psol = false;
+    _ageTLE = 0.;
+    _pas0 = 0.;
+    _seuilConjonction = 0.;
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Destructeur
@@ -468,6 +541,11 @@ QStringList Conditions::listeSatellites() const
     return _listeSatellites;
 }
 
+TypeCalcul Conditions::typeCalcul() const
+{
+    return _typeCalcul;
+}
+
 
 int Conditions::nbl() const
 {
@@ -494,9 +572,9 @@ double Conditions::mgn2() const
     return _mgn2;
 }
 
-QStringList Conditions::tabStsIri() const
+QStringList Conditions::tabSts() const
 {
-    return _tabStsIri;
+    return _tabSts;
 }
 
 QVector<TLE> Conditions::tabtle() const

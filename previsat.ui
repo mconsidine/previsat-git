@@ -2652,7 +2652,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8263,7 +8263,7 @@
              </property>
             </item>
            </widget>
-           <widget class="QCheckBox" name="satellitesOperationnels">
+           <widget class="QCheckBox" name="satellitesOperationnelsIri">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -8282,7 +8282,7 @@
              <bool>true</bool>
             </property>
            </widget>
-           <widget class="QCheckBox" name="ordreChronologique">
+           <widget class="QCheckBox" name="ordreChronologiqueIri">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -8649,7 +8649,7 @@
              </property>
             </column>
            </widget>
-           <widget class="QCheckBox" name="pecPanneauxSolaires">
+           <widget class="QCheckBox" name="pecPanneauxSolairesIri">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -10666,7 +10666,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>4</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="font">
@@ -12849,6 +12849,506 @@
               </property>
              </widget>
             </widget>
+            <widget class="QWidget" name="flashsMetOp">
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
+             <attribute name="title">
+              <string>Flashs MetOp</string>
+             </attribute>
+             <widget class="QComboBox" name="lieuxObservation5">
+              <property name="geometry">
+               <rect>
+                <x>110</x>
+                <y>60</y>
+                <width>191</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+             </widget>
+             <widget class="QDateTimeEdit" name="dateFinaleMetOp">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>34</y>
+                <width>145</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="calculsMetOp">
+              <property name="geometry">
+               <rect>
+                <x>589</x>
+                <y>144</y>
+                <width>79</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Calculs</string>
+              </property>
+              <property name="default">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="ordreChronologiqueMetOp">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>150</y>
+                <width>201</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Classer par ordre chronologique</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="effacerHeuresMetOp">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>10</y>
+                <width>115</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Effacer heures</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="afficherMetOp">
+              <property name="geometry">
+               <rect>
+                <x>673</x>
+                <y>144</y>
+                <width>79</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Afficher</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="hauteurSatMetOp">
+              <property name="geometry">
+               <rect>
+                <x>160</x>
+                <y>116</y>
+                <width>141</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>0°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>5°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>10°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>15°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>20°</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QComboBox" name="fichierTLEMetOp">
+              <property name="geometry">
+               <rect>
+                <x>420</x>
+                <y>88</y>
+                <width>151</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="hauteurSoleilMetOp">
+              <property name="geometry">
+               <rect>
+                <x>110</x>
+                <y>90</y>
+                <width>191</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="currentIndex">
+               <number>1</number>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <item>
+               <property name="text">
+                <string>Horizon (0°)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Crépuscule civil (-6°)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Crépuscule nautique (-12°)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Crépuscule astronomique (-18°)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Indifférent</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre...</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLineEdit" name="valHauteurSoleilMetOp">
+              <property name="geometry">
+               <rect>
+                <x>310</x>
+                <y>91</y>
+                <width>31</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="inputMask">
+               <string>###</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_hauteurSoleilMetOp">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>94</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Hauteur du Soleil :</string>
+              </property>
+             </widget>
+             <widget class="QGroupBox" name="groupBoxAffichageLignesMetOp">
+              <property name="geometry">
+               <rect>
+                <x>420</x>
+                <y>10</y>
+                <width>151</width>
+                <height>71</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="title">
+               <string>Affichage des résultats</string>
+              </property>
+              <widget class="QRadioButton" name="affichage1ligneMetOp">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>20</y>
+                 <width>82</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>1 ligne</string>
+               </property>
+              </widget>
+              <widget class="QRadioButton" name="affichage3lignesMetOp">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>40</y>
+                 <width>82</width>
+                 <height>17</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font/>
+               </property>
+               <property name="text">
+                <string>3 lignes</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QPushButton" name="parametrageDefautMetOp">
+              <property name="geometry">
+               <rect>
+                <x>590</x>
+                <y>14</y>
+                <width>161</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Paramétrage par défaut</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_hauteurSatMetOp">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>120</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Hauteur minimale du satellite :</string>
+              </property>
+             </widget>
+             <widget class="QDateTimeEdit" name="dateInitialeMetOp">
+              <property name="geometry">
+               <rect>
+                <x>80</x>
+                <y>10</y>
+                <width>145</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="valHauteurSatMetOp">
+              <property name="geometry">
+               <rect>
+                <x>310</x>
+                <y>117</y>
+                <width>31</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="inputMask">
+               <string>99</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="maxLength">
+               <number>2</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_magnitudeMaxMetOp">
+              <property name="geometry">
+               <rect>
+                <x>350</x>
+                <y>128</y>
+                <width>111</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Magnitude maximale :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateInitialeMetOp">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>14</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Date initiale :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_lieuxObservation5">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>64</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Lieu d'observation :</string>
+              </property>
+             </widget>
+             <widget class="QDoubleSpinBox" name="magnitudeMaxMetOp">
+              <property name="geometry">
+               <rect>
+                <x>460</x>
+                <y>124</y>
+                <width>51</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-8.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>8.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_dateFinaleMetOp">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>38</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Date finale :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_fichierTLEMetOp">
+              <property name="geometry">
+               <rect>
+                <x>350</x>
+                <y>94</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Fichier TLE :</string>
+              </property>
+             </widget>
+            </widget>
            </widget>
           </widget>
          </widget>
@@ -13644,8 +14144,8 @@ le flux vidéo</string>
   <tabstop>lieuxObservation3</tabstop>
   <tabstop>hauteurSatIri</tabstop>
   <tabstop>valHauteurSatIri</tabstop>
-  <tabstop>satellitesOperationnels</tabstop>
-  <tabstop>ordreChronologique</tabstop>
+  <tabstop>satellitesOperationnelsIri</tabstop>
+  <tabstop>ordreChronologiqueIri</tabstop>
   <tabstop>affichage1ligneIri</tabstop>
   <tabstop>affichage3lignesIri</tabstop>
   <tabstop>magnitudeMaxNuitIri</tabstop>

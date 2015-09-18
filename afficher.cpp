@@ -217,18 +217,32 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     police.setWeight(QFont::Bold);
     ui->listePrevisions->horizontalHeader()->setFont(police);
-    if (cond.nbl() == 0)
-        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
-    else
-        ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
 
-    if (cond.apassApogee() || cond.apassNoeuds() || cond.apassOmbre() || cond.apassPso() || cond.atransJn()) {
+    switch (cond.typeCalcul()) {
+    case PREVISION:
+        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
+        break;
+
+    case IRIDIUM:
+        ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
+        break;
+
+    case EVENEMENTS:
         ui->ongletsResultats->removeTab(1);
         ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
-    }
+        break;
 
-    if (cond.acalcLune() || cond.acalcSol())
+    case TRANSITS:
         ui->ongletsResultats->setTabText(ind, tr("Transits ISS"));
+        break;
+
+    case METOP:
+        ui->ongletsResultats->setTabText(ind, tr("Flashs MetOp"));
+        break;
+
+    default:
+        break;
+    }
 
     if (ind == 1) {
         Constellation::initCst = false;

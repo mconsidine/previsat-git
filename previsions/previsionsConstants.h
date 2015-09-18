@@ -18,46 +18,43 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    threadcalculs.h
+ * >    dateConstants.h
  *
  * Localisation
- * >
+ * >    librairies.dates
  *
  * Heritage
- * >    QThread
+ * >
+ *
+ * Description
+ * >     Constantes temporelles
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    3 mars 2012
+ * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    14 juin 2015
  *
  */
 
-#ifndef THREADCALCULS_H
-#define THREADCALCULS_H
 
-#include <QThread>
-#include "librairies/observateur/observateur.h"
-#include "previsions/conditions.h"
+#ifndef PREVISIONSCONSTANTS_H
+#define PREVISIONSCONSTANTS_H
 
-class ThreadCalculs : public QThread
-{
-public:
-
-    ThreadCalculs(const Conditions &cond);
-    ThreadCalculs(const Conditions &cond, const Observateur &obs);
-    void run();
-
-    Observateur observateur() const;
-    QStringList res();
-    TypeCalcul typeCalcul() const;
-
-private:
-    Conditions _conditions;
+/* Enumerations */
+enum TypeCalcul {
+    PREVISION,
+    IRIDIUM,
+    EVENEMENTS,
+    METOP,
+    TRANSITS
 };
 
-#endif // THREADCALCULS_H
+/* Declaration des constantes */
+
+
+#endif // PREVISIONSCONSTANTS_H
+
