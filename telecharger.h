@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    19 septembre 2015
  *
  */
 
@@ -56,27 +56,82 @@ class Telecharger : public QMainWindow
     Q_OBJECT
 
 public:
+
+    /**
+     * @brief Telecharger Constructeur pour la fenetre de telechargement
+     * @param idirHttp indice du repertoire cible
+     * @param fenetreParent fenetre
+     */
     explicit Telecharger(const int idirHttp, QWidget *fenetreParent = 0);
+
+    /**
+     * @brief AjoutFichier Ajout d'un fichier dans la liste de fichiers a telecharger
+     * @param url adresse du fichier
+     */
     void AjoutFichier(const QUrl &url);
+
     ~Telecharger();
 
 signals:
+
+    /**
+     * @brief TelechargementFini Signal du telechargement fini
+     */
     void TelechargementFini();
 
 private slots:
+
+    /**
+     * @brief on_fermer_clicked Fermeture de la fenetre
+     */
     void on_fermer_clicked();
+
+    /**
+     * @brief on_interrogerServeur_clicked Interrogation du serveur
+     */
     void on_interrogerServeur_clicked();
+
+    /**
+     * @brief MessageErreur Message d'erreur pour le telechargement
+     */
     void MessageErreur(QNetworkReply::NetworkError) const;
+
+    /**
+     * @brief Enregistrer Enregistrement du fichier
+     */
     void Enregistrer() const;
+
+    /**
+     * @brief ProgressionTelechargement Progression du telechargement
+     * @param recu nombre d'octets recus
+     * @param total nombre d'octets total
+     */
     void ProgressionTelechargement(qint64 recu, qint64 total) const;
+
+    /**
+     * @brief TelechargementSuivant Demarrage du telechargement suivant
+     */
     void TelechargementSuivant();
+
+    /**
+     * @brief FinEnregistrementFichier Gestion de l'enregistrement des fichiers telecharges
+     */
     void FinEnregistrementFichier();
+
+    /**
+     * @brief EcritureFichier Ecriture du fichier telecharge
+     */
     void EcritureFichier();
 
+    /**
+     * @brief on_telecharger_clicked Lancement du telechargement
+     */
     void on_telecharger_clicked();
 
 private:
+
     Ui::Telecharger *ui;
+
 };
 
 #endif // TELECHARGER_H

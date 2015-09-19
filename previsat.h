@@ -322,6 +322,10 @@ private:
 
 
 signals:
+
+    /**
+     * @brief TelechargementFini Signal du telechargement fini
+     */
     void TelechargementFini();
 
 
