@@ -303,8 +303,8 @@ void PreviSat::ChargementConfig()
     tim = QDateTime();
 
     listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" << "ISS-Live1.html"
-                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "resultat.map" << "stations.sta" << "taiutc.dat"
-                      << "tdrs.sat";
+                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "metop.sts" << "resultat.map" << "stations.sta"
+                      << "taiutc.dat" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
