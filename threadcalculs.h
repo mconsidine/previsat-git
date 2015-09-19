@@ -33,7 +33,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    19 septembre 2015
  *
  */
 
@@ -48,8 +48,22 @@ class ThreadCalculs : public QThread
 {
 public:
 
+    /**
+     * @brief ThreadCalculs Constructeur avec conditions
+     * @param cond conditions d'observation
+     */
     ThreadCalculs(const Conditions &cond);
+
+    /**
+     * @brief ThreadCalculs Constructeur avec conditions et lieu d'observation
+     * @param cond conditions d'observation
+     * @param obs lieu d'observation
+     */
     ThreadCalculs(const Conditions &cond, const Observateur &obs);
+
+    /**
+     * @brief run Lancement du thread
+     */
     void run();
 
     Observateur observateur() const;
@@ -57,7 +71,9 @@ public:
     TypeCalcul typeCalcul() const;
 
 private:
+
     Conditions _conditions;
+
 };
 
 #endif // THREADCALCULS_H
