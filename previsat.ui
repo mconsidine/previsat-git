@@ -10682,7 +10682,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>4</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="miseAJourTLE">
              <property name="font">
@@ -14124,23 +14124,23 @@ le flux vidéo</string>
   <tabstop>lieuxObservation1</tabstop>
   <tabstop>backward</tabstop>
   <tabstop>rewind</tabstop>
-  <tabstop>pause</tabstop>
-  <tabstop>play</tabstop>
-  <tabstop>forward</tabstop>
-  <tabstop>maximise</tabstop>
-  <tabstop>affichageCiel</tabstop>
-  <tabstop>tempsReel</tabstop>
-  <tabstop>pasReel</tabstop>
+  <tabstop>dateInitialeMetOp</tabstop>
+  <tabstop>dateFinaleMetOp</tabstop>
+  <tabstop>effacerHeuresMetOp</tabstop>
+  <tabstop>lieuxObservation5</tabstop>
+  <tabstop>hauteurSoleilMetOp</tabstop>
   <tabstop>modeManuel</tabstop>
-  <tabstop>pasManuel</tabstop>
-  <tabstop>valManuel</tabstop>
-  <tabstop>directHelp</tabstop>
-  <tabstop>barreMenu</tabstop>
-  <tabstop>liste1</tabstop>
-  <tabstop>dateHeure4</tabstop>
-  <tabstop>dateInitialePrev</tabstop>
-  <tabstop>dateFinalePrev</tabstop>
-  <tabstop>effacerHeuresPrev</tabstop>
+  <tabstop>valHauteurSoleilMetOp</tabstop>
+  <tabstop>hauteurSatMetOp</tabstop>
+  <tabstop>valHauteurSatMetOp</tabstop>
+  <tabstop>ordreChronologiqueMetOp</tabstop>
+  <tabstop>affichage1ligneMetOp</tabstop>
+  <tabstop>affichage3lignesMetOp</tabstop>
+  <tabstop>fichierTLEMetOp</tabstop>
+  <tabstop>magnitudeMaxMetOp</tabstop>
+  <tabstop>parametrageDefautMetOp</tabstop>
+  <tabstop>calculsMetOp</tabstop>
+  <tabstop>afficherMetOp</tabstop>
   <tabstop>pasGeneration</tabstop>
   <tabstop>lieuxObservation2</tabstop>
   <tabstop>hauteurSoleilPrev</tabstop>
@@ -14247,6 +14247,97 @@ le flux vidéo</string>
   <tabstop>soleilLune</tabstop>
   <tabstop>afficherTransit</tabstop>
   <tabstop>radar</tabstop>
+  <tabstop>listeFichiersTLE</tabstop>
+  <tabstop>meteo</tabstop>
+  <tabstop>mccISS</tabstop>
+  <tabstop>meteoBasesNASA</tabstop>
+  <tabstop>typeParametres</tabstop>
+  <tabstop>typeRepere</tabstop>
+  <tabstop>parametrageDefautPrev</tabstop>
+  <tabstop>parametrageDefautIri</tabstop>
+  <tabstop>fichierTLEIri</tabstop>
+  <tabstop>statutIridium</tabstop>
+  <tabstop>pecPanneauxSolairesIri</tabstop>
+  <tabstop>creationLieu</tabstop>
+  <tabstop>creationCategorie</tabstop>
+  <tabstop>unitesKm</tabstop>
+  <tabstop>unitesMi</tabstop>
+  <tabstop>heureLegale</tabstop>
+  <tabstop>utc</tabstop>
+  <tabstop>updown</tabstop>
+  <tabstop>utcAuto</tabstop>
+  <tabstop>syst24h</tabstop>
+  <tabstop>syst12h</tabstop>
+  <tabstop>verifMAJ</tabstop>
+  <tabstop>affgrille</tabstop>
+  <tabstop>affinvew</tabstop>
+  <tabstop>affinvns</tabstop>
+  <tabstop>affcoord</tabstop>
+  <tabstop>affnomlieu</tabstop>
+  <tabstop>proportionsCarte</tabstop>
+  <tabstop>affradar</tabstop>
+  <tabstop>calJulien</tabstop>
+  <tabstop>listeMap</tabstop>
+  <tabstop>intensiteVision</tabstop>
+  <tabstop>affSAA</tabstop>
+  <tabstop>refractionPourEclipses</tabstop>
+  <tabstop>extinctionAtmospherique</tabstop>
+  <tabstop>affnomsat</tabstop>
+  <tabstop>afficone</tabstop>
+  <tabstop>affvisib</tabstop>
+  <tabstop>afftraj</tabstop>
+  <tabstop>nombreTrajectoires</tabstop>
+  <tabstop>affnotif</tabstop>
+  <tabstop>afftraceCiel</tabstop>
+  <tabstop>listeSons</tabstop>
+  <tabstop>intensiteOmbre</tabstop>
+  <tabstop>affsoleil</tabstop>
+  <tabstop>affnuit</tabstop>
+  <tabstop>affphaselune</tabstop>
+  <tabstop>rotationLune</tabstop>
+  <tabstop>afflune</tabstop>
+  <tabstop>affplanetes</tabstop>
+  <tabstop>magnitudeEtoiles</tabstop>
+  <tabstop>affetoiles</tabstop>
+  <tabstop>affconst</tabstop>
+  <tabstop>affBetaWCC</tabstop>
+  <tabstop>styleWCC</tabstop>
+  <tabstop>listeStations</tabstop>
+  <tabstop>affCerclesAcq</tabstop>
+  <tabstop>affSAA_ZOE</tabstop>
+  <tabstop>coulGMT</tabstop>
+  <tabstop>coulZOE</tabstop>
+  <tabstop>affNbOrbWCC</tabstop>
+  <tabstop>policeWCC</tabstop>
+  <tabstop>affichageMsgMAJ</tabstop>
+  <tabstop>parcourirMaj2</tabstop>
+  <tabstop>fichierAMettreAJour</tabstop>
+  <tabstop>mettreAJourTLE</tabstop>
+  <tabstop>fichierALire</tabstop>
+  <tabstop>parcourirMaj1</tabstop>
+  <tabstop>parametrageDefautEvt</tabstop>
+  <tabstop>parametrageDefautTransit</tabstop>
+  <tabstop>fichierTLETransit</tabstop>
+  <tabstop>maximise</tabstop>
+  <tabstop>play</tabstop>
+  <tabstop>dateFinalePrev</tabstop>
+  <tabstop>valManuel</tabstop>
+  <tabstop>forward</tabstop>
+  <tabstop>effacerHeuresPrev</tabstop>
+  <tabstop>tempsReel</tabstop>
+  <tabstop>liste1</tabstop>
+  <tabstop>affichageCiel</tabstop>
+  <tabstop>pasReel</tabstop>
+  <tabstop>directHelp</tabstop>
+  <tabstop>barreMenu</tabstop>
+  <tabstop>dateInitialePrev</tabstop>
+  <tabstop>pause</tabstop>
+  <tabstop>pasManuel</tabstop>
+  <tabstop>dateHeure4</tabstop>
+  <tabstop>fermerVideo</tabstop>
+  <tabstop>agrandirVideo</tabstop>
+  <tabstop>chaine</tabstop>
+  <tabstop>fluxVideo</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>
