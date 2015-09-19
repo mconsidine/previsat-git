@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 septembre 2015
+ * >    19 septembre 2015
  *
  */
 
@@ -95,6 +95,7 @@ static QString dirLocalData;
 static QString dirExe;
 static QString dirMap;
 static QString dirOut;
+static QString dirSon;
 static QString dirTle;
 static QString dirTmp;
 
@@ -106,7 +107,8 @@ static QString l2;
 // Liste de satellites
 static bool htr;
 static bool info;
-static bool notif;
+static bool notifAOS;
+static bool notifLOS;
 static bool old;
 static bool acalcAOS;
 static bool acalcDN;
@@ -125,7 +127,8 @@ static QString ctypeAOS;
 static QString nomfic;
 static QString ficgz;
 static QString nor;
-static QVector<bool> bipSat;
+static QVector<bool> bipSatAOS;
+static QVector<bool> bipSatLOS;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QString liste;
@@ -164,6 +167,11 @@ static int selec2;
 static QStringList ficMap;
 static double DEG2PXHZ = 1. / 0.45;
 static double DEG2PXVT = 1. / 0.45;
+
+// Fichiers sons
+static int selec3;
+static QStringList ficSonAOS;
+static QStringList ficSonLOS;
 
 // Soleil, Lune, etoiles, planetes
 static Soleil soleil;
@@ -289,6 +297,7 @@ void PreviSat::ChargementConfig()
     old = false;
     selec = -1;
     selec2 = 0;
+    selec3 = 0;
     deltaNbOrb = 0;
     paletteDefaut = palette();
     tim = QDateTime();
@@ -357,6 +366,7 @@ void PreviSat::ChargementConfig()
 
     dirCoord = dirLocalData + QDir::separator() + "coordonnees";
     dirMap = dirLocalData + QDir::separator() + "map";
+    dirSon = dirLocalData + QDir::separator() + "sound";
     dirOut = QDir::toNativeSeparators(dirOut);
 
     chronometre = new QTimer(this);
@@ -376,7 +386,7 @@ void PreviSat::ChargementConfig()
         }
     }
 
-    const QStringList listeDir(QStringList () << dirMap << dirOut << dirTle << dirTmp);
+    const QStringList listeDir(QStringList () << dirMap << dirOut << dirSon << dirTle << dirTmp);
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
@@ -384,8 +394,9 @@ void PreviSat::ChargementConfig()
     }
 
     // Verification de la presence des fichiers du repertoire data
-    const QStringList ficCommonData(QStringList () << "chimes.wav" << "constellations.cst" << "constlabel.cst" << "constlines.cst" <<
-                                    "etoiles.str");
+    const QStringList ficCommonData(QStringList () << QString("sound") + QDir::separator() + "aos-default.wav" <<
+                                    "constellations.cst" << "constlabel.cst" << "constlines.cst" << "etoiles.str" <<
+                                    QString("sound") + QDir::separator() + "los-default.wav");
 
     QStringListIterator it1(ficCommonData);
     while (it1.hasNext()) {
@@ -409,6 +420,9 @@ void PreviSat::ChargementConfig()
 
     // Chargement des fichiers images de cartes du monde
     InitFicMap(false);
+
+    // Chargement des fichiers sons (pour les AOS et LOS)
+    InitFicSon();
 
     // Recuperation des donnees en memoire
     // TLE par defaut (lors de la premiere utilisation de PreviSat, ces chaines de caracteres sont vides)
@@ -843,7 +857,8 @@ void PreviSat::ChargementTLE()
         nbSat = 1;
     } else {
         tles.resize(nbSat);
-        bipSat.resize(nbSat);
+        bipSatAOS.resize(nbSat);
+        bipSatLOS.resize(nbSat);
     }
 
     // Lecture du fichier TLE par defaut
@@ -875,7 +890,8 @@ void PreviSat::ChargementTLE()
             // Mise a jour de la liste de satellites
             int i = 0;
             listeTLE.clear();
-            bipSat.clear();
+            bipSatAOS.clear();
+            bipSatLOS.clear();
             QVectorIterator<TLE> it2(tles);
             while (it2.hasNext()) {
                 const TLE tle = it2.next();
@@ -883,7 +899,8 @@ void PreviSat::ChargementTLE()
                     tles.remove(i);
                 } else {
                     listeTLE.append(tles.at(i).norad());
-                    bipSat.append(false);
+                    bipSatAOS.append(false);
+                    bipSatLOS.append(false);
                     i++;
                 }
             }
@@ -911,7 +928,8 @@ void PreviSat::ChargementTLE()
             nbSat = 0;
             tles.clear();
             listeTLE.clear();
-            bipSat.clear();
+            bipSatAOS.clear();
+            bipSatLOS.clear();
             l1 = "";
             l2 = "";
             ui->liste1->clear();
@@ -1118,11 +1136,12 @@ void PreviSat::InitFicMap(const bool majAff) const
     ui->listeMap->addItem(tr("* Défaut"));
     ui->listeMap->setCurrentIndex(0);
 
-    if (di.entryList(filtres, QDir::Files).count() == 0) {
+    const QStringList listMap = di.entryList(filtres, QDir::Files);
+    if (listMap.count() == 0) {
         ui->listeMap->addItem(tr("Télécharger..."));
     } else {
 
-        foreach(QString fic, di.entryList(filtres, QDir::Files)) {
+        foreach(QString fic, listMap) {
 
             const QString file = dirMap + QDir::separator() + fic;
             ficMap.append(file);
@@ -1157,7 +1176,8 @@ void PreviSat::InitFicObs(const bool alarm) const
     if (di.exists()) {
 
         // Nombre de fichiers contenus dans le repertoire 'coordonnees'
-        if (di.entryList(QDir::Files).count() == 0) {
+        const QStringList listFic = di.entryList(QDir::Files);
+        if (listFic.count() == 0) {
             if (alarm)
                 Message::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                      "Il n'existe aucun fichier de lieux d'observation"), WARNING);
@@ -1165,7 +1185,7 @@ void PreviSat::InitFicObs(const bool alarm) const
 
             // Liste de fichiers de lieux d'observation
             ficObs.clear();
-            foreach(QString fic, di.entryList(QDir::Files)) {
+            foreach(QString fic, listFic) {
 
                 try {
                     // Verification que le fichier est un fichier de lieux d'observation
@@ -1217,6 +1237,52 @@ void PreviSat::InitFicObs(const bool alarm) const
 }
 
 /*
+ * Chargement de la liste des fichiers sons
+ */
+void PreviSat::InitFicSon() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDir di(dirSon);
+    const QStringList filtresAOS(QStringList () << "aos-*.wav");
+    const QStringList filtresLOS(QStringList () << "los-*.wav");
+
+    /* Corps de la methode */
+    ui->listeSons->clear();
+    ui->listeSons->addItem(tr("* Défaut"));
+    ui->listeSons->setCurrentIndex(0);
+
+    QStringList listSonsAOS = di.entryList(filtresAOS, QDir::Files);
+    listSonsAOS.removeAll("aos-default.wav");
+    QStringList listSonsLOS = di.entryList(filtresLOS, QDir::Files);
+    listSonsLOS.removeAll("los-default.wav");
+
+    if (listSonsAOS.count() == 0 || listSonsLOS.count() == 0) {
+        ui->listeSons->addItem(tr("Télécharger..."));
+    } else {
+
+        foreach(QString fic, listSonsAOS) {
+
+            const QString file = dirSon + QDir::separator() + fic;
+            ficSonAOS.append(file);
+            ui->listeSons->addItem(fic.at(4).toUpper() + fic.mid(5, fic.mid(4).lastIndexOf(".")-1));
+            if (settings.value("fichier/listeSon", "").toString() == file)
+                ui->listeSons->setCurrentIndex(ficSonAOS.indexOf(file)+1);
+        }
+
+        foreach(QString fic, listSonsLOS) {
+            const QString file = dirSon + QDir::separator() + fic;
+            ficSonLOS.append(file);
+        }
+        ui->listeSons->addItem(tr("Télécharger..."));
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Chargement de la liste de fichiers TLE
  */
 void PreviSat::InitFicTLE() const
@@ -1233,9 +1299,10 @@ void PreviSat::InitFicTLE() const
 
         ficTLE.clear();
         ui->listeFichiersTLE->clear();
-        if (di.entryList(filtres, QDir::Files).count() != 0) {
+        const QStringList listFic = di.entryList(filtres, QDir::Files);
+        if (listFic.count() != 0) {
 
-            foreach(QString fic, di.entryList(filtres, QDir::Files)) {
+            foreach(QString fic, listFic) {
 
                 const QString file = QDir::toNativeSeparators(dirTle + QDir::separator() + fic);
                 if (TLE::VerifieFichier(file, false) > 0) {
@@ -1308,16 +1375,33 @@ void PreviSat::AffichageCourbes() const
         if (satellites.at(j).isVisible())
             ht = true;
 
-    if (!ht) {
+    if (ht) {
         for(int j=0; j<nbSat; j++)
-            bipSat[j] = false;
+            bipSatLOS[j] = false;
+    } else {
+        for(int j=0; j<nbSat; j++)
+            bipSatAOS[j] = false;
     }
 
     // Notification sonore
-    if (notif && ui->affnotif->isChecked()) {
-        if (ui->tempsReel->isChecked())
-            QSound::play(dirCommonData + QDir::separator() + "chimes.wav");
-        notif = false;
+    if (notifAOS && ui->affnotif->isChecked()) {
+        if (ui->tempsReel->isChecked()) {
+            const QString nomSonAOS = (ui->listeSons->currentIndex() == 0) ?
+                        dirCommonData + QDir::separator() + "sound" + QDir::separator() + "aos-default.wav" :
+                        ficSonAOS.at(ui->listeSons->currentIndex()-1);
+            QSound::play(nomSonAOS);
+        }
+        notifAOS = false;
+    }
+
+    if (notifLOS && ui->affnotif->isChecked()) {
+        if (ui->tempsReel->isChecked()) {
+            const QString nomSonLOS = (ui->listeSons->currentIndex() == 0) ?
+                        dirCommonData + QDir::separator() + "sound" + QDir::separator() + "los-default.wav" :
+                        ficSonLOS.at(ui->listeSons->currentIndex()-1);
+            QSound::play(nomSonLOS);
+        }
+        notifLOS = false;
     }
 
     // Phase de la Lune
@@ -3891,9 +3975,15 @@ void PreviSat::EnchainementCalculs() const
                                                    traceCiel, mcc, refraction, satellites);
 
             for (int i=0; i<nbSat; i++) {
-                if (satellites[i].isVisible() && !bipSat[i]) {
-                    notif = true;
-                    bipSat[i] = true;
+
+                if (!satellites[i].isVisible() && !bipSatLOS[i] && bipSatAOS[i]) {
+                    notifLOS = true;
+                    bipSatLOS[i] = true;
+                }
+
+                if (satellites[i].isVisible() && !bipSatAOS[i]) {
+                    notifAOS = true;
+                    bipSatAOS[i] = true;
                 }
             }
 
@@ -4506,7 +4596,8 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 listeTLE.clear();
                 tles.clear();
                 tles.resize(nbSat);
-                bipSat.resize(nbSat);
+                bipSatAOS.resize(nbSat);
+                bipSatLOS.resize(nbSat);
 
                 int j = -1;
                 for (int i=0; i<ui->liste1->count(); i++) {
@@ -4967,7 +5058,8 @@ void PreviSat::EcritureListeRegistre() const
             tles.clear();
             listeTLE.clear();
             tles.resize(nbSat);
-            bipSat.resize(nbSat);
+            bipSatAOS.resize(nbSat);
+            bipSatLOS.resize(nbSat);
 
             if (nbSat == 0) {
                 l1 = "";
@@ -5430,8 +5522,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     /* Corps de la methode */
     const QDir di = QDir(dirTmp);
-    if (di.entryList(QDir::Files).count() > 0) {
-        foreach(QString fic, di.entryList(QDir::Files)) {
+    const QStringList listeFic = di.entryList(QDir::Files);
+    if (listeFic.count() > 0) {
+        foreach(QString fic, listeFic) {
             if (ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) {
                 continue;
             } else {
@@ -5505,6 +5598,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
+    settings.setValue("fichier/listeSon", (ui->listeSons->currentIndex() > 0) ?
+                          ficSonAOS.at(qMax(0, ui->listeSons->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", (ficgz.isEmpty()) ? QDir::toNativeSeparators(nomfic) : QDir::toNativeSeparators(ficgz));
     settings.setValue("fichier/iridium", (ficTLEIri.count() > 0) ? ficTLEIri.at(0) : "");
     settings.setValue("fichier/fichierAMettreAJour", ui->fichierAMettreAJour->text());
@@ -5904,9 +5999,13 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
                     listeTLE[isat] = listeTLE.at(0);
                     listeTLE[0] = norad;
 
-                    bool bip = bipSat.at(isat);
-                    bipSat[isat] = bipSat.at(0);
-                    bipSat[0] = bip;
+                    bool bip = bipSatAOS.at(isat);
+                    bipSatAOS[isat] = bipSatAOS.at(0);
+                    bipSatAOS[0] = bip;
+
+                    bip = bipSatLOS.at(isat);
+                    bipSatLOS[isat] = bipSatLOS.at(0);
+                    bipSatLOS[0] = bip;
 
                     const TLE tle = tles.at(isat);
                     tles[isat] = tles.at(0);
@@ -5960,9 +6059,13 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
                         listeTLE[isat] = listeTLE.at(0);
                         listeTLE[0] = norad;
 
-                        const bool bip = bipSat.at(isat);
-                        bipSat[isat] = bipSat.at(0);
-                        bipSat[0] = bip;
+                        bool bip = bipSatAOS.at(isat);
+                        bipSatAOS[isat] = bipSatAOS.at(0);
+                        bipSatAOS[0] = bip;
+
+                        bip = bipSatLOS.at(isat);
+                        bipSatLOS[isat] = bipSatLOS.at(0);
+                        bipSatLOS[0] = bip;
 
                         const TLE tle = tles.at(isat);
                         tles[isat] = tles.at(0);
@@ -6009,9 +6112,13 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
                         listeTLE[isat] = listeTLE.at(0);
                         listeTLE[0] = norad;
 
-                        const bool bip = bipSat.at(isat);
-                        bipSat[isat] = bipSat.at(0);
-                        bipSat[0] = bip;
+                        bool bip = bipSatAOS.at(isat);
+                        bipSatAOS[isat] = bipSatAOS.at(0);
+                        bipSatAOS[0] = bip;
+
+                        bip = bipSatLOS.at(isat);
+                        bipSatLOS[isat] = bipSatLOS.at(0);
+                        bipSatLOS[0] = bip;
 
                         const TLE tle = tles.at(isat);
                         tles[isat] = tles.at(0);
@@ -7378,7 +7485,8 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
         nbSat++;
         listeTLE.append("");
         tles.resize(nbSat);
-        bipSat.resize(nbSat);
+        bipSatAOS.resize(nbSat);
+        bipSatLOS.resize(nbSat);
 
         for(int i=nbSat-1; i>0; i--)
             listeTLE[i] = listeTLE.at(i-1);
@@ -7544,7 +7652,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
         tles.append(TLE(nom, l1, l2));
         listeTLE.clear();
         listeTLE.append("");
-        bipSat.resize(1);
+        bipSatAOS.resize(1);
+        bipSatLOS.resize(1);
         l1 = "";
         l2 = "";
         ui->liste1->clear();
@@ -7566,7 +7675,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
                     ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
                     listeTLE.removeAt(i);
                     tles.remove(i);
-                    bipSat.remove(i);
+                    bipSatAOS.remove(i);
+                    bipSatLOS.remove(i);
                     ui->liste2->item(ind)->setCheckState(Qt::Unchecked);
                     ui->liste3->item(ind)->setCheckState(Qt::Unchecked);
                     break;
@@ -7580,7 +7690,8 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
             listeTLE.append(ui->liste1->item(ind)->text().split("#").at(1));
             nbSat++;
             tles.resize(nbSat);
-            bipSat.resize(nbSat);
+            bipSatAOS.resize(nbSat);
+            bipSatLOS.resize(nbSat);
             ui->liste1->currentItem()->setCheckState(Qt::Checked);
             ui->liste2->item(ind)->setCheckState(Qt::Checked);
             ui->liste3->item(ind)->setCheckState(Qt::Checked);
@@ -8057,6 +8168,7 @@ void PreviSat::on_affnotif_stateChanged(int arg1)
     ModificationOption();
 }
 
+
 void PreviSat::on_calJulien_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
@@ -8317,6 +8429,37 @@ void PreviSat::on_listeMap_currentIndexChanged(int index)
     /* Retour */
     return;
 }
+
+void PreviSat::on_listeSons_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->optionConfig->isVisible() && selec3 == 0) {
+        if (index == 0) {
+            settings.setValue("fichier/listeSon", "");
+        } else {
+            if (index == ui->listeSons->count() - 1) {
+                selec3 = -1;
+
+                Telecharger * const telecharger = new Telecharger(3);
+                telecharger->setWindowModality(Qt::ApplicationModal);
+                telecharger->show();
+                ui->listeSons->setCurrentIndex(ui->listeSons->findText(settings.value("fichier/listeSon", "").toString()));
+                InitFicSon();
+                selec3 = 0;
+            } else {
+                settings.setValue("fichier/listeSon", (index == 0) ? "" : ficSonAOS.at(qMax(0, ui->listeSons->currentIndex()-1)));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 
 void PreviSat::on_affBetaWCC_toggled(bool checked)
 {

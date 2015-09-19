@@ -29,8 +29,7 @@
    </size>
   </property>
   <property name="font">
-   <font>
-   </font>
+   <font/>
   </property>
   <property name="windowTitle">
    <string>Téléchargement de fichiers</string>
@@ -50,14 +49,13 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Interroger le serveur...</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listeLieuxObs">
+   <widget class="QListWidget" name="listeFichiers">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -67,8 +65,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="mouseTracking">
      <bool>true</bool>
@@ -87,8 +84,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="value">
      <number>0</number>
@@ -110,8 +106,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Télécharger...</string>
@@ -127,8 +122,7 @@
      </rect>
     </property>
     <property name="font">
-     <font>
-     </font>
+     <font/>
     </property>
     <property name="text">
      <string>Fermer</string>
