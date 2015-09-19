@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 septembre 2015
+ * >    20 septembre 2015
  *
  */
 
@@ -120,6 +120,7 @@ static int idxfi;
 static int idxfm;
 static int idxft;
 static int nbSat;
+static int notifFlash;
 static int deltaNbOrb;
 static double azimAOS;
 static double htSat;
@@ -1384,24 +1385,35 @@ void PreviSat::AffichageCourbes() const
     }
 
     // Notification sonore
-    if (notifAOS && ui->affnotif->isChecked()) {
-        if (ui->tempsReel->isChecked()) {
+    if (ui->affnotif->isChecked() /*&& ui->tempsReel->isChecked()*/) {
+
+        if (notifAOS) {
             const QString nomSonAOS = (ui->listeSons->currentIndex() == 0) ?
                         dirCommonData + QDir::separator() + "sound" + QDir::separator() + "aos-default.wav" :
                         ficSonAOS.at(ui->listeSons->currentIndex()-1);
             QSound::play(nomSonAOS);
+            notifAOS = false;
         }
-        notifAOS = false;
-    }
 
-    if (notifLOS && ui->affnotif->isChecked()) {
-        if (ui->tempsReel->isChecked()) {
+        if (notifLOS) {
             const QString nomSonLOS = (ui->listeSons->currentIndex() == 0) ?
                         dirCommonData + QDir::separator() + "sound" + QDir::separator() + "los-default.wav" :
                         ficSonLOS.at(ui->listeSons->currentIndex()-1);
             QSound::play(nomSonLOS);
+            notifLOS = false;
         }
-        notifLOS = false;
+
+        if (notifFlash%2 == 1) {
+            const QString nomSonFlare = dirSon + QDir::separator() + "aos-flare.wav";
+            const QFile fi(nomSonFlare);
+            if (fi.exists()) {
+                QSound::play(nomSonFlare);
+            }
+            if (notifFlash == 1)
+                notifFlash = 2;
+            if (notifFlash == 3)
+                notifFlash = 0;
+        }
     }
 
     // Phase de la Lune
@@ -2774,6 +2786,25 @@ void PreviSat::AffichageDonnees()
                             const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
                                                                                satellites.at(0), soleil, observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
+
+                            double crep = 0.;
+                            if (ui->hauteurSoleilIri->currentIndex() <= 3) {
+                                crep = -6. * ui->hauteurSoleilIri->currentIndex();
+                            } else if (ui->hauteurSoleilIri->currentIndex() == 4) {
+                                crep = 90.;
+                            } else if (ui->hauteurSoleilIri->currentIndex() == 5) {
+                                crep = ui->valHauteurSoleilIri->text().toInt();
+                            } else {
+                            }
+                            crep *= DEG2RAD;
+
+                            if (notifFlash == 0 && ((magnitude <= ui->magnitudeMaxNuitIri->value() && soleil.hauteur() <= crep) ||
+                                    (magnitude <= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
+                                notifFlash = 1;
+
+                            if (notifFlash == 2 && ((magnitude >= ui->magnitudeMaxNuitIri->value() && soleil.hauteur() <= crep) ||
+                                    (magnitude >= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
+                                notifFlash = 3;
                         }
 
                         // Le satellite est un MetOp, on calcule la veritable magnitude (flash)
@@ -2781,6 +2812,23 @@ void PreviSat::AffichageDonnees()
                             const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
                                                                            satellites.at(0), soleil, observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
+
+                            double crep = 0.;
+                            if (ui->hauteurSoleilMetOp->currentIndex() <= 3) {
+                                crep = -6. * ui->hauteurSoleilMetOp->currentIndex();
+                            } else if (ui->hauteurSoleilMetOp->currentIndex() == 4) {
+                                crep = 90.;
+                            } else if (ui->hauteurSoleilMetOp->currentIndex() == 5) {
+                                crep = ui->valHauteurSoleilMetOp->text().toInt();
+                            } else {
+                            }
+                            crep *= DEG2RAD;
+
+                            if (notifFlash == 0 && (magnitude <= ui->magnitudeMaxMetOp->value() && soleil.hauteur() <= crep))
+                                notifFlash = 1;
+
+                            if (notifFlash == 2 && (magnitude >= ui->magnitudeMaxMetOp->value() && soleil.hauteur() <= crep))
+                                notifFlash = 3;
                         }
 
                         chaine = chaine.arg((magnitude >= 0.) ? "+" : "-").arg(fabs(magnitude), 0, 'f', 1);
@@ -10151,6 +10199,7 @@ void PreviSat::on_calculsPrev_clicked()
             crep = 90;
         } else if (ui->hauteurSoleilPrev->currentIndex() == 5) {
             crep = ui->valHauteurSoleilPrev->text().toInt();
+        } else {
         }
 
         // Prise en compte de l'extinction atmospherique
@@ -10422,6 +10471,7 @@ void PreviSat::on_calculsIri_clicked()
             crep = 90;
         } else if (ui->hauteurSoleilIri->currentIndex() == 5) {
             crep = ui->valHauteurSoleilIri->text().toInt();
+        } else {
         }
 
         // Prise en compte des satellites operationnels uniquement
@@ -11237,6 +11287,7 @@ void PreviSat::on_calculsMetOp_clicked()
             crep = 90;
         } else if (ui->hauteurSoleilMetOp->currentIndex() == 5) {
             crep = ui->valHauteurSoleilMetOp->text().toInt();
+        } else {
         }
 
         // Choix du tri par ordre chronologique
