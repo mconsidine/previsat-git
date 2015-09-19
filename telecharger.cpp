@@ -27,7 +27,7 @@
  * >    QMainWindow
  *
  * Description
- * >    Fenetre de telechargement des categories de lieux d'observation et de cartes du monde
+ * >    Fenetre de telechargement des categories de lieux d'observation, de cartes du monde et de fichiers sons
  *
  * Auteur
  * >    Astropedia
@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    7 aout 2015
+ * >    19 septembre 2015
  *
  */
 
@@ -62,6 +62,7 @@ static int dirHttp;
 static QString fic;
 static QString dirCoo;
 static QString dirMap;
+static QString dirSon;
 static QString dirTmp;
 static QFile ficDwn;
 static QNetworkAccessManager mng;
@@ -71,6 +72,7 @@ static QNetworkReply *rep;
 static QSettings settings("Astropedia", "previsat");
 static const QString httpDirList1 = settings.value("fichier/dirHttpList1").toString();
 static const QString httpDirList2 = settings.value("fichier/dirHttpList2").toString();
+static const QString httpDirList3 = settings.value("fichier/dirHttpList3").toString();
 
 Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
@@ -107,9 +109,10 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
 
     dirCoo = dirLocalData + QDir::separator() + "coordonnees";
     dirMap = dirLocalData + QDir::separator() + "map";
+    dirSon = dirLocalData + QDir::separator() + "sound";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
-    ui->listeLieuxObs->clear();
+    ui->listeFichiers->clear();
     ui->barreProgression->setVisible(false);
     ui->telecharger->setVisible(false);
 
@@ -124,7 +127,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
         palList.setColor(QPalette::Base, coulList);
 
         this->setPalette(paletteWin);
-        ui->listeLieuxObs->setPalette(palList);
+        ui->listeFichiers->setPalette(palList);
     }
 }
 
@@ -143,13 +146,29 @@ void Telecharger::on_interrogerServeur_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    ui->listeLieuxObs->clear();
-    const QString httpDirList = (dirHttp == 1) ? httpDirList1 : httpDirList2;
+    ui->listeFichiers->clear();
+    QString httpDirList;
+    switch (dirHttp) {
+    case 1:
+        httpDirList = httpDirList1;
+        break;
+
+    case 2:
+        httpDirList = httpDirList2;
+        break;
+
+    case 3:
+        httpDirList = httpDirList3;
+        break;
+
+    default:
+        break;
+    };
 
     /* Corps de la methode */
     try {
         const QUrl url(httpDirList + "liste");
-        fic = dirTmp + QDir::separator() + "listeMap.tmp";
+        fic = dirTmp + QDir::separator() + "liste.tmp";
         const QNetworkRequest requete(url);
         rep = mng.get(requete);
 
@@ -196,7 +215,7 @@ void Telecharger::Enregistrer() const
         QString ligne = flux.readLine();
         ligne[0] = ligne[0].toUpper();
 
-        QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeLieuxObs);
+        QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeFichiers);
         elem1->setCheckState(Qt::Unchecked);
     }
 
@@ -229,28 +248,50 @@ void Telecharger::on_telecharger_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    for(int i=0; i<ui->listeLieuxObs->count(); i++) {
+    for(int i=0; i<ui->listeFichiers->count(); i++) {
 
-        if (ui->listeLieuxObs->item(i)->checkState() == Qt::Checked) {
+        if (ui->listeFichiers->item(i)->checkState() == Qt::Checked) {
 
-            QString httpDirList, dest;
+            QString httpDirList, dest, fichier;
 
-            fic = ui->listeLieuxObs->item(i)->text();
-            if (dirHttp == 1) {
+            fic = ui->listeFichiers->item(i)->text();
+            fichier = fic;
+            switch (dirHttp) {
+            case 1:
                 httpDirList = httpDirList1;
                 dest = dirCoo + QDir::separator();
-            } else {
+                break;
+
+            case 2:
                 httpDirList = httpDirList2;
                 dest = dirMap + QDir::separator();
                 fic = fic.toLower();
+                break;
+
+            case 3:
+            {
+                httpDirList = httpDirList3;
+                dest = dirSon + QDir::separator();
+                fic = "aos-" + fichier.toLower() + ".wav";
+
+                const QUrl url(httpDirList + fic);
+                fic = fic.toLower().insert(0, dest);
+                AjoutFichier(url);
+
+                fic = "los-" + fichier.toLower() + ".wav";
+                break;
+            }
+
+            default:
+                break;
             }
 
             const QUrl url(httpDirList + fic);
             fic = fic.toLower().insert(0, dest);
 
             AjoutFichier(url);
-
         }
+
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
     }
@@ -292,7 +333,24 @@ void Telecharger::TelechargementSuivant()
         ui->barreProgression->setVisible(true);
         ui->barreProgression->setValue(0);
         QUrl url = downQueue.dequeue();
-        const QString dest = (dirHttp == 1) ? dirCoo + QDir::separator() : dirMap + QDir::separator();
+        QString dest;
+        switch (dirHttp) {
+        case 1:
+            dest = dirCoo + QDir::separator();
+            break;
+
+        case 2:
+            dest = dirMap + QDir::separator();
+            break;
+
+        case 3:
+            dest = dirSon + QDir::separator();
+            break;
+
+        default:
+            break;
+        }
+
         ficDwn.setFileName(dest + QDir::separator() + QFileInfo(url.path()).fileName());
 
         if (ficDwn.open(QIODevice::WriteOnly)) {

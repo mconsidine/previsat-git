@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juillet 2015
+ * >    19 septembre 2015
  *
  */
 
@@ -109,6 +109,11 @@ private:
      * @param alarm affichage d'un message d'avertissement
      */
     void InitFicObs(const bool alarm) const;
+
+    /**
+     * @brief InitFicSon Chargement de la liste de cartes du monde
+     */
+    void InitFicSon() const;
 
     /**
      * @brief InitFicTLE Chargement de la liste de fichiers TLE
@@ -465,6 +470,7 @@ private slots:
     void on_updown_valueChanged(int arg1);
     void on_utcAuto_stateChanged(int arg1);
     void on_listeMap_currentIndexChanged(int index);
+    void on_listeSons_currentIndexChanged(int index);
 
     void on_affBetaWCC_toggled(bool checked);
     void on_affCerclesAcq_toggled(bool checked);
@@ -574,6 +580,7 @@ private slots:
     void on_parametrageDefautMetOp_clicked();
     void on_calculsMetOp_clicked();
     void on_afficherMetOp_clicked();
+
 };
 
 #endif // PREVISAT_H
