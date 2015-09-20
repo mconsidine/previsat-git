@@ -201,9 +201,14 @@
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1050"/>
+        <location filename="afficher.cpp" line="1051"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="1057"/>
+        <source>Flash %1</source>
+        <translation>%1 flare</translation>
     </message>
 </context>
 <context>
@@ -3927,7 +3932,7 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="296"/>
-        <location filename="previsions/flashs.cpp" line="278"/>
+        <location filename="previsions/flashs.cpp" line="277"/>
         <location filename="previsions/prevision.cpp" line="305"/>
         <location filename="previsions/transitiss.cpp" line="397"/>
         <source>Temps écoulé : %1s</source>
@@ -3940,7 +3945,7 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>FRLS</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="223"/>
+        <location filename="previsions/flashs.cpp" line="222"/>
         <source>%1   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max</source>
         <translation>%1   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>

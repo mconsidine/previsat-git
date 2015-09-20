@@ -148,7 +148,7 @@ double MetOp::CalculMagnitudeMetOp(const bool extinction, const Satellite &satel
     const double angRef = AngleReflexion(satellite, soleil);
 
     /* Retour */
-    return (MagnitudeFlash(extinction, angRef, observateur, soleil, sat));
+    return (MagnitudeFlash(extinction, angRef, observateur, sat));
 }
 
 /*
@@ -189,25 +189,24 @@ int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 /*
  * Determination de la magnitude du flash
  */
-double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
-                             Satellite &satellite)
+double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     double magnitude = 99.;
+    const double angDeg = angle * RAD2DEG;
+    const QString typSat = _sts.toLower();
 
     /* Corps de la methode */
-    const double omega = RAYON_SOLAIRE / (soleil.distanceUA() * UA2KM);
-    const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
-    const double aireProjetee = fabs(satellite.dist().x()) * invDist3 *
-            (_sts.toLower().contains("metop") ? AIRE_PAN_METOP : AIRE_PAN_SKYMED);
+    magnitude = -4. + angDeg * (0.239 + angDeg * 2.2573);
+    if (typSat.contains("metop"))
+        magnitude -= 1.;
 
-    // Magnitude standard (approche empirique)
-    const double magnitudeStandard = (angle < omega) ? -5. : 3.2 * log(angle * RAD2DEG) - 0.769;
-    magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
-    if (_sts.toLower().contains("skymed"))
-        magnitude += 1.;
+    if (typSat.contains("skymed")) {
+        if (angDeg > 0.5)
+            magnitude = 3.2 * log(angDeg) - 2.450012;;
+    }
 
     // Prise en compte de l'extinction atmospherique
     if (ext)
