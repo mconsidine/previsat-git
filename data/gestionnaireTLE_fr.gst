@@ -5,8 +5,8 @@ communications@www.celestrak.com#0#geo.txt,intelsat.txt,gorizont.txt,raduga.txt,
 navigation@www.celestrak.com#0#gps-ops.txt,glo-ops.txt,galileo.txt,beidou.txt,sbas.txt,nnss.txt,musson.txt
 scientifique@www.celestrak.com#0#science.txt,geodetic.txt,engineering.txt,education.txt
 divers@www.celestrak.com#0#military.txt,radar.txt,cubesat.txt,other.txt
-commun@astropedia.free.fr#0#visible-spctrk.txt,human-spaceflight-spctrk.txt,special-interest-spctrk.txt,metop-spctrk.txt
-tous@astropedia.free.fr#0#amateur-spctrk.txt,bright-geo-spctrk.txt,geo-spctrk.txt,heo-spctrk.txt,human-spaceflight-spctrk.txt,inmarsat-spctrk.txt,intelsat-spctrk.txt,leo-spctrk.txt,meo-spctrk.txt,metop-spctrk.txt,navigation-spctrk.txt,special-interest-spctrk.txt,visible-spctrk.txt,weather-spctrk.txt
+commun@astropedia.free.fr#0#visible-spctrk.txt,human-spaceflight-spctrk.txt,special-interest-spctrk.txt,flares-spctrk.txt
+tous@astropedia.free.fr#0#amateur-spctrk.txt,bright-geo-spctrk.txt,geo-spctrk.txt,heo-spctrk.txt,human-spaceflight-spctrk.txt,inmarsat-spctrk.txt,intelsat-spctrk.txt,leo-spctrk.txt,meo-spctrk.txt,flares-spctrk.txt,navigation-spctrk.txt,special-interest-spctrk.txt,visible-spctrk.txt,weather-spctrk.txt
 geo@astropedia.free.fr#0#bright-geo-spctrk.txt,geo-spctrk.txt
 communications@astropedia.free.fr#0#inmarsat-spctrk.txt,intelsat-spctrk.txt
 navigation@astropedia.free.fr#0#navigation-spctrk.txt
