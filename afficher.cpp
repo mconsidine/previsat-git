@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    20 septembre 2015
  *
  */
 
@@ -237,7 +237,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         break;
 
     case METOP:
-        ui->ongletsResultats->setTabText(ind, tr("Flashs MetOp"));
+        ui->ongletsResultats->setTabText(ind, tr("Flashs MetOp et SkyMed"));
         break;
 
     default:
@@ -304,12 +304,16 @@ void Afficher::load()
                 ligne = it.next();
         }
 
-        if (cond.nbl() > 0) {
+        if (cond.typeCalcul() == IRIDIUM) {
             const QString fmt2 = "  %1 %2  ";
             nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 4).trimmed());
         }
 
-        if (cond.nbl() < 0)
+        if (cond.typeCalcul() == METOP) {
+            nomsat = ligne.mid(166, 10).trimmed();
+        }
+
+        if (cond.typeCalcul() == TRANSITS)
             nomsat = "ISS";
 
         if (!ligne.contains(tr("Date"))) {
