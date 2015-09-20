@@ -375,7 +375,7 @@ void Afficher::load()
             tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
                           .arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
 
-            // Dans le cas des flashs Iridium ou des transits ISS, determination de la ligne ou se produit le maximum
+            // Dans le cas des flashs ou des transits ISS, determination de la ligne ou se produit le maximum
             if (cond.nbl() != 0) {
 
                 const int debt = (cond.nbl() > 0) ? 121 : 128;
@@ -1047,7 +1047,14 @@ void Afficher::loadSky(const int j)
                 QString sdate = "";
                 if (amax) {
                     amax = false;
-                    sdate = tr("Flash Iridium");
+                    if (cond.typeCalcul() == IRIDIUM)
+                        sdate = tr("Flash Iridium");
+                    if (cond.typeCalcul() == METOP) {
+                        QString nomFlash = sat.tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
+                        nomFlash[0] = nomFlash[0].toUpper();
+                        nomFlash[3] = nomFlash[3].toUpper();
+                        sdate = tr("Flash") + " " + nomFlash;
+                    }
                 } else {
                     if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
                             dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
