@@ -304,7 +304,7 @@ void PreviSat::ChargementConfig()
     tim = QDateTime();
 
     listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" << "ISS-Live1.html"
-                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "metop.sts" << "resultat.map" << "stations.sta"
+                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "flares.sts" << "resultat.map" << "stations.sta"
                       << "taiutc.dat" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
@@ -487,9 +487,10 @@ void PreviSat::ChargementConfig()
         ui->fichierTLETransit->addItem("");
     ui->fichierTLETransit->addItem(tr("Parcourir..."));
 
-    // Fichier flashs MetOp
+    // Fichier flashs MetOp et SkyMed
     ficTLEMetOp.clear();
-    const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() + "metop-spctrk.txt").toString().
+    const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() +
+                                                "flares-spctrk.txt").toString().
             trimmed();
     const QFileInfo fim(nomFicMetOp);
     if (fim.exists()) {
@@ -1376,16 +1377,15 @@ void PreviSat::AffichageCourbes() const
         if (satellites.at(j).isVisible())
             ht = true;
 
-    if (ht) {
-        for(int j=0; j<nbSat; j++)
-            bipSatLOS[j] = false;
-    } else {
-        for(int j=0; j<nbSat; j++)
+    if (!ht) {
+        for(int j=0; j<nbSat; j++) {
             bipSatAOS[j] = false;
+            bipSatLOS[j] = false;
+        }
     }
 
     // Notification sonore
-    if (ui->affnotif->isChecked() /*&& ui->tempsReel->isChecked()*/) {
+    if (ui->affnotif->isChecked() && ui->tempsReel->isChecked()) {
 
         if (notifAOS) {
             const QString nomSonAOS = (ui->listeSons->currentIndex() == 0) ?
@@ -2807,7 +2807,7 @@ void PreviSat::AffichageDonnees()
                                 notifFlash = 3;
                         }
 
-                        // Le satellite est un MetOp, on calcule la veritable magnitude (flash)
+                        // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                         if (tabStatutMetOp.join("").contains(satellites.at(0).tle().norad())) {
                             const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
                                                                            satellites.at(0), soleil, observateurs.at(0));
@@ -11401,7 +11401,7 @@ void PreviSat::on_afficherMetOp_clicked()
     QStringList result = threadCalculs->res();
     afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
-                                      tr("Prévisions des flashs MetOp"));
+                                      tr("Prévisions des flashs MetOp et SkyMed"));
     afficherResultats->show(ficRes);
     result.clear();
 

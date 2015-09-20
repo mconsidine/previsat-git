@@ -12873,7 +12873,7 @@
               <bool>true</bool>
              </property>
              <attribute name="title">
-              <string>Flashs MetOp</string>
+              <string>Flashs MetOp et SkyMed</string>
              </attribute>
              <widget class="QComboBox" name="lieuxObservation5">
               <property name="geometry">
@@ -13026,8 +13026,8 @@
              <widget class="QComboBox" name="fichierTLEMetOp">
               <property name="geometry">
                <rect>
-                <x>420</x>
-                <y>88</y>
+                <x>430</x>
+                <y>10</y>
                 <width>151</width>
                 <height>22</height>
                </rect>
@@ -13132,8 +13132,8 @@
              <widget class="QGroupBox" name="groupBoxAffichageLignesMetOp">
               <property name="geometry">
                <rect>
-                <x>420</x>
-                <y>10</y>
+                <x>360</x>
+                <y>90</y>
                 <width>151</width>
                 <height>71</height>
                </rect>
@@ -13187,7 +13187,7 @@
               <property name="geometry">
                <rect>
                 <x>590</x>
-                <y>14</y>
+                <y>10</y>
                 <width>161</width>
                 <height>23</height>
                </rect>
@@ -13259,8 +13259,8 @@
              <widget class="QLabel" name="lbl_magnitudeMaxMetOp">
               <property name="geometry">
                <rect>
-                <x>350</x>
-                <y>128</y>
+                <x>360</x>
+                <y>50</y>
                 <width>111</width>
                 <height>16</height>
                </rect>
@@ -13307,8 +13307,8 @@
              <widget class="QDoubleSpinBox" name="magnitudeMaxMetOp">
               <property name="geometry">
                <rect>
-                <x>460</x>
-                <y>124</y>
+                <x>470</x>
+                <y>46</y>
                 <width>51</width>
                 <height>22</height>
                </rect>
@@ -13351,8 +13351,8 @@
              <widget class="QLabel" name="lbl_fichierTLEMetOp">
               <property name="geometry">
                <rect>
-                <x>350</x>
-                <y>94</y>
+                <x>360</x>
+                <y>16</y>
                 <width>71</width>
                 <height>16</height>
                </rect>
@@ -14122,25 +14122,25 @@ le flux vidéo</string>
  <tabstops>
   <tabstop>dateHeure3</tabstop>
   <tabstop>lieuxObservation1</tabstop>
-  <tabstop>backward</tabstop>
-  <tabstop>rewind</tabstop>
   <tabstop>dateInitialeMetOp</tabstop>
   <tabstop>dateFinaleMetOp</tabstop>
   <tabstop>effacerHeuresMetOp</tabstop>
   <tabstop>lieuxObservation5</tabstop>
   <tabstop>hauteurSoleilMetOp</tabstop>
-  <tabstop>modeManuel</tabstop>
   <tabstop>valHauteurSoleilMetOp</tabstop>
   <tabstop>hauteurSatMetOp</tabstop>
   <tabstop>valHauteurSatMetOp</tabstop>
   <tabstop>ordreChronologiqueMetOp</tabstop>
-  <tabstop>affichage1ligneMetOp</tabstop>
-  <tabstop>affichage3lignesMetOp</tabstop>
   <tabstop>fichierTLEMetOp</tabstop>
   <tabstop>magnitudeMaxMetOp</tabstop>
+  <tabstop>affichage1ligneMetOp</tabstop>
+  <tabstop>affichage3lignesMetOp</tabstop>
   <tabstop>parametrageDefautMetOp</tabstop>
   <tabstop>calculsMetOp</tabstop>
   <tabstop>afficherMetOp</tabstop>
+  <tabstop>rewind</tabstop>
+  <tabstop>backward</tabstop>
+  <tabstop>modeManuel</tabstop>
   <tabstop>pasGeneration</tabstop>
   <tabstop>lieuxObservation2</tabstop>
   <tabstop>hauteurSoleilPrev</tabstop>

@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Calcul des flashs MetOp
+ * >    Calcul des flashs MetOp et Cosmo-Skymed
  *
  * Auteur
  * >    Astropedia
@@ -50,8 +50,8 @@
 // Nom et numeros des panneaux
 static const QByteArray LISTE_MIR = QObject::tr("FCB").toLatin1();
 static const int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
-static const double AIRE_PAN = 3.00 * 1.00 * 1.e-6;
-
+static const double AIRE_PAN_METOP = 3.00 * 1.00 * 1.e-6;
+static const double AIRE_PAN_SKYMED = 5.70 * 1.40 * 1.e-6;
 static double tabYaw[NB_PAN] = { 0. };
 static double tabPitch[NB_PAN] = { 0. };
 
@@ -71,13 +71,13 @@ double MetOp::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 
         int k = 0;
         const QStringList list = _sts.split(" ", QString::SkipEmptyParts);
-        for(int i=2; i<8; i+=2) {
+        for(int i=2; i<list.length(); i+=2) {
             tabYaw[k] = list.at(i).toDouble() * DEG2RAD;
             tabPitch[k] = list.at(i + 1).toDouble() * DEG2RAD;
             k++;
         }
         imin = 0;
-        imax = NB_PAN;
+        imax = k;
     } else {
         imin = _pan;
         imax = _pan + 1;
@@ -105,7 +105,7 @@ double MetOp::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         if (tmp < ang) {
             ang = tmp;
             j = i;
-            _mir = LISTE_MIR[j];
+            _mir = (_sts.toLower().contains("metop")) ? LISTE_MIR[j] : 'S';
             _direction = vecteur3;
             _surf = surf;
         }
@@ -168,7 +168,7 @@ int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
     int i = 0;
 
     /* Corps de la methode */
-    QFile fichier(dirLocalData + QDir::separator() + "metop.sts");
+    QFile fichier(dirLocalData + QDir::separator() + "flares.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 
@@ -189,7 +189,8 @@ int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 /*
  * Determination de la magnitude du flash
  */
-double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil, Satellite &satellite)
+double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
+                             Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -199,39 +200,14 @@ double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observate
     /* Corps de la methode */
     const double omega = RAYON_SOLAIRE / (soleil.distanceUA() * UA2KM);
     const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
-    const double aireProjetee = fabs(satellite.dist().x()) * invDist3 * AIRE_PAN;
+    const double aireProjetee = fabs(satellite.dist().x()) * invDist3 *
+            (_sts.toLower().contains("metop") ? AIRE_PAN_METOP : AIRE_PAN_SKYMED);
 
-    if (angle < omega) {
-        // Reflexion speculaire
-
-        // Calcul de la magnitude du point du Soleil
-        const double cosAngle = cos(angle);
-        const double cosOmega = cos(omega);
-        const double cosPsi = sqrt((cosAngle * cosAngle - cosOmega * cosOmega)) / sin(omega);
-        double psiterm = 1.;
-        double intens = 0.;
-        for (int i=0; i<3; i++) {
-            intens += TAB_INT[i] * psiterm;
-            psiterm *= cosPsi;
-        }
-
-        const double magSol = MAGNITUDE_SOLEIL - 2.5 * log10(intens);
-
-        // Correction due a la surface eclairee
-        const double surface = PI * omega * omega;
-        const double magCorr = -2.5 * log10(aireProjetee / surface);
-
-        // Magnitude du flash
-        magnitude = magSol + magCorr;
-
-    } else {
-        // Reflexion non speculaire
-
-        // Magnitude standard (approche empirique)
-        const double magnitudeStandard = 3.2 * log(angle * RAD2DEG) - 2.450012;
-        magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
-    }
-
+    // Magnitude standard (approche empirique)
+    const double magnitudeStandard = (angle < omega) ? -5. : 3.2 * log(angle * RAD2DEG) - 0.769;
+    magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
+    if (_sts.toLower().contains("skymed"))
+        magnitude += 1.;
 
     // Prise en compte de l'extinction atmospherique
     if (ext)
