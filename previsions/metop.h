@@ -100,7 +100,7 @@ public:
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil, Satellite &satellite);
+    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, Satellite &satellite);
 
 
     /* Accesseurs */

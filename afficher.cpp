@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    20 septembre 2015
+ * >    21 septembre 2015
  *
  */
 
@@ -1049,11 +1049,12 @@ void Afficher::loadSky(const int j)
                     amax = false;
                     if (cond.typeCalcul() == IRIDIUM)
                         sdate = tr("Flash Iridium");
+
                     if (cond.typeCalcul() == METOP) {
                         QString nomFlash = sat.tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
                         nomFlash[0] = nomFlash[0].toUpper();
                         nomFlash[3] = nomFlash[3].toUpper();
-                        sdate = tr("Flash") + " " + nomFlash;
+                        sdate = tr("Flash %1").arg(nomFlash);
                     }
                 } else {
                     if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||

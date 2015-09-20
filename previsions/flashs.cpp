@@ -98,6 +98,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
         Satellite sat = it4.next();
         _sts = it3.next();
+        double temp = -DATE_INFINIE;
 
         // Boucle sur le tableau d'ephemerides du Soleil
         it2.toFront();
@@ -124,8 +125,6 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
             // Le satellite a une hauteur superieure a celle specifiee par l'utilisateur
             if (sat.hauteur() >= conditions.haut()) {
-
-                double temp = -DATE_INFINIE;
 
                 // Determination de la condition d'eclipse du satellite
                 sat.CalculSatelliteEclipse(soleil, conditions.refr());
@@ -566,8 +565,9 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
         // Angle de reflexion
         const double ang = AngleReflexion(conditions.typeCalcul(), sat, soleil);
+        const double ang0 = (conditions.typeCalcul() == IRIDIUM) ? conditions.ang0() : PI;
 
-        if (ang <= conditions.ang0()) {
+        if (ang <= ang0) {
 
             const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
 
@@ -1001,7 +1001,7 @@ double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const d
 
     case METOP:
 
-        magnitude = MetOp::MagnitudeFlash(ext, angle, observateur, soleil, satellite);
+        magnitude = MetOp::MagnitudeFlash(ext, angle, observateur, satellite);
         break;
 
     case PREVISION:
