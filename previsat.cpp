@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 septembre 2015
+ * >    22 septembre 2015
  *
  */
 
@@ -1404,7 +1404,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         if (notifFlash%2 == 1) {
-            const QString nomSonFlare = dirSon + QDir::separator() + "aos-flare.wav";
+            const QString nomSonFlare = dirCommonData + QDir::separator() + "sound" + QDir::separator() + "flare.wav";
             const QFile fi(nomSonFlare);
             if (fi.exists()) {
                 QSound::play(nomSonFlare);
@@ -4022,16 +4022,18 @@ void PreviSat::EnchainementCalculs() const
             Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
                                                    traceCiel, mcc, refraction, satellites);
 
-            for (int i=0; i<nbSat; i++) {
+            if (ui->tempsReel->isChecked()) {
+                for (int i=0; i<nbSat; i++) {
 
-                if (!satellites[i].isVisible() && !bipSatLOS[i] && bipSatAOS[i]) {
-                    notifLOS = true;
-                    bipSatLOS[i] = true;
-                }
+                    if (!satellites[i].isVisible() && !bipSatLOS[i] && bipSatAOS[i]) {
+                        notifLOS = true;
+                        bipSatLOS[i] = true;
+                    }
 
-                if (satellites[i].isVisible() && !bipSatAOS[i]) {
-                    notifAOS = true;
-                    bipSatAOS[i] = true;
+                    if (satellites[i].isVisible() && !bipSatAOS[i]) {
+                        notifAOS = true;
+                        bipSatAOS[i] = true;
+                    }
                 }
             }
 
@@ -4430,16 +4432,17 @@ void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr
     const QString fic = compteRendu.at(compteRendu.count()-5);
 
     ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
-    QString msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+    QString msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
     if (nbmaj < nbold && nbmaj > 0) {
+
+        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
+        msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+
         for(int i=0; i<compteRendu.count()-5; i++) {
             const QString nomsat = compteRendu.at(i).split("#").at(0);
             const QString norad = compteRendu.at(i).split("#").at(1);
             ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
         }
-
-        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
     }
 
     if (nbmaj == nbold && nbold != 0) {
@@ -7947,6 +7950,8 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         htSat = 0.;
         acalcAOS = true;
         acalcDN = true;
+        notifAOS = false;
+        notifLOS = false;
     }
 
     /* Retour */
