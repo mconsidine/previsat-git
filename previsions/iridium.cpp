@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    25 septembre 2015
  *
  */
 
@@ -203,21 +203,38 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     return;
 }
 
-double Iridium::CalculMagnitudeIridium(const bool extinction, const Satellite &satellite, const Soleil &soleil,
-                                       const Observateur &observateur)
+double Iridium::CalculMagnitudeIridium(const bool extinction, const bool ope, const QStringList &tabSts, const Satellite &satellite,
+                                       const Soleil &soleil, const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _pan = -1;
-    _psol = true;
+    bool acalc = false;
+    double magnitude = 99.;
     Satellite sat = satellite;
 
     /* Corps de la methode */
-    const double angRef = AngleReflexion(satellite, soleil);
+    QStringListIterator it(tabSts);
+    while (it.hasNext()) {
+        const QString ligne = it.next();
+        if (ligne.contains(sat.tle().norad()) && !ligne.toLower().contains("t")) {
+            acalc = true;
+            if (ligne.contains("?") && ope)
+                acalc = false;
+            it.toBack();
+        }
+    }
+
+    if (acalc) {
+        _pan = -1;
+        _psol = true;
+
+        const double angRef = AngleReflexion(satellite, soleil);
+        magnitude = MagnitudeFlash(extinction, angRef, observateur, soleil, sat);
+    }
 
     /* Retour */
-    return (MagnitudeFlash(extinction, angRef, observateur, soleil, sat));
+    return (magnitude);
 }
 
 /*

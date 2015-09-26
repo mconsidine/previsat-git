@@ -77,13 +77,14 @@ public:
     /**
      * @brief CalculMagnitudeMetOp Calcul de la magnitude du flash MetOp
      * @param extinction Prise en compte de l'extinction atmospherique
+     * @param tabSts tableau de statut des satellites MetOp
      * @param satellite satellite
      * @param soleil Soleil
      * @param observateur observateur
      * @return magnitude du flash
      */
-    static double CalculMagnitudeMetOp(const bool extinction, const Satellite &satellite, const Soleil &soleil,
-                                         const Observateur &observateur);
+    static double CalculMagnitudeMetOp(const bool extinction, const QStringList &tabSts, const Satellite &satellite,
+                                       const Soleil &soleil, const Observateur &observateur);
 
     /**
      * @brief LectureStatutMetOp Lecture du fichier de statut des satellites MetOp

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 septembre 2015
+ * >    25 septembre 2015
  *
  */
 
@@ -2784,7 +2784,9 @@ void PreviSat::AffichageDonnees()
                         // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
                         if (tabStatutIridium.join("").contains(satellites.at(0).tle().norad())) {
                             const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
-                                                                               satellites.at(0), soleil, observateurs.at(0));
+                                                                               ui->satellitesOperationnelsIri->isChecked(),
+                                                                               tabStatutIridium, satellites.at(0), soleil,
+                                                                               observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
 
                             double crep = 0.;
@@ -2809,7 +2811,7 @@ void PreviSat::AffichageDonnees()
 
                         // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                         if (tabStatutMetOp.join("").contains(satellites.at(0).tle().norad())) {
-                            const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
+                            const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(), tabStatutMetOp,
                                                                            satellites.at(0), soleil, observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
 
@@ -4637,6 +4639,8 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
         // Ouverture du fichier TLE
         AfficherListeSatellites(nomfic, listeTLE);
+        notifLOS = false;
+        notifFlash = false;
 
         // Mise a jour de la liste de satellites selectionnes
         if (nbSat > 0) {
@@ -6720,7 +6724,7 @@ void PreviSat::on_meteo_clicked()
 
     /* Corps de la methode */
     afficherMeteo = new QMainWindow;
-    afficherMeteo->resize(720, 540);
+    afficherMeteo->resize(1000, 750);
 
     const int xmax = QApplication::desktop()->availableGeometry().width();
     const int ymax = QApplication::desktop()->availableGeometry().height() - 40;
@@ -7952,6 +7956,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         acalcDN = true;
         notifAOS = false;
         notifLOS = false;
+        notifFlash = false;
     }
 
     /* Retour */
@@ -9287,6 +9292,7 @@ void PreviSat::on_supprLieu_clicked()
         nomslieux.remove(nomslieux.length() - 1, 1);
         settings.setValue("observateur/lieu", nomslieux);
 
+        acalcAOS = true;
         AffichageLieuObs();
         EnchainementCalculs();
         AffichageDonnees();
