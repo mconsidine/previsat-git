@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    26 septembre 2015
  *
  */
 
@@ -76,13 +76,15 @@ public:
     /**
      * @brief CalculMagnitudeIridium Calcul de la magnitude du flash Iridium
      * @param extinction Prise en compte de l'extinction atmospherique
+     * @param ope Prise en compte des satellites operationnels uniquement
+     * @param tabSts tableau de statut des satellites Iridium
      * @param satellite satellite
      * @param soleil Soleil
      * @param observateur observateur
      * @return magnitude du flash
      */
-    static double CalculMagnitudeIridium(const bool extinction, const Satellite &satellite, const Soleil &soleil,
-                                         const Observateur &observateur);
+    static double CalculMagnitudeIridium(const bool extinction, const bool ope, const QStringList &tabSts, const Satellite &satellite,
+                                         const Soleil &soleil, const Observateur &observateur);
 
     /**
      * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium

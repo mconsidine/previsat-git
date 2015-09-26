@@ -135,20 +135,33 @@ void MetOp::CalculFlashsMetOp(const Conditions &conditions, Observateur &observa
     return;
 }
 
-double MetOp::CalculMagnitudeMetOp(const bool extinction, const Satellite &satellite, const Soleil &soleil,
+double MetOp::CalculMagnitudeMetOp(const bool extinction, const QStringList &tabSts, const Satellite &satellite, const Soleil &soleil,
                                    const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
+    double magnitude = 99.;
     _pan = -1;
     Satellite sat = satellite;
 
     /* Corps de la methode */
-    const double angRef = AngleReflexion(satellite, soleil);
+    QStringListIterator it(tabSts);
+    while (it.hasNext()) {
+        const QString ligne = it.next();
+        if (ligne.contains(sat.tle().norad())) {
+            _sts = ligne;
+            it.toBack();
+        }
+    }
+
+    if (!_sts.isEmpty()) {
+        const double angRef = AngleReflexion(satellite, soleil);
+        magnitude = MagnitudeFlash(extinction, angRef, observateur, sat);
+    }
 
     /* Retour */
-    return (MagnitudeFlash(extinction, angRef, observateur, sat));
+    return (magnitude);
 }
 
 /*
