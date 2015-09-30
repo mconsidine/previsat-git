@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    26 septembre 2015
+ * >    30 septembre 2015
  *
  */
 
@@ -90,9 +90,8 @@ public:
      * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium
      * @param ope prise en compte des satellites operationnels
      * @param tabStsIri tableau de statut des satellites Iridium
-     * @return nombre de satellites Iridium contenus dans le fichier de statut
      */
-    static int LectureStatutIridium(const char ope, QStringList &tabStsIri);
+    static void LectureStatutIridium(const char ope, QStringList &tabStsIri);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash

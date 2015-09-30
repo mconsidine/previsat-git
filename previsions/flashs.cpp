@@ -735,8 +735,10 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
     case METOP:
 
-        // Nom du satellite MetOp
-        num = _sts.mid(0, 7) + "   ";
+        // Nom du satellite MetOp ou SkyMed
+        num = _sts.split(" ", QString::SkipEmptyParts).at(0);
+        while (num.length() < 10)
+            num += "   ";
         break;
 
     case PREVISION:

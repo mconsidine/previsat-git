@@ -1,7 +1,7 @@
-# Nom Norad yaw1 pitch1 yaw2 pitch2 yaw3 pitch3
-MetOp-A 29499 315 -47.6 270 -56.5 225 -47.6
-MetOp-B 38771 315 -47.6 270 -56.5 225 -47.6
-SkyMed1 31598 90 -55.935
-SkyMed2 32376 90 -55.935
-SkyMed3 33412 90 -55.935
-SkyMed4 37216 90 -55.935
+# Nom      Norad yaw1 pitch1 yaw2 pitch2 yaw3 pitch3
+MetOp-A    29499 315 -47.6 270 -56.5 225 -47.6
+MetOp-B    38771 315 -47.6 270 -56.5 225 -47.6
+SkyMed1    31598 90 -55.935
+SkyMed2    32376 90 -55.935
+SkyMed3    33412 90 -55.935
+SkyMed4    37216 90 -55.935

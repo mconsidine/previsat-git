@@ -167,7 +167,7 @@ double MetOp::CalculMagnitudeMetOp(const bool extinction, const QStringList &tab
 /*
  * Lecture du fichier de statut des satellites MetOp
  */
-int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
+void MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 {
     /* Declarations des variables locales */
 
@@ -178,8 +178,6 @@ int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
-    int i = 0;
-
     /* Corps de la methode */
     QFile fichier(dirLocalData + QDir::separator() + "flares.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -187,16 +185,13 @@ int MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 
     while (!flux.atEnd()) {
         const QString ligne = flux.readLine();
-        if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-
+        if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#'))
             tabStsMetOp.append(ligne);
-            i++;
-        }
     }
     fichier.close();
 
     /* Retour */
-    return (i);
+    return;
 }
 
 /*
