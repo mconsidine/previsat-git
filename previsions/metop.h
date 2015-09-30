@@ -67,7 +67,7 @@ public:
     static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
 
     /**
-     * @brief CalculFlashsMetOp Calcul des flashs MetOp
+     * @brief CalculFlashsMetOp Calcul des flashs MetOp ou SkyMed
      * @param conditions conditions d'observation
      * @param observateur observateur
      * @param result tableau de resultats
@@ -75,9 +75,9 @@ public:
     static void CalculFlashsMetOp(const Conditions &conditions, Observateur &observateur, QStringList &result);
 
     /**
-     * @brief CalculMagnitudeMetOp Calcul de la magnitude du flash MetOp
+     * @brief CalculMagnitudeMetOp Calcul de la magnitude du flash MetOp ou SkyMed
      * @param extinction Prise en compte de l'extinction atmospherique
-     * @param tabSts tableau de statut des satellites MetOp
+     * @param tabSts tableau de statut des satellites MetOp ou SkyMed
      * @param satellite satellite
      * @param soleil Soleil
      * @param observateur observateur
@@ -87,11 +87,10 @@ public:
                                        const Soleil &soleil, const Observateur &observateur);
 
     /**
-     * @brief LectureStatutMetOp Lecture du fichier de statut des satellites MetOp
-     * @param tabStsMetOp tableau de statut des satellites MetOp
-     * @return nombre de satellites MetOp
+     * @brief LectureStatutMetOp Lecture du fichier de statut des satellites MetOp ou SkyMed
+     * @param tabStsMetOp tableau de statut des satellites MetOp ou SkyMed
      */
-    static int LectureStatutMetOp(QStringList &tabStsMetOp);
+    static void LectureStatutMetOp(QStringList &tabStsMetOp);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash

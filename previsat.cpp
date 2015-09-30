@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 septembre 2015
+ * >    30 septembre 2015
  *
  */
 
@@ -10532,8 +10532,9 @@ void PreviSat::on_calculsIri_clicked()
 
         // Lecture du fichier de statut des satellites Iridium
         QStringList tabStsIri;
-        const int nb = Iridium::LectureStatutIridium(ope, tabStsIri);
-        if (nb == 0)
+        tabStsIri.clear();
+        Iridium::LectureStatutIridium(ope, tabStsIri);
+        if (tabStsIri.isEmpty())
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
                                        "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"),
                                     WARNING);
@@ -11336,10 +11337,11 @@ void PreviSat::on_calculsMetOp_clicked()
 
         // Lecture du fichier de statut des satellites MetOp
         QStringList tabStsMetOp;
-        const int nb = MetOp::LectureStatutMetOp(tabStsMetOp);
-        if (nb == 0)
+        tabStsMetOp.clear();
+        MetOp::LectureStatutMetOp(tabStsMetOp);
+        if (tabStsMetOp.isEmpty())
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite MetOp susceptible de produire des flashs dans le fichier de statut"),
+                                       "Aucun satellite MetOp ou SkyMed susceptible de produire des flashs dans le fichier de statut"),
                                     WARNING);
 
         // Creation de la liste de satellites
@@ -11347,7 +11349,7 @@ void PreviSat::on_calculsMetOp_clicked()
         QStringListIterator it1(tabStsMetOp);
         while (it1.hasNext()) {
             const QString item = it1.next();
-            listeSatellites.append(item.mid(8, 5));
+            listeSatellites.append(item.split(" ", QString::SkipEmptyParts).at(1));
         }
 
         // Verification du fichier TLE
@@ -11377,10 +11379,10 @@ void PreviSat::on_calculsMetOp_clicked()
             }
         }
 
-        // Il n'y a aucun satellite MetOp dans le fichier TLE
+        // Il n'y a aucun satellite MetOp ou SkyMed dans le fichier TLE
         if (listeSatellites.size() == 0)
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite MetOp n'a été trouvé dans le fichier TLE"), WARNING);
+                                       "Aucun satellite MetOp ou SkyMed n'a été trouvé dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsMetOp->setEnabled(false);

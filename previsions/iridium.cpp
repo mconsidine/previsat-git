@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    25 septembre 2015
+ * >    30 septembre 2015
  *
  */
 
@@ -240,7 +240,7 @@ double Iridium::CalculMagnitudeIridium(const bool extinction, const bool ope, co
 /*
  * Lecture du fichier de statut des satellites Iridium
  */
-int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
+void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 {
     /* Declarations des variables locales */
 
@@ -251,8 +251,6 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
-    int i = 0;
-
     /* Corps de la methode */
     QFile fichier(dirLocalData + QDir::separator() + "iridium.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -262,16 +260,16 @@ int Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
         const QString ligne = flux.readLine();
         tabStsIri.append(ligne);
         if (ligne.size() == 9) {
-            i++;
+            tabStsIri.append(ligne);
         } else {
             if (ligne.at(10) == '?' && ope == 'n')
-                i++;
+                tabStsIri.append(ligne);
         }
     }
     fichier.close();
 
     /* Retour */
-    return (i);
+    return;
 }
 
 /*
