@@ -1212,7 +1212,7 @@ void PreviSat::InitFicObs(const bool alarm) const
                     }
 
                     ficObs.append(file);
-                    if (fic == "aapreferes") {
+                    if (fic == "preferes") {
                         ui->fichiersObs->addItem(tr("Mes Préférés"));
                         ui->ajdfic->addItem(tr("Mes Préférés"));
                     } else {
@@ -1223,6 +1223,19 @@ void PreviSat::InitFicObs(const bool alarm) const
                 } catch (PreviSatException &e) {
                 }
             }
+
+            const QString ficPref = dirCoord + QDir::separator() + "preferes";
+            if (ficObs.contains(ficPref)) {
+
+                const int indObs = ficObs.indexOf(ficPref);
+                ficObs.insert(0, ficPref);
+                ficObs.removeAt(indObs + 1);
+
+                ui->fichiersObs->insertItem(0, ui->fichiersObs->takeItem(indObs));
+                ui->ajdfic->insertItem(0, ui->ajdfic->itemText(indObs));
+                ui->ajdfic->removeItem(indObs + 1);
+            }
+
             if (ficObs.count() == 0)
                 if (alarm)
                     Message::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
@@ -8874,7 +8887,7 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
         ui->actionRenommerLieu->setVisible(true);
         ui->actionModifier_coordonnees->setVisible(true);
         ui->actionSupprimerLieu->setVisible(true);
-        const QFileInfo fi(dirCoord + QDir::separator() + "aapreferes");
+        const QFileInfo fi(dirCoord + QDir::separator() + "preferes");
         ui->actionAjouter_Mes_Preferes->setVisible(fi.exists() ? ui->fichiersObs->currentRow() > 0 :
                                                                  ui->fichiersObs->currentRow() >= 0);
     }
@@ -8934,9 +8947,9 @@ void PreviSat::on_actionAjouter_Mes_Preferes_triggered()
 
     /* Initialisations */
     QString fic = ficObs.at(0);
-    if (!fic.contains("aapreferes")) {
-        // Le fichier aapreferes n'existe pas, on le cree
-        ficObs.insert(0, dirCoord + QDir::separator() + "aapreferes");
+    if (!fic.contains("preferes")) {
+        // Le fichier preferes n'existe pas, on le cree
+        ficObs.insert(0, dirCoord + QDir::separator() + "preferes");
         fic = ficObs.at(0);
 
         QFile fi(fic);
@@ -9022,7 +9035,7 @@ void PreviSat::on_actionModifier_coordonnees_triggered()
             arg((la >= 0.) ? "+" : "-").arg(fabs(la), 12, 'f', 9, QChar('0')).arg(atd, 4, 10, QChar('0')).arg(lieu.at(0)).trimmed();
 
     const QString fic = (ui->fichiersObs->currentRow() == 0) ?
-                dirCoord + QDir::separator() + "aapreferes" :
+                dirCoord + QDir::separator() + "preferes" :
                 dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text();
 
     QFile sr(fic);
@@ -9111,7 +9124,7 @@ void PreviSat::on_validerObs_clicked()
                     .arg(nomlieu) << endl;
             fi.close();
 
-            on_fichiersObs_currentRowChanged(0);
+            ui->fichiersObs->setCurrentRow(0);
             AffichageLieuObs();
             ui->nouveauLieu->setVisible(false);
             selec = -1;
@@ -9142,7 +9155,7 @@ void PreviSat::on_actionRenommerLieu_triggered()
     if (ok && !nvNomLieu.trimmed().isEmpty()) {
 
         const QString fic = (ui->fichiersObs->currentRow() == 0) ?
-                    dirCoord + QDir::separator() + "aapreferes" :
+                    dirCoord + QDir::separator() + "preferes" :
                     dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text();
 
         QFile sr(fic);
