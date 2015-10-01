@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 septembre 2015
+ * >    1er octobre 2015
  *
  */
 
@@ -5292,7 +5292,7 @@ void PreviSat::GestionTempsReel()
         } else {
             pas1 = ui->pasManuel->currentText().toDouble();
         }
-        pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 1. : pas1 * NB_SEC_PAR_JOUR;
+        pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 0. : pas1 * NB_SEC_PAR_JOUR;
     }
 
     // Affichage du jour julien
@@ -5328,7 +5328,7 @@ void PreviSat::GestionTempsReel()
         AffichageCourbes();
     }
 
-    if (ui->modeManuel->isChecked() && fabs(fabs((double) tim.secsTo(QDateTime::currentDateTimeUtc()) - pas2)) > -EPSDBL100) {
+    if (ui->modeManuel->isChecked() && fabs((double) tim.secsTo(QDateTime::currentDateTimeUtc())) >=  pas2 - EPSDBL100) {
 
         tim = QDateTime::currentDateTimeUtc();
         info = true;
