@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    19 septembre 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -57,6 +57,7 @@ class Telecharger : public QMainWindow
 
 public:
 
+    /* Constructeurs */
     /**
      * @brief Telecharger Constructeur pour la fenetre de telechargement
      * @param idirHttp indice du repertoire cible
@@ -64,6 +65,11 @@ public:
      */
     explicit Telecharger(const int idirHttp, QWidget *fenetreParent = 0);
 
+    /* Constantes publiques */
+
+    /* Variables publiques */
+
+    /* Methodes publiques */
     /**
      * @brief AjoutFichier Ajout d'un fichier dans la liste de fichiers a telecharger
      * @param url adresse du fichier
@@ -72,12 +78,25 @@ public:
 
     ~Telecharger();
 
+    /* Accesseurs */
+
+
 signals:
 
     /**
      * @brief TelechargementFini Signal du telechargement fini
      */
     void TelechargementFini();
+
+
+protected:
+
+    /* Constantes protegees */
+
+    /* Variables protegees */
+
+    /* Methodes protegees */
+
 
 private slots:
 
@@ -130,7 +149,13 @@ private slots:
 
 private:
 
+    /* Constantes privees */
+
+    /* Variables privees */
     Ui::Telecharger *ui;
+
+    /* Methodes privees */
+
 
 };
 

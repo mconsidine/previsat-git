@@ -468,7 +468,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="informations.ui" line="462"/>
-        <location filename="informations.cpp" line="280"/>
+        <location filename="informations.cpp" line="268"/>
         <source>SGP4 (NE)</source>
         <translation></translation>
     </message>
@@ -533,71 +533,71 @@ PreviSat is free !</translation>
         <translation>Decay date :</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="280"/>
+        <location filename="informations.cpp" line="268"/>
         <source>SGP4 (DS)</source>
         <translation>SGP4 (DS)</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="281"/>
+        <location filename="informations.cpp" line="269"/>
         <source>Non applicable</source>
         <translation>Not applicable</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="288"/>
+        <location filename="informations.cpp" line="276"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="295"/>
+        <location filename="informations.cpp" line="283"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="300"/>
+        <location filename="informations.cpp" line="288"/>
         <source>Sphérique. R=</source>
         <translation>Spherical. R=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="303"/>
+        <location filename="informations.cpp" line="291"/>
         <source>Cylindrique. L=</source>
         <translation>Cylindrical. L=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="304"/>
+        <location filename="informations.cpp" line="292"/>
         <source>, R=</source>
         <translation>, R=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="307"/>
+        <location filename="informations.cpp" line="295"/>
         <source>Boîte.</source>
         <translation>Box.</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="312"/>
+        <location filename="informations.cpp" line="300"/>
         <source>Inconnues</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="328"/>
+        <location filename="informations.cpp" line="316"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="328"/>
+        <location filename="informations.cpp" line="316"/>
         <source>nmi</source>
         <translation>nmi</translation>
     </message>
     <message>
+        <location filename="informations.cpp" line="318"/>
         <location filename="informations.cpp" line="330"/>
-        <location filename="informations.cpp" line="342"/>
-        <location filename="informations.cpp" line="390"/>
+        <location filename="informations.cpp" line="378"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="350"/>
-        <location filename="informations.cpp" line="356"/>
-        <location filename="informations.cpp" line="386"/>
+        <location filename="informations.cpp" line="338"/>
+        <location filename="informations.cpp" line="344"/>
+        <location filename="informations.cpp" line="374"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>
