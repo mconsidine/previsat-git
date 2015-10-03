@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 septembre 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -432,6 +432,8 @@ private slots:
     void on_rewind_clicked();
     void on_forward_clicked();
     void on_backward_clicked();
+
+    void on_rechercheInfoSat_clicked();
 
     // Gestion des options d'affichage
     void on_affsoleil_stateChanged(int arg1);

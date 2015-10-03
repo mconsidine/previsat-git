@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er octobre 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -82,6 +82,7 @@
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
+#include "informations.h"
 #include "previsat.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
@@ -242,6 +243,7 @@ static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
 static QMainWindow *afficherVideo;
 static QMainWindow *afficherMeteo;
+static Informations *informations;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
@@ -3349,14 +3351,16 @@ void PreviSat::AffichageElementsOsculateurs() const
     // Apogee/perigee/periode orbitale
     chaine2 = "%2 %1 (%3 %1)";
     chaine2 = chaine2.arg(unite1);
-    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().apogee() :
-                                         satellites.at(0).elements().apogee() * MILE_PAR_KM;
-    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    const double ap = satellites.at(0).elements().apogee() - RAYON_TERRESTRE;
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().apogee() : satellites.at(0).elements().apogee() * MILE_PAR_KM;
+    double xval2 = (ui->unitesKm->isChecked()) ? ap : ap * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval2, 0, 'f', 1);
     ui->apogee->setText(chaine);
 
-    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().perigee() :
-                                         satellites.at(0).elements().perigee() * MILE_PAR_KM;
-    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval - RAYON_TERRESTRE, 0, 'f', 1);
+    const double per = satellites.at(0).elements().perigee() - RAYON_TERRESTRE;
+    xval = (ui->unitesKm->isChecked()) ? satellites.at(0).elements().perigee() : satellites.at(0).elements().perigee() * MILE_PAR_KM;
+    xval2 = (ui->unitesKm->isChecked()) ? per : per * MILE_PAR_KM;
+    chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval2, 0, 'f', 1);
     ui->perigee->setText(chaine);
 
     ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
@@ -3545,7 +3549,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                     const int indx1 = magn.indexOf(norad);
                     if (indx1 >= 0) {
                         const int indx2 = magn.indexOf("\n", indx1) - indx1;
-                        nomsat = magn.mid(indx1 + 60, indx2 - 60).trimmed();
+                        nomsat = magn.mid(indx1 + 117, indx2 - 117).trimmed();
                     } else {
                         nomsat = norad;
                     }
@@ -8111,6 +8115,23 @@ void PreviSat::on_backward_clicked()
     ui->rewind->setEnabled(enb);
     ui->forward->setEnabled(enb);
     ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
+}
+
+
+
+void PreviSat::on_rechercheInfoSat_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    informations = new Informations(satellites.at(0).tle().norad());
+    informations->setWindowModality(Qt::ApplicationModal);
+    informations->show();
 
     /* Retour */
     return;

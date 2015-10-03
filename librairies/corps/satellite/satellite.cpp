@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 septembre 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -689,6 +689,8 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
     }
 
     for (int isat=0; isat<nb; isat++) {
+
+        satellites[isat]._cospar = "";
         satellites[isat]._t1 = 0.;
         satellites[isat]._t2 = 0.;
         satellites[isat]._t3 = 0.;
@@ -696,6 +698,11 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         satellites[isat]._methMagnitude = ' ';
         satellites[isat]._section = 0.;
         satellites[isat]._dateLancement = "";
+        satellites[isat]._dateReentree = "";
+        satellites[isat]._periode = "";
+        satellites[isat]._perigee = "";
+        satellites[isat]._apogee = "";
+        satellites[isat]._inclinaison = "";
         satellites[isat]._categorieOrbite = "";
         satellites[isat]._pays = "";
     }
@@ -716,15 +723,22 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
             for(int isat=0; isat<nb; isat++) {
 
                 if (listeSatellites.at(isat) == norad) {
-                    satellites[isat]._t1 = ligne.mid(6, 5).toDouble();
-                    satellites[isat]._t2 = ligne.mid(12, 4).toDouble();
-                    satellites[isat]._t3 = ligne.mid(17, 4).toDouble();
-                    satellites[isat]._magnitudeStandard = ligne.mid(22, 4).toDouble();
-                    satellites[isat]._methMagnitude = ligne.at(27).toLatin1();
-                    satellites[isat]._section = ligne.mid(29, 6).toDouble();
-                    satellites[isat]._dateLancement = ligne.mid(36, 10);
-                    satellites[isat]._categorieOrbite = ligne.mid(47, 6).trimmed();
-                    satellites[isat]._pays = ligne.mid(54, 5).trimmed();
+
+                    satellites[isat]._cospar = ligne.mid(6, 11);
+                    satellites[isat]._t1 = ligne.mid(18, 5).toDouble();
+                    satellites[isat]._t2 = ligne.mid(24, 4).toDouble();
+                    satellites[isat]._t3 = ligne.mid(29, 4).toDouble();
+                    satellites[isat]._magnitudeStandard = ligne.mid(34, 4).toDouble();
+                    satellites[isat]._methMagnitude = ligne.at(39).toLatin1();
+                    satellites[isat]._section = ligne.mid(41, 6).toDouble();
+                    satellites[isat]._dateLancement = ligne.mid(48, 10);
+                    satellites[isat]._dateReentree = ligne.mid(59, 10);
+                    satellites[isat]._periode = ligne.mid(70, 10);
+                    satellites[isat]._perigee = ligne.mid(81, 7);
+                    satellites[isat]._apogee = ligne.mid(89, 7);
+                    satellites[isat]._inclinaison = ligne.mid(97, 6);
+                    satellites[isat]._categorieOrbite = ligne.mid(104, 6).trimmed();
+                    satellites[isat]._pays = ligne.mid(111, 5).trimmed();
                     j++;
                     break;
                 }
