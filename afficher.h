@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -58,22 +58,83 @@ class Afficher : public QMainWindow
     Q_OBJECT
 
 public:
+
+    /* Constructeurs */
     explicit Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, QWidget *fenetreParent = 0);
-    void show(const QString &fic);
     ~Afficher();
 
+    /* Constantes publiques */
+
+    /* Variables publiques */
+
+    /* Methodes publiques */
+    /**
+     * @brief show Affichage des resultats
+     * @param fic fichier resultat
+     */
+    void show(const QString &fic);
+
+    /* Accesseurs */
+
+
+protected:
+
+    /* Constantes protegees */
+
+    /* Variables protegees */
+
+    /* Methodes protegees */
+
+
 private:
+
+    /* Constantes privees */
+
+    /* Variables privees */
     Ui::Afficher *ui;
     QString _fichier;
+
+    /* Methodes privees */
+    /**
+     * @brief load Chargement des resultats
+     */
     void load();
+
+    /**
+     * @brief loadMap Chargement de la map
+     * @param i indice du tableau de resultats
+     */
     void loadMap(const int i);
+
+    /**
+     * @brief loadSky Chargement de la carte du ciel
+     * @param j indice du tableau de resultats
+     */
     void loadSky(const int j);
 
 private slots:
+
     void closeEvent(QCloseEvent *evt);
     void resizeEvent(QResizeEvent * evt);
+
+    /**
+     * @brief on_actionEnregistrer_triggered Enregistrement du fichier resultat
+     */
     void on_actionEnregistrer_triggered();
+
+    /**
+     * @brief on_listePrevisions_currentCellChanged Selection d'un passage
+     * @param currentRow indice du tableau
+     * @param currentColumn (non utilise)
+     * @param previousRow (non utilise)
+     * @param previousColumn (non utilise)
+     */
     void on_listePrevisions_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+
+    /**
+     * @brief on_ongletsResultats_currentChanged Selection de l'onglet des resultats
+     * @param index (non utilise)
+     */
     void on_ongletsResultats_currentChanged(int index);
 };
 

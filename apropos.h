@@ -33,7 +33,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -54,14 +54,43 @@ class Apropos : public QMainWindow
     Q_OBJECT
 
 public:
+
+    /* Constructeurs */
     explicit Apropos(QWidget *fenetreParent = 0);
     ~Apropos();
+
+    /* Constantes publiques */
+
+    /* Variables publiques */
+
+    /* Methodes publiques */
+
+    /* Accesseurs */
+
+
+protected:
+
+    /* Constantes protegees */
+
+    /* Variables protegees */
+
+    /* Methodes protegees */
+
 
 private slots:
     void on_ok_clicked();
 
+
 private:
+
+    /* Constantes privees */
+
+    /* Variables privees */
     Ui::Apropos *ui;
+
+    /* Methodes privees */
+
+
 };
 
 #endif // APROPOS_H
