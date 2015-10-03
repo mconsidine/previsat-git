@@ -104,27 +104,32 @@ void Informations::on_nom_returnPressed()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int indx1 = 0;
-    int indx2 = 0;
-    chg = false;
-    res.clear();
 
     /* Corps de la methode */
-    do {
-        indx1 = magn.indexOf(ui->nom->text().toLower().trimmed(), indx1 + indx2);
-        if (indx1 >= 0) {
-            indx1 = magn.lastIndexOf("\n", indx1) + 1;
-            indx2 = magn.indexOf("\n", indx1) - indx1;
-            const QString ligne = magn.mid(indx1, indx2);
-            if (ligne.length() > 0)
-                res.append(ligne);
-        }
-    } while (indx1 > 0);
+    if (!ui->nom->text().isEmpty()) {
 
-    ui->cospar->setText(res.at(0).mid(6, 11).toUpper().trimmed());
-    ui->norad->setValue(res.at(0).mid(0, 5).toInt());
-    chg = true;
-    AffichageResultats();
+        int indx1 = 0;
+        int indx2 = 0;
+        chg = false;
+        res.clear();
+
+        do {
+            indx1 = magn.indexOf(ui->nom->text().toLower().trimmed(), indx1 + indx2);
+            if (indx1 >= 0) {
+
+                indx1 = magn.lastIndexOf("\n", indx1) + 1;
+                indx2 = magn.indexOf("\n", indx1) - indx1;
+                const QString ligne = magn.mid(indx1, indx2);
+                if (ligne.length() > 0)
+                    res.append(ligne);
+            }
+        } while (indx1 > 0);
+
+        ui->cospar->setText(res.at(0).mid(6, 11).toUpper().trimmed());
+        ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        chg = true;
+        AffichageResultats();
+    }
 
     /* Retour */
     return;
@@ -133,31 +138,36 @@ void Informations::on_nom_returnPressed()
 void Informations::on_norad_valueChanged(int arg1)
 {
     /* Declarations des variables locales */
-    int indx1 = 0;
-    int indx2 = 0;
-    const QString chaine = "%1 ";
-    const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
 
     /* Initialisations */
+
+    /* Corps de la methode */
     if (chg) {
         res.clear();
+
+        int indx1 = 0;
+        int indx2 = 0;
+        const QString chaine = "%1 ";
+        const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
+
         do {
             indx1 = magn.indexOf(norad, indx1 + 1);
-        } while (magn.at(indx1 - 1) != '\n');
-        if (indx1 >= 0)
+        } while (indx1 >= 0 && magn.at(indx1 - 1) != '\n');
+        if (indx1 >= 0) {
+
             indx2 = magn.indexOf("\n", indx1) - indx1;
 
-        /* Corps de la methode */
-        const QString ligne = magn.mid(indx1, indx2).trimmed();
-        if (ligne.length() > 0)
-            res.append(ligne);
+            const QString ligne = magn.mid(indx1, indx2).trimmed();
+            if (ligne.length() > 0)
+                res.append(ligne);
 
-        QString nom = ligne.mid(117).trimmed();
-        if (nom == "iss (zarya)")
-            nom = "ISS";
-        ui->nom->setText(nom.toUpper());
+            QString nom = ligne.mid(117).trimmed();
+            if (nom == "iss (zarya)")
+                nom = "ISS";
+            ui->nom->setText(nom.toUpper());
 
-        ui->cospar->setText(ligne.mid(6, 11).toUpper());
+            ui->cospar->setText(ligne.mid(6, 11).toUpper());
+        }
 
         AffichageResultats();
     }
@@ -169,58 +179,34 @@ void Informations::on_norad_valueChanged(int arg1)
 void Informations::on_cospar_returnPressed()
 {
     /* Declarations des variables locales */
-    int indx1 = 0;
-    int indx2 = 0;
+
 
     /* Initialisations */
-    chg = false;
-    res.clear();
 
     /* Corps de la methode */
-    do {
-        indx1 = magn.indexOf(ui->cospar->text().toLower().trimmed(), indx1 + indx2);
-        if (indx1 >= 0) {
-            indx1 = magn.lastIndexOf("\n", indx1) + 1;
-            indx2 = magn.indexOf("\n", indx1) - indx1;
-            const QString ligne = magn.mid(indx1, indx2);
-            if (ligne.length() > 0)
-                res.append(ligne);
-        }
-    } while (indx1 > 0);
+    if (!ui->cospar->text().isEmpty() && ui->cospar->text().contains("-")) {
 
-    ui->nom->setText(res.at(0).mid(117).toUpper().trimmed());
-    ui->norad->setValue(res.at(0).mid(0, 5).toInt());
-    chg = true;
-    AffichageResultats();
+        int indx1 = 0;
+        int indx2 = 0;
+        chg = false;
+        res.clear();
 
-    /* Retour */
-    return;
-}
+        do {
+            indx1 = magn.indexOf(ui->cospar->text().toLower().trimmed(), indx1 + indx2);
+            if (indx1 >= 0) {
 
-void Informations::AffichageResultats()
-{
-    /* Declarations des variables locales */
+                indx1 = magn.lastIndexOf("\n", indx1) + 1;
+                indx2 = magn.indexOf("\n", indx1) - indx1;
+                const QString ligne = magn.mid(indx1, indx2);
+                if (ligne.length() > 0)
+                    res.append(ligne);
+            }
+        } while (indx1 > 0);
 
-    /* Initialisations */
-    ui->satellitesTrouves->clear();
-
-    /* Corps de la methode */
-    if (res.count() > 0) {
-
-        QStringListIterator it(res);
-        while (it.hasNext()) {
-            const QString item = it.next().toUpper();
-            QString nom = item.mid(117).trimmed();
-
-            if (nom.toLower() == "iss (zarya)")
-                nom = "ISS";
-            if (nom.length() == 0)
-                nom = item.mid(0, 5);
-
-            ui->satellitesTrouves->addItem(nom);
-        }
-        ui->satellitesTrouves->setCurrentRow(0);
-        ui->frameResultats->setVisible(true);
+        ui->nom->setText(res.at(0).mid(117).toUpper().trimmed());
+        ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        chg = true;
+        AffichageResultats();
     }
 
     /* Retour */
@@ -240,16 +226,18 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         const QString ligne = res.at(currentRow).toUpper();
         const double magnitudeStandard = ligne.mid(34, 4).toDouble();
+
+        const QString dateRentree = ligne.mid(59, 10).trimmed();
         const QString periode = ligne.mid(70, 10).trimmed();
         const QString perigee = ligne.mid(81, 7).trimmed();
         const QString apogee = ligne.mid(89, 7).trimmed();
+
         const double ap = apogee.toDouble() + RAYON_TERRESTRE;
         const double per = perigee.toDouble() + RAYON_TERRESTRE;
-        const QString dateRentree = ligne.mid(59, 10).trimmed();
 
         // Nom du satellite
         QString nom = ligne.mid(117).trimmed();
-        if (nom == "iss (zarya)")
+        if (nom.toLower() == "iss (zarya)")
             nom = "ISS";
         ui->nomsat->setText(nom);
 
@@ -334,7 +322,7 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
             chaine2 = chaine2.arg(unite1);
             xval = (unite) ? ap : ap * MILE_PAR_KM;
             xval2 = (unite) ? apogee.toDouble() : apogee.toDouble() * MILE_PAR_KM;
-            chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval2, 0, 'f', 1);
+            chaine = chaine2.arg(xval, 0, 'f', 0).arg(xval2, 0, 'f', 0);
             ui->apogee->setText(chaine);
         }
 
@@ -343,7 +331,7 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
         } else {
             xval = (unite) ? per : per * MILE_PAR_KM;
             xval2 = (unite) ? perigee.toDouble() : perigee.toDouble() * MILE_PAR_KM;
-            chaine = chaine2.arg(xval, 0, 'f', 1).arg(xval2, 0, 'f', 1);
+            chaine = chaine2.arg(xval, 0, 'f', 0).arg(xval2, 0, 'f', 0);
             ui->perigee->setText(chaine);
         }
 
@@ -388,6 +376,37 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
         // Pays/Organisation
         const QString pays = ligne.mid(111, 5);
         ui->pays->setText((pays.isEmpty()) ? tr("Inconnu") : pays);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Informations::AffichageResultats()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->satellitesTrouves->clear();
+    ui->frameResultats->setVisible(false);
+
+    /* Corps de la methode */
+    if (res.count() > 0) {
+
+        QStringListIterator it(res);
+        while (it.hasNext()) {
+            const QString item = it.next().toUpper();
+            QString nom = item.mid(117).trimmed();
+
+            if (nom.toLower() == "iss (zarya)")
+                nom = "ISS";
+            if (nom.length() == 0)
+                nom = item.mid(0, 5);
+
+            ui->satellitesTrouves->addItem(nom);
+        }
+        ui->satellitesTrouves->setCurrentRow(0);
+        ui->frameResultats->setVisible(true);
     }
 
     /* Retour */

@@ -55,25 +55,67 @@ class Informations : public QMainWindow
     Q_OBJECT
 
 public:
+
+    /* Constructeurs */
     explicit Informations(const QString &norad, QWidget *fenetreParent = 0);
     ~Informations();
+
+    /* Constantes publiques */
+
+    /* Variables publiques */
+
+    /* Methodes publiques */
+
+    /* Accesseurs */
+
+
+protected:
+
+    /* Constantes protegees */
+
+    /* Variables protegees */
+
+    /* Methodes protegees */
+
 
 private slots:
 
     void closeEvent(QCloseEvent *evt);
 
+    /**
+     * @brief on_nom_returnPressed Recherche basee sur le nom des objets
+     */
     void on_nom_returnPressed();
 
+    /**
+     * @brief on_norad_valueChanged Recherche basee sur le numero NORAD
+     * @param arg1 numero NORAD
+     */
     void on_norad_valueChanged(int arg1);
 
+    /**
+     * @brief on_cospar_returnPressed Recherche basee sur la designation COSPAR
+     */
     void on_cospar_returnPressed();
 
+    /**
+     * @brief on_satellitesTrouves_currentRowChanged Selection d'un objet dans la liste
+     * @param currentRow indice de l'objet
+     */
     void on_satellitesTrouves_currentRowChanged(int currentRow);
 
 
 private:
+
+    /* Constantes privees */
+
+    /* Variables privees */
     Ui::Informations *ui;
 
+    /* Methodes privees */
+    /**
+     * @brief AffichageResultats Remplissage de la liste d'objets
+     */
     void AffichageResultats();
 
 };
