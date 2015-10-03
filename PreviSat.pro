@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    19 septembre 2015
+# >    3 octobre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
-VERSION = 3.5.0.5
+VERSION = 3.5.0.6
 ANNEES_DEV = 2005-2015
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -84,6 +84,7 @@ SOURCES += main.cpp                                    \
     afficher.cpp                                       \
     apropos.cpp                                        \
     gestionnairetle.cpp                                \
+    informations.cpp                                   \
     telecharger.cpp                                    \
     threadcalculs.cpp                                  \
     librairies/corps/corps.cpp                         \
@@ -115,6 +116,7 @@ HEADERS += previsat.h                                  \
     afficher.h                                         \
     apropos.h                                          \
     gestionnairetle.h                                  \
+    informations.h                                     \
     telecharger.h                                      \
     threadcalculs.h                                    \
     librairies/corps/corps.h                           \
@@ -152,10 +154,11 @@ HEADERS += previsat.h                                  \
     $$ZLIB_DIR/inc/zlib.h
 
 
-FORMS += previsat.ui \
-    afficher.ui \
+FORMS += previsat.ui   \
+    afficher.ui        \
+    apropos.ui         \
     gestionnairetle.ui \
-    apropos.ui \
+    informations.ui    \
     telecharger.ui
 
 OTHER_FILES += icone.rc

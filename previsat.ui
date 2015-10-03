@@ -7378,6 +7378,19 @@
              <string>Pays/Organisation :</string>
             </property>
            </widget>
+           <widget class="QPushButton" name="rechercheInfoSat">
+            <property name="geometry">
+             <rect>
+              <x>574</x>
+              <y>10</y>
+              <width>191</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Recherche informations satellite...</string>
+            </property>
+           </widget>
            <zorder>nbOrbitesEpoque</zorder>
            <zorder>lbl_excentriciteMoy</zorder>
            <zorder>lbl_cospar</zorder>
@@ -7427,6 +7440,7 @@
            <zorder>categorieOrbite</zorder>
            <zorder>pays</zorder>
            <zorder>lbl_pays</zorder>
+           <zorder>rechercheInfoSat</zorder>
           </widget>
           <widget class="QWidget" name="previsions">
            <property name="font">

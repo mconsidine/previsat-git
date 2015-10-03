@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    3 octobre 2015
  *
  */
 
@@ -430,23 +430,31 @@ private:
     bool _eclipse;
     bool _ieralt;
     bool _penombre;
-    char _methMagnitude;
     int _nbOrbites;
     double _ageTLE;
     double _beta;
     double _elongation;
     double _fractionIlluminee;
     double _magnitude;
-    double _magnitudeStandard;
     double _rayonOmbre;
     double _rayonPenombre;
+
+    char _methMagnitude;
+    double _magnitudeStandard;
     double _section;
     double _t1;
     double _t2;
     double _t3;
+    QString _cospar;
     QString _dateLancement;
+    QString _dateReentree;
+    QString _periode;
+    QString _perigee;
+    QString _apogee;
+    QString _inclinaison;
     QString _categorieOrbite;
     QString _pays;
+
     TLE _tle;
     SatVariables _sat;
     ElementsOsculateurs _elements;
