@@ -42,10 +42,12 @@
 
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QSettings>
 #include <QTextStream>
 #include "informations.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
@@ -55,6 +57,7 @@
 
 static bool chg;
 static QSettings settings("Astropedia", "previsat");
+static QString dirOut;
 static QString magn;
 static QStringList res;
 
@@ -65,11 +68,54 @@ Informations::Informations(const QString &norad, QWidget *fenetreParent) :
 {
     ui->setupUi(this);
 
-#if defined (Q_OS_MAC)
-    const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    QFont police;
+
+    QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+
+#if defined (Q_OS_WIN)
+    police.setFamily("MS Shell Dlg 2");
+    police.setPointSize(8);
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + dirAstr).toString();
+
+#elif defined (Q_OS_LINUX)
+    police.setFamily("Sans Serif");
+    police.setPointSize(7);
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
+
+#elif defined (Q_OS_MAC)
+    police.setFamily("Marion");
+    police.setPointSize(11);
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
+    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+
 #else
-    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+                            QDir::separator() + dirAstr).toString();
 #endif
+
+    dirOut = QDir::toNativeSeparators(dirOut);
+    setFont(police);
+
+    QStyle * const styleBouton = QApplication::style();
+    ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
+
+    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
+
+        QPalette paletteWin, palList;
+        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
+        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
+        const QColor coulList = QColor(red + 27, 0, 0);
+
+        paletteWin.setBrush(this->backgroundRole(), alpha);
+        palList.setColor(QPalette::Base, coulList);
+
+        this->setPalette(paletteWin);
+        ui->satellitesTrouves->setPalette(palList);
+    }
 
     const QString ficData = dirLocalData + QDir::separator() + "donnees.sat";
 
@@ -113,6 +159,7 @@ void Informations::on_nom_returnPressed()
         chg = false;
         res.clear();
 
+        // Recherche dans le tableau de donnees a partir du nom de l'objet
         do {
             indx1 = magn.indexOf(ui->nom->text().toLower().trimmed(), indx1 + indx2);
             if (indx1 >= 0) {
@@ -123,10 +170,13 @@ void Informations::on_nom_returnPressed()
                 if (ligne.length() > 0)
                     res.append(ligne);
             }
-        } while (indx1 > 0);
+        } while (indx1 >= 0);
 
-        ui->cospar->setText(res.at(0).mid(6, 11).toUpper().trimmed());
-        ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        if (res.count() > 0) {
+            ui->cospar->setText(res.at(0).mid(6, 11).toUpper().trimmed());
+            ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        }
+
         chg = true;
         AffichageResultats();
     }
@@ -150,6 +200,7 @@ void Informations::on_norad_valueChanged(int arg1)
         const QString chaine = "%1 ";
         const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
 
+        // Recherche dans le tableau de donnees a partir du numero NORAD
         do {
             indx1 = magn.indexOf(norad, indx1 + 1);
         } while (indx1 >= 0 && magn.at(indx1 - 1) != '\n');
@@ -180,20 +231,20 @@ void Informations::on_cospar_returnPressed()
 {
     /* Declarations des variables locales */
 
-
     /* Initialisations */
 
     /* Corps de la methode */
-    if (!ui->cospar->text().isEmpty() && ui->cospar->text().contains("-")) {
+    if (ui->cospar->text().length() > 1 && ui->cospar->text().contains("-")) {
 
         int indx1 = 0;
-        int indx2 = 0;
+        int indx2 = 1;
         chg = false;
         res.clear();
 
+        // Recherche dans le tableau de donnees a partir de la designation COSPAR
         do {
             indx1 = magn.indexOf(ui->cospar->text().toLower().trimmed(), indx1 + indx2);
-            if (indx1 >= 0) {
+            if (indx1 >= 0 && magn.at(indx1 - 7) == '\n') {
 
                 indx1 = magn.lastIndexOf("\n", indx1) + 1;
                 indx2 = magn.indexOf("\n", indx1) - indx1;
@@ -201,10 +252,13 @@ void Informations::on_cospar_returnPressed()
                 if (ligne.length() > 0)
                     res.append(ligne);
             }
-        } while (indx1 > 0);
+        } while (indx1 >= 0);
 
-        ui->nom->setText(res.at(0).mid(117).toUpper().trimmed());
-        ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        if (res.count() > 0) {
+            ui->nom->setText(res.at(0).mid(117).toUpper().trimmed());
+            ui->norad->setValue(res.at(0).mid(0, 5).toInt());
+        }
+
         chg = true;
         AffichageResultats();
     }
@@ -239,13 +293,14 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
         QString nom = ligne.mid(117).trimmed();
         if (nom.toLower() == "iss (zarya)")
             nom = "ISS";
-        ui->nomsat->setText(nom);
+        ui->nomsat->setText((nom.isEmpty()) ? tr("Inconnu") : nom);
 
         // Numero NORAD
         ui->numNorad->setText(ligne.mid(0, 5));
 
         // Designation COSPAR
-        ui->desigCospar->setText(ligne.mid(6, 11));
+        const QString cospar = ligne.mid(6, 11).trimmed();
+        ui->desigCospar->setText((cospar.isEmpty()) ? tr("Inconnue") : cospar);
 
         // Magnitude standard/maximale
         if (magnitudeStandard > 98. || perigee.isEmpty() || apogee.isEmpty()) {
@@ -337,14 +392,15 @@ void Informations::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         chaine = (periode.isEmpty()) ? tr("Inconnue") :
                                        Maths::ToSexagesimal(periode.toDouble() * NB_HEUR_PAR_MIN * HEUR2RAD, HEURE1, 1, 0, false, true);
-        ui->periode->setText(chaine);
+        ui->periode->setText(chaine.trimmed());
 
         // Inclinaison
         const QString inclinaison = ligne.mid(97, 6).trimmed();
         ui->inclinaison->setText((inclinaison.isEmpty()) ? tr("Inconnue") : inclinaison + "°");
 
         // Date de lancement
-        ui->dateLancement->setText(ligne.mid(48, 10).trimmed());
+        const QString dateLancement = ligne.mid(48, 10).trimmed();
+        ui->dateLancement->setText((dateLancement.isEmpty()) ? tr("Inconnue") : dateLancement);
 
         // Date de rentree
         if (dateRentree.isEmpty()) {
@@ -393,6 +449,7 @@ void Informations::AffichageResultats()
     /* Corps de la methode */
     if (res.count() > 0) {
 
+        // Remplissage de la liste de resultats
         QStringListIterator it(res);
         while (it.hasNext()) {
             const QString item = it.next().toUpper();
@@ -411,4 +468,78 @@ void Informations::AffichageResultats()
 
     /* Retour */
     return;
+}
+
+void Informations::on_actionEnregistrer_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+#if defined (Q_OS_WIN)
+    const QString nomRepDefaut = dirOut.replace(QDir::separator(), "\\");
+#else
+    const QString nomRepDefaut = dirOut;
+#endif
+    const QString nomFicDefaut = tr("informations_satellite") + ".txt";
+
+    /* Corps de la methode */
+    try {
+
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut + QDir::separator() +
+                                                             nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+        if (!fichier.isEmpty()) {
+            QFile fi(fichier);
+            if (fi.exists())
+                fi.remove();
+
+            QFile sw(fichier);
+            sw.open(QIODevice::WriteOnly | QIODevice::Text);
+            if (!sw.isWritable()) {
+                const QString msg = tr("Problème de droits d'écriture du fichier %1");
+                throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+            }
+            QTextStream flux(&sw);
+
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                    arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+
+            // Donnees sur le satellite
+            flux << tr("Nom                :") + " " + ui->nomsat->text() << endl;
+
+            QString chaine = tr("Numéro NORAD       : %1\t\t\tMagnitude std/max  : %2");
+            flux << chaine.arg(ui->numNorad->text()).arg(ui->magnitudeStdMax->text()) << endl;
+
+            chaine = tr("Désignation COSPAR : %1\t\t\tModèle orbital     : %2");
+            flux << chaine.arg(ui->desigCospar->text()).arg(ui->modele->text()) << endl;
+
+            chaine = tr("Dimensions/Section : %1%2");
+            flux << chaine.arg(ui->dimensions->text()).arg((ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl << endl;
+
+
+            chaine = tr("Apogée  (Altitude) : %1\t\tDate de lancement  : %2");
+            flux << chaine.arg(ui->apogee->text()).arg(ui->dateLancement->text()) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1").arg(ui->dateRentree->text()) :
+                                                      tr("Catégorie d'orbite : %1").arg(ui->categorieOrbite->text());
+            flux << tr("Périgée (Altitude) : %1\t\t").arg(ui->perigee->text()).append(chaine) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1").arg(ui->categorieOrbite->text()) :
+                                                      tr("Pays/Organisation  : %1").arg(ui->pays->text());
+            flux << tr("Période orbitale   : %1 \t\t").arg(ui->periode->text()).append(chaine) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1").arg(ui->pays->text()) : "";
+            flux << tr("Inclinaison        : %1\t\t\t").arg(ui->inclinaison->text()).append(chaine) << endl;
+
+            sw.close();
+            QFileInfo fi2(fichier);
+            settings.setValue("fichier/sauvegarde", fi2.absolutePath());
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+
 }
