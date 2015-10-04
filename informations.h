@@ -105,6 +105,8 @@ private slots:
     void on_satellitesTrouves_currentRowChanged(int currentRow);
 
 
+    void on_actionEnregistrer_triggered();
+
 private:
 
     /* Constantes privees */
