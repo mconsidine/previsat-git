@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    4 octobre 2015
  *
  */
 
@@ -5016,9 +5016,10 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
         flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
 
-        chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3^2");
+        chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3%4");
         flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
-                .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text()) << endl;
+                .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text())
+                .arg((ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
         sw.close();
 
     } catch (PreviSatException &e) {
