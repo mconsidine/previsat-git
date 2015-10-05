@@ -7171,7 +7171,7 @@ void PreviSat::on_directHelp_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString aide = "file:///%1%2aide%3%4_%5.pdf";
+    const QString aide = "file:///%1%2doc%3%4_%5.pdf";
 
     /* Corps de la methode */
     if (!QDesktopServices::openUrl(aide.arg(dirExe).arg(QDir::separator()).arg(QDir::separator()).
