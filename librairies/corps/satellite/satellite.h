@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    6 octobre 2015
  *
  */
 
@@ -168,7 +168,10 @@ public:
     bool isEclipse() const;
     bool isIeralt() const;
     double ageTLE() const;
+    double attenuation() const;
     double beta() const;
+    double delai() const;
+    double doppler() const;
     double elongation() const;
     double fractionIlluminee() const;
     double magnitude() const;
@@ -440,6 +443,9 @@ private:
     double _rayonPenombre;
 
     char _methMagnitude;
+    double _doppler;
+    double _attenuation;
+    double _delai;
     double _magnitudeStandard;
     double _section;
     double _t1;
@@ -462,6 +468,11 @@ private:
     QList<QVector<double> > _traceCiel;
 
     /* Methodes privees */
+    /**
+     * @brief CalculSignal Calcul des proprietes du signal
+     */
+    void CalculSignal();
+
     /**
      * @brief CalculTracesAuSol Calcul de la trace au sol du satellite
      * @param date date

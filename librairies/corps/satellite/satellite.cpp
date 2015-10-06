@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    6 octobre 2015
  *
  */
 
@@ -518,6 +518,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
             // Calcul de l'angle beta
             satellites[isat].CalculBeta(soleil);
+
+            // Calcul des proprietes du signal (Doppler@100MHz, attenuation@100MHz et delai)
+            satellites[isat].CalculSignal();
         }
     }
 
@@ -746,6 +749,26 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         }
     }
     fi.close();
+
+    /* Retour */
+    return;
+}
+
+void Satellite::CalculSignal()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Decalage Doppler a 100 MHz
+    _doppler = -100.e6 * _rangeRate / VITESSE_LUMIERE;
+
+    // Attenuation (free-space path loss)
+    _attenuation = 72.45 + 20. * log10(_distance);
+
+    // Delai du signal en millisecondes (dans le vide)
+    _delai = 1000. * _distance / VITESSE_LUMIERE;
 
     /* Retour */
     return;
@@ -1527,9 +1550,24 @@ double Satellite::ageTLE() const
     return _ageTLE;
 }
 
+double Satellite::attenuation() const
+{
+    return _attenuation;
+}
+
 double Satellite::beta() const
 {
     return _beta;
+}
+
+double Satellite::delai() const
+{
+    return _delai;
+}
+
+double Satellite::doppler() const
+{
+    return _doppler;
 }
 
 double Satellite::elongation() const
