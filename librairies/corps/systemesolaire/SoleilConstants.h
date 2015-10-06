@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    6 octobre 2015
  *
  */
 
@@ -46,13 +46,16 @@
 /* Enumerations */
 
 /* Declaration des constantes */
+// Magnitude du centre du disque solaire
+static const double MAGNITUDE_SOLEIL = -26.98;
+
 // Rayon equatorial solaire (km)
 static const double RAYON_SOLAIRE = 696000.;
 
 // Unite astronomique (km)
 static const double UA2KM = 149597870.;
 
-// Magnitude du centre du disque solaire
-static const double MAGNITUDE_SOLEIL = -26.98;
+// Vitesse de la lumiere (km/s)
+static const double VITESSE_LUMIERE = 299792.458;
 
 #endif // SOLEILCONSTANTS_H

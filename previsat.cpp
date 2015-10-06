@@ -3234,9 +3234,9 @@ void PreviSat::AffichageElementsOsculateurs() const
 
     chaine = chaine.arg(xval, 0, 'f', 1);
     if (ui->typeParametres->currentIndex() == 2)
-        ui->demiGrandAxe->move(330, 103);
+        ui->demiGrandAxe->move(111, 20);
     else
-        ui->demiGrandAxe->move(303, 103);
+        ui->demiGrandAxe->move(84, 20);
     ui->demiGrandAxe->setText(chaine);
 
     ui->frameCirculaire->setVisible(false);
@@ -3364,6 +3364,12 @@ void PreviSat::AffichageElementsOsculateurs() const
     ui->perigee->setText(chaine);
 
     ui->periode->setText(Maths::ToSexagesimal(satellites.at(0).elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
+
+    // Proprietes du signal (Doppler@100MHz, attenuation@100MHz, delai en millisecondes)
+    chaine = "%1";
+    ui->doppler->setText(chaine.arg(satellites.at(0).doppler(), 0, 'f', 0) + " Hz");
+    ui->attenuation->setText(chaine.arg(satellites.at(0).attenuation(), 0, 'f', 2) + " dB");
+    ui->delai->setText(chaine.arg(satellites.at(0).delai(), 0, 'f', 2) + " ms");
 
     /* Retour */
     return;
@@ -4859,7 +4865,18 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
                 .arg(ui->anomalieExcentrique->text()).arg(ui->perigee->text()) << endl;
 
         chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
-        flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl;
+        flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl << endl;
+
+
+        flux << tr("Signal :") << endl;
+        chaine = tr("Doppler @ 100 MHz    : %1");
+        flux << chaine.arg(ui->doppler->text()) << endl;
+
+        chaine = tr("Atténuation          : %1");
+        flux << chaine.arg(ui->attenuation->text()) << endl;
+
+        chaine = tr("Délai                : %1");
+        flux << chaine.arg(ui->delai->text()) << endl;
 
         sw.close();
     } catch (PreviSatException &e) {

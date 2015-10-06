@@ -4713,60 +4713,6 @@
              <string>ligne1</string>
             </property>
            </widget>
-           <widget class="QLabel" name="lbl_vzsat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>184</y>
-              <width>19</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>vz :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="champDeVue">
-            <property name="geometry">
-             <rect>
-              <x>343</x>
-              <y>184</y>
-              <width>55</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>000.0000°</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="vzsat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>184</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+29.000000 km/s</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
            <widget class="QLabel" name="lbl_nomsat2">
             <property name="geometry">
              <rect>
@@ -4781,353 +4727,6 @@
             </property>
             <property name="text">
              <string>Nom :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="vxsat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>154</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+29.000000 km/s</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_ysat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>118</y>
-              <width>16</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>y :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_champDeVue">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>184</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Champ de vue :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_perigee">
-            <property name="geometry">
-             <rect>
-              <x>481</x>
-              <y>169</y>
-              <width>101</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Périgée (Altitude) :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="xsat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>103</y>
-              <width>82</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+36000.000 km</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_periode">
-            <property name="geometry">
-             <rect>
-              <x>481</x>
-              <y>184</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Période orbitale :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="zsat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>133</y>
-              <width>82</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+36000.000 km</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_xsat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>103</y>
-              <width>16</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>x :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_elementsOsculateurs">
-            <property name="geometry">
-             <rect>
-              <x>223</x>
-              <y>84</y>
-              <width>121</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Éléments osculateurs :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="anomalieVraie">
-            <property name="geometry">
-             <rect>
-              <x>343</x>
-              <y>154</y>
-              <width>55</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>000.0000°</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="apogee">
-            <property name="geometry">
-             <rect>
-              <x>580</x>
-              <y>154</y>
-              <width>151</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>036000.0 km (036000.0 km)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_zsat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>133</y>
-              <width>16</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>z :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_anomalieVraie">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>154</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Anomalie vraie :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="perigee">
-            <property name="geometry">
-             <rect>
-              <x>580</x>
-              <y>169</y>
-              <width>151</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>36000.0 km (36000.0 km)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="ysat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>118</y>
-              <width>82</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+36000.000 km</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_vecteurEtat">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>84</y>
-              <width>81</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Vecteur d'état :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_vxsat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>154</y>
-              <width>22</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>vx :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="anomalieExcentrique">
-            <property name="geometry">
-             <rect>
-              <x>343</x>
-              <y>169</y>
-              <width>55</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>000.0000°</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="periode">
-            <property name="geometry">
-             <rect>
-              <x>580</x>
-              <y>184</y>
-              <width>70</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>24h 50m 53s</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_apogee">
-            <property name="geometry">
-             <rect>
-              <x>481</x>
-              <y>154</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Apogée (Altitude) :</string>
             </property>
            </widget>
            <widget class="QLabel" name="ligne2">
@@ -5146,38 +4745,6 @@
             </property>
             <property name="text">
              <string>ligne2</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_vysat">
-            <property name="geometry">
-             <rect>
-              <x>16</x>
-              <y>169</y>
-              <width>19</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>vy :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_anomalieExcentrique">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>169</y>
-              <width>115</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Anomalie excentrique :</string>
             </property>
            </widget>
            <widget class="QLabel" name="nomsat2">
@@ -5317,25 +4884,6 @@
              <string>ISS</string>
             </property>
            </widget>
-           <widget class="QLabel" name="vysat">
-            <property name="geometry">
-             <rect>
-              <x>34</x>
-              <y>169</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>+29.000000 km/s</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
            <widget class="QDateTimeEdit" name="dateHeure4">
             <property name="geometry">
              <rect>
@@ -5384,7 +4932,7 @@
            <widget class="QComboBox" name="typeParametres">
             <property name="geometry">
              <rect>
-              <x>340</x>
+              <x>280</x>
               <y>80</y>
               <width>201</width>
               <height>22</height>
@@ -5420,820 +4968,12 @@
              </property>
             </item>
            </widget>
-           <widget class="QFrame" name="frameKeplerien">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>103</y>
-              <width>450</width>
-              <height>51</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <widget class="QLabel" name="lbl_ADNoeudAscendant">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>0</y>
-               <width>115</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>AD noeud ascendant :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_inclinaison">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>30</y>
-               <width>70</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Inclinaison :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="inclinaison">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>30</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ADNoeudAscendant">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>0</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_anomalieMoyenne">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>30</y>
-               <width>106</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Anomalie moyenne :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="anomalieMoyenne">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>30</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_argumentPerigee">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>15</y>
-               <width>115</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Argument du périgée :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="excentricite">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_excentricite">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>15</y>
-               <width>82</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Excentricité :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="argumentPerigee">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>15</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="frameCirculaire">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>103</y>
-              <width>450</width>
-              <height>51</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <widget class="QLabel" name="lbl_ADNoeudAscendant2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>0</y>
-               <width>115</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>AD noeud ascendant :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_ey1">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>30</y>
-               <width>70</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ey :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ADNoeudAscendant2">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>0</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_positionSurOrbite">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>30</y>
-               <width>106</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Position sur orbite :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="positionSurOrbite">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>30</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ex1">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_ex1">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>15</y>
-               <width>82</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ex :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_inclinaison2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>15</y>
-               <width>70</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Inclinaison :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ey1">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>30</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="inclinaison2">
-             <property name="geometry">
-              <rect>
-               <x>366</x>
-               <y>15</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="frameEquatorial">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>103</y>
-              <width>450</width>
-              <height>51</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <widget class="QLabel" name="lbl_ix1">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>0</y>
-               <width>71</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ix :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_anomalieMoyenne2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>30</y>
-               <width>130</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Anomalie moyenne :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="anomalieMoyenne2">
-             <property name="geometry">
-              <rect>
-               <x>354</x>
-               <y>30</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="excentricite2">
-             <property name="geometry">
-              <rect>
-               <x>118</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_excentricite2">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>15</y>
-               <width>82</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Excentricité :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_iy1">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>15</y>
-               <width>71</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Iy :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_longitudePerigee">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>30</y>
-               <width>115</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Longitude du périgée :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="longitudePerigee">
-             <property name="geometry">
-              <rect>
-               <x>114</x>
-               <y>30</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="iy1">
-             <property name="geometry">
-              <rect>
-               <x>348</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ix1">
-             <property name="geometry">
-              <rect>
-               <x>348</x>
-               <y>0</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="frameCirculaireEquatorial">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>103</y>
-              <width>450</width>
-              <height>51</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <widget class="QLabel" name="lbl_ix2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>0</y>
-               <width>101</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ix :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_argumentLongitudeVraie2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>30</y>
-               <width>130</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Argument longitude vraie :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="argumentLongitudeVraie2">
-             <property name="geometry">
-              <rect>
-               <x>382</x>
-               <y>30</y>
-               <width>55</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>000.0000°</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ex2">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_ex2">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>15</y>
-               <width>82</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ex :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_iy2">
-             <property name="geometry">
-              <rect>
-               <x>252</x>
-               <y>15</y>
-               <width>70</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Iy :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="lbl_ey2">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>30</y>
-               <width>115</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Ey :</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ey2">
-             <property name="geometry">
-              <rect>
-               <x>82</x>
-               <y>30</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="ix2">
-             <property name="geometry">
-              <rect>
-               <x>376</x>
-               <y>0</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="iy2">
-             <property name="geometry">
-              <rect>
-               <x>376</x>
-               <y>15</y>
-               <width>61</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>0.0000000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QLabel" name="demiGrandAxe">
-            <property name="geometry">
-             <rect>
-              <x>303</x>
-              <y>103</y>
-              <width>71</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>36000.0 km</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_demiGrandAxe">
-            <property name="geometry">
-             <rect>
-              <x>229</x>
-              <y>103</y>
-              <width>97</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Demi-grand axe :</string>
-            </property>
-           </widget>
            <widget class="QComboBox" name="typeRepere">
             <property name="geometry">
              <rect>
               <x>90</x>
               <y>80</y>
-              <width>61</width>
+              <width>51</width>
               <height>22</height>
              </rect>
             </property>
@@ -6257,48 +4997,1364 @@
              </property>
             </item>
            </widget>
-           <zorder>frameCirculaire</zorder>
-           <zorder>frameKeplerien</zorder>
-           <zorder>frameEquatorial</zorder>
-           <zorder>frameCirculaireEquatorial</zorder>
+           <widget class="QGroupBox" name="grpVecteurEtat">
+            <property name="geometry">
+             <rect>
+              <x>2</x>
+              <y>85</y>
+              <width>151</width>
+              <height>121</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string>Vecteur d'état</string>
+            </property>
+            <widget class="QLabel" name="lbl_ysat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>35</y>
+               <width>16</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>y :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="zsat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>50</y>
+               <width>82</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+36000.000 km</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_vzsat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>101</y>
+               <width>19</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>vz :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="ysat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>35</y>
+               <width>82</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+36000.000 km</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="vysat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>86</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+29.000000 km/s</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="vzsat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>101</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+29.000000 km/s</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_vxsat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>71</y>
+               <width>22</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>vx :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_zsat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>50</y>
+               <width>16</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>z :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="vxsat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>71</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+29.000000 km/s</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_vysat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>86</y>
+               <width>19</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>vy :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_xsat">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>16</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>x :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="xsat">
+             <property name="geometry">
+              <rect>
+               <x>28</x>
+               <y>20</y>
+               <width>82</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>+36000.000 km</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </widget>
+           <widget class="QGroupBox" name="grpElementsOsculateurs">
+            <property name="geometry">
+             <rect>
+              <x>160</x>
+              <y>85</y>
+              <width>441</width>
+              <height>121</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string>Éléments osculateurs</string>
+            </property>
+            <widget class="QFrame" name="frameCirculaireEquatorial">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>381</width>
+               <height>51</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <widget class="QLabel" name="lbl_ix2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>0</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ix :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_argumentLongitudeVraie2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>30</y>
+                <width>130</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Argument longitude vraie :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="argumentLongitudeVraie2">
+              <property name="geometry">
+               <rect>
+                <x>320</x>
+                <y>30</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ex2">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ex2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>15</y>
+                <width>82</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ex :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_iy2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>15</y>
+                <width>70</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Iy :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ey2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>30</y>
+                <width>115</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ey :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ey2">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>30</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ix2">
+              <property name="geometry">
+               <rect>
+                <x>314</x>
+                <y>0</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="iy2">
+              <property name="geometry">
+               <rect>
+                <x>314</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QFrame" name="frameEquatorial">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>381</width>
+               <height>51</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <widget class="QLabel" name="lbl_ix1">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>0</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ix :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_anomalieMoyenne2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>30</y>
+                <width>130</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Anomalie moyenne :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="anomalieMoyenne2">
+              <property name="geometry">
+               <rect>
+                <x>292</x>
+                <y>30</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="excentricite2">
+              <property name="geometry">
+               <rect>
+                <x>118</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_excentricite2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>15</y>
+                <width>82</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Excentricité :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_iy1">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>15</y>
+                <width>71</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Iy :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_longitudePerigee">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>30</y>
+                <width>115</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Longitude du périgée :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="longitudePerigee">
+              <property name="geometry">
+               <rect>
+                <x>114</x>
+                <y>30</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="iy1">
+              <property name="geometry">
+               <rect>
+                <x>286</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ix1">
+              <property name="geometry">
+               <rect>
+                <x>286</x>
+                <y>0</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QFrame" name="frameKeplerien">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>381</width>
+               <height>51</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <widget class="QLabel" name="lbl_ADNoeudAscendant">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>0</y>
+                <width>115</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>AD noeud ascendant :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_inclinaison">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>30</y>
+                <width>70</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Inclinaison :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="inclinaison">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>30</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ADNoeudAscendant">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>0</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_anomalieMoyenne">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>30</y>
+                <width>106</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Anomalie moyenne :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="anomalieMoyenne">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>30</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_argumentPerigee">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>15</y>
+                <width>115</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Argument du périgée :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="excentricite">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_excentricite">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>15</y>
+                <width>82</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Excentricité :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="argumentPerigee">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>15</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QFrame" name="frameCirculaire">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>381</width>
+               <height>51</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <widget class="QLabel" name="lbl_ADNoeudAscendant2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>0</y>
+                <width>115</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>AD noeud ascendant :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ey1">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>30</y>
+                <width>70</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ey :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ADNoeudAscendant2">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>0</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_positionSurOrbite">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>30</y>
+                <width>106</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Position sur orbite :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="positionSurOrbite">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>30</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ex1">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>15</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_ex1">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>15</y>
+                <width>82</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Ex :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_inclinaison2">
+              <property name="geometry">
+               <rect>
+                <x>190</x>
+                <y>15</y>
+                <width>70</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>Inclinaison :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="ey1">
+              <property name="geometry">
+               <rect>
+                <x>82</x>
+                <y>30</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>0.0000000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLabel" name="inclinaison2">
+              <property name="geometry">
+               <rect>
+                <x>304</x>
+                <y>15</y>
+                <width>55</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font/>
+              </property>
+              <property name="text">
+               <string>000.0000°</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QLabel" name="demiGrandAxe">
+             <property name="geometry">
+              <rect>
+               <x>84</x>
+               <y>20</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>36000.0 km</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_demiGrandAxe">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>97</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Demi-grand axe :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="anomalieExcentrique">
+             <property name="geometry">
+              <rect>
+               <x>124</x>
+               <y>85</y>
+               <width>55</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>000.0000°</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="anomalieVraie">
+             <property name="geometry">
+              <rect>
+               <x>124</x>
+               <y>70</y>
+               <width>55</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>000.0000°</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_apogee">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>70</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Apogée (Altitude) :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_perigee">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>85</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Périgée (Altitude) :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_periode">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>100</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Période orbitale :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="periode">
+             <property name="geometry">
+              <rect>
+               <x>299</x>
+               <y>100</y>
+               <width>70</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>24h 50m 53s</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="champDeVue">
+             <property name="geometry">
+              <rect>
+               <x>124</x>
+               <y>100</y>
+               <width>55</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>000.0000°</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="perigee">
+             <property name="geometry">
+              <rect>
+               <x>299</x>
+               <y>85</y>
+               <width>151</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>36000.0 km (36000.0 km)</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_champDeVue">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>100</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Champ de vue :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="apogee">
+             <property name="geometry">
+              <rect>
+               <x>299</x>
+               <y>70</y>
+               <width>151</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>036000.0 km (036000.0 km)</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_anomalieVraie">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>70</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Anomalie vraie :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_anomalieExcentrique">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>85</y>
+               <width>115</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Anomalie excentrique :</string>
+             </property>
+            </widget>
+           </widget>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="geometry">
+             <rect>
+              <x>609</x>
+              <y>85</y>
+              <width>161</width>
+              <height>121</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string>Signal</string>
+            </property>
+            <widget class="QLabel" name="lbl_doppler">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Doppler@100MHz :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_attenuation">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>35</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Atténuation :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="doppler">
+             <property name="geometry">
+              <rect>
+               <x>106</x>
+               <y>20</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>1824 Hz</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="delai">
+             <property name="geometry">
+              <rect>
+               <x>106</x>
+               <y>50</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>27.57 ms</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_delai">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>50</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Délai :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="attenuation">
+             <property name="geometry">
+              <rect>
+               <x>106</x>
+               <y>35</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>150.74 dB</string>
+             </property>
+            </widget>
+           </widget>
            <zorder>dateHeure2</zorder>
            <zorder>lbl_dateHeure2</zorder>
            <zorder>ligne1</zorder>
-           <zorder>lbl_vzsat</zorder>
-           <zorder>champDeVue</zorder>
-           <zorder>vzsat</zorder>
            <zorder>lbl_nomsat2</zorder>
-           <zorder>vxsat</zorder>
-           <zorder>lbl_ysat</zorder>
-           <zorder>lbl_champDeVue</zorder>
-           <zorder>lbl_perigee</zorder>
-           <zorder>xsat</zorder>
-           <zorder>lbl_periode</zorder>
-           <zorder>zsat</zorder>
-           <zorder>lbl_xsat</zorder>
-           <zorder>lbl_elementsOsculateurs</zorder>
-           <zorder>anomalieVraie</zorder>
-           <zorder>apogee</zorder>
-           <zorder>lbl_zsat</zorder>
-           <zorder>lbl_anomalieVraie</zorder>
-           <zorder>perigee</zorder>
-           <zorder>ysat</zorder>
-           <zorder>lbl_vecteurEtat</zorder>
-           <zorder>lbl_vxsat</zorder>
-           <zorder>anomalieExcentrique</zorder>
-           <zorder>periode</zorder>
-           <zorder>lbl_apogee</zorder>
            <zorder>ligne2</zorder>
-           <zorder>lbl_vysat</zorder>
-           <zorder>lbl_anomalieExcentrique</zorder>
            <zorder>nomsat2</zorder>
-           <zorder>vysat</zorder>
            <zorder>dateHeure4</zorder>
            <zorder>utcManuel2</zorder>
-           <zorder>typeParametres</zorder>
-           <zorder>demiGrandAxe</zorder>
-           <zorder>lbl_demiGrandAxe</zorder>
+           <zorder>grpVecteurEtat</zorder>
            <zorder>typeRepere</zorder>
+           <zorder>grpElementsOsculateurs</zorder>
+           <zorder>typeParametres</zorder>
+           <zorder>groupBox</zorder>
           </widget>
           <widget class="QWidget" name="informations">
            <property name="font">
