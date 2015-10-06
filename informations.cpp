@@ -42,7 +42,6 @@
 
 #include <QDesktopServices>
 #include <QDir>
-#include <QFileDialog>
 #include <QSettings>
 #include <QTextStream>
 #include "informations.h"
@@ -51,6 +50,8 @@
 #include "librairies/maths/maths.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QFileDialog>
+#include <QToolTip>
 #include "ui_informations.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -152,7 +153,7 @@ void Informations::on_nom_returnPressed()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (!ui->nom->text().isEmpty()) {
+    if (ui->nom->text().length() >= 3) {
 
         int indx1 = 0;
         int indx2 = 0;
@@ -164,11 +165,14 @@ void Informations::on_nom_returnPressed()
             indx1 = magn.indexOf(ui->nom->text().toLower().trimmed(), indx1 + indx2);
             if (indx1 >= 0) {
 
-                indx1 = magn.lastIndexOf("\n", indx1) + 1;
-                indx2 = magn.indexOf("\n", indx1) - indx1;
-                const QString ligne = magn.mid(indx1, indx2);
-                if (ligne.length() > 0)
-                    res.append(ligne);
+                int indx3 = magn.lastIndexOf("\n", indx1) + 1;
+                indx2 = magn.indexOf("\n", indx3) - indx3;
+                if (indx1 - indx3 >= 117) {
+                    const QString ligne = magn.mid(indx3, indx2);
+                    if (ligne.length() > 0)
+                        res.append(ligne);
+                }
+                indx1 = indx3;
             }
         } while (indx1 >= 0);
 
@@ -179,6 +183,8 @@ void Informations::on_nom_returnPressed()
 
         chg = true;
         AffichageResultats();
+    } else {
+        QToolTip::showText(ui->nom->mapToGlobal(QPoint(0, 0)), ui->nom->toolTip());
     }
 
     /* Retour */
