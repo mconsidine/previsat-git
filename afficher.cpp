@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    21 septembre 2015
+ * >    6 octobre 2015
  *
  */
 
@@ -354,8 +354,8 @@ void Afficher::load()
             ui->listePrevisions->insertRow(j);
             ui->listePrevisions->setRowHeight(j, 16);
 
-            const int lngDate = (cond.nbl() == 0) ? 20 : 22;
-            QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate) << fin.mid(idate, lngDate) <<
+            const int lngDate = (cond.nbl() == 0) ? 21 : 22;
+            QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate).trimmed() << fin.mid(idate, lngDate).trimmed() <<
                               ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
                               ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
                                maxHt.mid(ihtsol, 11).trimmed().left(10));
