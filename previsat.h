@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 octobre 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -442,7 +442,7 @@ private slots:
     void on_affgrille_stateChanged(int arg1);
     void on_afflune_stateChanged(int arg1);
     void on_affphaselune_stateChanged(int arg1);
-    void on_rotationIcones_stateChanged(int arg1);
+    void on_rotationIconeISS_stateChanged(int arg1);
     void on_rotationLune_stateChanged(int arg1);
     void on_affnomsat_stateChanged(int arg1);
     void on_affvisib_stateChanged(int arg1);
