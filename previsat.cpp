@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 octobre 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -536,7 +536,7 @@ void PreviSat::ChargementConfig()
     ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
-    ui->rotationIcones->setChecked(settings.value("affichage/rotationIcones", true).toBool());
+    ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
     ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
     ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
@@ -2120,7 +2120,7 @@ void PreviSat::AffichageCourbes() const
 
                         QTransform transform;
                         transform.translate(lsat, bsat);
-                        if (ui->rotationIcones->isChecked()) {
+                        if (ui->rotationIconeISS->isChecked() && satellites.at(isat).tle().norad() == "25544") {
                             const double vxsat = satellites.at(isat).vitesse().x();
                             const double vysat = satellites.at(isat).vitesse().y();
                             const double vzsat = satellites.at(isat).vitesse().z();
@@ -4552,6 +4552,8 @@ void PreviSat::ModificationOption()
         ui->rotationLune->setEnabled(false);
     }
 
+    ui->rotationIconeISS->setEnabled(ui->afficone->isChecked());
+
     ui->intensiteOmbre->setEnabled(ui->affnuit->isChecked());
     ui->nombreTrajectoires->setEnabled(ui->afftraj->isChecked());
 
@@ -5671,7 +5673,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
-    settings.setValue("affichage/rotationIcones", ui->rotationIcones->isChecked());
+    settings.setValue("affichage/rotationIconeISS", ui->rotationIconeISS->isChecked());
     settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
@@ -8220,7 +8222,7 @@ void PreviSat::on_affphaselune_stateChanged(int arg1)
     ModificationOption();
 }
 
-void PreviSat::on_rotationIcones_stateChanged(int arg1)
+void PreviSat::on_rotationIconeISS_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     ModificationOption();
@@ -9184,7 +9186,7 @@ void PreviSat::on_validerObs_clicked()
                     .arg(nomlieu) << endl;
             fi.close();
 
-            ui->fichiersObs->setCurrentRow(0);
+            on_fichiersObs_currentRowChanged(0);
             AffichageLieuObs();
             ui->nouveauLieu->setVisible(false);
             selec = -1;
@@ -11494,4 +11496,3 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
-

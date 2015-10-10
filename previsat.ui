@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8777,7 +8777,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -9562,7 +9562,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-52</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>500</height>
                 </rect>
@@ -10248,7 +10248,7 @@
                   <rect>
                    <x>407</x>
                    <y>66</y>
-                   <width>151</width>
+                   <width>111</width>
                    <height>22</height>
                   </rect>
                  </property>
@@ -10259,7 +10259,7 @@
                   <string notr="true"/>
                  </property>
                 </widget>
-                <widget class="QCheckBox" name="rotationIcones">
+                <widget class="QCheckBox" name="rotationIconeISS">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
@@ -10272,7 +10272,7 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Rotation des icônes</string>
+                  <string>Rotation de l'icône ISS</string>
                  </property>
                 </widget>
                </widget>
