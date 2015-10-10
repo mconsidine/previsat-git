@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8777,7 +8777,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -9562,7 +9562,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-52</y>
                  <width>784</width>
                  <height>500</height>
                 </rect>
@@ -10157,8 +10157,8 @@
                 <widget class="QCheckBox" name="affvisib">
                  <property name="geometry">
                   <rect>
-                   <x>10</x>
-                   <y>68</y>
+                   <x>530</x>
+                   <y>20</y>
                    <width>112</width>
                    <height>17</height>
                   </rect>
@@ -10257,6 +10257,22 @@
                  </property>
                  <property name="styleSheet">
                   <string notr="true"/>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="rotationIcones">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>68</y>
+                   <width>141</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Rotation des icônes</string>
                  </property>
                 </widget>
                </widget>

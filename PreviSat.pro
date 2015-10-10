@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    6 octobre 2015
+# >    9 octobre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
-VERSION = 3.5.0.7
+VERSION = 3.5.0.8
 ANNEES_DEV = 2005-2015
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts

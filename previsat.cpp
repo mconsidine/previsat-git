@@ -536,6 +536,8 @@ void PreviSat::ChargementConfig()
     ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
     ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
+    ui->rotationIcones->setChecked(settings.value("affichage/rotationIcones", true).toBool());
+    ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
     ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
     ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
     ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
@@ -2112,9 +2114,21 @@ void PreviSat::AffichageCourbes() const
                     if (img.isNull()) {
                         AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
                     } else {
+
                         img = img.scaled(qMin(lcarte / 12, img.width()), qMin(hcarte / 6, img.height()));
-                        QGraphicsPixmapItem *pm = scene->addPixmap(img);
-                        pm->setPos(lsat - img.width() / 2, bsat - img.height() / 2);
+                        QGraphicsPixmapItem * const pm = scene->addPixmap(img);
+
+                        QTransform transform;
+                        transform.translate(lsat, bsat);
+                        if (ui->rotationIcones->isChecked()) {
+                            const double vxsat = satellites.at(isat).vitesse().x();
+                            const double vysat = satellites.at(isat).vitesse().y();
+                            const double vzsat = satellites.at(isat).vitesse().z();
+                            const double angle = RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
+                            transform.rotate(angle);
+                        }
+                        transform.translate(-img.width() / 2, -img.height() / 2);
+                        pm->setTransform(transform);
                     }
                 } else {
                     AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
@@ -5657,6 +5671,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/rotationIcones", ui->rotationIcones->isChecked());
     settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
@@ -8200,6 +8215,12 @@ void PreviSat::on_afflune_stateChanged(int arg1)
 }
 
 void PreviSat::on_affphaselune_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
+void PreviSat::on_rotationIcones_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     ModificationOption();
@@ -11473,3 +11494,4 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
+
