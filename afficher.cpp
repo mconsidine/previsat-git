@@ -421,7 +421,7 @@ void Afficher::load()
     } else {
 
         // Affichage de la map
-        const QString fic = dirLocalData + QDir::separator() + "resultat.map";
+        const QString fic = dirLocalData + QDir::separator() + "html" + QDir::separator() + "resultat.map";
         QFile fi(fic);
 
         if (fi.exists()) {

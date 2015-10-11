@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -472,7 +472,7 @@ void Corps::InitTabConstellations()
 #endif
 
     /* Corps de la methode */
-    const QString fic = dirCommonData + QDir::separator() + "constellations.cst";
+    const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
     QFile fi(fic);
     if (fi.exists()) {
 
