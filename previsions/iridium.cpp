@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    30 septembre 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -252,7 +252,7 @@ void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 #endif
 
     /* Corps de la methode */
-    QFile fichier(dirLocalData + QDir::separator() + "iridium.sts");
+    QFile fichier(dirLocalData + QDir::separator() + "flares" + QDir::separator() + "iridium.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 

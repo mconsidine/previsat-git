@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Calcul des flashs MetOp et Cosmo-Skymed
+ * >    Calcul des flashs MetOp et COSMO-SkyMed
  *
  * Auteur
  * >    Astropedia
@@ -179,7 +179,7 @@ void MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 #endif
 
     /* Corps de la methode */
-    QFile fichier(dirLocalData + QDir::separator() + "flares.sts");
+    QFile fichier(dirLocalData + QDir::separator() + "flares" + QDir::separator() + "flares.sts");
     fichier.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fichier);
 

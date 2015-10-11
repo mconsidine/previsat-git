@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -126,7 +126,7 @@ void LigneConstellation::InitTabLignesCst()
 #endif
 
     /* Corps de la methode */
-    const QString ficLig = dirCommonData + QDir::separator() + "constlines.cst";
+    const QString ficLig = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlines.dat";
     QFile fichier(ficLig);
     if (fichier.exists()) {
 

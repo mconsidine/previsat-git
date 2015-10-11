@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    7 aout 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -118,7 +118,7 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
 #endif
 
     /* Corps de la methode */
-    const QString fic = dirCommonData + QDir::separator() + "constlabel.cst";
+    const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlabel.dat";
     QFile fi(fic);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);

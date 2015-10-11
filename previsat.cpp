@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2015
+ * >    11 octobre 2015
  *
  */
 
@@ -305,9 +305,13 @@ void PreviSat::ChargementConfig()
     paletteDefaut = palette();
     tim = QDateTime();
 
-    listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << "iridium.sts" << "ISS-Live1.html"
-                      << "ISS-Live2.html" << "meteo.map" << "meteoNASA.html" << "flares.sts" << "resultat.map" << "stations.sta"
-                      << "taiutc.dat" << "tdrs.sat";
+    const QString repFlr = QString("flares") + QDir::separator();
+    const QString repHtm = QString("html") + QDir::separator();
+    listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" <<
+                         repFlr + "iridium.sts" << repFlr + "flares.sts" <<
+                         repHtm + "ISS-Live1.html" << repHtm + "ISS-Live2.html" <<
+                         repHtm + "meteo.map" << repHtm + "meteoNASA.html"  << repHtm + "resultat.map" <<
+                         "stations.sta" << "taiutc.dat" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -367,7 +371,7 @@ void PreviSat::ChargementConfig()
 
     ui->policeWCC->setCurrentIndex(settings.value("affichage/policeWCC", 0).toInt());
 
-    dirCoord = dirLocalData + QDir::separator() + "coordonnees";
+    dirCoord = dirLocalData + QDir::separator() + "coordinates";
     dirMap = dirLocalData + QDir::separator() + "map";
     dirSon = dirLocalData + QDir::separator() + "sound";
     dirOut = QDir::toNativeSeparators(dirOut);
@@ -397,9 +401,12 @@ void PreviSat::ChargementConfig()
     }
 
     // Verification de la presence des fichiers du repertoire data
-    const QStringList ficCommonData(QStringList () << QString("sound") + QDir::separator() + "aos-default.wav" <<
-                                    "constellations.cst" << "constlabel.cst" << "constlines.cst" << "etoiles.str" <<
-                                    QString("sound") + QDir::separator() + "los-default.wav");
+    const QString repSon = QString("sound") + QDir::separator();
+    const QString repStr = QString("stars") + QDir::separator();
+    const QStringList ficCommonData(QStringList () <<
+                                    repSon + "aos-default.wav" << repSon + "los-default.wav" <<
+                                    repStr + "constellations.dat" << repStr + "constlabel.dat" <<
+                                    repStr + "constlines.dat" << repStr + "etoiles.dat");
 
     QStringListIterator it1(ficCommonData);
     while (it1.hasNext()) {
@@ -6816,7 +6823,7 @@ void PreviSat::on_meteo_clicked()
 
     // Affichage de la map
     QString map0;
-    const QString fic = dirLocalData + QDir::separator() + "meteo.map";
+    const QString fic = dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteo.map";
     QFile fi(fic);
 
     if (fi.exists()) {
@@ -6910,7 +6917,7 @@ void PreviSat::on_meteoBasesNASA_clicked()
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
     // Chargement de la meteo
-    const QString fic("file:///" + dirLocalData + QDir::separator() + "meteoNASA.html");
+    const QString fic("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteoNASA.html");
     const QUrl url(fic);
 
     viewMeteoNASA->load(url);
@@ -7034,7 +7041,8 @@ void PreviSat::on_fluxVideo_clicked()
     /* Corps de la methode */
     try {
 
-        const QString fic = QString("file:///" + dirLocalData + "/ISS-Live%1.html").arg(ui->chaine->value()).replace("\\", "/");
+        const QString fic = QString("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "/ISS-Live%1.html").
+                arg(ui->chaine->value()).replace("\\", "/");
 
         // Verification de la connexion
         QTcpSocket socket;
@@ -7100,7 +7108,8 @@ void PreviSat::on_agrandirVideo_clicked()
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
         // Chargement de la video
-        const QString fic = ("file:///" + dirLocalData + QDir::separator() + "ISS-Live%1.html").arg(ui->chaine->value());
+        const QString fic = ("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "ISS-Live%1.html").
+                arg(ui->chaine->value());
         const QUrl url(fic);
 
         viewLiveISS = new QWebView;

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -119,7 +119,7 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
 
     /* Corps de la methode */
     etoiles.clear();
-    const QString fic = dirCommonData + QDir::separator() + "etoiles.str";
+    const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "etoiles.dat";
     QFile fi(fic);
     if (fi.exists()) {
 

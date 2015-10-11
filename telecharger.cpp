@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    19 septembre 2015
+ * >    10 octobre 2015
  *
  */
 
@@ -107,7 +107,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
 
     setFont(police);
 
-    dirCoo = dirLocalData + QDir::separator() + "coordonnees";
+    dirCoo = dirLocalData + QDir::separator() + "coordinates";
     dirMap = dirLocalData + QDir::separator() + "map";
     dirSon = dirLocalData + QDir::separator() + "sound";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
