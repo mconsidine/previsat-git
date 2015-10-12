@@ -473,7 +473,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="informations.ui" line="469"/>
-        <location filename="informations.cpp" line="329"/>
+        <location filename="informations.cpp" line="332"/>
         <source>SGP4 (NE)</source>
         <translation></translation>
     </message>
@@ -544,152 +544,152 @@ PreviSat is free !</translation>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="329"/>
+        <location filename="informations.cpp" line="332"/>
         <source>SGP4 (DS)</source>
         <translation>SGP4 (DS)</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="330"/>
+        <location filename="informations.cpp" line="333"/>
         <source>Non applicable</source>
         <translation>Not applicable</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="337"/>
+        <location filename="informations.cpp" line="340"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="344"/>
+        <location filename="informations.cpp" line="347"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="349"/>
+        <location filename="informations.cpp" line="352"/>
         <source>Sphérique. R=</source>
         <translation>Spherical. R=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="352"/>
+        <location filename="informations.cpp" line="355"/>
         <source>Cylindrique. L=</source>
         <translation>Cylindrical. L=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="353"/>
+        <location filename="informations.cpp" line="356"/>
         <source>, R=</source>
         <translation>, R=</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="356"/>
+        <location filename="informations.cpp" line="359"/>
         <source>Boîte.</source>
         <translation>Box.</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="361"/>
-        <location filename="informations.cpp" line="523"/>
+        <location filename="informations.cpp" line="364"/>
+        <location filename="informations.cpp" line="526"/>
         <source>Inconnues</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="377"/>
+        <location filename="informations.cpp" line="380"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="377"/>
+        <location filename="informations.cpp" line="380"/>
         <source>nmi</source>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="489"/>
+        <location filename="informations.cpp" line="492"/>
         <source>informations_satellite</source>
         <translation>satellite_informations</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="494"/>
+        <location filename="informations.cpp" line="497"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="495"/>
+        <location filename="informations.cpp" line="498"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="504"/>
+        <location filename="informations.cpp" line="507"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Problem with writing rights with file %1</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="514"/>
+        <location filename="informations.cpp" line="517"/>
         <source>Nom                :</source>
         <translation>Name               :</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="516"/>
+        <location filename="informations.cpp" line="519"/>
         <source>Numéro NORAD       : %1			Magnitude std/max  : %2</source>
         <translation>NORAD number       : %1			Std/Max magnitude  : %2</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="519"/>
+        <location filename="informations.cpp" line="522"/>
         <source>Désignation COSPAR : %1			Modèle orbital     : %2</source>
         <translation>COSPAR designation  : %1		Propagation model  : %2</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="522"/>
+        <location filename="informations.cpp" line="525"/>
         <source>Dimensions/Section : %1%2</source>
         <translation>Dimensions/Section : %1%2</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="526"/>
+        <location filename="informations.cpp" line="529"/>
         <source>Apogée  (Altitude) : %1		Date de lancement  : %2</source>
         <translation>Apogee  (Altitude) : %1		Launch Date       : %2</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="529"/>
+        <location filename="informations.cpp" line="532"/>
         <source>Date de rentrée    : %1</source>
         <translation>Decay date         : %1</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="530"/>
         <location filename="informations.cpp" line="533"/>
+        <location filename="informations.cpp" line="536"/>
         <source>Catégorie d&apos;orbite : %1</source>
         <translation>Orbital category   : %1</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="531"/>
+        <location filename="informations.cpp" line="534"/>
         <source>Périgée (Altitude) : %1		</source>
         <translation>Perigee (Altitude) : %1		</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="534"/>
         <location filename="informations.cpp" line="537"/>
+        <location filename="informations.cpp" line="540"/>
         <source>Pays/Organisation  : %1</source>
         <translation>Country/Organization : %1</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="535"/>
+        <location filename="informations.cpp" line="538"/>
         <source>Période orbitale   : %1 		</source>
         <translation>Orbital period     : %1 		</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="538"/>
+        <location filename="informations.cpp" line="541"/>
         <source>Inclinaison        : %1			</source>
         <translation>Inclination        : %1			</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="302"/>
-        <location filename="informations.cpp" line="379"/>
-        <location filename="informations.cpp" line="391"/>
-        <location filename="informations.cpp" line="440"/>
+        <location filename="informations.cpp" line="305"/>
+        <location filename="informations.cpp" line="382"/>
+        <location filename="informations.cpp" line="394"/>
+        <location filename="informations.cpp" line="443"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="informations.cpp" line="309"/>
-        <location filename="informations.cpp" line="399"/>
-        <location filename="informations.cpp" line="405"/>
-        <location filename="informations.cpp" line="409"/>
-        <location filename="informations.cpp" line="436"/>
+        <location filename="informations.cpp" line="312"/>
+        <location filename="informations.cpp" line="402"/>
+        <location filename="informations.cpp" line="408"/>
+        <location filename="informations.cpp" line="412"/>
+        <location filename="informations.cpp" line="439"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>

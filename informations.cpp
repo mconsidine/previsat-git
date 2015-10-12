@@ -151,18 +151,19 @@ void Informations::on_nom_returnPressed()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString nomsat = ui->nom->text();
 
     /* Corps de la methode */
-    if (ui->nom->text().length() >= 3) {
+    if (nomsat.length() >= 3) {
 
-        int indx1 = 0;
+        int indx1 = 127;
         int indx2 = 0;
         chg = false;
         res.clear();
 
         // Recherche dans le tableau de donnees a partir du nom de l'objet
         do {
-            indx1 = magn.indexOf(ui->nom->text().toLower().trimmed(), indx1 + indx2);
+            indx1 = magn.indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
             if (indx1 >= 0) {
 
                 int indx3 = magn.lastIndexOf("\n", indx1) + 1;
@@ -171,8 +172,10 @@ void Informations::on_nom_returnPressed()
                     const QString ligne = magn.mid(indx3, indx2);
                     if (ligne.length() > 0)
                         res.append(ligne);
+                    indx1 = indx3;
+                } else {
+                    indx1 += nomsat.trimmed().length() - indx2;
                 }
-                indx1 = indx3;
             }
         } while (indx1 >= 0);
 
