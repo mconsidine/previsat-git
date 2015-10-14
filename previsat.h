@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2015
+ * >    14 octobre 2015
  *
  */
 
@@ -433,7 +433,12 @@ private slots:
     void on_forward_clicked();
     void on_backward_clicked();
 
-    void on_rechercheInfoSat_clicked();
+    void on_rechercheDonneesSat_toggled(bool checked);
+    void on_nom_returnPressed();
+    void on_noradDonneesSat_valueChanged(int arg1);
+    void on_cosparDonneesSat_returnPressed();
+    void on_satellitesTrouves_currentRowChanged(int currentRow);
+    void AffichageResultats();
 
     // Gestion des options d'affichage
     void on_affsoleil_stateChanged(int arg1);

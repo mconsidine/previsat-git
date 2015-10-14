@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2015
+ * >    14 octobre 2015
  *
  */
 
@@ -63,6 +63,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include <QToolTip>
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/etoiles/constellation.h"
@@ -82,7 +83,6 @@
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
-#include "informations.h"
 #include "previsat.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
@@ -115,6 +115,7 @@ static bool acalcAOS;
 static bool acalcDN;
 static bool isAOS;
 static bool isEcl;
+static int chg;
 static int ind;
 static int idxf;
 static int idxfi;
@@ -134,12 +135,14 @@ static QVector<bool> bipSatLOS;
 static QVector<TLE> tles;
 static QList<Satellite> satellites;
 static QString liste;
+static QString donneesSat;
 static QStringList listeTLE;
 static QStringList ficTLE;
 static QStringList ficTLEIri;
 static QStringList ficTLEMetOp;
 static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
+static QStringList resultatsSatellitesTrouves;
 static QStringList tabStatutIridium;
 static QStringList tabStatutMetOp;
 static QStringList tabTDRS;
@@ -243,7 +246,6 @@ static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
 static QMainWindow *afficherVideo;
 static QMainWindow *afficherMeteo;
-static Informations *informations;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
@@ -499,7 +501,7 @@ void PreviSat::ChargementConfig()
     // Fichier flashs MetOp et SkyMed
     ficTLEMetOp.clear();
     const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() +
-                                                "flares-spctrk.txt").toString().
+                                               "flares-spctrk.txt").toString().
             trimmed();
     const QFileInfo fim(nomFicMetOp);
     if (fim.exists()) {
@@ -614,6 +616,9 @@ void PreviSat::ChargementConfig()
 
     ui->lbl_prochainAOS->setVisible(false);
     ui->dateAOS->setVisible(false);
+
+    ui->frameInformationsSatellite->setVisible(true);
+    ui->frameDonneesSat->setVisible(false);
 
     QPalette pal;
     const QBrush coulLabel = QBrush(QColor::fromRgb(227, 227, 227));
@@ -2837,11 +2842,11 @@ void PreviSat::AffichageDonnees()
                             crep *= DEG2RAD;
 
                             if (notifFlash == 0 && ((magnitude <= ui->magnitudeMaxNuitIri->value() && soleil.hauteur() <= crep) ||
-                                    (magnitude <= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
+                                                    (magnitude <= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
                                 notifFlash = 1;
 
                             if (notifFlash == 2 && ((magnitude >= ui->magnitudeMaxNuitIri->value() && soleil.hauteur() <= crep) ||
-                                    (magnitude >= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
+                                                    (magnitude >= ui->magnitudeMaxJourIri->value() && soleil.hauteur() > crep)))
                                 notifFlash = 3;
                         }
 
@@ -5025,41 +5030,74 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 
-        // Donnees sur le satellite
-        flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;
-        flux << ui->line1->text() << endl;
-        flux << ui->line2->text() << endl << endl;
+        if (ui->frameInformationsSatellite->isVisible()) {
 
-        QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
-        flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()).arg(ui->dateLancement->text()) << endl;
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + ui->nomsat3->text() << endl;
+            flux << ui->line1->text() << endl;
+            flux << ui->line2->text() << endl << endl;
 
-        chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2\t Catégorie d'orbite : %4");
-        flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()).
-                arg(ui->categorieOrbite->text()) << endl;
+            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
+            flux << chaine.arg(ui->norad->text()).arg(ui->nbRev->text()).arg(ui->dateLancement->text()) << endl;
 
-        chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3\t Pays/Organisation  : %4");
-        flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()).
-                arg(ui->pays->text()) << endl;
+            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2%3 rev/jour^2\t Catégorie d'orbite : %4");
+            flux << chaine.arg(ui->cospar->text()).arg(QString(11 - ui->nbRev2->text().length(), QChar(' '))).arg(ui->nbRev2->text()).
+                    arg(ui->categorieOrbite->text()) << endl;
 
-        chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
-        flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
+            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2%3 rev/jour^3\t Pays/Organisation  : %4");
+            flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()).
+                    arg(ui->pays->text()) << endl;
 
-        chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
-        flux << chaine.arg(QString(9 - ui->inclinaisonMoy->text().trimmed().length(), QChar('0')))
-                .arg(ui->inclinaisonMoy->text().trimmed()).arg(QString(9 - ui->anomalieMoy->text().trimmed().length(), QChar('0')))
-                .arg(ui->anomalieMoy->text().trimmed()) << endl;
+            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
+            flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
 
-        chaine = tr("AD noeud ascendant      : %1%2\t\tMagnitude std/max     : %3");
-        flux << chaine.arg(QString(9 - ui->ADNoeudAscendantMoy->text().trimmed().length(), QChar('0')))
-                .arg(ui->ADNoeudAscendantMoy->text().trimmed()).arg(ui->magnitudeStdMax->text()) << endl;
+            chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
+            flux << chaine.arg(QString(9 - ui->inclinaisonMoy->text().trimmed().length(), QChar('0')))
+                    .arg(ui->inclinaisonMoy->text().trimmed()).arg(QString(9 - ui->anomalieMoy->text().trimmed().length(), QChar('0')))
+                    .arg(ui->anomalieMoy->text().trimmed()) << endl;
 
-        chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
-        flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
+            chaine = tr("AD noeud ascendant      : %1%2\t\tMagnitude std/max     : %3");
+            flux << chaine.arg(QString(9 - ui->ADNoeudAscendantMoy->text().trimmed().length(), QChar('0')))
+                    .arg(ui->ADNoeudAscendantMoy->text().trimmed()).arg(ui->magnitudeStdMax->text()) << endl;
 
-        chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3%4");
-        flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
-                .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text())
-                .arg((ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
+            chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+            flux << chaine.arg(ui->excentriciteMoy->text()).arg(ui->modele->text()) << endl;
+
+            chaine = tr("Argument du périgée     : %1%2\t\tDimensions/Section    : %3%4");
+            flux << chaine.arg(QString(9 - ui->argumentPerigeeMoy->text().trimmed().length(), QChar('0')))
+                    .arg(ui->argumentPerigeeMoy->text().trimmed()).arg(ui->dimensions->text())
+                    .arg((ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
+
+        } else {
+            // Donnees sur le satellite
+            flux << tr("Nom                :") + " " + ui->nomsat->text() << endl;
+
+            QString chaine = tr("Numéro NORAD       : %1\t\t\tMagnitude std/max  : %2");
+            flux << chaine.arg(ui->numNorad->text()).arg(ui->magnitudeStdMaxDonneesSat->text()) << endl;
+
+            chaine = tr("Désignation COSPAR : %1\t\t\tModèle orbital     : %2");
+            flux << chaine.arg(ui->desigCospar->text()).arg(ui->modele->text()) << endl;
+
+            chaine = tr("Dimensions/Section : %1%2");
+            flux << chaine.arg(ui->dimensionsDonneesSat->text()).
+                    arg((ui->dimensionsDonneesSat->text() == tr("Inconnues")) ? "" : "^2") << endl << endl;
+
+
+            chaine = tr("Apogée  (Altitude) : %1\t\tDate de lancement  : %2");
+            flux << chaine.arg(ui->apogeeDonneesSat->text()).arg(ui->dateLancementDonneesSat->text()) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1").arg(ui->dateRentree->text()) :
+                                                      tr("Catégorie d'orbite : %1").arg(ui->categorieOrbiteDonneesSat->text());
+            flux << tr("Périgée (Altitude) : %1\t\t").arg(ui->perigeeDonneesSat->text()).append(chaine) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1").arg(ui->categorieOrbiteDonneesSat->text()) :
+                                                      tr("Pays/Organisation  : %1").arg(ui->paysDonneesSat->text());
+            flux << tr("Période orbitale   : %1 \t\t").arg(ui->periodeDonneesSat->text()).append(chaine) << endl;
+
+            chaine = (ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1").arg(ui->paysDonneesSat->text()) : "";
+            flux << tr("Inclinaison        : %1\t\t\t").arg(ui->inclinaisonDonneesSat->text()).append(chaine) << endl;
+
+        }
         sw.close();
 
     } catch (PreviSatException &e) {
@@ -5777,6 +5815,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     if (afficherVideo != NULL)
         afficherVideo->close();
+
+    donneesSat = "";
 
     /* Retour */
     return;
@@ -8165,17 +8205,383 @@ void PreviSat::on_backward_clicked()
 }
 
 
-
-void PreviSat::on_rechercheInfoSat_clicked()
+void PreviSat::on_rechercheDonneesSat_toggled(bool checked)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    informations = new Informations(satellites.at(0).tle().norad());
-    informations->setWindowModality(Qt::ApplicationModal);
-    informations->show();
+    if (checked) {
+        ui->frameDonneesSat->setVisible(true);
+        ui->frameInformationsSatellite->setVisible(false);
+
+        const QString ficData = dirLocalData + QDir::separator() + "donnees.sat";
+
+        QFile donneesSatellites(ficData);
+        if (donneesSatellites.exists()) {
+            donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&donneesSatellites);
+            donneesSat = flux.readAll().toLower();
+        } else {
+            donneesSat = "";
+        }
+        donneesSatellites.close();
+
+        chg = true;
+        ui->frameResultats->setVisible(false);
+        ui->noradDonneesSat->setValue(satellites.at(0).tle().norad().toInt());
+        ui->rechercheDonneesSat->setText(tr("Informations satellite"));
+        ui->nom->setFocus();
+    } else {
+        ui->frameDonneesSat->setVisible(false);
+        ui->frameInformationsSatellite->setVisible(true);
+        ui->rechercheDonneesSat->setText(tr("Recherche données satellite..."));
+        donneesSat = "";
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_nom_returnPressed()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomsat = ui->nom->text();
+
+    /* Corps de la methode */
+    if (nomsat.length() >= 3) {
+
+        int indx1 = 127;
+        int indx2 = 0;
+        chg = false;
+        resultatsSatellitesTrouves.clear();
+
+        // Recherche dans le tableau de donnees a partir du nom de l'objet
+        do {
+            indx1 = donneesSat.indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
+            if (indx1 >= 0) {
+
+                int indx3 = donneesSat.lastIndexOf("\n", indx1) + 1;
+                indx2 = donneesSat.indexOf("\n", indx3) - indx3;
+                if (indx1 - indx3 >= 123) {
+                    const QString ligne = donneesSat.mid(indx3, indx2);
+                    if (ligne.length() > 0)
+                        resultatsSatellitesTrouves.append(ligne);
+                    indx1 = indx3;
+                } else {
+                    indx1 += nomsat.trimmed().length() - indx2;
+                }
+            }
+        } while (indx1 >= 0);
+
+        if (resultatsSatellitesTrouves.count() > 0) {
+            ui->cosparDonneesSat->setText(resultatsSatellitesTrouves.at(0).mid(6, 11).toUpper().trimmed());
+            ui->noradDonneesSat->setValue(resultatsSatellitesTrouves.at(0).mid(0, 5).toInt());
+        }
+
+        chg = true;
+        AffichageResultats();
+    } else {
+        QToolTip::showText(ui->nom->mapToGlobal(QPoint(0, 0)), ui->nom->toolTip());
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_noradDonneesSat_valueChanged(int arg1)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (chg) {
+        resultatsSatellitesTrouves.clear();
+
+        int indx1 = 0;
+        int indx2 = 0;
+        const QString chaine = "%1 ";
+        const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
+
+        // Recherche dans le tableau de donnees a partir du numero NORAD
+        do {
+            indx1 = donneesSat.indexOf(norad, indx1 + 1);
+        } while (indx1 >= 0 && donneesSat.at(indx1 - 1) != '\n');
+        if (indx1 >= 0) {
+
+            indx2 = donneesSat.indexOf("\n", indx1) - indx1;
+
+            const QString ligne = donneesSat.mid(indx1, indx2).trimmed();
+            if (ligne.length() > 0)
+                resultatsSatellitesTrouves.append(ligne);
+
+            QString nomsat = ligne.mid(123).trimmed();
+            if (nomsat == "iss (zarya)")
+                nomsat = "ISS";
+            ui->nom->setText(nomsat.toUpper());
+
+            ui->cosparDonneesSat->setText(ligne.mid(6, 11).toUpper());
+        }
+
+        AffichageResultats();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_cosparDonneesSat_returnPressed()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->cosparDonneesSat->text().length() > 1 && ui->cosparDonneesSat->text().contains("-")) {
+
+        int indx1 = 0;
+        int indx2 = 1;
+        chg = false;
+        resultatsSatellitesTrouves.clear();
+
+        // Recherche dans le tableau de donnees a partir de la designation COSPAR
+        do {
+            indx1 = donneesSat.indexOf(ui->cosparDonneesSat->text().toLower().trimmed(), indx1 + indx2);
+            if (indx1 >= 0 && donneesSat.at(indx1 - 7) == '\n') {
+
+                indx1 = donneesSat.lastIndexOf("\n", indx1) + 1;
+                indx2 = donneesSat.indexOf("\n", indx1) - indx1;
+                const QString ligne = donneesSat.mid(indx1, indx2);
+                if (ligne.length() > 0)
+                    resultatsSatellitesTrouves.append(ligne);
+            }
+        } while (indx1 >= 0);
+
+        if (resultatsSatellitesTrouves.count() > 0) {
+            ui->nom->setText(resultatsSatellitesTrouves.at(0).mid(123).toUpper().trimmed());
+            ui->noradDonneesSat->setValue(resultatsSatellitesTrouves.at(0).mid(0, 5).toInt());
+        }
+
+        chg = true;
+        AffichageResultats();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
+{
+    /* Declarations des variables locales */
+    double xval, xval2;
+    QString chaine;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (currentRow >= 0) {
+
+        const QString ligne = resultatsSatellitesTrouves.at(currentRow).toUpper();
+        const double magnitudeStandard = ligne.mid(34, 4).toDouble();
+
+        const QString dateRentree = ligne.mid(59, 10).trimmed();
+        const QString periode = ligne.mid(70, 10).trimmed();
+        const QString perigee = ligne.mid(81, 7).trimmed();
+        const QString apogee = ligne.mid(89, 7).trimmed();
+
+        const double ap = apogee.toDouble() + RAYON_TERRESTRE;
+        const double per = perigee.toDouble() + RAYON_TERRESTRE;
+
+        // Nom du satellite
+        QString nomsat = ligne.mid(123).trimmed();
+        if (nomsat.toLower() == "iss (zarya)")
+            nomsat = "ISS";
+        ui->nomsat->setText((nomsat.isEmpty()) ? tr("Inconnu") : nomsat);
+
+        // Numero NORAD
+        ui->numNorad->setText(ligne.mid(0, 5));
+
+        // Designation COSPAR
+        const QString cospar = ligne.mid(6, 11).trimmed();
+        ui->desigCospar->setText((cospar.isEmpty()) ? tr("Inconnue") : cospar);
+
+        // Magnitude standard/maximale
+        if (magnitudeStandard > 98. || perigee.isEmpty() || apogee.isEmpty()) {
+            ui->magnitudeStdMaxDonneesSat->setText("?/?");
+        } else {
+
+            // Estimation de la magnitude maximale
+            const double demiGrandAxe = 0.5 * (ap + per);
+            const double exc = 2. * ap / (ap + per) - 1.;
+            xval = magnitudeStandard - 15.75 + 5. * log10(1.45 * (demiGrandAxe * (1. - exc) - RAYON_TERRESTRE));
+            char methMagnitude = ligne.at(39).toLower().toLatin1();
+
+            chaine = "%1%2%3/%4%5";
+            chaine = chaine.arg((magnitudeStandard >= 0.) ? "+" : "-").arg(fabs(magnitudeStandard), 0, 'f', 1).
+                    arg(methMagnitude).arg((xval >= 0.) ? "+" : "-").arg(fabs(xval), 0, 'f', 1);
+            ui->magnitudeStdMaxDonneesSat->setText(chaine);
+        }
+
+        // Modele orbital
+        const QString modele = (periode.toDouble() > 225.) ? tr("SGP4 (DS)") : tr("SGP4 (NE)");
+        ui->modeleDonneesSat->setText((periode.isEmpty()) ? tr("Non applicable") : modele);
+
+        // Dimensions du satellite
+        double t1 = ligne.mid(18, 5).toDouble();
+        double t2 = ligne.mid(24, 4).toDouble();
+        double t3 = ligne.mid(29, 4).toDouble();
+        double section = ligne.mid(41, 6).toDouble();
+        QString unite1 = tr("m");
+        const bool unite = settings.value("affichage/unite", true).toBool();
+        if (!unite) {
+            t1 *= PIED_PAR_METRE;
+            t2 *= PIED_PAR_METRE;
+            t3 *= PIED_PAR_METRE;
+            section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
+            unite1 = tr("ft");
+        }
+
+        QString chaine2 = "%1 " + unite1;
+        if (fabs(t2) < EPSDBL100 && fabs(t3) < EPSDBL100)
+            chaine = tr("Sphérique. R=").append(chaine2.arg(t1, 0, 'f', 1));
+
+        if (fabs(t2) >= EPSDBL100 && fabs(t3) < EPSDBL100)
+            chaine = tr("Cylindrique. L=").append(chaine2.arg(t1, 0, 'f', 1)).
+                    append(tr(", R=")).append(chaine2.arg(t2, 0, 'f', 1));
+
+        if (fabs(t2) >= EPSDBL100 && fabs(t3) >= EPSDBL100) {
+            chaine = tr("Boîte.").append(" %1 x %2 x %3 ").append(unite1);
+            chaine = chaine.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1);
+        }
+
+        if (fabs(t1) < EPSDBL100)
+            chaine = tr("Inconnues");
+
+        if (fabs(section) > EPSDBL100) {
+            chaine = chaine + " / %1 " + unite1;
+            chaine = chaine.arg(section, 0, 'f', 2);
+            ui->sqDonneesSat->setVisible(true);
+        } else {
+            ui->sqDonneesSat->setVisible(false);
+        }
+
+        ui->dimensionsDonneesSat->setText(chaine);
+        ui->dimensionsDonneesSat->adjustSize();
+        ui->dimensionsDonneesSat->setFixedHeight(16);
+        ui->sqDonneesSat->move(ui->dimensionsDonneesSat->x() + ui->dimensionsDonneesSat->width() + 1, ui->sqDonneesSat->y());
+
+        // Apogee/perigee/periode orbitale
+        unite1 = (unite) ? tr("km") : tr("nmi");
+        if (apogee.isEmpty()) {
+            ui->apogeeDonneesSat->setText(tr("Inconnu"));
+
+        } else {
+            chaine2 = "%2 %1 (%3 %1)";
+            chaine2 = chaine2.arg(unite1);
+            xval = (unite) ? ap : ap * MILE_PAR_KM;
+            xval2 = (unite) ? apogee.toDouble() : apogee.toDouble() * MILE_PAR_KM;
+            chaine = chaine2.arg(xval, 0, 'f', 0).arg(xval2, 0, 'f', 0);
+            ui->apogeeDonneesSat->setText(chaine);
+        }
+
+        if (perigee.isEmpty() || perigee == "0") {
+            ui->perigeeDonneesSat->setText(tr("Inconnu"));
+        } else {
+            xval = (unite) ? per : per * MILE_PAR_KM;
+            xval2 = (unite) ? perigee.toDouble() : perigee.toDouble() * MILE_PAR_KM;
+            chaine = chaine2.arg(xval, 0, 'f', 0).arg(xval2, 0, 'f', 0);
+            ui->perigeeDonneesSat->setText(chaine);
+        }
+
+        chaine = (periode.isEmpty()) ?
+                    tr("Inconnue") : Maths::ToSexagesimal(periode.toDouble() * NB_HEUR_PAR_MIN * HEUR2RAD, HEURE1, 1, 0, false, true);
+        ui->periodeDonneesSat->setText(chaine.trimmed());
+
+        // Inclinaison
+        const QString inclinaison = ligne.mid(97, 6).trimmed();
+        ui->inclinaisonDonneesSat->setText((inclinaison.isEmpty()) ? tr("Inconnue") : inclinaison + "°");
+
+        // Date de lancement
+        const QString dateLancement = ligne.mid(48, 10).trimmed();
+        ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ? tr("Inconnue") : dateLancement);
+
+        // Date de rentree
+        if (dateRentree.isEmpty()) {
+            ui->lbl_dateRentree->setVisible(false);
+            ui->dateRentree->setVisible(false);
+
+            ui->lbl_categorieOrbiteDonneesSat->move(3, 70);
+            ui->categorieOrbiteDonneesSat->move(114, 70);
+
+            ui->lbl_paysDonneesSat->move(3, 85);
+            ui->paysDonneesSat->move(114, 85);
+
+            ui->lbl_siteLancement->move(3, 100);
+            ui->siteLancement->move(114, 100);
+        } else {
+
+            ui->dateRentree->setText(dateRentree);
+            ui->lbl_dateRentree->setVisible(true);
+            ui->dateRentree->setVisible(true);
+
+            ui->lbl_categorieOrbiteDonneesSat->move(3, 85);
+            ui->categorieOrbiteDonneesSat->move(114, 85);
+
+            ui->lbl_paysDonneesSat->move(3, 100);
+            ui->paysDonneesSat->move(114, 100);
+
+            ui->lbl_siteLancement->move(3, 115);
+            ui->siteLancement->move(114, 115);
+        }
+
+        // Categorie d'orbite
+        const QString categorie = ligne.mid(104, 6).trimmed();
+        ui->categorieOrbiteDonneesSat->setText((categorie.isEmpty()) ? tr("Inconnue") : categorie);
+
+        // Pays/Organisation
+        const QString pays = ligne.mid(111, 5).trimmed();
+        ui->paysDonneesSat->setText((pays.isEmpty()) ? tr("Inconnu") : pays);
+
+        // Site de lancement
+        const QString siteLancement = ligne.mid(117, 5).trimmed();
+        ui->siteLancement->setText((siteLancement.isEmpty()) ? tr("Inconnu") : siteLancement);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::AffichageResultats()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->satellitesTrouves->clear();
+    ui->frameResultats->setVisible(false);
+
+    /* Corps de la methode */
+    if (resultatsSatellitesTrouves.count() > 0) {
+
+        // Remplissage de la liste de resultats
+        QStringListIterator it(resultatsSatellitesTrouves);
+        while (it.hasNext()) {
+            const QString item = it.next().toUpper();
+            QString nomsat = item.mid(123).trimmed();
+
+            if (nomsat.toLower() == "iss (zarya)")
+                nomsat = "ISS";
+            if (nomsat.length() == 0)
+                nomsat = item.mid(0, 5);
+
+            ui->satellitesTrouves->addItem(nomsat);
+        }
+        ui->satellitesTrouves->setCurrentRow(0);
+        ui->frameResultats->setVisible(true);
+    }
 
     /* Retour */
     return;

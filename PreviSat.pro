@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    9 octobre 2015
+# >    14 octobre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
@@ -84,7 +84,6 @@ SOURCES += main.cpp                                    \
     afficher.cpp                                       \
     apropos.cpp                                        \
     gestionnairetle.cpp                                \
-    informations.cpp                                   \
     telecharger.cpp                                    \
     threadcalculs.cpp                                  \
     librairies/corps/corps.cpp                         \
@@ -116,7 +115,6 @@ HEADERS += previsat.h                                  \
     afficher.h                                         \
     apropos.h                                          \
     gestionnairetle.h                                  \
-    informations.h                                     \
     telecharger.h                                      \
     threadcalculs.h                                    \
     librairies/corps/corps.h                           \
@@ -158,7 +156,6 @@ FORMS += previsat.ui   \
     afficher.ui        \
     apropos.ui         \
     gestionnairetle.ui \
-    informations.ui    \
     telecharger.ui
 
 OTHER_FILES += icone.rc
