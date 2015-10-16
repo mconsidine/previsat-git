@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2015
+ * >    15 octobre 2015
  *
  */
 
@@ -1915,7 +1915,7 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la trace au sol du satellite par defaut
-        if (ui->afftraj->isChecked()) {
+        if (ui->afftraj->isChecked() || mcc) {
             if (nbSat > 0) {
                 if (!satellites.at(0).isIeralt()) {
                     double lsat1 = satellites.at(0).traceAuSol().at(0).at(0) * DEG2PXHZ;
@@ -2020,7 +2020,7 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la zone de visibilite des satellites
         if (nbSat > 0) {
-            if (ui->affvisib->isChecked()) {
+            if (ui->affvisib->isChecked() || mcc) {
                 const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
                 for(int isat=0; isat<nbMax2; isat++) {
@@ -3977,10 +3977,10 @@ void PreviSat::EnchainementCalculs() const
     const bool extinction = ui->extinctionAtmospherique->isChecked();
 
     // Calcul de la zone de visibilite des satellites
-    const bool visibilite = !ui->carte->isHidden();
+    const bool visibilite = ui->affvisib->isChecked() || (mcc && satellites.at(0).tle().norad() == "25544");
 
     // Calcul de la trace dans le ciel
-    const bool traceCiel = ui->afftraceCiel->isChecked();
+    const bool traceCiel = (ui->afftraceCiel->isChecked() && ui->ciel->isVisible()) || ui->affradar->isChecked();
 
     /* Corps de la methode */
     try {
