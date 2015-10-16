@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2015
+ * >    15 octobre 2015
  *
  */
 
@@ -509,12 +509,15 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul des elements osculateurs et du nombre d'orbites
             satellites[isat].CalculElementsOsculateurs(date);
 
-            const Date dateInit = (mcc && satellites.at(isat).tle().norad() == "25544") ?
+            // Calcul de la trajectoire
+            if (nbTracesAuSol > 0) {
+
+                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == "25544") ?
                         Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
                              false) : Date(date.jourJulienUTC(), 0., false);
 
-            // Calcul de la trajectoire
-            satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, refraction);
+                satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, refraction);
+            }
 
             // Calcul de l'angle beta
             satellites[isat].CalculBeta(soleil);
