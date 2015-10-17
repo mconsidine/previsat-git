@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2015
+ * >    17 octobre 2015
  *
  */
 
@@ -128,7 +128,7 @@ void Satellite::CalculCercleAcquisition(const Observateur &station)
     _latitude = station.latitude();
 
     /* Corps de la methode */
-    const double angleBeta = acos(RAYON_TERRESTRE / _position.Norme());
+    const double angleBeta = acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _altitude)) - 0.5 * REFRACTION_HZ;
     CalculZoneVisibilite(angleBeta);
 
     /* Retour */
@@ -142,7 +142,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
 {
     /* Declarations des variables locales */
     Date j0 = date;
-    Satellite sat = Satellite(_tle);
+    Satellite sat = *this;
 
     /* Initialisations */
     const double st = 1. / (_tle.no() * T360);
@@ -493,7 +493,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         }
 
         // Calcul de la trajectoire dans le ciel
-        if (traceCiel) {
+        if (traceCiel && satellites.at(isat).isVisible()) {
             Observateur obs(observateur);
             satellites[isat].CalculTraceCiel(date, refraction, obs);
         }
@@ -596,7 +596,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
         int i = 0;
         const double step = 1. / (_tle.no() * T360);
         const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
-        Satellite sat = Satellite(_tle);
+        Satellite sat = *this;
         Observateur obs = observateur;
 
         while (!afin) {
@@ -767,7 +767,7 @@ void Satellite::CalculSignal()
     // Decalage Doppler a 100 MHz
     _doppler = -100.e6 * _rangeRate / VITESSE_LUMIERE;
 
-    // Attenuation (free-space path loss)
+    // Attenuation (free-space path loss) a 100 MHz
     _attenuation = 72.45 + 20. * log10(_distance);
 
     // Delai du signal en millisecondes (dans le vide)
@@ -783,7 +783,7 @@ void Satellite::CalculSignal()
 void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool refraction)
 {
     /* Declarations des variables locales */
-    Satellite sat = Satellite(_tle);
+    Satellite sat = *this;
     Soleil soleil;
 
     /* Initialisations */

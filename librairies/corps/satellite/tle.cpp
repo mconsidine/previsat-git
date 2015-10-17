@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    17 octobre 2015
  *
  */
 
@@ -71,7 +71,6 @@ TLE::TLE()
 TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
 {
     /* Declarations des variables locales */
-    int an;
 
     /* Initialisations */
 
@@ -84,16 +83,14 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
     _norad = _ligne1.mid(2, 5);
 
     // Epoque
-    an = _ligne1.mid(18, 2).toInt();
+    int an = _ligne1.mid(18, 2).toInt();
     const double jrs = _ligne1.mid(20, 12).toDouble();
-    an = (an < 57) ? an + AN2000 : an + 1900;
+    an += (an < 57) ? AN2000 : 1900;
     const Date date(an, 1, 1., 0.);
     _epoque = Date(date.jourJulien() + jrs - 1., 0., true);
 
     // Coefficient pseudo-balistique
-    _bstar = _ligne1.mid(53, 6).toDouble();
-    const int ibe = _ligne1.mid(59, 2).toInt();
-    _bstar *= 1.e-5 * pow(10., ibe);
+    _bstar = 1.e-5 * (_ligne1.mid(53, 6) + "e" + _ligne1.mid(59, 2)).toDouble();
 
     // Elements orbitaux moyens
     // Inclinaison
