@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2015
+ * >    17 octobre 2015
  *
  */
 
@@ -3865,7 +3865,7 @@ void PreviSat::CalculDN() const
     /* Corps de la methode */
     if (i < satellites.at(0).traceAuSol().size()) {
         double ecl[3], jjm[3];
-        Satellite satellite(satellites.at(0).tle());
+        Satellite satellite = satellites.at(0);
         double t_ecl = satellites.at(0).traceAuSol().at(i-1).at(3);
         double periode = t_ecl - satellites.at(0).traceAuSol().at(i-2).at(3);
 
@@ -3918,7 +3918,7 @@ int PreviSat::CalculNumeroOrbiteISS(const Date &date) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Satellite sat(tles.at(0));
+    Satellite sat = satellites.at(0);
     int numOrbite = 0;
 
     /* Corps de la methode */
