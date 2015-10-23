@@ -36,11 +36,17 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    6 octobre 2015
+ * >    24 octobre 2015
  *
  */
 
+#include <QtGlobal>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
+
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wswitch-default"
@@ -180,29 +186,29 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         ui->listePrevisions->setPalette(palList);
     }
 
-    dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
 
-#if defined (Q_OS_WIN)
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
+#if QT_VERSION >= 0x050000
+    dirLocalData = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+            dirAstr + QDir::separator() + "data";
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) +
                             QDir::separator() + dirAstr).toString();
-
-#elif defined (Q_OS_LINUX)
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
-                            QDir::separator() + QCoreApplication::applicationName()).toString();
-
-#elif defined (Q_OS_MAC)
-    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
-                            QDir::separator() + QCoreApplication::applicationName()).toString();
-    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 #else
+    dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
                             QDir::separator() + dirAstr).toString();
+    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+#endif
+
+
+#if defined (Q_OS_LINUX) || defined (Q_OS_MAC)
+    dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+                            QDir::separator() + QCoreApplication::applicationName()).toString();
 #endif
 
     dirOut = QDir::toNativeSeparators(dirOut);
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 
     const int ind = (result.size() > 1000 || result.isEmpty()) ? 0 : 1;
 
@@ -220,7 +226,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     switch (cond.typeCalcul()) {
     case PREVISION:
-        ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
+        ui->ongletsResultats->setTabText(ind, tr("PrÃ©visions de passage"));
         break;
 
     case IRIDIUM:
@@ -229,7 +235,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     case EVENEMENTS:
         ui->ongletsResultats->removeTab(1);
-        ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
+        ui->ongletsResultats->setTabText(0, tr("Ã‰vÃ¨nements orbitaux"));
         break;
 
     case TRANSITS:
@@ -468,11 +474,7 @@ void Afficher::show(const QString &fic)
     /* Corps de la methode */
     QFile fi(_fichier);
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
-#if defined (Q_OS_WIN)
-    prev = QString::fromLatin1(fi.readAll());
-#else
     prev = fi.trUtf8(fi.readAll());
-#endif
     ui->fichier->setText(prev);
     setVisible(true);
     prev = "";

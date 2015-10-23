@@ -36,22 +36,34 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    12 septembre 2015
+ * >    24 octobre 2015
  *
  */
 
-#include <QCoreApplication>
+#include <QtGlobal>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
+
+#include <QCoreApplication>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#if QT_VERSION >= 0x050000
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif
 #include <QMessageBox>
 #include <QTextStream>
 #include "ui_gestionnairetle.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#if QT_VERSION >= 0x050000
+#pragma GCC diagnostic warning "-Wfloat-conversion"
+#endif
 #include "gestionnairetle.h"
 #include "previsat.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -118,7 +130,7 @@ void GestionnaireTLE::load()
     const QIcon ajout(":/resources/ajout.png");
     ui->actionCreer_un_groupe->setIcon(ajout);
     ui->creationGroupe->setIcon(ajout);
-    ui->creationGroupe->setToolTip(tr("Créer un groupe de TLE"));
+    ui->creationGroupe->setToolTip(tr("CrÃ©er un groupe de TLE"));
 
     ui->actionAjouter_des_fichiers->setIcon(ajout);
     ui->ajoutFichiersTLE->setIcon(ajout);
@@ -150,10 +162,23 @@ void GestionnaireTLE::load()
 #if defined (Q_OS_MAC)
     dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
+
+#if QT_VERSION >= 0x050000
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirLocalData = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+            dirAstr + QDir::separator() + "data";
+#else
     dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
+#endif
+
+#if QT_VERSION >= 0x050000
+    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+#else
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+#endif
+
     ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
     /* Corps de la methode */
@@ -323,10 +348,10 @@ void GestionnaireTLE::on_valider_clicked()
     /* Corps de la methode */
     try {
         if (ui->domaine->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du domaine n'est pas spÃ©cifiÃ©"), WARNING);
 
         if (ui->nomGroupe->text().trimmed().isEmpty())
-            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), WARNING);
+            throw PreviSatException(tr("Le nom du groupe n'est pas spÃ©cifiÃ©"), WARNING);
 
         const QString groupeDomaine = ui->nomGroupe->text().toLower().trimmed() + "@" + ui->domaine->text().trimmed();
         const QString listeFics = ui->listeFichiers->document()->toPlainText().replace("\n", ",");

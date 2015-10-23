@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    24 octobre 2015
  *
  */
 
@@ -177,7 +177,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                     } else {
                                         ligne = nomsat;
                                         if (nomsat.contains("R/B") || nomsat.contains(" DEB"))
-                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).
+                                            ligne = ligne.append(QObject::tr("  (numÃ©ro NORAD : %1)")).
                                                     arg(sat.tle().norad());
                                         res.append(ligne);
                                     }
@@ -302,7 +302,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
     }
 
     flux << endl;
-    ligne = QObject::tr("Temps écoulé : %1s");
+    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();

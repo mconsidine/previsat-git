@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    24 octobre 2015
  *
  */
 
@@ -134,7 +134,7 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     const QChar chr = QChar('0');
     const QString esp = (espace && typeAngle != HEURE2) ? " " : "";
     const QString signe0 = (sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
-    const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h") : ":";
+    const QString unite1 = (tst1) ? "Â°" : (tst2) ? QObject::tr("h") : ":";
     const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":";
     const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s") : "";
 

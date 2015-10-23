@@ -41,7 +41,9 @@
  */
 
 #include <QFile>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "flashs.h"
 #include "iridium.h"
 #include "metop.h"
@@ -274,7 +276,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
         }
     }
 
-    ligne = QObject::tr("Temps écoulé : %1s");
+    ligne = QObject::tr("Temps Ã©coulÃ© : %1s");
     ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
     flux << ligne << endl;
     fichier.close();

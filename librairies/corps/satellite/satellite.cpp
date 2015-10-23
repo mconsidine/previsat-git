@@ -36,13 +36,19 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2015
+ * >    24 octobre 2015
  *
  */
 
+#include <QtGlobal>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
+#include <QDesktopServices>
+#endif
+
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QCoreApplication>
-#include <QDesktopServices>
 #include <QDir>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
@@ -680,7 +686,16 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
 #if defined (Q_OS_MAC)
     const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
+
+#if QT_VERSION >= 0x050000
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    const QString dirLocalData =
+            QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+            dirAstr + QDir::separator() + "data";
+#else
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
+
 #endif
 
     const int nb = listeSatellites.size();
