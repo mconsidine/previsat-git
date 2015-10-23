@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    14 octobre 2015
+# >    23 octobre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
@@ -45,6 +45,8 @@ TRANSLATIONS = PreviSat_en.ts
 
 
 QT += core gui network webkit
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport webkitwidgets widgets
 
 TARGET = PreviSat
 TEMPLATE = app

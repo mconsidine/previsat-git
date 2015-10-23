@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    7 aout 2015
+ * >    24 octobre 2015
  *
  */
 
@@ -72,7 +72,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
 #endif
 
     setFont(police);
-    const QString titre = tr("À propos de %1 %2");
+    const QString titre = tr("Ã€ propos de %1 %2");
     setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
     QGraphicsScene * const scene = new QGraphicsScene;
@@ -97,7 +97,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
         ui->imagePreviSat->setBackgroundBrush(alpha);
     }
 
-    const QString informations = "Copyright © %1 %2";
+    const QString informations = "Copyright Â© %1 %2";
     ui->informationsCopyright->setText(informations.arg(QCoreApplication::organizationName()).arg(QString(APP_ANNEES_DEV)));
 
     const QString logiciel = "%1 %2";

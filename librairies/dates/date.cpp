@@ -36,15 +36,21 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    24 octobre 2015
  *
  */
+
+#include <QtGlobal>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
+#include <QDesktopServices>
+#endif
 
 #include <cmath>
 #include <ctime>
 #include <fstream>
 #include <QCoreApplication>
-#include <QDesktopServices>
 #include <QDir>
 #include <QObject>
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -396,10 +402,20 @@ void Date::Initialisation()
 
     /* Corps de la methode */
     try {
+
 #if defined (Q_OS_MAC)
         const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #else
+
+#if QT_VERSION >= 0x050000
+        const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+        const QString dirLocalData =
+                QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
+                dirAstr + QDir::separator() + "data";
+#else
         const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
+
 #endif
 
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";

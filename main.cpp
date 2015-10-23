@@ -36,10 +36,11 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2015
+ * >    24 octobre 2015
  *
  */
 
+#include <QtGlobal>
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include "previsat.h"
@@ -49,6 +50,7 @@
 #include <QSplashScreen>
 #include <QTranslator>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
@@ -59,6 +61,12 @@ int main(int argc, char *argv[])
     a.setOrganizationName("Astropedia");
     a.setApplicationName("PreviSat");
     a.setOrganizationDomain("http://astropedia.free.fr/");
+
+#if QT_VERSION < 0x050000
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     /* Corps de la methode */
     const QString locale = PreviSat::DeterminationLocale();
@@ -78,7 +86,7 @@ int main(int argc, char *argv[])
     if (!mem.create(sizeof(pid))) {
         if (mem.error() == QSharedMemory::AlreadyExists) {
             if (mem.attach(QSharedMemory::ReadOnly)) {
-                const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
+                const QString msg = QObject::tr("Une instance de %1 est dÃ©jÃ  ouverte");
                 QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
                 return 1;
             }
@@ -107,11 +115,11 @@ int main(int argc, char *argv[])
     a.processEvents();
     w.ChargementTLE();
 
-    splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
+    splash->showMessage(QObject::tr("Mise Ã  jour des TLE...") + "     ", alignement, Qt::white);
     a.processEvents();
     w.MAJTLE();
 
-    splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+    splash->showMessage(QObject::tr("DÃ©marrage de l'application...") + "     ", alignement, Qt::white);
     a.processEvents();
     w.DemarrageApplication();
 
