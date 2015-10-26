@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    23 octobre 2015
+# >    25 octobre 2015
 
 #-------------------------------------------------
 VER_MAJ = 3.5
@@ -94,6 +94,7 @@ SOURCES += main.cpp                                    \
     librairies/corps/etoiles/ligneconstellation.cpp    \
     librairies/corps/satellite/elementsosculateurs.cpp \
     librairies/corps/satellite/satellite.cpp           \
+    librairies/corps/satellite/sgp4.cpp                \
     librairies/corps/satellite/tle.cpp                 \
     librairies/corps/systemesolaire/lune.cpp           \
     librairies/corps/systemesolaire/planete.cpp        \
@@ -113,6 +114,7 @@ SOURCES += main.cpp                                    \
     previsions/prevision.cpp                           \
     previsions/transitiss.cpp
 
+
 HEADERS += previsat.h                                  \
     afficher.h                                         \
     apropos.h                                          \
@@ -125,6 +127,7 @@ HEADERS += previsat.h                                  \
     librairies/corps/etoiles/ligneconstellation.h      \
     librairies/corps/satellite/elementsosculateurs.h   \
     librairies/corps/satellite/satellite.h             \
+    librairies/corps/satellite/sgp4.h                  \
     librairies/corps/satellite/tle.h                   \
     librairies/corps/systemesolaire/lune.h             \
     librairies/corps/systemesolaire/LuneConstants.h    \
