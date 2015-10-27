@@ -51,6 +51,18 @@ static const double RPTIM = OMEGA * NB_SEC_PAR_MIN;
 
 
 /* Constructeurs */
+SGP4::SGP4()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _init = false;
+
+    /* Retour */
+    return;
+}
 
 /* Methodes */
 void SGP4::Calcul(const Date &date, const TLE &tle)
@@ -58,7 +70,7 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (!_sat.init)
+    if (!_init)
         SGP4Init(tle);
 
     /* Corps de la methode */
@@ -267,7 +279,7 @@ void SGP4::Dpper() {
 
     /* Corps de la methode */
     zm = _sat.zmos + ZNS * _sat.t;
-    if (!_sat.init)
+    if (!_init)
         zm = _sat.zmos;
 
     zf = zm + 2. * ZES * sin(zm);
@@ -280,7 +292,7 @@ void SGP4::Dpper() {
     const double sghs = _sat.sgh2 * f2 + _sat.sgh3 * f3 + _sat.sgh4 * sinzf;
     const double shs = _sat.sh2 * f2 + _sat.sh3 * f3;
     zm = _sat.zmol + ZNL * _sat.t;
-    if (!_sat.init)
+    if (!_init)
         zm = _sat.zmol;
 
     zf = zm + 2. * ZEL * sin(zm);
@@ -299,7 +311,7 @@ void SGP4::Dpper() {
     pgh = sghs + sghl;
     ph = shs + shll;
 
-    if (_sat.init) {
+    if (_init) {
 
         _sat.xincp += pinc;
         _sat.ep += pe;
@@ -962,7 +974,8 @@ void SGP4::SGP4Init(const TLE &tle)
             _sat.t5cof = 0.2 * (3. * _sat.d4 + 12. * _sat.cc1 * _sat.d3 + 6. * _sat.d2 * _sat.d2 + 15. *
                                 cc1sq * (2. * _sat.d2 + cc1sq));
         }
-        _sat.init = true;
+
+        _init = true;
     }
 
     /* Retour */

@@ -49,6 +49,10 @@ class SGP4
 {
 public:
     /* Constructeurs */
+    /**
+     * @brief SGP4 Constructeur par defaut
+     */
+    SGP4();
 
     /* Constantes publiques */
 
@@ -120,7 +124,6 @@ private:
         Date epoque;
 
         // Variables du modele SGP4
-        bool init;
         bool isimp;
         char method;
         int irez;
@@ -297,6 +300,7 @@ private:
         double zmos;
     };
 
+    bool _init;
     SatVariables _sat;
     Vecteur3D _position;
     Vecteur3D _vitesse;
