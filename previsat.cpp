@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    31 octobre 2015
  *
  */
 
@@ -3888,12 +3888,13 @@ void PreviSat::CalculDN() const
     /* Initialisations */
     // Parcours du tableau "trace au sol"
     int i = 0;
-    const double dn = (satellites.at(0).isEclipse()) ? 1. : 0.;
+    const int dn = (satellites.at(0).isPenombre()) ? 1 : 0;
     QListIterator<QVector<double> > it(satellites.at(0).traceAuSol());
     while (it.hasNext()) {
         const QVector<double> list = it.next();
         if (list.at(3) >= dateCourante.jourJulienUTC()) {
-            if (fabs(dn - list.at(2)) > EPSDBL100)
+            const int dn0 = (list.at(2) > 0.5) ? 1 : 0;
+            if (dn != dn0)
                 it.toBack();
         }
         i++;
@@ -3907,6 +3908,7 @@ void PreviSat::CalculDN() const
         double periode = t_ecl - satellites.at(0).traceAuSol().at(i-2).at(3);
 
         bool afin = false;
+        double tdn = dateCourante.jourJulienUTC();
         while (!afin) {
 
             jjm[0] = t_ecl - periode;
@@ -3925,10 +3927,9 @@ void PreviSat::CalculDN() const
 
                 // Conditions d'eclipse du satellite
                 satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
-                ecl[j] = satellite.rayonOmbre() - satellite.elongation();
+                ecl[j] = satellite.rayonPenombre() - satellite.elongation();
             }
 
-            double tdn = t_ecl;
             if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
                 tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
             periode *= 0.5;
@@ -8601,8 +8602,12 @@ void PreviSat::AffichageResultats()
     ui->frameResultats->setVisible(false);
 
     /* Corps de la methode */
-    if (resultatsSatellitesTrouves.count() > 0) {
+    if (resultatsSatellitesTrouves.count() == 0) {
+        ui->lbl_satellitesTrouves->setText(tr("Objets trouvés :"));
+    } else {
 
+        const QString chaine = tr("Objets trouvés (%1) :");
+        ui->lbl_satellitesTrouves->setText(chaine.arg(resultatsSatellitesTrouves.count()));
         // Remplissage de la liste de resultats
         QStringListIterator it(resultatsSatellitesTrouves);
         while (it.hasNext()) {

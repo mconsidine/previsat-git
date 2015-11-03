@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -8049,7 +8049,7 @@
               <rect>
                <x>0</x>
                <y>50</y>
-               <width>101</width>
+               <width>161</width>
                <height>16</height>
               </rect>
              </property>
