@@ -59,6 +59,7 @@ SGP4::SGP4()
 
     /* Corps du constructeur */
     _init = false;
+    _sat = SatVariables();
 
     /* Retour */
     return;

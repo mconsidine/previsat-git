@@ -221,12 +221,11 @@ double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observate
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double magnitude = 99.;
     const double angDeg = angle * RAD2DEG;
     const QString typSat = _sts.toLower();
 
     /* Corps de la methode */
-    magnitude = -4. + angDeg * (0.239 + angDeg * 2.2573);
+    double magnitude = -4. + angDeg * (0.239 + angDeg * 2.2573);
     if (typSat.contains("metop"))
         magnitude -= 1.;
 

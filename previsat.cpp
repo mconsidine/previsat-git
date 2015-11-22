@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2015
+ * >    22 novembre 2015
  *
  */
 
@@ -8341,7 +8341,6 @@ void PreviSat::on_noradDonneesSat_valueChanged(int arg1)
         resultatsSatellitesTrouves.clear();
 
         int indx1 = 0;
-        int indx2 = 0;
         const QString chaine = "%1 ";
         const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
 
@@ -8351,7 +8350,7 @@ void PreviSat::on_noradDonneesSat_valueChanged(int arg1)
         } while (indx1 >= 0 && donneesSat.at(indx1 - 1) != '\n');
         if (indx1 >= 0) {
 
-            indx2 = donneesSat.indexOf("\n", indx1) - indx1;
+            int indx2 = donneesSat.indexOf("\n", indx1) - indx1;
 
             const QString ligne = donneesSat.mid(indx1, indx2).trimmed();
             if (ligne.length() > 0)
@@ -8415,7 +8414,6 @@ void PreviSat::on_cosparDonneesSat_returnPressed()
 void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
 {
     /* Declarations des variables locales */
-    double xval, xval2;
     QString chaine;
 
     /* Initialisations */
@@ -8423,6 +8421,7 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
     /* Corps de la methode */
     if (currentRow >= 0) {
 
+        double xval, xval2;
         const QString ligne = resultatsSatellitesTrouves.at(currentRow).toUpper();
         const double magnitudeStandard = ligne.mid(34, 4).toDouble();
 
