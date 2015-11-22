@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    22 novembre 2015
  *
  */
 
@@ -221,7 +221,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const bool itr = (ang <= rayonApparent);
                         sat.CalculSatelliteEclipse(soleil, conditions.refr());
 
-                        if (itr || (!itr && !sat.isEclipse())) {
+                        if (itr || !sat.isEclipse()) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[1] = date2;
