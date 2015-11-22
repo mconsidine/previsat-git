@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    22 novembre 2015
  *
  */
 
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     // Verification si une instance de PreviSat existe
     const qint64 pid = a.applicationPid();
     QSharedMemory mem;
-    mem.setKey("pid");
+    mem.setKey("pidPreviSat");
     if (!mem.create(sizeof(pid))) {
         if (mem.error() == QSharedMemory::AlreadyExists) {
             if (mem.attach(QSharedMemory::ReadOnly)) {
