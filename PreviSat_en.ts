@@ -35,7 +35,7 @@
     </message>
     <message>
         <location filename="afficher.ui" line="177"/>
-        <location filename="afficher.cpp" line="307"/>
+        <location filename="afficher.cpp" line="315"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
@@ -45,7 +45,7 @@
         <translation>Mir</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="285"/>
+        <location filename="afficher.cpp" line="293"/>
         <source>Corps</source>
         <translation>Body</translation>
     </message>
@@ -86,122 +86,122 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="229"/>
+        <location filename="afficher.cpp" line="237"/>
         <source>Prévisions de passage</source>
         <translation>Predictions of passes</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="233"/>
+        <location filename="afficher.cpp" line="241"/>
         <source>Flashs Iridium</source>
         <translation>Iridium flares</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="242"/>
+        <location filename="afficher.cpp" line="250"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="238"/>
+        <location filename="afficher.cpp" line="246"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="246"/>
+        <location filename="afficher.cpp" line="254"/>
         <source>Flashs MetOp et SkyMed</source>
         <translation>MetOp and SkyMed flares</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="283"/>
+        <location filename="afficher.cpp" line="291"/>
         <source>Angle</source>
         <translation>Angle</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="284"/>
+        <location filename="afficher.cpp" line="292"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="304"/>
-        <location filename="afficher.cpp" line="305"/>
-        <location filename="afficher.cpp" line="325"/>
+        <location filename="afficher.cpp" line="312"/>
+        <location filename="afficher.cpp" line="313"/>
+        <location filename="afficher.cpp" line="333"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="306"/>
+        <location filename="afficher.cpp" line="314"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="308"/>
+        <location filename="afficher.cpp" line="316"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="315"/>
+        <location filename="afficher.cpp" line="323"/>
         <source>Iridium</source>
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="402"/>
-        <location filename="afficher.cpp" line="406"/>
+        <location filename="afficher.cpp" line="410"/>
+        <location filename="afficher.cpp" line="414"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="404"/>
-        <location filename="afficher.cpp" line="408"/>
+        <location filename="afficher.cpp" line="412"/>
+        <location filename="afficher.cpp" line="416"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="442"/>
+        <location filename="afficher.cpp" line="450"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="442"/>
-        <location filename="afficher.cpp" line="443"/>
+        <location filename="afficher.cpp" line="450"/>
+        <location filename="afficher.cpp" line="451"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="442"/>
+        <location filename="afficher.cpp" line="450"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="446"/>
+        <location filename="afficher.cpp" line="454"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="447"/>
+        <location filename="afficher.cpp" line="455"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="447"/>
+        <location filename="afficher.cpp" line="455"/>
         <source>Altitude</source>
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="519"/>
+        <location filename="afficher.cpp" line="527"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="520"/>
+        <location filename="afficher.cpp" line="528"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1053"/>
+        <location filename="afficher.cpp" line="1061"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1059"/>
+        <location filename="afficher.cpp" line="1067"/>
         <source>Flash %1</source>
         <translation>%1 flare</translation>
     </message>
