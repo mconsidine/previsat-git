@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    23 novembre 2015
  *
  */
 
@@ -204,8 +204,16 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
 
 #if defined (Q_OS_LINUX) || defined (Q_OS_MAC)
+
+#if QT_VERSION >= 0x050000
+    dirOut = settings.value("fichier/sauvegarde",
+                            QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) +
+                            QDir::separator() + dirAstr).toString();
+#else
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
                             QDir::separator() + QCoreApplication::applicationName()).toString();
+#endif
+
 #endif
 
     dirOut = QDir::toNativeSeparators(dirOut);

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    23 novembre 2015
  *
  */
 
@@ -472,7 +472,8 @@ void Corps::InitTabConstellations()
 #if defined (Q_OS_MAC)
     const QString dirCommonData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #elif defined (Q_OS_LINUX)
-    const QString dirCommonData = "/usr/share" + QDir::separator() + dirAstr;
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    const QString dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr;
 #else
 
 #if QT_VERSION >= 0x050000
