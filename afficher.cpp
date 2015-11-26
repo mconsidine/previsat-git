@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    23 novembre 2015
+ * >    24 novembre 2015
  *
  */
 
@@ -202,6 +202,8 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
 
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if defined (Q_OS_LINUX) || defined (Q_OS_MAC)
 

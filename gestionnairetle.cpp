@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    24 novembre 2015
  *
  */
 
@@ -178,6 +178,9 @@ void GestionnaireTLE::load()
 #else
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
+
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
     ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
