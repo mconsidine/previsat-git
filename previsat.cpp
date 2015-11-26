@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 novembre 2015
+ * >    24 novembre 2015
  *
  */
 
@@ -353,6 +353,8 @@ void PreviSat::ChargementConfig()
     dirTle = QDir::toNativeSeparators(listeGenericDir + QDir::separator() + "tle");
 #endif
 
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if defined (Q_OS_WIN)
 
@@ -402,6 +404,12 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Marion");
 
 #else
+#endif
+
+#if not defined (Q_OS_WIN)
+    ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
+    ui->grpElementsOsculateurs->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
+    ui->grpSignal->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
 #endif
 
     ui->policeWCC->setCurrentIndex(settings.value("affichage/policeWCC", 0).toInt());

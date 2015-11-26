@@ -6251,7 +6251,7 @@
              </property>
             </widget>
            </widget>
-           <widget class="QGroupBox" name="groupBox">
+           <widget class="QGroupBox" name="grpSignal">
             <property name="geometry">
              <rect>
               <x>609</x>
@@ -6354,7 +6354,7 @@
            <zorder>typeRepere</zorder>
            <zorder>grpElementsOsculateurs</zorder>
            <zorder>typeParametres</zorder>
-           <zorder>groupBox</zorder>
+           <zorder>grpSignal</zorder>
           </widget>
           <widget class="QWidget" name="informations">
            <property name="font">
@@ -7500,10 +7500,10 @@
               </rect>
              </property>
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Plain</enum>
              </property>
              <widget class="QLabel" name="lbl_nomsat">
               <property name="geometry">

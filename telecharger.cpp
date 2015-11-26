@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    24 novembre 2015
  *
  */
 
@@ -100,6 +100,9 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
+
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if defined (Q_OS_WIN)
 
