@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    24 novembre 2015
+ * >    30 novembre 2015
  *
  */
 
@@ -200,6 +200,10 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirOut = settings.value("fichier/sauvegarde", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) +
                             QDir::separator() + dirAstr).toString();
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+#endif
+
+#if defined (Q_OS_MAC)
+    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #endif
 
     if (dirTmp.trimmed().isEmpty())

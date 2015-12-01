@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 novembre 2015
+ * >    28 novembre 2015
  *
  */
 
@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
     /* Corps de la methode */
     const QString locale = PreviSat::DeterminationLocale();
 
+    // Chargement des fichiers de traduction
     QTranslator qtTranslator;
     qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
     a.installTranslator(&qtTranslator);
@@ -129,5 +130,4 @@ int main(int argc, char *argv[])
 
     /* Retour */
     return a.exec();
-
 }

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 novembre 2015
+ * >    30 novembre 2015
  *
  */
 
@@ -353,8 +353,6 @@ void PreviSat::ChargementConfig()
     dirTle = QDir::toNativeSeparators(listeGenericDir + QDir::separator() + "tle");
 #endif
 
-    if (dirTmp.trimmed().isEmpty())
-        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if defined (Q_OS_WIN)
 
@@ -371,7 +369,7 @@ void PreviSat::ChargementConfig()
     dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(),
                                     QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
 #else
-    dirCommonData = "/usr/share" + QDir::separator() + dirAstr;
+    dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
             QCoreApplication::applicationName();
 #endif
@@ -405,6 +403,9 @@ void PreviSat::ChargementConfig()
 
 #else
 #endif
+
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if not defined (Q_OS_WIN)
     ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
@@ -7139,6 +7140,12 @@ void PreviSat::on_fluxVideo_clicked()
 
         setCursor(Qt::ArrowCursor);
 
+#if defined (Q_OS_MAC) && QT_VERSION < 0x050000
+        ui->lbl_chaine->setVisible(true);
+        ui->chaine->setVisible(true);
+        QDesktopServices::openUrl(QUrl(fic));
+
+#else
         ui->fluxVideo->setText(tr("Veuillez patienter..."));
         ui->fluxVideo->repaint();
         ui->lbl_video->raise();
@@ -7163,6 +7170,7 @@ void PreviSat::on_fluxVideo_clicked()
         ui->fluxVideoHtml->setVisible(true);
         ui->fluxVideo->setVisible(false);
         ui->lbl_video->setVisible(false);
+#endif
 
     } catch (PreviSatException &e) {
     }

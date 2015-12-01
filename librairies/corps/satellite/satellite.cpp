@@ -36,13 +36,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 novembre 2015
+ * >    30 novembre 2015
  *
  */
 
+#include <QCoreApplication>
 #include <QtGlobal>
 #if QT_VERSION >= 0x050000
-#include <QCoreApplication>
 #include <QStandardPaths>
 #else
 #include <QDesktopServices>
