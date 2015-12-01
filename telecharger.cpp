@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    24 novembre 2015
+ * >    30 novembre 2015
  *
  */
 
@@ -92,17 +92,15 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
 
 #if QT_VERSION >= 0x050000
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    const QString dirLocalData =
+    QString dirLocalData =
             QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
             dirAstr + QDir::separator() + "data";
     dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 #else
-    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+    QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
 
-    if (dirTmp.trimmed().isEmpty())
-        dirTmp = dirLocalData + QDir::separator() + "cache";
 
 #if defined (Q_OS_WIN)
 
@@ -115,12 +113,15 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
-    const QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 
     police.setFamily("Marion");
     police.setPointSize(11);
 #else
 #endif
+
+    if (dirTmp.trimmed().isEmpty())
+        dirTmp = dirLocalData + QDir::separator() + "cache";
 
     setFont(police);
 

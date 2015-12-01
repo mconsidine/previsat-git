@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    23 novembre 2015
+ * >    2 decembre 2015
  *
  */
 
@@ -119,7 +119,7 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     const QString dirCommonData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #elif defined (Q_OS_LINUX)
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    const QString dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr;
+    const QString dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #else
 
 #if QT_VERSION >= 0x050000
