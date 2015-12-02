@@ -48,7 +48,7 @@
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;
 static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
-static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
+static const double PAS_INT0 = 30. * NB_JOUR_PAR_SEC;
 static const double PAS_INT1 = 2. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 static const double TEMPS2 = 76. * NB_JOUR_PAR_MIN;

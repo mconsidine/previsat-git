@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -567,9 +567,8 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
         // Angle de reflexion
         const double ang = AngleReflexion(conditions.typeCalcul(), sat, soleil);
-        const double ang0 = (conditions.typeCalcul() == IRIDIUM) ? conditions.ang0() : PI;
 
-        if (ang <= ang0) {
+        if (ang <= conditions.ang0()) {
 
             const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
 
@@ -651,7 +650,7 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
     /* Initialisations */
     double altitude = alt;
-    const QString fmt = "%1%2 %3 %4 %5 %6 %7  %8  %9%10 %11%12 %13%14%15";
+    const QString fmt = "%1%2 %3 %4 %5 %6%7  %8  %9%10 %11%12 %13%14%15";
 
     /* Corps de la methode */
 
@@ -683,8 +682,8 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
     const QString azs = Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, false);
     const QString hts = Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, false);
 
-    QString result = fmt.arg(date3.ToShortDateAMJ(FORMAT_LONG, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).arg(az).arg(ht).arg(ad).
-            arg(de).arg(sat.constellation()).arg(angref * RAD2DEG, 4, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).
+    QString result = fmt.arg(date3.ToShortDateAMJ(FORMAT_LONG, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).arg(az).arg(ht).
+            arg(ad).arg(de).arg(sat.constellation()).arg(angref * RAD2DEG, 5, 'f', 2).arg(_mir).arg(magn).arg(altitude, 6, 'f', 1).
             arg(distance, 6, 'f', 1).arg(azs).arg(hts).arg(i);
 
     // Recherche des coordonnees geographiques ou se produit le maximum du flash

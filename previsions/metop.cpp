@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -221,17 +221,21 @@ double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observate
     /* Declarations des variables locales */
 
     /* Initialisations */
+    double magnitude = 99.;
     const double angDeg = angle * RAD2DEG;
     const QString typSat = _sts.toLower();
 
     /* Corps de la methode */
-    double magnitude = -4. + angDeg * (0.239 + angDeg * 2.2573);
     if (typSat.contains("metop"))
-        magnitude -= 1.;
+        magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
 
     if (typSat.contains("skymed")) {
-        if (angDeg > 0.5)
-            magnitude = 3.2 * log(angDeg) - 2.450012;;
+
+        const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
+        const double aireProjetee = fabs(satellite.dist().x()) * invDist3 * AIRE_PAN_SKYMED;
+
+        const double magnitudeStandard = (angle < 0.0172) ? -1.5 : 3.2 * log(angDeg) - 1.450012;
+        magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
     }
 
     // Prise en compte de l'extinction atmospherique
