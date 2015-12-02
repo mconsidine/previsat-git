@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    2 decembre 2015
  *
  */
 
@@ -320,7 +320,7 @@ Conditions::Conditions(const TypeCalcul typeCalc, const bool pecEcart, const boo
     _haut = hauteur * DEG2RAD;
     _nbl = nbLig;
     _chr = chrono;
-    _ang0 = 9.99 * DEG2RAD;
+    _ang0 = PI;
     _jj1 = jourJulien1;
     _jj2 = jourJulien2;
     _offset = offsetUTC;

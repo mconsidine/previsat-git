@@ -3964,7 +3964,7 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="207"/>
-        <location filename="previsions/flashs.cpp" line="677"/>
+        <location filename="previsions/flashs.cpp" line="676"/>
         <location filename="previsions/prevision.cpp" line="220"/>
         <location filename="previsions/transitiss.cpp" line="273"/>
         <source>nmi</source>
@@ -4064,7 +4064,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="213"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/flashs.cpp" line="716"/>
+        <location filename="previsions/flashs.cpp" line="715"/>
         <location filename="previsions/transitiss.cpp" line="326"/>
         <source>W</source>
         <translation>W</translation>
@@ -4072,7 +4072,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="213"/>
         <location filename="previsions/evenements.cpp" line="395"/>
-        <location filename="previsions/flashs.cpp" line="716"/>
+        <location filename="previsions/flashs.cpp" line="715"/>
         <location filename="previsions/transitiss.cpp" line="326"/>
         <source>E</source>
         <translation>E</translation>
@@ -4080,7 +4080,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="215"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/flashs.cpp" line="717"/>
+        <location filename="previsions/flashs.cpp" line="716"/>
         <location filename="previsions/transitiss.cpp" line="327"/>
         <source>N</source>
         <translation>N</translation>
@@ -4088,7 +4088,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="215"/>
         <location filename="previsions/evenements.cpp" line="397"/>
-        <location filename="previsions/flashs.cpp" line="717"/>
+        <location filename="previsions/flashs.cpp" line="716"/>
         <location filename="previsions/transitiss.cpp" line="286"/>
         <location filename="previsions/transitiss.cpp" line="327"/>
         <source>S</source>
@@ -4170,13 +4170,13 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>%1   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="704"/>
+        <location filename="previsions/flashs.cpp" line="703"/>
         <location filename="previsions/transitiss.cpp" line="324"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="704"/>
+        <location filename="previsions/flashs.cpp" line="703"/>
         <location filename="previsions/transitiss.cpp" line="320"/>
         <source>(E)</source>
         <translation>(E)</translation>
