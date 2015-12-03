@@ -688,7 +688,10 @@ void PreviSat::ChargementConfig()
     ui->magnitudeMaxJourIri->setValue(settings.value("previsions/magnitudeMaxJourIri", -4.).toDouble());
     ui->magnitudeMaxNuitIri->setValue(settings.value("previsions/magnitudeMaxNuitIri", 2.).toDouble());
     ui->angleMaxReflexionIri->setValue(settings.value("previsions/angleMaxReflexionIri", 5.).toDouble());
-    ui->affichage3lignesIri->setChecked(settings.value("previsions/affichage3lignesIri", true).toBool());
+    if (settings.value("previsions/affichage3lignesIri", true).toBool())
+        ui->affichage3lignesIri->setChecked(true);
+    else
+        ui->affichage1ligneIri->setChecked(true);
     ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setEnabled(false);
@@ -819,7 +822,10 @@ void PreviSat::ChargementConfig()
     ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
     ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
     ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
-    ui->affichage3lignesMetOp->setChecked(settings.value("previsions/affichage3lignesMetOp", true).toBool());
+    if (settings.value("previsions/affichage3lignesMetOp", true).toBool())
+        ui->affichage3lignesMetOp->setChecked(true);
+    else
+        ui->affichage1ligneMetOp->setChecked(true);
     ui->valHauteurSatMetOp->setVisible(false);
     ui->valHauteurSoleilMetOp->setVisible(false);
     ui->afficherMetOp->setEnabled(false);
