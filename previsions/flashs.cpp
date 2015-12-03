@@ -75,6 +75,8 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
     _psol = conditions.psol();
     _res.clear();
     result.clear();
+    const double angrefMax = (conditions.typeCalcul() == IRIDIUM) ? 0.3 : 1.;
+
     _tabtle = conditions.tabtle();
     QVectorIterator<TLE> it1(_tabtle);
     while (it1.hasNext()) {
@@ -145,7 +147,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                         const double angref = AngleReflexion(conditions.typeCalcul(), sat, soleil);
                         const double pas = (angref < 0.5) ? PAS1 : PAS0;
 
-                        if (angref <= 0.3) {
+                        if (angref <= angrefMax) {
 
                             double jjm[3];
                             jjm[0] = jj0 - NB_JOUR_PAR_MIN;
@@ -221,7 +223,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
     if (_res.count() > 0) {
 
         const QString enteteLigne =
-                QObject::tr("%1   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst Ang  Mir Magn" \
+                QObject::tr("%1   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn" \
                             "   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max");
 
         ligne = enteteLigne.arg(idsat);
@@ -238,28 +240,28 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
             case IRIDIUM:
             {
-                const QString flashMax1 = ligne.mid(336, idsat.length()) + ligne.mid(170, 120) +
-                        ligne.mid(291, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax1 : ligne.mid(166, idsat.length()) + ligne.mid(0, 120) + "\n" +
-                                                  flashMax1 + "\n" + ligne.mid(506, idsat.length()) + ligne.mid(340, 120);
+                const QString flashMax1 = ligne.mid(338, idsat.length()) + ligne.mid(171, 121) +
+                        ligne.mid(293, 44).remove(QRegExp("\\s+$"));
+                flash = (conditions.nbl() == 1) ? flashMax1 : ligne.mid(167, idsat.length()) + ligne.mid(0, 121) + "\n" +
+                                                  flashMax1 + "\n" + ligne.mid(509, idsat.length()) + ligne.mid(342, 121);
 
-                result.append((ligne.mid(0, 170) + ligne.right(5)).trimmed());
-                result.append((ligne.mid(170, 170) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(340).trimmed());
+                result.append((ligne.mid(0, 171) + ligne.right(5)).trimmed());
+                result.append((ligne.mid(171, 171) + ligne.right(5)).trimmed());
+                result.append(ligne.mid(341).trimmed());
                 result.append("");
                 break;
             }
 
             case METOP:
             {
-                const QString flashMax2 = ligne.mid(342, idsat.length()) + ligne.mid(176, 120) +
-                        ligne.mid(297, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(166, idsat.length()) + ligne.mid(0, 120) + "\n" +
-                                                  flashMax2 + "\n" + ligne.mid(518, idsat.length()) + ligne.mid(352, 120);
+                const QString flashMax2 = ligne.mid(344, idsat.length()) + ligne.mid(177, 121) +
+                        ligne.mid(299, 44).remove(QRegExp("\\s+$"));
+                flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, idsat.length()) + ligne.mid(0, 121) + "\n" +
+                                                  flashMax2 + "\n" + ligne.mid(521, idsat.length()) + ligne.mid(354, 121);
 
-                result.append((ligne.mid(0, 180) + ligne.right(5)).trimmed());
-                result.append((ligne.mid(176, 180) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(352).trimmed());
+                result.append((ligne.mid(0, 181) + ligne.right(5)).trimmed());
+                result.append((ligne.mid(177, 181) + ligne.right(5)).trimmed());
+                result.append(ligne.mid(354).trimmed());
                 result.append("");
                 break;
             }
@@ -650,7 +652,7 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
     /* Initialisations */
     double altitude = alt;
-    const QString fmt = "%1%2 %3 %4 %5 %6%7  %8  %9%10 %11%12 %13%14%15";
+    const QString fmt = "%1%2 %3 %4 %5 %6 %7  %8  %9%10 %11%12 %13%14%15";
 
     /* Corps de la methode */
 

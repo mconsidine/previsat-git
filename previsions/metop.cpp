@@ -229,14 +229,8 @@ double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observate
     if (typSat.contains("metop"))
         magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
 
-    if (typSat.contains("skymed")) {
-
-        const double invDist3 = 1. / (satellite.distance() * satellite.distance() * satellite.distance());
-        const double aireProjetee = fabs(satellite.dist().x()) * invDist3 * AIRE_PAN_SKYMED;
-
-        const double magnitudeStandard = (angle < 0.0172) ? -1.5 : 3.2 * log(angDeg) - 1.450012;
-        magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
-    }
+    if (typSat.contains("skymed"))
+        magnitude = 0.3075 * angDeg - 2.92;
 
     // Prise en compte de l'extinction atmospherique
     if (ext)
