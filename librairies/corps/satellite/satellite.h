@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 octobre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -60,7 +60,28 @@ public:
      * @brief Satellite Constructeur a partir d'un TLE
      * @param xtle tle
      */
-    Satellite(const TLE &xtle);
+    explicit Satellite(const TLE &xtle) : _tle(xtle) {
+        _eclipse = true;
+        _ieralt = true;
+        _penombre = false;
+        _methMagnitude = 'v';
+        _nbOrbites = 0;
+        _ageTLE = 0.;
+        _attenuation = 0.;
+        _beta = 0.;
+        _delai = 0.;
+        _doppler = 0.;
+        _elongation = 0.;
+        _fractionIlluminee = 0.;
+        _magnitude = 99.;
+        _magnitudeStandard = 99.;
+        _rayonOmbre = 0.;
+        _rayonPenombre = 0.;
+        _section = 0.;
+        _t1 = 0.;
+        _t2 = 0.;
+        _t3 = 0.;
+    }
 
     ~Satellite();
 

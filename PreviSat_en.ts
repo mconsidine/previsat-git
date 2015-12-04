@@ -4335,19 +4335,19 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="208"/>
+        <location filename="telecharger.cpp" line="212"/>
         <source>Erreur lors du téléchargement du fichier :
 %1</source>
         <translation>Error while downloading file :
 %1</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="346"/>
+        <location filename="telecharger.cpp" line="350"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour</source>
         <translation>Please restart %1 in order to take into account updates</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="347"/>
+        <location filename="telecharger.cpp" line="351"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>

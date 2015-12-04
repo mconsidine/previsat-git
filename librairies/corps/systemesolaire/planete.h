@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -53,7 +53,7 @@ public:
      * @brief Planete Constructeur avec l'identifiant de la planete
      * @param iplanete indice de la planete
      */
-    Planete(const int iplanete);
+    explicit Planete(const int iplanete);
 
     /* Constantes publiques */
 

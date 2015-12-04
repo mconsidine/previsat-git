@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -50,7 +50,7 @@ public:
 
     /* Constructeurs */
     PreviSatException() throw();
-    PreviSatException(const int ierr) throw();
+    explicit PreviSatException(const int ierr) throw();
     PreviSatException(const QString &message, const MessageType ierr) throw();
 
     /* Constantes publiques */

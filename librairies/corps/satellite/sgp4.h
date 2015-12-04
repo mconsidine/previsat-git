@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -52,13 +52,21 @@ public:
     /**
      * @brief SGP4 Constructeur par defaut
      */
-    SGP4();
+    SGP4() :
+        _sat(SatVariables()) {
+        _init = false;
+    }
 
     /* Constantes publiques */
 
     /* Variables publiques */
 
     /* Methodes publiques */
+    /**
+     * @brief Calcul Calcul de la position et de la vitesse
+     * @param date date
+     * @param tle TLE du satellite
+     */
     void Calcul(const Date &date, const TLE &tle);
 
     /* Accesseurs */

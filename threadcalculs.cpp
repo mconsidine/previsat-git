@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    6 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -47,29 +47,18 @@
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
 
-static Observateur observ;
+Observateur ThreadCalculs::_observ;
 static QStringList result;
-
-ThreadCalculs::ThreadCalculs(const Conditions &cond)
-{
-    _conditions = cond;
-}
-
-ThreadCalculs::ThreadCalculs(const Conditions &cond, const Observateur &obs)
-{
-    _conditions = cond;
-    observ = obs;
-}
 
 void ThreadCalculs::run()
 {
     switch (_conditions.typeCalcul()) {
     case PREVISION:
-        Prevision::CalculPassages(_conditions, observ, result);
+        Prevision::CalculPassages(_conditions, _observ, result);
         break;
 
     case IRIDIUM:
-        Iridium::CalculFlashsIridium(_conditions, observ, result);
+        Iridium::CalculFlashsIridium(_conditions, _observ, result);
         break;
 
     case EVENEMENTS:
@@ -77,11 +66,11 @@ void ThreadCalculs::run()
         break;
 
     case TRANSITS:
-        TransitISS::CalculTransitsISS(_conditions, observ, result);
+        TransitISS::CalculTransitsISS(_conditions, _observ, result);
         break;
 
     case METOP:
-        MetOp::CalculFlashsMetOp(_conditions, observ, result);
+        MetOp::CalculFlashsMetOp(_conditions, _observ, result);
         break;
 
     default:
@@ -94,9 +83,9 @@ TypeCalcul ThreadCalculs::typeCalcul() const
     return _conditions.typeCalcul();
 }
 
-Observateur ThreadCalculs::observateur() const
+Observateur ThreadCalculs::observateur()
 {
-    return observ;
+    return _observ;
 }
 
 QStringList ThreadCalculs::res()

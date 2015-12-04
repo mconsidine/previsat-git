@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -58,7 +58,7 @@ public:
      * @brief Date Obtention de la date systeme en definissant l'ecart heure legale - UTC
      * @param offset ecart heure legale - UTC
      */
-    Date(const double offset);
+    explicit Date(const double offset);
 
     /**
      * @brief Date Definition de la date a partir d'un objet Date et de l'ecart heure legale - UTC

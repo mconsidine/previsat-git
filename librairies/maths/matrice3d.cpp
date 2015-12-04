@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -53,24 +53,6 @@ Matrice3D::Matrice3D()
     /* Initialisations */
 
     /* Corps du constructeur */
-
-    /* Retour */
-    return;
-}
-
-/*
- * Constructeur a partir d'une Matrice3D
- */
-Matrice3D::Matrice3D(const Matrice3D &matrice)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _vecteur1 = matrice._vecteur1;
-    _vecteur2 = matrice._vecteur2;
-    _vecteur3 = matrice._vecteur3;
 
     /* Retour */
     return;
@@ -113,24 +95,6 @@ Matrice3D::Matrice3D(const AxeType &axe, const double ang)
     _vecteur1 = vec1;
     _vecteur2 = vec2;
     _vecteur3 = vec3;
-
-    /* Retour */
-    return;
-}
-
-/*
- * Constructeur a partir de 3 vecteurs colonnes
- */
-Matrice3D::Matrice3D(const Vecteur3D &vect1, const Vecteur3D &vect2, const Vecteur3D &vect3)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _vecteur1 = vect1;
-    _vecteur2 = vect2;
-    _vecteur3 = vect3;
 
     /* Retour */
     return;
