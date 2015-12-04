@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -117,7 +117,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
         bool atransJn = false;
         res.clear();
         int i = 0, j = 0, k = 0, l = 0, m = 0;
-        Satellite sat = it1.next();
+        Satellite sat(it1.next());
 
         const QList<QVector<double> > list = it2.next();
         const int dim = list.size();

@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    30 novembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -97,7 +97,11 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
             dirAstr + QDir::separator() + "data";
     dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 #else
+
+#if !defined (Q_OS_MAC)
     QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#endif
+
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
 

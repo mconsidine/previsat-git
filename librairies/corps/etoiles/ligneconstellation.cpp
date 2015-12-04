@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 decembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -66,21 +66,6 @@ QList<QVector<int> > LigneConstellation::_tabLigCst;
 LigneConstellation::LigneConstellation()
 {
     _dessin = false;
-}
-
-LigneConstellation::LigneConstellation(const Etoile &star1, const Etoile &star2)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _etoile1 = star1;
-    _etoile2 = star2;
-    _dessin = _etoile1.isVisible() && _etoile2.isVisible();
-
-    /* Retour */
-    return;
 }
 
 /*

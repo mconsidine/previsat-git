@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -56,8 +56,16 @@ public:
      * @brief Matrice3D Definition a partir d'une matrice 3D
      * @param matrice matrice
      */
-    Matrice3D(const Matrice3D &matrice);
+    Matrice3D(const Matrice3D &matrice) :
+        _vecteur1(matrice._vecteur1),
+        _vecteur2(matrice._vecteur2),
+        _vecteur3(matrice._vecteur3) { }
 
+    /**
+     * @brief Matrice3D Definition d'une matrice de rotation
+     * @param axe axe de rotation
+     * @param ang angle de rotation
+     */
     Matrice3D(const AxeType &axe, const double ang);
 
     /**
@@ -66,7 +74,10 @@ public:
      * @param vec2 vecteur 2
      * @param vec3 vecteur 3
      */
-    Matrice3D(const Vecteur3D &vect1, const Vecteur3D &vect2, const Vecteur3D &vect3);
+    Matrice3D(const Vecteur3D &vect1, const Vecteur3D &vect2, const Vecteur3D &vect3) :
+        _vecteur1(vect1),
+        _vecteur2(vect2),
+        _vecteur3(vect3) { }
 
     ~Matrice3D();
 

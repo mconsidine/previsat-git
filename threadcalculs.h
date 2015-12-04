@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -53,14 +53,18 @@ public:
      * @brief ThreadCalculs Constructeur avec conditions
      * @param cond conditions d'observation
      */
-    ThreadCalculs(const Conditions &cond);
+    explicit ThreadCalculs(const Conditions &cond) :
+        _conditions(cond) { }
 
     /**
      * @brief ThreadCalculs Constructeur avec conditions et lieu d'observation
      * @param cond conditions d'observation
      * @param obs lieu d'observation
      */
-    ThreadCalculs(const Conditions &cond, const Observateur &obs);
+    ThreadCalculs(const Conditions &cond, const Observateur &obs) :
+        _conditions(cond) {
+        _observ = obs;
+    }
 
     /* Constantes publiques */
 
@@ -73,7 +77,7 @@ public:
     void run();
 
     /* Accesseurs */
-    Observateur observateur() const;
+    static Observateur observateur();
     QStringList res();
     TypeCalcul typeCalcul() const;
 
@@ -93,6 +97,7 @@ private:
 
     /* Variables privees */
     Conditions _conditions;
+    static Observateur _observ;
 
     /* Methodes privees */
 

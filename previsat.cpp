@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 novembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -407,7 +407,7 @@ void PreviSat::ChargementConfig()
     if (dirTmp.trimmed().isEmpty())
         dirTmp = dirLocalData + QDir::separator() + "cache";
 
-#if not defined (Q_OS_WIN)
+#if !defined (Q_OS_WIN)
     ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     ui->grpElementsOsculateurs->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     ui->grpSignal->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");

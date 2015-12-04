@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -57,7 +57,11 @@ public:
      * @param star1 etoile 1
      * @param star2 etoile 2
      */
-    LigneConstellation(const Etoile &star1, const Etoile &star2);
+    LigneConstellation(const Etoile &star1, const Etoile &star2) :
+        _etoile1(star1),
+        _etoile2(star2) {
+        _dessin = _etoile1.isVisible() && _etoile2.isVisible();
+    }
 
     ~LigneConstellation();
 

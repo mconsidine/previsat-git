@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -57,7 +57,7 @@ public:
      * @brief Soleil Constructeur a partir du vecteur position
      * @param pos vecteur position du Soleil
      */
-    Soleil(const Vecteur3D &pos);
+    explicit Soleil(const Vecteur3D &pos);
 
     ~Soleil();
 

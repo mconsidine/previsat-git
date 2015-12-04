@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -51,19 +51,6 @@ static const double RPTIM = OMEGA * NB_SEC_PAR_MIN;
 
 
 /* Constructeurs */
-SGP4::SGP4()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _init = false;
-    _sat = SatVariables();
-
-    /* Retour */
-    return;
-}
 
 /* Methodes */
 void SGP4::Calcul(const Date &date, const TLE &tle)

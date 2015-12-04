@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 novembre 2015
+ * >    4 decembre 2015
  *
  */
 
@@ -82,39 +82,6 @@ Satellite::Satellite()
     _t1 = 0.;
     _t2 = 0.;
     _t3 = 0.;
-}
-
-Satellite::Satellite(const TLE &xtle)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _eclipse = true;
-    _ieralt = true;
-    _penombre = false;
-    _methMagnitude = 'v';
-    _nbOrbites = 0;
-    _ageTLE = 0.;
-    _attenuation = 0.;
-    _beta = 0.;
-    _delai = 0.;
-    _doppler = 0.;
-    _elongation = 0.;
-    _fractionIlluminee = 0.;
-    _magnitude = 99.;
-    _magnitudeStandard = 99.;
-    _rayonOmbre = 0.;
-    _rayonPenombre = 0.;
-    _section = 0.;
-    _t1 = 0.;
-    _t2 = 0.;
-    _t3 = 0.;
-    _tle = xtle;
-
-    /* Retour */
-    return;
 }
 
 /* Destructeur */
