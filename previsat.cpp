@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    8 decembre 2015
  *
  */
 
@@ -405,7 +405,7 @@ void PreviSat::ChargementConfig()
 #endif
 
     if (dirTmp.trimmed().isEmpty())
-        dirTmp = dirLocalData + QDir::separator() + "cache";
+        dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
 
 #if !defined (Q_OS_WIN)
     ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
@@ -543,8 +543,7 @@ void PreviSat::ChargementConfig()
     // Fichier flashs MetOp et SkyMed
     ficTLEMetOp.clear();
     const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() +
-                                               "flares-spctrk.txt").toString().
-            trimmed();
+                                               "flares-spctrk.txt").toString().trimmed();
     const QFileInfo fim(nomFicMetOp);
     if (fim.exists()) {
         ui->fichierTLEMetOp->addItem(fim.fileName());
@@ -760,8 +759,8 @@ void PreviSat::ChargementConfig()
 
         const QString nomStation = "%1 (%2)";
         QListWidgetItem * const elem = new QListWidgetItem(nomStation.arg(nomlieu).arg(nomSta) , ui->listeStations);
-        elem->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + QString::number(ista), Qt::Checked)
-                                                          .toUInt())) ? Qt::Checked : Qt::Unchecked);
+        elem->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + QString::number(ista), Qt::Checked).
+                                                          toUInt())) ? Qt::Checked : Qt::Unchecked);
         ista++;
     }
     ficSta.close();
@@ -1133,8 +1132,7 @@ void PreviSat::DemarrageApplication()
     ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
     ui->frameCarteListe->resize(width(), ui->frameCarteListe->height());
 
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
 
     // Demarrage du temps reel
     chronometre->setInterval(200);
@@ -4412,8 +4410,9 @@ void PreviSat::VerifMAJPreviSat()
                 QDateTime dateMax;
                 for(int i=0; i<listeFicLocalData.size(); i++) {
 
-                    if (!listeFicLocalData.at(i).startsWith("gestionnaireTLE_")) {
-                        const QString fich = dirLocalData + QDir::separator() + listeFicLocalData.at(i);
+                    const QString fichier = listeFicLocalData.at(i);
+                    if (!fichier.contains("gestionnaireTLE_")) {
+                        const QString fich = dirLocalData + QDir::separator() + fichier;
                         const QFileInfo fi2(fich);
 
                         if (fi2.lastModified().date() > dateMax.date())
@@ -5122,6 +5121,7 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
                     .arg((ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
 
         } else {
+
             // Donnees sur le satellite
             flux << tr("Nom                :") + " " + ui->nomsat->text() << endl;
 
@@ -5149,7 +5149,6 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
 
             chaine = (ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1").arg(ui->paysDonneesSat->text()) : "";
             flux << tr("Inclinaison        : %1\t\t\t").arg(ui->inclinaisonDonneesSat->text()).append(chaine) << endl;
-
         }
         sw.close();
 
@@ -5411,6 +5410,7 @@ void PreviSat::GestionTempsReel()
 
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
+
         modeFonctionnement->setText(tr("Temps réel"));
         const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
         offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
@@ -5420,6 +5420,7 @@ void PreviSat::GestionTempsReel()
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
     } else {
+
         modeFonctionnement->setText(tr("Mode manuel"));
         date1 = dateCourante;
         if (ui->valManuel->currentIndex() < 3) {
@@ -5671,6 +5672,7 @@ void PreviSat::TelechargementSuivant()
 
     /* Corps de la methode */
     if (downQueue.isEmpty()) {
+
         emit TelechargementFini();
 
         atrouve = false;
@@ -5682,9 +5684,13 @@ void PreviSat::TelechargementSuivant()
     } else {
 
         const QUrl url = downQueue.dequeue();
+        const QString dirHttpPrevi =
+                settings.value("fichier/dirHttpPrevi", "").toString().trimmed().replace(QCoreApplication::organizationDomain(), "/") +
+                "commun/data/";
+        const QString fic = (url.path().contains(dirHttpPrevi)) ? url.path().replace(dirHttpPrevi, "") :
+                                                                  QFileInfo(url.path()).fileName();
 
-        const QString fic = QFileInfo(url.path()).fileName();
-        ui->fichierTelechargement->setText(fic);
+        ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
         if (ui->miseAJourTLE->isVisible()) {
             ui->barreProgression->setValue(0);
             ui->frameBarreProgression->setVisible(true);
@@ -6786,8 +6792,7 @@ void PreviSat::on_maximise_clicked()
         EnchainementCalculs();
     }
 
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
 
     /* Retour */
     return;
@@ -6831,8 +6836,7 @@ void PreviSat::on_affichageCiel_clicked()
     // Enchainement de l'ensemble des calculs et affichage
     CalculsAffichage();
 
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
 
     /* Retour */
     return;
@@ -7110,8 +7114,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
 
     CalculsAffichage();
 
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
 
     /* Retour */
     return;
@@ -7387,14 +7390,17 @@ void PreviSat::on_actionEnregistrer_triggered()
                 // Sauvegarde de l'onglet General
                 SauveOngletGeneral(fichier);
                 break;
+
             case 1:
                 // Sauvegarde de l'onglet Elements osculateurs
                 SauveOngletElementsOsculateurs(fichier);
                 break;
+
             case 2:
                 // Sauvegarde de l'onglet Informations satellite
                 SauveOngletInformations(fichier);
                 break;
+
             default:
                 break;
             }
@@ -7580,7 +7586,7 @@ void PreviSat::on_actionFichier_d_aide_triggered()
 
 void PreviSat::on_actionAstropedia_free_fr_triggered()
 {
-    QDesktopServices::openUrl(QUrl("http://astropedia.free.fr/"));
+    QDesktopServices::openUrl(QUrl(QCoreApplication::organizationDomain()));
 }
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
@@ -7600,8 +7606,8 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_triggered()
 
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
-        if (!fic.startsWith("gestionnaireTLE_")) {
-            const QString ficMaj = dirHttpPrevi + "commun/data/" + fic;
+        if (!fic.contains("gestionnaireTLE_")) {
+            const QString ficMaj = dirHttpPrevi + "commun/data/" + fic.replace("\\", "/");
             TelechargementFichier(ficMaj, aclickFicMaj);
         }
     }
@@ -8881,8 +8887,7 @@ void PreviSat::on_syst12h_toggled(bool checked)
 void PreviSat::on_proportionsCarte_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
 }
 
 void PreviSat::on_typeRepere_currentIndexChanged(int index)
@@ -9142,8 +9147,7 @@ void PreviSat::on_listeStations_customContextMenuRequested(const QPoint &positio
 void PreviSat::on_styleWCC_toggled(bool checked)
 {
     Q_UNUSED(checked)
-    QResizeEvent *evt = NULL;
-    resizeEvent(evt);
+    resizeEvent(NULL);
     ModificationOption();
 }
 
@@ -9957,6 +9961,7 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->ongletsOutils->indexOf(ui->evenementsOrbitaux)) {
+
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeEvt->setDisplayFormat(fmt);
@@ -9968,6 +9973,7 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
         ui->calculsEvt->setFocus();
 
     } else if (index == ui->ongletsOutils->indexOf(ui->transitsISS)) {
+
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeTransit->setDisplayFormat(fmt);
@@ -9988,6 +9994,7 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
         }
 
     } else  if (ui->flashsMetOp->isVisible()) {
+
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeMetOp->setDisplayFormat(fmt);
