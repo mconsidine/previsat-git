@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    30 novembre 2015
+ * >    8 decembre 2015
  *
  */
 
@@ -207,7 +207,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 #endif
 
     if (dirTmp.trimmed().isEmpty())
-        dirTmp = dirLocalData + QDir::separator() + "cache";
+        dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
 
 #if defined (Q_OS_LINUX) || defined (Q_OS_MAC)
 

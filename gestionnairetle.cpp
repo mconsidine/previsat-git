@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    24 novembre 2015
+ * >    8 decembre 2015
  *
  */
 
@@ -180,7 +180,7 @@ void GestionnaireTLE::load()
 #endif
 
     if (dirTmp.trimmed().isEmpty())
-        dirTmp = dirLocalData + QDir::separator() + "cache";
+        dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
 
     ficTLE = dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePrevisat + ".gst";
 
