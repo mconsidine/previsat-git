@@ -5499,9 +5499,11 @@ void PreviSat::GestionTempsReel()
         }
     }
 
+#if !(defined (Q_OS_MAC) && QT_VERSION < 0x500000)
     ui->lbl_chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->frameCtrlVideo->setVisible(ui->fluxVideoHtml->isVisible());
+#endif
 
     /* Retour */
     return;

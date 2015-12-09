@@ -319,7 +319,7 @@ void Afficher::load()
             idate = (cond.nbl() == 0) ? ligne.indexOf(tr("Date")) - 3 : 0;
             iht = ligne.indexOf(tr("Hauteur Sat")) - 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
-            ihtsol = ligne.indexOf(tr("Haut Soleil"));
+            ihtsol = ligne.indexOf(tr("Haut Soleil")) - 1;
             if (it.hasNext())
                 ligne = it.next();
         }
@@ -378,7 +378,7 @@ void Afficher::load()
             QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate).trimmed() << fin.mid(idate, lngDate).trimmed() <<
                               ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
                               ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
-                               maxHt.mid(ihtsol, 11).trimmed().left(10));
+                               maxHt.mid(ihtsol, maxHt.lastIndexOf("\"") - ihtsol + 1).trimmed());
 
             if (cond.nbl() != 0)
                 items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 2, 1) : maxHt.mid(84, 1));
