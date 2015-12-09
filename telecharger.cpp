@@ -117,7 +117,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
-    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+    QString dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 
     police.setFamily("Marion");
     police.setPointSize(11);
