@@ -9465,15 +9465,22 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    QPalette filigrane;
+    filigrane.setColor(QPalette::Text, QColor::fromRgb(100, 100, 100));
 
     /* Corps de la methode */
     ui->nouvelleCategorie->setVisible(false);
     ui->nouveauLieu->setVisible(true);
     ui->coordonnees->setVisible(false);
+
     ui->nvLieu->setText("");
     ui->nvLongitude->setText("000°00'00\"");
+    ui->nvLongitude->setPalette(filigrane);
     ui->nvLatitude->setText("000°00'00\"");
+    ui->nvLatitude->setPalette(filigrane);
     ui->nvAltitude->setText("0000");
+    ui->nvAltitude->setPalette(filigrane);
+
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->lbl_ajouterDans->setVisible(true);
     ui->ajdfic->setVisible(true);
@@ -9568,12 +9575,18 @@ void PreviSat::on_actionModifier_coordonnees_triggered()
     const int atd = coord.at(2).toInt();
 
     ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, DEGRE, 3, 0, false, true));
+    ui->nvLongitude->setPalette(QPalette());
     ui->nvEw->setCurrentIndex((lo <= 0.) ? 0 : 1);
+
     ui->nvLatitude->setText(Maths::ToSexagesimal(fabs(la) * DEG2RAD, DEGRE, 2, 0,false, true));
+    ui->nvLatitude->setPalette(QPalette());
     ui->nvNs->setCurrentIndex((la >= 0.) ? 0 : 1);
+
     const QString alt = "%1";
     ui->nvAltitude->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE), 4, 10, QChar('0')));
+    ui->nvAltitude->setPalette(QPalette());
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+
     ui->lbl_ajouterDans->setVisible(false);
     ui->ajdfic->setVisible(false);
 
