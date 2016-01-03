@@ -6386,8 +6386,10 @@ void PreviSat::mouseMoveEvent(QMouseEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    setCursor(Qt::ArrowCursor);
     setToolTip("");
     ui->liste1->setToolTip("");
+
     messagesStatut->setText("");
     messagesStatut2->setVisible(false);
     messagesStatut3->setVisible(false);
@@ -6722,6 +6724,7 @@ void PreviSat::mouseDoubleClickEvent(QMouseEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    setCursor(Qt::ArrowCursor);
 
     /* Corps de la methode */
     if (ui->dateHeure1->underMouse() && ui->dateHeure1->isVisible()) {
