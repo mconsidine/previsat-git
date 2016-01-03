@@ -6059,7 +6059,7 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->est->move(ui->ciel->x() - ui->est->width() - 2, qRound(0.5 * ui->ciel->height()) + 10);
     ui->ouest->move(ui->ciel->x() + ui->ciel->width() + 2, ui->est->y());
 
-    if (Satellite::initCalcul && !l1.isEmpty() && !l2.isEmpty()) {
+    if (Satellite::initCalcul) {
 
         // Affichage des donnees numeriques
         AffichageDonnees();
