@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 janvier 2016
+ * >    4 janvier 2016
  *
  */
 
@@ -171,6 +171,7 @@ static Date date_lct;
 
 // Lieux d'observation
 static int selec;
+static QString ligneCoord;
 static QList<Observateur> observateurs;
 static QStringList ficObs;
 static QStringList listeObs;
@@ -9332,7 +9333,8 @@ void PreviSat::on_actionRenommerCategorie_triggered()
 
     /* Corps de la methode */
     const QString nvNomCateg = QInputDialog::getText(0, tr("Catégorie"), tr("Nouveau nom de la catégorie :"),
-                                                     QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), &ok);
+                                                     QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), &ok,
+                                                     Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
     if (ok && !nvNomCateg.trimmed().isEmpty()) {
         QFile fi(dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text().toLower());
@@ -9349,6 +9351,10 @@ void PreviSat::on_fichiersObs_currentRowChanged(int currentRow)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    if (ui->nouveauLieu->isVisible() && !ui->ajdfic->isVisible()) {
+        ui->nouveauLieu->setVisible(false);
+        on_validerObs_clicked();
+    }
 
     /* Corps de la methode */
     ui->coordonnees->setVisible(false);
@@ -9417,7 +9423,19 @@ void PreviSat::on_fichiersObs_customContextMenuRequested(const QPoint &position)
 
 void PreviSat::on_lieuxObs_currentRowChanged(int currentRow)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->nouveauLieu->isVisible() && !ui->ajdfic->isVisible()) {
+        ui->nouveauLieu->setVisible(false);
+        on_validerObs_clicked();
+    }
     AfficherLieuSelectionne(currentRow);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
@@ -9450,7 +9468,19 @@ void PreviSat::on_lieuxObs_customContextMenuRequested(const QPoint &position)
 
 void PreviSat::on_selecLieux_currentRowChanged(int currentRow)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->nouveauLieu->isVisible() && !ui->ajdfic->isVisible()) {
+        ui->nouveauLieu->setVisible(false);
+        on_validerObs_clicked();
+    }
     AfficherLieuSelectionne(currentRow);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_selecLieux_customContextMenuRequested(const QPoint &position)
@@ -9586,6 +9616,7 @@ void PreviSat::on_actionModifier_coordonnees_triggered()
     ui->nvAltitude->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE), 4, 10, QChar('0')));
     ui->nvAltitude->setPalette(QPalette());
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    ligneCoord = QString("%1&%2&%3").arg(ui->nvLongitude->text()).arg(ui->nvLatitude->text()).arg(ui->nvAltitude->text());
 
     ui->lbl_ajouterDans->setVisible(false);
     ui->ajdfic->setVisible(false);
@@ -9639,6 +9670,7 @@ void PreviSat::on_validerObs_clicked()
             throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spécifié"), WARNING);
         } else {
 
+            ui->nouveauLieu->setVisible(false);
             nomlieu[0] = nomlieu.at(0).toUpper();
 
             // Recuperation de la longitude
@@ -9700,7 +9732,26 @@ void PreviSat::on_validerObs_clicked()
 
 void PreviSat::on_annulerObs_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->nouveauLieu->isVisible() && !ui->ajdfic->isVisible()) {
+        ui->nouveauLieu->setVisible(false);
+
+        if (!ligneCoord.isEmpty()) {
+            const QStringList list = ligneCoord.split("&");
+            ui->nvLongitude->setText(list.at(0));
+            ui->nvLatitude->setText(list.at(1));
+            ui->nvAltitude->setText(list.at(2));
+        }
+        on_validerObs_clicked();
+    }
     ui->nouveauLieu->setVisible(false);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionRenommerLieu_triggered()
@@ -9712,7 +9763,8 @@ void PreviSat::on_actionRenommerLieu_triggered()
 
     /* Corps de la methode */
     const QString nvNomLieu = QInputDialog::getText(0, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"),
-                                                    QLineEdit::Normal, ui->lieuxObs->currentItem()->text(), &ok);
+                                                    QLineEdit::Normal, ui->lieuxObs->item(ui->lieuxObs->currentRow())->text(), &ok,
+                                                    Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
     if (ok && !nvNomLieu.trimmed().isEmpty()) {
 
