@@ -3445,7 +3445,7 @@ void PreviSat::AffichageElementsOsculateurs() const
 
     // Proprietes du signal (Doppler@100MHz, attenuation@100MHz, delai en millisecondes)
     chaine = "%1";
-    ui->doppler->setText(chaine.arg(satellites.at(0).doppler(), 0, 'f', 0) + " Hz");
+    ui->doppler->setText(((satellites.at(0).doppler() >= 0.) ? "+" : "-") + chaine.arg(fabs(satellites.at(0).doppler()), 0, 'f', 0) + " Hz");
     ui->attenuation->setText(chaine.arg(satellites.at(0).attenuation(), 0, 'f', 2) + " dB");
     ui->delai->setText(chaine.arg(satellites.at(0).delai(), 0, 'f', 2) + " ms");
 
