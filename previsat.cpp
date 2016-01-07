@@ -299,6 +299,7 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
     ui->onglets->setCurrentIndex(0);
     ui->ongletsOptions->setCurrentIndex(0);
     ui->ongletsOutils->setCurrentIndex(0);
+    mng.setNetworkAccessible(QNetworkAccessManager::Accessible);
 }
 
 void PreviSat::ChargementConfig()
@@ -2741,7 +2742,7 @@ void PreviSat::AffichageDonnees()
             chaine = tr("Nuit");
         ui->conditionsObservation->setText(chaine);
 
-        if (info) {
+        if (info && !satellites.isEmpty()) {
 
             // Date de lancement
             const QString dateLancement = satellites.at(0).dateLancement();
