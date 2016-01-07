@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    8 decembre 2015
+ * >    4 janvier 2016
  *
  */
 
@@ -87,6 +87,7 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     ui->setupUi(this);
 
     dirHttp = idirHttp;
+    mng.setNetworkAccessible(QNetworkAccessManager::Accessible);
 
     QFont police;
 
