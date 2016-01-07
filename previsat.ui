@@ -3217,7 +3217,7 @@
             <widget class="QLabel" name="azimutSat">
              <property name="geometry">
               <rect>
-               <x>238</x>
+               <x>239</x>
                <y>39</y>
                <width>64</width>
                <height>16</height>
