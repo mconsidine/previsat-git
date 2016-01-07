@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 janvier 2016
+ * >    7 janvier 2016
  *
  */
 
