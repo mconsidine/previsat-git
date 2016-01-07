@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    7 janvier 2016
  *
  */
 
@@ -87,7 +87,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
-    const QString fuseau = QObject::tr("Fuseau horaire            : %1");
+    const QString fuseau = QObject::tr("Fuseau horaire : %1");
     QString chaine = QObject::tr("UTC");
     if (conditions.ecart()) {
         if (fabs(conditions.offset()) > EPSDBL100) {
@@ -96,9 +96,8 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             chaine = chaine.append((conditions.offset() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }
-    flux << QString((conditions.ecart()) ? fuseau.arg(chaine) : fuseau.arg(QObject::tr("Heure légale"))) << endl;
+    flux << QString((conditions.ecart()) ? fuseau.arg(chaine) : fuseau.arg(QObject::tr("Heure légale"))) << endl << endl;
 
-    flux << QObject::tr("Unité de distance         : %1").arg(conditions.unite()) << endl << endl;
 
     /* Corps de la methode */
     tps.start();
@@ -208,7 +207,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }
-                    const QString ligne = fmt.arg(date.ToShortDateAMJ(FORMAT_COURT, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
+                    const QString ligne = fmt.arg(date.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H)).
                             arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.longitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
                             arg((sat.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
                             arg(fabs(sat.latitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
@@ -270,10 +269,35 @@ void Evenements::CalculEvenements(const Conditions &conditions)
         // Ecriture du fichier
         if (res.count() > 0) {
 
-            i = 0;
-
             // Tri des resultats
             res.sort();
+
+            // Conversion des dates au format AM/PM
+            if (!conditions.syst()) {
+
+                QStringList res2;
+                res2.clear();
+
+                i = 0;
+                while (i < res.count()) {
+
+                    const QStringList listDate = res.at(i).mid(0, 19).split(QRegExp("[/: ]"), QString::SkipEmptyParts);
+                    const QString evt = res.at(i).mid(20);
+
+                    const int annee = listDate.at(0).toInt();
+                    const int mois = listDate.at(1).toInt();
+                    const int jour = listDate.at(2).toInt();
+                    const int heure = listDate.at(3).toInt();
+                    const int minutes = listDate.at(4).toInt();
+                    const double secondes = listDate.at(5).toDouble();
+
+                    const Date date(annee, mois, jour, heure, minutes, secondes, 0.);
+                    const QString date12h = date.ToShortDateAMJ(FORMAT_COURT, SYSTEME_12H);
+                    res2.append(date12h + evt);
+                    i++;
+                }
+                res = res2;
+            }
 
             QString nom = sat.tle().nom();
             if (nom.contains("R/B") || nom.contains(" DEB"))
@@ -281,6 +305,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             flux << nom << endl;
             flux << QObject::tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
 
+            i = 0;
             while (i < res.count()) {
                 if (i > 0 && res.at(i).mid(0, 10) != res.at(i-1).mid(0, 10))
                     flux << endl;
@@ -390,7 +415,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
     const double pso = RAD2DEG * modulo(sat.elements().anomalieVraie() + sat.elements().argumentPerigee(), DEUX_PI);
 
     // Ecriture de la ligne de resultat
-    const QString ligne = fmt.arg(date.ToShortDateAMJ(FORMAT_COURT, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
+    const QString ligne = fmt.arg(date.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H)).
             arg(pso, 6, 'f', 2, QChar('0')).arg(fabs(sat.longitude() * RAD2DEG), 6, 'f', 2, QChar('0')).
             arg((sat.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E")).
             arg(fabs(sat.latitude()) * RAD2DEG, 5, 'f', 2, QChar('0')).
