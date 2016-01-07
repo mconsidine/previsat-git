@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 janvier 2016
+ * >    8 janvier 2016
  *
  */
 
@@ -5305,6 +5305,7 @@ void PreviSat::CalculsTermines()
     switch (threadCalculs->typeCalcul()) {
 
     case PREVISION:
+
         ui->calculsPrev->setEnabled(true);
         if (fi.exists()) {
             ui->calculsPrev->setDefault(false);
@@ -5348,6 +5349,7 @@ void PreviSat::CalculsTermines()
             settings.setValue("fichier/fichierTLETransit",
                               QDir::toNativeSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
         }
+        break;
 
     case METOP:
 
@@ -10064,7 +10066,7 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
             ui->lbl_ageTLETransit->setVisible(true);
         }
 
-    } else  if (ui->flashsMetOp->isVisible()) {
+    } else  if (index == ui->ongletsOutils->indexOf(ui->flashsMetOp)) {
 
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
