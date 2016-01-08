@@ -148,6 +148,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         scrollAreaRes->setWidgetResizable(true);
         setCentralWidget(scrollAreaRes);
     } else {
+        ui->horizontalLayoutFichier->setContentsMargins(0, 0, 0, 45);
         setMaximumSize(minimumSize());
     }
 
@@ -509,11 +510,8 @@ void Afficher::resizeEvent(QResizeEvent *evt)
     Q_UNUSED(evt)
     if (baseSize() == size()) {
         ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
-        ui->fichier->setGeometry(0, 0, width() - 4, height() - ui->barreOutils->height() - 24);
         if (cond.nbl() == 0)
             ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
-    } else {
-        ui->fichier->resize(baseSize().width() - 4, baseSize().height());
     }
 }
 

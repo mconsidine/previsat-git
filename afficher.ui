@@ -39,273 +39,329 @@
      <height>720</height>
     </size>
    </property>
-   <widget class="QTabWidget" name="ongletsResultats">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1287</width>
-      <height>696</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-    <property name="currentIndex">
+   <layout class="QHBoxLayout" name="horizontalLayoutPrincipal">
+    <property name="spacing">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="fichier_txt">
-     <attribute name="title">
-      <string>Fichier texte</string>
-     </attribute>
-     <widget class="QTextEdit" name="fichier">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1095</width>
-        <height>554</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier New</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="lineWrapMode">
-       <enum>QTextEdit::NoWrap</enum>
-      </property>
-      <property name="readOnly">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="ongletsResultats">
+      <property name="autoFillBackground">
        <bool>true</bool>
       </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="previsions">
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <attribute name="title">
-      <string>Prévisions</string>
-     </attribute>
-     <widget class="QGraphicsView" name="ciel">
-      <property name="geometry">
-       <rect>
-        <x>638</x>
-        <y>20</y>
-        <width>602</width>
-        <height>602</height>
-       </rect>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
-      </property>
-      <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="cacheMode">
-       <set>QGraphicsView::CacheBackground</set>
-      </property>
-     </widget>
-     <widget class="QTableWidget" name="listePrevisions">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>5</y>
-        <width>601</width>
-        <height>318</height>
-       </rect>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="cornerButtonEnabled">
-       <bool>false</bool>
-      </property>
-      <property name="columnCount">
-       <number>7</number>
-      </property>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>85</number>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Satellite</string>
+      <widget class="QWidget" name="fichier_txt">
+       <attribute name="title">
+        <string>Fichier texte</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayoutFichierTexte">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QScrollArea" name="scrollAreaFichier">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaFichierContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1272</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayoutFichier">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QTextEdit" name="fichier">
+              <property name="font">
+               <font>
+                <family>Courier New</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QTextEdit::NoWrap</enum>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="previsions">
+       <property name="autoFillBackground">
+        <bool>true</bool>
        </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Date de début</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Date de fin</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Hauteur Max</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Magn</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Mir</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Hauteur Soleil</string>
-       </property>
-      </column>
-     </widget>
-     <widget class="QFrame" name="frame">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>322</y>
-        <width>601</width>
-        <height>317</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <widget class="QWebView" name="webView">
-       <property name="geometry">
-        <rect>
-         <x>1</x>
-         <y>1</y>
-         <width>599</width>
-         <height>315</height>
-        </rect>
-       </property>
-       <property name="url">
-        <url>
-         <string>about:blank</string>
-        </url>
-       </property>
+       <attribute name="title">
+        <string>Prévisions</string>
+       </attribute>
+       <widget class="QGraphicsView" name="ciel">
+        <property name="geometry">
+         <rect>
+          <x>638</x>
+          <y>20</y>
+          <width>602</width>
+          <height>602</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="cacheMode">
+         <set>QGraphicsView::CacheBackground</set>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="listePrevisions">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>5</y>
+          <width>601</width>
+          <height>318</height>
+         </rect>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="cornerButtonEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="columnCount">
+         <number>7</number>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>85</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Satellite</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Date de début</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Date de fin</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Hauteur Max</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Magn</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Mir</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Hauteur Soleil</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QFrame" name="frame">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>322</y>
+          <width>601</width>
+          <height>317</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <widget class="QWebView" name="webView">
+         <property name="geometry">
+          <rect>
+           <x>1</x>
+           <y>1</y>
+           <width>599</width>
+           <height>315</height>
+          </rect>
+         </property>
+         <property name="url">
+          <url>
+           <string>about:blank</string>
+          </url>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="nord">
+        <property name="geometry">
+         <rect>
+          <x>925</x>
+          <y>4</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Nord</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sud">
+        <property name="geometry">
+         <rect>
+          <x>925</x>
+          <y>623</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Sud</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="est">
+        <property name="geometry">
+         <rect>
+          <x>603</x>
+          <y>311</y>
+          <width>31</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Est</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="ouest">
+        <property name="geometry">
+         <rect>
+          <x>1243</x>
+          <y>311</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Ouest</string>
+        </property>
+       </widget>
       </widget>
      </widget>
-     <widget class="QLabel" name="nord">
-      <property name="geometry">
-       <rect>
-        <x>925</x>
-        <y>4</y>
-        <width>31</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Nord</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="sud">
-      <property name="geometry">
-       <rect>
-        <x>925</x>
-        <y>623</y>
-        <width>31</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Sud</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="est">
-      <property name="geometry">
-       <rect>
-        <x>603</x>
-        <y>311</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Est</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="ouest">
-      <property name="geometry">
-       <rect>
-        <x>1243</x>
-        <y>311</y>
-        <width>31</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Ouest</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QToolBar" name="barreOutils">
    <property name="windowTitle">
