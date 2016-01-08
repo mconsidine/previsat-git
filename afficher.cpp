@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 decembre 2015
+ * >    8 janvier 2016
  *
  */
 
@@ -398,7 +398,7 @@ void Afficher::load()
             // Dans le cas des flashs ou des transits ISS, determination de la ligne ou se produit le maximum
             if (cond.nbl() != 0) {
 
-                const int debt = (cond.nbl() > 0) ? 121 : 128;
+                const int debt = (cond.nbl() > 0) ? 122 : 128;
                 if (debut.mid(debt, 44).trimmed().isEmpty() && fin.mid(debt, 44).trimmed().isEmpty()) {
                     tablonlat.append("0. 0. 0. 0.");
                 } else {
