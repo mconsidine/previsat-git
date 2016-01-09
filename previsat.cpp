@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 janvier 2016
+ * >    9 janvier 2016
  *
  */
 
@@ -3184,6 +3184,9 @@ void PreviSat::AffichageDonnees()
 
                 // Pays ou organisation
                 ui->pays->setText((satellites.at(0).pays().isEmpty()) ? tr("Indéterminé") : satellites.at(0).pays());
+
+                // Site de lancement
+                ui->siteLancement->setText((satellites.at(0).siteLancement().isEmpty()) ? tr("Inconnu") : satellites.at(0).siteLancement());
             }
         }
     }
@@ -8594,8 +8597,8 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
             ui->lbl_paysDonneesSat->move(3, 85);
             ui->paysDonneesSat->move(114, 85);
 
-            ui->lbl_siteLancement->move(3, 100);
-            ui->siteLancement->move(114, 100);
+            ui->lbl_siteLancementDonneesSat->move(3, 100);
+            ui->siteLancementDonneesSat->move(114, 100);
         } else {
 
             ui->dateRentree->setText(dateRentree);
@@ -8608,8 +8611,8 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
             ui->lbl_paysDonneesSat->move(3, 100);
             ui->paysDonneesSat->move(114, 100);
 
-            ui->lbl_siteLancement->move(3, 115);
-            ui->siteLancement->move(114, 115);
+            ui->lbl_siteLancementDonneesSat->move(3, 115);
+            ui->siteLancementDonneesSat->move(114, 115);
         }
 
         // Categorie d'orbite
@@ -8622,7 +8625,7 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Site de lancement
         const QString siteLancement = ligne.mid(117, 5).trimmed();
-        ui->siteLancement->setText((siteLancement.isEmpty()) ? tr("Inconnu") : siteLancement);
+        ui->siteLancementDonneesSat->setText((siteLancement.isEmpty()) ? tr("Inconnu") : siteLancement);
     }
 
     /* Retour */
