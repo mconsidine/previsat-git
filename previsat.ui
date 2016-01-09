@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -7474,6 +7474,38 @@
               <string>Cylindrique. L=30.0m, R=20.0m / 350.00 m</string>
              </property>
             </widget>
+            <widget class="QLabel" name="lbl_siteLancement">
+             <property name="geometry">
+              <rect>
+               <x>531</x>
+               <y>108</y>
+               <width>112</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Site de lancement :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="siteLancement">
+             <property name="geometry">
+              <rect>
+               <x>645</x>
+               <y>108</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>AFETR</string>
+             </property>
+            </widget>
            </widget>
            <widget class="QFrame" name="frameDonneesSat">
             <property name="geometry">
@@ -7494,7 +7526,7 @@
              <property name="geometry">
               <rect>
                <x>190</x>
-               <y>70</y>
+               <y>60</y>
                <width>571</width>
                <height>131</height>
               </rect>
@@ -8011,7 +8043,7 @@
                <string>Date de rentrée :</string>
               </property>
              </widget>
-             <widget class="QLabel" name="siteLancement">
+             <widget class="QLabel" name="siteLancementDonneesSat">
               <property name="geometry">
                <rect>
                 <x>114</x>
@@ -8027,7 +8059,7 @@
                <string>AFETR</string>
               </property>
              </widget>
-             <widget class="QLabel" name="lbl_siteLancement">
+             <widget class="QLabel" name="lbl_siteLancementDonneesSat">
               <property name="geometry">
                <rect>
                 <x>3</x>

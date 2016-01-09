@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    9 janvier 2016
  *
  */
 
@@ -209,6 +209,7 @@ public:
     QString dateLancement() const;
     QString categorieOrbite() const;
     QString pays() const;
+    QString siteLancement() const;
 
     TLE tle() const;
     ElementsOsculateurs elements() const;
@@ -253,13 +254,13 @@ private:
     double _t3;
     QString _cospar;
     QString _dateLancement;
-    QString _dateReentree;
     QString _periode;
     QString _perigee;
     QString _apogee;
     QString _inclinaison;
     QString _categorieOrbite;
     QString _pays;
+    QString _siteLancement;
 
     SGP4 _sgp4;
     TLE _tle;

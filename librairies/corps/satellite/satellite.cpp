@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    9 janvier 2016
  *
  */
 
@@ -522,13 +522,13 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
         satellites[isat]._methMagnitude = ' ';
         satellites[isat]._section = 0.;
         satellites[isat]._dateLancement = "";
-        satellites[isat]._dateReentree = "";
         satellites[isat]._periode = "";
         satellites[isat]._perigee = "";
         satellites[isat]._apogee = "";
         satellites[isat]._inclinaison = "";
         satellites[isat]._categorieOrbite = "";
         satellites[isat]._pays = "";
+        satellites[isat]._siteLancement = "";
     }
 
     /* Corps de la methode */
@@ -556,13 +556,13 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
                     satellites[isat]._methMagnitude = ligne.at(39).toLatin1();
                     satellites[isat]._section = ligne.mid(41, 6).toDouble();
                     satellites[isat]._dateLancement = ligne.mid(48, 10);
-                    satellites[isat]._dateReentree = ligne.mid(59, 10);
                     satellites[isat]._periode = ligne.mid(70, 10);
                     satellites[isat]._perigee = ligne.mid(81, 7);
                     satellites[isat]._apogee = ligne.mid(89, 7);
                     satellites[isat]._inclinaison = ligne.mid(97, 6);
                     satellites[isat]._categorieOrbite = ligne.mid(104, 6).trimmed();
                     satellites[isat]._pays = ligne.mid(111, 5).trimmed();
+                    satellites[isat]._siteLancement = ligne.mid(117, 5).trimmed();
                     j++;
                     break;
                 }
@@ -766,6 +766,11 @@ QString Satellite::categorieOrbite() const
 QString Satellite::pays() const
 {
     return _pays;
+}
+
+QString Satellite::siteLancement() const
+{
+    return _siteLancement;
 }
 
 ElementsOsculateurs Satellite::elements() const
