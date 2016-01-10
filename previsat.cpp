@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 janvier 2016
+ * >    10 janvier 2016
  *
  */
 
@@ -2071,12 +2071,16 @@ void PreviSat::AffichageCourbes() const
         }
 
         // Affichage de la zone de visibilite des satellites
+        QList<bool> als;
+
         if (nbSat > 0) {
+
             if (ui->affvisib->isChecked() || mcc) {
                 const int nbMax2 = (ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : listeTLE.size();
 
                 for(int isat=0; isat<nbMax2; isat++) {
 
+                    als.append(false);
                     if (mcc) {
 
                         crayon = QPen(Qt::white, 2);
@@ -2133,6 +2137,7 @@ void PreviSat::AffichageCourbes() const
                                 else
                                     lsat1 += lcarte;
                                 ils = j;
+                                als[isat] = true;
                             }
 
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
@@ -2184,15 +2189,32 @@ void PreviSat::AffichageCourbes() const
 
                         QTransform transform;
                         transform.translate(lsat, bsat);
+
+                        double angle = 0.;
                         if (ui->rotationIconeISS->isChecked() && satellites.at(isat).tle().norad() == "25544") {
                             const double vxsat = satellites.at(isat).vitesse().x();
                             const double vysat = satellites.at(isat).vitesse().y();
                             const double vzsat = satellites.at(isat).vitesse().z();
-                            const double angle = RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
+                            angle = RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
                             transform.rotate(angle);
                         }
                         transform.translate(-img.width() / 2, -img.height() / 2);
                         pm->setTransform(transform);
+
+                        if (als.at(isat)) {
+                            QGraphicsPixmapItem * const pm2 = scene->addPixmap(img);
+                            transform.reset();
+
+                            if (lsat > lcarte2) {
+                                transform.translate(lsat - lcarte, bsat);
+                            } else {
+                                transform.translate(lsat + lcarte, bsat);
+                            }
+
+                            transform.rotate(angle);
+                            transform.translate(-img.width() / 2, -img.height() / 2);
+                            pm2->setTransform(transform);
+                        }
                     }
                 } else {
                     AffichageSatellite(isat, lsat, bsat, lcarte, hcarte);
