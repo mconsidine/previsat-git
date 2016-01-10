@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 janvier 2016
+ * >    10 janvier 2016
  *
  */
 
@@ -300,8 +300,13 @@ void Afficher::load()
         ui->listePrevisions->horizontalHeaderItem(5)->setText(tr("Corps"));
     }
 
-    if (cond.nbl() == 0)
+    if (cond.nbl() == 0) {
         ui->listePrevisions->removeColumn(5);
+        ui->listePrevisions->setColumnWidth(0, 120);
+    } else {
+        ui->listePrevisions->setColumnWidth(0, 100);
+    }
+
 
     /* Corps de la methode */
     QStringListIterator it(res);
@@ -388,9 +393,11 @@ void Afficher::load()
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
                 item->setTextAlignment(Qt::AlignCenter);
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+                if (k == 0)
+                    item->setToolTip(items.at(0));
 
                 ui->listePrevisions->setItem(j, k, item);
-                if ((k > 0 && cond.nbl() == 0) || (k >= 0 && cond.nbl() != 0))
+                if (k > 0)
                     ui->listePrevisions->resizeColumnToContents(k);
             }
             tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
