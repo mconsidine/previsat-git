@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -6598,7 +6598,7 @@
               <rect>
                <x>130</x>
                <y>78</y>
-               <width>43</width>
+               <width>72</width>
                <height>16</height>
               </rect>
              </property>
@@ -6609,7 +6609,7 @@
               <bool>true</bool>
              </property>
              <property name="text">
-              <string>98067A</string>
+              <string>1998-067A</string>
              </property>
             </widget>
             <widget class="QLabel" name="nbRev">
