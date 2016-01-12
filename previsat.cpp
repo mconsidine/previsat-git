@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 janvier 2016
+ * >    11 janvier 2016
  *
  */
 
@@ -3087,7 +3087,10 @@ void PreviSat::AffichageDonnees()
                 ui->norad->setText(l1.mid(2, 5));
 
                 // Designation COSPAR
-                ui->cospar->setText(l1.mid(9, 8).trimmed());
+                chaine = "%1-%2";
+                int annee = l1.mid(9, 2).trimmed().toInt();
+                annee += (annee < 57) ? AN2000 : 1900;
+                ui->cospar->setText(chaine.arg(annee).arg(l1.mid(11, 6).trimmed()));
 
                 // Epoque du TLE
                 ui->epoque->setText(tles.at(0).epoque().
