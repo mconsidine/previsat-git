@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 janvier 2016
+ * >    15 janvier 2016
  *
  */
 
@@ -8313,6 +8313,7 @@ void PreviSat::on_rechercheDonneesSat_toggled(bool checked)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    ui->noradDonneesSat->setValue(0);
 
     /* Corps de la methode */
     if (checked) {
@@ -8405,31 +8406,34 @@ void PreviSat::on_noradDonneesSat_valueChanged(int arg1)
     if (chg) {
         resultatsSatellitesTrouves.clear();
 
-        int indx1 = 0;
-        const QString chaine = "%1 ";
-        const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
+        if (arg1 > 0) {
 
-        // Recherche dans le tableau de donnees a partir du numero NORAD
-        do {
-            indx1 = donneesSat.indexOf(norad, indx1 + 1);
-        } while (indx1 >= 0 && donneesSat.at(indx1 - 1) != '\n');
-        if (indx1 >= 0) {
+            int indx1 = 0;
+            const QString chaine = "%1 ";
+            const QString norad = chaine.arg(arg1, 5, 10, QChar('0'));
 
-            int indx2 = donneesSat.indexOf("\n", indx1) - indx1;
+            // Recherche dans le tableau de donnees a partir du numero NORAD
+            do {
+                indx1 = donneesSat.indexOf(norad, indx1 + 1);
+            } while (indx1 >= 0 && donneesSat.at(indx1 - 1) != '\n');
+            if (indx1 >= 0) {
 
-            const QString ligne = donneesSat.mid(indx1, indx2).trimmed();
-            if (ligne.length() > 0)
-                resultatsSatellitesTrouves.append(ligne);
+                int indx2 = donneesSat.indexOf("\n", indx1) - indx1;
 
-            QString nomsat = ligne.mid(123).trimmed();
-            if (nomsat == "iss (zarya)")
-                nomsat = "ISS";
-            ui->nom->setText(nomsat.toUpper());
+                const QString ligne = donneesSat.mid(indx1, indx2).trimmed();
+                if (ligne.length() > 0)
+                    resultatsSatellitesTrouves.append(ligne);
 
-            ui->cosparDonneesSat->setText(ligne.mid(6, 11).toUpper());
+                QString nomsat = ligne.mid(123).trimmed();
+                if (nomsat == "iss (zarya)")
+                    nomsat = "ISS";
+                ui->nom->setText(nomsat.toUpper());
+
+                ui->cosparDonneesSat->setText(ligne.mid(6, 11).toUpper());
+            }
+
+            AffichageResultats();
         }
-
-        AffichageResultats();
     }
 
     /* Retour */
@@ -8672,6 +8676,7 @@ void PreviSat::AffichageResultats()
 
         const QString chaine = tr("Objets trouvés (%1) :");
         ui->lbl_satellitesTrouves->setText(chaine.arg(resultatsSatellitesTrouves.count()));
+
         // Remplissage de la liste de resultats
         QStringListIterator it(resultatsSatellitesTrouves);
         while (it.hasNext()) {
