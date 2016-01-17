@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 janvier 2016
+ * >    17 janvier 2016
  *
  */
 
@@ -635,7 +635,6 @@ void PreviSat::ChargementConfig()
     ui->chaine->setVisible(false);
     ui->chaine->setValue(settings.value("affichage/chaine", 1).toInt());
     ui->fluxVideoHtml->setVisible(false);
-    ui->fluxVideo->raise();
 
     ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
@@ -3931,12 +3930,12 @@ void PreviSat::CalculDN() const
     /* Initialisations */
     // Parcours du tableau "trace au sol"
     int i = 0;
-    const int dn = (satellites.at(0).isPenombre()) ? 1 : 0;
+    const int dn = (satellites.at(0).isEclipse()) ? 1 : 0;
     QListIterator<QVector<double> > it(satellites.at(0).traceAuSol());
     while (it.hasNext()) {
         const QVector<double> list = it.next();
         if (list.at(3) >= dateCourante.jourJulienUTC()) {
-            const int dn0 = (list.at(2) > 0.5) ? 1 : 0;
+            const int dn0 = ((int) list.at(2))%2;
             if (dn != dn0)
                 it.toBack();
         }
@@ -3970,7 +3969,7 @@ void PreviSat::CalculDN() const
 
                 // Conditions d'eclipse du satellite
                 satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
-                ecl[j] = satellite.rayonPenombre() - satellite.elongation();
+                ecl[j] = satellite.rayonOmbre() - satellite.elongation();
             }
 
             if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
@@ -4657,12 +4656,13 @@ void PreviSat::ModificationOption()
 
     if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
         info = true;
-        acalcAOS = true;
-        acalcDN = true;
         AffichageLieuObs();
         ui->lieuxObs->setCurrentRow(-1);
         ui->selecLieux->setCurrentRow(-1);
     }
+
+    acalcAOS = true;
+    acalcDN = true;
 
     ui->afficherPrev->setEnabled(false);
     ui->afficherIri->setEnabled(false);
