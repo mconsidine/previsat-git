@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2015
+ * >    21 janvier 2016
  *
  */
 
@@ -493,6 +493,9 @@ private slots:
     void on_styleWCC_toggled(bool checked);
     void on_coulGMT_currentIndexChanged(int index);
     void on_coulZOE_currentIndexChanged(int index);
+    void on_coulEquateur_currentIndexChanged(int index);
+    void on_coulTerminateur_currentIndexChanged(int index);
+    void on_coulCercleVisibilite_currentIndexChanged(int index);
     void on_policeWCC_currentIndexChanged(int index);
 
     // Gestion des lieux d'observation

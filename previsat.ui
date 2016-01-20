@@ -11359,7 +11359,7 @@
                </rect>
               </property>
               <property name="text">
-               <string>Choix de la couleur de GMT :</string>
+               <string>Couleur de GMT :</string>
               </property>
              </widget>
              <widget class="QComboBox" name="coulGMT">
@@ -11417,7 +11417,7 @@
                </rect>
               </property>
               <property name="text">
-               <string>Choix de la couleur de la ZOE :</string>
+               <string>Couleur de la ZOE :</string>
               </property>
              </widget>
              <widget class="QCheckBox" name="affNbOrbWCC">
@@ -11437,7 +11437,7 @@
               <property name="geometry">
                <rect>
                 <x>490</x>
-                <y>77</y>
+                <y>148</y>
                 <width>151</width>
                 <height>16</height>
                </rect>
@@ -11450,7 +11450,7 @@
               <property name="geometry">
                <rect>
                 <x>640</x>
-                <y>74</y>
+                <y>145</y>
                 <width>111</width>
                 <height>22</height>
                </rect>
@@ -11463,6 +11463,105 @@
               <item>
                <property name="text">
                 <string>MS Shell Dlg 2</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLabel" name="lbl_coulEquateur">
+              <property name="geometry">
+               <rect>
+                <x>490</x>
+                <y>77</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Couleur de l'équateur :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="coulEquateur">
+              <property name="geometry">
+               <rect>
+                <x>640</x>
+                <y>74</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Rouge</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blanc</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QComboBox" name="coulTerminateur">
+              <property name="geometry">
+               <rect>
+                <x>640</x>
+                <y>98</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Brun</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Jaune</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLabel" name="lbl_coulTerminateur">
+              <property name="geometry">
+               <rect>
+                <x>490</x>
+                <y>101</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Couleur du terminateur :</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="lbl_coulCercleVisibilite">
+              <property name="geometry">
+               <rect>
+                <x>490</x>
+                <y>124</y>
+                <width>151</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Couleur du cercle de visibilité :</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="coulCercleVisibilite">
+              <property name="geometry">
+               <rect>
+                <x>640</x>
+                <y>121</y>
+                <width>81</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>Blanc</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Rouge</string>
                </property>
               </item>
              </widget>

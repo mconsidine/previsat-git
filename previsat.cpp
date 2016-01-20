@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 janvier 2016
+ * >    21 janvier 2016
  *
  */
 
@@ -477,6 +477,18 @@ void PreviSat::ChargementConfig()
     // Chargement des fichiers images de cartes du monde
     InitFicMap(false);
 
+    const QString nomMap = (ui->listeMap->currentIndex() == 0) ? ":/resources/map.png" : ficMap.at(ui->listeMap->currentIndex()-1);
+    const int w = settings.value("affichage/largeur", width()).toInt() - ui->frameListe->width() - ui->frameLat->width() - 31;
+    const int h = settings.value("affichage/hauteur", height()).toInt() - ui->frameOnglets->height() - ui->frameLon->height() - 52;
+
+    scene = new QGraphicsScene;
+    scene->addPixmap(QPixmap(nomMap).scaled(w, h));
+    ui->carte->setScene(scene);
+
+    scene2 = new QGraphicsScene;
+    scene2->setBackgroundBrush(QBrush(ui->frameZone->palette().background().color()));
+    ui->radar->setScene(scene2);
+
     // Chargement des fichiers sons (pour les AOS et LOS)
     InitFicSon();
 
@@ -644,6 +656,10 @@ void PreviSat::ChargementConfig()
     ui->sud->setVisible(false);
     ui->est->setVisible(false);
     ui->ouest->setVisible(false);
+    ui->coordGeo1->setVisible(false);
+    ui->coordGeo2->setVisible(false);
+    ui->coordGeo3->setVisible(false);
+    ui->coordGeo4->setVisible(false);
     ui->fluxVideo->setVisible(false);
     ui->fluxVideo->raise();
 
@@ -1129,6 +1145,9 @@ void PreviSat::DemarrageApplication()
     ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
     ui->coulGMT->setCurrentIndex(settings.value("affichage/coulGMT", 0).toInt());
     ui->coulZOE->setCurrentIndex(settings.value("affichage/coulZOE", 0).toInt());
+    ui->coulCercleVisibilite->setCurrentIndex(settings.value("affichage/coulCercleVisibilite", 0).toInt());
+    ui->coulEquateur->setCurrentIndex(settings.value("affichage/coulEquateur", 0).toInt());
+    ui->coulTerminateur->setCurrentIndex(settings.value("affichage/coulTerminateur").toInt());
 
     ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
     ui->frameCarteListe->resize(width(), ui->frameCarteListe->height());
@@ -1550,8 +1569,7 @@ void PreviSat::AffichageCourbes() const
 
     /* Corps de la methode */
     QRect rectangle;
-    const QString nomMap = (ui->listeMap->currentIndex() == 0) ?
-                ":/resources/map.png" : ficMap.at(ui->listeMap->currentIndex()-1);
+    const QString nomMap = (ui->listeMap->currentIndex() == 0) ? ":/resources/map.png" : ficMap.at(ui->listeMap->currentIndex()-1);
     scene->addPixmap(QPixmap(nomMap).scaled(ui->carte->size()));
 
     if (!ui->carte->isHidden()) {
@@ -1574,7 +1592,8 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == "25544") ? Qt::red : Qt::white);
+            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == "25544") ?
+                                      ((ui->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
             scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
 
@@ -1720,7 +1739,8 @@ void PreviSat::AffichageCourbes() const
             int jmin = 0;
             int xmin = ui->carte->width() - 3;
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, (int) (2.55 * ui->intensiteOmbre->value())));
-            const QPen stylo((mcc) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::NoBrush, 0));
+            const QPen stylo((mcc) ? ((ui->coulTerminateur->currentIndex() == 0) ?
+                                          QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2)) : QPen(Qt::NoBrush, 0));
 
             QVector<QPoint> zone;
             zone.resize(361);
@@ -2082,7 +2102,7 @@ void PreviSat::AffichageCourbes() const
                     als.append(false);
                     if (mcc) {
 
-                        crayon = QPen(Qt::white, 2);
+                        crayon = QPen((ui->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
                         if (satellites.at(isat).tle().nom().toLower().startsWith("tdrs")) {
 
                             const int numeroTDRS = satellites.at(isat).tle().nom().section(" ", 1).toInt();
@@ -3255,17 +3275,19 @@ void PreviSat::AffichageDonnees()
             ui->betaISS->setText(chaine.arg(satellites.at(0).beta() * RAD2DEG, 0, 'f', 1));
 
             // Calcul et affichage du jour et de l'heure GMT
-            chaine = "GMT = %1/%2:%3";
+            chaine = "GMT = %1/%2:%3:%4";
             const Date date2 = Date(dateCourante.annee(), 1, 1., 0.);
             const double jourDsAnnee = dateCourante.jourJulienUTC() - date2.jourJulienUTC() + 1.;
             const int numJour = (int) jourDsAnnee;
             const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
-            const int min = (int) floor(NB_MIN_PAR_JOUR * (jourDsAnnee - numJour) - NB_MIN_PAR_HEUR * heure + 0.00005);
+            const int min = dateCourante.minutes();
+            const int sec = (int) floor(dateCourante.secondes());
 
             QPalette coul;
             coul.setColor(QPalette::WindowText, cgmt[ui->coulGMT->currentIndex()]);
             ui->gmt->setPalette(coul);
-            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')));
+            ui->gmt->setText(chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0'))
+                             .arg(sec, 2, 10, QChar('0')));
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
 
@@ -5836,6 +5858,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/styleWCC", ui->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", ui->coulGMT->currentIndex());
     settings.setValue("affichage/coulZOE", ui->coulZOE->currentIndex());
+    settings.setValue("affichage/coulCercleVisibilite", ui->coulCercleVisibilite->currentIndex());
+    settings.setValue("affichage/coulEquateur", ui->coulEquateur->currentIndex());
+    settings.setValue("affichage/coulTerminateur", ui->coulTerminateur->currentIndex());
     settings.setValue("affichage/policeWCC", ui->policeWCC->currentIndex());
 
     for(int i=0; i<ui->listeStations->count(); i++)
@@ -7710,6 +7735,7 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
             OuvertureFichierTLE(ficTLE.at(index));
             idxf = index;
         }
+        on_rechercheDonneesSat_toggled(ui->rechercheDonneesSat->isChecked());
     }
 
     /* Retour */
@@ -9205,6 +9231,24 @@ void PreviSat::on_coulZOE_currentIndexChanged(int index)
     ModificationOption();
 }
 
+void PreviSat::on_coulEquateur_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    ModificationOption();
+}
+
+void PreviSat::on_coulTerminateur_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    ModificationOption();
+}
+
+void PreviSat::on_coulCercleVisibilite_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    ModificationOption();
+}
+
 void PreviSat::on_policeWCC_currentIndexChanged(int index)
 {
 #if defined (Q_OS_WIN)
@@ -9232,7 +9276,7 @@ void PreviSat::on_policeWCC_currentIndexChanged(int index)
     ui->nextTransitionISS->setFont(police);
     ui->orbiteISS->setFont(police);
 
-    police.setPointSize(11);
+    police.setPointSize(12);
     police.setBold(true);
     ui->gmt->setFont(police);
     ui->gmt->adjustSize();
@@ -9994,6 +10038,10 @@ void PreviSat::on_onglets_currentChanged(int index)
             ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
             ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
         }
+
+    } else if (index == ui->onglets->indexOf(ui->informations)) {
+
+        on_rechercheDonneesSat_toggled(ui->rechercheDonneesSat->isChecked());
 
     } else if (index == ui->onglets->indexOf(ui->previsions)) {
 
