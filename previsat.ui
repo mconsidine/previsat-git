@@ -2164,9 +2164,9 @@
          <widget class="QGroupBox" name="mode">
           <property name="geometry">
            <rect>
-            <x>3</x>
+            <x>9</x>
             <y>6</y>
-            <width>191</width>
+            <width>185</width>
             <height>68</height>
            </rect>
           </property>
@@ -2467,7 +2467,7 @@
          <widget class="QToolButton" name="meteo">
           <property name="geometry">
            <rect>
-            <x>190</x>
+            <x>197</x>
             <y>106</y>
             <width>24</width>
             <height>24</height>
