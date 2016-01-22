@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 janvier 2016
+ * >    22 janvier 2016
  *
  */
 
@@ -126,6 +126,111 @@ void Satellite::CalculCercleAcquisition(const Observateur &station)
     return;
 }
 
+Date Satellite::CalculDateAOSSuiv(const Date &dateCalcul, const Observateur &observateur, QString &ctypeAOS, double &azimAOS, bool &aos)
+{
+    /* Declarations des variables locales */
+    Date dateAOS;
+
+    /* Initialisations */
+    ctypeAOS = QObject::tr("AOS");
+    Satellite sat = *this;
+    Observateur obs = observateur;
+    aos = sat.hasAOS(obs);
+
+    /* Corps de la methode */
+    if (aos) {
+
+        // Calcul du prochain AOS ou LOS
+        double jjm[3], ht[3];
+        double periode = NB_JOUR_PAR_MIN;
+        if (sat._hauteur >= 0.)
+            ctypeAOS = QObject::tr("LOS");
+
+        double tAOS = 0.;
+        double t_ht = dateCalcul.jourJulienUTC();
+
+        bool afin = false;
+        int iter = 0;
+        while (!afin) {
+
+            jjm[0] = t_ht;
+            jjm[1] = jjm[0] + 0.5 * periode;
+            jjm[2] = jjm[0] + periode;
+
+            for(int i=0; i<3; i++) {
+
+                const Date date(jjm[i], 0., false);
+
+                obs.CalculPosVit(date);
+
+                sat.CalculPosVit(date);
+                sat.CalculCoordHoriz(obs, false, false);
+                ht[i] = sat._hauteur;
+            }
+
+            const bool atst1 = ht[0] * ht[1] < 0.;
+            const bool atst2 = ht[1] * ht[2] < 0.;
+            if (atst1 || atst2) {
+
+                t_ht = (atst1) ? jjm[1] : jjm[2];
+
+                if (ctypeAOS == QObject::tr("AOS")) {
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht - 0.5 * periode;
+                    jjm[2] = t_ht;
+                } else {
+                    jjm[0] = t_ht;
+                    jjm[1] = t_ht + 0.5 * periode;
+                    jjm[2] = t_ht + periode;
+                }
+
+                while (fabs(tAOS - t_ht) > EPS_DATES) {
+
+                    tAOS = t_ht;
+
+                    for(int i=0; i<3; i++) {
+
+                        const Date date(jjm[i], 0., false);
+
+                        obs.CalculPosVit(date);
+
+                        // Position du satellite
+                        sat.CalculPosVit(date);
+                        sat.CalculCoordHoriz(obs, true, false);
+                        ht[i] = sat._hauteur;
+                    }
+
+                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
+                    periode *= 0.5;
+
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht;
+                    jjm[2] = t_ht + periode;
+                }
+                dateAOS = Date(tAOS, 0.);
+                obs.CalculPosVit(dateAOS);
+
+                // Position du satellite
+                sat.CalculPosVit(dateAOS);
+                sat.CalculCoordHoriz(obs, true, false);
+                azimAOS = sat._azimut;
+                afin = true;
+            } else {
+                t_ht += periode;
+                iter++;
+
+                if (iter > 50000) {
+                    afin = true;
+                    aos = false;
+                }
+            }
+        }
+    }
+
+    /* Retour */
+    return (dateAOS);
+}
+
 /*
  * Calcul de la date du noeud ascendant precedent a la date donnee
  */
@@ -189,6 +294,73 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
 
     /* Retour */
     return (Date(jj0, 0., false));
+}
+
+Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const bool refraction)
+{
+    /* Declarations des variables locales */
+    Date dateEcl;
+
+    /* Initialisations */
+    // Parcours du tableau "trace au sol"
+    int i = 0;
+    const int dn = (_eclipse) ? 1 : 0;
+    QListIterator<QVector<double> > it(_traceAuSol);
+    while (it.hasNext()) {
+        const QVector<double> list = it.next();
+        if (list.at(3) >= dateCalcul.jourJulienUTC()) {
+            const int dn0 = ((int) list.at(2))%2;
+            if (dn != dn0)
+                it.toBack();
+        }
+        i++;
+    }
+
+    /* Corps de la methode */
+    if (i < _traceAuSol.size()) {
+        double ecl[3], jjm[3];
+        Satellite satellite = *this;
+        double t_ecl = _traceAuSol.at(i-1).at(3);
+        double periode = t_ecl - _traceAuSol.at(i-2).at(3);
+
+        bool afin = false;
+        double tdn = dateCalcul.jourJulienUTC();
+        while (!afin) {
+
+            jjm[0] = t_ecl - periode;
+            jjm[1] = t_ecl;
+            jjm[2] = t_ecl + periode;
+
+            for(int j=0; j<3; j++) {
+
+                const Date date(jjm[j], 0., false);
+
+                // Position du satellite
+                satellite.CalculPosVit(date);
+
+                // Position du Soleil
+                Soleil soleil;
+                soleil.CalculPosition(date);
+
+                // Conditions d'eclipse du satellite
+                satellite.CalculSatelliteEclipse(soleil, refraction);
+                ecl[j] = satellite._rayonOmbre - satellite._elongation;
+            }
+
+            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
+                tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
+            periode *= 0.5;
+            if (fabs(tdn - t_ecl) < 1.e-6)
+                afin = true;
+            t_ecl = tdn;
+        }
+        dateEcl = Date(t_ecl, 0.);
+    } else {
+        dateEcl = Date(dateCalcul.jourJulienUTC() - 10., 0.);
+    }
+
+    /* Retour */
+    return (dateEcl);
 }
 
 /*

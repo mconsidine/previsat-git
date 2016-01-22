@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 janvier 2016
+ * >    22 janvier 2016
  *
  */
 
@@ -104,11 +104,30 @@ public:
     void CalculCercleAcquisition(const Observateur &station);
 
     /**
-     * @brief CalculDateNoeudAscPrec Calcul de la date du noeud ascedant precedent a la date donnee
+     * @brief CalculDateAOSSuiv Calcul de la date du prochain AOS ou LOS
+     * @param dateCalcul date
+     * @param observateur observateur
+     * @param ctypeAOS type d'evenement (AOS ou LOS)
+     * @param azimAOS azimut de l'evenement
+     * @param aos vrai si le satellite peut apparaitre dans le ciel de l'observateur
+     * @return date du prochain AOS/LOS
+     */
+    Date CalculDateAOSSuiv(const Date &dateCalcul, const Observateur &observateur, QString &ctypeAOS, double &azimAOS, bool &aos);
+
+    /**
+     * @brief CalculDateNoeudAscPrec Calcul de la date du noeud ascendant precedent a la date donnee
      * @param date date
      * @return date du noeud ascendant precedent
      */
     Date CalculDateNoeudAscPrec(const Date &date);
+
+    /**
+     * @brief CalculDateOmbrePenombreSuiv Calcul de la date du prochain passage ombre->penombre ou penombre->ombre
+     * @param date date
+     * @param refraction prise en compte de la refraction atmospherique
+     * @return date du prochain passage ombre->penombre ou penombre->ombre
+     */
+    Date CalculDateOmbrePenombreSuiv(const Date &date, const bool refraction);
 
     /**
      * @brief CalculElementsOsculateurs Calcul des elements osculateurs et du numero d'orbite
