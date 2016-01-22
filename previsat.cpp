@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 janvier 2016
+ * >    22 janvier 2016
  *
  */
 
@@ -3797,101 +3797,11 @@ bool PreviSat::CalculAOS() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    ctypeAOS = tr("AOS");
-    Satellite sat = satellites.at(0);
-    Observateur obs = observateurs.at(0);
-    bool res = sat.hasAOS(obs);
+    bool res = false;
+    Satellite satellite = satellites.at(0);
 
     /* Corps de la methode */
-    if (res) {
-
-        // Calcul du prochain AOS ou LOS
-        double jjm[3], ht[3];
-        double periode = NB_JOUR_PAR_MIN;
-        if (sat.hauteur() >= 0.)
-            ctypeAOS = tr("LOS");
-
-        double tAOS = 0.;
-        double t_ht = dateCourante.jourJulienUTC();
-
-        bool afin = false;
-        int iter = 0;
-        while (!afin) {
-
-            jjm[0] = t_ht;
-            jjm[1] = jjm[0] + 0.5 * periode;
-            jjm[2] = jjm[0] + periode;
-
-            for(int i=0; i<3; i++) {
-
-                const Date date(jjm[i], 0., false);
-
-                obs.CalculPosVit(date);
-
-                sat.CalculPosVit(date);
-                sat.CalculCoordHoriz(obs, false, false);
-                ht[i] = sat.hauteur();
-            }
-
-            const bool atst1 = ht[0] * ht[1] < 0.;
-            const bool atst2 = ht[1] * ht[2] < 0.;
-            if (atst1 || atst2) {
-
-                t_ht = (atst1) ? jjm[1] : jjm[2];
-
-                if (ctypeAOS == tr("AOS")) {
-                    jjm[0] = t_ht - periode;
-                    jjm[1] = t_ht - 0.5 * periode;
-                    jjm[2] = t_ht;
-                } else {
-                    jjm[0] = t_ht;
-                    jjm[1] = t_ht + 0.5 * periode;
-                    jjm[2] = t_ht + periode;
-                }
-
-                while (fabs(tAOS - t_ht) > EPS_DATES) {
-
-                    tAOS = t_ht;
-
-                    for(int i=0; i<3; i++) {
-
-                        const Date date(jjm[i], 0., false);
-
-                        obs.CalculPosVit(date);
-
-                        // Position du satellite
-                        sat.CalculPosVit(date);
-                        sat.CalculCoordHoriz(obs, true, false);
-                        ht[i] = sat.hauteur();
-                    }
-
-                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
-                    periode *= 0.5;
-
-                    jjm[0] = t_ht - periode;
-                    jjm[1] = t_ht;
-                    jjm[2] = t_ht + periode;
-                }
-                dateAOS = Date(tAOS + offsetUTC, offsetUTC);
-                obs.CalculPosVit(dateAOS);
-
-                // Position du satellite
-                sat.CalculPosVit(dateAOS);
-                sat.CalculCoordHoriz(obs, true, false);
-                azimAOS = sat.azimut();
-                afin = true;
-            } else {
-                t_ht += periode;
-                iter++;
-
-                if (iter > 50000) {
-                    afin = true;
-                    res = false;
-                }
-            }
-        }
-    }
-
+    dateAOS = satellite.CalculDateAOSSuiv(dateCourante, observateurs.at(0), ctypeAOS, azimAOS, res);
     acalcAOS = false;
 
     /* Retour */
@@ -3950,62 +3860,10 @@ void PreviSat::CalculDN() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    // Parcours du tableau "trace au sol"
-    int i = 0;
-    const int dn = (satellites.at(0).isEclipse()) ? 1 : 0;
-    QListIterator<QVector<double> > it(satellites.at(0).traceAuSol());
-    while (it.hasNext()) {
-        const QVector<double> list = it.next();
-        if (list.at(3) >= dateCourante.jourJulienUTC()) {
-            const int dn0 = ((int) list.at(2))%2;
-            if (dn != dn0)
-                it.toBack();
-        }
-        i++;
-    }
+    Satellite satellite = satellites.at(0);
 
     /* Corps de la methode */
-    if (i < satellites.at(0).traceAuSol().size()) {
-        double ecl[3], jjm[3];
-        Satellite satellite = satellites.at(0);
-        double t_ecl = satellites.at(0).traceAuSol().at(i-1).at(3);
-        double periode = t_ecl - satellites.at(0).traceAuSol().at(i-2).at(3);
-
-        bool afin = false;
-        double tdn = dateCourante.jourJulienUTC();
-        while (!afin) {
-
-            jjm[0] = t_ecl - periode;
-            jjm[1] = t_ecl;
-            jjm[2] = t_ecl + periode;
-
-            for(int j=0; j<3; j++) {
-
-                const Date date(jjm[j], 0., false);
-
-                // Position du satellite
-                satellite.CalculPosVit(date);
-
-                // Position du Soleil
-                soleil.CalculPosition(date);
-
-                // Conditions d'eclipse du satellite
-                satellite.CalculSatelliteEclipse(soleil, ui->refractionPourEclipses->isChecked());
-                ecl[j] = satellite.rayonOmbre() - satellite.elongation();
-            }
-
-            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
-                tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
-            periode *= 0.5;
-            if (fabs(tdn - t_ecl) < 1.e-6)
-                afin = true;
-            t_ecl = tdn;
-        }
-        dateEcl = Date(t_ecl + offsetUTC, offsetUTC);
-    } else {
-        dateEcl = Date(dateCourante.jourJulienUTC() - 10., 0.);
-    }
-
+    dateEcl = satellite.CalculDateOmbrePenombreSuiv(dateCourante, ui->refractionPourEclipses->isChecked());
     acalcDN = false;
 
     /* Retour */
