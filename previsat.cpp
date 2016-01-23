@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 janvier 2016
+ * >    23 janvier 2016
  *
  */
 
@@ -2790,7 +2790,7 @@ void PreviSat::AffichageDonnees()
             const int annee_lct = dateLancement.mid(0, 4).toInt();
             const int mois_lct = dateLancement.mid(5, 2).toInt();
             const double jour_lct = dateLancement.mid(8, 2).toDouble();
-            date_lct = Date(annee_lct, mois_lct, jour_lct, offsetUTC);
+            date_lct = Date(annee_lct, mois_lct, jour_lct, 0.);
 
             // Nombre theorique d'orbites a l'epoque
             const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
@@ -5010,8 +5010,8 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
             flux << chaine.arg(ui->epoque->text()).arg(QString(11 - ui->nbRev3->text().length(), QChar(' '))).arg(ui->nbRev3->text()).
                     arg(ui->pays->text()) << endl;
 
-            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2");
-            flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()) << endl << endl;
+            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3");
+            flux << chaine.arg(ui->bstar->text()).arg(ui->nbOrbitesEpoque->text()).arg(ui->siteLancement->text()) << endl << endl;
 
             chaine = tr("Inclinaison             : %1%2\t\tAnomalie moyenne      : %3%4");
             flux << chaine.arg(QString(9 - ui->inclinaisonMoy->text().trimmed().length(), QChar('0')))
@@ -5035,30 +5035,33 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
             // Donnees sur le satellite
             flux << tr("Nom                :") + " " + ui->nomsat->text() << endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\t\tMagnitude std/max  : %2");
+            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2");
             flux << chaine.arg(ui->numNorad->text()).arg(ui->magnitudeStdMaxDonneesSat->text()) << endl;
 
-            chaine = tr("Désignation COSPAR : %1\t\t\tModèle orbital     : %2");
+            chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
             flux << chaine.arg(ui->desigCospar->text()).arg(ui->modele->text()) << endl;
 
             chaine = tr("Dimensions/Section : %1%2");
             flux << chaine.arg(ui->dimensionsDonneesSat->text()).
                     arg((ui->dimensionsDonneesSat->text() == tr("Inconnues")) ? "" : "^2") << endl << endl;
 
+            chaine = tr("Date de lancement  : %1\t\tApogée  (Altitude) : %2");
+            flux << chaine.arg(ui->dateLancementDonneesSat->text()).arg(ui->apogeeDonneesSat->text()) << endl;
 
-            chaine = tr("Apogée  (Altitude) : %1\t\tDate de lancement  : %2");
-            flux << chaine.arg(ui->apogeeDonneesSat->text()).arg(ui->dateLancementDonneesSat->text()) << endl;
+            chaine = (ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(ui->dateRentree->text()) :
+                                                      tr("Catégorie d'orbite : %1\t\t").arg(ui->categorieOrbiteDonneesSat->text());
+            flux << chaine + tr("Périgée (Altitude) : %1").arg(ui->perigeeDonneesSat->text()) << endl;
 
-            chaine = (ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1").arg(ui->dateRentree->text()) :
-                                                      tr("Catégorie d'orbite : %1").arg(ui->categorieOrbiteDonneesSat->text());
-            flux << tr("Périgée (Altitude) : %1\t\t").arg(ui->perigeeDonneesSat->text()).append(chaine) << endl;
+            chaine = (ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(ui->categorieOrbiteDonneesSat->text()) :
+                                                      tr("Pays/Organisation  : %1\t\t").arg(ui->paysDonneesSat->text());
+            flux << chaine + tr("Période orbitale   : %1").arg(ui->periodeDonneesSat->text()) << endl;
 
-            chaine = (ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1").arg(ui->categorieOrbiteDonneesSat->text()) :
-                                                      tr("Pays/Organisation  : %1").arg(ui->paysDonneesSat->text());
-            flux << tr("Période orbitale   : %1 \t\t").arg(ui->periodeDonneesSat->text()).append(chaine) << endl;
+            chaine = (ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(ui->paysDonneesSat->text()) :
+                                                      tr("Site de lancement  : %1\t\t").arg(ui->siteLancement->text());
+            flux << chaine + tr("Inclinaison        : %1").arg(ui->inclinaisonDonneesSat->text()) << endl;
 
-            chaine = (ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1").arg(ui->paysDonneesSat->text()) : "";
-            flux << tr("Inclinaison        : %1\t\t\t").arg(ui->inclinaisonDonneesSat->text()).append(chaine) << endl;
+            if (ui->dateRentree->isVisible())
+                flux << tr("Site de lancement  : %1").arg(ui->siteLancementDonneesSat->text());
         }
         sw.close();
 
@@ -8497,7 +8500,13 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Date de lancement
         const QString dateLancement = ligne.mid(48, 10).trimmed();
-        ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ? tr("Inconnue") : dateLancement);
+        const int annee_lct = dateLancement.mid(0, 4).toInt();
+        const int mois_lct = dateLancement.mid(5, 2).toInt();
+        const double jour_lct = dateLancement.mid(8, 2).toDouble();
+        const Date date_lancement(annee_lct, mois_lct, jour_lct, 0.);
+
+        ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ?
+                                                 tr("Inconnue") : date_lancement.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
 
         // Date de rentree
         if (dateRentree.isEmpty()) {
@@ -8514,7 +8523,12 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
             ui->siteLancementDonneesSat->move(114, 100);
         } else {
 
-            ui->dateRentree->setText(dateRentree);
+            const int annee_rentree = dateRentree.mid(0, 4).toInt();
+            const int mois_rentree = dateRentree.mid(5, 2).toInt();
+            const double jour_rentree = dateRentree.mid(8, 2).toDouble();
+            const Date date_rentree(annee_rentree, mois_rentree, jour_rentree, 0.);
+
+            ui->dateRentree->setText(date_rentree.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
             ui->lbl_dateRentree->setVisible(true);
             ui->dateRentree->setVisible(true);
 
