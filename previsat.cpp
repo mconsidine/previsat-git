@@ -7984,8 +7984,6 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         if (tim.isValid()) {
 
             // Date actuelle
-            if (ui->utc->isChecked())
-                offsetUTC = 0.;
             dateCourante = Date(offsetUTC);
 
             // Enchainement de l'ensemble des calculs
@@ -8886,6 +8884,7 @@ void PreviSat::on_utc_toggled(bool checked)
     /* Corps de la methode */
     if (ui->options->isVisible() && checked) {
 
+        offsetUTC = 0.;
         dateCourante = Date(dateCourante, 0.);
 
         // Enchainement de l'ensemble des calculs
@@ -10735,15 +10734,14 @@ void PreviSat::on_calculsPrev_clicked()
         // Date et heure initiales
         const Date date1(ui->dateInitialePrev->date().year(), ui->dateInitialePrev->date().month(), ui->dateInitialePrev->date().day(),
                          ui->dateInitialePrev->time().hour(), ui->dateInitialePrev->time().minute(),
-                         ui->dateInitialePrev->time().second(), offset1);
+                         ui->dateInitialePrev->time().second(), 0.);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinalePrev->date().year(), ui->dateFinalePrev->date().month(), ui->dateFinalePrev->date().day(),
-                         ui->dateFinalePrev->time().hour(), ui->dateFinalePrev->time().minute(), ui->dateFinalePrev->time().second(),
-                         offset2);
+                         ui->dateFinalePrev->time().hour(), ui->dateFinalePrev->time().minute(), ui->dateFinalePrev->time().second(), 0.);
 
         // Jour julien final
         double jj2 = date2.jourJulien() - offset2;
@@ -11042,16 +11040,14 @@ void PreviSat::on_calculsIri_clicked()
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeIri->date().year(), ui->dateInitialeIri->date().month(), ui->dateInitialeIri->date().day(),
-                         ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(),
-                         ui->dateInitialeIri->time().second(), offset1);
+                         ui->dateInitialeIri->time().hour(), ui->dateInitialeIri->time().minute(), ui->dateInitialeIri->time().second(), 0.);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleIri->date().year(), ui->dateFinaleIri->date().month(), ui->dateFinaleIri->date().day(),
-                         ui->dateFinaleIri->time().hour(), ui->dateFinaleIri->time().minute(), ui->dateFinaleIri->time().second(),
-                         offset2);
+                         ui->dateFinaleIri->time().hour(), ui->dateFinaleIri->time().minute(), ui->dateFinaleIri->time().second(), 0.);
 
         // Jour julien final
         double jj2 = date2.jourJulien() - offset2;
@@ -11322,16 +11318,14 @@ void PreviSat::on_calculsEvt_clicked()
 
         // Date et heure initiales
         const Date date1(ui->dateInitialeEvt->date().year(), ui->dateInitialeEvt->date().month(), ui->dateInitialeEvt->date().day(),
-                         ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(),
-                         ui->dateInitialeEvt->time().second(), offset1);
+                         ui->dateInitialeEvt->time().hour(), ui->dateInitialeEvt->time().minute(), ui->dateInitialeEvt->time().second(), 0.);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
         const Date date2(ui->dateFinaleEvt->date().year(), ui->dateFinaleEvt->date().month(), ui->dateFinaleEvt->date().day(),
-                         ui->dateFinaleEvt->time().hour(), ui->dateFinaleEvt->time().minute(), ui->dateFinaleEvt->time().second(),
-                         offset2);
+                         ui->dateFinaleEvt->time().hour(), ui->dateFinaleEvt->time().minute(), ui->dateFinaleEvt->time().second(), 0.);
 
         // Jour julien final
         double jj2 = date2.jourJulien() - offset2;
@@ -11578,7 +11572,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Date et heure initiales
         const Date date1(ui->dateInitialeTransit->date().year(), ui->dateInitialeTransit->date().month(),
                          ui->dateInitialeTransit->date().day(), ui->dateInitialeTransit->time().hour(),
-                         ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(), offset1);
+                         ui->dateInitialeTransit->time().minute(), ui->dateInitialeTransit->time().second(), 0.);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
@@ -11586,7 +11580,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Date et heure finales
         const Date date2(ui->dateFinaleTransit->date().year(), ui->dateFinaleTransit->date().month(),
                          ui->dateFinaleTransit->date().day(), ui->dateFinaleTransit->time().hour(),
-                         ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(), offset2);
+                         ui->dateFinaleTransit->time().minute(), ui->dateFinaleTransit->time().second(), 0.);
 
         // Jour julien final
         double jj2 = date2.jourJulien() - offset2;
@@ -11860,7 +11854,7 @@ void PreviSat::on_calculsMetOp_clicked()
         // Date et heure initiales
         const Date date1(ui->dateInitialeMetOp->date().year(), ui->dateInitialeMetOp->date().month(),
                          ui->dateInitialeMetOp->date().day(), ui->dateInitialeMetOp->time().hour(),
-                         ui->dateInitialeMetOp->time().minute(), ui->dateInitialeMetOp->time().second(), offset1);
+                         ui->dateInitialeMetOp->time().minute(), ui->dateInitialeMetOp->time().second(), 0.);
 
         // Jour julien initial
         double jj1 = date1.jourJulien() - offset1;
@@ -11868,7 +11862,7 @@ void PreviSat::on_calculsMetOp_clicked()
         // Date et heure finales
         const Date date2(ui->dateFinaleMetOp->date().year(), ui->dateFinaleMetOp->date().month(),
                          ui->dateFinaleMetOp->date().day(), ui->dateFinaleMetOp->time().hour(),
-                         ui->dateFinaleMetOp->time().minute(), ui->dateFinaleMetOp->time().second(), offset2);
+                         ui->dateFinaleMetOp->time().minute(), ui->dateFinaleMetOp->time().second(), 0.);
 
         // Jour julien final
         double jj2 = date2.jourJulien() - offset2;
