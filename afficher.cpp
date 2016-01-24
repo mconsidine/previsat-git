@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 janvier 2016
+ * >    24 janvier 2016
  *
  */
 
@@ -618,7 +618,7 @@ void Afficher::loadSky(const int j)
     const Date dateI(deb.at(0).toInt(), deb.at(1).toInt(), deb.at(2).toInt(), heure, deb.at(4).toInt(),
                      deb.at(5).left(2).toDouble(), 0.);
     double offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateI.jourJulienUTC(), 0.).ToQDateTime(1));
-    Date dateDeb(dateI.jourJulienUTC(), offset);
+    Date dateDeb(dateI.jourJulienUTC() - offset, offset);
 
     Date dateInit(dateDeb, offset);
     Date dateMax, dateFin;
@@ -633,10 +633,10 @@ void Afficher::loadSky(const int j)
             if (sat.hauteur() < 0.) {
                 atrouve = true;
             } else {
-                dateInit = Date(dateInit.jourJulien() - NB_JOUR_PAR_SEC * 10., offset);
+                dateInit = Date(dateInit.jourJulienUTC() - NB_JOUR_PAR_SEC * 10., offset);
             }
         }
-        dateInit = Date(dateInit.jourJulien() + NB_JOUR_PAR_SEC * 10., offset);
+        dateInit = Date(dateInit.jourJulienUTC() + NB_JOUR_PAR_SEC * 10., offset);
 
         if (cond.nbl() == 3) {
 
@@ -645,7 +645,7 @@ void Afficher::loadSky(const int j)
             const Date dateM(max.at(0).toInt(), max.at(1).toInt(), max.at(2).toInt(), max.at(3).toInt(), max.at(4).toInt(),
                              max.at(5).toDouble(), 0.);
             offset = (cond.ecart()) ? cond.offset() : Date::CalculOffsetUTC(Date(dateM.jourJulienUTC(), 0.).ToQDateTime(1));
-            dateMax = Date(dateM.jourJulienUTC(), offset);
+            dateMax = Date(dateM.jourJulienUTC() - offset, offset);
 
             date = tab.at(3);
             QStringList fin = date.replace("/", " ").replace(":", " ").split(" ");
@@ -653,7 +653,7 @@ void Afficher::loadSky(const int j)
                              fin.at(5).toDouble(), 0.);
             offset = (cond.ecart()) ? cond.offset() :
                                       Date::CalculOffsetUTC(Date(dateF.jourJulienUTC(), 0.).ToQDateTime(1));
-            dateFin = Date(dateF.jourJulienUTC(), offset);
+            dateFin = Date(dateF.jourJulienUTC() - offset, offset);
         }
     }
 
@@ -1030,7 +1030,7 @@ void Afficher::loadSky(const int j)
             const QLineF lig = QLineF(lsat2, bsat2, lsat1, bsat1);
 
             // Determination des dates a afficher sur la carte du ciel
-            Date dateTrace(trace.at(i).at(3) + offset, offset);
+            const Date dateTrace(trace.at(i).at(3), offset);
             const double norm = sqrt((lsat1 - lsat0) * (lsat1 - lsat0) + (bsat1 - bsat0) * (bsat1 - bsat0));
 
             if (dateTrace.minutes() != min && norm > 12.) {

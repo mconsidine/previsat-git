@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 janvier 2016
+ * >    24 janvier 2016
  *
  */
 
@@ -5355,9 +5355,12 @@ void PreviSat::GestionTempsReel()
         stsDate->setToolTip(tr("Jour julien"));
         stsHeure->setToolTip(tr("Jour"));
     } else {
-        stsDate->setText(QDate(date1.annee(), date1.mois(), date1.jour()).toString(tr("dd/MM/yyyy")));
-        stsHeure->setText(QTime(date1.heure(), date1.minutes(), (int) date1.secondes()).
-                          toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
+        const QDateTime dateTime = QDateTime(QDate(date1.annee(), date1.mois(), date1.jour()),
+                                             QTime(date1.heure(), date1.minutes(), (int) date1.secondes())).
+                addSecs((int) floor(date1.offsetUTC() * NB_SEC_PAR_JOUR));
+
+        stsDate->setText(dateTime.date().toString(tr("dd/MM/yyyy")));
+        stsHeure->setText(dateTime.time().toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
         stsDate->setToolTip(tr("Date"));
         stsHeure->setToolTip(tr("Heure"));
     }
@@ -7981,6 +7984,8 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         if (tim.isValid()) {
 
             // Date actuelle
+            if (ui->utc->isChecked())
+                offsetUTC = 0.;
             dateCourante = Date(offsetUTC);
 
             // Enchainement de l'ensemble des calculs
@@ -8029,7 +8034,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         on_pasManuel_currentIndexChanged(ui->pasManuel->currentIndex());
         ui->pasManuel->setVisible(true);
         ui->valManuel->setVisible(true);
-        ui->dateHeure3->setDateTime(QDateTime::currentDateTime());
+        ui->dateHeure3->setDateTime((ui->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
         ui->dateHeure3->setDisplayFormat(fmt);
         ui->dateHeure3->setVisible(true);
         ui->dateHeure4->setDateTime(ui->dateHeure3->dateTime());
@@ -8059,10 +8064,11 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QDateTime dateTime = date.addSecs((int) floor(-dateCourante.offsetUTC() * NB_SEC_PAR_JOUR));
 
     /* Corps de la methode */
-    dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.offsetUTC());
+    dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),
+                        dateTime.time().minute(), dateTime.time().second(), dateCourante.offsetUTC());
 
     if (ui->modeManuel->isChecked()) {
         info = true;
@@ -8088,10 +8094,11 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QDateTime dateTime = date.addSecs((int) floor(-dateCourante.offsetUTC() * NB_SEC_PAR_JOUR));
 
     /* Corps de la methode */
-    dateCourante = Date(date.date().year(), date.date().month(), date.date().day(),
-                        date.time().hour(), date.time().minute(), date.time().second(), dateCourante.offsetUTC());
+    dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),
+                        dateTime.time().minute(), dateTime.time().second(), dateCourante.offsetUTC());
 
     ui->dateHeure3->setDateTime(date);
 
