@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    24 janvier 2016
  *
  */
 
@@ -189,9 +189,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 // Calcul de la date calendaire
                                 const double offset = (conditions.ecart()) ?
-                                            conditions.offset() :
-                                            Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date2(date.jourJulien() + offset + EPS_DATES, 0.);
+                                            conditions.offset() : Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
+                                const Date date2(date.jourJulien() + EPS_DATES, offset);
 
                                 // Coordonnees topocentriques du satellite
                                 const QString az = Maths::ToSexagesimal(sat.azimut(), DEGRE, 3, 0, false, false);

@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    22 novembre 2015
+ * >    24 janvier 2016
  *
  */
 
@@ -253,9 +253,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Date calendaire
                                 const double offset = (conditions.ecart()) ?
-                                            conditions.offset() :
-                                            Date::CalculOffsetUTC(Date(dates[j].jourJulienUTC(), 0.).ToQDateTime(1));
-                                const Date date3(dates[j].jourJulien() + offset + EPS_DATES, 0.);
+                                            conditions.offset() : Date::CalculOffsetUTC(Date(dates[j].jourJulienUTC(), 0.).ToQDateTime(1));
+                                const Date date3(dates[j].jourJulien() + EPS_DATES, offset);
 
                                 // Coordonnees topocentriques du satellite
                                 const QString az = Maths::ToSexagesimal(sat.azimut(), DEGRE, 3, 0, false, false);

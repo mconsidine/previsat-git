@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    7 janvier 2016
+ * >    24 janvier 2016
  *
  */
 
@@ -187,7 +187,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     Maths::CalculExtremumInterpolation3(xtab, ytab, minmax);
                     const double offset = (conditions.ecart()) ?
                                 conditions.offset() : Date::CalculOffsetUTC(Date(minmax[0], 0.).ToQDateTime(1));
-                    const Date date(minmax[0] + offset + EPS_DATES, offset);
+                    const Date date(minmax[0] + EPS_DATES, offset);
 
                     // Calcul de la position du satellite pour la date calculee
                     sat.CalculPosVit(date);
@@ -404,7 +404,7 @@ void Evenements::CalculEvt(const double xtab[3], const double ytab[3], const dou
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);
     const double offset = (conditions.ecart()) ? conditions.offset() : Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
-    const Date date(datp + offset + EPS_DATES, offset);
+    const Date date(datp + EPS_DATES, offset);
 
     // Calcul de la position du satellite pour la date calculee
     sat.CalculPosVit(date);
