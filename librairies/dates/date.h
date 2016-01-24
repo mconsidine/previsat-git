@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    24 janvier 2016
  *
  */
 
@@ -94,8 +94,7 @@ public:
      * @param sec secondes
      * @param offset ecart heure legale - UTC
      */
-    Date(const int an, const int mo, const int j, const int h, const int min, const double sec,
-         const double offset);
+    Date(const int an, const int mo, const int j, const int h, const int min, const double sec, const double offset);
 
     ~Date();
 

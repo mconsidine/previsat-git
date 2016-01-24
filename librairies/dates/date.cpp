@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    24 janvier 2016
  *
  */
 
@@ -100,7 +100,7 @@ Date::Date(const double offset)
     /* Initialisations */
 
     /* Corps du constructeur */
-    const QDateTime dateSysteme = QDateTime::currentDateTime();
+    const QDateTime dateSysteme = QDateTime::currentDateTimeUtc();
 
     _annee = dateSysteme.date().year();
     _mois = dateSysteme.date().month();
@@ -135,8 +135,8 @@ Date::Date(const Date &date, const double offset)
     _secondes = date._secondes;
 
     _offsetUTC = offset;
-    _jourJulien = date._jourJulien;
-    _jourJulienUTC = _jourJulien - offset;
+    _jourJulienUTC = date._jourJulienUTC;
+    _jourJulien = _jourJulienUTC + offset;
     getDeltaAT();
     _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
@@ -185,8 +185,8 @@ Date::Date(const double jourJulien2000, const double offset, const bool acalc)
     }
 
     _offsetUTC = offset;
-    _jourJulien = jourJulien2000;
-    _jourJulienUTC = _jourJulien - _offsetUTC;
+    _jourJulienUTC = jourJulien2000;
+    _jourJulien = _jourJulienUTC + _offsetUTC;
     getDeltaAT();
     _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
@@ -352,7 +352,8 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES)));
+    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES))).
+            addSecs((int) floor(_offsetUTC * NB_SEC_PAR_JOUR));
 
     /* Corps de la methode */
     QString res = date.toString(QObject::tr("dddd dd MMMM yyyy hh:mm:ss") + ((systeme == SYSTEME_12H) ? "a" : ""));
@@ -372,21 +373,20 @@ void Date::CalculJourJulien()
     /* Initialisations */
     int d = _annee;
     int n = _mois;
-    const double xj = _jour + _heure * NB_JOUR_PAR_HEUR + _minutes * NB_JOUR_PAR_MIN + _secondes *
-            NB_JOUR_PAR_SEC;
+    const double xj = _jour + _heure * NB_JOUR_PAR_HEUR + _minutes * NB_JOUR_PAR_MIN + _secondes * NB_JOUR_PAR_SEC;
 
     /* Corps de la methode */
     if (n < 3) {
         d--;
-        n+=12;
+        n += 12;
     }
 
     const int c = d / 100;
     const int b = 2 - c + c / 4;
     d -= AN2000;
 
-    _jourJulien = floor(NB_JOURS_PAR_ANJ * d) + floor(30.6001 * (n + 1)) + xj + b - 50.5;
-    _jourJulienUTC = _jourJulien - _offsetUTC;
+    _jourJulienUTC = floor(NB_JOURS_PAR_ANJ * d) + floor(30.6001 * (n + 1)) + xj + b - 50.5;
+    _jourJulien = _jourJulienUTC + _offsetUTC;
     getDeltaAT();
     _jourJulienTT = _jourJulienUTC + (NB_SEC_TT_TAI + _deltaAT) * NB_JOUR_PAR_SEC;
 
