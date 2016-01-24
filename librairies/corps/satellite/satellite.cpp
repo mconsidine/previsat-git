@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 janvier 2016
+ * >    24 janvier 2016
  *
  */
 
@@ -350,7 +350,7 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const bool r
             if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
                 tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
             periode *= 0.5;
-            if (fabs(tdn - t_ecl) < 1.e-6)
+            if (fabs(tdn - t_ecl) < EPS_DATES)
                 afin = true;
             t_ecl = tdn;
         }
