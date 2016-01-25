@@ -2755,7 +2755,7 @@ void PreviSat::AffichageDonnees()
 
         if (fabs(dateCourante.offsetUTC()) > EPSDBL100) {
             QTime heur(0, 0);
-            heur = heur.addSecs((int) (fabs(dateCourante.offsetUTC()) * NB_SEC_PAR_JOUR + EPS_DATES));
+            heur = heur.addSecs(qRound(fabs(dateCourante.offsetUTC()) * NB_SEC_PAR_JOUR));
             chaineUTC = chaineUTC.append((dateCourante.offsetUTC() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
             ui->utcManuel->setText(chaineUTC);
             date = dateCourante;
@@ -5330,7 +5330,7 @@ void PreviSat::GestionTempsReel()
         const double offset = Date::CalculOffsetUTC(QDateTime::currentDateTime());
         offsetUTC = (fabs(offsetUTC - offset) < EPSDBL100) ? offset : offsetUTC;
         if (ui->heureLegale->isChecked())
-            ui->updown->setValue(sgn(offsetUTC) * ((int) (fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
+            ui->updown->setValue(sgn(offsetUTC) * (qRound(fabs(offsetUTC) * NB_MIN_PAR_JOUR)));
         date1 = Date(dateCourante.offsetUTC());
         pas1 = ui->pasReel->currentText().toDouble();
         pas2 = 0.;
@@ -5356,8 +5356,8 @@ void PreviSat::GestionTempsReel()
         stsHeure->setToolTip(tr("Jour"));
     } else {
         const QDateTime dateTime = QDateTime(QDate(date1.annee(), date1.mois(), date1.jour()),
-                                             QTime(date1.heure(), date1.minutes(), (int) date1.secondes())).
-                addSecs((int) floor(date1.offsetUTC() * NB_SEC_PAR_JOUR));
+                                             QTime(date1.heure(), date1.minutes(), qRound(date1.secondes()))).
+                addSecs(qRound(date1.offsetUTC() * NB_SEC_PAR_JOUR));
 
         stsDate->setText(dateTime.date().toString(tr("dd/MM/yyyy")));
         stsHeure->setText(dateTime.time().toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
@@ -5394,7 +5394,7 @@ void PreviSat::GestionTempsReel()
 
             if (!ui->pasManuel->view()->isVisible()) {
 
-                double jd = dateCourante.jourJulien();
+                double jd = dateCourante.jourJulienUTC();
                 if (!ui->rewind->isEnabled() || !ui->backward->isEnabled())
                     jd -= pas1;
                 if (!ui->play->isEnabled() || !ui->forward->isEnabled())
@@ -6059,7 +6059,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             // Date actuelle
             dateCourante = Date(offsetUTC);
 
-            const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
+            const Date date(dateCourante.jourJulienUTC() + EPS_DATES, offsetUTC);
 
             if (ui->dateHeure4->isVisible()) {
                 ui->dateHeure4->setDisplayFormat(fmt);
@@ -6078,13 +6078,13 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
             ui->modeManuel->setChecked(true);
         const int sgnk = (evt->key() == etape_av) ? -1 : 1;
 
-        const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.jourJulien() +
+        const double jd = (ui->valManuel->currentIndex() < 3) ? dateCourante.jourJulienUTC() +
                                                                 sgnk * ui->pasManuel->currentText().toDouble() *
                                                                 qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
-                                                                dateCourante.jourJulien() + sgnk * ui->pasManuel->currentText().
+                                                                dateCourante.jourJulienUTC() + sgnk * ui->pasManuel->currentText().
                                                                 toDouble();
 
-        const Date date(jd + EPS_DATES, 0.);
+        const Date date(jd + EPS_DATES, offsetUTC);
 
         if (ui->dateHeure4->isVisible()) {
             ui->dateHeure4->setDisplayFormat(fmt);
@@ -8062,7 +8062,7 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime dateTime = date.addSecs((int) floor(-dateCourante.offsetUTC() * NB_SEC_PAR_JOUR));
+    const QDateTime dateTime = date.addSecs(qRound(-(dateCourante.offsetUTC() * NB_SEC_PAR_JOUR)));
 
     /* Corps de la methode */
     dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),
@@ -8092,7 +8092,7 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime dateTime = date.addSecs((int) floor(-dateCourante.offsetUTC() * NB_SEC_PAR_JOUR));
+    const QDateTime dateTime = date.addSecs(qRound(-(dateCourante.offsetUTC() * NB_SEC_PAR_JOUR)));
 
     /* Corps de la methode */
     dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    25 janvier 2016
  *
  */
 
@@ -283,7 +283,7 @@ QDateTime Date::ToQDateTime(const int type) const
     const int sec = (type == 0) ? 0 : qRound(_secondes);
 
     /* Retour */
-    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)));
+    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)).addSecs(qRound(_offsetUTC * NB_SEC_PAR_JOUR)));
 }
 
 QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) const
@@ -352,8 +352,8 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, (int) (_secondes + EPS_DATES))).
-            addSecs((int) floor(_offsetUTC * NB_SEC_PAR_JOUR));
+    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, qRound(_secondes))).
+            addSecs(qRound(_offsetUTC * NB_SEC_PAR_JOUR));
 
     /* Corps de la methode */
     QString res = date.toString(QObject::tr("dddd dd MMMM yyyy hh:mm:ss") + ((systeme == SYSTEME_12H) ? "a" : ""));
