@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    25 janvier 2016
  *
  */
 
@@ -11908,7 +11908,7 @@ void PreviSat::on_calculsMetOp_clicked()
         const bool syst = ui->syst24h->isChecked();
 
         // Nom du fichier resultat
-        const QString chaine = tr("metop") + "_%1_%2.txt";
+        const QString chaine = tr("metop_skymed") + "_%1_%2.txt";
         ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
