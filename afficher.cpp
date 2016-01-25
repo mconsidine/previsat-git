@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    25 janvier 2016
  *
  */
 
@@ -384,7 +384,7 @@ void Afficher::load()
             QStringList items(QStringList () << nomsat << debut.mid(idate, lngDate).trimmed() << fin.mid(idate, lngDate).trimmed() <<
                               ((cond.nbl() >= 0) ? maxHt.mid(iht, 11).trimmed() : maxHt.mid(71, 5)) <<
                               ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
-                               maxHt.mid(ihtsol, maxHt.lastIndexOf("\"") - ihtsol + 1).trimmed());
+                              maxHt.mid(ihtsol, maxHt.lastIndexOf("\"") - ihtsol + 1).trimmed());
 
             if (cond.nbl() != 0)
                 items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 2, 1) : maxHt.mid(84, 1));
@@ -532,20 +532,36 @@ void Afficher::on_actionEnregistrer_triggered()
 #else
     const QString nomRepDefaut = dirOut;
 #endif
-    const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
 
     /* Corps de la methode */
-    const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut + QDir::separator() +
-                                                         nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
-    if (!fichier.isEmpty()) {
-        QFile fi(fichier);
-        if (fi.exists())
-            fi.remove();
+    if (ui->fichier_txt->isVisible()) {
 
-        QFile fi2(_fichier);
-        fi2.copy(fi.fileName());
-        QFileInfo fi3(fichier);
-        settings.setValue("fichier/sauvegarde", fi3.absolutePath());
+        const QString nomFicDefaut = _fichier.split(QDir::separator()).last();
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut + QDir::separator() +
+                                                             nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+        if (!fichier.isEmpty()) {
+            QFile fi(fichier);
+            if (fi.exists())
+                fi.remove();
+
+            QFile fi2(_fichier);
+            fi2.copy(fi.fileName());
+            QFileInfo fi3(fichier);
+            settings.setValue("fichier/sauvegarde", fi3.absolutePath());
+        }
+    } else {
+
+        const QPixmap image = QPixmap::grabWidget(ui->ongletsResultats);
+        const QString nomFicDefaut = nomRepDefaut + QDir::separator() + _fichier.split(QDir::separator()).last().remove(".txt");
+
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
+                                                         tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;" \
+                                                            "Tous les fichiers (*)"));
+        if (!fic.isEmpty()) {
+            image.save(fic);
+            const QFileInfo fi(fic);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
     }
 
     /* Retour */

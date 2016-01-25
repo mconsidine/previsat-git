@@ -186,22 +186,32 @@
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="538"/>
+        <location filename="afficher.cpp" line="540"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="539"/>
+        <location filename="afficher.cpp" line="541"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1072"/>
+        <location filename="afficher.cpp" line="557"/>
+        <source>Enregistrer sous</source>
+        <translation>Save as</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="558"/>
+        <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
+        <translation>PNG files (*.png);;JPEG files (*.jpg);;BMP files (*.bmp);;All files (*)</translation>
+    </message>
+    <message>
+        <location filename="afficher.cpp" line="1088"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1078"/>
+        <location filename="afficher.cpp" line="1094"/>
         <source>Flash %1</source>
         <translation>%1 flare</translation>
     </message>
@@ -3708,8 +3718,8 @@ The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="11911"/>
-        <source>metop</source>
-        <translation>metop</translation>
+        <source>metop_skymed</source>
+        <translation>metop_skymed</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="11930"/>
