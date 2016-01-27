@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 janvier 2016
+ * >    27 janvier 2016
  *
  */
 
@@ -212,6 +212,11 @@ private:
      * @param url adresse du fichier
      */
     void AjoutFichier(const QUrl &url);
+
+    /**
+     * @brief MajFichierTLE Mise a jour du fichier TLE courant
+     */
+    void MajFichierTLE();
 
     /**
      * @brief MajWebTLE Mise a jour automatique des TLE
