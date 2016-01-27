@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 janvier 2016
+ * >    28 janvier 2016
  *
  */
 
@@ -3801,7 +3801,7 @@ bool PreviSat::CalculAOS() const
     Satellite satellite = satellites.at(0);
 
     /* Corps de la methode */
-    dateAOS = satellite.CalculDateAOSSuiv(dateCourante, observateurs.at(0), ctypeAOS, azimAOS, res);
+    dateAOS = Date(satellite.CalculDateAOSSuiv(dateCourante, observateurs.at(0), ctypeAOS, azimAOS, res), offsetUTC);
     acalcAOS = false;
 
     /* Retour */
@@ -8906,6 +8906,8 @@ void PreviSat::on_utc_toggled(bool checked)
     if (ui->options->isVisible() && checked) {
 
         offsetUTC = 0.;
+        acalcAOS = true;
+        acalcDN = true;
         dateCourante = Date(dateCourante, 0.);
 
         // Enchainement de l'ensemble des calculs
@@ -8938,7 +8940,10 @@ void PreviSat::on_updown_valueChanged(int arg1)
     if (ui->options->isVisible()) {
 
         if (ui->heureLegale->isChecked()) {
-            dateCourante = Date(dateCourante, offsetUTC);
+
+            acalcAOS = true;
+            acalcDN = true;
+            dateCourante = Date(dateCourante.jourJulien() - offsetUTC, offsetUTC);
 
             // Enchainement de l'ensemble des calculs
             EnchainementCalculs();
