@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2016
+ * >    27 janvier 2016
  *
  */
 
@@ -4092,6 +4092,38 @@ void PreviSat::AjoutFichier(const QUrl &url)
 }
 
 /*
+ * Mise a jour du fichier TLE courant
+ */
+void PreviSat::MajFichierTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QFileInfo fi(nomfic);
+    if (fi.absoluteDir() == dirTle) {
+
+        amajDeb = true;
+        amajPrevi = false;
+        atrouve = true;
+        aupdnow = false;
+        dirDwn = dirTle;
+
+        messagesStatut->setText(tr("Mise à jour du fichier TLE %1 en cours").arg(fi.fileName()));
+        const QString adresse = (fi.fileName().contains("spctrk")) ?
+                    QCoreApplication::organizationDomain() + "previsat/tle/" : adresseCelestrakNorad;
+        const QString ficMaj = adresse + fi.fileName();
+        TelechargementFichier(ficMaj, false);
+
+        settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Mise a jour automatique des TLE
  */
 void PreviSat::MajWebTLE()
@@ -4225,24 +4257,8 @@ void PreviSat::VerifAgeTLE()
             msgbox.exec();
             const int res = msgbox.result();
 
-            if (res == QMessageBox::Yes) {
-
-                const QFileInfo fi(nomfic);
-                if (fi.absoluteDir() == dirTle) {
-
-                    amajDeb = true;
-                    amajPrevi = false;
-                    atrouve = true;
-                    aupdnow = false;
-                    dirDwn = dirTle;
-                    const QString adresse = (fi.fileName().contains("spctrk")) ?
-                                QCoreApplication::organizationDomain() + "previsat/tle/" : adresseCelestrakNorad;
-                    const QString ficMaj = adresse + fi.fileName();
-                    TelechargementFichier(ficMaj, false);
-
-                    settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
-                }
-            }
+            if (res == QMessageBox::Yes)
+                MajFichierTLE();
             old = true;
         }
     }
@@ -6026,7 +6042,12 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
 #endif
 
     /* Corps de la methode */
-    if (evt->key() == Qt::Key_F8) {
+    if (evt->key() == Qt::Key_F5) {
+
+        // Mise a jour du fichier TLE courant
+        MajFichierTLE();
+
+    } else if (evt->key() == Qt::Key_F8) {
 
         // Capture de la fenetre
         chronometre->stop();
