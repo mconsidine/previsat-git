@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    28 janvier 2016
  *
  */
 
@@ -302,10 +302,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
 
                 if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 
-                    const int indx1 = magn.indexOf(li1.mid(2, 5));
-                    if (indx1 >= 0) {
+                    const int indx1 = magn.indexOf('\n' + li1.mid(2, 5)) + 1;
+                    if (indx1 > 0) {
                         const int indx2 = magn.indexOf('\n', indx1) - indx1;
-                        nomsat = magn.mid(indx1 + 60, indx2 - 60).trimmed();
+                        nomsat = magn.mid(indx1 + 123, indx2 - 123).trimmed();
                     } else {
                         nomsat = li1.mid(2, 5);
                     }

@@ -3679,10 +3679,10 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                 const QString norad = li1.mid(2, 5);
                 if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 
-                    const int indx1 = magn.indexOf(norad);
-                    if (indx1 >= 0) {
+                    const int indx1 = magn.indexOf("\n" + norad) + 1;
+                    if (indx1 > 0) {
                         const int indx2 = magn.indexOf("\n", indx1) - indx1;
-                        nomsat = magn.mid(indx1 + 117, indx2 - 117).trimmed();
+                        nomsat = magn.mid(indx1 + 123, indx2 - 123).trimmed();
                     } else {
                         nomsat = norad;
                     }
