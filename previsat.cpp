@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 janvier 2016
+ * >    31 janvier 2016
  *
  */
 
@@ -5363,18 +5363,22 @@ void PreviSat::GestionTempsReel()
         pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 0. : pas1 * NB_SEC_PAR_JOUR;
     }
 
-    // Affichage du jour julien
-    date2 = Date(date1.annee(), 1, 1., 0.);
+    const QDateTime dateTime =
+            QDateTime(QDate(date1.annee(), date1.mois(), date1.jour()), QTime(date1.heure(), date1.minutes(), qRound(date1.secondes()))).
+            addSecs(qRound(date1.offsetUTC() * NB_SEC_PAR_JOUR));
+    date2 = Date(dateTime.date().year(), 1, 1., 0.);
+
     if (ui->calJulien->isChecked()) {
+
+        // Affichage du jour julien
         stsDate->setText(QString::number(date1.jourJulien() + TJ2000, 'f', 5));
         stsHeure->setText(QString::number(date1.jourJulien() - date2.jourJulien() + 1., 'f', 5));
         stsDate->setToolTip(tr("Jour julien"));
         stsHeure->setToolTip(tr("Jour"));
-    } else {
-        const QDateTime dateTime = QDateTime(QDate(date1.annee(), date1.mois(), date1.jour()),
-                                             QTime(date1.heure(), date1.minutes(), qRound(date1.secondes()))).
-                addSecs(qRound(date1.offsetUTC() * NB_SEC_PAR_JOUR));
 
+    } else {
+
+        // Affichage de la date et l'heure
         stsDate->setText(dateTime.date().toString(tr("dd/MM/yyyy")));
         stsHeure->setText(dateTime.time().toString(QString("hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "")));
         stsDate->setToolTip(tr("Date"));

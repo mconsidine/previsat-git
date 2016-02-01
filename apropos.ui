@@ -157,8 +157,9 @@
      </rect>
     </property>
     <property name="text">
-     <string>PreviSat est un logiciel de calcul de la position des satellites artificiels.
-Il permet d'afficher la position des satellites à tout instant (en temps réel ou en mode manuel), d'effectuer les prévisions de passage pour n'importe quel lieu d'observation, et également de déterminer très rapidement les flashs Iridium.
+     <string>PreviSat est un logiciel de suivi des satellites artificiels afin de les observer.
+
+ Il permet d'afficher la position des satellites en temps réel ou en mode manuel. PreviSat est capable d'effectuer les prévisions de passage, de calculer les flashs Iridium, ainsi que plusieurs autres calculs de prévisions.
 
 PreviSat est entièrement gratuit!</string>
     </property>
