@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    25 janvier 2016
+ * >    10 fevrier 2016
  *
  */
 
@@ -76,6 +76,7 @@ static QString dirOut;
 static QString dirTmp;
 static QString map0;
 static QString prev;
+static QString noradStationSpatiale = "25544";
 static QStringList res;
 static QStringList tablonlat;
 static QStringList tabres;
@@ -400,7 +401,7 @@ void Afficher::load()
                 if (k > 0)
                     ui->listePrevisions->resizeColumnToContents(k);
             }
-            tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : "25544").arg(debut.mid(idate, lngDate))
+            tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : noradStationSpatiale).arg(debut.mid(idate, lngDate))
                           .arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
 
             // Dans le cas des flashs ou des transits ISS, determination de la ligne ou se produit le maximum

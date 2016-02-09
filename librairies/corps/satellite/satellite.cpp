@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    10 fevrier 2016
  *
  */
 
@@ -58,6 +58,7 @@
 
 
 bool Satellite::initCalcul = false;
+static QString noradStationSpatiale = "25544";
 
 /* Constructeurs */
 Satellite::Satellite()
@@ -493,7 +494,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul de la trajectoire
             if (nbTracesAuSol > 0) {
 
-                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == "25544") ?
+                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == noradStationSpatiale) ?
                         Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
                              false) : Date(date.jourJulienUTC(), 0., false);
 

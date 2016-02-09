@@ -3517,9 +3517,9 @@
             <widget class="QLabel" name="magnitudeSat">
              <property name="geometry">
               <rect>
-               <x>177</x>
+               <x>333</x>
                <y>78</y>
-               <width>202</width>
+               <width>211</width>
                <height>16</height>
               </rect>
              </property>
@@ -3537,7 +3537,7 @@
              <property name="geometry">
               <rect>
                <x>177</x>
-               <y>93</y>
+               <y>78</y>
                <width>46</width>
                <height>16</height>
               </rect>
@@ -3556,8 +3556,8 @@
              <property name="geometry">
               <rect>
                <x>222</x>
-               <y>93</y>
-               <width>40</width>
+               <y>78</y>
+               <width>41</width>
                <height>16</height>
               </rect>
              </property>
@@ -3577,7 +3577,7 @@
                <x>333</x>
                <y>3</y>
                <width>151</width>
-               <height>20</height>
+               <height>13</height>
               </rect>
              </property>
              <property name="font">
@@ -3596,7 +3596,7 @@
                <x>484</x>
                <y>3</y>
                <width>70</width>
-               <height>20</height>
+               <height>13</height>
               </rect>
              </property>
              <property name="font">
@@ -3642,6 +3642,41 @@
              </property>
              <property name="text">
               <string>2011/07/31 00:00:00 (dans 00min 00s). Azimut : 000° 00'</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_prochainJN">
+             <property name="geometry">
+              <rect>
+               <x>177</x>
+               <y>93</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Prochain J&gt;N :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="dateJN">
+             <property name="geometry">
+              <rect>
+               <x>255</x>
+               <y>93</y>
+               <width>291</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>2011/07/31 00:00:00 (dans 00min 00s)</string>
              </property>
             </widget>
            </widget>
