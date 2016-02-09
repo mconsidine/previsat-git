@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 janvier 2016
+ * >    10 fevrier 2016
  *
  */
 
@@ -291,26 +291,26 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime date = QDateTime(QDate(_annee, _mois, _jour), QTime(0, 0, 0));
     const int fmt = (format == FORMAT_COURT) ? 0 : 1;
     const double tmp = floor(_jourJulien);
     const QString chaine = " %1:%2:%3%4";
 
     /* Corps de la methode */
     const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    Date date2(jjsec, _offsetUTC);
+    const Date date(jjsec, _offsetUTC);
+    const QDateTime date2 = date.ToQDateTime(0);
 
-    int hr = date2._heure;
+    int hr = date._heure;
     QString sys = " ";
     if (systeme == SYSTEME_12H) {
-        hr = date2._heure%12;
-        sys = (hr >= 0 && date2._heure < 12) ? "a" : "p";
+        hr = date._heure%12;
+        sys = (hr >= 0 && date._heure < 12) ? "a" : "p";
         if (hr == 0)
             hr = 12;
     }
 
-    const QString res = date.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
-                        arg(date2._minutes, 2, 10, QChar('0')).arg(date2._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')).arg(sys);
+    const QString res = date2.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
+                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, 2 * (fmt + 1), 'f', fmt, QChar('0')).arg(sys);
 
     /* Retour */
     return (res);
