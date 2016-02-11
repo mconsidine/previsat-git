@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    11 fevrier 2016
  *
  */
 
@@ -338,7 +338,7 @@ double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observa
 
             // Magnitude standard (approche empirique)
             const double magnitudeStandard = 3.2 * log(angle * RAD2DEG) - 2.450012;
-            magnitude = magnitudeStandard - 2.5 * log10(aireProjetee / 1.e-12);
+            magnitude = magnitudeStandard - 2.5 * log10(aireProjetee * 1.e12);
         }
     } else {
 

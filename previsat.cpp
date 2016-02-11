@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 fevrier 2016
+ * >    11 fevrier 2016
  *
  */
 
@@ -3015,7 +3015,7 @@ void PreviSat::AffichageDonnees()
 
             const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
             const double delai = dateEcl.jourJulienUTC() - dateCrt.jourJulienUTC();
-            if (delai >= 0. && dateEcl.jourJulienUTC() < satellites.at(0).traceAuSol().last().at(3)) {
+            if (delai >= -EPS_DATES && dateEcl.jourJulienUTC() < satellites.at(0).traceAuSol().last().at(3)) {
 
                 chaine = tr("Prochain %1 :");
                 ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).isEclipse()) ? tr("N>J") : tr("J>N")));
@@ -5899,21 +5899,21 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     const int hcarte = ui->carte->height() - 3;
     const int lcarte = ui->carte->width() - 3;
 
-    DEG2PXHZ = lcarte / T360;
-    DEG2PXVT = hcarte * 2. / T360;
+    DEG2PXHZ = lcarte * (1. / T360);
+    DEG2PXVT = hcarte * (2. / T360);
 
     ui->gmt->adjustSize();
     ui->gmt->move((ui->carte->width() - ui->gmt->width()) / 2, (int) (15. * DEG2PXVT) + 2);
 
     ui->liste1->resize(211, hcarte - 147);
 
-    ui->S60->move(5, (int) (hcarte / 1.2) - 1);
-    ui->S30->move(5, (int) (hcarte / 1.5) - 1);
-    ui->SS->move(5, (int) (hcarte * 7. / 12.) - 1);
+    ui->S60->move(5, (int) (hcarte * (1. / 1.2)) - 1);
+    ui->S30->move(5, (int) (hcarte * (1. / 1.5)) - 1);
+    ui->SS->move(5, (int) (hcarte * (7. / 12.)) - 1);
     ui->N0->move(5, (int) (hcarte * 0.5) - 1);
-    ui->NN->move(5, (int) (hcarte / 2.4) - 1);
-    ui->N30->move(5, (int) (hcarte / 3.) - 1);
-    ui->N60->move(5, (int) (hcarte / 6.) - 1);
+    ui->NN->move(5, (int) (hcarte * (1. / 2.4)) - 1);
+    ui->N30->move(5, (int) (hcarte * (1. / 3.)) - 1);
+    ui->N60->move(5, (int) (hcarte * (1. / 6.)) - 1);
     const int xLat = (wcc) ? -26 : 1;
     ui->frameLat->setGeometry(xLat + ui->carte->x() + ui->carte->width(), 0, ui->frameLat->width(), ui->carte->height());
 
@@ -5997,19 +5997,19 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     const int dec1 = (wcc) ? 12 : 8;
     const int dec2 = (wcc) ? 9 : 5;
-    ui->W150->move((int) (lcarte / 12.) - dec1, 0);
-    ui->W120->move((int) (lcarte / 6.) - dec1, 0);
-    ui->W90->move((int) (lcarte / 4.) - dec2, 0);
-    ui->W60->move((int) (lcarte / 3.) - dec2, 0);
-    ui->W30->move((int) (lcarte / 2.4) - dec2, 0);
-    ui->WW->move((int) (lcarte * 11. / 24.) - 2, 0);
+    ui->W150->move((int) (lcarte * (1. / 12.)) - dec1, 0);
+    ui->W120->move((int) (lcarte * (1. / 6.)) - dec1, 0);
+    ui->W90->move((int) (lcarte * (1. / 4.)) - dec2, 0);
+    ui->W60->move((int) (lcarte * (1. / 3.)) - dec2, 0);
+    ui->W30->move((int) (lcarte * (1. / 2.4)) - dec2, 0);
+    ui->WW->move((int) (lcarte * (11. / 24.)) - 2, 0);
     ui->W0->move((int) (lcarte * 0.5) - 2, 0);
-    ui->EE->move((int) (lcarte * 13. / 24.) - 2, 0);
-    ui->E30->move((int) (lcarte * 7. / 12.) - 5, 0);
-    ui->E60->move((int) (lcarte / 1.5) - 5, 0);
+    ui->EE->move((int) (lcarte * (13. / 24.)) - 2, 0);
+    ui->E30->move((int) (lcarte * (7. / 12.)) - 5, 0);
+    ui->E60->move((int) (lcarte * (1. / 1.5)) - 5, 0);
     ui->E90->move((int) (lcarte * 0.75) - 5, 0);
-    ui->E120->move((int) (lcarte / 1.2) - 8, 0);
-    ui->E150->move((int) (lcarte * 11. / 12.) - 8, 0);
+    ui->E120->move((int) (lcarte * (1. / 1.2)) - 8, 0);
+    ui->E150->move((int) (lcarte * (11. / 12.)) - 8, 0);
     const int yLon = (wcc) ? -10 : 1 + ui->carte->y();
     ui->frameLon->setGeometry(ui->carte->x(), yLon + ui->carte->height(), ui->carte->width(), ui->frameLon->height());
 

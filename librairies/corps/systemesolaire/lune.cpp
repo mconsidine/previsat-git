@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    11 fevrier 2016
  *
  */
 
@@ -124,19 +124,20 @@ void Lune::CalculPosition(const Date &date)
     const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
 
     // Longitude moyenne de la Lune
-    const double ll = DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * (1. / 538841. - t / 65194000.))), T360);
+    const double ll = DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * ((1. / 538841.) - t * (1. / 65194000.)))),
+                                       T360);
 
     // Elongation moyenne de la Lune
-    coef[0] = DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * (1. / 545868. - t / 113065000.))), T360);
+    coef[0] = DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * ((1. / 545868.) - t * (1. / 113065000.)))), T360);
 
     // Anomalie moyenne du Soleil
-    coef[1] = DEG2RAD * modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t / 24490000.)), T360);
+    coef[1] = DEG2RAD * modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t * (1. / 24490000.))), T360);
 
     // Anomalie moyenne de la Lune
-    coef[2] = DEG2RAD * modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * (1. / 69699. - t / 14712000.))), T360);
+    coef[2] = DEG2RAD * modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * ((1. / 69699.) - t * (1. / 14712000.)))), T360);
 
     // Argument de latitude de la Lune
-    coef[3] = DEG2RAD * modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * (1. / 3526000. + t / 863310000.))), T360);
+    coef[3] = DEG2RAD * modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * ((1. / 3526000.) + t * (1. / 863310000.)))), T360);
 
     coef[4] = 1. - t * (0.002516 + 0.0000074 * t);
 
@@ -260,7 +261,7 @@ void Lune::CalculMagnitude(const Soleil &soleil)
 
     const double kappa = exp(-THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
 
-    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 / 6.;
+    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 * (1. / 6.);
     const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
     const double phi = (W0S8 * ((1. + b) * ppi - 1.) + R0S2 * (1. - R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
                         DEUX_TIERS * R2 / PI * (sin(angPha) + (PI - angPha) * cosang)) / p;

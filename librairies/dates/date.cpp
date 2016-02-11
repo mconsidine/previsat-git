@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 fevrier 2016
+ * >    11 fevrier 2016
  *
  */
 
@@ -165,14 +165,14 @@ Date::Date(const double jourJulien2000, const double offset, const bool acalc)
         if (z < 2299161) {
             a = z;
         } else {
-            const int al = (int) floor((z - 1867216.25) / 36524.25);
+            const int al = (int) floor((z - 1867216.25) * (1. / 36524.25));
             a = z + 1 + al - al / 4;
         }
 
         const int b = a + 1524;
         const int c = (int) floor((b - 122.1) * NB_ANJ_PAR_JOURS);
         const int d = (int) floor(NB_JOURS_PAR_ANJ * c);
-        const int e = (int) floor((b - d) / 30.6001);
+        const int e = (int) floor((b - d) * (1. / 30.6001));
         const double j0 = b - d - floor(30.6001 * e) + f;
 
         _mois = (e < 14) ? e - 1 : e - 13;
