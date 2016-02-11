@@ -179,12 +179,14 @@ protected:
 
     /**
      * @brief RotationRV Calcul de la matrice de rotation du repere equatorial au repere orbital local
+     * D'apres l'algorithme developpe dans SatCal de Gerhard Holtkamp
+     * http://www.aaw-darmstadt.de/websystem/_main.php?page=download.php
      * @param position position du satellite (repere equatorial)
      * @param vitesse vitesse du satellite
      * @param lacet angle de lacet (en radians)
      * @param tangage angle de tangage (en radians)
      * @param inpl rotation plan LVLH (inpl = 0 : pas de rotation, x pointe selon le vecteur vitesse;
-     *                                 inpl = 1 : rotation de 90° autour de l'axe X;
+     *                                 inpl = 1 : rotation de 90Â° autour de l'axe X;
      *                                 inpl = 2 : rotation LVLH)
      * @return matrice de rotation
      */
@@ -193,7 +195,9 @@ protected:
 
     /**
      * @brief RotationYawSteering Calcul de la matrice de rotation du repere equatorial au repere defini par la loi locale de
-     *  yaw steering
+     * yaw steering
+     * D'apres l'algorithme developpe dans SatCal de Gerhard Holtkamp
+     * http://www.aaw-darmstadt.de/websystem/_main.php?page=download.php
      * @param satellite satellite
      * @param lacet angle de lacet (en radians)
      * @param tangage angle de tangage (en radians)

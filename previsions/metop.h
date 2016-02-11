@@ -60,6 +60,8 @@ public:
     /* Methodes publiques */
     /**
      * @brief AngleReflexion Calcul de l'angle de reflexion du panneau
+     * D'apres l'algorithme developpe dans SatCal de Gerhard Holtkamp
+     * http://www.aaw-darmstadt.de/websystem/_main.php?page=download.php
      * @param satellite satellite
      * @param soleil Soleil
      * @return angle de reflexion du panneau
