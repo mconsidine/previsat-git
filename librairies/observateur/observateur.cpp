@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    11 fevrier 2016
  *
  */
 
@@ -95,8 +95,8 @@ Observateur::Observateur(const QString &nom, const double lon, const double lat,
     _posZ = (RAYON_TERRESTRE * sinter + _altitude) * _sinlat;
 
     // Pour l'extinction atmospherique
-    _aray = 0.1451 * exp(-_altitude / 7.996);
-    _aaer = 0.120 * exp(-_altitude / 1.5);
+    _aray = 0.1451 * exp(-_altitude * (1. / 7.996));
+    _aaer = 0.120 * exp(-_altitude * (1. / 1.5));
 
     /* Retour */
     return;
@@ -223,7 +223,7 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Corps de la methode */
 
     /* Retour */
-    return (DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu / 38710000.), T360));
+    return (DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu * (1. / 38710000.)), T360));
 }
 
 /*

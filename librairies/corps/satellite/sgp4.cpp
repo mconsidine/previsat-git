@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >
+ * >     11 fevrier 2016
  *
  */
 
@@ -156,7 +156,7 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
             if (fabs(cosip + 1.) > 1.5e-12) {
                 _sat.xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) / (1. + cosip);
             } else {
-                _sat.xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) / 1.5e-12;
+                _sat.xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) * (1. / 1.5e-12);
             }
         }
 
@@ -811,6 +811,7 @@ void SGP4::SGP4Init(const TLE &tle)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const double rt = 1. / RAYON_TERRESTRE;
 
     /* Corps de la methode */
     // Recuperation des elements du TLE et formattage
@@ -823,8 +824,8 @@ void SGP4::SGP4Init(const TLE &tle)
     _sat.no = tle.no() * DEUX_PI * NB_JOUR_PAR_MIN;
     _sat.omegao = DEG2RAD * tle.omegao();
 
-    const double ss = 78. / RAYON_TERRESTRE + 1.;
-    const double qzms2t = pow((120. - 78.) / RAYON_TERRESTRE, 4.);
+    const double ss = 78. * rt + 1.;
+    const double qzms2t = pow((120. - 78.) * rt, 4.);
     _sat.t = 0.;
 
     _sat.eccsq = _sat.ecco * _sat.ecco;
@@ -837,7 +838,7 @@ void SGP4::SGP4Init(const TLE &tle)
     const double d1 = 0.75 * J2 * (3. * _sat.cosio2 - 1.) / (_sat.rteosq * _sat.omeosq);
     double del = d1 / (ak * ak);
     const double del2 = del * del;
-    const double adel = ak * (1. - del2 - del * (0.5 * DEUX_TIERS + 134. * del2 / 81.));
+    const double adel = ak * (1. - del2 - del * (0.5 * DEUX_TIERS + del2 * (134. / 81.)));
     del = d1 / (adel * adel);
     _sat.no /= (1. + del);
 
@@ -856,7 +857,7 @@ void SGP4::SGP4Init(const TLE &tle)
         double cc3, qzms24, sfour;
 
         _sat.isimp = false;
-        if (_sat.rp < 220. / RAYON_TERRESTRE + 1.)
+        if (_sat.rp < 220. * rt + 1.)
             _sat.isimp = true;
 
         sfour = ss;
@@ -868,7 +869,7 @@ void SGP4::SGP4Init(const TLE &tle)
             if (perige < 98.)
                 sfour = 20.;
 
-            qzms24 = pow((120. - sfour) / RAYON_TERRESTRE, 4.);
+            qzms24 = pow((120. - sfour) * rt, 4.);
             sfour /= RAYON_TERRESTRE + 1.;
         }
 
@@ -917,7 +918,7 @@ void SGP4::SGP4Init(const TLE &tle)
         if (fabs(_sat.cosio + 1.) > 1.5e-12) {
             _sat.xlcof = -0.25 * J3SJ2 * _sat.sinio * (3. + 5. * _sat.cosio) / (1. + _sat.cosio);
         } else {
-            _sat.xlcof = -0.25 * J3SJ2 * _sat.sinio * (3. + 5. * _sat.cosio) / 1.5e-12;
+            _sat.xlcof = -0.25 * J3SJ2 * _sat.sinio * (3. + 5. * _sat.cosio) * (1. / 1.5e-12);
         }
 
         _sat.aycof = -0.5 * J3SJ2 * _sat.sinio;
@@ -954,7 +955,7 @@ void SGP4::SGP4Init(const TLE &tle)
 
             const double cc1sq = _sat.cc1 * _sat.cc1;
             _sat.d2 = 4. * _sat.ao * tsi * cc1sq;
-            const double temp = _sat.d2 * tsi * _sat.cc1 / 3.;
+            const double temp = _sat.d2 * tsi * _sat.cc1 * (1. / 3.);
             _sat.d3 = (17. * _sat.ao + sfour) * temp;
             _sat.d4 = 0.5 * temp * _sat.ao * tsi * (221. * _sat.ao + 31. * sfour) * _sat.cc1;
             _sat.t3cof = _sat.d2 + 2. * cc1sq;

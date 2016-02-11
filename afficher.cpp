@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 fevrier 2016
+ * >    11 fevrier 2016
  *
  */
 
@@ -719,7 +719,7 @@ void Afficher::loadSky(const int j)
         double diff = (ll - ls) * RAD2DEG;
         if (diff < 0.)
             diff += T360;
-        indLune = (int) (diff / 12.190749) + 1;
+        indLune = (int) (diff  * (1. / 12.190749)) + 1;
         if (indLune > 29)
             indLune = 1;
     } else {
