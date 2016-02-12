@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    11 fevrier 2016
  *
  */
 
@@ -219,16 +219,16 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                 }
             }
 
-            // Recherche des transitions jour/nuit
+            // Recherche des passages au terminateur
             if (conditions.atransJn()) {
                 l = i;
                 if (list1.at(6) * list3.at(6) < 0. && !atransJn) {
 
-                    // Il y a une transition jour/nuit : calcul par interpolation de la date
+                    // Il y a un passage au terminateur : calcul par interpolation de la date
                     atransJn = true;
                     const double ytab[] = { list1.at(6), list2.at(6), list3.at(6) };
-                    const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Transition jour -> nuit") :
-                                                               QObject::tr("Transition nuit -> jour");
+                    const QString typeTrans = (ytab[2] < 0.) ? QObject::tr("Passage terminateur Jour -> Nuit") :
+                                                               QObject::tr("Passage terminateur Nuit -> Jour");
                     CalculEvt(xtab, ytab, 0., typeTrans, conditions, sat);
                     l++;
                 }
@@ -243,7 +243,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                     const double noeud = 90. * n * DEG2RAD;
                     if ((list1.at(7) - noeud) * (list3.at(7) - noeud) < 0. && list1.at(7) < noeud && !apassPso) {
 
-                        // Il y a une transition jour/nuit : calcul par interpolation de la date
+                        // Il y a un passage a PSO=90° ou PSO=270° : calcul par interpolation de la date
                         apassPso = true;
                         const double ytab[] = { list1.at(7), list2.at(7), list3.at(7) };
                         const QString typePso = QObject::tr("Passage à PSO =") + " " + QString::number(noeud * RAD2DEG) + "°";
