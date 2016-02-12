@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    12 fevrier 2016
  *
  */
 
@@ -8920,6 +8920,8 @@ void PreviSat::on_heureLegale_toggled(bool checked)
     if (ui->options->isVisible() && checked) {
 
         offsetUTC = ui->updown->value() * NB_JOUR_PAR_MIN;
+        acalcAOS = true;
+        acalcDN = true;
         dateCourante = Date(dateCourante, offsetUTC);
 
         // Enchainement de l'ensemble des calculs
