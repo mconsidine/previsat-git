@@ -3684,9 +3684,9 @@
             <property name="geometry">
              <rect>
               <x>560</x>
-              <y>32</y>
+              <y>13</y>
               <width>209</width>
-              <height>175</height>
+              <height>195</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -13250,7 +13250,7 @@
                 <rect>
                  <x>180</x>
                  <y>40</y>
-                 <width>161</width>
+                 <width>191</width>
                  <height>17</height>
                 </rect>
                </property>
@@ -13258,7 +13258,7 @@
                 <font/>
                </property>
                <property name="text">
-                <string>Transitions jour/nuit</string>
+                <string>Passages terminateur</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
