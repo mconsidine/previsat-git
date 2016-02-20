@@ -3665,7 +3665,7 @@
               <rect>
                <x>255</x>
                <y>93</y>
-               <width>291</width>
+               <width>195</width>
                <height>16</height>
               </rect>
              </property>
@@ -3676,7 +3676,20 @@
               <bool>true</bool>
              </property>
              <property name="text">
-              <string>2011/07/31 00:00:00 (dans 00min 00s)</string>
+              <string>2011/07/31 00:00:00 (dans 00min 00s).</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_beta">
+             <property name="geometry">
+              <rect>
+               <x>460</x>
+               <y>93</y>
+               <width>81</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Beta : 000° 00'</string>
              </property>
             </widget>
            </widget>
@@ -3734,7 +3747,7 @@
                <x>0</x>
                <y>0</y>
                <width>198</width>
-               <height>296</height>
+               <height>316</height>
               </rect>
              </property>
              <property name="font">

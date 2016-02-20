@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 fevrier 2016
+ * >    20 fevrier 2016
  *
  */
 
@@ -651,6 +651,7 @@ void PreviSat::ChargementConfig()
     ui->lbl_prochainAOS->adjustSize();
     ui->dateAOS->move(ui->lbl_prochainAOS->x() + ui->lbl_prochainAOS->width() + 7, ui->dateAOS->y());
     ui->dateJN->move(ui->dateAOS->x(), ui->dateJN->y());
+    ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() - 2, ui->dateJN->y());
 
     ui->gmt->setVisible(false);
     ui->frameCoordISS->setVisible(false);
@@ -3021,7 +3022,7 @@ void PreviSat::AffichageDonnees()
                 ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).isEclipse()) ? tr("N>J") : tr("J>N")));
 
                 // Delai de l'evenement
-                chaine = tr("%1 (dans %2)");
+                chaine = tr("%1 (dans %2).");
                 const Date delaiEcl = Date(delai - 0.5, 0.);
                 const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR) ?
                             delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
@@ -3065,11 +3066,25 @@ void PreviSat::AffichageDonnees()
                                      arg(cDelaiAOS).arg(Maths::ToSexagesimal(azimAOS, DEGRE, 3, 0, false, true).mid(0, 9)));
 
                 ui->lbl_prochainAOS->setVisible(true);
+                ui->dateAOS->adjustSize();
                 ui->dateAOS->setVisible(true);
 
             } else {
                 ui->lbl_prochainAOS->setVisible(false);
                 ui->dateAOS->setVisible(false);
+            }
+
+            // Angle beta
+            chaine = tr("Beta : %1");
+            ui->lbl_beta->setText(chaine.arg(Maths::ToSexagesimal(satellites.at(0).beta(), DEGRE, 2, 0, false, true).mid(0, 9)));
+
+            if (ui->magnitudeSat->x() == 333) {
+                ui->lbl_beta->adjustSize();
+                ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() + 2, ui->dateJN->y());
+            } else {
+                ui->lbl_beta->move(333, ui->dateJN->y());
+                if (!isAOS)
+                    ui->lbl_beta->move(ui->lbl_prochainAOS->pos());
             }
         }
 
@@ -4963,51 +4978,54 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
             // Donnees sur le satellite
             flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
 
-            chaine = tr("Longitude : %1\tHauteur    : %2\tAscension droite :  %3");
+            chaine = tr("Longitude : %1\t\tHauteur    : %2\tAscension droite :  %3");
             flux << chaine.arg(ui->longitudeSat->text().trimmed()).arg(ui->hauteurSat->text())
                     .arg(ui->ascensionDroiteSat->text().trimmed()) << endl;
 
-            chaine = tr("Latitude  :  %1\tAzimut (N) : %2\tDéclinaison      : %3");
+            chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
             flux << chaine.arg(ui->latitudeSat->text().trimmed()).arg(ui->azimutSat->text().trimmed())
                     .arg(ui->declinaisonSat->text()) << endl;
 
-            chaine = tr("Altitude  :  %1%2\tDistance   : %3%4\tConstellation    : %5");
+            chaine = tr("Altitude  :  %1%2\t\tDistance   : %3%4\tConstellation    : %5");
             flux << chaine.arg(ui->altitudeSat->text()).arg(QString(13 - ui->altitudeSat->text().length(), QChar(' ')))
                     .arg(ui->distanceSat->text()).arg(QString(13 - ui->distanceSat->text().length(), QChar(' ')))
                     .arg(ui->constellationSat->text()) << endl << endl;
 
-            chaine = tr("Direction          : %1  \t%2");
-            flux << chaine.arg(ui->directionSat->text()).arg(ui->magnitudeSat->text()) << endl;
+            chaine = tr("Direction          : %1  \tOrbite n°%2      \t\t%3");
+            flux << chaine.arg(ui->directionSat->text()).arg(ui->nbOrbitesSat->text())
+                    .arg((ui->magnitudeSat->x() == 333) ? ui->magnitudeSat->text() : "").trimmed() << endl;
 
-            chaine = tr("Vitesse orbitale   : %1%2  \tOrbite n°%3");
+            chaine = tr("Vitesse orbitale   : %1%2  \t%3\t%4");
             flux << chaine.arg((ui->vitesseSat->text().length() < 11) ? " " : "").arg(ui->vitesseSat->text())
-                    .arg(ui->nbOrbitesSat->text()) << endl;
+                    .arg((ui->dateJN->isVisible()) ? ui->lbl_prochainJN->text() + " " + ui->dateJN->text() + " " : ui->magnitudeSat->text())
+                    .arg((ui->dateAOS->isVisible()) ? ui->lbl_beta->text() : "").trimmed() << endl;
 
-            chaine = tr("Variation distance : %1  \t%2 %3");
-            flux << chaine.arg(ui->rangeRate->text()).arg(ui->lbl_prochainAOS->text()).arg(ui->dateAOS->text())
-                 << endl << endl << endl;
+            chaine = tr("Variation distance : %1  \t%2");
+            flux << chaine.arg(ui->rangeRate->text())
+                    .arg((ui->dateAOS->isVisible()) ? ui->lbl_prochainAOS->text() + " " + ui->dateAOS->text() : ui->lbl_beta->text())
+                    .trimmed() << endl << endl << endl;
         }
 
         // Donnees sur le Soleil
         flux << tr("Coordonnées du Soleil :") << endl;
-        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurSoleil->text().trimmed()).arg(ui->ascensionDroiteSoleil->text()) << endl;
 
-        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2");
         flux << chaine.arg(ui->azimutSoleil->text().trimmed()).arg(ui->declinaisonSoleil->text()) << endl;
 
-        chaine = tr("Distance   : %1   \tConstellation    : %2");
+        chaine = tr("Distance   : %1   \t\tConstellation    : %2");
         flux << chaine.arg(ui->distanceSoleil->text()).arg(ui->constellationSoleil->text()) << endl << endl << endl;
 
         // Donnees sur la Lune
         flux << tr("Coordonnées de la Lune :") << endl;
-        chaine = tr("Hauteur    : %1\tAscension droite :  %2");
+        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
         flux << chaine.arg(ui->hauteurLune->text().trimmed()).arg(ui->ascensionDroiteLune->text()) << endl;
 
-        chaine = tr("Azimut (N) : %1\tDéclinaison      : %2");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2");
         flux << chaine.arg(ui->azimutLune->text().trimmed()).arg(ui->declinaisonLune->text()) << endl;
 
-        chaine = tr("Distance   : %1  \tConstellation    : %2");
+        chaine = tr("Distance   : %1  \t\tConstellation    : %2");
         flux << chaine.arg(ui->distanceLune->text()).arg(ui->constellationLune->text()) << endl << endl;
         flux << tr("Phase        :") + " " + ui->phaseLune->text() << endl;
         flux << tr("Illumination :") + " " + ui->illuminationLune->text() << endl;
