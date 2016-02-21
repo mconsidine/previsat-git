@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    21 fevrier 2016
  *
  */
 
@@ -297,14 +297,14 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
 
     /* Corps de la methode */
     const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    const Date date(jjsec, _offsetUTC);
+    const Date date(jjsec, 0.);
     const QDateTime date2 = date.ToQDateTime(0);
 
-    int hr = date._heure;
+    int hr = date2.time().hour();
     QString sys = " ";
     if (systeme == SYSTEME_12H) {
-        hr = date._heure%12;
-        sys = (hr >= 0 && date._heure < 12) ? "a" : "p";
+        hr = date2.time().hour()%12;
+        sys = (hr >= 0 && date2.time().hour() < 12) ? "a" : "p";
         if (hr == 0)
             hr = 12;
     }
