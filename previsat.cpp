@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 fevrier 2016
+ * >    23 fevrier 2016
  *
  */
 
@@ -4155,17 +4155,20 @@ void PreviSat::MajFichierTLE()
     const QFileInfo fi(nomfic);
     if (fi.absoluteDir() == dirTle) {
 
-        amajDeb = true;
+        amajDeb = false;
         amajPrevi = false;
         atrouve = true;
         aupdnow = false;
         dirDwn = dirTle;
 
-        messagesStatut->setText(tr("Mise à jour du fichier TLE %1 en cours").arg(fi.fileName()));
+        messagesStatut->setText(tr("Mise à jour du fichier TLE %1 en cours...").arg(fi.fileName()));
         const QString adresse = (fi.fileName().contains("spctrk")) ?
                     QCoreApplication::organizationDomain() + "previsat/tle/" : adresseCelestrakNorad;
         const QString ficMaj = adresse + fi.fileName();
         TelechargementFichier(ficMaj, false);
+
+        if (downQueue.isEmpty())
+            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
 
         settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
     }
@@ -5675,6 +5678,7 @@ void PreviSat::TelechargementSuivant()
         ui->frameBarreProgression->setVisible(false);
         ui->affichageMsgMAJ->setVisible(true);
         messagesStatut->setText(tr("Terminé !"));
+
     } else {
 
         const QUrl url = downQueue.dequeue();
@@ -5685,7 +5689,7 @@ void PreviSat::TelechargementSuivant()
                                                                   QFileInfo(url.path()).fileName();
 
         ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
-        if (ui->miseAJourTLE->isVisible()) {
+        if (ui->miseAJourTLE->isVisible() && aupdnow) {
             ui->barreProgression->setValue(0);
             ui->frameBarreProgression->setVisible(true);
             ui->compteRenduMaj->setVisible(true);
