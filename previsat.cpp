@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 fevrier 2016
+ * >    25 fevrier 2016
  *
  */
 
@@ -3411,10 +3411,6 @@ void PreviSat::AffichageElementsOsculateurs() const
     double xval = satellites.at(0).elements().demiGrandAxe() * ((ui->unitesKm->isChecked()) ? 1. : MILE_PAR_KM);
 
     chaine = chaine.arg(xval, 0, 'f', 1);
-    if (ui->typeParametres->currentIndex() == 2)
-        ui->demiGrandAxe->move(111, 20);
-    else
-        ui->demiGrandAxe->move(84, 20);
     ui->demiGrandAxe->setText(chaine);
 
     ui->frameCirculaire->setVisible(false);
@@ -4851,17 +4847,17 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 0:
             // Parametres kepleriens
-            chaine = tr("Demi-grand axe : %1\tAscension droite du noeud ascendant : %2%3");
+            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2%3");
             flux << chaine.arg(ui->demiGrandAxe->text()).
                     arg(QString(9 - ui->ADNoeudAscendant->text().length(), QChar('0'))).
                     arg(ui->ADNoeudAscendant->text()) << endl;
 
-            chaine = tr("Excentricité   : %1\tArgument du périgée                 : %2%3");
+            chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2%3");
             flux << chaine.arg(ui->excentricite->text()).
                     arg(QString(9 - ui->argumentPerigee->text().length(), QChar('0'))).
                     arg(ui->argumentPerigee->text()) << endl;
 
-            chaine = tr("Inclinaison    : %1%2\tAnomalie moyenne                    : %3%4");
+            chaine = tr("Inclinaison          : %1%2\tAnomalie moyenne                    : %3%4");
             flux << chaine.arg(QString(9 - ui->inclinaison->text().length(), QChar('0'))).arg(ui->inclinaison->text()).
                     arg(QString(9 - ui->anomalieMoyenne->text().length(), QChar('0'))).arg(ui->anomalieMoyenne->text())
                  << endl << endl;
@@ -4869,16 +4865,16 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 1:
             // Parametres circulaires
-            chaine = tr("Demi-grand axe : %1\tAscension droite du noeud ascendant : %2%3");
+            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2%3");
             flux << chaine.arg(ui->demiGrandAxe->text()).
                     arg(QString(9 - ui->ADNoeudAscendant2->text().length(), QChar('0'))).
                     arg(ui->ADNoeudAscendant2->text()) << endl;
 
-            chaine = tr("Ex             : %1\tInclinaison                         : %2%3");
+            chaine = tr("Ex                   : %1\tInclinaison                         : %2%3");
             flux << chaine.arg(ui->ex1->text()).arg(QString(9 - ui->inclinaison2->text().length(), QChar('0'))).
                     arg(ui->inclinaison2->text()) << endl;
 
-            chaine = tr("Ey             : %1\tPosition sur orbite                 : %2%3");
+            chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2%3");
             flux << chaine.arg(ui->ey1->text()).arg(QString(9 - ui->positionSurOrbite->text().length(), QChar('0'))).
                     arg(ui->positionSurOrbite->text())
                  << endl << endl;
@@ -4886,13 +4882,13 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 2:
             // Parametres equatoriaux
-            chaine = tr("Demi-grand axe       : %1\tIx               : %2");
+            chaine = tr("Demi-grand axe       : %1\tIx                 : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité         : %1\tIy               : %2");
+            chaine = tr("Excentricité         : %1\tIy                 : %2");
             flux << chaine.arg(ui->excentricite2->text()).arg(ui->iy1->text()) << endl;
 
-            chaine = tr("Longitude du périgée : %1%2\tAnomalie moyenne : %3%4");
+            chaine = tr("Longitude du périgée : %1%2\tAnomalie moyenne   : %3%4");
             flux << chaine.arg(QString(9 - ui->longitudePerigee->text().length(), QChar('0'))).
                     arg(ui->longitudePerigee->text()).
                     arg(QString(9 - ui->anomalieMoyenne2->text().length(), QChar('0'))).
@@ -4901,13 +4897,13 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 3:
             // Parametres circulaires equatoriaux
-            chaine = tr("Demi-grand axe : %1\tIx                         : %2");
+            chaine = tr("Demi-grand axe       : %1\tIx                          : %2");
             flux << chaine.arg(ui->demiGrandAxe->text()).arg(ui->ix2->text()) << endl;
 
-            chaine = tr("Ex             : %1\tIy                         : %2");
+            chaine = tr("Ex                   : %1\tIy                          : %2");
             flux << chaine.arg(ui->ex2->text()).arg(ui->iy2->text()) << endl;
 
-            chaine = tr("Ey             : %1\tArgument de longitude vrai : %2%3");
+            chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2%3");
             flux << chaine.arg(ui->ey2->text()).arg(QString(9 - ui->argumentLongitudeVraie2->text().length(), QChar('0'))).
                     arg(ui->argumentLongitudeVraie2->text()) << endl << endl;
             break;

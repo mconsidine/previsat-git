@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -5352,7 +5352,7 @@
              <widget class="QLabel" name="ex2">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>15</y>
                 <width>61</width>
                 <height>16</height>
@@ -5419,7 +5419,7 @@
              <widget class="QLabel" name="ey2">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>30</y>
                 <width>61</width>
                 <height>16</height>
@@ -5546,7 +5546,7 @@
              <widget class="QLabel" name="excentricite2">
               <property name="geometry">
                <rect>
-                <x>118</x>
+                <x>117</x>
                 <y>15</y>
                 <width>61</width>
                 <height>16</height>
@@ -5718,7 +5718,7 @@
              <widget class="QLabel" name="inclinaison">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>30</y>
                 <width>61</width>
                 <height>16</height>
@@ -5807,7 +5807,7 @@
              <widget class="QLabel" name="excentricite">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>15</y>
                 <width>61</width>
                 <height>16</height>
@@ -5966,7 +5966,7 @@
              <widget class="QLabel" name="ex1">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>15</y>
                 <width>61</width>
                 <height>16</height>
@@ -6017,7 +6017,7 @@
              <widget class="QLabel" name="ey1">
               <property name="geometry">
                <rect>
-                <x>82</x>
+                <x>108</x>
                 <y>30</y>
                 <width>61</width>
                 <height>16</height>
@@ -6056,7 +6056,7 @@
             <widget class="QLabel" name="demiGrandAxe">
              <property name="geometry">
               <rect>
-               <x>84</x>
+               <x>110</x>
                <y>20</y>
                <width>71</width>
                <height>16</height>
