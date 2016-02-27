@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >     11 fevrier 2016
+ * >     27 fevrier 2016
  *
  */
 
@@ -48,7 +48,8 @@
 
 static const double J3SJ2 = J3 / J2;
 static const double RPTIM = OMEGA * NB_SEC_PAR_MIN;
-
+static const double X1SRT = 1. / RAYON_TERRESTRE;
+static const double RTMS = RAYON_TERRESTRE * NB_MIN_PAR_SEC;
 
 /* Constructeurs */
 
@@ -73,105 +74,106 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
         // Calcul du temps ecoule depuis l'epoque (en minutes)
         const double tsince = NB_MIN_PAR_JOUR * (date.jourJulienUTC() - tle.epoque().jourJulienUTC());
 
-        _sat.t = tsince;
+        _t = tsince;
 
         // Prise en compte des termes seculaires de la gravite et du freinage atmospherique
-        const double xmdf = _sat.mo + _sat.mdot * _sat.t;
-        const double argpdf = _sat.argpo + _sat.argpdot * _sat.t;
-        const double nodedf = _sat.omegao + _sat.nodedot * _sat.t;
-        _sat.argpm = argpdf;
-        _sat.mm = xmdf;
-        const double tt2 = _sat.t * _sat.t;
-        _sat.nodem = nodedf + _sat.nodecf * tt2;
-        tempa = 1. - _sat.cc1 * _sat.t;
-        tempe = _sat.bstar * _sat.cc4 * _sat.t;
-        templ = _sat.t2cof * tt2;
+        const double xmdf = _mo + _mdot * _t;
+        const double argpdf = _argpo + _argpdot * _t;
+        const double nodedf = _omegao + _nodedot * _t;
+        _argpm = argpdf;
+        _mm = xmdf;
+        const double tt2 = _t * _t;
+        _nodem = nodedf + _nodecf * tt2;
+        tempa = 1. - _cc1 * _t;
+        tempe = _bstar * _cc4 * _t;
+        templ = _t2cof * tt2;
 
-        if (!_sat.isimp) {
+        if (!_isimp) {
 
-            const double delomg = _sat.omgcof * _sat.t;
-            const double delm = _sat.xmcof * (pow((1. + _sat.eta * cos(xmdf)), 3.) - _sat.delmo);
+            const double delomg = _omgcof * _t;
+            const double delmtmp = 1. + _eta * cos(xmdf);
+            const double delm = _xmcof * (delmtmp * delmtmp * delmtmp - _delmo);
             temp = delomg + delm;
-            _sat.mm = xmdf + temp;
-            _sat.argpm = argpdf - temp;
-            const double tt3 = tt2 * _sat.t;
-            const double t4 = tt3 * _sat.t;
-            tempa += -_sat.d2 * tt2 - _sat.d3 * tt3 - _sat.d4 * t4;
-            tempe += _sat.bstar * _sat.cc5 * (sin(_sat.mm) - _sat.sinmao);
-            templ += _sat.t3cof * tt3 + t4 * (_sat.t4cof + _sat.t * _sat.t5cof);
+            _mm = xmdf + temp;
+            _argpm = argpdf - temp;
+            const double tt3 = tt2 * _t;
+            const double t4 = tt3 * _t;
+            tempa += -_d2 * tt2 - _d3 * tt3 - _d4 * t4;
+            tempe += _bstar * _cc5 * (sin(_mm) - _sinmao);
+            templ += _t3cof * tt3 + t4 * (_t4cof + _t * _t5cof);
         }
 
-        _sat.nm = _sat.no;
-        _sat.em = _sat.ecco;
-        _sat.inclm = _sat.inclo;
+        _nm = _no;
+        _em = _ecco;
+        _inclm = _inclo;
 
-        if (_sat.method == 'd') {
-            const double tc = _sat.t;
+        if (_method == 'd') {
+            const double tc = _t;
             Dspace(tc);
         }
 
-        const double am = pow((KE / _sat.nm), DEUX_TIERS) * tempa * tempa;
-        _sat.nm = KE * pow(am, -1.5);
-        _sat.em -= tempe;
+        const double am = pow((KE / _nm), DEUX_TIERS) * tempa * tempa;
+        _nm = KE * pow(am, -1.5);
+        _em -= tempe;
 
-        if (_sat.em < 1.e-6)
-            _sat.em = 1.e-6;
+        if (_em < 1.e-6)
+            _em = 1.e-6;
 
-        _sat.mm += _sat.no * templ;
-        xlm = _sat.mm + _sat.argpm + _sat.nodem;
-        _sat.emsq = _sat.em * _sat.em;
-        temp = 1. - _sat.emsq;
+        _mm += _no * templ;
+        xlm = _mm + _argpm + _nodem;
+        _emsq = _em * _em;
+        temp = 1. - _emsq;
 
-        _sat.nodem = fmod(_sat.nodem, DEUX_PI);
-        _sat.argpm = fmod(_sat.argpm, DEUX_PI);
+        _nodem = fmod(_nodem, DEUX_PI);
+        _argpm = fmod(_argpm, DEUX_PI);
         xlm = fmod(xlm, DEUX_PI);
-        _sat.mm = fmod(xlm - _sat.argpm - _sat.nodem, DEUX_PI);
+        _mm = fmod(xlm - _argpm - _nodem, DEUX_PI);
 
-        _sat.sinim = sin(_sat.inclm);
-        _sat.cosim = cos(_sat.inclm);
+        _sinim = sin(_inclm);
+        _cosim = cos(_inclm);
 
         // Prise en compte des termes periodiques luni-solaires
-        _sat.ep = _sat.em;
-        _sat.xincp = _sat.inclm;
-        _sat.argpp = _sat.argpm;
-        _sat.nodep = _sat.nodem;
-        _sat.mp = _sat.mm;
-        sinip = _sat.sinim;
-        cosip = _sat.cosim;
-        if (_sat.method == 'd') {
+        _ep = _em;
+        _xincp = _inclm;
+        _argpp = _argpm;
+        _nodep = _nodem;
+        _mp = _mm;
+        sinip = _sinim;
+        cosip = _cosim;
+        if (_method == 'd') {
             Dpper();
-            if (_sat.xincp < 0.) {
-                _sat.xincp = -_sat.xincp;
-                _sat.nodep += PI;
-                _sat.argpp -= PI;
+            if (_xincp < 0.) {
+                _xincp = -_xincp;
+                _nodep += PI;
+                _argpp -= PI;
             }
         }
 
         // Termes longue periode
-        if (_sat.method == 'd') {
-            sinip = sin(_sat.xincp);
-            cosip = cos(_sat.xincp);
-            _sat.aycof = -0.5 * J3SJ2 * sinip;
+        if (_method == 'd') {
+            sinip = sin(_xincp);
+            cosip = cos(_xincp);
+            _aycof = -0.5 * J3SJ2 * sinip;
 
             if (fabs(cosip + 1.) > 1.5e-12) {
-                _sat.xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) / (1. + cosip);
+                _xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) / (1. + cosip);
             } else {
-                _sat.xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) * (1. / 1.5e-12);
+                _xlcof = -0.25 * J3SJ2 * sinip * (3. + 5. * cosip) * (1. / 1.5e-12);
             }
         }
 
-        const double axnl = _sat.ep * cos(_sat.argpp);
-        temp = 1. / (am * (1. - _sat.ep * _sat.ep));
-        const double aynl = _sat.ep * sin(_sat.argpp) + temp * _sat.aycof;
-        const double xl = _sat.mp + _sat.argpp + _sat.nodep + temp * _sat.xlcof * axnl;
+        const double axnl = _ep * cos(_argpp);
+        temp = 1. / (am * (1. - _ep * _ep));
+        const double aynl = _ep * sin(_argpp) + temp * _aycof;
+        const double xl = _mp + _argpp + _nodep + temp * _xlcof * axnl;
 
         // Resolution de l'equation de Kepler
-        const double u = fmod(xl - _sat.nodep, DEUX_PI);
+        const double u = fmod(xl - _nodep, DEUX_PI);
         eo1 = u;
         tem5 = 9999.9;
         ktr = 1;
 
-        while (fabs(tem5) >= EPSDBL && ktr < 10) {
+        while (fabs(tem5) >= EPSDBL && ktr <= 10) {
             sineo1 = sin(eo1);
             coseo1 = cos(eo1);
             tem5 = (u - aynl * coseo1 + axnl * sineo1 - eo1) / (1. - coseo1 * axnl - sineo1 * aynl);
@@ -187,6 +189,7 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
         const double esine = axnl * sineo1 - aynl * coseo1;
         const double el2 = axnl * axnl + aynl * aynl;
         const double pl = am * (1. - el2);
+
         if (pl >= 0.) {
             double su;
 
@@ -195,8 +198,9 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
             const double rvdotl = sqrt(pl) / rl;
             const double betal = sqrt(1. - el2);
             temp = esine / (1. + betal);
-            const double sinu = am / rl * (sineo1 - aynl - axnl * temp);
-            const double cosu = am / rl * (coseo1 - axnl + aynl * temp);
+            const double tmp1 = am / rl;
+            const double sinu = tmp1 * (sineo1 - aynl - axnl * temp);
+            const double cosu = tmp1 * (coseo1 - axnl + aynl * temp);
             su = atan2(sinu, cosu);
             const double sin2u = (cosu + cosu) * sinu;
             const double cos2u = 1. - 2. * sinu * sinu;
@@ -205,23 +209,21 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
             const double temp2 = temp1 * temp;
 
             // Prise en compte des termes courte periode
-            if (_sat.method == 'd') {
+            if (_method == 'd') {
 
                 const double cosisq = cosip * cosip;
-                _sat.con41 = 3. * cosisq - 1.;
-                _sat.x1mth2 = 1. - cosisq;
-                _sat.x7thm1 = 7. * cosisq - 1.;
+                _con41 = 3. * cosisq - 1.;
+                _x1mth2 = 1. - cosisq;
+                _x7thm1 = 7. * cosisq - 1.;
             }
 
-            const double mrt = RAYON_TERRESTRE *
-                    (rl * (1. - 1.5 * temp2 * betal * _sat.con41) + 0.5 * temp1 * _sat.x1mth2 * cos2u);
-            su -= 0.25 * temp2 * _sat.x7thm1 * sin2u;
-            const double xnode = _sat.nodep + 1.5 * temp2 * cosip * sin2u;
-            const double xinc = _sat.xincp + 1.5 * temp2 * cosip * sinip * cos2u;
-            const double mvt = RAYON_TERRESTRE * NB_MIN_PAR_SEC *
-                    (KE * rdotl - _sat.nm * temp1 * _sat.x1mth2 * sin2u);
-            const double rvdot = RAYON_TERRESTRE * NB_MIN_PAR_SEC *
-                    (KE * rvdotl + _sat.nm * temp1 * (_sat.x1mth2 * cos2u + 1.5 * _sat.con41));
+            const double mrt = RAYON_TERRESTRE * (rl * (1. - 1.5 * temp2 * betal * _con41) + 0.5 * temp1 * _x1mth2 * cos2u);
+            su -= 0.25 * temp2 * _x7thm1 * sin2u;
+            const double temp3 = 1.5 * temp2 * cosip;
+            const double xnode = _nodep + temp3 * sin2u;
+            const double xinc = _xincp + temp3 * sinip * cos2u;
+            const double mvt = RTMS * (KE * rdotl - _nm * temp1 * _x1mth2 * sin2u);
+            const double rvdot = RTMS * (KE * rvdotl + _nm * temp1 * (_x1mth2 * cos2u + 1.5 * _con41));
 
             // Vecteurs directeurs
             const double sinsu = sin(su);
@@ -266,33 +268,33 @@ void SGP4::Dpper() {
     /* Initialisations */
 
     /* Corps de la methode */
-    zm = _sat.zmos + ZNS * _sat.t;
+    zm = _zmos + ZNS * _t;
     if (!_init)
-        zm = _sat.zmos;
+        zm = _zmos;
 
     zf = zm + 2. * ZES * sin(zm);
     sinzf = sin(zf);
     f2 = 0.5 * sinzf * sinzf - 0.25;
     f3 = -0.5 * sinzf * cos(zf);
-    const double ses = _sat.se2 * f2 + _sat.se3 * f3;
-    const double sis = _sat.si2 * f2 + _sat.si3 * f3;
-    const double sls = _sat.sl2 * f2 + _sat.sl3 * f3 + _sat.sl4 * sinzf;
-    const double sghs = _sat.sgh2 * f2 + _sat.sgh3 * f3 + _sat.sgh4 * sinzf;
-    const double shs = _sat.sh2 * f2 + _sat.sh3 * f3;
-    zm = _sat.zmol + ZNL * _sat.t;
+    const double ses = _se2 * f2 + _se3 * f3;
+    const double sis = _si2 * f2 + _si3 * f3;
+    const double sls = _sl2 * f2 + _sl3 * f3 + _sl4 * sinzf;
+    const double sghs = _sgh2 * f2 + _sgh3 * f3 + _sgh4 * sinzf;
+    const double shs = _sh2 * f2 + _sh3 * f3;
+    zm = _zmol + ZNL * _t;
     if (!_init)
-        zm = _sat.zmol;
+        zm = _zmol;
 
     zf = zm + 2. * ZEL * sin(zm);
     sinzf = sin(zf);
     f2 = 0.5 * sinzf * sinzf - 0.25;
     f3 = -0.5 * sinzf * cos(zf);
 
-    const double sel = _sat.ee2 * f2 + _sat.e3 * f3;
-    const double sil = _sat.xi2 * f2 + _sat.xi3 * f3;
-    const double sll = _sat.xl2 * f2 + _sat.xl3 * f3 + _sat.xl4 * sinzf;
-    const double sghl = _sat.xgh2 * f2 + _sat.xgh3 * f3 + _sat.xgh4 * sinzf;
-    const double shll = _sat.xh2 * f2 + _sat.xh3 * f3;
+    const double sel = _ee2 * f2 + _e3 * f3;
+    const double sil = _xi2 * f2 + _xi3 * f3;
+    const double sll = _xl2 * f2 + _xl3 * f3 + _xl4 * sinzf;
+    const double sghl = _xgh2 * f2 + _xgh3 * f3 + _xgh4 * sinzf;
+    const double shll = _xh2 * f2 + _xh3 * f3;
     const double pe = ses + sel;
     const double pinc = sis + sil;
     const double pl = sls + sll;
@@ -301,48 +303,49 @@ void SGP4::Dpper() {
 
     if (_init) {
 
-        _sat.xincp += pinc;
-        _sat.ep += pe;
-        const double sinip = sin(_sat.xincp);
-        const double cosip = cos(_sat.xincp);
+        _xincp += pinc;
+        _ep += pe;
+        const double sinip = sin(_xincp);
+        const double cosip = cos(_xincp);
 
         // Application directe des termes periodiques
-        if (_sat.xincp >= 0.2) {
+        if (_xincp >= 0.2) {
             ph /= sinip;
             pgh -= cosip * ph;
-            _sat.argpp += pgh;
-            _sat.nodep += ph;
-            _sat.mp += pl;
+            _argpp += pgh;
+            _nodep += ph;
+            _mp += pl;
         } else {
 
             // Application des termes periodiques avec la modification de Lyddane
             double alfdp, betdp, xls;
 
-            const double sinop = sin(_sat.nodep);
-            const double cosop = cos(_sat.nodep);
+            const double sinop = sin(_nodep);
+            const double cosop = cos(_nodep);
             alfdp = sinip * sinop;
             betdp = sinip * cosop;
-            const double dalf = ph * cosop + pinc * cosip * sinop;
-            const double dbet = -ph * sinop + pinc * cosip * cosop;
+            const double tmp = pinc * cosip;
+            const double dalf = ph * cosop + tmp * sinop;
+            const double dbet = -ph * sinop + tmp * cosop;
             alfdp += dalf;
             betdp += dbet;
-            _sat.nodep = fmod(_sat.nodep, DEUX_PI);
-            if (_sat.nodep < 0.)
-                _sat.nodep += DEUX_PI;
+            _nodep = fmod(_nodep, DEUX_PI);
+            if (_nodep < 0.)
+                _nodep += DEUX_PI;
 
-            xls = _sat.mp + _sat.argpp + cosip * _sat.nodep;
-            const double dls = pl + pgh - pinc * _sat.nodep * sinip;
+            xls = _mp + _argpp + cosip * _nodep;
+            const double dls = pl + pgh - pinc * _nodep * sinip;
             xls += dls;
-            const double xnoh = _sat.nodep;
-            _sat.nodep = atan2(alfdp, betdp);
-            if (_sat.nodep < 0.)
-                _sat.nodep += DEUX_PI;
+            const double xnoh = _nodep;
+            _nodep = atan2(alfdp, betdp);
+            if (_nodep < 0.)
+                _nodep += DEUX_PI;
 
-            if (fabs(xnoh - _sat.nodep) > PI)
-                _sat.nodep = (_sat.nodep < xnoh) ? _sat.nodep + DEUX_PI : _sat.nodep - DEUX_PI;
+            if (fabs(xnoh - _nodep) > PI)
+                _nodep = (_nodep < xnoh) ? _nodep + DEUX_PI : _nodep - DEUX_PI;
 
-            _sat.mp += pl;
-            _sat.argpp = xls - _sat.mp - cosip * _sat.nodep;
+            _mp += pl;
+            _argpp = xls - _mp - cosip * _nodep;
         }
     }
 
@@ -361,32 +364,32 @@ void SGP4::Dscom(const double tc) {
     /* Initialisations */
 
     /* Corps de la methode */
-    _sat.nm = _sat.no;
-    _sat.em = _sat.ecco;
-    _sat.snodm = sin(_sat.omegao);
-    _sat.cnodm = cos(_sat.omegao);
-    _sat.sinomm = sin(_sat.argpo);
-    _sat.cosomm = cos(_sat.argpo);
-    _sat.sinim = sin(_sat.inclo);
-    _sat.cosim = cos(_sat.inclo);
-    _sat.emsq = _sat.em * _sat.em;
-    const double betasq = 1. - _sat.emsq;
-    _sat.rtemsq = sqrt(betasq);
+    _nm = _no;
+    _em = _ecco;
+    _snodm = sin(_omegao);
+    _cnodm = cos(_omegao);
+    _sinomm = sin(_argpo);
+    _cosomm = cos(_argpo);
+    _sinim = sin(_inclo);
+    _cosim = cos(_inclo);
+    _emsq = _em * _em;
+    const double betasq = 1. - _emsq;
+    _rtemsq = sqrt(betasq);
 
     // Initialisation des termes luni-solaires
-    _sat.day = _sat.epoque.jourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
-    const double xnodce = fmod(4.523602 - 0.00092422029 * _sat.day, DEUX_PI);
+    _day = _epoque.jourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
+    const double xnodce = fmod(4.523602 - 0.00092422029 * _day, DEUX_PI);
     const double stem = sin(xnodce);
     const double ctem = cos(xnodce);
     const double zcosil = 0.91375164 - 0.03568096 * ctem;
     const double zsinil = sqrt(1. - zcosil * zcosil);
     const double zsinhl = 0.089683511 * stem / zsinil;
     const double zcoshl = sqrt(1. - zsinhl * zsinhl);
-    _sat.gam = 5.8351514 + 0.001944368 * _sat.day;
+    _gam = 5.8351514 + 0.001944368 * _day;
     zx = 0.39785416 * stem / zsinil;
     const double zy = zcoshl * ctem + 0.91744867 * zsinhl * stem;
     zx = atan2(zx, zy);
-    zx = _sat.gam + zx - xnodce;
+    zx = _gam + zx - xnodce;
     const double zcosgl = cos(zx);
     const double zsingl = sin(zx);
 
@@ -395,117 +398,126 @@ void SGP4::Dscom(const double tc) {
     double zsing = ZSINGS;
     double zcosi = ZCOSIS;
     double zsini = ZSINIS;
-    double zcosh = _sat.cnodm;
-    double zsinh = _sat.snodm;
+    double zcosh = _cnodm;
+    double zsinh = _snodm;
     double cc = C1SS;
-    double xnoi = 1. / _sat.nm;
+    double xnoi = 1. / _nm;
 
     for (int lsflg = 1; lsflg <= 2; lsflg++) {
 
-        const double a1 = zcosg * zcosh + zsing * zcosi * zsinh;
-        const double a3 = -zsing * zcosh + zcosg * zcosi * zsinh;
+        const double a0 = zcosi * zsinh;
+        const double a1 = zcosg * zcosh + zsing * a0;
+        const double a3 = -zsing * zcosh + zcosg * a0;
         const double a7 = -zcosg * zsinh + zsing * zcosi * zcosh;
         const double a8 = zsing * zsini;
         const double a9 = zsing * zsinh + zcosg * zcosi * zcosh;
         const double a10 = zcosg * zsini;
-        const double a2 = _sat.cosim * a7 + _sat.sinim * a8;
-        const double a4 = _sat.cosim * a9 + _sat.sinim * a10;
-        const double a5 = -_sat.sinim * a7 + _sat.cosim * a8;
-        const double a6 = -_sat.sinim * a9 + _sat.cosim * a10;
+        const double a2 = _cosim * a7 + _sinim * a8;
+        const double a4 = _cosim * a9 + _sinim * a10;
+        const double a5 = -_sinim * a7 + _cosim * a8;
+        const double a6 = -_sinim * a9 + _cosim * a10;
 
-        const double x1 = a1 * _sat.cosomm + a2 * _sat.sinomm;
-        const double x2 = a3 * _sat.cosomm + a4 * _sat.sinomm;
-        const double x3 = -a1 * _sat.sinomm + a2 * _sat.cosomm;
-        const double x4 = -a3 * _sat.sinomm + a4 * _sat.cosomm;
-        const double x5 = a5 * _sat.sinomm;
-        const double x6 = a6 * _sat.sinomm;
-        const double x7 = a5 * _sat.cosomm;
-        const double x8 = a6 * _sat.cosomm;
+        const double x1 = a1 * _cosomm + a2 * _sinomm;
+        const double x2 = a3 * _cosomm + a4 * _sinomm;
+        const double x3 = -a1 * _sinomm + a2 * _cosomm;
+        const double x4 = -a3 * _sinomm + a4 * _cosomm;
+        const double x5 = a5 * _sinomm;
+        const double x6 = a6 * _sinomm;
+        const double x7 = a5 * _cosomm;
+        const double x8 = a6 * _cosomm;
 
-        _sat.z31 = 12. * x1 * x1 - 3. * x3 * x3;
-        _sat.z32 = 24. * x1 * x2 - 6. * x3 * x4;
-        _sat.z33 = 12. * x2 * x2 - 3. * x4 * x4;
-        _sat.z1 = 3. * (a1 * a1 + a2 * a2) + _sat.z31 * _sat.emsq;
-        _sat.z2 = 6. * (a1 * a3 + a2 * a4) + _sat.z32 * _sat.emsq;
-        _sat.z3 = 3. * (a3 * a3 + a4 * a4) + _sat.z33 * _sat.emsq;
-        _sat.z11 = -6. * a1 * a5 + _sat.emsq * (-24. * x1 * x7 - 6. * x3 * x5);
-        _sat.z12 = -6. * (a1 * a6 + a3 * a5) + _sat.emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
-        _sat.z13 = -6. * a3 * a6 + _sat.emsq * (-24. * x2 * x8 - 6. * x4 * x6);
-        _sat.z21 = 6. * a2 * a5 + _sat.emsq * (24. * x1 * x5 - 6. * x3 * x7);
-        _sat.z22 = 6. * (a4 * a5 + a2 * a6) + _sat.emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
-        _sat.z23 = 6. * a4 * a6 + _sat.emsq * (24. * x2 * x6 - 6. * x4 * x8);
-        _sat.z1 = _sat.z1 + _sat.z1 + betasq * _sat.z31;
-        _sat.z2 = _sat.z2 + _sat.z2 + betasq * _sat.z32;
-        _sat.z3 = _sat.z3 + _sat.z3 + betasq * _sat.z33;
-        _sat.s3 = cc * xnoi;
-        _sat.s2 = -0.5 * _sat.s3 / _sat.rtemsq;
-        _sat.s4 = _sat.s3 * _sat.rtemsq;
-        _sat.s1 = -15. * _sat.em * _sat.s4;
-        _sat.s5 = x1 * x3 + x2 * x4;
-        _sat.s6 = x2 * x3 + x1 * x4;
-        _sat.s7 = x2 * x4 - x1 * x3;
+        _z31 = 12. * x1 * x1 - 3. * x3 * x3;
+        _z32 = 24. * x1 * x2 - 6. * x3 * x4;
+        _z33 = 12. * x2 * x2 - 3. * x4 * x4;
+        _z1 = 3. * (a1 * a1 + a2 * a2) + _z31 * _emsq;
+        _z2 = 6. * (a1 * a3 + a2 * a4) + _z32 * _emsq;
+        _z3 = 3. * (a3 * a3 + a4 * a4) + _z33 * _emsq;
+        _z11 = -6. * a1 * a5 + _emsq * (-24. * x1 * x7 - 6. * x3 * x5);
+        _z12 = -6. * (a1 * a6 + a3 * a5) + _emsq * (-24. * (x2 * x7 + x1 * x8) - 6. * (x3 * x6 + x4 * x5));
+        _z13 = -6. * a3 * a6 + _emsq * (-24. * x2 * x8 - 6. * x4 * x6);
+        _z21 = 6. * a2 * a5 + _emsq * (24. * x1 * x5 - 6. * x3 * x7);
+        _z22 = 6. * (a4 * a5 + a2 * a6) + _emsq * (24. * (x2 * x5 + x1 * x6) - 6. * (x4 * x7 + x3 * x8));
+        _z23 = 6. * a4 * a6 + _emsq * (24. * x2 * x6 - 6. * x4 * x8);
+        _z1 = _z1 + _z1 + betasq * _z31;
+        _z2 = _z2 + _z2 + betasq * _z32;
+        _z3 = _z3 + _z3 + betasq * _z33;
+        _s3 = cc * xnoi;
+        _s2 = -0.5 * _s3 / _rtemsq;
+        _s4 = _s3 * _rtemsq;
+        _s1 = -15. * _em * _s4;
+        _s5 = x1 * x3 + x2 * x4;
+        _s6 = x2 * x3 + x1 * x4;
+        _s7 = x2 * x4 - x1 * x3;
 
         // Termes lunaires
         if (lsflg == 1) {
-            _sat.ss1 = _sat.s1;
-            _sat.ss2 = _sat.s2;
-            _sat.ss3 = _sat.s3;
-            _sat.ss4 = _sat.s4;
-            _sat.ss5 = _sat.s5;
-            _sat.ss6 = _sat.s6;
-            _sat.ss7 = _sat.s7;
-            _sat.sz1 = _sat.z1;
-            _sat.sz2 = _sat.z2;
-            _sat.sz3 = _sat.z3;
-            _sat.sz11 = _sat.z11;
-            _sat.sz12 = _sat.z12;
-            _sat.sz13 = _sat.z13;
-            _sat.sz21 = _sat.z21;
-            _sat.sz22 = _sat.z22;
-            _sat.sz23 = _sat.z23;
-            _sat.sz31 = _sat.z31;
-            _sat.sz32 = _sat.z32;
-            _sat.sz33 = _sat.z33;
+            _ss1 = _s1;
+            _ss2 = _s2;
+            _ss3 = _s3;
+            _ss4 = _s4;
+            _ss5 = _s5;
+            _ss6 = _s6;
+            _ss7 = _s7;
+            _sz1 = _z1;
+            _sz2 = _z2;
+            _sz3 = _z3;
+            _sz11 = _z11;
+            _sz12 = _z12;
+            _sz13 = _z13;
+            _sz21 = _z21;
+            _sz22 = _z22;
+            _sz23 = _z23;
+            _sz31 = _z31;
+            _sz32 = _z32;
+            _sz33 = _z33;
             zcosg = zcosgl;
             zsing = zsingl;
             zcosi = zcosil;
             zsini = zsinil;
-            zcosh = zcoshl * _sat.cnodm + zsinhl * _sat.snodm;
-            zsinh = _sat.snodm * zcoshl - _sat.cnodm * zsinhl;
+            zcosh = zcoshl * _cnodm + zsinhl * _snodm;
+            zsinh = _snodm * zcoshl - _cnodm * zsinhl;
             cc = C1L;
         }
     }
 
-    _sat.zmol = fmod(4.7199672 + 0.2299715 * _sat.day - _sat.gam, DEUX_PI);
-    _sat.zmos = fmod(6.2565837 + 0.017201977 * _sat.day, DEUX_PI);
+    _zmol = fmod(4.7199672 + 0.2299715 * _day - _gam, DEUX_PI);
+    _zmos = fmod(6.2565837 + 0.017201977 * _day, DEUX_PI);
 
     // Termes solaires
-    _sat.se2 = 2. * _sat.ss1 * _sat.ss6;
-    _sat.se3 = 2. * _sat.ss1 * _sat.ss7;
-    _sat.si2 = 2. * _sat.ss2 * _sat.sz12;
-    _sat.si3 = 2. * _sat.ss2 * (_sat.sz13 - _sat.sz11);
-    _sat.sl2 = -2. * _sat.ss3 * _sat.sz2;
-    _sat.sl3 = -2. * _sat.ss3 * (_sat.sz3 - _sat.sz1);
-    _sat.sl4 = -2. * _sat.ss3 * (-21. - 9. * _sat.emsq) * ZES;
-    _sat.sgh2 = 2. * _sat.ss4 * _sat.sz32;
-    _sat.sgh3 = 2. * _sat.ss4 * (_sat.sz33 - _sat.sz31);
-    _sat.sgh4 = -18. * _sat.ss4 * ZES;
-    _sat.sh2 = -2. * _sat.ss2 * _sat.sz22;
-    _sat.sh3 = -2. * _sat.ss2 * (_sat.sz23 - _sat.sz21);
+    const double tmp1 = 2. * _ss1;
+    const double tmp2 = 2. * _ss2;
+    const double tmp3 = -2. * _ss3;
+    const double tmp4 = 2. * _ss4;
+    _se2 = tmp1 * _ss6;
+    _se3 = tmp1 * _ss7;
+    _si2 = tmp2 * _sz12;
+    _si3 = tmp2 * (_sz13 - _sz11);
+    _sl2 = tmp3 * _sz2;
+    _sl3 = tmp3 * (_sz3 - _sz1);
+    _sl4 = tmp3 * (-21. - 9. * _emsq) * ZES;
+    _sgh2 = tmp4 * _sz32;
+    _sgh3 = tmp4 * (_sz33 - _sz31);
+    _sgh4 = -18. * _ss4 * ZES;
+    _sh2 = -tmp2 * _sz22;
+    _sh3 = -tmp2 * (_sz23 - _sz21);
 
     // Termes lunaires
-    _sat.ee2 = 2. * _sat.s1 * _sat.s6;
-    _sat.e3 = 2. * _sat.s1 * _sat.s7;
-    _sat.xi2 = 2. * _sat.s2 * _sat.z12;
-    _sat.xi3 = 2. * _sat.s2 * (_sat.z13 - _sat.z11);
-    _sat.xl2 = -2. * _sat.s3 * _sat.z2;
-    _sat.xl3 = -2. * _sat.s3 * (_sat.z3 - _sat.z1);
-    _sat.xl4 = -2. * _sat.s3 * (-21. - 9. * _sat.emsq) * ZEL;
-    _sat.xgh2 = 2. * _sat.s4 * _sat.z32;
-    _sat.xgh3 = 2. * _sat.s4 * (_sat.z33 - _sat.z31);
-    _sat.xgh4 = -18. * _sat.s4 * ZEL;
-    _sat.xh2 = -2. * _sat.s2 * _sat.z22;
-    _sat.xh3 = -2. * _sat.s2 * (_sat.z23 - _sat.z21);
+    const double tmpl1 = 2. * _s1;
+    const double tmpl2 = 2. * _s2;
+    const double tmpl3 = -2. * _s3;
+    const double tmpl4 = 2. * _s4;
+    _ee2 = tmpl1 * _s6;
+    _e3 = tmpl1 * _s7;
+    _xi2 = tmpl2 * _z12;
+    _xi3 = tmpl2 * (_z13 - _z11);
+    _xl2 = tmpl3 * _z2;
+    _xl3 = tmpl3 * (_z3 - _z1);
+    _xl4 = tmpl3 * (-21. - 9. * _emsq) * ZEL;
+    _xgh2 = tmpl4 * _z32;
+    _xgh3 = tmpl4 * (_z33 - _z31);
+    _xgh4 = -18. * _s4 * ZEL;
+    _xh2 = -tmpl2 * _z22;
+    _xh3 = -tmpl2 * (_z23 - _z21);
 
     /* Retour */
     return;
@@ -522,171 +534,177 @@ void SGP4::Dsinit(const double tc) {
     /* Initialisations */
 
     /* Corps de la methode */
-    _sat.irez = 0;
-    if (_sat.nm < 0.0052359877 && _sat.nm > 0.0034906585)
-        _sat.irez = 1;
+    _irez = 0;
+    if (_nm < 0.0052359877 && _nm > 0.0034906585)
+        _irez = 1;
 
-    if (_sat.nm >= 0.00826 && _sat.nm <= 0.00924 && _sat.em >= 0.5)
-        _sat.irez = 2;
+    if (_nm >= 0.00826 && _nm <= 0.00924 && _em >= 0.5)
+        _irez = 2;
 
     // Termes solaires
-    const double ses = _sat.ss1 * ZNS * _sat.ss5;
-    const double sis = _sat.ss2 * ZNS * (_sat.sz11 + _sat.sz13);
-    const double sls = -(ZNS * _sat.ss3 * (_sat.sz1 + _sat.sz3 - 14. - 6. * _sat.emsq));
-    const double sghs = _sat.ss4 * ZNS * (_sat.sz31 + _sat.sz33 - 6.);
-    shs = -(ZNS * _sat.ss2 * (_sat.sz21 + _sat.sz23));
+    const double ses = _ss1 * ZNS * _ss5;
+    const double sis = _ss2 * ZNS * (_sz11 + _sz13);
+    const double sls = -(ZNS * _ss3 * (_sz1 + _sz3 - 14. - 6. * _emsq));
+    const double sghs = _ss4 * ZNS * (_sz31 + _sz33 - 6.);
+    shs = -(ZNS * _ss2 * (_sz21 + _sz23));
 
-    if (_sat.inclm < 0.052359877 || _sat.inclm > PI - 0.052359877)
+    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877)
         shs = 0.;
 
-    if (fabs(_sat.sinim) > EPSDBL100)
-        shs /= _sat.sinim;
+    if (fabs(_sinim) > EPSDBL100)
+        shs /= _sinim;
 
-    const double sgs = sghs - _sat.cosim * shs;
+    const double sgs = sghs - _cosim * shs;
 
     // Termes lunaires
-    _sat.dedt = ses + _sat.s1 * ZNL * _sat.s5;
-    _sat.didt = sis + _sat.s2 * ZNL * (_sat.z11 + _sat.z13);
-    _sat.dmdt = sls - ZNL * _sat.s3 * (_sat.z1 + _sat.z3 - 14. - 6. * _sat.emsq);
-    const double sghl = _sat.s4 * ZNL * (_sat.z31 + _sat.z33 - 6.);
-    shll = -(ZNL * _sat.s2 * (_sat.z21 + _sat.z23));
+    _dedt = ses + _s1 * ZNL * _s5;
+    _didt = sis + _s2 * ZNL * (_z11 + _z13);
+    _dmdt = sls - ZNL * _s3 * (_z1 + _z3 - 14. - 6. * _emsq);
+    const double sghl = _s4 * ZNL * (_z31 + _z33 - 6.);
+    shll = -(ZNL * _s2 * (_z21 + _z23));
 
-    if (_sat.inclm < 0.052359877 || _sat.inclm > PI - 0.052359877)
+    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877)
         shll = 0.;
 
-    _sat.domdt = sgs + sghl;
-    _sat.dnodt = shs;
-    if (fabs(_sat.sinim) > EPSDBL100) {
-        _sat.domdt -= (_sat.cosim / _sat.sinim * shll);
-        _sat.dnodt += (shll / _sat.sinim);
+    _domdt = sgs + sghl;
+    _dnodt = shs;
+    if (fabs(_sinim) > EPSDBL100) {
+        _domdt -= (_cosim / _sinim * shll);
+        _dnodt += (shll / _sinim);
     }
 
     // Calcul des effets de resonance haute orbite
-    _sat.dndt = 0.;
-    const double theta = fmod(_sat.gsto + tc * RPTIM, DEUX_PI);
-    _sat.em += _sat.dedt * _sat.t;
-    _sat.inclm += _sat.didt * _sat.t;
-    _sat.argpm += _sat.domdt * _sat.t;
-    _sat.nodem += _sat.dnodt * _sat.t;
-    _sat.mm += _sat.dmdt * _sat.t;
+    _dndt = 0.;
+    const double theta = fmod(_gsto + tc * RPTIM, DEUX_PI);
+    _em += _dedt * _t;
+    _inclm += _didt * _t;
+    _argpm += _domdt * _t;
+    _nodem += _dnodt * _t;
+    _mm += _dmdt * _t;
     // sgp4fix for negative inclinations
     // the following if statement should be commented out
-    // if (inclm < 0.)
+    // if (_inclm < 0.)
     // {
-    //     inclm = -inclm
-    //     argpm = argpm - PI
-    //     nodem = nodem + PI
+    //     _inclm = -_inclm;
+    //     _argpm = _argpm - PI;
+    //     _nodem = _nodem + PI;
     // }
 
     // Initialisation des termes de resonance
-    if (_sat.irez != 0) {
+    if (_irez != 0) {
 
-        const double aonv = pow(_sat.nm / KE, DEUX_TIERS);
+        const double aonv = pow(_nm / KE, DEUX_TIERS);
 
         // Resonance geopotentielle pour les orbites de 12h
-        if (_sat.irez == 2) {
+        if (_irez == 2) {
             double temp, temp1;
 
-            const double cosisq = _sat.cosim * _sat.cosim;
-            const double emo = _sat.em;
-            _sat.em = _sat.ecco;
-            const double emsqo = _sat.emsq;
-            _sat.emsq = _sat.eccsq;
-            const double eoc = _sat.em * _sat.emsq;
-            _sat.g201 = -0.306 - (_sat.em - 0.64) * 0.44;
+            const double cosisq = _cosim * _cosim;
+            const double emo = _em;
+            _em = _ecco;
+            const double emsqo = _emsq;
+            _emsq = _eccsq;
+            const double eoc = _em * _emsq;
+            _g201 = -0.306 - (_em - 0.64) * 0.44;
 
-            if (_sat.em <= 0.65) {
-                _sat.g211 = 3.616 - 13.247 * _sat.em + 16.29 * _sat.emsq;
-                _sat.g310 = -19.302 + 117.39 * _sat.em - 228.419 * _sat.emsq + 156.591 * eoc;
-                _sat.g322 = -18.9068 + 109.7927 * _sat.em - 214.6334 * _sat.emsq + 146.5816 * eoc;
-                _sat.g410 = -41.122 + 242.694 * _sat.em - 471.094 * _sat.emsq + 313.953 * eoc;
-                _sat.g422 = -146.407 + 841.88 * _sat.em - 1629.014 * _sat.emsq + 1083.435 * eoc;
-                _sat.g520 = -532.114 + 3017.977 * _sat.em - 5740.032 * _sat.emsq + 3708.276 * eoc;
+            if (_em <= 0.65) {
+                _g211 = 3.616 - 13.247 * _em + 16.29 * _emsq;
+                _g310 = -19.302 + 117.39 * _em - 228.419 * _emsq + 156.591 * eoc;
+                _g322 = -18.9068 + 109.7927 * _em - 214.6334 * _emsq + 146.5816 * eoc;
+                _g410 = -41.122 + 242.694 * _em - 471.094 * _emsq + 313.953 * eoc;
+                _g422 = -146.407 + 841.88 * _em - 1629.014 * _emsq + 1083.435 * eoc;
+                _g520 = -532.114 + 3017.977 * _em - 5740.032 * _emsq + 3708.276 * eoc;
             } else {
-                _sat.g211 = -72.099 + 331.819 * _sat.em - 508.738 * _sat.emsq + 266.724 * eoc;
-                _sat.g310 = -346.844 + 1582.851 * _sat.em - 2415.925 * _sat.emsq + 1246.113 * eoc;
-                _sat.g322 = -342.585 + 1554.908 * _sat.em - 2366.899 * _sat.emsq + 1215.972 * eoc;
-                _sat.g410 = -1052.797 + 4758.686 * _sat.em - 7193.992 * _sat.emsq + 3651.957 * eoc;
-                _sat.g422 = -3581.69 + 16178.11 * _sat.em - 24462.77 * _sat.emsq + 12422.52 * eoc;
-                if (_sat.em > 0.715) {
-                    _sat.g520 = -5149.66 + 29936.92 * _sat.em - 54087.36 * _sat.emsq + 31324.56 * eoc;
+                _g211 = -72.099 + 331.819 * _em - 508.738 * _emsq + 266.724 * eoc;
+                _g310 = -346.844 + 1582.851 * _em - 2415.925 * _emsq + 1246.113 * eoc;
+                _g322 = -342.585 + 1554.908 * _em - 2366.899 * _emsq + 1215.972 * eoc;
+                _g410 = -1052.797 + 4758.686 * _em - 7193.992 * _emsq + 3651.957 * eoc;
+                _g422 = -3581.69 + 16178.11 * _em - 24462.77 * _emsq + 12422.52 * eoc;
+                if (_em > 0.715) {
+                    _g520 = -5149.66 + 29936.92 * _em - 54087.36 * _emsq + 31324.56 * eoc;
                 } else {
-                    _sat.g520 = 1464.74 - 4664.75 * _sat.em + 3763.64 * _sat.emsq;
+                    _g520 = 1464.74 - 4664.75 * _em + 3763.64 * _emsq;
                 }
             }
-            if (_sat.em < 0.7) {
-                _sat.g533 = -919.2277 + 4988.61 * _sat.em - 9064.77 * _sat.emsq + 5542.21 * eoc;
-                _sat.g521 = -822.71072 + 4568.6173 * _sat.em - 8491.4146 * _sat.emsq + 5337.524 * eoc;
-                _sat.g532 = -853.666 + 4690.25 * _sat.em - 8624.77 * _sat.emsq + 5341.4 * eoc;
+            if (_em < 0.7) {
+                _g533 = -919.2277 + 4988.61 * _em - 9064.77 * _emsq + 5542.21 * eoc;
+                _g521 = -822.71072 + 4568.6173 * _em - 8491.4146 * _emsq + 5337.524 * eoc;
+                _g532 = -853.666 + 4690.25 * _em - 8624.77 * _emsq + 5341.4 * eoc;
             } else {
-                _sat.g533 = -37995.78 + 161616.52 * _sat.em - 229838.2 * _sat.emsq + 109377.94 * eoc;
-                _sat.g521 = -51752.104 + 218913.95 * _sat.em - 309468.16 * _sat.emsq + 146349.42 * eoc;
-                _sat.g532 = -40023.88 + 170470.89 * _sat.em - 242699.48 * _sat.emsq + 115605.82 * eoc;
+                _g533 = -37995.78 + 161616.52 * _em - 229838.2 * _emsq + 109377.94 * eoc;
+                _g521 = -51752.104 + 218913.95 * _em - 309468.16 * _emsq + 146349.42 * eoc;
+                _g532 = -40023.88 + 170470.89 * _em - 242699.48 * _emsq + 115605.82 * eoc;
             }
 
-            const double sini2 = _sat.sinim * _sat.sinim;
-            _sat.f220 = 0.75 * (1. + 2. * _sat.cosim + cosisq);
-            _sat.f221 = 1.5 * sini2;
-            _sat.f321 = 1.875 * _sat.sinim * (1. - 2. * _sat.cosim - 3. * cosisq);
-            _sat.f322 = -1.875 * _sat.sinim * (1. + 2. * _sat.cosim - 3. * cosisq);
-            _sat.f441 = 35. * sini2 * _sat.f220;
-            _sat.f442 = 39.375 * sini2 * sini2;
-            _sat.f522 = 9.84375 * _sat.sinim * (sini2 * (1. - 2. * _sat.cosim - 5. * cosisq) + 0.33333333 *
-                                                (-2. + 4. * _sat.cosim + 6. * cosisq));
-            _sat.f523 = _sat.sinim * (4.92187512 * sini2 * (-2. - 4. * _sat.cosim + 10. * cosisq) +
-                                      6.56250012 * (1. + 2. * _sat.cosim - 3. * cosisq));
-            _sat.f542 = 29.53125 * _sat.sinim * (2. - 8. * _sat.cosim + cosisq * (-12. + 8. * _sat.cosim + 10. * cosisq));
-            _sat.f543 = 29.53125 * _sat.sinim * (-2. - 8. * _sat.cosim + cosisq * (12. + 8. * _sat.cosim - 10. * cosisq));
+            const double sini2 = _sinim * _sinim;
+            _f220 = 0.75 * (1. + 2. * _cosim + cosisq);
+            _f221 = 1.5 * sini2;
+            const double tmp1 = 1.875 * _sinim;
+            const double tmp2 = 2. * _cosim;
+            const double tmp3 = 3. * cosisq;
+            _f321 = tmp1 * (1. - tmp2 - tmp3);
+            _f322 = -tmp1 * (1. + tmp2 - tmp3);
+            _f441 = 35. * sini2 * _f220;
+            _f442 = 39.375 * sini2 * sini2;
+            const double tmp4 = 10. * cosisq;
+            _f522 = 9.84375 * _sinim * (sini2 * (1. - tmp2 - 5. * cosisq) + 0.33333333 *
+                                        (-2. + 4. * _cosim + 6. * cosisq));
+            _f523 = _sinim * (4.92187512 * sini2 * (-2. - 4. * _cosim + tmp4) +
+                              6.56250012 * (1. + tmp2 - tmp3));
+            const double tmp5 = 8. * _cosim;
+            const double tmp6 = 29.53125 * _sinim;
+            _f542 = tmp6 * (2. - tmp5 + cosisq * (-12. + tmp5 + tmp4));
+            _f543 = tmp6 * (-2. - tmp5 + cosisq * (12. + tmp5 - tmp4));
 
-            const double xno2 = _sat.nm * _sat.nm;
+            const double xno2 = _nm * _nm;
             const double ainv2 = aonv * aonv;
             temp1 = 3. * xno2 * ainv2;
             temp = temp1 * ROOT22;
-            _sat.d2201 = temp * _sat.f220 * _sat.g201;
-            _sat.d2211 = temp * _sat.f221 * _sat.g211;
+            _d2201 = temp * _f220 * _g201;
+            _d2211 = temp * _f221 * _g211;
             temp1 *= aonv;
             temp = temp1 * ROOT32;
-            _sat.d3210 = temp * _sat.f321 * _sat.g310;
-            _sat.d3222 = temp * _sat.f322 * _sat.g322;
+            _d3210 = temp * _f321 * _g310;
+            _d3222 = temp * _f322 * _g322;
             temp1 *= aonv;
             temp = 2. * temp1 * ROOT44;
-            _sat.d4410 = temp * _sat.f441 * _sat.g410;
-            _sat.d4422 = temp * _sat.f442 * _sat.g422;
+            _d4410 = temp * _f441 * _g410;
+            _d4422 = temp * _f442 * _g422;
             temp1 *= aonv;
             temp = temp1 * ROOT52;
-            _sat.d5220 = temp * _sat.f522 * _sat.g520;
-            _sat.d5232 = temp * _sat.f523 * _sat.g532;
+            _d5220 = temp * _f522 * _g520;
+            _d5232 = temp * _f523 * _g532;
             temp = 2. * temp1 * ROOT54;
-            _sat.d5421 = temp * _sat.f542 * _sat.g521;
-            _sat.d5433 = temp * _sat.f543 * _sat.g533;
-            _sat.xlamo = fmod(_sat.mo + _sat.omegao + _sat.omegao - theta - theta, DEUX_PI);
-            _sat.xfact = _sat.mdot + _sat.dmdt + 2. * (_sat.nodedot + _sat.dnodt - RPTIM) - _sat.no;
-            _sat.em = emo;
-            _sat.emsq = emsqo;
+            _d5421 = temp * _f542 * _g521;
+            _d5433 = temp * _f543 * _g533;
+            _xlamo = fmod(_mo + _omegao + _omegao - theta - theta, DEUX_PI);
+            _xfact = _mdot + _dmdt + 2. * (_nodedot + _dnodt - RPTIM) - _no;
+            _em = emo;
+            _emsq = emsqo;
         }
 
         // Termes de resonance synchrones
-        if (_sat.irez == 1) {
-            _sat.g200 = 1. + _sat.emsq * (-2.5 + 0.8125 * _sat.emsq);
-            _sat.g310 = 1. + 2. * _sat.emsq;
-            _sat.g300 = 1. + _sat.emsq * (-6. + 6.60937 * _sat.emsq);
-            _sat.f220 = 0.75 * (1. + _sat.cosim) * (1. + _sat.cosim);
-            _sat.f311 = 0.9375 * _sat.sinim * _sat.sinim * (1. + 3. * _sat.cosim) - 0.75 * (1. + _sat.cosim);
-            _sat.f330 = 1. + _sat.cosim;
-            _sat.f330 = 1.875 * _sat.f330 * _sat.f330 * _sat.f330;
-            _sat.del1 = 3. * _sat.nm * _sat.nm * aonv * aonv;
-            _sat.del2 = 2. * _sat.del1 * _sat.f220 * _sat.g200 * Q22;
-            _sat.del3 = 3. * _sat.del1 * _sat.f330 * _sat.g300 * Q33 * aonv;
-            _sat.del1 *= _sat.f311 * _sat.g310 * Q31 * aonv;
-            _sat.xlamo = fmod(_sat.mo + _sat.omegao + _sat.argpo - theta, DEUX_PI);
-            _sat.xfact = _sat.mdot + _sat.xpidot - RPTIM + _sat.dmdt + _sat.domdt + _sat.dnodt - _sat.no;
+        if (_irez == 1) {
+            _g200 = 1. + _emsq * (-2.5 + 0.8125 * _emsq);
+            _g310 = 1. + 2. * _emsq;
+            _g300 = 1. + _emsq * (-6. + 6.60937 * _emsq);
+            _f220 = 0.75 * (1. + _cosim) * (1. + _cosim);
+            _f311 = 0.9375 * _sinim * _sinim * (1. + 3. * _cosim) - 0.75 * (1. + _cosim);
+            _f330 = 1. + _cosim;
+            _f330 = 1.875 * _f330 * _f330 * _f330;
+            _del1 = 3. * _nm * _nm * aonv * aonv;
+            _del2 = 2. * _del1 * _f220 * _g200 * Q22;
+            _del3 = 3. * _del1 * _f330 * _g300 * Q33 * aonv;
+            _del1 *= _f311 * _g310 * Q31 * aonv;
+            _xlamo = fmod(_mo + _omegao + _argpo - theta, DEUX_PI);
+            _xfact = _mdot + _xpidot - RPTIM + _dmdt + _domdt + _dnodt - _no;
         }
 
         // Initialisation de l'integrateur
-        _sat.xli = _sat.xlamo;
-        _sat.xni = _sat.no;
-        _sat.atime = 0.;
-        _sat.nm = _sat.no + _sat.dndt;
+        _xli = _xlamo;
+        _xni = _no;
+        _atime = 0.;
+        _nm = _no + _dndt;
     }
 
     /* Retour */
@@ -708,95 +726,93 @@ void SGP4::Dspace(const double tc) {
 
     /* Corps de la methode */
     // Calcul des effets de resonance haute orbite
-    _sat.dndt = 0.;
-    const double theta = fmod(_sat.gsto + tc * RPTIM, DEUX_PI);
-    _sat.em += _sat.dedt * _sat.t;
-    _sat.inclm += _sat.didt * _sat.t;
-    _sat.argpm += _sat.domdt * _sat.t;
-    _sat.nodem += _sat.dnodt * _sat.t;
-    _sat.mm += _sat.dmdt * _sat.t;
+    _dndt = 0.;
+    const double theta = fmod(_gsto + tc * RPTIM, DEUX_PI);
+    _em += _dedt * _t;
+    _inclm += _didt * _t;
+    _argpm += _domdt * _t;
+    _nodem += _dnodt * _t;
+    _mm += _dmdt * _t;
 
     // sgp4fix for negative inclinations
     // the following if statement should be commented out
-    // if (inclm < 0.)
+    // if (_inclm < 0.)
     // {
-    //     inclm = -inclm
-    //     argpm = argpm - PI
-    //     nodem = nodem + PI
+    //     _inclm = -_inclm;
+    //     _argpm = _argpm - PI;
+    //     _nodem = _nodem + PI;
     // }
 
     // Integration numerique (Euler-MacLaurin)
-    if (_sat.irez != 0) {
-        double ft = 0.;
+    double ft = 0.;
+    if (_irez != 0) {
 
-        if (fabs(_sat.atime) <= EPSDBL100 || _sat.t * _sat.atime <= 0. || fabs(_sat.t) < fabs(_sat.atime)) {
-            _sat.atime = 0.;
-            _sat.xni = _sat.no;
-            _sat.xli = _sat.xlamo;
+        if (fabs(_atime) <= EPSDBL100 || _t * _atime <= 0. || fabs(_t) < fabs(_atime)) {
+            _atime = 0.;
+            _xni = _no;
+            _xli = _xlamo;
         }
-        if (_sat.t > 0.) {
-            _sat.delt = STEPP;
-        } else {
-            _sat.delt = STEPN;
-        }
+
+        _delt = (_t > 0) ? STEPP : STEPN;
 
         int iretn = 381;
         while (iretn == 381) {
             // Calculs des termes derives
 
             // Termes de resonance quasi-synchrones
-            if (_sat.irez != 2) {
-                xndt = _sat.del1 * sin(_sat.xli - FASX2) + _sat.del2 * sin(2. * (_sat.xli - FASX4)) +
-                        _sat.del3 * sin(3. * (_sat.xli - FASX6));
-                xldot = _sat.xni + _sat.xfact;
-                xnddt = _sat.del1 * cos(_sat.xli - FASX2) + 2. * _sat.del2 * cos(2. * (_sat.xli - FASX4)) +
-                        3. * _sat.del3 * cos(3. * (_sat.xli - FASX6));
+            if (_irez != 2) {
+                xndt = _del1 * sin(_xli - FASX2) + _del2 * sin(2. * (_xli - FASX4)) +
+                        _del3 * sin(3. * (_xli - FASX6));
+                xldot = _xni + _xfact;
+                xnddt = _del1 * cos(_xli - FASX2) + 2. * _del2 * cos(2. * (_xli - FASX4)) +
+                        3. * _del3 * cos(3. * (_xli - FASX6));
                 xnddt *= xldot;
             } else {
 
                 // Termes de resonance d'environ 12h
-                const double xomi = _sat.argpo + _sat.argpdot * _sat.atime;
+                const double xomi = _argpo + _argpdot * _atime;
                 const double x2omi = xomi + xomi;
-                const double x2li = _sat.xli + _sat.xli;
-                xndt = _sat.d2201 * sin(x2omi + _sat.xli - G22) + _sat.d2211 * sin(_sat.xli - G22) +
-                        _sat.d3210 * sin(xomi + _sat.xli - G32) + _sat.d3222 * sin(-xomi + _sat.xli - G32) +
-                        _sat.d4410 * sin(x2omi + x2li - G44) + _sat.d4422 * sin(x2li - G44) + _sat.d5220 *
-                        sin(xomi + _sat.xli - G52) + _sat.d5232 * sin(-xomi + _sat.xli - G52) + _sat.d5421 *
-                        sin(xomi + x2li - G54) + _sat.d5433 * sin(-xomi + x2li - G54);
-                xldot = _sat.xni + _sat.xfact;
-                xnddt = _sat.d2201 * cos(x2omi + _sat.xli - G22) + _sat.d2211 * cos(_sat.xli - G22) +
-                        _sat.d3210 * cos(xomi + _sat.xli - G32) + _sat.d3222 * cos(-xomi + _sat.xli - G32) +
-                        _sat.d5220 * cos(xomi + _sat.xli - G52) + _sat.d5232 * cos(-xomi + _sat.xli - G52) +
-                        2.0 * (_sat.d4410 * cos(x2omi + x2li - G44) + _sat.d4422 * cos(x2li - G44) +
-                               _sat.d5421 * cos(xomi + x2li - G54) + _sat.d5433 * cos(-xomi + x2li - G54));
+                const double x2li = _xli + _xli;
+                xndt = _d2201 * sin(x2omi + _xli - G22) + _d2211 * sin(_xli - G22) +
+                        _d3210 * sin(xomi + _xli - G32) + _d3222 * sin(-xomi + _xli - G32) +
+                        _d4410 * sin(x2omi + x2li - G44) + _d4422 * sin(x2li - G44) + _d5220 *
+                        sin(xomi + _xli - G52) + _d5232 * sin(-xomi + _xli - G52) + _d5421 *
+                        sin(xomi + x2li - G54) + _d5433 * sin(-xomi + x2li - G54);
+                xldot = _xni + _xfact;
+                xnddt = _d2201 * cos(x2omi + _xli - G22) + _d2211 * cos(_xli - G22) +
+                        _d3210 * cos(xomi + _xli - G32) + _d3222 * cos(-xomi + _xli - G32) +
+                        _d5220 * cos(xomi + _xli - G52) + _d5232 * cos(-xomi + _xli - G52) +
+                        2.0 * (_d4410 * cos(x2omi + x2li - G44) + _d4422 * cos(x2li - G44) +
+                               _d5421 * cos(xomi + x2li - G54) + _d5433 * cos(-xomi + x2li - G54));
                 xnddt *= xldot;
             }
 
             // Integrateur
-            if (fabs(_sat.t - _sat.atime) >= STEPP) {
+            if (fabs(_t - _atime) >= STEPP) {
                 iretn = 381;
             } else {
-                ft = _sat.t - _sat.atime;
+                ft = _t - _atime;
                 iretn = 0;
             }
 
             if (iretn == 381) {
-                _sat.xli += xldot * _sat.delt + xndt * STEP2;
-                _sat.xni += xndt * _sat.delt + xnddt * STEP2;
-                _sat.atime += _sat.delt;
+                _xli += xldot * _delt + xndt * STEP2;
+                _xni += xndt * _delt + xnddt * STEP2;
+                _atime += _delt;
             }
         }
 
-        _sat.nm = _sat.xni + xndt * ft + xnddt * ft * ft * 0.5;
-        const double xl = _sat.xli + xldot * ft + xndt * ft * ft * 0.5;
-        if (_sat.irez != 1) {
-            _sat.mm = xl - 2. * _sat.nodem + 2. * theta;
-            _sat.dndt = _sat.nm - _sat.no;
+        const double ft2 = ft * ft * 0.5;
+        _nm = _xni + xndt * ft + xnddt * ft2;
+        const double xl = _xli + xldot * ft + xndt * ft2;
+        if (_irez != 1) {
+            _mm = xl - 2. * _nodem + 2. * theta;
+            _dndt = _nm - _no;
         } else {
-            _sat.mm = xl - _sat.nodem - _sat.argpm + theta;
-            _sat.dndt = _sat.nm - _sat.no;
+            _mm = xl - _nodem - _argpm + theta;
+            _dndt = _nm - _no;
         }
-        _sat.nm = _sat.no + _sat.dndt;
+        _nm = _no + _dndt;
     }
 
     /* Retour */
@@ -811,157 +827,156 @@ void SGP4::SGP4Init(const TLE &tle)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double rt = 1. / RAYON_TERRESTRE;
 
     /* Corps de la methode */
     // Recuperation des elements du TLE et formattage
-    _sat.argpo = DEG2RAD * tle.argpo();
-    _sat.bstar = tle.bstar();
-    _sat.ecco = tle.ecco();
-    _sat.epoque = tle.epoque();
-    _sat.inclo = DEG2RAD * tle.inclo();
-    _sat.mo = DEG2RAD * tle.mo();
-    _sat.no = tle.no() * DEUX_PI * NB_JOUR_PAR_MIN;
-    _sat.omegao = DEG2RAD * tle.omegao();
+    _argpo = DEG2RAD * tle.argpo();
+    _bstar = tle.bstar();
+    _ecco = tle.ecco();
+    _epoque = tle.epoque();
+    _inclo = DEG2RAD * tle.inclo();
+    _mo = DEG2RAD * tle.mo();
+    _no = tle.no() * DEUX_PI * NB_JOUR_PAR_MIN;
+    _omegao = DEG2RAD * tle.omegao();
 
-    const double ss = 78. * rt + 1.;
-    const double qzms2t = pow((120. - 78.) * rt, 4.);
-    _sat.t = 0.;
+    const double ss = 78. * X1SRT + 1.;
+    const double qzms2t = pow((120. - 78.) * X1SRT, 4.);
+    _t = 0.;
 
-    _sat.eccsq = _sat.ecco * _sat.ecco;
-    _sat.omeosq = 1. - _sat.eccsq;
-    _sat.rteosq = sqrt(_sat.omeosq);
-    _sat.cosio = cos(_sat.inclo);
-    _sat.cosio2 = _sat.cosio * _sat.cosio;
+    _eccsq = _ecco * _ecco;
+    _omeosq = 1. - _eccsq;
+    _rteosq = sqrt(_omeosq);
+    _cosio = cos(_inclo);
+    _cosio2 = _cosio * _cosio;
 
-    const double ak = pow(KE / _sat.no, DEUX_TIERS);
-    const double d1 = 0.75 * J2 * (3. * _sat.cosio2 - 1.) / (_sat.rteosq * _sat.omeosq);
+    const double ak = pow(KE / _no, DEUX_TIERS);
+    const double d1 = 0.75 * J2 * (3. * _cosio2 - 1.) / (_rteosq * _omeosq);
     double del = d1 / (ak * ak);
     const double del2 = del * del;
     const double adel = ak * (1. - del2 - del * (0.5 * DEUX_TIERS + del2 * (134. / 81.)));
     del = d1 / (adel * adel);
-    _sat.no /= (1. + del);
+    _no /= (1. + del);
 
-    _sat.ao = pow(KE / _sat.no, DEUX_TIERS);
-    _sat.sinio = sin(_sat.inclo);
-    const double po = _sat.ao * _sat.omeosq;
-    _sat.con42 = 1. - 5. * _sat.cosio2;
-    _sat.con41 = -_sat.con42 - _sat.cosio2 - _sat.cosio2;
-    _sat.posq = po * po;
-    _sat.rp = _sat.ao * (1. - _sat.ecco);
-    _sat.method = 'n';
+    _ao = pow(KE / _no, DEUX_TIERS);
+    _sinio = sin(_inclo);
+    const double po = _ao * _omeosq;
+    _con42 = 1. - 5. * _cosio2;
+    _con41 = -_con42 - _cosio2 - _cosio2;
+    _posq = po * po;
+    _rp = _ao * (1. - _ecco);
+    _method = 'n';
 
-    _sat.gsto = Observateur::CalculTempsSideralGreenwich(_sat.epoque);
+    _gsto = Observateur::CalculTempsSideralGreenwich(_epoque);
 
-    if (_sat.omeosq >= 0. || _sat.no > 0.) {
+    if (_omeosq >= 0. || _no > 0.) {
         double cc3, qzms24, sfour;
 
-        _sat.isimp = false;
-        if (_sat.rp < 220. * rt + 1.)
-            _sat.isimp = true;
+        _isimp = false;
+        if (_rp < 220. * X1SRT + 1.)
+            _isimp = true;
 
         sfour = ss;
         qzms24 = qzms2t;
 
-        const double perige = (_sat.rp - 1.) * RAYON_TERRESTRE;
+        const double perige = (_rp - 1.) * RAYON_TERRESTRE;
         if (perige < 156.) {
             sfour = perige - 78.;
             if (perige < 98.)
                 sfour = 20.;
 
-            qzms24 = pow((120. - sfour) * rt, 4.);
+            qzms24 = pow((120. - sfour) * X1SRT, 4.);
             sfour /= RAYON_TERRESTRE + 1.;
         }
 
-        const double pinvsq = 1. / _sat.posq;
-        const double tsi = 1. / (_sat.ao - sfour);
-        _sat.eta = _sat.ao * _sat.ecco * tsi;
+        const double pinvsq = 1. / _posq;
+        const double tsi = 1. / (_ao - sfour);
+        _eta = _ao * _ecco * tsi;
 
-        const double etasq = _sat.eta * _sat.eta;
-        const double eeta = _sat.ecco * _sat.eta;
+        const double etasq = _eta * _eta;
+        const double eeta = _ecco * _eta;
         const double psisq = fabs(1. - etasq);
         const double coef = qzms24 * pow(tsi, 4.);
         const double coef1 = coef * pow(psisq, -3.5);
-        const double cc2 = coef1 * _sat.no * (_sat.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq *
-                                              _sat.con41 * (8. + 3. * etasq * (8. + etasq)));
-        _sat.cc1 = _sat.bstar * cc2;
+        const double cc2 = coef1 * _no * (_ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq *
+                                          _con41 * (8. + 3. * etasq * (8. + etasq)));
+        _cc1 = _bstar * cc2;
         cc3 = 0.;
-        if (_sat.ecco > 1.e-4)
-            cc3 = -2. * coef * tsi * J3SJ2 * _sat.no * _sat.sinio / _sat.ecco;
+        if (_ecco > 1.e-4)
+            cc3 = -2. * coef * tsi * J3SJ2 * _no * _sinio / _ecco;
 
-        _sat.x1mth2 = 1. - _sat.cosio2;
-        _sat.cc4 = 2. * _sat.no * coef1 * _sat.ao * _sat.omeosq *
-                (_sat.eta * (2. + 0.5 * etasq) + _sat.ecco * (0.5 + 2. * etasq) - J2 * tsi /
-                 (_sat.ao * psisq) * (-3. * _sat.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
-                                      0.75 * _sat.x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _sat.argpo)));
-        _sat.cc5 = 2. * coef1 * _sat.ao * _sat.omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
+        _x1mth2 = 1. - _cosio2;
+        _cc4 = 2. * _no * coef1 * _ao * _omeosq *
+                (_eta * (2. + 0.5 * etasq) + _ecco * (0.5 + 2. * etasq) - J2 * tsi /
+                 (_ao * psisq) * (-3. * _con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
+                                  0.75 * _x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _argpo)));
+        _cc5 = 2. * coef1 * _ao * _omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
 
-        const double cosio4 = _sat.cosio2 * _sat.cosio2;
-        const double temp1 = 1.5 * J2 * pinvsq * _sat.no;
+        const double cosio4 = _cosio2 * _cosio2;
+        const double temp1 = 1.5 * J2 * pinvsq * _no;
         const double temp2 = 0.5 * temp1 * J2 * pinvsq;
-        const double temp3 = -0.46875 * J4 * pinvsq * pinvsq * _sat.no;
-        _sat.mdot = _sat.no + 0.5 * temp1 * _sat.rteosq * _sat.con41 + 0.0625 * temp2 * _sat.rteosq *
-                (13. - 78. * _sat.cosio2 + 137. * cosio4);
-        _sat.argpdot = -0.5 * temp1 * _sat.con42 + 0.0625 * temp2 * (7. - 114. * _sat.cosio2 + 395. * cosio4) +
-                temp3 * (3. - 36. * _sat.cosio2 + 49. * cosio4);
-        const double xhdot1 = -temp1 * _sat.cosio;
-        _sat.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _sat.cosio2) + 2. * temp3 * (3. - 7. * _sat.cosio2)) * _sat.cosio;
-        _sat.xpidot = _sat.argpdot + _sat.nodedot;
-        _sat.omgcof = _sat.bstar * cc3 * cos(_sat.argpo);
-        _sat.xmcof = 0.;
-        if (_sat.ecco > 1.e-4)
-            _sat.xmcof = -DEUX_TIERS * coef * _sat.bstar / eeta;
+        const double temp3 = -0.46875 * J4 * pinvsq * pinvsq * _no;
+        _mdot = _no + 0.5 * temp1 * _rteosq * _con41 + 0.0625 * temp2 * _rteosq *
+                (13. - 78. * _cosio2 + 137. * cosio4);
+        _argpdot = -0.5 * temp1 * _con42 + 0.0625 * temp2 * (7. - 114. * _cosio2 + 395. * cosio4) +
+                temp3 * (3. - 36. * _cosio2 + 49. * cosio4);
+        const double xhdot1 = -temp1 * _cosio;
+        _nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _cosio2) + 2. * temp3 * (3. - 7. * _cosio2)) * _cosio;
+        _xpidot = _argpdot + _nodedot;
+        _omgcof = _bstar * cc3 * cos(_argpo);
+        _xmcof = 0.;
+        if (_ecco > 1.e-4)
+            _xmcof = -DEUX_TIERS * coef * _bstar / eeta;
 
-        _sat.nodecf = 3.5 * _sat.omeosq * xhdot1 * _sat.cc1;
-        _sat.t2cof = 1.5 * _sat.cc1;
+        _nodecf = 3.5 * _omeosq * xhdot1 * _cc1;
+        _t2cof = 1.5 * _cc1;
 
-        if (fabs(_sat.cosio + 1.) > 1.5e-12) {
-            _sat.xlcof = -0.25 * J3SJ2 * _sat.sinio * (3. + 5. * _sat.cosio) / (1. + _sat.cosio);
+        if (fabs(_cosio + 1.) > 1.5e-12) {
+            _xlcof = -0.25 * J3SJ2 * _sinio * (3. + 5. * _cosio) / (1. + _cosio);
         } else {
-            _sat.xlcof = -0.25 * J3SJ2 * _sat.sinio * (3. + 5. * _sat.cosio) * (1. / 1.5e-12);
+            _xlcof = -0.25 * J3SJ2 * _sinio * (3. + 5. * _cosio) * (1. / 1.5e-12);
         }
 
-        _sat.aycof = -0.5 * J3SJ2 * _sat.sinio;
-        _sat.delmo = pow((1. + _sat.eta * cos(_sat.mo)), 3.);
-        _sat.sinmao = sin(_sat.mo);
-        _sat.x7thm1 = 7. * _sat.cosio2 - 1.;
+        _aycof = -0.5 * J3SJ2 * _sinio;
+        _delmo = pow((1. + _eta * cos(_mo)), 3.);
+        _sinmao = sin(_mo);
+        _x7thm1 = 7. * _cosio2 - 1.;
 
         // Initialisation du modele haute orbite
-        if (DEUX_PI >= 225. * _sat.no) {
+        if (DEUX_PI >= 225. * _no) {
 
-            _sat.method = 'd';
-            _sat.isimp = true;
-            _sat.inclm = _sat.inclo;
+            _method = 'd';
+            _isimp = true;
+            _inclm = _inclo;
 
             const double tc = 0.;
             Dscom(tc);
 
-            _sat.mp = _sat.mo;
-            _sat.argpp = _sat.argpo;
-            _sat.ep = _sat.ecco;
-            _sat.nodep = _sat.omegao;
-            _sat.xincp = _sat.inclo;
+            _mp = _mo;
+            _argpp = _argpo;
+            _ep = _ecco;
+            _nodep = _omegao;
+            _xincp = _inclo;
 
             Dpper();
 
-            _sat.argpm = 0.;
-            _sat.nodem = 0.;
-            _sat.mm = 0.;
+            _argpm = 0.;
+            _nodem = 0.;
+            _mm = 0.;
 
             Dsinit(tc);
         }
 
-        if (!_sat.isimp) {
+        if (!_isimp) {
 
-            const double cc1sq = _sat.cc1 * _sat.cc1;
-            _sat.d2 = 4. * _sat.ao * tsi * cc1sq;
-            const double temp = _sat.d2 * tsi * _sat.cc1 * (1. / 3.);
-            _sat.d3 = (17. * _sat.ao + sfour) * temp;
-            _sat.d4 = 0.5 * temp * _sat.ao * tsi * (221. * _sat.ao + 31. * sfour) * _sat.cc1;
-            _sat.t3cof = _sat.d2 + 2. * cc1sq;
-            _sat.t4cof = 0.25 * (3. * _sat.d3 + _sat.cc1 * (12. * _sat.d2 + 10. * cc1sq));
-            _sat.t5cof = 0.2 * (3. * _sat.d4 + 12. * _sat.cc1 * _sat.d3 + 6. * _sat.d2 * _sat.d2 + 15. *
-                                cc1sq * (2. * _sat.d2 + cc1sq));
+            const double cc1sq = _cc1 * _cc1;
+            _d2 = 4. * _ao * tsi * cc1sq;
+            const double temp = _d2 * tsi * _cc1 * (1. / 3.);
+            _d3 = (17. * _ao + sfour) * temp;
+            _d4 = 0.5 * temp * _ao * tsi * (221. * _ao + 31. * sfour) * _cc1;
+            _t3cof = _d2 + 2. * cc1sq;
+            _t4cof = 0.25 * (3. * _d3 + _cc1 * (12. * _d2 + 10. * cc1sq));
+            _t5cof = 0.2 * (3. * _d4 + 12. * _cc1 * _d3 + 6. * _d2 * _d2 + 15. *
+                            cc1sq * (2. * _d2 + cc1sq));
         }
 
         _init = true;
@@ -975,7 +990,7 @@ void SGP4::SGP4Init(const TLE &tle)
 /* Accesseurs */
 char SGP4::method() const
 {
-    return _sat.method;
+    return (_method);
 }
 
 Vecteur3D SGP4::position() const
