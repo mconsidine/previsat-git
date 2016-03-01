@@ -404,8 +404,8 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="2727"/>
         <location filename="previsat.ui" line="8474"/>
         <location filename="previsat.ui" line="9039"/>
-        <location filename="previsat.ui" line="13486"/>
-        <location filename="previsat.ui" line="14270"/>
+        <location filename="previsat.ui" line="13489"/>
+        <location filename="previsat.ui" line="14273"/>
         <location filename="previsat.cpp" line="4969"/>
         <source>Lieu d&apos;observation :</source>
         <translation>Name of location :</translation>
@@ -597,7 +597,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="3609"/>
-        <location filename="previsat.ui" line="13830"/>
+        <location filename="previsat.ui" line="13833"/>
         <source>-360.3 jours</source>
         <translation></translation>
     </message>
@@ -743,7 +743,7 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="5575"/>
         <location filename="previsat.ui" line="5839"/>
         <location filename="previsat.ui" line="6839"/>
-        <location filename="previsat.ui" line="12312"/>
+        <location filename="previsat.ui" line="12315"/>
         <source>Excentricité :</source>
         <translation>Eccentricity :</translation>
     </message>
@@ -759,7 +759,7 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="5979"/>
         <location filename="previsat.ui" line="6030"/>
         <location filename="previsat.ui" line="6798"/>
-        <location filename="previsat.ui" line="12407"/>
+        <location filename="previsat.ui" line="12410"/>
         <source>0.0000000</source>
         <translation></translation>
     </message>
@@ -768,7 +768,7 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="6014"/>
         <location filename="previsat.ui" line="6584"/>
         <location filename="previsat.ui" line="7802"/>
-        <location filename="previsat.ui" line="12443"/>
+        <location filename="previsat.ui" line="12446"/>
         <source>Inclinaison :</source>
         <translation>Inclination :</translation>
     </message>
@@ -813,14 +813,14 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="5699"/>
         <location filename="previsat.ui" line="5893"/>
         <location filename="previsat.ui" line="7465"/>
-        <location filename="previsat.ui" line="12143"/>
+        <location filename="previsat.ui" line="12146"/>
         <source>AD noeud ascendant :</source>
         <translation>RA of ascending node :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="5804"/>
         <location filename="previsat.ui" line="7161"/>
-        <location filename="previsat.ui" line="12854"/>
+        <location filename="previsat.ui" line="12857"/>
         <source>Argument du périgée :</source>
         <translation>Argument of perigee :</translation>
     </message>
@@ -871,7 +871,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="6641"/>
         <location filename="previsat.ui" line="7668"/>
-        <location filename="previsat.ui" line="12006"/>
+        <location filename="previsat.ui" line="12009"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD number :</translation>
     </message>
@@ -1011,18 +1011,18 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="8311"/>
         <location filename="previsat.ui" line="8885"/>
-        <location filename="previsat.ui" line="13145"/>
-        <location filename="previsat.ui" line="13441"/>
-        <location filename="previsat.ui" line="14254"/>
+        <location filename="previsat.ui" line="13148"/>
+        <location filename="previsat.ui" line="13444"/>
+        <location filename="previsat.ui" line="14257"/>
         <source>Date initiale :</source>
         <translation>Start date :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8355"/>
         <location filename="previsat.ui" line="8936"/>
-        <location filename="previsat.ui" line="13113"/>
-        <location filename="previsat.ui" line="13457"/>
-        <location filename="previsat.ui" line="14314"/>
+        <location filename="previsat.ui" line="13116"/>
+        <location filename="previsat.ui" line="13460"/>
+        <location filename="previsat.ui" line="14317"/>
         <source>Date finale :</source>
         <translation>Finish date :</translation>
     </message>
@@ -1060,7 +1060,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="720"/>
         <location filename="previsat.ui" line="9688"/>
-        <location filename="previsat.ui" line="14397"/>
+        <location filename="previsat.ui" line="14400"/>
         <location filename="previsat.cpp" line="2625"/>
         <location filename="previsat.cpp" line="2630"/>
         <location filename="previsat.cpp" line="2849"/>
@@ -1128,7 +1128,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="701"/>
         <location filename="previsat.ui" line="9693"/>
-        <location filename="previsat.ui" line="14375"/>
+        <location filename="previsat.ui" line="14378"/>
         <location filename="previsat.cpp" line="2626"/>
         <location filename="previsat.cpp" line="2629"/>
         <location filename="previsat.cpp" line="2849"/>
@@ -1141,7 +1141,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="657"/>
         <location filename="previsat.ui" line="9752"/>
-        <location filename="previsat.ui" line="14416"/>
+        <location filename="previsat.ui" line="14419"/>
         <location filename="previsat.cpp" line="2617"/>
         <location filename="previsat.cpp" line="2620"/>
         <location filename="previsat.cpp" line="2852"/>
@@ -1154,7 +1154,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="679"/>
         <location filename="previsat.ui" line="9757"/>
-        <location filename="previsat.ui" line="14438"/>
+        <location filename="previsat.ui" line="14441"/>
         <location filename="previsat.cpp" line="2616"/>
         <location filename="previsat.cpp" line="2621"/>
         <location filename="previsat.cpp" line="2852"/>
@@ -1566,42 +1566,42 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="8509"/>
         <location filename="previsat.ui" line="9023"/>
-        <location filename="previsat.ui" line="14095"/>
+        <location filename="previsat.ui" line="14098"/>
         <source>Hauteur du Soleil :</source>
         <translation>Sun elevation :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8538"/>
         <location filename="previsat.ui" line="8981"/>
-        <location filename="previsat.ui" line="14031"/>
+        <location filename="previsat.ui" line="14034"/>
         <source>Horizon (0°)</source>
         <translation>Horizon (0°)</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8543"/>
         <location filename="previsat.ui" line="8986"/>
-        <location filename="previsat.ui" line="14036"/>
+        <location filename="previsat.ui" line="14039"/>
         <source>Crépuscule civil (-6°)</source>
         <translation>Civil twilight (-6°)</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8548"/>
         <location filename="previsat.ui" line="8991"/>
-        <location filename="previsat.ui" line="14041"/>
+        <location filename="previsat.ui" line="14044"/>
         <source>Crépuscule nautique (-12°)</source>
         <translation>Nautical twilight (-12°)</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8553"/>
         <location filename="previsat.ui" line="8996"/>
-        <location filename="previsat.ui" line="14046"/>
+        <location filename="previsat.ui" line="14049"/>
         <source>Crépuscule astronomique (-18°)</source>
         <translation>Astronomical twilight (-18°)</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8558"/>
         <location filename="previsat.ui" line="9001"/>
-        <location filename="previsat.ui" line="14051"/>
+        <location filename="previsat.ui" line="14054"/>
         <source>Indifférent</source>
         <translation>Indifferent</translation>
     </message>
@@ -1610,60 +1610,60 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="8628"/>
         <location filename="previsat.ui" line="9006"/>
         <location filename="previsat.ui" line="9113"/>
-        <location filename="previsat.ui" line="12165"/>
-        <location filename="previsat.ui" line="12334"/>
-        <location filename="previsat.ui" line="13063"/>
-        <location filename="previsat.ui" line="13588"/>
-        <location filename="previsat.ui" line="13988"/>
-        <location filename="previsat.ui" line="14056"/>
+        <location filename="previsat.ui" line="12168"/>
+        <location filename="previsat.ui" line="12337"/>
+        <location filename="previsat.ui" line="13066"/>
+        <location filename="previsat.ui" line="13591"/>
+        <location filename="previsat.ui" line="13991"/>
+        <location filename="previsat.ui" line="14059"/>
         <source>Autre...</source>
         <translation>Other...</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8583"/>
         <location filename="previsat.ui" line="9068"/>
-        <location filename="previsat.ui" line="13627"/>
-        <location filename="previsat.ui" line="14181"/>
+        <location filename="previsat.ui" line="13630"/>
+        <location filename="previsat.ui" line="14184"/>
         <source>Hauteur minimale du satellite :</source>
         <translation>Minimal elevation of satellite :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8603"/>
         <location filename="previsat.ui" line="9088"/>
-        <location filename="previsat.ui" line="13563"/>
-        <location filename="previsat.ui" line="13963"/>
+        <location filename="previsat.ui" line="13566"/>
+        <location filename="previsat.ui" line="13966"/>
         <source>0°</source>
         <translation>0°</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8608"/>
         <location filename="previsat.ui" line="9093"/>
-        <location filename="previsat.ui" line="13568"/>
-        <location filename="previsat.ui" line="13968"/>
+        <location filename="previsat.ui" line="13571"/>
+        <location filename="previsat.ui" line="13971"/>
         <source>5°</source>
         <translation>5°</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8613"/>
         <location filename="previsat.ui" line="9098"/>
-        <location filename="previsat.ui" line="13573"/>
-        <location filename="previsat.ui" line="13973"/>
+        <location filename="previsat.ui" line="13576"/>
+        <location filename="previsat.ui" line="13976"/>
         <source>10°</source>
         <translation>10°</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8618"/>
         <location filename="previsat.ui" line="9103"/>
-        <location filename="previsat.ui" line="13578"/>
-        <location filename="previsat.ui" line="13978"/>
+        <location filename="previsat.ui" line="13581"/>
+        <location filename="previsat.ui" line="13981"/>
         <source>15°</source>
         <translation>15°</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8623"/>
         <location filename="previsat.ui" line="9108"/>
-        <location filename="previsat.ui" line="13583"/>
-        <location filename="previsat.ui" line="13983"/>
+        <location filename="previsat.ui" line="13586"/>
+        <location filename="previsat.ui" line="13986"/>
         <source>20°</source>
         <translation>20°</translation>
     </message>
@@ -1680,36 +1680,36 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="8748"/>
         <location filename="previsat.ui" line="8920"/>
-        <location filename="previsat.ui" line="13129"/>
-        <location filename="previsat.ui" line="13425"/>
-        <location filename="previsat.ui" line="13927"/>
+        <location filename="previsat.ui" line="13132"/>
+        <location filename="previsat.ui" line="13428"/>
+        <location filename="previsat.ui" line="13930"/>
         <source>Effacer heures</source>
         <translation>Erase hours</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8767"/>
         <location filename="previsat.ui" line="9386"/>
-        <location filename="previsat.ui" line="13322"/>
-        <location filename="previsat.ui" line="13757"/>
-        <location filename="previsat.ui" line="13889"/>
+        <location filename="previsat.ui" line="13325"/>
+        <location filename="previsat.ui" line="13760"/>
+        <location filename="previsat.ui" line="13892"/>
         <source>Calculs</source>
         <translation>Run</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8789"/>
         <location filename="previsat.ui" line="9370"/>
-        <location filename="previsat.ui" line="13341"/>
-        <location filename="previsat.ui" line="13741"/>
-        <location filename="previsat.ui" line="13943"/>
+        <location filename="previsat.ui" line="13344"/>
+        <location filename="previsat.ui" line="13744"/>
+        <location filename="previsat.ui" line="13946"/>
         <source>Afficher</source>
         <translation>Show results</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8855"/>
         <location filename="previsat.ui" line="9449"/>
-        <location filename="previsat.ui" line="13357"/>
-        <location filename="previsat.ui" line="13776"/>
-        <location filename="previsat.ui" line="14165"/>
+        <location filename="previsat.ui" line="13360"/>
+        <location filename="previsat.ui" line="13779"/>
+        <location filename="previsat.ui" line="14168"/>
         <source>Paramétrage par défaut</source>
         <translation>Default settings</translation>
     </message>
@@ -1720,14 +1720,14 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9149"/>
-        <location filename="previsat.ui" line="13908"/>
+        <location filename="previsat.ui" line="13911"/>
         <source>Classer par ordre chronologique</source>
         <translation>Chronologically sorting</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9168"/>
-        <location filename="previsat.ui" line="13502"/>
-        <location filename="previsat.ui" line="14330"/>
+        <location filename="previsat.ui" line="13505"/>
+        <location filename="previsat.ui" line="14333"/>
         <source>Fichier TLE :</source>
         <translation>TLE file :</translation>
     </message>
@@ -1765,6 +1765,21 @@ PreviSat is free !</translation>
         <location filename="previsat.ui" line="10833"/>
         <source>Vision nocturne :</source>
         <translation>Night vision :</translation>
+    </message>
+    <message>
+        <location filename="previsat.ui" line="15094"/>
+        <source>Mettre à jour TLE courant</source>
+        <translation>Update current TLE file</translation>
+    </message>
+    <message>
+        <location filename="previsat.ui" line="15097"/>
+        <source>F5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="previsat.ui" line="15102"/>
+        <source>Mettre à jour groupe TLE</source>
+        <translation>Update TLE group</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="10607"/>
@@ -1833,15 +1848,15 @@ PreviSat is free !</translation>
     <message>
         <location filename="previsat.ui" line="8808"/>
         <location filename="previsat.ui" line="9405"/>
-        <location filename="previsat.ui" line="14073"/>
+        <location filename="previsat.ui" line="14076"/>
         <source>###</source>
         <translation>###</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8833"/>
         <location filename="previsat.ui" line="9427"/>
-        <location filename="previsat.ui" line="13605"/>
-        <location filename="previsat.ui" line="14216"/>
+        <location filename="previsat.ui" line="13608"/>
+        <location filename="previsat.ui" line="14219"/>
         <source>99</source>
         <translation>99</translation>
     </message>
@@ -1966,10 +1981,10 @@ PreviSat is free !</translation>
         <translation>Color of ISS footprint :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11840"/>
-        <location filename="previsat.ui" line="11930"/>
-        <location filename="previsat.ui" line="11990"/>
-        <location filename="previsat.ui" line="12752"/>
+        <location filename="previsat.ui" line="11843"/>
+        <location filename="previsat.ui" line="11933"/>
+        <location filename="previsat.ui" line="11993"/>
+        <location filename="previsat.ui" line="12755"/>
         <location filename="previsat.cpp" line="541"/>
         <location filename="previsat.cpp" line="556"/>
         <location filename="previsat.cpp" line="571"/>
@@ -1977,81 +1992,81 @@ PreviSat is free !</translation>
         <location filename="previsat.cpp" line="4439"/>
         <location filename="previsat.cpp" line="4712"/>
         <location filename="previsat.cpp" line="7671"/>
-        <location filename="previsat.cpp" line="10989"/>
-        <location filename="previsat.cpp" line="11112"/>
-        <location filename="previsat.cpp" line="11537"/>
-        <location filename="previsat.cpp" line="11642"/>
-        <location filename="previsat.cpp" line="11806"/>
-        <location filename="previsat.cpp" line="11925"/>
+        <location filename="previsat.cpp" line="10999"/>
+        <location filename="previsat.cpp" line="11122"/>
+        <location filename="previsat.cpp" line="11547"/>
+        <location filename="previsat.cpp" line="11652"/>
+        <location filename="previsat.cpp" line="11816"/>
+        <location filename="previsat.cpp" line="11935"/>
         <source>Parcourir...</source>
         <translation>Browse...</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12404"/>
-        <location filename="previsat.ui" line="12423"/>
+        <location filename="previsat.ui" line="12407"/>
+        <location filename="previsat.ui" line="12426"/>
         <source>9.9999999</source>
         <translation>9.9999999</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12800"/>
-        <location filename="previsat.ui" line="12835"/>
+        <location filename="previsat.ui" line="12803"/>
+        <location filename="previsat.ui" line="12838"/>
         <source>99.999999999</source>
         <translation>99.999999999</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13811"/>
+        <location filename="previsat.ui" line="13814"/>
         <source>Age du TLE : </source>
         <translation>TLE age :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13842"/>
+        <location filename="previsat.ui" line="13845"/>
         <source>Flashs MetOp et SkyMed</source>
         <translation>MetOp and SkyMed flares</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14588"/>
+        <location filename="previsat.ui" line="14591"/>
         <source>Chaîne :</source>
         <translation>Channel :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14710"/>
+        <location filename="previsat.ui" line="14713"/>
         <source>Cliquer pour activer
 le flux vidéo</source>
         <translation>Click here to activate
 the video stream</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15058"/>
+        <location filename="previsat.ui" line="15064"/>
         <source>Mettre à jour les fichiers internes</source>
         <translation>Update internal files</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15072"/>
-        <location filename="previsat.ui" line="15075"/>
+        <location filename="previsat.ui" line="15078"/>
+        <location filename="previsat.ui" line="15081"/>
         <source>Fenêtre séparée</source>
         <translation>Separate window</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15080"/>
-        <location filename="previsat.ui" line="15083"/>
+        <location filename="previsat.ui" line="15086"/>
+        <location filename="previsat.ui" line="15089"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9187"/>
-        <location filename="previsat.ui" line="14114"/>
+        <location filename="previsat.ui" line="14117"/>
         <source>Affichage des résultats</source>
         <translation>Output display</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9202"/>
-        <location filename="previsat.ui" line="14129"/>
+        <location filename="previsat.ui" line="14132"/>
         <source>1 ligne</source>
         <translation>1 line</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="9218"/>
-        <location filename="previsat.ui" line="14145"/>
+        <location filename="previsat.ui" line="14148"/>
         <source>3 lignes</source>
         <translation>3 lines</translation>
     </message>
@@ -2093,7 +2108,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="11177"/>
-        <location filename="previsat.ui" line="13721"/>
+        <location filename="previsat.ui" line="13724"/>
         <location filename="previsat.cpp" line="6473"/>
         <location filename="previsat.cpp" line="6566"/>
         <location filename="previsat.cpp" line="6570"/>
@@ -2188,18 +2203,18 @@ the video stream</translation>
         <translation>Display of informative messages</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14910"/>
+        <location filename="previsat.ui" line="14916"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14925"/>
-        <location filename="previsat.ui" line="14928"/>
+        <location filename="previsat.ui" line="14931"/>
+        <location filename="previsat.ui" line="14934"/>
         <source>Télécharger la mise à jour</source>
         <translation>Download software update</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14992"/>
+        <location filename="previsat.ui" line="14998"/>
         <location filename="previsat.cpp" line="1242"/>
         <location filename="previsat.cpp" line="1253"/>
         <location filename="previsat.cpp" line="1376"/>
@@ -2208,33 +2223,33 @@ the video stream</translation>
         <translation>Download...</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15021"/>
+        <location filename="previsat.ui" line="15027"/>
         <source>Imprimer carte</source>
         <translation>Print map</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15024"/>
+        <location filename="previsat.ui" line="15030"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15029"/>
-        <location filename="previsat.ui" line="15034"/>
+        <location filename="previsat.ui" line="15035"/>
+        <location filename="previsat.ui" line="15040"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15039"/>
+        <location filename="previsat.ui" line="15045"/>
         <source>Modifier coordonnées</source>
         <translation>Modify coordinates</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15047"/>
+        <location filename="previsat.ui" line="15053"/>
         <source>Vision nocturne</source>
         <translation>Night vision</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15050"/>
+        <location filename="previsat.ui" line="15056"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
@@ -2291,7 +2306,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="11110"/>
-        <location filename="previsat.ui" line="13702"/>
+        <location filename="previsat.ui" line="13705"/>
         <location filename="previsat.cpp" line="6454"/>
         <location filename="previsat.cpp" line="6547"/>
         <location filename="previsat.cpp" line="6551"/>
@@ -2331,23 +2346,23 @@ the video stream</translation>
         <translation>TLE update</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11885"/>
+        <location filename="previsat.ui" line="11888"/>
         <source>Fichier à mettre à jour :</source>
         <translation>TLE file to update :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11869"/>
-        <location filename="previsat.ui" line="11961"/>
+        <location filename="previsat.ui" line="11872"/>
+        <location filename="previsat.ui" line="11964"/>
         <source>Fichier TLE à lire :</source>
         <translation>TLE File to read :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11901"/>
+        <location filename="previsat.ui" line="11904"/>
         <source>Mettre à jour</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11771"/>
+        <location filename="previsat.ui" line="11774"/>
         <source>Paramétrage...</source>
         <translation>Settings...</translation>
     </message>
@@ -2387,150 +2402,156 @@ the video stream</translation>
         <translation>Wall Command Center</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11825"/>
+        <location filename="previsat.ui" line="11682"/>
+        <location filename="previsat.ui" line="15105"/>
+        <source>Ctrl+F5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="previsat.ui" line="11828"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>Manual TLE update</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="11946"/>
+        <location filename="previsat.ui" line="11949"/>
         <source>Extraction fichier TLE</source>
         <translation>TLE file extraction</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12023"/>
-        <location filename="previsat.ui" line="14972"/>
+        <location filename="previsat.ui" line="12026"/>
+        <location filename="previsat.ui" line="14978"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12028"/>
+        <location filename="previsat.ui" line="12031"/>
         <source>Sélection...</source>
         <translation>Selection...</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12066"/>
-        <location filename="previsat.ui" line="12203"/>
-        <location filename="previsat.ui" line="12372"/>
-        <location filename="previsat.ui" line="12504"/>
-        <location filename="previsat.ui" line="12784"/>
-        <location filename="previsat.ui" line="12891"/>
+        <location filename="previsat.ui" line="12069"/>
+        <location filename="previsat.ui" line="12206"/>
+        <location filename="previsat.ui" line="12375"/>
+        <location filename="previsat.ui" line="12507"/>
+        <location filename="previsat.ui" line="12787"/>
+        <location filename="previsat.ui" line="12894"/>
         <source>de</source>
         <translation>from</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12104"/>
-        <location filename="previsat.ui" line="12241"/>
-        <location filename="previsat.ui" line="12388"/>
-        <location filename="previsat.ui" line="12574"/>
-        <location filename="previsat.ui" line="12652"/>
-        <location filename="previsat.ui" line="12819"/>
-        <location filename="previsat.ui" line="12929"/>
+        <location filename="previsat.ui" line="12107"/>
+        <location filename="previsat.ui" line="12244"/>
+        <location filename="previsat.ui" line="12391"/>
+        <location filename="previsat.ui" line="12577"/>
+        <location filename="previsat.ui" line="12655"/>
+        <location filename="previsat.ui" line="12822"/>
+        <location filename="previsat.ui" line="12932"/>
         <source>à</source>
         <translation>to</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12160"/>
-        <location filename="previsat.ui" line="13058"/>
+        <location filename="previsat.ui" line="12163"/>
+        <location filename="previsat.ui" line="13061"/>
         <source>De 0° à 360°</source>
         <translation>From 0° to 360°</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12279"/>
-        <location filename="previsat.ui" line="12295"/>
-        <location filename="previsat.ui" line="12520"/>
-        <location filename="previsat.ui" line="12536"/>
-        <location filename="previsat.ui" line="12690"/>
-        <location filename="previsat.ui" line="12706"/>
-        <location filename="previsat.ui" line="12967"/>
-        <location filename="previsat.ui" line="12983"/>
+        <location filename="previsat.ui" line="12282"/>
+        <location filename="previsat.ui" line="12298"/>
+        <location filename="previsat.ui" line="12523"/>
+        <location filename="previsat.ui" line="12539"/>
+        <location filename="previsat.ui" line="12693"/>
+        <location filename="previsat.ui" line="12709"/>
+        <location filename="previsat.ui" line="12970"/>
+        <location filename="previsat.ui" line="12986"/>
         <source>°</source>
         <translation>°</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12329"/>
+        <location filename="previsat.ui" line="12332"/>
         <source>De 0 à 1</source>
         <translation>From 0 to 1</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12426"/>
+        <location filename="previsat.ui" line="12429"/>
         <source>1.0000000</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12460"/>
+        <location filename="previsat.ui" line="12463"/>
         <source>1 intervalle</source>
         <translation>1 interval</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12465"/>
+        <location filename="previsat.ui" line="12468"/>
         <source>2 intervalles</source>
         <translation>2 intervals</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12611"/>
+        <location filename="previsat.ui" line="12614"/>
         <source>et de</source>
         <translation>and from</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12723"/>
+        <location filename="previsat.ui" line="12726"/>
         <source>Nom du fichier personnel :</source>
         <translation>Name of personal file :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12768"/>
+        <location filename="previsat.ui" line="12771"/>
         <source>Nombre de révolutions par jour :</source>
         <translation>Number of revolutions per day :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12803"/>
+        <location filename="previsat.ui" line="12806"/>
         <source>18.000000000</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="12838"/>
+        <location filename="previsat.ui" line="12841"/>
         <source>00.000000000</source>
         <translation>00.000000000</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13000"/>
-        <location filename="previsat.ui" line="14238"/>
+        <location filename="previsat.ui" line="13003"/>
+        <location filename="previsat.ui" line="14241"/>
         <source>Magnitude maximale :</source>
         <translation>Maximal magnitude :</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="8150"/>
-        <location filename="previsat.ui" line="13038"/>
+        <location filename="previsat.ui" line="13041"/>
         <source>Recherche</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13079"/>
-        <location filename="previsat.cpp" line="11502"/>
+        <location filename="previsat.ui" line="13082"/>
+        <location filename="previsat.cpp" line="11512"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13183"/>
+        <location filename="previsat.ui" line="13186"/>
         <source>Évènements</source>
         <translation>Events</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13198"/>
+        <location filename="previsat.ui" line="13201"/>
         <source>Passages aux noeuds</source>
         <translation>Passes to nodes</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13217"/>
+        <location filename="previsat.ui" line="13220"/>
         <source>Passages aux quadrangles</source>
         <translation>Passes to quadrangles</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13236"/>
+        <location filename="previsat.ui" line="13239"/>
         <source>Passages apogée/périgée</source>
         <translation>Passes to apogee/perigee</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13255"/>
+        <location filename="previsat.ui" line="13258"/>
         <source>Passages ombre/pénombre/lumière</source>
         <translation>Passes to shadow/penumbra/light</translation>
     </message>
@@ -2539,23 +2560,23 @@ the video stream</translation>
         <translation type="vanished">Day/night transitions</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13372"/>
-        <location filename="previsat.cpp" line="11771"/>
+        <location filename="previsat.ui" line="13375"/>
+        <location filename="previsat.cpp" line="11781"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13518"/>
+        <location filename="previsat.ui" line="13521"/>
         <source>Age maximal du TLE :</source>
         <translation>TLE maximal age :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13643"/>
+        <location filename="previsat.ui" line="13646"/>
         <source>Élongation maximale avec le corps :</source>
         <translation>Maximal elongation with the body :</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13687"/>
+        <location filename="previsat.ui" line="13690"/>
         <source>Corps</source>
         <translation>Body</translation>
     </message>
@@ -2570,109 +2591,109 @@ the video stream</translation>
         <translation>Update now</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="13274"/>
+        <location filename="previsat.ui" line="13277"/>
         <source>Passages terminateur</source>
         <translation>Terminator pass</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14831"/>
+        <location filename="previsat.ui" line="14837"/>
         <source>Ajouter sélection dans</source>
         <translation>Add selection in</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14887"/>
+        <location filename="previsat.ui" line="14893"/>
         <location filename="previsat.cpp" line="7351"/>
         <location filename="previsat.cpp" line="7791"/>
-        <location filename="previsat.cpp" line="10197"/>
-        <location filename="previsat.cpp" line="10216"/>
-        <location filename="previsat.cpp" line="10394"/>
-        <location filename="previsat.cpp" line="10993"/>
-        <location filename="previsat.cpp" line="11541"/>
-        <location filename="previsat.cpp" line="11810"/>
+        <location filename="previsat.cpp" line="10207"/>
+        <location filename="previsat.cpp" line="10226"/>
+        <location filename="previsat.cpp" line="10404"/>
+        <location filename="previsat.cpp" line="11003"/>
+        <location filename="previsat.cpp" line="11551"/>
+        <location filename="previsat.cpp" line="11820"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14907"/>
+        <location filename="previsat.ui" line="14913"/>
         <source>Fichier d&apos;aide</source>
         <translation>Help contents</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14915"/>
+        <location filename="previsat.ui" line="14921"/>
         <source>astropedia.free.fr</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14920"/>
+        <location filename="previsat.ui" line="14926"/>
         <source>Rapport de bug</source>
         <translation>Bug report</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14942"/>
+        <location filename="previsat.ui" line="14948"/>
         <source>www.celestrak.com</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14947"/>
+        <location filename="previsat.ui" line="14953"/>
         <source>www.space-track.org</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14952"/>
+        <location filename="previsat.ui" line="14958"/>
         <source>À propos</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14957"/>
+        <location filename="previsat.ui" line="14963"/>
         <source>Définir par défaut</source>
         <translation>Define as default</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14962"/>
+        <location filename="previsat.ui" line="14968"/>
         <source>Nouveau fichier TLE</source>
         <translation>New TLE file</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14967"/>
+        <location filename="previsat.ui" line="14973"/>
         <source>Fichier TLE existant</source>
         <translation>Existing TLE file</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14977"/>
+        <location filename="previsat.ui" line="14983"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14982"/>
+        <location filename="previsat.ui" line="14988"/>
         <location filename="previsat.cpp" line="812"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14987"/>
-        <location filename="previsat.ui" line="15007"/>
-        <location filename="previsat.ui" line="15066"/>
+        <location filename="previsat.ui" line="14993"/>
+        <location filename="previsat.ui" line="15013"/>
+        <location filename="previsat.ui" line="15072"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14997"/>
+        <location filename="previsat.ui" line="15003"/>
         <location filename="previsat.cpp" line="815"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15002"/>
+        <location filename="previsat.ui" line="15008"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="15012"/>
+        <location filename="previsat.ui" line="15018"/>
         <source>Copier dans le presse-papier</source>
         <translation>Copy to the clipboard</translation>
     </message>
     <message>
-        <location filename="previsat.ui" line="14895"/>
+        <location filename="previsat.ui" line="14901"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
@@ -2826,8 +2847,8 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="7353"/>
-        <location filename="previsat.cpp" line="10218"/>
-        <location filename="previsat.cpp" line="10396"/>
+        <location filename="previsat.cpp" line="10228"/>
+        <location filename="previsat.cpp" line="10406"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;TLE files (*.tle);;Gz files (*.gz);;All files (*)</translation>
     </message>
@@ -2843,13 +2864,13 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="7389"/>
-        <location filename="previsat.cpp" line="10420"/>
+        <location filename="previsat.cpp" line="10430"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="7390"/>
-        <location filename="previsat.cpp" line="10421"/>
+        <location filename="previsat.cpp" line="10431"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
@@ -2874,8 +2895,8 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="6525"/>
         <location filename="previsat.cpp" line="6625"/>
         <location filename="previsat.cpp" line="8002"/>
-        <location filename="previsat.cpp" line="10661"/>
-        <location filename="previsat.cpp" line="11347"/>
+        <location filename="previsat.cpp" line="10671"/>
+        <location filename="previsat.cpp" line="11357"/>
         <source>%1 (numéro NORAD : %2)</source>
         <translation>%1 (NORAD number : %2)</translation>
     </message>
@@ -2892,10 +2913,10 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="previsat.cpp" line="7756"/>
         <location filename="previsat.cpp" line="7792"/>
-        <location filename="previsat.cpp" line="10199"/>
-        <location filename="previsat.cpp" line="10995"/>
-        <location filename="previsat.cpp" line="11543"/>
-        <location filename="previsat.cpp" line="11812"/>
+        <location filename="previsat.cpp" line="10209"/>
+        <location filename="previsat.cpp" line="11005"/>
+        <location filename="previsat.cpp" line="11553"/>
+        <location filename="previsat.cpp" line="11822"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;TLE files (*.tle);;All files (*)</translation>
     </message>
@@ -3198,13 +3219,13 @@ The directory containing the observation sites does not exist</translation>
         <translation>Location already selected</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10243"/>
+        <location filename="previsat.cpp" line="10253"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>The name of file to update is not given</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10246"/>
-        <location filename="previsat.cpp" line="10445"/>
+        <location filename="previsat.cpp" line="10256"/>
+        <location filename="previsat.cpp" line="10455"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>The name of file to read is not given</translation>
     </message>
@@ -3241,7 +3262,7 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="previsat.cpp" line="5352"/>
         <location filename="previsat.cpp" line="5676"/>
-        <location filename="previsat.cpp" line="10293"/>
+        <location filename="previsat.cpp" line="10303"/>
         <source>Terminé !</source>
         <translation>Done !</translation>
     </message>
@@ -3274,10 +3295,10 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="978"/>
         <location filename="previsat.cpp" line="4663"/>
         <location filename="previsat.cpp" line="4670"/>
-        <location filename="previsat.cpp" line="10260"/>
-        <location filename="previsat.cpp" line="10265"/>
-        <location filename="previsat.cpp" line="10465"/>
-        <location filename="previsat.cpp" line="10470"/>
+        <location filename="previsat.cpp" line="10270"/>
+        <location filename="previsat.cpp" line="10275"/>
+        <location filename="previsat.cpp" line="10475"/>
+        <location filename="previsat.cpp" line="10480"/>
         <source>Erreur rencontrée lors de la décompression du fichier %1</source>
         <translation>Error occured while decompressing file %1</translation>
     </message>
@@ -3285,11 +3306,11 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="2731"/>
         <location filename="previsat.cpp" line="3374"/>
         <location filename="previsat.cpp" line="8555"/>
-        <location filename="previsat.cpp" line="10922"/>
-        <location filename="previsat.cpp" line="11206"/>
-        <location filename="previsat.cpp" line="11471"/>
-        <location filename="previsat.cpp" line="11714"/>
-        <location filename="previsat.cpp" line="12009"/>
+        <location filename="previsat.cpp" line="10932"/>
+        <location filename="previsat.cpp" line="11216"/>
+        <location filename="previsat.cpp" line="11481"/>
+        <location filename="previsat.cpp" line="11724"/>
+        <location filename="previsat.cpp" line="12019"/>
         <source>nmi</source>
         <translation>nmi</translation>
     </message>
@@ -3401,7 +3422,7 @@ The directory containing the observation sites does not exist</translation>
         <location filename="previsat.cpp" line="4816"/>
         <location filename="previsat.cpp" line="4959"/>
         <location filename="previsat.cpp" line="5055"/>
-        <location filename="previsat.cpp" line="10558"/>
+        <location filename="previsat.cpp" line="10568"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Problem with writing rights with file %1</translation>
     </message>
@@ -3739,8 +3760,8 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="7874"/>
-        <location filename="previsat.cpp" line="10276"/>
-        <location filename="previsat.cpp" line="10475"/>
+        <location filename="previsat.cpp" line="10286"/>
+        <location filename="previsat.cpp" line="10485"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>The file %1 does not exist</translation>
     </message>
@@ -3783,106 +3804,106 @@ the video stream</translation>
         <translation>The location &quot;%1&quot; has been added in &quot;My Favorites&quot; category</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10535"/>
+        <location filename="previsat.cpp" line="10545"/>
         <source>Erreur rencontrée lors du chargement du fichier %1</source>
         <translation>Error while downloading file %1</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10811"/>
-        <location filename="previsat.cpp" line="11396"/>
+        <location filename="previsat.cpp" line="10821"/>
+        <location filename="previsat.cpp" line="11406"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11113"/>
-        <location filename="previsat.cpp" line="11643"/>
-        <location filename="previsat.cpp" line="11926"/>
+        <location filename="previsat.cpp" line="11123"/>
+        <location filename="previsat.cpp" line="11653"/>
+        <location filename="previsat.cpp" line="11936"/>
         <source>Le nom du fichier TLE n&apos;est pas spécifié</source>
         <translation>The name of TLE file is not given</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11118"/>
-        <location filename="previsat.cpp" line="11648"/>
-        <location filename="previsat.cpp" line="11931"/>
+        <location filename="previsat.cpp" line="11128"/>
+        <location filename="previsat.cpp" line="11658"/>
+        <location filename="previsat.cpp" line="11941"/>
         <source>Le nom du fichier TLE est incorrect</source>
         <translation>The name of TLE file is incorrect</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11213"/>
+        <location filename="previsat.cpp" line="11223"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut</source>
         <translation>Error occured while execution
 There is no Iridium satellites which can make flares in the Iridium status file</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11233"/>
-        <location filename="previsat.cpp" line="11721"/>
-        <location filename="previsat.cpp" line="12030"/>
+        <location filename="previsat.cpp" line="11243"/>
+        <location filename="previsat.cpp" line="11731"/>
+        <location filename="previsat.cpp" line="12040"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11260"/>
+        <location filename="previsat.cpp" line="11270"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite Iridium n&apos;a été trouvé dans le fichier TLE</source>
         <translation>Error occured while execution
 There is no Iridium satellites in the TLE file</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11443"/>
+        <location filename="previsat.cpp" line="11453"/>
         <source>Aucun évènement sélectionné</source>
         <translation>No event selected</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11729"/>
+        <location filename="previsat.cpp" line="11739"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <translation>Error occured while loading file
 The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11737"/>
+        <location filename="previsat.cpp" line="11747"/>
         <source>L&apos;âge du TLE de l&apos;ISS (%1 jours) est supérieur à %2 jours</source>
         <translation>The TLE age of ISS (%1 days) is over to %2 days</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11997"/>
+        <location filename="previsat.cpp" line="12007"/>
         <source>metop_skymed</source>
         <translation>metop_skymed</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="12016"/>
+        <location filename="previsat.cpp" line="12026"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite MetOp ou SkyMed susceptible de produire des flashs dans le fichier de statut</source>
         <translation>Error occured while execution
 There is no MetOp or SkyMed satellites which can make flares in the status file</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="12057"/>
+        <location filename="previsat.cpp" line="12067"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite MetOp ou SkyMed n&apos;a été trouvé dans le fichier TLE</source>
         <translation>Error occured while execution
 There is no MetOp or SkyMed satellites in the TLE file</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="12090"/>
+        <location filename="previsat.cpp" line="12100"/>
         <source>Prévisions des flashs MetOp et SkyMed</source>
         <translation>Predictions of MetOp and SkyMed flares</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10448"/>
+        <location filename="previsat.cpp" line="10458"/>
         <source>Le nom du fichier personnel n&apos;est pas spécifié</source>
         <translation>The name of personal file is not given</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10608"/>
+        <location filename="previsat.cpp" line="10618"/>
         <source>Fichier %1 écrit</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10910"/>
+        <location filename="previsat.cpp" line="10920"/>
         <source>previsions</source>
         <translation>predictions</translation>
     </message>
@@ -3890,45 +3911,45 @@ There is no MetOp or SkyMed satellites in the TLE file</translation>
         <location filename="previsat.cpp" line="2731"/>
         <location filename="previsat.cpp" line="3374"/>
         <location filename="previsat.cpp" line="8555"/>
-        <location filename="previsat.cpp" line="10922"/>
-        <location filename="previsat.cpp" line="11206"/>
-        <location filename="previsat.cpp" line="11471"/>
-        <location filename="previsat.cpp" line="11714"/>
-        <location filename="previsat.cpp" line="12009"/>
+        <location filename="previsat.cpp" line="10932"/>
+        <location filename="previsat.cpp" line="11216"/>
+        <location filename="previsat.cpp" line="11481"/>
+        <location filename="previsat.cpp" line="11724"/>
+        <location filename="previsat.cpp" line="12019"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10924"/>
-        <location filename="previsat.cpp" line="11263"/>
-        <location filename="previsat.cpp" line="11473"/>
-        <location filename="previsat.cpp" line="11741"/>
-        <location filename="previsat.cpp" line="12060"/>
+        <location filename="previsat.cpp" line="10934"/>
+        <location filename="previsat.cpp" line="11273"/>
+        <location filename="previsat.cpp" line="11483"/>
+        <location filename="previsat.cpp" line="11751"/>
+        <location filename="previsat.cpp" line="12070"/>
         <source>Calculs en cours. Veuillez patienter...</source>
         <translation>Calculating. Be patient...</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="10954"/>
+        <location filename="previsat.cpp" line="10964"/>
         <source>Prévisions de passage des satellites</source>
         <translation>Predictions of satellite passes</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11194"/>
+        <location filename="previsat.cpp" line="11204"/>
         <source>iridiums</source>
         <translation>iridiums</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11293"/>
+        <location filename="previsat.cpp" line="11303"/>
         <source>Prévisions des flashs Iridium</source>
         <translation>Predictions of Iridium flares</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11459"/>
+        <location filename="previsat.cpp" line="11469"/>
         <source>evenements</source>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="11702"/>
+        <location filename="previsat.cpp" line="11712"/>
         <source>transits</source>
         <translation>transits</translation>
     </message>

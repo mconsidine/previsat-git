@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 janvier 2016
+ * >    1er mars 2016
  *
  */
 
@@ -537,6 +537,8 @@ private slots:
     // Mise a jour des TLE
     void on_groupeTLE_currentIndexChanged(int index);
     void on_majMaintenant_clicked();
+    void on_actionMettre_jour_TLE_courant_triggered();
+    void on_actionMettre_jour_groupe_TLE_triggered();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();

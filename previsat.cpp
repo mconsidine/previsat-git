@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2016
+ * >    1er mars 2016
  *
  */
 
@@ -10185,6 +10185,16 @@ void PreviSat::on_majMaintenant_clicked()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
+{
+    MajFichierTLE();
+}
+
+void PreviSat::on_actionMettre_jour_groupe_TLE_triggered()
+{
+    on_majMaintenant_clicked();
 }
 
 void PreviSat::on_parcourirMaj1_clicked()
