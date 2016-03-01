@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -11678,6 +11678,9 @@
               <property name="text">
                <string>Mettre à jour maintenant</string>
               </property>
+              <property name="shortcut">
+               <string>Ctrl+F5</string>
+              </property>
               <property name="default">
                <bool>true</bool>
               </property>
@@ -14804,6 +14807,9 @@ le flux vidéo</string>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
+    <addaction name="actionMettre_jour_TLE_courant"/>
+    <addaction name="actionMettre_jour_groupe_TLE"/>
+    <addaction name="separator"/>
     <addaction name="actionVision_nocturne"/>
     <addaction name="separator"/>
     <addaction name="actionFichier_d_aide"/>
@@ -15081,6 +15087,22 @@ le flux vidéo</string>
    </property>
    <property name="toolTip">
     <string>Fermer</string>
+   </property>
+  </action>
+  <action name="actionMettre_jour_TLE_courant">
+   <property name="text">
+    <string>Mettre à jour TLE courant</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionMettre_jour_groupe_TLE">
+   <property name="text">
+    <string>Mettre à jour groupe TLE</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F5</string>
    </property>
   </action>
  </widget>
