@@ -877,7 +877,7 @@ void PreviSat::ChargementConfig()
     messagesStatut->setFont(police);
     messagesStatut->setFrameStyle(QFrame::NoFrame);
     messagesStatut->setIndent(3);
-    messagesStatut->setMinimumSize(398, 0);
+    messagesStatut->setMinimumSize(405, 0);
     messagesStatut->setToolTip(tr("Messages"));
 
     messagesStatut2 = new QLabel("", this);
@@ -897,7 +897,7 @@ void PreviSat::ChargementConfig()
     modeFonctionnement = new QLabel("", this);
     modeFonctionnement->setFont(police);
     modeFonctionnement->setFrameStyle(QFrame::NoFrame);
-    modeFonctionnement->setFixedWidth(110);
+    modeFonctionnement->setFixedWidth(103);
     modeFonctionnement->setAlignment(Qt::AlignCenter);
     modeFonctionnement->setToolTip(tr("Mode de fonctionnement"));
 
