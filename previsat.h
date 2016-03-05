@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mars 2016
+ * >    5 mars 2016
  *
  */
 
@@ -43,10 +43,12 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QComboBox>
 #include <QListWidget>
 #include <QMainWindow>
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "librairies/dates/date.h"
 
 

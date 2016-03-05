@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,16 +36,18 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    5 mars 2016
  *
  */
 
 #include <QDate>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QSettings>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "ui_apropos.h"
+#pragma GCC diagnostic warning "-Wpacked"
 
 static QSettings settings("Astropedia", "previsat");
 

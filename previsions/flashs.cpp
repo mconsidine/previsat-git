@@ -36,14 +36,16 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    5 mars 2016
  *
  */
 
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "flashs.h"
 #include "iridium.h"
 #include "metop.h"

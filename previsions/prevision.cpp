@@ -36,16 +36,18 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    5 mars 2016
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QFile>
 #include <QSettings>
 #include <QTime>
 #include <QTextStream>
-#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "prevision.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"

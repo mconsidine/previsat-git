@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    5 mars 2016
  *
  */
 
@@ -48,6 +48,7 @@
 #endif
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -55,6 +56,7 @@
 #include <QStringList>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "ligneconstellation.h"
 
 bool LigneConstellation::initLig = false;

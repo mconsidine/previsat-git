@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >
+ * >    5 mars 2016
  *
  */
 
@@ -51,8 +51,10 @@
 #include <QDir>
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "metop.h"
 
 #define NB_PAN 3

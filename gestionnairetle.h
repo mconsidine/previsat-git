@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    5 mars 2016
  *
  */
 
@@ -42,10 +42,12 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QMainWindow>
 #include <QtNetwork>
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 

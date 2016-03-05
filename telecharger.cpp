@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    4 janvier 2016
+ * >    5 mars 2016
  *
  */
 
@@ -52,6 +52,7 @@
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QMessageBox>
 #include <QSettings>
 #include <QTimer>
@@ -59,6 +60,7 @@
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #include <QQueue>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wpacked"
 #include "telecharger.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"

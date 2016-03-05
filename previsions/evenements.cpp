@@ -36,17 +36,19 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    5 mars 2016
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QCoreApplication>
 #include <QFile>
 #include <QSettings>
 #include <QTextStream>
 #include <QTime>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "evenements.h"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"

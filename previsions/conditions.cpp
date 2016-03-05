@@ -36,15 +36,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 decembre 2015
+ * >    5 mars 2016
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "conditions.h"
 #include "librairies/maths/maths.h"
 #include "librairies/corps/systemesolaire/TerreConstants.h"
