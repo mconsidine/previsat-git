@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    8 decembre 2015
+ * >    5 mars 2016
  *
  */
 
@@ -51,6 +51,7 @@
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #if QT_VERSION >= 0x050000
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
@@ -60,6 +61,7 @@
 #include "ui_gestionnairetle.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #if QT_VERSION >= 0x050000
 #pragma GCC diagnostic warning "-Wfloat-conversion"

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 fevrier 2016
+ * >    5 mars 2016
  *
  */
 
@@ -50,8 +50,10 @@
 
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "satellite.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"

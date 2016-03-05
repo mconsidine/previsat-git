@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 decembre 2015
+ * >    5 mars 2016
  *
  */
 
@@ -48,10 +48,12 @@
 #endif
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QCoreApplication>
 #include <QDir>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "etoile.h"
 #include "librairies/maths/mathsConstants.h"
 

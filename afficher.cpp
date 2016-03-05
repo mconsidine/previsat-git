@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    5 mars 2016
  *
  */
 
@@ -49,12 +49,14 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopWidget>
 #include <QGraphicsSimpleTextItem>
 #include "ui_afficher.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wpacked"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QDir>
 #include <QFile>

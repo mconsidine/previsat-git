@@ -36,14 +36,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 novembre 2015
+ * >    5 mars 2016
  *
  */
 
 #include <QtGlobal>
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include "previsat.h"
+#pragma GCC diagnostic warning "-Wpacked"
 #include <QApplication>
 #include <QMessageBox>
 #include <QSharedMemory>

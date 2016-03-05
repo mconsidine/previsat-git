@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mars 2016
+ * >    5 mars 2016
  *
  */
 
@@ -50,6 +50,7 @@
 #include <QSound>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wundef"
 #if QT_VERSION >= 0x050000
@@ -70,6 +71,7 @@
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wpacked"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wundef"
 #if QT_VERSION >= 0x050000

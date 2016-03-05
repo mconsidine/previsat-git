@@ -36,16 +36,18 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    10 fevrier 2016
+ * >    5 mars 2016
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QFile>
 #include <QSettings>
 #include <QTextStream>
 #include <QTime>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "transitiss.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"

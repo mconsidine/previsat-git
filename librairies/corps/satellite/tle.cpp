@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 janvier 2016
+ * >    5 mars 2016
  *
  */
 
@@ -49,6 +49,7 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <cmath>
 #include <QCoreApplication>
 #include <QDir>
@@ -57,6 +58,7 @@
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "tle.h"
 #include "librairies/dates/dateConstants.h"
 #include "librairies/exceptions/previsatexception.h"

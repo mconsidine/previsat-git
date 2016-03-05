@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 fevrier 2016
+ * >    5 mars 2016
  *
  */
 
@@ -54,8 +54,10 @@
 #include <QDir>
 #include <QObject>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wpacked"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wpacked"
 #include "date.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"

@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    1er mars 2016
+# >    5 mars 2016
 
 #-------------------------------------------------
 VER_MAJ = 3.5
@@ -51,24 +51,17 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport webkitwidgets wi
 TARGET = PreviSat
 TEMPLATE = app
 
-ICON = resources/icone.ico
-
 CONFIG(debug, debug|release) {
-    QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -Wmissing-declarations
+    QMAKE_CXXFLAGS += -Wmissing-declarations
     mac {
         QMAKE_CXXFLAGS += -O
         QMAKE_CXXFLAGS -= -Wmissing-declarations
     }
 }
 
-LIBS += -L$$ZLIB_DIR/lib -lz
-win32 {
-    RC_FILE = icone.rc
-}
-
-mac {
-    ICON = resources/icone.icns
-}
+ICON = resources/icone.ico
+win32:RC_FILE = icone.rc
+mac:ICON = resources/icone.icns
 
 VERSIONSTR = '\\"$${VERSION}\\"'
 VER_MAJSTR = '\\"$${VER_MAJ}\\"'
@@ -80,6 +73,7 @@ DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
 
 INCLUDEPATH += $$ZLIB_DIR/inc
 
+LIBS += -L$$ZLIB_DIR/lib -lz
 
 SOURCES += main.cpp                                    \
     previsat.cpp                                       \
