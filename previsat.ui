@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -3882,7 +3882,7 @@
              <widget class="QLabel" name="distanceSoleil">
               <property name="geometry">
                <rect>
-                <x>67</x>
+                <x>71</x>
                 <y>51</y>
                 <width>55</width>
                 <height>16</height>
@@ -4220,7 +4220,7 @@
              <widget class="QLabel" name="distanceLune">
               <property name="geometry">
                <rect>
-                <x>67</x>
+                <x>73</x>
                 <y>174</y>
                 <width>58</width>
                 <height>16</height>
