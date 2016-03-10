@@ -10160,6 +10160,10 @@ void PreviSat::on_majMaintenant_clicked()
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
+    const QString chaine = tr("Mise à jour du groupe de TLE \"%1\" (à partir de %2) en cours...");
+    const QStringList list = ui->groupeTLE->currentText().split("@", QString::SkipEmptyParts);
+    messagesStatut->setText(chaine.arg(list.at(0)).arg(list.at(1)));
+
     ui->affichageMsgMAJ->setVisible(false);
     ui->frameBarreProgression->setVisible(true);
     while (!flux.atEnd()) {
