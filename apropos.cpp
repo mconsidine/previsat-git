@@ -58,6 +58,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
     ui->setupUi(this);
 
     QFont police;
+    ui->ok->setFocus();
 
 #if defined (Q_OS_WIN)
     police.setFamily("MS Shell Dlg 2");
@@ -81,6 +82,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
     scene->setSceneRect(ui->imagePreviSat->rect());
     scene->setBackgroundBrush(QBrush(palette().background().color()));
     scene->addPixmap(QPixmap(":/resources/apropos.png").scaled(ui->imagePreviSat->size()));
+
     ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
     view.setRenderHints(QPainter::Antialiasing);

@@ -224,7 +224,7 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="apropos.ui" line="160"/>
+        <location filename="apropos.ui" line="163"/>
         <source>PreviSat est un logiciel de suivi des satellites artificiels afin de les observer.
 
  Il permet d&apos;afficher la position des satellites en temps réel ou en mode manuel. PreviSat est capable d&apos;effectuer les prévisions de passage, de calculer les flashs Iridium, ainsi que plusieurs autres calculs de prévisions.
@@ -237,12 +237,12 @@ It shows positions of artificial satellites in real time or manual mode. PreviSa
 PreviSat is free !</translation>
     </message>
     <message>
-        <location filename="apropos.cpp" line="77"/>
+        <location filename="apropos.cpp" line="78"/>
         <source>À propos de %1 %2</source>
         <translation>About %1 %2</translation>
     </message>
     <message>
-        <location filename="apropos.cpp" line="108"/>
+        <location filename="apropos.cpp" line="110"/>
         <source>Version %1  (%2)</source>
         <translation>Version %1  (%2)</translation>
     </message>
@@ -2592,7 +2592,7 @@ the video stream</translation>
     <message>
         <location filename="previsat.ui" line="13274"/>
         <source>Passages terminateur</source>
-        <translation>Terminator pass</translation>
+        <translation>Terminator passes</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="14834"/>
