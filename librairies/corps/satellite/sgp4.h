@@ -33,7 +33,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    27 fevrier 2016
+ * >    19 mars 2016
  *
  */
 
@@ -52,7 +52,7 @@ public:
     /**
      * @brief SGP4 Constructeur par defaut
      */
-    SGP4() : _init(false) { }
+    SGP4();
 
     /* Constantes publiques */
 

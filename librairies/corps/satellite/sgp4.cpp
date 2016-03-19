@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >     27 fevrier 2016
+ * >     19 mars 2016
  *
  */
 
@@ -52,6 +52,202 @@ static const double X1SRT = 1. / RAYON_TERRESTRE;
 static const double RTMS = RAYON_TERRESTRE * NB_MIN_PAR_SEC;
 
 /* Constructeurs */
+SGP4::SGP4()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    // Elements orbitaux moyens
+    _argpo = 0.;
+    _bstar = 0.;
+    _ecco = 0.;
+    _inclo = 0.;
+    _mo = 0.;
+    _no = 0.;
+    _omegao = 0.;
+
+    // Variables du modele SGP4
+    _isimp = false;
+    _method = 'n';
+    _irez = 0;
+    _ao = 0.;
+    _argpdot = 0.;
+    _argpm = 0.;
+    _argpp = 0.;
+    _atime = 0.;
+    _aycof = 0.;
+    _cc1 = 0.;
+    _cc4 = 0.;
+    _cc5 = 0.;
+    _cnodm = 0.;
+    _con41 = 0.;
+    _con42 = 0.;
+    _cosim = 0.;
+    _cosio = 0.;
+    _cosio2 = 0.;
+    _cosomm = 0.;
+    _d2 = 0.;
+    _d2201 = 0.;
+    _d2211 = 0.;
+    _d3 = 0.;
+    _d3210 = 0.;
+    _d3222 = 0.;
+    _d4 = 0.;
+    _d4410 = 0.;
+    _d4422 = 0.;
+    _d5220 = 0.;
+    _d5232 = 0.;
+    _d5421 = 0.;
+    _d5433 = 0.;
+    _day = 0.;
+    _dedt = 0.;
+    _del1 = 0.;
+    _del2 = 0.;
+    _del3 = 0.;
+    _delmo = 0.;
+    _delt = 0.;
+    _didt = 0.;
+    _dmdt = 0.;
+    _domdt = 0.;
+    _dndt = 0.;
+    _dnodt = 0.;
+    _eccsq = 0.;
+    _ee2 = 0.;
+    _e3 = 0.;
+    _em = 0.;
+    _emsq = 0.;
+    _ep = 0.;
+    _eta = 0.;
+    _f220 = 0.;
+    _f221 = 0.;
+    _f311 = 0.;
+    _f321 = 0.;
+    _f322 = 0.;
+    _f330 = 0.;
+    _f441 = 0.;
+    _f442 = 0.;
+    _f522 = 0.;
+    _f523 = 0.;
+    _f542 = 0.;
+    _f543 = 0.;
+    _g200 = 0.;
+    _g201 = 0.;
+    _g211 = 0.;
+    _g300 = 0.;
+    _g310 = 0.;
+    _g322 = 0.;
+    _g410 = 0.;
+    _g422 = 0.;
+    _g520 = 0.;
+    _g521 = 0.;
+    _g532 = 0.;
+    _g533 = 0.;
+    _gam = 0.;
+    _gsto = 0.;
+    _inclm = 0.;
+    _mdot = 0.;
+    _mm = 0.;
+    _mp = 0.;
+    _nm = 0.;
+    _nodecf = 0.;
+    _nodedot = 0.;
+    _nodem = 0.;
+    _nodep = 0.;
+    _omeosq = 0.;
+    _omgcof = 0.;
+    _posq = 0.;
+    _rp = 0.;
+    _rtemsq = 0.;
+    _rteosq = 0.;
+    _s1 = 0.;
+    _s2 = 0.;
+    _s3 = 0.;
+    _s4 = 0.;
+    _s5 = 0.;
+    _s6 = 0.;
+    _s7 = 0.;
+    _se2 = 0.;
+    _se3 = 0.;
+    _sgh2 = 0.;
+    _sgh3 = 0.;
+    _sgh4 = 0.;
+    _sh2 = 0.;
+    _sh3 = 0.;
+    _si2 = 0.;
+    _si3 = 0.;
+    _sinim = 0.;
+    _sinio = 0.;
+    _sinmao = 0.;
+    _sinomm = 0.;
+    _sl2 = 0.;
+    _sl3 = 0.;
+    _sl4 = 0.;
+    _snodm = 0.;
+    _ss1 = 0.;
+    _ss2 = 0.;
+    _ss3 = 0.;
+    _ss4 = 0.;
+    _ss5 = 0.;
+    _ss6 = 0.;
+    _ss7 = 0.;
+    _sz1 = 0.;
+    _sz2 = 0.;
+    _sz3 = 0.;
+    _sz11 = 0.;
+    _sz12 = 0.;
+    _sz13 = 0.;
+    _sz21 = 0.;
+    _sz22 = 0.;
+    _sz23 = 0.;
+    _sz31 = 0.;
+    _sz32 = 0.;
+    _sz33 = 0.;
+    _t = 0.;
+    _t2cof = 0.;
+    _t3cof = 0.;
+    _t4cof = 0.;
+    _t5cof = 0.;
+    _x1mth2 = 0.;
+    _x7thm1 = 0.;
+    _xfact = 0.;
+    _xi2 = 0.;
+    _xi3 = 0.;
+    _xincp = 0.;
+    _xgh2 = 0.;
+    _xgh3 = 0.;
+    _xgh4 = 0.;
+    _xh2 = 0.;
+    _xh3 = 0.;
+    _xl2 = 0.;
+    _xl3 = 0.;
+    _xl4 = 0.;
+    _xlamo = 0.;
+    _xlcof = 0.;
+    _xli = 0.;
+    _xmcof = 0.;
+    _xni = 0.;
+    _xpidot = 0.;
+    _z1 = 0.;
+    _z2 = 0.;
+    _z3 = 0.;
+    _z11 = 0.;
+    _z12 = 0.;
+    _z13 = 0.;
+    _z21 = 0.;
+    _z22 = 0.;
+    _z23 = 0.;
+    _z31 = 0.;
+    _z32 = 0.;
+    _z33 = 0.;
+    _zmol = 0.;
+    _zmos = 0.;
+    _init = false;
+
+    /* Retour */
+    return;
+}
 
 /* Methodes */
 void SGP4::Calcul(const Date &date, const TLE &tle)
@@ -583,8 +779,7 @@ void SGP4::Dsinit(const double tc) {
     _mm += _dmdt * _t;
     // sgp4fix for negative inclinations
     // the following if statement should be commented out
-    // if (_inclm < 0.)
-    // {
+    // if (_inclm < 0.) {
     //     _inclm = -_inclm;
     //     _argpm = _argpm - PI;
     //     _nodem = _nodem + PI;
@@ -736,17 +931,16 @@ void SGP4::Dspace(const double tc) {
 
     // sgp4fix for negative inclinations
     // the following if statement should be commented out
-    // if (_inclm < 0.)
-    // {
+    // if (_inclm < 0.) {
     //     _inclm = -_inclm;
     //     _argpm = _argpm - PI;
     //     _nodem = _nodem + PI;
     // }
 
     // Integration numerique (Euler-MacLaurin)
-    double ft = 0.;
     if (_irez != 0) {
 
+        double ft = 0.;
         if (fabs(_atime) <= EPSDBL100 || _t * _atime <= 0. || fabs(_t) < fabs(_atime)) {
             _atime = 0.;
             _xni = _no;
