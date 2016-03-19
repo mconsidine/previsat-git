@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    5 mars 2016
+ * >    18 mars 2016
  *
  */
 
@@ -586,7 +586,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                 // Calcul des limites du flash
                 CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
 
-                if (dates[1].jourJulienUTC() < DATE_INFINIE) {
+                if (dates[1].jourJulienUTC() < DATE_INFINIE && fabs(dates[1].jourJulienUTC() - temp) > PAS1) {
 
                     temp = minmax[0];
 
