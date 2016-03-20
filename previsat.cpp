@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    19 mars 2016
  *
  */
 
@@ -7324,11 +7324,11 @@ void PreviSat::on_directHelp_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString aide = "file:///%1%2doc%3%4_%5.pdf";
+    const QString aide = QString("file:///%1%2doc%3%4_%5.pdf").arg(dirExe).arg(QDir::separator()).arg(QDir::separator()).
+            arg(QCoreApplication::applicationName()).arg(localePreviSat);
 
     /* Corps de la methode */
-    if (!QDesktopServices::openUrl(aide.arg(dirExe).arg(QDir::separator()).arg(QDir::separator()).
-                                   arg(QCoreApplication::applicationName()).arg(localePreviSat))) {
+    if (!QDesktopServices::openUrl(aide)) {
         const QFileInfo fi(aide);
         const QString msg = tr("Impossible d'ouvrir le fichier d'aide %1");
         Message::Afficher(msg.arg(fi.fileName()), WARNING);
