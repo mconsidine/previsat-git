@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    18 mars 2016
+ * >    15 avril 2016
  *
  */
 
@@ -78,6 +78,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
     _res.clear();
     result.clear();
     const double angrefMax = (conditions.typeCalcul() == IRIDIUM) ? 0.3 : 1.;
+    const double pasmax = (conditions.typeCalcul() == IRIDIUM) ? PAS1 : 3. * PAS1;
 
     _tabtle = conditions.tabtle();
     QVectorIterator<TLE> it1(_tabtle);
@@ -172,7 +173,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                                 pasInt *= 0.5;
                             }
 
-                            if (minmax[0] - temp > PAS1)
+                            if (fabs(minmax[0] - temp) > pasmax)
                                 DeterminationFlash(minmax, conditions, temp, observateur, sat, soleil);
 
                         } // fin if (angref <= 0.2)
@@ -502,29 +503,27 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
     dateSup = qMin(dateSup, limite[3]);
 
     double dateMax = dateMaxFlash;
-    if (((dateInf > dateMax || dateSup < dateMax) && conditions.typeCalcul() == METOP) || conditions.typeCalcul() == IRIDIUM) {
 
-        jjm[0] = dateInf;
-        jjm[1] = 0.5 * (dateInf + dateSup);
-        jjm[2] = dateSup;
+    jjm[0] = dateInf;
+    jjm[1] = 0.5 * (dateInf + dateSup);
+    jjm[2] = dateSup;
 
-        double minmax[2];
+    double minmax[2];
+    CalculAngleMin(jjm, conditions.typeCalcul(), satellite, observateur, soleil, minmax);
+
+    // Iterations supplementaires pour affiner la date du maximum
+    double pasInt = PAS_INT0;
+    for (int it=0; it<4; it++) {
+
+        jjm[0] = minmax[0] - pasInt;
+        jjm[1] = minmax[0];
+        jjm[2] = minmax[0] + pasInt;
+
         CalculAngleMin(jjm, conditions.typeCalcul(), satellite, observateur, soleil, minmax);
-
-        // Iterations supplementaires pour affiner la date du maximum
-        double pasInt = PAS_INT0;
-        for (int it=0; it<4; it++) {
-
-            jjm[0] = minmax[0] - pasInt;
-            jjm[1] = minmax[0];
-            jjm[2] = minmax[0] + pasInt;
-
-            CalculAngleMin(jjm, conditions.typeCalcul(), satellite, observateur, soleil, minmax);
-            pasInt *= 0.5;
-        }
-
-        dateMax = minmax[0];
+        pasInt *= 0.5;
     }
+
+    dateMax = minmax[0];
 
     if (dateInf < dateSup - EPS_DATES && fabs(dateInf) < DATE_INFINIE && fabs(dateSup) < DATE_INFINIE) {
         if (dateMax < dateInf)
@@ -585,8 +584,9 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
                 // Calcul des limites du flash
                 CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
+                const double pasmax = (conditions.typeCalcul() == IRIDIUM) ? PAS1 : 3. * PAS1;
 
-                if (dates[1].jourJulienUTC() < DATE_INFINIE && fabs(dates[1].jourJulienUTC() - temp) > PAS1) {
+                if (dates[1].jourJulienUTC() < DATE_INFINIE && fabs(dates[1].jourJulienUTC() - temp) > pasmax) {
 
                     temp = minmax[0];
 
@@ -617,6 +617,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                             mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), angref, observateur, soleil, sat);
 
                             if (mag <= mgn0 + 0.05) {
+
                                 // Ascension droite/declinaison/constellation
                                 sat.CalculCoordEquat(observateur);
 
