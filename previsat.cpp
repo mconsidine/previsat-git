@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 mars 2016
+ * >    3 mai 2016
  *
  */
 
@@ -5367,6 +5367,18 @@ void PreviSat::GestionTempsReel()
     Date date1, date2;
 
     /* Initialisations */
+    if (afficherResultats != NULL && !afficherResultats->isVisible()) {
+
+        if (threadCalculs != NULL) {
+            threadCalculs->deleteLater();
+            threadCalculs = NULL;
+        }
+
+        afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
+
     if (afficherMeteo != NULL && !afficherMeteo->isVisible()) {
 
         if (viewMeteo != NULL) {
@@ -10808,8 +10820,11 @@ void PreviSat::on_calculsPrev_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -11114,8 +11129,11 @@ void PreviSat::on_calculsIri_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -11393,8 +11411,11 @@ void PreviSat::on_calculsEvt_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -11644,8 +11665,11 @@ void PreviSat::on_calculsTransit_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
     messagesStatut->setText("");
 
     /* Corps de la methode */
@@ -11927,8 +11951,11 @@ void PreviSat::on_calculsMetOp_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+        afficherResultats->deleteLater();
+        afficherResultats = NULL;
+    }
     messagesStatut->setText("");
 
     /* Corps de la methode */
