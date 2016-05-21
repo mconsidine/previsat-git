@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mai 2016
+ * >    21 mai 2016
  *
  */
 
@@ -2812,6 +2812,7 @@ void PreviSat::AffichageDonnees()
                                                                         date_lct.jourJulienUTC()));
             int resteOrb = nbOrbTheo%100000;
             resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
+            resteOrb -= ((satellites.at(0).tle().nbOrbites() < 50000 && resteOrb > 50000) ? 100000 : 0);
             deltaNbOrb = nbOrbTheo - resteOrb;
         }
 
