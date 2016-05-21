@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    3 mai 2016
  *
  */
 
@@ -479,6 +479,7 @@ void Afficher::load()
     ui->listePrevisions->horizontalHeader()->setHighlightSections(false);
     ui->listePrevisions->selectRow(0);
     ui->listePrevisions->setFocus();
+    res.clear();
 
     /* Retour */
     return;
@@ -503,6 +504,7 @@ void Afficher::show(const QString &fic)
     ui->fichier->setText(prev);
     setVisible(true);
     prev = "";
+    fi.close();
 
     /* Retour */
     return;
@@ -513,6 +515,15 @@ void Afficher::closeEvent(QCloseEvent *evt)
     Q_UNUSED(evt)
     settings.setValue("affichage/ongletPrevisions", ui->ongletsResultats->currentIndex());
     ui->fichier->clear();
+    if (sceneSky != NULL) {
+        sceneSky->deleteLater();
+        sceneSky = NULL;
+    }
+
+    if (scrollAreaRes != NULL) {
+        scrollAreaRes->deleteLater();
+        scrollAreaRes = NULL;
+    }
 }
 
 void Afficher::resizeEvent(QResizeEvent *evt)
