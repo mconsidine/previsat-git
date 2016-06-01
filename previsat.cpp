@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 mai 2016
+ * >    31 mai 2016
  *
  */
 
@@ -653,7 +653,7 @@ void PreviSat::ChargementConfig()
     ui->lbl_prochainAOS->adjustSize();
     ui->dateAOS->move(ui->lbl_prochainAOS->x() + ui->lbl_prochainAOS->width() + 7, ui->dateAOS->y());
     ui->dateJN->move(ui->dateAOS->x(), ui->dateJN->y());
-    ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() - 2, ui->dateJN->y());
+    ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() + 2, ui->dateJN->y());
 
     ui->gmt->setVisible(false);
     ui->frameCoordISS->setVisible(false);
@@ -3081,13 +3081,15 @@ void PreviSat::AffichageDonnees()
             chaine = tr("Beta : %1");
             ui->lbl_beta->setText(chaine.arg(Maths::ToSexagesimal(satellites.at(0).beta(), DEGRE, 2, 0, false, true).mid(0, 9)));
 
-            if (ui->magnitudeSat->x() == 333) {
-                ui->lbl_beta->adjustSize();
-                ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() + 2, ui->dateJN->y());
-            } else {
-                ui->lbl_beta->move(333, ui->dateJN->y());
+            ui->magnitudeSat->adjustSize();
+            if (ui->magnitudeSat->x() == 177) {
+                const int posMag = ui->magnitudeSat->x() + ui->magnitudeSat->width();
+                ui->lbl_beta->move((posMag > 321) ? posMag + 10 : 333, ui->dateJN->y());
                 if (!isAOS)
                     ui->lbl_beta->move(ui->lbl_prochainAOS->pos());
+            } else {
+                ui->lbl_beta->adjustSize();
+                ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() + 2, ui->dateJN->y());
             }
         }
 
