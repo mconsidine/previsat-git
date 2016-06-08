@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2015
+ * >    8 juin 2016
  *
  */
 
@@ -54,7 +54,50 @@ public:
     /**
      * @brief Conditions Constructeur par defaut
      */
-    Conditions();
+    Conditions() : _typeCalcul((TypeCalcul) 0)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _acalcLune = false;
+        _acalcSol = false;
+        _apassApogee = false;
+        _apassNoeuds = false;
+        _apassOmbre = false;
+        _apassPso = false;
+        _atransJn = false;
+        _ecart = false;
+        _ecl = false;
+        _ext = false;
+        _refr = false;
+        _syst = false;
+        _chr = true;
+        _psol = true;
+        _nbl = 0;
+
+        _psol = false;
+        _ageTLE = 0.;
+        _ang0 = 0.;
+        _crep = 0.;
+        _jj1 = 0.;
+        _jj2 = 0.;
+        _haut = 0.;
+        _mgn1 = 99.;
+        _mgn2 = 99.;
+        _offset = 0.;
+        _pas0 = 0.;
+        _seuilConjonction = 0.;
+
+        _fic = "";
+        _out = "";
+        _unite = "";
+        _listeSatellites = QStringList("");
+
+        /* Retour */
+        return;
+    }
 
     /**
      * @brief Conditions Constructeur pour le calcul des previsions de passages
@@ -65,21 +108,62 @@ public:
      * @param refraction Prise en compte de la refraction
      * @param systeme systeme horaire
      * @param crepuscule valeur de la hauteur du Soleil
-     * @param haut hauteur minimale du satellite
-     * @param pas0 pas de generation des previsions
-     * @param jj1 jour julien initial
-     * @param jj2 jour julien final
+     * @param hauteur hauteur minimale du satellite
+     * @param pas pas de generation des previsions
+     * @param jourJulien1 jour julien initial
+     * @param jourJulien2 jour julien final
      * @param offset ecart heure legale - UTC
      * @param mgn1 magnitude limite
-     * @param fic fichier de TLE
-     * @param out fichier de previsions
-     * @param unite unite de distance
+     * @param ficEnt fichier de TLE
+     * @param ficOut fichier de previsions
+     * @param unit unite de distance
      * @param listeSat liste des satellites
      */
     Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction,
-               const bool systeme, const int crepuscule, const int haut, const int pas0, const double jj1, const double jj2,
-               const double offset, const double mgn1, const QString &fic, const QString &out, const QString &unite,
-               const QStringList &listeSat);
+               const bool systeme, const int crepuscule, const int hauteur, const int pas, const double jourJulien1, const double jourJulien2,
+               const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
+               const QStringList &listeSat) : _typeCalcul(typeCalc)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _ecart = pecEcart;
+        _ecl = eclipse;
+        _ext = extinction;
+        _refr = refraction;
+        _syst = systeme;
+        _crep = crepuscule * DEG2RAD;
+        _haut = hauteur * DEG2RAD;
+        _pas0 = pas * NB_JOUR_PAR_SEC;
+        _jj1 = jourJulien1;
+        _jj2 = jourJulien2;
+        _offset = offsetUTC;
+        _mgn1 = magn1;
+        _fic = ficEnt;
+        _out = ficOut;
+        _unite = unit;
+        _listeSatellites = listeSat;
+
+        _psol = false;
+        _acalcLune = false;
+        _acalcSol = false;
+        _apassApogee = false;
+        _apassNoeuds = false;
+        _apassOmbre = false;
+        _apassPso = false;
+        _atransJn = false;
+        _chr = ' ';
+        _nbl = 0;
+        _ageTLE = 0.;
+        _ang0 = 0.;
+        _mgn2 = 99.;
+        _seuilConjonction = 0.;
+
+        /* Retour */
+        return;
+    }
 
     /**
      * @brief Conditions Constructeur pour le calcul des flashs Iridium
@@ -105,11 +189,54 @@ public:
      * @param tabStsIridium tableau de statut des Iridium
      * @param tabTLEIri tableau des TLE des satellites Iridium
      */
-    Conditions(const TypeCalcul typeCalc, const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono,
+    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
+               const bool chrono,
                const bool panSol, const int crepuscule, const int hauteur, const int nbLig, const double angle0,
                const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1, const double magn2,
                const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &tabStsIridium,
-               const QVector<TLE> &tabTLEIri);
+               const QVector<TLE> &tabTLEIri) : _typeCalcul(typeCalc)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _ecart = pecEcart;
+        _ext = extinction;
+        _refr = refraction;
+        _syst = systeme;
+        _crep = crepuscule * DEG2RAD;
+        _haut = hauteur * DEG2RAD;
+        _nbl = nbLig;
+        _chr = chrono;
+        _psol = panSol;
+        _ang0 = angle0 * DEG2RAD;
+        _jj1 = jourJulien1;
+        _jj2 = jourJulien2;
+        _offset = offsetUTC;
+        _mgn1 = magn1;
+        _mgn2 = magn2;
+        _fic = ficEnt;
+        _out = ficOut;
+        _unite = unit;
+        _tabSts = tabStsIridium;
+        _tabtle = tabTLEIri;
+
+        _acalcLune = false;
+        _acalcSol = false;
+        _apassApogee = false;
+        _apassNoeuds = false;
+        _apassOmbre = false;
+        _apassPso = false;
+        _atransJn = false;
+        _ecl = false;
+        _ageTLE = 0.;
+        _pas0 = 0.;
+        _seuilConjonction = 0.;
+
+        /* Retour */
+        return;
+    }
 
     /**
      * @brief Conditions Constructeur pour le calcul des evenements orbitaux
@@ -133,7 +260,48 @@ public:
     Conditions(const TypeCalcul typeCalc, const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre,
                const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
                const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
-               const QString &unit, const QStringList &listeSat);
+               const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _apassApogee = apassageApogee;
+        _apassNoeuds = apassageNoeuds;
+        _apassOmbre = apassageOmbre;
+        _apassPso = apassagePso;
+        _atransJn = atransitionJn;
+        _ecart = pecEcart;
+        _refr = refraction;
+        _syst = systeme;
+        _jj1 = jourJulien1;
+        _jj2 = jourJulien2;
+        _offset = offsetUTC;
+        _fic = ficEnt;
+        _out = ficOut;
+        _unite = unit;
+        _listeSatellites = listeSat;
+
+        _acalcLune = false;
+        _acalcSol = false;
+        _ecl = false;
+        _ext = false;
+        _psol = false;
+        _chr = ' ';
+        _nbl = 0;
+        _ageTLE = 0.;
+        _ang0 = 0.;
+        _crep = 0.;
+        _haut = 0.;
+        _mgn1 = 99.;
+        _mgn2 = 99.;
+        _pas0 = 0.;
+        _seuilConjonction = 0.;
+
+        /* Retour */
+        return;
+    }
 
     /**
      * @brief Conditions Constructeur pour le calcul des transits ISS
@@ -155,7 +323,48 @@ public:
      */
     Conditions(const TypeCalcul typeCalc, const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction,
                const bool systeme, const int hauteur, const double age, const double seuilConj, const double jourJulien1,
-               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit);
+               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit) :
+        _typeCalcul(typeCalc)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _acalcLune = acalculLune;
+        _acalcSol = acalculSoleil;
+        _ecart = pecEcart;
+        _refr = refraction;
+        _syst = systeme;
+        _haut = hauteur * DEG2RAD;
+        _ageTLE = age;
+        _seuilConjonction = seuilConj * DEG2RAD;
+        _jj1 = jourJulien1;
+        _jj2 = jourJulien2;
+        _offset = offsetUTC;
+        _fic = ficEnt;
+        _out = ficOut;
+        _unite = unit;
+
+        _apassApogee = false;
+        _apassNoeuds = false;
+        _apassOmbre = false;
+        _apassPso = false;
+        _atransJn = false;
+        _ecl = false;
+        _ext = false;
+        _psol = false;
+        _chr = ' ';
+        _nbl = -1;
+        _ang0 = 0.;
+        _crep = 0.;
+        _mgn1 = 99.;
+        _mgn2 = 99.;
+        _pas0 = 0.;
+
+        /* Retour */
+        return;
+    }
 
     /**
      * @brief Conditions Constructeur pour le calcul des flashs MetOp
@@ -178,10 +387,53 @@ public:
      * @param tabStsMetOp tableau de statut des MetOp
      * @param tabTLEMetOp tableau des TLE des satellites MetOp
      */
-    Conditions(const TypeCalcul typeCalc, const bool ecart, const bool ext, const bool refr, const bool syst, const bool chrono,
-               const int crepuscule, const int hauteur, const int nbLig, const double jourJulien1, const double jourJulien2,
-               const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
-               const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp);
+    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
+                           const bool chrono, const int crepuscule, const int hauteur, const int nbLig, const double jourJulien1,
+                           const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
+                           const QString &ficOut, const QString &unit, const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp) :
+        _typeCalcul(typeCalc)
+    {
+        /* Declarations des variables locales */
+
+        /* Initialisations */
+
+        /* Corps du constructeur */
+        _ecart = pecEcart;
+        _ext = extinction;
+        _refr = refraction;
+        _syst = systeme;
+        _crep = crepuscule * DEG2RAD;
+        _haut = hauteur * DEG2RAD;
+        _nbl = nbLig;
+        _chr = chrono;
+        _ang0 = PI;
+        _jj1 = jourJulien1;
+        _jj2 = jourJulien2;
+        _offset = offsetUTC;
+        _mgn1 = magn1;
+        _mgn2 = -99.;
+        _fic = ficEnt;
+        _out = ficOut;
+        _unite = unit;
+        _tabSts = tabStsMetOp;
+        _tabtle = tabTLEMetOp;
+
+        _acalcLune = false;
+        _acalcSol = false;
+        _apassApogee = false;
+        _apassNoeuds = false;
+        _apassOmbre = false;
+        _apassPso = false;
+        _atransJn = false;
+        _ecl = false;
+        _psol = false;
+        _ageTLE = 0.;
+        _pas0 = 0.;
+        _seuilConjonction = 0.;
+
+        /* Retour */
+        return;
+    }
 
     ~Conditions();
 
