@@ -4152,7 +4152,7 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="librairies/maths/maths.cpp" line="138"/>
-        <location filename="previsions/conditions.cpp" line="382"/>
+        <location filename="previsions/conditions.cpp" line="84"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -4162,8 +4162,8 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="379"/>
-        <location filename="previsions/conditions.cpp" line="382"/>
+        <location filename="previsions/conditions.cpp" line="81"/>
+        <location filename="previsions/conditions.cpp" line="84"/>
         <source>km</source>
         <translation>km</translation>
     </message>
@@ -4176,81 +4176,81 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="382"/>
+        <location filename="previsions/conditions.cpp" line="84"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="374"/>
+        <location filename="previsions/conditions.cpp" line="76"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="374"/>
+        <location filename="previsions/conditions.cpp" line="76"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="377"/>
+        <location filename="previsions/conditions.cpp" line="79"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="377"/>
+        <location filename="previsions/conditions.cpp" line="79"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="383"/>
+        <location filename="previsions/conditions.cpp" line="85"/>
         <source>Conditions d&apos;observations :</source>
         <translation>Conditions of observations :</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="384"/>
+        <location filename="previsions/conditions.cpp" line="86"/>
         <source>Hauteur minimale du satellite = %1°</source>
         <translation>Minimal elevation of the satellite = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="393"/>
+        <location filename="previsions/conditions.cpp" line="95"/>
         <source>Age du TLE                : %1 jours (au %2)</source>
         <translation>Age of the TLE             : %1 days (at %2)</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="419"/>
+        <location filename="previsions/conditions.cpp" line="121"/>
         <source>Age du TLE le plus récent : %1 jours (au %2)
 Age du TLE le plus ancien : %3 jours</source>
         <translation>Age of the most recent TLE : %1 days (at %2)
 Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="433"/>
+        <location filename="previsions/conditions.cpp" line="135"/>
         <source>Lieu d&apos;observation        : %1     %2 %3   %4 %5   %6 %7</source>
         <translation>Location                   : %1     %2 %3   %4 %5   %6 %7</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="438"/>
+        <location filename="previsions/conditions.cpp" line="140"/>
         <source>Fuseau horaire            : %1</source>
         <translation>Timezone                   : %1</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="439"/>
+        <location filename="previsions/conditions.cpp" line="141"/>
         <location filename="previsions/evenements.cpp" line="93"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="447"/>
+        <location filename="previsions/conditions.cpp" line="149"/>
         <location filename="previsions/evenements.cpp" line="101"/>
         <source>Heure légale</source>
         <translation>Local time</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="453"/>
+        <location filename="previsions/conditions.cpp" line="155"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="457"/>
+        <location filename="previsions/conditions.cpp" line="159"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
     </message>
