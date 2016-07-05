@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 mai 2016
+ * >    23 juin 2016
  *
  */
 
@@ -651,6 +651,7 @@ void PreviSat::ChargementConfig()
     ui->nbOrbitesSat->move(ui->lbl_nbOrbitesSat->x() + ui->lbl_nbOrbitesSat->width() + 2, ui->nbOrbitesSat->y());
 
     ui->lbl_prochainAOS->adjustSize();
+    ui->lbl_prochainAOS->resize(ui->lbl_prochainAOS->width(), 16);
     ui->dateAOS->move(ui->lbl_prochainAOS->x() + ui->lbl_prochainAOS->width() + 7, ui->dateAOS->y());
     ui->dateJN->move(ui->dateAOS->x(), ui->dateJN->y());
     ui->lbl_beta->move(ui->dateAOS->x() + ui->dateAOS->width() - ui->lbl_beta->width() + 2, ui->dateJN->y());
