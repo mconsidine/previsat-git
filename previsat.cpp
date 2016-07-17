@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 juin 2016
+ * >    17 juillet 2016
  *
  */
 
@@ -3071,6 +3071,7 @@ void PreviSat::AffichageDonnees()
 
                 ui->lbl_prochainAOS->setVisible(true);
                 ui->dateAOS->adjustSize();
+                ui->dateAOS->resize(ui->dateAOS->width(), 16);
                 ui->dateAOS->setVisible(true);
 
             } else {
