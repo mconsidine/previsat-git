@@ -50,9 +50,14 @@
 		    mapquestAttrib = 'Data, imagery and map information provided by ' + '<a>MapQuest</a>, ' + '<a>OpenStreetMap</a> and ' + 'Map: <a>CC-BY-SA</a>',
 		    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: mapquestSubDomains});
 
+	var standard = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 18,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</a>'
+		});
+
         var map = L.map('map', {
 		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
-		    layers: [mapquest]
+		    layers: [standard]
 	    });
 
         var marker = new L.marker([LATITUDE_CENTRE, LONGITUDE_CENTRE]).addTo(map);
