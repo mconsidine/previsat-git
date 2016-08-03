@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    23 juin 2016
+# >    2 aout 2016
 
 #-------------------------------------------------
 VER_MAJ = 3.5
@@ -47,6 +47,7 @@ TRANSLATIONS = PreviSat_en.ts
 QT += core gui network webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport webkitwidgets widgets
+greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 
 TARGET = PreviSat
 TEMPLATE = app

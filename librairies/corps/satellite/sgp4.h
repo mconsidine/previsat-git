@@ -33,7 +33,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    19 mars 2016
+ * >    2 aout 2016
  *
  */
 
@@ -84,36 +84,42 @@ protected:
 private:
 
     /* Constantes privees */
+#if __GNUC__ > 4
+#define CONST constexpr
+#else
+#define CONST const
+#endif
+
     // Pour le modele haute orbite
-    static const double ZEL = 0.0549;
-    static const double ZES = 0.01675;
-    static const double ZNL = 1.5835218e-4;
-    static const double ZNS = 1.19459e-5;
-    static const double C1SS = 2.9864797e-6;
-    static const double C1L = 4.7968065e-7;
-    static const double ZSINIS = 0.39785416;
-    static const double ZCOSIS = 0.91744867;
-    static const double ZCOSGS = 0.1945905;
-    static const double ZSINGS = -0.98088458;
-    static const double Q22 = 1.7891679e-6;
-    static const double Q31 = 2.1460748e-6;
-    static const double Q33 = 2.2123015e-7;
-    static const double ROOT22 = 1.7891679e-6;
-    static const double ROOT44 = 7.3636953e-9;
-    static const double ROOT54 = 2.1765803e-9;
-    static const double ROOT32 = 3.7393792e-7;
-    static const double ROOT52 = 1.1428639e-7;
-    static const double FASX2 = 0.13130908;
-    static const double FASX4 = 2.8843198;
-    static const double FASX6 = 0.37448087;
-    static const double G22 = 5.7686396;
-    static const double G32 = 0.95240898;
-    static const double G44 = 1.8014998;
-    static const double G52 = 1.050833;
-    static const double G54 = 4.4108898;
-    static const double STEPP = 720.;
-    static const double STEPN = -720.;
-    static const double STEP2 = 259200.;
+    static CONST double ZEL = 0.0549;
+    static CONST double ZES = 0.01675;
+    static CONST double ZNL = 1.5835218e-4;
+    static CONST double ZNS = 1.19459e-5;
+    static CONST double C1SS = 2.9864797e-6;
+    static CONST double C1L = 4.7968065e-7;
+    static CONST double ZSINIS = 0.39785416;
+    static CONST double ZCOSIS = 0.91744867;
+    static CONST double ZCOSGS = 0.1945905;
+    static CONST double ZSINGS = -0.98088458;
+    static CONST double Q22 = 1.7891679e-6;
+    static CONST double Q31 = 2.1460748e-6;
+    static CONST double Q33 = 2.2123015e-7;
+    static CONST double ROOT22 = 1.7891679e-6;
+    static CONST double ROOT44 = 7.3636953e-9;
+    static CONST double ROOT54 = 2.1765803e-9;
+    static CONST double ROOT32 = 3.7393792e-7;
+    static CONST double ROOT52 = 1.1428639e-7;
+    static CONST double FASX2 = 0.13130908;
+    static CONST double FASX4 = 2.8843198;
+    static CONST double FASX6 = 0.37448087;
+    static CONST double G22 = 5.7686396;
+    static CONST double G32 = 0.95240898;
+    static CONST double G44 = 1.8014998;
+    static CONST double G52 = 1.050833;
+    static CONST double G54 = 4.4108898;
+    static CONST double STEPP = 720.;
+    static CONST double STEPN = -720.;
+    static CONST double STEP2 = 259200.;
 
     /* Variables privees */
     // Elements orbitaux moyens
