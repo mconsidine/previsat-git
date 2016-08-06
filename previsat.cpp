@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 juillet 2016
+ * >    5 aout 2016
  *
  */
 
@@ -3688,7 +3688,7 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
 /*
  * Affichage des noms des satellites dans les listes
  */
-void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const
+void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList &listeSat, const bool aMajListesSecondaires) const
 {
     /* Declarations des variables locales */
     QString magn;
@@ -3709,8 +3709,10 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     /* Corps de la methode */
     // NB : le fichier doit etre verifie au prealable
     ui->liste1->clear();
-    ui->liste2->clear();
-    ui->liste3->clear();
+    if (aMajListesSecondaires) {
+        ui->liste2->clear();
+        ui->liste3->clear();
+    }
     QFile fichierTLE(fichier);
     if (fichierTLE.exists()) {
 
@@ -3777,10 +3779,12 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
                 QListWidgetItem * const elem1 = new QListWidgetItem(nomsat2, ui->liste1);
                 elem1->setFlags(Qt::ItemIsEnabled);
                 elem1->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-                QListWidgetItem * const elem2 = new QListWidgetItem(nomsat2, ui->liste2);
-                elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-                QListWidgetItem * const elem3 = new QListWidgetItem(nomsat2, ui->liste3);
-                elem3->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+                if (aMajListesSecondaires) {
+                    QListWidgetItem * const elem2 = new QListWidgetItem(nomsat2, ui->liste2);
+                    elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+                    QListWidgetItem * const elem3 = new QListWidgetItem(nomsat2, ui->liste3);
+                    elem3->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+                }
             }
             nomsat = ligne.trimmed();
         }
@@ -3801,8 +3805,10 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
             }
 
             ui->liste1->setCurrentRow(ind0);
-            ui->liste2->setCurrentRow(ind0);
-            ui->liste3->setCurrentRow(ind0);
+            if (aMajListesSecondaires) {
+                ui->liste2->setCurrentRow(ind0);
+                ui->liste3->setCurrentRow(ind0);
+            }
             l1 = li1;
             l2 = li2;
         }
@@ -5586,7 +5592,7 @@ void PreviSat::FinEnregistrementFichier()
                         Satellite::initCalcul = false;
                         Satellite::LectureDonnees(listeTLE, tles, satellites);
 
-                        AfficherListeSatellites(nomfic, listeTLE);
+                        AfficherListeSatellites(nomfic, listeTLE, false);
 
                         CalculsAffichage();
                     }
@@ -5638,7 +5644,7 @@ void PreviSat::FinEnregistrementFichier()
                         Satellite::initCalcul = false;
                         Satellite::LectureDonnees(listeTLE, tles, satellites);
 
-                        AfficherListeSatellites(nomfic, listeTLE);
+                        AfficherListeSatellites(nomfic, listeTLE, false);
 
                         CalculsAffichage();
                     }
@@ -10336,7 +10342,7 @@ void PreviSat::on_mettreAJourTLE_clicked()
 
             if (nbSat > 0) {
 
-                AfficherListeSatellites(nomfic, listeTLE);
+                AfficherListeSatellites(nomfic, listeTLE, false);
 
                 Satellite::initCalcul = false;
 
