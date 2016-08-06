@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    5 aout 2016
  *
  */
 
@@ -166,7 +166,7 @@ private:
      * @param fichier fichier TLE
      * @param listeSat liste des satellites
      */
-    void AfficherListeSatellites(const QString &fichier, const QStringList &listeSat) const;
+    void AfficherListeSatellites(const QString &fichier, const QStringList &listeSat, const bool aMajListesSecondaires = true) const;
 
     /**
      * @brief CalculsAffichage Enchainement des calculs et affichage
