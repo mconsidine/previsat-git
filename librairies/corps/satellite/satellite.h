@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 janvier 2016
+ * >    21 aout 2016
  *
  */
 
@@ -44,6 +44,7 @@
 #include "sgp4.h"
 #include "tle.h"
 #include "librairies/corps/corps.h"
+#include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 
 class Satellite : public Corps
@@ -60,10 +61,21 @@ public:
      * @brief Satellite Constructeur a partir d'un TLE
      * @param xtle tle
      */
-    explicit Satellite(const TLE &xtle) : _tle(xtle) {
-        _eclipse = true;
+    explicit Satellite(const TLE &xtle) : _typeEclipseSoleil(NON_ECLIPSE), _typeEclipseLune(NON_ECLIPSE), _tle(xtle) {
+
+        _eclipseTotale = true;
+        _eclipsePartielle = false;
+        _eclipseAnnulaire = false;
+        _luminositeEclipseSoleil = 1.;
+        _luminositeEclipseLune = 1.;
+        _phiSoleil = 0.;
+        _phiSoleilRefr = 0.;
+        _phiTerre = 0.;
+        _phiLune = 0.;
+        _elongationSoleil = 0.;
+        _elongationLune = 0.;
+
         _ieralt = true;
-        _penombre = false;
         _methMagnitude = 'v';
         _nbOrbites = 0;
         _ageTLE = 0.;
@@ -71,12 +83,9 @@ public:
         _beta = 0.;
         _delai = 0.;
         _doppler = 0.;
-        _elongation = 0.;
         _fractionIlluminee = 0.;
         _magnitude = 99.;
         _magnitudeStandard = 99.;
-        _rayonOmbre = 0.;
-        _rayonPenombre = 0.;
         _section = 0.;
         _t1 = 0.;
         _t2 = 0.;
@@ -124,10 +133,12 @@ public:
     /**
      * @brief CalculDateOmbrePenombreSuiv Calcul de la date du prochain passage ombre->penombre ou penombre->ombre
      * @param date date
+     * @param nbTrajectoires nombre de traces au sol
+     * @param acalcEclipseLune prise en compte des eclipses de Lune
      * @param refraction prise en compte de la refraction atmospherique
      * @return date du prochain passage ombre->penombre ou penombre->ombre
      */
-    Date CalculDateOmbrePenombreSuiv(const Date &date, const bool refraction);
+    Date CalculDateOmbrePenombreSuiv(const Date &date, const int nbTrajectoires, const bool acalcEclipseLune, const bool refraction);
 
     /**
      * @brief CalculElementsOsculateurs Calcul des elements osculateurs et du numero d'orbite
@@ -139,8 +150,9 @@ public:
      * @brief CalculMagnitude Calcul de la magnitude visuelle du satellite
      * @param observateur observateur
      * @param extinction prise en compte de l'extinction atmospherique
+     * @param effetEclipsePartielle prise en compte de l'eclipse partielle
      */
-    void CalculMagnitude(const Observateur &observateur, const bool extinction);
+    void CalculMagnitude(const Observateur &observateur, const bool extinction, const bool effetEclipsePartielle);
 
     /**
      * @brief CalculPosVit Calcul de la position et de la vitesse du satellite
@@ -160,27 +172,44 @@ public:
      * @param traceCiel Calcul de la trace du satellite dans le ciel de l'observateur
      * @param mcc Calcul des cercles des satellites TDRS
      * @param refraction Prise en compte de la refraction atmospherique
+     * @param acalcEclipseLune prise en compte des eclipses de Lune
+     * @param effetEclipsePartielle prise en compte de l'eclipse partielle pour le calcul de la magnitude
      * @param satellites liste de satellites
      */
-    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
-                                            const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites);
+    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
+                                            const int nbTracesAuSol, const bool visibilite, const bool extinction, const bool traceCiel,
+                                            const bool mcc, const bool refraction, const bool acalcEclipseLune,
+                                            const bool effetEclipsePartielle, QList<Satellite> &satellites);
 
     /**
      * @brief CalculSatelliteEclipse Determination de la condition d'eclipse du satellite
      * @param soleil Soleil
+     * @param lune Lune
+     * @param acalcEclipseLune prise en compte des eclipses de Lune
      * @param refraction Prise en compte de la refraction atmospherique
      */
-    void CalculSatelliteEclipse(const Soleil &soleil, const bool refraction);
+    void CalculSatelliteEclipse(const Soleil &soleil, const Lune &lune, const bool acalcEclipseLune, const bool refraction = true);
+
+    /**
+     * @brief CalculSatelliteEclipseCorps Calcul de la condition d'eclipse du satellite par un corps occultant
+     * @param soleil Soleil
+     * @param corpsOccultant corps occultant
+     * @param lune Lune
+     * @param refraction Prise en compte de la refraction atmospherique
+     */
+    void CalculSatelliteEclipseCorps(const Soleil &soleil, const CorpsOccultant &corpsOccultant, const Lune &lune = Lune(),
+                                     const bool refraction = true);
 
     /**
      * @brief CalculTraceCiel Calcul de la trace dans le ciel
      * @param date date
+     * @param acalcEclipseLune prise en compte des eclipses de Lune
      * @param refraction Prise en compte de la refraction atmospherique
      * @param observateur observateur
      * @param sec parametre pour les satellites geostationnaires
      */
-    void CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec = 0);
+    void CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur,
+                         const int sec = 0);
 
     /**
      * @brief hasAOS Determination si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
@@ -204,23 +233,32 @@ public:
     static void LectureDonnees(const QStringList &listeSatellites, const QVector<TLE> &tabtle, QList<Satellite> &satellites);
 
     /* Accesseurs */
-    bool isEclipse() const;
+    bool isEclipseTotale() const;
+    bool isEclipsePartielle() const;
+    bool isEclipseAnnulaire() const;
+    TypeEclipse typeEclipseSoleil() const;
+    TypeEclipse typeEclipseLune() const;
+    double luminositeEclipseSoleil() const;
+    double luminositeEclipseLune() const;
+    double elongationSoleil() const;
+    double elongationLune() const;
+    double phiSoleil() const;
+    double phiSoleilRefr() const;
+    double phiTerre() const;
+    double phiLune() const;
+
     bool isIeralt() const;
     double ageTLE() const;
     double attenuation() const;
     double beta() const;
     double delai() const;
     double doppler() const;
-    double elongation() const;
     double fractionIlluminee() const;
     double magnitude() const;
     double magnitudeStandard() const;
     char methMagnitude() const;
     char method() const;
     int nbOrbites() const;
-    bool isPenombre() const;
-    double rayonOmbre() const;
-    double rayonPenombre() const;
     double section() const;
     double t1() const;
     double t2() const;
@@ -250,17 +288,26 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    bool _eclipse;
+    bool _eclipseTotale;
+    bool _eclipsePartielle;
+    bool _eclipseAnnulaire;
+    TypeEclipse _typeEclipseSoleil;
+    TypeEclipse _typeEclipseLune;
+    double _luminositeEclipseSoleil;
+    double _luminositeEclipseLune;
+    double _phiSoleil;
+    double _phiSoleilRefr;
+    double _phiTerre;
+    double _phiLune;
+    double _elongationSoleil;
+    double _elongationLune;
+
     bool _ieralt;
-    bool _penombre;
     int _nbOrbites;
     double _ageTLE;
     double _beta;
-    double _elongation;
     double _fractionIlluminee;
     double _magnitude;
-    double _rayonOmbre;
-    double _rayonPenombre;
 
     char _methMagnitude;
     double _doppler;
@@ -297,9 +344,10 @@ private:
      * @brief CalculTracesAuSol Calcul de la trace au sol du satellite
      * @param date date
      * @param nbOrbites nombre de traces au sol
-     * @param refraction prise en compte de la refraction atmospherique
+     * @param acalcEclipseLune prise en compte des eclipses de Lune
+     * @param refraction Prise en compte de la refraction atmospherique
      */
-    void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool refraction);
+    void CalculTracesAuSol(const Date &date, const int nbOrbites, const bool acalcEclipseLune, const bool refraction);
 
 };
 

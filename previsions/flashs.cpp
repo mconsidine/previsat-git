@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    15 avril 2016
+ * >    14 aout 2016
  *
  */
 
@@ -133,11 +133,15 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
             // Le satellite a une hauteur superieure a celle specifiee par l'utilisateur
             if (sat.hauteur() >= conditions.haut()) {
 
+                Lune lune;
+                if (conditions.acalcEclipseLune())
+                    lune.CalculPosition(date);
+
                 // Determination de la condition d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
 
                 // Le satellite n'est pas eclipse
-                if (!sat.isEclipse()) {
+                if (!sat.isEclipseTotale()) {
 
                     double jj0 = date.jourJulienUTC();
                     const double jj2 = jj0 + TEMPS1;
@@ -190,10 +194,13 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                         // Position du Soleil
                         soleil.CalculPosition(date0);
 
-                        // Condition d'eclipse du satellite
-                        sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                        if (conditions.acalcEclipseLune())
+                            lune.CalculPosition(date0);
 
-                        if (sat.isEclipse() || sat.hauteur() < conditions.haut())
+                        // Condition d'eclipse du satellite
+                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+
+                        if (sat.isEclipseTotale() || sat.hauteur() < conditions.haut())
                             jj0 = jj2 + PAS0;
                     } while (jj0 <= jj2);
                     date = Date(jj0 + TEMPS2, 0., false);
@@ -605,8 +612,12 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                         soleil.CalculPosition(dates[i]);
                         soleil.CalculCoordHoriz(observateur);
 
+                        Lune lune;
+                        if (conditions.acalcEclipseLune())
+                            lune.CalculPosition(dates[i]);
+
                         // Condition d'eclipse du satellite
-                        sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
 
                         // Angle de reflexion
                         const double angref = AngleReflexion(conditions.typeCalcul(), sat, soleil);
@@ -673,7 +684,8 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
     // Magnitude
     const QString fmgn = "%1%2%3";
-    const QString magn = fmgn.arg((mag > 0.) ? "+" : "-").arg(fabs(mag), 2, 'f', 1).arg((sat.isPenombre()) ? "*" : " ");
+    const QString magn = fmgn.arg((mag > 0.) ? "+" : "-").arg(fabs(mag), 2, 'f', 1)
+            .arg((sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "*" : " ");
 
     // Altitude du satellite et distance a l'observateur
     double distance = sat.distance();
@@ -712,7 +724,7 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
         // Magnitude du flash
         const double magFlashMax = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), angRefMax, obsmax, soleil, sat);
         QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
-                QString((sat.isPenombre()) ? "*" : " ");
+                QString((sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "*" : " ");
         while (mags.length() < 6)
             mags += " ";
 
@@ -785,9 +797,15 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
         // Position du Soleil
         soleil.CalculPosition(date);
 
+        Lune lune;
+        if (conditions.acalcEclipseLune())
+            lune.CalculPosition(date);
+
         // Conditions d'eclipse du satellite
-        satellite.CalculSatelliteEclipse(soleil, conditions.refr());
-        ecl[i] = satellite.rayonOmbre() - satellite.elongation();
+        satellite.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+        ecl[i] = (satellite.luminositeEclipseLune() < satellite.luminositeEclipseSoleil()) ?
+                    satellite.phiLune() - satellite.phiSoleil() - satellite.elongationLune() :
+                    satellite.phiTerre() - satellite.phiSoleilRefr() - satellite.elongationSoleil();
 
         // Angle de reflexion
         ang[i] = AngleReflexion(conditions.typeCalcul(), satellite, soleil);

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 aout 2016
+ * >    21 aout 2016
  *
  */
 
@@ -471,6 +471,8 @@ private slots:
     void on_affcoord_stateChanged(int arg1);
     void on_extinctionAtmospherique_stateChanged(int arg1);
     void on_refractionPourEclipses_stateChanged(int arg1);
+    void on_effetEclipsesMagnitude_stateChanged(int arg1);
+    void on_eclipsesLune_stateChanged(int arg1);
     void on_affetoiles_stateChanged(int arg1);
     void on_affconst_stateChanged(int arg1);
     void on_magnitudeEtoiles_valueChanged(double arg1);

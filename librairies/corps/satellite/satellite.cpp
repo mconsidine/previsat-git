@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    20 aout 2016
  *
  */
 
@@ -65,9 +65,19 @@ static QString noradStationSpatiale = "25544";
 /* Constructeurs */
 Satellite::Satellite()
 {
-    _eclipse = true;
+    _eclipseTotale = true;
+    _eclipsePartielle = false;
+    _eclipseAnnulaire = false;
+    _luminositeEclipseSoleil = 1.;
+    _luminositeEclipseLune = 1.;
+    _phiSoleil = 0.;
+    _phiSoleilRefr = 0.;
+    _phiTerre = 0.;
+    _phiLune = 0.;
+    _elongationSoleil = 0.;
+    _elongationLune = 0.;
+
     _ieralt = true;
-    _penombre = false;
     _methMagnitude = 'v';
     _nbOrbites = 0;
     _ageTLE = 0.;
@@ -75,12 +85,9 @@ Satellite::Satellite()
     _beta = 0.;
     _delai = 0.;
     _doppler = 0.;
-    _elongation = 0.;
     _fractionIlluminee = 0.;
     _magnitude = 99.;
     _magnitudeStandard = 99.;
-    _rayonOmbre = 0.;
-    _rayonPenombre = 0.;
     _section = 0.;
     _t1 = 0.;
     _t2 = 0.;
@@ -299,7 +306,8 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
     return (Date(jj0, 0., false));
 }
 
-Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const bool refraction)
+Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const int nbTrajectoires, const bool acalcEclipseLune,
+                                            const bool refraction)
 {
     /* Declarations des variables locales */
     Date dateEcl;
@@ -307,7 +315,10 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const bool r
     /* Initialisations */
     // Parcours du tableau "trace au sol"
     int i = 0;
-    const int dn = (_eclipse) ? 1 : 0;
+    const int dn = (_eclipseTotale) ? 1 : 0;
+    if (_traceAuSol.isEmpty())
+        CalculTracesAuSol(dateCalcul, nbTrajectoires, acalcEclipseLune, refraction);
+
     QListIterator<QVector<double> > it(_traceAuSol);
     while (it.hasNext()) {
         const QVector<double> list = it.next();
@@ -345,9 +356,16 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const bool r
                 Soleil soleil;
                 soleil.CalculPosition(date);
 
+                // Position de la Lune
+                Lune lune;
+                if (acalcEclipseLune)
+                    lune.CalculPosition(date);
+
                 // Conditions d'eclipse du satellite
-                satellite.CalculSatelliteEclipse(soleil, refraction);
-                ecl[j] = satellite._rayonOmbre - satellite._elongation;
+                satellite.CalculSatelliteEclipse(soleil, lune, acalcEclipseLune, refraction);
+                ecl[j] = (satellite._luminositeEclipseLune < satellite._luminositeEclipseSoleil) ?
+                            satellite._phiLune - satellite._phiSoleil - satellite._elongationLune :
+                            satellite._phiTerre - satellite._phiSoleilRefr - satellite._elongationSoleil;
             }
 
             if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
@@ -391,7 +409,7 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 /*
  * Calcul de la magnitude visuelle du satellite
  */
-void Satellite::CalculMagnitude(const Observateur &observateur, const bool extinction) {
+void Satellite::CalculMagnitude(const Observateur &observateur, const bool extinction, const bool effetEclipsePartielle) {
 
     /* Declarations des variables locales */
 
@@ -399,14 +417,21 @@ void Satellite::CalculMagnitude(const Observateur &observateur, const bool extin
     _magnitude = 99.;
 
     /* Corps de la methode */
-    if (!_eclipse) {
+    if (!_eclipseTotale) {
 
         // Fraction illuminee
-        _fractionIlluminee = 0.5 * (1. + cos(_elongation));
+        _fractionIlluminee = 0.5 * (1. + cos(_elongationSoleil));
 
         // Magnitude
         if (_magnitudeStandard < 99.) {
             _magnitude = _magnitudeStandard - 15.75 + 2.5 * log10(_distance * _distance / _fractionIlluminee);
+
+            // Prise en compte des eclipses partielles ou annulaires
+            if (effetEclipsePartielle) {
+                const double luminositeEclipse = qMin(_luminositeEclipseLune, _luminositeEclipseSoleil);
+                if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
+                    _magnitude += -2.5 * log10(luminositeEclipse);
+            }
 
             // Prise en compte de l'extinction atmospherique
             if (extinction) {
@@ -444,9 +469,10 @@ void Satellite::CalculPosVit(const Date &date)
 /*
  * Calcul de la position d'une liste de satellites
  */
-void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil,
+void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool visibilite, const bool extinction,
-                                            const bool traceCiel, const bool mcc, const bool refraction, QList<Satellite> &satellites)
+                                            const bool traceCiel, const bool mcc, const bool refraction, const bool acalcEclipseLune,
+                                            const bool effetEclipsePartielle, QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
 
@@ -462,7 +488,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         satellites[isat].CalculCoordHoriz(observateur);
 
         // Calcul des conditions d'eclipse
-        satellites[isat].CalculSatelliteEclipse(soleil, refraction);
+        satellites[isat].CalculSatelliteEclipse(soleil, lune, acalcEclipseLune, refraction);
 
         // Calcul des coordonnees terrestres
         satellites[isat].CalculCoordTerrestres(observateur);
@@ -479,7 +505,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         // Calcul de la trajectoire dans le ciel
         if (traceCiel && satellites.at(isat).isVisible()) {
             Observateur obs(observateur);
-            satellites[isat].CalculTraceCiel(date, refraction, obs);
+            satellites[isat].CalculTraceCiel(date, acalcEclipseLune, refraction, obs);
         }
 
         if (isat == 0) {
@@ -488,7 +514,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             satellites[isat].CalculCoordEquat(observateur);
 
             // Calcul de la magnitude
-            satellites[isat].CalculMagnitude(observateur, extinction);
+            satellites[isat].CalculMagnitude(observateur, extinction, effetEclipsePartielle);
 
             // Calcul des elements osculateurs et du nombre d'orbites
             satellites[isat].CalculElementsOsculateurs(date);
@@ -497,10 +523,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             if (nbTracesAuSol > 0) {
 
                 const Date dateInit = (mcc && satellites.at(isat).tle().norad() == noradStationSpatiale) ?
-                        Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
-                             false) : Date(date.jourJulienUTC(), 0., false);
+                            Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
+                                 false) : Date(date.jourJulienUTC(), 0., false);
 
-                satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, refraction);
+                satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refraction);
             }
 
             // Calcul de l'angle beta
@@ -518,43 +544,131 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 /*
  * Determination de la condition d'eclipse du satellite
  */
-void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const bool refraction)
+void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const Lune &lune, const bool acalcEclipseLune, const bool refraction)
 {
     /* Declarations des variables locales */
+    const Lune empty;
 
     /* Initialisations */
-    const double rs = 1. / soleil.position().Norme();
-    const double ro = 1. / _position.Norme();
-    const double tanlat = _position.z() / sqrt(_position.x() * _position.x() + _position.y() * _position.y());
-    const double u = atan(tanlat / (1. - APLA));
-    const double cu = cos(u);
-    const double su = sin(u);
-    const double r = RAYON_TERRESTRE * sqrt(cu * cu + G2 * su * su);
+    _luminositeEclipseSoleil = 1.;
+    _luminositeEclipseLune = 1.;
+    _typeEclipseLune = NON_ECLIPSE;
 
     /* Corps de la methode */
-    double psat = asin(r * ro);
-    if (std::isnan(psat))
-        psat = PI_SUR_DEUX;
-    const double rsol = asin(RAYON_SOLAIRE * rs);
-    const double psol = asin(RAYON_TERRESTRE * rs);
+    if (acalcEclipseLune)
+        CalculSatelliteEclipseCorps(soleil, LUNE, lune);
+    CalculSatelliteEclipseCorps(soleil, TERRE, empty, refraction);
 
-    // Rayon de l'ombre de la Terre
-    _rayonOmbre = psol + psat - rsol;
+    if (_typeEclipseSoleil != NON_ECLIPSE && _typeEclipseLune != NON_ECLIPSE) {
 
-    // Prise en compte de la refraction atmospherique
-    if (refraction)
-        _rayonOmbre -= REFRACTION_HZ;
+        if (_luminositeEclipseSoleil < _luminositeEclipseLune) {
+            _typeEclipseLune = NON_ECLIPSE;
+            _luminositeEclipseLune = 1.;
+        } else {
+            _typeEclipseSoleil = NON_ECLIPSE;
+            _luminositeEclipseSoleil = 1.;
+        }
+    }
 
-    // Rayon de la penombre de la Terre
-    _rayonPenombre = psol + 1.01 * psat + rsol;
+    _eclipseTotale = (_typeEclipseSoleil == ECLIPSE_TOTALE || _typeEclipseLune == ECLIPSE_TOTALE);
+    _eclipsePartielle = (_typeEclipseSoleil == ECLIPSE_PARTIELLE || _typeEclipseLune == ECLIPSE_PARTIELLE);
+    _eclipseAnnulaire = (_typeEclipseSoleil == ECLIPSE_ANNULAIRE || _typeEclipseLune == ECLIPSE_ANNULAIRE);
 
-    _elongation = _position.Angle(-soleil.position());
+    /* Retour */
+    return;
+}
 
-    // Test si le satellite est en phase d'eclipse
-    _eclipse = (_elongation < _rayonOmbre);
+void Satellite::CalculSatelliteEclipseCorps(const Soleil &soleil, const CorpsOccultant &corpsOccultant, const Lune &lune,
+                                            const bool refraction)
+{
+    /* Declarations des variables locales */
+    double rayonCorps;
+    Vecteur3D rhoSatCorps;
 
-    // Test si le satellite est dans la penombre
-    _penombre = (_eclipse || _elongation < _rayonPenombre);
+    /* Initialisations */
+    TypeEclipse *typeEclipse = NULL;
+    double *elongation = NULL;
+    double *luminosite = NULL;
+    double *phiCorps = NULL;
+    double *phiSol = NULL;
+
+    const Vecteur3D rhoSatSol = soleil.position() - _position;
+    const double distSatSol = rhoSatSol.Norme();
+
+    switch (corpsOccultant) {
+    default:
+    case TERRE:
+    {
+        rhoSatCorps = _position;
+        const double tanlat = _position.z() / sqrt(_position.x() * _position.x() + _position.y() * _position.y());
+        const double u = atan(tanlat / (1. - APLA));
+        const double cu = cos(u);
+        const double su = sin(u);
+        rayonCorps = RAYON_TERRESTRE * sqrt(cu * cu + G2 * su * su);
+
+        typeEclipse = &_typeEclipseSoleil;
+        elongation = &_elongationSoleil;
+        luminosite = &_luminositeEclipseSoleil;
+        phiCorps = &_phiTerre;
+        phiSol = &_phiSoleilRefr;
+        break;
+    }
+
+    case LUNE:
+        rhoSatCorps = _position - lune.position();
+        rayonCorps = RAYON_LUNAIRE;
+        typeEclipse = &_typeEclipseLune;
+        elongation = &_elongationLune;
+        luminosite = &_luminositeEclipseLune;
+        phiCorps = &_phiLune;
+        phiSol = &_phiSoleil;
+        break;
+    }
+    const double distSatCorps = rhoSatCorps.Norme();
+
+    /* Corps de la methode */
+    *phiSol = asin(RAYON_SOLAIRE / distSatSol);
+    if (std::isnan(*phiSol)) {
+        *phiSol = PI_SUR_DEUX;
+    } else {
+        if (corpsOccultant == TERRE && refraction)
+            *phiSol += REFRACTION_HZ;
+    }
+
+    *phiCorps = asin(rayonCorps / distSatCorps);
+    if (std::isnan(*phiCorps))
+        *phiCorps = PI_SUR_DEUX;
+
+    *elongation = (-rhoSatCorps).Angle(rhoSatSol);
+
+    if (((*phiSol + *phiCorps) <= *elongation) || distSatSol <= distSatCorps) {
+        *typeEclipse = NON_ECLIPSE;
+        *luminosite = 1.;
+
+    } else if ((*phiCorps - *phiSol) >= *elongation) {
+        *typeEclipse = ECLIPSE_TOTALE;
+        *luminosite = 0.;
+
+    } else if ((*phiSol - *phiCorps) >= *elongation) {
+        *typeEclipse = ECLIPSE_ANNULAIRE;
+        const double cps = cos(*phiSol);
+        const double cpc = cos(*phiCorps);
+        *luminosite = 1. - (1. - cpc) / (1. - cps);
+
+    } else {
+        *typeEclipse = ECLIPSE_PARTIELLE;
+        const double cps = cos(*phiSol);
+        const double cpc = cos(*phiCorps);
+        const double cth = cos(*elongation);
+        const double sps = sin(*phiSol);
+        const double spc = sin(*phiCorps);
+        const double sth = sin(*elongation);
+
+        const double tmp1 = cps * acos((cpc - cps * cth) / (sps * sth));
+        const double tmp2 = cpc * acos((cps - cpc * cth) / (spc * sth));
+        const double tmp3 = acos((cth - cps * cpc) / (sps * spc));
+        *luminosite = 1. - (PI - tmp1 - tmp2 - tmp3) / (PI * (1. - cps));
+    }
 
     /* Retour */
     return;
@@ -563,10 +677,12 @@ void Satellite::CalculSatelliteEclipse(const Soleil &soleil, const bool refracti
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const Observateur &observateur, const int sec)
+void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur,
+                                const int sec)
 {
     /* Declarations des variables locales */
     Soleil soleil;
+    Lune lune;
 
     /* Initialisations */
     _traceCiel.clear();
@@ -601,11 +717,16 @@ void Satellite::CalculTraceCiel(const Date &date, const bool refraction, const O
                 // Position du Soleil
                 soleil.CalculPosition(j0);
 
+                // Position de la Lune
+                if (acalcEclipseLune)
+                    lune.CalculPosition(j0);
+
                 // Conditions d'eclipse
-                sat.CalculSatelliteEclipse(soleil, refraction);
+                sat.CalculSatelliteEclipse(soleil, lune, acalcEclipseLune, refraction);
 
                 const QVector<double> list(QVector<double> () << sat._hauteur << sat._azimut <<
-                                           ((sat._eclipse) ? 1. : (sat._penombre) ? 2. : 0.) << j0.jourJulienUTC());
+                                           ((sat._eclipseTotale) ? 1. : (sat._eclipsePartielle || sat._eclipseAnnulaire) ? 2. : 0.) <<
+                                           j0.jourJulienUTC());
                 _traceCiel.append(list);
 
             } else {
@@ -773,11 +894,12 @@ void Satellite::CalculSignal()
 /*
  * Calcul de la trace au sol du satellite
  */
-void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool refraction)
+void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool acalcEclipseLune, const bool refraction)
 {
     /* Declarations des variables locales */
     Satellite sat = *this;
     Soleil soleil;
+    Lune lune;
 
     /* Initialisations */
     const double st = 1. / (_tle.no() * T360);
@@ -802,13 +924,18 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool 
         lat = RAD2DEG * (PI_SUR_DEUX - lat);
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosition(j0);
+
+        // Position de la Lune
+        if (acalcEclipseLune)
+            lune.CalculPosition(j0);
 
         // Conditions d'eclipse
-        sat.CalculSatelliteEclipse(soleil, refraction);
+        sat.CalculSatelliteEclipse(soleil, lune, acalcEclipseLune, refraction);
 
-        const QVector<double> list(QVector<double> () << lon << lat << ((sat._eclipse) ? 1. : (sat._penombre) ? 2. : 0)
-                                   << j0.jourJulienUTC());
+        const QVector<double> list(QVector<double> () << lon << lat <<
+                                   ((sat._eclipseTotale) ? 1. : (sat._eclipsePartielle || sat._eclipseAnnulaire) ? 2. : 0) <<
+                                   j0.jourJulienUTC());
         _traceAuSol.append(list);
     }
 
@@ -818,9 +945,69 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool 
 
 
 /* Accesseurs */
-bool Satellite::isEclipse() const
+bool Satellite::isEclipseTotale() const
 {
-    return _eclipse;
+    return _eclipseTotale;
+}
+
+bool Satellite::isEclipsePartielle() const
+{
+    return _eclipsePartielle;
+}
+
+bool Satellite::isEclipseAnnulaire() const
+{
+    return _eclipseAnnulaire;
+}
+
+TypeEclipse Satellite::typeEclipseSoleil() const
+{
+    return _typeEclipseSoleil;
+}
+
+TypeEclipse Satellite::typeEclipseLune() const
+{
+    return _typeEclipseLune;
+}
+
+double Satellite::luminositeEclipseSoleil() const
+{
+    return _luminositeEclipseSoleil;
+}
+
+double Satellite::luminositeEclipseLune() const
+{
+    return _luminositeEclipseLune;
+}
+
+double Satellite::elongationSoleil() const
+{
+    return _elongationSoleil;
+}
+
+double Satellite::elongationLune() const
+{
+    return _elongationLune;
+}
+
+double Satellite::phiSoleil() const
+{
+    return _phiSoleil;
+}
+
+double Satellite::phiSoleilRefr() const
+{
+    return _phiSoleilRefr;
+}
+
+double Satellite::phiTerre() const
+{
+    return _phiTerre;
+}
+
+double Satellite::phiLune() const
+{
+    return _phiLune;
 }
 
 bool Satellite::isIeralt() const
@@ -853,11 +1040,6 @@ double Satellite::doppler() const
     return _doppler;
 }
 
-double Satellite::elongation() const
-{
-    return _elongation;
-}
-
 double Satellite::fractionIlluminee() const
 {
     return _fractionIlluminee;
@@ -886,21 +1068,6 @@ char Satellite::method() const
 int Satellite::nbOrbites() const
 {
     return _nbOrbites;
-}
-
-bool Satellite::isPenombre() const
-{
-    return _penombre;
-}
-
-double Satellite::rayonOmbre() const
-{
-    return _rayonOmbre;
-}
-
-double Satellite::rayonPenombre() const
-{
-    return _rayonPenombre;
 }
 
 double Satellite::section() const
