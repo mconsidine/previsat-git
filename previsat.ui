@@ -3519,7 +3519,7 @@
               <rect>
                <x>333</x>
                <y>78</y>
-               <width>211</width>
+               <width>221</width>
                <height>16</height>
               </rect>
              </property>
@@ -10340,9 +10340,9 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-344</y>
                  <width>784</width>
-                 <height>500</height>
+                 <height>530</height>
                 </rect>
                </property>
                <property name="font">
@@ -10355,7 +10355,7 @@
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>360</y>
+                  <y>400</y>
                   <width>751</width>
                   <height>130</height>
                  </rect>
@@ -10614,7 +10614,7 @@
                   <x>10</x>
                   <y>210</y>
                   <width>751</width>
-                  <height>141</height>
+                  <height>181</height>
                  </rect>
                 </property>
                 <property name="title">
@@ -10795,7 +10795,7 @@
                 <widget class="QSlider" name="intensiteVision">
                  <property name="geometry">
                   <rect>
-                   <x>400</x>
+                   <x>380</x>
                    <y>100</y>
                    <width>100</width>
                    <height>19</height>
@@ -10854,7 +10854,7 @@
                   <rect>
                    <x>10</x>
                    <y>120</y>
-                   <width>271</width>
+                   <width>311</width>
                    <height>17</height>
                   </rect>
                  </property>
@@ -10862,7 +10862,7 @@
                   <font/>
                  </property>
                  <property name="text">
-                  <string>Prise en compte de la réfraction pour les éclipses</string>
+                  <string>Prise en compte de la réfraction terrestre pour les éclipses</string>
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="extinctionAtmospherique">
@@ -10879,6 +10879,38 @@
                  </property>
                  <property name="text">
                   <string>Prise en compte de l'extinction atmosphérique</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="eclipsesLune">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>160</y>
+                   <width>271</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Prise en compte des éclipses produites par la Lune</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="effetEclipsesMagnitude">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>140</y>
+                   <width>311</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Prise en compte des éclipses partielles sur la magnitude</string>
                  </property>
                 </widget>
                </widget>

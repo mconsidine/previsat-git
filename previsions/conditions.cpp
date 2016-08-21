@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juin 2016
+ * >    20 aout 2016
  *
  */
 
@@ -183,6 +183,16 @@ bool Conditions::ext() const
 bool Conditions::refr() const
 {
     return _refr;
+}
+
+bool Conditions::acalcEclipseLune() const
+{
+    return _acalcEclipseLune;
+}
+
+bool Conditions::effetEclipsePartielle() const
+{
+    return _effetEclipsePartielle;
 }
 
 bool Conditions::syst() const

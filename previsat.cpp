@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 aout 2016
+ * >    21 aout 2016
  *
  */
 
@@ -599,6 +599,8 @@ void PreviSat::ChargementConfig()
     ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
     ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
     ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
+    ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
+    ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
     ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
     ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
     ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
@@ -1600,9 +1602,11 @@ void PreviSat::AffichageCourbes() const
         const QBrush alphaNuit = (ui->actionVision_nocturne->isChecked()) ? QBrush(QColor::fromRgb(128, 0, 0, 128)) :
                                                                             QBrush(Qt::NoBrush);
         const QRect rectCarte(0, 0, ui->carte->width(), ui->carte->height());
+        scene->setSceneRect(rectCarte);
         scene->addRect(rectCarte, QPen(Qt::NoBrush, 0), alphaNuit);
 
         const QRect rectRadar(0, 0, ui->radar->width(), ui->radar->height());
+        scene2->setSceneRect(rectRadar);
         scene2->addRect(rectRadar, QPen(Qt::NoBrush, 0), alphaNuit);
 
         // Affichage de la grille de coordonnees
@@ -2567,8 +2571,9 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipse()) ?
-                            crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
+                const QColor col = (satellites.at(isat).isEclipseTotale()) ?
+                            crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ?
+                                Qt::green : Qt::yellow;
                 scene3->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -2699,8 +2704,9 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipse()) ?
-                            crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
+                const QColor col = (satellites.at(isat).isEclipseTotale()) ?
+                            crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ?
+                                Qt::green : Qt::yellow;
                 scene2->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -2908,16 +2914,20 @@ void PreviSat::AffichageDonnees()
 
             // Magnitude/Illumination
             const double fractionilluminee = 100. * satellites.at(0).fractionIlluminee();
+            chaine2 = (satellites.at(0).luminositeEclipseLune() < satellites.at(0).luminositeEclipseSoleil()) ? " " + tr("Lune") : "";
             if (satellites.at(0).magnitudeStandard() > 98.) {
 
-                // Magnitude standand inconnue
-                if (satellites.at(0).isEclipse()) {
-                    ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
+                // Magnitude standard inconnue
+                if (satellites.at(0).isEclipseTotale()) {
+                    ui->magnitudeSat->setText(tr("Satellite en éclipse totale%1").arg(chaine2));
                 } else {
-                    chaine = tr("Illumination : %1%");
+                    chaine = tr("Satellite non éclipsé");
+                    if (satellites.at(0).isEclipsePartielle())
+                        chaine = tr("Satellite en éclipse partielle%1").arg(chaine2);
+                    if (satellites.at(0).isEclipseAnnulaire())
+                        chaine = tr("Satellite en éclipse annulaire%1").arg(chaine2);
+                    chaine = chaine.append(" (%1%)");
                     chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
-                    if (satellites.at(0).isPenombre())
-                        chaine = chaine.append(" ").append(tr("Pénombre"));
                     ui->magnitudeSat->setText(chaine);
                 }
             } else {
@@ -2926,8 +2936,8 @@ void PreviSat::AffichageDonnees()
                 if (satellites.at(0).isVisible()) {
 
                     // Satellite eclipse
-                    if (satellites.at(0).isEclipse()) {
-                        ui->magnitudeSat->setText(tr("Satellite non visible (Ombre)"));
+                    if (satellites.at(0).isEclipseTotale()) {
+                        ui->magnitudeSat->setText(tr("Satellite en éclipse totale%1").arg(chaine2));
                     } else {
                         chaine = tr("Magnitude (Illumination) : %1%2");
                         double magnitude = satellites.at(0).magnitude();
@@ -2985,19 +2995,29 @@ void PreviSat::AffichageDonnees()
                         }
 
                         chaine = chaine.arg((magnitude >= 0.) ? "+" : "-").arg(fabs(magnitude), 0, 'f', 1);
-                        if (satellites.at(0).isPenombre())
-                            chaine = chaine.append("*");
+
                         chaine = chaine.append((" (%1%)"));
                         chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
+
+                        if (satellites.at(0).isEclipsePartielle())
+                            chaine = chaine.append(" " + tr("P"));
+
+                        if (satellites.at(0).isEclipseAnnulaire())
+                            chaine = chaine.append(" " + tr("A"));
+
+                        if (satellites.at(0).isEclipseAnnulaire() || satellites.at(0).isEclipsePartielle())
+                            chaine = chaine.append((chaine2.length() > 0) ? tr("/L") : tr("/S"));
                         ui->magnitudeSat->setText(chaine);
                     }
                 } else {
-                    chaine = tr("Satellite non visible");
-                    if (satellites.at(0).isEclipse()) {
-                        chaine = tr("Satellite non visible (Ombre)");
+                    if (satellites.at(0).isEclipseTotale()) {
+                        chaine = tr("Satellite en éclipse totale%1").arg(chaine2);
                     } else {
-                        if (satellites.at(0).isPenombre())
-                            chaine = chaine.append(" : ").append(tr("Pénombre"));
+                        chaine = tr("Satellite non éclipsé");
+                        if (satellites.at(0).isEclipsePartielle())
+                            chaine = tr("Satellite en éclipse partielle%1").arg(chaine2);
+                        if (satellites.at(0).isEclipseAnnulaire())
+                            chaine = tr("Satellite en éclipse annulaire%1").arg(chaine2);
                         chaine = chaine.append(" (%1%)");
                         chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
                     }
@@ -3010,12 +3030,12 @@ void PreviSat::AffichageDonnees()
             ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).nbOrbites() + deltaNbOrb));
 
             // Calcul de la prochaine transition J/N
-            if (!(isEcl && satellites.at(0).isEclipse()))
+            if (!(isEcl && satellites.at(0).isEclipseTotale()))
                 acalcDN = true;
 
             if (acalcDN) {
                 CalculDN();
-                isEcl = satellites.at(0).isEclipse();
+                isEcl = satellites.at(0).isEclipseTotale();
             }
 
             const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
@@ -3023,11 +3043,11 @@ void PreviSat::AffichageDonnees()
             if (delai >= -EPS_DATES && dateEcl.jourJulienUTC() < satellites.at(0).traceAuSol().last().at(3)) {
 
                 chaine = tr("Prochain %1 :");
-                ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).isEclipse()) ? tr("N>J") : tr("J>N")));
+                ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).isEclipseTotale()) ? tr("N>J") : tr("J>N")));
 
                 // Delai de l'evenement
                 chaine = tr("%1 (dans %2).");
-                const Date delaiEcl = Date(delai - 0.5, 0.);
+                const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
                 const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR) ?
                             delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
                             delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
@@ -3061,7 +3081,7 @@ void PreviSat::AffichageDonnees()
 
                 // Delai de l'evenement
                 chaine = tr("%1 (dans %2). Azimut : %3");
-                const Date delaiAOS = Date(dateAOS.jourJulienUTC() - dateCrt.jourJulienUTC() - 0.5, 0.);
+                const Date delaiAOS = Date(dateAOS.jourJulienUTC() - dateCrt.jourJulienUTC() - 0.5 + EPS_DATES, 0.);
                 const QString cDelaiAOS = (delaiAOS.heure() > 0) ?
                             delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
                             delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
@@ -3662,7 +3682,8 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
     const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-    const QColor col = (satellites.at(isat).isEclipse()) ? crimson : (satellites.at(isat).isPenombre()) ? Qt::green : Qt::yellow;
+    const QColor col = (satellites.at(isat).isEclipseTotale()) ?
+                crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
     scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
 
     // Nom des satellites
@@ -3920,10 +3941,11 @@ void PreviSat::CalculDN() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Satellite satellite = satellites.at(0);
 
     /* Corps de la methode */
-    dateEcl = Date(satellite.CalculDateOmbrePenombreSuiv(dateCourante, ui->refractionPourEclipses->isChecked()), offsetUTC);
+    dateEcl = Date(satellites[0].CalculDateOmbrePenombreSuiv(dateCourante, ui->eclipsesLune->isChecked(),
+                                                             ui->refractionPourEclipses->isChecked(),
+                                                             ui->nombreTrajectoires->value()), offsetUTC);
     acalcDN = false;
 
     /* Retour */
@@ -3989,12 +4011,18 @@ void PreviSat::EnchainementCalculs() const
     // Prise en compte de la refraction atmospherique
     const bool refraction = ui->refractionPourEclipses->isChecked();
 
+    // Calcul des eclipses produites par la Lune
+    const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
     // Nombre de traces au sol a afficher
     const int nbTraces = (satellites.isEmpty()) ? 0 : (mcc && satellites.at(0).tle().norad() == noradStationSpatiale) ?
                                                       3 : (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
 
     // Prise en compte de l'extinction atmospherique
     const bool extinction = ui->extinctionAtmospherique->isChecked();
+
+    // Prise en compte de l'effet des eclipses partielles sur la magnitude
+    const bool effetEclipsePartielle = ui->effetEclipsesMagnitude->isChecked();
 
     // Calcul de la zone de visibilite des satellites
     const bool visibilite = ui->affvisib->isChecked() || (mcc && satellites.at(0).tle().norad() == noradStationSpatiale);
@@ -4090,8 +4118,8 @@ void PreviSat::EnchainementCalculs() const
          */
         if (nbSat > 0) {
 
-            Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, nbTraces, visibilite, extinction,
-                                                   traceCiel, mcc, refraction, satellites);
+            Satellite::CalculPosVitListeSatellites(dateCourante, observateurs.at(0), soleil, lune, nbTraces, visibilite, extinction,
+                                                   traceCiel, mcc, refraction, acalcEclipseLune, effetEclipsePartielle, satellites);
 
             if (ui->tempsReel->isChecked()) {
                 for (int i=0; i<nbSat; i++) {
@@ -5796,6 +5824,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
     settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/effetEclipsesMagnitude", ui->effetEclipsesMagnitude->isChecked());
+    settings.setValue("affichage/eclipsesLune", ui->eclipsesLune->isChecked());
     settings.setValue("affichage/rotationIconeISS", ui->rotationIconeISS->isChecked());
     settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
@@ -8113,6 +8143,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         ui->pasReel->setVisible(true);
         ui->secondes->setVisible(true);
         ui->frameSimu->setVisible(false);
+        on_pause_clicked();
         acalcAOS = true;
         acalcDN = true;
     }
@@ -8858,6 +8889,18 @@ void PreviSat::on_extinctionAtmospherique_stateChanged(int arg1)
 }
 
 void PreviSat::on_refractionPourEclipses_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
+void PreviSat::on_effetEclipsesMagnitude_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    ModificationOption();
+}
+
+void PreviSat::on_eclipsesLune_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     ModificationOption();
@@ -10938,6 +10981,12 @@ void PreviSat::on_calculsPrev_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        const bool effetEclPartielle = ui->effetEclipsesMagnitude->isChecked();
+
+        // Prise en compte des eclipses de Lune
+        const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
         // Prise en compte du systeme horaire
         const bool syst = ui->syst24h->isChecked();
 
@@ -10968,8 +11017,8 @@ void PreviSat::on_calculsPrev_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(PREVISION, ecart, ecl, ext, refr, syst, crep, haut, pas0, jj1, jj2, offset1, mag, nomfic, ficRes,
-                                unite, listeSat);
+        conditions = Conditions(PREVISION, ecart, ecl, ext, refr, acalcEclipseLune, effetEclPartielle, syst, crep, haut, pas0, jj1, jj2,
+                                offset1, mag, nomfic, ficRes, unite, listeSat);
         const Observateur obser(observateurs.at(ui->lieuxObservation2->currentIndex()));
 
         threadCalculs = new ThreadCalculs(conditions, obser);
@@ -11232,6 +11281,12 @@ void PreviSat::on_calculsIri_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        const bool effetEclPartielle = ui->effetEclipsesMagnitude->isChecked();
+
+        // Prise en compte des eclipses de Lune
+        const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
         // Prise en compte du systeme horaire
         const bool syst = ui->syst24h->isChecked();
 
@@ -11310,8 +11365,8 @@ void PreviSat::on_calculsIri_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(IRIDIUM, ecart, ext, refr, syst, chr, psol, crep, haut, nbl, ang0, jj1, jj2, offset1, mgn1, mgn2,
-                                fi.absoluteFilePath(), ficRes, unite, tabStsIri, tabtle2);
+        conditions = Conditions(IRIDIUM, ecart, ext, refr, acalcEclipseLune, effetEclPartielle, syst, chr, psol, crep, haut, nbl, ang0, jj1,
+                                jj2, offset1, mgn1, mgn2, fi.absoluteFilePath(), ficRes, unite, tabStsIri, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation3->currentIndex()));
 
         threadCalculs = new ThreadCalculs(conditions, obser);
@@ -11493,6 +11548,9 @@ void PreviSat::on_calculsEvt_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte des eclipses de Lune
+        const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
         // Prise en compte du systeme horaire
         const bool syst = ui->syst24h->isChecked();
 
@@ -11523,8 +11581,8 @@ void PreviSat::on_calculsEvt_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(EVENEMENTS, apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, syst, jj1, jj2, offset1, nomfic,
-                                ficRes, unite, listeSat);
+        conditions = Conditions(EVENEMENTS, apogee, noeuds, ombre, quadr, jourNuit, ecart, refr, acalcEclipseLune, syst, jj1, jj2, offset1,
+                                nomfic, ficRes, unite, listeSat);
 
         threadCalculs = new ThreadCalculs(conditions);
         connect(threadCalculs, SIGNAL(finished()), this, SLOT(CalculsTermines()));
@@ -11746,6 +11804,9 @@ void PreviSat::on_calculsTransit_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte des eclipses de Lune
+        const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
         // Prise en compte du systeme horaire
         const bool syst = ui->syst24h->isChecked();
 
@@ -11794,7 +11855,7 @@ void PreviSat::on_calculsTransit_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, syst, haut, ageTLE, elong, jj1, jj2, offset1,
+        conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, acalcEclipseLune, syst, haut, ageTLE, elong, jj1, jj2, offset1,
                                 fi.absoluteFilePath(), ficRes, unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
@@ -12044,6 +12105,12 @@ void PreviSat::on_calculsMetOp_clicked()
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        const bool effetEclPartielle = ui->effetEclipsesMagnitude->isChecked();
+
+        // Prise en compte des eclipses de Lune
+        const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
+
         // Prise en compte du systeme horaire
         const bool syst = ui->syst24h->isChecked();
 
@@ -12116,8 +12183,8 @@ void PreviSat::on_calculsMetOp_clicked()
 
 
         // Lancement des calculs
-        conditions = Conditions(METOP, ecart, ext, refr, syst, chr, crep, haut, nbl, jj1, jj2, offset1, mgn1, fi.absoluteFilePath(),
-                                ficRes, unite, tabStsMetOp, tabtle2);
+        conditions = Conditions(METOP, ecart, ext, refr, acalcEclipseLune, effetEclPartielle, syst, chr, crep, haut, nbl, jj1, jj2, offset1,
+                                mgn1, fi.absoluteFilePath(), ficRes, unite, tabStsMetOp, tabtle2);
         Observateur obser(observateurs.at(ui->lieuxObservation5->currentIndex()));
 
         threadCalculs = new ThreadCalculs(conditions, obser);

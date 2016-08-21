@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2015
+ * >    14 aout 2016
  *
  */
 
@@ -44,6 +44,17 @@
 #define SOLEILCONSTANTS_H
 
 /* Enumerations */
+enum CorpsOccultant {
+    TERRE,
+    LUNE
+};
+
+enum TypeEclipse {
+    NON_ECLIPSE,
+    ECLIPSE_PARTIELLE,
+    ECLIPSE_ANNULAIRE,
+    ECLIPSE_TOTALE
+};
 
 /* Declaration des constantes */
 // Magnitude du centre du disque solaire

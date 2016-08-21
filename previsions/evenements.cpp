@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    21 aout 2016
  *
  */
 
@@ -151,23 +151,23 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             if (conditions.apassOmbre()) {
 
                 k = i;
-                if ((list1.at(4) - list1.at(3)) * (list3.at(4) - list3.at(3)) < 0. && !apassOmbre) {
+                if ((list1.at(5) - list1.at(4) - list1.at(3)) * (list3.at(5) - list3.at(4) - list3.at(3)) < 0. && !apassOmbre) {
 
                     // Il y a passage ombre->lumiere ou lumiere->ombre : calcul par interpolation de la date
                     apassOmbre = true;
                     k = i;
 
-                    const double ytab1[] = { list1.at(4) - list1.at(3),
-                                             list2.at(4) - list2.at(3),
-                                             list3.at(4) - list3.at(3) };
+                    const double ytab1[] = { list1.at(5) - list1.at(4) - list1.at(3),
+                                             list2.at(5) - list2.at(4) - list2.at(3),
+                                             list3.at(5) - list3.at(4) - list3.at(3) };
 
                     const QString typeOmbre = (ytab1[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
                     CalculEvt(xtab, ytab1, 0., typeOmbre, conditions, sat);
 
                     // Calcul du passage lumiere/penombre
-                    const double ytab2[] = { list1.at(5) - list1.at(3),
-                                             list2.at(5) - list2.at(3),
-                                             list3.at(5) - list3.at(3) };
+                    const double ytab2[] = { list1.at(5) + list1.at(4) - list1.at(3),
+                                             list2.at(5) + list2.at(4) - list2.at(3),
+                                             list3.at(5) + list3.at(4) - list3.at(3) };
 
                     const QString typePenombre = (typeOmbre == QObject::tr("Ombre -> Pénombre")) ?
                                 QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
@@ -344,6 +344,7 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
 {
     /* Declarations des variables locales */
     Soleil soleil;
+    Lune lune;
     QVector<double> listVal;
     QList<QVector<double> > tab;
 
@@ -362,9 +363,13 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
             // Position du Soleil
             soleil.CalculPosition(date);
 
+            // Position de la Lune
+            if (conditions.acalcEclipseLune())
+                lune.CalculPosition(date);
+
             // Position du satellite
             sat.CalculPosVit(date);
-            sat.CalculSatelliteEclipse(soleil, conditions.refr());
+            sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
             sat.CalculElementsOsculateurs(date);
 
             // Sauvegarde des donnees
@@ -374,9 +379,19 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
             listVal.append(position.z());
             listVal.append(position.Norme());
 
-            listVal.append(sat.elongation());
-            listVal.append(sat.rayonOmbre());
-            listVal.append(sat.rayonPenombre());
+            double elongation, phiSoleil, phiCorps;
+            if (sat.luminositeEclipseLune() < sat.luminositeEclipseSoleil()) {
+                elongation = sat.elongationLune();
+                phiSoleil = sat.phiSoleil();
+                phiCorps = sat.phiLune();
+            } else {
+                elongation = sat.elongationSoleil();
+                phiSoleil = sat.phiSoleilRefr();
+                phiCorps = sat.phiTerre();
+            }
+            listVal.append(elongation);
+            listVal.append(phiSoleil);
+            listVal.append(phiCorps);
             listVal.append(position * soleil.position());
             listVal.append(modulo(sat.elements().anomalieVraie() + sat.elements().argumentPerigee(), DEUX_PI));
 

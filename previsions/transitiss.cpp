@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    14 aout 2016
  *
  */
 
@@ -222,9 +222,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.distance());
 
                         const bool itr = (ang <= rayonApparent);
-                        sat.CalculSatelliteEclipse(soleil, conditions.refr());
+                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
 
-                        if (itr || !sat.isEclipse()) {
+                        if (itr || !sat.isEclipseTotale()) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[1] = date2;
@@ -250,7 +250,12 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);
                                 soleil.CalculCoordHoriz(observateur);
-                                sat.CalculSatelliteEclipse(soleil, conditions.refr());
+
+                                // Position de la Lune
+                                if (conditions.acalcEclipseLune())
+                                    lune.CalculPosition(dates[j]);
+
+                                sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
 
                                 // Ecriture du resultat
 
@@ -286,8 +291,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
-                                        arg((sat.isEclipse()) ? QObject::tr("Omb") : (sat.isPenombre()) ?
-                                                                    QObject::tr("Pen") : QObject::tr("Lum")).
+                                        arg((sat.isEclipseTotale()) ?
+                                                QObject::tr("Omb") : (sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ?
+                                                    QObject::tr("Pen") : QObject::tr("Lum")).
                                         arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
                                 // Recherche du maximum (transit ou conjonction)

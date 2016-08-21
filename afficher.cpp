@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 mai 2016
+ * >    14 aout 2016
  *
  */
 
@@ -621,6 +621,7 @@ void Afficher::loadSky(const int j)
     const bool affphaselune = settings.value("affichage/affphaselune", true).toBool();
     const bool affsoleil = settings.value("affichage/affsoleil", true).toBool();
     const bool refraction = settings.value("affichage/refractionPourEclipses", true).toBool();
+    const bool eclipsesLune = settings.value("affichage/eclipsesLune", true).toBool();
     const bool rotationLune = settings.value("affichage/rotationLune", true).toBool();
     const double magnitudeEtoiles = settings.value("affichage/magnitudeEtoiles", 4.0).toDouble();
     sceneSky = new QGraphicsScene;
@@ -720,7 +721,7 @@ void Afficher::loadSky(const int j)
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
 
     // Position du satellite
-    sat.CalculTraceCiel(dateInit, refraction, obs, 1);
+    sat.CalculTraceCiel(dateInit, eclipsesLune, refraction, obs, 1);
 
     // Preparations pour l'affichage de la carte du ciel
     // Phase de la Lune
@@ -1147,7 +1148,8 @@ void Afficher::loadSky(const int j)
 
         rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
         const QPen noir(Qt::black);
-        const QColor col = (sat.isEclipse()) ? crimson : (sat.isPenombre()) ? Qt::green : Qt::yellow;
+        const QColor col = (sat.isEclipseTotale()) ?
+                    crimson : (sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
         sceneSky->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
     }
 

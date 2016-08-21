@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juin 2016
+ * >    20 aout 2016
  *
  */
 
@@ -72,6 +72,8 @@ public:
         _ecl = false;
         _ext = false;
         _refr = false;
+        _acalcEclipseLune = false;
+        _effetEclipsePartielle = false;
         _syst = false;
         _chr = true;
         _psol = true;
@@ -106,6 +108,8 @@ public:
      * @param eclipse Prise en compte de l'etat d'eclipse du satellite
      * @param extinction Prise en compte de l'extinction atmospherique
      * @param refraction Prise en compte de la refraction
+     * @param acalcEclLune prise en compte des eclipses produites par la Lune
+     * @param effetEclPartielle prise en compte de l'effet des eclipses partielles sur la magnitude
      * @param systeme systeme horaire
      * @param crepuscule valeur de la hauteur du Soleil
      * @param hauteur hauteur minimale du satellite
@@ -120,9 +124,9 @@ public:
      * @param listeSat liste des satellites
      */
     Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction,
-               const bool systeme, const int crepuscule, const int hauteur, const int pas, const double jourJulien1, const double jourJulien2,
-               const double offsetUTC, const double magn1, const QString &ficEnt, const QString &ficOut, const QString &unit,
-               const QStringList &listeSat) : _typeCalcul(typeCalc)
+               const bool acalcEclLune, const bool effetEclPartielle, const bool systeme, const int crepuscule, const int hauteur,
+               const int pas, const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1,
+               const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -133,6 +137,8 @@ public:
         _ecl = eclipse;
         _ext = extinction;
         _refr = refraction;
+        _acalcEclipseLune = acalcEclLune;
+        _effetEclipsePartielle = effetEclPartielle;
         _syst = systeme;
         _crep = crepuscule * DEG2RAD;
         _haut = hauteur * DEG2RAD;
@@ -171,6 +177,8 @@ public:
      * @param ecart Prise en compte de l'ecart heure legale - UTC
      * @param ext Prise en compte de l'extinction atmospherique
      * @param refr Prise en compte de la refraction
+     * @param acalcEclLune prise en compte des eclipses produites par la Lune
+     * @param effetEclPartielle prise en compte de l'effet des eclipses partielles sur la magnitude
      * @param syst systeme horaire
      * @param chrono tri par ordre chronologique
      * @param panSol prise en compte des panneaux solaires
@@ -189,12 +197,11 @@ public:
      * @param tabStsIridium tableau de statut des Iridium
      * @param tabTLEIri tableau des TLE des satellites Iridium
      */
-    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
-               const bool chrono,
-               const bool panSol, const int crepuscule, const int hauteur, const int nbLig, const double angle0,
-               const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1, const double magn2,
-               const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &tabStsIridium,
-               const QVector<TLE> &tabTLEIri) : _typeCalcul(typeCalc)
+    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool acalcEclLune,
+               const bool effetEclPartielle, const bool systeme, const bool chrono, const bool panSol, const int crepuscule,
+               const int hauteur, const int nbLig, const double angle0, const double jourJulien1, const double jourJulien2,
+               const double offsetUTC, const double magn1, const double magn2, const QString &ficEnt, const QString &ficOut,
+               const QString &unit, const QStringList &tabStsIridium, const QVector<TLE> &tabTLEIri) : _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -204,6 +211,8 @@ public:
         _ecart = pecEcart;
         _ext = extinction;
         _refr = refraction;
+        _acalcEclipseLune = acalcEclLune;
+        _effetEclipsePartielle = effetEclPartielle;
         _syst = systeme;
         _crep = crepuscule * DEG2RAD;
         _haut = hauteur * DEG2RAD;
@@ -248,6 +257,7 @@ public:
      * @param atransitionJn Calcul des passages aux transitions jour/nuit
      * @param pecEcart Prise en compte de l'ecart heure legale - UTC
      * @param refraction Prise en compte de la refraction
+     * @param acalcEclLune prise en compte des eclipses produites par la Lune
      * @param systeme systeme horaire
      * @param jourJulien1 jour julien initial
      * @param jourJulien2 jour julien final
@@ -258,9 +268,9 @@ public:
      * @param listeSat liste des satellites
      */
     Conditions(const TypeCalcul typeCalc, const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre,
-               const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool systeme,
-               const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
-               const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
+               const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool acalcEclLune,
+               const bool systeme, const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
+               const QString &ficOut, const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -274,6 +284,8 @@ public:
         _atransJn = atransitionJn;
         _ecart = pecEcart;
         _refr = refraction;
+        _acalcEclipseLune = acalcEclLune;
+        _effetEclipsePartielle = false;
         _syst = systeme;
         _jj1 = jourJulien1;
         _jj2 = jourJulien2;
@@ -310,6 +322,7 @@ public:
      * @param acalculSoleil Calcul des transits/conjonctions avec le Soleil
      * @param pecEcart Prise en compte de l'ecart heure legale - UTC
      * @param refraction Prise en compte de la refraction
+     * @param acalcEclLune prise en compte des eclipses produites par la Lune
      * @param systeme systeme horaire
      * @param hauteur hauteur minimale du satellite
      * @param age age du TLE
@@ -322,8 +335,9 @@ public:
      * @param unit unite de distance
      */
     Conditions(const TypeCalcul typeCalc, const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction,
-               const bool systeme, const int hauteur, const double age, const double seuilConj, const double jourJulien1,
-               const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut, const QString &unit) :
+               const bool acalcEclLune, const bool systeme, const int hauteur, const double age, const double seuilConj,
+               const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
+               const QString &unit) :
         _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
@@ -335,6 +349,8 @@ public:
         _acalcSol = acalculSoleil;
         _ecart = pecEcart;
         _refr = refraction;
+        _acalcEclipseLune = acalcEclLune;
+        _effetEclipsePartielle = false;
         _syst = systeme;
         _haut = hauteur * DEG2RAD;
         _ageTLE = age;
@@ -372,6 +388,8 @@ public:
      * @param ecart Prise en compte de l'ecart heure legale - UTC
      * @param ext Prise en compte de l'extinction atmospherique
      * @param refr Prise en compte de la refraction
+     * @param acalcEclLune prise en compte des eclipses produites par la Lune
+     * @param effetEclPartielle prise en compte de l'effet des eclipses partielles sur la magnitude
      * @param syst systeme horaire
      * @param chrono tri par ordre chronologique
      * @param crepuscule valeur de la hauteur du Soleil
@@ -387,10 +405,10 @@ public:
      * @param tabStsMetOp tableau de statut des MetOp
      * @param tabTLEMetOp tableau des TLE des satellites MetOp
      */
-    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool systeme,
-                           const bool chrono, const int crepuscule, const int hauteur, const int nbLig, const double jourJulien1,
-                           const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
-                           const QString &ficOut, const QString &unit, const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp) :
+    Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool extinction, const bool refraction, const bool acalcEclLune,
+               const bool effetEclPartielle, const bool systeme, const bool chrono, const int crepuscule, const int hauteur, const int nbLig,
+               const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
+               const QString &ficOut, const QString &unit, const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp) :
         _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
@@ -401,6 +419,8 @@ public:
         _ecart = pecEcart;
         _ext = extinction;
         _refr = refraction;
+        _acalcEclipseLune = acalcEclLune;
+        _effetEclipsePartielle = effetEclPartielle;
         _syst = systeme;
         _crep = crepuscule * DEG2RAD;
         _haut = hauteur * DEG2RAD;
@@ -456,6 +476,8 @@ public:
     bool ecl() const;
     bool ext() const;
     bool refr() const;
+    bool acalcEclipseLune() const;
+    bool effetEclipsePartielle() const;
     bool syst() const;
     double crep() const;
     double haut() const;
@@ -509,6 +531,8 @@ private:
     bool _ecl;
     bool _ext;
     bool _refr;
+    bool _acalcEclipseLune;
+    bool _effetEclipsePartielle;
     bool _syst;
     double _crep;
     double _haut;
