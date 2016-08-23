@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2015  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >
+ * >    22 aout 2016
  *
  */
 
@@ -225,14 +225,15 @@ private:
      * @brief MagnitudeFlash Determination de la magnitude du flash
      * @param typeCalc type de calcul (IRIDIUM ou METOP)
      * @param ext prise en compte de l'extinction atmospherique
+     * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param angle angle de reflexion
      * @param observateur observateur
      * @param soleil Soleil
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const double angle, const Observateur &observateur,
-                                 const Soleil &soleil, Satellite &satellite);
+    static double MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
+                                 const Observateur &observateur, const Soleil &soleil, Satellite &satellite);
 
 
 };

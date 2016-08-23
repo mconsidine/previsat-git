@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 aout 2016
+ * >    22 aout 2016
  *
  */
 
@@ -2945,6 +2945,7 @@ void PreviSat::AffichageDonnees()
                         // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
                         if (tabStatutIridium.join("").contains(satellites.at(0).tle().norad())) {
                             const double mag = Iridium::CalculMagnitudeIridium(ui->extinctionAtmospherique->isChecked(),
+                                                                               ui->effetEclipsesMagnitude->isChecked(),
                                                                                ui->satellitesOperationnelsIri->isChecked(),
                                                                                tabStatutIridium, satellites.at(0), soleil,
                                                                                observateurs.at(0));
@@ -2972,7 +2973,8 @@ void PreviSat::AffichageDonnees()
 
                         // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                         if (tabStatutMetOp.join("").contains(satellites.at(0).tle().norad())) {
-                            const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(), tabStatutMetOp,
+                            const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
+                                                                           ui->effetEclipsesMagnitude->isChecked(), tabStatutMetOp,
                                                                            satellites.at(0), soleil, observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
 

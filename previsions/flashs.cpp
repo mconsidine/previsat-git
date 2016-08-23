@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    14 aout 2016
+ * >    22 aout 2016
  *
  */
 
@@ -583,7 +583,8 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
             const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
 
             // Magnitude du flash
-            double mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), minmax[1], observateur, soleil, sat);
+            double mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), minmax[1], observateur,
+                    soleil, sat);
 
             if (mag <= mgn0) {
 
@@ -625,7 +626,8 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                         if (angref <= conditions.ang0() + 0.0001) {
 
                             // Magnitude du flash
-                            mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), angref, observateur, soleil, sat);
+                            mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angref,
+                                                 observateur, soleil, sat);
 
                             if (mag <= mgn0 + 0.05) {
 
@@ -722,7 +724,9 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
         const double angRefMax = AngleReflexion(conditions.typeCalcul(), sat, soleil);
 
         // Magnitude du flash
-        const double magFlashMax = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), angRefMax, obsmax, soleil, sat);
+        const double magFlashMax = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angRefMax,
+                                                  obsmax, soleil, sat);
+
         QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
                 QString((sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "*" : " ");
         while (mags.length() < 6)
@@ -811,7 +815,8 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
         ang[i] = AngleReflexion(conditions.typeCalcul(), satellite, soleil);
 
         // Magnitude du satellite
-        mag[i] = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), ang[i], observateur, soleil, satellite);
+        mag[i] = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), ang[i], observateur, soleil,
+                                satellite);
     }
 
     double t_ecl, t_ht;
@@ -1009,8 +1014,8 @@ double Flashs::AngleReflexion(const TypeCalcul typeCalc, const Satellite &satell
 /*
  * Determination de la magnitude du flash
  */
-double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const double angle, const Observateur &observateur,
-                              const Soleil &soleil, Satellite &satellite)
+double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
+                              const Observateur &observateur, const Soleil &soleil, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -1021,12 +1026,12 @@ double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const d
     switch (typeCalc) {
     case IRIDIUM:
 
-        magnitude = Iridium::MagnitudeFlash(ext, angle, observateur, soleil, satellite);
+        magnitude = Iridium::MagnitudeFlash(ext, eclPartielle, angle, observateur, soleil, satellite);
         break;
 
     case METOP:
 
-        magnitude = MetOp::MagnitudeFlash(ext, angle, observateur, satellite);
+        magnitude = MetOp::MagnitudeFlash(ext, eclPartielle, angle, observateur, satellite);
         break;
 
     case PREVISION:

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >
+ * >    22 aout 2016
  *
  */
 
@@ -79,13 +79,14 @@ public:
     /**
      * @brief CalculMagnitudeMetOp Calcul de la magnitude du flash MetOp ou SkyMed
      * @param extinction Prise en compte de l'extinction atmospherique
+     * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param tabSts tableau de statut des satellites MetOp ou SkyMed
      * @param satellite satellite
      * @param soleil Soleil
      * @param observateur observateur
      * @return magnitude du flash
      */
-    static double CalculMagnitudeMetOp(const bool extinction, const QStringList &tabSts, const Satellite &satellite,
+    static double CalculMagnitudeMetOp(const bool extinction, const bool eclPartielle, const QStringList &tabSts, const Satellite &satellite,
                                        const Soleil &soleil, const Observateur &observateur);
 
     /**
@@ -97,12 +98,14 @@ public:
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash
      * @param ext prise en compte de l'extinction atmospherique
+     * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param angle angle de reflexion
      * @param observateur observateur
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, Satellite &satellite);
+    static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                                 Satellite &satellite);
 
 
     /* Accesseurs */

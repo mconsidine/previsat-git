@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    5 mars 2016
+ * >    22 aout 2016
  *
  */
 
@@ -147,8 +147,8 @@ void MetOp::CalculFlashsMetOp(const Conditions &conditions, Observateur &observa
     return;
 }
 
-double MetOp::CalculMagnitudeMetOp(const bool extinction, const QStringList &tabSts, const Satellite &satellite, const Soleil &soleil,
-                                   const Observateur &observateur)
+double MetOp::CalculMagnitudeMetOp(const bool extinction, const bool eclPartielle, const QStringList &tabSts, const Satellite &satellite,
+                                   const Soleil &soleil, const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
@@ -169,7 +169,7 @@ double MetOp::CalculMagnitudeMetOp(const bool extinction, const QStringList &tab
 
     if (!_sts.isEmpty()) {
         const double angRef = AngleReflexion(satellite, soleil);
-        magnitude = MagnitudeFlash(extinction, angRef, observateur, sat);
+        magnitude = MagnitudeFlash(extinction, eclPartielle, angRef, observateur, sat);
     }
 
     /* Retour */
@@ -218,7 +218,8 @@ void MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 /*
  * Determination de la magnitude du flash
  */
-double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, Satellite &satellite)
+double MetOp::MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                             Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -233,6 +234,13 @@ double MetOp::MagnitudeFlash(const bool ext, const double angle, const Observate
 
     if (typSat.contains("skymed"))
         magnitude = 0.3075 * angDeg - 2.92;
+
+    // Prise en compte des eclipses partielles ou annulaires
+    if (eclPartielle) {
+        const double luminositeEclipse = qMin(satellite.luminositeEclipseLune(), satellite.luminositeEclipseSoleil());
+        if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
+            magnitude += -2.5 * log10(luminositeEclipse);
+    }
 
     // Prise en compte de l'extinction atmospherique
     if (ext)
