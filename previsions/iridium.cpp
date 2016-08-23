@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    22 aout 2016
  *
  */
 
@@ -215,8 +215,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
     return;
 }
 
-double Iridium::CalculMagnitudeIridium(const bool extinction, const bool ope, const QStringList &tabSts, const Satellite &satellite,
-                                       const Soleil &soleil, const Observateur &observateur)
+double Iridium::CalculMagnitudeIridium(const bool extinction, const bool eclPartielle, const bool ope, const QStringList &tabSts,
+                                       const Satellite &satellite, const Soleil &soleil, const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
@@ -242,7 +242,7 @@ double Iridium::CalculMagnitudeIridium(const bool extinction, const bool ope, co
         _psol = true;
 
         const double angRef = AngleReflexion(satellite, soleil);
-        magnitude = MagnitudeFlash(extinction, angRef, observateur, soleil, sat);
+        magnitude = MagnitudeFlash(extinction, eclPartielle, angRef, observateur, soleil, sat);
     }
 
     /* Retour */
@@ -296,8 +296,8 @@ void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
 /*
  * Determination de la magnitude du flash
  */
-double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
-                               Satellite &satellite)
+double Iridium::MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                               const Soleil &soleil, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -356,6 +356,13 @@ double Iridium::MagnitudeFlash(const bool ext, const double angle, const Observa
         const double angRefDeg = angle * RAD2DEG;
         const double corrMag = (angRefDeg < 3.5) ? -3.867 + 0.993 * angRefDeg : -5.6415 + 1.5 * angRefDeg;
         magnitude += corrMag - 0.7;
+    }
+
+    // Prise en compte des eclipses partielles ou annulaires
+    if (eclPartielle) {
+        const double luminositeEclipse = qMin(satellite.luminositeEclipseLune(), satellite.luminositeEclipseSoleil());
+        if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
+            magnitude += -2.5 * log10(luminositeEclipse);
     }
 
     // Prise en compte de l'extinction atmospherique

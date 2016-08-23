@@ -1,4 +1,4 @@
-/*
+﻿/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -33,7 +33,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    30 septembre 2015
+ * >    22 aout 2016
  *
  */
 
@@ -76,6 +76,7 @@ public:
     /**
      * @brief CalculMagnitudeIridium Calcul de la magnitude du flash Iridium
      * @param extinction Prise en compte de l'extinction atmospherique
+     * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param ope Prise en compte des satellites operationnels uniquement
      * @param tabSts tableau de statut des satellites Iridium
      * @param satellite satellite
@@ -83,8 +84,8 @@ public:
      * @param observateur observateur
      * @return magnitude du flash
      */
-    static double CalculMagnitudeIridium(const bool extinction, const bool ope, const QStringList &tabSts, const Satellite &satellite,
-                                         const Soleil &soleil, const Observateur &observateur);
+    static double CalculMagnitudeIridium(const bool extinction, const bool eclPartielle, const bool ope, const QStringList &tabSts,
+                                         const Satellite &satellite, const Soleil &soleil, const Observateur &observateur);
 
     /**
      * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium
@@ -96,14 +97,15 @@ public:
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash
      * @param ext prise en compte de l'extinction atmospherique
+     * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param angle angle de reflexion
      * @param observateur observateur
      * @param soleil Soleil
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const bool ext, const double angle, const Observateur &observateur, const Soleil &soleil,
-                                 Satellite &satellite);
+    static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                                 const Soleil &soleil, Satellite &satellite);
 
 
     /* Accesseurs */
