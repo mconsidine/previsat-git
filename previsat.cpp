@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 aout 2016
+ * >    24 aout 2016
  *
  */
 
@@ -3001,14 +3001,17 @@ void PreviSat::AffichageDonnees()
                         chaine = chaine.append((" (%1%)"));
                         chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
 
+                        if (satellites.at(0).isEclipseAnnulaire() || satellites.at(0).isEclipsePartielle()) {
+                            chaine = chaine.append(" %1/%2");
+                            chaine = chaine.arg((chaine2.length() > 0) ? tr("L") : tr("T"));
+                        }
+
                         if (satellites.at(0).isEclipsePartielle())
-                            chaine = chaine.append(" " + tr("P"));
+                            chaine = chaine.arg(tr("P"));
 
                         if (satellites.at(0).isEclipseAnnulaire())
-                            chaine = chaine.append(" " + tr("A"));
+                            chaine = chaine.arg(tr("A"));
 
-                        if (satellites.at(0).isEclipseAnnulaire() || satellites.at(0).isEclipsePartielle())
-                            chaine = chaine.append((chaine2.length() > 0) ? tr("/L") : tr("/S"));
                         ui->magnitudeSat->setText(chaine);
                     }
                 } else {
