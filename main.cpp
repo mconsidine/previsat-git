@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    1er septembre 2016
  *
  */
 
@@ -96,10 +96,6 @@ int main(int argc, char *argv[])
         } else {
             QMessageBox::information(0, QObject::tr("Information"), mem.errorString());
         }
-    } else {
-        mem.lock();
-        memcpy(mem.data(), &pid, mem.size());
-        mem.unlock();
     }
 
     // Lancement du splash screen et demarrage de l'application
