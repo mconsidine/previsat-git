@@ -4412,22 +4412,22 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>An instance of %1 is already launched</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="113"/>
+        <location filename="main.cpp" line="109"/>
         <source>Initialisation de la configuration...</source>
         <translation>Initialisation of configuration...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="117"/>
+        <location filename="main.cpp" line="113"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>Loading TLE file...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="121"/>
+        <location filename="main.cpp" line="117"/>
         <source>Mise à jour des TLE...</source>
         <translation>Updating TLEs...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="125"/>
+        <location filename="main.cpp" line="121"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>Launching application...</translation>
     </message>
