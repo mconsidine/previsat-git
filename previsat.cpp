@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 aout 2016
+ * >    3 septembre 2016
  *
  */
 
@@ -8148,7 +8148,8 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         ui->pasReel->setVisible(true);
         ui->secondes->setVisible(true);
         ui->frameSimu->setVisible(false);
-        on_pause_clicked();
+        if (ui->pause->isEnabled())
+            on_pause_clicked();
         acalcAOS = true;
         acalcDN = true;
     }
