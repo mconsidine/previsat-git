@@ -162,7 +162,7 @@ protected:
      * @return ligne du flash
      */
     static QString EcrireFlash(const Date &date, const int i, const double altitude, const double angref, const double mag,
-                               const Conditions &conditions, const Observateur &observateur, const Soleil &soleil, Satellite &sat);
+                               const Conditions &conditions, const Observateur &observateur, const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &sat);
 
     /**
      * @brief LimiteFlash Calcul d'une limite du flash
@@ -233,7 +233,7 @@ private:
      * @return valeur de la magnitude du flash
      */
     static double MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
-                                 const Observateur &observateur, const Soleil &soleil, Satellite &satellite);
+                                 const Observateur &observateur, const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite);
 
 
 };

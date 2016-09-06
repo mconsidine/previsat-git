@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    22 aout 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -138,10 +138,11 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                     lune.CalculPosition(date);
 
                 // Determination de la condition d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+                ConditionEclipse condEcl;
+                condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
                 // Le satellite n'est pas eclipse
-                if (!sat.isEclipseTotale()) {
+                if (!condEcl.isEclipseTotale()) {
 
                     double jj0 = date.jourJulienUTC();
                     const double jj2 = jj0 + TEMPS1;
@@ -198,9 +199,10 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                             lune.CalculPosition(date0);
 
                         // Condition d'eclipse du satellite
-                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(),
+                                                       conditions.refr());
 
-                        if (sat.isEclipseTotale() || sat.hauteur() < conditions.haut())
+                        if (condEcl.isEclipseTotale() || sat.hauteur() < conditions.haut())
                             jj0 = jj2 + PAS0;
                     } while (jj0 <= jj2);
                     date = Date(jj0 + TEMPS2, 0., false);
@@ -582,9 +584,16 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
             const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
 
+            Lune lune;
+            if (conditions.acalcEclipseLune())
+                lune.CalculPosition(date);
+
+            ConditionEclipse condEcl;
+            condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
+
             // Magnitude du flash
             double mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), minmax[1], observateur,
-                    soleil, sat);
+                    soleil, condEcl, sat);
 
             if (mag <= mgn0) {
 
@@ -613,12 +622,12 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                         soleil.CalculPosition(dates[i]);
                         soleil.CalculCoordHoriz(observateur);
 
-                        Lune lune;
                         if (conditions.acalcEclipseLune())
                             lune.CalculPosition(dates[i]);
 
                         // Condition d'eclipse du satellite
-                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+                        ConditionEclipse condEcl2;
+                        condEcl2.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
                         // Angle de reflexion
                         const double angref = AngleReflexion(conditions.typeCalcul(), sat, soleil);
@@ -627,7 +636,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
                             // Magnitude du flash
                             mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angref,
-                                                 observateur, soleil, sat);
+                                                 observateur, soleil, condEcl2, sat);
 
                             if (mag <= mgn0 + 0.05) {
 
@@ -639,7 +648,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                                 const double altitude = sat.CalculAltitude(sat.position());
 
                                 // Ecriture du flash
-                                ligne = EcrireFlash(dates[i], i, altitude, angref, mag, conditions, observateur, soleil, sat);
+                                ligne = EcrireFlash(dates[i], i, altitude, angref, mag, conditions, observateur, soleil, condEcl2, sat);
 
                                 flash.append(ligne);
                             }
@@ -661,7 +670,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
  */
 QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, const double angref, const double mag,
                             const Conditions &conditions, const Observateur &observateur,
-                            const Soleil &soleil, Satellite &sat)
+                            const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &sat)
 {
     /* Declarations des variables locales */
     Observateur obsmax;
@@ -687,7 +696,7 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
     // Magnitude
     const QString fmgn = "%1%2%3";
     const QString magn = fmgn.arg((mag > 0.) ? "+" : "-").arg(fabs(mag), 2, 'f', 1)
-            .arg((sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "*" : " ");
+            .arg((condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "*" : " ");
 
     // Altitude du satellite et distance a l'observateur
     double distance = sat.distance();
@@ -725,10 +734,10 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
         // Magnitude du flash
         const double magFlashMax = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angRefMax,
-                                                  obsmax, soleil, sat);
+                                                  obsmax, soleil, condEcl, sat);
 
         QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
-                QString((sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "*" : " ");
+                QString((condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "*" : " ");
         while (mags.length() < 6)
             mags += " ";
 
@@ -795,7 +804,7 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
 
         // Position du satellite
         satellite.CalculPosVit(date);
-        satellite.CalculCoordHoriz(observateur, false);;
+        satellite.CalculCoordHoriz(observateur, false);
         ht[i] = satellite.hauteur();
 
         // Position du Soleil
@@ -806,16 +815,17 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
             lune.CalculPosition(date);
 
         // Conditions d'eclipse du satellite
-        satellite.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
-        ecl[i] = (satellite.luminositeEclipseLune() < satellite.luminositeEclipseSoleil()) ?
-                    satellite.phiLune() - satellite.phiSoleil() - satellite.elongationLune() :
-                    satellite.phiTerre() - satellite.phiSoleilRefr() - satellite.elongationSoleil();
+        ConditionEclipse condEcl;
+        condEcl.CalculSatelliteEclipse(soleil, lune, satellite.position(), conditions.acalcEclipseLune(), conditions.refr());
+        ecl[i] = (condEcl.luminositeEclipseLune() < condEcl.luminositeEclipseSoleil()) ?
+                    condEcl.phiLune() - condEcl.phiSoleil() - condEcl.elongationLune() :
+                    condEcl.phiTerre() - condEcl.phiSoleilRefr() - condEcl.elongationSoleil();
 
         // Angle de reflexion
         ang[i] = AngleReflexion(conditions.typeCalcul(), satellite, soleil);
 
         // Magnitude du satellite
-        mag[i] = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), ang[i], observateur, soleil,
+        mag[i] = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), ang[i], observateur, soleil, condEcl,
                                 satellite);
     }
 
@@ -1015,7 +1025,7 @@ double Flashs::AngleReflexion(const TypeCalcul typeCalc, const Satellite &satell
  * Determination de la magnitude du flash
  */
 double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
-                              const Observateur &observateur, const Soleil &soleil, Satellite &satellite)
+                              const Observateur &observateur, const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -1026,12 +1036,12 @@ double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const b
     switch (typeCalc) {
     case IRIDIUM:
 
-        magnitude = Iridium::MagnitudeFlash(ext, eclPartielle, angle, observateur, soleil, satellite);
+        magnitude = Iridium::MagnitudeFlash(ext, eclPartielle, angle, observateur, soleil, condEcl, satellite);
         break;
 
     case METOP:
 
-        magnitude = MetOp::MagnitudeFlash(ext, eclPartielle, angle, observateur, satellite);
+        magnitude = MetOp::MagnitudeFlash(ext, eclPartielle, angle, observateur, condEcl, satellite);
         break;
 
     case PREVISION:

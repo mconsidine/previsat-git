@@ -85,7 +85,8 @@ public:
      * @return magnitude du flash
      */
     static double CalculMagnitudeIridium(const bool extinction, const bool eclPartielle, const bool ope, const QStringList &tabSts,
-                                         const Satellite &satellite, const Soleil &soleil, const Observateur &observateur);
+                                         const Satellite &satellite, const Soleil &soleil, const ConditionEclipse &condEcl,
+                                         const Observateur &observateur);
 
     /**
      * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium
@@ -105,7 +106,7 @@ public:
      * @return valeur de la magnitude du flash
      */
     static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
-                                 const Soleil &soleil, Satellite &satellite);
+                                 const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite);
 
 
     /* Accesseurs */

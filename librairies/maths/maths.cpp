@@ -81,11 +81,13 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
 
     /* Corps de la methode */
     const double dy = 2. * yy[1];
-    while (fabs(dn0) >= epsilon && iter < 10000) {
+    while (fabs(dn0) >= epsilon && iter < 100) {
 
         const double tmp1 = c * n0;
         const double tmp2 = a + b + tmp1;
         dn0 = -(dy + n0 * tmp2) / (tmp1 + tmp2);
+        if (fabs(dn0) > 1.)
+            dn0 = sgn(dn0);
         n0 += dn0;
         iter++;
     }

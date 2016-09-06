@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -374,7 +374,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     LectureFichier(ficOld, liste, tleOld);
 
     // Verification du fichier contenant les TLE recents
-    int nbNew = VerifieFichier(ficNew, false);
+    const int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0)
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);

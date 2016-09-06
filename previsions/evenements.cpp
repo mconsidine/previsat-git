@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    3 septembre 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -411,7 +411,9 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
 
             // Position du satellite
             sat.CalculPosVit(date);
-            sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+
+            ConditionEclipse condEcl;
+            condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
             sat.CalculElementsOsculateurs(date);
 
             // Sauvegarde des donnees
@@ -423,16 +425,16 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
             listVal.append(position * soleil.position());
             listVal.append(modulo(sat.elements().anomalieVraie() + sat.elements().argumentPerigee(), DEUX_PI));
 
-            listVal.append(sat.elongationSoleil());
-            listVal.append(sat.phiSoleilRefr());
-            listVal.append(sat.phiTerre());
+            listVal.append(condEcl.elongationSoleil());
+            listVal.append(condEcl.phiSoleilRefr());
+            listVal.append(condEcl.phiTerre());
 
             if (conditions.acalcEclipseLune()) {
-                listVal.append(sat.elongationLune());
-                listVal.append(sat.phiSoleil());
-                listVal.append(sat.phiLune());
-                listVal.append(sat.luminositeEclipseLune());
-                listVal.append(sat.luminositeEclipseSoleil());
+                listVal.append(condEcl.elongationLune());
+                listVal.append(condEcl.phiSoleil());
+                listVal.append(condEcl.phiLune());
+                listVal.append(condEcl.luminositeEclipseLune());
+                listVal.append(condEcl.luminositeEclipseSoleil());
             }
 
             tab.append(listVal);

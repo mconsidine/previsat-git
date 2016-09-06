@@ -87,7 +87,7 @@ public:
      * @return magnitude du flash
      */
     static double CalculMagnitudeMetOp(const bool extinction, const bool eclPartielle, const QStringList &tabSts, const Satellite &satellite,
-                                       const Soleil &soleil, const Observateur &observateur);
+                                       const Soleil &soleil, const ConditionEclipse &condEcl, const Observateur &observateur);
 
     /**
      * @brief LectureStatutMetOp Lecture du fichier de statut des satellites MetOp ou SkyMed
@@ -104,7 +104,7 @@ public:
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+    static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur, const ConditionEclipse &condEcl,
                                  Satellite &satellite);
 
 

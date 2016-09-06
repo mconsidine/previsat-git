@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 septembre 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -78,11 +78,11 @@
 #pragma GCC diagnostic warning "-Wfloat-conversion"
 #endif
 #include <QToolTip>
-#include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
+#include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/exceptions/message.h"
@@ -2571,9 +2571,9 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipseTotale()) ?
-                            crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ?
-                                Qt::green : Qt::yellow;
+                const QColor col = (satellites.at(isat).conditionEclipse().isEclipseTotale()) ?
+                            crimson : (satellites.at(isat).conditionEclipse().isEclipsePartielle() ||
+                                       satellites.at(isat).conditionEclipse().isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
                 scene3->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -2704,9 +2704,9 @@ void PreviSat::AffichageCourbes() const
                                         cos(satellites.at(isat).azimut()));
 
                 rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-                const QColor col = (satellites.at(isat).isEclipseTotale()) ?
-                            crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ?
-                                Qt::green : Qt::yellow;
+                const QColor col = (satellites.at(isat).conditionEclipse().isEclipseTotale()) ?
+                            crimson : (satellites.at(isat).conditionEclipse().isEclipsePartielle() ||
+                                       satellites.at(isat).conditionEclipse().isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
                 scene2->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
             }
         }
@@ -2913,18 +2913,19 @@ void PreviSat::AffichageDonnees()
             }
 
             // Magnitude/Illumination
-            const double fractionilluminee = 100. * satellites.at(0).fractionIlluminee();
-            chaine2 = (satellites.at(0).luminositeEclipseLune() < satellites.at(0).luminositeEclipseSoleil()) ? " " + tr("Lune") : "";
+            const double fractionilluminee = 100. * satellites.at(0).magnitude().fractionIlluminee();
+            chaine2 = (satellites.at(0).conditionEclipse().luminositeEclipseLune() <
+                       satellites.at(0).conditionEclipse().luminositeEclipseSoleil()) ? " " + tr("Lune") : "";
             if (satellites.at(0).magnitudeStandard() > 98.) {
 
                 // Magnitude standard inconnue
-                if (satellites.at(0).isEclipseTotale()) {
+                if (satellites.at(0).conditionEclipse().isEclipseTotale()) {
                     ui->magnitudeSat->setText(tr("Satellite en éclipse totale%1").arg(chaine2));
                 } else {
                     chaine = tr("Satellite non éclipsé");
-                    if (satellites.at(0).isEclipsePartielle())
+                    if (satellites.at(0).conditionEclipse().isEclipsePartielle())
                         chaine = tr("Satellite en éclipse partielle%1").arg(chaine2);
-                    if (satellites.at(0).isEclipseAnnulaire())
+                    if (satellites.at(0).conditionEclipse().isEclipseAnnulaire())
                         chaine = tr("Satellite en éclipse annulaire%1").arg(chaine2);
                     chaine = chaine.append(" (%1%)");
                     chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
@@ -2936,11 +2937,11 @@ void PreviSat::AffichageDonnees()
                 if (satellites.at(0).isVisible()) {
 
                     // Satellite eclipse
-                    if (satellites.at(0).isEclipseTotale()) {
+                    if (satellites.at(0).conditionEclipse().isEclipseTotale()) {
                         ui->magnitudeSat->setText(tr("Satellite en éclipse totale%1").arg(chaine2));
                     } else {
                         chaine = tr("Magnitude (Illumination) : %1%2");
-                        double magnitude = satellites.at(0).magnitude();
+                        double magnitude = satellites.at(0).magnitude().magnitude();
 
                         // Le satellite est un Iridium, on calcule la veritable magnitude (flash)
                         if (tabStatutIridium.join("").contains(satellites.at(0).tle().norad())) {
@@ -2948,7 +2949,7 @@ void PreviSat::AffichageDonnees()
                                                                                ui->effetEclipsesMagnitude->isChecked(),
                                                                                ui->satellitesOperationnelsIri->isChecked(),
                                                                                tabStatutIridium, satellites.at(0), soleil,
-                                                                               observateurs.at(0));
+                                                                               satellites.at(0).conditionEclipse(), observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
 
                             double crep = 0.;
@@ -2975,7 +2976,8 @@ void PreviSat::AffichageDonnees()
                         if (tabStatutMetOp.join("").contains(satellites.at(0).tle().norad())) {
                             const double mag = MetOp::CalculMagnitudeMetOp(ui->extinctionAtmospherique->isChecked(),
                                                                            ui->effetEclipsesMagnitude->isChecked(), tabStatutMetOp,
-                                                                           satellites.at(0), soleil, observateurs.at(0));
+                                                                           satellites.at(0), soleil, satellites.at(0).conditionEclipse(),
+                                                                           observateurs.at(0));
                             magnitude = qMin(magnitude, mag);
 
                             double crep = 0.;
@@ -3001,27 +3003,27 @@ void PreviSat::AffichageDonnees()
                         chaine = chaine.append((" (%1%)"));
                         chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
 
-                        if (satellites.at(0).isEclipseAnnulaire() || satellites.at(0).isEclipsePartielle()) {
+                        if (satellites.at(0).conditionEclipse().isEclipseAnnulaire() || satellites.at(0).conditionEclipse().isEclipsePartielle()) {
                             chaine = chaine.append(" %1/%2");
                             chaine = chaine.arg((chaine2.length() > 0) ? tr("L") : tr("T"));
                         }
 
-                        if (satellites.at(0).isEclipsePartielle())
+                        if (satellites.at(0).conditionEclipse().isEclipsePartielle())
                             chaine = chaine.arg(tr("P"));
 
-                        if (satellites.at(0).isEclipseAnnulaire())
+                        if (satellites.at(0).conditionEclipse().isEclipseAnnulaire())
                             chaine = chaine.arg(tr("A"));
 
                         ui->magnitudeSat->setText(chaine);
                     }
                 } else {
-                    if (satellites.at(0).isEclipseTotale()) {
+                    if (satellites.at(0).conditionEclipse().isEclipseTotale()) {
                         chaine = tr("Satellite en éclipse totale%1").arg(chaine2);
                     } else {
                         chaine = tr("Satellite non éclipsé");
-                        if (satellites.at(0).isEclipsePartielle())
+                        if (satellites.at(0).conditionEclipse().isEclipsePartielle())
                             chaine = tr("Satellite en éclipse partielle%1").arg(chaine2);
-                        if (satellites.at(0).isEclipseAnnulaire())
+                        if (satellites.at(0).conditionEclipse().isEclipseAnnulaire())
                             chaine = tr("Satellite en éclipse annulaire%1").arg(chaine2);
                         chaine = chaine.append(" (%1%)");
                         chaine = chaine.arg(fractionilluminee, 0, 'f', 0);
@@ -3035,12 +3037,12 @@ void PreviSat::AffichageDonnees()
             ui->nbOrbitesSat->setText(chaine.arg(satellites.at(0).nbOrbites() + deltaNbOrb));
 
             // Calcul de la prochaine transition J/N
-            if (!(isEcl && satellites.at(0).isEclipseTotale()))
+            if (!(isEcl && satellites.at(0).conditionEclipse().isEclipseTotale()))
                 acalcDN = true;
 
             if (acalcDN) {
                 CalculDN();
-                isEcl = satellites.at(0).isEclipseTotale();
+                isEcl = satellites.at(0).conditionEclipse().isEclipseTotale();
             }
 
             const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
@@ -3048,7 +3050,7 @@ void PreviSat::AffichageDonnees()
             if (delai >= -EPS_DATES && dateEcl.jourJulienUTC() < satellites.at(0).traceAuSol().last().at(3)) {
 
                 chaine = tr("Prochain %1 :");
-                ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).isEclipseTotale()) ? tr("N>J") : tr("J>N")));
+                ui->lbl_prochainJN->setText(chaine.arg((satellites.at(0).conditionEclipse().isEclipseTotale()) ? tr("N>J") : tr("J>N")));
 
                 // Delai de l'evenement
                 chaine = tr("%1 (dans %2).");
@@ -3573,9 +3575,10 @@ void PreviSat::AffichageElementsOsculateurs() const
 
     // Proprietes du signal (Doppler@100MHz, attenuation@100MHz, delai en millisecondes)
     chaine = "%1";
-    ui->doppler->setText(((satellites.at(0).doppler() >= 0.) ? "+" : "-") + chaine.arg(fabs(satellites.at(0).doppler()), 0, 'f', 0) + " Hz");
-    ui->attenuation->setText(chaine.arg(satellites.at(0).attenuation(), 0, 'f', 2) + " dB");
-    ui->delai->setText(chaine.arg(satellites.at(0).delai(), 0, 'f', 2) + " ms");
+    ui->doppler->setText(((satellites.at(0).signal().doppler() >= 0.) ? "+" : "-") +
+                         chaine.arg(fabs(satellites.at(0).signal().doppler()), 0, 'f', 0) + " Hz");
+    ui->attenuation->setText(chaine.arg(satellites.at(0).signal().attenuation(), 0, 'f', 2) + " dB");
+    ui->delai->setText(chaine.arg(satellites.at(0).signal().delai(), 0, 'f', 2) + " ms");
 
     /* Retour */
     return;
@@ -3687,8 +3690,9 @@ void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
     const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-    const QColor col = (satellites.at(isat).isEclipseTotale()) ?
-                crimson : (satellites.at(isat).isEclipsePartielle() || satellites.at(isat).isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
+    const QColor col = (satellites.at(isat).conditionEclipse().isEclipseTotale()) ?
+                crimson : (satellites.at(isat).conditionEclipse().isEclipsePartielle() ||
+                           satellites.at(isat).conditionEclipse().isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
     scene->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
 
     // Nom des satellites
@@ -3948,9 +3952,9 @@ void PreviSat::CalculDN() const
     /* Initialisations */
 
     /* Corps de la methode */
-    dateEcl = Date(satellites[0].CalculDateOmbrePenombreSuiv(dateCourante, ui->eclipsesLune->isChecked(),
-                                                             ui->refractionPourEclipses->isChecked(),
-                                                             ui->nombreTrajectoires->value()), offsetUTC);
+    dateEcl = Date(satellites[0].CalculDateOmbrePenombreSuiv(dateCourante, satellites[0].conditionEclipse(), ui->eclipsesLune->isChecked(),
+            ui->refractionPourEclipses->isChecked(),
+            ui->nombreTrajectoires->value()), offsetUTC);
     acalcDN = false;
 
     /* Retour */
@@ -10674,10 +10678,8 @@ void PreviSat::on_rechercheCreerTLE_clicked()
             // Magnitude
             double mag;
             if (sats.at(isat).magnitudeStandard() < 98.9) {
-                const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).no() * DEUX_PI *
-                                                               NB_JOUR_PAR_MIN), DEUX_TIERS);
-                mag = sats.at(isat).magnitudeStandard() - 15.75 + 5. *
-                        log10(1.45 * (ax * 1. - tabtle.at(isat).ecco()));
+                const double ax = RAYON_TERRESTRE * qPow(KE / (tabtle.at(isat).no() * DEUX_PI * NB_JOUR_PAR_MIN), DEUX_TIERS);
+                mag = sats.at(isat).magnitudeStandard() - 15.75 + 5. * log10(1.45 * (ax * 1. - tabtle.at(isat).ecco()));
             } else {
                 mag = -10.;
             }

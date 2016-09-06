@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    22 aout 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -216,7 +216,8 @@ void Iridium::CalculFlashsIridium(const Conditions &conditions, Observateur &obs
 }
 
 double Iridium::CalculMagnitudeIridium(const bool extinction, const bool eclPartielle, const bool ope, const QStringList &tabSts,
-                                       const Satellite &satellite, const Soleil &soleil, const Observateur &observateur)
+                                       const Satellite &satellite, const Soleil &soleil, const ConditionEclipse &condEcl,
+                                       const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
@@ -242,7 +243,7 @@ double Iridium::CalculMagnitudeIridium(const bool extinction, const bool eclPart
         _psol = true;
 
         const double angRef = AngleReflexion(satellite, soleil);
-        magnitude = MagnitudeFlash(extinction, eclPartielle, angRef, observateur, soleil, sat);
+        magnitude = MagnitudeFlash(extinction, eclPartielle, angRef, observateur, soleil, condEcl, sat);
     }
 
     /* Retour */
@@ -297,7 +298,7 @@ void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
  * Determination de la magnitude du flash
  */
 double Iridium::MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
-                               const Soleil &soleil, Satellite &satellite)
+                               const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -360,14 +361,14 @@ double Iridium::MagnitudeFlash(const bool ext, const bool eclPartielle, const do
 
     // Prise en compte des eclipses partielles ou annulaires
     if (eclPartielle) {
-        const double luminositeEclipse = qMin(satellite.luminositeEclipseLune(), satellite.luminositeEclipseSoleil());
+        const double luminositeEclipse = qMin(condEcl.luminositeEclipseLune(), condEcl.luminositeEclipseSoleil());
         if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
             magnitude += -2.5 * log10(luminositeEclipse);
     }
 
     // Prise en compte de l'extinction atmospherique
     if (ext)
-        magnitude += satellite.ExtinctionAtmospherique(observateur);
+        magnitude += satellite.magnitude().ExtinctionAtmospherique(satellite.hauteur(), observateur);
 
     /* Retour */
     return (magnitude);

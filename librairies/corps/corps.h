@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    5 septembre 2016
  *
  */
 
@@ -126,14 +126,6 @@ public:
      * @param beta rayon apparent du corps
      */
     void CalculZoneVisibilite(const double beta);
-
-    /**
-     * @brief ExtinctionAtmospherique Determination de l'extinction atmospherique, issu de l'article
-     * "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
-     * @param observateur observateur
-     * @return correction de magnitude correspondant a l'extinction atmospherique
-     */
-    double ExtinctionAtmospherique(const Observateur &observateur);
 
     /**
      * @brief Sph2Cart Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales

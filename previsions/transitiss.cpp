@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    14 aout 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -222,14 +222,16 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.distance());
 
                         const bool itr = (ang <= rayonApparent);
-                        sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
+                        ConditionEclipse condEcl;
+                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune() && typeCorps == 2,
+                                                       conditions.refr());
 
-                        if (itr || !sat.isEclipseTotale()) {
+                        if (itr || !condEcl.isEclipseTotale()) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[1] = date2;
                             CalculElements(sat, observateur, minmax[0], typeCorps, itr,
-                                           conditions.seuilConjonction(), dates);
+                                    conditions.seuilConjonction(), dates);
 
                             // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
                             QString transit = "";
@@ -255,7 +257,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 if (conditions.acalcEclipseLune())
                                     lune.CalculPosition(dates[j]);
 
-                                sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
+                                condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(),
+                                                               conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
 
                                 // Ecriture du resultat
 
@@ -291,8 +294,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
                                         arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
-                                        arg((sat.isEclipseTotale()) ?
-                                                QObject::tr("Omb") : (sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ?
+                                        arg((condEcl.isEclipseTotale()) ?
+                                                QObject::tr("Omb") : (condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ?
                                                     QObject::tr("Pen") : QObject::tr("Lum")).
                                         arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
