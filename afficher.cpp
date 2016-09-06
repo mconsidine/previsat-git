@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    14 aout 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -1148,8 +1148,8 @@ void Afficher::loadSky(const int j)
 
         rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
         const QPen noir(Qt::black);
-        const QColor col = (sat.isEclipseTotale()) ?
-                    crimson : (sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
+        const QColor col = (sat.conditionEclipse().isEclipseTotale()) ?
+                    crimson : (sat.conditionEclipse().isEclipsePartielle() || sat.conditionEclipse().isEclipseAnnulaire()) ? Qt::green : Qt::yellow;
         sceneSky->addEllipse(rectangle, noir, QBrush(col, Qt::SolidPattern));
     }
 

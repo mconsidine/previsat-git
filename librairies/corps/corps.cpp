@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -394,29 +394,6 @@ void Corps::CalculZoneVisibilite(const double beta)
 
     /* Retour */
     return;
-}
-
-/*
- * Determination de l'extinction atmospherique, issu de l'article
- * "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
- */
-double Corps::ExtinctionAtmospherique(const Observateur &observateur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    double corr = 0.;
-
-    /* Corps de la methode */
-    if (_hauteur >= 0.) {
-
-        const double cosz = cos(PI_SUR_DEUX - _hauteur);
-        const double x = 1. / (cosz + 0.025 * exp(-11. * cosz));
-        corr = x * (0.016 + observateur.aray() + observateur.aaer());
-    }
-
-    /* Retour */
-    return (corr);
 }
 
 /*

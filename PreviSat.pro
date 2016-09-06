@@ -36,8 +36,8 @@
 # >    21 aout 2016
 
 #-------------------------------------------------
-VER_MAJ = 3.5
-VERSION = 3.5.4.4
+VER_MAJ = 4.0
+VERSION = 4.0.0.0
 ANNEES_DEV = 2005-2016
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -87,9 +87,12 @@ SOURCES += main.cpp                                    \
     librairies/corps/etoiles/constellation.cpp         \
     librairies/corps/etoiles/etoile.cpp                \
     librairies/corps/etoiles/ligneconstellation.cpp    \
+    librairies/corps/satellite/conditioneclipse.cpp    \
     librairies/corps/satellite/elementsosculateurs.cpp \
+    librairies/corps/satellite/magnitude.cpp           \
     librairies/corps/satellite/satellite.cpp           \
     librairies/corps/satellite/sgp4.cpp                \
+    librairies/corps/satellite/signal.cpp              \
     librairies/corps/satellite/tle.cpp                 \
     librairies/corps/systemesolaire/lune.cpp           \
     librairies/corps/systemesolaire/planete.cpp        \
@@ -120,9 +123,12 @@ HEADERS += previsat.h                                  \
     librairies/corps/etoiles/constellation.h           \
     librairies/corps/etoiles/etoile.h                  \
     librairies/corps/etoiles/ligneconstellation.h      \
+    librairies/corps/satellite/conditioneclipse.h      \
     librairies/corps/satellite/elementsosculateurs.h   \
+    librairies/corps/satellite/magnitude.h             \
     librairies/corps/satellite/satellite.h             \
     librairies/corps/satellite/sgp4.h                  \
+    librairies/corps/satellite/signal.h                \
     librairies/corps/satellite/tle.h                   \
     librairies/corps/systemesolaire/lune.h             \
     librairies/corps/systemesolaire/LuneConstants.h    \

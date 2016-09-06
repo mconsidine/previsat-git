@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 aout 2016
+ * >    5 septembre 2016
  *
  */
 
@@ -141,16 +141,19 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                     lune.CalculPosition(date);
 
                 // Conditions d'eclipse du satellite
-                sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
+                ConditionEclipse condEcl;
+                condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
                 // Le satellite n'est pas eclipse
-                if (!sat.isEclipseTotale() || !conditions.ecl()) {
+                if (!condEcl.isEclipseTotale() || !conditions.ecl()) {
 
                     // Magnitude du satellite
-                    sat.CalculMagnitude(obs, conditions.ext(), conditions.effetEclipsePartielle());
+                    Magnitude magn;
+                    magn.Calcul(obs, condEcl, sat.distance(), sat.hauteur(), sat.magnitudeStandard(), conditions.ext(),
+                                conditions.effetEclipsePartielle());
 
                     // Toutes les conditions sont remplies
-                    if (sat.magnitude() < conditions.mgn1() ||
+                    if (magn.magnitude() < conditions.mgn1() ||
                             (sat.magnitudeStandard() > 98. && conditions.mgn1() > 98.) || !conditions.ecl()) {
 
                         if (ent == 2)
@@ -165,9 +168,8 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         bool afin = false;
                         while (!afin) {
 
-                            if ((!sat.isEclipseTotale() || !conditions.ecl()) &&
-                                    (sat.magnitude() < conditions.mgn1() ||
-                                     sat.magnitudeStandard() > 98. || !conditions.ecl())) {
+                            if ((!condEcl.isEclipseTotale() || !conditions.ecl()) &&
+                                    (magn.magnitude() < conditions.mgn1() || sat.magnitudeStandard() > 98. || !conditions.ecl())) {
 
                                 // Altitude du satellite
                                 sat.CalculLatitude(sat.position());
@@ -207,17 +209,17 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const QString de = Maths::ToSexagesimal(sat.declinaison(), DEGRE, 2, 0, true, false);
 
                                 // Magnitude
-                                const double mag = sat.magnitude();
-                                QString magn;
+                                const double mag = magn.magnitude();
+                                QString magnSat;
                                 if (mag > 98.) {
-                                    magn = (conditions.ecl() || sat.magnitudeStandard() > 98.) ?
+                                    magnSat = (conditions.ecl() || sat.magnitudeStandard() > 98.) ?
                                                 " ????  " : " ----  ";
                                 } else {
                                     const QString fmagn = "%1%2%3%4";
                                     const QString esp = (mag < 9.95) ? " " : "";
                                     const QString signe = (mag >= 0.) ? "+" : "-";
-                                    const QString pen = (sat.isEclipsePartielle() || sat.isEclipseAnnulaire()) ? "* " : "  ";
-                                    magn = fmagn.arg(esp).arg(signe).arg(fabs(mag), 0, 'f', 1, QChar('0')).arg(pen);
+                                    const QString pen = (condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "* " : "  ";
+                                    magnSat = fmagn.arg(esp).arg(signe).arg(fabs(mag), 0, 'f', 1, QChar('0')).arg(pen);
                                 }
 
                                 // Altitude du satellite et distance a l'observateur
@@ -233,7 +235,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 const QString result
                                         (fmt.arg(date2.ToShortDateAMJ(FORMAT_COURT, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
-                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(magn).
+                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(magnSat).
                                          arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1).arg(azs).arg(hts).
                                          arg(sat.tle().norad()));
 
@@ -264,8 +266,10 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 } else {
                                     if (conditions.acalcEclipseLune())
                                         lune.CalculPosition(date);
-                                    sat.CalculSatelliteEclipse(soleil, lune, conditions.acalcEclipseLune(), conditions.refr());
-                                    sat.CalculMagnitude(observateur, conditions.ext(), conditions.effetEclipsePartielle());
+                                    condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(),
+                                                                                  conditions.refr());
+                                    magn.Calcul(observateur, condEcl, sat.distance(), sat.hauteur(), sat.magnitudeStandard(),
+                                                conditions.ext(), conditions.effetEclipsePartielle());
                                     sat.CalculCoordEquat(observateur);
                                 }
                             }
