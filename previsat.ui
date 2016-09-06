@@ -14832,6 +14832,7 @@ le flux vidéo</string>
     <addaction name="separator"/>
     <addaction name="actionMettre_jour_TLE_courant"/>
     <addaction name="actionMettre_jour_groupe_TLE"/>
+    <addaction name="actionMettre_jour_tous_les_groupes_de_TLE"/>
     <addaction name="separator"/>
     <addaction name="actionVision_nocturne"/>
     <addaction name="separator"/>
@@ -15122,10 +15123,18 @@ le flux vidéo</string>
   </action>
   <action name="actionMettre_jour_groupe_TLE">
    <property name="text">
-    <string>Mettre à jour groupe TLE</string>
+    <string>Mettre à jour groupe TLE courant</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F5</string>
+   </property>
+  </action>
+  <action name="actionMettre_jour_tous_les_groupes_de_TLE">
+   <property name="text">
+    <string>Mettre à jour tous les groupes de TLE</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
    </property>
   </action>
  </widget>

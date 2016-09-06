@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    6 septembre 2016
  *
  */
 
@@ -10277,6 +10277,59 @@ void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
 void PreviSat::on_actionMettre_jour_groupe_TLE_triggered()
 {
     on_majMaintenant_clicked();
+}
+
+void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    aupdnow = true;
+    dirDwn = dirTmp;
+    ui->majMaintenant->setEnabled(false);
+    ui->compteRenduMaj->clear();
+    ui->compteRenduMaj->setVisible(true);
+
+    /* Corps de la methode */
+    QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
+    fi.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fi);
+
+    for(int i=0; i<ui->groupeTLE->count(); i++) {
+
+        if (ui->groupeTLE->itemText(i).contains(tr("Tous") + "@")) {
+            const QString groupeTLE = ui->groupeTLE->itemText(i).toLower();
+            messagesStatut->setText(tr("Mise à jour de tous les groupes de TLE en cours..."));
+
+            ui->affichageMsgMAJ->setVisible(false);
+            ui->frameBarreProgression->setVisible(true);
+            while (!flux.atEnd()) {
+                const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
+                if (ligne.at(0) == groupeTLE) {
+
+                    QString adresse = ligne.at(0).split("@", QString::SkipEmptyParts).at(1);
+                    if (adresse.contains("celestrak"))
+                        adresse = adresseCelestrakNorad;
+                    if (adresse.contains("astropedia"))
+                        adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
+                    if (!adresse.startsWith("http://"))
+                        adresse.insert(0, "http://");
+                    if (!adresse.endsWith("/"))
+                        adresse.append("/");
+
+                    const QStringList listeTLEs = ligne.at(2).split(",", QString::SkipEmptyParts);
+                    foreach(QString file, listeTLEs)
+                        AjoutFichier(QUrl(adresse + file.trimmed()));
+
+                    if (downQueue.isEmpty())
+                        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+                }
+            }
+        }
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_parcourirMaj1_clicked()

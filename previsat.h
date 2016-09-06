@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 aout 2016
+ * >    6 septembre 2016
  *
  */
 
@@ -543,6 +543,7 @@ private slots:
     void on_majMaintenant_clicked();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
+    void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
