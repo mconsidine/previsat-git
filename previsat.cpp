@@ -10295,17 +10295,19 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
 
-    for(int i=0; i<ui->groupeTLE->count(); i++) {
+    while (!flux.atEnd()) {
 
-        if (ui->groupeTLE->itemText(i).contains(tr("Tous") + "@")) {
-            const QString groupeTLE = ui->groupeTLE->itemText(i).toLower();
-            messagesStatut->setText(tr("Mise à jour de tous les groupes de TLE en cours..."));
+        const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
+        if (ligne.at(0).contains(tr("tous") + "@")) {
 
-            ui->affichageMsgMAJ->setVisible(false);
-            ui->frameBarreProgression->setVisible(true);
-            while (!flux.atEnd()) {
-                const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
-                if (ligne.at(0) == groupeTLE) {
+            for(int i=0; i<ui->groupeTLE->count(); i++) {
+
+                const QString groupeTLE = ui->groupeTLE->itemText(i).toLower();
+                if (ligne.at(0).toLower() == groupeTLE) {
+
+                    messagesStatut->setText(tr("Mise à jour de tous les groupes de TLE en cours..."));
+                    ui->affichageMsgMAJ->setVisible(false);
+                    ui->frameBarreProgression->setVisible(true);
 
                     QString adresse = ligne.at(0).split("@", QString::SkipEmptyParts).at(1);
                     if (adresse.contains("celestrak"))
@@ -11240,7 +11242,7 @@ void PreviSat::on_parametrageDefautIri_clicked()
     ui->affichage3lignesIri->setChecked(true);
     if (!ui->calculsIri->isEnabled() && ! ui->afficherIri->isEnabled() && threadCalculs == NULL)
         ui->calculsIri->setEnabled(true);
-    
+
     /* Retour */
     return;
 }
