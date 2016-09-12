@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 septembre 2016
+ * >    12 septembre 2016
  *
  */
 
@@ -249,6 +249,8 @@ static bool amajDeb;
 static bool amajPrevi;
 static bool atrouve;
 static bool aupdnow;
+static bool aupdateCF5;
+static int cptCF5;
 static QNetworkAccessManager mng;
 static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
@@ -4205,6 +4207,7 @@ void PreviSat::MajFichierTLE()
         amajPrevi = false;
         atrouve = true;
         aupdnow = false;
+        aupdateCF5 = false;
         dirDwn = dirTle;
 
         messagesStatut->setText(tr("Mise à jour du fichier TLE %1 en cours...").arg(fi.fileName()));
@@ -5600,11 +5603,15 @@ void PreviSat::FinEnregistrementFichier()
             if (fd.exists())
                 fd.remove();
 
-            QString msg = tr("Erreur lors du téléchargement du fichier %1");
-            if (rep->error())
-                msg += " : " + rep->errorString();
-            Message::Afficher(msg.arg(ff.fileName()), WARNING);
-            ui->compteRenduMaj->setVisible(false);
+            if (aupdateCF5) {
+                cptCF5++;
+            } else {
+                QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                if (rep->error())
+                    msg += " : " + rep->errorString();
+                Message::Afficher(msg.arg(ff.fileName()), WARNING);
+                ui->compteRenduMaj->setVisible(false);
+            }
 
         } else {
 
@@ -5730,6 +5737,14 @@ void PreviSat::TelechargementSuivant()
 
         emit TelechargementFini();
 
+        if (aupdateCF5 && cptCF5 > 0) {
+            QString msg = tr("Erreur lors du téléchargement des fichiers TLE");
+            if (rep->error())
+                msg += " : " + rep->errorString();
+            Message::Afficher(msg, WARNING);
+            ui->compteRenduMaj->setVisible(false);
+        }
+
         atrouve = false;
         aupdnow = false;
         ui->majMaintenant->setEnabled(true);
@@ -5743,8 +5758,7 @@ void PreviSat::TelechargementSuivant()
         const QString dirHttpPrevi =
                 settings.value("fichier/dirHttpPrevi", "").toString().trimmed().replace(QCoreApplication::organizationDomain(), "/") +
                 "commun/data/";
-        const QString fic = (url.path().contains(dirHttpPrevi)) ? url.path().replace(dirHttpPrevi, "") :
-                                                                  QFileInfo(url.path()).fileName();
+        const QString fic = (url.path().contains(dirHttpPrevi)) ? url.path().replace(dirHttpPrevi, "") : QFileInfo(url.path()).fileName();
 
         ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
         if (ui->miseAJourTLE->isVisible() && aupdnow) {
@@ -10276,6 +10290,8 @@ void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
 
 void PreviSat::on_actionMettre_jour_groupe_TLE_triggered()
 {
+    aupdateCF5 = true;
+    cptCF5 = 0;
     on_majMaintenant_clicked();
 }
 
@@ -10285,6 +10301,8 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
 
     /* Initialisations */
     aupdnow = true;
+    aupdateCF5 = true;
+    cptCF5 = 0;
     dirDwn = dirTmp;
     ui->majMaintenant->setEnabled(false);
     ui->compteRenduMaj->clear();
@@ -10298,7 +10316,7 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     while (!flux.atEnd()) {
 
         const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
-        if (ligne.at(0).contains(tr("tous") + "@")) {
+        if (ligne.at(0).startsWith(tr("tous") + "@")) {
 
             for(int i=0; i<ui->groupeTLE->count(); i++) {
 
