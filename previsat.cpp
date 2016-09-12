@@ -3954,9 +3954,8 @@ void PreviSat::CalculDN() const
     /* Initialisations */
 
     /* Corps de la methode */
-    dateEcl = Date(satellites[0].CalculDateOmbrePenombreSuiv(dateCourante, satellites[0].conditionEclipse(), ui->eclipsesLune->isChecked(),
-            ui->refractionPourEclipses->isChecked(),
-            ui->nombreTrajectoires->value()), offsetUTC);
+    dateEcl = Date(satellites[0].CalculDateOmbrePenombreSuiv(dateCourante, satellites[0].conditionEclipse(), ui->nombreTrajectoires->value(),
+            ui->eclipsesLune->isChecked(), ui->refractionPourEclipses->isChecked()), offsetUTC);
     acalcDN = false;
 
     /* Retour */
