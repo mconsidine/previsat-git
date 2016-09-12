@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    12 septembre 2016
  *
  */
 
@@ -157,11 +157,13 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
             int itle = 0;
             while (!flux.atEnd()) {
 
-                const QString ligne = flux.readLine();
-                if (nomsat == "---" || nomsat.isEmpty())
-                    nomsat = ligne.trimmed();
+                const QString ligne = flux.readLine().trimmed();
 
                 if (ligne.size() > 0) {
+
+                    if (nomsat == "---" || nomsat.isEmpty())
+                        nomsat = ligne;
+
                     if (ligne.mid(0, 2) == "1 ") {
                         li1 = ligne;
 
