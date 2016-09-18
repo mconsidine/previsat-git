@@ -58,7 +58,6 @@
 #include "librairies/maths/maths.h"
 
 bool Satellite::initCalcul = false;
-static QString noradStationSpatiale = "25544";
 
 
 /* Constructeurs */
@@ -469,7 +468,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul de la trajectoire
             if (nbTracesAuSol > 0) {
 
-                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == noradStationSpatiale) ?
+                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == NORAD_STATION_SPATIALE) ?
                             Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
                                  false) : Date(date.jourJulienUTC(), 0., false);
 

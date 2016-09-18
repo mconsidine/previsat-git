@@ -42,6 +42,7 @@
 
 #include "elementsosculateurs.h"
 #include "magnitude.h"
+#include "satelliteconstants.h"
 #include "sgp4.h"
 #include "signal.h"
 #include "tle.h"
