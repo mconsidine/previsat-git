@@ -127,6 +127,7 @@ HEADERS += previsat.h                                  \
     librairies/corps/satellite/elementsosculateurs.h   \
     librairies/corps/satellite/magnitude.h             \
     librairies/corps/satellite/satellite.h             \
+    librairies/corps/satellite/satelliteconstants.h    \
     librairies/corps/satellite/sgp4.h                  \
     librairies/corps/satellite/signal.h                \
     librairies/corps/satellite/tle.h                   \

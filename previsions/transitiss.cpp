@@ -61,7 +61,6 @@ static const double PAS0 = NB_JOUR_PAR_MIN;
 static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 
-static QString noradStationSpatiale = "25544";
 static QStringList res;
 static QVector<TLE> tabtle;
 static QVector<QList<QVector<double> > > tabEphem;
@@ -80,7 +79,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     /* Initialisations */
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
     const QString fmt = "%1%2 %3 %4 %5 %6 %7   %8    %9   %10 %11 %12%13  %14%15";
-    const QStringList listeTLE(noradStationSpatiale);
+    const QStringList listeTLE(NORAD_STATION_SPATIALE);
 
     // Lecture du TLE
     TLE::LectureFichier(conditions.fic(), listeTLE, tabtle);

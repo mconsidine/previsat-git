@@ -144,7 +144,6 @@ static QString ctypeAOS;
 static QString nomfic;
 static QString ficgz;
 static QString nor;
-static QString noradStationSpatiale = "25544";
 static QVector<bool> bipSatAOS;
 static QVector<bool> bipSatLOS;
 static QVector<TLE> tles;
@@ -1148,7 +1147,7 @@ void PreviSat::DemarrageApplication()
 
     // Affichage du Wall Command Center
     ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
-    const bool affWCC = ui->mccISS->isChecked() && !satellites.isEmpty() && satellites.at(0).tle().norad() == noradStationSpatiale &&
+    const bool affWCC = ui->mccISS->isChecked() && !satellites.isEmpty() && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE &&
             !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible();
     ui->frameCoordISS->move(ui->carte->pos());
     ui->frameCoordISS->setVisible(affWCC);
@@ -1614,7 +1613,7 @@ void PreviSat::AffichageCourbes() const
         // Affichage de la grille de coordonnees
         if (ui->affgrille->isChecked()) {
 
-            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == noradStationSpatiale) ?
+            const QPen pen = QPen((!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) ?
                                       ((ui->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
             scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
             scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
@@ -1863,7 +1862,7 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
         if (ui->affSAA_ZOE->isChecked() && ui->mccISS->isChecked() && !satellites.isEmpty() &&
-                satellites.at(0).tle().norad() == noradStationSpatiale && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
+                satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
 
             // Zone Of Exclusion (ZOE)
             QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -1952,7 +1951,7 @@ void PreviSat::AffichageCourbes() const
                     scene->addItem(txtSta);
 
                     if (ui->affCerclesAcq->isChecked() && !satellites.isEmpty() && !satellites.at(0).isIeralt() && !l1.isEmpty() &&
-                            !l2.isEmpty() && satellites.at(0).tle().norad() == noradStationSpatiale && !ui->ciel->isVisible()) {
+                            !l2.isEmpty() && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE && !ui->ciel->isVisible()) {
 
                         const QPen crayon2 = (ui->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = satellites.at(0);
@@ -2037,7 +2036,7 @@ void PreviSat::AffichageCourbes() const
 
                         if (ui->mccISS->isChecked()) {
 
-                            if (satellites.at(0).tle().norad() == noradStationSpatiale) {
+                            if (satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) {
 
                                 // Affichage du numero d'orbite
                                 if (satellites.at(0).traceAuSol().at(j).at(1) < 90. &&
@@ -2061,7 +2060,7 @@ void PreviSat::AffichageCourbes() const
 
                                 if (ui->styleWCC->isChecked()) {
 
-                                    if (satellites.at(0).tle().norad() == noradStationSpatiale)
+                                    if (satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE)
                                         crayon = QPen(Qt::white, 2);
 
                                     // Affichage des crochets des transitions jour/nuit
@@ -2232,7 +2231,7 @@ void PreviSat::AffichageCourbes() const
                         transform.translate(lsat, bsat);
 
                         double angle = 0.;
-                        if (ui->rotationIconeISS->isChecked() && satellites.at(isat).tle().norad() == noradStationSpatiale) {
+                        if (ui->rotationIconeISS->isChecked() && satellites.at(isat).tle().norad() == NORAD_STATION_SPATIALE) {
                             const double vxsat = satellites.at(isat).vitesse().x();
                             const double vysat = satellites.at(isat).vitesse().y();
                             const double vzsat = satellites.at(isat).vitesse().z();
@@ -3335,7 +3334,7 @@ void PreviSat::AffichageDonnees()
      * Donnees ISS sur le Wall Command Center
      */
     if (!satellites.isEmpty()) {
-        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == noradStationSpatiale && !l1.isEmpty() && !l2.isEmpty() &&
+        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE && !l1.isEmpty() && !l2.isEmpty() &&
                 !ui->ciel->isVisible()) {
 
             // Prochaine transition J/N
@@ -3912,7 +3911,7 @@ void PreviSat::CalculAgeTLETransitISS() const
     if (nbt > 0) {
 
         // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
-        const QStringList iss(noradStationSpatiale);
+        const QStringList iss(NORAD_STATION_SPATIALE);
         QVector<TLE> tleISS;
         TLE::LectureFichier(fichier, iss, tleISS);
         const double ageISS = dateCourante.jourJulienUTC() - tleISS.at(0).epoque().jourJulienUTC();
@@ -4025,7 +4024,7 @@ void PreviSat::EnchainementCalculs() const
     const bool acalcEclipseLune = ui->eclipsesLune->isChecked();
 
     // Nombre de traces au sol a afficher
-    const int nbTraces = (satellites.isEmpty()) ? 0 : (mcc && satellites.at(0).tle().norad() == noradStationSpatiale) ?
+    const int nbTraces = (satellites.isEmpty()) ? 0 : (mcc && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) ?
                                                       3 : (ui->afftraj->isChecked()) ? ui->nombreTrajectoires->value() : 0;
 
     // Prise en compte de l'extinction atmospherique
@@ -4035,7 +4034,7 @@ void PreviSat::EnchainementCalculs() const
     const bool effetEclipsePartielle = ui->effetEclipsesMagnitude->isChecked();
 
     // Calcul de la zone de visibilite des satellites
-    const bool visibilite = ui->affvisib->isChecked() || (mcc && satellites.at(0).tle().norad() == noradStationSpatiale);
+    const bool visibilite = ui->affvisib->isChecked() || (mcc && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE);
 
     // Calcul de la trace dans le ciel
     const bool traceCiel = (ui->afftraceCiel->isChecked() && ui->ciel->isVisible()) || ui->affradar->isChecked();
@@ -6316,7 +6315,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
 
                     CalculsAffichage();
 
-                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).tle().norad() == noradStationSpatiale && !l1.isEmpty() &&
+                    const bool affWCC = ui->mccISS->isChecked() && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE && !l1.isEmpty() &&
                             !l2.isEmpty() && !ui->ciel->isVisible();
                     ui->frameCoordISS->setVisible(affWCC);
                     ui->gmt->setVisible(affWCC);
@@ -7183,7 +7182,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->fluxVideo->setVisible(checked);
 
     // Affichage du blackboard
-    const bool tstSat = (satellites.isEmpty()) ? false : satellites.at(0).tle().norad() == noradStationSpatiale;
+    const bool tstSat = (satellites.isEmpty()) ? false : satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE;
     if (checked && tstSat && !l1.isEmpty() && !l2.isEmpty() && !ui->ciel->isVisible()) {
         ui->frameCoordISS->setVisible(true);
         ui->frameLat2->setVisible(true);
@@ -8028,7 +8027,7 @@ void PreviSat::on_liste1_clicked(const QModelIndex &index)
             l2 = "";
         }
 
-        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == noradStationSpatiale && !l1.isEmpty() && !l2.isEmpty() &&
+        if (ui->mccISS->isChecked() && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE && !l1.isEmpty() && !l2.isEmpty() &&
                 !ui->ciel->isVisible()) {
             ui->frameCoordISS->setVisible(true);
             ui->gmt->setVisible(true);
@@ -11905,7 +11904,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
-        const QStringList listeTLEs(noradStationSpatiale);
+        const QStringList listeTLEs(NORAD_STATION_SPATIALE);
         QVector<TLE> tabtle;
 
         // Verification du fichier TLE
