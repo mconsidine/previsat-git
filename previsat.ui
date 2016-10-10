@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -6303,7 +6303,7 @@
              </rect>
             </property>
             <property name="title">
-             <string>Signal</string>
+             <string>Divers</string>
             </property>
             <widget class="QLabel" name="lbl_doppler">
              <property name="geometry">
@@ -6381,6 +6381,32 @@
              </property>
              <property name="text">
               <string>150.74 dB</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="lbl_phasage">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>70</y>
+               <width>51</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Phasage :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="phasage">
+             <property name="geometry">
+              <rect>
+               <x>65</x>
+               <y>70</y>
+               <width>91</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>[ 15; 15; 30 ] 1000</string>
              </property>
             </widget>
            </widget>

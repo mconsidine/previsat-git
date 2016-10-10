@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    12 septembre 2016
+# >    10 octobre 2016
 
 #-------------------------------------------------
 VER_MAJ = 4.0
-VERSION = 4.0.0.2
+VERSION = 4.0.0.3
 ANNEES_DEV = 2005-2016
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -90,6 +90,7 @@ SOURCES += main.cpp                                    \
     librairies/corps/satellite/conditioneclipse.cpp    \
     librairies/corps/satellite/elementsosculateurs.cpp \
     librairies/corps/satellite/magnitude.cpp           \
+    librairies/corps/satellite/phasage.cpp             \
     librairies/corps/satellite/satellite.cpp           \
     librairies/corps/satellite/sgp4.cpp                \
     librairies/corps/satellite/signal.cpp              \
@@ -126,6 +127,7 @@ HEADERS += previsat.h                                  \
     librairies/corps/satellite/conditioneclipse.h      \
     librairies/corps/satellite/elementsosculateurs.h   \
     librairies/corps/satellite/magnitude.h             \
+    librairies/corps/satellite/phasage.h               \
     librairies/corps/satellite/satellite.h             \
     librairies/corps/satellite/satelliteconstants.h    \
     librairies/corps/satellite/sgp4.h                  \

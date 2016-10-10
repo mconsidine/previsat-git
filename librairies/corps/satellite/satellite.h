@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    10 octobre 2016
  *
  */
 
@@ -42,6 +42,7 @@
 
 #include "elementsosculateurs.h"
 #include "magnitude.h"
+#include "phasage.h"
 #include "satelliteconstants.h"
 #include "sgp4.h"
 #include "signal.h"
@@ -217,6 +218,7 @@ public:
     ConditionEclipse conditionEclipse() const;
     ElementsOsculateurs elements() const;
     Magnitude magnitude() const;
+    Phasage phasage() const;
     Signal signal() const;
     QList<QVector<double> > traceAuSol() const;
     QList<QVector<double> > traceCiel() const;
@@ -262,6 +264,7 @@ private:
     ConditionEclipse _conditionEclipse;
     ElementsOsculateurs _elements;
     Magnitude _magnitude;
+    Phasage _phasage;
     Signal _signal;
     QList<QVector<double> > _traceAuSol;
     QList<QVector<double> > _traceCiel;
