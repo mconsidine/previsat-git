@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 septembre 2016
+ * >    10 octobre 2016
  *
  */
 
@@ -3581,6 +3581,11 @@ void PreviSat::AffichageElementsOsculateurs() const
     ui->attenuation->setText(chaine.arg(satellites.at(0).signal().attenuation(), 0, 'f', 2) + " dB");
     ui->delai->setText(chaine.arg(satellites.at(0).signal().delai(), 0, 'f', 2) + " ms");
 
+    // Triplet de phasage
+    chaine = "[ %1; %2; %3 ] %4";
+    ui->phasage->setText(chaine.arg(satellites.at(0).phasage().nu0()).arg(satellites.at(0).phasage().dt0()).arg(satellites.at(0).phasage().ct0())
+                         .arg(satellites.at(0).phasage().nbOrb()));
+
     /* Retour */
     return;
 }
@@ -4975,7 +4980,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << chaine.arg(ui->champDeVue->text()).arg(ui->periode->text().replace(" ", "")) << endl << endl;
 
 
-        flux << tr("Signal :") << endl;
+        flux << tr("Divers :") << endl;
         chaine = tr("Doppler @ 100 MHz    : %1");
         flux << chaine.arg(ui->doppler->text()) << endl;
 
@@ -4983,7 +4988,10 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << chaine.arg(ui->attenuation->text()) << endl;
 
         chaine = tr("Délai                : %1");
-        flux << chaine.arg(ui->delai->text()) << endl;
+        flux << chaine.arg(ui->delai->text()) << endl << endl;
+
+        chaine = tr("Phasage              : %1");
+        flux << chaine.arg(ui->phasage->text()) << endl;
 
         sw.close();
     } catch (PreviSatException &e) {

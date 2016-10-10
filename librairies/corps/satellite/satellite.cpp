@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    10 octobre 2016
  *
  */
 
@@ -63,6 +63,11 @@ bool Satellite::initCalcul = false;
 /* Constructeurs */
 Satellite::Satellite()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
@@ -74,6 +79,9 @@ Satellite::Satellite()
     _t1 = 0.;
     _t2 = 0.;
     _t3 = 0.;
+
+    /* Retour */
+    return;
 }
 
 /* Destructeur */
@@ -475,6 +483,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
                 satellites[isat].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refraction);
             }
 
+            // Calcul du phasage
+            satellites[isat]._phasage.Calcul(satellites[isat]._elements, satellites[isat].tle().no());
+
             // Calcul de l'angle beta
             satellites[isat].CalculBeta(soleil);
 
@@ -833,6 +844,11 @@ ElementsOsculateurs Satellite::elements() const
 Magnitude Satellite::magnitude() const
 {
     return _magnitude;
+}
+
+Phasage Satellite::phasage() const
+{
+    return _phasage;
 }
 
 Signal Satellite::signal() const

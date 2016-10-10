@@ -66,6 +66,11 @@
 /* Constructeurs */
 TLE::TLE()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _nbOrbites = 0;
     _argpo = 0.;
     _bstar = 0.;
@@ -74,6 +79,9 @@ TLE::TLE()
     _mo = 0.;
     _no = 0.;
     _omegao = 0.;
+
+    /* Retour */
+    return;
 }
 
 TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
