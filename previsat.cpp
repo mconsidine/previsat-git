@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2016
+ * >    19 novembre 2016
  *
  */
 
@@ -102,6 +102,7 @@
 #include "threadcalculs.h"
 #include "zlib.h"
 
+#define BOOL_STR(b) ((b) ? "true" : "false")
 
 // Repertoires
 static QString dirCoord;
@@ -110,6 +111,7 @@ static QString dirLocalData;
 static QString dirExe;
 static QString dirMap;
 static QString dirOut;
+static QString dirPrf;
 static QString dirSon;
 static QString dirTle;
 static QString dirTmp;
@@ -192,6 +194,10 @@ static double DEG2PXVT = 1. / 0.45;
 static int selec3;
 static QStringList ficSonAOS;
 static QStringList ficSonLOS;
+
+// Fichiers de preferences
+static QStringList ficPrf;
+static int selec4;
 
 // Soleil, Lune, etoiles, planetes
 static Soleil soleil;
@@ -321,6 +327,7 @@ void PreviSat::ChargementConfig()
     selec = -1;
     selec2 = 0;
     selec3 = 0;
+    selec4 = 0;
     deltaNbOrb = 0;
     paletteDefaut = palette();
     tim = QDateTime();
@@ -331,6 +338,7 @@ void PreviSat::ChargementConfig()
                          repFlr + "iridium.sts" << repFlr + "flares.sts" <<
                          repHtm + "ISS-Live1.html" << repHtm + "ISS-Live2.html" <<
                          repHtm + "meteo.map" << repHtm + "meteoNASA.html"  << repHtm + "resultat.map" <<
+                         QString("preferences") + QDir::separator() + "defaut" <<
                          "stations.sta" << "taiutc.dat" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
@@ -423,6 +431,7 @@ void PreviSat::ChargementConfig()
 
     dirCoord = dirLocalData + QDir::separator() + "coordinates";
     dirMap = dirLocalData + QDir::separator() + "map";
+    dirPrf = dirLocalData + QDir::separator() + "preferences";
     dirSon = dirLocalData + QDir::separator() + "sound";
     dirOut = QDir::toNativeSeparators(dirOut);
 
@@ -443,7 +452,7 @@ void PreviSat::ChargementConfig()
         }
     }
 
-    const QStringList listeDir(QStringList () << dirMap << dirOut << dirSon << dirTle << dirTmp);
+    const QStringList listeDir(QStringList () << dirMap << dirOut << dirPrf << dirSon << dirTle << dirTmp);
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
@@ -577,42 +586,10 @@ void PreviSat::ChargementConfig()
     ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
     ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
 
-    ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
-    ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
-    ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
-    ui->affgrille->setChecked(settings.value("affichage/affgrille", true).toBool());
-    ui->afficone->setChecked(settings.value("affichage/afficone", false).toBool());
-    ui->affinvew->setChecked(settings.value("affichage/affinvew", false).toBool());
-    ui->affinvns->setChecked(settings.value("affichage/affinvns", false).toBool());
-    ui->afflune->setChecked(settings.value("affichage/afflune", true).toBool());
-    ui->affnomlieu->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomlieu", Qt::Checked).toUInt()));
-    ui->affnomsat->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomsat", Qt::Checked).toUInt()));
-    ui->affnotif->setChecked(settings.value("affichage/affnotif", true).toBool());
-    ui->affnuit->setChecked(settings.value("affichage/affnuit", true).toBool());
-    ui->affphaselune->setChecked(settings.value("affichage/affphaselune", true).toBool());
-    ui->affplanetes->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affplanetes", Qt::Checked).toUInt()));
-    ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
-    ui->affSAA->setChecked(settings.value("affichage/affSAA", false).toBool());
-    ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
-    ui->afftraceCiel->setChecked(settings.value("affichage/afftraceCiel", true).toBool());
-    ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
-    ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
-    ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
-    ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
-    ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
-    ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
-    ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
-    ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
-    ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
-    ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
-    ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
-    ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
-    ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
-    ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
-    ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
-    ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
-    ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 0).toInt());
-    ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+    // Chargement des preferences
+    InitFicPref(false);
+
+    ChargementPref();
 
     if (settings.value("affichage/utc", false).toBool())
         ui->utc->setChecked(true);
@@ -1351,6 +1328,46 @@ void PreviSat::InitFicObs(const bool alarm) const
             Message::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                  "Le répertoire contenant les fichiers de lieux d'observation n'existe pas"), WARNING);
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::InitFicPref(const bool majAff) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDir di(dirPrf);
+    const QStringList filtres(QStringList () << "*.prf");
+
+    /* Corps de la methode */
+    ui->preferences->clear();
+    ui->preferences->addItem(tr("* Défaut"));
+    ficPrf.clear();
+    ficPrf.append(dirPrf + QDir::separator() + "defaut");
+
+    const QStringList listPrf = di.entryList(filtres, QDir::Files);
+    if (listPrf.count() == 0) {
+        ui->preferences->addItem(tr("Sauvegarder..."));
+    } else {
+
+        foreach(QString fic, listPrf) {
+
+            if (fic != "defaut") {
+                const QString file = dirPrf + QDir::separator() + fic;
+                ficPrf.append(file);
+                ui->preferences->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
+                if (settings.value("fichier/preferences", dirPrf + QDir::separator() + "defaut").toString() == file)
+                    ui->preferences->setCurrentIndex(ficPrf.indexOf(file));
+            }
+        }
+
+        ui->preferences->addItem(tr("Sauvegarder..."));
+        if (ui->preferences->currentIndex() > 0 && majAff)
+            AffichageCourbes();
+    }
+    ui->preferences->addItem(tr("Supprimer..."));
 
     /* Retour */
     return;
@@ -4552,6 +4569,92 @@ void PreviSat::AfficherLieuSelectionne(const int index)
     return;
 }
 
+void PreviSat::ChargementPref() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomPref = ficPrf.at(ui->preferences->currentIndex());
+
+    /* Corps de la methode */
+    QFile fichier(nomPref);
+    if (fichier.exists()) {
+
+        // Lecture du fichier de preferences
+        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fichier);
+
+        QStringList listePrf;
+        while (!flux.atEnd()) {
+            listePrf.append(flux.readLine());
+        }
+        fichier.close();
+
+        QStringListIterator it(listePrf);
+        while (it.hasNext()) {
+            const QStringList item = it.next().split(" ", QString::SkipEmptyParts);
+
+            if (item.at(1) == "true") {
+                settings.setValue(item.at(0), true);
+
+            } else if (item.at(1) == "false") {
+                settings.setValue(item.at(0), false);
+
+            } else {
+                if (item.at(0) == "affichage/magnitudeEtoiles") {
+                    settings.setValue(item.at(0), item.at(1).toDouble());
+
+                } else if (item.at(0) == "affichage/affconst" || item.at(0) == "affichage/affnomlieu" || item.at(0) == "affichage/affnomsat" ||
+                           item.at(0) == "affichage/affplanetes" || item.at(0) == "affichage/affradar" || item.at(0) == "affichage/affvisib" ||
+                           item.at(0) == "affichage/intensiteOmbre" || item.at(0) == "affichage/intensiteVision") {
+                    settings.setValue(item.at(0), item.at(1).toUInt());
+                } else {
+                }
+            }
+        }
+
+        ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
+        ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
+        ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
+        ui->affgrille->setChecked(settings.value("affichage/affgrille", true).toBool());
+        ui->afficone->setChecked(settings.value("affichage/afficone", true).toBool());
+        ui->affinvew->setChecked(settings.value("affichage/affinvew", false).toBool());
+        ui->affinvns->setChecked(settings.value("affichage/affinvns", false).toBool());
+        ui->afflune->setChecked(settings.value("affichage/afflune", true).toBool());
+        ui->affnomlieu->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomlieu", Qt::Checked).toUInt()));
+        ui->affnomsat->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomsat", Qt::Checked).toUInt()));
+        ui->affnotif->setChecked(settings.value("affichage/affnotif", true).toBool());
+        ui->affnuit->setChecked(settings.value("affichage/affnuit", true).toBool());
+        ui->affphaselune->setChecked(settings.value("affichage/affphaselune", true).toBool());
+        ui->affplanetes->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affplanetes", Qt::Checked).toUInt()));
+        ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
+        ui->affSAA->setChecked(settings.value("affichage/affSAA", false).toBool());
+        ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
+        ui->afftraceCiel->setChecked(settings.value("affichage/afftraceCiel", true).toBool());
+        ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
+        ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
+        ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
+        ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
+        ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
+        ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
+        ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
+        ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
+        ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
+        ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
+        ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
+        ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
+        ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
+        ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
+        ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
+        ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
+        ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 1).toInt());
+        ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr)
 {
     /* Declarations des variables locales */
@@ -5200,6 +5303,93 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
     return;
 }
 
+void PreviSat::SauvePreferences(const QString &fic) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+        QFile sw(fic);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (!sw.isWritable()) {
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        flux << "affichage/affMax " << BOOL_STR(ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) << endl <<
+                "affichage/affSAA " << BOOL_STR(ui->affSAA->isChecked()) << endl <<
+                "affichage/affconst " << ui->affconst->checkState() << endl <<
+                "affichage/affcoord " << BOOL_STR(ui->affcoord->isChecked()) << endl <<
+                "affichage/affetoiles " << BOOL_STR(ui->affetoiles->isChecked()) << endl <<
+                "affichage/affgrille " << BOOL_STR(ui->affgrille->isChecked()) << endl <<
+                "affichage/afficone " << BOOL_STR(ui->afficone->isChecked()) << endl <<
+                "affichage/affinvew " << BOOL_STR(ui->affinvew->isChecked()) << endl <<
+                "affichage/affinvns " << BOOL_STR(ui->affinvns->isChecked()) << endl <<
+                "affichage/afflune " << BOOL_STR(ui->afflune->isChecked()) << endl <<
+                "affichage/affnomlieu " << ui->affnomlieu->checkState() << endl <<
+                "affichage/affnomsat " << ui->affnomsat->checkState() << endl <<
+                "affichage/affnotif " << BOOL_STR(ui->affnotif->isChecked()) << endl <<
+                "affichage/affnuit " << BOOL_STR(ui->affnuit->isChecked()) << endl <<
+                "affichage/affphaselune " << BOOL_STR(ui->affphaselune->isChecked()) << endl <<
+                "affichage/affplanetes " << ui->affplanetes->checkState() << endl <<
+                "affichage/affradar " << ui->affradar->checkState() << endl <<
+                "affichage/affsoleil " << BOOL_STR(ui->affsoleil->isChecked()) << endl <<
+                "affichage/afftraceCiel " << BOOL_STR(ui->afftraceCiel->isChecked()) << endl <<
+                "affichage/afftraj " << BOOL_STR(ui->afftraj->isChecked()) << endl <<
+                "affichage/affvisib " << ui->affvisib->checkState() << endl <<
+                "affichage/calJulien " << BOOL_STR(ui->calJulien->isChecked()) << endl <<
+                "affichage/eclipsesLune " << BOOL_STR(ui->calJulien->isChecked()) << endl <<
+                "affichage/effetEclipsesMagnitude " << BOOL_STR(ui->effetEclipsesMagnitude->isChecked()) << endl <<
+                "affichage/extinction " << BOOL_STR(ui->extinctionAtmospherique->isChecked()) << endl <<
+                "affichage/fenetreMax " << BOOL_STR(isMaximized()) << endl <<
+                "affichage/groupeTLE " << ui->groupeTLE->currentIndex() << endl <<
+                "affichage/hauteur " << height() << endl <<
+                "affichage/intensiteOmbre " << ui->intensiteOmbre->value() << endl <<
+                "affichage/intensiteVision " << ui->intensiteVision->value() << endl <<
+                "affichage/largeur " << width() << endl <<
+                "affichage/magnitudeEtoiles " << ui->magnitudeEtoiles->value() << endl <<
+                "affichage/nombreTrajectoires " << ui->nombreTrajectoires->value() << endl <<
+                "affichage/proportionsCarte " << BOOL_STR(ui->proportionsCarte->isChecked()) << endl <<
+                "affichage/refractionPourEclipses " << BOOL_STR(ui->refractionPourEclipses->isChecked()) << endl <<
+                "affichage/rotationIconeISS " << BOOL_STR(ui->rotationIconeISS->isChecked()) << endl <<
+                "affichage/rotationLune " << BOOL_STR(ui->rotationLune->isChecked()) << endl <<
+                "affichage/systemeHoraire " << BOOL_STR(ui->syst24h->isChecked()) << endl <<
+                "affichage/typeParametres " << ui->typeParametres->currentIndex() << endl <<
+                "affichage/typeRepere " << ui->typeRepere->currentIndex() << endl <<
+                "affichage/unite " << BOOL_STR(ui->unitesKm->isChecked()) << endl <<
+                "affichage/utc " << BOOL_STR(ui->utc->isChecked()) << endl <<
+                "affichage/utcAuto " << BOOL_STR(ui->utcAuto->isChecked()) << endl <<
+                "affichage/verifMAJ " << BOOL_STR(ui->verifMAJ->isChecked()) << endl <<
+                "fichier/affichageMsgMAJ " << ui->affichageMsgMAJ->currentIndex() << endl <<
+                "affichage/mccISS " << BOOL_STR(ui->mccISS->isChecked()) << endl <<
+                "affichage/affBetaWCC " << BOOL_STR(ui->affBetaWCC->isChecked()) << endl <<
+                "affichage/affCerclesAcq " << BOOL_STR(ui->affCerclesAcq->isChecked()) << endl <<
+                "affichage/affNbOrbWCC " << BOOL_STR(ui->affNbOrbWCC->isChecked()) << endl <<
+                "affichage/aff_ZOE " << BOOL_STR(ui->affSAA_ZOE->isChecked()) << endl <<
+                "affichage/chaine " << ui->chaine->value() << endl <<
+                "affichage/styleWCC " << BOOL_STR(ui->styleWCC->isChecked()) << endl <<
+                "affichage/coulGMT " << ui->coulGMT->currentIndex() << endl <<
+                "affichage/coulZOE " << ui->coulZOE->currentIndex() << endl <<
+                "affichage/coulCercleVisibilite " << ui->coulCercleVisibilite->currentIndex() << endl <<
+                "affichage/coulEquateur " << ui->coulEquateur->currentIndex() << endl <<
+                "affichage/coulTerminateur " << ui->coulTerminateur->currentIndex() << endl <<
+                "affichage/policeWCC " << ui->policeWCC->currentIndex() << endl;
+
+        for(int i=0; i<ui->listeStations->count(); i++) {
+            flux << "affichage/station" + QString::number(i) + " " + settings.value("affichage/station" + QString::number(i)).toString() << endl;
+        }
+
+        sw.close();
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /***********
  * Systeme *
@@ -5826,8 +6016,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
     settings.setValue("temps/dtu", ui->updown->value() * NB_JOUR_PAR_MIN);
 
-    settings.setValue("affichage/groupeTLE", ui->groupeTLE->currentIndex());
+    settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
+    settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
+    settings.setValue("affichage/affconst", ui->affconst->checkState());
     settings.setValue("affichage/affcoord", ui->affcoord->isChecked());
+    settings.setValue("affichage/affetoiles", ui->affetoiles->isChecked());
     settings.setValue("affichage/affgrille", ui->affgrille->isChecked());
     settings.setValue("affichage/afficone", ui->afficone->isChecked());
     settings.setValue("affichage/affinvew", ui->affinvew->isChecked());
@@ -5840,36 +6033,33 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affphaselune", ui->affphaselune->isChecked());
     settings.setValue("affichage/affplanetes", ui->affplanetes->checkState());
     settings.setValue("affichage/affradar", ui->affradar->checkState());
-    settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
     settings.setValue("affichage/affsoleil", ui->affsoleil->isChecked());
     settings.setValue("affichage/afftraceCiel", ui->afftraceCiel->isChecked());
     settings.setValue("affichage/afftraj", ui->afftraj->isChecked());
-    settings.setValue("affichage/affconst", ui->affconst->checkState());
-    settings.setValue("affichage/affetoiles", ui->affetoiles->isChecked());
-    settings.setValue("affichage/nombreTrajectoires", ui->nombreTrajectoires->value());
-    settings.setValue("affichage/magnitudeEtoiles", ui->magnitudeEtoiles->value());
     settings.setValue("affichage/affvisib", ui->affvisib->checkState());
-    settings.setValue("affichage/utcAuto", ui->utcAuto->isChecked());
     settings.setValue("affichage/calJulien", ui->calJulien->isChecked());
-    settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
-    settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
-    settings.setValue("affichage/effetEclipsesMagnitude", ui->effetEclipsesMagnitude->isChecked());
     settings.setValue("affichage/eclipsesLune", ui->eclipsesLune->isChecked());
-    settings.setValue("affichage/rotationIconeISS", ui->rotationIconeISS->isChecked());
-    settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
+    settings.setValue("affichage/effetEclipsesMagnitude", ui->effetEclipsesMagnitude->isChecked());
+    settings.setValue("affichage/extinction", ui->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/fenetreMax", isMaximized());
+    settings.setValue("affichage/groupeTLE", ui->groupeTLE->currentIndex());
+    settings.setValue("affichage/hauteur", height());
     settings.setValue("affichage/intensiteOmbre", ui->intensiteOmbre->value());
     settings.setValue("affichage/intensiteVision", ui->intensiteVision->value());
-    settings.setValue("affichage/utc", ui->utc->isChecked());
-    settings.setValue("affichage/unite", ui->unitesKm->isChecked());
-    settings.setValue("affichage/systemeHoraire", ui->syst24h->isChecked());
-    settings.setValue("affichage/typeRepere", ui->typeRepere->currentIndex());
-    settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
-    settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
-    settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
     settings.setValue("affichage/largeur", width());
-    settings.setValue("affichage/hauteur", height());
-    settings.setValue("affichage/fenetreMax", isMaximized());
-    settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
+    settings.setValue("affichage/magnitudeEtoiles", ui->magnitudeEtoiles->value());
+    settings.setValue("affichage/nombreTrajectoires", ui->nombreTrajectoires->value());
+    settings.setValue("affichage/proportionsCarte", ui->proportionsCarte->isChecked());
+    settings.setValue("affichage/refractionPourEclipses", ui->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/rotationIconeISS", ui->rotationIconeISS->isChecked());
+    settings.setValue("affichage/rotationLune", ui->rotationLune->isChecked());
+    settings.setValue("affichage/systemeHoraire", ui->syst24h->isChecked());
+    settings.setValue("affichage/typeParametres", ui->typeParametres->currentIndex());
+    settings.setValue("affichage/typeRepere", ui->typeRepere->currentIndex());
+    settings.setValue("affichage/unite", ui->unitesKm->isChecked());
+    settings.setValue("affichage/utc", ui->utc->isChecked());
+    settings.setValue("affichage/utcAuto", ui->utcAuto->isChecked());
+    settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
 
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
     settings.setValue("affichage/affBetaWCC", ui->affBetaWCC->isChecked());
@@ -5946,6 +6136,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         settings.setValue("fichier/majPrevi", "0");
 
     EcritureListeRegistre();
+
+    if (ui->preferences->currentIndex() < ui->preferences->count() - 2)
+        SauvePreferences(ficPrf.at(ui->preferences->currentIndex()));
 
     if (afficherResultats != NULL)
         afficherResultats->close();
@@ -8770,6 +8963,68 @@ void PreviSat::AffichageResultats()
 /*
  * Gestion des options d'affichage
  */
+void PreviSat::on_preferences_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->optionConfig->isVisible() && selec4 == 0) {
+
+        if (index == ui->preferences->count() - 2) {
+            selec4 = -1;
+
+            // Sauvegarde d'un fichier de preferences
+            const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirPrf,
+                                                                 tr("Fichiers Preferences (*.prf)"));
+
+            if (!fichier.isEmpty()) {
+                SauvePreferences(fichier);
+
+                InitFicPref(true);
+                const QFileInfo fi(fichier);
+                const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1).toLower();
+                ui->preferences->setCurrentIndex(ui->preferences->findText(fic));
+            }
+            selec4 = 0;
+
+        } else if (index == ui->preferences->count() - 1) {
+
+            // Suppression d'un fichier de preferences
+            const QString fichier = QFileDialog::getOpenFileName(this, tr("Supprimer un fichier..."), dirPrf,
+                                                                 tr("Fichiers Preferences (*.prf)"));
+
+            if (fichier.isEmpty()) {
+                selec4 = -1;
+                const QFileInfo fi(settings.value("fichier/preferences", dirPrf + QDir::separator() + "defaut").toString());
+                const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1).toLower();
+                ui->preferences->setCurrentIndex(qMax(0, ui->preferences->findText(fic)));
+
+            } else {
+                if (fichier != "defaut") {
+                    selec4 = -1;
+                    QFile fi(fichier);
+                    fi.remove();
+                    InitFicPref(true);
+                    ui->preferences->setCurrentIndex(qMax(0, ui->preferences->currentIndex() - 1));
+                    ChargementPref();
+                }
+            }
+            selec4 = 0;
+
+        } else {
+            ChargementPref();
+            settings.setValue("fichier/preferences", ficPrf.at(qMax(0, ui->preferences->currentIndex())));
+        }
+
+        AffichageCourbes();
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_affsoleil_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)

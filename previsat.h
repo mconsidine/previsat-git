@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 septembre 2016
+ * >    19 novembre 2016
  *
  */
 
@@ -111,6 +111,12 @@ private:
      * @param alarm affichage d'un message d'avertissement
      */
     void InitFicObs(const bool alarm) const;
+
+    /**
+     * @brief InitFicPref Chargement de la liste de fichiers de preferences
+     * @param majAff mise a jour de l'affichage
+     */
+    void InitFicPref(const bool majAff) const;
 
     /**
      * @brief InitFicSon Chargement de la liste de cartes du monde
@@ -267,6 +273,8 @@ private:
      */
     void AfficherLieuSelectionne(const int index);
 
+    void ChargementPref() const;
+
     /**
      * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
      * @param compteRendu compte-rendu
@@ -309,6 +317,8 @@ private:
      * @param fic nom du fichier
      */
     void SauveOngletInformations(const QString &fic) const;
+
+    void SauvePreferences(const QString &fic) const;
 
 
     /***********
@@ -448,6 +458,7 @@ private slots:
     void AffichageResultats();
 
     // Gestion des options d'affichage
+    void on_preferences_currentIndexChanged(int index);
     void on_affsoleil_stateChanged(int arg1);
     void on_affnuit_stateChanged(int arg1);
     void on_intensiteOmbre_valueChanged(int value);

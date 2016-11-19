@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -10362,7 +10362,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>784</width>
-                 <height>530</height>
+                 <height>560</height>
                 </rect>
                </property>
                <property name="font">
@@ -10375,7 +10375,7 @@
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>400</y>
+                  <y>433</y>
                   <width>751</width>
                   <height>130</height>
                  </rect>
@@ -10632,7 +10632,7 @@
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>210</y>
+                  <y>242</y>
                   <width>751</width>
                   <height>181</height>
                  </rect>
@@ -10938,7 +10938,7 @@
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>10</y>
+                  <y>40</y>
                   <width>751</width>
                   <height>91</height>
                  </rect>
@@ -11110,7 +11110,7 @@
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>110</y>
+                  <y>141</y>
                   <width>751</width>
                   <height>91</height>
                  </rect>
@@ -11327,6 +11327,29 @@
                   <string>Magnitude limite des étoiles :</string>
                  </property>
                 </widget>
+               </widget>
+               <widget class="QComboBox" name="preferences">
+                <property name="geometry">
+                 <rect>
+                  <x>540</x>
+                  <y>10</y>
+                  <width>191</width>
+                  <height>22</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QLabel" name="lbl_preferences">
+                <property name="geometry">
+                 <rect>
+                  <x>410</x>
+                  <y>10</y>
+                  <width>131</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Préférences d'affichage :</string>
+                </property>
                </widget>
               </widget>
              </widget>
