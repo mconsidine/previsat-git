@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 septembre 2016
+ * >    19 novembre 2016
  *
  */
 
@@ -410,7 +410,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         } else {
 
             if (j < nbNew && !norad1.isEmpty()) {
-                while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1))
+                while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1) < 0)
                     j++;
             } else {
                 j = nbNew;
