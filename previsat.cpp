@@ -3605,8 +3605,15 @@ void PreviSat::AffichageElementsOsculateurs() const
 
     // Triplet de phasage
     chaine = "[ %1; %2; %3 ] %4";
-    ui->phasage->setText(chaine.arg(satellites.at(0).phasage().nu0()).arg(satellites.at(0).phasage().dt0()).arg(satellites.at(0).phasage().ct0())
-                         .arg(satellites.at(0).phasage().nbOrb()));
+    const int nu0 = satellites.at(0).phasage().nu0();
+    const int dt0 = satellites.at(0).phasage().dt0();
+    const int ct0 = satellites.at(0).phasage().ct0();
+    const int nbOrb = satellites.at(0).phasage().nbOrb();
+    if (nu0 < 0 || dt0 < 0 || ct0 < 0 || nbOrb < 0) {
+        ui->phasage->setText(tr("N/A"));
+    } else {
+        ui->phasage->setText(chaine.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
+    }
 
     /* Retour */
     return;
