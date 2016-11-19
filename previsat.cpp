@@ -2827,18 +2827,23 @@ void PreviSat::AffichageDonnees()
 
             // Date de lancement
             const QString dateLancement = satellites.at(0).dateLancement();
-            const int annee_lct = dateLancement.mid(0, 4).toInt();
-            const int mois_lct = dateLancement.mid(5, 2).toInt();
-            const double jour_lct = dateLancement.mid(8, 2).toDouble();
-            date_lct = Date(annee_lct, mois_lct, jour_lct, 0.);
+            if (dateLancement.isEmpty()) {
+                deltaNbOrb = 0;
 
-            // Nombre theorique d'orbites a l'epoque
-            const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
-                                                                        date_lct.jourJulienUTC()));
-            int resteOrb = nbOrbTheo%100000;
-            resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
-            resteOrb -= ((satellites.at(0).tle().nbOrbites() < 50000 && resteOrb > 50000) ? 100000 : 0);
-            deltaNbOrb = nbOrbTheo - resteOrb;
+            } else {
+                const int annee_lct = dateLancement.mid(0, 4).toInt();
+                const int mois_lct = dateLancement.mid(5, 2).toInt();
+                const double jour_lct = dateLancement.mid(8, 2).toDouble();
+                date_lct = Date(annee_lct, mois_lct, jour_lct, 0.);
+
+                // Nombre theorique d'orbites a l'epoque
+                const int nbOrbTheo = (int) (satellites.at(0).tle().no() * (satellites.at(0).tle().epoque().jourJulienUTC() -
+                                                                            date_lct.jourJulienUTC()));
+                int resteOrb = nbOrbTheo%100000;
+                resteOrb += ((satellites.at(0).tle().nbOrbites() > 50000 && resteOrb < 50000) ? 100000 : 0);
+                resteOrb -= ((satellites.at(0).tle().nbOrbites() < 50000 && resteOrb > 50000) ? 100000 : 0);
+                deltaNbOrb = nbOrbTheo - resteOrb;
+            }
         }
 
 
