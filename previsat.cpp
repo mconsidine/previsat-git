@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 novembre 2016
+ * >    23 novembre 2016
  *
  */
 
@@ -622,6 +622,8 @@ void PreviSat::ChargementConfig()
 
     ui->actionAgrandirVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarNormalButton));
     ui->agrandirVideo->setDefaultAction(ui->actionAgrandirVideo);
+
+    ui->enregistrerPref->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
 
     ui->lbl_ageTLE->adjustSize();
     ui->ageTLE->move(ui->lbl_ageTLE->x() + ui->lbl_ageTLE->width() + 7, ui->ageTLE->y());
@@ -1349,7 +1351,7 @@ void PreviSat::InitFicPref(const bool majAff) const
 
     const QStringList listPrf = di.entryList(filtres, QDir::Files);
     if (listPrf.count() == 0) {
-        ui->preferences->addItem(tr("Sauvegarder..."));
+        ui->preferences->addItem(tr("Enregistrer sous..."));
     } else {
 
         foreach(QString fic, listPrf) {
@@ -1363,7 +1365,7 @@ void PreviSat::InitFicPref(const bool majAff) const
             }
         }
 
-        ui->preferences->addItem(tr("Sauvegarder..."));
+        ui->preferences->addItem(tr("Enregistrer sous..."));
         if (ui->preferences->currentIndex() > 0 && majAff)
             AffichageCourbes();
     }
@@ -5395,6 +5397,7 @@ void PreviSat::SauvePreferences(const QString &fic) const
         }
 
         sw.close();
+
     } catch (PreviSatException &e) {
     }
 
@@ -7625,6 +7628,29 @@ void PreviSat::on_directHelp_clicked()
     return;
 }
 
+QString PreviSat::getText(QWidget *fenetreParent, const QString &titre, const QString &label, const QString &texteOk, const QString &texteAnnule,
+                          QLineEdit::EchoMode mode, const QString &texte, Qt::WindowFlags flags, Qt::InputMethodHints hints)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QInputDialog input(fenetreParent, flags);
+    input.setWindowTitle(titre);
+    input.setLabelText(label);
+    input.setTextValue(texte);
+    input.setTextEchoMode(mode);
+    input.setInputMethodHints(hints);
+    input.setOkButtonText(texteOk);
+    input.setCancelButtonText(texteAnnule);
+
+    const int ret = input.exec();
+
+    /* Retour */
+    return ((ret) ? input.textValue() : QString());
+}
+
 
 /*
  * Menu deroulant
@@ -8988,40 +9014,85 @@ void PreviSat::on_preferences_currentIndexChanged(int index)
             selec4 = -1;
 
             // Sauvegarde d'un fichier de preferences
-            const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), dirPrf,
-                                                                 tr("Fichiers Preferences (*.prf)"));
+            QString fichier = getText(this, tr("Enregistrer sous..."), tr("Nom du fichier :"), tr("OK"), tr("Annuler"), QLineEdit::Normal,
+                                      QString(), Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-            if (!fichier.isEmpty()) {
-                SauvePreferences(fichier);
-
-                InitFicPref(true);
-                const QFileInfo fi(fichier);
+            if (fichier.isEmpty()) {
+                const QFileInfo fi(settings.value("fichier/preferences", dirPrf + QDir::separator() + "defaut").toString());
                 const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1).toLower();
-                ui->preferences->setCurrentIndex(ui->preferences->findText(fic));
+                ui->preferences->setCurrentIndex(qMax(0, ui->preferences->findText(fic)));
+                ChargementPref();
+
+            } else {
+                fichier = dirPrf + QDir::separator() + fichier.toLower() + ".prf";
+                const QFileInfo fi(fichier);
+                bool ok = true;
+                if (fi.exists()) {
+
+                    QMessageBox msgbox(tr("Information"), tr("Le fichier existe déjà. Voulez-vous l'écraser?"), QMessageBox::Question,
+                                       QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+                    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+                    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+                    msgbox.exec();
+                    ok = (msgbox.result() == QMessageBox::Yes);
+
+                } else {
+                    ok = true;
+                }
+
+                if (ok) {
+                    SauvePreferences(fichier);
+                    InitFicPref(true);
+                    const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1);
+                    ui->preferences->setCurrentIndex(ui->preferences->findText(fic));
+                }
             }
             selec4 = 0;
 
         } else if (index == ui->preferences->count() - 1) {
+            selec4 = -1;
 
             // Suppression d'un fichier de preferences
-            const QString fichier = QFileDialog::getOpenFileName(this, tr("Supprimer un fichier..."), dirPrf,
-                                                                 tr("Fichiers Preferences (*.prf)"));
+            const QDir di(dirPrf);
+            const QStringList filtres(QStringList () << "*.prf");
+            const QStringList items = di.entryList(filtres, QDir::Files).replaceInStrings(".prf", "");
 
-            if (fichier.isEmpty()) {
-                selec4 = -1;
-                const QFileInfo fi(settings.value("fichier/preferences", dirPrf + QDir::separator() + "defaut").toString());
-                const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1).toLower();
-                ui->preferences->setCurrentIndex(qMax(0, ui->preferences->findText(fic)));
-
-            } else {
-                if (fichier != "defaut") {
-                    selec4 = -1;
-                    QFile fi(fichier);
-                    fi.remove();
-                    InitFicPref(true);
-                    ui->preferences->setCurrentIndex(qMax(0, ui->preferences->currentIndex() - 1));
-                    ChargementPref();
+            if (items.count() > 0) {
+                QStringList listePrf;
+                foreach(QString item, items) {
+                    listePrf.append(item.at(0).toUpper() + item.mid(1));
                 }
+
+                const QString text(listePrf.value(ui->preferences->currentIndex()));
+                QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+                input.setWindowTitle(tr("Supprimer un fichier..."));
+                input.setLabelText(tr("Fichier :"));
+                input.setComboBoxItems(listePrf);
+                input.setTextValue(text);
+                input.setComboBoxEditable(false);
+                input.setOkButtonText(tr("Supprimer"));
+                input.setCancelButtonText(tr("Annuler"));
+                input.setOption(QInputDialog::UseListViewForComboBoxItems, true);
+                const int ret = input.exec();
+                const QString fichier = (ret) ? input.textValue() : "";
+
+                if (fichier.isEmpty()) {
+                    const QFileInfo fi(settings.value("fichier/preferences", dirPrf + QDir::separator() + "defaut").toString());
+                    const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1);
+                    ui->preferences->setCurrentIndex(qMax(0, ui->preferences->findText(fic)));
+
+                } else {
+                    if (ret && fichier != "defaut") {
+                        const QString fic = dirPrf + QDir::separator() + fichier.toLower() + ".prf";
+                        QFile fi(fic);
+                        fi.remove();
+                        InitFicPref(true);
+                        ui->preferences->setCurrentIndex(qMax(0, ui->preferences->currentIndex() - 1));
+                        ChargementPref();
+                    }
+                }
+            } else {
+                ui->preferences->setCurrentIndex(0);
             }
             selec4 = 0;
 
@@ -9035,6 +9106,11 @@ void PreviSat::on_preferences_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_enregistrerPref_clicked()
+{
+    SauvePreferences(ficPrf.at(ui->preferences->currentIndex()));
 }
 
 void PreviSat::on_affsoleil_stateChanged(int arg1)
@@ -9736,19 +9812,36 @@ void PreviSat::on_validerCategorie_clicked()
 void PreviSat::on_actionRenommerCategorie_triggered()
 {
     /* Declarations des variables locales */
-    bool ok;
 
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString nvNomCateg = QInputDialog::getText(0, tr("Catégorie"), tr("Nouveau nom de la catégorie :"),
-                                                     QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), &ok,
-                                                     Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+    const QString nvNomCateg = getText(this, tr("Catégorie"), tr("Nouveau nom de la catégorie :"), tr("OK"), tr("Annuler"),
+                                       QLineEdit::Normal, ui->fichiersObs->currentItem()->text(), Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-    if (ok && !nvNomCateg.trimmed().isEmpty()) {
+
+    if (!nvNomCateg.trimmed().isEmpty()) {
+
+        bool ok = true;
         QFile fi(dirCoord + QDir::separator() + ui->fichiersObs->currentItem()->text().toLower());
-        fi.rename(dirCoord + QDir::separator() + nvNomCateg.trimmed().toLower());
-        InitFicObs(false);
+
+        if (fi.exists()) {
+
+            QMessageBox msgbox(tr("Information"), tr("La catégorie existe déjà. Voulez-vous l'écraser?"), QMessageBox::Question, QMessageBox::Yes,
+                               QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+            msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+            msgbox.setButtonText(QMessageBox::No, tr("Non"));
+            msgbox.exec();
+            ok = (msgbox.result() == QMessageBox::Yes);
+
+        } else {
+            ok = true;
+        }
+
+        if (ok) {
+            fi.rename(dirCoord + QDir::separator() + nvNomCateg.trimmed().toLower());
+            InitFicObs(false);
+        }
     }
 
     /* Retour */
@@ -10166,16 +10259,15 @@ void PreviSat::on_annulerObs_clicked()
 void PreviSat::on_actionRenommerLieu_triggered()
 {
     /* Declarations des variables locales */
-    bool ok;
 
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString nvNomLieu = QInputDialog::getText(0, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"),
-                                                    QLineEdit::Normal, ui->lieuxObs->item(ui->lieuxObs->currentRow())->text(), &ok,
-                                                    Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+    const QString nvNomLieu = getText(this, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"), tr("OK"), tr("Annuler"),
+                                      QLineEdit::Normal, ui->lieuxObs->item(ui->lieuxObs->currentRow())->text(),
+                                      Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-    if (ok && !nvNomLieu.trimmed().isEmpty()) {
+    if (!nvNomLieu.trimmed().isEmpty()) {
 
         const QString fic = (ui->fichiersObs->currentRow() == 0) ?
                     dirCoord + QDir::separator() + "preferes" :

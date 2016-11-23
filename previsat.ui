@@ -11331,7 +11331,7 @@
                <widget class="QComboBox" name="preferences">
                 <property name="geometry">
                  <rect>
-                  <x>540</x>
+                  <x>520</x>
                   <y>10</y>
                   <width>191</width>
                   <height>22</height>
@@ -11341,7 +11341,7 @@
                <widget class="QLabel" name="lbl_preferences">
                 <property name="geometry">
                  <rect>
-                  <x>410</x>
+                  <x>390</x>
                   <y>10</y>
                   <width>131</width>
                   <height>20</height>
@@ -11349,6 +11349,22 @@
                 </property>
                 <property name="text">
                  <string>Préférences d'affichage :</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="enregistrerPref">
+                <property name="geometry">
+                 <rect>
+                  <x>715</x>
+                  <y>10</y>
+                  <width>21</width>
+                  <height>23</height>
+                 </rect>
+                </property>
+                <property name="toolTip">
+                 <string>Enregistrer les préférences d'affichage</string>
+                </property>
+                <property name="text">
+                 <string/>
                 </property>
                </widget>
               </widget>
