@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 novembre 2016
+ * >    23 novembre 2016
  *
  */
 
@@ -44,11 +44,14 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wpacked"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QComboBox>
+#include <QLineEdit>
 #include <QListWidget>
 #include <QMainWindow>
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wpacked"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "librairies/dates/date.h"
 
 
@@ -415,6 +418,10 @@ private slots:
 
     void on_directHelp_clicked();
 
+    QString getText(QWidget *fenetreParent, const QString &titre, const QString &label, const QString &texteOk, const QString &texteAnnule,
+                    QLineEdit::EchoMode mode = QLineEdit::Normal, const QString &texte = QString(), Qt::WindowFlags flags = 0,
+                    Qt::InputMethodHints hints = Qt::ImhNone);
+
     // Menu deroulant
     void on_actionOuvrir_fichier_TLE_triggered();
     void on_actionEnregistrer_triggered();
@@ -459,6 +466,7 @@ private slots:
 
     // Gestion des options d'affichage
     void on_preferences_currentIndexChanged(int index);
+    void on_enregistrerPref_clicked();
     void on_affsoleil_stateChanged(int arg1);
     void on_affnuit_stateChanged(int arg1);
     void on_intensiteOmbre_valueChanged(int value);
