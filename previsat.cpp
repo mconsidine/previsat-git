@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 novembre 2016
+ * >    24 decembre 2016
  *
  */
 
@@ -5805,7 +5805,7 @@ void PreviSat::FinEnregistrementFichier()
         if (lg.contains("DOCTYPE"))
             atr = true;
 
-        if (!amajPrevi && (rep->error() || atr)) {
+        if ((!amajPrevi && (rep->error() || atr)) || lg.isEmpty()) {
 
             // Erreur survenue lors du telechargement
             ui->frameBarreProgression->setVisible(false);
@@ -5817,10 +5817,13 @@ void PreviSat::FinEnregistrementFichier()
             if (aupdateCF5) {
                 cptCF5++;
             } else {
-                QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                if (rep->error())
-                    msg += " : " + rep->errorString();
-                Message::Afficher(msg.arg(ff.fileName()), WARNING);
+                const QString fic = ff.fileName();
+                if (fic != "versionPreviSat" && fic != "majFicInt") {
+                    QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    if (rep->error())
+                        msg += " : " + rep->errorString();
+                    Message::Afficher(msg.arg(ff.fileName()), WARNING);
+                }
                 ui->compteRenduMaj->setVisible(false);
             }
 
@@ -9110,7 +9113,8 @@ void PreviSat::on_preferences_currentIndexChanged(int index)
 
 void PreviSat::on_enregistrerPref_clicked()
 {
-    SauvePreferences(ficPrf.at(ui->preferences->currentIndex()));
+    if (ui->preferences->currentIndex() < ui->preferences->count() - 2)
+        SauvePreferences(ficPrf.at(ui->preferences->currentIndex()));
 }
 
 void PreviSat::on_affsoleil_stateChanged(int arg1)
