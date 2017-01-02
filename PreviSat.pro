@@ -1,6 +1,6 @@
 #
 #     PreviSat, Satellite tracking software
-#     Copyright (C) 2005-2016  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+#     Copyright (C) 2005-2017  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    20 novembre 2016
+# >    1er janvier 2017
 
 #-------------------------------------------------
 VER_MAJ = 4.0
 VERSION = 4.0.0.5
-ANNEES_DEV = 2005-2016
+ANNEES_DEV = 2005-2017
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
 #-------------------------------------------------
