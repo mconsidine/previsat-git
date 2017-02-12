@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -423,7 +423,7 @@ void Date::Initialisation()
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
 
         QFile fi(fic);
-        if (fi.exists()) {
+        if (fi.exists() && fi.size() != 0) {
 
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fi);

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -655,7 +655,7 @@ void Satellite::LectureDonnees(const QStringList &listeSatellites, const QVector
     /* Corps de la methode */
     const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
     QFile fi(fic);
-    if (fi.exists()) {
+    if (fi.exists() && fi.size() != 0) {
 
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);

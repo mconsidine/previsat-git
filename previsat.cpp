@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 decembre 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -470,8 +470,17 @@ void PreviSat::ChargementConfig()
     QStringListIterator it1(ficCommonData);
     while (it1.hasNext()) {
         const QFile fi(dirCommonData + QDir::separator() + it1.next());
+
+        // Le fichier n'existe pas
         if (!fi.exists()) {
             const QString message = tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+            exit(1);
+        }
+
+        // Le fichier est vide
+        if (fi.size() == 0) {
+            const QString message = tr("Le fichier %1 est vide, veuillez réinstaller %2");
             Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
         }
@@ -480,8 +489,17 @@ void PreviSat::ChargementConfig()
     QStringListIterator it2(listeFicLocalData);
     while (it2.hasNext()) {
         const QFile fi(dirLocalData + QDir::separator() + it2.next());
+
+        // Le fichier n'existe pas
         if (!fi.exists()) {
             const QString message = tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+            exit(1);
+        }
+
+        // Le fichier est vide
+        if (fi.size() == 0) {
+            const QString message = tr("Le fichier %1 est vide, veuillez réinstaller %2");
             Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
         }
@@ -542,7 +560,7 @@ void PreviSat::ChargementConfig()
     ficTLEIri.clear();
     const QString nomFicIri = settings.value("fichier/iridium", dirTle + QDir::separator() + "iridium.txt").toString().trimmed();
     const QFileInfo fi(nomFicIri);
-    if (fi.exists()) {
+    if (fi.exists() && fi.size() != 0) {
         ui->fichierTLEIri->addItem(fi.fileName());
         ui->fichierTLEIri->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
         ficTLEIri.append(QDir::toNativeSeparators(nomFicIri));
@@ -557,7 +575,7 @@ void PreviSat::ChargementConfig()
     const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().
             trimmed();
     const QFileInfo fit(nomFicTransit);
-    if (fit.exists()) {
+    if (fit.exists() && fi.size() != 0) {
         ui->fichierTLETransit->addItem(fit.fileName());
         ui->fichierTLETransit->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
         ficTLETransit.append(QDir::toNativeSeparators(nomFicTransit));
@@ -572,7 +590,7 @@ void PreviSat::ChargementConfig()
     const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", dirTle + QDir::separator() +
                                                "flares-spctrk.txt").toString().trimmed();
     const QFileInfo fim(nomFicMetOp);
-    if (fim.exists()) {
+    if (fim.exists() && fi.size() != 0) {
         ui->fichierTLEMetOp->addItem(fim.fileName());
         ui->fichierTLEMetOp->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
         ficTLEMetOp.append(QDir::toNativeSeparators(nomFicMetOp));
@@ -949,7 +967,7 @@ void PreviSat::ChargementTLE()
     try {
 
         const QFileInfo fi(nomfic);
-        if (fi.exists()) {
+        if (fi.exists() && fi.size() != 0) {
 
             if (fi.suffix() == "gz") {
 
@@ -1049,26 +1067,24 @@ void PreviSat::MAJTLE()
     AffichageGroupesTLE();
 
     // Mise a jour des TLE si necessaire
-    if (!amajPrevi) {
-        if (listeGroupeMaj.count() > 0) {
+    if (listeGroupeMaj.count() > 0) {
 
-            const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
-            if (ageMaxTLE) {
-                const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
-                const int ageMax = settings.value("temps/ageMax", 15).toInt();
-                if (fabs(dateCourante.jourJulienUTC() - lastUpdate) > ageMax ||
-                        (dateCourante.jourJulienUTC() - tles.at(0).epoque().jourJulienUTC()) > ageMax) {
-                    MajWebTLE();
-                    settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
-                }
-            } else {
-                messagesStatut->setText(tr("Mise à jour automatique des TLE"));
+        const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
+        if (ageMaxTLE) {
+            const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
+            const int ageMax = settings.value("temps/ageMax", 15).toInt();
+            if (fabs(dateCourante.jourJulienUTC() - lastUpdate) > ageMax ||
+                    (dateCourante.jourJulienUTC() - tles.at(0).epoque().jourJulienUTC()) > ageMax) {
                 MajWebTLE();
                 settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
             }
         } else {
-            VerifAgeTLE();
+            messagesStatut->setText(tr("Mise à jour automatique des TLE"));
+            MajWebTLE();
+            settings.setValue("temps/lastUpdate", dateCourante.jourJulienUTC());
         }
+    } else {
+        VerifAgeTLE();
     }
 
     /* Retour */
@@ -3764,7 +3780,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
     nbSat = 0;
     QString nomsat = "---";
     QFile donneesSatellites(dirLocalData + QDir::separator() + "donnees.sat");
-    if (donneesSatellites.exists()) {
+    if (donneesSatellites.exists() && donneesSatellites.size() != 0) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
         magn = flux.readAll();
@@ -3781,7 +3797,7 @@ void PreviSat::AfficherListeSatellites(const QString &fichier, const QStringList
         ui->liste3->clear();
     }
     QFile fichierTLE(fichier);
-    if (fichierTLE.exists()) {
+    if (fichierTLE.exists() && fichierTLE.size() != 0) {
 
         QString li1, li2;
         fichierTLE.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -4362,6 +4378,7 @@ void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
         QEventLoop loop;
         connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
         loop.exec();
+        rep->deleteLater();
     }
 
     if (downQueue.isEmpty())
@@ -4429,7 +4446,7 @@ void PreviSat::VerifMAJPreviSat()
 
         QString ligne;
         QFile fi(dirDwn + QDir::separator() + fic);
-        if (fi.exists()) {
+        if (fi.exists() && fi.size() != 0) {
 
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fi);
@@ -4495,6 +4512,7 @@ void PreviSat::VerifMAJPreviSat()
             }
         }
     }
+    amajDeb = false;
 
     /* Retour */
     return;
@@ -4592,7 +4610,7 @@ void PreviSat::ChargementPref() const
 
     /* Corps de la methode */
     QFile fichier(nomPref);
-    if (fichier.exists()) {
+    if (fichier.exists() && fichier.size() != 0) {
 
         // Lecture du fichier de preferences
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -5956,7 +5974,6 @@ void PreviSat::TelechargementSuivant()
             if (rep->error())
                 msg += " : " + rep->errorString();
             Message::Afficher(msg, WARNING);
-            ui->compteRenduMaj->setVisible(false);
         }
 
         atrouve = false;
@@ -7223,7 +7240,7 @@ void PreviSat::on_meteo_clicked()
     const QString fic = dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteo.map";
     QFile fi(fic);
 
-    if (fi.exists()) {
+    if (fi.exists() && fi.size() != 0) {
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
         map0 = flux.readAll();
@@ -8614,7 +8631,7 @@ void PreviSat::on_rechercheDonneesSat_toggled(bool checked)
         const QString ficData = dirLocalData + QDir::separator() + "donnees.sat";
 
         QFile donneesSatellites(ficData);
-        if (donneesSatellites.exists()) {
+        if (donneesSatellites.exists() && donneesSatellites.size() != 0) {
             donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&donneesSatellites);
             donneesSat = flux.readAll().toLower();

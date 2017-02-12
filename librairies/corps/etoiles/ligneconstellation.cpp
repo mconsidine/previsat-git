@@ -132,7 +132,7 @@ void LigneConstellation::InitTabLignesCst()
     /* Corps de la methode */
     const QString ficLig = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlines.dat";
     QFile fichier(ficLig);
-    if (fichier.exists()) {
+    if (fichier.exists() && fichier.size() != 0) {
 
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichier);

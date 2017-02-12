@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    5 mars 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -139,14 +139,16 @@ void Constellation::InitTabCst(QList<Constellation> &constellations)
     /* Corps de la methode */
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlabel.dat";
     QFile fi(fic);
-    fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fi);
+    if (fi.exists() && fi.size() != 0) {
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
 
-    while (!flux.atEnd()) {
-        const QString ligne = flux.readLine();
-        const double asc = ligne.mid(0, 6).toDouble();
-        const double dec = ligne.mid(7, 7).toDouble();
-        constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
+        while (!flux.atEnd()) {
+            const QString ligne = flux.readLine();
+            const double asc = ligne.mid(0, 6).toDouble();
+            const double dec = ligne.mid(7, 7).toDouble();
+            constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
+        }
     }
     fi.close();
 

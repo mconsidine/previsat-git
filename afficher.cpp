@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -454,7 +454,7 @@ void Afficher::load()
         const QString fic = dirLocalData + QDir::separator() + "html" + QDir::separator() + "resultat.map";
         QFile fi(fic);
 
-        if (fi.exists()) {
+        if (fi.exists() && fi.size() != 0) {
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fi);
             map0 = flux.readAll();
