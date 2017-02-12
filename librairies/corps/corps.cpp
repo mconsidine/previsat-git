@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -470,7 +470,7 @@ void Corps::InitTabConstellations()
     /* Corps de la methode */
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
     QFile fi(fic);
-    if (fi.exists()) {
+    if (fi.exists() && fi.size() != 0) {
 
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);

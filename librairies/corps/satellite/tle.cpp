@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 novembre 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -157,7 +157,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
     try {
 
         QFile fichier(nomFichier);
-        if (fichier.exists()) {
+        if (fichier.exists() && fichier.size() != 0) {
 
             fichier.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fichier);
@@ -277,7 +277,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
 
     QFile donneesSatellites(fic);
-    if (donneesSatellites.exists()) {
+    if (donneesSatellites.exists() && donneesSatellites.size() != 0) {
         donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&donneesSatellites);
         magn = flux.readAll();

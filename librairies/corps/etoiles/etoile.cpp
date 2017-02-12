@@ -140,7 +140,7 @@ void Etoile::InitTabEtoiles(QList<Etoile> &etoiles)
     etoiles.clear();
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "etoiles.dat";
     QFile fi(fic);
-    if (fi.exists()) {
+    if (fi.exists() && fi.size() != 0) {
 
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);

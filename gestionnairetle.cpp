@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    5 mars 2016
+ * >    11 fevrier 2017
  *
  */
 
@@ -521,11 +521,13 @@ void GestionnaireTLE::on_MajAutoGroupe_toggled(bool checked)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(checked)
 
     /* Corps de la methode */
     if (init)
         settings.setValue("TLE/" + ui->listeGroupeTLE->currentItem()->text(), (checked) ? 1 : 0);
+
+    if (checked)
+        settings.setValue("temps/lastUpdate", 0.);
 
     /* Retour */
     return;
