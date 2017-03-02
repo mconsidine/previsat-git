@@ -926,8 +926,13 @@ void PreviSat::ChargementConfig()
     ui->barreStatut->addPermanentWidget(stsHeure);
 
     // Verification des mises a jour (logiciel, fichiers internes)
+#if defined (Q_OS_MAC)
+    settings.setValue("affichage/verifMAJ", false);
+    ui->verifMAJ->setVisible(false);
+#else
     if (ui->verifMAJ->isChecked())
         VerifMAJPreviSat();
+#endif
 
     // Initialisation du lieu d'observation
     AffichageLieuObs();
@@ -3657,8 +3662,10 @@ void PreviSat::AffichageGroupesTLE() const
         nomGroupe[0] = nomGroupe[0].toUpper();
         ui->groupeTLE->addItem(nomGroupe);
 
+#if !defined (Q_OS_MAC)
         if (settings.value("TLE/" + nomGroupe, 0).toInt() == 1)
             listeGroupeMaj.append(ligne.at(0) + "#" + ligne.at(2));
+#endif
     }
     fi.close();
     ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());

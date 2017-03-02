@@ -95,6 +95,7 @@ GestionnaireTLE::GestionnaireTLE(QWidget *fenetreParent) :
     police.setPointSize(7);
 
 #elif defined (Q_OS_MAC)
+    ui->MajAutoGroupe->setVisible(false);
     police.setFamily("Marion");
     police.setPointSize(11);
 #else
