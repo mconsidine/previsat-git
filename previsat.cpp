@@ -4497,7 +4497,7 @@ void PreviSat::VerifMAJPreviSat()
                 for(int i=0; i<listeFicLocalData.size(); i++) {
 
                     const QString fichier = listeFicLocalData.at(i);
-                    if (!fichier.contains("gestionnaireTLE_")) {
+                    if (!fichier.contains("gestionnaireTLE_") && !fichier.contains("preferences")) {
                         const QString fich = dirLocalData + QDir::separator() + fichier;
                         const QFileInfo fi2(fich);
 
@@ -7953,7 +7953,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_triggered()
 
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
-        if (!fic.contains("gestionnaireTLE_")) {
+        if (!fic.contains("gestionnaireTLE_") && !fic.contains("preferences")) {
             const QString ficMaj = dirHttpPrevi + "commun/data/" + fic.replace("\\", "/");
             TelechargementFichier(ficMaj, aclickFicMaj);
         }
