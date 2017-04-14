@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    14 avril 2017
  *
  */
 
@@ -735,8 +735,7 @@ void PreviSat::ChargementConfig()
 #endif
 
     // Affichage du statut des satellites Iridium
-    const char ope = (ui->satellitesOperationnelsIri->isChecked()) ? 'o' : 'n';
-    Iridium::LectureStatutIridium(ope, tabStatutIridium);
+    Iridium::LectureStatutIridium(tabStatutIridium);
 
     for(int i=0; i<tabStatutIridium.count(); i++) {
 
@@ -11782,7 +11781,7 @@ void PreviSat::on_calculsIri_clicked()
         // Lecture du fichier de statut des satellites Iridium
         QStringList tabStsIri;
         tabStsIri.clear();
-        Iridium::LectureStatutIridium(ope, tabStsIri);
+        Iridium::LectureStatutIridium(tabStsIri);
         if (tabStsIri.isEmpty())
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
                                        "Aucun satellite Iridium susceptible de produire des flashs dans le fichier de statut"),
