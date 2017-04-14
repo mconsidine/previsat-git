@@ -90,10 +90,9 @@ public:
 
     /**
      * @brief LectureStatutIridium Lecture du fichier de statut des satellites Iridium
-     * @param ope prise en compte des satellites operationnels
      * @param tabStsIri tableau de statut des satellites Iridium
      */
-    static void LectureStatutIridium(const char ope, QStringList &tabStsIri);
+    static void LectureStatutIridium(QStringList &tabStsIri);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash

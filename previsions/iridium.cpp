@@ -36,7 +36,7 @@
  * >    17 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    14 avril 2017
  *
  */
 
@@ -253,7 +253,7 @@ double Iridium::CalculMagnitudeIridium(const bool extinction, const bool eclPart
 /*
  * Lecture du fichier de statut des satellites Iridium
  */
-void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
+void Iridium::LectureStatutIridium(QStringList &tabStsIri)
 {
     /* Declarations des variables locales */
 
@@ -281,12 +281,6 @@ void Iridium::LectureStatutIridium(const char ope, QStringList &tabStsIri)
     while (!flux.atEnd()) {
         const QString ligne = flux.readLine();
         tabStsIri.append(ligne);
-        if (ligne.size() == 9) {
-            tabStsIri.append(ligne);
-        } else {
-            if (ligne.at(10) == '?' && ope == 'n')
-                tabStsIri.append(ligne);
-        }
     }
     fichier.close();
 
