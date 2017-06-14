@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 avril 2017
+ * >    14 juin 2017
  *
  */
 
@@ -1043,6 +1043,7 @@ void PreviSat::ChargementTLE()
             ui->liste3->clear();
         }
     } catch (PreviSatException &e) {
+        throw PreviSatException();
     }
 
     /* Retour */
