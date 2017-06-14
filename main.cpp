@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er septembre 2016
+ * >    14 juin 2017
  *
  */
 
@@ -53,79 +53,87 @@
 #include <QTranslator>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QTextCodec>
+#include "librairies/exceptions/previsatexception.h"
+
 
 int main(int argc, char *argv[])
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QApplication a(argc, argv);
-    a.setOrganizationName("Astropedia");
-    a.setApplicationName("PreviSat");
-    a.setOrganizationDomain("http://astropedia.free.fr/");
-
-#if QT_VERSION < 0x050000
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-#endif
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     /* Corps de la methode */
-    const QString locale = PreviSat::DeterminationLocale();
+    try {
 
-    // Chargement des fichiers de traduction
-    QTranslator qtTranslator;
-    qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
-    a.installTranslator(&qtTranslator);
+        QApplication a(argc, argv);
+        a.setOrganizationName("Astropedia");
+        a.setApplicationName("PreviSat");
+        a.setOrganizationDomain("http://astropedia.free.fr/");
 
-    QTranslator appTranslator;
-    appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
-    a.installTranslator(&appTranslator);
+#if QT_VERSION < 0x050000
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
-    // Verification si une instance de PreviSat existe
-    const qint64 pid = a.applicationPid();
-    QSharedMemory mem;
-    mem.setKey("pidPreviSat");
-    if (!mem.create(sizeof(pid))) {
-        if (mem.error() == QSharedMemory::AlreadyExists) {
-            if (mem.attach(QSharedMemory::ReadOnly)) {
-                const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
-                QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
-                return 1;
+        const QString locale = PreviSat::DeterminationLocale();
+
+        // Chargement des fichiers de traduction
+        QTranslator qtTranslator;
+        qtTranslator.load(QString("qt_") + locale, a.applicationDirPath());
+        a.installTranslator(&qtTranslator);
+
+        QTranslator appTranslator;
+        appTranslator.load(QString("PreviSat_") + locale, a.applicationDirPath());
+        a.installTranslator(&appTranslator);
+
+        // Verification si une instance de PreviSat existe
+        const qint64 pid = a.applicationPid();
+        QSharedMemory mem;
+        mem.setKey("pidPreviSat");
+        if (!mem.create(sizeof(pid))) {
+            if (mem.error() == QSharedMemory::AlreadyExists) {
+                if (mem.attach(QSharedMemory::ReadOnly)) {
+                    const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
+                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
+                    return 1;
+                }
+            } else {
+                QMessageBox::information(0, QObject::tr("Information"), mem.errorString());
             }
-        } else {
-            QMessageBox::information(0, QObject::tr("Information"), mem.errorString());
         }
+
+        // Lancement du splash screen et demarrage de l'application
+        QSplashScreen * const splash = new QSplashScreen;
+        splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
+        splash->show();
+
+        PreviSat w;
+
+        const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
+        splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.ChargementConfig();
+
+        splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.ChargementTLE();
+
+        splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.MAJTLE();
+
+        splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.DemarrageApplication();
+        w.show();
+        splash->finish(&w);
+        delete splash;
+
+        /* Retour */
+        return a.exec();
+
+    } catch (PreviSatException &e) {
+        return EXIT_FAILURE;
     }
-
-    // Lancement du splash screen et demarrage de l'application
-    QSplashScreen * const splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
-    splash->show();
-
-    PreviSat w;
-
-    const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
-    splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
-    a.processEvents();
-    w.ChargementConfig();
-
-    splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
-    a.processEvents();
-    w.ChargementTLE();
-
-    splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
-    a.processEvents();
-    w.MAJTLE();
-
-    splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
-    a.processEvents();
-    w.DemarrageApplication();
-
-    w.show();
-    splash->finish(&w);
-    delete splash;
-
-    /* Retour */
-    return a.exec();
 }
