@@ -4326,6 +4326,7 @@ void PreviSat::MajWebTLE()
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
     }
+    amajDeb = false;
 
     /* Retour */
     return;
@@ -6010,7 +6011,7 @@ void PreviSat::TelechargementSuivant()
 
             QNetworkProxyFactory::setUseSystemConfiguration(true);
             const QNetworkRequest requete(url);
-            if (!amajDeb || rep->isFinished())
+            if (!amajDeb)
                 rep = mng.get(requete);
 
             connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
