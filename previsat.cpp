@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2017
+ * >    27 septembre 2017
  *
  */
 
@@ -6010,7 +6010,7 @@ void PreviSat::TelechargementSuivant()
 
             QNetworkProxyFactory::setUseSystemConfiguration(true);
             const QNetworkRequest requete(url);
-            if (!amajDeb)
+            if (!amajDeb || rep->isFinished())
                 rep = mng.get(requete);
 
             connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
