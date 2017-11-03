@@ -1232,7 +1232,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="2180"/>
-        <location filename="previsat.cpp" line="904"/>
+        <location filename="previsat.cpp" line="841"/>
         <source>Mode de fonctionnement</source>
         <translation>Mode</translation>
     </message>
@@ -2706,7 +2706,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="15077"/>
-        <location filename="previsat.cpp" line="814"/>
+        <location filename="previsat.cpp" line="751"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
@@ -2720,7 +2720,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="previsat.ui" line="15092"/>
-        <location filename="previsat.cpp" line="817"/>
+        <location filename="previsat.cpp" line="754"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
@@ -2909,7 +2909,7 @@ The directory containing the observation sites does not exist</translation>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="748"/>
+        <location filename="previsat.cpp" line="884"/>
         <location filename="previsat.cpp" line="6752"/>
         <location filename="previsat.cpp" line="6845"/>
         <location filename="previsat.cpp" line="6945"/>
@@ -3101,7 +3101,7 @@ The directory containing the observation sites does not exist</translation>
         <translation>Do you really want  to remove the &quot;%1&quot; category?</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="883"/>
+        <location filename="previsat.cpp" line="820"/>
         <source>Messages</source>
         <translation>Messages</translation>
     </message>
@@ -3301,17 +3301,17 @@ The directory containing the observation sites does not exist</translation>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="757"/>
+        <location filename="previsat.cpp" line="893"/>
         <source>Satellite non opérationnel</source>
         <translation>Non-operational satellite</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="757"/>
+        <location filename="previsat.cpp" line="893"/>
         <source>Satellite de réserve</source>
         <translation>Spare satellite</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="758"/>
+        <location filename="previsat.cpp" line="894"/>
         <source>Satellite opérationnel</source>
         <translation>Operational satellite</translation>
     </message>
@@ -3493,17 +3493,17 @@ The directory containing the observation sites does not exist</translation>
         <translation>The file %1 is empty, please re-install %2</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="756"/>
+        <location filename="previsat.cpp" line="892"/>
         <source>Non op.</source>
         <translation>Non Op.</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="756"/>
+        <location filename="previsat.cpp" line="892"/>
         <source>Op.</source>
         <translation>Op.</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="756"/>
+        <location filename="previsat.cpp" line="892"/>
         <source>Sp.</source>
         <translation>Sp.</translation>
     </message>
@@ -4018,13 +4018,13 @@ The position of the satellite %1 (NORAD number : %2) can not be calculated (nega
         <translation>Julian day</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="911"/>
+        <location filename="previsat.cpp" line="848"/>
         <location filename="previsat.cpp" line="5739"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="918"/>
+        <location filename="previsat.cpp" line="855"/>
         <location filename="previsat.cpp" line="5740"/>
         <source>Heure</source>
         <translation>Hour</translation>
