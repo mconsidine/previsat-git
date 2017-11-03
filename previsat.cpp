@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 septembre 2017
+ * >    3 novembre 2017
  *
  */
 
@@ -734,69 +734,6 @@ void PreviSat::ChargementConfig()
     ui->statutIridium->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 #endif
 
-    // Affichage du statut des satellites Iridium
-    Iridium::LectureStatutIridium(tabStatutIridium);
-
-    for(int i=0; i<tabStatutIridium.count(); i++) {
-
-        const QString item = tabStatutIridium.at(i);
-        ui->statutIridium->insertRow(i);
-        ui->statutIridium->setRowHeight(i, 16);
-
-        const QString iri = "Iridium %1";
-        QTableWidgetItem * const item2 = new QTableWidgetItem(iri.arg(item.mid(0, 4).toInt(), 2, 10, QChar('0')));
-        const QString norad = tr("%1 (numéro NORAD : %2)");
-        item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
-        QTableWidgetItem * const item3 = new QTableWidgetItem;
-        QColor sts;
-        const int ists = (tabStatutIridium.at(i).contains("T")) ? -1 : (tabStatutIridium.at(i).contains("?")) ? 0 : 1;
-        sts.setNamedColor((ists == -1) ? "red" : (ists == 0) ? "orange" : "green");
-        item3->setBackgroundColor(sts);
-        item3->setTextAlignment(Qt::AlignCenter);
-        item3->setText((ists == -1) ? tr("Non op.") : (ists == 0) ? tr("Sp.") : tr("Op."));
-        item3->setToolTip((ists == -1) ? tr("Satellite non opérationnel") : ((ists == 0) ? tr("Satellite de réserve") :
-                                                                                           tr("Satellite opérationnel")));
-        ui->statutIridium->setItem(i, 0, item2);
-        ui->statutIridium->setItem(i, 1, item3);
-    }
-    ui->statutIridium->sortItems(0);
-
-    // Satellites TDRS
-    QFile fichier(dirLocalData + QDir::separator() + "tdrs.sat");
-    fichier.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fichier);
-
-    while (!flux.atEnd()) {
-        const QString ligne = flux.readLine();
-        tabTDRS.append(ligne);
-    }
-    fichier.close();
-
-    // Stations
-    QFile ficSta(dirLocalData + QDir::separator() + "stations.sta");
-    ficSta.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux2(&ficSta);
-
-    int ista = 0;
-    while (!flux2.atEnd()) {
-
-        const QStringList ligne = flux2.readLine().split(" ", QString::SkipEmptyParts);
-
-        const double lo = ligne.at(0).toDouble();
-        const double la = ligne.at(1).toDouble();
-        const double alt = ligne.at(2).toDouble();
-        const QString nomSta = ligne.at(3);
-        const QString nomlieu = ligne.at(4);
-        stations.append(Observateur(nomSta, lo, la, alt));
-
-        const QString nomStation = "%1 (%2)";
-        QListWidgetItem * const elem = new QListWidgetItem(nomStation.arg(nomlieu).arg(nomSta) , ui->listeStations);
-        elem->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + QString::number(ista), Qt::Checked).
-                                                          toUInt())) ? Qt::Checked : Qt::Unchecked);
-        ista++;
-    }
-    ficSta.close();
-
     ui->coordonnees->setVisible(false);
     ui->nouveauLieu->setVisible(false);
     ui->nouvelleCategorie->setVisible(false);
@@ -932,6 +869,69 @@ void PreviSat::ChargementConfig()
     if (ui->verifMAJ->isChecked())
         VerifMAJPreviSat();
 #endif
+
+    // Affichage du statut des satellites Iridium
+    Iridium::LectureStatutIridium(tabStatutIridium);
+
+    for(int i=0; i<tabStatutIridium.count(); i++) {
+
+        const QString item = tabStatutIridium.at(i);
+        ui->statutIridium->insertRow(i);
+        ui->statutIridium->setRowHeight(i, 16);
+
+        const QString iri = "Iridium %1";
+        QTableWidgetItem * const item2 = new QTableWidgetItem(iri.arg(item.mid(0, 4).toInt(), 2, 10, QChar('0')));
+        const QString norad = tr("%1 (numéro NORAD : %2)");
+        item2->setToolTip(norad.arg(item2->text()).arg(item.mid(5, 5)));
+        QTableWidgetItem * const item3 = new QTableWidgetItem;
+        QColor sts;
+        const int ists = (tabStatutIridium.at(i).contains("T")) ? -1 : (tabStatutIridium.at(i).contains("?")) ? 0 : 1;
+        sts.setNamedColor((ists == -1) ? "red" : (ists == 0) ? "orange" : "green");
+        item3->setBackgroundColor(sts);
+        item3->setTextAlignment(Qt::AlignCenter);
+        item3->setText((ists == -1) ? tr("Non op.") : (ists == 0) ? tr("Sp.") : tr("Op."));
+        item3->setToolTip((ists == -1) ? tr("Satellite non opérationnel") : ((ists == 0) ? tr("Satellite de réserve") :
+                                                                                           tr("Satellite opérationnel")));
+        ui->statutIridium->setItem(i, 0, item2);
+        ui->statutIridium->setItem(i, 1, item3);
+    }
+    ui->statutIridium->sortItems(0);
+
+    // Satellites TDRS
+    QFile fichier(dirLocalData + QDir::separator() + "tdrs.sat");
+    fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fichier);
+
+    while (!flux.atEnd()) {
+        const QString ligne = flux.readLine();
+        tabTDRS.append(ligne);
+    }
+    fichier.close();
+
+    // Stations
+    QFile ficSta(dirLocalData + QDir::separator() + "stations.sta");
+    ficSta.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux2(&ficSta);
+
+    int ista = 0;
+    while (!flux2.atEnd()) {
+
+        const QStringList ligne = flux2.readLine().split(" ", QString::SkipEmptyParts);
+
+        const double lo = ligne.at(0).toDouble();
+        const double la = ligne.at(1).toDouble();
+        const double alt = ligne.at(2).toDouble();
+        const QString nomSta = ligne.at(3);
+        const QString nomlieu = ligne.at(4);
+        stations.append(Observateur(nomSta, lo, la, alt));
+
+        const QString nomStation = "%1 (%2)";
+        QListWidgetItem * const elem = new QListWidgetItem(nomStation.arg(nomlieu).arg(nomSta) , ui->listeStations);
+        elem->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + QString::number(ista), Qt::Checked).
+                                                          toUInt())) ? Qt::Checked : Qt::Unchecked);
+        ista++;
+    }
+    ficSta.close();
 
     // Initialisation du lieu d'observation
     AffichageLieuObs();
