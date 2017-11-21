@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2017
+ * >    21 novembre 2017
  *
  */
 
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
                 if (mem.attach(QSharedMemory::ReadOnly)) {
                     const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
                     QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
-                    return 1;
+                    return EXIT_FAILURE;
                 }
             } else {
                 QMessageBox::information(0, QObject::tr("Information"), mem.errorString());
