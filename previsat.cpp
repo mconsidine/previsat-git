@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2017
+ * >    21 novembre 2017
  *
  */
 
@@ -261,6 +261,7 @@ static QQueue<QUrl> downQueue;
 static QNetworkReply *rep;
 static QFile ficDwn;
 static QString dirDwn;
+static QString adresseAstropedia;
 static const QString adresseCelestrak = "http://www.celestrak.com/";
 static const QString adresseCelestrakNorad = adresseCelestrak + "NORAD/elements/";
 
@@ -348,6 +349,7 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->clear();
 
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    adresseAstropedia = QCoreApplication::organizationDomain();
 
 #if QT_VERSION >= 0x050000
     const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(),
@@ -414,6 +416,8 @@ void PreviSat::ChargementConfig()
 
     ui->policeWCC->addItem("Lucida Grande");
     ui->policeWCC->addItem("Marion");
+    adresseAstropedia = "http://astropedia.free.fr/";
+    settings.setValue("fichier/dirHttpPrevi", adresseAstropedia + "previsat/Qt/");
 
 #else
 #endif
@@ -4269,7 +4273,7 @@ void PreviSat::MajFichierTLE()
 
         messagesStatut->setText(tr("Mise à jour du fichier TLE %1 en cours...").arg(fi.fileName()));
         const QString adresse = (fi.fileName().contains("spctrk")) ?
-                    QCoreApplication::organizationDomain() + "previsat/tle/" : adresseCelestrakNorad;
+                    adresseAstropedia + "previsat/tle/" : adresseCelestrakNorad;
         const QString ficMaj = adresse + fi.fileName();
         TelechargementFichier(ficMaj, false);
 
@@ -4307,7 +4311,7 @@ void PreviSat::MajWebTLE()
         if (adresse.contains("celestrak"))
             adresse = adresseCelestrakNorad;
         if (adresse.contains("astropedia"))
-            adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
+            adresse = adresseAstropedia + "previsat/tle/";
         if (!adresse.startsWith("http://"))
             adresse.insert(0, "http://");
         if (!adresse.endsWith("/"))
@@ -4438,8 +4442,7 @@ void PreviSat::VerifMAJPreviSat()
 
     /* Initialisations */
     bool anewVersion = false;
-    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", QCoreApplication::organizationDomain() + "previsat/Qt/").
-            toString().trimmed();
+    const QString dirHttpPrevi = adresseAstropedia + "previsat/Qt/";
 
     /* Corps de la methode */
     const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt");
@@ -5995,7 +5998,7 @@ void PreviSat::TelechargementSuivant()
 
         const QUrl url = downQueue.dequeue();
         const QString dirHttpPrevi =
-                settings.value("fichier/dirHttpPrevi", "").toString().trimmed().replace(QCoreApplication::organizationDomain(), "/") +
+                settings.value("fichier/dirHttpPrevi", "").toString().trimmed().replace(adresseAstropedia, "/") +
                 "commun/data/";
         const QString fic = (url.path().contains(dirHttpPrevi)) ? url.path().replace(dirHttpPrevi, "") : QFileInfo(url.path()).fileName();
 
@@ -7467,7 +7470,7 @@ void PreviSat::on_fluxVideo_clicked()
 
         // Verification de la connexion
         QTcpSocket socket;
-        socket.connectToHost(QCoreApplication::organizationDomain().remove("http://").remove("/"), 80);
+        socket.connectToHost(adresseAstropedia.remove("http://").remove("/"), 80);
         if (!socket.waitForConnected(1000))
             throw PreviSatException(tr("Impossible de lancer le flux vidéo : " \
                                        "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
@@ -7934,7 +7937,7 @@ void PreviSat::on_actionFichier_d_aide_triggered()
 
 void PreviSat::on_actionAstropedia_free_fr_triggered()
 {
-    QDesktopServices::openUrl(QUrl(QCoreApplication::organizationDomain()));
+    QDesktopServices::openUrl(QUrl(adresseAstropedia));
 }
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
@@ -7950,7 +7953,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_triggered()
     dirDwn = dirLocalData;
     atrouve = false;
     aupdnow = false;
-    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", "").toString().trimmed();
+    const QString dirHttpPrevi = settings.value("fichier/dirHttpPrevi", adresseAstropedia + "previsat/Qt/").toString().trimmed();
 
     /* Corps de la methode */
     foreach(QString fic, listeFicLocalData) {
@@ -7972,7 +7975,7 @@ void PreviSat::on_actionMettre_jour_fichiers_internes_triggered()
 
 void PreviSat::on_actionRapport_de_bug_triggered()
 {
-    QDesktopServices::openUrl(QUrl(QCoreApplication::organizationDomain() + "rapport.html"));
+    QDesktopServices::openUrl(QUrl(adresseAstropedia + "rapport.html"));
 }
 
 void PreviSat::on_actionWww_celestrak_com_triggered()
@@ -10658,7 +10661,7 @@ void PreviSat::on_majMaintenant_clicked()
             if (adresse.contains("celestrak"))
                 adresse = adresseCelestrakNorad;
             if (adresse.contains("astropedia"))
-                adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
+                adresse = adresseAstropedia + "previsat/tle/";
             if (!adresse.startsWith("http://"))
                 adresse.insert(0, "http://");
             if (!adresse.endsWith("/"))
@@ -10725,7 +10728,7 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
                     if (adresse.contains("celestrak"))
                         adresse = adresseCelestrakNorad;
                     if (adresse.contains("astropedia"))
-                        adresse = QCoreApplication::organizationDomain() + "previsat/tle/";
+                        adresse = adresseAstropedia + "previsat/tle/";
                     if (!adresse.startsWith("http://"))
                         adresse.insert(0, "http://");
                     if (!adresse.endsWith("/"))
