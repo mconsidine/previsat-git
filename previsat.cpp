@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2017
+ * >    22 novembre 2017
  *
  */
 
@@ -417,7 +417,6 @@ void PreviSat::ChargementConfig()
     ui->policeWCC->addItem("Lucida Grande");
     ui->policeWCC->addItem("Marion");
     adresseAstropedia = "http://astropedia.free.fr/";
-    settings.setValue("fichier/dirHttpPrevi", adresseAstropedia + "previsat/Qt/");
 
 #else
 #endif
@@ -426,6 +425,7 @@ void PreviSat::ChargementConfig()
         dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
 
 #if !defined (Q_OS_WIN)
+    settings.setValue("fichier/dirHttpPrevi", adresseAstropedia + "previsat/Qt/");
     ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     ui->grpElementsOsculateurs->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     ui->grpSignal->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
