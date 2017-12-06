@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    31 mai 2017
+ * >    5 decembre 2017
  *
  */
 
@@ -299,7 +299,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(altitude, 6, 'f', 1).arg(distance, 6, 'f', 1).arg(azs).arg(hts);
 
                                 // Recherche du maximum (transit ou conjonction)
-                                QString max(36, ' ');
+                                QString max(37, ' ');
                                 const Vecteur3D direction = corps.dist() - sat.dist();
                                 Observateur obsmin =
                                         Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
@@ -340,7 +340,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     const QString fmt2 = "   %1 %2  %3 %4  %5 %6";
                                     max = fmt2.arg(fabs(obsmin.longitude() * RAD2DEG), 8, 'f', 4,QChar('0')).
                                             arg(ew).arg(fabs(obsmin.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).
-                                            arg(ns).arg(distanceObs, 6, 'f', 1).arg(dir);
+                                            arg(ns).arg(distanceObs, 7, 'f', 1).arg(dir);
                                 }
                                 transit.append(resultat.arg(max));
                             }
@@ -378,7 +378,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     if (res.size() > 0) {
 
         ligne = QObject::tr("   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist" \
-                            "  Az Soleil  Haut Soleil    Long Max    Lat Max    Distance");
+                            "  Az Soleil  Haut Soleil    Long Max    Lat Max     Distance");
         result.append(ligne);
         flux << ligne << endl;
 
@@ -386,9 +386,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
         while (i < res.count()) {
 
             const QString ligne0 = res.at(i);
-            const QString ligne1 = ligne0.mid(0, 164).trimmed();
-            const QString ligne2 = ligne0.mid(164, 164).trimmed();
-            const QString ligne3 = ligne0.mid(328, 164).trimmed();
+            const QString ligne1 = ligne0.mid(0, 165).trimmed();
+            const QString ligne2 = ligne0.mid(165, 165).trimmed();
+            const QString ligne3 = ligne0.mid(330, 165).trimmed();
             const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
             flux << transit << endl;
             flux << endl;

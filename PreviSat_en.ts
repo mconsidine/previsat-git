@@ -4497,9 +4497,8 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/transitiss.cpp" line="380"/>
-        <source>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max    Distance</source>
-        <oldsource>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max   Distance</oldsource>
-        <translation>   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat      Range</translation>
+        <source>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max     Distance</source>
+        <translation>   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat       Range</translation>
     </message>
     <message>
         <location filename="librairies/corps/systemesolaire/planete.cpp" line="120"/>
