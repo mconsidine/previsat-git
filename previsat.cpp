@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 novembre 2017
+ * >    8 decembre 2017
  *
  */
 
@@ -298,6 +298,7 @@ QWebView *viewMeteoNASA;
 
 // Etat video Live ISS
 static bool iEtatVideo;
+static QStringList listeChaines;
 QWebView *viewLiveISS;
 QWebView *viewLiveISSWin;
 
@@ -333,12 +334,13 @@ void PreviSat::ChargementConfig()
     paletteDefaut = palette();
     tim = QDateTime();
 
+    listeChaines << "ISS-Live1.html" << "ISS-Live2.html" << "NASA-TV.html" << "NASA-TV-media.html";
     const QString repFlr = QString("flares") + QDir::separator();
     const QString repHtm = QString("html") + QDir::separator();
     listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" <<
                          repFlr + "iridium.sts" << repFlr + "flares.sts" <<
-                         repHtm + "ISS-Live1.html" << repHtm + "ISS-Live2.html" <<
-                         repHtm + "meteo.map" << repHtm + "meteoNASA.html"  << repHtm + "resultat.map" <<
+                         repHtm + listeChaines.at(0) << repHtm + listeChaines.at(1) << repHtm + listeChaines.at(2) <<
+                         repHtm + listeChaines.at(3) << repHtm + "meteo.map" << repHtm + "meteoNASA.html"  << repHtm + "resultat.map" <<
                          QString("preferences") + QDir::separator() + "defaut" <<
                          "stations.sta" << "taiutc.dat" << "tdrs.sat";
 
@@ -7465,8 +7467,8 @@ void PreviSat::on_fluxVideo_clicked()
     /* Corps de la methode */
     try {
 
-        const QString fic = QString("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "/ISS-Live%1.html").
-                arg(ui->chaine->value()).replace("\\", "/");
+        const QString fic = QString("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() +
+                                    listeChaines.at(ui->chaine->value()-1)).replace("\\", "/");
 
         // Verification de la connexion
         QTcpSocket socket;
