@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    16 decembre 2017
  *
  */
 
@@ -173,11 +173,11 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
                         nomsat = ligne;
 
                     if (ligne.mid(0, 2) == "1 ") {
-                        li1 = ligne;
+                        li1 = ligne.trimmed();
 
                         do {
-                            li2 = flux.readLine();
-                        } while (li2.trimmed().length() == 0);
+                            li2 = flux.readLine().trimmed();
+                        } while (li2.length() == 0);
 
                         VerifieLignes(li1, li2);
                         if ((li1 == nomsat && itle == 3) || (li1 != nomsat && itle == 2))
@@ -307,10 +307,10 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
             if (ligne.mid(0, 2) == "1 ") {
 
                 QString li1, li2;
-                li1 = ligne;
+                li1 = ligne.trimmed();
                 do {
-                    li2 = flux.readLine();
-                } while (li2.trimmed().length() == 0);
+                    li2 = flux.readLine().trimmed();
+                } while (li2.length() == 0);
 
                 if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 

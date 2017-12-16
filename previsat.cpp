@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 decembre 2017
+ * >    16 decembre 2017
  *
  */
 
@@ -612,7 +612,6 @@ void PreviSat::ChargementConfig()
 
     // Chargement des preferences
     InitFicPref(false);
-
     ChargementPref();
 
     if (settings.value("affichage/utc", false).toBool())
@@ -708,15 +707,16 @@ void PreviSat::ChargementConfig()
 
     ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
     ui->lieuxObservation2->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
+    ui->valHauteurSatPrev->setVisible(false);
     ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
+    ui->valHauteurSoleilPrev->setVisible(false);
     ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
     ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
     ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
     ui->valMagnitudeMaxPrev->setVisible(ui->magnitudeMaxPrev->isChecked());
-    ui->valHauteurSatPrev->setVisible(false);
-    ui->valHauteurSoleilPrev->setVisible(false);
     ui->afficherPrev->setEnabled(false);
 
+    ui->valHauteurSatIri->setVisible(false);
     ui->hauteurSatIri->setCurrentIndex(settings.value("previsions/hauteurSatIri", 2).toInt());
     ui->hauteurSoleilIri->setCurrentIndex(settings.value("previsions/hauteurSoleilIri", 1).toInt());
     ui->lieuxObservation3->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
@@ -730,7 +730,6 @@ void PreviSat::ChargementConfig()
         ui->affichage3lignesIri->setChecked(true);
     else
         ui->affichage1ligneIri->setChecked(true);
-    ui->valHauteurSatIri->setVisible(false);
     ui->valHauteurSoleilIri->setVisible(false);
     ui->afficherIri->setEnabled(false);
     ui->statutIridium->setColumnWidth(0, 80);
@@ -784,14 +783,16 @@ void PreviSat::ChargementConfig()
     ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
     ui->afficherEvt->setEnabled(false);
 
+    ui->valHauteurSatTransit->setVisible(false);
     ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
-    ui->valHauteurSatTransit->setVisible(false);
     ui->afficherTransit->setEnabled(false);
 
+    ui->valHauteurSatMetOp->setVisible(false);
     ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
+    ui->valHauteurSoleilMetOp->setVisible(false);
     ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
     ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
     ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
@@ -800,8 +801,6 @@ void PreviSat::ChargementConfig()
         ui->affichage3lignesMetOp->setChecked(true);
     else
         ui->affichage1ligneMetOp->setChecked(true);
-    ui->valHauteurSatMetOp->setVisible(false);
-    ui->valHauteurSoleilMetOp->setVisible(false);
     ui->afficherMetOp->setEnabled(false);
     MetOp::LectureStatutMetOp(tabStatutMetOp);
 
@@ -6141,15 +6140,17 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
     settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
-    settings.setValue("previsions/hauteurSatPrev", (ui->hauteurSatPrev->currentIndex() > 4) ? 0 : ui->hauteurSatPrev->currentIndex());
-    settings.setValue("previsions/hauteurSoleilPrev", (ui->hauteurSoleilPrev->currentIndex() > 4) ?
-                          1 : ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/hauteurSatPrev", ui->hauteurSatPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSatPrev", ui->valHauteurSatPrev->text().toInt());
+    settings.setValue("previsions/hauteurSoleilPrev", ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilPrev", ui->valHauteurSoleilPrev->text().toInt());
     settings.setValue("previsions/illuminationPrev", ui->illuminationPrev->isChecked());
     settings.setValue("previsions/magnitudeMaxPrev", ui->magnitudeMaxPrev->isChecked());
 
-    settings.setValue("previsions/hauteurSatIri", (ui->hauteurSatIri->currentIndex() > 4) ? 2 : ui->hauteurSatIri->currentIndex());
-    settings.setValue("previsions/hauteurSoleilIri", (ui->hauteurSoleilIri->currentIndex() > 4) ?
-                          1 : ui->hauteurSoleilIri->currentIndex());
+    settings.setValue("previsions/hauteurSatIri", ui->hauteurSatIri->currentIndex());
+    settings.setValue("previsions/valHauteurSatIri", ui->valHauteurSatIri->text().toInt());
+    settings.setValue("previsions/hauteurSoleilIri", ui->hauteurSoleilIri->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilIri", ui->valHauteurSoleilIri->text().toInt());
     settings.setValue("previsions/lieuxObservation3", ui->lieuxObservation3->currentIndex());
     settings.setValue("previsions/satellitesOperationnelsIri", ui->satellitesOperationnelsIri->isChecked());
     settings.setValue("previsions/ordreChronologiqueIri", ui->ordreChronologiqueIri->isChecked());
@@ -6165,16 +6166,14 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/passageQuadrangles", ui->passageQuadrangles->isChecked());
     settings.setValue("previsions/transitionJourNuit", ui->transitionJourNuit->isChecked());
 
-    settings.setValue("previsions/hauteurSatTransit", (ui->hauteurSatTransit->currentIndex() > 4) ?
-                          1 : ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/hauteurSatTransit", ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/valHauteurSatTransit", ui->valHauteurSatTransit->text().toInt());
     settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
     settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
     settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
 
-    settings.setValue("previsions/hauteurSatMetOp",
-                      (ui->hauteurSatMetOp->currentIndex() > 4) ? 2 : ui->hauteurSatMetOp->currentIndex());
-    settings.setValue("previsions/hauteurSoleilMetOp",
-                      (ui->hauteurSoleilMetOp->currentIndex() > 4) ? 1 : ui->hauteurSoleilMetOp->currentIndex());
+    settings.setValue("previsions/hauteurSatMetOp", ui->hauteurSatMetOp->currentIndex());
+    settings.setValue("previsions/hauteurSoleilMetOp", ui->hauteurSoleilMetOp->currentIndex());
     settings.setValue("previsions/lieuxObservation5", ui->lieuxObservation5->currentIndex());
     settings.setValue("previsions/ordreChronologiqueMetOp", ui->ordreChronologiqueMetOp->isChecked());
     settings.setValue("previsions/magnitudeMaxMetOp", ui->magnitudeMaxMetOp->value());
@@ -9327,7 +9326,7 @@ void PreviSat::on_affconst_stateChanged(int arg1)
 
 void PreviSat::on_magnitudeEtoiles_valueChanged(double arg1)
 {
-    Q_UNUSED(arg1)
+    settings.setValue("affichage/magnitudeEtoiles", arg1);
     ModificationOption();
 }
 
@@ -11290,6 +11289,7 @@ void PreviSat::on_hauteurSatPrev_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSatPrev->count() - 1) {
+        ui->valHauteurSatPrev->setText(settings.value("previsions/valHauteurSatPrev", 0).toString());
         ui->valHauteurSatPrev->setVisible(true);
         ui->valHauteurSatPrev->setCursorPosition(0);
         ui->valHauteurSatPrev->setFocus();
@@ -11309,6 +11309,7 @@ void PreviSat::on_hauteurSoleilPrev_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSoleilPrev->count() - 1) {
+        ui->valHauteurSoleilPrev->setText(settings.value("previsions/valHauteurSoleilPrev", 0).toString());
         ui->valHauteurSoleilPrev->setVisible(true);
         ui->valHauteurSoleilPrev->setCursorPosition(0);
         ui->valHauteurSoleilPrev->setFocus();
@@ -11607,6 +11608,7 @@ void PreviSat::on_hauteurSatIri_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSatIri->count() - 1) {
+        ui->valHauteurSatIri->setText(settings.value("previsions/valHauteurSatIri", 0).toString());
         ui->valHauteurSatIri->setVisible(true);
         ui->valHauteurSatIri->setCursorPosition(0);
         ui->valHauteurSatIri->setFocus();
@@ -11626,6 +11628,7 @@ void PreviSat::on_hauteurSoleilIri_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSoleilIri->count() - 1) {
+        ui->valHauteurSoleilIri->setText(settings.value("previsions/valHauteurSoleilIri", 0).toString());
         ui->valHauteurSoleilIri->setVisible(true);
         ui->valHauteurSoleilIri->setCursorPosition(0);
         ui->valHauteurSoleilIri->setFocus();
@@ -12178,6 +12181,7 @@ void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSatTransit->count() - 1) {
+        ui->valHauteurSatTransit->setText(settings.value("previsions/valHauteurSatTransit", 0).toString());
         ui->valHauteurSatTransit->setVisible(true);
         ui->valHauteurSatTransit->setCursorPosition(0);
         ui->valHauteurSatTransit->setFocus();
@@ -12445,6 +12449,7 @@ void PreviSat::on_hauteurSatMetOp_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSatMetOp->count() - 1) {
+        ui->valHauteurSatMetOp->setText(settings.value("previsions/valHauteurSatMetOp", 0).toString());
         ui->valHauteurSatMetOp->setVisible(true);
         ui->valHauteurSatMetOp->setCursorPosition(0);
         ui->valHauteurSatMetOp->setFocus();
@@ -12464,6 +12469,7 @@ void PreviSat::on_hauteurSoleilMetOp_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (index == ui->hauteurSoleilMetOp->count() - 1) {
+        ui->valHauteurSoleilMetOp->setText(settings.value("previsions/valHauteurSoleilMetOp", 0).toString());
         ui->valHauteurSoleilMetOp->setVisible(true);
         ui->valHauteurSoleilMetOp->setCursorPosition(0);
         ui->valHauteurSoleilMetOp->setFocus();
