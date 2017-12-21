@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2017
+ * >    21 decembre 2017
  *
  */
 
@@ -7531,7 +7531,9 @@ void PreviSat::on_agrandirVideo_clicked()
         // Definition de la fenetre separee
         afficherVideo = new QMainWindow;
         afficherVideo->resize(640, 360);
-        afficherVideo->setWindowTitle(QString("%1 %2 - ISS Live").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
+        QString nomVideo = listeChaines.at(ui->chaine->value()-1);
+        nomVideo = nomVideo.replace("-", " ").replace(QRegExp("[0-9]"), "").replace(".html", "");
+        afficherVideo->setWindowTitle(QString("%1 %2 - %3").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(nomVideo));
 
         // Definition de raccourcis
         const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F11), afficherVideo);
@@ -7540,8 +7542,8 @@ void PreviSat::on_agrandirVideo_clicked()
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
         // Chargement de la video
-        const QString fic = ("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "ISS-Live%1.html").
-                arg(ui->chaine->value());
+        const QString fic = QString("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() +
+                                    listeChaines.at(ui->chaine->value()-1)).replace("\\", "/");
         const QUrl url(fic);
 
         viewLiveISS = new QWebView;
