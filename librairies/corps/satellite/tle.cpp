@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 decembre 2017
+ * >    11 fevrier 2017
  *
  */
 
@@ -169,16 +169,15 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 
                 if (ligne.size() > 0) {
 
-                    if (nomsat == "---" || nomsat.isEmpty()) {
+                    if (nomsat == "---" || nomsat.isEmpty())
                         nomsat = ligne;
-                    }
 
                     if (ligne.mid(0, 2) == "1 ") {
-                        li1 = ligne.trimmed();
-                    }
+                        li1 = ligne;
 
-                    if (ligne.mid(0, 2) == "2 ") {
-                        li2 = ligne.trimmed();
+                        do {
+                            li2 = flux.readLine();
+                        } while (li2.trimmed().length() == 0);
 
                         VerifieLignes(li1, li2);
                         if ((li1 == nomsat && itle == 3) || (li1 != nomsat && itle == 2))
@@ -294,7 +293,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     /* Corps de la methode */
     try {
 
-        QString li0, li1, li2;
+        QString li0;
 
         int j = 0;
         QString nomsat = "---";
@@ -305,13 +304,13 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         while (!flux.atEnd() || j > jmax) {
 
             const QString ligne = flux.readLine();
-
             if (ligne.mid(0, 2) == "1 ") {
-                li1 = ligne.trimmed();
-            }
 
-            if (ligne.mid(0, 2) == "2 ") {
-                li2 = ligne.trimmed();
+                QString li1, li2;
+                li1 = ligne;
+                do {
+                    li2 = flux.readLine();
+                } while (li2.trimmed().length() == 0);
 
                 if (nomsat.mid(0, 2) == "1 " || nomsat == "---" || nomsat.isEmpty()) {
 
