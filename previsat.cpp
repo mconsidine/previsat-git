@@ -4276,7 +4276,7 @@ void PreviSat::MajFichierTLE()
         const QString adresse = (fi.fileName().contains("spctrk")) ?
                     adresseAstropedia + "previsat/tle/" : adresseCelestrakNorad;
         const QString ficMaj = adresse + fi.fileName();
-        TelechargementFichier(ficMaj, false);
+        TelechargementFichier(ficMaj, true);
 
         if (downQueue.isEmpty())
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
