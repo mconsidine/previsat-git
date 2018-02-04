@@ -143,75 +143,75 @@
         <translation>Iridium</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="426"/>
-        <location filename="afficher.cpp" line="430"/>
+        <location filename="afficher.cpp" line="434"/>
+        <location filename="afficher.cpp" line="438"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="428"/>
-        <location filename="afficher.cpp" line="432"/>
+        <location filename="afficher.cpp" line="436"/>
+        <location filename="afficher.cpp" line="440"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="466"/>
+        <location filename="afficher.cpp" line="474"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="466"/>
-        <location filename="afficher.cpp" line="467"/>
+        <location filename="afficher.cpp" line="474"/>
+        <location filename="afficher.cpp" line="475"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="466"/>
+        <location filename="afficher.cpp" line="474"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="470"/>
+        <location filename="afficher.cpp" line="478"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="471"/>
+        <location filename="afficher.cpp" line="479"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="471"/>
+        <location filename="afficher.cpp" line="479"/>
         <source>Altitude</source>
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="553"/>
+        <location filename="afficher.cpp" line="561"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="554"/>
+        <location filename="afficher.cpp" line="562"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="570"/>
+        <location filename="afficher.cpp" line="578"/>
         <source>Enregistrer sous</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="571"/>
+        <location filename="afficher.cpp" line="579"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg);;BMP files (*.bmp);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1102"/>
+        <location filename="afficher.cpp" line="1110"/>
         <source>Flash Iridium</source>
         <translation>Iridium flare</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1108"/>
+        <location filename="afficher.cpp" line="1116"/>
         <source>Flash %1</source>
         <translation>%1 flare</translation>
     </message>
@@ -4429,7 +4429,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="365"/>
         <location filename="previsions/flashs.cpp" line="293"/>
         <location filename="previsions/prevision.cpp" line="316"/>
-        <location filename="previsions/transitiss.cpp" line="407"/>
+        <location filename="previsions/transitiss.cpp" line="411"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
