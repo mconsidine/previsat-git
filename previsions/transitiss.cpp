@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    5 decembre 2017
+ * >    3 fevrier 2018
  *
  */
 
@@ -199,7 +199,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                     if (sat.hauteur() >= conditions.haut() && minmax[1] <= conditions.seuilConjonction()) {
 
-                        Date dates[3];
+                        Date dates[5];
 
                         // Position du corps (Soleil ou Lune)
                         soleil.CalculPosition(date2);
@@ -228,13 +228,13 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         if (itr || !condEcl.isEclipseTotale()) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
-                            dates[1] = date2;
+                            dates[2] = date2;
                             CalculElements(sat, observateur, minmax[0], typeCorps, itr,
                                     conditions.seuilConjonction(), dates);
 
                             // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
                             QString transit = "";
-                            for (int j=0; j<3; j++) {
+                            for (int j=0; j<5; j++) {
 
                                 observateur.CalculPosVit(dates[j]);
 
@@ -387,14 +387,18 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
             const QString ligne0 = res.at(i);
             const QString ligne1 = ligne0.mid(0, 165).trimmed();
-            const QString ligne2 = ligne0.mid(165, 165).trimmed();
-            const QString ligne3 = ligne0.mid(330, 165).trimmed();
+            const QString ligne4 = ligne0.mid(165, 165).trimmed();
+            const QString ligne2 = ligne0.mid(330, 165).trimmed();
+            const QString ligne3 = ligne0.mid(660, 165).trimmed();
+            const QString ligne5 = ligne0.mid(495, 165).trimmed();
             const QString transit = ligne1 + "\n" + ligne2 + "\n" + ligne3;
             flux << transit << endl;
             flux << endl;
 
             result.append(ligne1);
+            result.append(ligne4);
             result.append(ligne2);
+            result.append(ligne5);
             result.append(ligne3);
             result.append("");
             i++;
@@ -534,7 +538,7 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 {
     /* Declarations des variables locales */
     int it;
-    double dateInf, dateSup, tmp;
+    double date1, date2, dateInf, dateSup, tmp;
     double jjm[3];
 
     /* Initialisations */
@@ -550,7 +554,7 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 
     // Iterations supplementaires pour affiner la date
     it = 0;
-    while (fabs(dateInf - tmp) > EPS_DATES || it < 6) {
+    while (fabs(dateInf - tmp) > EPS_DATES && it < 6) {
 
         tmp = dateInf;
         jjm[1] = dateInf;
@@ -562,6 +566,10 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
     }
 
 
+    // Premiere date pour le trace sur la map
+    date1 = 0.2 * (4. * jmax + dateInf);
+
+
     // Date de fin
     jjm[0] = jmax;
     jjm[2] = jmax + PAS1;
@@ -571,7 +579,7 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 
     // Iterations supplementaires pour affiner la date
     it = 0;
-    while (fabs(dateSup - tmp) > EPS_DATES || it < 6) {
+    while (fabs(dateSup - tmp) > EPS_DATES && it < 6) {
 
         tmp = dateSup;
         jjm[1] = dateSup;
@@ -582,8 +590,14 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
         it++;
     }
 
+    // Deuxieme date pour le trace sur la map
+    date2 = 0.2 * (4. * jmax + dateSup);
+
+
     dates[0] = Date(dateInf, 0., false);
-    dates[2] = Date(dateSup, 0., false);
+    dates[1] = Date(date1, 0., false);
+    dates[3] = Date(date2, 0., false);
+    dates[4] = Date(dateSup, 0., false);
 
     /* Retour */
     return;

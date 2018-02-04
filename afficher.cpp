@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    3 fevrier 2018
  *
  */
 
@@ -347,11 +347,15 @@ void Afficher::load()
         if (!ligne.contains(tr("Date"))) {
 
             QString debut = ligne;
+            QString debut1 = debut;
+            if (cond.typeCalcul() == TRANSITS)
+                debut1 = it.next();
 
             // Maximums et fin du passage
             QString maxMag = debut;
             QString maxHt = debut;
             QString fin = debut;
+            QString fin1 = debut;
 
             bool afin = false;
             while (!afin) {
@@ -374,9 +378,13 @@ void Afficher::load()
                         if (ligne.mid(71, 5).toDouble() <= maxHt.mid(71, 5).toDouble())
                             maxHt = ligne;
                     }
+                    fin1 = fin;
                     fin = ligne;
                 }
             }
+
+            if (cond.typeCalcul() == IRIDIUM)
+                fin1 = fin;
 
             // Ajout d'une ligne dans le tableau des resultats
             ui->listePrevisions->insertRow(j);
@@ -409,14 +417,14 @@ void Afficher::load()
             if (cond.nbl() != 0) {
 
                 const int debt = (cond.nbl() > 0) ? 122 : 128;
-                if (debut.mid(debt, 44).trimmed().isEmpty() && fin.mid(debt, 44).trimmed().isEmpty()) {
+                if (debut1.mid(debt, 44).trimmed().isEmpty() && fin1.mid(debt, 44).trimmed().isEmpty()) {
                     tablonlat.append("0. 0. 0. 0.");
                 } else {
 
-                    bool tst = debut.mid(debt, 44).trimmed().isEmpty();
-                    const QString deb = (tst) ? maxMag : debut;
-                    tst = fin.mid(debt, 44).trimmed().isEmpty();
-                    const QString end = (tst) ? maxMag : fin;
+                    bool tst = debut1.mid(debt, 44).trimmed().isEmpty();
+                    const QString deb = (tst) ? maxMag : debut1;
+                    tst = fin1.mid(debt, 44).trimmed().isEmpty();
+                    const QString end = (tst) ? maxMag : fin1;
 
                     if (deb == end) {
                         tablonlat.append("0. 0. 0. 0.");
