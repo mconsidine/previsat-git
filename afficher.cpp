@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 fevrier 2018
+ * >    11 mars 2018
  *
  */
 
@@ -641,7 +641,7 @@ void Afficher::loadSky(const int j)
     Satellite sat(tabtle.at(0));
 
     // Date de debut du passage
-    QString date = tab.at(1);
+    QString date = tab.at(1).trimmed();
     QStringList deb = date.replace("/", " ").replace(":", " ").split(" ");
 
     int heure = deb.at(3).toInt();
