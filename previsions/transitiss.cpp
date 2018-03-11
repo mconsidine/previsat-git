@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    3 fevrier 2018
+ * >    11 mars 2018
  *
  */
 
@@ -263,7 +263,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                                 // Date calendaire
                                 const double offset = (conditions.ecart()) ?
-                                            conditions.offset() : Date::CalculOffsetUTC(Date(dates[j].jourJulienUTC(), 0.).ToQDateTime(1));
+                                            conditions.offset() :
+                                            Date::CalculOffsetUTC(Date(dates[j].jourJulien(), conditions.offset()).ToQDateTime(1));
                                 const Date date3(dates[j].jourJulien() + EPS_DATES, offset);
 
                                 // Coordonnees topocentriques du satellite
@@ -513,9 +514,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
 
     if (itransit) {
 
-        double rayon;
-        if (typeCorps == 1)
-            rayon = RAYON_SOLAIRE;
+        double rayon = RAYON_SOLAIRE;
         if (typeCorps == 2)
             rayon = RAYON_LUNAIRE;
 

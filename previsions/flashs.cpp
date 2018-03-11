@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    11 mars 2018
  *
  */
 
@@ -682,7 +682,8 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
     /* Corps de la methode */
 
     // Date calendaire
-    const double offset = (conditions.ecart()) ? conditions.offset() : Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
+    const double offset = (conditions.ecart()) ? conditions.offset() :
+                                                 Date::CalculOffsetUTC(Date(date.jourJulien(), conditions.offset()).ToQDateTime(1));
     const Date date3(date.jourJulienUTC() + EPS_DATES, offset, true);
 
     // Coordonnees topocentriques

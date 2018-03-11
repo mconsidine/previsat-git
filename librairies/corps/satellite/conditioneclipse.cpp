@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    11 mars 2018
  *
  */
 
@@ -190,6 +190,8 @@ void ConditionEclipse::CalculSatelliteEclipseCorps(const Soleil &soleil, const V
         const double tmp2 = cpc * acos((cps - cpc * cth) / (spc * sth));
         const double tmp3 = acos((cth - cps * cpc) / (sps * spc));
         *luminosite = 1. - (PI - tmp1 - tmp2 - tmp3) / (PI * (1. - cps));
+        if (*luminosite > 1.)
+            *luminosite = 1.;
     }
 
     /* Retour */

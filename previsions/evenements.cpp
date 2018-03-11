@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    11 mars 2018
  *
  */
 
@@ -462,7 +462,7 @@ Satellite &sat)
 
     /* Corps de la methode */
     const double datp = Maths::CalculValeurXInterpolation3(xtab, ytab, yval, EPS_DATES);
-    const double offset = (conditions.ecart()) ? conditions.offset() : Date::CalculOffsetUTC(Date(datp, 0.).ToQDateTime(1));
+    const double offset = (conditions.ecart()) ? conditions.offset() : Date::CalculOffsetUTC(Date(datp, conditions.offset()).ToQDateTime(1));
     const Date date(datp + EPS_DATES, offset);
 
     // Calcul de la position du satellite pour la date calculee
