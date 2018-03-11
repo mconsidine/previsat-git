@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 decembre 2017
+ * >    11 mars 2018
  *
  */
 
@@ -5722,9 +5722,7 @@ void PreviSat::GestionTempsReel()
         pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 0. : pas1 * NB_SEC_PAR_JOUR;
     }
 
-    const QDateTime dateTime =
-            QDateTime(QDate(date1.annee(), date1.mois(), date1.jour()), QTime(date1.heure(), date1.minutes(), qRound(date1.secondes()))).
-            addSecs(qRound(date1.offsetUTC() * NB_SEC_PAR_JOUR));
+    const QDateTime dateTime = Date(date1.jourJulienUTC() + date1.offsetUTC(), 0.).ToQDateTime(1);
     date2 = Date(dateTime.date().year(), 1, 1., 0.);
 
     if (ui->calJulien->isChecked()) {
@@ -8492,11 +8490,11 @@ void PreviSat::on_dateHeure3_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime dateTime = date.addSecs(qRound(-(dateCourante.offsetUTC() * NB_SEC_PAR_JOUR)));
+    const Date datp(date.date().year(), date.date().month(), date.date().day(),
+                    date.time().hour(), date.time().minute(), date.time().second(), 0.);
 
     /* Corps de la methode */
-    dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),
-                        dateTime.time().minute(), dateTime.time().second(), dateCourante.offsetUTC());
+    dateCourante = Date(datp.jourJulienUTC() - dateCourante.offsetUTC(), dateCourante.offsetUTC());
 
     if (ui->modeManuel->isChecked()) {
         info = true;
@@ -8522,11 +8520,11 @@ void PreviSat::on_dateHeure4_dateTimeChanged(const QDateTime &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime dateTime = date.addSecs(qRound(-(dateCourante.offsetUTC() * NB_SEC_PAR_JOUR)));
+    const Date datp(date.date().year(), date.date().month(), date.date().day(),
+                    date.time().hour(), date.time().minute(), date.time().second(), 0.);
 
     /* Corps de la methode */
-    dateCourante = Date(dateTime.date().year(), dateTime.date().month(), dateTime.date().day(), dateTime.time().hour(),
-                        dateTime.time().minute(), dateTime.time().second(), dateCourante.offsetUTC());
+    dateCourante = Date(datp.jourJulienUTC() - dateCourante.offsetUTC(), dateCourante.offsetUTC());
 
     ui->dateHeure3->setDateTime(date);
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    11 mars 2018
  *
  */
 
@@ -197,7 +197,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
 
                                 // Calcul de la date calendaire
                                 const double offset = (conditions.ecart()) ?
-                                            conditions.offset() : Date::CalculOffsetUTC(Date(date.jourJulienUTC(), 0.).ToQDateTime(1));
+                                            conditions.offset() :
+                                            Date::CalculOffsetUTC(Date(date.jourJulien(), conditions.offset()).ToQDateTime(1));
+
                                 const Date date2(date.jourJulien() + EPS_DATES, offset);
 
                                 // Coordonnees topocentriques du satellite
