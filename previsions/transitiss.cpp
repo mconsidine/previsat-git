@@ -79,10 +79,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     /* Initialisations */
     const double temps1 = 16. * NB_JOUR_PAR_MIN;
     const QString fmt = "%1%2 %3 %4 %5 %6 %7   %8    %9   %10 %11 %12%13  %14%15";
-    const QStringList listeTLE(NORAD_STATION_SPATIALE);
 
     // Lecture du TLE
-    TLE::LectureFichier(conditions.fic(), listeTLE, tabtle);
+    TLE::LectureFichier3le(conditions.fic(), tabtle);
 
     const double periode = 1. / tabtle.at(0).no() - temps1;
 
@@ -92,7 +91,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     /* Corps de la methode */
     result.clear();
     tps.start();
-    Satellite sat = Satellite(tabtle.at(0));
+    Satellite sat = Satellite(tabtle);
 
     // Generation des ephemerides du Soleil et de la Lune
     CalculEphemSoleilLune(conditions, observateur);

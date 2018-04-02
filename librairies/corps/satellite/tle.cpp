@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    2 avril 2018
  *
  */
 
@@ -84,7 +84,7 @@ TLE::TLE()
     return;
 }
 
-TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
+TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid)
 {
     /* Declarations des variables locales */
 
@@ -97,6 +97,8 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2)
 
     // Numero NORAD
     _norad = _ligne1.mid(2, 5);
+
+    _dateDebutValidite = dateDebValid;
 
     // Epoque
     int an = _ligne1.mid(18, 2).toInt();
@@ -364,6 +366,138 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     return;
 }
 
+/*
+ * Lecture du fichier 3le
+ */
+void TLE::LectureFichier3le(const QString &nomFichier3le, QVector<TLE> &tabtle)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QFile fichier(nomFichier3le);
+        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fichier);
+
+        while (!flux.atEnd()) {
+
+            const QString ligne = flux.readLine();
+            if (!ligne.trimmed().isEmpty()) {
+
+                const QString ligne0 = ligne;
+
+                QString ligne1, ligne2;
+                while (ligne1.trimmed().isEmpty()) {
+                    ligne1 = flux.readLine();
+                }
+
+                while (ligne2.trimmed().isEmpty()) {
+                    ligne2 = flux.readLine();
+                }
+
+                const Date dateDeb(ligne0.mid(15).toDouble(), 0., false);
+
+                TLE tle(ligne0.mid(0, 15).trimmed(), ligne1, ligne2, dateDeb);
+                tabtle.append(tle);
+            }
+        }
+        fichier.close();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier Human Space Flight
+ */
+void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le)
+{
+    /* Declarations des variables locales */
+    QVector<TLE> tabtle;
+
+    /* Initialisations */
+    tabtle.clear();
+
+    /* Corps de la methode */
+    QFile fi(fichierHsf);
+    if (fi.exists() && fi.size() != 0) {
+
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+
+        Date debValid(-DATE_INFINIE, 0., false);
+
+        while (!flux.atEnd()) {
+
+            const QString ligne = flux.readLine();
+
+            if (ligne.contains("Vector Time (GMT)")) {
+
+                const QStringList dateNasa = ligne.split(" ", QString::SkipEmptyParts).last().split("/");
+                const int annee = dateNasa.at(0).toInt();
+                const int nbJours = dateNasa.at(1).toInt();
+
+                const QStringList heures = dateNasa.at(2).split(":", QString::SkipEmptyParts);
+                const int heure = heures.at(0).toInt();
+                const int minutes = heures.at(1).toInt();
+                const double secondes = heures.at(2).toDouble();
+
+                const double jours = nbJours + heure * NB_JOUR_PAR_HEUR + minutes * NB_JOUR_PAR_MIN + secondes * NB_JOUR_PAR_SEC;
+
+                const Date date(annee, 1, 1., 0.);
+                debValid = Date(date.jourJulien() + jours - 1., 0., true);
+            }
+
+            if (ligne.trimmed() == "TWO LINE MEAN ELEMENT SET") {
+
+                bool afin = false;
+                while (!afin) {
+
+                    const QString lig = flux.readLine().trimmed();
+
+                    if (lig.size() > 0) {
+                        afin = true;
+                        const QString li0 = lig;
+                        const QString li1 = flux.readLine().trimmed();
+                        const QString li2 = flux.readLine().trimmed();
+
+                        VerifieLignes(li1, li2);
+                        tabtle.append(TLE(li0, li1, li2, debValid));
+                    }
+                }
+            }
+        }
+        fi.close();
+    }
+
+    if (!tabtle.isEmpty()) {
+
+        QFile fichier(fichier3le);
+        fichier.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux(&fichier);
+
+        const QString fmt = "%1";
+        QVectorIterator<TLE> it(tabtle);
+        while (it.hasNext()) {
+            const TLE tle = it.next();
+            flux << tle._ligne0 << QString(15 - tle._ligne0.length(), QChar(' ')) << fmt.arg(tle._dateDebutValidite.jourJulienUTC(), 0, 'f', 12)
+                 << endl;
+            flux << tle._ligne1 << endl;
+            flux << tle._ligne2 << endl;
+        }
+        fichier.close();
+    }
+
+    /* Retour */
+    return;
+}
+
 void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu)
 {
     /* Declarations des variables locales */
@@ -609,6 +743,16 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2)
 }
 
 /* Accesseurs */
+int TLE::nbOrbites() const
+{
+    return _nbOrbites;
+}
+
+Date TLE::dateDebutValidite() const
+{
+    return _dateDebutValidite;
+}
+
 double TLE::argpo() const
 {
     return _argpo;
@@ -647,11 +791,6 @@ QString TLE::ligne2() const
 double TLE::mo() const
 {
     return _mo;
-}
-
-int TLE::nbOrbites() const
-{
-    return _nbOrbites;
 }
 
 double TLE::no() const

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    2 avril 2018
  *
  */
 
@@ -136,7 +136,6 @@ static int ind;
 static int idxf;
 static int idxfi;
 static int idxfm;
-static int idxft;
 static int nbSat;
 static int notifFlash;
 static int deltaNbOrb;
@@ -149,6 +148,7 @@ static QString nor;
 static QVector<bool> bipSatAOS;
 static QVector<bool> bipSatLOS;
 static QVector<TLE> tles;
+static QVector<TLE> tab3le;
 static QList<Satellite> satellites;
 static QString liste;
 static QString donneesSat;
@@ -156,7 +156,6 @@ static QStringList listeTLE;
 static QStringList ficTLE;
 static QStringList ficTLEIri;
 static QStringList ficTLEMetOp;
-static QStringList ficTLETransit;
 static QStringList listeGroupeMaj;
 static QStringList resultatsSatellitesTrouves;
 static QStringList tabStatutIridium;
@@ -575,21 +574,6 @@ void PreviSat::ChargementConfig()
     if (ficTLEIri.isEmpty())
         ui->fichierTLEIri->addItem("");
     ui->fichierTLEIri->addItem(tr("Parcourir..."));
-
-    // Fichier transit ISS
-    ficTLETransit.clear();
-    const QString nomFicTransit = settings.value("fichier/fichierTLETransit", dirTle + QDir::separator() + "visual.txt").toString().
-            trimmed();
-    const QFileInfo fit(nomFicTransit);
-    if (fit.exists() && fi.size() != 0) {
-        ui->fichierTLETransit->addItem(fit.fileName());
-        ui->fichierTLETransit->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
-        ficTLETransit.append(QDir::toNativeSeparators(nomFicTransit));
-    }
-    idxft = 0;
-    if (ficTLETransit.isEmpty())
-        ui->fichierTLETransit->addItem("");
-    ui->fichierTLETransit->addItem(tr("Parcourir..."));
 
     // Fichier flashs MetOp et SkyMed
     ficTLEMetOp.clear();
@@ -1095,6 +1079,33 @@ void PreviSat::MAJTLE()
         }
     } else {
         VerifAgeTLE();
+    }
+
+    // Verification du fichier iss.3le
+    if (ui->verifMAJ->isChecked()) {
+
+        const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+        const QFile fi(fichier3leIss);
+
+        if (fi.exists()) {
+
+            // Lecture du fichier iss.3le
+            TLE::LectureFichier3le(fichier3leIss, tab3le);
+        }
+
+        const double jj3lemoy = 0.5 * (tab3le.first().dateDebutValidite().jourJulienUTC() + tab3le.last().dateDebutValidite().jourJulienUTC());
+        if (tab3le.isEmpty() || (dateCourante.jourJulienUTC() >= jj3lemoy)) {
+
+            // Telechargement du fichier Human Space Flight
+            amajDeb = true;
+            dirDwn = dirTmp;
+            TelechargementFichier(ISS_TRAJECTOIRE_NASA, false);
+            amajDeb = false;
+
+            // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+            const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+            TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
+        }
     }
 
     /* Retour */
@@ -3968,39 +3979,54 @@ void PreviSat::CalculAgeTLETransitISS() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fichier = ficTLETransit.at(idxft);
+    const QString fichier = dirTle + QDir::separator() + "iss.3le";
     const int nbt = TLE::VerifieFichier(fichier, false);
 
     /* Corps de la methode */
     if (nbt > 0) {
 
         // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
-        const QStringList iss(NORAD_STATION_SPATIALE);
         QVector<TLE> tleISS;
-        TLE::LectureFichier(fichier, iss, tleISS);
-        const double ageISS = dateCourante.jourJulienUTC() - tleISS.at(0).epoque().jourJulienUTC();
+        TLE::LectureFichier3le(fichier, tleISS);
+        const double jjcour = dateCourante.jourJulienUTC();
+        const double age1 = tleISS.first().dateDebutValidite().jourJulienUTC() - jjcour;
+        const double age2 = jjcour - tleISS.last().dateDebutValidite().jourJulienUTC();
+        const double ageISS = qMax(age1, age2);
 
-        const QString chaine = tr("%1 jours");
-        QBrush brush;
-        QPalette paletteTLE;
-        brush.setStyle(Qt::SolidPattern);
+        if (ageISS > 0.) {
 
-        // Indicateur de l'age du TLE
-        if (fabs(ageISS) > 15.) {
-            brush.setColor(Qt::red);
-        } else if (fabs(ageISS) > 10.) {
-            brush.setColor(QColor("orange"));
-        } else if (fabs(ageISS) > 5.) {
-            brush.setColor(Qt::darkYellow);
+            const QString chaine = tr("%1 jours");
+            QBrush brush;
+            QPalette paletteTLE;
+            brush.setStyle(Qt::SolidPattern);
+
+            // Indicateur de l'age du TLE
+            if (fabs(ageISS) > ui->ageMaxTLETransit->value() + 8.) {
+                brush.setColor(Qt::red);
+            } else if (fabs(ageISS) > ui->ageMaxTLETransit->value() + 4.) {
+                brush.setColor(QColor("orange"));
+            } else if (fabs(ageISS) > ui->ageMaxTLETransit->value()) {
+                brush.setColor(Qt::darkYellow);
+            } else {
+                brush.setColor(QColor("forestgreen"));
+            }
+
+            paletteTLE.setBrush(QPalette::WindowText, brush);
+            ui->ageTLETransit->setPalette(paletteTLE);
+
+            if (fabs(ageISS - age1) < EPSDBL100) {
+                ui->lbl_ageTLETransit->setText(tr("Age du premier TLE :"));
+            } else {
+                ui->lbl_ageTLETransit->setText(tr("Age du dernier TLE :"));
+            }
+
+            ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
+            ui->lbl_ageTLETransit->setVisible(true);
+            ui->ageTLETransit->setVisible(true);
         } else {
-            brush.setColor(QColor("forestgreen"));
+            ui->lbl_ageTLETransit->setVisible(false);
+            ui->ageTLETransit->setVisible(false);
         }
-
-        paletteTLE.setBrush(QPalette::WindowText, brush);
-        ui->ageTLETransit->setPalette(paletteTLE);
-        ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
-        ui->lbl_ageTLETransit->setVisible(true);
-        ui->ageTLETransit->setVisible(true);
     } else {
         ui->lbl_ageTLETransit->setVisible(false);
         ui->ageTLETransit->setVisible(false);
@@ -5620,8 +5646,6 @@ void PreviSat::CalculsTermines()
             ui->afficherTransit->setEnabled(true);
             ui->afficherTransit->setDefault(true);
             ui->afficherTransit->setFocus();
-            settings.setValue("fichier/fichierTLETransit",
-                              QDir::toNativeSeparators(ficTLETransit.at(ui->fichierTLETransit->currentIndex())));
         }
         break;
 
@@ -5722,7 +5746,7 @@ void PreviSat::GestionTempsReel()
         pas2 = (!ui->backward->isEnabled() || !ui->forward->isEnabled()) ? 0. : pas1 * NB_SEC_PAR_JOUR;
     }
 
-    const QDateTime dateTime = Date(date1.jourJulienUTC() + date1.offsetUTC(), 0.).ToQDateTime(1);
+    const QDateTime dateTime = Date(date1.jourJulienUTC() + date1.offsetUTC() + EPS_DATES, 0.).ToQDateTime(1);
     date2 = Date(dateTime.date().year(), 1, 1., 0.);
 
     if (ui->calJulien->isChecked()) {
@@ -6134,7 +6158,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("fichier/affichageMsgMAJ", ui->affichageMsgMAJ->currentIndex());
     settings.setValue("fichier/fichierALireCreerTLE", ui->fichierALireCreerTLE->text());
     settings.setValue("fichier/nomFichierPerso", ui->nomFichierPerso->text());
-    settings.setValue("fichier/fichierTLETransit", (ficTLETransit.count() > 0) ? ficTLETransit.at(0) : "");
 
     settings.setValue("previsions/pasGeneration", ui->pasGeneration->currentIndex());
     settings.setValue("previsions/lieuxObservation2", ui->lieuxObservation2->currentIndex());
@@ -6422,7 +6445,11 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
 #endif
 
     /* Corps de la methode */
-    if (evt->key() == Qt::Key_F5) {
+    if (evt->key() == Qt::Key_F4) {
+
+        on_majTleIss_clicked();
+
+    } else if (evt->key() == Qt::Key_F5) {
 
         // Mise a jour du fichier TLE courant
         MajFichierTLE();
@@ -7909,7 +7936,6 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->dateInitialeTransit->setPalette(palList);
     ui->dateFinaleTransit->setPalette(palList);
     ui->lieuxObservation4->setPalette(palList);
-    ui->fichierTLETransit->setPalette(palList);
     ui->ageMaxTLETransit->setPalette(palList);
     ui->hauteurSatTransit->setPalette(palList);
     ui->valHauteurSatTransit->setPalette(palList);
@@ -10540,13 +10566,11 @@ void PreviSat::on_onglets_currentChanged(int index)
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
 
-        if (ficTLETransit.isEmpty()) {
+        if (tab3le.isEmpty()) {
             ui->ageTLETransit->setVisible(false);
             ui->lbl_ageTLETransit->setVisible(false);
         } else {
             CalculAgeTLETransitISS();
-            ui->ageTLETransit->setVisible(true);
-            ui->lbl_ageTLETransit->setVisible(true);
         }
     }
 
@@ -10592,13 +10616,11 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
 
-        if (ficTLETransit.isEmpty()) {
+        if (tab3le.isEmpty()) {
             ui->ageTLETransit->setVisible(false);
             ui->lbl_ageTLETransit->setVisible(false);
         } else {
             CalculAgeTLETransitISS();
-            ui->ageTLETransit->setVisible(true);
-            ui->lbl_ageTLETransit->setVisible(true);
         }
 
     } else  if (index == ui->ongletsOutils->indexOf(ui->flashsMetOp)) {
@@ -10679,6 +10701,11 @@ void PreviSat::on_majMaintenant_clicked()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionMettre_jour_TLE_de_l_ISS_triggered()
+{
+    on_majTleIss_clicked();
 }
 
 void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
@@ -12114,65 +12141,6 @@ void PreviSat::on_effacerHeuresTransit_clicked()
     return;
 }
 
-void PreviSat::on_fichierTLETransit_currentIndexChanged(int index)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    ui->fichierTLETransit->setToolTip("");
-
-    /* Corps de la methode */
-    try {
-        if (ui->fichierTLETransit->itemText(ui->fichierTLETransit->count() - 1) == tr("Parcourir...")) {
-
-            if (index == ui->fichierTLETransit->count() - 1) {
-
-                const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
-                                                                     settings.value("fichier/fichierTLETransit", dirTle).toString(),
-                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
-                                                                        "Tous les fichiers (*)"));
-
-                if (fichier.isEmpty()) {
-                    if (!ui->fichierTLETransit->currentText().isEmpty())
-                        ui->fichierTLETransit->setCurrentIndex(idxft);
-                } else {
-                    AffichageListeFichiersTLE(fichier, ui->fichierTLETransit, ficTLETransit);
-                    const int idx = qMax(ficTLETransit.size() - 1, 0);
-                    ui->fichierTLETransit->setItemData(idxft, QColor(Qt::white), Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
-                    idxft = idx;
-                }
-            } else {
-                if (!ficTLETransit.isEmpty()) {
-                    const int idx = qMax(index - 1, 0);
-                    ui->fichierTLETransit->setItemData(idxft, QColor(Qt::white), Qt::BackgroundRole);
-                    ui->fichierTLETransit->setItemData(idx, QColor(Qt::gray), Qt::BackgroundRole);
-                    AffichageListeFichiersTLE(ficTLETransit.at(index), ui->fichierTLETransit, ficTLETransit);
-                    idxft = idx;
-                }
-            }
-
-            if (ficTLETransit.isEmpty()) {
-                ui->ageTLETransit->setVisible(false);
-                ui->lbl_ageTLETransit->setVisible(false);
-            } else {
-                const QFileInfo fi(ficTLETransit.at(idxft));
-                ui->fichierTLETransit->setCurrentIndex(idxft);
-                ui->fichierTLETransit->setToolTip((QDir::toNativeSeparators(fi.absolutePath()) != dirTle) ?
-                                                      "" : fi.absoluteFilePath());
-                CalculAgeTLETransitISS();
-                ui->ageTLETransit->setVisible(true);
-                ui->lbl_ageTLETransit->setVisible(true);
-            }
-        }
-
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
 void PreviSat::on_hauteurSatTransit_currentIndexChanged(int index)
 {
     /* Declarations des variables locales */
@@ -12213,6 +12181,19 @@ void PreviSat::on_parametrageDefautTransit_clicked()
     return;
 }
 
+void PreviSat::on_majTleIss_clicked()
+{
+    // Mise a jour du fichier iss.3le
+    messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
+    dirDwn = dirTmp;
+    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+
+    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+    TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
+}
+
 void PreviSat::on_calculsTransit_clicked()
 {
     /* Declarations des variables locales */
@@ -12232,13 +12213,11 @@ void PreviSat::on_calculsTransit_clicked()
     ui->afficherMetOp->setEnabled(false);
 
     try {
-        if (ui->fichierTLETransit->currentText().trimmed().isEmpty() || ui->fichierTLETransit->currentText() == tr("Parcourir..."))
-            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
 
-        const QFileInfo fi(ficTLETransit.at(ui->fichierTLETransit->currentIndex()));
+        const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+        const QFileInfo fi(fichier3leIss);
         if (!fi.exists()) {
-            ui->fichierTLETransit->removeItem(ui->fichierTLETransit->currentIndex());
-            throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
+            throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
         }
 
         ui->afficherTransit->setEnabled(false);
@@ -12309,7 +12288,6 @@ void PreviSat::on_calculsTransit_clicked()
         // Unite pour les distances
         const QString unite = (ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
 
-        const QStringList listeTLEs(NORAD_STATION_SPATIALE);
         QVector<TLE> tabtle;
 
         // Verification du fichier TLE
@@ -12320,23 +12298,23 @@ void PreviSat::on_calculsTransit_clicked()
         }
 
         // Lecture du TLE
-        TLE::LectureFichier(fi.absoluteFilePath(), listeTLEs, tabtle);
-        if (tabtle.at(0).norad().isEmpty()) {
+        TLE::LectureFichier3le(fi.absoluteFilePath(), tabtle);
+        if (tabtle.at(0).norad() != NORAD_STATION_SPATIALE) {
             const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
         }
 
-        // Age du TLE
-        const double age = fabs(jj1 - tabtle.at(0).epoque().jourJulienUTC());
-        if (age > ageTLE + 0.05) {
+        // Age des TLE
+        const double age1 = qMin(tabtle.first().epoque().jourJulienUTC() - jj1, tabtle.last().epoque().jourJulienUTC() - jj1);
+        const double age2 = qMin(jj2 - tabtle.first().epoque().jourJulienUTC(), jj2 - tabtle.last().epoque().jourJulienUTC());
+        if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
             const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-            Message::Afficher(msg.arg(age, 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+            Message::Afficher(msg.arg(qMax(age1, age2), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsTransit->setEnabled(false);
-
 
         // Lancement des calculs
         conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, acalcEclipseLune, syst, haut, ageTLE, elong, jj1, jj2, offset1,

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    2 avril 2018
  *
  */
 
@@ -68,6 +68,31 @@ Satellite::Satellite()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _tabtle.clear();
+    _ieralt = true;
+    _nbOrbites = 0;
+    _ageTLE = 0.;
+    _beta = 0.;
+
+    _methMagnitude = 'v';
+    _magnitudeStandard = 99.;
+    _section = 0.;
+    _t1 = 0.;
+    _t2 = 0.;
+    _t3 = 0.;
+
+    /* Retour */
+    return;
+}
+
+Satellite::Satellite(const QVector<TLE> &tabtle)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _tabtle = tabtle;
     _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
@@ -296,6 +321,9 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
     return (Date(jj0, 0., false));
 }
 
+/*
+ * Calcul de la date du prochain passage ombre->penombre ou penombre->ombre
+ */
 Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const ConditionEclipse &condEclipse, const int nbTrajectoires,
                                             const bool acalcEclipseLune, const bool refraction)
 {
@@ -409,9 +437,34 @@ void Satellite::CalculPosVit(const Date &date)
 
     /* Corps de la methode */
     try {
+
+        if (!_tabtle.isEmpty()) {
+
+            if (date.jourJulienUTC() < _tabtle.at(0).dateDebutValidite().jourJulienUTC()) {
+                _tle = _tabtle.at(0);
+            } else {
+
+                QVectorIterator<TLE> it(_tabtle);
+                bool atrouve = false;
+                while (it.hasNext()) {
+                    const TLE xtle = it.next();
+
+                    if (date.jourJulienUTC() >= xtle.dateDebutValidite().jourJulienUTC()) {
+                        _tle = xtle;
+                        atrouve = true;
+                    } else {
+                        if (atrouve) {
+                            it.toBack();
+                        }
+                    }
+                }
+            }
+        }
+
         _sgp4.Calcul(date, _tle);
         _position = _sgp4.position();
         _vitesse = _sgp4.vitesse();
+
     } catch (PreviSatException &e) {
     }
 

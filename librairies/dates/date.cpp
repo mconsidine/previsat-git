@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    2 avril 2018
  *
  */
 
@@ -355,7 +355,7 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
 
     /* Initialisations */
     const double offset = Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1));
-    const QDateTime qdate = Date((*this).jourJulienUTC() + offset, 0.).ToQDateTime(1);
+    const QDateTime qdate = Date((*this).jourJulienUTC() + offset + EPS_DATES, 0.).ToQDateTime(1);
 
     /* Corps de la methode */
     QString res = qdate.toString(QObject::tr("dddd dd MMMM yyyy hh:mm:ss") + ((systeme == SYSTEME_12H) ? "a" : ""));
