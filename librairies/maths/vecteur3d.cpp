@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    2 avril 2018
  *
  */
 
@@ -215,6 +215,15 @@ Vecteur3D Vecteur3D::Rotation(AxeType axe, double angle) const
 
     /* Retour */
     return (vecteur);
+}
+
+/*
+ * Affectation d'un vecteur 3D
+ */
+Vecteur3D &Vecteur3D::operator = (const Vecteur3D &vecteur)
+{
+    *this = vecteur;
+    return (*this);
 }
 
 

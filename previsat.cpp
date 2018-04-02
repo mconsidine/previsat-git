@@ -990,7 +990,7 @@ void PreviSat::ChargementTLE()
             QVectorIterator<TLE> it2(tles);
             while (it2.hasNext()) {
                 const TLE tle = it2.next();
-                if (tle.norad().isEmpty()) {
+                if (tle.norad().trimmed().isEmpty()) {
                     tles.remove(i);
                 } else {
                     listeTLE.append(tles.at(i).norad());
@@ -8761,7 +8761,7 @@ void PreviSat::on_noradDonneesSat_valueChanged(int arg1)
             // Recherche dans le tableau de donnees a partir du numero NORAD
             do {
                 indx1 = donneesSat.indexOf(norad, indx1 + 1);
-            } while (indx1 >= 0 && donneesSat.at(indx1 - 1) != '\n');
+            } while (indx1 >= 0 && donneesSat.at(qMax(0, indx1 - 1)) != '\n');
             if (indx1 >= 0) {
 
                 int indx2 = donneesSat.indexOf("\n", indx1) - indx1;
@@ -8803,7 +8803,7 @@ void PreviSat::on_cosparDonneesSat_returnPressed()
         // Recherche dans le tableau de donnees a partir de la designation COSPAR
         do {
             indx1 = donneesSat.indexOf(ui->cosparDonneesSat->text().toLower().trimmed(), indx1 + indx2);
-            if (indx1 >= 0 && donneesSat.at(indx1 - 7) == '\n') {
+            if (indx1 >= 0 && donneesSat.at(qMax(0, indx1 - 7)) == '\n') {
 
                 indx1 = donneesSat.lastIndexOf("\n", indx1) + 1;
                 indx2 = donneesSat.indexOf("\n", indx1) - indx1;

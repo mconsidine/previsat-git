@@ -366,6 +366,16 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
 }
 
 /*
+ * Affectation d'une date
+ */
+Date &Date::operator = (const Date &date)
+{
+    *this = date;
+    return (*this);
+}
+
+
+/*
  * Calcul du jour julien 2000
  */
 void Date::CalculJourJulien()

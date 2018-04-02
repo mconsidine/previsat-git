@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    2 avril 2018
  *
  */
 
@@ -354,6 +354,16 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
     /* Retour */
     return (Observateur(nom, lon, lat, 0.));
 }
+
+/*
+ * Affectation d'un observateur
+ */
+Observateur &Observateur::operator = (const Observateur &observateur)
+{
+    *this = observateur;
+    return (*this);
+}
+
 
 /* Accesseurs */
 double Observateur::aaer() const

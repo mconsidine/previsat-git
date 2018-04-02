@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    2 avril 2018
  *
  */
 
@@ -44,6 +44,7 @@
 #include "librairies/corps/systemesolaire/TerreConstants.h"
 #include "librairies/maths/mathsConstants.h"
 #include "librairies/maths/matrice3d.h"
+
 
 class Observateur
 {
@@ -127,6 +128,13 @@ public:
      * @return lieu pointe par le vecteur
      */
     static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D origine, const Vecteur3D direction);
+
+    /**
+     * @brief operator = Affectation d'un observateur
+     * @param observateur observateur
+     */
+    Observateur &operator = (const Observateur &observateur);
+
 
     /* Accesseurs */
     double aaer() const;
