@@ -370,7 +370,20 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
  */
 Date &Date::operator = (const Date &date)
 {
-    *this = date;
+    _annee = date._annee;
+    _mois = date._mois;
+    _jour = date._jour;
+    _heure = date._heure;
+    _minutes = date._minutes;
+    _secondes = date.secondes();
+
+    _jourJulien = date._jourJulien;
+    _jourJulienTT = date._jourJulienTT;
+    _jourJulienUTC = date._jourJulienUTC;
+    _offsetUTC = date._offsetUTC;
+
+    _deltaAT = date._deltaAT;
+
     return (*this);
 }
 
