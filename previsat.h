@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 novembre 2016
+ * >    2 avril 2018
  *
  */
 
@@ -560,6 +560,7 @@ private slots:
     // Mise a jour des TLE
     void on_groupeTLE_currentIndexChanged(int index);
     void on_majMaintenant_clicked();
+    void on_actionMettre_jour_TLE_de_l_ISS_triggered();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
     void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();
@@ -612,9 +613,9 @@ private slots:
 
     // Calcul des transits ISS
     void on_effacerHeuresTransit_clicked();
-    void on_fichierTLETransit_currentIndexChanged(int index);
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_parametrageDefautTransit_clicked();
+    void on_majTleIss_clicked();
     void on_calculsTransit_clicked();
     void on_afficherTransit_clicked();
 

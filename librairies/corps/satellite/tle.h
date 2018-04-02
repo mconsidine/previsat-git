@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    2 avril 2018
  *
  */
 
@@ -59,8 +59,9 @@ public:
      * @param lig0 ligne 0 du TLE (nom du satellite)
      * @param lig1 ligne 1 du TLE
      * @param lig2 ligne 2 du TLE
+     * @param dateDebValid date de debut de validite du TLE
      */
-    TLE(const QString &lig0, const QString &lig1, const QString &lig2);
+    TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid = Date(-DATE_INFINIE, 0.));
 
     ~TLE();
 
@@ -86,6 +87,20 @@ public:
     static void LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, QVector<TLE> &tabtle);
 
     /**
+     * @brief LectureFichier3le Lecture du fichier 3le
+     * @param nomFichier3le nom du fichier 3le
+     * @param tabtle tableau de TLE
+     */
+    static void LectureFichier3le(const QString &nomFichier3le, QVector<TLE> &tabtle);
+
+    /**
+     * @brief LectureTrajectoryData Lecture du fichier Human Space Flight
+     * @param fichierHsf nom du fichier html
+     * @param fichier3le nom du fichier 3le
+     */
+    static void LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le);
+
+    /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
      * @param ficOld fichier avec les anciens TLE
      * @param ficNew fichier avec les nouveaux TLE
@@ -94,7 +109,11 @@ public:
      */
     static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
 
+
     /* Accesseurs */
+    int nbOrbites() const;
+    Date dateDebutValidite() const;
+
     double argpo() const;
     double bstar() const;
     double ecco() const;
@@ -103,7 +122,6 @@ public:
     QString ligne1() const;
     QString ligne2() const;
     double mo() const;
-    int nbOrbites() const;
     double no() const;
     QString nom() const;
     QString norad() const;
@@ -125,6 +143,8 @@ private:
 
     /* Variables privees */
     int _nbOrbites;
+    Date _dateDebutValidite;
+
     double _argpo;
     double _bstar;
     double _ecco;

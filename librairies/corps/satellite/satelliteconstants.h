@@ -36,7 +36,7 @@
  * >    16 septembre 2016
  *
  * Date de revision
- * >
+ * >    2 avril 2018
  *
  */
 
@@ -50,6 +50,6 @@
 
 /* Declaration des constantes */
 static const QString NORAD_STATION_SPATIALE = "25544";
-
+static const QString ISS_TRAJECTOIRE_NASA = "https://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/orbit/ISS/SVPOST.html";
 
 #endif // SATELLITECONSTANTS_H

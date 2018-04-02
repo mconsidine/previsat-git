@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2016
+ * >    2 avril 2018
  *
  */
 
@@ -63,7 +63,7 @@ public:
 
     /**
      * @brief Satellite Constructeur a partir d'un TLE
-     * @param xtle tle
+     * @param xtle TLE
      */
     explicit Satellite(const TLE &xtle) : _tle(xtle) {
 
@@ -79,6 +79,12 @@ public:
         _t2 = 0.;
         _t3 = 0.;
     }
+
+    /**
+     * @brief Satellite Constructeur a partir d'un tableau de TLE
+     * @param tabtle tableau de TLE
+     */
+    explicit Satellite(const QVector<TLE> &tabtle);
 
     ~Satellite();
 
@@ -261,6 +267,7 @@ private:
 
     SGP4 _sgp4;
     TLE _tle;
+    QVector<TLE> _tabtle;
     ConditionEclipse _conditionEclipse;
     ElementsOsculateurs _elements;
     Magnitude _magnitude;

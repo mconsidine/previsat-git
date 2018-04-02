@@ -13577,27 +13577,11 @@
                <string>Lieu d'observation :</string>
               </property>
              </widget>
-             <widget class="QLabel" name="lbl_fichierTLETransit">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>92</y>
-                <width>61</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="text">
-               <string>Fichier TLE :</string>
-              </property>
-             </widget>
              <widget class="QLabel" name="lbl_ageMaxTLETransit">
               <property name="geometry">
                <rect>
                 <x>10</x>
-                <y>120</y>
+                <y>92</y>
                 <width>111</width>
                 <height>16</height>
                </rect>
@@ -13613,7 +13597,7 @@
               <property name="geometry">
                <rect>
                 <x>120</x>
-                <y>116</y>
+                <y>88</y>
                 <width>41</width>
                 <height>22</height>
                </rect>
@@ -13721,7 +13705,7 @@
              <widget class="QLabel" name="lbl_elongationMaxCorps">
               <property name="geometry">
                <rect>
-                <x>380</x>
+                <x>10</x>
                 <y>120</y>
                 <width>181</width>
                 <height>16</height>
@@ -13737,7 +13721,7 @@
              <widget class="QDoubleSpinBox" name="elongationMaxCorps">
               <property name="geometry">
                <rect>
-                <x>560</x>
+                <x>190</x>
                 <y>116</y>
                 <width>51</width>
                 <height>22</height>
@@ -13867,31 +13851,12 @@
                <string>Paramétrage par défaut</string>
               </property>
              </widget>
-             <widget class="QComboBox" name="fichierTLETransit">
-              <property name="geometry">
-               <rect>
-                <x>70</x>
-                <y>90</y>
-                <width>154</width>
-                <height>20</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font/>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-              </property>
-             </widget>
              <widget class="QLabel" name="lbl_ageTLETransit">
               <property name="geometry">
                <rect>
-                <x>234</x>
+                <x>188</x>
                 <y>92</y>
-                <width>65</width>
+                <width>111</width>
                 <height>16</height>
                </rect>
               </property>
@@ -13899,7 +13864,7 @@
                <font/>
               </property>
               <property name="text">
-               <string>Age du TLE : </string>
+               <string>Age du dernier TLE : </string>
               </property>
              </widget>
              <widget class="QLabel" name="ageTLETransit">
@@ -13919,6 +13884,19 @@
               </property>
               <property name="text">
                <string>-360.3 jours</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="majTleIss">
+              <property name="geometry">
+               <rect>
+                <x>510</x>
+                <y>10</y>
+                <width>191</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Mettre à jour TLE de l'ISS...</string>
               </property>
              </widget>
             </widget>
@@ -14895,6 +14873,7 @@ le flux vidéo</string>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
+    <addaction name="actionMettre_jour_TLE_de_l_ISS"/>
     <addaction name="actionMettre_jour_TLE_courant"/>
     <addaction name="actionMettre_jour_groupe_TLE"/>
     <addaction name="actionMettre_jour_tous_les_groupes_de_TLE"/>
@@ -15202,6 +15181,14 @@ le flux vidéo</string>
     <string>Shift+F5</string>
    </property>
   </action>
+  <action name="actionMettre_jour_TLE_de_l_ISS">
+   <property name="text">
+    <string>Mettre à jour TLE de l'ISS (transits)</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -15402,7 +15389,6 @@ le flux vidéo</string>
   <tabstop>parcourirMaj1</tabstop>
   <tabstop>parametrageDefautEvt</tabstop>
   <tabstop>parametrageDefautTransit</tabstop>
-  <tabstop>fichierTLETransit</tabstop>
   <tabstop>maximise</tabstop>
   <tabstop>play</tabstop>
   <tabstop>dateFinalePrev</tabstop>
