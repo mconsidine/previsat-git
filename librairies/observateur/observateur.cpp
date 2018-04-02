@@ -360,7 +360,17 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
  */
 Observateur &Observateur::operator = (const Observateur &observateur)
 {
-    *this = observateur;
+    _longitude = observateur._longitude;
+    _latitude = observateur._latitude;
+    _altitude = observateur._altitude;
+    _coslat = observateur._coslat;
+    _sinlat = observateur._sinlat;
+    _rayon = observateur._rayon;
+    _posZ = observateur._posZ;
+    _aaer = observateur._aaer;
+    _aray = observateur._aray;
+    _tempsSideralGreenwich = observateur._tempsSideralGreenwich;
+
     return (*this);
 }
 

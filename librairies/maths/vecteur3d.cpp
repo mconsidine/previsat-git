@@ -222,7 +222,9 @@ Vecteur3D Vecteur3D::Rotation(AxeType axe, double angle) const
  */
 Vecteur3D &Vecteur3D::operator = (const Vecteur3D &vecteur)
 {
-    *this = vecteur;
+    _x = vecteur._x;
+    _y = vecteur._y;
+    _z = vecteur._z;
     return (*this);
 }
 
