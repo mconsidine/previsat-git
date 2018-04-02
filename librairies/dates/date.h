@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 janvier 2016
+ * >    2 avril 2018
  *
  */
 
@@ -43,6 +43,7 @@
 #include <QDateTime>
 #include <QString>
 #include "dateConstants.h"
+
 
 class Date
 {
@@ -139,6 +140,13 @@ public:
      * @return chaine de caracteres contenant la date au format long
      */
     QString ToLongDate(const DateSysteme &systeme) const;
+
+    /**
+     * @brief operator = Affectation d'une date
+     * @param date date
+     */
+    Date &operator = (const Date &date);
+
 
     /* Accesseurs */
     int annee() const;

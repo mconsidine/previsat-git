@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    2 avril 2018
  *
  */
 
@@ -41,6 +41,7 @@
 #define VECTEUR3D_H
 
 #include "mathsConstants.h"
+
 
 class Vecteur3D
 {
@@ -105,6 +106,12 @@ public:
      * @return vecteur issu de la rotation
      */
     Vecteur3D Rotation(AxeType axe, double angle) const;
+
+    /**
+     * @brief operator = Affectation d'un vecteur 3D
+     * @param vecteur vecteur
+     */
+    Vecteur3D &operator = (const Vecteur3D &vecteur);
 
     /**
      * @brief operator - Oppose du vecteur 3D
