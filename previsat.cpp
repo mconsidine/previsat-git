@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    3 avril 2018
  *
  */
 
@@ -1471,7 +1471,7 @@ void PreviSat::InitFicTLE() const
     try {
         bool aNomficTrouve = false;
         const QDir di(dirTle);
-        const QStringList filtres(QStringList () << "*.txt" << "*.tle" << "*");
+        const QStringList filtres(QStringList () << "*.txt" << "*.tle");
 
         ficTLE.clear();
         ui->listeFichiersTLE->clear();
@@ -7725,7 +7725,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_triggered()
     const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                          settings.value("fichier/repTLE", dirTle).toString(),
                                                          tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
-                                                            "Fichiers gz (*.gz);;Tous les fichiers (*)"));
+                                                            "Fichiers gz (*.gz)"));
 
     try {
         if (fichier.isEmpty()) {
@@ -8126,7 +8126,7 @@ void PreviSat::on_actionNouveau_fichier_TLE_triggered()
 
     /* Corps de la methode */
     const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), dirTle,
-                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
 
     QFile fichier(fic);
     fichier.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -8162,7 +8162,7 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
     try {
 
         const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), dirTle,
-                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
 
 
         // Verification que le fichier est un TLE
@@ -10786,7 +10786,7 @@ void PreviSat::on_parcourirMaj1_clicked()
     /* Corps de la methode */
     QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                    settings.value("fichier/fichierMaj", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Tous les fichiers (*)"));
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::toNativeSeparators(fichier);
         ui->fichierAMettreAJour->setText(fichier);
@@ -10805,8 +10805,7 @@ void PreviSat::on_parcourirMaj2_clicked()
     /* Corps de la methode */
     QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                    settings.value("fichier/fichierALire", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
-                                                      "Tous les fichiers (*)"));
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::toNativeSeparators(fichier);
         ui->fichierALire->setText(fichier);
@@ -10983,8 +10982,7 @@ void PreviSat::on_parcourir1CreerTLE_clicked()
     /* Corps de la methode */
     QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                    settings.value("fichier/fichierALireCreerTLE", dirTle).toString(),
-                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz);;" \
-                                                      "Tous les fichiers (*)"));
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)"));
     if (!fichier.isEmpty()) {
         fichier = QDir::toNativeSeparators(fichier);
         ui->fichierALireCreerTLE->setText(fichier);
@@ -11007,8 +11005,7 @@ void PreviSat::on_parcourir2CreerTLE_clicked()
     const QString nomRepDefaut = settings.value("fichier/sauvegarde", dirOut).toString();
 #endif
 
-    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut,
-                                                   tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomRepDefaut, tr("Fichiers texte (*.txt)"));
 
     if (!fichier.isEmpty()) {
         fichier = QDir::toNativeSeparators(fichier);
@@ -11591,8 +11588,7 @@ void PreviSat::on_fichierTLEIri_currentIndexChanged(int index)
 
                 const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                                      settings.value("fichier/iridium", dirTle).toString(),
-                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
-                                                                        "Tous les fichiers (*)"));
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLEIri->currentText().isEmpty())
@@ -12383,8 +12379,7 @@ void PreviSat::on_fichierTLEMetOp_currentIndexChanged(int index)
 
                 const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
                                                                      settings.value("fichier/fichierTLEMetOp", dirTle).toString(),
-                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
-                                                                        "Tous les fichiers (*)"));
+                                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
 
                 if (fichier.isEmpty()) {
                     if (!ui->fichierTLEMetOp->currentText().isEmpty())
