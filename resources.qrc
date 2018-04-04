@@ -55,9 +55,11 @@
         <file>resources/icones/atv.png</file>
         <file>resources/icones/dragon.png</file>
         <file>resources/icones/progress.png</file>
-        <file>resources/icones/saliout.png</file>
+        <file>resources/icones/tiangong.png</file>
         <file>resources/icones/soyuz.png</file>
         <file>resources/meteo.png</file>
         <file>resources/icones/otv.png</file>
+        <file>resources/icones/noaa.png</file>
+        <file>resources/icones/cygnus.png</file>
     </qresource>
 </RCC>
