@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    8 avril 2018
  *
  */
 
@@ -68,7 +68,6 @@ Satellite::Satellite()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _tabtle.clear();
     _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
@@ -440,24 +439,20 @@ void Satellite::CalculPosVit(const Date &date)
 
         if (!_tabtle.isEmpty()) {
 
-            if (date.jourJulienUTC() < _tabtle.at(0).dateDebutValidite().jourJulienUTC()) {
-                _tle = _tabtle.at(0);
-            } else {
+            const double jjsav = _tle.dateDebutValidite().jourJulienUTC();
+            _tle = _tabtle.at(0);
+            QVectorIterator<TLE> it(_tabtle);
+            while (it.hasNext()) {
 
-                QVectorIterator<TLE> it(_tabtle);
-                bool atrouve = false;
-                while (it.hasNext()) {
-                    const TLE xtle = it.next();
-
-                    if (date.jourJulienUTC() >= xtle.dateDebutValidite().jourJulienUTC()) {
-                        _tle = xtle;
-                        atrouve = true;
-                    } else {
-                        if (atrouve) {
-                            it.toBack();
-                        }
-                    }
+                const TLE xtle = it.next();
+                if (date.jourJulienUTC() >= xtle.dateDebutValidite().jourJulienUTC()) {
+                    _tle = xtle;
+                } else {
+                    it.toBack();
                 }
+            }
+            if (fabs(_tle.dateDebutValidite().jourJulienUTC() - jjsav) > EPS_DATES) {
+                _sgp4.setInit(false);
             }
         }
 

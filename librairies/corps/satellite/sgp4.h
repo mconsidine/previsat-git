@@ -33,7 +33,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    2 aout 2016
+ * >    8 avril 2018
  *
  */
 
@@ -70,6 +70,7 @@ public:
     char method() const;
     Vecteur3D position() const;
     Vecteur3D vitesse() const;
+    void setInit(const bool init);
 
 
 protected:

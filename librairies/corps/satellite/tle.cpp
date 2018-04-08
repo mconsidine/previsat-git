@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    8 avril 2018
  *
  */
 
@@ -105,7 +105,7 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Da
     const double jrs = _ligne1.mid(20, 12).toDouble();
     an += (an < 57) ? AN2000 : 1900;
     const Date date(an, 1, 1., 0.);
-    _epoque = Date(date.jourJulien() + jrs - 1., 0., true);
+    _epoque = Date(date.jourJulienUTC() + jrs - 1., 0., true);
 
     // Coefficient pseudo-balistique
     _bstar = 1.e-5 * (_ligne1.mid(53, 6) + "e" + _ligne1.mid(59, 2)).toDouble();

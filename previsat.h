@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    8 avril 2018
  *
  */
 
@@ -104,6 +104,37 @@ private:
      * Initialisations *
      ******************/
     /**
+     * @brief InitAffichageDemarrage Affichage au demarrage
+     */
+    void InitAffichageDemarrage() const;
+
+    /**
+     * @brief InitAffichageStatutIridium Affichage du statut des satellites Iridium
+     */
+    void InitAffichageStatutIridium() const;
+
+    /**
+     * @brief InitBarreStatut Initialisation de la barre de statut
+     * @param police police
+     */
+    void InitBarreStatut(const QFont &police);
+
+    /**
+     * @brief InitChampsDefaut Initialisation des champs par defaut
+     */
+    void InitChampsDefaut();
+
+    /**
+     * @brief InitChargementStations Chargement des stations
+     */
+    void InitChargementStations() const;
+
+    /**
+     * @brief InitChargementTDRS Chargement des satellites TDRS
+     */
+    void InitChargementTDRS() const;
+
+    /**
      * @brief InitFicMap Chargement de la liste de cartes du monde
      * @param majAff mise a jour de l'affichage
      */
@@ -130,6 +161,24 @@ private:
      * @brief InitFicTLE Chargement de la liste de fichiers TLE
      */
     void InitFicTLE() const;
+
+    /**
+     * @brief InitMenus Initialisation des menus
+     * @param police police
+     */
+    void InitMenus(const QFont &police) const;
+
+    /**
+     * @brief InitWallCommandCenter Affichage du Wall Command Center au demarrage
+     */
+    void InitWallCommandCenter();
+
+    /**
+     * @brief VerifieFichiersData Verifie la presence des fichiers du repertoire data
+     * @param dirData repertoire data
+     * @param listeFicData liste de fichiers du repertoire data
+     */
+    void VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const;
 
 
     /**************
@@ -276,6 +325,9 @@ private:
      */
     void AfficherLieuSelectionne(const int index);
 
+    /**
+     * @brief ChargementPref Chargement des preferences
+     */
     void ChargementPref() const;
 
     /**
@@ -560,7 +612,6 @@ private slots:
     // Mise a jour des TLE
     void on_groupeTLE_currentIndexChanged(int index);
     void on_majMaintenant_clicked();
-    void on_actionMettre_jour_TLE_de_l_ISS_triggered();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
     void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();

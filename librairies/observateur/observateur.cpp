@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    8 avril 2018
  *
  */
 
@@ -360,6 +360,7 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
  */
 Observateur &Observateur::operator = (const Observateur &observateur)
 {
+    _nomlieu = observateur._nomlieu;
     _longitude = observateur._longitude;
     _latitude = observateur._latitude;
     _altitude = observateur._altitude;
@@ -367,6 +368,9 @@ Observateur &Observateur::operator = (const Observateur &observateur)
     _sinlat = observateur._sinlat;
     _rayon = observateur._rayon;
     _posZ = observateur._posZ;
+    _position = observateur._position;
+    _vitesse = observateur._vitesse;
+    _rotHz = observateur._rotHz;
     _aaer = observateur._aaer;
     _aray = observateur._aray;
     _tempsSideralGreenwich = observateur._tempsSideralGreenwich;
