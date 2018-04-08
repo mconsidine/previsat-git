@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 aout 2016
+ * >    8 avril 2018
  *
  */
 
@@ -97,31 +97,52 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
                 arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed());
 
     } else {
-        double tlemin = -DATE_INFINIE;
-        double tlemax = DATE_INFINIE;
 
-        QVectorIterator<TLE> it(tabtle);
-        while (it.hasNext()) {
-            const TLE tle = it.next();
-            const double epok = tle.epoque().jourJulienUTC();
-            if (epok > tlemin)
-                tlemin = epok;
-            if (epok < tlemax)
-                tlemax = epok;
-        }
+        double age1 = 0.;
+        double age2 = 0.;
 
-        if (tlemax > conditions._jj1 || tlemin > conditions._jj1) {
-            if (tlemin > tlemax) {
-                const double tmp = tlemin;
-                tlemin = tlemax;
-                tlemax = tmp;
+        if (itransit) {
+
+            const double date1 = tabtle.first().epoque().jourJulienUTC();
+            const double date2 = tabtle.last().epoque().jourJulienUTC();
+
+            age1 = qMin(conditions._jj1 - date1, date2 - conditions._jj1);
+            age2 = qMin(date1 - conditions._jj2, conditions._jj2 - date2);
+
+            if ((age1 < 0.) || (age2 < 0.)) {
+                ligne1 = QObject::tr("Age du TLE le plus ancien : %1 jours");
+                ligne1 = ligne1.arg(fabs(qMax(age1, age2)), 4, 'f', 2);
             }
-        }
+        } else {
 
-        ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
-        ligne1 = ligne1.arg(fabs(conditions._jj1 - tlemin), 4, 'f', 2).
-                arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed()).
-                arg(fabs(conditions._jj1 - tlemax), 4, 'f', 2);
+            double tlemin = -DATE_INFINIE;
+            double tlemax = DATE_INFINIE;
+
+            QVectorIterator<TLE> it(tabtle);
+            while (it.hasNext()) {
+                const TLE tle = it.next();
+                const double epok = tle.epoque().jourJulienUTC();
+                if (epok > tlemin)
+                    tlemin = epok;
+                if (epok < tlemax)
+                    tlemax = epok;
+            }
+
+            if (tlemax > conditions._jj1 || tlemin > conditions._jj1) {
+                if (tlemin > tlemax) {
+                    const double tmp = tlemin;
+                    tlemin = tlemax;
+                    tlemax = tmp;
+                }
+            }
+
+            age1 = fabs(conditions._jj1 - tlemin);
+            age2 = fabs(conditions._jj1 - tlemax);
+
+            ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
+            ligne1 = ligne1.arg(age1, 4, 'f', 2).
+                    arg(date.ToShortDate(FORMAT_COURT, (conditions._syst) ? SYSTEME_24H : SYSTEME_12H).trimmed()).arg(age2, 4, 'f', 2);
+        }
     }
 
     QFile fichier(conditions._out);

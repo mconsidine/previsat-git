@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    8 avril 2018
  *
  */
 
@@ -91,7 +91,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     /* Corps de la methode */
     result.clear();
     tps.start();
-    Satellite sat = Satellite(tabtle);
+    Satellite sat(tabtle);
 
     // Generation des ephemerides du Soleil et de la Lune
     CalculEphemSoleilLune(conditions, observateur);
@@ -245,7 +245,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Altitude du satellite
                                 const Vecteur3D position = sat.position();
                                 sat.CalculLatitude(position);
-                                double altitude = sat.CalculAltitude(sat.position());
+                                double altitude = sat.CalculAltitude(position);
 
                                 // Position du Soleil
                                 soleil.CalculPosition(dates[j]);
@@ -255,7 +255,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 if (conditions.acalcEclipseLune())
                                     lune.CalculPosition(dates[j]);
 
-                                condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(),
+                                condEcl.CalculSatelliteEclipse(soleil, lune, position,
                                                                conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
 
                                 // Ecriture du resultat
@@ -465,7 +465,6 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
     }
 
     Maths::CalculExtremumInterpolation3(jjm, angle, minmax);
-
 
     /* Retour */
     return;

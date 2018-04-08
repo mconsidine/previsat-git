@@ -14873,7 +14873,6 @@ le flux vidéo</string>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
-    <addaction name="actionMettre_jour_TLE_de_l_ISS"/>
     <addaction name="actionMettre_jour_TLE_courant"/>
     <addaction name="actionMettre_jour_groupe_TLE"/>
     <addaction name="actionMettre_jour_tous_les_groupes_de_TLE"/>
@@ -15179,14 +15178,6 @@ le flux vidéo</string>
    </property>
    <property name="shortcut">
     <string>Shift+F5</string>
-   </property>
-  </action>
-  <action name="actionMettre_jour_TLE_de_l_ISS">
-   <property name="text">
-    <string>Mettre à jour TLE de l'ISS (transits)</string>
-   </property>
-   <property name="shortcut">
-    <string>F4</string>
    </property>
   </action>
  </widget>

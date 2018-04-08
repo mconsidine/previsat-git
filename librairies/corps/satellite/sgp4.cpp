@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >     19 mars 2016
+ * >     8 avril 2018
  *
  */
 
@@ -1195,4 +1195,9 @@ Vecteur3D SGP4::position() const
 Vecteur3D SGP4::vitesse() const
 {
     return (_vitesse);
+}
+
+void SGP4::setInit(const bool init)
+{
+    _init = init;
 }

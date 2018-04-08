@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    8 avril 2018
  *
  */
 
@@ -635,10 +635,17 @@ void Afficher::loadSky(const int j)
 
     const QStringList tab = tabres.at(j).split("@");
 
-    const QStringList listeTLEs(tab.at(0));
     QVector<TLE> tabtle;
-    TLE::LectureFichier(cond.fic(), listeTLEs, tabtle);
-    Satellite sat(tabtle.at(0));
+    Satellite sat;
+
+    if (cond.typeCalcul() == TRANSITS) {
+        TLE::LectureFichier3le(cond.fic(), tabtle);
+        sat = Satellite(tabtle);
+    } else {
+        const QStringList listeTLEs(tab.at(0));
+        TLE::LectureFichier(cond.fic(), listeTLEs, tabtle);
+        sat = Satellite(tabtle.at(0));
+    }
 
     // Date de debut du passage
     QString date = tab.at(1).trimmed();
