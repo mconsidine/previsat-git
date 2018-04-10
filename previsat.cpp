@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    9 avril 2018
  *
  */
 
@@ -12431,7 +12431,7 @@ void PreviSat::on_calculsTransit_clicked()
         // Age des TLE
         const double age1 = qMin(jj1 - tabtle.first().epoque().jourJulienUTC(), tabtle.last().epoque().jourJulienUTC() - jj1);
         const double age2 = qMin(tabtle.first().epoque().jourJulienUTC() - jj2, jj2 - tabtle.last().epoque().jourJulienUTC());
-        if ((-age1 > ageTLE + 0.05) || (-age2 > ageTLE + 0.05)) {
+        if ((-age1 > ageTLE + 0.05) && (-age2 > ageTLE + 0.05)) {
             const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
             Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
