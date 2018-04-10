@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    9 avril 2018
  *
  */
 
@@ -109,7 +109,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             age1 = qMin(conditions._jj1 - date1, date2 - conditions._jj1);
             age2 = qMin(date1 - conditions._jj2, conditions._jj2 - date2);
 
-            if ((age1 < 0.) || (age2 < 0.)) {
+            if ((age1 < 0.) && (age2 < 0.)) {
                 ligne1 = QObject::tr("Age du TLE le plus ancien : %1 jours");
                 ligne1 = ligne1.arg(fabs(qMax(age1, age2)), 4, 'f', 2);
             }
