@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 avril 2018
+ * >    26 avril 2018
  *
  */
 
@@ -7620,7 +7620,8 @@ void PreviSat::on_fluxVideo_clicked()
 
         // Verification de la connexion
         QTcpSocket socket;
-        socket.connectToHost(adresseAstropedia.remove("http://").remove("/"), 80);
+        QString adresse = adresseAstropedia;
+        socket.connectToHost(adresse.remove("http://").remove("/"), 80);
         if (!socket.waitForConnected(1000))
             throw PreviSatException(tr("Impossible de lancer le flux vidéo : " \
                                        "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
@@ -12306,7 +12307,7 @@ void PreviSat::on_majTleIss_clicked()
     /* Corps de la methode */
     // Mise a jour du fichier iss.3le
     messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
-    TelechargementFichier(ISS_TRAJECTOIRE_NASA, false);
+    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
 
     // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
     const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
