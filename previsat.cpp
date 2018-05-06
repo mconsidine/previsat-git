@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 avril 2018
+ * >    6 mai 2018
  *
  */
 
@@ -112,6 +112,7 @@ static QString dirExe;
 static QString dirMap;
 static QString dirOut;
 static QString dirPrf;
+static QString dirRsc;
 static QString dirSon;
 static QString dirTle;
 static QString dirTmp;
@@ -437,6 +438,7 @@ void PreviSat::ChargementConfig()
     dirCoord = dirLocalData + QDir::separator() + "coordinates";
     dirMap = dirLocalData + QDir::separator() + "map";
     dirPrf = dirLocalData + QDir::separator() + "preferences";
+    dirRsc = dirLocalData + QDir::separator() + "resources";
     dirSon = dirLocalData + QDir::separator() + "sound";
     dirOut = QDir::toNativeSeparators(dirOut);
 
@@ -457,7 +459,7 @@ void PreviSat::ChargementConfig()
         }
     }
 
-    const QStringList listeDir(QStringList () << dirMap << dirOut << dirPrf << dirSon << dirTle << dirTmp);
+    const QStringList listeDir(QStringList () << dirMap << dirOut << dirPrf << dirRsc << dirSon << dirTle << dirTmp);
     foreach(QString dir, listeDir) {
         di = QDir(dir);
         if (!di.exists())
@@ -2391,17 +2393,28 @@ void PreviSat::AffichageCourbes() const
                 if (mcc || ui->afficone->isChecked()) {
 
                     // Affichage de l'icone du satellite a partir du numero NORAD
-                    const QString nomIcone = ":/resources/icones/%1.png";
-                    const int norad = satellites.at(isat).tle().norad().toInt();
+                    const QStringList listeIcones(QStringList () << dirRsc + QDir::separator() + "%1.png" << ":/resources/icones/%1.png");
+                    QPixmap img;
 
-                    QPixmap img(nomIcone.arg(norad));
+                    QStringListIterator it(listeIcones);
+                    while (it.hasNext()) {
 
-                    if (img.isNull()) {
+                        const QString nomIcone = it.next();
+                        const int norad = satellites.at(isat).tle().norad().toInt();
 
-                        // Affichage de l'icone du satellite a partir du nom du satellite
-                        const QString nomsatm = satellites.at(isat).tle().nom().toLower();
-                        if (!(nomsatm.contains(" deb") && nomsatm.contains("r/b")))
-                            img = QPixmap(nomIcone.arg(nomsatm.section(QRegExp("[^a-z0-9]"), 0, 0)));
+                        img = QPixmap(nomIcone.arg(norad));
+
+                        if (img.isNull()) {
+
+                            // Affichage de l'icone du satellite a partir du nom du satellite
+                            const QString nomsatm = satellites.at(isat).tle().nom().toLower();
+                            if (!(nomsatm.contains(" deb") && nomsatm.contains("r/b")))
+                                img = QPixmap(nomIcone.arg(nomsatm.section(QRegExp("[^a-z0-9]"), 0, 0)));
+                        }
+
+                        if (!img.isNull()) {
+                            it.toBack();
+                        }
                     }
 
                     if (img.isNull()) {
