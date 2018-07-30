@@ -61,7 +61,7 @@ enum TypeEclipse {
 static const double MAGNITUDE_SOLEIL = -26.98;
 
 // Rayon equatorial solaire (km)
-static const double RAYON_SOLAIRE = 696000.;
+static const double RAYON_SOLAIRE = 696342.;
 
 // Unite astronomique (km)
 static const double UA2KM = 149597870.;
