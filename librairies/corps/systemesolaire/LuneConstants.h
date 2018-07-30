@@ -49,7 +49,7 @@
 
 /* Declaration des constantes */
 // Rayon equatorial lunaire (km)
-static const double RAYON_LUNAIRE = 1738.;
+static const double RAYON_LUNAIRE = 1737.4;
 
 // Pour le calcul de la magnitude
 static const double THETA = 20. * DEG2RAD;

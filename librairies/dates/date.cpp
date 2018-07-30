@@ -62,7 +62,6 @@
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 
-bool Date::_init = false;
 QList<QList<double> > Date::_ecartsTAI_UTC;
 
 
@@ -459,7 +458,6 @@ void Date::Initialisation()
                     _ecartsTAI_UTC.append(list);
                 }
             }
-            _init = true;
         } else {
             throw PreviSatException(QObject::tr("Fichier %1 absent").arg(QDir::toNativeSeparators(fic)), WARNING);
         }

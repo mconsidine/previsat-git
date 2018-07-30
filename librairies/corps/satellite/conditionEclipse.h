@@ -24,7 +24,7 @@
  * >    librairies.corps.satellite
  *
  * Heritage
- * >    Corps
+ * >
  *
  * Auteur
  * >    Astropedia

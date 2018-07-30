@@ -175,8 +175,6 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    static bool _init;
-
     int _annee;
     int _mois;
     int _jour;
