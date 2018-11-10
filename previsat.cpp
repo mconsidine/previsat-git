@@ -8153,7 +8153,7 @@ void PreviSat::on_actionA_propos_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-    Apropos * const apropos = new Apropos;
+    Apropos * const apropos = new Apropos(this);
     apropos->setWindowModality(Qt::ApplicationModal);
     apropos->show();
 
