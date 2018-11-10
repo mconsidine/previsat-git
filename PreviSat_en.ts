@@ -237,12 +237,12 @@ It shows positions of artificial satellites in real time or manual mode. PreviSa
 PreviSat is free !</translation>
     </message>
     <message>
-        <location filename="apropos.cpp" line="78"/>
+        <location filename="apropos.cpp" line="79"/>
         <source>À propos de %1 %2</source>
         <translation>About %1 %2</translation>
     </message>
     <message>
-        <location filename="apropos.cpp" line="110"/>
+        <location filename="apropos.cpp" line="111"/>
         <source>Version %1  (%2)</source>
         <translation>Version %1  (%2)</translation>
     </message>
