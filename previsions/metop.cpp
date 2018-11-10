@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    10 novembre 2018
  *
  */
 
@@ -229,11 +229,15 @@ double MetOp::MagnitudeFlash(const bool ext, const bool eclPartielle, const doub
     const QString typSat = _sts.toLower();
 
     /* Corps de la methode */
-    if (typSat.contains("metop"))
-        magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
+    if (typSat.contains("metop")) {
 
-    if (typSat.contains("skymed"))
+        // Magnitude for ASCAT instrument
+        magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
+    } else {
+
+        // Magnitude for SAR panel
         magnitude = 0.3075 * angDeg - 2.92;
+    }
 
     // Prise en compte des eclipses partielles ou annulaires
     if (eclPartielle) {

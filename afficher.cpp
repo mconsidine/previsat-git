@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    10 novembre 2018
  *
  */
 
@@ -334,11 +334,11 @@ void Afficher::load()
 
         if (cond.typeCalcul() == IRIDIUM) {
             const QString fmt2 = "  %1 %2  ";
-            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 4).trimmed());
+            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 5).trimmed());
         }
 
         if (cond.typeCalcul() == METOP) {
-            nomsat = ligne.mid(166, 10).trimmed();
+            nomsat = ligne.mid(166, 11).trimmed();
         }
 
         if (cond.typeCalcul() == TRANSITS)
@@ -397,7 +397,7 @@ void Afficher::load()
                               maxHt.mid(ihtsol, maxHt.lastIndexOf("\"") - ihtsol + 1).trimmed());
 
             if (cond.nbl() != 0)
-                items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 2, 1) : maxHt.mid(84, 1));
+                items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 3, 1) : maxHt.mid(84, 1));
 
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
