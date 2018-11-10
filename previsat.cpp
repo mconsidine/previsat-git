@@ -6043,7 +6043,7 @@ void PreviSat::FinEnregistrementFichier()
             }
 
             // Mise a jour des fichiers TLE selectionnes
-            if (aupdnow) {
+            if (aupdnow && !lg.contains("HTML")) {
 
                 QString fichierALire = QDir::toNativeSeparators(ficDwn.fileName());
                 QFileInfo ff(fichierALire);
@@ -10860,6 +10860,15 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     ui->compteRenduMaj->setVisible(true);
 
     /* Corps de la methode */
+    // Mise a jour du TLE de l'ISS pour les transits
+    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+
+    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+    TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
+
+    // Mise a jour de tous les groupes de TLE
     QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
