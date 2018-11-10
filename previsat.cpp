@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 novembre 2018
+ * >    10 novembre 2018
  *
  */
 
@@ -6050,7 +6050,7 @@ void PreviSat::FinEnregistrementFichier()
                 QString fichierAMettreAJour = QDir::toNativeSeparators(dirTle + QDir::separator() + ff.fileName());
 
                 QFile fi(fichierAMettreAJour);
-                if (fi.exists()) {
+                if (fi.exists() && fi.size() > 0) {
 
                     QStringList compteRendu;
                     const int affMsg = ui->affichageMsgMAJ->currentIndex();
@@ -6064,8 +6064,9 @@ void PreviSat::FinEnregistrementFichier()
                     }
 
                 } else {
+                    const QString msg = ((fi.size() == 0) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1")) + "\n";
+                    if (fi.size() == 0) fi.remove();
                     fi.copy(fichierALire, fichierAMettreAJour);
-                    const QString msg = tr("Ajout du fichier %1") + "\n";
                     ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
                     InitFicTLE();
                 }
