@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    11 mars 2018
+ * >    10 novembre 2018
  *
  */
 
@@ -235,7 +235,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
     if (_res.count() > 0) {
 
         const QString enteteLigne =
-                QObject::tr("%1   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn" \
+                QObject::tr("%1    Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn" \
                             "   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max");
 
         ligne = enteteLigne.arg(idsat);
@@ -247,33 +247,34 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
             ligne = _res.at(i);
 
+            const int slen = idsat.length() + 1;
             QString flash;
             switch (conditions.typeCalcul()) {
 
             case IRIDIUM:
             {
-                const QString flashMax1 = ligne.mid(338, idsat.length()) + ligne.mid(171, 121) +
-                        ligne.mid(293, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax1 : ligne.mid(167, idsat.length()) + ligne.mid(0, 121) + "\n" +
-                                                  flashMax1 + "\n" + ligne.mid(509, idsat.length()) + ligne.mid(342, 121);
+                const QString flashMax1 = ligne.mid(339, slen) + ligne.mid(172, 121) +
+                        ligne.mid(295, 44).remove(QRegExp("\\s+$"));
+                flash = (conditions.nbl() == 1) ? flashMax1 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
+                                                  flashMax1 + "\n" + ligne.mid(511, slen) + ligne.mid(344, 121);
 
-                result.append((ligne.mid(0, 171) + ligne.right(5)).trimmed());
-                result.append((ligne.mid(171, 171) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(341).trimmed());
+                result.append((ligne.mid(0, 172) + ligne.right(5)).trimmed());
+                result.append((ligne.mid(172, 172) + ligne.right(5)).trimmed());
+                result.append(ligne.mid(343).trimmed());
                 result.append("");
                 break;
             }
 
             case METOP:
             {
-                const QString flashMax2 = ligne.mid(344, idsat.length()) + ligne.mid(177, 121) +
-                        ligne.mid(299, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, idsat.length()) + ligne.mid(0, 121) + "\n" +
-                                                  flashMax2 + "\n" + ligne.mid(521, idsat.length()) + ligne.mid(354, 121);
+                const QString flashMax2 = ligne.mid(345, slen) + ligne.mid(178, 121) +
+                        ligne.mid(301, 44).remove(QRegExp("\\s+$"));
+                flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
+                                                  flashMax2 + "\n" + ligne.mid(523, slen) + ligne.mid(356, 121);
 
-                result.append((ligne.mid(0, 181) + ligne.right(5)).trimmed());
-                result.append((ligne.mid(177, 181) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(354).trimmed());
+                result.append((ligne.mid(0, 178) + ligne.right(5)));
+                result.append((ligne.mid(178, 178) + ligne.right(5)));
+                result.append(ligne.mid(356));
                 result.append("");
                 break;
             }
@@ -760,7 +761,7 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
         // Numero Iridium
         num = _sts.mid(0, 4).trimmed() + ((_sts.length() == 9) ? " " : "?");
-        while (num.length() < 4)
+        while (num.length() < 5)
             num += " ";
         break;
 
@@ -768,8 +769,8 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
         // Nom du satellite MetOp ou SkyMed
         num = _sts.split(" ", QString::SkipEmptyParts).at(0);
-        while (num.length() < 10)
-            num += "   ";
+        while (num.length() < 11)
+            num += " ";
         break;
 
     case PREVISION:
