@@ -334,15 +334,12 @@ void PreviSat::ChargementConfig()
     paletteDefaut = palette();
     tim = QDateTime();
 
-    listeChaines << "ISS-Live1.html" << "ISS-Live2.html" << "NASA-TV.html" << "NASA-TV-media.html";
     const QString repFlr = QString("flares") + QDir::separator();
     const QString repHtm = QString("html") + QDir::separator();
 
     listeFicLocalData << "donnees.sat" << "gestionnaireTLE_" + localePreviSat + ".gst" << repFlr + "iridium.sts" << repFlr + "flares.sts" <<
-                         repHtm + listeChaines.at(0) << repHtm + listeChaines.at(1) << repHtm + listeChaines.at(2) <<
-                         repHtm + listeChaines.at(3) << repHtm + "meteo.map" << repHtm + "meteoNASA.html"  << repHtm + "resultat.map" <<
-                         QString("preferences") + QDir::separator() + "defaut" <<
-                         "stations.sta" << "taiutc.dat" << "tdrs.sat";
+                         repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map" <<
+                         QString("preferences") + QDir::separator() + "defaut" << "stations.sta" << "taiutc.dat" << "tdrs.sat";
 
     // Definition des repertoires et de la police suivant la plateforme
     dirExe = QCoreApplication::applicationDirPath();
@@ -478,6 +475,9 @@ void PreviSat::ChargementConfig()
 
     // Fichiers du repertoire local
     VerifieFichiersData(dirLocalData, listeFicLocalData);
+
+    // Chargement de la liste des chaines video
+    InitChainesVideo();
 
     // Chargement des fichiers sons (pour les AOS et LOS)
     InitFicSon();
@@ -1135,6 +1135,31 @@ void PreviSat::InitBarreStatut(const QFont &police)
     ui->barreStatut->addPermanentWidget(modeFonctionnement);
     ui->barreStatut->addPermanentWidget(stsDate);
     ui->barreStatut->addPermanentWidget(stsHeure);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement de la liste des chaines video
+ */
+void PreviSat::InitChainesVideo() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    listeChaines.clear();
+
+    /* Corps de la methode */
+    QFile ficChnl(dirLocalData + QDir::separator() + "html" + QDir::separator() + "chaines.chnl");
+    ficChnl.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&ficChnl);
+
+    while (!flux.atEnd()) {
+        listeChaines.append(flux.readLine());
+    }
+    ficChnl.close();
+    ui->chaine->setMaximum(listeChaines.size());
 
     /* Retour */
     return;
@@ -5951,7 +5976,7 @@ void PreviSat::GestionTempsReel()
         }
     }
 
-#if !(defined (Q_OS_MAC) && QT_VERSION < 0x500000)
+#if !((defined (Q_OS_MAC) || defined (Q_OS_WIN)) && QT_VERSION < 0x500000)
     ui->lbl_chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->chaine->setVisible(ui->fluxVideoHtml->isVisible());
     ui->frameCtrlVideo->setVisible(ui->fluxVideoHtml->isVisible());
@@ -7621,8 +7646,7 @@ void PreviSat::on_fluxVideo_clicked()
     /* Corps de la methode */
     try {
 
-        const QString fic = QString("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() +
-                                    listeChaines.at(ui->chaine->value()-1)).replace("\\", "/");
+        const QString fic = listeChaines.at(ui->chaine->value()-1);
 
         // Verification de la connexion
         QTcpSocket socket;
@@ -7634,12 +7658,7 @@ void PreviSat::on_fluxVideo_clicked()
 
         setCursor(Qt::ArrowCursor);
 
-#if defined (Q_OS_MAC) && QT_VERSION < 0x050000
-        ui->lbl_chaine->setVisible(true);
-        ui->chaine->setVisible(true);
-        QDesktopServices::openUrl(QUrl(fic));
-
-#else
+#if defined (Q_OS_LINUX)
         ui->fluxVideo->setText(tr("Veuillez patienter..."));
         ui->fluxVideo->repaint();
         ui->lbl_video->raise();
@@ -7664,6 +7683,12 @@ void PreviSat::on_fluxVideo_clicked()
         ui->fluxVideoHtml->setVisible(true);
         ui->fluxVideo->setVisible(false);
         ui->lbl_video->setVisible(false);
+#else
+#if QT_VERSION < 0x050000
+        ui->lbl_chaine->setVisible(true);
+        ui->chaine->setVisible(true);
+        QDesktopServices::openUrl(QUrl(fic));
+#endif
 #endif
 
     } catch (PreviSatException &e) {
