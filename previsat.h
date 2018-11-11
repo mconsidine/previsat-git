@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    11 novembre 2018
  *
  */
 
@@ -118,6 +118,11 @@ private:
      * @param police police
      */
     void InitBarreStatut(const QFont &police);
+
+    /**
+     * @brief InitChainesVideo Chargement de la liste des chaines video
+     */
+    void InitChainesVideo() const;
 
     /**
      * @brief InitChampsDefaut Initialisation des champs par defaut
