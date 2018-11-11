@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2018
+ * >    11 novembre 2018
  *
  */
 
@@ -10740,7 +10740,7 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeTransit->setDisplayFormat(fmt);
-        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(7));
+        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(14));
         ui->dateFinaleTransit->setDisplayFormat(fmt);
 
         ui->afficherTransit->setDefault(false);
