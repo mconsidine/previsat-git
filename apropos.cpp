@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    10 novembre 2018
+ * >    12 novembre 2018
  *
  */
 
@@ -56,7 +56,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
     ui(new Ui::Apropos)
 {
     ui->setupUi(this);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->rect()));
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 
     QFont police;
     ui->ok->setFocus();
