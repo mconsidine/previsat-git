@@ -455,7 +455,7 @@ void Afficher::load()
     if (cond.nbl() == 0) {
         // Masquage de la map
         ui->frame->setVisible(false);
-        ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 4);
+        ui->listePrevisions->resize(ui->listePrevisions->width(), 633);
     } else {
 
         // Affichage de la map
