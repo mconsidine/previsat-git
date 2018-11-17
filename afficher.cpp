@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 novembre 2018
+ * >    17 novembre 2018
  *
  */
 
@@ -341,15 +341,21 @@ void Afficher::load()
             nomsat = ligne.mid(166, 11).trimmed();
         }
 
-        if (cond.typeCalcul() == TRANSITS)
+        if (cond.typeCalcul() == TRANSITS) {
             nomsat = "ISS";
+        }
 
         if (!ligne.contains(tr("Date"))) {
 
             QString debut = ligne;
             QString debut1 = debut;
-            if (cond.typeCalcul() == TRANSITS)
-                debut1 = it.next();
+            if (cond.typeCalcul() == TRANSITS) {
+                if (debut.mid(79, 1) == "C") {
+                    debut1 = it.next();
+                } else {
+                    it.next();
+                }
+            }
 
             // Maximums et fin du passage
             QString maxMag = debut;
@@ -383,8 +389,9 @@ void Afficher::load()
                 }
             }
 
-            if (cond.typeCalcul() == IRIDIUM)
+            if (cond.typeCalcul() == IRIDIUM || (cond.typeCalcul() == TRANSITS && fin.mid(79, 1) == "T")) {
                 fin1 = fin;
+            }
 
             // Ajout d'une ligne dans le tableau des resultats
             ui->listePrevisions->insertRow(j);

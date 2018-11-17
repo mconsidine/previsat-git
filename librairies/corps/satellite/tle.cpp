@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    16 novembre 2018
  *
  */
 
@@ -416,12 +416,14 @@ void TLE::LectureFichier3le(const QString &nomFichier3le, QVector<TLE> &tabtle)
 /*
  * Lecture du fichier Human Space Flight
  */
-void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le)
+void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le, QStringList &tabManoeuvres)
 {
     /* Declarations des variables locales */
+    QStringList tabMan;
     QVector<TLE> tabtle;
 
     /* Initialisations */
+    tabManoeuvres.clear();
     tabtle.clear();
 
     /* Corps de la methode */
@@ -433,27 +435,58 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 
         Date debValid(-DATE_INFINIE, 0., false);
 
+        int i = 0;
+        QString dateFormatNasa;
+        QString orb;
         while (!flux.atEnd()) {
 
-            const QString ligne = flux.readLine();
+            QString ligne = flux.readLine();
 
-            if (ligne.contains("Vector Time (GMT)")) {
+            // Lecture des manoeuvres
+            if (ligne.contains("Maneuvers contained")) {
 
-                const QStringList dateNasa = ligne.split(" ", QString::SkipEmptyParts).last().split("/");
-                const int annee = dateNasa.at(0).toInt();
-                const int nbJours = dateNasa.at(1).toInt();
+                while (!flux.readLine().contains("---")) {
+                }
 
-                const QStringList heures = dateNasa.at(2).split(":", QString::SkipEmptyParts);
-                const int heure = heures.at(0).toInt();
-                const int minutes = heures.at(1).toInt();
-                const double secondes = heures.at(2).toDouble();
+                while (!(ligne = flux.readLine()).contains("Coasting Arc")) {
 
-                const double jours = nbJours + heure * NB_JOUR_PAR_HEUR + minutes * NB_JOUR_PAR_MIN + secondes * NB_JOUR_PAR_SEC;
-
-                const Date date(annee, 1, 1., 0.);
-                debValid = Date(date.jourJulien() + jours - 1., 0., true);
+                    if (!ligne.trimmed().isEmpty()) {
+                        const QStringList tab1 = ligne.split(" ", QString::SkipEmptyParts);
+                        const QString date = tab1.at(0);
+                        const QString deltaV = tab1.last();
+                        const QString apogee = flux.readLine().split(" ", QString::SkipEmptyParts).last();
+                        const QStringList tab2 = flux.readLine().split(" ", QString::SkipEmptyParts);
+                        const QString duree = QString("%1").arg((Date::ConversionDateNasa("2000/" + tab2.at(0)).jourJulienUTC() + 1.5) *
+                                                                NB_SEC_PAR_JOUR, 0, 'f', 3);
+                        const QString perigee = tab2.last();
+                        tabMan.append(date + " " + apogee + " " + perigee + " " + deltaV + " " + duree);
+                    }
+                }
             }
 
+            // Nombre d'orbites NASA
+            if (ligne.contains("Coasting Arc")) {
+                orb = ligne.split(" ", QString::SkipEmptyParts).last().replace(")", "");
+            }
+
+            // Date du TLE
+            if (ligne.contains("Vector Time (GMT)")) {
+                dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).last();
+                debValid = Date::ConversionDateNasa(dateFormatNasa);
+            }
+
+            // Masse
+            if (ligne.contains("Weight")) {
+                if (i < tabMan.size()) {
+                    if (dateFormatNasa.endsWith(tabMan.at(i).split(" ", QString::SkipEmptyParts).first())) {
+                        QString fmt = "%1";
+                        tabManoeuvres.append(fmt.arg(debValid.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + ligne.split(" ", QString::SkipEmptyParts).last() + " " + tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
+                        i++;
+                    }
+                }
+            }
+
+            // TLE
             if (ligne.trimmed() == "TWO LINE MEAN ELEMENT SET") {
 
                 bool afin = false;

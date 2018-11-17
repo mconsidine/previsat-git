@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    16 novembre 2018
  *
  */
 
@@ -97,8 +97,9 @@ public:
      * @brief LectureTrajectoryData Lecture du fichier Human Space Flight
      * @param fichierHsf nom du fichier html
      * @param fichier3le nom du fichier 3le
+     * @param tabManoeuvres tableau des manoeuvres
      */
-    static void LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le);
+    static void LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le, QStringList &tabManoeuvres);
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE

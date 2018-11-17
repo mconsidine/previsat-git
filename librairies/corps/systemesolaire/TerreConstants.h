@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    16 novembre 2018
  *
  */
 
@@ -81,6 +81,9 @@ static const double MILE_PAR_KM = 1. / 1.852;
 
 // Nombre de pieds par metre
 static const double PIED_PAR_METRE = 1. / 0.3048;
+
+// Nombre de kilogrammes par livre
+static const double KG_PAR_LIVRE = 0.45359237;
 
 #endif // TERRECONST
 
