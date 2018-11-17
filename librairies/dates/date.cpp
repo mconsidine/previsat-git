@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    17 novembre 2018
  *
  */
 
@@ -269,6 +269,33 @@ double Date::CalculOffsetUTC(const QDateTime &date)
 
     /* Retour */
     return ((double) date.secsTo(utc) * NB_JOUR_PAR_SEC);
+}
+
+/*
+ * Conversion d'une date au format NASA en Date
+ */
+Date Date::ConversionDateNasa(const QString &dateFormatNasa)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QStringList dateNasa = dateFormatNasa.split("/");
+    const int annee = dateNasa.at(0).toInt();
+    const int nbJours = dateNasa.at(1).toInt();
+
+    const QStringList heures = dateNasa.at(2).split(":", QString::SkipEmptyParts);
+    const int heure = heures.at(0).toInt();
+    const int minutes = heures.at(1).toInt();
+    const double secondes = heures.at(2).toDouble();
+
+    const double jours = nbJours + heure * NB_JOUR_PAR_HEUR + minutes * NB_JOUR_PAR_MIN + secondes * NB_JOUR_PAR_SEC;
+
+    const Date date(annee, 1, 1., 0.);
+
+    /* Retour */
+    return Date(date.jourJulien() + jours - 1., 0., true);
 }
 
 /*

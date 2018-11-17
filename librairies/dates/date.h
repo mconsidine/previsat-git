@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    17 novembre 2018
  *
  */
 
@@ -110,6 +110,13 @@ public:
      * @return ecart heure legale - UTC
      */
     static double CalculOffsetUTC(const QDateTime &date);
+
+    /**
+     * @brief ConversionDateNasa Conversion d'une date au format NASA en Date
+     * @param dateFormatNasa date au format NASA
+     * @return date
+     */
+    static Date ConversionDateNasa(const QString &dateFormatNasa);
 
     /**
      * @brief ToQDateTime Conversion de la date en QDateTime

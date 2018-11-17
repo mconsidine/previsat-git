@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 novembre 2018
+ * >    17 novembre 2018
  *
  */
 
@@ -63,6 +63,7 @@
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QScrollBar>
 #include <QSettings>
 #include <QShortcut>
 #include <QtNetwork>
@@ -274,6 +275,7 @@ static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
 static QStringList listeFicLocalData;
+static QStringList tabManoeuvresISS;
 
 // Interface graphique
 QPalette paletteDefaut;
@@ -722,30 +724,37 @@ void PreviSat::MAJTLE()
     }
 
     // Verification du fichier iss.3le
+    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+
     if (ui->verifMAJ->isChecked()) {
 
-        const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
         const QFile fi(fichier3leIss);
-
         if (fi.exists()) {
 
             // Lecture du fichier iss.3le
             TLE::LectureFichier3le(fichier3leIss, tab3le);
         }
 
+        const QFile fi2(ficHsf);
+
         const double jj3lemoy = 0.5 * (tab3le.first().dateDebutValidite().jourJulienUTC() + tab3le.last().dateDebutValidite().jourJulienUTC());
-        if (tab3le.isEmpty() || (dateCourante.jourJulienUTC() >= jj3lemoy)) {
+        if (!fi2.exists() || tab3le.isEmpty() || (dateCourante.jourJulienUTC() >= jj3lemoy)) {
 
             // Telechargement du fichier Human Space Flight
             amajDeb = true;
             dirDwn = dirTmp;
             TelechargementFichier(ISS_TRAJECTOIRE_NASA, false);
             amajDeb = false;
-
-            // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-            const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
-            TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
         }
+    }
+
+    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
+
+    // Affichage des manoeuvres ISS
+    if (!tabManoeuvresISS.isEmpty()) {
+        AffichageManoeuvresISS();
     }
 
     /* Retour */
@@ -1010,6 +1019,7 @@ void PreviSat::InitAffichageDemarrage() const
     ui->afficherEvt->setEnabled(false);
 
     ui->valHauteurSatTransit->setVisible(false);
+    ui->manoeuvresISS->setVisible(false);
     ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
@@ -3913,6 +3923,93 @@ void PreviSat::AffichageLieuObs() const
     return;
 }
 
+/*
+ * Affichage des manoeuvres ISS
+ */
+void PreviSat::AffichageManoeuvresISS() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    ui->manoeuvresISS->setRowCount(0);
+    ui->manoeuvresISS->setVisible(true);
+
+    /* Corps de la methode */
+    for(int i=0; i<tabManoeuvresISS.count(); i++) {
+
+        const QStringList man = tabManoeuvresISS.at(i).split(" ", QString::SkipEmptyParts);
+        ui->manoeuvresISS->insertRow(i);
+        ui->manoeuvresISS->setRowHeight(i, 16);
+
+        for(int k=0; k<man.count(); k++) {
+
+            QString elem = man.at(k);
+            QTableWidgetItem * const item = new QTableWidgetItem();
+
+            // Date
+            if (k == 0) {
+                elem = Date(elem.toDouble(), offsetUTC).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+            }
+
+            // Masse
+            if (k == 2) {
+                if (ui->unitesKm->isChecked()) {
+                    elem = QString("%1").arg(elem.toDouble() * KG_PAR_LIVRE, 0, 'f', 1);
+                    item->setToolTip("kg");
+                } else {
+                    item->setToolTip("lb");
+                }
+            }
+
+            // Apogee, perigee
+            if (k == 3 || k == 4) {
+                if (ui->unitesKm->isChecked()) {
+                    elem = QString("%1").arg(elem.toDouble() / MILE_PAR_KM, 0, 'f', 1);
+                    item->setToolTip("km");
+                } else {
+                    item->setToolTip("nmi");
+                }
+            }
+
+            // DeltaV
+            if (k == 5) {
+                if (fabs(elem.toDouble()) < EPSDBL100) {
+                    elem = "-";
+                } else {
+                    if (ui->unitesKm->isChecked()) {
+                        elem = QString("%1").arg(elem.toDouble() * PIED_PAR_METRE, 0, 'f', 1);
+                        item->setToolTip("m/s");
+                    } else {
+                        item->setToolTip("fps");
+                    }
+                }
+            }
+
+            // Duree
+            if (k == 6) {
+                if (fabs(elem.toDouble()) < EPSDBL100) {
+                    elem = "-";
+                } else {
+                    item->setToolTip("s");
+                }
+            }
+
+            item->setText(elem);
+            item->setTextAlignment(Qt::AlignCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            ui->manoeuvresISS->setItem(i, k, item);
+            if (k < 6 || !ui->manoeuvresISS->verticalScrollBar()->isVisible()) {
+                ui->manoeuvresISS->resizeColumnToContents(k);
+            }
+        }
+    }
+    ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
+    ui->manoeuvresISS->setAlternatingRowColors(true);
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::AffichageSatellite(const int isat, const int lsat, const int bsat, const int lcarte, const int hcarte) const
 {
     /* Declarations des variables locales */
@@ -6015,11 +6112,11 @@ void PreviSat::FinEnregistrementFichier()
         if (lg.contains("DOCTYPE"))
             atr = true;
 
+        const QFileInfo ff(ficDwn.fileName());
         if ((!amajPrevi && (rep->error() || atr)) || lg.isEmpty()) {
 
             // Erreur survenue lors du telechargement
             ui->frameBarreProgression->setVisible(false);
-            const QFileInfo ff(ficDwn.fileName());
 
             if (fd.exists())
                 fd.remove();
@@ -6071,8 +6168,8 @@ void PreviSat::FinEnregistrementFichier()
             if (aupdnow && !lg.contains("HTML")) {
 
                 QString fichierALire = QDir::toNativeSeparators(ficDwn.fileName());
-                QFileInfo ff(fichierALire);
-                QString fichierAMettreAJour = QDir::toNativeSeparators(dirTle + QDir::separator() + ff.fileName());
+                QFileInfo ff2(fichierALire);
+                QString fichierAMettreAJour = QDir::toNativeSeparators(dirTle + QDir::separator() + ff2.fileName());
 
                 QFile fi(fichierAMettreAJour);
                 if (fi.exists() && fi.size() > 0) {
@@ -6117,6 +6214,20 @@ void PreviSat::FinEnregistrementFichier()
 
                         CalculsAffichage();
                     }
+                }
+            }
+
+            const QString hsf = ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+            const QString ficHsf = dirTmp + QDir::separator() + hsf;
+            if (ff.fileName() == hsf) {
+
+                // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+                const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+                TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
+
+                // Affichage des manoeuvres ISS
+                if (!tabManoeuvresISS.isEmpty()) {
+                    AffichageManoeuvresISS();
                 }
             }
         }
@@ -6229,7 +6340,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     const QStringList listeFic = di.entryList(QDir::Files);
     if (listeFic.count() > 0) {
         foreach(QString fic, listeFic) {
-            if (ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) {
+            if ((ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) ||
+                    fic == ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last()) {
                 continue;
             } else {
                 QFile fi(dirTmp + QDir::separator() + fic);
@@ -10703,6 +10815,37 @@ void PreviSat::on_onglets_currentChanged(int index)
         ui->calculsIri->setDefault(true);
         ui->calculsIri->setFocus();
 
+    } else if (index == ui->onglets->indexOf(ui->flashs)) {
+
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
+        ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeMetOp->setDisplayFormat(fmt);
+        ui->dateFinaleMetOp->setDateTime(ui->dateInitialeMetOp->dateTime().addDays(7));
+        ui->dateFinaleMetOp->setDisplayFormat(fmt);
+
+        ui->afficherMetOp->setDefault(false);
+        ui->calculsMetOp->setDefault(true);
+        ui->calculsMetOp->setFocus();
+
+    } else if (index == ui->onglets->indexOf(ui->transits_ISS)) {
+
+        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
+        ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+        ui->dateInitialeTransit->setDisplayFormat(fmt);
+        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(14));
+        ui->dateFinaleTransit->setDisplayFormat(fmt);
+
+        ui->afficherTransit->setDefault(false);
+        ui->calculsTransit->setDefault(true);
+        ui->calculsTransit->setFocus();
+
+        if (tab3le.isEmpty()) {
+            ui->ageTLETransit->setVisible(false);
+            ui->lbl_ageTLETransit->setVisible(false);
+        } else {
+            CalculAgeTLETransitISS();
+        }
+
     } else {
     }
 
@@ -10717,7 +10860,7 @@ void PreviSat::on_onglets_currentChanged(int index)
         ui->calculsEvt->setFocus();
     }
 
-    if (ui->transitsISS->isVisible()) {
+    if (ui->transits_ISS->isVisible()) {
         ui->afficherTransit->setDefault(false);
         ui->calculsTransit->setDefault(true);
         ui->calculsTransit->setFocus();
@@ -10730,7 +10873,7 @@ void PreviSat::on_onglets_currentChanged(int index)
         }
     }
 
-    if (ui->flashsMetOp->isVisible()) {
+    if (ui->flashs->isVisible()) {
         ui->afficherMetOp->setDefault(false);
         ui->calculsMetOp->setDefault(true);
         ui->calculsMetOp->setFocus();
@@ -10759,37 +10902,6 @@ void PreviSat::on_ongletsOutils_currentChanged(int index)
         ui->afficherEvt->setDefault(false);
         ui->calculsEvt->setDefault(true);
         ui->calculsEvt->setFocus();
-
-    } else if (index == ui->ongletsOutils->indexOf(ui->transitsISS)) {
-
-        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
-        ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
-        ui->dateInitialeTransit->setDisplayFormat(fmt);
-        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(14));
-        ui->dateFinaleTransit->setDisplayFormat(fmt);
-
-        ui->afficherTransit->setDefault(false);
-        ui->calculsTransit->setDefault(true);
-        ui->calculsTransit->setFocus();
-
-        if (tab3le.isEmpty()) {
-            ui->ageTLETransit->setVisible(false);
-            ui->lbl_ageTLETransit->setVisible(false);
-        } else {
-            CalculAgeTLETransitISS();
-        }
-
-    } else  if (index == ui->ongletsOutils->indexOf(ui->flashsMetOp)) {
-
-        const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
-        ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
-        ui->dateInitialeMetOp->setDisplayFormat(fmt);
-        ui->dateFinaleMetOp->setDateTime(ui->dateInitialeMetOp->dateTime().addDays(7));
-        ui->dateFinaleMetOp->setDisplayFormat(fmt);
-
-        ui->afficherMetOp->setDefault(false);
-        ui->calculsMetOp->setDefault(true);
-        ui->calculsMetOp->setFocus();
 
     } else {
     }
@@ -10891,7 +11003,12 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
     const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
     const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-    TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
+    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
+
+    // Affichage des manoeuvres ISS
+    if (!tabManoeuvresISS.isEmpty()) {
+        AffichageManoeuvresISS();
+    }
 
     // Mise a jour de tous les groupes de TLE
     QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
@@ -12324,7 +12441,7 @@ void PreviSat::on_parametrageDefautTransit_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->transitsISS));
+    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->transits_ISS));
     ui->hauteurSatTransit->setCurrentIndex(1);
     ui->valHauteurSatTransit->setVisible(false);
     ui->lieuxObservation4->setCurrentIndex(0);
@@ -12348,11 +12465,6 @@ void PreviSat::on_majTleIss_clicked()
     // Mise a jour du fichier iss.3le
     messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
     TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
-
-    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
-    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-    TLE::LectureTrajectoryData(ficHsf, fichier3leIss);
 
     /* Retour */
     return;
@@ -12629,7 +12741,7 @@ void PreviSat::on_parametrageDefautMetOp_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    on_ongletsOutils_currentChanged(ui->ongletsOutils->indexOf(ui->flashsMetOp));
+    on_ongletsOutils_currentChanged(ui->onglets->indexOf(ui->flashs));
     ui->hauteurSatMetOp->setCurrentIndex(2);
     ui->hauteurSoleilMetOp->setCurrentIndex(1);
     ui->valHauteurSatMetOp->setVisible(false);

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 novembre 2018
+ * >    17 novembre 2018
  *
  */
 
@@ -213,6 +213,11 @@ private:
      * @brief AffichageLieuObs Affichage du lieu d'observation sur l'interface graphique
      */
     void AffichageLieuObs() const;
+
+    /**
+     * @brief AffichageManoeuvresISS Affichage des manoeuvres ISS
+     */
+    void AffichageManoeuvresISS() const;
 
     /**
      * @brief AffichageSatellite Affichage d'un satellite sur la carte du monde
