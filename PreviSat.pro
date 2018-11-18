@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    17 novembre 2018
+# >    18 novembre 2018
 
 #-------------------------------------------------
 VER_MAJ = 4.0
-VERSION = 4.0.0.10
+VERSION = 4.0.0.11
 ANNEES_DEV = 2005-2018
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -108,7 +108,6 @@ SOURCES += main.cpp                                    \
     previsions/conditions.cpp                          \
     previsions/evenements.cpp                          \
     previsions/flashs.cpp                              \
-    previsions/iridium.cpp                             \
     previsions/metop.cpp                               \
     previsions/prevision.cpp                           \
     previsions/transitiss.cpp
@@ -153,7 +152,6 @@ HEADERS += previsat.h                                  \
     previsions/conditions.h                            \
     previsions/evenements.h                            \
     previsions/flashs.h                                \
-    previsions/iridium.h                               \
     previsions/metop.h                                 \
     previsions/prevision.h                             \
     previsions/previsionsConstants.h                   \

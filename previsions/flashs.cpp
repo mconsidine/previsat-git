@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Calcul des flashs Iridium ou MetOp
+ * >    Calcul des flashs
  *
  * Auteur
  * >    Astropedia
@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    10 novembre 2018
+ * >    18 novembre 2018
  *
  */
 
@@ -47,7 +47,6 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wpacked"
 #include "flashs.h"
-#include "iridium.h"
 #include "metop.h"
 #include "librairies/maths/maths.h"
 
@@ -74,11 +73,10 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
     QTime tps;
 
     /* Initialisations */
-    _psol = conditions.psol();
     _res.clear();
     result.clear();
-    const double angrefMax = (conditions.typeCalcul() == IRIDIUM) ? 0.3 : 1.;
-    const double pasmax = (conditions.typeCalcul() == IRIDIUM) ? PAS1 : 3. * PAS1;
+    const double angrefMax = 1.;
+    const double pasmax = 3. * PAS1;
 
     _tabtle = conditions.tabtle();
     QVectorIterator<TLE> it1(_tabtle);
@@ -152,7 +150,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
                         // Calcul de l'angle de reflexion
                         _pan = -1;
-                        const double angref = AngleReflexion(conditions.typeCalcul(), sat, soleil);
+                        const double angref = AngleReflexion(sat, soleil);
                         const double pas = (angref < 0.5) ? PAS1 : PAS0;
 
                         if (angref <= angrefMax) {
@@ -164,7 +162,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
                             // Calcul par interpolation de l'instant correspondant
                             // a l'angle de reflexion minimum
-                            CalculAngleMin(jjm, conditions.typeCalcul(), sat, observateur, soleil, minmax);
+                            CalculAngleMin(jjm, sat, observateur, soleil, minmax);
 
                             // Iterations supplementaires pour affiner la date du maximum
                             double pasInt = PAS_INT0;
@@ -174,7 +172,7 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
                                 jjm[1] = minmax[0];
                                 jjm[2] = minmax[0] + pasInt;
 
-                                CalculAngleMin(jjm, conditions.typeCalcul(), sat, observateur, soleil, minmax);
+                                CalculAngleMin(jjm, sat, observateur, soleil, minmax);
                                 pasInt *= 0.5;
                             }
 
@@ -249,42 +247,16 @@ void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Obs
 
             const int slen = idsat.length() + 1;
             QString flash;
-            switch (conditions.typeCalcul()) {
 
-            case IRIDIUM:
-            {
-                const QString flashMax1 = ligne.mid(339, slen) + ligne.mid(172, 121) +
-                        ligne.mid(295, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax1 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
-                                                  flashMax1 + "\n" + ligne.mid(511, slen) + ligne.mid(344, 121);
+            const QString flashMax2 = ligne.mid(345, slen) + ligne.mid(178, 121) +
+                    ligne.mid(301, 44).remove(QRegExp("\\s+$"));
+            flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
+                                              flashMax2 + "\n" + ligne.mid(523, slen) + ligne.mid(356, 121);
 
-                result.append((ligne.mid(0, 172) + ligne.right(5)).trimmed());
-                result.append((ligne.mid(172, 172) + ligne.right(5)).trimmed());
-                result.append(ligne.mid(343).trimmed());
-                result.append("");
-                break;
-            }
-
-            case METOP:
-            {
-                const QString flashMax2 = ligne.mid(345, slen) + ligne.mid(178, 121) +
-                        ligne.mid(301, 44).remove(QRegExp("\\s+$"));
-                flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
-                                                  flashMax2 + "\n" + ligne.mid(523, slen) + ligne.mid(356, 121);
-
-                result.append((ligne.mid(0, 178) + ligne.right(5)));
-                result.append((ligne.mid(178, 178) + ligne.right(5)));
-                result.append(ligne.mid(356));
-                result.append("");
-                break;
-            }
-
-            case PREVISION:
-            case EVENEMENTS:
-            case TRANSITS:
-            default:
-                break;
-            }
+            result.append((ligne.mid(0, 178) + ligne.right(5)));
+            result.append((ligne.mid(178, 178) + ligne.right(5)));
+            result.append(ligne.mid(356));
+            result.append("");
 
             flux << flash.trimmed() << endl << endl;
             i++;
@@ -312,8 +284,7 @@ void Flashs::FinTraitement()
 /*
  * Calcul de l'angle minimum du panneau
  */
-void Flashs::CalculAngleMin(const double jjm[], const TypeCalcul typeCalc, Satellite &satellite, Observateur &observateur,
-                            Soleil &soleil, double minmax[])
+void Flashs::CalculAngleMin(const double jjm[], Satellite &satellite, Observateur &observateur, Soleil &soleil, double minmax[])
 {
     /* Declarations des variables locales */
     double ang[3];
@@ -335,7 +306,7 @@ void Flashs::CalculAngleMin(const double jjm[], const TypeCalcul typeCalc, Satel
         soleil.CalculPosition(date);
 
         // Angle de reflexion
-        ang[i] = AngleReflexion(typeCalc, satellite, soleil);
+        ang[i] = AngleReflexion(satellite, soleil);
     }
 
     // Determination du minimum par interpolation
@@ -371,7 +342,7 @@ void Flashs::CalculEphemSoleilObservateur(const Conditions &conditions, Observat
         // Position topocentrique du Soleil
         soleil.CalculCoordHoriz(observateur, false);
 
-        if ((conditions.typeCalcul() == METOP && soleil.hauteur() <= conditions.crep()) || conditions.typeCalcul() == IRIDIUM) {
+        if ((conditions.typeCalcul() == METOP && soleil.hauteur() <= conditions.crep())) {
 
             svis = false;
 
@@ -449,7 +420,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
             int it = 0;
             double pasInt = PAS_INT1;
-            if (fabs(mgn0 - conditions.mgn2()) <= EPSDBL100)
+            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100)
                 pasInt *= 0.5;
             do {
                 it++;
@@ -489,7 +460,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
             int it = 0;
             double pasInt = PAS_INT1;
-            if (fabs(mgn0 - conditions.mgn2()) <= EPSDBL100)
+            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100)
                 pasInt *= 0.5;
             do {
                 it++;
@@ -519,7 +490,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
     jjm[2] = dateSup;
 
     double minmax[2];
-    CalculAngleMin(jjm, conditions.typeCalcul(), satellite, observateur, soleil, minmax);
+    CalculAngleMin(jjm, satellite, observateur, soleil, minmax);
 
     // Iterations supplementaires pour affiner la date du maximum
     double pasInt = PAS_INT0;
@@ -529,7 +500,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
         jjm[1] = minmax[0];
         jjm[2] = minmax[0] + pasInt;
 
-        CalculAngleMin(jjm, conditions.typeCalcul(), satellite, observateur, soleil, minmax);
+        CalculAngleMin(jjm, satellite, observateur, soleil, minmax);
         pasInt *= 0.5;
     }
 
@@ -579,11 +550,11 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
         soleil.CalculCoordHoriz(observateur, false);
 
         // Angle de reflexion
-        const double ang = AngleReflexion(conditions.typeCalcul(), sat, soleil);
+        const double ang = AngleReflexion(sat, soleil);
 
         if (ang <= conditions.ang0()) {
 
-            const double mgn0 = (soleil.hauteur() < conditions.crep()) ? conditions.mgn1() : conditions.mgn2();
+            const double mgn0 = conditions.mgn1();
 
             Lune lune;
             if (conditions.acalcEclipseLune())
@@ -593,8 +564,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
             condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
             // Magnitude du flash
-            double mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), minmax[1], observateur,
-                    soleil, condEcl, sat);
+            double mag = MagnitudeFlash(conditions.ext(), conditions.effetEclipsePartielle(), minmax[1], observateur, condEcl, sat);
 
             if (mag <= mgn0) {
 
@@ -602,7 +572,7 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
 
                 // Calcul des limites du flash
                 CalculLimitesFlash(mgn0, minmax[0], conditions, sat, observateur, soleil, dates);
-                const double pasmax = (conditions.typeCalcul() == IRIDIUM) ? PAS1 : 3. * PAS1;
+                const double pasmax = 3. * PAS1;
 
                 if (dates[1].jourJulienUTC() < DATE_INFINIE && fabs(dates[1].jourJulienUTC() - temp) > pasmax) {
 
@@ -631,13 +601,12 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                         condEcl2.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
                         // Angle de reflexion
-                        const double angref = AngleReflexion(conditions.typeCalcul(), sat, soleil);
+                        const double angref = AngleReflexion(sat, soleil);
 
                         if (angref <= conditions.ang0() + 0.0001) {
 
                             // Magnitude du flash
-                            mag = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angref,
-                                                 observateur, soleil, condEcl2, sat);
+                            mag = MagnitudeFlash(conditions.ext(), conditions.effetEclipsePartielle(), angref, observateur, condEcl2, sat);
 
                             if (mag <= mgn0 + 0.05) {
 
@@ -732,11 +701,10 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
         const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
 
         // Angle de reflexion pour le lieu du maximum
-        const double angRefMax = AngleReflexion(conditions.typeCalcul(), sat, soleil);
+        const double angRefMax = AngleReflexion(sat, soleil);
 
         // Magnitude du flash
-        const double magFlashMax = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), angRefMax,
-                                                  obsmax, soleil, condEcl, sat);
+        const double magFlashMax = MagnitudeFlash(conditions.ext(), conditions.effetEclipsePartielle(), angRefMax, obsmax, condEcl, sat);
 
         QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
                 QString((condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "*" : " ");
@@ -755,29 +723,11 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
     result = result.arg(max);
 
     QString num;
-    switch (conditions.typeCalcul()) {
 
-    case IRIDIUM:
-
-        // Numero Iridium
-        num = _sts.mid(0, 4).trimmed() + ((_sts.length() == 9) ? " " : "?");
-        while (num.length() < 5)
-            num += " ";
-        break;
-
-    case METOP:
-
-        // Nom du satellite MetOp ou SkyMed
-        num = _sts.split(" ", QString::SkipEmptyParts).at(0);
-        while (num.length() < 11)
-            num += " ";
-        break;
-
-    case PREVISION:
-    case EVENEMENTS:
-    case TRANSITS:
-    default:
-        break;
+    // Nom du satellite MetOp ou SkyMed
+    num = _sts.split(" ", QString::SkipEmptyParts).at(0);
+    while (num.length() < 11) {
+        num += " ";
     }
 
     result = result.append(num);
@@ -824,11 +774,10 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
                     condEcl.phiTerre() - condEcl.phiSoleilRefr() - condEcl.elongationSoleil();
 
         // Angle de reflexion
-        ang[i] = AngleReflexion(conditions.typeCalcul(), satellite, soleil);
+        ang[i] = AngleReflexion(satellite, soleil);
 
         // Magnitude du satellite
-        mag[i] = MagnitudeFlash(conditions.typeCalcul(), conditions.ext(), conditions.effetEclipsePartielle(), ang[i], observateur, soleil, condEcl,
-                                satellite);
+        mag[i] = MagnitudeFlash(conditions.ext(), conditions.effetEclipsePartielle(), ang[i], observateur, condEcl, satellite);
     }
 
     double t_ecl, t_ht;
@@ -993,7 +942,7 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
 /*
  * Calcul de l'angle de reflexion du panneau
  */
-double Flashs::AngleReflexion(const TypeCalcul typeCalc, const Satellite &satellite, const Soleil &soleil)
+double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 {
     /* Declarations des variables locales */
 
@@ -1001,23 +950,7 @@ double Flashs::AngleReflexion(const TypeCalcul typeCalc, const Satellite &satell
     double ang = PI;
 
     /* Corps de la methode */
-    switch (typeCalc) {
-    case IRIDIUM:
-
-        ang = Iridium::AngleReflexion(satellite, soleil);
-        break;
-
-    case METOP:
-
-        ang = MetOp::AngleReflexion(satellite, soleil);
-        break;
-
-    case PREVISION:
-    case EVENEMENTS:
-    case TRANSITS:
-    default:
-        break;
-    }
+    ang = MetOp::AngleReflexion(satellite, soleil);
 
     /* Retour */
     return (ang);
@@ -1026,8 +959,8 @@ double Flashs::AngleReflexion(const TypeCalcul typeCalc, const Satellite &satell
 /*
  * Determination de la magnitude du flash
  */
-double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
-                              const Observateur &observateur, const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite)
+double Flashs::MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                              const ConditionEclipse &condEcl, Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -1035,23 +968,7 @@ double Flashs::MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const b
     double magnitude = 99.;
 
     /* Corps de la methode */
-    switch (typeCalc) {
-    case IRIDIUM:
-
-        magnitude = Iridium::MagnitudeFlash(ext, eclPartielle, angle, observateur, soleil, condEcl, satellite);
-        break;
-
-    case METOP:
-
-        magnitude = MetOp::MagnitudeFlash(ext, eclPartielle, angle, observateur, condEcl, satellite);
-        break;
-
-    case PREVISION:
-    case EVENEMENTS:
-    case TRANSITS:
-    default:
-        break;
-    }
+    magnitude = MetOp::MagnitudeFlash(ext, eclPartielle, angle, observateur, condEcl, satellite);
 
     /* Retour */
     return (magnitude);

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 avril 2018
+ * >    18 novembre 2018
  *
  */
 
@@ -292,19 +292,9 @@ bool Conditions::chr() const
     return _chr;
 }
 
-bool Conditions::psol() const
-{
-    return _psol;
-}
-
 double Conditions::ang0() const
 {
     return _ang0;
-}
-
-double Conditions::mgn2() const
-{
-    return _mgn2;
 }
 
 QStringList Conditions::tabSts() const
