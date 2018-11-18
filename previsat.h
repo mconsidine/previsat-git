@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 novembre 2018
+ * >    18 novembre 2018
  *
  */
 
@@ -107,11 +107,6 @@ private:
      * @brief InitAffichageDemarrage Affichage au demarrage
      */
     void InitAffichageDemarrage() const;
-
-    /**
-     * @brief InitAffichageStatutIridium Affichage du statut des satellites Iridium
-     */
-    void InitAffichageStatutIridium() const;
 
     /**
      * @brief InitBarreStatut Initialisation de la barre de statut
@@ -654,15 +649,6 @@ private slots:
     void on_parametrageDefautPrev_clicked();
     void on_calculsPrev_clicked();
     void on_afficherPrev_clicked();
-
-    // Calcul des flashs Iridium
-    void on_effacerHeuresIri_clicked();
-    void on_fichierTLEIri_currentIndexChanged(int index);
-    void on_hauteurSatIri_currentIndexChanged(int index);
-    void on_hauteurSoleilIri_currentIndexChanged(int index);
-    void on_parametrageDefautIri_clicked();
-    void on_calculsIri_clicked();
-    void on_afficherIri_clicked();
 
     // Calcul des evenements orbitaux
     void on_effacerHeuresEvt_clicked();

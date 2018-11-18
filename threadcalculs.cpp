@@ -36,13 +36,12 @@
  * >    3 mars 2012
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    18 novembre 2018
  *
  */
 
 #include "threadcalculs.h"
 #include "previsions/evenements.h"
-#include "previsions/iridium.h"
 #include "previsions/metop.h"
 #include "previsions/prevision.h"
 #include "previsions/transitiss.h"
@@ -55,10 +54,6 @@ void ThreadCalculs::run()
     switch (_conditions.typeCalcul()) {
     case PREVISION:
         Prevision::CalculPassages(_conditions, _observ, result);
-        break;
-
-    case IRIDIUM:
-        Iridium::CalculFlashsIridium(_conditions, _observ, result);
         break;
 
     case EVENEMENTS:

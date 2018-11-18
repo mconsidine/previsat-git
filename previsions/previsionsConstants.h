@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    18 novembre 2018
  *
  */
 
@@ -47,7 +47,6 @@
 /* Enumerations */
 enum TypeCalcul {
     PREVISION,
-    IRIDIUM,
     EVENEMENTS,
     METOP,
     TRANSITS

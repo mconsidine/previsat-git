@@ -33,7 +33,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    22 aout 2016
+ * >    18 novembre 2018
  *
  */
 
@@ -107,14 +107,12 @@ protected:
     /**
      * @brief CalculAngleMin Calcul de l'angle minimum du panneau
      * @param jjm tableau de dates
-     * @param typeCalc type de calcul (IRIDIUM ou METOP)
      * @param satellite satellite
      * @param observateur observateur
      * @param soleil Soleil
      * @param minmax tableau de la date et de l'angle minimum
      */
-    static void CalculAngleMin(const double jjm[], const TypeCalcul typeCalc, Satellite &satellite, Observateur &observateur,
-                               Soleil &soleil, double minmax[]);
+    static void CalculAngleMin(const double jjm[], Satellite &satellite, Observateur &observateur, Soleil &soleil, double minmax[]);
 
     /**
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de la position de l'observateur
@@ -214,26 +212,23 @@ private:
     /* Methodes privees */
     /**
      * @brief AngleReflexion Calcul de l'angle de reflexion du panneau
-     * @param typeCalc type de calcul (IRIDIUM ou METOP)
      * @param satellite satellite
      * @param soleil Soleil
      * @return angle de reflexion du panneau
      */
-    static double AngleReflexion(const TypeCalcul typeCalc, const Satellite &satellite, const Soleil &soleil);
+    static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash
-     * @param typeCalc type de calcul (IRIDIUM ou METOP)
      * @param ext prise en compte de l'extinction atmospherique
      * @param eclPartielle Prise en compte des eclipses partielles ou annulaires
      * @param angle angle de reflexion
      * @param observateur observateur
-     * @param soleil Soleil
      * @param satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const TypeCalcul typeCalc, const bool ext, const bool eclPartielle, const double angle,
-                                 const Observateur &observateur, const Soleil &soleil, const ConditionEclipse &condEcl, Satellite &satellite);
+    static double MagnitudeFlash(const bool ext, const bool eclPartielle, const double angle, const Observateur &observateur,
+                                 const ConditionEclipse &condEcl, Satellite &satellite);
 
 
 };

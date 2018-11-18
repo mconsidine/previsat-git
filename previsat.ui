@@ -8876,10 +8876,7 @@
             </property>
            </widget>
           </widget>
-          <widget class="QWidget" name="iridium">
-           <property name="font">
-            <font/>
-           </property>
+          <widget class="QWidget" name="flashs">
            <property name="mouseTracking">
             <bool>true</bool>
            </property>
@@ -8887,25 +8884,22 @@
             <bool>true</bool>
            </property>
            <attribute name="title">
-            <string>Flashs Iridium</string>
+            <string>Flashs</string>
            </attribute>
-           <widget class="QLabel" name="lbl_dateInitialeIri">
+           <widget class="QComboBox" name="lieuxObservation5">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>71</width>
-              <height>16</height>
+              <x>110</x>
+              <y>84</y>
+              <width>191</width>
+              <height>22</height>
              </rect>
             </property>
             <property name="font">
              <font/>
             </property>
-            <property name="text">
-             <string>Date initiale :</string>
-            </property>
            </widget>
-           <widget class="QDateTimeEdit" name="dateFinaleIri">
+           <widget class="QDateTimeEdit" name="dateFinaleMetOp">
             <property name="geometry">
              <rect>
               <x>80</x>
@@ -8924,7 +8918,45 @@
              <bool>true</bool>
             </property>
            </widget>
-           <widget class="QPushButton" name="effacerHeuresIri">
+           <widget class="QPushButton" name="calculsMetOp">
+            <property name="geometry">
+             <rect>
+              <x>560</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font/>
+            </property>
+            <property name="text">
+             <string>Calculs</string>
+            </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="ordreChronologiqueMetOp">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>142</y>
+              <width>201</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font/>
+            </property>
+            <property name="text">
+             <string>Classer par ordre chronologique</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="effacerHeuresMetOp">
             <property name="geometry">
              <rect>
               <x>230</x>
@@ -8940,155 +8972,23 @@
              <string>Effacer heures</string>
             </property>
            </widget>
-           <widget class="QLabel" name="lbl_dateFinaleIri">
+           <widget class="QPushButton" name="afficherMetOp">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>34</y>
-              <width>71</width>
-              <height>16</height>
+              <x>660</x>
+              <y>180</y>
+              <width>91</width>
+              <height>23</height>
              </rect>
             </property>
             <property name="font">
              <font/>
             </property>
             <property name="text">
-             <string>Date finale :</string>
+             <string>Afficher</string>
             </property>
            </widget>
-           <widget class="QDateTimeEdit" name="dateInitialeIri">
-            <property name="geometry">
-             <rect>
-              <x>80</x>
-              <y>6</y>
-              <width>145</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::UpDownArrows</enum>
-            </property>
-            <property name="calendarPopup">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="hauteurSoleilIri">
-            <property name="geometry">
-             <rect>
-              <x>110</x>
-              <y>56</y>
-              <width>191</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="currentIndex">
-             <number>1</number>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <item>
-             <property name="text">
-              <string>Horizon (0°)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Crépuscule civil (-6°)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Crépuscule nautique (-12°)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Crépuscule astronomique (-18°)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Indifférent</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Autre...</string>
-             </property>
-            </item>
-           </widget>
-           <widget class="QLabel" name="lbl_hauteurSoleilIri">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>60</y>
-              <width>101</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Hauteur du Soleil :</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_lieuxObservation3">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>88</y>
-              <width>101</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Lieu d'observation :</string>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="lieuxObservation3">
-            <property name="geometry">
-             <rect>
-              <x>110</x>
-              <y>84</y>
-              <width>191</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_hauteurSatIri">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>116</y>
-              <width>151</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Hauteur minimale du satellite :</string>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="hauteurSatIri">
+           <widget class="QComboBox" name="hauteurSatMetOp">
             <property name="geometry">
              <rect>
               <x>160</x>
@@ -9134,584 +9034,11 @@
              </property>
             </item>
            </widget>
-           <widget class="QCheckBox" name="satellitesOperationnelsIri">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>142</y>
-              <width>241</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Uniquement les satellites opérationnels</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QCheckBox" name="ordreChronologiqueIri">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>166</y>
-              <width>201</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Classer par ordre chronologique</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_fichierTLEIri">
-            <property name="geometry">
-             <rect>
-              <x>350</x>
-              <y>88</y>
-              <width>71</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Fichier TLE :</string>
-            </property>
-           </widget>
-           <widget class="QGroupBox" name="groupBoxAffichageLignesIri">
-            <property name="geometry">
-             <rect>
-              <x>420</x>
-              <y>6</y>
-              <width>151</width>
-              <height>71</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-            <property name="title">
-             <string>Affichage des résultats</string>
-            </property>
-            <widget class="QRadioButton" name="affichage1ligneIri">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>82</width>
-               <height>17</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>1 ligne</string>
-             </property>
-            </widget>
-            <widget class="QRadioButton" name="affichage3lignesIri">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>40</y>
-               <width>82</width>
-               <height>17</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>3 lignes</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QLabel" name="lbl_magnitudeMaxNuitIri">
-            <property name="geometry">
-             <rect>
-              <x>350</x>
-              <y>124</y>
-              <width>141</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Magnitude maximale (nuit) :</string>
-            </property>
-           </widget>
-           <widget class="QDoubleSpinBox" name="magnitudeMaxNuitIri">
-            <property name="geometry">
-             <rect>
-              <x>490</x>
-              <y>120</y>
-              <width>51</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>-8.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>8.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-            <property name="value">
-             <double>2.000000000000000</double>
-            </property>
-           </widget>
-           <widget class="QDoubleSpinBox" name="magnitudeMaxJourIri">
-            <property name="geometry">
-             <rect>
-              <x>490</x>
-              <y>150</y>
-              <width>51</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>-8.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>8.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-            <property name="value">
-             <double>-4.000000000000000</double>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_magnitudeMaxJourIri">
-            <property name="geometry">
-             <rect>
-              <x>350</x>
-              <y>154</y>
-              <width>141</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Magnitude maximale (jour) :</string>
-            </property>
-           </widget>
-           <widget class="QDoubleSpinBox" name="angleMaxReflexionIri">
-            <property name="geometry">
-             <rect>
-              <x>490</x>
-              <y>180</y>
-              <width>51</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>1.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>8.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-            <property name="value">
-             <double>4.000000000000000</double>
-            </property>
-           </widget>
-           <widget class="QLabel" name="lbl_angleMaxReflexionIri">
-            <property name="geometry">
-             <rect>
-              <x>350</x>
-              <y>184</y>
-              <width>141</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Angle maximal de réflexion :</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="afficherIri">
-            <property name="geometry">
-             <rect>
-              <x>673</x>
-              <y>180</y>
-              <width>79</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Afficher</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="calculsIri">
-            <property name="geometry">
-             <rect>
-              <x>589</x>
-              <y>180</y>
-              <width>79</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Calculs</string>
-            </property>
-            <property name="default">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="valHauteurSoleilIri">
-            <property name="geometry">
-             <rect>
-              <x>310</x>
-              <y>57</y>
-              <width>31</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="inputMask">
-             <string>###</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="maxLength">
-             <number>3</number>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="valHauteurSatIri">
-            <property name="geometry">
-             <rect>
-              <x>310</x>
-              <y>113</y>
-              <width>31</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="inputMask">
-             <string>99</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="maxLength">
-             <number>2</number>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="parametrageDefautIri">
-            <property name="geometry">
-             <rect>
-              <x>590</x>
-              <y>10</y>
-              <width>161</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Paramétrage par défaut</string>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="fichierTLEIri">
-            <property name="geometry">
-             <rect>
-              <x>420</x>
-              <y>84</y>
-              <width>151</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="mouseTracking">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QTableWidget" name="statutIridium">
-            <property name="geometry">
-             <rect>
-              <x>590</x>
-              <y>40</y>
-              <width>161</width>
-              <height>134</height>
-             </rect>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="selectionMode">
-             <enum>QAbstractItemView::NoSelection</enum>
-            </property>
-            <attribute name="horizontalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-            <column>
-             <property name="text">
-              <string>Satellite</string>
-             </property>
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Statut</string>
-             </property>
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-            </column>
-           </widget>
-           <widget class="QCheckBox" name="pecPanneauxSolairesIri">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>190</y>
-              <width>231</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Inclure les flashs des panneaux solaires</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </widget>
-          <widget class="QWidget" name="flashs">
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <attribute name="title">
-            <string>Flashs</string>
-           </attribute>
-           <widget class="QComboBox" name="lieuxObservation5">
-            <property name="geometry">
-             <rect>
-              <x>110</x>
-              <y>56</y>
-              <width>191</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-           </widget>
-           <widget class="QDateTimeEdit" name="dateFinaleMetOp">
-            <property name="geometry">
-             <rect>
-              <x>80</x>
-              <y>30</y>
-              <width>145</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::UpDownArrows</enum>
-            </property>
-            <property name="calendarPopup">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="calculsMetOp">
-            <property name="geometry">
-             <rect>
-              <x>589</x>
-              <y>146</y>
-              <width>79</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Calculs</string>
-            </property>
-            <property name="default">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QCheckBox" name="ordreChronologiqueMetOp">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>146</y>
-              <width>201</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Classer par ordre chronologique</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="effacerHeuresMetOp">
-            <property name="geometry">
-             <rect>
-              <x>230</x>
-              <y>6</y>
-              <width>115</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Effacer heures</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="afficherMetOp">
-            <property name="geometry">
-             <rect>
-              <x>673</x>
-              <y>146</y>
-              <width>79</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string>Afficher</string>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="hauteurSatMetOp">
-            <property name="geometry">
-             <rect>
-              <x>160</x>
-              <y>116</y>
-              <width>141</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font/>
-            </property>
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>0°</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>5°</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>10°</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>15°</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>20°</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Autre...</string>
-             </property>
-            </item>
-           </widget>
            <widget class="QComboBox" name="fichierTLEMetOp">
             <property name="geometry">
              <rect>
-              <x>426</x>
-              <y>8</y>
+              <x>420</x>
+              <y>112</y>
               <width>151</width>
               <height>22</height>
              </rect>
@@ -9727,7 +9054,7 @@
             <property name="geometry">
              <rect>
               <x>110</x>
-              <y>86</y>
+              <y>56</y>
               <width>191</width>
               <height>22</height>
              </rect>
@@ -9779,7 +9106,7 @@
             <property name="geometry">
              <rect>
               <x>310</x>
-              <y>87</y>
+              <y>57</y>
               <width>31</width>
               <height>20</height>
              </rect>
@@ -9801,7 +9128,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>90</y>
+              <y>60</y>
               <width>101</width>
               <height>16</height>
              </rect>
@@ -9816,8 +9143,8 @@
            <widget class="QGroupBox" name="groupBoxAffichageLignesMetOp">
             <property name="geometry">
              <rect>
-              <x>360</x>
-              <y>41</y>
+              <x>420</x>
+              <y>6</y>
               <width>151</width>
               <height>71</height>
              </rect>
@@ -9887,7 +9214,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>120</y>
+              <y>116</y>
               <width>151</width>
               <height>16</height>
              </rect>
@@ -9922,7 +9249,7 @@
             <property name="geometry">
              <rect>
               <x>310</x>
-              <y>117</y>
+              <y>113</y>
               <width>31</width>
               <height>20</height>
              </rect>
@@ -9943,8 +9270,8 @@
            <widget class="QLabel" name="lbl_magnitudeMaxMetOp">
             <property name="geometry">
              <rect>
-              <x>360</x>
-              <y>120</y>
+              <x>10</x>
+              <y>168</y>
               <width>111</width>
               <height>16</height>
              </rect>
@@ -9976,7 +9303,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>60</y>
+              <y>88</y>
               <width>101</width>
               <height>16</height>
              </rect>
@@ -9991,8 +9318,8 @@
            <widget class="QDoubleSpinBox" name="magnitudeMaxMetOp">
             <property name="geometry">
              <rect>
-              <x>470</x>
-              <y>117</y>
+              <x>120</x>
+              <y>165</y>
               <width>51</width>
               <height>22</height>
              </rect>
@@ -10035,8 +9362,8 @@
            <widget class="QLabel" name="lbl_fichierTLEMetOp">
             <property name="geometry">
              <rect>
-              <x>360</x>
-              <y>12</y>
+              <x>350</x>
+              <y>116</y>
               <width>71</width>
               <height>16</height>
              </rect>
@@ -15380,23 +14707,6 @@ le flux vidéo</string>
   <tabstop>valMagnitudeMaxPrev</tabstop>
   <tabstop>calculsPrev</tabstop>
   <tabstop>afficherPrev</tabstop>
-  <tabstop>dateInitialeIri</tabstop>
-  <tabstop>dateFinaleIri</tabstop>
-  <tabstop>effacerHeuresIri</tabstop>
-  <tabstop>hauteurSoleilIri</tabstop>
-  <tabstop>valHauteurSoleilIri</tabstop>
-  <tabstop>lieuxObservation3</tabstop>
-  <tabstop>hauteurSatIri</tabstop>
-  <tabstop>valHauteurSatIri</tabstop>
-  <tabstop>satellitesOperationnelsIri</tabstop>
-  <tabstop>ordreChronologiqueIri</tabstop>
-  <tabstop>affichage1ligneIri</tabstop>
-  <tabstop>affichage3lignesIri</tabstop>
-  <tabstop>magnitudeMaxNuitIri</tabstop>
-  <tabstop>magnitudeMaxJourIri</tabstop>
-  <tabstop>angleMaxReflexionIri</tabstop>
-  <tabstop>calculsIri</tabstop>
-  <tabstop>afficherIri</tabstop>
   <tabstop>fichiersObs</tabstop>
   <tabstop>lieuxObs</tabstop>
   <tabstop>selecLieux</tabstop>
@@ -15482,10 +14792,6 @@ le flux vidéo</string>
   <tabstop>typeParametres</tabstop>
   <tabstop>typeRepere</tabstop>
   <tabstop>parametrageDefautPrev</tabstop>
-  <tabstop>parametrageDefautIri</tabstop>
-  <tabstop>fichierTLEIri</tabstop>
-  <tabstop>statutIridium</tabstop>
-  <tabstop>pecPanneauxSolairesIri</tabstop>
   <tabstop>creationLieu</tabstop>
   <tabstop>creationCategorie</tabstop>
   <tabstop>unitesKm</tabstop>

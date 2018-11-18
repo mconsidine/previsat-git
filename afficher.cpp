@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    17 novembre 2018
+ * >    18 novembre 2018
  *
  */
 
@@ -246,10 +246,6 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         ui->ongletsResultats->setTabText(ind, tr("Prévisions de passage"));
         break;
 
-    case IRIDIUM:
-        ui->ongletsResultats->setTabText(ind, tr("Flashs Iridium"));
-        break;
-
     case EVENEMENTS:
         ui->ongletsResultats->removeTab(1);
         ui->ongletsResultats->setTabText(0, tr("Évènements orbitaux"));
@@ -332,11 +328,6 @@ void Afficher::load()
                 ligne = it.next();
         }
 
-        if (cond.typeCalcul() == IRIDIUM) {
-            const QString fmt2 = "  %1 %2  ";
-            nomsat = fmt2.arg(tr("Iridium")).arg(ligne.mid(166, 5).trimmed());
-        }
-
         if (cond.typeCalcul() == METOP) {
             nomsat = ligne.mid(166, 11).trimmed();
         }
@@ -389,7 +380,7 @@ void Afficher::load()
                 }
             }
 
-            if (cond.typeCalcul() == IRIDIUM || (cond.typeCalcul() == TRANSITS && fin.mid(79, 1) == "T")) {
+            if (cond.typeCalcul() == TRANSITS && fin.mid(79, 1) == "T") {
                 fin1 = fin;
             }
 
@@ -1120,8 +1111,6 @@ void Afficher::loadSky(const int j)
                 QString sdate = "";
                 if (amax) {
                     amax = false;
-                    if (cond.typeCalcul() == IRIDIUM)
-                        sdate = tr("Flash Iridium");
 
                     if (cond.typeCalcul() == METOP) {
                         QString nomFlash = sat.tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
