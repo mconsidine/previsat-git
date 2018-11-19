@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    19 novembre 2018
  *
  */
 
@@ -3830,7 +3830,9 @@ void PreviSat::AffichageManoeuvresISS() const
 
             // Date
             if (k == 0) {
-                elem = Date(elem.toDouble(), offsetUTC).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+                elem = Date(elem.toDouble(), offsetUTC).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ?
+                                                                           SYSTEME_24H : SYSTEME_12H).trimmed();
+                item->setToolTip("UTC");
             }
 
             // Masse
@@ -6164,7 +6166,11 @@ void PreviSat::TelechargementSuivant()
                 "commun/data/";
         const QString fic = (url.path().contains(dirHttpPrevi)) ? url.path().replace(dirHttpPrevi, "") : QFileInfo(url.path()).fileName();
 
-        ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
+        if (fic.endsWith("txt")) {
+            ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
+        } else {
+            ui->fichierTelechargement->setText("TLE ISS");
+        }
         if (ui->miseAJourTLE->isVisible() && aupdnow) {
             ui->barreProgression->setValue(0);
             ui->frameBarreProgression->setVisible(true);
@@ -10662,7 +10668,7 @@ void PreviSat::on_onglets_currentChanged(int index)
         const Date date(dateCourante.jourJulien() + EPS_DATES, 0.);
         ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         ui->dateInitialeTransit->setDisplayFormat(fmt);
-        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(14));
+        ui->dateFinaleTransit->setDateTime(ui->dateInitialeTransit->dateTime().addDays(12));
         ui->dateFinaleTransit->setDisplayFormat(fmt);
 
         ui->afficherTransit->setDefault(false);
@@ -12060,9 +12066,16 @@ void PreviSat::on_calculsTransit_clicked()
         }
 
         // Age des TLE
-        const double age1 = qMin(jj1 - tabtle.first().epoque().jourJulienUTC(), tabtle.last().epoque().jourJulienUTC() - jj1);
-        const double age2 = qMin(tabtle.first().epoque().jourJulienUTC() - jj2, jj2 - tabtle.last().epoque().jourJulienUTC());
-        if ((-age1 > ageTLE + 0.05) && (-age2 > ageTLE + 0.05)) {
+        const double agePremierTLE = tabtle.first().epoque().jourJulienUTC();
+        const double ageDernierTLE = tabtle.last().epoque().jourJulienUTC();
+        double age1 = 0.;
+        if (jj1 < agePremierTLE) age1 = agePremierTLE - jj1;
+        if (jj1 > ageDernierTLE) age1 = jj1 - ageDernierTLE;
+        double age2 = 0.;
+        if (jj2 < agePremierTLE) age2 = agePremierTLE - jj2;
+        if (jj2 > ageDernierTLE) age2 = jj2 - ageDernierTLE;
+
+        if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
             const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
             Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
