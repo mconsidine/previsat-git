@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 novembre 2018
+ * >    21 novembre 2018
  *
  */
 
@@ -9504,12 +9504,22 @@ void PreviSat::on_unitesKm_toggled(bool checked)
 {
     Q_UNUSED(checked)
     ModificationOption();
+
+    // Affichage des manoeuvres ISS
+    if (!tabManoeuvresISS.isEmpty()) {
+        AffichageManoeuvresISS();
+    }
 }
 
 void PreviSat::on_unitesMi_toggled(bool checked)
 {
     Q_UNUSED(checked)
     ModificationOption();
+
+    // Affichage des manoeuvres ISS
+    if (!tabManoeuvresISS.isEmpty()) {
+        AffichageManoeuvresISS();
+    }
 }
 
 void PreviSat::on_syst24h_toggled(bool checked)
