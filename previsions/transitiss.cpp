@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    7 decembre 2018
  *
  */
 
@@ -202,6 +202,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                         // Position du corps (Soleil ou Lune)
                         soleil.CalculPosition(date2);
+                        soleil.CalculCoordHoriz(observateur, false);
                         if (typeCorps == 1) {
                             corps.setPosition(soleil.position());
                             rayon = RAYON_SOLAIRE;
@@ -220,11 +221,12 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.distance());
 
                         const bool itr = (ang <= rayonApparent);
+                        const bool ilu = (typeCorps == 2) && (soleil.hauteur() >= 0.);
                         ConditionEclipse condEcl;
                         condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune() && typeCorps == 2,
                                                        conditions.refr());
 
-                        if (itr || !condEcl.isEclipseTotale()) {
+                        if (!ilu && (itr || !condEcl.isEclipseTotale())) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[2] = date2;
@@ -512,11 +514,9 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
 
     if (itransit) {
 
-        double rayon = RAYON_SOLAIRE;
-        if (typeCorps == 2)
-            rayon = RAYON_LUNAIRE;
-
+        const double rayon = (typeCorps == 1) ? RAYON_SOLAIRE : RAYON_LUNAIRE;
         dist = asin(rayon / corps.distance());
+
     } else {
         dist = seuilConjonction;
     }
@@ -590,6 +590,10 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
     // Deuxieme date pour le trace sur la map
     date2 = 0.2 * (4. * jmax + dateSup);
 
+    if (fabs(date2 - date1) * NB_SEC_PAR_JOUR < 2.) {
+        date1 = dateInf;
+        date2 = dateSup;
+    }
 
     dates[0] = Date(dateInf, 0., false);
     dates[1] = Date(date1, 0., false);
