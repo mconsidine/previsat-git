@@ -4124,7 +4124,7 @@ Do you want to remove this TLE from the file to update?</translation>
         <location filename="previsions/evenements.cpp" line="250"/>
         <location filename="previsions/flashs.cpp" line="674"/>
         <location filename="previsions/prevision.cpp" line="229"/>
-        <location filename="previsions/transitiss.cpp" line="282"/>
+        <location filename="previsions/transitiss.cpp" line="284"/>
         <source>nmi</source>
         <translation>nmi</translation>
     </message>
@@ -4226,7 +4226,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="256"/>
         <location filename="previsions/evenements.cpp" line="479"/>
         <location filename="previsions/flashs.cpp" line="714"/>
-        <location filename="previsions/transitiss.cpp" line="336"/>
+        <location filename="previsions/transitiss.cpp" line="338"/>
         <source>W</source>
         <translation>W</translation>
     </message>
@@ -4234,7 +4234,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="256"/>
         <location filename="previsions/evenements.cpp" line="479"/>
         <location filename="previsions/flashs.cpp" line="714"/>
-        <location filename="previsions/transitiss.cpp" line="336"/>
+        <location filename="previsions/transitiss.cpp" line="338"/>
         <source>E</source>
         <translation>E</translation>
     </message>
@@ -4242,7 +4242,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="258"/>
         <location filename="previsions/evenements.cpp" line="481"/>
         <location filename="previsions/flashs.cpp" line="715"/>
-        <location filename="previsions/transitiss.cpp" line="337"/>
+        <location filename="previsions/transitiss.cpp" line="339"/>
         <source>N</source>
         <translation>N</translation>
     </message>
@@ -4250,8 +4250,8 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="258"/>
         <location filename="previsions/evenements.cpp" line="481"/>
         <location filename="previsions/flashs.cpp" line="715"/>
-        <location filename="previsions/transitiss.cpp" line="295"/>
-        <location filename="previsions/transitiss.cpp" line="337"/>
+        <location filename="previsions/transitiss.cpp" line="297"/>
+        <location filename="previsions/transitiss.cpp" line="339"/>
         <source>S</source>
         <translation>S</translation>
     </message>
@@ -4340,7 +4340,7 @@ Age of the oldest TLE      : %3 days</translation>
         <location filename="previsions/evenements.cpp" line="365"/>
         <location filename="previsions/flashs.cpp" line="266"/>
         <location filename="previsions/prevision.cpp" line="318"/>
-        <location filename="previsions/transitiss.cpp" line="411"/>
+        <location filename="previsions/transitiss.cpp" line="413"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
@@ -4351,58 +4351,58 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/flashs.cpp" line="701"/>
-        <location filename="previsions/transitiss.cpp" line="334"/>
+        <location filename="previsions/transitiss.cpp" line="336"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
         <location filename="previsions/flashs.cpp" line="701"/>
-        <location filename="previsions/transitiss.cpp" line="330"/>
+        <location filename="previsions/transitiss.cpp" line="332"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="294"/>
+        <location filename="previsions/transitiss.cpp" line="296"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="294"/>
+        <location filename="previsions/transitiss.cpp" line="296"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="295"/>
+        <location filename="previsions/transitiss.cpp" line="297"/>
         <source>L</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="297"/>
+        <location filename="previsions/transitiss.cpp" line="299"/>
         <source>Omb</source>
         <translation>Sha</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="298"/>
+        <location filename="previsions/transitiss.cpp" line="300"/>
         <source>Pen</source>
         <translation>Pen</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="298"/>
+        <location filename="previsions/transitiss.cpp" line="300"/>
         <source>Lum</source>
         <translation>Ill</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="328"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>(N)</source>
         <translation>(N)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="332"/>
+        <location filename="previsions/transitiss.cpp" line="334"/>
         <source>(S)</source>
         <translation>(S)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="380"/>
+        <location filename="previsions/transitiss.cpp" line="382"/>
         <source>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max     Distance</source>
         <translation>   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat       Range</translation>
     </message>
