@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -256,7 +256,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
         break;
 
     case METOP:
-        ui->ongletsResultats->setTabText(ind, tr("Flashs MetOp et SkyMed"));
+        ui->ongletsResultats->setTabText(ind, tr("Flashs"));
         break;
 
     default:

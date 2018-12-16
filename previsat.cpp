@@ -12353,7 +12353,7 @@ void PreviSat::on_calculsMetOp_clicked()
         const bool syst = ui->syst24h->isChecked();
 
         // Nom du fichier resultat
-        const QString chaine = tr("metop_skymed") + "_%1_%2.txt";
+        const QString chaine = tr("flashs") + "_%1_%2.txt";
         ficRes = dirTmp + QDir::separator() + chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
 
@@ -12411,10 +12411,10 @@ void PreviSat::on_calculsMetOp_clicked()
             }
         }
 
-        // Il n'y a aucun satellite MetOp ou SkyMed dans le fichier TLE
+        // Il n'y a aucun satellite produisant des flashs dans le fichier TLE
         if (listeSatellites.size() == 0)
             throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
-                                       "Aucun satellite MetOp ou SkyMed n'a été trouvé dans le fichier TLE"), WARNING);
+                                       "Aucun satellite produisant des flashs n'a été trouvé dans le fichier TLE"), WARNING);
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));
         ui->calculsMetOp->setEnabled(false);
@@ -12446,7 +12446,7 @@ void PreviSat::on_afficherMetOp_clicked()
     QStringList result = threadCalculs->res();
     afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
-                                      tr("Prévisions des flashs MetOp et SkyMed"));
+                                      tr("Prévisions des flashs"));
     afficherResultats->show(ficRes);
     result.clear();
 
