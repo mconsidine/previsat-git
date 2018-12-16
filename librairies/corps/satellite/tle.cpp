@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -420,6 +420,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 {
     /* Declarations des variables locales */
     QStringList tabMan;
+    QStringList tabMasse;
     QVector<TLE> tabtle;
 
     /* Initialisations */
@@ -435,7 +436,6 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 
         Date debValid(-DATE_INFINIE, 0., false);
 
-        int i = 0;
         QString dateFormatNasa;
         QString orb;
         while (!flux.atEnd()) {
@@ -477,13 +477,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 
             // Masse
             if (ligne.contains("Weight")) {
-                if (i < tabMan.size()) {
-                    if (dateFormatNasa.endsWith(tabMan.at(i).split(" ", QString::SkipEmptyParts).first())) {
-                        QString fmt = "%1";
-                        tabManoeuvres.append(fmt.arg(debValid.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + ligne.split(" ", QString::SkipEmptyParts).last() + " " + tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
-                        i++;
-                    }
-                }
+                tabMasse.append(dateFormatNasa + " " + orb + " " + ligne.split(" ", QString::SkipEmptyParts).last());
             }
 
             // TLE
@@ -509,6 +503,31 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
         fi.close();
     }
 
+    // Tableau de manoeuvres
+    int i = 0;
+    Date dateArc1(-DATE_INFINIE, 0.);
+    QString masse1;
+    QStringListIterator it(tabMasse);
+    while (it.hasNext()) {
+        const QString ligne = it.next();
+        const QString dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).first();
+        const QString orb = ligne.split(" ", QString::SkipEmptyParts).at(1);
+        const Date dateArc2 = Date::ConversionDateNasa(dateFormatNasa);
+        const QString masse2 = ligne.split(" ", QString::SkipEmptyParts).last();
+        const Date dateMan = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
+                                                      tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
+
+        if ((dateMan.jourJulienUTC() > dateArc1.jourJulienUTC()) && (dateMan.jourJulienUTC() <= dateArc2.jourJulienUTC())) {
+            QString fmt = "%1";
+            if (masse1.isEmpty()) masse1 = masse2;
+            tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
+                                 tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
+            i++;
+        }
+        dateArc1 = dateArc2;
+        masse1 = masse2;
+    }
+
     if (!tabtle.isEmpty()) {
 
         QFile fichier(fichier3le);
@@ -516,9 +535,9 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
         QTextStream flux(&fichier);
 
         const QString fmt = "%1";
-        QVectorIterator<TLE> it(tabtle);
-        while (it.hasNext()) {
-            const TLE tle = it.next();
+        QVectorIterator<TLE> it2(tabtle);
+        while (it2.hasNext()) {
+            const TLE tle = it2.next();
             flux << tle._ligne0 << QString(15 - tle._ligne0.length(), QChar(' ')) << fmt.arg(tle._dateDebutValidite.jourJulienUTC(), 0, 'f', 12)
                  << endl;
             flux << tle._ligne1 << endl;
