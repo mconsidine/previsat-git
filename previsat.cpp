@@ -2228,7 +2228,6 @@ void PreviSat::AffichageCourbes() const
                         scene->addLine(lig, crayon);
 
                         if (ils == j) {
-                            lsat1 -= lcarte;
                             lsat2 -= lcarte;
                             scene->addLine(lig, crayon);
                             ils = 0;

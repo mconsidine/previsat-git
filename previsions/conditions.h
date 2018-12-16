@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -54,7 +54,7 @@ public:
     /**
      * @brief Conditions Constructeur par defaut
      */
-    Conditions() : _typeCalcul((TypeCalcul) 0)
+    Conditions() : _fic(""), _out(""), _unite(""), _listeSatellites(QStringList("")), _typeCalcul((TypeCalcul) 0)
     {
         /* Declarations des variables locales */
 
@@ -89,11 +89,6 @@ public:
         _pas0 = 0.;
         _seuilConjonction = 0.;
 
-        _fic = "";
-        _out = "";
-        _unite = "";
-        _listeSatellites = QStringList("");
-
         /* Retour */
         return;
     }
@@ -123,7 +118,8 @@ public:
     Conditions(const TypeCalcul typeCalc, const bool pecEcart, const bool eclipse, const bool extinction, const bool refraction,
                const bool acalcEclLune, const bool effetEclPartielle, const bool systeme, const int crepuscule, const int hauteur,
                const int pas, const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1,
-               const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
+               const QString &ficEnt, const QString &ficOut, const QString &unit, const QStringList &listeSat) :
+        _fic(ficEnt), _out(ficOut), _unite(unit), _listeSatellites(listeSat),_typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -144,10 +140,6 @@ public:
         _jj2 = jourJulien2;
         _offset = offsetUTC;
         _mgn1 = magn1;
-        _fic = ficEnt;
-        _out = ficOut;
-        _unite = unit;
-        _listeSatellites = listeSat;
 
         _acalcLune = false;
         _acalcSol = false;
@@ -189,7 +181,8 @@ public:
     Conditions(const TypeCalcul typeCalc, const bool apassageApogee, const bool apassageNoeuds, const bool apassageOmbre,
                const bool apassagePso, const bool atransitionJn, const bool pecEcart, const bool refraction, const bool acalcEclLune,
                const bool systeme, const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
-               const QString &ficOut, const QString &unit, const QStringList &listeSat) : _typeCalcul(typeCalc)
+               const QString &ficOut, const QString &unit, const QStringList &listeSat) :
+        _fic(ficEnt), _out(ficOut), _unite(unit), _listeSatellites(listeSat), _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -209,10 +202,6 @@ public:
         _jj1 = jourJulien1;
         _jj2 = jourJulien2;
         _offset = offsetUTC;
-        _fic = ficEnt;
-        _out = ficOut;
-        _unite = unit;
-        _listeSatellites = listeSat;
 
         _acalcLune = false;
         _acalcSol = false;
@@ -255,7 +244,7 @@ public:
                const bool acalcEclLune, const bool systeme, const int hauteur, const double age, const double seuilConj,
                const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
                const QString &unit) :
-        _typeCalcul(typeCalc)
+        _fic(ficEnt), _out(ficOut), _unite(unit), _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
 
@@ -275,9 +264,6 @@ public:
         _jj1 = jourJulien1;
         _jj2 = jourJulien2;
         _offset = offsetUTC;
-        _fic = ficEnt;
-        _out = ficOut;
-        _unite = unit;
 
         _apassApogee = false;
         _apassNoeuds = false;
@@ -324,7 +310,7 @@ public:
                const bool effetEclPartielle, const bool systeme, const bool chrono, const int crepuscule, const int hauteur, const int nbLig,
                const double jourJulien1, const double jourJulien2, const double offsetUTC, const double magn1, const QString &ficEnt,
                const QString &ficOut, const QString &unit, const QStringList &tabStsMetOp, const QVector<TLE> &tabTLEMetOp) :
-        _typeCalcul(typeCalc)
+        _fic(ficEnt), _out(ficOut), _unite(unit), _typeCalcul(typeCalc), _tabSts(tabStsMetOp), _tabtle(tabTLEMetOp)
     {
         /* Declarations des variables locales */
 
@@ -346,11 +332,6 @@ public:
         _jj2 = jourJulien2;
         _offset = offsetUTC;
         _mgn1 = magn1;
-        _fic = ficEnt;
-        _out = ficOut;
-        _unite = unit;
-        _tabSts = tabStsMetOp;
-        _tabtle = tabTLEMetOp;
 
         _acalcLune = false;
         _acalcSol = false;

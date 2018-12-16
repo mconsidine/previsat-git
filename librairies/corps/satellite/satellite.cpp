@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -84,14 +84,14 @@ Satellite::Satellite()
     return;
 }
 
-Satellite::Satellite(const QVector<TLE> &tabtle)
+Satellite::Satellite(const QVector<TLE> &tabtle) :
+    _tabtle(tabtle)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _tabtle = tabtle;
     _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
