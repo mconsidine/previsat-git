@@ -827,9 +827,12 @@ QString PreviSat::DeterminationLocale()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    localePreviSat = QLocale::system().name().section('_', 0, 0);
 
     /* Corps de la methode */
-    if ((localePreviSat = QLocale::system().name().section('_', 0, 0)) != "fr") {
+    const QFile fi(QCoreApplication::applicationDirPath() + QDir::separator() + QCoreApplication::applicationName() + "_" +
+                   localePreviSat + ".qm");
+    if (!fi.exists() && localePreviSat != "fr") {
         localePreviSat = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
     }
 
