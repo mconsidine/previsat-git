@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    11 mars 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -44,13 +44,17 @@
 
 
 /* Constructeurs */
-ConditionEclipse::ConditionEclipse()
+ConditionEclipse::ConditionEclipse() :
+    _typeEclipseSoleil(NON_ECLIPSE), _typeEclipseLune(NON_ECLIPSE)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
     _eclipseTotale = false;
     _eclipsePartielle = false;
     _eclipseAnnulaire = false;
-    _typeEclipseSoleil = NON_ECLIPSE;
-    _typeEclipseLune = NON_ECLIPSE;
     _luminositeEclipseSoleil = 0.;
     _luminositeEclipseLune = 0.;
     _phiSoleil = 0.;
@@ -59,6 +63,9 @@ ConditionEclipse::ConditionEclipse()
     _phiLune = 0.;
     _elongationSoleil = 0.;
     _elongationLune = 0.;
+
+    /* Retour */
+    return;
 }
 
 /* Methodes */
@@ -77,8 +84,9 @@ void ConditionEclipse::CalculSatelliteEclipse(const Soleil &soleil, const Lune &
     _typeEclipseLune = NON_ECLIPSE;
 
     /* Corps de la methode */
-    if (acalcEclipseLune)
+    if (acalcEclipseLune) {
         CalculSatelliteEclipseCorps(soleil, position, LUNE, lune);
+    }
     CalculSatelliteEclipseCorps(soleil, position, TERRE, empty, refraction);
 
     if (_typeEclipseSoleil != NON_ECLIPSE && _typeEclipseLune != NON_ECLIPSE) {

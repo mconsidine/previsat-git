@@ -33,7 +33,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -75,7 +75,7 @@ public:
      * @param observateur observateur
      * @param result tableau de resultats
      */
-    static void CalculFlashs(const QString idsat, const Conditions &conditions, Observateur &observateur, QStringList &result);
+    static void CalculFlashs(const QString &idsat, const Conditions &conditions, Observateur &observateur, QStringList &result);
 
     /**
      * @brief FinTraitement Finalisation du traitement (liberation memoire)

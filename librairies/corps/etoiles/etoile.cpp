@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2016
+ * >    16 decembre 2018
  *
  */
 
@@ -67,14 +67,14 @@ Etoile::Etoile()
     _magnitude = 0.;
 }
 
-Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag)
+Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag) :
+    _nom(nomEtoile)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nom = nomEtoile;
     _ascensionDroite = ascDroite * HEUR2RAD;
     _declinaison = decl * DEG2RAD;
     _magnitude = mag;

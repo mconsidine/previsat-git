@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -66,7 +66,7 @@ QList<QVector<double > > Flashs::_tabEphem;
 /*
  * Calcul des flashs
  */
-void Flashs::CalculFlashs(const QString idsat, const Conditions &conditions, Observateur &observateur, QStringList &result)
+void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Observateur &observateur, QStringList &result)
 {
     /* Declarations des variables locales */
     QString ligne;
@@ -398,7 +398,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
     double jjm[3], limite[4], lim0[4];
 
     /* Initialisations */
-    double dateInf = -DATE_INFINIE;
+    double dateInf;
     double dateSup = DATE_INFINIE;
     double jj0 = dateMaxFlash - PAS_INT0;
     double jj2 = dateMaxFlash + PAS_INT0;

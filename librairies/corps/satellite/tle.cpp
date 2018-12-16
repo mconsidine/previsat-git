@@ -84,17 +84,14 @@ TLE::TLE()
     return;
 }
 
-TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid)
+TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid) :
+    _ligne0(lig0), _ligne1(lig1), _ligne2(lig2)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ligne0 = lig0;
-    _ligne1 = lig1;
-    _ligne2 = lig2;
-
     // Numero NORAD
     _norad = _ligne1.mid(2, 5);
 

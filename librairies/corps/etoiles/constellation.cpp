@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    16 decembre 2018
  *
  */
 
@@ -66,14 +66,14 @@ Constellation::Constellation()
 {
 }
 
-Constellation::Constellation(const QString &nomConst, const double ascDroite, const double decl)
+Constellation::Constellation(const QString &nomConst, const double ascDroite, const double decl) :
+    _nom(nomConst)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nom = nomConst;
     _ascensionDroite = ascDroite * HEUR2RAD;
     _declinaison = decl * DEG2RAD;
 

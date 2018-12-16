@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    8 avril 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -72,7 +72,8 @@ Observateur::Observateur()
 /*
  * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
  */
-Observateur::Observateur(const QString &nom, const double lon, const double lat, const double alt)
+Observateur::Observateur(const QString &nom, const double lon, const double lat, const double alt) :
+    _nomlieu(nom)
 {
     /* Declarations des variables locales */
 
@@ -80,7 +81,6 @@ Observateur::Observateur(const QString &nom, const double lon, const double lat,
     _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
-    _nomlieu = nom;
     _longitude = DEG2RAD * lon;
     _latitude = DEG2RAD * lat;
     _altitude = alt * 1.e-3;
@@ -105,7 +105,8 @@ Observateur::Observateur(const QString &nom, const double lon, const double lat,
 /*
  * Constructeur a partir d'un lieu d'observation
  */
-Observateur::Observateur(const Observateur &observateur)
+Observateur::Observateur(const Observateur &observateur) :
+    _nomlieu(observateur.nomlieu()), _position(observateur.position()), _vitesse(observateur.vitesse()), _rotHz(observateur.rotHz())
 {
     /* Declarations des variables locales */
 
@@ -113,7 +114,6 @@ Observateur::Observateur(const Observateur &observateur)
     _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
-    _nomlieu = observateur._nomlieu;
     _longitude = observateur._longitude;
     _latitude = observateur._latitude;
     _altitude = observateur._altitude;
@@ -123,11 +123,6 @@ Observateur::Observateur(const Observateur &observateur)
 
     _rayon = observateur._rayon;
     _posZ = observateur._posZ;
-
-    _position = observateur._position;
-    _vitesse = observateur._vitesse;
-
-    _rotHz = observateur._rotHz;
 
     // Pour l'extinction atmospherique
     _aray = observateur._aray;
@@ -142,7 +137,8 @@ Observateur::Observateur(const Observateur &observateur)
  * (pour le calcul des previsions)
  */
 Observateur::Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal,
-                         const double arayVal)
+                         const double arayVal) :
+    _position(pos), _vitesse(vit), _rotHz(matRotHz)
 {
     /* Declarations des variables locales */
 
@@ -157,9 +153,6 @@ Observateur::Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matri
     _rayon = 0.;
     _posZ = 0.;
     _tempsSideralGreenwich = 0.;
-    _position = pos;
-    _vitesse = vit;
-    _rotHz = matRotHz;
     _aaer = aaerVal;
     _aray = arayVal;
 
