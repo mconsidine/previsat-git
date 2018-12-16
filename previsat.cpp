@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2018
+ * >    16 decembre 2018
  *
  */
 
@@ -3830,8 +3830,7 @@ void PreviSat::AffichageManoeuvresISS() const
 
             // Date
             if (k == 0) {
-                elem = Date(elem.toDouble(), offsetUTC).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ?
-                                                                           SYSTEME_24H : SYSTEME_12H).trimmed();
+                elem = Date(elem.toDouble(), 0.).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
                 item->setToolTip("UTC");
             }
 
