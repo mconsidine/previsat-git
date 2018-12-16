@@ -102,8 +102,8 @@
     </message>
     <message>
         <location filename="afficher.cpp" line="259"/>
-        <source>Flashs MetOp et SkyMed</source>
-        <translation>MetOp and SkyMed flares</translation>
+        <source>Flashs</source>
+        <translation>Flares</translation>
     </message>
     <message>
         <location filename="afficher.cpp" line="296"/>
@@ -3720,6 +3720,11 @@ the video stream</translation>
         <translation>The file %1 does not exist</translation>
     </message>
     <message>
+        <location filename="previsat.cpp" line="12356"/>
+        <source>flashs</source>
+        <translation>flares</translation>
+    </message>
+    <message>
         <location filename="previsat.cpp" line="3441"/>
         <location filename="previsat.cpp" line="8970"/>
         <location filename="previsat.cpp" line="9047"/>
@@ -3837,11 +3842,6 @@ The file %1 does not contain the TLE of ISS</translation>
         <translation>The TLE age of ISS (%1 days) is over to %2 days</translation>
     </message>
     <message>
-        <location filename="previsat.cpp" line="12356"/>
-        <source>metop_skymed</source>
-        <translation>metop_skymed</translation>
-    </message>
-    <message>
         <location filename="previsat.cpp" line="12375"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite MetOp ou SkyMed susceptible de produire des flashs dans le fichier de statut</source>
@@ -3851,14 +3851,14 @@ There is no MetOp or SkyMed satellites which can make flares in the status file<
     <message>
         <location filename="previsat.cpp" line="12416"/>
         <source>Erreur rencontrée lors de l&apos;exécution
-Aucun satellite MetOp ou SkyMed n&apos;a été trouvé dans le fichier TLE</source>
+Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier TLE</source>
         <translation>Error occured while execution
-There is no MetOp or SkyMed satellites in the TLE file</translation>
+There is no satellites producing flares in the TLE file</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="12449"/>
-        <source>Prévisions des flashs MetOp et SkyMed</source>
-        <translation>Predictions of MetOp and SkyMed flares</translation>
+        <source>Prévisions des flashs</source>
+        <translation>Predictions of flares</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="11157"/>
