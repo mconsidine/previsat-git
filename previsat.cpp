@@ -3703,7 +3703,7 @@ void PreviSat::AffichageElementsOsculateurs() const
     const int dt0 = satellites.at(0).phasage().dt0();
     const int ct0 = satellites.at(0).phasage().ct0();
     const int nbOrb = satellites.at(0).phasage().nbOrb();
-    if (nu0 < 0 || dt0 < 0 || ct0 < 0 || nbOrb < 0) {
+    if (nu0 < -98 || dt0 < -98 || ct0 < -98 || nbOrb < -98) {
         ui->phasage->setText(tr("N/A"));
     } else {
         ui->phasage->setText(chaine.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
