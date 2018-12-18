@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2016
+ * >    18 decembre 2018
  *
  */
 
@@ -152,8 +152,8 @@ void Lune::CalculPosition(const Date &date)
             ang2 += coef[j] * _tabCoef2[i][j];
         }
 
-        const double fact1 = (_tabCoef1[i][1] == 0) ? 1. : pow(coef[4], fabs(_tabCoef1[i][1]));
-        const double fact2 = (_tabCoef2[i][1] == 0) ? 1. : pow(coef[4], fabs(_tabCoef2[i][1]));
+        const double fact1 = (_tabCoef1[i][1] == 0) ? 1. : pow(coef[4], abs(_tabCoef1[i][1]));
+        const double fact2 = (_tabCoef2[i][1] == 0) ? 1. : pow(coef[4], abs(_tabCoef2[i][1]));
 
         // Termes en longitude
         l0 += _tabLon[i] * fact1 * sin(ang1);
