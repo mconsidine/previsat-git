@@ -8921,9 +8921,9 @@
            <widget class="QPushButton" name="calculsMetOp">
             <property name="geometry">
              <rect>
-              <x>560</x>
+              <x>556</x>
               <y>180</y>
-              <width>91</width>
+              <width>101</width>
               <height>23</height>
              </rect>
             </property>
@@ -8975,9 +8975,9 @@
            <widget class="QPushButton" name="afficherMetOp">
             <property name="geometry">
              <rect>
-              <x>660</x>
+              <x>664</x>
               <y>180</y>
-              <width>91</width>
+              <width>101</width>
               <height>23</height>
              </rect>
             </property>
@@ -9144,7 +9144,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>6</y>
+              <y>40</y>
               <width>151</width>
               <height>71</height>
              </rect>
@@ -9197,8 +9197,8 @@
            <widget class="QPushButton" name="parametrageDefautMetOp">
             <property name="geometry">
              <rect>
-              <x>590</x>
-              <y>7</y>
+              <x>600</x>
+              <y>10</y>
               <width>161</width>
               <height>23</height>
              </rect>
@@ -14382,6 +14382,8 @@ le flux vidéo</string>
     <addaction name="actionTelecharger_la_mise_a_jour"/>
     <addaction name="actionMettre_jour_fichiers_internes"/>
     <addaction name="separator"/>
+    <addaction name="actionFaire_un_don"/>
+    <addaction name="separator"/>
     <addaction name="actionAstropedia_free_fr"/>
     <addaction name="actionRapport_de_bug"/>
     <addaction name="separator"/>
@@ -14676,6 +14678,11 @@ le flux vidéo</string>
    </property>
    <property name="shortcut">
     <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actionFaire_un_don">
+   <property name="text">
+    <string>Faire un don</string>
    </property>
   </action>
  </widget>

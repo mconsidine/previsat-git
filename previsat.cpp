@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    18 decembre 2018
  *
  */
 
@@ -419,8 +419,9 @@ void PreviSat::ChargementConfig()
 #else
 #endif
 
-    if (dirTmp.trimmed().isEmpty())
+    if (dirTmp.trimmed().isEmpty()) {
         dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
+    }
 
 #if !defined (Q_OS_WIN)
     settings.setValue("fichier/dirHttpPrevi", adresseAstropedia + "previsat/Qt/");
@@ -548,8 +549,30 @@ void PreviSat::ChargementConfig()
     settings.setValue("affichage/verifMAJ", false);
     ui->verifMAJ->setVisible(false);
 #else
-    if (ui->verifMAJ->isChecked())
+    if (ui->verifMAJ->isChecked()) {
         VerifMAJPreviSat();
+    }
+#endif
+
+#if !defined (Q_OS_WIN)
+    if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
+        dirDwn = dirTmp;
+        amajPrevi = true;
+        amajDeb = true;
+
+        QString fic("don");
+        TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + fic, false);
+        QFile fi(dirDwn + QDir::separator() + fic);
+        if (fi.exists() && fi.size() != 0) {
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            settings.setValue("fichier/dirHttpPreviDon", flux.readLine());
+            fi.close();
+        }
+        amajDeb = false;
+        amajPrevi = false;
+    }
 #endif
 
     // Chargement des satellites TDRS
@@ -8079,6 +8102,11 @@ void PreviSat::on_actionFichier_d_aide_triggered()
     on_directHelp_clicked();
 }
 
+void PreviSat::on_actionFaire_un_don_triggered()
+{
+    QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
+}
+
 void PreviSat::on_actionAstropedia_free_fr_triggered()
 {
     QDesktopServices::openUrl(QUrl(adresseAstropedia));
@@ -11590,7 +11618,7 @@ void PreviSat::on_calculsPrev_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatPrev->currentIndex() == 5) ?
-                    (int) fabs(ui->valHauteurSatPrev->text().toInt()) : 5 * ui->hauteurSatPrev->currentIndex();
+                    abs(ui->valHauteurSatPrev->text().toInt()) : 5 * ui->hauteurSatPrev->currentIndex();
 
         // Hauteur maximale du Soleil
         int crep = 0;
@@ -12026,7 +12054,7 @@ void PreviSat::on_calculsTransit_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatTransit->currentIndex() == 5) ?
-                    (int) fabs(ui->valHauteurSatTransit->text().toInt()) : 5 * ui->hauteurSatTransit->currentIndex();
+                    abs(ui->valHauteurSatTransit->text().toInt()) : 5 * ui->hauteurSatTransit->currentIndex();
 
         // Elongation maximale
         const double elong = ui->elongationMaxCorps->value();
@@ -12317,7 +12345,7 @@ void PreviSat::on_calculsMetOp_clicked()
 
         // Hauteur minimale du satellite
         const int haut = (ui->hauteurSatMetOp->currentIndex() == 5) ?
-                    (int) fabs(ui->valHauteurSatMetOp->text().toInt()) : 5 * ui->hauteurSatMetOp->currentIndex();
+                    abs(ui->valHauteurSatMetOp->text().toInt()) : 5 * ui->hauteurSatMetOp->currentIndex();
 
         // Hauteur maximale du Soleil
         int crep = 0;
@@ -12455,3 +12483,5 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
+
+
