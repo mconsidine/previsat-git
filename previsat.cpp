@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 decembre 2018
+ * >    21 decembre 2018
  *
  */
 
@@ -557,7 +557,6 @@ void PreviSat::ChargementConfig()
 #if !defined (Q_OS_WIN)
     if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
         dirDwn = dirTmp;
-        amajPrevi = true;
         amajDeb = true;
 
         QString fic("don");
@@ -571,7 +570,6 @@ void PreviSat::ChargementConfig()
             fi.close();
         }
         amajDeb = false;
-        amajPrevi = false;
     }
 #endif
 

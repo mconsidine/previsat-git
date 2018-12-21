@@ -2655,7 +2655,7 @@
            <bool>true</bool>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="general">
            <property name="font">
@@ -9854,7 +9854,7 @@
              <number>60</number>
             </attribute>
             <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>49</number>
+             <number>43</number>
             </attribute>
             <attribute name="horizontalHeaderStretchLastSection">
              <bool>true</bool>
