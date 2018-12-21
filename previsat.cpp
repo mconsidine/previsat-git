@@ -8102,7 +8102,7 @@ void PreviSat::on_actionFichier_d_aide_triggered()
     on_directHelp_clicked();
 }
 
-void PreviSat::on_actionFaire_un_don_triggered()
+void PreviSat::on_actionFaire_triggered()
 {
     QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
 }
@@ -12483,5 +12483,3 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
-
-

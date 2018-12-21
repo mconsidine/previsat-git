@@ -14382,7 +14382,7 @@ le flux vidéo</string>
     <addaction name="actionTelecharger_la_mise_a_jour"/>
     <addaction name="actionMettre_jour_fichiers_internes"/>
     <addaction name="separator"/>
-    <addaction name="actionFaire_un_don"/>
+    <addaction name="actionFaire"/>
     <addaction name="separator"/>
     <addaction name="actionAstropedia_free_fr"/>
     <addaction name="actionRapport_de_bug"/>
@@ -14680,7 +14680,7 @@ le flux vidéo</string>
     <string>Shift+F5</string>
    </property>
   </action>
-  <action name="actionFaire_un_don">
+  <action name="actionFaire">
    <property name="text">
     <string>Faire un don</string>
    </property>

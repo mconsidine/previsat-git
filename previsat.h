@@ -485,7 +485,7 @@ private slots:
     void on_actionImprimer_carte_triggered();
     void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionFichier_d_aide_triggered();
-    void on_actionFaire_un_don_triggered();
+    void on_actionFaire_triggered();
     void on_actionAstropedia_free_fr_triggered();
     void on_actionTelecharger_la_mise_a_jour_triggered();
     void on_actionMettre_jour_fichiers_internes_triggered();

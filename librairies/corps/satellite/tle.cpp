@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    21 decembre 2018
  *
  */
 
@@ -505,7 +505,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
     Date dateArc1(-DATE_INFINIE, 0.);
     QString masse1;
     QStringListIterator it(tabMasse);
-    while (it.hasNext()) {
+    while (it.hasNext() && (i < tabMan.size())) {
         const QString ligne = it.next();
         const QString dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).first();
         const QString orb = ligne.split(" ", QString::SkipEmptyParts).at(1);
