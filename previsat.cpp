@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 decembre 2018
+ * >    24 decembre 2018
  *
  */
 
@@ -4872,7 +4872,7 @@ void PreviSat::ChargementPref() const
         ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
         ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
         ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
-        ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toUInt());
+        ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
         ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
