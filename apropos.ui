@@ -123,12 +123,12 @@
      <rect>
       <x>280</x>
       <y>70</y>
-      <width>131</width>
+      <width>181</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string notr="true">&lt;a href=&quot;http://astropedia.free.fr/&quot;&gt;http://astropedia.free.fr&lt;/a&gt;</string>
+     <string notr="true">&lt;a href=&quot;http://previsat.sourceforge.net/&quot;&gt;http://previsat.sourceforge.net/&lt;/a&gt;</string>
     </property>
     <property name="openExternalLinks">
      <bool>true</bool>

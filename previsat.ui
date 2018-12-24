@@ -9848,7 +9848,7 @@
              <bool>false</bool>
             </property>
             <property name="columnCount">
-             <number>12</number>
+             <number>7</number>
             </property>
             <attribute name="horizontalHeaderDefaultSectionSize">
              <number>60</number>
@@ -9946,11 +9946,6 @@
               </font>
              </property>
             </column>
-            <column/>
-            <column/>
-            <column/>
-            <column/>
-            <column/>
            </widget>
            <widget class="QLabel" name="lbl_manoeuvresISS">
             <property name="geometry">
