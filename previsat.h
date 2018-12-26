@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    26 decembre 2018
  *
  */
 
@@ -52,6 +52,7 @@
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #pragma GCC diagnostic warning "-Wpacked"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include <QTableWidget>
 #include "librairies/dates/date.h"
 
 
@@ -486,7 +487,7 @@ private slots:
     void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionFichier_d_aide_triggered();
     void on_actionFaire_triggered();
-    void on_actionAstropedia_free_fr_triggered();
+    void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionTelecharger_la_mise_a_jour_triggered();
     void on_actionMettre_jour_fichiers_internes_triggered();
     void on_actionRapport_de_bug_triggered();
@@ -664,6 +665,7 @@ private slots:
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_parametrageDefautTransit_clicked();
     void on_majTleIss_clicked();
+    void on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item);
     void on_calculsTransit_clicked();
     void on_afficherTransit_clicked();
 

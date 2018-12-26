@@ -8864,7 +8864,7 @@
              <rect>
               <x>10</x>
               <y>180</y>
-              <width>151</width>
+              <width>161</width>
               <height>23</height>
              </rect>
             </property>
@@ -9037,8 +9037,8 @@
            <widget class="QComboBox" name="fichierTLEMetOp">
             <property name="geometry">
              <rect>
-              <x>420</x>
-              <y>116</y>
+              <x>490</x>
+              <y>60</y>
               <width>151</width>
               <height>22</height>
              </rect>
@@ -9144,7 +9144,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>40</y>
+              <y>94</y>
               <width>151</width>
               <height>71</height>
              </rect>
@@ -9197,8 +9197,8 @@
            <widget class="QPushButton" name="parametrageDefautMetOp">
             <property name="geometry">
              <rect>
-              <x>600</x>
-              <y>10</y>
+              <x>10</x>
+              <y>180</y>
               <width>161</width>
               <height>23</height>
              </rect>
@@ -9270,8 +9270,8 @@
            <widget class="QLabel" name="lbl_magnitudeMaxMetOp">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>180</y>
+              <x>420</x>
+              <y>34</y>
               <width>111</width>
               <height>16</height>
              </rect>
@@ -9318,8 +9318,8 @@
            <widget class="QDoubleSpinBox" name="magnitudeMaxMetOp">
             <property name="geometry">
              <rect>
-              <x>120</x>
-              <y>177</y>
+              <x>530</x>
+              <y>31</y>
               <width>51</width>
               <height>22</height>
              </rect>
@@ -9362,8 +9362,8 @@
            <widget class="QLabel" name="lbl_fichierTLEMetOp">
             <property name="geometry">
              <rect>
-              <x>350</x>
-              <y>120</y>
+              <x>420</x>
+              <y>64</y>
               <width>71</width>
               <height>16</height>
              </rect>
@@ -9837,6 +9837,9 @@
             </property>
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
             </property>
             <property name="selectionMode">
              <enum>QAbstractItemView::SingleSelection</enum>
@@ -14379,7 +14382,7 @@ le flux vidéo</string>
     <addaction name="separator"/>
     <addaction name="actionFaire"/>
     <addaction name="separator"/>
-    <addaction name="actionAstropedia_free_fr"/>
+    <addaction name="actionPrevisat_sourceforge_net"/>
     <addaction name="actionRapport_de_bug"/>
     <addaction name="separator"/>
     <addaction name="actionWww_celestrak_com"/>
@@ -14478,9 +14481,15 @@ le flux vidéo</string>
     <string>F1</string>
    </property>
   </action>
-  <action name="actionAstropedia_free_fr">
+  <action name="actionPrevisat_sourceforge_net">
    <property name="text">
-    <string>astropedia.free.fr</string>
+    <string notr="true">previsat.sourceforge.net</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">previsat.sourceforge.net</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">previsat.sourceforge.net</string>
    </property>
   </action>
   <action name="actionRapport_de_bug">
