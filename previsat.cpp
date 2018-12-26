@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 decembre 2018
+ * >    26 decembre 2018
  *
  */
 
@@ -268,6 +268,7 @@ static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
 static QMainWindow *afficherVideo;
 static QMainWindow *afficherMeteo;
+static QMainWindow *afficherManoeuvre;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
 static Conditions conditions;
@@ -275,31 +276,34 @@ static QStringList listeFicLocalData;
 static QStringList tabManoeuvresISS;
 
 // Interface graphique
-QPalette paletteDefaut;
-QGraphicsScene *scene;
-QGraphicsScene *scene2;
-QGraphicsScene *scene3;
-QScrollArea *scrollArea;
+static QPalette paletteDefaut;
+static QGraphicsScene *scene;
+static QGraphicsScene *scene2;
+static QGraphicsScene *scene3;
+static QScrollArea *scrollArea;
 
-QLabel *messagesStatut;
-QLabel *messagesStatut2;
-QLabel *messagesStatut3;
-QLabel *modeFonctionnement;
-QLabel *stsDate;
-QLabel *stsHeure;
+static QLabel *messagesStatut;
+static QLabel *messagesStatut2;
+static QLabel *messagesStatut3;
+static QLabel *modeFonctionnement;
+static QLabel *stsDate;
+static QLabel *stsHeure;
 
 // Meteo
-QWebView *viewMeteo;
+static QWebView *viewMeteo;
 
 // Meteo bases NASA
 static bool iEtatMeteo;
-QWebView *viewMeteoNASA;
+static QWebView *viewMeteoNASA;
 
 // Etat video Live ISS
 static bool iEtatVideo;
 static QStringList listeChaines;
-QWebView *viewLiveISS;
-QWebView *viewLiveISSWin;
+static QWebView *viewLiveISS;
+static QWebView *viewLiveISSWin;
+
+// Detail des manoeuvres
+static QTableWidget *tableMan;
 
 
 PreviSat::PreviSat(QWidget *fenetreParent) :
@@ -863,14 +867,24 @@ QString PreviSat::DeterminationLocale()
 
 PreviSat::~PreviSat()
 {
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+    }
 
-    if (afficherMeteo != NULL)
+    if (afficherMeteo != NULL) {
         afficherMeteo->close();
+    }
 
-    if (afficherVideo != NULL)
+    if (afficherVideo != NULL) {
         afficherVideo->close();
+    }
+
+    if (afficherManoeuvre != NULL) {
+        if (tableMan != NULL) {
+            tableMan->close();
+        }
+        afficherManoeuvre->close();
+    }
 
     delete ui;
 }
@@ -3861,9 +3875,9 @@ void PreviSat::AffichageManoeuvresISS() const
             if (k == 2) {
                 if (ui->unitesKm->isChecked()) {
                     elem = QString("%1").arg(elem.toDouble() * KG_PAR_LIVRE, 0, 'f', 1);
-                    item->setToolTip("kg");
+                    item->setToolTip(tr("kg"));
                 } else {
-                    item->setToolTip("lb");
+                    item->setToolTip(tr("lb"));
                 }
             }
 
@@ -3871,9 +3885,9 @@ void PreviSat::AffichageManoeuvresISS() const
             if (k == 3 || k == 4) {
                 if (ui->unitesKm->isChecked()) {
                     elem = QString("%1").arg(elem.toDouble() / MILE_PAR_KM, 0, 'f', 1);
-                    item->setToolTip("km");
+                    item->setToolTip(tr("km"));
                 } else {
-                    item->setToolTip("nmi");
+                    item->setToolTip(tr("nmi"));
                 }
             }
 
@@ -3883,10 +3897,10 @@ void PreviSat::AffichageManoeuvresISS() const
                     elem = "-";
                 } else {
                     if (ui->unitesKm->isChecked()) {
-                        elem = QString("%1").arg(elem.toDouble() * PIED_PAR_METRE, 0, 'f', 1);
-                        item->setToolTip("m/s");
+                        elem = QString("%1").arg(elem.toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+                        item->setToolTip(tr("m/s"));
                     } else {
-                        item->setToolTip("fps");
+                        item->setToolTip(tr("fps"));
                     }
                 }
             }
@@ -3896,7 +3910,7 @@ void PreviSat::AffichageManoeuvresISS() const
                 if (fabs(elem.toDouble()) < EPSDBL100) {
                     elem = "-";
                 } else {
-                    item->setToolTip("s");
+                    item->setToolTip(tr("s"));
                 }
             }
 
@@ -3909,7 +3923,14 @@ void PreviSat::AffichageManoeuvresISS() const
             }
         }
     }
+
+    ui->manoeuvresISS->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
     ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
+#if QT_VERSION >= 0x050000
+    ui->manoeuvresISS->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+#else
+    ui->manoeuvresISS->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+#endif
     ui->manoeuvresISS->setAlternatingRowColors(true);
 
     /* Retour */
@@ -5870,6 +5891,17 @@ void PreviSat::GestionTempsReel()
             on_fluxVideo_clicked();
     }
 
+    if (afficherManoeuvre != NULL && afficherManoeuvre->isHidden()) {
+
+        if (tableMan != NULL) {
+            tableMan->deleteLater();
+            tableMan = NULL;
+        }
+
+        afficherManoeuvre->deleteLater();
+        afficherManoeuvre = NULL;
+    }
+
     /* Corps de la methode */
     if (ui->tempsReel->isChecked()) {
 
@@ -6312,8 +6344,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/coulTerminateur", ui->coulTerminateur->currentIndex());
     settings.setValue("affichage/policeWCC", ui->policeWCC->currentIndex());
 
-    for(int i=0; i<ui->listeStations->count(); i++)
+    for(int i=0; i<ui->listeStations->count(); i++) {
         settings.setValue("affichage/station" + QString::number(i), ui->listeStations->item(i)->checkState());
+    }
 
     settings.setValue("fichier/listeMap", (ui->listeMap->currentIndex() > 0) ?
                           ficMap.at(qMax(0, ui->listeMap->currentIndex() - 1)) : "");
@@ -6354,22 +6387,31 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/magnitudeMaxMetOp", ui->magnitudeMaxMetOp->value());
     settings.setValue("previsions/affichage3lignesMetOp", ui->affichage3lignesMetOp->isChecked());
 
-    if (!ui->verifMAJ->isChecked())
+    if (!ui->verifMAJ->isChecked()) {
         settings.setValue("fichier/majPrevi", "0");
+    }
 
     EcritureListeRegistre();
 
-    if (ui->preferences->currentIndex() < ui->preferences->count() - 2)
+    if (ui->preferences->currentIndex() < ui->preferences->count() - 2) {
         SauvePreferences(ficPrf.at(ui->preferences->currentIndex()));
+    }
 
-    if (afficherResultats != NULL)
+    if (afficherResultats != NULL) {
         afficherResultats->close();
+    }
 
-    if (afficherMeteo != NULL)
+    if (afficherMeteo != NULL) {
         afficherMeteo->close();
+    }
 
-    if (afficherVideo != NULL)
+    if (afficherVideo != NULL) {
         afficherVideo->close();
+    }
+
+    if (afficherManoeuvre != NULL) {
+        afficherManoeuvre->close();
+    }
 
     donneesSat = "";
 
@@ -7804,10 +7846,11 @@ void PreviSat::VideoPleinEcran()
     /* Corps de la methode */
     if (afficherVideo->isFullScreen()) {
 
-        if (iEtatVideo)
+        if (iEtatVideo) {
             afficherVideo->showMaximized();
-        else
+        } else {
             afficherVideo->showNormal();
+        }
 
     } else {
         iEtatVideo = afficherVideo->isMaximized();
@@ -8105,9 +8148,9 @@ void PreviSat::on_actionFaire_triggered()
     QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
 }
 
-void PreviSat::on_actionAstropedia_free_fr_triggered()
+void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
 {
-    QDesktopServices::openUrl(QUrl(adresseAstropedia));
+    QDesktopServices::openUrl(QUrl("http://previsat.sourceforge.net/"));
 }
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
@@ -11987,6 +12030,119 @@ void PreviSat::on_majTleIss_clicked()
     // Mise a jour du fichier iss.3le
     messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
     TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QStringList manoeuvre = tabManoeuvresISS.at(item->row()).split(" ", QString::SkipEmptyParts);
+    const double deltaV = manoeuvre.at(5).toDouble();
+
+    /* Corps de la methode */
+    if (fabs(deltaV) > EPSDBL100) {
+
+        if (afficherManoeuvre != NULL) {
+
+            if (tableMan != NULL) {
+                tableMan->close();
+                tableMan->deleteLater();
+                tableMan = NULL;
+            }
+
+            afficherManoeuvre->close();
+            afficherManoeuvre->deleteLater();
+            afficherManoeuvre = NULL;
+        }
+
+        // Entete
+        tableMan = new QTableWidget;
+        tableMan->insertRow(0);
+        tableMan->setColumnCount(5);
+        tableMan->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Durée") << "ΔV" << "ΔV (M50)" << "ΔV (LVLH)");
+        QFont fnt;
+        fnt.setBold(true);
+        tableMan->horizontalHeader()->setFont(fnt);
+        tableMan->setSelectionMode(QTableWidget::NoSelection);
+        tableMan->setCornerButtonEnabled(false);
+        tableMan->verticalHeader()->setVisible(false);
+
+        // Date
+        QTableWidgetItem *itm = new QTableWidgetItem(ui->manoeuvresISS->item(item->row(), 0)->text());
+        itm->setTextAlignment(Qt::AlignCenter);
+        itm->setFlags(item->flags() & ~Qt::ItemIsEditable);
+        itm->setToolTip("UTC");
+        tableMan->setItem(0, 0, itm);
+
+        // Duree
+        itm = new QTableWidgetItem(manoeuvre.at(6));
+        itm->setTextAlignment(Qt::AlignCenter);
+        itm->setToolTip(tr("s"));
+        tableMan->setItem(0, 1, itm);
+
+        // DeltaV total
+        itm = new QTableWidgetItem(ui->manoeuvresISS->item(item->row(), 5)->text());
+        itm->setTextAlignment(Qt::AlignCenter);
+        itm->setToolTip((ui->unitesKm->isChecked()) ? tr("m/s") : tr("fps"));
+        tableMan->setItem(0, 2, itm);
+
+        // DeltaV (M50)
+        const QString fmt("%1\n%2\n%3");
+        itm = new QTableWidgetItem();
+        QString dv = fmt.arg(manoeuvre.at(7)).arg(manoeuvre.at(8)).arg(manoeuvre.at(9));
+        if (ui->unitesKm->isChecked()) {
+             dv = fmt.arg(manoeuvre.at(7).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(8).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                     .arg(manoeuvre.at(9).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+             itm->setToolTip(tr("m/s"));
+         } else {
+             itm->setToolTip(tr("fps"));
+         }
+        itm->setText(dv);
+        itm->setTextAlignment(Qt::AlignCenter);
+        tableMan->setItem(0, 3, itm);
+
+        // DeltaV (LVLH)
+        itm = new QTableWidgetItem();
+        dv = fmt.arg(manoeuvre.at(10)).arg(manoeuvre.at(11)).arg(manoeuvre.at(12));
+        if (ui->unitesKm->isChecked()) {
+             dv = fmt.arg(manoeuvre.at(10).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(11).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                     .arg(manoeuvre.at(12).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+             itm->setToolTip(tr("m/s"));
+         } else {
+             itm->setToolTip(tr("fps"));
+         }
+        itm->setText(dv);
+        itm->setTextAlignment(Qt::AlignCenter);
+        tableMan->setItem(0, 4, itm);
+
+        tableMan->resizeRowsToContents();
+        tableMan->resizeColumnsToContents();
+        tableMan->viewport()->setFocusPolicy(Qt::NoFocus);
+#if QT_VERSION >= 0x050000
+        tableMan->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+#else
+        tableMan->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+#endif
+
+        afficherManoeuvre = new QMainWindow;
+        afficherManoeuvre->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
+        afficherManoeuvre->setWindowTitle(tr("Détail de la manoeuvre"));
+        afficherManoeuvre->setCentralWidget(tableMan);
+        int lrg = 2;
+        for(int i=0; i<tableMan->columnCount(); i++) {
+            lrg += tableMan->columnWidth(i);
+        }
+        afficherManoeuvre->resize(lrg, tableMan->horizontalHeader()->height()+tableMan->rowHeight(0));
+
+        afficherManoeuvre->setMinimumSize(afficherManoeuvre->size());
+        afficherManoeuvre->setMaximumSize(afficherManoeuvre->size());
+        afficherManoeuvre->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherManoeuvre->size(), geometry()));
+        afficherManoeuvre->show();
+    }
 
     /* Retour */
     return;

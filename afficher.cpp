@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    26 decembre 2018
  *
  */
 
@@ -305,7 +305,6 @@ void Afficher::load()
         ui->listePrevisions->setColumnWidth(0, 100);
     }
 
-
     /* Corps de la methode */
     QStringListIterator it(res);
     while (it.hasNext()) {
@@ -445,9 +444,17 @@ void Afficher::load()
             j++;
         }
     }
-    if (tabres.isEmpty())
+    if (tabres.isEmpty()) {
         ui->ongletsResultats->removeTab(1);
+    }
+
+    ui->listePrevisions->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
     ui->listePrevisions->horizontalHeader()->setStretchLastSection(true);
+#if QT_VERSION >= 0x050000
+   ui->listePrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+#else
+    ui->listePrevisions->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+#endif
     ui->listePrevisions->setAlternatingRowColors(true);
 
     if (cond.nbl() == 0) {
