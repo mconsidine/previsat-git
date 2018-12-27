@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    27 decembre 2018
  *
  */
 
@@ -45,8 +45,9 @@
 
 /* Enumerations */
 enum DateFormat {
-    FORMAT_COURT,
-    FORMAT_LONG
+    FORMAT_COURT = 0,
+    FORMAT_LONG = 1,
+    FORMAT_MILLISEC = 3
 };
 
 enum DateSysteme {
