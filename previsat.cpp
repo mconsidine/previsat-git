@@ -518,23 +518,27 @@ void PreviSat::ChargementConfig()
     InitFicPref(false);
     ChargementPref();
 
-    if (settings.value("affichage/utc", false).toBool())
+    if (settings.value("affichage/utc", false).toBool()) {
         ui->utc->setChecked(true);
-    else
+    } else {
         ui->heureLegale->setChecked(true);
+    }
 
-    if (settings.value("affichage/unite", true).toBool())
+    if (settings.value("affichage/unite", true).toBool()) {
         ui->unitesKm->setChecked(true);
-    else
+    } else {
         ui->unitesMi->setChecked(true);
+    }
 
-    if (settings.value("affichage/systemeHoraire", true).toBool())
+    if (settings.value("affichage/systemeHoraire", true).toBool()) {
         ui->syst24h->setChecked(true);
-    else
+    } else {
         ui->syst12h->setChecked(true);
+    }
 
-    if (settings.value("fichier/sauvegarde").toString().isEmpty())
+    if (settings.value("fichier/sauvegarde").toString().isEmpty()) {
         settings.setValue("fichier/sauvegarde", dirOut);
+    }
     settings.setValue("fichier/path", dirExe);
     settings.setValue("fichier/version", QString(APPVERSION));
     settings.setValue("affichage/flagIntensiteVision", false);
@@ -798,21 +802,18 @@ void PreviSat::DemarrageApplication()
     ui->frameCarte->resize(width() - ui->frameListe->width(), height() - ui->frameOnglets->height() - 26);
     ui->frameCarteListe->resize(ui->frameCarte->size());
 
-    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi <= xmax && yPrevi <= ymax)
+    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi <= xmax && yPrevi <= ymax) {
         showMaximized();
-    else
+    } else {
         resize(xPrevi, yPrevi);
+    }
 
     // Redimensionnement de la fenetre si necessaire
-    if (xPrevi > xmax)
-        xPrevi = xmax;
-    if (yPrevi > ymax)
-        yPrevi = ymax;
+    if (xPrevi > xmax) xPrevi = xmax;
+    if (yPrevi > ymax) yPrevi = ymax;
     if (xPrevi < width() || yPrevi < height()) {
-        if (xmax < minimumWidth())
-            setMinimumWidth(xmax);
-        if (ymax < minimumHeight())
-            setMinimumHeight(ymax);
+        if (xmax < minimumWidth()) setMinimumWidth(xmax);
+        if (ymax < minimumHeight()) setMinimumHeight(ymax);
         resize(xPrevi, yPrevi);
         scrollArea = new QScrollArea(this);
         scrollArea->setWidget(centralWidget());
@@ -820,8 +821,9 @@ void PreviSat::DemarrageApplication()
         setCentralWidget(scrollArea);
     }
 
-    if (settings.value("affichage/affMax", false).toBool())
+    if (settings.value("affichage/affMax", false).toBool()) {
         on_maximise_clicked();
+    }
 
     // Calcul de la position des etoiles
     observateurs[0].CalculPosVit(dateCourante);
@@ -1372,15 +1374,18 @@ void PreviSat::InitFicObs(const bool alarm) const
                 ui->ajdfic->removeItem(indObs + 1);
             }
 
-            if (ficObs.count() == 0)
-                if (alarm)
+            if (ficObs.count() == 0) {
+                if (alarm) {
                     Message::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                          "Il n'existe aucun fichier de lieux d'observation"), WARNING);
+                }
+            }
         }
     } else {
-        if (alarm)
+        if (alarm) {
             Message::Afficher(tr("Erreur rencontrée lors de l'initialisation\n" \
                                  "Le répertoire contenant les fichiers de lieux d'observation n'existe pas"), WARNING);
+        }
     }
 
     /* Retour */
@@ -9226,10 +9231,9 @@ void PreviSat::AffichageResultats()
             const QString item = it.next().toUpper();
             QString nomsat = item.mid(123).trimmed();
 
-            if (nomsat.toLower() == "iss (zarya)")
-                nomsat = "ISS";
-            if (nomsat.length() == 0)
+            if (nomsat.length() == 0) {
                 nomsat = item.mid(0, 5);
+            }
 
             ui->satellitesTrouves->addItem(nomsat);
         }
