@@ -319,6 +319,7 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
     const double tmp = floor(_jourJulien);
     const QString chaine = " %1:%2:%3%4";
 
@@ -337,7 +338,7 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     }
 
     const QString res = date2.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
-                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, format + 3, 'f', format, QChar('0')).arg(sys);
+                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(sys);
 
     /* Retour */
     return (res);
@@ -352,7 +353,8 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     QString res = "%1/%2/%3 %4:%5:%6%7";
 
     /* Corps de la methode */
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), format) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     const Date date(jjsec, _offsetUTC);
     int hr = date._heure;
     QString sys = " ";
@@ -367,7 +369,7 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     /* Retour */
     return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
             arg(date._jour, 2, 10, QChar('0')).arg(hr, 2, 10, QChar('0')).
-            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, format + 3, 'f', format, QChar('0')).arg(sys));
+            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(sys));
 }
 
 /*
