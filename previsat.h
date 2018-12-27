@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 decembre 2018
+ * >    27 decembre 2018
  *
  */
 
@@ -379,6 +379,10 @@ private:
      */
     void SauveOngletInformations(const QString &fic) const;
 
+    /**
+     * @brief SauvePreferences Sauvegarde des preferences
+     * @param fic fichier
+     */
     void SauvePreferences(const QString &fic) const;
 
 
