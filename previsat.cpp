@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 decembre 2018
+ * >    27 decembre 2018
  *
  */
 
@@ -12072,7 +12072,9 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
         tableMan->verticalHeader()->setVisible(false);
 
         // Date
-        QTableWidgetItem *itm = new QTableWidgetItem(ui->manoeuvresISS->item(item->row(), 0)->text());
+        const QString dateMan = Date(manoeuvre.at(0).toDouble(), 0.)
+                .ToShortDateAMJ(FORMAT_MILLISEC, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+        QTableWidgetItem *itm = new QTableWidgetItem(dateMan);
         itm->setTextAlignment(Qt::AlignCenter);
         itm->setFlags(item->flags() & ~Qt::ItemIsEditable);
         itm->setToolTip("UTC");
