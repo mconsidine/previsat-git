@@ -9835,6 +9835,11 @@
               <height>165</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
+            </property>
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
@@ -9871,7 +9876,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9883,7 +9888,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9895,7 +9900,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9907,7 +9912,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9919,7 +9924,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9931,7 +9936,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -9943,7 +9948,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>8</pointsize>
+               <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>

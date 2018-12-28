@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2018
+ * >    28 decembre 2018
  *
  */
 
@@ -879,13 +879,6 @@ PreviSat::~PreviSat()
 
     if (afficherVideo != NULL) {
         afficherVideo->close();
-    }
-
-    if (afficherManoeuvre != NULL) {
-        if (tableMan != NULL) {
-            tableMan->close();
-        }
-        afficherManoeuvre->close();
     }
 
     delete ui;
@@ -3857,6 +3850,11 @@ void PreviSat::AffichageManoeuvresISS() const
     /* Initialisations */
     ui->manoeuvresISS->setRowCount(0);
     ui->manoeuvresISS->setVisible(true);
+#if !defined (Q_OS_LINUX)
+    QFont fnt;
+    fnt.setPointSize(8);
+    ui->manoeuvresISS->setFont(fnt);
+#endif
 
     /* Corps de la methode */
     for(int i=0; i<tabManoeuvresISS.count(); i++) {
@@ -12071,6 +12069,14 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
         QFont fnt;
         fnt.setBold(true);
         tableMan->horizontalHeader()->setFont(fnt);
+#if defined (Q_OS_LINUX)
+        fnt.setPointSize(7);
+        tableMan->horizontalHeader()->setStyleSheet("QHeaderView { font-size: 7pt; }");
+#else
+        fnt.setPointSize(9);
+#endif
+        fnt.setBold(false);
+        tableMan->setFont(fnt);
         tableMan->setSelectionMode(QTableWidget::NoSelection);
         tableMan->setCornerButtonEnabled(false);
         tableMan->verticalHeader()->setVisible(false);
@@ -12138,7 +12144,11 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
         afficherManoeuvre->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
         afficherManoeuvre->setWindowTitle(tr("Détail de la manoeuvre"));
         afficherManoeuvre->setCentralWidget(tableMan);
+#if defined (Q_OS_LINUX)
+        int lrg = 5;
+#else
         int lrg = 2;
+#endif
         for(int i=0; i<tableMan->columnCount(); i++) {
             lrg += tableMan->columnWidth(i);
         }
