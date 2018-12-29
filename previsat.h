@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2018
+ * >    29 decembre 2018
  *
  */
 
@@ -473,10 +473,6 @@ private slots:
     void on_mccISS_toggled(bool checked);
     void on_chaine_valueChanged(int arg1);
     void on_fluxVideo_clicked();
-    void on_agrandirVideo_clicked();
-    void on_fermerVideo_clicked();
-    void StopVideoHttp();
-    void VideoPleinEcran();
 
     void on_directHelp_clicked();
 
