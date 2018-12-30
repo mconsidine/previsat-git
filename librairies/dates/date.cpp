@@ -353,7 +353,7 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
 
     /* Corps de la methode */
     const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), fmt) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), format) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
     const Date date(jjsec, _offsetUTC);
     int hr = date._heure;
     QString sys = " ";
