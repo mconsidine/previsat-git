@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -102,8 +102,9 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     }
 
     /* Corps de la methode */
-    for (int i=0; i<etoiles.size(); i++)
+    for (int i=0; i<etoiles.size(); i++) {
         etoiles[i].CalculCoordHoriz2(observateur);
+    }
 
     /* Retour */
     return;

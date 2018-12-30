@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -167,8 +167,9 @@ Date Satellite::CalculDateAOSSuiv(const Date &dateCalcul, const Observateur &obs
         // Calcul du prochain AOS ou LOS
         double jjm[3], ht[3];
         double periode = NB_JOUR_PAR_MIN;
-        if (sat._hauteur >= 0.)
+        if (sat._hauteur >= 0.) {
             ctypeAOS = QObject::tr("LOS");
+        }
 
         double tAOS = 0.;
         double t_ht = dateCalcul.jourJulienUTC();
@@ -186,7 +187,6 @@ Date Satellite::CalculDateAOSSuiv(const Date &dateCalcul, const Observateur &obs
                 const Date date(jjm[i], 0., false);
 
                 obs.CalculPosVit(date);
-
                 sat.CalculPosVit(date);
                 sat.CalculCoordHoriz(obs, false, false);
                 ht[i] = sat._hauteur;
@@ -281,8 +281,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
         // Latitude
         const double lat = sat.CalculLatitude(sat.position());
 
-        if (lat1 > 0. && lat < 0.)
-            atrouve = true;
+        if (lat1 > 0. && lat < 0.) atrouve = true;
         lat1 = lat;
 
         i--;
@@ -310,8 +309,7 @@ Date Satellite::CalculDateNoeudAscPrec(const Date &date)
         }
 
         const double t_noeudAsc = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
-        if (fabs(jj0 - t_noeudAsc) < EPS_DATES)
-            afin = true;
+        if (fabs(jj0 - t_noeudAsc) < EPS_DATES) afin = true;
         jj0 = t_noeudAsc;
         periode *= 0.5;
     }
@@ -333,16 +331,18 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const Condit
     // Parcours du tableau "trace au sol"
     int i = 0;
     const int dn = (condEclipse.isEclipseTotale()) ? 1 : 0;
-    if (_traceAuSol.isEmpty())
+    if (_traceAuSol.isEmpty()) {
         CalculTracesAuSol(dateCalcul, nbTrajectoires, acalcEclipseLune, refraction);
+    }
 
     QListIterator<QVector<double> > it(_traceAuSol);
     while (it.hasNext()) {
         const QVector<double> list = it.next();
         if (list.at(3) >= dateCalcul.jourJulienUTC()) {
             const int dn0 = ((int) list.at(2))%2;
-            if (dn != dn0)
+            if (dn != dn0) {
                 it.toBack();
+            }
         }
         i++;
     }
@@ -375,8 +375,9 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const Condit
 
                 // Position de la Lune
                 Lune lune;
-                if (acalcEclipseLune)
+                if (acalcEclipseLune) {
                     lune.CalculPosition(date);
+                }
 
                 // Conditions d'eclipse du satellite
                 ConditionEclipse condEcl;
@@ -386,11 +387,11 @@ Date Satellite::CalculDateOmbrePenombreSuiv(const Date &dateCalcul, const Condit
                             condEcl.phiTerre() - condEcl.phiSoleilRefr() - condEcl.elongationSoleil();
             }
 
-            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.))
+            if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.)) {
                 tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
+            }
             periode *= 0.5;
-            if (fabs(tdn - t_ecl) < EPS_DATES)
-                afin = true;
+            if (fabs(tdn - t_ecl) < EPS_DATES) afin = true;
             t_ecl = tdn;
         }
         dateEcl = Date(t_ecl, 0.);
@@ -603,8 +604,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
                 _traceCiel.append(list);
 
             } else {
-                if (i > 0)
-                    afin = true;
+                if (i > 0) afin = true;
             }
             i++;
         }
@@ -623,8 +623,9 @@ bool Satellite::hasAOS(const Observateur &observateur) const
 
     /* Initialisations */
     double incl = _tle.inclo() * DEG2RAD;
-    if (incl >= PI_SUR_DEUX)
+    if (incl >= PI_SUR_DEUX) {
         incl = PI - incl;
+    }
 
     /* Corps de la methode */
 
@@ -769,8 +770,7 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool 
         // Longitude
         const Vecteur3D pos = sat._position;
         double lon = RAD2DEG * modulo(PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(j0), DEUX_PI);
-        if (lon < 0.)
-            lon += T360;
+        if (lon < 0.) lon += T360;
 
         // Latitude
         double lat = sat.CalculLatitude(pos);
@@ -780,8 +780,9 @@ void Satellite::CalculTracesAuSol(const Date &date, const int nbOrb, const bool 
         soleil.CalculPosition(j0);
 
         // Position de la Lune
-        if (acalcEclipseLune)
+        if (acalcEclipseLune) {
             lune.CalculPosition(j0);
+        }
 
         // Conditions d'eclipse
         sat._conditionEclipse.CalculSatelliteEclipse(soleil, lune, sat._position, acalcEclipseLune, refraction);

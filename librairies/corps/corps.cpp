@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    30 decembre 2018
  *
  */
 
@@ -143,8 +143,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur)
 
     // Ascension droite
     _ascensionDroite = atan2(vec2.y(), vec2.x());
-    if (_ascensionDroite < 0.)
-        _ascensionDroite += DEUX_PI;
+    if (_ascensionDroite < 0.) _ascensionDroite += DEUX_PI;
 
     // Determination de la constellation
     if (!_initCst) {
@@ -196,16 +195,14 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
         _visible = true;
     } else {
         _visible = false;
-        if (arefr)
-            _hauteur = ht;
+        if (arefr) _hauteur = ht;
     }
 
     if (acalc) {
 
         // Azimut
         _azimut = atan2(vec.y(), -vec.x());
-        if (_azimut < 0.)
-            _azimut += DEUX_PI;
+        if (_azimut < 0.) _azimut += DEUX_PI;
 
         const Vecteur3D distp = _vitesse - observateur.vitesse();
 
@@ -247,8 +244,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
         if (_hauteur >= 0.) {
             // Azimut
             _azimut = atan2(vec2.y(), -vec2.x());
-            if (_azimut < 0.)
-                _azimut += DEUX_PI;
+            if (_azimut < 0.) _azimut += DEUX_PI;
             _visible = true;
         } else {
             _visible = false;
@@ -272,8 +268,9 @@ void Corps::CalculCoordTerrestres(const Observateur &observateur)
     /* Corps de la methode */
     // Longitude
     _longitude = modulo(observateur.tempsSideralGreenwich() - atan2(_position.y(), _position.x()), DEUX_PI);
-    if (fabs(_longitude) > PI)
+    if (fabs(_longitude) > PI) {
         _longitude -= sgn(_longitude) * DEUX_PI;
+    }
 
     CalculLatitudeAltitude();
 
@@ -292,10 +289,10 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.y(), _position.x()),
-                               DEUX_PI);
-    if (fabs(_longitude) > PI)
+    _longitude = modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.y(), _position.x()), DEUX_PI);
+    if (fabs(_longitude) > PI) {
         _longitude -= sgn(_longitude) * DEUX_PI;
+    }
 
     CalculLatitudeAltitude();
 

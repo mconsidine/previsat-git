@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -206,20 +206,25 @@ void Lune::CalculPhase(const Soleil &soleil)
     _fractionIlluminee = 0.5 * (1. + cos(elongation));
 
     // Phase
-    if (_fractionIlluminee >= 0. && _fractionIlluminee < 0.03)
+    if (_fractionIlluminee >= 0. && _fractionIlluminee < 0.03) {
         _phase = QObject::tr("Nouvelle Lune");
+    }
 
-    if (_fractionIlluminee >= 0.03 && _fractionIlluminee < 0.31)
+    if (_fractionIlluminee >= 0.03 && _fractionIlluminee < 0.31) {
         _phase = (sgns) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
+    }
 
-    if (_fractionIlluminee >= 0.31 && _fractionIlluminee < 0.69)
+    if (_fractionIlluminee >= 0.31 && _fractionIlluminee < 0.69) {
         _phase = (sgns) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
+    }
 
-    if (_fractionIlluminee >= 0.69 && _fractionIlluminee < 0.97)
+    if (_fractionIlluminee >= 0.69 && _fractionIlluminee < 0.97) {
         _phase = (sgns) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
+    }
 
-    if (_fractionIlluminee >= 0.97)
+    if (_fractionIlluminee >= 0.97) {
         _phase = QObject::tr("Pleine Lune");
+    }
 
     /* Retour */
     return;
@@ -234,8 +239,7 @@ void Lune::CalculMagnitude(const Soleil &soleil)
     const double distsol = soleil.distance() / UA2KM;
     const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
     double angPha = fmod(atan(distsol * sqrt(1. - cospsi * cospsi) / (distlune - distsol * cospsi)), PI);
-    if (angPha < 0.)
-        angPha += PI;
+    if (angPha < 0.) angPha += PI;
 
     /* Corps de la methode */
     const double cosang = cos(angPha);

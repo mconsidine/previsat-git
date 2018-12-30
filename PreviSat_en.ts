@@ -35,7 +35,7 @@
     </message>
     <message>
         <location filename="afficher.ui" line="231"/>
-        <location filename="afficher.cpp" line="324"/>
+        <location filename="afficher.cpp" line="328"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
@@ -45,7 +45,7 @@
         <translation>Mir</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="298"/>
+        <location filename="afficher.cpp" line="301"/>
         <source>Corps</source>
         <translation>Body</translation>
     </message>
@@ -86,117 +86,117 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="246"/>
+        <location filename="afficher.cpp" line="249"/>
         <source>Prévisions de passage</source>
         <translation>Predictions of passes</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="255"/>
+        <location filename="afficher.cpp" line="258"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="251"/>
+        <location filename="afficher.cpp" line="254"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="259"/>
+        <location filename="afficher.cpp" line="262"/>
         <source>Flashs</source>
         <translation>Flares</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="296"/>
+        <location filename="afficher.cpp" line="299"/>
         <source>Angle</source>
         <translation>Angle</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="297"/>
+        <location filename="afficher.cpp" line="300"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="321"/>
-        <location filename="afficher.cpp" line="322"/>
-        <location filename="afficher.cpp" line="338"/>
+        <location filename="afficher.cpp" line="325"/>
+        <location filename="afficher.cpp" line="326"/>
+        <location filename="afficher.cpp" line="343"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="323"/>
+        <location filename="afficher.cpp" line="327"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="325"/>
+        <location filename="afficher.cpp" line="329"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="431"/>
-        <location filename="afficher.cpp" line="435"/>
+        <location filename="afficher.cpp" line="440"/>
+        <location filename="afficher.cpp" line="444"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="433"/>
-        <location filename="afficher.cpp" line="437"/>
+        <location filename="afficher.cpp" line="442"/>
+        <location filename="afficher.cpp" line="446"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="479"/>
+        <location filename="afficher.cpp" line="488"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="479"/>
-        <location filename="afficher.cpp" line="480"/>
+        <location filename="afficher.cpp" line="488"/>
+        <location filename="afficher.cpp" line="489"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="479"/>
+        <location filename="afficher.cpp" line="488"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="483"/>
+        <location filename="afficher.cpp" line="492"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="484"/>
+        <location filename="afficher.cpp" line="493"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="484"/>
+        <location filename="afficher.cpp" line="493"/>
         <source>Altitude</source>
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="566"/>
+        <location filename="afficher.cpp" line="576"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="567"/>
+        <location filename="afficher.cpp" line="577"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="583"/>
+        <location filename="afficher.cpp" line="594"/>
         <source>Enregistrer sous</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="584"/>
+        <location filename="afficher.cpp" line="595"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg);;BMP files (*.bmp);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1126"/>
+        <location filename="afficher.cpp" line="1138"/>
         <source>Flash %1</source>
         <translation>%1 flare</translation>
     </message>
@@ -3976,99 +3976,99 @@ The position of the satellite %1 (NORAD number : %2) can not be calculated (nega
 <context>
     <name>QObject</name>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="208"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="209"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="213"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="214"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="218"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="219"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="223"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="224"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="228"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="229"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="234"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="235"/>
         <source>Erreur CheckSum ligne %1 :
 Satellite %2 - numéro NORAD : %3</source>
         <translation>CheckSum Error line %1 :
 Satellite %2 - NORAD number : %3</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="239"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="240"/>
         <source>Le fichier %1 ne contient aucun satellite ou n&apos;est pas valide</source>
         <translation>The file %1 does not contain satellites or is not valid</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="581"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="590"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="588"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="598"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="641"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="651"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the file to update.
 Do you want to add this TLE in the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="645"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="655"/>
         <source>Ajout du nouveau TLE</source>
         <translation>Addition of the new TLE</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="650"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="676"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="660"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="686"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="651"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="677"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="661"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="687"/>
         <source>Oui à tout</source>
         <translation>Yes to all</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="652"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="678"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="662"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="688"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="653"/>
-        <location filename="librairies/corps/satellite/tle.cpp" line="679"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="663"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="689"/>
         <source>Non à tout</source>
         <translation>No to all</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="668"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="678"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the TLE files to read.
 Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
-        <location filename="librairies/corps/satellite/tle.cpp" line="671"/>
+        <location filename="librairies/corps/satellite/tle.cpp" line="681"/>
         <source>Suppression du TLE</source>
         <translation>Deletion of the TLE</translation>
     </message>
@@ -4078,37 +4078,37 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="213"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="214"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="213"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="214"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="216"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="218"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="216"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="218"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="219"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="222"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="219"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="222"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning decrescent</translation>
     </message>
     <message>
-        <location filename="librairies/corps/systemesolaire/lune.cpp" line="222"/>
+        <location filename="librairies/corps/systemesolaire/lune.cpp" line="226"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>
@@ -4130,18 +4130,18 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="139"/>
+        <location filename="librairies/maths/maths.cpp" line="138"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="140"/>
+        <location filename="librairies/maths/maths.cpp" line="139"/>
         <location filename="previsions/conditions.cpp" line="84"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="librairies/maths/maths.cpp" line="141"/>
+        <location filename="librairies/maths/maths.cpp" line="140"/>
         <source>s</source>
         <translation>s</translation>
     </message>
@@ -4153,9 +4153,9 @@ Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="250"/>
-        <location filename="previsions/flashs.cpp" line="674"/>
-        <location filename="previsions/prevision.cpp" line="229"/>
-        <location filename="previsions/transitiss.cpp" line="284"/>
+        <location filename="previsions/flashs.cpp" line="666"/>
+        <location filename="previsions/prevision.cpp" line="228"/>
+        <location filename="previsions/transitiss.cpp" line="282"/>
         <source>nmi</source>
         <translation>nmi</translation>
     </message>
@@ -4205,41 +4205,41 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Age of the oldest TLE      : %1 days</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="142"/>
+        <location filename="previsions/conditions.cpp" line="140"/>
         <source>Age du TLE le plus récent : %1 jours (au %2)
 Age du TLE le plus ancien : %3 jours</source>
         <translation>Age of the most recent TLE : %1 days (at %2)
 Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="156"/>
+        <location filename="previsions/conditions.cpp" line="154"/>
         <source>Lieu d&apos;observation        : %1     %2 %3   %4 %5   %6 %7</source>
         <translation>Location                   : %1     %2 %3   %4 %5   %6 %7</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="161"/>
+        <location filename="previsions/conditions.cpp" line="158"/>
         <source>Fuseau horaire            : %1</source>
         <translation>Timezone                   : %1</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="162"/>
+        <location filename="previsions/conditions.cpp" line="159"/>
         <location filename="previsions/evenements.cpp" line="93"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="170"/>
+        <location filename="previsions/conditions.cpp" line="167"/>
         <location filename="previsions/evenements.cpp" line="101"/>
         <source>Heure légale</source>
         <translation>Local time</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="176"/>
+        <location filename="previsions/conditions.cpp" line="173"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
     </message>
     <message>
-        <location filename="previsions/conditions.cpp" line="180"/>
+        <location filename="previsions/conditions.cpp" line="177"/>
         <source>Unité de distance         : %1</source>
         <translation>Range unit                 : %1</translation>
     </message>
@@ -4255,34 +4255,34 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="256"/>
-        <location filename="previsions/evenements.cpp" line="479"/>
-        <location filename="previsions/flashs.cpp" line="714"/>
-        <location filename="previsions/transitiss.cpp" line="338"/>
+        <location filename="previsions/evenements.cpp" line="478"/>
+        <location filename="previsions/flashs.cpp" line="708"/>
+        <location filename="previsions/transitiss.cpp" line="339"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="256"/>
-        <location filename="previsions/evenements.cpp" line="479"/>
-        <location filename="previsions/flashs.cpp" line="714"/>
-        <location filename="previsions/transitiss.cpp" line="338"/>
+        <location filename="previsions/evenements.cpp" line="478"/>
+        <location filename="previsions/flashs.cpp" line="708"/>
+        <location filename="previsions/transitiss.cpp" line="339"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="258"/>
-        <location filename="previsions/evenements.cpp" line="481"/>
-        <location filename="previsions/flashs.cpp" line="715"/>
-        <location filename="previsions/transitiss.cpp" line="339"/>
+        <location filename="previsions/evenements.cpp" line="480"/>
+        <location filename="previsions/flashs.cpp" line="709"/>
+        <location filename="previsions/transitiss.cpp" line="340"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="258"/>
-        <location filename="previsions/evenements.cpp" line="481"/>
-        <location filename="previsions/flashs.cpp" line="715"/>
-        <location filename="previsions/transitiss.cpp" line="297"/>
-        <location filename="previsions/transitiss.cpp" line="339"/>
+        <location filename="previsions/evenements.cpp" line="480"/>
+        <location filename="previsions/flashs.cpp" line="709"/>
+        <location filename="previsions/transitiss.cpp" line="295"/>
+        <location filename="previsions/transitiss.cpp" line="340"/>
         <source>S</source>
         <translation>S</translation>
     </message>
@@ -4357,83 +4357,83 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Pass to position =</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="348"/>
+        <location filename="previsions/evenements.cpp" line="344"/>
         <location filename="previsions/prevision.cpp" line="188"/>
         <source>  (numéro NORAD : %1)</source>
         <translation>  (NORAD number : %1)</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="350"/>
+        <location filename="previsions/evenements.cpp" line="347"/>
         <source>   Date      Heure      PSO    Longitude  Latitude  Évènements</source>
         <translation>   Date      Hour     Position Longitude  Latitude  Events</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="365"/>
-        <location filename="previsions/flashs.cpp" line="266"/>
-        <location filename="previsions/prevision.cpp" line="318"/>
-        <location filename="previsions/transitiss.cpp" line="413"/>
+        <location filename="previsions/evenements.cpp" line="363"/>
+        <location filename="previsions/flashs.cpp" line="268"/>
+        <location filename="previsions/prevision.cpp" line="317"/>
+        <location filename="previsions/transitiss.cpp" line="415"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="236"/>
+        <location filename="previsions/flashs.cpp" line="239"/>
         <source>%1    Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max</source>
         <translation>%1   Date         Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="701"/>
+        <location filename="previsions/flashs.cpp" line="694"/>
         <location filename="previsions/transitiss.cpp" line="336"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="701"/>
-        <location filename="previsions/transitiss.cpp" line="332"/>
+        <location filename="previsions/flashs.cpp" line="694"/>
+        <location filename="previsions/transitiss.cpp" line="330"/>
         <source>(E)</source>
         <translation>(E)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="296"/>
+        <location filename="previsions/transitiss.cpp" line="294"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="296"/>
+        <location filename="previsions/transitiss.cpp" line="294"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="297"/>
+        <location filename="previsions/transitiss.cpp" line="295"/>
         <source>L</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="299"/>
+        <location filename="previsions/transitiss.cpp" line="297"/>
         <source>Omb</source>
         <translation>Sha</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="300"/>
+        <location filename="previsions/transitiss.cpp" line="298"/>
         <source>Pen</source>
         <translation>Pen</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="300"/>
+        <location filename="previsions/transitiss.cpp" line="298"/>
         <source>Lum</source>
         <translation>Ill</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="330"/>
+        <location filename="previsions/transitiss.cpp" line="327"/>
         <source>(N)</source>
         <translation>(N)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="334"/>
+        <location filename="previsions/transitiss.cpp" line="333"/>
         <source>(S)</source>
         <translation>(S)</translation>
     </message>
     <message>
-        <location filename="previsions/transitiss.cpp" line="382"/>
+        <location filename="previsions/transitiss.cpp" line="384"/>
         <source>   Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Type Corps Ill   Alt   Dist  Az Soleil  Haut Soleil    Long Max    Lat Max     Distance</source>
         <translation>   Date        Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Type Body  Ill   Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat       Range</translation>
     </message>
@@ -4498,17 +4498,17 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Launching application...</translation>
     </message>
     <message>
-        <location filename="librairies/dates/date.cpp" line="340"/>
+        <location filename="librairies/dates/date.cpp" line="339"/>
         <source>dd/MM/yyyy</source>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="librairies/dates/date.cpp" line="387"/>
+        <location filename="librairies/dates/date.cpp" line="385"/>
         <source>dddd dd MMMM yyyy hh:mm:ss</source>
         <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="librairies/dates/date.cpp" line="489"/>
+        <location filename="librairies/dates/date.cpp" line="487"/>
         <source>Fichier %1 absent</source>
         <translation>File %1 missing</translation>
     </message>
@@ -4557,19 +4557,19 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="219"/>
+        <location filename="telecharger.cpp" line="220"/>
         <source>Erreur lors du téléchargement du fichier :
 %1</source>
         <translation>Error while downloading file :
 %1</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="357"/>
+        <location filename="telecharger.cpp" line="360"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour</source>
         <translation>Please restart %1 in order to take into account updates</translation>
     </message>
     <message>
-        <location filename="telecharger.cpp" line="358"/>
+        <location filename="telecharger.cpp" line="361"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -333,8 +333,7 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     if (systeme == SYSTEME_12H) {
         hr = date2.time().hour()%12;
         sys = (hr >= 0 && date2.time().hour() < 12) ? "a" : "p";
-        if (hr == 0)
-            hr = 12;
+        if (hr == 0) hr = 12;
     }
 
     const QString res = date2.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
@@ -362,8 +361,7 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     if (systeme == SYSTEME_12H) {
         hr = date._heure%12;
         sys = (hr >= 0 && date._heure < 12) ? "a" : "p";
-        if (hr == 0)
-            hr = 12;
+        if (hr == 0) hr = 12;
     }
 
     /* Retour */
@@ -507,8 +505,9 @@ void Date::getDeltaAT()
     /* Corps de la methode */
     try {
 
-        if (_ecartsTAI_UTC.count() == 0)
+        if (_ecartsTAI_UTC.count() == 0) {
             Initialisation();
+        }
 
         if (_jourJulienUTC < _ecartsTAI_UTC.at(0).at(0) - TJ2000) {
 

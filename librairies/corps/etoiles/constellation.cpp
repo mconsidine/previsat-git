@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -102,8 +102,9 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
     }
 
     /* Corps de la methode */
-    for (int i=0; i<constellations.size(); i++)
+    for (int i=0; i<constellations.size(); i++) {
         constellations[i].CalculCoordHoriz2(observateur);
+    }
 
     /* Retour */
     return;

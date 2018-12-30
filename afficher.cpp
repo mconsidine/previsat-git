@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    26 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -127,23 +127,25 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     int xAff = width();
     int yAff = height();
 
-    if (x() < 0 || y() < 0)
+    if (x() < 0 || y() < 0) {
         move(0, 0);
+    }
 
-    if (!(xAff < xmax && yAff < ymax))
+    if (!(xAff < xmax && yAff < ymax)) {
         resize(xAff, yAff);
+    }
 
     // Redimensionnement de la fenetre si necessaire
-    if (xAff > xmax)
-        xAff = xmax;
-    if (yAff > ymax)
-        yAff = ymax;
+    if (xAff > xmax) xAff = xmax;
+    if (yAff > ymax) yAff = ymax;
 
     if (xAff < width() || yAff < height()) {
-        if (xmax < minimumWidth())
+        if (xmax < minimumWidth()) {
             setMinimumWidth(xmax);
-        if (ymax < minimumHeight())
+        }
+        if (ymax < minimumHeight()) {
             setMinimumHeight(ymax);
+        }
         resize(xAff, yAff);
         scrollAreaRes = new QScrollArea(this);
         scrollAreaRes->setWidget(centralWidget());
@@ -209,8 +211,9 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
     dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
 #endif
 
-    if (dirTmp.trimmed().isEmpty())
+    if (dirTmp.trimmed().isEmpty()) {
         dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
+    }
 
 #if defined (Q_OS_LINUX) || defined (Q_OS_MAC)
 
@@ -314,8 +317,9 @@ void Afficher::load()
         // Nom du satellite et debut du passage
         if (ligne.length() < 60) {
             nomsat = ligne;
-            if (it.hasNext())
+            if (it.hasNext()) {
                 ligne = it.next();
+            }
         }
 
         if (ligne.contains(tr("Date"))) {
@@ -323,8 +327,9 @@ void Afficher::load()
             iht = ligne.indexOf(tr("Hauteur Sat")) - 1;
             imagn = ligne.indexOf(tr("Magn")) - 1;
             ihtsol = ligne.indexOf(tr("Haut Soleil")) - 1;
-            if (it.hasNext())
+            if (it.hasNext()) {
                 ligne = it.next();
+            }
         }
 
         if (cond.typeCalcul() == METOP) {
@@ -362,17 +367,18 @@ void Afficher::load()
                     if (cond.nbl() >= 0) {
 
                         // Magnitude max
-                        if (ligne.mid(imagn+1, 4) != "----")
-                            if (ligne.mid(imagn, 5).toDouble() <= maxMag.mid(imagn, 5).toDouble() || maxMag.mid(imagn+1, 4) == "----")
+                        if (ligne.mid(imagn+1, 4) != "----") {
+                            if (ligne.mid(imagn, 5).toDouble() <= maxMag.mid(imagn, 5).toDouble() || maxMag.mid(imagn+1, 4) == "----") {
                                 maxMag = ligne;
+                            }
+                        }
 
                         // Hauteur max
-                        if (QString::compare(ligne.mid(iht, 9), maxHt.mid(iht, 9)) > 0)
-                            maxHt = ligne;
+                        if (QString::compare(ligne.mid(iht, 9), maxHt.mid(iht, 9)) > 0) maxHt = ligne;
+
                     } else {
                         // Angle minimum
-                        if (ligne.mid(71, 5).toDouble() <= maxHt.mid(71, 5).toDouble())
-                            maxHt = ligne;
+                        if (ligne.mid(71, 5).toDouble() <= maxHt.mid(71, 5).toDouble()) maxHt = ligne;
                     }
                     fin1 = fin;
                     fin = ligne;
@@ -393,19 +399,22 @@ void Afficher::load()
                               ((cond.nbl() >= 0) ? maxMag.mid(imagn, 6).trimmed() : debut.mid(79, 1)) <<
                               maxHt.mid(ihtsol, maxHt.lastIndexOf("\"") - ihtsol + 1).trimmed());
 
-            if (cond.nbl() != 0)
+            if (cond.nbl() != 0) {
                 items.insert(5, (cond.nbl() > 0) ? maxMag.mid(imagn - 3, 1) : maxHt.mid(84, 1));
+            }
 
             for(int k=0; k<items.count(); k++) {
                 QTableWidgetItem * const item = new QTableWidgetItem(items.at(k));
                 item->setTextAlignment(Qt::AlignCenter);
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-                if (k == 0)
+                if (k == 0) {
                     item->setToolTip(items.at(0));
+                }
 
                 ui->listePrevisions->setItem(j, k, item);
-                if (k > 0)
+                if (k > 0) {
                     ui->listePrevisions->resizeColumnToContents(k);
+                }
             }
             tabres.append(fmt.arg((cond.nbl() >= 0) ? debut.right(5) : NORAD_STATION_SPATIALE).arg(debut.mid(idate, lngDate))
                           .arg(maxMag.mid(idate, lngDate)).arg(fin.mid(idate, lngDate)));
@@ -543,8 +552,9 @@ void Afficher::resizeEvent(QResizeEvent *evt)
     Q_UNUSED(evt)
     if (baseSize() == size()) {
         ui->ongletsResultats->resize(width(), height() - ui->barreOutils->height());
-        if (cond.nbl() == 0)
+        if (cond.nbl() == 0) {
             ui->listePrevisions->resize(ui->listePrevisions->width(), ui->ongletsResultats->height() - 30);
+        }
     }
 }
 
@@ -567,8 +577,9 @@ void Afficher::on_actionEnregistrer_triggered()
                                                              nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
         if (!fichier.isEmpty()) {
             QFile fi(fichier);
-            if (fi.exists())
+            if (fi.exists()) {
                 fi.remove();
+            }
 
             QFile fi2(_fichier);
             fi2.copy(fi.fileName());
@@ -661,8 +672,7 @@ void Afficher::loadSky(const int j)
         if (date.right(1) == "p") {
             heure += 12;
         } else {
-            if (heure == 12)
-                heure = 0;
+            if (heure == 12) heure = 0;
         }
     }
     const Date dateI(deb.at(0).toInt(), deb.at(1).toInt(), deb.at(2).toInt(), heure, deb.at(4).toInt(),
@@ -734,10 +744,12 @@ void Afficher::loadSky(const int j)
 
     // Position des etoiles
     Etoile::CalculPositionEtoiles(obs, etoiles);
-    if (affconst == Qt::Checked)
+    if (affconst == Qt::Checked) {
         Constellation::CalculConstellations(obs, constellations);
-    if (affconst != Qt::Unchecked)
+    }
+    if (affconst != Qt::Unchecked) {
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
+    }
 
     // Position du satellite
     sat.CalculTraceCiel(dateInit, eclipsesLune, refraction, obs, 1);
@@ -750,11 +762,9 @@ void Afficher::loadSky(const int j)
         const double ls = atan2(soleil.position().y(), soleil.position().x());
 
         double diff = (ll - ls) * RAD2DEG;
-        if (diff < 0.)
-            diff += T360;
+        if (diff < 0.) diff += T360;
         indLune = (int) (diff  * (1. / 12.190749)) + 1;
-        if (indLune > 29)
-            indLune = 1;
+        if (indLune > 29) indLune = 1;
     } else {
         indLune = 15;
     }
@@ -824,8 +834,9 @@ void Afficher::loadSky(const int j)
                 crayon = QPen((soleil.hauteur() > -0.08) ?
                                   bleuClair : (soleil.hauteur() > -0.12) ? QColor("deepskyblue") : QColor(Qt::cyan));
 
-                if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height())
+                if ((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1) < lciel * ui->ciel->height()) {
                     sceneSky->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
+                }
             }
         }
 
@@ -967,14 +978,14 @@ void Afficher::loadSky(const int j)
             const double ht2 = asin(vec2.z());
 
             double az2 = atan2(vec2.y(), -vec2.x());
-            if (az2 < 0.)
-                az2 += DEUX_PI;
+            if (az2 < 0.) az2 += DEUX_PI;
 
             const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
             const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
 
-            if (ht1 >= 0. || ht2 >= 0.)
+            if (ht1 >= 0. || ht2 >= 0.) {
                 sceneSky->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
+            }
 
             lecl1 = lecl2;
             becl1 = becl2;
@@ -1040,8 +1051,9 @@ void Afficher::loadSky(const int j)
         QGraphicsPixmapItem * const lun = sceneSky->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
-        if (rotationLune && obs.latitude() < 0.)
+        if (rotationLune && obs.latitude() < 0.) {
             transform.rotate(180.);
+        }
         transform.translate(-7, -7);
         lun->setTransform(transform);
     }
@@ -1187,8 +1199,9 @@ void Afficher::on_listePrevisions_currentCellChanged(int currentRow, int current
     Q_UNUSED(currentColumn)
     Q_UNUSED(previousRow)
     Q_UNUSED(previousColumn)
-    if (cond.nbl() != 0)
+    if (cond.nbl() != 0) {
         loadMap(currentRow);
+    }
     loadSky(currentRow);
 }
 

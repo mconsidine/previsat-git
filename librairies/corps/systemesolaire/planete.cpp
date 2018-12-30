@@ -36,7 +36,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    30 decembre 2018
  * 
  */
 
@@ -116,12 +116,14 @@ static const double _tabPlanetes[7][6][4] = {
 Planete::Planete(const int iplanete)
 {
     _iplanete = iplanete;
-    if (!_init)
+    if (!_init) {
         nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") <<
                        QObject::tr("Saturne") << QObject::tr("Uranus") << QObject::tr("Neptune");
+    }
     _init = true;
-    for(int i=0; i<6; i++)
+    for(int i=0; i<6; i++) {
         _elem[i] = 0.;
+    }
 }
 
 /*
@@ -180,14 +182,16 @@ void Planete::CalculElements(const Date &date)
     // Calcul des elements orbitaux
     for(int i=0; i<6; i++) {
         _elem[i] = 0.;
-        for(int j=0; j<4; j++)
+        for(int j=0; j<4; j++) {
             _elem[i] += _tabPlanetes[_iplanete][i][j] * tt[j];
+        }
     }
 
     // Reduction des elements
     _elem[0] = fmod(_elem[0], T360) * DEG2RAD;
-    for(int i=3; i<6; i++)
+    for(int i=3; i<6; i++) {
         _elem[i] *= DEG2RAD;
+    }
 
     /* Retour */
     return;
@@ -213,11 +217,9 @@ void Planete::CalculCoordonneesSpheriques()
     /* Corps de la methode */
     // Anomalie moyenne
     double na = atan(tan(longPerihelie - longNoeudAsc) / cosincl);
-    if (cos(longPerihelie - longNoeudAsc) < 0.)
-        na += PI;
+    if (cos(longPerihelie - longNoeudAsc) < 0.) na += PI;
     double nm = atan(tan(longMoy - longNoeudAsc) / cosincl);
-    if (cos(longMoy - longNoeudAsc - nm) < 0.)
-        nm += PI;
+    if (cos(longMoy - longNoeudAsc - nm) < 0.) nm += PI;
     const double m = nm - na;
 
     // Anomalie excentrique (equation de Kepler)
@@ -232,8 +234,7 @@ void Planete::CalculCoordonneesSpheriques()
 
     // Longitude ecliptique vraie
     double nl = atan(tan(na + v) * cosincl);
-    if (cos(na + v - nl) < 0.)
-        nl += PI;
+    if (cos(na + v - nl) < 0.) nl += PI;
     const double l = longNoeudAsc + nl;
 
     // Latitude ecliptique

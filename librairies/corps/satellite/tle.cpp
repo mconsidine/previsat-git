@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -168,8 +168,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 
                 if (ligne.size() > 0) {
 
-                    if (nomsat == "---" || nomsat.isEmpty())
-                        nomsat = ligne;
+                    if (nomsat == "---" || nomsat.isEmpty()) nomsat = ligne;
 
                     if (ligne.mid(0, 2) == "1 ") {
                         li1 = ligne;
@@ -179,8 +178,9 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
                         } while (li2.trimmed().length() == 0);
 
                         VerifieLignes(li1, li2);
-                        if ((li1 == nomsat && itle == 3) || (li1 != nomsat && itle == 2))
+                        if ((li1 == nomsat && itle == 3) || (li1 != nomsat && itle == 2)) {
                             throw PreviSatException(8);
+                        }
 
                         itle = (li1 == nomsat) ? 2 : 3;
                         nb++;
@@ -191,8 +191,9 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
         }
         fichier.close();
 
-        if (nb == 0 || nomsat != "---")
+        if (nb == 0 || nomsat != "---") {
             throw PreviSatException(8);
+        }
 
     } catch (PreviSatException &e) {
 
@@ -284,10 +285,12 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         magn = "";
     }
     donneesSatellites.close();
-    if (listeSatellites.size() == 0)
+
+    if (listeSatellites.size() == 0) {
         tabtle.clear();
-    else
+    } else {
         tabtle.resize(jmax);
+    }
 
     /* Corps de la methode */
     try {
@@ -322,17 +325,21 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     }
                 }
 
-                if (nomsat.size() > 25 && nomsat.mid(25).contains('.') > 0)
+                if (nomsat.size() > 25 && nomsat.mid(25).contains('.') > 0) {
                     nomsat = nomsat.mid(0, 15).trimmed();
+                }
 
-                if (nomsat.mid(0, 2) == "0 ")
+                if (nomsat.mid(0, 2) == "0 ") {
                     nomsat = nomsat.mid(2);
+                }
 
-                if (nomsat.toLower() == "iss (zarya)")
+                if (nomsat.toLower() == "iss (zarya)") {
                     nomsat = "ISS";
+                }
 
-                if (nomsat.toLower().contains("iridium") && nomsat.contains("["))
+                if (nomsat.toLower().contains("iridium") && nomsat.contains("[")) {
                     nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
+                }
 
                 if (listeSatellites.size() == 0) {
                     TLE tle = TLE(li0, li1, li2);
@@ -577,18 +584,20 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
 
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
-    if (nbOld == 0)
+    if (nbOld == 0) {
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
+    }
 
     // Lecture du TLE
     LectureFichier(ficOld, liste, tleOld);
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
-    if (nbNew == 0)
+    if (nbNew == 0) {
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);
+    }
 
     // Lecture du TLE
     LectureFichier(ficNew, liste, tleNew);
@@ -611,8 +620,9 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         } else {
 
             if (j < nbNew && !norad1.isEmpty()) {
-                while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1) < 0)
+                while (j < nbNew && (norad2 = tleNew.at(j)._norad).compare(norad1) < 0) {
                     j++;
+                }
             } else {
                 j = nbNew;
                 norad2 = "0";
@@ -688,8 +698,9 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
                     }
                 }
             } else {
-                if (!norad1.isEmpty())
+                if (!norad1.isEmpty()) {
                     compteRendu.append(tleOld[isat]._nom + "#" + tleOld[isat]._norad);
+                }
             }
         }
         isat++;
@@ -742,8 +753,7 @@ bool TLE::CheckSum(const QString &ligne)
         if (chr >= 0 && chr <= 9) {
             check += chr;
         } else {
-            if (ligne.at(i) == '-')
-                check++;
+            if (ligne.at(i) == '-') check++;
         }
     }
     chr = ligne.at(68).digitValue();
@@ -776,34 +786,39 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2)
         ierr++;
     }
 
-    if (ierr == 1)
+    if (ierr == 1) {
         throw PreviSatException(exc);
-    else if (ierr > 1)
+    } else if (ierr > 1) {
         throw PreviSatException(8);
-    else
-    {}
+    } else {
+    }
 
     // Verification des espaces dans les lignes
     if (li1.at(1) != ' ' || li1.at(8) != ' ' || li1.at(17) != ' ' || li1.at(32) != ' ' || li1.at(43) != ' ' ||
             li1.at(52) != ' ' || li1.at(61) != ' ' || li1.at(63) != ' ' || li2.at(1) != ' ' || li2.at(7) != ' ' ||
-            li2.at(16) != ' ' || li2.at(25) != ' ' || li2.at(33) != ' ' || li2.at(42) != ' ' || li2.at(51) != ' ')
+            li2.at(16) != ' ' || li2.at(25) != ' ' || li2.at(33) != ' ' || li2.at(42) != ' ' || li2.at(51) != ' ') {
         throw PreviSatException(3);
+    }
 
     // Verification de la ponctuation des lignes
     if (li1.at(23) != '.' || li1.at(34) != '.' || li2.at(11) != '.' || li2.at(20) != '.' || li2.at(37) != '.' ||
-            li2.at(46) != '.' || li2.at(54) != '.')
+            li2.at(46) != '.' || li2.at(54) != '.') {
         throw PreviSatException(4);
+}
 
     // Verification du numero NORAD
-    if (li1.mid(2, 5) != li2.mid(2, 5))
+    if (li1.mid(2, 5) != li2.mid(2, 5)) {
         throw PreviSatException(5);
+    }
 
     // Verification des checksums
-    if (!CheckSum(li1))
+    if (!CheckSum(li1)) {
         throw PreviSatException(6);
+    }
 
-    if (!CheckSum(li2))
+    if (!CheckSum(li2)) {
         throw PreviSatException(7);
+    }
 
     /* Retour */
     return;

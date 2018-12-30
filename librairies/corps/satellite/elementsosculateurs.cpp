@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    30 decembre 2018
  *
  */
 
@@ -121,32 +121,37 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
         const double nn = n.Norme();
         const double cosasc = n.x() / nn;
         _ascDroiteNA = acos(cosasc);
-        if (n.y() < 0.)
+        if (n.y() < 0.) {
             _ascDroiteNA = DEUX_PI - _ascDroiteNA;
+        }
 
         // Argument du perigee
         const double ne = n * exc;
         _argumentPerigee = acos(ne / (nn * _excentricite));
-        if (exc.z() < 0.)
+        if (exc.z() < 0.) {
             _argumentPerigee = DEUX_PI - _argumentPerigee;
+        }
 
         // Anomalie vraie
         const double er = exc * position;
         _anomalieVraie = acos(er * x1sp / _excentricite);
-        if (rv < 0.)
+        if (rv < 0.) {
             _anomalieVraie = DEUX_PI - _anomalieVraie;
+        }
 
         // Anomalie excentrique
         const double x1mexc = 1. - _excentricite;
         const double x1pexc = 1. + _excentricite;
         _anomalieExcentrique = 2. * atan(sqrt(x1mexc / x1pexc) * tan(0.5 * _anomalieVraie));
-        if (_anomalieExcentrique < 0.)
+        if (_anomalieExcentrique < 0.) {
             _anomalieExcentrique += DEUX_PI;
+        }
 
         // Anomalie moyenne
         _anomalieMoyenne = _anomalieExcentrique - _excentricite * sin(_anomalieExcentrique);
-        if (_anomalieMoyenne < 0.)
+        if (_anomalieMoyenne < 0.) {
             _anomalieMoyenne += DEUX_PI;
+        }
 
         const double exc2 = _excentricite * _excentricite;
         const double alpha = _demiGrandAxe / RAYON_TERRESTRE;
@@ -174,8 +179,9 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
         const double cl = (position.x() - temp4 * hn.x()) * x1sp;
         const double sl = (position.y() - temp4 * hn.y()) * x1sp;
         _argumentLongitudeVraie = atan2(sl, cl);
-        if (_argumentLongitudeVraie < 0.)
+        if (_argumentLongitudeVraie < 0.) {
             _argumentLongitudeVraie += DEUX_PI;
+        }
 
         const double se = rv / sqrt(GE * _demiGrandAxe);
         const double ce = p * v2 / GE - 1.;
@@ -200,8 +206,7 @@ void ElementsOsculateurs::CalculElementsOsculateurs(const Vecteur3D &position, c
         const double temp5 = se * bt;
         const double ae = atan2(xs / _demiGrandAxe + _eyCirc - temp5 * _exCirc, xr / _demiGrandAxe + _exCirc - temp5 * _eyCirc);
         _pso = ae - _exCirc * sin(ae) + _eyCirc * cos(ae);
-        if (_pso < 0.)
-            _pso += DEUX_PI;
+        if (_pso < 0.) _pso += DEUX_PI;
     }
 
     /* Retour */
