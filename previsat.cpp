@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -2969,13 +2969,13 @@ void PreviSat::AffichageDonnees()
             const QString msg = "%1 %2";
             setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
-            if (ui->onglets->count() == 7 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
+            if (ui->onglets->count() == 8 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
                 ui->onglets->removeTab(1);
                 ui->onglets->removeTab(1);
             }
         } else {
             ui->satellite->setVisible(true);
-            if (ui->onglets->count() < 7) {
+            if (ui->onglets->count() < 8) {
                 ui->onglets->insertTab(1, ui->osculateurs, tr("Éléments osculateurs"));
                 ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
             }
@@ -3378,7 +3378,7 @@ void PreviSat::AffichageDonnees()
         ui->utcManuel2->setText(ui->utcManuel->text());
         if (!l1.isEmpty() && !l2.isEmpty()) {
 
-            ui->nomsat2->setText(nom);
+            ui->nomsat2->setText(nom.trimmed());
             ui->ligne1->setText(l1);
             ui->ligne2->setText(l2);
 
@@ -3389,7 +3389,7 @@ void PreviSat::AffichageDonnees()
                 // Affichage des donnees sur l'onglet Informations satellite
 
                 // Nom du satellite
-                ui->nomsat3->setText(nom);
+                ui->nomsat3->setText(nom.trimmed());
 
                 // Lignes du TLE
                 ui->line1->setText(ui->ligne1->text());
@@ -4492,7 +4492,7 @@ void PreviSat::EnchainementCalculs() const
                 }
             }
 
-            if (ui->onglets->count() == 7 && satellites[0].isIeralt()) {
+            if (ui->onglets->count() == 8 && satellites[0].isIeralt()) {
                 chronometre->stop();
                 const QString msg = tr("Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) " \
                                        "ne peut pas être calculée (altitude négative)");
@@ -4502,7 +4502,7 @@ void PreviSat::EnchainementCalculs() const
                 l2 = "";
             }
 
-            if (ui->onglets->count() < 7 && !satellites[0].isIeralt()) {
+            if (ui->onglets->count() < 8 && !satellites[0].isIeralt()) {
                 l1 = tles.at(0).ligne1();
                 l2 = tles.at(0).ligne2();
             }
@@ -5497,7 +5497,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         chaine = tr("Conditions : %1");
         flux << chaine.arg(ui->conditionsObservation->text()) << endl << endl << endl;
 
-        if (ui->onglets->count() == 7) {
+        if (ui->onglets->count() == 8) {
 
             // Donnees sur le satellite
             flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
@@ -8657,6 +8657,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         }
         acalcAOS = true;
         acalcDN = true;
+        CalculAgeTLETransitISS();
     }
 
     /* Retour */
@@ -8690,6 +8691,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->utcManuel2->setVisible(true);
         ui->frameSimu->setVisible(true);
         ui->pasManuel->setFocus();
+        CalculAgeTLETransitISS();
 
         htSat = 0.;
         acalcAOS = true;
@@ -10728,7 +10730,7 @@ void PreviSat::on_supprLieu_clicked()
  */
 void PreviSat::on_barreMenu_pressed()
 {
-    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 7) ||
+    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 8) ||
                                       ui->onglets->currentIndex() < 1);
 }
 
