@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -153,8 +153,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                     // Calcul de l'angle ISS - observateur - corps
                     ang = corps.dist().Angle(sat.dist());
-                    if (ang < ang0)
-                        ang0 = ang;
+                    if (ang < ang0) ang0 = ang;
 
                     jj0 += PAS1;
                 } while (jj0 <= jj2 && ang < ang0 + EPSDBL100 && sat.hauteur() >= 0.);
@@ -230,8 +229,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[2] = date2;
-                            CalculElements(sat, observateur, minmax[0], typeCorps, itr,
-                                    conditions.seuilConjonction(), dates);
+                            CalculElements(sat, observateur, minmax[0], typeCorps, itr, conditions.seuilConjonction(), dates);
 
                             // Recalcul de la position pour chacune des dates en vue de l'ecriture des resultats
                             QString transit = "";
@@ -303,8 +301,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                 // Recherche du maximum (transit ou conjonction)
                                 QString max(37, ' ');
                                 const Vecteur3D direction = corps.dist() - sat.dist();
-                                Observateur obsmin =
-                                        Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
+                                Observateur obsmin = Observateur::CalculIntersectionEllipsoide(dates[j], position, direction);
 
                                 if (!obsmin.nomlieu().isEmpty()) {
                                     obsmin.CalculPosVit(dates[j]);
@@ -326,14 +323,18 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     const double cap = observateur.CalculCap(obsmin) * RAD2DEG;
 
                                     QString dir;
-                                    if (cap >= 315. || cap < 45.)
+                                    if (cap >= 315. || cap < 45.) {
                                         dir = QObject::tr("(N)");
-                                    if (cap >= 45. && cap < 135.)
+                                    }
+                                    if (cap >= 45. && cap < 135.) {
                                         dir = QObject::tr("(E)");
-                                    if (cap >= 135. && cap < 225.)
+                                    }
+                                    if (cap >= 135. && cap < 225.) {
                                         dir = QObject::tr("(S)");
-                                    if (cap >= 225. && cap < 315.)
+                                    }
+                                    if (cap >= 225. && cap < 315.) {
                                         dir = QObject::tr("(W)");
+                                    }
 
                                     const QString ew = (obsmin.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
                                     const QString ns = (obsmin.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
@@ -351,8 +352,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     }
                     date = Date(jj2, 0., false);
                 } else {
-                    if (sat.hauteur() < conditions.haut())
+                    if (sat.hauteur() < conditions.haut()) {
                         date = Date(date.jourJulienUTC() + periode, 0., false);
+                    }
                 }
                 date = Date(date.jourJulienUTC() + PAS0, 0., false);
 
@@ -405,9 +407,9 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             result.append("");
             i++;
         }
-        if (res.count() > 0)
-            if (!res.at(res.count() - 1).isEmpty())
-                flux << endl;
+        if (res.count() > 0 && !res.at(res.count() - 1).isEmpty()) {
+            flux << endl;
+        }
     }
 
     ligne = QObject::tr("Temps écoulé : %1s");
@@ -610,15 +612,12 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool lvis, svis;
     Soleil soleil;
     Lune lune;
     QVector<double> tab;
     QList<QVector<double> > tabEphemLune, tabEphemSoleil;
 
     /* Initialisations */
-    lvis = false;
-    svis = false;
 
     /* Corps de la methode */
     // Ephemerides du Soleil
@@ -635,7 +634,6 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
 
             if (soleil.hauteur() >= conditions.haut()) {
 
-                svis = true;
                 tab.clear();
 
                 // Remplissage du tableau d'ephemerides
@@ -660,11 +658,6 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
                 tab.append(1);
 
                 tabEphemSoleil.append(tab);
-            } else {
-                if (svis) {
-                    svis = false;
-                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
-                }
             }
 
             date = Date(date.jourJulienUTC() + PAS0, 0., false);
@@ -685,7 +678,6 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
 
             if (lune.hauteur() >= conditions.haut()) {
 
-                lvis = true;
                 tab.clear();
 
                 // Remplissage du tableau d'ephemerides
@@ -710,11 +702,6 @@ void TransitISS::CalculEphemSoleilLune(const Conditions &conditions, Observateur
                 tab.append(2);
 
                 tabEphemLune.append(tab);
-            } else {
-                if (lvis) {
-                    lvis = false;
-                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
-                }
             }
 
             date = Date(date.jourJulienUTC() + PAS0, 0., false);

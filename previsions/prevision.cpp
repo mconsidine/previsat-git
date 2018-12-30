@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -137,8 +137,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
             if (sat.hauteur() >= conditions.haut()) {
 
                 Lune lune;
-                if (conditions.acalcEclipseLune())
+                if (conditions.acalcEclipseLune()) {
                     lune.CalculPosition(date);
+                }
 
                 // Conditions d'eclipse du satellite
                 ConditionEclipse condEcl;
@@ -156,8 +157,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                     if (magn.magnitude() < conditions.mgn1() ||
                             (sat.magnitudeStandard() > 98. && conditions.mgn1() > 98.) || !conditions.ecl()) {
 
-                        if (ent == 2)
-                            ent = 1;
+                        if (ent == 2) ent = 1;
 
                         sat.CalculCoordHoriz(obs);
                         soleil.CalculCoordHoriz(obs);
@@ -184,9 +184,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                         res.append("ISS");
                                     } else {
                                         ligne = nomsat;
-                                        if (nomsat.contains("R/B") || nomsat.contains(" DEB"))
-                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).
-                                                    arg(sat.tle().norad());
+                                        if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
+                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.tle().norad());
+                                        }
                                         res.append(ligne);
                                     }
 
@@ -214,8 +214,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 const double mag = magn.magnitude();
                                 QString magnSat;
                                 if (mag > 98.) {
-                                    magnSat = (conditions.ecl() || sat.magnitudeStandard() > 98.) ?
-                                                " ????  " : " ----  ";
+                                    magnSat = (conditions.ecl() || sat.magnitudeStandard() > 98.) ? " ????  " : " ----  ";
                                 } else {
                                     const QString fmagn = "%1%2%3%4";
                                     const QString esp = (mag < 9.95) ? " " : "";
@@ -256,8 +255,7 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                             soleil.CalculPosition(date);
                             soleil.CalculCoordHoriz(observateur);
 
-                            if (soleil.hauteur() > conditions.crep() ||
-                                    date.jourJulienUTC() > conditions.jj2() + conditions.pas0()) {
+                            if (soleil.hauteur() > conditions.crep() || date.jourJulienUTC() > conditions.jj2() + conditions.pas0()) {
                                 afin = true;
                             } else {
 
@@ -266,8 +264,9 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                                 if (sat.hauteur() < conditions.haut()) {
                                     afin = true;
                                 } else {
-                                    if (conditions.acalcEclipseLune())
+                                    if (conditions.acalcEclipseLune()) {
                                         lune.CalculPosition(date);
+                                    }
                                     condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(),
                                                                                   conditions.refr());
                                     magn.Calcul(observateur, condEcl, sat.distance(), sat.hauteur(), sat.magnitudeStandard(),
@@ -338,12 +337,10 @@ void Prevision::FinTraitement()
 void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool svis;
     QVector<double> tab;
     Soleil soleil;
 
     /* Initialisations */
-    svis = true;
     const double pas = NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
@@ -361,7 +358,6 @@ void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Obser
 
         if (soleil.hauteur() <= conditions.crep()) {
 
-            svis = false;
             tab.clear();
 
             // Remplissage du tableau d'ephemerides
@@ -385,13 +381,6 @@ void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Obser
             tab.push_back(soleil.position().z());
 
             tabEphem.append(tab);
-
-        } else {
-            if (!svis) {
-                svis = true;
-                if (conditions.crep() <= EPSDBL100)
-                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
-            }
         }
 
         date = Date(date.jourJulienUTC() + pas, 0., false);
