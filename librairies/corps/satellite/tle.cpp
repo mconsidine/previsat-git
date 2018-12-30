@@ -63,7 +63,14 @@
 #include "librairies/dates/dateConstants.h"
 #include "librairies/exceptions/previsatexception.h"
 
+static bool alarme;
+static QString nomsat;
+
+
 /* Constructeurs */
+/*
+ * Constructeur par defaut
+ */
 TLE::TLE()
 {
     /* Declarations des variables locales */
@@ -84,6 +91,9 @@ TLE::TLE()
     return;
 }
 
+/*
+ * Definition a partir des composantes du TLE
+ */
 TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid) :
     _ligne0(lig0), _ligne1(lig1), _ligne2(lig2)
 {
@@ -148,7 +158,8 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 
     /* Initialisations */
     int nb = 0;
-    QString nomsat = "---";
+    alarme = alarm;
+    nomsat = "---";
     QString li1 = "";
     QString li2 = "";
 
@@ -179,7 +190,11 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
 
                         VerifieLignes(li1, li2);
                         if ((li1 == nomsat && itle == 3) || (li1 != nomsat && itle == 2)) {
-                            throw PreviSatException(8);
+                            QString msg = "";
+                            if (alarme) {
+                                msg = QObject::tr("Le fichier %1 ne contient aucun satellite ou n'est pas valide").arg(nomFichier);
+                            }
+                            throw PreviSatException(msg, WARNING);
                         }
 
                         itle = (li1 == nomsat) ? 2 : 3;
@@ -192,56 +207,17 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarm)
         fichier.close();
 
         if (nb == 0 || nomsat != "---") {
-            throw PreviSatException(8);
+            QString msg = "";
+            if (alarme) {
+                msg = QObject::tr("Le fichier %1 ne contient aucun satellite ou n'est pas valide").arg(nomFichier);
+            }
+            throw PreviSatException(msg, WARNING);
         }
 
     } catch (PreviSatException &e) {
-
         nb = 0;
-        if (alarm) {
-
-            QString msg = "";
-
-            // Construction du message
-            const int ierr = QString(e.what()).toInt();
-            switch (ierr) {
-            case 1:
-                msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte");
-                msg = msg.arg(nomsat).arg(li2.mid(1, 6).trimmed());
-                break;
-
-            case 2:
-                msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects");
-                msg = msg.arg(nomsat).arg(li2.mid(2, 5));
-                break;
-
-            case 3:
-                msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2");
-                msg = msg.arg(nomsat).arg(li2.mid(2, 5));
-                break;
-
-            case 4:
-                msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2");
-                msg = msg.arg(nomsat).arg(li2.mid(2, 5));
-                break;
-
-            case 5:
-                msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)");
-                msg = msg.arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
-                break;
-
-            case 6:
-            case 7:
-                msg = QObject::tr("Erreur CheckSum ligne %1 :\nSatellite %2 - numéro NORAD : %3");
-                msg = msg.arg(ierr - 5).arg(nomsat).arg(li1.mid(2, 5));
-                break;
-
-            default:
-                msg = QObject::tr("Le fichier %1 ne contient aucun satellite ou n'est pas valide");
-                msg = msg.arg(nomFichier);
-            }
-
-            throw PreviSatException(msg, WARNING);
+        if (alarme) {
+            throw PreviSatException();
         }
     }
 
@@ -298,7 +274,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
         QString li0;
 
         int j = 0;
-        QString nomsat = "---";
+        nomsat = "---";
         QFile fichier(nomFichier);
         fichier.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fichier);
@@ -572,6 +548,9 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
     return;
 }
 
+/*
+ * Mise a jour du fichier TLE
+ */
 void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu)
 {
     /* Declarations des variables locales */
@@ -770,54 +749,67 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int exc = 0;
-    int ierr = 0;
+    QString msg = "";
 
     /* Corps de la methode */
-    // Verification de la longueur des lignes
-    if (li1.size() != 69 || li2.size() != 69) {
-        exc = 1;
-        ierr++;
-    }
-
     // Verification du numero des lignes
     if (li1.mid(0, 2) != "1 " || li2.mid(0, 2) != "2 ") {
-        exc = 2;
-        ierr++;
+        if (alarme) {
+            msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).arg(li2.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
-    if (ierr == 1) {
-        throw PreviSatException(exc);
-    } else if (ierr > 1) {
-        throw PreviSatException(8);
-    } else {
+    // Verification de la longueur des lignes
+    if (li1.size() != 69 || li2.size() != 69) {
+        if (alarme) {
+            msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte")
+                    .arg(nomsat).arg(li2.mid(1, 6).trimmed());
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
     // Verification des espaces dans les lignes
     if (li1.at(1) != ' ' || li1.at(8) != ' ' || li1.at(17) != ' ' || li1.at(32) != ' ' || li1.at(43) != ' ' ||
             li1.at(52) != ' ' || li1.at(61) != ' ' || li1.at(63) != ' ' || li2.at(1) != ' ' || li2.at(7) != ' ' ||
             li2.at(16) != ' ' || li2.at(25) != ' ' || li2.at(33) != ' ' || li2.at(42) != ' ' || li2.at(51) != ' ') {
-        throw PreviSatException(3);
+        if (alarme) {
+            msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
     // Verification de la ponctuation des lignes
     if (li1.at(23) != '.' || li1.at(34) != '.' || li2.at(11) != '.' || li2.at(20) != '.' || li2.at(37) != '.' ||
             li2.at(46) != '.' || li2.at(54) != '.') {
-        throw PreviSatException(4);
+        if (alarme) {
+            msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
 }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
-        throw PreviSatException(5);
+        if (alarme) {
+            msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
+                    .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1)) {
-        throw PreviSatException(6);
+        if (alarme) {
+            msg = QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
     if (!CheckSum(li2)) {
-        throw PreviSatException(7);
+        if (alarme) {
+            msg = QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5));
+        }
+        throw PreviSatException(msg, WARNING);
     }
 
     /* Retour */
