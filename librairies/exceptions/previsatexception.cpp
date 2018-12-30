@@ -60,7 +60,9 @@ PreviSatException::PreviSatException(const int ierr) throw()
 PreviSatException::PreviSatException(const QString &message, const MessageType ierr) throw()
 {
     _ierr = ierr;
-    Message::Afficher(message, ierr);
+    if (!message.trimmed().isEmpty()) {
+        Message::Afficher(message, ierr);
+    }
 }
 
 /*
