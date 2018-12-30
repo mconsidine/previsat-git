@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -132,8 +132,9 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
             if (sat.hauteur() >= conditions.haut()) {
 
                 Lune lune;
-                if (conditions.acalcEclipseLune())
+                if (conditions.acalcEclipseLune()) {
                     lune.CalculPosition(date);
+                }
 
                 // Determination de la condition d'eclipse du satellite
                 ConditionEclipse condEcl;
@@ -176,8 +177,9 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
                                 pasInt *= 0.5;
                             }
 
-                            if (fabs(minmax[0] - temp) > pasmax)
+                            if (fabs(minmax[0] - temp) > pasmax) {
                                 DeterminationFlash(minmax, conditions, temp, observateur, sat, soleil);
+                            }
 
                         } // fin if (angref <= 0.2)
 
@@ -193,15 +195,16 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
                         // Position du Soleil
                         soleil.CalculPosition(date0);
 
-                        if (conditions.acalcEclipseLune())
+                        if (conditions.acalcEclipseLune()) {
                             lune.CalculPosition(date0);
+                        }
 
                         // Condition d'eclipse du satellite
-                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(),
-                                                       conditions.refr());
+                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
 
-                        if (condEcl.isEclipseTotale() || sat.hauteur() < conditions.haut())
+                        if (condEcl.isEclipseTotale() || sat.hauteur() < conditions.haut()) {
                             jj0 = jj2 + PAS0;
+                        }
                     } while (jj0 <= jj2);
                     date = Date(jj0 + TEMPS2, 0., false);
                 }
@@ -222,8 +225,9 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
     int fin = tps.elapsed();
 
     // Tri chronologique
-    if (conditions.chr())
+    if (conditions.chr()) {
         _res.sort();
+    }
 
     // Ecriture des resultats dans le fichier de previsions
     QFile fichier(conditions.out());
@@ -232,9 +236,8 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
 
     if (_res.count() > 0) {
 
-        const QString enteteLigne =
-                QObject::tr("%1    Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn" \
-                            "   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max");
+        const QString enteteLigne = QObject::tr("%1    Date       Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Cst  Ang  Mir Magn" \
+                                                "   Alt   Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance  Magn Max");
 
         ligne = enteteLigne.arg(idsat);
         result.append(ligne.mid(idsat.length()));
@@ -248,8 +251,7 @@ void Flashs::CalculFlashs(const QString &idsat, const Conditions &conditions, Ob
             const int slen = idsat.length() + 1;
             QString flash;
 
-            const QString flashMax2 = ligne.mid(345, slen) + ligne.mid(178, 121) +
-                    ligne.mid(301, 44).remove(QRegExp("\\s+$"));
+            const QString flashMax2 = ligne.mid(345, slen) + ligne.mid(178, 121) + ligne.mid(301, 44).remove(QRegExp("\\s+$"));
             flash = (conditions.nbl() == 1) ? flashMax2 : ligne.mid(167, slen) + ligne.mid(0, 121) + "\n" +
                                               flashMax2 + "\n" + ligne.mid(523, slen) + ligne.mid(356, 121);
 
@@ -322,12 +324,10 @@ void Flashs::CalculAngleMin(const double jjm[], Satellite &satellite, Observateu
 void Flashs::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur)
 {
     /* Declarations des variables locales */
-    bool svis;
     QVector<double> tab;
     Soleil soleil;
 
     /* Initialisations */
-    svis = true;
 
     /* Corps de la methode */
     Date date(conditions.jj1(), 0., false);
@@ -343,8 +343,6 @@ void Flashs::CalculEphemSoleilObservateur(const Conditions &conditions, Observat
         soleil.CalculCoordHoriz(observateur, false);
 
         if ((conditions.typeCalcul() == METOP && soleil.hauteur() <= conditions.crep())) {
-
-            svis = false;
 
             tab.clear();
 
@@ -369,13 +367,6 @@ void Flashs::CalculEphemSoleilObservateur(const Conditions &conditions, Observat
             tab.push_back(soleil.position().z());
 
             _tabEphem.append(tab);
-
-        } else {
-            if (!svis) {
-                svis = true;
-                if (conditions.crep() <= EPSDBL100)
-                    date = Date(date.jourJulienUTC() + 0.375, 0., false);
-            }
         }
 
         date = Date(date.jourJulienUTC() + PAS0, 0., false);
@@ -411,8 +402,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
     LimiteFlash(mgn0, jjm, conditions, satellite, observateur, soleil, limite);
 
-    if (conditions.typeCalcul() == METOP)
-        limite[1] = DATE_INFINIE;
+    if (conditions.typeCalcul() == METOP) limite[1] = DATE_INFINIE;
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
@@ -420,8 +410,9 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
             int it = 0;
             double pasInt = PAS_INT1;
-            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100)
+            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100) {
                 pasInt *= 0.5;
+            }
             do {
                 it++;
                 tmp = lim0[i];
@@ -451,8 +442,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
     LimiteFlash(mgn0, jjm, conditions, satellite, observateur, soleil, limite);
 
-    if (conditions.typeCalcul() == METOP)
-        limite[1] = DATE_INFINIE;
+    if (conditions.typeCalcul() == METOP) limite[1] = DATE_INFINIE;
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
@@ -460,8 +450,9 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
             int it = 0;
             double pasInt = PAS_INT1;
-            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100)
+            if (fabs(mgn0 - conditions.mgn1()) <= EPSDBL100) {
                 pasInt *= 0.5;
+            }
             do {
                 it++;
                 tmp = lim0[i];
@@ -507,10 +498,8 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
     dateMax = minmax[0];
 
     if (dateInf < dateSup - EPS_DATES && fabs(dateInf) < DATE_INFINIE && fabs(dateSup) < DATE_INFINIE) {
-        if (dateMax < dateInf)
-            dateMax = dateInf;
-        if (dateMax > dateSup)
-            dateMax = dateSup;
+        if (dateMax < dateInf) dateMax = dateInf;
+        if (dateMax > dateSup) dateMax = dateSup;
 
         lim[0] = Date(dateInf, 0., false);
         lim[1] = Date(dateMax, 0., false);
@@ -557,8 +546,9 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
             const double mgn0 = conditions.mgn1();
 
             Lune lune;
-            if (conditions.acalcEclipseLune())
+            if (conditions.acalcEclipseLune()) {
                 lune.CalculPosition(date);
+            }
 
             ConditionEclipse condEcl;
             condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
@@ -593,8 +583,9 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                         soleil.CalculPosition(dates[i]);
                         soleil.CalculCoordHoriz(observateur);
 
-                        if (conditions.acalcEclipseLune())
+                        if (conditions.acalcEclipseLune()) {
                             lune.CalculPosition(dates[i]);
+                        }
 
                         // Condition d'eclipse du satellite
                         ConditionEclipse condEcl2;
@@ -624,8 +615,9 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                             }
                         }
                     }
-                    if (flash.length() == 3 * ligne.length() && flash.length() > 0)
+                    if (flash.length() == 3 * ligne.length() && flash.length() > 0) {
                         _res.append(flash + sat.tle().norad());
+                    }
                 }
             }
         }
@@ -696,8 +688,9 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
         // Distance entre les 2 lieux d'observation
         const double distanceObs = observateur.CalculDistance(obsmax);
         double diff = obsmax.longitude() - observateur.longitude();
-        if (fabs(diff) > PI)
+        if (fabs(diff) > PI) {
             diff -= sgn(diff) * PI;
+        }
         const QString dir = (diff > 0) ? QObject::tr("(W)") : QObject::tr("(E)");
 
         // Angle de reflexion pour le lieu du maximum
@@ -708,8 +701,9 @@ QString Flashs::EcrireFlash(const Date &date, const int i, const double alt, con
 
         QString mags = QString((magFlashMax >= 0.) ? "+" : "-") + QString::number(fabs(magFlashMax), 'f', 1).trimmed() +
                 QString((condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "*" : " ");
-        while (mags.length() < 6)
+        while (mags.length() < 6) {
             mags += " ";
+        }
 
         const QString ew = (obsmax.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
         const QString ns = (obsmax.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
@@ -763,8 +757,9 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
         soleil.CalculPosition(date);
 
         Lune lune;
-        if (conditions.acalcEclipseLune())
+        if (conditions.acalcEclipseLune()) {
             lune.CalculPosition(date);
+        }
 
         // Conditions d'eclipse du satellite
         ConditionEclipse condEcl;
@@ -781,12 +776,10 @@ void Flashs::LimiteFlash(const double mgn0, const double jjm[], const Conditions
     }
 
     double t_ecl, t_ht;
-    // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee
-    // par l'utilisateur
+    // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee par l'utilisateur
     const double t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, EPS_DATES);
 
-    // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle
-    // de reflexion specifie par l'utilisateur
+    // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle de reflexion specifie par l'utilisateur
     const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, conditions.ang0(), EPS_DATES);
 
     // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie par l'utilisateur
@@ -914,8 +907,7 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
 
                 double alpha = atan(tanalpha);
                 alpha -= psi;
-                if (satellite.vitesse().z() < 0.)
-                    alpha = -alpha;
+                if (satellite.vitesse().z() < 0.) alpha = -alpha;
                 yaw += alpha;
             }
         }
