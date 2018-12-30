@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    10 novembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -123,8 +123,9 @@ double MetOp::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         }
     }
 
-    if (_pan == -1)
+    if (_pan == -1) {
         _pan = LISTE_PAN[j];
+    }
 
     /* Retour */
     return (ang);
@@ -206,8 +207,9 @@ void MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
 
     while (!flux.atEnd()) {
         const QString ligne = flux.readLine();
-        if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#'))
+        if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
             tabStsMetOp.append(ligne);
+        }
     }
     fichier.close();
 
@@ -231,24 +233,26 @@ double MetOp::MagnitudeFlash(const bool ext, const bool eclPartielle, const doub
     /* Corps de la methode */
     if (typSat.contains("metop")) {
 
-        // Magnitude for ASCAT instrument
+        // Magnitude pour l'instrument ASCAT (satellites MetOp)
         magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
     } else {
 
-        // Magnitude for SAR panel
+        // Magnitude pour l'antenne SAR
         magnitude = 0.3075 * angDeg - 2.92;
     }
 
     // Prise en compte des eclipses partielles ou annulaires
     if (eclPartielle) {
         const double luminositeEclipse = qMin(condEcl.luminositeEclipseLune(), condEcl.luminositeEclipseSoleil());
-        if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
+        if (luminositeEclipse > 0. && luminositeEclipse <= 1.) {
             magnitude += -2.5 * log10(luminositeEclipse);
+        }
     }
 
     // Prise en compte de l'extinction atmospherique
-    if (ext)
+    if (ext) {
         magnitude += satellite.magnitude().ExtinctionAtmospherique(satellite.hauteur(), observateur);
+    }
 
     /* Retour */
     return (magnitude);

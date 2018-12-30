@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    30 decembre 2018
  *
  */
 
@@ -74,9 +74,11 @@ void Magnitude::Calcul(const Observateur &observateur, const ConditionEclipse &c
 
             // Prise en compte des eclipses partielles ou annulaires
             if (effetEclipsePartielle) {
+
                 const double luminositeEclipse = qMin(conditionEclipse.luminositeEclipseLune(), conditionEclipse.luminositeEclipseSoleil());
-                if (luminositeEclipse > 0. && luminositeEclipse <= 1.)
+                if (luminositeEclipse > 0. && luminositeEclipse <= 1.) {
                     _magnitude += -2.5 * log10(luminositeEclipse);
+                }
             }
 
             // Prise en compte de l'extinction atmospherique

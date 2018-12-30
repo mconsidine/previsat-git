@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    21 novembre 2017
+ * >    30 novembre 2018
  *
  */
 
@@ -131,8 +131,9 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
 #else
 #endif
 
-    if (dirTmp.trimmed().isEmpty())
+    if (dirTmp.trimmed().isEmpty()) {
         dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
+    }
 
     setFont(police);
 
@@ -320,8 +321,9 @@ void Telecharger::on_telecharger_clicked()
             AjoutFichier(url);
         }
 
-        if (downQueue.isEmpty())
+        if (downQueue.isEmpty()) {
             QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        }
     }
 
     /* Retour */
@@ -335,8 +337,9 @@ void Telecharger::AjoutFichier(const QUrl &url)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (downQueue.isEmpty())
+    if (downQueue.isEmpty()) {
         QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
+    }
     downQueue.enqueue(url);
 
     /* Retour */

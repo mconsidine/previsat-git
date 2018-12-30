@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2015
+ * >    30 decembre 2018
  *
  */
 
@@ -72,8 +72,9 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
     int iter = 0;
     double dn0 = 100000.;
     double n0 = 0.;
-    for (int i=0; i<3; i++)
+    for (int i=0; i<3; i++) {
         yy[i] = ytab[i] - yval;
+    }
 
     const double a = yy[1] - yy[0];
     const double b = yy[2] - yy[1];
@@ -86,8 +87,9 @@ double Maths::CalculValeurXInterpolation3(const double xtab[], const double ytab
         const double tmp1 = c * n0;
         const double tmp2 = a + b + tmp1;
         dn0 = -(dy + n0 * tmp2) / (tmp1 + tmp2);
-        if (fabs(dn0) > 1.)
+        if (fabs(dn0) > 1.) {
             dn0 = sgn(dn0);
+        }
         n0 += dn0;
         iter++;
     }
@@ -122,14 +124,11 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     double y = fabs(xval) + EPSDBL100;
 
     int degr = nbDeg;
-    if (degr < 0)
-        degr = 0;
-    if (degr > 2 && (typeAngle == HEURE1 || typeAngle == HEURE2))
-        degr = 2;
+    if (degr < 0) degr = 0;
+    if (degr > 2 && (typeAngle == HEURE1 || typeAngle == HEURE2)) degr = 2;
 
     int dec = nbDecimales;
-    if (dec < 0)
-        dec = 0;
+    if (dec < 0) dec = 0;
 
     const bool tst1 = (typeAngle == DEGRE || typeAngle == NO_TYPE);
     const bool tst2 = (typeAngle == HEURE1);

@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -166,8 +166,7 @@ void ConditionEclipse::CalculSatelliteEclipseCorps(const Soleil &soleil, const V
     }
 
     *phiCorps = asin(rayonCorps / distSatCorps);
-    if (std::isnan(*phiCorps))
-        *phiCorps = PI_SUR_DEUX;
+    if (std::isnan(*phiCorps)) *phiCorps = PI_SUR_DEUX;
 
     *elongation = (-rhoSatCorps).Angle(rhoSatSol);
 
@@ -198,8 +197,7 @@ void ConditionEclipse::CalculSatelliteEclipseCorps(const Soleil &soleil, const V
         const double tmp2 = cpc * acos((cps - cpc * cth) / (spc * sth));
         const double tmp3 = acos((cth - cps * cpc) / (sps * spc));
         *luminosite = 1. - (PI - tmp1 - tmp2 - tmp3) / (PI * (1. - cps));
-        if (*luminosite > 1.)
-            *luminosite = 1.;
+        if (*luminosite > 1.) *luminosite = 1.;
     }
 
     /* Retour */

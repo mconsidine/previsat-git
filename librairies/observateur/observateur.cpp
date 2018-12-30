@@ -36,7 +36,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -334,8 +334,9 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
 
         // Longitude
         lon = modulo(tsg - atan2(intersection.y(), intersection.x()), DEUX_PI);
-        if (fabs(lon) > PI)
+        if (fabs(lon) > PI) {
             lon -= sgn(lon) * DEUX_PI;
+        }
         lon *= RAD2DEG;
 
         // Latitude

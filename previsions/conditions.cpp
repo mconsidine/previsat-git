@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -122,10 +122,8 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             while (it.hasNext()) {
                 const TLE tle = it.next();
                 const double epok = tle.epoque().jourJulienUTC();
-                if (epok > tlemin)
-                    tlemin = epok;
-                if (epok < tlemax)
-                    tlemax = epok;
+                if (epok > tlemin) tlemin = epok;
+                if (epok < tlemax) tlemax = epok;
             }
 
             if (tlemax > conditions._jj1 || tlemin > conditions._jj1) {
@@ -156,7 +154,6 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     QString ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
     ligne2 = ligne2.arg(observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unit);
     flux << ligne2 << endl;
-
 
     ligne2 = QObject::tr("Fuseau horaire            : %1");
     QString chaine = QObject::tr("UTC");

@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    11 mars 2018
+ * >    30 decembre 2018
  *
  */
 
@@ -297,14 +297,10 @@ void Evenements::CalculEvenements(const Conditions &conditions)
                 }
             }
 
-            if (j == i)
-                apassNoeuds = false;
-            if (k == i)
-                apassOmbre = false;
-            if (l == i)
-                atransJn = false;
-            if (m == i)
-                apassPso = false;
+            if (j == i) apassNoeuds = false;
+            if (k == i) apassOmbre = false;
+            if (l == i) atransJn = false;
+            if (m == i) apassPso = false;
             it3.previous();
             it3.previous();
             i++;
@@ -344,15 +340,17 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             }
 
             QString nom = sat.tle().nom();
-            if (nom.contains("R/B") || nom.contains(" DEB"))
+            if (nom.contains("R/B") || nom.contains(" DEB")) {
                 nom = nom.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.tle().norad());
+            }
             flux << nom << endl;
             flux << QObject::tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
 
             i = 0;
             while (i < res.count()) {
-                if (i > 0 && res.at(i).mid(0, 10) != res.at(i-1).mid(0, 10))
+                if (i > 0 && res.at(i).mid(0, 10) != res.at(i-1).mid(0, 10)) {
                     flux << endl;
+                }
                 flux << res.at(i) << endl;
                 i++;
             }
@@ -406,8 +404,9 @@ void Evenements::CalculEphemerides(const Conditions &conditions)
             soleil.CalculPosition(date);
 
             // Position de la Lune
-            if (conditions.acalcEclipseLune())
+            if (conditions.acalcEclipseLune()) {
                 lune.CalculPosition(date);
+            }
 
             // Position du satellite
             sat.CalculPosVit(date);
