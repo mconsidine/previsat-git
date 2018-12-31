@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    31 decembre 2018
  *
  */
 
@@ -47,28 +47,38 @@
 /*
  * Constructeurs
  */
+
+/*
+ * Constructeur par defaut (propagation de l'exception)
+ */
 PreviSatException::PreviSatException() throw()
 {
-    _ierr = 0;
-}
+    /* Declarations des variables locales */
 
-PreviSatException::PreviSatException(const int ierr) throw()
-{
-    _ierr = ierr;
-}
+    /* Initialisations */
 
-PreviSatException::PreviSatException(const QString &message, const MessageType ierr) throw()
-{
-    _ierr = ierr;
-    if (!message.trimmed().isEmpty()) {
-        Message::Afficher(message, ierr);
-    }
+    /* Corps du constructeur */
+    _typeMessage = INFO;
+
+    /* Retour */
+    return;
 }
 
 /*
- * Code d'erreur
+ * Propagation de l'exception avec affichage d'un message
  */
-const char* PreviSatException::what() const throw()
+PreviSatException::PreviSatException(const QString &message, const MessageType &typeMessage) throw()
 {
-    return (QString::number(_ierr).toStdString().c_str());
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    _typeMessage = typeMessage;
+    if (!message.trimmed().isEmpty()) {
+        Message::Afficher(message, typeMessage);
+    }
+
+    /* Retour */
+    return;
 }

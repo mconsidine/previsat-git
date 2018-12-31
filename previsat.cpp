@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    31 decembre 2018
  *
  */
 
@@ -846,6 +846,7 @@ void PreviSat::DemarrageApplication()
     InitWallCommandCenter();
 
     resizeEvent(NULL);
+    Message::setFenetreParent(this);
 
     // Demarrage du temps reel
     chronometre->setInterval(200);
@@ -5258,8 +5259,9 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
                 for (int i=0; i<ui->liste1->count(); i++) {
                     if (ui->liste1->item(i)->checkState() == Qt::Checked) {
                         listeTLE.append(ui->liste1->item(i)->text().split("#").at(1));
-                        if (listeTLE.last() == nor)
+                        if (listeTLE.last() == nor) {
                             j = listeTLE.size() - 1;
+                        }
                     }
                 }
 
