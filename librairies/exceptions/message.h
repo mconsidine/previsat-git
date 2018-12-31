@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    31 decembre 2018
  *
  */
 
@@ -42,6 +42,9 @@
 
 #include <QString>
 #include "messageConstants.h"
+
+
+class QMainWindow;
 
 class Message
 {
@@ -60,6 +63,12 @@ public:
      * @param ierr Type de message (ERREUR, INFO, WARNING)
      */
     static void Afficher(const QString &message, const MessageType ierr);
+
+    /**
+     * @brief setFenetreParent Definition de la fenetre parent (pour centrer l'affichage)
+     * @param fenetre fenetre
+     */
+    static void setFenetreParent(QMainWindow *fenetre);
 
     /* Accesseurs */
 

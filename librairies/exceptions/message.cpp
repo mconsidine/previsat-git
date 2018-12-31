@@ -36,17 +36,24 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    31 decembre 2018
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#include <QMainWindow>
 #include <QMessageBox>
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wfloat-equal"
 #include "message.h"
 
+
+QMainWindow *_fenetre;
+
+/*
+ * Affichage d'un message dans une boite de message
+ */
 void Message::Afficher(const QString &message, const MessageType ierr)
 {
     /* Declarations des variables locales */
@@ -57,15 +64,15 @@ void Message::Afficher(const QString &message, const MessageType ierr)
     switch (ierr) {
 
     case INFO:
-        QMessageBox::information(0, QObject::tr("Information"), message);
+        QMessageBox::information(_fenetre, QObject::tr("Information"), message);
         break;
 
     case WARNING:
-        QMessageBox::warning(0, QObject::tr("Avertissement"), message);
+        QMessageBox::warning(_fenetre, QObject::tr("Avertissement"), message);
         break;
 
     case ERREUR:
-        QMessageBox::critical(0, QObject::tr("Erreur"), message);
+        QMessageBox::critical(_fenetre, QObject::tr("Erreur"), message);
 
     default:
         break;
@@ -73,4 +80,12 @@ void Message::Afficher(const QString &message, const MessageType ierr)
 
     /* Retour */
     return;
+}
+
+/*
+ * Definition de la fenetre parent (pour centrer l'affichage)
+ */
+void Message::setFenetreParent(QMainWindow *fenetre)
+{
+    _fenetre = fenetre;
 }

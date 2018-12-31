@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    31 decembre 2018
  *
  */
 
@@ -49,16 +49,23 @@ class PreviSatException : public std::exception
 public:
 
     /* Constructeurs */
+    /**
+     * @brief PreviSatException Constructeur par defaut (propagation de l'exception)
+     */
     PreviSatException() throw();
-    explicit PreviSatException(const int ierr) throw();
-    PreviSatException(const QString &message, const MessageType ierr) throw();
+
+    /**
+     * @brief PreviSatException Propagation de l'exception avec affichage d'un message
+     * @param message message
+     * @param typeMessage type du message (INFO, WARNING ou ERREUR)
+     */
+    PreviSatException(const QString &message, const MessageType &typeMessage) throw();
 
     /* Constantes publiques */
 
     /* Variables publiques */
 
     /* Methodes publiques */
-    virtual const char* what() const throw();
 
     /* Accesseurs */
 
@@ -77,7 +84,7 @@ private:
     /* Constantes privees */
 
     /* Variables privees */
-    int _ierr;
+    int _typeMessage;
 
     /* Methodes privees */
 
