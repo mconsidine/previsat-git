@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 decembre 2018
+ * >    1er janvier 2019
  *
  */
 
@@ -60,9 +60,9 @@ public:
     /**
      * @brief Afficher Affichage d'un message dans une boite de message
      * @param message Message a afficher
-     * @param ierr Type de message (ERREUR, INFO, WARNING)
+     * @param typeMessage Type de message (ERREUR, INFO, WARNING)
      */
-    static void Afficher(const QString &message, const MessageType ierr);
+    static void Afficher(const QString &message, const MessageType &typeMessage);
 
     /**
      * @brief setFenetreParent Definition de la fenetre parent (pour centrer l'affichage)

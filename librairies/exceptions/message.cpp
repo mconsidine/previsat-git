@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 decembre 2018
+ * >    1er janvier 2019
  *
  */
 
@@ -54,14 +54,14 @@ QMainWindow *_fenetre;
 /*
  * Affichage d'un message dans une boite de message
  */
-void Message::Afficher(const QString &message, const MessageType ierr)
+void Message::Afficher(const QString &message, const MessageType &typeMessage)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    switch (ierr) {
+    switch (typeMessage) {
 
     case INFO:
         QMessageBox::information(_fenetre, QObject::tr("Information"), message);
