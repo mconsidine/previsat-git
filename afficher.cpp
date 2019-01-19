@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    19 janvier 2019
  *
  */
 
@@ -234,6 +234,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     if (ind == 1) {
         res = result;
+        ui->ongletsResultats->setCurrentIndex(settings.value("affichage/ongletPrevisions", 0).toInt());
     } else {
         ui->ongletsResultats->removeTab(1);
     }
@@ -496,7 +497,6 @@ void Afficher::load()
         ui->webView->setContextMenuPolicy(Qt::CustomContextMenu);
     }
 
-    ui->ongletsResultats->setCurrentIndex(settings.value("affichage/ongletPrevisions", 0).toInt());
     ui->listePrevisions->horizontalHeader()->setHighlightSections(false);
     ui->listePrevisions->selectRow(0);
     ui->listePrevisions->setFocus();
@@ -534,7 +534,11 @@ void Afficher::show(const QString &fic)
 void Afficher::closeEvent(QCloseEvent *evt)
 {
     Q_UNUSED(evt)
-    settings.setValue("affichage/ongletPrevisions", ui->ongletsResultats->currentIndex());
+
+    if (ui->ongletsResultats->count() > 1) {
+        settings.setValue("affichage/ongletPrevisions", ui->ongletsResultats->currentIndex());
+    }
+
     ui->fichier->clear();
     if (sceneSky != NULL) {
         sceneSky->deleteLater();

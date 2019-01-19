@@ -35,7 +35,7 @@
     </message>
     <message>
         <location filename="afficher.ui" line="231"/>
-        <location filename="afficher.cpp" line="328"/>
+        <location filename="afficher.cpp" line="329"/>
         <source>Magn</source>
         <translation>Magn</translation>
     </message>
@@ -45,7 +45,7 @@
         <translation>Mir</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="301"/>
+        <location filename="afficher.cpp" line="302"/>
         <source>Corps</source>
         <translation>Body</translation>
     </message>
@@ -86,117 +86,117 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="249"/>
+        <location filename="afficher.cpp" line="250"/>
         <source>Prévisions de passage</source>
         <translation>Predictions of passes</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="258"/>
+        <location filename="afficher.cpp" line="259"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="254"/>
+        <location filename="afficher.cpp" line="255"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="262"/>
+        <location filename="afficher.cpp" line="263"/>
         <source>Flashs</source>
         <translation>Flares</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="299"/>
+        <location filename="afficher.cpp" line="300"/>
         <source>Angle</source>
         <translation>Angle</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="300"/>
+        <location filename="afficher.cpp" line="301"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="325"/>
         <location filename="afficher.cpp" line="326"/>
-        <location filename="afficher.cpp" line="343"/>
+        <location filename="afficher.cpp" line="327"/>
+        <location filename="afficher.cpp" line="344"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="327"/>
+        <location filename="afficher.cpp" line="328"/>
         <source>Hauteur Sat</source>
         <translation>Sat Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="329"/>
+        <location filename="afficher.cpp" line="330"/>
         <source>Haut Soleil</source>
         <translation>Sun Elev</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="440"/>
-        <location filename="afficher.cpp" line="444"/>
+        <location filename="afficher.cpp" line="441"/>
+        <location filename="afficher.cpp" line="445"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="442"/>
-        <location filename="afficher.cpp" line="446"/>
+        <location filename="afficher.cpp" line="443"/>
+        <location filename="afficher.cpp" line="447"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="488"/>
+        <location filename="afficher.cpp" line="489"/>
         <source>km</source>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="488"/>
         <location filename="afficher.cpp" line="489"/>
+        <location filename="afficher.cpp" line="490"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="488"/>
+        <location filename="afficher.cpp" line="489"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="492"/>
+        <location filename="afficher.cpp" line="493"/>
         <source>Longitude</source>
         <translation>Longitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="493"/>
+        <location filename="afficher.cpp" line="494"/>
         <source>Latitude</source>
         <translation>Latitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="493"/>
+        <location filename="afficher.cpp" line="494"/>
         <source>Altitude</source>
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="576"/>
+        <location filename="afficher.cpp" line="580"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="577"/>
+        <location filename="afficher.cpp" line="581"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="594"/>
+        <location filename="afficher.cpp" line="598"/>
         <source>Enregistrer sous</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="595"/>
+        <location filename="afficher.cpp" line="599"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg);;BMP files (*.bmp);;All files (*)</translation>
     </message>
     <message>
-        <location filename="afficher.cpp" line="1138"/>
+        <location filename="afficher.cpp" line="1142"/>
         <source>Flash %1</source>
         <translation>%1 flare</translation>
     </message>
