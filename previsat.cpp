@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 decembre 2018
+ * >    17 fevrier 2019
  *
  */
 
@@ -10945,7 +10945,7 @@ void PreviSat::on_actionMettre_jour_groupe_TLE_triggered()
     on_majMaintenant_clicked();
 }
 
-void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
+void PreviSat::MettreAJourGroupesTLE(const QString &groupe)
 {
     /* Declarations des variables locales */
 
@@ -10959,20 +10959,6 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     ui->compteRenduMaj->setVisible(true);
 
     /* Corps de la methode */
-    // Mise a jour du TLE de l'ISS pour les transits
-    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
-
-    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
-    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
-
-    // Affichage des manoeuvres ISS
-    if (!tabManoeuvresISS.isEmpty()) {
-        AffichageManoeuvresISS();
-    }
-
-    // Mise a jour de tous les groupes de TLE
     QFile fi(dirLocalData + QDir::separator() + "gestionnaireTLE_" + localePreviSat + ".gst");
     fi.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&fi);
@@ -10980,14 +10966,14 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     while (!flux.atEnd()) {
 
         const QStringList ligne = flux.readLine().split("#", QString::SkipEmptyParts);
-        if (ligne.at(0).startsWith(tr("tous") + "@")) {
+        if (ligne.at(0).startsWith(groupe + "@")) {
 
             for(int i=0; i<ui->groupeTLE->count(); i++) {
 
                 const QString groupeTLE = ui->groupeTLE->itemText(i).toLower();
                 if (ligne.at(0).toLower() == groupeTLE) {
 
-                    messagesStatut->setText(tr("Mise à jour de tous les groupes de TLE en cours..."));
+                    messagesStatut->setText(tr("Mise à jour des groupes de TLE en cours..."));
                     ui->affichageMsgMAJ->setVisible(false);
                     ui->frameBarreProgression->setVisible(true);
 
@@ -11017,6 +11003,49 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
             }
         }
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionMettre_jour_TLE_communs_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Mise a jour des groupes de TLE communs
+    const QString groupe = tr("commun");
+    MettreAJourGroupesTLE(groupe);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Mise a jour du TLE de l'ISS pour les transits
+    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+
+    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
+    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
+
+    // Affichage des manoeuvres ISS
+    if (!tabManoeuvresISS.isEmpty()) {
+        AffichageManoeuvresISS();
+    }
+
+    // Mise a jour de tous les groupes de TLE
+    const QString groupe = tr("tous");
+    MettreAJourGroupesTLE(groupe);
 
     /* Retour */
     return;
@@ -12729,3 +12758,4 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
+

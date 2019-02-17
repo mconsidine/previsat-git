@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2018
+ * >    17 fevrier 2019
  *
  */
 
@@ -621,6 +621,8 @@ private slots:
     void on_majMaintenant_clicked();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
+    void MettreAJourGroupesTLE(const QString &groupe);
+    void on_actionMettre_jour_TLE_communs_triggered();
     void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();
     void on_parcourirMaj1_clicked();
     void on_parcourirMaj2_clicked();
