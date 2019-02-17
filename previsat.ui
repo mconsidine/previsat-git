@@ -14376,6 +14376,7 @@ le flux vidéo</string>
     <addaction name="separator"/>
     <addaction name="actionMettre_jour_TLE_courant"/>
     <addaction name="actionMettre_jour_groupe_TLE"/>
+    <addaction name="actionMettre_jour_TLE_communs"/>
     <addaction name="actionMettre_jour_tous_les_groupes_de_TLE"/>
     <addaction name="separator"/>
     <addaction name="actionVision_nocturne"/>
@@ -14692,6 +14693,17 @@ le flux vidéo</string>
   <action name="actionFaire">
    <property name="text">
     <string>Faire un don</string>
+   </property>
+  </action>
+  <action name="actionMettre_jour_TLE_communs">
+   <property name="text">
+    <string>Mettre à jour TLE communs</string>
+   </property>
+   <property name="toolTip">
+    <string>Mettre à jour TLE communs</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+F5</string>
    </property>
   </action>
  </widget>
