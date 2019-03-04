@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    3 mars 2019
  *
  */
 
@@ -515,7 +515,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
         const Date dateMan = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
                                                       tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
 
-        if ((dateMan.jourJulienUTC() > dateArc1.jourJulienUTC()) && (dateMan.jourJulienUTC() <= dateArc2.jourJulienUTC())) {
+        if ((dateMan.jourJulienUTC() >= dateArc1.jourJulienUTC()) && (dateMan.jourJulienUTC() < dateArc2.jourJulienUTC())) {
             QString fmt = "%1";
             if (masse1.isEmpty()) masse1 = masse2;
             tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
