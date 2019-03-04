@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 fevrier 2019
+ * >    4 mars 2019
  *
  */
 
@@ -7778,6 +7778,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->coordGeo3->setVisible(false);
         ui->coordGeo4->setVisible(false);
         ui->radar->setVisible(false);
+        ui->lbl_chaine->setVisible(true);
+        ui->chaine->setVisible(true);
         ui->fluxVideo->setText(tr("Cliquez ici pour activer\nle flux vidéo"));
 
         ui->frameZone->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -7794,6 +7796,8 @@ void PreviSat::on_mccISS_toggled(bool checked)
         ui->coordGeo3->setVisible(true);
         ui->coordGeo4->setVisible(true);
         ui->radar->setVisible(true);
+        ui->lbl_chaine->setVisible(false);
+        ui->chaine->setVisible(false);
 
         ui->frameZone->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         ui->frameOnglets->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -7849,8 +7853,6 @@ void PreviSat::on_fluxVideo_clicked()
         }
 
         setCursor(Qt::ArrowCursor);
-        ui->lbl_chaine->setVisible(true);
-        ui->chaine->setVisible(true);
         QDesktopServices::openUrl(QUrl(fic));
 
     } catch (PreviSatException &e) {
