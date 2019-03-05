@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mars 2019
+ * >    5 mars 2019
  *
  */
 
@@ -7554,6 +7554,11 @@ void PreviSat::on_pasManuel_currentIndexChanged(int index)
 }
 
 
+void PreviSat::on_faireDon_clicked()
+{
+    on_actionFaire_triggered();
+}
+
 void PreviSat::on_meteo_clicked()
 {
     /* Declarations des variables locales */
@@ -12760,4 +12765,3 @@ void PreviSat::on_afficherMetOp_clicked()
     /* Retour */
     return;
 }
-

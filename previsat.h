@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 fevrier 2019
+ * >    5 mars 2019
  *
  */
 
@@ -464,6 +464,7 @@ private slots:
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
 
+    void on_faireDon_clicked();
     void on_meteo_clicked();
     void on_meteoBasesNASA_clicked();
     void MeteoPleinEcran();
