@@ -61,5 +61,6 @@
         <file>resources/icones/otv.png</file>
         <file>resources/icones/noaa.png</file>
         <file>resources/icones/cygnus.png</file>
+        <file>resources/paypal.png</file>
     </qresource>
 </RCC>
