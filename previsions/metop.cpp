@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    25 mars 2019
  *
  */
 
@@ -234,11 +234,15 @@ double MetOp::MagnitudeFlash(const bool ext, const bool eclPartielle, const doub
     if (typSat.contains("metop")) {
 
         // Magnitude pour l'instrument ASCAT (satellites MetOp)
-        magnitude = -5. + angDeg * (0.239 + angDeg * 2.2573);
+        if (_pan == 1) {
+            magnitude = (angDeg < 0.5) ? 0.5333 * angDeg - 3.6 : 1.9419 * log(angDeg) - 2.769;
+        } else {
+            magnitude = angDeg - 5.;
+        }
     } else {
 
         // Magnitude pour l'antenne SAR
-        magnitude = 0.3075 * angDeg - 2.92;
+        magnitude = 0.3061 * angDeg - 2.6051;
     }
 
     // Prise en compte des eclipses partielles ou annulaires
