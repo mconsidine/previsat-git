@@ -9077,7 +9077,7 @@
             <property name="geometry">
              <rect>
               <x>490</x>
-              <y>60</y>
+              <y>30</y>
               <width>151</width>
               <height>22</height>
              </rect>
@@ -9310,7 +9310,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>34</y>
+              <y>64</y>
               <width>111</width>
               <height>16</height>
              </rect>
@@ -9358,7 +9358,7 @@
             <property name="geometry">
              <rect>
               <x>530</x>
-              <y>31</y>
+              <y>61</y>
               <width>51</width>
               <height>22</height>
              </rect>
@@ -9402,7 +9402,7 @@
             <property name="geometry">
              <rect>
               <x>420</x>
-              <y>64</y>
+              <y>34</y>
               <width>71</width>
               <height>16</height>
              </rect>
@@ -14421,6 +14421,7 @@ le flux vidéo</string>
     <addaction name="actionVision_nocturne"/>
     <addaction name="separator"/>
     <addaction name="actionFichier_d_aide"/>
+    <addaction name="actionInformations"/>
     <addaction name="separator"/>
     <addaction name="actionTelecharger_la_mise_a_jour"/>
     <addaction name="actionMettre_jour_fichiers_internes"/>
@@ -14730,6 +14731,10 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionFaire">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/paypal.png</normaloff>:/resources/paypal.png</iconset>
+   </property>
    <property name="text">
     <string>Faire un don</string>
    </property>
@@ -14743,6 +14748,14 @@ le flux vidéo</string>
    </property>
    <property name="shortcut">
     <string>Alt+F5</string>
+   </property>
+  </action>
+  <action name="actionInformations">
+   <property name="text">
+    <string>Informations</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
    </property>
   </action>
  </widget>

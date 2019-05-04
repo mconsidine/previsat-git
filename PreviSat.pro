@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    18 novembre 2018
+# >    1er mai 2019
 
 #-------------------------------------------------
 VER_MAJ = 4.0
-VERSION = 4.0.0.11
+VERSION = 4.0.0.12
 ANNEES_DEV = 2005-2019
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -81,6 +81,7 @@ SOURCES += main.cpp                                    \
     afficher.cpp                                       \
     apropos.cpp                                        \
     gestionnairetle.cpp                                \
+    informations.cpp                                   \
     telecharger.cpp                                    \
     threadcalculs.cpp                                  \
     librairies/corps/corps.cpp                         \
@@ -117,6 +118,7 @@ HEADERS += previsat.h                                  \
     afficher.h                                         \
     apropos.h                                          \
     gestionnairetle.h                                  \
+    informations.h                                     \
     telecharger.h                                      \
     threadcalculs.h                                    \
     librairies/corps/corps.h                           \
@@ -163,6 +165,7 @@ FORMS += previsat.ui   \
     afficher.ui        \
     apropos.ui         \
     gestionnairetle.ui \
+    informations.ui    \
     telecharger.ui
 
 OTHER_FILES += icone.rc

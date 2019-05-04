@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2019
+ * >    4 mai 2019
  *
  */
 
@@ -97,6 +97,7 @@
 #include "afficher.h"
 #include "apropos.h"
 #include "gestionnairetle.h"
+#include "informations.h"
 #include "previsat.h"
 #include "telecharger.h"
 #include "threadcalculs.h"
@@ -262,6 +263,7 @@ static QString dirDwn;
 static QString adresseAstropedia;
 static const QString adresseCelestrak = "http://www.celestrak.com/";
 static const QString adresseCelestrakNorad = adresseCelestrak + "NORAD/elements/";
+static QString majInfosDate;
 
 static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
@@ -855,6 +857,11 @@ void PreviSat::DemarrageApplication()
 
     CalculsAffichage();
 
+    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString() + "informations/last_news_" + localePreviSat + ".html");
+    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+        on_actionInformations_triggered();
+    }
+
     tim = QDateTime::currentDateTimeUtc();
 
     /* Retour */
@@ -912,6 +919,7 @@ void PreviSat::InitAffichageDemarrage() const
     /* Corps de la methode */
     ui->actionOuvrir_fichier_TLE->setIcon(styleIcones->standardIcon(QStyle::SP_DirOpenIcon));
     ui->actionEnregistrer->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
+    ui->actionInformations->setIcon(styleIcones->standardIcon(QStyle::SP_MessageBoxInformation));
 
     ui->actionFermerVideo->setIcon(styleIcones->standardIcon(QStyle::SP_TitleBarCloseButton));
     ui->fermerVideo->setDefaultAction(ui->actionFermerVideo);
@@ -4747,7 +4755,7 @@ void PreviSat::VerifMAJPreviSat()
     const QString dirHttpPrevi = adresseAstropedia + "previsat/Qt/";
 
     /* Corps de la methode */
-    const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt");
+    const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt" << "majInfos");
     amajDeb = true;
     amajPrevi = true;
     dirDwn = dirTmp;
@@ -4789,7 +4797,7 @@ void PreviSat::VerifMAJPreviSat()
                     ui->actionTelecharger_la_mise_a_jour->setVisible(false);
                 }
 
-            } else if (fic == "majFicInt" && !anewVersion) {
+            } else if ((fic == "majFicInt" || fic == "majInfos") && !anewVersion) {
 
                 const int an = ligne.mid(0, 4).toInt();
                 const int mo = ligne.mid(5, 2).toInt();
@@ -4797,29 +4805,50 @@ void PreviSat::VerifMAJPreviSat()
 
                 const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
 
-                dirDwn = dirLocalData;
+                if (fic == "majFicInt") {
 
-                QDateTime dateMax;
-                for(int i=0; i<listeFicLocalData.size(); i++) {
+                    dirDwn = dirLocalData;
 
-                    const QString fichier = listeFicLocalData.at(i);
-                    if (!fichier.contains("gestionnaireTLE_") && !fichier.contains("preferences")) {
-                        const QString fich = dirLocalData + QDir::separator() + fichier;
-                        const QFileInfo fi2(fich);
+                    QDateTime dateMax;
+                    for(int i=0; i<listeFicLocalData.size(); i++) {
 
-                        if (fi2.lastModified().date() > dateMax.date()) {
-                            dateMax.setDate(fi2.lastModified().date());
+                        const QString fichier = listeFicLocalData.at(i);
+                        if (!fichier.contains("gestionnaireTLE_") && !fichier.contains("preferences")) {
+                            const QString fich = dirLocalData + QDir::separator() + fichier;
+                            const QFileInfo fi2(fich);
+
+                            if (fi2.lastModified().date() > dateMax.date()) {
+                                dateMax.setDate(fi2.lastModified().date());
+                            }
                         }
+                    }
+
+                    const bool anew = (dateHttp > dateMax);
+
+                    if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
+                        MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, tr("des fichiers internes"));
+                        settings.setValue("fichier/majPrevi", "1");
+                    } else {
+                        ui->actionMettre_jour_fichiers_internes->setVisible(false);
                     }
                 }
 
-                const bool anew = (dateHttp > dateMax);
+                if (fic == "majInfos") {
 
-                if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
-                    MiseAJourFichiers(ui->actionMettre_jour_fichiers_internes, tr("des fichiers internes"));
-                    settings.setValue("fichier/majPrevi", "1");
-                } else {
-                    ui->actionMettre_jour_fichiers_internes->setVisible(false);
+                    majInfosDate = ligne;
+                    QFont fnt;
+
+                    if (settings.value("affichage/informationsDemarrage", true).toBool()) {
+                        fnt.setBold(false);
+                        ui->actionInformations->setFont(fnt);
+
+                    } else {
+                        const QDateTime lastInfos = QDateTime::fromString(settings.value("temps/lastInfos", "").toString(), "yyyy-MM-dd");
+                        if (dateHttp > lastInfos) {
+                            fnt.setBold(true);
+                            ui->actionInformations->setFont(fnt);
+                        }
+                    }
                 }
 
             } else {
@@ -8148,6 +8177,39 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
 void PreviSat::on_actionFichier_d_aide_triggered()
 {
     on_directHelp_clicked();
+}
+
+void PreviSat::on_actionInformations_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString() + "informations/last_news_" + localePreviSat + ".html");
+
+    if (Informations::UrlExiste(urlLastNews)) {
+
+        Informations * const infos = new Informations(localePreviSat, this);
+        infos->setWindowModality(Qt::ApplicationModal);
+        infos->show();
+
+        QFont fnt;
+        fnt.setBold(false);
+        ui->actionInformations->setFont(fnt);
+
+        if (!majInfosDate.isEmpty()) {
+            settings.setValue("temps/lastInfos", majInfosDate);
+        }
+
+    } else {
+        if (!majInfosDate.isEmpty()) {
+            Message::Afficher(tr("Pas d'informations à afficher"), INFO);
+        }
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionFaire_triggered()
@@ -12212,12 +12274,12 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
         itm = new QTableWidgetItem();
         QString dv = fmt.arg(manoeuvre.at(7)).arg(manoeuvre.at(8)).arg(manoeuvre.at(9));
         if (ui->unitesKm->isChecked()) {
-             dv = fmt.arg(manoeuvre.at(7).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(8).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
-                     .arg(manoeuvre.at(9).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
-             itm->setToolTip(tr("m/s"));
-         } else {
-             itm->setToolTip(tr("fps"));
-         }
+            dv = fmt.arg(manoeuvre.at(7).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(8).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                    .arg(manoeuvre.at(9).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+            itm->setToolTip(tr("m/s"));
+        } else {
+            itm->setToolTip(tr("fps"));
+        }
         itm->setText(dv);
         itm->setTextAlignment(Qt::AlignCenter);
         tableMan->setItem(0, 3, itm);
@@ -12226,12 +12288,12 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
         itm = new QTableWidgetItem();
         dv = fmt.arg(manoeuvre.at(10)).arg(manoeuvre.at(11)).arg(manoeuvre.at(12));
         if (ui->unitesKm->isChecked()) {
-             dv = fmt.arg(manoeuvre.at(10).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(11).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
-                     .arg(manoeuvre.at(12).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
-             itm->setToolTip(tr("m/s"));
-         } else {
-             itm->setToolTip(tr("fps"));
-         }
+            dv = fmt.arg(manoeuvre.at(10).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(11).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                    .arg(manoeuvre.at(12).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+            itm->setToolTip(tr("m/s"));
+        } else {
+            itm->setToolTip(tr("fps"));
+        }
         itm->setText(dv);
         itm->setTextAlignment(Qt::AlignCenter);
         tableMan->setItem(0, 4, itm);
