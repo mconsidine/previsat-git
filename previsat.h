@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 mars 2019
+ * >    2 mai 2019
  *
  */
 
@@ -487,6 +487,7 @@ private slots:
     void on_actionImprimer_carte_triggered();
     void on_actionVision_nocturne_toggled(bool arg1);
     void on_actionFichier_d_aide_triggered();
+    void on_actionInformations_triggered();
     void on_actionFaire_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionTelecharger_la_mise_a_jour_triggered();
