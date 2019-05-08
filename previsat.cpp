@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mai 2019
+ * >    8 mai 2019
  *
  */
 
@@ -12617,7 +12617,7 @@ void PreviSat::on_parametrageDefautMetOp_clicked()
     ui->valHauteurSoleilMetOp->setVisible(false);
     ui->lieuxObservation5->setCurrentIndex(0);
     ui->ordreChronologiqueMetOp->setChecked(true);
-    ui->magnitudeMaxMetOp->setValue(2.);
+    ui->magnitudeMaxMetOp->setValue(4.);
     ui->affichage3lignesMetOp->setChecked(true);
     if (!ui->calculsMetOp->isEnabled() && ! ui->afficherMetOp->isEnabled() && threadCalculs == NULL) {
         ui->calculsMetOp->setEnabled(true);
