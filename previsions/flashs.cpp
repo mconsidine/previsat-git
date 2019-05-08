@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    8 mai 2019
  *
  */
 
@@ -569,7 +569,6 @@ void Flashs::DeterminationFlash(const double minmax[], const Conditions &conditi
                     temp = minmax[0];
 
                     // Calcul des valeurs exactes pour les differentes dates
-                    _pan = -1;
                     QString flash = "", ligne = "";
                     for(int i=0; i<3; i++) {
 

@@ -374,7 +374,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="informations.ui" line="65"/>
         <source>Dernière Information</source>
-        <translation>Last informations</translation>
+        <translation>Latest informations</translation>
     </message>
     <message>
         <location filename="informations.ui" line="78"/>
@@ -4227,7 +4227,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="previsions/evenements.cpp" line="250"/>
-        <location filename="previsions/flashs.cpp" line="666"/>
+        <location filename="previsions/flashs.cpp" line="665"/>
         <location filename="previsions/prevision.cpp" line="228"/>
         <location filename="previsions/transitiss.cpp" line="282"/>
         <source>nmi</source>
@@ -4330,7 +4330,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="256"/>
         <location filename="previsions/evenements.cpp" line="478"/>
-        <location filename="previsions/flashs.cpp" line="708"/>
+        <location filename="previsions/flashs.cpp" line="707"/>
         <location filename="previsions/transitiss.cpp" line="339"/>
         <source>W</source>
         <translation>W</translation>
@@ -4338,7 +4338,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="256"/>
         <location filename="previsions/evenements.cpp" line="478"/>
-        <location filename="previsions/flashs.cpp" line="708"/>
+        <location filename="previsions/flashs.cpp" line="707"/>
         <location filename="previsions/transitiss.cpp" line="339"/>
         <source>E</source>
         <translation>E</translation>
@@ -4346,7 +4346,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="258"/>
         <location filename="previsions/evenements.cpp" line="480"/>
-        <location filename="previsions/flashs.cpp" line="709"/>
+        <location filename="previsions/flashs.cpp" line="708"/>
         <location filename="previsions/transitiss.cpp" line="340"/>
         <source>N</source>
         <translation>N</translation>
@@ -4354,7 +4354,7 @@ Age of the oldest TLE      : %3 days</translation>
     <message>
         <location filename="previsions/evenements.cpp" line="258"/>
         <location filename="previsions/evenements.cpp" line="480"/>
-        <location filename="previsions/flashs.cpp" line="709"/>
+        <location filename="previsions/flashs.cpp" line="708"/>
         <location filename="previsions/transitiss.cpp" line="295"/>
         <location filename="previsions/transitiss.cpp" line="340"/>
         <source>S</source>
@@ -4455,13 +4455,13 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>%1   Date         Hour    Sat Azimuth Sat Elev    RA Sat    Decl Sat  Cst  Ang  Mir Magn   Alt  Range   Sun Azim   Sun Elev     Max Long    Max Lat      Range    Max Magn</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="694"/>
+        <location filename="previsions/flashs.cpp" line="693"/>
         <location filename="previsions/transitiss.cpp" line="336"/>
         <source>(W)</source>
         <translation>(W)</translation>
     </message>
     <message>
-        <location filename="previsions/flashs.cpp" line="694"/>
+        <location filename="previsions/flashs.cpp" line="693"/>
         <location filename="previsions/transitiss.cpp" line="330"/>
         <source>(E)</source>
         <translation>(E)</translation>
