@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 mai 2019
+ * >    18 mai 2019
  *
  */
 
@@ -2569,8 +2569,13 @@ void PreviSat::AffichageCourbes() const
                 const int lstr = qRound(lciel - lciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * sin(etoile.azimut()));
                 const int bstr = qRound(hciel - hciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * cos(etoile.azimut()));
 
-                rectangle = (etoile.magnitude() > 3.) ? QRect(lstr-1, bstr-1, 2, 2) : QRect(lstr-1, bstr-1, 2, 3);
-                scene3->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
+                if (etoile.magnitude() <= 3.) {
+                    rectangle = QRect(lstr-1, bstr-1, 2, 3);
+                    scene3->addEllipse(rectangle, QPen(Qt::NoPen), bru2);
+                } else {
+                    const QLine lin(lstr, bstr, lstr, bstr);
+                    scene3->addLine(lin, bru2.color());
+                }
 
                 // Nom des etoiles les plus brillantes
                 if (ui->affetoiles->isChecked()) {
