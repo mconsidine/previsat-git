@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    30 juin 2019
  *
  */
 
@@ -157,14 +157,12 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
 
     ligne2 = QObject::tr("Fuseau horaire            : %1");
     QString chaine = QObject::tr("UTC");
-    if (conditions._ecart) {
-        if (fabs(conditions._offset) > EPSDBL100) {
-            QTime heur;
-            heur = heur.addSecs((int) (conditions._offset * NB_SEC_PAR_JOUR + EPS_DATES));
-            chaine = chaine.append((conditions._offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
-        }
+    if (fabs(conditions._offset) > EPSDBL100) {
+        QTime heur;
+        heur = heur.addSecs((int) (conditions._offset * NB_SEC_PAR_JOUR + EPS_DATES));
+        chaine = chaine.append((conditions._offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
     }
-    flux << QString((conditions._ecart) ? ligne2.arg(chaine) : ligne2.arg(QObject::tr("Heure légale"))) << endl;
+    flux << ligne2.arg(chaine) << endl;
 
     if (itransit) {
         flux << (cond1 + cond2).arg(conditions._haut * RAD2DEG) << endl;
