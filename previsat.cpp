@@ -67,7 +67,6 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QtNetwork>
-#include <QWebFrame>
 #include <QWebView>
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wconversion"
@@ -2317,6 +2316,9 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la zone de visibilite des satellites
         QList<bool> als;
+		for(int i=0; i<nbSat; i++) {
+            als.append(false);
+		}
 
         if (nbSat > 0) {
 
@@ -2325,7 +2327,6 @@ void PreviSat::AffichageCourbes() const
 
                 for(int isat=0; isat<nbMax2; isat++) {
 
-                    als.append(false);
                     if (mcc) {
 
                         crayon = QPen((ui->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
