@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    3 juillet 2019
  *
  */
 
@@ -378,7 +378,7 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double offset = Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1));
+    const double offset = (fabs(_offsetUTC) > EPSDBL100) ? Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1)) : 0.;
     const QDateTime qdate = Date((*this).jourJulienUTC() + offset + EPS_DATES, 0.).ToQDateTime(1);
 
     /* Corps de la methode */
