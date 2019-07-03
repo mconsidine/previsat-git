@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    3 juillet 2018
  *
  */
 
@@ -98,7 +98,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
             chaine = chaine.append((conditions.offset() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
     }
-    flux << QString((conditions.ecart()) ? fuseau.arg(chaine) : fuseau.arg(QObject::tr("Heure légale"))) << endl << endl;
+    flux << fuseau.arg(chaine) << endl << endl;
 
 
     /* Corps de la methode */
