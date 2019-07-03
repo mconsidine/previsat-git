@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 mai 2019
+ * >    3 juillet 2019
  *
  */
 
@@ -5155,7 +5155,9 @@ void PreviSat::ModificationOption()
 
     const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : "");
     ui->dateHeure3->setDisplayFormat(fmt);
+    ui->dateHeure3->setDateTime(dateCourante.ToQDateTime(1));
     ui->dateHeure4->setDisplayFormat(fmt);
+    ui->dateHeure4->setDateTime(dateCourante.ToQDateTime(1));
 
     if (ui->unitesKm->hasFocus() || ui->unitesMi->hasFocus() || ui->syst12h->hasFocus() || ui->syst24h->hasFocus()) {
         info = true;
@@ -9735,14 +9737,7 @@ void PreviSat::on_heureLegale_toggled(bool checked)
         acalcDN = true;
         dateCourante = Date(dateCourante, offsetUTC);
 
-        // Enchainement de l'ensemble des calculs
-        EnchainementCalculs();
-
-        // Affichage des donnees numeriques
-        AffichageDonnees();
-
-        // Affichage des elements graphiques
-        AffichageCourbes();
+        ModificationOption();
     }
 
     /* Retour */
@@ -9763,14 +9758,7 @@ void PreviSat::on_utc_toggled(bool checked)
         acalcDN = true;
         dateCourante = Date(dateCourante, 0.);
 
-        // Enchainement de l'ensemble des calculs
-        EnchainementCalculs();
-
-        // Affichage des donnees numeriques
-        AffichageDonnees();
-
-        // Affichage des elements graphiques
-        AffichageCourbes();
+        ModificationOption();
     }
 
     /* Retour */
