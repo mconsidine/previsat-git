@@ -4302,11 +4302,6 @@ Age of the oldest TLE      : %3 days</translation>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="previsions/evenements.cpp" line="101"/>
-        <source>Heure légale</source>
-        <translation>Local time</translation>
-    </message>
-    <message>
         <location filename="previsions/conditions.cpp" line="171"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>Maximal elevation of the Sun = %1°</translation>
