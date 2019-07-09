@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juillet 2019
+ * >    9 juillet 2019
  *
  */
 
@@ -6030,7 +6030,6 @@ void PreviSat::GestionTempsReel()
             threadCalculs = NULL;
         }
 
-        afficherResultats->close();
         afficherResultats->deleteLater();
         afficherResultats = NULL;
     }
@@ -11768,7 +11767,6 @@ void PreviSat::on_calculsPrev_clicked()
 
     /* Initialisations */
     if (afficherResultats != NULL) {
-        afficherResultats->close();
         afficherResultats->deleteLater();
         afficherResultats = NULL;
     }
@@ -12027,7 +12025,6 @@ void PreviSat::on_calculsEvt_clicked()
 
     /* Initialisations */
     if (afficherResultats != NULL) {
-        afficherResultats->close();
         afficherResultats->deleteLater();
         afficherResultats = NULL;
     }
@@ -12373,7 +12370,6 @@ void PreviSat::on_calculsTransit_clicked()
 
     /* Initialisations */
     if (afficherResultats != NULL) {
-        afficherResultats->close();
         afficherResultats->deleteLater();
         afficherResultats = NULL;
     }
@@ -12669,7 +12665,6 @@ void PreviSat::on_calculsMetOp_clicked()
 
     /* Initialisations */
     if (afficherResultats != NULL) {
-        afficherResultats->close();
         afficherResultats->deleteLater();
         afficherResultats = NULL;
     }
