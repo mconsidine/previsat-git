@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juillet 2019
+ * >    8 juillet 2019
  *
  */
 
@@ -2316,9 +2316,9 @@ void PreviSat::AffichageCourbes() const
 
         // Affichage de la zone de visibilite des satellites
         QList<bool> als;
-		for(int i=0; i<nbSat; i++) {
+        for(int i=0; i<nbSat; i++) {
             als.append(false);
-		}
+        }
 
         if (nbSat > 0) {
 
@@ -9133,7 +9133,8 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
         ui->nomsat->setText((nomsat.isEmpty()) ? tr("Inconnu") : nomsat);
 
         // Numero NORAD
-        ui->numNorad->setText(ligne.mid(0, 5));
+        const QString norad = ligne.mid(0, 5);
+        ui->numNorad->setText(norad);
 
         // Designation COSPAR
         const QString cospar = ligne.mid(6, 11).trimmed();
@@ -9293,6 +9294,45 @@ void PreviSat::on_satellitesTrouves_currentRowChanged(int currentRow)
         // Site de lancement
         const QString siteLancement = ligne.mid(117, 5).trimmed();
         ui->siteLancementDonneesSat->setText((siteLancement.isEmpty()) ? tr("Inconnu") : siteLancement);
+
+        // Recherche des fichiers TLE dans lesquels le satellite est present
+        ui->fichiersTle->clear();
+        const QDir di(dirTle);
+        const QStringList filtres(QStringList () << "*.txt");
+        const QStringList listeFicTle = di.entryList(filtres, QDir::Files);
+
+        foreach(const QString fic, listeFicTle) {
+
+            QVector<TLE> tabtle;
+            //TLE::LectureFichier(dirTle + QDir::separator() + fic, norad, tabtle);
+            QFile fi(dirTle + QDir::separator() + fic);
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+
+            bool atr = false;
+            while (!flux.atEnd() && !atr) {
+
+                const QString lig = flux.readLine();
+                if (lig.mid(0, 2) == "1 ") {
+                    if (lig.mid(2, 5) == norad) {
+                        atr = true;
+                    }
+                }
+            }
+            fi.close();
+
+            if (atr) {
+                ui->fichiersTle->addItem(fic);
+            }
+        }
+
+        if (ui->fichiersTle->count() > 0) {
+            ui->lbl_fichiersTle->setVisible(true);
+            ui->fichiersTle->setVisible(true);
+        } else {
+            ui->lbl_fichiersTle->setVisible(false);
+            ui->fichiersTle->setVisible(false);
+        }
     }
 
     /* Retour */
@@ -9306,6 +9346,8 @@ void PreviSat::AffichageResultats()
     /* Initialisations */
     ui->satellitesTrouves->clear();
     ui->frameResultats->setVisible(false);
+    ui->lbl_fichiersTle->setVisible(false);
+    ui->fichiersTle->setVisible(false);
 
     /* Corps de la methode */
     if (resultatsSatellitesTrouves.count() == 0) {
