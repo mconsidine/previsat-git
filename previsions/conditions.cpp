@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juillet 2019
+ * >    14 juillet 2019
  *
  */
 
@@ -148,7 +148,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
     QTextStream flux(&fichier);
 
     const QString titre = "%1 %2 / %3 (c) %4";
-    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
     QString ligne2 = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
