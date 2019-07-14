@@ -276,6 +276,7 @@ static QStringList listeFicLocalData;
 static QStringList tabManoeuvresISS;
 
 // Interface graphique
+static int nbOnglets;
 static QPalette paletteDefaut;
 static QGraphicsScene *scene;
 static QGraphicsScene *scene2;
@@ -308,6 +309,7 @@ PreviSat::PreviSat(QWidget *fenetreParent) :
     ui(new Ui::PreviSat)
 {
     ui->setupUi(this);
+    nbOnglets = ui->onglets->count();
     ui->onglets->setCurrentIndex(0);
     ui->ongletsOptions->setCurrentIndex(0);
     ui->ongletsOutils->setCurrentIndex(0);
@@ -670,8 +672,9 @@ void PreviSat::ChargementTLE()
 
             if (nbSat == 0) {
 
-                if (!l1.isEmpty() && !l2.isEmpty())
+                if (!l1.isEmpty() && !l2.isEmpty()) {
                     tles.append(TLE(nom, l1, l2));
+                }
 
                 // Ouverture du fichier TLE (pour placer dans la liste de l'interface graphique les satellites
                 // contenus dans le fichier)
@@ -2984,13 +2987,13 @@ void PreviSat::AffichageDonnees()
             const QString msg = "%1 %2";
             setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
-            if (ui->onglets->count() == 8 || (ui->onglets->count() == 6 && ui->liste2->count() == 0)) {
+            if ((ui->onglets->count() == nbOnglets) || ((ui->onglets->count() == nbOnglets-2) && (ui->liste2->count() == 0))) {
                 ui->onglets->removeTab(1);
                 ui->onglets->removeTab(1);
             }
         } else {
             ui->satellite->setVisible(true);
-            if (ui->onglets->count() < 8) {
+            if (ui->onglets->count() < nbOnglets) {
                 ui->onglets->insertTab(1, ui->osculateurs, tr("Éléments osculateurs"));
                 ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
             }
@@ -4508,7 +4511,7 @@ void PreviSat::EnchainementCalculs() const
                 }
             }
 
-            if (ui->onglets->count() == 8 && satellites[0].isIeralt()) {
+            if ((ui->onglets->count() == nbOnglets) && satellites[0].isIeralt()) {
                 chronometre->stop();
                 const QString msg = tr("Erreur rencontrée lors de l'exécution\nLa position du satellite %1 (numéro NORAD : %2) " \
                                        "ne peut pas être calculée (altitude négative)");
@@ -4518,7 +4521,7 @@ void PreviSat::EnchainementCalculs() const
                 l2 = "";
             }
 
-            if (ui->onglets->count() < 8 && !satellites[0].isIeralt()) {
+            if ((ui->onglets->count() < nbOnglets) && !satellites[0].isIeralt()) {
                 l1 = tles.at(0).ligne1();
                 l2 = tles.at(0).ligne2();
             }
@@ -5537,7 +5540,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         chaine = tr("Conditions : %1");
         flux << chaine.arg(ui->conditionsObservation->text()) << endl << endl << endl;
 
-        if (ui->onglets->count() == 8) {
+        if (ui->onglets->count() == nbOnglets) {
 
             // Donnees sur le satellite
             flux << tr("Nom du satellite :") + " " + ui->nomsat1->text() << endl << endl;
@@ -10832,8 +10835,8 @@ void PreviSat::on_supprLieu_clicked()
  */
 void PreviSat::on_barreMenu_pressed()
 {
-    ui->actionEnregistrer->setVisible((ui->onglets->currentIndex() < 3 && ui->onglets->count() == 8) ||
-                                      ui->onglets->currentIndex() < 1);
+    ui->actionEnregistrer->setVisible(((ui->onglets->currentIndex() < 3) && (ui->onglets->count() == nbOnglets))
+                                      || (ui->onglets->currentIndex() < 1));
 }
 
 void PreviSat::on_onglets_currentChanged(int index)
