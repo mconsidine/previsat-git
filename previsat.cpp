@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 juillet 2019
+ * >    14 juillet 2019
  *
  */
 
@@ -3258,7 +3258,7 @@ void PreviSat::AffichageDonnees()
             }
 
             const Date dateCrt = (ui->tempsReel->isChecked()) ? Date(offsetUTC) : Date(dateCourante, offsetUTC);
-            const double delai = dateEcl.jourJulienUTC() - dateCrt.jourJulienUTC();
+            double delai = dateEcl.jourJulienUTC() - dateCrt.jourJulienUTC();
             if (delai >= -EPS_DATES && dateEcl.jourJulienUTC() < satellites.at(0).traceAuSol().last().at(3)) {
 
                 chaine = tr("Prochain %1 :");
@@ -3267,7 +3267,7 @@ void PreviSat::AffichageDonnees()
                 // Delai de l'evenement
                 chaine = tr("%1 (dans %2).");
                 const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
-                const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR) ?
+                const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
                             delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
                             delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
 
@@ -3301,8 +3301,9 @@ void PreviSat::AffichageDonnees()
 
                 // Delai de l'evenement
                 chaine = tr("%1 (dans %2). Azimut : %3");
-                const Date delaiAOS = Date(dateAOS.jourJulienUTC() - dateCrt.jourJulienUTC() - 0.5 + EPS_DATES, 0.);
-                const QString cDelaiAOS = (delaiAOS.heure() > 0) ?
+                delai = dateAOS.jourJulienUTC() - dateCrt.jourJulienUTC();
+                const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
+                const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
                             delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
                             delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
 
