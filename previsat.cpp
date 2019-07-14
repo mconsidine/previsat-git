@@ -10389,8 +10389,6 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QPalette filigrane;
-    filigrane.setColor(QPalette::Text, QColor::fromRgb(100, 100, 100));
 
     /* Corps de la methode */
     ui->nouvelleCategorie->setVisible(false);
@@ -10399,11 +10397,8 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
 
     ui->nvLieu->setText("");
     ui->nvLongitude->setText("000°00'00\"");
-    ui->nvLongitude->setPalette(filigrane);
     ui->nvLatitude->setText("000°00'00\"");
-    ui->nvLatitude->setPalette(filigrane);
     ui->nvAltitude->setText("0000");
-    ui->nvAltitude->setPalette(filigrane);
 
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->lbl_ajouterDans->setVisible(true);
