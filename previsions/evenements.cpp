@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    3 juillet 2018
+ * >    14 juillet 2018
  *
  */
 
@@ -86,7 +86,7 @@ void Evenements::CalculEvenements(const Conditions &conditions)
     QTextStream flux(&fichier);
 
     const QString titre = "%1 %2 / %3 (c) %4";
-    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+    flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 
     const QString fuseau = QObject::tr("Fuseau horaire : %1");
