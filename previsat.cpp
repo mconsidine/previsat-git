@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juillet 2019
+ * >    27 juillet 2019
  *
  */
 
@@ -987,6 +987,7 @@ void PreviSat::InitAffichageDemarrage() const
     pal.setBrush(ui->lbl_coordonneesSoleil->backgroundRole(), coulLabel);
     ui->lbl_coordonneesSoleil->setPalette(pal);
     ui->lbl_coordonneesLune->setPalette(pal);
+    ui->rechercheDonneesSat->setChecked(settings.value("affichage/rechercheDonneesSat", false).toBool());
 
     ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
     ui->lieuxObservation2->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
@@ -2987,15 +2988,16 @@ void PreviSat::AffichageDonnees()
             const QString msg = "%1 %2";
             setWindowTitle(msg.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
 
-            if ((ui->onglets->count() == nbOnglets) || ((ui->onglets->count() == nbOnglets-2) && (ui->liste2->count() == 0))) {
+            if ((ui->onglets->count() == nbOnglets) || ((ui->onglets->count() == nbOnglets-1) && (ui->liste2->count() == 0))) {
                 ui->onglets->removeTab(1);
-                ui->onglets->removeTab(1);
+                ui->rechercheDonneesSat->setChecked(true);
+                ui->rechercheDonneesSat->setVisible(false);
             }
         } else {
             ui->satellite->setVisible(true);
             if (ui->onglets->count() < nbOnglets) {
                 ui->onglets->insertTab(1, ui->osculateurs, tr("Éléments osculateurs"));
-                ui->onglets->insertTab(2, ui->informations, tr("Informations satellite"));
+                ui->rechercheDonneesSat->setVisible(true);
             }
         }
 
@@ -5728,7 +5730,8 @@ void PreviSat::SauvePreferences(const QString &fic) const
         }
         QTextStream flux(&sw);
 
-        flux << "affichage/affMax " << BOOL_STR(ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) << endl <<
+        flux << "affichage/rechercheDonneesSat " << BOOL_STR(ui->rechercheDonneesSat->isChecked()) << endl <<
+                "affichage/affMax " << BOOL_STR(ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) << endl <<
                 "affichage/affSAA " << BOOL_STR(ui->affSAA->isChecked()) << endl <<
                 "affichage/affconst " << ui->affconst->checkState() << endl <<
                 "affichage/affcoord " << BOOL_STR(ui->affcoord->isChecked()) << endl <<
@@ -6467,6 +6470,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
     settings.setValue("temps/dtu", ui->updown->value() * NB_JOUR_PAR_MIN);
 
+    settings.setValue("affichage/rechercheDonneesSat", ui->rechercheDonneesSat->isChecked());
     settings.setValue("affichage/affMax", ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored);
     settings.setValue("affichage/affSAA", ui->affSAA->isChecked());
     settings.setValue("affichage/affconst", ui->affconst->checkState());
@@ -8956,7 +8960,9 @@ void PreviSat::on_rechercheDonneesSat_toggled(bool checked)
 
         chg = true;
         ui->frameResultats->setVisible(false);
-        ui->noradDonneesSat->setValue(satellites.at(0).tle().norad().toInt());
+        if (!satellites.isEmpty()) {
+            ui->noradDonneesSat->setValue(satellites.at(0).tle().norad().toInt());
+        }
         ui->rechercheDonneesSat->setText(tr("Informations satellite"));
         ui->nom->setFocus();
     } else {
