@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 aout 2019
+ * >    20 aout 2019
  *
  */
 
@@ -5114,6 +5114,7 @@ void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr
         ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
     }
     ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+    ui->compteRenduMaj->verticalScrollBar()->setValue(ui->compteRenduMaj->blockCount());
 
     aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
 
