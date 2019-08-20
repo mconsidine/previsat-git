@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 juillet 2019
+ * >    17 aout 2019
  *
  */
 
@@ -954,6 +954,20 @@ void PreviSat::InitAffichageDemarrage() const
 
     ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
+
+    const QRegExpValidator *valLon = new QRegExpValidator(QRegExp("([0-1]?[0-7]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|180°0?0'0?0\"?)"));
+    ui->nvLongitude->setValidator(valLon);
+
+    const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("([0-8]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|90°0?0'0?0\"?)"));
+    ui->nvLatitude->setValidator(valLat);
+
+    if (ui->unitesKm->isChecked()) {
+        const QIntValidator *valAlt = new QIntValidator(-500, 8900);
+        ui->nvAltitude->setValidator(valAlt);
+    } else {
+        const QIntValidator *valAlt = new QIntValidator(-1640, 29200);
+        ui->nvAltitude->setValidator(valAlt);
+    }
 
     ui->ciel->setVisible(false);
     ui->nord->setVisible(false);
@@ -3904,7 +3918,7 @@ void PreviSat::AffichageLieuObs() const
             const QString fmt = "%1 %2";
             ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo) * DEG2RAD, DEGRE, 3, 0, false, true)).arg(ew));
             ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la) * DEG2RAD, DEGRE, 2, 0,false, true)).arg(ns));
-            ui->altitudeObs->setText(fmt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE + EPSDBL100)).
+            ui->altitudeObs->setText(fmt.arg((ui->unitesKm->isChecked()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
                                      arg((ui->unitesKm->isChecked()) ? tr("m") : tr("ft")));
         }
     }
@@ -4955,7 +4969,7 @@ void PreviSat::AfficherLieuSelectionne(const int index)
         ui->nLatitude->setText(Maths::ToSexagesimal(fabs(la), NO_TYPE, 2, 0, false, true) + " " + ns);
         const QString msg = "%1 ";
         ui->nAltitude->setText((ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
-                                                             msg.arg((int) (atd * PIED_PAR_METRE)).append(tr("ft")));
+                                                             msg.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).append(tr("ft")));
     }
 
     /* Retour */
@@ -9721,6 +9735,19 @@ void PreviSat::on_intensiteVision_valueChanged(int value)
 void PreviSat::on_unitesKm_toggled(bool checked)
 {
     Q_UNUSED(checked)
+
+    if (checked) {
+        ui->nvAltitude->setText("0000");
+        ui->nvAltitude->setInputMask("####");
+        const QIntValidator *valAlt = new QIntValidator(-500, 8900);
+        ui->nvAltitude->setValidator(valAlt);
+    } else {
+        ui->nvAltitude->setText("00000");
+        ui->nvAltitude->setInputMask("#####");
+        const QIntValidator *valAlt = new QIntValidator(-1640, 29200);
+        ui->nvAltitude->setValidator(valAlt);
+    }
+
     ModificationOption();
 
     // Affichage des manoeuvres ISS
@@ -9732,6 +9759,19 @@ void PreviSat::on_unitesKm_toggled(bool checked)
 void PreviSat::on_unitesMi_toggled(bool checked)
 {
     Q_UNUSED(checked)
+
+    if (checked) {
+        ui->nvAltitude->setText("00000");
+        ui->nvAltitude->setInputMask("#####");
+        const QIntValidator *valAlt = new QIntValidator(-1640, 29200);
+        ui->nvAltitude->setValidator(valAlt);
+    } else {
+        ui->nvAltitude->setText("0000");
+        ui->nvAltitude->setInputMask("####");
+        const QIntValidator *valAlt = new QIntValidator(-500, 8900);
+        ui->nvAltitude->setValidator(valAlt);
+    }
+
     ModificationOption();
 
     // Affichage des manoeuvres ISS
@@ -10407,7 +10447,14 @@ void PreviSat::on_actionCreer_un_nouveau_lieu_triggered()
     ui->nvLieu->setText("");
     ui->nvLongitude->setText("000°00'00\"");
     ui->nvLatitude->setText("000°00'00\"");
-    ui->nvAltitude->setText("0000");
+
+    if (ui->unitesKm->isChecked()) {
+        ui->nvAltitude->setText("0000");
+        ui->nvAltitude->setInputMask("####");
+    } else {
+        ui->nvAltitude->setText("00000");
+        ui->nvAltitude->setInputMask("#####");
+    }
 
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
     ui->lbl_ajouterDans->setVisible(true);
@@ -10493,6 +10540,11 @@ void PreviSat::on_actionModifier_coordonnees_triggered()
     ui->nouvelleCategorie->setVisible(false);
     ui->nouveauLieu->setVisible(true);
     ui->coordonnees->setVisible(false);
+    if (ui->unitesKm->isChecked()) {
+        ui->nvAltitude->setInputMask("####");
+    } else {
+        ui->nvAltitude->setInputMask("#####");
+    }
 
     const QString obs = mapObs.at(ui->lieuxObs->currentRow());
     ui->nvLieu->setText(obs.mid(0, obs.indexOf("#")).trimmed());
@@ -10511,10 +10563,14 @@ void PreviSat::on_actionModifier_coordonnees_triggered()
     ui->nvNs->setCurrentIndex((la >= 0.) ? 0 : 1);
 
     const QString alt = "%1";
-    ui->nvAltitude->setText(alt.arg((ui->unitesKm->isChecked()) ? atd : (int) (atd * PIED_PAR_METRE), 4, 10, QChar('0')));
+    if (ui->unitesKm->isChecked()) {
+        ui->nvAltitude->setText(alt.arg(atd, 4, 10, QChar('0')));
+    } else {
+        ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
+    }
     ui->nvAltitude->setPalette(QPalette());
     ui->lbl_nvUnite->setText((ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
-    ligneCoord = QString("%1&%2&%3").arg(ui->nvLongitude->text()).arg(ui->nvLatitude->text()).arg(ui->nvAltitude->text());
+    ligneCoord = QString("%1&%2&%3").arg(ui->nvLongitude->text()).arg(ui->nvLatitude->text()).arg(alt.arg(atd, 4, 10, QChar('0')));
 
     ui->lbl_ajouterDans->setVisible(false);
     ui->ajdfic->setVisible(false);
@@ -10591,7 +10647,7 @@ void PreviSat::on_validerObs_clicked()
             }
 
             // Recuperation de l'altitude
-            int atd = ui->nvAltitude->text().mid(0, 4).toInt();
+            int atd = ui->nvAltitude->text().mid(0, 5).toInt();
             if (ui->unitesMi->isChecked()) {
                 atd = qRound(atd / PIED_PAR_METRE);
             }
