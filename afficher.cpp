@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    18 mai 2019
+ * >    20 aout 2019
  *
  */
 
@@ -302,6 +302,14 @@ void Afficher::load()
         ui->listePrevisions->horizontalHeaderItem(5)->setText(tr("Corps"));
     }
 
+    if (ui->listePrevisions->horizontalHeaderItem(4)->text() == tr("Magn")) {
+        ui->listePrevisions->horizontalHeaderItem(4)->setToolTip(tr("Magnitude"));
+    }
+
+    if (ui->listePrevisions->horizontalHeaderItem(5)->text() == tr("Mir")) {
+        ui->listePrevisions->horizontalHeaderItem(5)->setToolTip(tr("Miroir"));
+    }
+
     if (cond.nbl() == 0) {
         ui->listePrevisions->removeColumn(5);
         ui->listePrevisions->setColumnWidth(0, 120);
@@ -410,6 +418,15 @@ void Afficher::load()
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
                 if (k == 0) {
                     item->setToolTip(items.at(0));
+                }
+
+                if (cond.typeCalcul() == TRANSITS) {
+                    if (k == 4) {
+                        item->setToolTip((items.at(4) == tr("C")) ? tr("Conjonction") : tr("Transit"));
+                    }
+                    if (k == 5) {
+                        item->setToolTip((items.at(5) == tr("L")) ? tr("Lune") : tr("Soleil"));
+                    }
                 }
 
                 ui->listePrevisions->setItem(j, k, item);
