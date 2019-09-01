@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 aout 2019
+ * >    21 aout 2019
  *
  */
 
@@ -5081,39 +5081,51 @@ void PreviSat::EcritureCompteRenduMaj(const QStringList &compteRendu, bool &aecr
     const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
     const QString fic = compteRendu.at(compteRendu.count()-5);
 
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Fichier").append(" ").append(fic).append(" :\n"));
-    QString msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+    if (!ui->compteRenduMaj->toPlainText().isEmpty()) {
+        if (!ui->compteRenduMaj->toPlainText().split("\n").last().trimmed().isEmpty()) {
+            ui->compteRenduMaj->appendPlainText("");
+        }
+    }
+
+    ui->compteRenduMaj->appendPlainText(QString(tr("Fichier %1 :").arg(fic)));
+
+    QString msgcpt;
     if (nbmaj < nbold && nbmaj > 0) {
 
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbmaj).arg(nbold) + "\n");
         msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
 
         for(int i=0; i<compteRendu.count()-5; i++) {
             const QString nomsat = compteRendu.at(i).split("#").at(0);
             const QString norad = compteRendu.at(i).split("#").at(1);
-            ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nomsat).arg(norad) + "\n");
+            ui->compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
         }
-    }
-
-    if (nbmaj == nbold && nbold != 0) {
-        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbold) + "\n");
-    }
-
-    if (nbmaj == 0 && nbold != 0) {
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + tr("Aucun TLE mis à jour") + "\n");
     }
 
     if (nbsup > 0) {
         msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbsup) + "\n");
+        ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbsup));
     }
 
     if (nbadd > 0) {
         msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-        ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msgcpt.arg(nbadd) + "\n");
+        ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbadd));
     }
-    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + "\n");
+
+    if (nbmaj < nbold && nbmaj > 0) {
+        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+        ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbmaj).arg(nbold));
+    }
+
+    if (nbmaj == nbold && nbold != 0) {
+        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
+        ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbold));
+    }
+
+    if (nbmaj == 0 && nbold != 0) {
+        ui->compteRenduMaj->appendPlainText(tr("Aucun TLE mis à jour"));
+    }
+
+    ui->compteRenduMaj->appendPlainText("");
     ui->compteRenduMaj->verticalScrollBar()->setValue(ui->compteRenduMaj->blockCount());
 
     aecr = nbold > 0 && (nbmaj > 0 || nbsup > 0 || nbadd > 0);
@@ -6303,10 +6315,10 @@ void PreviSat::FinEnregistrementFichier()
                     }
 
                 } else {
-                    const QString msg = ((fi.size() == 0) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1")) + "\n";
+                    const QString msg = (fi.exists() && (fi.size() == 0)) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1");
                     if (fi.size() == 0) fi.remove();
                     fi.copy(fichierALire, fichierAMettreAJour);
-                    ui->compteRenduMaj->setPlainText(ui->compteRenduMaj->toPlainText() + msg.arg(ff.fileName()));
+                    ui->compteRenduMaj->appendPlainText(msg.arg(ff.fileName()));
                     InitFicTLE();
                 }
 
