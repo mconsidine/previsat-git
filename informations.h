@@ -33,7 +33,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >
+ * >    20 octobre 2019
  *
  */
 
@@ -57,7 +57,7 @@ class Informations : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Informations(QString localePreviSat, QWidget *fenetreParent = 0);
+    explicit Informations(const QString &localePreviSat, QWidget *fenetreParent = 0);
     ~Informations();
 
     /**

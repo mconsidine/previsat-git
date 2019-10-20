@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 aout 2019
+ * >    20 octobre 2019
  *
  */
 
@@ -771,7 +771,8 @@ void PreviSat::MAJTLE()
 
         const QFile fi2(ficHsf);
 
-        const double jj3lemoy = 0.5 * (tab3le.first().dateDebutValidite().jourJulienUTC() + tab3le.last().dateDebutValidite().jourJulienUTC());
+        const double jj3lemoy = (tab3le.isEmpty()) ?
+                    0. : 0.5 * (tab3le.first().dateDebutValidite().jourJulienUTC() + tab3le.last().dateDebutValidite().jourJulienUTC());
         if (!fi2.exists() || tab3le.isEmpty() || (dateCourante.jourJulienUTC() >= jj3lemoy)) {
 
             // Telechargement du fichier Human Space Flight

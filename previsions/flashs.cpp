@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    8 mai 2019
+ * >    20 octobre 2019
  *
  */
 
@@ -402,7 +402,9 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
     LimiteFlash(mgn0, jjm, conditions, satellite, observateur, soleil, limite);
 
-    if (conditions.typeCalcul() == METOP) limite[1] = DATE_INFINIE;
+    if (conditions.typeCalcul() == METOP) {
+        limite[1] = DATE_INFINIE;
+    }
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
@@ -442,7 +444,9 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
 
     LimiteFlash(mgn0, jjm, conditions, satellite, observateur, soleil, limite);
 
-    if (conditions.typeCalcul() == METOP) limite[1] = DATE_INFINIE;
+    if (conditions.typeCalcul() == METOP) {
+        limite[1] = DATE_INFINIE;
+    }
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
@@ -474,7 +478,6 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
     dateSup = qMin(dateSup, limite[2]);
     dateSup = qMin(dateSup, limite[3]);
 
-    double dateMax = dateMaxFlash;
 
     jjm[0] = dateInf;
     jjm[1] = 0.5 * (dateInf + dateSup);
@@ -495,7 +498,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, co
         pasInt *= 0.5;
     }
 
-    dateMax = minmax[0];
+    double dateMax = minmax[0];
 
     if (dateInf < dateSup - EPS_DATES && fabs(dateInf) < DATE_INFINIE && fabs(dateSup) < DATE_INFINIE) {
         if (dateMax < dateInf) dateMax = dateInf;
@@ -885,14 +888,16 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
         if (cospsi > 0.) {
 
             double psi1 = psi;
-            if (satellite.vitesse().z() < 0.)
+            if (satellite.vitesse().z() < 0.) {
                 psi1 = PI - psi1;
+            }
             psi1 = modulo(psi1, DEUX_PI);
 
             double phi1 = acos(cosphi1);
             double corrgeo = fabs(APLA * sin(2. * phi1));
-            if (satellite.position().z() < 0.)
+            if (satellite.position().z() < 0.) {
                 corrgeo = -corrgeo;
+            }
 
             const Matrice3D matrice1(AXE_Z, psi1);
             const Matrice3D matrice2 = matrice1 * matrice;
@@ -906,7 +911,9 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
 
                 double alpha = atan(tanalpha);
                 alpha -= psi;
-                if (satellite.vitesse().z() < 0.) alpha = -alpha;
+                if (satellite.vitesse().z() < 0.) {
+                    alpha = -alpha;
+                }
                 yaw += alpha;
             }
         }
