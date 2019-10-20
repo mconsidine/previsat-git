@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >     30 decembre 2018
+ * >     20 octobre 2019
  *
  */
 
@@ -313,8 +313,9 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
         _nm = KE * pow(am, -1.5);
         _em -= tempe;
 
-        if (_em < 1.e-6)
+        if (_em < 1.e-6) {
             _em = 1.e-6;
+        }
 
         _mm += _no * templ;
         xlm = _mm + _argpm + _nodem;
@@ -337,6 +338,8 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
         _mp = _mm;
         sinip = _sinim;
         cosip = _cosim;
+
+        // Termes longue periode
         if (_method == 'd') {
             Dpper();
             if (_xincp < 0.) {
@@ -344,10 +347,7 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
                 _nodep += PI;
                 _argpp -= PI;
             }
-        }
 
-        // Termes longue periode
-        if (_method == 'd') {
             sinip = sin(_xincp);
             cosip = cos(_xincp);
             _aycof = -0.5 * J3SJ2 * sinip;
@@ -466,7 +466,9 @@ void SGP4::Dpper() {
 
     /* Corps de la methode */
     zm = _zmos + ZNS * _t;
-    if (!_init) zm = _zmos;
+    if (!_init) {
+        zm = _zmos;
+    }
 
     zf = zm + 2. * ZES * sin(zm);
     sinzf = sin(zf);
@@ -478,7 +480,9 @@ void SGP4::Dpper() {
     const double sghs = _sgh2 * f2 + _sgh3 * f3 + _sgh4 * sinzf;
     const double shs = _sh2 * f2 + _sh3 * f3;
     zm = _zmol + ZNL * _t;
-    if (!_init) zm = _zmol;
+    if (!_init) {
+        zm = _zmol;
+    }
 
     zf = zm + 2. * ZEL * sin(zm);
     sinzf = sin(zf);
@@ -525,14 +529,18 @@ void SGP4::Dpper() {
             alfdp += dalf;
             betdp += dbet;
             _nodep = fmod(_nodep, DEUX_PI);
-            if (_nodep < 0.) _nodep += DEUX_PI;
+            if (_nodep < 0.) {
+                _nodep += DEUX_PI;
+            }
 
             xls = _mp + _argpp + cosip * _nodep;
             const double dls = pl + pgh - pinc * _nodep * sinip;
             xls += dls;
             const double xnoh = _nodep;
             _nodep = atan2(alfdp, betdp);
-            if (_nodep < 0.) _nodep += DEUX_PI;
+            if (_nodep < 0.) {
+                _nodep += DEUX_PI;
+            }
 
             if (fabs(xnoh - _nodep) > PI) {
                 _nodep = (_nodep < xnoh) ? _nodep + DEUX_PI : _nodep - DEUX_PI;
@@ -729,9 +737,13 @@ void SGP4::Dsinit(const double tc) {
 
     /* Corps de la methode */
     _irez = 0;
-    if (_nm < 0.0052359877 && _nm > 0.0034906585) _irez = 1;
+    if (_nm < 0.0052359877 && _nm > 0.0034906585) {
+        _irez = 1;
+    }
 
-    if (_nm >= 0.00826 && _nm <= 0.00924 && _em >= 0.5) _irez = 2;
+    if (_nm >= 0.00826 && _nm <= 0.00924 && _em >= 0.5) {
+        _irez = 2;
+    }
 
     // Termes solaires
     const double ses = _ss1 * ZNS * _ss5;
@@ -740,8 +752,12 @@ void SGP4::Dsinit(const double tc) {
     const double sghs = _ss4 * ZNS * (_sz31 + _sz33 - 6.);
     shs = -(ZNS * _ss2 * (_sz21 + _sz23));
 
-    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877) shs = 0.;
-    if (fabs(_sinim) > EPSDBL100) shs /= _sinim;
+    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877) {
+        shs = 0.;
+    }
+    if (fabs(_sinim) > EPSDBL100) {
+        shs /= _sinim;
+    }
 
     const double sgs = sghs - _cosim * shs;
 
@@ -752,7 +768,9 @@ void SGP4::Dsinit(const double tc) {
     const double sghl = _s4 * ZNL * (_z31 + _z33 - 6.);
     shll = -(ZNL * _s2 * (_z21 + _z23));
 
-    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877) shll = 0.;
+    if (_inclm < 0.052359877 || _inclm > PI - 0.052359877) {
+        shll = 0.;
+    }
 
     _domdt = sgs + sghl;
     _dnodt = shs;
@@ -990,11 +1008,11 @@ void SGP4::Dspace(const double tc) {
         const double ft2 = ft * ft * 0.5;
         _nm = _xni + xndt * ft + xnddt * ft2;
         const double xl = _xli + xldot * ft + xndt * ft2;
-        if (_irez != 1) {
-            _mm = xl - 2. * _nodem + 2. * theta;
+        if (_irez == 1) {
+            _mm = xl - _nodem - _argpm + theta;
             _dndt = _nm - _no;
         } else {
-            _mm = xl - _nodem - _argpm + theta;
+            _mm = xl - 2. * _nodem + 2. * theta;
             _dndt = _nm - _no;
         }
         _nm = _no + _dndt;
@@ -1057,7 +1075,9 @@ void SGP4::SGP4Init(const TLE &tle)
         double cc3, qzms24, sfour;
 
         _isimp = false;
-        if (_rp < 220. * X1SRT + 1.) _isimp = true;
+        if (_rp < 220. * X1SRT + 1.) {
+            _isimp = true;
+        }
 
         sfour = ss;
         qzms24 = qzms2t;
@@ -1065,7 +1085,9 @@ void SGP4::SGP4Init(const TLE &tle)
         const double perige = (_rp - 1.) * RAYON_TERRESTRE;
         if (perige < 156.) {
             sfour = perige - 78.;
-            if (perige < 98.) sfour = 20.;
+            if (perige < 98.) {
+                sfour = 20.;
+            }
 
             qzms24 = pow((120. - sfour) * X1SRT, 4.);
             sfour /= RAYON_TERRESTRE + 1.;

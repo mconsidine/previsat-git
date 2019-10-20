@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >
+ * >    20 octobre 2019
  *
  */
 
@@ -55,7 +55,7 @@
 // Registre
 static QSettings settings("Astropedia", "previsat");
 
-Informations::Informations(QString localePreviSat, QWidget *fenetreParent) :
+Informations::Informations(const QString &localePreviSat, QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
     ui(new Ui::Informations)
 {
