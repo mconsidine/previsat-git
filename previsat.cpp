@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 octobre 2019
+ * >    23 novembre 2019
  *
  */
 
@@ -757,7 +757,7 @@ void PreviSat::MAJTLE()
     }
 
     // Verification du fichier iss.3le
-    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
     const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
 
     if (ui->verifMAJ->isChecked()) {
@@ -778,7 +778,7 @@ void PreviSat::MAJTLE()
             // Telechargement du fichier Human Space Flight
             amajDeb = true;
             dirDwn = dirTmp;
-            TelechargementFichier(ISS_TRAJECTOIRE_NASA, false);
+            TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", false);
             amajDeb = false;
         }
     }
@@ -6347,9 +6347,8 @@ void PreviSat::FinEnregistrementFichier()
                 }
             }
 
-            const QString hsf = ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
-            const QString ficHsf = dirTmp + QDir::separator() + hsf;
-            if (ff.fileName() == hsf) {
+            const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
+            if (ff.fileName() == "HSF.html") {
 
                 // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
                 const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
@@ -6482,8 +6481,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     const QStringList listeFic = di.entryList(QDir::Files);
     if (listeFic.count() > 0) {
         foreach(QString fic, listeFic) {
-            if ((ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) ||
-                    fic == ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last()) {
+            if ((ui->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt")) || fic == "HSF.html") {
                 continue;
             } else {
                 QFile fi(dirTmp + QDir::separator() + fic);
@@ -11210,10 +11208,10 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
 
     /* Corps de la methode */
     // Mise a jour du TLE de l'ISS pour les transits
-    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+    TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", true);
 
     // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-    const QString ficHsf = dirTmp + QDir::separator() + ISS_TRAJECTOIRE_NASA.split("/", QString::SkipEmptyParts).last();
+    const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
     const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
     TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
 
@@ -12306,7 +12304,7 @@ void PreviSat::on_majTleIss_clicked()
     /* Corps de la methode */
     // Mise a jour du fichier iss.3le
     messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
-    TelechargementFichier(ISS_TRAJECTOIRE_NASA, true);
+    TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", true);
 
     /* Retour */
     return;
