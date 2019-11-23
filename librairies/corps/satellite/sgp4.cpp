@@ -1074,10 +1074,7 @@ void SGP4::SGP4Init(const TLE &tle)
     if (_omeosq >= 0. || _no > 0.) {
         double cc3, qzms24, sfour;
 
-        _isimp = false;
-        if (_rp < 220. * X1SRT + 1.) {
-            _isimp = true;
-        }
+        _isimp = (_rp < 220. * X1SRT + 1.);
 
         sfour = ss;
         qzms24 = qzms2t;
