@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >     20 octobre 2019
+ * >     29 novembre 2019
  *
  */
 
@@ -1087,7 +1087,7 @@ void SGP4::SGP4Init(const TLE &tle)
             }
 
             qzms24 = pow((120. - sfour) * X1SRT, 4.);
-            sfour /= RAYON_TERRESTRE + 1.;
+            sfour = sfour / RAYON_TERRESTRE + 1.;
         }
 
         const double pinvsq = 1. / _posq;
