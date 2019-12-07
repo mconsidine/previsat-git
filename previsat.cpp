@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 novembre 2019
+ * >    7 decembre 2019
  *
  */
 
@@ -5414,7 +5414,7 @@ void PreviSat::SauveOngletElementsOsculateurs(const QString &fic) const
         QTextStream flux(&sw);
 
         const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure2->text() << endl << endl;
 
@@ -5560,7 +5560,7 @@ void PreviSat::SauveOngletGeneral(const QString &fic) const
         QTextStream flux(&sw);
 
         const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
         flux << tr("Date :") << " " << ui->dateHeure1->text() << endl << endl;
 
@@ -5656,7 +5656,7 @@ void PreviSat::SauveOngletInformations(const QString &fic) const
         QTextStream flux(&sw);
 
         const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 
         if (ui->frameInformationsSatellite->isVisible()) {
