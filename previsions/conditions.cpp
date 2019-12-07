@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juillet 2019
+ * >    7 decembre 2019
  *
  */
 
@@ -126,16 +126,11 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
                 if (epok < tlemax) tlemax = epok;
             }
 
-            if (tlemax > conditions._jj1 || tlemin > conditions._jj1) {
-                if (tlemin > tlemax) {
-                    const double tmp = tlemin;
-                    tlemin = tlemax;
-                    tlemax = tmp;
-                }
-            }
-
             age1 = fabs(conditions._jj1 - tlemin);
             age2 = fabs(conditions._jj1 - tlemax);
+            if (age1 > age2) {
+                qSwap(age1, age2);
+            }
 
             ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");
             ligne1 = ligne1.arg(age1, 4, 'f', 2).

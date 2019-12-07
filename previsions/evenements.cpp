@@ -36,7 +36,7 @@
  * >    23 juillet 2011
  *
  * Date de revision
- * >    14 juillet 2018
+ * >    7 decembre 2019
  *
  */
 
@@ -91,12 +91,10 @@ void Evenements::CalculEvenements(const Conditions &conditions)
 
     const QString fuseau = QObject::tr("Fuseau horaire : %1");
     QString chaine = QObject::tr("UTC");
-    if (conditions.ecart()) {
-        if (fabs(conditions.offset()) > EPSDBL100) {
-            QTime heur;
-            heur = heur.addSecs((int) (conditions.offset() * NB_SEC_PAR_JOUR + EPS_DATES));
-            chaine = chaine.append((conditions.offset() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
-        }
+    if (fabs(conditions.offset()) > EPSDBL100) {
+        QTime heur;
+        heur = heur.addSecs((int) (conditions.offset() * NB_SEC_PAR_JOUR + EPS_DATES));
+        chaine = chaine.append((conditions.offset() > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
     }
     flux << fuseau.arg(chaine) << endl << endl;
 
