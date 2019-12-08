@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    8 decembre 2019
  *
  */
 
@@ -174,6 +174,11 @@ void GestionnaireTLE::load()
     dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
+#endif
+
+#if defined (Q_OS_LINUX)
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #endif
 
 #if QT_VERSION >= 0x050000

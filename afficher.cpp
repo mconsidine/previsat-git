@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    20 aout 2019
+ * >    8 decembre 2019
  *
  */
 
@@ -209,6 +209,10 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
 #if defined (Q_OS_MAC)
     dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+#endif
+
+#if defined (Q_OS_LINUX)
+    dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #endif
 
     if (dirTmp.trimmed().isEmpty()) {
