@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2019
+ * >    8 decembre 2019
  *
  */
 
@@ -390,6 +390,8 @@ void PreviSat::ChargementConfig()
                                     QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
 #else
     dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
+    dirLocalData = dirCommonData;
+    dirTle = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "tle";
     dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() +
             QCoreApplication::applicationName();
 #endif

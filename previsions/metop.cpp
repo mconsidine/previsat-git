@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    25 mars 2019
+ * >    8 decembre 2019
  *
  */
 
@@ -194,10 +194,15 @@ void MetOp::LectureStatutMetOp(QStringList &tabStsMetOp)
     const QString dirLocalData =
             QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
             dirAstr + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_WIN)
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
+#endif
+
+#if defined (Q_OS_LINUX)
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    const QString dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #endif
 
     /* Corps de la methode */

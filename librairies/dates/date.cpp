@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juillet 2019
+ * >    8 decembre 2019
  *
  */
 
@@ -462,9 +462,14 @@ void Date::Initialisation()
                 QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
                 dirAstr + QDir::separator() + "data";
 #else
-        const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+        QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
+#endif
+
+#if defined (Q_OS_LINUX)
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #endif
 
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";

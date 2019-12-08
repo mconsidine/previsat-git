@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2019
+ * >    8 decembre 2019
  *
  */
 
@@ -243,10 +243,15 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
     const QString dirLocalData =
             QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
             dirAstr + QDir::separator() + "data";
-#else
+#elif defined (Q_OS_WIN)
     const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
+#endif
+
+#if defined (Q_OS_LINUX)
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    const QString dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
 #endif
 
     const int jmax = (listeSatellites.size() == 0) ? tabtle.size() : listeSatellites.size();
@@ -301,7 +306,7 @@ void TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSate
                     }
                 }
 
-                if (nomsat.size() > 25 && nomsat.mid(25).contains('.') > 0) {
+                if (nomsat.size() > 25 && nomsat.mid(25).contains('.')) {
                     nomsat = nomsat.mid(0, 15).trimmed();
                 }
 

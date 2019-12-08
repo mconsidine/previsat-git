@@ -129,7 +129,7 @@ void Conditions::EcrireEntete(const Observateur &observateur, const Conditions &
             age1 = fabs(conditions._jj1 - tlemin);
             age2 = fabs(conditions._jj1 - tlemax);
             if (age1 > age2) {
-                qSwap(age1, age2);
+                std::swap(age1, age2);
             }
 
             ligne1 = QObject::tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours");

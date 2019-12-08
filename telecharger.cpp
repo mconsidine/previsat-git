@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    30 novembre 2018
+ * >    8 decembre 2019
  *
  */
 
@@ -102,13 +102,17 @@ Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
     dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 #else
 
-#if !defined (Q_OS_MAC)
-    QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
+#if defined (Q_OS_WIN)
+    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
 #endif
 
     dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
 #endif
 
+#if defined (Q_OS_LINUX)
+    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
+    const QString dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
+#endif
 
 #if defined (Q_OS_WIN)
 
