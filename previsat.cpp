@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 decembre 2019
+ * >    16 fevrier 2020
  *
  */
 
@@ -958,10 +958,10 @@ void PreviSat::InitAffichageDemarrage() const
     ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
 
-    const QRegExpValidator *valLon = new QRegExpValidator(QRegExp("([0-1]?[0-7]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|180°0?0'0?0\"?)"));
+    const QRegExpValidator *valLon = new QRegExpValidator(QRegExp("((0\\d\\d|1[0-7]\\d)°[0-5]\\d'[0-5]\\d\"|180°0?0'0?0\")"));
     ui->nvLongitude->setValidator(valLon);
 
-    const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("([0-8]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|90°0?0'0?0\"?)"));
+    const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("((0\\d|[0-8]\\d)°[0-5]\\d'[0-5]\\d\"|90°0?0'0?0\")"));
     ui->nvLatitude->setValidator(valLat);
 
     if (ui->unitesKm->isChecked()) {
