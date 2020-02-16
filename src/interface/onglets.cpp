@@ -1135,10 +1135,10 @@ void Onglets::InitAffichageDemarrage()
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
 
-    const QRegExpValidator *valLon = new QRegExpValidator(QRegExp("([0-1]?[0-7]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|180°0?0'0?0\"?)"));
+    const QRegExpValidator *valLon = new QRegExpValidator(QRegExp("((0\\d\\d|1[0-7]\\d)°[0-5]\\d'[0-5]\\d\"|180°0?0'0?0\")"));
     _ui->nvLongitude->setValidator(valLon);
 
-    const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("([0-8]?\\d°[0-5]?\\d'[0-5]?\\d?\"?|90°0?0'0?0\"?)"));
+    const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("((0\\d|[0-8]\\d)°[0-5]\\d'[0-5]\\d\"|90°0?0'0?0\")"));
     _ui->nvLatitude->setValidator(valLat);
 
     const QString unite = (_ui->unitesKm->isChecked()) ? tr("m") : tr("ft");
