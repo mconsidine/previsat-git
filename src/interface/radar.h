@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    carte.h
+ * >    radar.h
  *
  * Localisation
  * >    interface
@@ -27,21 +27,21 @@
  * >
  *
  * Description
- * >    Carte du monde
+ * >    Radar
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    11 decembre 2019
+ * >    3 avril 2020
  *
  * Date de revision
  * >
  *
  */
 
-#ifndef CARTE_H
-#define CARTE_H
+#ifndef RADAR_H
+#define RADAR_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFrame>
@@ -49,15 +49,13 @@
 
 
 namespace Ui {
-class Carte;
+class Radar;
 }
 
-class Observateur;
 class Onglets;
-class Satellite;
 class QGraphicsScene;
 
-class Carte : public QFrame
+class Radar : public QFrame
 {
     Q_OBJECT
 
@@ -67,16 +65,16 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief Carte Constructeur par defaut
+     * @brief Radar Constructeur par defaut
      * @param parent parent
      */
-    Carte(Onglets *onglets, QWidget *parent = nullptr);
+    explicit Radar(Onglets *onglets, QWidget *parent = nullptr);
 
 
     /*
      * Destructeur
      */
-    ~Carte();
+    ~Radar();
 
     /*
      * Accesseurs
@@ -94,19 +92,9 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief show Affichage des courbes sur la carte du monde
+     * @brief show Affichage du radar
      */
     void show();
-
-
-public slots:
-
-    /**
-     * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement
-     * @param acronyme acronyme
-     * @param siteLancement site de lancement
-     */
-    void AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement);
 
 
 protected:
@@ -124,10 +112,6 @@ protected:
      */
 
 
-private slots:
-
-    void resizeEvent(QResizeEvent *evt);
-
 private:
 
     /*
@@ -137,28 +121,15 @@ private:
     /*
      * Variables privees
      */
-    double DEG2PXHZ;
-    double DEG2PXVT;
-
-    Ui::Carte *ui;
+    Ui::Radar *ui;
     QGraphicsScene *scene;
     Onglets *_onglets;
-
 
     /*
      * Methodes privees
      */
-    /**
-     * @brief AffichageSatellite Affichage par defaut d'un satellite (sans icone)
-     * @param satellite satellite
-     * @param lsat longitude du satellite, en pixels
-     * @param bsat latitude du satellite, en pixels
-     * @param lcarte largeur de la carte du monde, en pixels
-     * @param hcarte hauteur de la carte du monde, en pixels
-     */
-    void AffichageSatellite(const Satellite &satellite, const int lsat, const int bsat, const int lcarte, const int hcarte) const;
 
 
 };
 
-#endif // CARTE_H
+#endif // RADAR_H

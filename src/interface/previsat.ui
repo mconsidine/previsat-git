@@ -1435,7 +1435,7 @@
         <widget class="QFrame" name="frameOnglets">
          <property name="minimumSize">
           <size>
-           <width>804</width>
+           <width>797</width>
            <height>0</height>
           </size>
          </property>
@@ -1472,7 +1472,7 @@
         <widget class="QFrame" name="frameRadar">
          <property name="minimumSize">
           <size>
-           <width>264</width>
+           <width>272</width>
            <height>0</height>
           </size>
          </property>
@@ -1485,6 +1485,30 @@
          <property name="lineWidth">
           <number>0</number>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="layoutRadar">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -1498,7 +1522,7 @@
      <x>0</x>
      <y>0</y>
      <width>1068</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">

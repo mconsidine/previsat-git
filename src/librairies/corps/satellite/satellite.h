@@ -50,6 +50,14 @@
 #include "tle.h"
 
 
+struct ElementsTraceCiel {
+    double hauteur;
+    double azimut;
+    double jourJulienUTC;
+    bool eclipseTotale;
+    bool eclipsePartielle;
+};
+
 struct ElementsTraceSol {
     double longitude;
     double latitude;
@@ -110,7 +118,7 @@ public:
     Phasage phasage() const;
     Signal signal() const;
     QList<ElementsTraceSol> traceAuSol() const;
-//    QList<QVector<double> > traceCiel() const;
+    QList<ElementsTraceCiel> traceCiel() const;
 
 
     /*
@@ -139,7 +147,10 @@ public:
 
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
-                                            const bool extinction, const bool refraction, const bool visibilite, QList<Satellite> &satellites);
+                                            const bool extinction, const bool refraction, const bool traceCiel, const bool visibilite,
+                                            QList<Satellite> &satellites);
+
+    void CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec = 0);
 
     void CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction);
 
@@ -198,6 +209,7 @@ private:
     Magnitude _magnitude;
 
     QList<ElementsTraceSol> _traceAuSol;
+    QList<ElementsTraceCiel> _traceCiel;
 
 
     /*
