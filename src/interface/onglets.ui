@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -3834,7 +3834,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="infos">
        <property name="autoFillBackground">
@@ -4413,6 +4413,9 @@
         <property name="font">
          <font/>
         </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>LEO/I</string>
         </property>
@@ -4831,6 +4834,9 @@
         </property>
         <property name="font">
          <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>US</string>
@@ -5338,6 +5344,9 @@
          <property name="font">
           <font/>
          </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
          <property name="text">
           <string>LEO/I</string>
          </property>
@@ -5455,6 +5464,9 @@
          </property>
          <property name="font">
           <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
          </property>
          <property name="text">
           <string>US</string>
@@ -8782,7 +8794,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="satellites">
          <widget class="QCheckBox" name="affnotif">
@@ -9107,6 +9119,9 @@
           <property name="text">
            <string>Zone d'ombre</string>
           </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
          </widget>
          <widget class="QCheckBox" name="affphaselune">
           <property name="geometry">
@@ -9143,7 +9158,7 @@
            <number>5</number>
           </property>
           <property name="value">
-           <number>40</number>
+           <number>30</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

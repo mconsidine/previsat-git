@@ -94,13 +94,15 @@ PreviSat::PreviSat(QWidget *parent) :
     // Initialisation de la configuration generale
     Configuration::instance()->Initialisation();
 
-    // Carte
-    _carte = new Carte(this);
-    ui->layoutCarte->addWidget(_carte);
-
     // Onglets
     _onglets = new Onglets(this);
     ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
+
+    // Carte
+    _carte = new Carte(_onglets, this);
+    _carte->resize(811, 425);
+    ui->layoutCarte->addWidget(_carte);
+
     connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
@@ -260,6 +262,7 @@ void PreviSat::DemarrageApplication()
     const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
     const QFileInfo fi(Configuration::instance()->nomfic());
+
     QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
     while (it.hasNext()) {
         const QString norad = it.next();
@@ -690,7 +693,14 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
 
     /* Corps de la methode */
     _messageStatut->setText(message);
-    QTimer::singleShot(secondes * 1000, this, SLOT(EffacerMessageStatut()));
+
+    if (_timerStatut->isActive()) {
+        _timerStatut->stop();
+    }
+    _timerStatut = new QTimer(this);
+    _timerStatut->setInterval(secondes * 1000);
+    connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
+    _timerStatut->start();
 
     /* Retour */
     return;
@@ -707,6 +717,7 @@ void PreviSat::EnchainementCalculs()
 
     /* Corps de la methode */
     try {
+
 
         /*
          * Calcul de la position de l'observateur
@@ -726,18 +737,14 @@ void PreviSat::EnchainementCalculs()
 
         //        //if (!ui->carte->isHidden()) {
 
-        //        // Coordonnees terrestres
-        //        soleil.CalculCoordTerrestres(observateur);
+        // Coordonnees terrestres
+        soleil.CalculCoordTerrestres(observateur);
 
-        //        // Zone d'ombre
-        //        const double beta = acos((RAYON_TERRESTRE - 15.) / Configuration::instance()->soleil().distance()) - REFRACTION_HZ;
-        //        soleil.CalculZoneVisibilite(beta);
-
-        //        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
+        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
         // Coordonnees equatoriales
         soleil.CalculCoordEquat(observateur);
-        //        //}
-        //        //}
+        //}
+        //}
 
 
         /*
@@ -755,24 +762,24 @@ void PreviSat::EnchainementCalculs()
         // Calcul de la magnitude de la Lune
         lune.CalculMagnitude(soleil);
 
-        //        //if (!ui->carte->isHidden()) {
+        //if (!ui->carte->isHidden()) {
 
-        //        // Coordonnees terrestres
-        //        lune.CalculCoordTerrestres(observateur);
+        // Coordonnees terrestres
+        lune.CalculCoordTerrestres(observateur);
 
-        //        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
+        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
         // Coordonnees equatoriales
         lune.CalculCoordEquat(observateur);
-        //        //}
-        //        //}
+        //}
+        //}
 
 
-        //        //if (ui->ciel->isVisible()) {
+        //if (ui->ciel->isVisible()) {
 
-        //            /*
-        //             * Calcul de la position des planetes
-        //             */
-        //            //if (ui->affplanetes->checkState() != Qt::Unchecked) {
+        /*
+                     * Calcul de la position des planetes
+                     */
+        //if (ui->affplanetes->checkState() != Qt::Unchecked) {
 
         //                QList<Planete> &planetes = Configuration::instance()->planetes();
         //                planetes.clear();
@@ -783,19 +790,19 @@ void PreviSat::EnchainementCalculs()
         //                    planete.CalculCoordHoriz(observateur);
         //                    planetes.append(planete);
         //                }
-        //            //}
+        //}
 
         //            /*
         //             * Calcul de la position du catalogue d'etoiles
         //             */
         //            Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
-        //            //if (ui->affconst->isChecked()) {
+        //if (ui->affconst->isChecked()) {
         //                Constellation::CalculConstellations(observateur);
-        //            //}
-        //            //if (ui->affconst->checkState() != Qt::Unchecked) {
+        //}
+        //if (ui->affconst->checkState() != Qt::Unchecked) {
         //                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles());
-        //            //}
-        //        //}
+        //}
+        //}
 
         QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
         if (satellites.isEmpty()) {
@@ -808,9 +815,10 @@ void PreviSat::EnchainementCalculs()
             const QString titre = "%1 %2 - %3";
             setWindowTitle(titre.arg(qApp->applicationName()).arg(QString(APPVER_MAJ)).arg(Configuration::instance()->tleDefaut().nomsat));
 
-            Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, satellites, _onglets->ui()->nombreTrajectoires->value(),
+            Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, _onglets->ui()->nombreTrajectoires->value(),
                                                    _onglets->ui()->eclipsesLune->isChecked(), _onglets->ui()->effetEclipsesMagnitude->isChecked(),
-                                                   _onglets->ui()->extinctionAtmospherique->isChecked(), _onglets->ui()->refractionPourEclipses->isChecked());
+                                                   _onglets->ui()->extinctionAtmospherique->isChecked(),
+                                                   _onglets->ui()->refractionPourEclipses->isChecked(), _onglets->ui()->affvisib, satellites);
         }
 
 
@@ -844,6 +852,43 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
         _onglets->ui()->calJulien->setChecked(!_onglets->ui()->calJulien->isChecked());
         TempsReel();
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::resizeEvent(QResizeEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    const double hcarte6 = _carte->height() / 6.;
+    ui->S60->move(5, static_cast<int> (5 * hcarte6) - 6);
+    ui->S30->move(5, static_cast<int> (4 * hcarte6) - 6);
+    ui->SS->move(5, static_cast<int> (3.5 * hcarte6) - 7);
+    ui->N0->move(5, static_cast<int> (3 * hcarte6) - 7);
+    ui->NN->move(5, static_cast<int> (2.5 * hcarte6) - 7);
+    ui->N30->move(5, static_cast<int> (2 * hcarte6) - 7);
+    ui->N60->move(5, static_cast<int> (hcarte6) - 7);
+
+    const double lcarte12 = _carte->width() / 12.;
+    ui->W150->move(static_cast<int> (lcarte12) - 7, 0);
+    ui->W120->move(static_cast<int> (2. * lcarte12) - 7, 0);
+    ui->W90->move(static_cast<int> (3. * lcarte12) - 5, 0);
+    ui->W60->move(static_cast<int> (4. * lcarte12) - 5, 0);
+    ui->W30->move(static_cast<int> (5. * lcarte12) - 5, 0);
+    ui->WW->move(static_cast<int> (5.5 * lcarte12) - 3, 0);
+    ui->W0->move(static_cast<int> (6. * lcarte12) - 1, 0);
+    ui->EE->move(static_cast<int> (6.5 * lcarte12) - 3, 0);
+    ui->E30->move(static_cast<int> (7. * lcarte12) - 5, 0);
+    ui->E60->move(static_cast<int> (8. * lcarte12) - 5, 0);
+    ui->E90->move(static_cast<int> (9. * lcarte12) - 5, 0);
+    ui->E120->move(static_cast<int> (10. * lcarte12) - 7, 0);
+    ui->E150->move(static_cast<int> (11. * lcarte12) - 7, 0);
+
 
     /* Retour */
     return;
@@ -910,11 +955,10 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     /* Initialisations */
     const QString nomsat = item->text();
     const QString norad = item->data(Qt::UserRole).toString();
-    _messageStatut->setText("");
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        _messageStatut->setText(tr("%1 (numéro NORAD : %2)").arg(nomsat).arg(norad));
+        AfficherMessageStatut(tr("%1 (numéro NORAD : %2)").arg(nomsat).arg(norad), 10);
     }
 
     /* Retour */

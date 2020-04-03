@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatPays version="1.0">
+    <Pays>
+        <Acronyme>ATM</Acronyme>
+        <Description>Atmospheric orbit</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>AB</Acronyme>
+        <Description>Arab satellite communications organization</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>AC</Acronyme>
+        <Description>Asiatsat corp</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ALG</Acronyme>
+        <Description>Algeria</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ARGN</Acronyme>
+        <Description>Argentina</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ASRA</Acronyme>
+        <Description>Austria</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>AUS</Acronyme>
+        <Description>Australia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>AZER</Acronyme>
+        <Description>Azerbaijan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>BELA</Acronyme>
+        <Description>Belarus</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>BRAZ</Acronyme>
+        <Description>Brazil</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CA</Acronyme>
+        <Description>Canada</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CHBZ</Acronyme>
+        <Description>Peoples republic of China/Brazil</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CHLE</Acronyme>
+        <Description>Chile</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CIS</Acronyme>
+        <Description>Commonwealth of independent states</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>COL</Acronyme>
+        <Description>Columbia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CZCH</Acronyme>
+        <Description>Czechoslovakia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>DEN</Acronyme>
+        <Description>Denmark</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ECU</Acronyme>
+        <Description>Ecuador</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>EGYP</Acronyme>
+        <Description>Egypt</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ESA</Acronyme>
+        <Description>European Space Agency</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ESRO</Acronyme>
+        <Description>European Space Research Organization</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>EST</Acronyme>
+        <Description>Estonia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>EUME</Acronyme>
+        <Description>European organization for the exploitation of meteorological satellites</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>EUTE</Acronyme>
+        <Description>European telecommunications satellite organization (EUTELSAT)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>FGER</Acronyme>
+        <Description>France/Germany</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>FR</Acronyme>
+        <Description>France</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>GER</Acronyme>
+        <Description>Germany</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>GLOB</Acronyme>
+        <Description>Globalstar</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>GREC</Acronyme>
+        <Description>Greece</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>HUN</Acronyme>
+        <Description>Hungary</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>IM</Acronyme>
+        <Description>International maritime satellite organization (INMARSAT)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>IND</Acronyme>
+        <Description>India</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>INDO</Acronyme>
+        <Description>Indonesia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>IRAN</Acronyme>
+        <Description>Iran</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>IRID</Acronyme>
+        <Description>Iridium</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ISRA</Acronyme>
+        <Description>Israel</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ISS</Acronyme>
+        <Description>International Space Station</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>IT</Acronyme>
+        <Description>Italy</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ITSO</Acronyme>
+        <Description>International telecommunications satellite organization (INTELSAT)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>JPN</Acronyme>
+        <Description>Japan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>LUXE</Acronyme>
+        <Description>Luxembourg</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MALA</Acronyme>
+        <Description>Malaysia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MEX</Acronyme>
+        <Description>Mexico</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NATO</Acronyme>
+        <Description>North Atlantic Treaty Organization (NATO)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NETH</Acronyme>
+        <Description>Netherlands</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NICO</Acronyme>
+        <Description>New Ico</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NIG</Acronyme>
+        <Description>Nigeria</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NKOR</Acronyme>
+        <Description>North Korea</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NOR</Acronyme>
+        <Description>Norway</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>O3B</Acronyme>
+        <Description>O3B Networks</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ORB</Acronyme>
+        <Description>Orbital telecommunications satellite (GLOBALSTAR)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>PAKI</Acronyme>
+        <Description>Pakistan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>POL</Acronyme>
+        <Description>Poland</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>POR</Acronyme>
+        <Description>Portugal</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>PRC</Acronyme>
+        <Description>Peoples republic of China</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>RASC</Acronyme>
+        <Description>Regional african satellite communications organization</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ROC</Acronyme>
+        <Description>Republic of China (Taiwan)</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>ROM</Acronyme>
+        <Description>Romania</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>RP</Acronyme>
+        <Description>Republic of Philippines</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SAFR</Acronyme>
+        <Description>South Africa</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SAUD</Acronyme>
+        <Description>Saudi Arabia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SEAL</Acronyme>
+        <Description>Sea Launch Demo</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SES</Acronyme>
+        <Description>Société européenne des satellites</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SING</Acronyme>
+        <Description>Singapore</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SKOR</Acronyme>
+        <Description>South Korea</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SPN</Acronyme>
+        <Description>Spain</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>STCT</Acronyme>
+        <Description>Singapore/Taiwan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SWED</Acronyme>
+        <Description>Sweden</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>SWTZ</Acronyme>
+        <Description>Switzerland</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>THAI</Acronyme>
+        <Description>Thailand</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>TURK</Acronyme>
+        <Description>Turkey</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>UAE</Acronyme>
+        <Description>United Arab Emirates</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>UK</Acronyme>
+        <Description>United Kingdom</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>US</Acronyme>
+        <Description>United States of America</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>USBZ</Acronyme>
+        <Description>United States/Brazil</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>VENZ</Acronyme>
+        <Description>Venezuela</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>VTNM</Acronyme>
+        <Description>Vietnam</Description>
+    </Pays>
+</PreviSatPays>

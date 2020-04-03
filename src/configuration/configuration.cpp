@@ -21,7 +21,7 @@
  * >    configuration.cpp
  *
  * Localisation
- * >
+ * >    configuration
  *
  * Heritage
  * >
@@ -46,6 +46,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QDomDocument>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QLocale>
 #include <QSettings>
@@ -222,6 +223,16 @@ QList<Etoile> &Configuration::etoiles()
     return _etoiles;
 }
 
+QMap<QString, QString> Configuration::mapCategories() const
+{
+    return _mapCategories;
+}
+
+QMap<QString, QString> Configuration::mapPays() const
+{
+    return _mapPays;
+}
+
 QMap<QString, Observateur> Configuration::mapSites() const
 {
     return _mapSites;
@@ -337,6 +348,12 @@ void Configuration::Initialisation()
 
     // Lecture de la configuration
     LectureConfiguration();
+
+    // Lecture du fichier de categories d'orbite
+    LectureCategoriesOrbite();
+
+    // Lecture du fichier listant les pays ou organisations
+    LecturePays();
 
     // Lecture du fichier des sites de lancement
     LectureSitesLancement();
@@ -584,24 +601,26 @@ void Configuration::LectureConfiguration()
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fi(_dirCfg + QDir::separator() + "configuration.xml");
+    QFile fi1(_dirCfg + QDir::separator() + "configuration.xml");
 
 #if !defined (Q_OS_MAC)
-    if (!fi.exists()) {
-        QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "configuration.xml");
-        if (fi2.exists()) {
-            fi2.copy(fi.fileName());
-        }
-    }
+
+    const QString msg = "Le fichier de configuration de PreviSat a évolué.\n"
+                        "Certaines informations de configuration "
+                        "(par exemple les lieux d'observation sélectionnés) seront perdues.";
+
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "configuration.xml");
+    VerifieVersionXml(msg, fi1, fi2);
+
 #endif
 
-    fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    if (fi.exists()) {
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
 
-        QXmlStreamReader cfg(&fi);
+        QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
-        if (cfg.name() == "PreviSat") {
+        if (cfg.name() == "PreviSatConfiguration") {
 
             while (cfg.readNextStartElement()) {
 
@@ -666,7 +685,7 @@ void Configuration::LectureConfiguration()
             }
         }
     }
-    fi.close();
+    fi1.close();
 
     // Verifications
     if (_observateurs.isEmpty()) {
@@ -675,6 +694,130 @@ void Configuration::LectureConfiguration()
 
     if (_mapSatellitesFicTLE.isEmpty()) {
         _mapSatellitesFicTLE.insert("visual.txt", QStringList() << "25544" << "20580");
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier de categories d'orbite
+ */
+void Configuration::LectureCategoriesOrbite()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi1(_dirCfg + QDir::separator() + "categories.xml");
+
+#if !defined (Q_OS_MAC)
+
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "categories.xml");
+    VerifieVersionXml(QString(), fi1, fi2);
+
+#endif
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name() == "PreviSatCategories") {
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name() == "Categorie") {
+
+                    QString acronyme;
+                    QString desc;
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name() == "Acronyme") {
+                            acronyme = cfg.readElementText();
+                        } else if (cfg.name() == "Description") {
+                            desc = cfg.readElementText();
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+                    _mapCategories.insert(acronyme, desc);
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    // Verifications
+    if (_mapCategories.isEmpty()) {
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
+                                            "Aucune catégorie d'orbite n'a été trouvée dans le fichier, veuillez réinstaller %2");
+        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier listant les pays ou organisations
+ */
+void Configuration::LecturePays()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi1(_dirCfg + QDir::separator() + "pays.xml");
+
+#if !defined (Q_OS_MAC)
+
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "pays.xml");
+    VerifieVersionXml(QString(), fi1, fi2);
+
+#endif
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name() == "PreviSatPays") {
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name() == "Pays") {
+
+                    QString acronyme;
+                    QString desc;
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name() == "Acronyme") {
+                            acronyme = cfg.readElementText();
+                        } else if (cfg.name() == "Description") {
+                            desc = cfg.readElementText();
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+                    _mapPays.insert(acronyme, desc);
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    // Verifications
+    if (_mapPays.isEmpty()) {
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
+                                            "Aucun pays ou organisation n'a été trouvée dans le fichier, veuillez réinstaller %2");
+        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
     }
 
     /* Retour */
@@ -691,24 +834,22 @@ void Configuration::LectureSitesLancement()
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fi(_dirCfg + QDir::separator() + "sites.xml");
+    QFile fi1(_dirCfg + QDir::separator() + "sites.xml");
 
 #if !defined (Q_OS_MAC)
-    if (!fi.exists()) {
-        QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "sites.xml");
-        if (fi2.exists()) {
-            fi2.copy(fi.fileName());
-        }
-    }
+
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "sites.xml");
+    VerifieVersionXml(QString(), fi1, fi2);
+
 #endif
 
-    fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    if (fi.exists()) {
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
 
-        QXmlStreamReader cfg(&fi);
+        QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
-        if (cfg.name() == "PreviSat") {
+        if (cfg.name() == "PreviSatSites") {
 
             while (cfg.readNextStartElement()) {
 
@@ -737,7 +878,14 @@ void Configuration::LectureSitesLancement()
             }
         }
     }
-    fi.close();
+    fi1.close();
+
+    // Verifications
+    if (_mapSites.isEmpty()) {
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
+                                            "Aucun site de lancement n'a été trouvé dans le fichier, veuillez réinstaller %2");
+        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
+    }
 
     /* Retour */
     return;
@@ -778,7 +926,8 @@ void Configuration::VerificationArborescences()
     const QString repSon = QString("sound") + QDir::separator();
     const QString repStr = QString("stars") + QDir::separator();
     const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav" << repSon + "los-default.wav"
-                                    << repStr + "constellations.dat" << repStr + "constlabel.dat" <<  repStr + "constlines.dat" << repStr + "etoiles.dat");
+                                    << repStr + "constellations.dat" << repStr + "constlabel.dat" <<  repStr + "constlines.dat"
+                                    << repStr + "etoiles.dat");
 
     VerifieFichiersData(_dirCommonData, ficCommonData);
 
@@ -786,7 +935,8 @@ void Configuration::VerificationArborescences()
     const QString repFlr = QString("flares") + QDir::separator();
     const QString repHtm = QString("html") + QDir::separator();
     _listeFicLocalData << "donnees.sat" << repFlr + "flares.sts" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
-                       << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "stations.sta" << "taiutc.dat" << "tdrs.sat";
+                       << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "stations.sta" << "taiutc.dat"
+                       << "tdrs.sat";
 
     VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
@@ -821,6 +971,52 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
             const QString message = QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2");
             Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
             exit(1);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification du numero de version du fichier xml
+ */
+void Configuration::VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (fi2.exists()) {
+
+        if (fi1.exists()) {
+
+            // Comparaison des numeros de version du fichier xml
+            QDomDocument doc;
+            doc.setContent(&fi2);
+            const QString versionNew = doc.documentElement().attribute("version");
+
+            doc.clear();
+            doc.setContent(&fi1);
+            const QString versionOld = doc.documentElement().attribute("version");
+            fi1.seek(0);
+
+            if (versionNew != versionOld) {
+
+                if (!msg.isEmpty()) {
+                    Message::Afficher(QT_TR_NOOP(msg), WARNING);
+                }
+
+                // Copie du fichier xml
+                fi1.remove();
+                fi2.copy(fi1.fileName());
+            }
+
+        } else {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
         }
     }
 

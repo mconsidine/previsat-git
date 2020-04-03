@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatSites version="1.0">
+    <Site>
+        <Acronyme>AFETR</Acronyme>
+        <Description>Air Force Eastern Test Range, Florida, USA</Description>
+		<Longitude>80.6511695</Longitude>
+		<Latitude>28.5728769</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>AFWTR</Acronyme>
+        <Description>Air Force Western Test Range, California, USA</Description>
+		<Longitude>120.5746291</Longitude>
+		<Latitude>34.7420311</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>CAS</Acronyme>
+        <Description>Canaries Airspace</Description>
+		<Longitude>15.385444</Longitude>
+		<Latitude>27.932009</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>DLS</Acronyme>
+        <Description>Dombarovskiy Launch Site, Russia</Description>
+		<Longitude>-59.74822144016974</Longitude>
+		<Latitude>51.07970739656233</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>ERAS</Acronyme>
+        <Description>Eastern Range Airspace</Description>
+		<Longitude></Longitude>
+		<Latitude></Latitude>
+	</Site>
+    <Site>
+        <Acronyme>FRGUI</Acronyme>
+        <Description>Europe's Spaceport, Kourou, French Guiana</Description>
+		<Longitude>52.771990</Longitude>
+		<Latitude>5.235406</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>HGSTR</Acronyme>
+        <Description>Hammaguira Space Track Range, Algeria</Description>
+		<Longitude>-3.065</Longitude>
+		<Latitude>30.825</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>JSC</Acronyme>
+        <Description>Jiuquan Space Center, China</Description>
+		<Longitude>-100.303856</Longitude>
+		<Latitude>41.133366</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>KODAK</Acronyme>
+        <Description>Kodiak Launch Complex, Alaska, USA</Description>
+		<Longitude>152.339382</Longitude>
+		<Latitude>57.435251</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>KSCUT</Acronyme>
+        <Description>Uchinoura Space Center, University of Tokyo (Kagoshima)</Description>
+		<Longitude>131.080648</Longitude>
+		<Latitude>31.251455</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>KWAJL</Acronyme>
+        <Description>US Army Kwajalein Atoll (USAKA)</Description>
+		<Longitude>-167.731627</Longitude>
+		<Latitude>8.720211</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>KYMTR</Acronyme>
+        <Description>Kapustin Yar Missile and Space Complex, Russia</Description>
+		<Longitude>-46.017101</Longitude>
+		<Latitude>48.648037</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>NSC</Acronyme>
+        <Description>Naro Space Complex, South Korea</Description>
+		<Longitude>-127.536267</Longitude>
+		<Latitude>34.431805</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>OREN</Acronyme>
+        <Description>Orenburg, Russia</Description>
+		<Longitude>-54.5421139</Longitude>
+		<Latitude>51.7910686</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>PKMTR</Acronyme>
+        <Description>Plesetsk Missile and Space Complex, Russia</Description>
+		<Longitude>-40.660991</Longitude>
+		<Latitude>62.921579</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>PMRF</Acronyme>
+        <Description>Pacific Missile Range Facility</Description>
+		<Longitude>159.7907122</Longitude>
+		<Latitude>22.0352872</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>RLLC</Acronyme>
+        <Description>Rocket Lab Launch Complex</Description>
+		<Longitude>-177.865677</Longitude>
+		<Latitude>-39.260993</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SADOL</Acronyme>
+        <Description>Submarine Launch from Barents Sea, Russia</Description>
+		<Longitude></Longitude>
+		<Latitude></Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SEAL</Acronyme>
+        <Description>Sea Launch Platform (mobile)</Description>
+		<Longitude>154</Longitude>
+		<Latitude>0</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SEM</Acronyme>
+        <Description>Semnan Satellite Launch Site, Iran</Description>
+		<Longitude>-53.924531</Longitude>
+		<Latitude>35.231459</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SNMLP</Acronyme>
+        <Description>San Marco Launch Platform, Indian Ocean (Kenya)</Description>
+		<Longitude>-40.213333</Longitude>
+		<Latitude>-2.940833</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SRI</Acronyme>
+        <Description>Satish Dhawan Space Center, (India), formerly Sriharikota Launching Range</Description>
+		<Longitude>-80.232470</Longitude>
+		<Latitude>13.726598</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>SVOB</Acronyme>
+        <Description>Svobodnyy Launch Complex, Russia</Description>
+		<Longitude>-128.3739065623254</Longitude>
+		<Latitude>51.87978346856201</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>TNSTA</Acronyme>
+        <Description>Tanegashima Space Center, Japan</Description>
+		<Longitude>-130.9554574</Longitude>
+		<Latitude>30.3748696</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>TSC</Acronyme>
+        <Description>Taiyuan Space Center, China</Description>
+		<Longitude>-111.607114</Longitude>
+		<Latitude>38.842076</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>TTMTR</Acronyme>
+        <Description>Tyuratam missile and Space Center, Kazakhstan also known as Baikonur cosmodrome</Description>
+		<Longitude>-63.300506</Longitude>
+		<Latitude>45.996711</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>UNKN</Acronyme>
+        <Description>Unknown</Description>
+		<Longitude></Longitude>
+		<Latitude></Latitude>
+	</Site>
+    <Site>
+        <Acronyme>VOSTO</Acronyme>
+        <Description>Vostochny Cosmodrome</Description>
+		<Longitude>-128.3319234</Longitude>
+		<Latitude>51.8839402</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>WLPIS</Acronyme>
+        <Description>Wallops Island, Virginie, USA</Description>
+		<Longitude>75.478671</Longitude>
+		<Latitude>37.842817</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>WOMRA</Acronyme>
+        <Description>Woomera, Australia</Description>
+		<Longitude>-136.528145</Longitude>
+		<Latitude>-30.946802</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>WRAS</Acronyme>
+        <Description>Western Range Air Space, USA</Description>
+		<Longitude></Longitude>
+		<Latitude></Latitude>
+	</Site>
+    <Site>
+        <Acronyme>XSC</Acronyme>
+        <Description>Xichang Space Center, China</Description>
+		<Longitude>-102.028146</Longitude>
+		<Latitude>28.246341</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>YAVNE</Acronyme>
+        <Description>Yavne Launch Facility, Israel</Description>
+		<Longitude>-34.700994</Longitude>
+		<Latitude>31.898079</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>YSLA</Acronyme>
+        <Description>Yellow Sea Launch Area, China</Description>
+		<Longitude>-34.700994</Longitude>
+		<Latitude>31.898079</Latitude>
+	</Site>
+    <Site>
+        <Acronyme>YUN</Acronyme>
+        <Description>Yunsong, North Korea</Description>
+		<Longitude>-124.705294</Longitude>
+		<Latitude>39.660075</Latitude>
+	</Site>
+</PreviSatSites>

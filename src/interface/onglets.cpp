@@ -91,6 +91,10 @@ Onglets::Onglets(QWidget *parent) :
 {
     _ui->setupUi(this);
 
+    _ui->categorieOrbite->installEventFilter(this);
+    _ui->categorieOrbiteDonneesSat->installEventFilter(this);
+    _ui->pays->installEventFilter(this);
+    _ui->paysDonneesSat->installEventFilter(this);
     _ui->siteLancement->installEventFilter(this);
     _ui->siteLancementDonneesSat->installEventFilter(this);
 
@@ -140,6 +144,9 @@ Ui::Onglets *Onglets::ui()
 
 /*
  * Methodes publiques
+ */
+/*
+ * Affichage des donnees numeriques
  */
 void Onglets::show(const Date &date)
 {
@@ -284,18 +291,18 @@ void Onglets::AffichageDonneesSatellite() const
     const QString nss = (satellite.latitude() >= 0.) ? tr("Nord") : tr("Sud");
     _ui->latitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.latitude()), DEGRE, 2, 0, false, true)).arg(nss));
     if (_ui->unitesKm->isChecked()) {
-        _ui->altitudeSat->setText(text.sprintf("%.1f ", satellite.altitude()) + unite);
+        _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude()) + unite);
     } else {
-        _ui->altitudeSat->setText(text.sprintf("%.1f ", satellite.altitude() * MILE_PAR_KM) + unite);
+        _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude() * MILE_PAR_KM) + unite);
     }
 
     // Hauteur/Azimut/Distance
     _ui->hauteurSat->setText(Maths::ToSexagesimal(satellite.hauteur(), DEGRE, 2, 0, true, true));
     _ui->azimutSat->setText(Maths::ToSexagesimal(satellite.azimut(), DEGRE, 3, 0, false, true));
     if (_ui->unitesKm->isChecked()) {
-        _ui->distanceSat->setText(text.sprintf("%.1f ", satellite.distance()) + unite);
+        _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance()) + unite);
     } else {
-        _ui->distanceSat->setText(text.sprintf("%.1f ", satellite.distance() * MILE_PAR_KM) + unite);
+        _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance() * MILE_PAR_KM) + unite);
     }
 
     // Ascension droite/declinaison/constellation
@@ -336,7 +343,7 @@ void Onglets::AffichageDonneesSatellite() const
                 // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                 // TODO
 
-                const QString magnitude = fmt1.arg(text.sprintf("%+.1f", magn)).arg(fractionIlluminee);
+                const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn)).arg(fractionIlluminee);
 
                 QString eclipse;
                 const QString fmt2 = " %1/%2";
@@ -542,14 +549,14 @@ void Onglets::AffichageElementsOSculateurs() const
     _ui->ligne2->setText(satellite.tle().ligne2());
 
     // Position cartesienne
-    _ui->xsat->setText(text.sprintf("%+.3f ", position.x()) + unite);
-    _ui->ysat->setText(text.sprintf("%+.3f ", position.y()) + unite);
-    _ui->zsat->setText(text.sprintf("%+.3f ", position.z()) + unite);
+    _ui->xsat->setText(text.asprintf("%+.3f ", position.x()) + unite);
+    _ui->ysat->setText(text.asprintf("%+.3f ", position.y()) + unite);
+    _ui->zsat->setText(text.asprintf("%+.3f ", position.z()) + unite);
 
     // Elements osculateurs
     const QString fmt1 = "%1";
     const QString fmt2 = "%1°";
-    _ui->demiGrandAxe->setText(text.sprintf("%.1f ", satellite.elements().demiGrandAxe()) + unite);
+    _ui->demiGrandAxe->setText(text.asprintf("%.1f ", satellite.elements().demiGrandAxe()) + unite);
 
     _ui->frameCirculaire->setVisible(false);
     _ui->frameCirculaireEquatorial->setVisible(false);
@@ -624,7 +631,7 @@ void Onglets::AffichageElementsOSculateurs() const
     _ui->periode->setText(Maths::ToSexagesimal(satellite.elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
 
     // Informations de signal
-    _ui->doppler->setText(text.sprintf("%+.0f Hz", satellite.signal().doppler()));
+    _ui->doppler->setText(text.asprintf("%+.0f Hz", satellite.signal().doppler()));
     _ui->attenuation->setText(fmt1.arg(satellite.signal().attenuation(), 0, 'f', 2) + " dB");
     _ui->delai->setText(fmt1.arg(satellite.signal().delai(), 0, 'f', 2) + " ms");
 
@@ -737,7 +744,7 @@ void Onglets::AffichageInformationsSatellite() const
         QString text;
         const double magMax = donnee.magnitudeStandard() - 15.75
                 + 5. * log10(1.45 * (satellite.elements().demiGrandAxe() * (1. - satellite.elements().excentricite()) - RAYON_TERRESTRE));
-        _ui->magnitudeStdMax->setText(text.sprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
+        _ui->magnitudeStdMax->setText(text.asprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
     }
 
     // Modele orbital
@@ -859,22 +866,22 @@ void Onglets::AffichageVitesses() const
 
         vitesse *= NB_SEC_PAR_HEUR;
 
-        _ui->vitesseSat->setText(text.sprintf("%.0f ", vitesse.Norme()) + unite);
-        _ui->rangeRate->setText(text.sprintf("%+.0f ", rangeRate * NB_SEC_PAR_HEUR) + unite);
+        _ui->vitesseSat->setText(text.asprintf("%.0f ", vitesse.Norme()) + unite);
+        _ui->rangeRate->setText(text.asprintf("%+.0f ", rangeRate * NB_SEC_PAR_HEUR) + unite);
 
         // Vitesse cartesienne
-        _ui->vxsat->setText(text.sprintf("%+.3f ", vitesse.x()) + unite);
-        _ui->vysat->setText(text.sprintf("%+.3f ", vitesse.y()) + unite);
-        _ui->vzsat->setText(text.sprintf("%+.3f ", vitesse.z()) + unite);
+        _ui->vxsat->setText(text.asprintf("%+.3f ", vitesse.x()) + unite);
+        _ui->vysat->setText(text.asprintf("%+.3f ", vitesse.y()) + unite);
+        _ui->vzsat->setText(text.asprintf("%+.3f ", vitesse.z()) + unite);
 
     } else {
-        _ui->vitesseSat->setText(text.sprintf("%.3f ", vitesse.Norme()) + unite);
-        _ui->rangeRate->setText(text.sprintf("%+.3f ", rangeRate) + unite);
+        _ui->vitesseSat->setText(text.asprintf("%.3f ", vitesse.Norme()) + unite);
+        _ui->rangeRate->setText(text.asprintf("%+.3f ", rangeRate) + unite);
 
         // Vitesse cartesienne
-        _ui->vxsat->setText(text.sprintf("%+.6f ", vitesse.x()) + unite);
-        _ui->vysat->setText(text.sprintf("%+.6f ", vitesse.y()) + unite);
-        _ui->vzsat->setText(text.sprintf("%+.6f ", vitesse.z()) + unite);
+        _ui->vxsat->setText(text.asprintf("%+.6f ", vitesse.x()) + unite);
+        _ui->vysat->setText(text.asprintf("%+.6f ", vitesse.y()) + unite);
+        _ui->vzsat->setText(text.asprintf("%+.6f ", vitesse.z()) + unite);
     }
 
     /* Retour */
@@ -965,7 +972,7 @@ void Onglets::ChargementPref() const
         _ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
-        _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
+        _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 30).toInt());
         _ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
         _ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
@@ -1369,6 +1376,22 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
 
     if (evt->type() == QEvent::MouseMove) {
 
+        // Affichage de la categorie d'orbite
+        if (_ui->categorieOrbite->underMouse() || _ui->categorieOrbiteDonneesSat->underMouse()) {
+
+            const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().categorieOrbite();
+            _ui->categorieOrbite->setToolTip(Configuration::instance()->mapCategories()[acronyme]);
+            _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategories()[acronyme]);
+        }
+
+        // Affichage du pays ou de l'organisation
+        if (_ui->pays->underMouse() || _ui->paysDonneesSat->underMouse()) {
+
+            const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().pays();
+            _ui->pays->setToolTip(Configuration::instance()->mapPays()[acronyme]);
+            _ui->paysDonneesSat->setToolTip(Configuration::instance()->mapPays()[acronyme]);
+        }
+
         // Affichage du site de lancement
         if (_ui->siteLancement->underMouse() || _ui->siteLancementDonneesSat->underMouse()) {
 
@@ -1717,7 +1740,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
             char methMagnitude = ligne.at(39).toLower().toLatin1();
 
             QString text;
-            _ui->magnitudeStdMaxDonneesSat->setText(text.sprintf("%+.1f%c/%+.1f", magnitudeStandard, methMagnitude, magMax));
+            _ui->magnitudeStdMaxDonneesSat->setText(text.asprintf("%+.1f%c/%+.1f", magnitudeStandard, methMagnitude, magMax));
         }
 
         // Modele orbital
@@ -2249,7 +2272,7 @@ void Onglets::on_validerObs_clicked()
             const double x2 = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
 
             QString text;
-            flux << text.sprintf("%+13.9f %+12.9f %04d ", x1, x1, atd) + nomlieu << endl;
+            flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x1, atd) + nomlieu << endl;
             fi.close();
 
             on_categoriesObs_currentRowChanged(0);
@@ -2327,7 +2350,7 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
     } else {
 
         QString text;
-        const QString ligne = text.sprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + nom;
+        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + nom;
 
         // Ajout du lieu d'observation dans Mes Preferes
         QFile fich(fic);
@@ -2389,7 +2412,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
     // Suppression du lieu du fichier
     QString text;
     const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-    const QString ligne = text.sprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
+    const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
 
     const QString fic = Configuration::instance()->dirCoord() + QDir::separator() +
             ((_ui->categoriesObs->currentRow() == 0) ? "preferes" : _ui->categoriesObs->currentItem()->text());
@@ -2486,7 +2509,7 @@ void Onglets::on_actionSupprimerLieu_triggered()
 
         QString text;
         const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-        const QString ligne = text.sprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
+        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
 
         QFile sr(fic);
         sr.open(QIODevice::ReadOnly | QIODevice::Text);

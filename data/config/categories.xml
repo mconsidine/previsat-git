@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatCategories version="1.0">
+    <Categorie>
+        <Acronyme>ATM</Acronyme>
+        <Description>Atmospheric orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>TAO</Acronyme>
+        <Description>Trans-atmospheric orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>SO</Acronyme>
+        <Description>Suborbital orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>LEO/E</Acronyme>
+        <Description>Equatorial low orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>LEO/I</Acronyme>
+        <Description>Intermediate low orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>LEO/P</Acronyme>
+        <Description>Polar low orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>LEO/S</Acronyme>
+        <Description>Sun-synchroneous low orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>LEO/R</Acronyme>
+        <Description>Retrograde low orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>MEO</Acronyme>
+        <Description>Medium orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>HEO</Acronyme>
+        <Description>Highly elliptic orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>HEO/M</Acronyme>
+        <Description>Molniya orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GTO</Acronyme>
+        <Description>GEO Transfer orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/S</Acronyme>
+        <Description>Stationary geosynchronous orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/I</Acronyme>
+        <Description>Inclined GEO</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/T</Acronyme>
+        <Description>Synchronous orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/D</Acronyme>
+        <Description>Drift GEO</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/ID</Acronyme>
+        <Description>Inclined drift GEO</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>GEO/NS</Acronyme>
+        <Description>Near-synchronous orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>DSO</Acronyme>
+        <Description>Deep Space orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>DHEO</Acronyme>
+        <Description>Deep Eccentric orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>CLO</Acronyme>
+        <Description>Cislunar orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>EEO</Acronyme>
+        <Description>Earth Escape orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>HCO</Acronyme>
+        <Description>Heliocentric orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>PCO</Acronyme>
+        <Description>Planetocentric orbit</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>PEO</Acronyme>
+        <Description>Planetary escape trajectory</Description>
+    </Categorie>
+    <Categorie>
+        <Acronyme>SSE</Acronyme>
+        <Description>Solar system Escape</Description>
+    </Categorie>
+</PreviSatCategories>

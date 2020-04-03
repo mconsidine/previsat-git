@@ -13,35 +13,8 @@
         <file>resources/apropos.png</file>
         <file>resources/splashscreen.png</file>
         <file>resources/icone.ico</file>
-        <file>resources/lune01.png</file>
-        <file>resources/lune02.png</file>
-        <file>resources/lune03.png</file>
-        <file>resources/lune04.png</file>
-        <file>resources/lune05.png</file>
-        <file>resources/lune06.png</file>
-        <file>resources/lune07.png</file>
-        <file>resources/lune08.png</file>
-        <file>resources/lune09.png</file>
-        <file>resources/lune10.png</file>
-        <file>resources/lune11.png</file>
-        <file>resources/lune12.png</file>
-        <file>resources/lune13.png</file>
-        <file>resources/lune14.png</file>
-        <file>resources/lune15.png</file>
-        <file>resources/lune16.png</file>
-        <file>resources/lune17.png</file>
-        <file>resources/lune18.png</file>
-        <file>resources/lune19.png</file>
-        <file>resources/lune20.png</file>
-        <file>resources/lune21.png</file>
-        <file>resources/lune22.png</file>
-        <file>resources/lune23.png</file>
-        <file>resources/lune24.png</file>
-        <file>resources/lune25.png</file>
-        <file>resources/lune26.png</file>
-        <file>resources/lune27.png</file>
-        <file>resources/lune28.png</file>
-        <file>resources/lune29.png</file>
+        <file>resources/lune.png</file>
+        <file>resources/soleil.png</file>
         <file>resources/print.png</file>
         <file>resources/ajout.png</file>
         <file>resources/suppr.png</file>

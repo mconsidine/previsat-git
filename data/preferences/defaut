@@ -26,7 +26,7 @@ affichage/extinction true
 affichage/fenetreMax false
 affichage/groupeTLE 0
 affichage/hauteur 690
-affichage/intensiteOmbre 40
+affichage/intensiteOmbre 25
 affichage/intensiteVision 50
 affichage/largeur 1068
 affichage/magnitudeEtoiles 4

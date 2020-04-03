@@ -75,7 +75,7 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief PreviSat Constructeur par defaut
+     * @brief Onglets Constructeur par defaut
      * @param parent parent
      */
     explicit Onglets(QWidget *parent = nullptr);
@@ -104,6 +104,10 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief show Affichage des donnees numeriques
+     * @param date date
+     */
     void show(const Date &date);
 
     /**
@@ -115,7 +119,6 @@ public:
 signals:
 
     void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
-
     void AfficherMessageStatut(const QString &message, const int secondes);
 
 protected:

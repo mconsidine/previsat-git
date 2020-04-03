@@ -62,6 +62,8 @@ public:
     /*
      * Accesseurs
      */
+    bool luneCroissante() const;
+    double anglePhase() const;
     double fractionIlluminee() const;
     double magnitude() const;
     QString phase() const;
@@ -122,6 +124,7 @@ private:
     /*
      * Variables privees
      */
+    bool _luneCroissante;
     double _anglePhase;
     double _fractionIlluminee;
     double _magnitude;
