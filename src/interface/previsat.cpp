@@ -55,6 +55,7 @@
 #include "listwidgetitem.h"
 #include "onglets.h"
 #include "previsat.h"
+#include "radar.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
@@ -107,6 +108,10 @@ PreviSat::PreviSat(QWidget *parent) :
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
     connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+
+    // Radar
+    _radar = new Radar(_onglets, this);
+    ui->layoutRadar->addWidget(_radar);
 
     /* Retour */
     return;
@@ -277,10 +282,14 @@ void PreviSat::DemarrageApplication()
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
     EnchainementCalculs();
 
-    // Affichage des donnees dans la barre d'onglets
+    // Affichage des donnees numeriques dans la barre d'onglets
     _onglets->show(*_dateCourante);
 
-    _carte->AffichageCourbes();
+    // Affichage des courbes sur la carte du monde
+    _carte->show();
+
+    // Affichage du radar
+    _radar->show();
 
     // Lancement du chronometre
     _chronometre = new QTimer(this);
@@ -818,7 +827,8 @@ void PreviSat::EnchainementCalculs()
             Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, _onglets->ui()->nombreTrajectoires->value(),
                                                    _onglets->ui()->eclipsesLune->isChecked(), _onglets->ui()->effetEclipsesMagnitude->isChecked(),
                                                    _onglets->ui()->extinctionAtmospherique->isChecked(),
-                                                   _onglets->ui()->refractionPourEclipses->isChecked(), _onglets->ui()->affvisib, satellites);
+                                                   _onglets->ui()->refractionPourEclipses->isChecked(), _onglets->ui()->afftraceCiel->isChecked(),
+                                                   _onglets->ui()->affvisib, satellites);
         }
 
 
@@ -993,10 +1003,14 @@ void PreviSat::GestionTempsReel()
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
         EnchainementCalculs();
 
-        // Affichage des donnees dans la barre d'onglets
+        // Affichage des donnees numeriques dans la barre d'onglets
         _onglets->show(*_dateCourante);
 
-        _carte->AffichageCourbes();
+        // Affichage des courbes sur la carte du monde
+        _carte->show();
+
+        // Affichage du radar
+        _radar->show();
     }
 
     /* Retour */

@@ -46,7 +46,6 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFrame>
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QGraphicsScene>
 
 
 namespace Ui {
@@ -56,6 +55,7 @@ class Carte;
 class Observateur;
 class Onglets;
 class Satellite;
+class QGraphicsScene;
 
 class Carte : public QFrame
 {
@@ -78,11 +78,9 @@ public:
      */
     ~Carte();
 
-
     /*
      * Accesseurs
      */
-
 
     /*
      * Constantes publiques
@@ -96,9 +94,9 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief AffichageCourbes Affichage des courbes sur la carte du monde
+     * @brief show Affichage des courbes sur la carte du monde
      */
-    void AffichageCourbes();
+    void show();
 
 
 public slots:

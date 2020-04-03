@@ -50,6 +50,7 @@
 class Carte;
 class Date;
 class Onglets;
+class Radar;
 class QListWidgetItem;
 
 namespace Ui {
@@ -160,6 +161,7 @@ private:
 
     Carte *_carte;
     Onglets *_onglets;
+    Radar *_radar;
 
     // Barre de statut
     QLabel *_messageStatut;

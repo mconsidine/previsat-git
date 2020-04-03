@@ -75,6 +75,7 @@ SOURCES += \
     src/interface/carte.cpp                                \
     src/interface/onglets.cpp                              \
     src/interface/previsat.cpp                             \
+    src/interface/radar.cpp                                \
     src/librairies/corps/corps.cpp                         \
     src/librairies/corps/etoiles/constellation.cpp         \
     src/librairies/corps/etoiles/etoile.cpp                \
@@ -110,6 +111,7 @@ HEADERS += \
     src/interface/listwidgetitem.h                       \
     src/interface/onglets.h                              \
     src/interface/previsat.h                             \
+    src/interface/radar.h                                \
     src/librairies/corps/corps.h                         \
     src/librairies/corps/etoiles/constellation.h         \
     src/librairies/corps/etoiles/etoile.h                \
@@ -155,6 +157,7 @@ FORMS += \
 #    src/interface/informations.ui    \
     src/interface/onglets.ui         \
     src/interface/previsat.ui        \
+    src/interface/radar.ui           \
     src/interface/telecharger.ui
 
 OTHER_FILES += icone.rc

@@ -42,10 +42,11 @@
 #include "carte.h"
 #include "onglets.h"
 #pragma GCC diagnostic ignored "-Wconversion"
+#include <QGraphicsScene>
+#include <QGraphicsSimpleTextItem>
 #include "ui_carte.h"
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QGraphicsSimpleTextItem>
 
 
 // SAA
@@ -104,7 +105,7 @@ Carte::~Carte()
 /*
  * Affichage des courbes sur la carte du monde
  */
-void Carte::AffichageCourbes()
+void Carte::show()
 {
     /* Declarations des variables locales */
 
@@ -113,33 +114,6 @@ void Carte::AffichageCourbes()
     const QColor bleuClair(173, 216, 230);
     const QPen noir(Qt::black);
     QPen crayon(Qt::white);
-
-    // Couleur du ciel
-    QBrush couleurCiel(Qt::black);
-    //if (!ui->ciel->isHidden() || ui->affradar->isChecked()) {
-
-    const double hts = Configuration::instance()->soleil().hauteur() * RAD2DEG;
-    if (hts >= 0.) {
-        // Jour
-        couleurCiel = QBrush(QColor::fromRgb(213, 255, 254));
-
-    } else {
-
-        const int red = static_cast<int> (213.15126 / (1. + 0.0018199 * exp(-0.983684 * hts)) + 0.041477);
-        const int green = static_cast<int> (qMax(qMin(256.928983 / (1. + 0.008251 * exp(-0.531535 * hts)) - 0.927648, 255.), 0.));
-
-        // Algorithme special pour le bleu
-        int blue;
-        if (hts >= -6.) {
-            blue = 254;
-        } else if (hts >= -12.) {
-            blue = static_cast<int> (-2.74359 * hts * hts - 31.551282 * hts + 163.461538);
-        } else {
-            blue = static_cast<int> (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hts)) - 1.46635, 0.));
-        }
-        couleurCiel = QBrush(QColor::fromRgb(red, green, blue));
-    }
-    //}
 
     if (scene != nullptr) {
         scene->deleteLater();
@@ -529,6 +503,9 @@ void Carte::AffichageCourbes()
                 if ((llun - 7) < 0) {
                     transform2.translate(lsol + ui->carte->width(), blun);
                 }
+                if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
+                    transform2.rotate(180.);
+                }
                 transform2.translate(-7, -7);
                 lun2->setTransform(transform2);
             }
@@ -858,7 +835,7 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
     QPen crayon(Qt::white);
 
     /* Corps de la methode */
-    AffichageCourbes();
+    show();
     const int lobs = qRound((180. - siteLancement.longitude() * RAD2DEG) * DEG2PXHZ)+1;
     const int bobs = qRound((90. - siteLancement.latitude() * RAD2DEG) * DEG2PXVT)+1;
 
@@ -888,7 +865,7 @@ void Carte::resizeEvent(QResizeEvent *evt)
     DEG2PXHZ = lcarte * (1. / T360);
     DEG2PXVT = hcarte * (2. / T360);
 
-    AffichageCourbes();
+    show();
 }
 
 

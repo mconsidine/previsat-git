@@ -343,7 +343,7 @@ void Onglets::AffichageDonneesSatellite() const
                 // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                 // TODO
 
-                const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn)).arg(fractionIlluminee);
+                const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn)).arg(text.asprintf("%.0f", fractionIlluminee));
 
                 QString eclipse;
                 const QString fmt2 = " %1/%2";

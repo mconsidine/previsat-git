@@ -157,10 +157,10 @@ QList<ElementsTraceSol> Satellite::traceAuSol() const
     return _traceAuSol;
 }
 
-//QList<QVector<double> > Satellite::traceCiel() const
-//{
-//    return _traceCiel;
-//}
+QList<ElementsTraceCiel> Satellite::traceCiel() const
+{
+    return _traceCiel;
+}
 
 
 /*
@@ -228,7 +228,7 @@ void Satellite::CalculPosVit(const Date &date)
 
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle, const bool extinction,
-                                            const bool refraction, const bool visibilite, QList<Satellite> &satellites)
+                                            const bool refraction, const bool traceCiel, const bool visibilite, QList<Satellite> &satellites)
 
 {
     /* Declarations des variables locales */
@@ -256,6 +256,12 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
                         PI_SUR_DEUX + 8.7 * DEG2RAD :*/
                         acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
             satellites[i].CalculZoneVisibilite(beta);
+        }
+
+        // Calcul de la trajectoire dans le ciel
+        if (traceCiel && satellites.at(i).isVisible()) {
+            Observateur obs(observateur);
+            satellites[i].CalculTraceCiel(date, acalcEclipseLune, refraction, obs);
         }
 
         if (i == 0) {
@@ -289,6 +295,73 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
             // Calcul des proprietes du signal (Doppler@100MHz, attenuation@100MHz et delai)
             satellites[i]._signal.Calcul(satellites[i].rangeRate(), satellites[i].distance());
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec)
+{
+    /* Declarations des variables locales */
+    Soleil soleil;
+    Lune lune;
+
+    /* Initialisations */
+    _traceCiel.clear();
+    if (_elements.demiGrandAxe() < EPSDBL100) {
+        CalculElementsOsculateurs(date);
+    }
+
+    /* Corps de la methode */
+    if (!isGeo()) {
+
+        bool afin = false;
+        int i = 0;
+        const double step = 1. / (_tle.no() * T360);
+        const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
+        Satellite sat = *this;
+        Observateur obs = observateur;
+
+        while (!afin) {
+
+            ElementsTraceCiel elements;
+            const Date j0 = Date(date.jourJulienUTC() + i * st, 0., false);
+
+            // Position du satellite
+            sat.CalculPosVit(j0);
+
+            // Position de l'observateur
+            obs.CalculPosVit(j0);
+
+            // Coordonnees horizontales
+            sat.CalculCoordHoriz(obs);
+
+            if ((sat._hauteur >= 0.) && (i < 86400)) {
+
+                // Position du Soleil
+                soleil.CalculPosition(j0);
+
+                // Position de la Lune
+                if (acalcEclipseLune) {
+                    lune.CalculPosition(j0);
+                }
+
+                // Conditions d'eclipse
+                sat._conditionEclipse.CalculSatelliteEclipse(sat._position, soleil, lune, refraction);
+
+                elements.azimut = sat.azimut();
+                elements.hauteur = sat.hauteur();
+                elements.jourJulienUTC = date.jourJulienUTC();
+                elements.eclipseTotale = sat._conditionEclipse.eclipseTotale();
+                elements.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
+                _traceCiel.append(elements);
+
+            } else {
+                if (i > 0) afin = true;
+            }
+            i++;
         }
     }
 
