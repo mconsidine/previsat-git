@@ -64,7 +64,6 @@ Satellite::Satellite()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
     _beta = 0.;
@@ -85,7 +84,6 @@ Satellite::Satellite(const QVector<TLE> &tabtle) :
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ieralt = true;
     _nbOrbites = 0;
     _ageTLE = 0.;
     _beta = 0.;
@@ -99,11 +97,6 @@ Satellite::Satellite(const QVector<TLE> &tabtle) :
 /*
  * Accesseurs
  */
-bool Satellite::isIeralt() const
-{
-    return _ieralt;
-}
-
 double Satellite::ageTLE() const
 {
     return _ageTLE;
@@ -233,9 +226,9 @@ void Satellite::CalculPosVit(const Date &date)
     return;
 }
 
-void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune, QList<Satellite> &satellites,
+void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle, const bool extinction,
-                                            const bool refraction)
+                                            const bool refraction, const bool visibilite, QList<Satellite> &satellites)
 
 {
     /* Declarations des variables locales */
@@ -257,6 +250,14 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         // Coordonnees terrestres du satellite
         satellites[i].CalculCoordTerrestres(observateur);
 
+        // Calcul de la zone de visibilite du satellite
+        if (visibilite) {
+            const double beta = /*(mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
+                        PI_SUR_DEUX + 8.7 * DEG2RAD :*/
+                        acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
+            satellites[i].CalculZoneVisibilite(beta);
+        }
+
         if (i == 0) {
 
             // Coordonnees equatoriales
@@ -271,8 +272,12 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
             // Calcul des traces au sol
             if (nbTracesAuSol > 0) {
+
                 // TODO
-                const Date dateInit = date;
+//                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == NORAD_STATION_SPATIALE) ?
+//                            Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
+//                                 false) : Date(date.jourJulienUTC(), 0., false);
+                const Date dateInit = Date(date.jourJulienUTC(), 0., false);
                 satellites[i].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refraction);
             }
 

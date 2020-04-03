@@ -64,6 +64,8 @@ struct TLEdefaut
 };
 
 
+class QFile;
+
 class Configuration
 {
 public:
@@ -114,6 +116,8 @@ public:
     QList<Planete> &planetes();
     QList<Etoile> &etoiles();
 
+    QMap<QString, QString> mapCategories() const;
+    QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
 
 
@@ -235,6 +239,12 @@ private:
 
     QList<Satellite> _listeSatellites;
 
+    // Categories d'orbite
+    QMap<QString, QString> _mapCategories;
+
+    // Pays ou organisations
+    QMap<QString, QString> _mapPays;
+
     // Sites de lancement
     QMap<QString, Observateur> _mapSites;
 
@@ -282,6 +292,16 @@ private:
     void LectureConfiguration();
 
     /**
+     * @brief LectureCategoriesOrbite Lecture du fichier de categories d'orbite
+     */
+    void LectureCategoriesOrbite();
+
+    /**
+     * @brief LecturePays Lecture du fichier listant les pays ou organisations
+     */
+    void LecturePays();
+
+    /**
      * @brief LectureSitesLancement Lecture du fichier des sites de lancement
      */
     void LectureSitesLancement();
@@ -298,6 +318,13 @@ private:
      */
     void VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const;
 
+    /**
+     * @brief VerifieVersionXml Verification du numero de version du fichier xml
+     * @param msg message
+     * @param fi1 fichier xml du repertoire commun
+     * @param fi2 fichier xml du repertoire local
+     */
+    void VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2) const;
 
 };
 

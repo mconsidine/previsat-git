@@ -43,6 +43,7 @@
 #ifndef EVENEMENTS_H
 #define EVENEMENTS_H
 
+#include <QObject>
 #include "librairies/dates/date.h"
 
 

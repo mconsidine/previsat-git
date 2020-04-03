@@ -80,7 +80,6 @@ public:
     explicit Satellite(const TLE &xtle) :
         _tle(xtle) {
 
-        _ieralt = true;
         _nbOrbites = 0;
         _ageTLE = 0.;
         _beta = 0.;
@@ -97,7 +96,6 @@ public:
     /*
      * Accesseurs
      */
-    bool isIeralt() const;
     double ageTLE() const;
     double beta() const;
 
@@ -139,9 +137,9 @@ public:
      */
     void CalculPosVit(const Date &date);
 
-    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune, QList<Satellite> &satellites,
-                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle, const bool extinction,
-                                            const bool refraction);
+    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
+                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
+                                            const bool extinction, const bool refraction, const bool visibilite, QList<Satellite> &satellites);
 
     void CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction);
 
@@ -183,7 +181,6 @@ private:
     /*
      * Variables privees
      */
-    bool _ieralt;
     int _deltaNbOrb;
     unsigned int _nbOrbites;
     double _ageTLE;

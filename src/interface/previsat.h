@@ -176,6 +176,7 @@ private:
     Date *_dateCourante;
     QTimer *_chronometre;
     QTimer *_chronometreMs;
+    QTimer *_timerStatut;
 
 
     /*
@@ -249,12 +250,11 @@ private:
 
 private slots:
 
-    void on_pasReel_currentIndexChanged(int index);
-
-    void on_pasManuel_currentIndexChanged(int index);
-
     void mousePressEvent(QMouseEvent *evt);
+    void resizeEvent(QResizeEvent *evt);
 
+    void on_pasReel_currentIndexChanged(int index);
+    void on_pasManuel_currentIndexChanged(int index);
     void on_actionA_propos_triggered();
 
 

@@ -48,7 +48,7 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 
 QT += core gui network #webkit
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport widgets xml
 greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 
 TARGET = PreviSat

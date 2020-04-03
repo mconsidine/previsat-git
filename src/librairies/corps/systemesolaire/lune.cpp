@@ -101,9 +101,10 @@ Lune::Lune()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _luneCroissante = false;
     _anglePhase = 0.;
     _fractionIlluminee = 0.;
-    _magnitude = 99.;
+    _magnitude = std::numeric_limits<double>::quiet_NaN();
 
     /* Retour */
     return;
@@ -113,6 +114,16 @@ Lune::Lune()
 /*
  * Accesseurs
  */
+bool Lune::luneCroissante() const
+{
+    return _luneCroissante;
+}
+
+double Lune::anglePhase() const
+{
+    return _anglePhase;
+}
+
 double Lune::fractionIlluminee() const
 {
     return _fractionIlluminee;
@@ -220,7 +231,8 @@ void Lune::CalculPhase(const Soleil &soleil)
     const double distlune = _position.Norme() * KM2UA;
 
     /* Corps de la methode */
-    const bool sgns = ((soleil.position() ^ _position) * w > 0.);
+    // Determination si la lune est croissante
+    _luneCroissante = ((soleil.position() ^ _position) * w > 0.);
 
     // Angle de phase
     const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
@@ -238,15 +250,15 @@ void Lune::CalculPhase(const Soleil &soleil)
     }
 
     if ((_fractionIlluminee >= 0.03) && (_fractionIlluminee < 0.31)) {
-        _phase = (sgns) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
+        _phase = (_luneCroissante) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
     }
 
     if ((_fractionIlluminee >= 0.31) && (_fractionIlluminee < 0.69)) {
-        _phase = (sgns) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
+        _phase = (_luneCroissante) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
     }
 
     if ((_fractionIlluminee >= 0.69) && (_fractionIlluminee < 0.97)) {
-        _phase = (sgns) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
+        _phase = (_luneCroissante) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
     }
 
     if (_fractionIlluminee >= 0.97) {
@@ -257,6 +269,9 @@ void Lune::CalculPhase(const Soleil &soleil)
     return;
 }
 
+/*
+ * Calcul de la magnitude visuelle de la Lune
+ */
 void Lune::CalculMagnitude(const Soleil &soleil)
 {
     /* Declarations des variables locales */
