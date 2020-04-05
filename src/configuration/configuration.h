@@ -120,6 +120,8 @@ public:
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
 
+    bool isCarteMonde() const;
+
 
     /*
      * Modificateurs
@@ -137,6 +139,9 @@ public:
 
     void ajoutSatelliteFicTLE(const QString &norad);
     void suppressionSatelliteFicTLE(const QString &norad);
+
+
+    void setIsCarteMonde(bool isCarteMonde);
 
 
     /*
@@ -262,6 +267,7 @@ private:
     // Etoiles
     QList<Etoile> _etoiles;
 
+    bool _isCarteMonde;
 
     /*
      * Methodes privees

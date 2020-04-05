@@ -238,6 +238,11 @@ QMap<QString, Observateur> Configuration::mapSites() const
     return _mapSites;
 }
 
+bool Configuration::isCarteMonde() const
+{
+    return _isCarteMonde;
+}
+
 
 /*
  * Modificateurs
@@ -432,6 +437,13 @@ void Configuration::EcritureConfiguration()
 }
 
 
+
+void Configuration::setIsCarteMonde(bool isCarteMonde)
+{
+    _isCarteMonde = isCarteMonde;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -602,6 +614,7 @@ void Configuration::LectureConfiguration()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "configuration.xml");
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
 
@@ -614,7 +627,6 @@ void Configuration::LectureConfiguration()
 
 #endif
 
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -711,6 +723,7 @@ void Configuration::LectureCategoriesOrbite()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "categories.xml");
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
 
@@ -719,7 +732,6 @@ void Configuration::LectureCategoriesOrbite()
 
 #endif
 
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -773,6 +785,7 @@ void Configuration::LecturePays()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "pays.xml");
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
 
@@ -781,7 +794,6 @@ void Configuration::LecturePays()
 
 #endif
 
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -835,6 +847,7 @@ void Configuration::LectureSitesLancement()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "sites.xml");
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
 
@@ -843,7 +856,6 @@ void Configuration::LectureSitesLancement()
 
 #endif
 
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
