@@ -63,6 +63,7 @@ Radar::Radar(Onglets *onglets, QWidget *parent) :
     ui(new Ui::Radar)
 {
     ui->setupUi(this);
+    scene = nullptr;
     _onglets = onglets;
 }
 
@@ -72,7 +73,9 @@ Radar::Radar(Onglets *onglets, QWidget *parent) :
 Radar::~Radar()
 {
     delete ui;
-    delete scene;
+    if (scene != nullptr) {
+        delete scene;
+    }
 }
 
 
@@ -257,14 +260,19 @@ void Radar::show()
 
                     if (trace.at(i).eclipseTotale) {
                         crayon = crimson;
+
                     } else if (trace.at(i).eclipsePartielle) {
                         crayon = QPen(Qt::green);
+
                     } else {
+
                         const double hauteurSoleil = Configuration::instance()->soleil().hauteur();
                         if (hauteurSoleil > -0.08) {
                             crayon = bleuClair;
+
                         } else if (hauteurSoleil > -0.12) {
                             crayon = QPen(QColor("deepskyblue"));
+
                         } else {
                             crayon = QPen(QColor("cyan"));
                         }

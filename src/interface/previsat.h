@@ -48,10 +48,12 @@
 
 
 class Carte;
+class Ciel;
 class Date;
 class Onglets;
 class Radar;
 class QListWidgetItem;
+class QToolButton;
 
 namespace Ui {
 class PreviSat;
@@ -159,9 +161,13 @@ private:
      */
     Ui::PreviSat *ui;
 
+    // Elements de la fenetre
     Carte *_carte;
+    Ciel *_ciel;
     Onglets *_onglets;
     Radar *_radar;
+    QToolButton* _maximise;
+    QToolButton* _affichageCiel;
 
     // Barre de statut
     QLabel *_messageStatut;
@@ -262,6 +268,14 @@ private slots:
 
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
+
+    void ChangementCarte();
+    void ChangementZoom();
+
+    /**
+     * @brief ChargementFenetre Chargement des elements de la fenetre
+     */
+    void ChargementFenetre();
 
     /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut

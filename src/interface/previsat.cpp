@@ -51,6 +51,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "carte.h"
+#include "ciel.h"
 #include "configuration/configuration.h"
 #include "listwidgetitem.h"
 #include "onglets.h"
@@ -66,6 +67,8 @@
 #include "librairies/maths/maths.h"
 #include "librairies/systeme/decompression.h"
 
+
+static bool isMaximise;
 
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
@@ -95,23 +98,8 @@ PreviSat::PreviSat(QWidget *parent) :
     // Initialisation de la configuration generale
     Configuration::instance()->Initialisation();
 
-    // Onglets
-    _onglets = new Onglets(this);
-    ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
-
-    // Carte
-    _carte = new Carte(_onglets, this);
-    _carte->resize(811, 425);
-    ui->layoutCarte->addWidget(_carte);
-
-    connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
-    connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
-            _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
-    connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
-
-    // Radar
-    _radar = new Radar(_onglets, this);
-    ui->layoutRadar->addWidget(_radar);
+    // Chargement des elements de la fenetre
+    ChargementFenetre();
 
     /* Retour */
     return;
@@ -263,6 +251,8 @@ void PreviSat::DemarrageApplication()
     _onglets->AffichageLieuObs();
 
     Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
+    Constellation::Initialisation(Configuration::instance()->dirCommonData());
+    LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
 
     const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
@@ -285,11 +275,21 @@ void PreviSat::DemarrageApplication()
     // Affichage des donnees numeriques dans la barre d'onglets
     _onglets->show(*_dateCourante);
 
-    // Affichage des courbes sur la carte du monde
-    _carte->show();
+    if (Configuration::instance()->isCarteMonde()) {
+
+        // Affichage des courbes sur la carte du monde
+        _carte->show();
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show();
+    }
 
     // Affichage du radar
-    _radar->show();
+    if (_onglets->ui()->affradar->isChecked()) {
+        _radar->show();
+    }
 
     // Lancement du chronometre
     _chronometre = new QTimer(this);
@@ -744,16 +744,16 @@ void PreviSat::EnchainementCalculs()
         // Position topocentrique
         soleil.CalculCoordHoriz(observateur);
 
-        //        //if (!ui->carte->isHidden()) {
+        if (Configuration::instance()->isCarteMonde()) {
 
-        // Coordonnees terrestres
-        soleil.CalculCoordTerrestres(observateur);
+            // Coordonnees terrestres
+            soleil.CalculCoordTerrestres(observateur);
 
-        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
-        // Coordonnees equatoriales
-        soleil.CalculCoordEquat(observateur);
-        //}
-        //}
+            if (!isMaximise) {
+                // Coordonnees equatoriales
+                soleil.CalculCoordEquat(observateur);
+            }
+        }
 
 
         /*
@@ -771,47 +771,47 @@ void PreviSat::EnchainementCalculs()
         // Calcul de la magnitude de la Lune
         lune.CalculMagnitude(soleil);
 
-        //if (!ui->carte->isHidden()) {
+        if (Configuration::instance()->isCarteMonde()) {
 
-        // Coordonnees terrestres
-        lune.CalculCoordTerrestres(observateur);
+            // Coordonnees terrestres
+            lune.CalculCoordTerrestres(observateur);
 
-        //if (ui->frameListe->sizePolicy().horizontalPolicy() != QSizePolicy::Ignored) {
-        // Coordonnees equatoriales
-        lune.CalculCoordEquat(observateur);
-        //}
-        //}
+            if (!isMaximise) {
+                // Coordonnees equatoriales
+                lune.CalculCoordEquat(observateur);
+            }
+        }
 
 
-        //if (ui->ciel->isVisible()) {
+        if (!Configuration::instance()->isCarteMonde()) {
 
-        /*
-                     * Calcul de la position des planetes
-                     */
-        //if (ui->affplanetes->checkState() != Qt::Unchecked) {
+            /*
+             * Calcul de la position des planetes
+             */
+            if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
-        //                QList<Planete> &planetes = Configuration::instance()->planetes();
-        //                planetes.clear();
-        //                for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+                QList<Planete> &planetes = Configuration::instance()->planetes();
+                planetes.clear();
+                for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-        //                    Planete planete(static_cast<IndicePlanete>(iplanete));
-        //                    planete.CalculPosition(_dateCourante, soleil);
-        //                    planete.CalculCoordHoriz(observateur);
-        //                    planetes.append(planete);
-        //                }
-        //}
+                    Planete planete(static_cast<IndicePlanete>(iplanete));
+                    planete.CalculPosition(*_dateCourante, soleil);
+                    planete.CalculCoordHoriz(observateur);
+                    planetes.append(planete);
+                }
+            }
 
-        //            /*
-        //             * Calcul de la position du catalogue d'etoiles
-        //             */
-        //            Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
-        //if (ui->affconst->isChecked()) {
-        //                Constellation::CalculConstellations(observateur);
-        //}
-        //if (ui->affconst->checkState() != Qt::Unchecked) {
-        //                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles());
-        //}
-        //}
+            /*
+             * Calcul de la position du catalogue d'etoiles
+             */
+            Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
+            if (_onglets->ui()->affconst->isChecked()) {
+                Constellation::CalculConstellations(observateur);
+            }
+            if (_onglets->ui()->affconst->checkState() != Qt::Unchecked) {
+                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles());
+            }
+        }
 
         QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
         if (satellites.isEmpty()) {
@@ -899,6 +899,12 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     ui->E120->move(static_cast<int> (10. * lcarte12) - 7, 0);
     ui->E150->move(static_cast<int> (11. * lcarte12) - 7, 0);
 
+    _maximise->setGeometry(qMax(815, ui->frameCarteLon->width() - 20), 0, 20, 20);
+    _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 20), 28, 20, 20);
+
+    if (!Configuration::instance()->isCarteMonde()) {
+        _ciel->resizeEvent(evt);
+    }
 
     /* Retour */
     return;
@@ -975,6 +981,113 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     return;
 }
 
+void PreviSat::ChangementCarte()
+{
+    if (Configuration::instance()->isCarteMonde()) {
+
+        // Passage en carte du ciel
+        Configuration::instance()->setIsCarteMonde(false);
+        _affichageCiel->setToolTip(tr("Carte du monde"));
+        ui->frameCarteGenerale->setVisible(false);
+        ui->frameLon->setVisible(false);
+        ui->frameCarteLon->setContentsMargins(0, 0, 20, 0);
+
+        // Ciel
+        if (_ciel != nullptr) {
+            _ciel->deleteLater();
+            _ciel = nullptr;
+        }
+        _ciel = new Ciel(_onglets, ui->frameCarteLon);
+
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage de la carte du ciel
+        _ciel->show();
+
+    } else {
+        // Passage en carte du monde
+        Configuration::instance()->setIsCarteMonde(true);
+        _affichageCiel->setToolTip(tr("Carte du ciel"));
+        ui->frameCarteGenerale->setVisible(true);
+        ui->frameLon->setVisible(true);
+        ui->frameCarteLon->setContentsMargins(0, 0, 0, 0);
+
+        if (_ciel != nullptr) {
+            _ciel->deleteLater();
+            _ciel = nullptr;
+        }
+    }
+}
+
+void PreviSat::ChangementZoom()
+{
+    if (isMaximise) {
+
+        // Passage en affichage minimise
+        isMaximise = false;
+        _maximise->setToolTip(tr("Agrandir"));
+
+    } else {
+        // Passage en affichage maximise
+        isMaximise = true;
+        _maximise->setToolTip(tr("Réduire"));
+    }
+}
+
+/*
+ * Chargement des elements de la fenetre
+ */
+void PreviSat::ChargementFenetre()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ciel = nullptr;
+
+    /* Corps de la methode */
+    // Bouton pour maximiser la carte
+    isMaximise = false;
+    _maximise = new QToolButton(ui->frameCarteLon);
+    _maximise->setMaximumSize(20, 20);
+    _maximise->setToolTip(tr("Agrandir"));
+    _maximise->setIcon(QIcon(":/resources/maxi.png"));
+    _maximise->setShortcut(QKeySequence::fromString("Ctrl+M"));
+    _maximise->setAutoRaise(true);
+    connect(_maximise, SIGNAL(clicked()), this, SLOT(ChangementZoom()));
+
+    // Bouton pour passer de la carte du monde a la carte du ciel (et vice versa)
+    Configuration::instance()->setIsCarteMonde(true);
+    _affichageCiel = new QToolButton(ui->frameCarteLon);
+    _affichageCiel->setMaximumSize(20, 20);
+    _affichageCiel->setToolTip(tr("Carte du ciel"));
+    _affichageCiel->setIcon(QIcon(":/resources/globe.png"));
+    _affichageCiel->setShortcut(QKeySequence::fromString("F9"));
+    _affichageCiel->setAutoRaise(true);
+    connect(_affichageCiel, SIGNAL(clicked()), this, SLOT(ChangementCarte()));
+
+    // Onglets
+    _onglets = new Onglets(this);
+    ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
+
+    // Carte
+    _carte = new Carte(_onglets, this);
+    //_carte->resize(811, 425);
+    ui->layoutCarte->addWidget(_carte);
+
+    connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
+    connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
+            _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
+    connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+
+    // Radar
+    _radar = new Radar(_onglets, this);
+    ui->layoutRadar->addWidget(_radar);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Effacer la zone de message de statut
  */
@@ -1006,11 +1119,21 @@ void PreviSat::GestionTempsReel()
         // Affichage des donnees numeriques dans la barre d'onglets
         _onglets->show(*_dateCourante);
 
-        // Affichage des courbes sur la carte du monde
-        _carte->show();
+        if (Configuration::instance()->isCarteMonde()) {
+
+            // Affichage des courbes sur la carte du monde
+            _carte->show();
+
+        } else {
+
+            // Affichage de la carte du ciel
+            _ciel->show();
+        }
 
         // Affichage du radar
-        _radar->show();
+        if (_onglets->ui()->affradar->isChecked()) {
+            _radar->show();
+        }
     }
 
     /* Retour */

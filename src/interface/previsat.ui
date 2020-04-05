@@ -68,7 +68,7 @@
          <property name="lineWidth">
           <number>0</number>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="layoutCarteLon">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -1435,7 +1435,7 @@
         <widget class="QFrame" name="frameOnglets">
          <property name="minimumSize">
           <size>
-           <width>797</width>
+           <width>790</width>
            <height>0</height>
           </size>
          </property>
@@ -1472,13 +1472,13 @@
         <widget class="QFrame" name="frameRadar">
          <property name="minimumSize">
           <size>
-           <width>272</width>
+           <width>279</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>264</width>
+           <width>272</width>
            <height>241</height>
           </size>
          </property>

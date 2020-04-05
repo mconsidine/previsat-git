@@ -81,6 +81,9 @@ Carte::Carte(Onglets *onglets, QWidget *parent) :
     ui->setupUi(this);
     scene = nullptr;
     _onglets = onglets;
+
+    DEG2PXHZ = (1. / 0.45);
+    DEG2PXVT = (1. / 0.45);
 }
 
 
@@ -90,7 +93,9 @@ Carte::Carte(Onglets *onglets, QWidget *parent) :
 Carte::~Carte()
 {
     delete ui;
-    delete scene;
+    if (scene != nullptr) {
+        delete scene;
+    }
 }
 
 
@@ -325,82 +330,128 @@ void Carte::show()
 
             for(int i=0; i<imax; i++) {
 
-                //if (i==1) {
+                //if (i==0) {
                 soleil.CalculZoneVisibilite(beta);
 
-                QList<int> jmin;
                 QVector<QPointF> zone;
+                QList<int> idxIntersection;
                 zone.append(QPointF(soleil.zone().at(0).x() * DEG2PXHZ, soleil.zone().at(0).y() * DEG2PXVT));
 
                 for(int j=1; j<soleil.zone().size(); j++) {
 
                     zone.append(QPointF(soleil.zone().at(j).x() * DEG2PXHZ, soleil.zone().at(j).y() * DEG2PXVT));
 
-                    if (fabs(zone.at(j).x() - zone.at(j-1).x()) > ui->carte->width() / 2) {
-                        jmin.append(j);
+                    if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (ui->carte->width() / 2)) {
+                        idxIntersection.append(j);
                     }
                 }
 
-                if (jmin.size() > 0) {
+                if ((fabs(soleil.latitude()) > 0.002449 * DEG2RAD) || (i > 0)) {
 
-                    if (i == 0) {
+                    switch (idxIntersection.size()) {
 
-                        int k = jmin.at(0);
-                        const double ymoy = 0.5 * (zone.at(k-1).y() + zone.at(k).y());
+                    default:
+                    case 0:
+                    {
+                        // Aucune intersection avec les bords de la carte (la zone d'ombre est patatoide)
+                        const QPolygonF poly(zone);
+                        scene->addPolygon(poly, stylo, alpha);
+                        break;
+                    }
 
-                        if (zone.at(k).x() < zone.at(k-1).x()) {
+                    case 1:
+                    {
+                        // Une intersection avec les bords de la carte (la zone d'ombre forme une bande)
+                        for(int j=0; j<idxIntersection.first(); j++) {
+                            zone.move(0, zone.size()-1);
+                        }
 
-                            zone.insert(k, QPointF(ui->carte->width(), ymoy));
-                            zone.insert(k+1, QPointF(ui->carte->width(), ui->carte->height()));
-                            zone.insert(k+2, QPointF(-1., ui->carte->height()));
-                            zone.insert(k+3, QPointF(-1., ymoy));
+                        if (zone.first().x() < zone.last().x()) {
+
+                            zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), zone.last().y()));
+
+                            if (soleil.latitude() > 0.) {
+                                zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), ui->carte->height()));
+                                zone.insert(0, QPointF(zone.at(2).x() + ui->carte->width(), ui->carte->height()));
+
+                            } else {
+                                zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.at(2).x() + ui->carte->width(), -1.));
+                            }
+                            zone.insert(0, QPointF(zone.at(3).x() + ui->carte->width(), zone.at(3).y()));
 
                         } else {
 
-                            zone.insert(k, QPointF(-1., ymoy));
-                            zone.insert(k+1, QPointF(-1., -1.));
-                            zone.insert(k+2, QPointF(ui->carte->width(), -1.));
-                            zone.insert(k+3, QPointF(ui->carte->width(), ymoy));
-                        }
-                    } else {
+                            zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), zone.last().y()));
 
+                            if (soleil.latitude() > 0.) {
+                                zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), ui->carte->height()));
+                                zone.insert(0, QPointF(zone.at(2).x() - ui->carte->width(), ui->carte->height()));
+
+                            } else {
+                                zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.at(2).x() - ui->carte->width(), -1.));
+                            }
+                            zone.insert(0, QPointF(zone.at(3).x() - ui->carte->width(), zone.at(3).y()));
+                        }
+
+                        const QPolygonF poly(zone);
+                        scene->addPolygon(poly, stylo, alpha);
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        // Deux intersections avec les bords de la carte (la zone d'ombre est patatoide a cheval sur les extremites de la carte)
+                        const int jmed = idxIntersection.first();
                         QVector<QPointF> zone1;
                         QVector<QPointF> zone2;
                         for(int j=0; j<zone.size(); j++) {
-                            if ((j < jmin.at(0)) || (j >= jmin.at(1))) {
+                            if ((j < idxIntersection.first()) || (j >= idxIntersection.last())) {
                                 zone1.append(zone.at(j));
                             } else {
                                 zone2.append(zone.at(j));
                             }
                         }
 
-                        const int jmed = jmin.first();
-                        const double x1 = zone.at(qMax(jmed-1, 0)).x();
+                        if (zone1.at(jmed-1).x() > zone2.first().x()) {
 
-                        if (x1 > ui->carte->width() / 2) {
-                            zone1.insert(jmed, QPointF(ui->carte->width(), zone2.first().y()));
-                            zone1.insert(jmed+1, QPointF(ui->carte->width(), zone2.last().y()));
-                            zone2.insert(0, QPointF(-1., zone1.at(qMax(jmed-1, 0)).y()));
-                            zone2.append(QPointF(-1., zone1.at(jmed+1).y()));
+                            if (zone1.size() > jmed) {
+                                zone1.insert(jmed, QPointF(zone2.last().x() + ui->carte->width(), zone2.last().y()));
+                                zone1.insert(jmed, QPointF(zone2.first().x() + ui->carte->width(), zone2.first().y()));
+
+                            } else {
+                                zone1.append(QPointF(zone2.last().x() + ui->carte->width(), zone2.last().y()));
+                                zone1.append(QPointF(zone2.first().x() + ui->carte->width(), zone2.first().y()));
+                            }
+
+                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() - ui->carte->width(), zone1.at(jmed-1).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() - ui->carte->width(), zone1.at(jmed+2).y()));
+
                         } else {
-                            zone2.insert(0, QPointF(ui->carte->width(), zone1.at(qMax(jmed-1, 0)).y()));
-                            zone2.append(QPointF(ui->carte->width(), zone1.at(jmed+1).y()));
-                            zone1.insert(jmed, QPointF(-1., zone1.at(qMax(jmed-1, 0)).y()));
-                            zone1.insert(jmed+1, QPointF(-1., zone1.at(jmed+1).y()));
+
+                            if (zone1.size() > jmed) {
+                                zone1.insert(jmed, QPointF(zone2.last().x() - ui->carte->width(), zone2.last().y()));
+                                zone1.insert(jmed, QPointF(zone2.first().x() - ui->carte->width(), zone2.first().y()));
+
+                            } else {
+                                zone1.append(QPointF(zone2.last().x() - ui->carte->width(), zone2.last().y()));
+                                zone1.append(QPointF(zone2.first().x() - ui->carte->width(), zone2.first().y()));
+                            }
+
+                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() + ui->carte->width(), zone1.at(jmed-1).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() + ui->carte->width(), zone1.at(jmed+2).y()));
                         }
 
                         const QPolygonF poly1(zone1);
                         const QPolygonF poly2(zone2);
                         scene->addPolygon(poly1, stylo, alpha);
                         scene->addPolygon(poly2, stylo, alpha);
-                    }
-                }
 
-                if (fabs(soleil.latitude()) > 0.002449 * DEG2RAD) {
-                    if ((i == 0) || (jmin.isEmpty())) {
-                        const QPolygonF poly(zone);
-                        scene->addPolygon(poly, stylo, alpha);
+                        break;
                     }
+                    }
+
                 } else {
 
                     // Cas des equinoxes
@@ -437,7 +488,8 @@ void Carte::show()
                         const QPolygonF poly1(zone1);
                         scene->addPolygon(poly1, stylo, alpha);
                     }
-                }//}
+                }
+                //}
                 beta += 6. * DEG2RAD;
             }
         }
@@ -865,7 +917,9 @@ void Carte::resizeEvent(QResizeEvent *evt)
     DEG2PXHZ = lcarte * (1. / T360);
     DEG2PXVT = hcarte * (2. / T360);
 
-    show();
+    if (Configuration::instance()->isCarteMonde()) {
+        show();
+    }
 }
 
 

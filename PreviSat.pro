@@ -73,6 +73,7 @@ SOURCES += \
     src/configuration/configuration.cpp                    \
     src/interface/apropos.cpp                              \
     src/interface/carte.cpp                                \
+    src/interface/ciel.cpp                                 \
     src/interface/onglets.cpp                              \
     src/interface/previsat.cpp                             \
     src/interface/radar.cpp                                \
@@ -108,6 +109,7 @@ HEADERS += \
     src/configuration/configuration.h                    \
     src/interface/apropos.h                              \
     src/interface/carte.h                                \
+    src/interface/ciel.h                                 \
     src/interface/listwidgetitem.h                       \
     src/interface/onglets.h                              \
     src/interface/previsat.h                             \
@@ -155,6 +157,7 @@ FORMS += \
     src/interface/apropos.ui         \
 #    src/interface/gestionnairetle.ui \
 #    src/interface/informations.ui    \
+    src/interface/ciel.ui \
     src/interface/onglets.ui         \
     src/interface/previsat.ui        \
     src/interface/radar.ui           \

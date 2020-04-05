@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    radar.h
+ * >    ciel.h
  *
  * Localisation
  * >    interface
@@ -40,8 +40,8 @@
  *
  */
 
-#ifndef RADAR_H
-#define RADAR_H
+#ifndef CIEL_H
+#define CIEL_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFrame>
@@ -49,13 +49,13 @@
 
 
 namespace Ui {
-class Radar;
+class Ciel;
 }
 
 class Onglets;
 class QGraphicsScene;
 
-class Radar : public QFrame
+class Ciel : public QFrame
 {
     Q_OBJECT
 
@@ -65,16 +65,15 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief Radar Constructeur par defaut
+     * @brief Ciel Constructeur par defaut
      * @param parent parent
      */
-    explicit Radar(Onglets *onglets, QWidget *parent = nullptr);
-
+    explicit Ciel(Onglets *onglets,QWidget *parent = nullptr);
 
     /*
      * Destructeur
      */
-    ~Radar();
+    ~Ciel();
 
 
     /*
@@ -93,9 +92,14 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief show Affichage du radar
+     * @brief show Affichage du ciel
      */
     void show();
+
+
+public slots:
+
+    void resizeEvent(QResizeEvent *evt);
 
 
 protected:
@@ -122,7 +126,7 @@ private:
     /*
      * Variables privees
      */
-    Ui::Radar *ui;
+    Ui::Ciel *ui;
     QGraphicsScene *scene;
     Onglets *_onglets;
 
@@ -133,4 +137,4 @@ private:
 
 };
 
-#endif // RADAR_H
+#endif // CIEL_H
