@@ -48,12 +48,12 @@
 #pragma GCC diagnostic warning "-Wconversion"
 
 
+class Onglets;
+class QGraphicsScene;
+
 namespace Ui {
 class Radar;
 }
-
-class Onglets;
-class QGraphicsScene;
 
 class Radar : public QFrame
 {

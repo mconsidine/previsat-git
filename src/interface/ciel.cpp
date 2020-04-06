@@ -210,7 +210,7 @@ void Ciel::show()
                     const int bst = hciel - bcst;
 
                     QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
-                    const int lng = (int) txtCst->boundingRect().width();
+                    const int lng = static_cast<int> (txtCst->boundingRect().width());
 
                     const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
                     const int yncst = (bcst + 9 > ui->vueCiel->height()) ? bcst - 10 : bcst + 1;
@@ -541,6 +541,23 @@ void Ciel::show()
     return;
 }
 
+void Ciel::resizeEvent(QResizeEvent *evt)
+{
+    Q_UNUSED(evt)
+    if (!Configuration::instance()->isCarteMonde()) {
+
+        ui->vueCiel->setGeometry(ui->vueCiel->x(), ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
+        setGeometry((parentWidget()->width() - width() - ui->est->width()) / 2, 0, ui->vueCiel->width() + 2 * ui->est->width(),
+                    parentWidget()->height());
+
+        ui->est->setGeometry(ui->est->x(), ui->est->y(), ui->est->width(), ui->vueCiel->height());
+        ui->ouest->setGeometry(ui->est->width() + ui->vueCiel->width(), ui->ouest->y(), ui->ouest->width(), ui->vueCiel->height());
+        ui->nord->setGeometry(ui->nord->x(), ui->nord->y(), 2 * ui->est->width() + ui->vueCiel->width(), ui->nord->height());
+        ui->sud->setGeometry(ui->sud->x(), ui->nord->height() + ui->vueCiel->height(), ui->nord->width(), ui->sud->height());
+        show();
+    }
+}
+
 
 /*************
  * PROTECTED *
@@ -558,19 +575,3 @@ void Ciel::show()
 /*
  * Methodes privees
  */
-void Ciel::resizeEvent(QResizeEvent *evt)
-{
-    Q_UNUSED(evt)
-    if (!Configuration::instance()->isCarteMonde()) {
-
-        ui->vueCiel->setGeometry(ui->vueCiel->x(), ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
-        setGeometry((parentWidget()->width() - width() - ui->est->width()) / 2, 0, ui->vueCiel->width() + 2 * ui->est->width(),
-                    parentWidget()->height());
-
-        ui->est->setGeometry(ui->est->x(), ui->est->y(), ui->est->width(), ui->vueCiel->height());
-        ui->ouest->setGeometry(ui->est->width() + ui->vueCiel->width(), ui->ouest->y(), ui->ouest->width(), ui->vueCiel->height());
-        ui->nord->setGeometry(ui->nord->x(), ui->nord->y(), 2 * ui->est->width() + ui->vueCiel->width(), ui->nord->height());
-        ui->sud->setGeometry(ui->sud->x(), ui->nord->height() + ui->vueCiel->height(), ui->nord->width(), ui->sud->height());
-        show();
-    }
-}

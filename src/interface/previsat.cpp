@@ -41,6 +41,7 @@
  */
 
 #include <QDir>
+#include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QSettings>
 #include <QTimer>
@@ -584,6 +585,11 @@ void PreviSat::InitMenus() const
     /* Corps de la methode */
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
+#if defined Q_OS_MAC
+   ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(true);
+#else
+    ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
+#endif
 
     /* Retour */
     return;
@@ -840,6 +846,308 @@ void PreviSat::EnchainementCalculs()
     return;
 }
 
+
+void PreviSat::ChangementCarte()
+{
+    if (Configuration::instance()->isCarteMonde()) {
+
+        // Passage en carte du ciel
+        Configuration::instance()->setIsCarteMonde(false);
+        _affichageCiel->setToolTip(tr("Carte du monde"));
+        ui->frameCarteGenerale->setVisible(false);
+        ui->frameLon->setVisible(false);
+        ui->frameCarteLon->setContentsMargins(0, 0, 20, 0);
+
+        // Ciel
+        if (_ciel != nullptr) {
+            _ciel->deleteLater();
+            _ciel = nullptr;
+        }
+        _ciel = new Ciel(_onglets, ui->frameCarteLon);
+
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage de la carte du ciel
+        _ciel->show();
+
+    } else {
+        // Passage en carte du monde
+        Configuration::instance()->setIsCarteMonde(true);
+        _affichageCiel->setToolTip(tr("Carte du ciel"));
+        ui->frameCarteGenerale->setVisible(true);
+        ui->frameLon->setVisible(true);
+        ui->frameCarteLon->setContentsMargins(0, 0, 0, 0);
+
+        if (_ciel != nullptr) {
+            _ciel->deleteLater();
+            _ciel = nullptr;
+        }
+    }
+}
+
+void PreviSat::ChangementZoom()
+{
+    if (isMaximise) {
+
+        // Passage en affichage minimise
+        isMaximise = false;
+        _maximise->setToolTip(tr("Agrandir"));
+        _maximise->setIcon(QIcon(":/resources/maxi.png"));
+
+        ui->layoutCarteLon->setContentsMargins(0, 0, 0, 0);
+        ui->frameModeListe->setVisible(true);
+        ui->frameOngletsRadar->setVisible(true);
+
+    } else {
+        // Passage en affichage maximise
+        isMaximise = true;
+        _maximise->setToolTip(tr("Réduire"));
+        _maximise->setIcon(QIcon(":/resources/mini.png"));
+
+        ui->layoutCarteLon->setContentsMargins(0, 0, 6, 0);
+        ui->frameModeListe->setVisible(false);
+        ui->frameOngletsRadar->setVisible(false);
+    }
+
+    resizeEvent(NULL);
+}
+
+void PreviSat::ChangementDate(const QDateTime &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const Date datp(date.date().year(), date.date().month(), date.date().day(),
+                    date.time().hour(), date.time().minute(), date.time().second(), 0.);
+
+    /* Corps de la methode */
+    _dateCourante = new Date(datp.jourJulienUTC() - _dateCourante->offsetUTC(), _dateCourante->offsetUTC());
+
+    if (ui->modeManuel->isChecked()) {
+        _onglets->setInfo(true);
+        _onglets->setAcalcDN(true);
+        _onglets->setAcalcAOS(true);
+    }
+
+    _onglets->ui()->dateHeure3->setDateTime(date);
+    _onglets->ui()->dateHeure4->setDateTime(date);
+
+    // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+    EnchainementCalculs();
+
+    // Affichage des donnees numeriques dans la barre d'onglets
+    _onglets->show(*_dateCourante);
+
+    if (Configuration::instance()->isCarteMonde()) {
+
+        // Affichage des courbes sur la carte du monde
+        _carte->show();
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show();
+    }
+
+    // Affichage du radar
+    if (_onglets->ui()->affradar->isChecked()) {
+        _radar->show();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement des elements de la fenetre
+ */
+void PreviSat::ChargementFenetre()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ciel = nullptr;
+
+    /* Corps de la methode */
+    // Bouton pour maximiser la carte
+    isMaximise = false;
+    _maximise = new QToolButton(ui->frameCarteLon);
+    _maximise->setMaximumSize(20, 20);
+    _maximise->setToolTip(tr("Agrandir"));
+    _maximise->setIcon(QIcon(":/resources/maxi.png"));
+    _maximise->setShortcut(QKeySequence::fromString("Ctrl+M"));
+    _maximise->setAutoRaise(true);
+    connect(_maximise, SIGNAL(clicked()), this, SLOT(ChangementZoom()));
+
+    // Bouton pour passer de la carte du monde a la carte du ciel (et vice versa)
+    Configuration::instance()->setIsCarteMonde(true);
+    _affichageCiel = new QToolButton(ui->frameCarteLon);
+    _affichageCiel->setMaximumSize(20, 20);
+    _affichageCiel->setToolTip(tr("Carte du ciel"));
+    _affichageCiel->setIcon(QIcon(":/resources/globe.png"));
+    _affichageCiel->setShortcut(QKeySequence::fromString("F9"));
+    _affichageCiel->setAutoRaise(true);
+    connect(_affichageCiel, SIGNAL(clicked()), this, SLOT(ChangementCarte()));
+
+    // Onglets
+    _onglets = new Onglets(this);
+    ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
+
+    // Carte
+    _carte = new Carte(_onglets, ui->frameCarteLon);
+    ui->layoutCarte->addWidget(_carte);
+
+    // Radar
+    _radar = new Radar(_onglets, this);
+    ui->layoutRadar->addWidget(_radar);
+
+    // Connexions signaux-slots
+    connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
+    connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
+            _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
+    connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+
+    connect(_onglets, SIGNAL(ModeManuel(bool)), this, SLOT(on_modeManuel_toggled(bool)));
+    connect(_onglets, SIGNAL(ChangementDate(const QDateTime &)), this, SLOT(ChangementDate(const QDateTime &)));
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Effacer la zone de message de statut
+ */
+void PreviSat::EffacerMessageStatut()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut->setText("");
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::GestionTempsReel()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->tempsReel->isChecked()) {
+
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage des donnees numeriques dans la barre d'onglets
+        _onglets->show(*_dateCourante);
+
+        if (Configuration::instance()->isCarteMonde()) {
+
+            // Affichage des courbes sur la carte du monde
+            _carte->show();
+
+        } else {
+
+            // Affichage de la carte du ciel
+            _ciel->show();
+        }
+
+        // Affichage du radar
+        if (_onglets->ui()->affradar->isChecked()) {
+            _radar->show();
+        }
+    }
+
+    if (ui->modeManuel->isChecked()) {
+
+        _onglets->setInfo(true);
+        _onglets->setAcalcDN(true);
+        _onglets->setAcalcAOS(true);
+
+        if (_onglets->ui()->pause->isEnabled()) {
+
+            if (!ui->pasManuel->view()->isVisible()) {
+
+                double pas;
+                if (ui->valManuel->currentIndex() < 3) {
+                    pas = ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+                } else {
+                    pas = ui->pasManuel->currentText().toDouble();
+                }
+
+                double jd = _dateCourante->jourJulienUTC();
+                if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->backward->isEnabled()) {
+                    jd -= pas;
+                }
+                if (!_onglets->ui()->play->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
+                    jd += pas;
+                }
+
+                _dateCourante = new Date(jd + EPS_DATES, _dateCourante->offsetUTC());
+
+                // Enchainement de l'ensemble des calculs
+                EnchainementCalculs();
+
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+                if (_onglets->ui()->dateHeure4->isVisible()) {
+                    _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
+                    _onglets->ui()->dateHeure4->setDateTime(_dateCourante->ToQDateTime(1));
+                } else {
+                    _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
+                    _onglets->ui()->dateHeure3->setDateTime(_dateCourante->ToQDateTime(1));
+                }
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::TempsReel()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->tempsReel->isChecked()) {
+
+        // Date actuelle
+        _dateCourante = new Date(_dateCourante->offsetUTC());
+        _modeFonctionnement->setText(tr("Temps réel"));
+    } else {
+        _modeFonctionnement->setText(tr("Mode manuel"));
+    }
+
+    if (_onglets->ui()->calJulien->isChecked()) {
+
+        // Affichage du jour julien dans la barre de statut
+        const Date date1(_dateCourante->annee(), 1, 1, 0.);
+        _stsDate->setText(QString::number(_dateCourante->jourJulien() + TJ2000, 'f', 5));
+        _stsHeure->setText(QString::number(_dateCourante->jourJulien() - date1.jourJulien() + 1., 'f', 5));
+        _stsDate->setToolTip(tr("Jour julien"));
+        _stsHeure->setToolTip(tr("Jour"));
+
+    } else {
+
+        // Affichage de la date et l'heure dans la barre de statut
+        const QDateTime d = _dateCourante->ToQDateTime(1);
+        _stsDate->setText(d.toString(tr("dd/MM/yyyy")));
+        _stsHeure->setText(d.toString("hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : ""));
+        _stsDate->setToolTip(tr("Date"));
+        _stsHeure->setToolTip(tr("Heure"));
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::mousePressEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -875,35 +1183,48 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     Q_UNUSED(evt)
 
     /* Corps de la methode */
-    const double hcarte6 = _carte->height() / 6.;
-    ui->S60->move(5, static_cast<int> (5 * hcarte6) - 6);
-    ui->S30->move(5, static_cast<int> (4 * hcarte6) - 6);
-    ui->SS->move(5, static_cast<int> (3.5 * hcarte6) - 7);
-    ui->N0->move(5, static_cast<int> (3 * hcarte6) - 7);
-    ui->NN->move(5, static_cast<int> (2.5 * hcarte6) - 7);
-    ui->N30->move(5, static_cast<int> (2 * hcarte6) - 7);
-    ui->N60->move(5, static_cast<int> (hcarte6) - 7);
+    if (Configuration::instance()->isCarteMonde()) {
 
-    const double lcarte12 = _carte->width() / 12.;
-    ui->W150->move(static_cast<int> (lcarte12) - 7, 0);
-    ui->W120->move(static_cast<int> (2. * lcarte12) - 7, 0);
-    ui->W90->move(static_cast<int> (3. * lcarte12) - 5, 0);
-    ui->W60->move(static_cast<int> (4. * lcarte12) - 5, 0);
-    ui->W30->move(static_cast<int> (5. * lcarte12) - 5, 0);
-    ui->WW->move(static_cast<int> (5.5 * lcarte12) - 3, 0);
-    ui->W0->move(static_cast<int> (6. * lcarte12) - 1, 0);
-    ui->EE->move(static_cast<int> (6.5 * lcarte12) - 3, 0);
-    ui->E30->move(static_cast<int> (7. * lcarte12) - 5, 0);
-    ui->E60->move(static_cast<int> (8. * lcarte12) - 5, 0);
-    ui->E90->move(static_cast<int> (9. * lcarte12) - 5, 0);
-    ui->E120->move(static_cast<int> (10. * lcarte12) - 7, 0);
-    ui->E150->move(static_cast<int> (11. * lcarte12) - 7, 0);
+        if (_onglets->ui()->proportionsCarte->isChecked()) {
+            ui->layoutCarte->setEnabled(false);
+        }
+        _carte->resizeEvent(evt);
 
-    _maximise->setGeometry(qMax(815, ui->frameCarteLon->width() - 20), 0, 20, 20);
-    _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 20), 28, 20, 20);
+        const double hcarte6 = _carte->height() / 6.;
+        ui->S60->move(5, static_cast<int> (5 * hcarte6) - 6);
+        ui->S30->move(5, static_cast<int> (4 * hcarte6) - 6);
+        ui->SS->move(5, static_cast<int> (3.5 * hcarte6) - 7);
+        ui->N0->move(5, static_cast<int> (3 * hcarte6) - 7);
+        ui->NN->move(5, static_cast<int> (2.5 * hcarte6) - 7);
+        ui->N30->move(5, static_cast<int> (2 * hcarte6) - 7);
+        ui->N60->move(5, static_cast<int> (hcarte6) - 7);
 
-    if (!Configuration::instance()->isCarteMonde()) {
+        const double lcarte12 = _carte->width() / 12.;
+        ui->W150->move(static_cast<int> (lcarte12) - 7, 0);
+        ui->W120->move(static_cast<int> (2. * lcarte12) - 7, 0);
+        ui->W90->move(static_cast<int> (3. * lcarte12) - 5, 0);
+        ui->W60->move(static_cast<int> (4. * lcarte12) - 5, 0);
+        ui->W30->move(static_cast<int> (5. * lcarte12) - 5, 0);
+        ui->WW->move(static_cast<int> (5.5 * lcarte12) - 3, 0);
+        ui->W0->move(static_cast<int> (6. * lcarte12) - 1, 0);
+        ui->EE->move(static_cast<int> (6.5 * lcarte12) - 3, 0);
+        ui->E30->move(static_cast<int> (7. * lcarte12) - 5, 0);
+        ui->E60->move(static_cast<int> (8. * lcarte12) - 5, 0);
+        ui->E90->move(static_cast<int> (9. * lcarte12) - 5, 0);
+        ui->E120->move(static_cast<int> (10. * lcarte12) - 7, 0);
+        ui->E150->move(static_cast<int> (11. * lcarte12) - 7, 0);
+
+    } else {
         _ciel->resizeEvent(evt);
+    }
+
+    if (isMaximise) {
+        _maximise->setGeometry(ui->centralWidget->width() - 30, 0, 20, 20);
+        _affichageCiel->setGeometry(ui->centralWidget->width() - 30, 28, 20, 20);
+
+    } else {
+        _maximise->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 0, 20, 20);
+        _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 28, 20, 20);
     }
 
     /* Retour */
@@ -920,6 +1241,94 @@ void PreviSat::on_actionA_propos_triggered()
     Apropos * const apropos = new Apropos(this);
     apropos->setWindowModality(Qt::ApplicationModal);
     apropos->show();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_tempsReel_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+
+        // Positionnement de date actuelle et enchainement des calculs
+        TempsReel();
+        GestionTempsReel();
+
+        ui->pasManuel->setVisible(false);
+        ui->valManuel->setVisible(false);
+
+        _onglets->ui()->dateHeure1->setVisible(true);
+        _onglets->ui()->dateHeure2->setVisible(true);
+        _onglets->ui()->dateHeure3->setVisible(false);
+        _onglets->ui()->dateHeure4->setVisible(false);
+        _onglets->ui()->utcManuel->setVisible(false);
+        _onglets->ui()->utcManuel2->setVisible(false);
+        _onglets->ui()->frameSimu->setVisible(false);
+        if (_onglets->ui()->pause->isEnabled()) {
+            _onglets->on_pause_clicked();
+        }
+
+        on_pasReel_currentIndexChanged(ui->pasReel->currentIndex());
+        ui->pasReel->setVisible(true);
+        ui->secondes->setVisible(true);
+
+        _onglets->setAcalcDN(true);
+        _onglets->setAcalcAOS(true);
+
+        // TODO
+        //CalculAgeTLETransitISS();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_modeManuel_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+
+        ui->modeManuel->setChecked(true);
+        ui->pasReel->setVisible(false);
+        ui->secondes->setVisible(false);
+        on_pasManuel_currentIndexChanged(ui->pasManuel->currentIndex());
+        ui->pasManuel->setVisible(true);
+        ui->valManuel->setVisible(true);
+
+        const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+        _onglets->ui()->dateHeure3->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+        _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
+        _onglets->ui()->dateHeure3->setVisible(true);
+
+        _onglets->ui()->dateHeure4->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+        _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
+        _onglets->ui()->dateHeure4->setVisible(true);
+
+        _onglets->ui()->dateHeure1->setVisible(false);
+        _onglets->ui()->dateHeure2->setVisible(false);
+
+        _onglets->ui()->utcManuel->setVisible(true);
+        _onglets->ui()->utcManuel2->setVisible(true);
+        _onglets->ui()->frameSimu->setVisible(true);
+        ui->pasManuel->setFocus();
+
+        _onglets->setAcalcDN(true);
+        _onglets->setAcalcAOS(true);
+
+        // TODO
+//        notifAOS = false;
+//        notifLOS = false;
+//        notifFlash = false;
+    }
 
     /* Retour */
     return;
@@ -974,204 +1383,7 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        AfficherMessageStatut(tr("%1 (numéro NORAD : %2)").arg(nomsat).arg(norad), 10);
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::ChangementCarte()
-{
-    if (Configuration::instance()->isCarteMonde()) {
-
-        // Passage en carte du ciel
-        Configuration::instance()->setIsCarteMonde(false);
-        _affichageCiel->setToolTip(tr("Carte du monde"));
-        ui->frameCarteGenerale->setVisible(false);
-        ui->frameLon->setVisible(false);
-        ui->frameCarteLon->setContentsMargins(0, 0, 20, 0);
-
-        // Ciel
-        if (_ciel != nullptr) {
-            _ciel->deleteLater();
-            _ciel = nullptr;
-        }
-        _ciel = new Ciel(_onglets, ui->frameCarteLon);
-
-        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
-        EnchainementCalculs();
-
-        // Affichage de la carte du ciel
-        _ciel->show();
-
-    } else {
-        // Passage en carte du monde
-        Configuration::instance()->setIsCarteMonde(true);
-        _affichageCiel->setToolTip(tr("Carte du ciel"));
-        ui->frameCarteGenerale->setVisible(true);
-        ui->frameLon->setVisible(true);
-        ui->frameCarteLon->setContentsMargins(0, 0, 0, 0);
-
-        if (_ciel != nullptr) {
-            _ciel->deleteLater();
-            _ciel = nullptr;
-        }
-    }
-}
-
-void PreviSat::ChangementZoom()
-{
-    if (isMaximise) {
-
-        // Passage en affichage minimise
-        isMaximise = false;
-        _maximise->setToolTip(tr("Agrandir"));
-
-    } else {
-        // Passage en affichage maximise
-        isMaximise = true;
-        _maximise->setToolTip(tr("Réduire"));
-    }
-}
-
-/*
- * Chargement des elements de la fenetre
- */
-void PreviSat::ChargementFenetre()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    _ciel = nullptr;
-
-    /* Corps de la methode */
-    // Bouton pour maximiser la carte
-    isMaximise = false;
-    _maximise = new QToolButton(ui->frameCarteLon);
-    _maximise->setMaximumSize(20, 20);
-    _maximise->setToolTip(tr("Agrandir"));
-    _maximise->setIcon(QIcon(":/resources/maxi.png"));
-    _maximise->setShortcut(QKeySequence::fromString("Ctrl+M"));
-    _maximise->setAutoRaise(true);
-    connect(_maximise, SIGNAL(clicked()), this, SLOT(ChangementZoom()));
-
-    // Bouton pour passer de la carte du monde a la carte du ciel (et vice versa)
-    Configuration::instance()->setIsCarteMonde(true);
-    _affichageCiel = new QToolButton(ui->frameCarteLon);
-    _affichageCiel->setMaximumSize(20, 20);
-    _affichageCiel->setToolTip(tr("Carte du ciel"));
-    _affichageCiel->setIcon(QIcon(":/resources/globe.png"));
-    _affichageCiel->setShortcut(QKeySequence::fromString("F9"));
-    _affichageCiel->setAutoRaise(true);
-    connect(_affichageCiel, SIGNAL(clicked()), this, SLOT(ChangementCarte()));
-
-    // Onglets
-    _onglets = new Onglets(this);
-    ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
-
-    // Carte
-    _carte = new Carte(_onglets, this);
-    //_carte->resize(811, 425);
-    ui->layoutCarte->addWidget(_carte);
-
-    connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
-    connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
-            _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
-    connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
-
-    // Radar
-    _radar = new Radar(_onglets, this);
-    ui->layoutRadar->addWidget(_radar);
-
-    /* Retour */
-    return;
-}
-
-/*
- * Effacer la zone de message de statut
- */
-void PreviSat::EffacerMessageStatut()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    _messageStatut->setText("");
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::GestionTempsReel()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->tempsReel->isChecked()) {
-
-        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
-        EnchainementCalculs();
-
-        // Affichage des donnees numeriques dans la barre d'onglets
-        _onglets->show(*_dateCourante);
-
-        if (Configuration::instance()->isCarteMonde()) {
-
-            // Affichage des courbes sur la carte du monde
-            _carte->show();
-
-        } else {
-
-            // Affichage de la carte du ciel
-            _ciel->show();
-        }
-
-        // Affichage du radar
-        if (_onglets->ui()->affradar->isChecked()) {
-            _radar->show();
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::TempsReel()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (ui->tempsReel->isChecked()) {
-        // Date actuelle
-        _dateCourante = new Date(_dateCourante->offsetUTC());
-        _modeFonctionnement->setText(tr("Temps réel"));
-    } else {
-        _modeFonctionnement->setText(tr("Mode manuel"));
-    }
-
-    if (_onglets->ui()->calJulien->isChecked()) {
-
-        // Affichage du jour julien dans la barre de statut
-        const Date date1(_dateCourante->annee(), 1, 1, 0.);
-        _stsDate->setText(QString::number(_dateCourante->jourJulien() + TJ2000, 'f', 5));
-        _stsHeure->setText(QString::number(_dateCourante->jourJulien() - date1.jourJulien() + 1., 'f', 5));
-        _stsDate->setToolTip(tr("Jour julien"));
-        _stsHeure->setToolTip(tr("Jour"));
-
-    } else {
-
-        // Affichage de la date et l'heure dans la barre de statut
-        const QDateTime d = _dateCourante->ToQDateTime(1);
-        _stsDate->setText(d.toString(tr("dd/MM/yyyy")));
-        _stsHeure->setText(d.toString("hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : ""));
-        _stsDate->setToolTip(tr("Date"));
-        _stsHeure->setToolTip(tr("Heure"));
+        AfficherMessageStatut(tr("%1 (numéro NORAD : %2)").arg(nomsat).arg(norad), 5);
     }
 
     /* Retour */

@@ -51,15 +51,15 @@
 #include "librairies/observateur/observateur.h"
 
 
+struct ElementsAOS;
+class Date;
+class QListWidgetItem;
+
 struct Coordonnees {
     QString lon;
     QString lat;
     QString alt;
 };
-
-struct ElementsAOS;
-class Date;
-class QListWidgetItem;
 
 namespace Ui {
 class Onglets;
@@ -92,6 +92,13 @@ public:
      */
     Ui::Onglets *ui();
 
+    /*
+     * Modificateurs
+     */
+    static void setAcalcDN(bool acalcDN);
+    static void setAcalcAOS(bool acalcAOS);
+    void setInfo(bool info);
+
 
     /*
      * Constantes publiques
@@ -116,10 +123,18 @@ public:
     void AffichageLieuObs() const;
 
 
+public slots:
+
+    void on_pause_clicked();
+
+
 signals:
 
     void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
     void AfficherMessageStatut(const QString &message, const int secondes);
+    void ModeManuel(bool enabled);
+    void ChangementDate(const QDateTime &dateTime);
+
 
 protected:
 
@@ -270,6 +285,14 @@ private slots:
                     QLineEdit::EchoMode mode = QLineEdit::Normal, const QString &texte = QString(), Qt::WindowFlags flags = 0,
                     Qt::InputMethodHints hints = Qt::ImhNone);
 
+    void on_dateHeure3_dateTimeChanged(const QDateTime &dateTime);
+    void on_dateHeure4_dateTimeChanged(const QDateTime &dateTime);
+
+    void on_play_clicked();
+    void on_rewind_clicked();
+    void on_forward_clicked();
+    void on_backward_clicked();
+
     // Recherche des donnees satellites
     void on_infoPrec_clicked();
     void on_infoSuiv_clicked();
@@ -307,6 +330,8 @@ private slots:
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_optionPrec_clicked();
     void on_optionSuiv_clicked();
+
+
 };
 
 #endif // ONGLETS_H

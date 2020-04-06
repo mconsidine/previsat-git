@@ -124,7 +124,7 @@ void Carte::show()
         scene->deleteLater();
     }
     scene = new QGraphicsScene;
-    scene->setSceneRect(rect());
+    scene->setSceneRect(ui->carte->rect());
 
     /* Corps de la methode */
     // Chargement de la carte
@@ -133,7 +133,7 @@ void Carte::show()
     const QString nomMap = ":/resources/map.png";
     QPixmap pixMap;
     pixMap.load(nomMap);
-    pixMap = pixMap.scaled(size());
+    pixMap = pixMap.scaled(ui->carte->size());
     scene->addPixmap(pixMap);
 
     if (!ui->carte->isHidden()) {
@@ -876,6 +876,36 @@ void Carte::show()
     return;
 }
 
+void Carte::resizeEvent(QResizeEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    if (_onglets->ui()->proportionsCarte->isChecked()) {
+
+        const int href = 2 * height() - 3;
+        const int lref = width();
+        const int lc = qMin(href, lref);
+        const int hc = (lc + 3) / 2;
+        ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
+    }
+    const int hcarte = ui->carte->height() - 3;
+    const int lcarte = ui->carte->width() - 3;
+
+    DEG2PXHZ = lcarte * (1. / T360);
+    DEG2PXVT = hcarte * (2. / T360);
+
+    if (Configuration::instance()->isCarteMonde()) {
+        show();
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage de l'info bulle du site de lancement
  */
@@ -905,21 +935,6 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
     /* Retour */
     return;
-}
-
-void Carte::resizeEvent(QResizeEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    const int hcarte = ui->carte->height() - 3;
-    const int lcarte = ui->carte->width() - 3;
-
-    DEG2PXHZ = lcarte * (1. / T360);
-    DEG2PXVT = hcarte * (2. / T360);
-
-    if (Configuration::instance()->isCarteMonde()) {
-        show();
-    }
 }
 
 

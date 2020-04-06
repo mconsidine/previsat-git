@@ -141,6 +141,24 @@ Ui::Onglets *Onglets::ui()
     return _ui;
 }
 
+/*
+ * Modificateurs
+ */
+void Onglets::setAcalcAOS(bool acalcAOS)
+{
+    _acalcAOS = acalcAOS;
+}
+
+void Onglets::setAcalcDN(bool acalcDN)
+{
+    _acalcDN = acalcDN;
+}
+
+void Onglets::setInfo(bool info)
+{
+    _info = info;
+}
+
 
 /*
  * Methodes publiques
@@ -912,7 +930,8 @@ void Onglets::ChargementPref() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString nomPref = Configuration::instance()->dirPrf() + QDir::separator() + Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
+    const QString nomPref = Configuration::instance()->dirPrf() + QDir::separator() +
+            Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
 
     /* Corps de la methode */
     QFile fichier(nomPref);
@@ -976,6 +995,7 @@ void Onglets::ChargementPref() const
         _ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
         _ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
+        _ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
@@ -1079,6 +1099,26 @@ void Onglets::AffichageLieuObs() const
     /* Retour */
     return;
 }
+
+void Onglets::on_pause_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->pause->setEnabled(!_ui->pause->isEnabled());
+    const bool enb = !_ui->pause->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Affichage au demarrage
@@ -1430,6 +1470,10 @@ void Onglets::mouseMoveEvent(QMouseEvent *event)
 
 void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    if ((_ui->dateHeure1->underMouse() && _ui->dateHeure1->isVisible()) || (_ui->dateHeure3->underMouse() && _ui->dateHeure3->isVisible())) {
+        emit ModeManuel(true);
+    }
+
     if ((_ui->vitesseSat->underMouse() && _ui->vitesseSat->isVisible()) || (_ui->rangeRate->underMouse() && _ui->rangeRate->isVisible()) ||
             (_ui->vxsat->underMouse() && _ui->vxsat->isVisible()) || (_ui->vysat->underMouse() && _ui->vysat->isVisible()) ||
             (_ui->vzsat->underMouse() && _ui->vzsat->isVisible())) {
@@ -1537,6 +1581,92 @@ QString Onglets::getText(QWidget *fenetreParent, const QString &titre, const QSt
 
     /* Retour */
     return ((ret) ? input.textValue() : QString());
+}
+
+void Onglets::on_dateHeure3_dateTimeChanged(const QDateTime &dateTime)
+{
+    emit ChangementDate(dateTime);
+}
+
+void Onglets::on_dateHeure4_dateTimeChanged(const QDateTime &dateTime)
+{
+    emit ChangementDate(dateTime);
+}
+
+void Onglets::on_play_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->play->setEnabled(!_ui->play->isEnabled());
+    const bool enb = !_ui->play->isEnabled();
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_rewind_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->rewind->setEnabled(!_ui->rewind->isEnabled());
+    const bool enb = !_ui->rewind->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_forward_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->forward->setEnabled(!_ui->forward->isEnabled());
+    const bool enb = !_ui->forward->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_backward_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->backward->setEnabled(!_ui->backward->isEnabled());
+    const bool enb = !_ui->backward->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+
+    /* Retour */
+    return;
 }
 
 void Onglets::on_infoPrec_clicked()
@@ -2631,3 +2761,4 @@ void Onglets::on_optionSuiv_clicked()
     _ui->configuration->setCurrentIndex(_indexOption);
 
 }
+

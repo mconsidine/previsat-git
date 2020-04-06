@@ -94,11 +94,6 @@ protected:
      */
 
 
-private slots:
-
-    void on_ok_clicked();
-
-
 private:
 
     /*
@@ -114,6 +109,11 @@ private:
     /*
      * Methodes privees
      */
+
+
+private slots:
+
+    void on_ok_clicked();
 
 
 };

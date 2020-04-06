@@ -258,19 +258,10 @@ private:
 
 private slots:
 
-    void mousePressEvent(QMouseEvent *evt);
-    void resizeEvent(QResizeEvent *evt);
-
-    void on_pasReel_currentIndexChanged(int index);
-    void on_pasManuel_currentIndexChanged(int index);
-    void on_actionA_propos_triggered();
-
-
-    void on_liste1_itemClicked(QListWidgetItem *item);
-    void on_liste1_itemEntered(QListWidgetItem *item);
-
     void ChangementCarte();
     void ChangementZoom();
+    void ChangementDate(const QDateTime &date);
+
 
     /**
      * @brief ChargementFenetre Chargement des elements de la fenetre
@@ -285,6 +276,18 @@ private slots:
     void GestionTempsReel();
 
     void TempsReel();
+
+    void mousePressEvent(QMouseEvent *evt);
+    void resizeEvent(QResizeEvent *evt);
+
+    void on_tempsReel_toggled(bool checked);
+    void on_modeManuel_toggled(bool checked);
+    void on_pasReel_currentIndexChanged(int index);
+    void on_pasManuel_currentIndexChanged(int index);
+    void on_actionA_propos_triggered();
+
+    void on_liste1_itemClicked(QListWidgetItem *item);
+    void on_liste1_itemEntered(QListWidgetItem *item);
 
 
 };
