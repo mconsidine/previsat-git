@@ -140,7 +140,6 @@ public:
     void ajoutSatelliteFicTLE(const QString &norad);
     void suppressionSatelliteFicTLE(const QString &norad);
 
-
     void setIsCarteMonde(bool isCarteMonde);
 
 

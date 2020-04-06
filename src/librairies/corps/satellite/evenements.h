@@ -47,15 +47,15 @@
 #include "librairies/dates/date.h"
 
 
+class Satellite;
+class Observateur;
+
 struct ElementsAOS {
     Date date;
     QString typeAOS = QObject::tr("AOS");
     double azimut;
     bool aos;
 };
-
-class Satellite;
-class Observateur;
 
 class Evenements
 {

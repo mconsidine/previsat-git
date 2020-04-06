@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1068</width>
-    <height>708</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1068</width>
-    <height>708</height>
+    <height>688</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <property name="minimumSize">
     <size>
      <width>1068</width>
-     <height>667</height>
+     <height>646</height>
     </size>
    </property>
    <layout class="QVBoxLayout" name="layoutFenetre">
@@ -110,7 +110,7 @@
                <property name="minimumSize">
                 <size>
                  <width>23</width>
-                 <height>403</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
@@ -902,7 +902,7 @@
            <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>16</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QFrame" name="frameMode">
@@ -915,7 +915,7 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>149</height>
+              <height>150</height>
              </size>
             </property>
             <property name="lineWidth">
@@ -1369,6 +1369,9 @@
             <property name="rightMargin">
              <number>2</number>
             </property>
+            <property name="bottomMargin">
+             <number>15</number>
+            </property>
             <item>
              <widget class="QListWidget" name="liste1">
               <property name="font">
@@ -1543,6 +1546,8 @@
     <addaction name="actionMettre_jour_groupe_TLE"/>
     <addaction name="actionMettre_jour_TLE_communs"/>
     <addaction name="actionMettre_jour_tous_les_groupes_de_TLE"/>
+    <addaction name="separator"/>
+    <addaction name="actionMettre_jour_les_fichiers_de_donnees"/>
     <addaction name="separator"/>
     <addaction name="actionVision_nocturne"/>
     <addaction name="separator"/>
@@ -1908,6 +1913,11 @@
    </property>
    <property name="shortcut">
     <string>F2</string>
+   </property>
+  </action>
+  <action name="actionMettre_jour_les_fichiers_de_donnees">
+   <property name="text">
+    <string>Mettre à jour les fichiers de données</string>
    </property>
   </action>
  </widget>

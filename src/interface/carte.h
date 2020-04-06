@@ -48,14 +48,14 @@
 #pragma GCC diagnostic warning "-Wconversion"
 
 
-namespace Ui {
-class Carte;
-}
-
 class Observateur;
 class Onglets;
 class Satellite;
 class QGraphicsScene;
+
+namespace Ui {
+class Carte;
+}
 
 class Carte : public QFrame
 {
@@ -101,6 +101,8 @@ public:
 
 public slots:
 
+    void resizeEvent(QResizeEvent *evt);
+
     /**
      * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement
      * @param acronyme acronyme
@@ -123,10 +125,6 @@ protected:
      * Methodes protegees
      */
 
-
-private slots:
-
-    void resizeEvent(QResizeEvent *evt);
 
 private:
 
