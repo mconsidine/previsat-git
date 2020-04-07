@@ -24,7 +24,10 @@
  * >    librairies.exceptions
  *
  * Heritage
- * >
+ * >    std::exception
+ *
+ * Description
+ * >    Gestion des exceptions
  *
  * Auteur
  * >    Astropedia

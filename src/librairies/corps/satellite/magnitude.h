@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Calcul de la magnitude du satellite artificiel
+ * >    Calcul de la magnitude visuelle d'un satellite artificiel
  *
  * Auteur
  * >    Astropedia

@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Donnees des satellites
+ *
  * Auteur
  * >    Astropedia
  *

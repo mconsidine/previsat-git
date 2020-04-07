@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Utilitaires lies a la manipulation des TLE
+ *
  * Auteur
  * >    Astropedia
  *

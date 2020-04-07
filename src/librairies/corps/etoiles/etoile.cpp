@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.corps.etoiles
  *
- * Heritage
- * >
- *
- * Description
- * >    Definition d'une etoile
- *
  * Auteur
  * >    Astropedia
  *

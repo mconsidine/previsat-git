@@ -26,6 +26,9 @@
  * Heritage
  * >    Corps
  *
+ * Description
+ * >    Definition d'une constellation
+ *
  * Auteur
  * >    Astropedia
  *

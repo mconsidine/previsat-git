@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Utilitaires sur les dates
+ *
  * Auteur
  * >    Astropedia
  *

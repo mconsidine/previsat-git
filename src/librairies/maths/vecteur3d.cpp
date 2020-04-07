@@ -23,9 +23,6 @@
  * Localisation
  * >    librairies.maths
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *

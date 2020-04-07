@@ -23,9 +23,6 @@
  * Localisation
  * >    interface
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *
@@ -333,6 +330,7 @@ void Carte::show()
                 //if (i==0) {
                 soleil.CalculZoneVisibilite(beta);
 
+                // Coordonnees de la zone d'ombre, en pixels
                 QVector<QPointF> zone;
                 QList<int> idxIntersection;
                 zone.append(QPointF(soleil.zone().at(0).x() * DEG2PXHZ, soleil.zone().at(0).y() * DEG2PXVT));
@@ -348,6 +346,7 @@ void Carte::show()
 
                 if ((fabs(soleil.latitude()) > 0.002449 * DEG2RAD) || (i > 0)) {
 
+                    // Cas en dehors des equinoxes (ou pour les crepuscules)
                     switch (idxIntersection.size()) {
 
                     default:
@@ -366,6 +365,7 @@ void Carte::show()
                             zone.move(0, zone.size()-1);
                         }
 
+                        // Ajout de points pour completer la zone d'ombre sur les bords de la carte
                         if (zone.first().x() < zone.last().x()) {
 
                             zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), zone.last().y()));
@@ -402,7 +402,8 @@ void Carte::show()
 
                     case 2:
                     {
-                        // Deux intersections avec les bords de la carte (la zone d'ombre est patatoide a cheval sur les extremites de la carte)
+                        // Deux intersections avec les bords de la carte (la zone d'ombre est patatoide et a cheval sur les extremites de la carte)
+                        // Partage en 2 zones
                         const int jmed = idxIntersection.first();
                         QVector<QPointF> zone1;
                         QVector<QPointF> zone2;
@@ -414,6 +415,7 @@ void Carte::show()
                             }
                         }
 
+                        // Ajout de points pour completer la zone d'ombre sur les bords de la carte
                         if (zone1.at(jmed-1).x() > zone2.first().x()) {
 
                             if (zone1.size() > jmed) {
@@ -454,7 +456,7 @@ void Carte::show()
 
                 } else {
 
-                    // Cas des equinoxes
+                    // Cas des equinoxes (on trace un terminateur vertical)
                     const double x1 = qMin(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
                     const double x2 = qMax(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
 
@@ -818,6 +820,7 @@ void Carte::show()
                 const QDir di2(":/resources/icones");
                 const QStringList filtre(QStringList () << norad + ".png" << nomsat + ".png");
 
+                // L'icone de l'utilisateur est prioritaire sur l'icone par defaut
                 QStringList listeIcones = di.entryList(filtre, QDir::Files);
                 if (listeIcones.isEmpty()) {
                     listeIcones = di2.entryList(filtre, QDir::Files).replaceInStrings(QRegExp("^"), di2.path() + "/");
@@ -826,9 +829,11 @@ void Carte::show()
                 }
 
                 if (listeIcones.isEmpty()) {
+                    // L'icone du satellite n'a pas ete trouvee, affichage par defaut
                     AffichageSatellite(satellites.at(isat), lsat, bsat, ui->carte->width(), ui->carte->height());
                 } else {
 
+                    // Affichage de l'icone satellite
                     QPixmap img(listeIcones.at(0));
                     img = img.scaled(qMin(ui->carte->width() / 12, img.width()), qMin(ui->carte->height() / 6, img.height()));
 
@@ -837,8 +842,10 @@ void Carte::show()
                     QTransform transform;
                     transform.translate(lsat, bsat);
 
+                    // Rotation de l'icone de l'ISS
                     double angle = 0.;
-                    if (_onglets->ui()->rotationIconeISS->isChecked() /*&& (satellites.at(isat).tle().norad() == NORAD_STATION_SPATIALE)*/) {
+                    if (_onglets->ui()->rotationIconeISS->isChecked() &&
+                            (satellites.at(isat).tle().norad() == Configuration::instance()->noradStationSpatiale())) {
 
                         const double vxsat = satellites.at(isat).vitesse().x();
                         const double vysat = satellites.at(isat).vitesse().y();
@@ -850,6 +857,7 @@ void Carte::show()
                     transform.translate(-img.width() / 2, -img.height() / 2);
                     pm->setTransform(transform);
 
+                    // Icone sur le bord de la carte du monde
                     if (als.at(isat)) {
                         QGraphicsPixmapItem * const pm2 = scene->addPixmap(img);
                         transform.reset();

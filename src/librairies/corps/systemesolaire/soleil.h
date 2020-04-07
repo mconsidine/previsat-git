@@ -26,6 +26,9 @@
  * Heritage
  * >    Corps
  *
+ * Description
+ * >    Utilitaires lies a la position du Soleil
+ *
  * Auteur
  * >    Astropedia
  *

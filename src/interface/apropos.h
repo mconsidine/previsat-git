@@ -21,10 +21,13 @@
  * >    apropos.h
  *
  * Localisation
- * >
+ * >    interface
  *
  * Heritage
  * >    QMainWindow
+ *
+ * Description
+ * >    Fenetre A propos
  *
  * Auteur
  * >    Astropedia

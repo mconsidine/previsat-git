@@ -23,12 +23,6 @@
  * Localisation
  * >    interface
  *
- * Heritage
- * >    QMainWindow
- *
- * Description
- * >    Fenetre principale
- *
  * Auteur
  * >    Astropedia
  *
@@ -586,7 +580,7 @@ void PreviSat::InitMenus() const
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
 #if defined Q_OS_MAC
-   ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(true);
+    ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(true);
 #else
     ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
 #endif
@@ -1190,6 +1184,11 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         }
         _carte->resizeEvent(evt);
 
+        ui->frameCarteGenerale->setGeometry(ui->frameCarteGenerale->x(), ui->frameCarteGenerale->y(), ui->frameCarteGenerale->width(),
+                                            _carte->height());
+        ui->frameCarteLon->setGeometry(ui->frameCarteLon->x(), ui->frameCarteLon->y(), ui->frameCarteLon->width(),
+                                       _carte->height());
+
         const double hcarte6 = _carte->height() / 6.;
         ui->S60->move(5, static_cast<int> (5 * hcarte6) - 6);
         ui->S30->move(5, static_cast<int> (4 * hcarte6) - 6);
@@ -1256,6 +1255,8 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     if (checked) {
 
         // Positionnement de date actuelle et enchainement des calculs
+        _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
+
         TempsReel();
         GestionTempsReel();
 
@@ -1297,6 +1298,20 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     /* Corps de la methode */
     if (checked) {
 
+        if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->play->isEnabled()) {
+
+            double pas = 0.;
+            if (ui->valManuel->currentIndex() < 3) {
+                pas = ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+            } else {
+                pas = ui->pasManuel->currentText().toDouble();
+            }
+            _chronometre->setInterval(static_cast<int> (pas * NB_SEC_PAR_JOUR + EPS_DATES) * 1000);
+
+        } else if (!_onglets->ui()->backward->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
+            _chronometre->setInterval(0);
+        }
+
         ui->modeManuel->setChecked(true);
         ui->pasReel->setVisible(false);
         ui->secondes->setVisible(false);
@@ -1325,9 +1340,9 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         _onglets->setAcalcAOS(true);
 
         // TODO
-//        notifAOS = false;
-//        notifLOS = false;
-//        notifFlash = false;
+        //        notifAOS = false;
+        //        notifLOS = false;
+        //        notifFlash = false;
     }
 
     /* Retour */
@@ -1336,12 +1351,16 @@ void PreviSat::on_modeManuel_toggled(bool checked)
 
 void PreviSat::on_pasReel_currentIndexChanged(int index)
 {
-
+    ui->secondes->setText((index == 0) ? tr("seconde") : tr("secondes"));
 }
 
 void PreviSat::on_pasManuel_currentIndexChanged(int index)
 {
-
+    const bool aindx = (index == 0);
+    ui->valManuel->setItemText(0, (aindx) ? tr("seconde") : tr("secondes"));
+    ui->valManuel->setItemText(1, (aindx) ? tr("minute") : tr("minutes"));
+    ui->valManuel->setItemText(2, (aindx) ? tr("heure") : tr("heures"));
+    ui->valManuel->setItemText(3, (aindx) ? tr("jour") : tr("jours"));
 }
 
 void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)

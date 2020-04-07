@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.maths
  *
- * Heritage
- * >
- *
- * Description
- * >    Utilitaires mathematiques
- *
  * Auteur
  * >    Astropedia
  *

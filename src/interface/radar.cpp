@@ -23,9 +23,6 @@
  * Localisation
  * >    interface
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *

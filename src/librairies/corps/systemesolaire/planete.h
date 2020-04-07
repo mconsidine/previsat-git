@@ -26,6 +26,9 @@
  * Heritage
  * >    Corps
  *
+ * Description
+ * >    Utilitaires lies a la position des planetes
+ *
  * Auteur
  * >    Astropedia
  *

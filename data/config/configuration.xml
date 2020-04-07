@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreviSatConfiguration version="1.0">
+    <NoradStationSpatiale>25544</NoradStationSpatiale>
     <Observateurs>
         <Observateur>
             <Nom>Paris</Nom>

@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.corps.etoiles
  *
- * Heritage
- * >    Corps
- *
- * Description
- * >    Definition d'une constellation
- *
  * Auteur
  * >    Astropedia
  *

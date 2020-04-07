@@ -23,9 +23,6 @@
  * Localisation
  * >    configuration
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *
@@ -238,6 +235,11 @@ QMap<QString, Observateur> Configuration::mapSites() const
     return _mapSites;
 }
 
+QString Configuration::noradStationSpatiale() const
+{
+    return _noradStationSpatiale;
+}
+
 bool Configuration::isCarteMonde() const
 {
     return _isCarteMonde;
@@ -326,6 +328,11 @@ void Configuration::suppressionSatelliteFicTLE(const QString &norad)
     if (_mapSatellitesFicTLE[_nomfic].contains(norad)) {
         _mapSatellitesFicTLE[_nomfic].removeOne(norad);
     }
+}
+
+void Configuration::setIsCarteMonde(bool isCarteMonde)
+{
+    _isCarteMonde = isCarteMonde;
 }
 
 
@@ -434,13 +441,6 @@ void Configuration::EcritureConfiguration()
 
     /* Retour */
     return;
-}
-
-
-
-void Configuration::setIsCarteMonde(bool isCarteMonde)
-{
-    _isCarteMonde = isCarteMonde;
 }
 
 
@@ -614,10 +614,10 @@ void Configuration::LectureConfiguration()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "configuration.xml");
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
 
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     const QString msg = "Le fichier de configuration de PreviSat a évolué.\n"
                         "Certaines informations de configuration "
                         "(par exemple les lieux d'observation sélectionnés) seront perdues.";
@@ -625,8 +625,12 @@ void Configuration::LectureConfiguration()
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "configuration.xml");
     VerifieVersionXml(msg, fi1, fi2);
 
+    fi1.close();
+    fi2.close();
+
 #endif
 
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -636,7 +640,11 @@ void Configuration::LectureConfiguration()
 
             while (cfg.readNextStartElement()) {
 
-                if (cfg.name() == "Observateurs") {
+                if (cfg.name() == "NoradStationSpatiale") {
+
+                    _noradStationSpatiale = cfg.readElementText();
+
+                } else if (cfg.name() == "Observateurs") {
 
                     while (cfg.readNextStartElement()) {
 
@@ -723,15 +731,20 @@ void Configuration::LectureCategoriesOrbite()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "categories.xml");
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "categories.xml");
     VerifieVersionXml(QString(), fi1, fi2);
 
+    fi1.close();
+    fi2.close();
+
 #endif
 
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -785,15 +798,20 @@ void Configuration::LecturePays()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "pays.xml");
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "pays.xml");
     VerifieVersionXml(QString(), fi1, fi2);
 
+    fi1.close();
+    fi2.close();
+
 #endif
 
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
@@ -847,15 +865,20 @@ void Configuration::LectureSitesLancement()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + "sites.xml");
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
 #if !defined (Q_OS_MAC)
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "sites.xml");
     VerifieVersionXml(QString(), fi1, fi2);
 
+    fi1.close();
+    fi2.close();
+
 #endif
 
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
 
         QXmlStreamReader cfg(&fi1);
