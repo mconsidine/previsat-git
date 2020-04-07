@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Utilitaires mathematiques
+ *
  * Auteur
  * >    Astropedia
  *

@@ -24,7 +24,7 @@
  * >    interface
  *
  * Heritage
- * >
+ * >    QFrame
  *
  * Description
  * >    Radar

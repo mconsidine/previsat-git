@@ -24,7 +24,10 @@
  * >    librairies.corps.etoiles
  *
  * Heritage
- * >
+ * >    Corps
+ *
+ * Description
+ * >    Definition d'une etoile
  *
  * Auteur
  * >    Astropedia

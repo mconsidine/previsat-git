@@ -23,9 +23,6 @@
  * Localisation
  * >    librairies.corps
  *
- * Heritage
- * >
- *
  * Description
  * >    Donnees relatives a un corps (satellite, Soleil, ...)
  *

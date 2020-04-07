@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Calcul matriciel
+ *
  * Auteur
  * >    Astropedia
  *

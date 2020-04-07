@@ -21,13 +21,13 @@
  * >    listwidgetitem.h
  *
  * Localisation
- * >
+ * >    interface
  *
  * Heritage
- * >
+ * >    QListWidgetItem
  *
  * Description
- * >
+ * >    Liste personnalisee
  *
  * Auteur
  * >    Astropedia

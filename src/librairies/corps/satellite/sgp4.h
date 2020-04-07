@@ -26,6 +26,9 @@
  * Heritage
  * >
  *
+ * Description
+ * >    Modele orbital SGP4
+ *
  * Auteur
  * >    Astropedia
  *

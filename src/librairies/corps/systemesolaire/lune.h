@@ -26,6 +26,9 @@
  * Heritage
  * >    Corps
  *
+ * Description
+ * >    Utilitaires lies a la position de la Lune
+ *
  * Auteur
  * >    Astropedia
  *

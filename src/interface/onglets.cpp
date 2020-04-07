@@ -23,12 +23,6 @@
  * Localisation
  * >    interface
  *
- * Heritage
- * >    QMainWindow
- *
- * Description
- * >    Fenetre principale
- *
  * Auteur
  * >    Astropedia
  *
@@ -1114,6 +1108,7 @@ void Onglets::on_pause_clicked()
     _ui->forward->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
 
     /* Retour */
     return;
@@ -1607,6 +1602,7 @@ void Onglets::on_play_clicked()
     _ui->forward->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
 
     /* Retour */
     return;
@@ -1626,6 +1622,7 @@ void Onglets::on_rewind_clicked()
     _ui->forward->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
 
     /* Retour */
     return;
@@ -1645,6 +1642,7 @@ void Onglets::on_forward_clicked()
     _ui->rewind->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
 
     /* Retour */
     return;
@@ -1664,6 +1662,7 @@ void Onglets::on_backward_clicked()
     _ui->rewind->setEnabled(enb);
     _ui->forward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
 
     /* Retour */
     return;

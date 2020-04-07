@@ -23,9 +23,6 @@
  * Localisation
  * >    librairies.corps.satellite
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *

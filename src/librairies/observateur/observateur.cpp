@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.observateur
  *
- * Heritage
- * >
- *
- * Description
- * >    Utilitaires lies au lieu d'observation
- *
  * Auteur
  * >    Astropedia
  *

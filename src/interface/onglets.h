@@ -26,6 +26,9 @@
  * Heritage
  * >    QMainWindow
  *
+ * Description
+ * >    Barre d'onglets
+ *
  * Auteur
  * >    Astropedia
  *

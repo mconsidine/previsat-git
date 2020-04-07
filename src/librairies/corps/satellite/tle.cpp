@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.corps.satellite
  *
- * Heritage
- * >
- *
- * Description
- * >    Utilitaires lies a la manipulation des TLE
- *
  * Auteur
  * >    Astropedia
  *

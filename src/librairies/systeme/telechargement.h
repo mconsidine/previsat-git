@@ -24,7 +24,7 @@
  * >    librairies.systeme
  *
  * Heritage
- * >
+ * >    QObject
  *
  * Description
  * >    Telechargement de fichiers

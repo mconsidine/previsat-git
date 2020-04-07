@@ -21,16 +21,13 @@
  * >    evenements.cpp
  *
  * Localisation
- * >
- *
- * Heritage
- * >
+ * >    librairies.corps.satellite
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >
+ * >    28 mars 2020
  *
  * Date de revision
  * >

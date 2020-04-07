@@ -23,9 +23,6 @@
  * Localisation
  * >
  *
- * Heritage
- * >
- *
  * Description
  * >    Demarrage de l'application
  *

@@ -26,6 +26,9 @@
  * Heritage
  * >    QMainWindow
  *
+ * Description
+ * >    Fenetre principale
+ *
  * Auteur
  * >    Astropedia
  *

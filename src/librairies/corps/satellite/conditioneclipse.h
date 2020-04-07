@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >
+ * >    Determination des conditions d'eclipse
  *
  * Auteur
  * >    Astropedia

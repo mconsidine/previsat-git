@@ -120,6 +120,8 @@ public:
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
 
+    QString noradStationSpatiale() const;
+
     bool isCarteMonde() const;
 
 
@@ -265,6 +267,9 @@ private:
 
     // Etoiles
     QList<Etoile> _etoiles;
+
+    // Numero NORAD de la station spatiale
+    QString _noradStationSpatiale;
 
     bool _isCarteMonde;
 

@@ -21,13 +21,13 @@
  * >    evenements.h
  *
  * Localisation
- * >
+ * >    librairies.corps.satellite
  *
  * Heritage
  * >
  *
  * Description
- * >    Recherche d'evenements
+ * >    Calcul des evenements lies au satellite
  *
  * Auteur
  * >    Astropedia

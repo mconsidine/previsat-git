@@ -24,7 +24,7 @@
  * >    interface
  *
  * Heritage
- * >
+ * >    QFrame
  *
  * Description
  * >    Carte du monde

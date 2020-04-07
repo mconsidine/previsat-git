@@ -21,13 +21,7 @@
  * >    apropos.cpp
  *
  * Localisation
- * >
- *
- * Heritage
- * >    QMainWindow
- *
- * Description
- * >    Fenetre A propos
+ * >    interface
  *
  * Auteur
  * >    Astropedia

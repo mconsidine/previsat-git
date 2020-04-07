@@ -23,9 +23,6 @@
  * Localisation
  * >    librairies.systeme
  *
- * Heritage
- * >
- *
  * Auteur
  * >    Astropedia
  *

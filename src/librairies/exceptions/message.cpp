@@ -23,12 +23,6 @@
  * Localisation
  * >    librairies.exceptions
  *
- * Heritage
- * >
- *
- * Description
- * >    Affichage d'un message
- *
  * Auteur
  * >    Astropedia
  *
