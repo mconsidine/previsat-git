@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    20 octobre 2019
+ * >    10 avril 2020
  *
  */
 
@@ -75,9 +75,9 @@ Informations::Informations(const QString &localePreviSat, QWidget *fenetreParent
     }
 
     // Anciennes informations
-    const QUrl urlOldNews(settings.value("fichier/dirHttpPrevi", "").toString() + "informations/old_news_" + localePreviSat + ".html");
-    if (UrlExiste(urlOldNews)) {
-        ui->anciennesInfos->load(urlOldNews);
+    const QUrl urlHistoNews(settings.value("fichier/dirHttpPrevi", "").toString() + "informations/histo_news_" + localePreviSat + ".html");
+    if (UrlExiste(urlHistoNews)) {
+        ui->anciennesInfos->load(urlHistoNews);
     } else {
         ui->ongletsInfos->removeTab(1);
     }
