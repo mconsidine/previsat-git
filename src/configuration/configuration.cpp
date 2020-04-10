@@ -145,6 +145,21 @@ QFont Configuration::police() const
     return _police;
 }
 
+QString Configuration::adresseAstropedia() const
+{
+    return _adresseAstropedia;
+}
+
+QString Configuration::adresseCelestrak() const
+{
+    return "http://www.celestrak.com/";
+}
+
+QString Configuration::adresseCelestrakNorad() const
+{
+    return adresseCelestrak() + "NORAD/elements/";
+}
+
 QStringList Configuration::listeFicLocalData() const
 {
     return _listeFicLocalData;
@@ -473,6 +488,7 @@ void Configuration::DefinitionArborescences()
 
     /* Corps de la methode */
     _dirExe = QCoreApplication::applicationDirPath();
+    _adresseAstropedia = QCoreApplication::organizationDomain();
 
 #if QT_VERSION >= 0x050000
 
@@ -512,6 +528,7 @@ void Configuration::DefinitionArborescences()
     _dirCommonData = _dirExe + QDir::separator() + "data";
     _dirLocalData = _dirCommonData;
     _dirTle = _dirExe + QDir::separator() + "tle";
+    _adresseAstropedia = "http://astropedia.free.fr/";
 
 #if QT_VERSION >= 0x050000
     _dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
