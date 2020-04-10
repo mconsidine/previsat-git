@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 fevrier 2020
+ * >    10 avril 2020
  *
  */
 
@@ -902,6 +902,10 @@ PreviSat::~PreviSat()
 
     if (afficherMeteo != NULL) {
         afficherMeteo->close();
+    }
+
+    if (rep != NULL) {
+        rep->close();
     }
 
     delete ui;
@@ -11107,6 +11111,7 @@ void PreviSat::on_majMaintenant_clicked()
             }
         }
     }
+    fi.close();
 
     /* Retour */
     return;
