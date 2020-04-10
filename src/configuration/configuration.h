@@ -94,6 +94,10 @@ public:
     QString locale() const;
     QFont police() const;
 
+    QString adresseAstropedia() const;
+    QString adresseCelestrak() const;
+    QString adresseCelestrakNorad() const;
+
     QStringList listeFicLocalData() const;
     QStringList &listeFicObs();
     QStringList listeFicPref() const;
@@ -218,6 +222,9 @@ private:
 
     // Locale
     QString _locale;
+
+    // Adresses internet
+    QString _adresseAstropedia;
 
     // Police
     QFont _police;

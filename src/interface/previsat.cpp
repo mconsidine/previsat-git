@@ -34,6 +34,7 @@
  *
  */
 
+#include <QDesktopServices>
 #include <QDir>
 #include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -67,6 +68,7 @@ static bool isMaximise;
 
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
+
 
 
 /**********
@@ -579,11 +581,7 @@ void PreviSat::InitMenus() const
     /* Corps de la methode */
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
-#if defined Q_OS_MAC
-    ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(true);
-#else
-    ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
-#endif
+
 
     /* Retour */
     return;
@@ -1230,6 +1228,32 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     return;
 }
 
+
+void PreviSat::on_actionFaire_triggered()
+{
+    QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
+}
+
+void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://previsat.sourceforge.net/"));
+}
+
+void PreviSat::on_actionRapport_de_bug_triggered()
+{
+    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseAstropedia() + "rapport.html"));
+}
+
+void PreviSat::on_actionWww_celestrak_com_triggered()
+{
+    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseCelestrak()));
+}
+
+void PreviSat::on_actionWww_space_track_org_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://www.space-track.org"));
+}
+
 void PreviSat::on_actionA_propos_triggered()
 {
     /* Declarations des variables locales */
@@ -1243,6 +1267,13 @@ void PreviSat::on_actionA_propos_triggered()
 
     /* Retour */
     return;
+}
+
+
+
+void PreviSat::on_faireDon_clicked()
+{
+    on_actionFaire_triggered();
 }
 
 void PreviSat::on_tempsReel_toggled(bool checked)

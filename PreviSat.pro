@@ -37,7 +37,7 @@
 
 #-------------------------------------------------
 VER_MAJ = 5.0
-VERSION = 5.0.0.0
+VERSION = 5.0.0.11
 ANNEES_DEV = 2005-2020
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
@@ -46,7 +46,7 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 #-------------------------------------------------
 
 
-QT += core gui network #webkit
+QT += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport widgets xml
 greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11

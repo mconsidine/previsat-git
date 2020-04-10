@@ -283,14 +283,25 @@ private slots:
     void mousePressEvent(QMouseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
 
+    // Menu deroulant
+    void on_actionFaire_triggered();
+    void on_actionPrevisat_sourceforge_net_triggered();
+    void on_actionRapport_de_bug_triggered();
+    void on_actionWww_celestrak_com_triggered();
+    void on_actionWww_space_track_org_triggered();
+    void on_actionA_propos_triggered();
+
+
+    void on_faireDon_clicked();
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
-    void on_actionA_propos_triggered();
 
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
+
+
 
 
 };
