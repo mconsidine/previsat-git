@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    10 avril 2020
+# >    11 avril 2020
 
 #-------------------------------------------------
 VER_MAJ = 4.0
-VERSION = 4.0.2.2
+VERSION = 4.0.2.3
 ANNEES_DEV = 2005-2020
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts

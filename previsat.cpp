@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 avril 2020
+ * >    11 avril 2020
  *
  */
 
@@ -4723,6 +4723,9 @@ void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     const QNetworkRequest requete(url);
+    if (rep != NULL) {
+        rep->close();
+    }
     rep = mng.get(requete);
 
     if (!async) {
@@ -4731,7 +4734,6 @@ void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
         QEventLoop loop;
         connect(rep, SIGNAL(finished()), &loop, SLOT(quit()));
         loop.exec();
-        rep->deleteLater();
     }
 
     if (downQueue.isEmpty()) {
@@ -12311,7 +12313,8 @@ void PreviSat::on_majTleIss_clicked()
     /* Corps de la methode */
     // Mise a jour du fichier iss.3le
     messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
-    TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", true);
+    TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", false);
+    CalculAgeTLETransitISS();
 
     /* Retour */
     return;
