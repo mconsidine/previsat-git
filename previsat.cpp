@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 avril 2020
+ * >    14 avril 2020
  *
  */
 
@@ -814,15 +814,16 @@ void PreviSat::DemarrageApplication()
 
     /* Corps de la methode */
     move(0, 0);
-    ui->frameCarte->resize(ui->frameCarte->minimumSize());
-    ui->frameCarte->resize(width() - ui->frameListe->width(), height() - ui->frameOnglets->height() - 26);
-    ui->frameCarteListe->resize(ui->frameCarte->size());
 
-    if (settings.value("affichage/fenetreMax", false).toBool() && xPrevi <= xmax && yPrevi <= ymax) {
+    if (settings.value("affichage/fenetreMax", false).toBool() && (xPrevi <= xmax) && (yPrevi <= ymax)) {
         showMaximized();
     } else {
         resize(xPrevi, yPrevi);
     }
+
+    ui->frameCarte->resize(ui->frameCarte->minimumSize());
+    ui->frameCarte->resize(width() - ui->frameListe->width(), height() - ui->frameOnglets->height() - 43);
+    ui->frameCarteListe->resize(ui->frameCarte->size());
 
     // Redimensionnement de la fenetre si necessaire
     if (xPrevi > xmax) xPrevi = xmax;
@@ -5061,6 +5062,7 @@ void PreviSat::ChargementPref() const
         ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
         ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
         ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
+        ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
         ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
         ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
