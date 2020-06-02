@@ -92,11 +92,17 @@ PreviSat::PreviSat(QWidget *parent) :
     /* Corps du constructeur */
     ui->setupUi(this);
 
-    // Initialisation de la configuration generale
-    Configuration::instance()->Initialisation();
+    try {
 
-    // Chargement des elements de la fenetre
-    ChargementFenetre();
+        // Initialisation de la configuration generale
+        Configuration::instance()->Initialisation();
+
+        // Chargement des elements de la fenetre
+        ChargementFenetre();
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
 
     /* Retour */
     return;
@@ -167,7 +173,13 @@ void PreviSat::ChargementTLE()
     // Lecture du fichier TLE par defaut
     try {
 
-        QString nomfic = Configuration::instance()->nomfic();
+        QString &nomfic = Configuration::instance()->nomfic();
+
+        if (!Configuration::instance()->listeFicTLE().isEmpty() && !Configuration::instance()->listeFicTLE().contains(nomfic)) {
+            const QString fic = Configuration::instance()->listeFicTLE().at(0);
+            nomfic = (fic.contains(QDir::separator())) ? fic : Configuration::instance()->dirTle() + QDir::separator() + fic;
+        }
+
         QFileInfo fi(nomfic);
         if (fi.exists() && (fi.size() != 0)) {
 
@@ -190,11 +202,12 @@ void PreviSat::ChargementTLE()
             TLE::VerifieFichier(nomfic, true);
 
             // Lecture du fichier TLE en entier
-            Configuration::instance()->setMapTLE(TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic()));
+            Configuration::instance()->setMapTLE(TLE::LectureFichier(Configuration::instance()->dirLocalData(), nomfic));
 
             // Mise a jour de la liste de satellites
             QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()];
             QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
+
             while (it.hasNext()) {
                 const QString norad = it.next();
                 if (Configuration::instance()->mapTLE().keys().contains(norad)) {
@@ -232,7 +245,6 @@ void PreviSat::MAJTLE()
 
     /* Retour */
     return;
-
 }
 
 /*
@@ -255,14 +267,16 @@ void PreviSat::DemarrageApplication()
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
     const QFileInfo fi(Configuration::instance()->nomfic());
 
-    QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
-    while (it.hasNext()) {
-        const QString norad = it.next();
-        const TLE tle = Configuration::instance()->mapTLE()[norad];
-        if (norad == noradDefaut) {
-            satellites.insert(0, Satellite(tle));
-        } else {
-            satellites.append(Satellite(tle));
+    if (!Configuration::instance()->mapTLE().isEmpty()) {
+        QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
+        while (it.hasNext()) {
+            const QString norad = it.next();
+            const TLE tle = Configuration::instance()->mapTLE()[norad];
+            if (norad == noradDefaut) {
+                satellites.insert(0, Satellite(tle));
+            } else {
+                satellites.append(Satellite(tle));
+            }
         }
     }
 
@@ -478,7 +492,6 @@ void PreviSat::InitBarreStatut()
 
     /* Retour */
     return;
-
 }
 
 /*
@@ -581,7 +594,6 @@ void PreviSat::InitMenus() const
     /* Corps de la methode */
     ui->barreMenu->setMenu(ui->menuPrincipal);
     ui->menuBar->setVisible(false);
-
 
     /* Retour */
     return;

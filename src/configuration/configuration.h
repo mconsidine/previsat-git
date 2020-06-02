@@ -105,7 +105,7 @@ public:
 
     QMap<QString, TLE> mapTLE() const;
 
-    QString nomfic() const;
+    QString &nomfic();
     TLEdefaut tleDefaut() const;
 
     QList<Satellite> &listeSatellites();
