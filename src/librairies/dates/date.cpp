@@ -346,7 +346,7 @@ void Date::Initialisation(const QString &dirLocalData)
                 }
             }
         } else {
-            throw PreviSatException(QObject::tr("Fichier %1 absent").arg(QDir::toNativeSeparators(fic)), WARNING);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas").arg(QDir::toNativeSeparators(fic)), WARNING);
         }
         fi.close();
 

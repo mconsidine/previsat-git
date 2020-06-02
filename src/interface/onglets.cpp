@@ -192,6 +192,11 @@ void Onglets::show(const Date &date)
         if (_ui->barreOnglets->count() < 9) {
             _ui->satellite->setVisible(true);
             _ui->barreOnglets->insertTab(1, _ui->osculateurs, tr("Éléments osculateurs"));
+
+            if (_titreInformations.size() < 3) {
+                _titreInformations.insert(0, tr("Informations satellite"));
+            }
+            _ui->barreOnglets->insertTab(2, _ui->infos, _titreInformations.at(_indexInfo));
             on_informations_currentChanged(_indexInfo);
         }
 

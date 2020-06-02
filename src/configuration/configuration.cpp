@@ -52,6 +52,7 @@
 #include <QXmlStreamWriter>
 #include "configuration.h"
 #include "librairies/exceptions/message.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -185,7 +186,7 @@ QMap<QString, TLE> Configuration::mapTLE() const
     return _mapTLE;
 }
 
-QString Configuration::nomfic() const
+QString &Configuration::nomfic()
 {
     return _nomfic;
 }
@@ -364,38 +365,44 @@ void Configuration::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    // Determination de la locale
-    DeterminationLocale();
+    try {
 
-    // Definition des arborescences
-    DefinitionArborescences();
+        // Determination de la locale
+        DeterminationLocale();
 
-    // Verification des arborescences
-    //VerificationArborescences();
+        // Definition des arborescences
+        DefinitionArborescences();
 
-    // Lecture de la configuration
-    LectureConfiguration();
+        // Verification des arborescences
+        VerificationArborescences();
 
-    // Lecture du fichier de categories d'orbite
-    LectureCategoriesOrbite();
+        // Lecture de la configuration
+        LectureConfiguration();
 
-    // Lecture du fichier listant les pays ou organisations
-    LecturePays();
+        // Lecture du fichier de categories d'orbite
+        LectureCategoriesOrbite();
 
-    // Lecture du fichier des sites de lancement
-    LectureSitesLancement();
+        // Lecture du fichier listant les pays ou organisations
+        LecturePays();
 
-    // Fichiers de preferences
-    InitFicPref();
+        // Lecture du fichier des sites de lancement
+        LectureSitesLancement();
 
-    // Fichiers TLE
-    InitFicTLE();
+        // Fichiers de preferences
+        InitFicPref();
 
-    // Lecture du fichier taiutc.dat
-    Date::Initialisation(_dirLocalData);
+        // Fichiers TLE
+        InitFicTLE();
 
-    // Lecture du fichier de constellations
-    Corps::InitTabConstellations(_dirCommonData);
+        // Lecture du fichier taiutc.dat
+        Date::Initialisation(_dirLocalData);
+
+        // Lecture du fichier de constellations
+        Corps::InitTabConstellations(_dirCommonData);
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
 
     /* Retour */
     return;
@@ -484,7 +491,6 @@ void Configuration::DefinitionArborescences()
 
     /* Initialisations */
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-
 
     /* Corps de la methode */
     _dirExe = QCoreApplication::applicationDirPath();
@@ -635,15 +641,32 @@ void Configuration::LectureConfiguration()
 #if !defined (Q_OS_MAC)
 
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-    const QString msg = "Le fichier de configuration de PreviSat a évolué.\n"
-                        "Certaines informations de configuration "
-                        "(par exemple les lieux d'observation sélectionnés) seront perdues.";
-
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "configuration.xml");
-    VerifieVersionXml(msg, fi1, fi2);
 
-    fi1.close();
+    if (fi1.exists()) {
+
+        const QString msg = "Le fichier de configuration de PreviSat a évolué.\n"
+                            "Certaines informations de configuration "
+                            "(par exemple les lieux d'observation sélectionnés) seront perdues.";
+
+        VerifieVersionXml(msg, fi1, fi2);
+
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi1.remove();
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Le fichier %1 n'existe pas :\nUtilisation de la configuration par défaut");
+            const QFileInfo ff(fi1.fileName());
+            Message::Afficher(message.arg(ff.fileName()), WARNING);
+        }
+    }
     fi2.close();
+    fi1.close();
 
 #endif
 
@@ -752,12 +775,26 @@ void Configuration::LectureCategoriesOrbite()
 #if !defined (Q_OS_MAC)
 
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "categories.xml");
-    VerifieVersionXml(QString(), fi1, fi2);
 
-    fi1.close();
+    if (fi1.exists()) {
+        VerifieVersionXml(QString(), fi1, fi2);
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QFileInfo ff(fi1.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+        }
+    }
     fi2.close();
+    fi1.close();
 
 #endif
 
@@ -795,9 +832,10 @@ void Configuration::LectureCategoriesOrbite()
 
     // Verifications
     if (_mapCategories.isEmpty()) {
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
-                                            "Aucune catégorie d'orbite n'a été trouvée dans le fichier, veuillez réinstaller %2");
-        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                            "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
+        const QFileInfo ff(fi1.fileName());
+        throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
 
     /* Retour */
@@ -819,12 +857,26 @@ void Configuration::LecturePays()
 #if !defined (Q_OS_MAC)
 
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "pays.xml");
-    VerifieVersionXml(QString(), fi1, fi2);
 
-    fi1.close();
+    if (fi1.exists()) {
+        VerifieVersionXml(QString(), fi1, fi2);
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QFileInfo ff(fi1.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+        }
+    }
     fi2.close();
+    fi1.close();
 
 #endif
 
@@ -862,9 +914,10 @@ void Configuration::LecturePays()
 
     // Verifications
     if (_mapPays.isEmpty()) {
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
-                                            "Aucun pays ou organisation n'a été trouvée dans le fichier, veuillez réinstaller %2");
-        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                            "Aucun pays ou organisation n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
+        const QFileInfo ff(fi1.fileName());
+        throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
 
     /* Retour */
@@ -886,12 +939,26 @@ void Configuration::LectureSitesLancement()
 #if !defined (Q_OS_MAC)
 
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "sites.xml");
-    VerifieVersionXml(QString(), fi1, fi2);
 
-    fi1.close();
+    if (fi1.exists()) {
+        VerifieVersionXml(QString(), fi1, fi2);
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QFileInfo ff(fi1.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+        }
+    }
     fi2.close();
+    fi1.close();
 
 #endif
 
@@ -934,9 +1001,10 @@ void Configuration::LectureSitesLancement()
 
     // Verifications
     if (_mapSites.isEmpty()) {
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
-                                            "Aucun site de lancement n'a été trouvé dans le fichier, veuillez réinstaller %2");
-        Message::Afficher(message.arg(QCoreApplication::applicationName()), WARNING);
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                            "Aucun site de lancement n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
+        const QFileInfo ff(fi1.fileName());
+        throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
 
     /* Retour */
@@ -954,43 +1022,48 @@ void Configuration::VerificationArborescences()
     const QStringList listeDirDat(QStringList () << _dirCommonData << _dirLocalData);
 
     /* Corps de la methode */
-    // Verification et creation des arborescences
-    foreach(const QString dirDat, listeDirDat) {
-        const QDir di(dirDat);
-        if (!di.exists()) {
-            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation\n" \
-                                                "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
-            Message::Afficher(message.arg(QDir::toNativeSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
-            exit(1);
+    try {
+
+        // Verification et creation des arborescences
+        foreach(const QString dirDat, listeDirDat) {
+            const QDir di(dirDat);
+            if (!di.exists()) {
+                const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                    "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
+                throw PreviSatException(message.arg(QDir::toNativeSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
+            }
         }
-    }
 
-    const QStringList listeDir(QStringList () << _dirCfg << _dirMap << _dirOut << _dirPrf << _dirRsc << _dirSon << _dirTle << _dirTmp);
-    foreach(const QString dir, listeDir) {
-        const QDir di = QDir(dir);
-        if (!di.exists()) {
-            di.mkpath(dir);
+        const QStringList listeDir(QStringList () << _dirCfg << _dirMap << _dirOut << _dirPrf << _dirRsc << _dirSon << _dirTle << _dirTmp);
+        foreach(const QString dir, listeDir) {
+            const QDir di = QDir(dir);
+            if (!di.exists()) {
+                di.mkpath(dir);
+            }
         }
+
+        // Verification de la presence des fichiers du repertoire data
+        // Fichiers du repertoire data commun
+        const QString repSon = QString("sound") + QDir::separator();
+        const QString repStr = QString("stars") + QDir::separator();
+        const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav" << repSon + "los-default.wav"
+                                        << repStr + "constellations.dat" << repStr + "constlabel.dat" <<  repStr + "constlines.dat"
+                                        << repStr + "etoiles.dat");
+
+        VerifieFichiersData(_dirCommonData, ficCommonData);
+
+        // Fichiers du repertoire data local
+        const QString repFlr = QString("flares") + QDir::separator();
+        const QString repHtm = QString("html") + QDir::separator();
+        _listeFicLocalData << "donnees.sat" << repFlr + "flares.sts" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
+                           << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "stations.sta" << "taiutc.dat"
+                           << "tdrs.sat";
+
+        VerifieFichiersData(_dirLocalData, _listeFicLocalData);
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
     }
-
-    // Verification de la presence des fichiers du repertoire data
-    // Fichiers du repertoire data commun
-    const QString repSon = QString("sound") + QDir::separator();
-    const QString repStr = QString("stars") + QDir::separator();
-    const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav" << repSon + "los-default.wav"
-                                    << repStr + "constellations.dat" << repStr + "constlabel.dat" <<  repStr + "constlines.dat"
-                                    << repStr + "etoiles.dat");
-
-    VerifieFichiersData(_dirCommonData, ficCommonData);
-
-    // Fichiers du repertoire data local
-    const QString repFlr = QString("flares") + QDir::separator();
-    const QString repHtm = QString("html") + QDir::separator();
-    _listeFicLocalData << "donnees.sat" << repFlr + "flares.sts" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
-                       << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "stations.sta" << "taiutc.dat"
-                       << "tdrs.sat";
-
-    VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
     /* Retour */
     return;
@@ -1014,15 +1087,15 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
         // Le fichier n'existe pas
         if (!fi.exists()) {
             const QString message = QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
-            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
-            exit(1);
+            const QFileInfo ff(fi.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
             const QString message = QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2");
-            Message::Afficher(message.arg(fi.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
-            exit(1);
+            const QFileInfo ff(fi.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
         }
     }
 
