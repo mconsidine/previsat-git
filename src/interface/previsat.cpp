@@ -174,13 +174,14 @@ void PreviSat::ChargementTLE()
     try {
 
         QString &nomfic = Configuration::instance()->nomfic();
+        QFileInfo fi(nomfic);
 
-        if (!Configuration::instance()->listeFicTLE().isEmpty() && !Configuration::instance()->listeFicTLE().contains(nomfic)) {
+        if (!Configuration::instance()->listeFicTLE().isEmpty() && !Configuration::instance()->listeFicTLE().contains(fi.fileName())) {
             const QString fic = Configuration::instance()->listeFicTLE().at(0);
             nomfic = (fic.contains(QDir::separator())) ? fic : Configuration::instance()->dirTle() + QDir::separator() + fic;
+            fi = QFileInfo(nomfic);
         }
 
-        QFileInfo fi(nomfic);
         if (fi.exists() && (fi.size() != 0)) {
 
             if (fi.suffix() == "gz") {
