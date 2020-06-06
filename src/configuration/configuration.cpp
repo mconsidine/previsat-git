@@ -748,6 +748,10 @@ void Configuration::LectureConfiguration()
     fi1.close();
 
     // Verifications
+    if (_noradStationSpatiale.isEmpty()) {
+        _noradStationSpatiale = "25544";
+    }
+
     if (_observateurs.isEmpty()) {
         _observateurs.append(Observateur("Paris", -002.348640000, +48.853390000, 30));
     }
