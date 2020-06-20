@@ -61,6 +61,8 @@ static QSettings settings("Astropedia", "PreviSat");
 
 Configuration *Configuration::_instance = nullptr;
 
+bool Configuration::_isCarteMonde;
+
 
 /**********
  * PUBLIC *
@@ -211,7 +213,7 @@ Observateur &Configuration::observateur()
     return _observateurs[0];
 }
 
-QMap<QString, QStringList> Configuration::mapSatellitesFicTLE() const
+QMap<QString, QStringList> &Configuration::mapSatellitesFicTLE()
 {
     return _mapSatellitesFicTLE;
 }
@@ -425,7 +427,11 @@ void Configuration::EcritureConfiguration()
 
     cfg.setAutoFormatting(true);
     cfg.writeStartDocument();
-    cfg.writeStartElement("PreviSat");
+    cfg.writeStartElement("PreviSatConfiguration");
+    cfg.writeAttribute("version", _versionCfg);
+
+    // Numero NORAD de la station spatiale
+    cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
 
     // Observateurs
     cfg.writeStartElement("Observateurs");
@@ -434,9 +440,9 @@ void Configuration::EcritureConfiguration()
         const Observateur obs = itObs.next();
         cfg.writeStartElement("Observateur");
         cfg.writeTextElement("Nom", obs.nomlieu());
-        cfg.writeTextElement("Longitude", QString::number(obs.longitude(), 'f', 9));
-        cfg.writeTextElement("Latitude", QString::number(obs.latitude(), 'f', 9));
-        cfg.writeTextElement("Altitude", QString::number(obs.altitude()));
+        cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
         cfg.writeEndElement();
     }
     cfg.writeEndElement();
@@ -649,7 +655,7 @@ void Configuration::LectureConfiguration()
                             "Certaines informations de configuration "
                             "(par exemple les lieux d'observation sélectionnés) seront perdues.";
 
-        VerifieVersionXml(msg, fi1, fi2);
+        VerifieVersionXml(fi1, fi2, _versionCfg, msg);
 
     } else {
 
@@ -770,6 +776,7 @@ void Configuration::LectureConfiguration()
 void Configuration::LectureCategoriesOrbite()
 {
     /* Declarations des variables locales */
+    QString version;
 
     /* Initialisations */
 
@@ -782,7 +789,7 @@ void Configuration::LectureCategoriesOrbite()
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "categories.xml");
 
     if (fi1.exists()) {
-        VerifieVersionXml(QString(), fi1, fi2);
+        VerifieVersionXml(fi1, fi2, version);
     } else {
 
         if (fi2.exists()) {
@@ -852,6 +859,7 @@ void Configuration::LectureCategoriesOrbite()
 void Configuration::LecturePays()
 {
     /* Declarations des variables locales */
+    QString version;
 
     /* Initialisations */
 
@@ -864,7 +872,7 @@ void Configuration::LecturePays()
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "pays.xml");
 
     if (fi1.exists()) {
-        VerifieVersionXml(QString(), fi1, fi2);
+        VerifieVersionXml(fi1, fi2, version);
     } else {
 
         if (fi2.exists()) {
@@ -934,6 +942,7 @@ void Configuration::LecturePays()
 void Configuration::LectureSitesLancement()
 {
     /* Declarations des variables locales */
+    QString version;
 
     /* Initialisations */
 
@@ -946,7 +955,7 @@ void Configuration::LectureSitesLancement()
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "sites.xml");
 
     if (fi1.exists()) {
-        VerifieVersionXml(QString(), fi1, fi2);
+        VerifieVersionXml(fi1, fi2, version);
     } else {
 
         if (fi2.exists()) {
@@ -1110,7 +1119,7 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
 /*
  * Verification du numero de version du fichier xml
  */
-void Configuration::VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2) const
+void Configuration::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, const QString &msg)
 {
     /* Declarations des variables locales */
 
@@ -1119,19 +1128,19 @@ void Configuration::VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2
     /* Corps de la methode */
     if (fi2.exists()) {
 
+        QDomDocument doc;
+        doc.setContent(&fi2);
+        const QString versionNew = doc.documentElement().attribute("version");
+
         if (fi1.exists()) {
 
             // Comparaison des numeros de version du fichier xml
-            QDomDocument doc;
-            doc.setContent(&fi2);
-            const QString versionNew = doc.documentElement().attribute("version");
-
             doc.clear();
             doc.setContent(&fi1);
-            const QString versionOld = doc.documentElement().attribute("version");
+            version = doc.documentElement().attribute("version");
             fi1.seek(0);
 
-            if (versionNew != versionOld) {
+            if (versionNew != _versionCfg) {
 
                 if (!msg.isEmpty()) {
                     Message::Afficher(QT_TR_NOOP(msg), WARNING);
@@ -1140,12 +1149,14 @@ void Configuration::VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2
                 // Copie du fichier xml
                 fi1.remove();
                 fi2.copy(fi1.fileName());
+                version = versionNew;
             }
 
         } else {
 
             // Copie du fichier xml
             fi2.copy(fi1.fileName());
+            version = versionNew;
         }
     }
 

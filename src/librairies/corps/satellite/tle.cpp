@@ -68,6 +68,8 @@ TLE::TLE()
     _ecco = 0.;
     _inclo = 0.;
     _mo = 0.;
+    _ndd60 = 0.;
+    _ndt20 = 0.;
     _no = 0.;
     _omegao = 0.;
 

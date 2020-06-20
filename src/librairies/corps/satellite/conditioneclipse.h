@@ -50,11 +50,11 @@
 class Vecteur3D;
 
 struct ElementsEclipse {
-    TypeEclipse type = NON_ECLIPSE;
     double luminosite = 1.;
     double elongation;
     double phiSoleil;
     double phi;
+    TypeEclipse type = NON_ECLIPSE;
 };
 
 class ConditionEclipse
@@ -64,6 +64,13 @@ public:
     /*
      *  Constructeurs
      */
+    ConditionEclipse() {
+        _eclipseTotale = false;
+        _eclipsePartielle = false;
+        _eclipseAnnulaire = false;
+        _eclipseLune.type = NON_ECLIPSE;
+        _eclipseSoleil.type = NON_ECLIPSE;
+    }
 
     /*
      * Accesseurs

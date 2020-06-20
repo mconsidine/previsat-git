@@ -137,6 +137,11 @@ public slots:
      */
     void AfficherMessageStatut(const QString &message, const int secondes);
 
+    /**
+     * @brief EffacerMessageStatut Effacer la zone de message de statut
+     */
+    void EffacerMessageStatut();
+
 
 protected:
 
@@ -270,11 +275,6 @@ private slots:
      * @brief ChargementFenetre Chargement des elements de la fenetre
      */
     void ChargementFenetre();
-
-    /**
-     * @brief EffacerMessageStatut Effacer la zone de message de statut
-     */
-    void EffacerMessageStatut();
 
     void GestionTempsReel();
 

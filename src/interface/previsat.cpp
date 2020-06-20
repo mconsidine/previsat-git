@@ -211,7 +211,7 @@ void PreviSat::ChargementTLE()
 
             while (it.hasNext()) {
                 const QString norad = it.next();
-                if (Configuration::instance()->mapTLE().keys().contains(norad)) {
+                if (!Configuration::instance()->mapTLE().keys().contains(norad)) {
                     listeSatellites.removeOne(norad);
                 }
             }
@@ -727,6 +727,22 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
 }
 
 /*
+ * Effacer la zone de message de statut
+ */
+void PreviSat::EffacerMessageStatut()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut->setText("");
+
+    /* Retour */
+    return;
+}
+
+/*
  * Enchainement des calculs
  */
 void PreviSat::EnchainementCalculs()
@@ -1012,25 +1028,10 @@ void PreviSat::ChargementFenetre()
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
     connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+    connect(_onglets, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
 
     connect(_onglets, SIGNAL(ModeManuel(bool)), this, SLOT(on_modeManuel_toggled(bool)));
     connect(_onglets, SIGNAL(ChangementDate(const QDateTime &)), this, SLOT(ChangementDate(const QDateTime &)));
-
-    /* Retour */
-    return;
-}
-
-/*
- * Effacer la zone de message de statut
- */
-void PreviSat::EffacerMessageStatut()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    _messageStatut->setText("");
 
     /* Retour */
     return;

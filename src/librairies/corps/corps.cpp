@@ -55,10 +55,10 @@
  **********/
 
 struct ConstElem {
-    QString nom;
     double ad1;
     double ad2;
     double dec;
+    QString nom;
 };
 
 static QList<ConstElem> _tabConst;

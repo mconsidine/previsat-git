@@ -52,8 +52,8 @@ class Observateur;
 
 struct ElementsAOS {
     Date date;
-    QString typeAOS = QObject::tr("AOS");
     double azimut;
+    QString typeAOS = QObject::tr("AOS");
     bool aos;
 };
 
