@@ -58,6 +58,7 @@ Telechargement::Telechargement(const QString &dirDwn)
     /* Corps du constructeur */
     _mng.setNetworkAccessible(QNetworkAccessManager::Accessible);
     _dirDwn = dirDwn;
+    _async = true;
 
     /* Retour */
     return;

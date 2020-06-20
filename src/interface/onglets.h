@@ -135,6 +135,7 @@ signals:
 
     void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
     void AfficherMessageStatut(const QString &message, const int secondes);
+    void EffacerMessageStatut();
     void ModeManuel(bool enabled);
     void ChangementDate(const QDateTime &dateTime);
 

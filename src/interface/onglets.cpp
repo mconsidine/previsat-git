@@ -114,7 +114,7 @@ Onglets::Onglets(QWidget *parent) :
     ChargementPref();
 
     // Chargement des fichiers d'observation
-    InitFicObs(false);
+    InitFicObs(true);
     _ui->categoriesObs->setCurrentRow(0);
 }
 
@@ -165,6 +165,9 @@ void Onglets::show(const Date &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    if (_date != nullptr) {
+        delete _date;
+    }
     _date = new Date(date, date.offsetUTC());
 
     /* Corps de la methode */
@@ -1074,7 +1077,7 @@ void Onglets::AffichageLieuObs() const
             // Longitude/Latitude/Altitude
             const double lo = obs.longitude();
             const double la = obs.latitude();
-            const double atd = obs.altitude();
+            const double atd = obs.altitude() * 1000.;
 
             const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
             const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
@@ -2292,6 +2295,7 @@ void Onglets::on_lieuxObs_currentRowChanged(int currentRow)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    emit EffacerMessageStatut();
 
     /* Corps de la methode */
     if (_ui->outilsLieuxObservation->isVisible() && !_ui->ajdfic->isVisible()) {
@@ -2693,12 +2697,12 @@ void Onglets::on_ajoutLieu_clicked()
                 emit AfficherMessageStatut(tr("Lieu d'observation déjà sélectionné"), 10);
                 throw PreviSatException();
             }
-        }
 
-        _ui->selecLieux->addItem(_ui->lieuxObs->currentItem()->text());
-        Configuration::instance()->observateurs().append(_mapObs[_ui->lieuxObs->currentItem()->text()]);
-        Configuration::instance()->EcritureConfiguration();
-        _ui->lieuxObs->setFocus();
+            _ui->selecLieux->addItem(_ui->lieuxObs->currentItem()->text());
+            Configuration::instance()->observateurs().append(_mapObs[_ui->lieuxObs->currentItem()->text()]);
+            Configuration::instance()->EcritureConfiguration();
+            _ui->lieuxObs->setFocus();
+        }
 
         // TODO
 
@@ -2717,8 +2721,9 @@ void Onglets::on_supprLieu_clicked()
 
     /* Corps de la methode */
     if ((_ui->selecLieux->currentRow() >= 0) && (_ui->selecLieux->count() > 1)) {
+
         Configuration::instance()->observateurs().removeAt(_ui->selecLieux->currentRow());
-        _ui->selecLieux->removeItemWidget(_ui->selecLieux->currentItem());
+        AffichageLieuObs();
         Configuration::instance()->EcritureConfiguration();
 
         // TODO
@@ -2765,4 +2770,3 @@ void Onglets::on_optionSuiv_clicked()
     _ui->configuration->setCurrentIndex(_indexOption);
 
 }
-

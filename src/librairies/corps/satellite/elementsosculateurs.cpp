@@ -57,6 +57,25 @@ ElementsOsculateurs::ElementsOsculateurs()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _demiGrandAxe = 0.;
+    _excentricite = 0.;
+    _inclinaison = 0.;
+    _ascensionDroiteNoeudAscendant = 0.;
+    _argumentPerigee = 0.;
+    _anomalieVraie = 0.;
+    _anomalieExcentrique = 0.;
+    _anomalieMoyenne = 0.;
+    _apogee = 0.;
+    _perigee = 0.;
+    _periode = 0.;
+    _exCirc = 0.;
+    _eyCirc = 0.;
+    _exCEq = 0.;
+    _eyCEq = 0.;
+    _pso = 0.;
+    _ix = 0.;
+    _iy = 0.;
+    _argumentLongitudeVraie = 0.;
 
     /* Retour */
     return;

@@ -113,7 +113,7 @@ public:
     QList<Observateur> &observateurs();
     Observateur &observateur();
 
-    QMap<QString, QStringList> mapSatellitesFicTLE() const;
+    QMap<QString, QStringList> &mapSatellitesFicTLE();
 
     Soleil &soleil();
     Lune &lune();
@@ -206,6 +206,8 @@ private:
      */
     static Configuration *_instance;
 
+    QString _versionCfg;
+
     // Repertoires
     QString _dirExe;
     QString _dirCoord;
@@ -278,7 +280,7 @@ private:
     // Numero NORAD de la station spatiale
     QString _noradStationSpatiale;
 
-    bool _isCarteMonde;
+    static bool _isCarteMonde;
 
     /*
      * Methodes privees
@@ -337,11 +339,11 @@ private:
 
     /**
      * @brief VerifieVersionXml Verification du numero de version du fichier xml
-     * @param msg message
      * @param fi1 fichier xml du repertoire commun
      * @param fi2 fichier xml du repertoire local
+     * @param msg message a afficher
      */
-    void VerifieVersionXml(const QString &msg, QFile &fi1, QFile &fi2) const;
+    void VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, const QString &msg = QString());
 
 };
 

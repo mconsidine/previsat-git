@@ -70,7 +70,7 @@ public:
      * @brief Carte Constructeur par defaut
      * @param parent parent
      */
-    Carte(Onglets *onglets, QWidget *parent = nullptr);
+    explicit Carte(Onglets *onglets, QWidget *parent = nullptr);
 
 
     /*
