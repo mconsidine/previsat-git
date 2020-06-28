@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 decembre 2019
+ * >    28 juin 2020
  *
  */
 
@@ -435,32 +435,35 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 
                 while (!(ligne = flux.readLine()).contains("Coasting Arc")) {
 
-                    if (!ligne.trimmed().isEmpty()) {
+                    if (!ligne.contains("no maneuvers")) {
 
-                        // Premiere ligne
-                        const QStringList tab1 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString date = tab1.at(0);
-                        const QString dvx_m50 = tab1.at(1);
-                        const QString dvx_lvlh = tab1.at(2);
-                        const QString deltaV = tab1.last();
+                        if (!ligne.trimmed().isEmpty()) {
 
-                        // Deuxieme ligne
-                        ligne = flux.readLine();
-                        const QStringList tab2 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString dvy_m50 = tab2.at(1);
-                        const QString dvy_lvlh = tab2.at(2);
-                        const QString apogee = tab2.last();
+                            // Premiere ligne
+                            const QStringList tab1 = ligne.split(" ", QString::SkipEmptyParts);
+                            const QString date = tab1.at(0);
+                            const QString dvx_m50 = tab1.at(1);
+                            const QString dvx_lvlh = tab1.at(2);
+                            const QString deltaV = tab1.last();
 
-                        // Troisieme ligne
-                        ligne = flux.readLine();
-                        const QStringList tab3 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString dvz_m50 = tab3.at(1);
-                        const QString dvz_lvlh = tab3.at(2);
-                        const QString duree = QString("%1").arg((Date::ConversionDateNasa("2000/" + tab3.at(0)).jourJulienUTC() + 1.5) *
-                                                                NB_SEC_PAR_JOUR, 0, 'f', 3);
-                        const QString perigee = tab3.last();
-                        tabMan.append(date + " " + apogee + " " + perigee + " " + deltaV + " " + duree + " " + dvx_m50 + " " + dvy_m50 + " " +
-                                      dvz_m50 + " " + dvx_lvlh + " " + dvy_lvlh + " " + dvz_lvlh);
+                            // Deuxieme ligne
+                            ligne = flux.readLine();
+                            const QStringList tab2 = ligne.split(" ", QString::SkipEmptyParts);
+                            const QString dvy_m50 = tab2.at(1);
+                            const QString dvy_lvlh = tab2.at(2);
+                            const QString apogee = tab2.last();
+
+                            // Troisieme ligne
+                            ligne = flux.readLine();
+                            const QStringList tab3 = ligne.split(" ", QString::SkipEmptyParts);
+                            const QString dvz_m50 = tab3.at(1);
+                            const QString dvz_lvlh = tab3.at(2);
+                            const QString duree = QString("%1").arg((Date::ConversionDateNasa("2000/" + tab3.at(0)).jourJulienUTC() + 1.5) *
+                                                                    NB_SEC_PAR_JOUR, 0, 'f', 3);
+                            const QString perigee = tab3.last();
+                            tabMan.append(date + " " + apogee + " " + perigee + " " + deltaV + " " + duree + " " + dvx_m50 + " " + dvy_m50 + " " +
+                                          dvz_m50 + " " + dvx_lvlh + " " + dvy_lvlh + " " + dvz_lvlh);
+                        }
                     }
                 }
             }
@@ -506,29 +509,47 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
 
     // Tableau de manoeuvres
     int i = 0;
+    Date date;
     Date dateArc1(-DATE_INFINIE, 0.);
     QString masse1;
+    QString orb;
     QStringListIterator it(tabMasse);
-    while (it.hasNext() && (i < tabMan.size())) {
+    while (it.hasNext()) {
 
         const QString ligne = it.next();
         const QString dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).first();
-        const QString orb = ligne.split(" ", QString::SkipEmptyParts).at(1);
+        orb = ligne.split(" ", QString::SkipEmptyParts).at(1);
 
         const Date dateArc2 = Date::ConversionDateNasa(dateFormatNasa);
         const QString masse2 = ligne.split(" ", QString::SkipEmptyParts).last();
-        const Date dateMan = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
-                                                      tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
 
-        if ((dateMan.jourJulienUTC() >= dateArc1.jourJulienUTC()) && (dateMan.jourJulienUTC() < dateArc2.jourJulienUTC())) {
-            QString fmt = "%1";
-            if (masse1.isEmpty()) masse1 = masse2;
-            tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
-                                 tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
-            i++;
+        if (!tabMan.isEmpty()) {
+            date = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
+                                            tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
+
+            if ((date.jourJulienUTC() >= dateArc1.jourJulienUTC()) && (date.jourJulienUTC() < dateArc2.jourJulienUTC())) {
+
+                QString fmt = "%1";
+                if (masse1.isEmpty()) {
+                    masse1 = masse2;
+                }
+
+                tabManoeuvres.append(fmt.arg(date.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
+                                     tabMan.at(tabMan.size()-1).mid(tabMan.at(i).indexOf(" ")+1));
+                i++;
+            }
         }
         dateArc1 = dateArc2;
         masse1 = masse2;
+    }
+
+    if (!tabMan.isEmpty() && tabManoeuvres.isEmpty()) {
+        tabManoeuvres.append(QString("%1").arg(date.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
+                             tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
+    }
+
+    if (tabManoeuvres.isEmpty()) {
+        tabManoeuvres.append(QObject::tr("Pas de manoeuvres"));
     }
 
     if (!tabtle.isEmpty()) {
@@ -791,7 +812,7 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2)
             msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
         }
         throw PreviSatException(msg, WARNING);
-}
+    }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {

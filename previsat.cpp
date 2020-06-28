@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 avril 2020
+ * >    28 juin 2020
  *
  */
 
@@ -905,9 +905,11 @@ PreviSat::~PreviSat()
         afficherMeteo->close();
     }
 
+#if !defined (Q_OS_WIN)
     if (rep != NULL) {
         rep->close();
     }
+#endif
 
     delete ui;
 }
@@ -3956,72 +3958,92 @@ void PreviSat::AffichageManoeuvresISS() const
 #endif
 
     /* Corps de la methode */
-    for(int i=0; i<tabManoeuvresISS.count(); i++) {
+    if (tabManoeuvresISS.at(0).contains(tr("manoeuvres"))) {
 
-        const QStringList man = tabManoeuvresISS.at(i).split(" ", QString::SkipEmptyParts);
-        ui->manoeuvresISS->insertRow(i);
-        ui->manoeuvresISS->setRowHeight(i, 16);
+        ui->manoeuvresISS->horizontalHeader()->setVisible(false);
+        ui->manoeuvresISS->insertRow(0);
+        ui->manoeuvresISS->setRowHeight(0, ui->manoeuvresISS->height());
+        ui->manoeuvresISS->setColumnWidth(0, ui->manoeuvresISS->width());
+        ui->manoeuvresISS->setFocusPolicy(Qt::NoFocus);
 
-        for(int k=0; k<man.count(); k++) {
+        QTableWidgetItem * const item = new QTableWidgetItem(tabManoeuvresISS.at(0));
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable & ~Qt::ItemIsSelectable);
+        ui->manoeuvresISS->setItem(0, 0, item);
 
-            QString elem = man.at(k);
-            QTableWidgetItem * const item = new QTableWidgetItem();
+    } else {
 
-            // Date
-            if (k == 0) {
-                elem = Date(elem.toDouble(), 0.).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
-                item->setToolTip("UTC");
-            }
+        ui->manoeuvresISS->horizontalHeader()->setVisible(true);
 
-            // Masse
-            if (k == 2) {
-                if (ui->unitesKm->isChecked()) {
-                    elem = QString("%1").arg(elem.toDouble() * KG_PAR_LIVRE, 0, 'f', 1);
-                    item->setToolTip(tr("kg"));
-                } else {
-                    item->setToolTip(tr("lb"));
+        for(int i=0; i<tabManoeuvresISS.count(); i++) {
+
+            const QStringList man = tabManoeuvresISS.at(i).split(" ", QString::SkipEmptyParts);
+            ui->manoeuvresISS->insertRow(i);
+            ui->manoeuvresISS->setRowHeight(i, 16);
+
+            for(int k=0; k<7; k++) {
+
+                QString elem = (k < man.count()) ? man.at(k) : "-";
+                QTableWidgetItem * const item = new QTableWidgetItem();
+
+                // Date
+                if (k == 0) {
+                    elem = Date(elem.toDouble(), 0.).ToShortDateAMJ(FORMAT_COURT, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+                    item->setToolTip("UTC");
                 }
-            }
 
-            // Apogee, perigee
-            if (k == 3 || k == 4) {
-                if (ui->unitesKm->isChecked()) {
-                    elem = QString("%1").arg(elem.toDouble() / MILE_PAR_KM, 0, 'f', 1);
-                    item->setToolTip(tr("km"));
-                } else {
-                    item->setToolTip(tr("nmi"));
-                }
-            }
-
-            // DeltaV
-            if (k == 5) {
-                if (fabs(elem.toDouble()) < EPSDBL100) {
-                    elem = "-";
-                } else {
+                // Masse
+                if (k == 2) {
                     if (ui->unitesKm->isChecked()) {
-                        elem = QString("%1").arg(elem.toDouble() / PIED_PAR_METRE, 0, 'f', 2);
-                        item->setToolTip(tr("m/s"));
+                        elem = QString("%1").arg(elem.toDouble() * KG_PAR_LIVRE, 0, 'f', 1);
+                        item->setToolTip(tr("kg"));
                     } else {
-                        item->setToolTip(tr("fps"));
+                        item->setToolTip(tr("lb"));
                     }
                 }
-            }
 
-            // Duree
-            if (k == 6) {
-                if (fabs(elem.toDouble()) < EPSDBL100) {
-                    elem = "-";
-                } else {
-                    item->setToolTip(tr("s"));
+                // Apogee, perigee
+                if (k == 3 || k == 4) {
+                    if (elem != "-") {
+                        if (ui->unitesKm->isChecked()) {
+                            elem = QString("%1").arg(elem.toDouble() / MILE_PAR_KM, 0, 'f', 1);
+                            item->setToolTip(tr("km"));
+                        } else {
+                            item->setToolTip(tr("nmi"));
+                        }
+                    }
                 }
-            }
 
-            item->setText(elem);
-            item->setTextAlignment(Qt::AlignCenter);
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            ui->manoeuvresISS->setItem(i, k, item);
-            if (k < 6 || !ui->manoeuvresISS->verticalScrollBar()->isVisible()) {
-                ui->manoeuvresISS->resizeColumnToContents(k);
+                // DeltaV
+                if (k == 5) {
+                    if (fabs(elem.toDouble()) < EPSDBL100) {
+                        elem = "-";
+                    } else {
+                        if (ui->unitesKm->isChecked()) {
+                            elem = QString("%1").arg(elem.toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+                            item->setToolTip(tr("m/s"));
+                        } else {
+                            item->setToolTip(tr("fps"));
+                        }
+                    }
+                }
+
+                // Duree
+                if (k == 6) {
+                    if (fabs(elem.toDouble()) < EPSDBL100) {
+                        elem = "-";
+                    } else {
+                        item->setToolTip(tr("s"));
+                    }
+                }
+
+                item->setText(elem);
+                item->setTextAlignment(Qt::AlignCenter);
+                item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+                ui->manoeuvresISS->setItem(i, k, item);
+                if (k < 6 || !ui->manoeuvresISS->verticalScrollBar()->isVisible()) {
+                    ui->manoeuvresISS->resizeColumnToContents(k);
+                }
             }
         }
     }
@@ -4724,9 +4746,6 @@ void PreviSat::TelechargementFichier(const QString &ficHttp, const bool async)
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     const QNetworkRequest requete(url);
-    if (rep != NULL) {
-        rep->close();
-    }
     rep = mng.get(requete);
 
     if (!async) {
