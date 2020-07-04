@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 juin 2020
+ * >    4 juillet 2020
  *
  */
 
@@ -3974,6 +3974,7 @@ void PreviSat::AffichageManoeuvresISS() const
     } else {
 
         ui->manoeuvresISS->horizontalHeader()->setVisible(true);
+        ui->manoeuvresISS->setFocusPolicy(Qt::StrongFocus);
 
         for(int i=0; i<tabManoeuvresISS.count(); i++) {
 
@@ -12346,122 +12347,126 @@ void PreviSat::on_manoeuvresISS_itemDoubleClicked(QTableWidgetItem *item)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QStringList manoeuvre = tabManoeuvresISS.at(item->row()).split(" ", QString::SkipEmptyParts);
-    const double deltaV = manoeuvre.at(5).toDouble();
 
     /* Corps de la methode */
-    if (fabs(deltaV) > EPSDBL100) {
+    if (!item->text().contains(tr("manoeuvres"))) {
 
-        if (afficherManoeuvre != NULL) {
+        const QStringList manoeuvre = tabManoeuvresISS.at(item->row()).split(" ", QString::SkipEmptyParts);
+        const double deltaV = manoeuvre.at(5).toDouble();
 
-            if (tableMan != NULL) {
-                tableMan->close();
-                tableMan->deleteLater();
-                tableMan = NULL;
+        if (fabs(deltaV) > EPSDBL100) {
+
+            if (afficherManoeuvre != NULL) {
+
+                if (tableMan != NULL) {
+                    tableMan->close();
+                    tableMan->deleteLater();
+                    tableMan = NULL;
+                }
+
+                afficherManoeuvre->close();
+                afficherManoeuvre->deleteLater();
+                afficherManoeuvre = NULL;
             }
 
-            afficherManoeuvre->close();
-            afficherManoeuvre->deleteLater();
-            afficherManoeuvre = NULL;
-        }
-
-        // Entete
-        tableMan = new QTableWidget;
-        tableMan->insertRow(0);
-        tableMan->setColumnCount(5);
-        tableMan->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Durée") << "ΔV" << "ΔV (M50)" << "ΔV (LVLH)");
-        QFont fnt;
-        fnt.setBold(true);
-        tableMan->horizontalHeader()->setFont(fnt);
+            // Entete
+            tableMan = new QTableWidget;
+            tableMan->insertRow(0);
+            tableMan->setColumnCount(5);
+            tableMan->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Durée") << "ΔV" << "ΔV (M50)" << "ΔV (LVLH)");
+            QFont fnt;
+            fnt.setBold(true);
+            tableMan->horizontalHeader()->setFont(fnt);
 #if defined (Q_OS_LINUX)
-        fnt.setPointSize(7);
-        tableMan->horizontalHeader()->setStyleSheet("QHeaderView { font-size: 7pt; }");
+            fnt.setPointSize(7);
+            tableMan->horizontalHeader()->setStyleSheet("QHeaderView { font-size: 7pt; }");
 #else
-        fnt.setPointSize(9);
+            fnt.setPointSize(9);
 #endif
-        fnt.setBold(false);
-        tableMan->setFont(fnt);
-        tableMan->setSelectionMode(QTableWidget::NoSelection);
-        tableMan->setCornerButtonEnabled(false);
-        tableMan->verticalHeader()->setVisible(false);
+            fnt.setBold(false);
+            tableMan->setFont(fnt);
+            tableMan->setSelectionMode(QTableWidget::NoSelection);
+            tableMan->setCornerButtonEnabled(false);
+            tableMan->verticalHeader()->setVisible(false);
 
-        // Date
-        const QString dateMan = Date(manoeuvre.at(0).toDouble(), 0.)
-                .ToShortDateAMJ(FORMAT_MILLISEC, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
-        QTableWidgetItem *itm = new QTableWidgetItem(dateMan);
-        itm->setTextAlignment(Qt::AlignCenter);
-        itm->setFlags(item->flags() & ~Qt::ItemIsEditable);
-        itm->setToolTip("UTC");
-        tableMan->setItem(0, 0, itm);
+            // Date
+            const QString dateMan = Date(manoeuvre.at(0).toDouble(), 0.)
+                    .ToShortDateAMJ(FORMAT_MILLISEC, (ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+            QTableWidgetItem *itm = new QTableWidgetItem(dateMan);
+            itm->setTextAlignment(Qt::AlignCenter);
+            itm->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            itm->setToolTip("UTC");
+            tableMan->setItem(0, 0, itm);
 
-        // Duree
-        itm = new QTableWidgetItem(manoeuvre.at(6));
-        itm->setTextAlignment(Qt::AlignCenter);
-        itm->setToolTip(tr("s"));
-        tableMan->setItem(0, 1, itm);
+            // Duree
+            itm = new QTableWidgetItem(manoeuvre.at(6));
+            itm->setTextAlignment(Qt::AlignCenter);
+            itm->setToolTip(tr("s"));
+            tableMan->setItem(0, 1, itm);
 
-        // DeltaV total
-        itm = new QTableWidgetItem(ui->manoeuvresISS->item(item->row(), 5)->text());
-        itm->setTextAlignment(Qt::AlignCenter);
-        itm->setToolTip((ui->unitesKm->isChecked()) ? tr("m/s") : tr("fps"));
-        tableMan->setItem(0, 2, itm);
+            // DeltaV total
+            itm = new QTableWidgetItem(ui->manoeuvresISS->item(item->row(), 5)->text());
+            itm->setTextAlignment(Qt::AlignCenter);
+            itm->setToolTip((ui->unitesKm->isChecked()) ? tr("m/s") : tr("fps"));
+            tableMan->setItem(0, 2, itm);
 
-        // DeltaV (M50)
-        const QString fmt("%1\n%2\n%3");
-        itm = new QTableWidgetItem();
-        QString dv = fmt.arg(manoeuvre.at(7)).arg(manoeuvre.at(8)).arg(manoeuvre.at(9));
-        if (ui->unitesKm->isChecked()) {
-            dv = fmt.arg(manoeuvre.at(7).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(8).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
-                    .arg(manoeuvre.at(9).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
-            itm->setToolTip(tr("m/s"));
-        } else {
-            itm->setToolTip(tr("fps"));
-        }
-        itm->setText(dv);
-        itm->setTextAlignment(Qt::AlignCenter);
-        tableMan->setItem(0, 3, itm);
+            // DeltaV (M50)
+            const QString fmt("%1\n%2\n%3");
+            itm = new QTableWidgetItem();
+            QString dv = fmt.arg(manoeuvre.at(7)).arg(manoeuvre.at(8)).arg(manoeuvre.at(9));
+            if (ui->unitesKm->isChecked()) {
+                dv = fmt.arg(manoeuvre.at(7).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(8).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                        .arg(manoeuvre.at(9).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+                itm->setToolTip(tr("m/s"));
+            } else {
+                itm->setToolTip(tr("fps"));
+            }
+            itm->setText(dv);
+            itm->setTextAlignment(Qt::AlignCenter);
+            tableMan->setItem(0, 3, itm);
 
-        // DeltaV (LVLH)
-        itm = new QTableWidgetItem();
-        dv = fmt.arg(manoeuvre.at(10)).arg(manoeuvre.at(11)).arg(manoeuvre.at(12));
-        if (ui->unitesKm->isChecked()) {
-            dv = fmt.arg(manoeuvre.at(10).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(11).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
-                    .arg(manoeuvre.at(12).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
-            itm->setToolTip(tr("m/s"));
-        } else {
-            itm->setToolTip(tr("fps"));
-        }
-        itm->setText(dv);
-        itm->setTextAlignment(Qt::AlignCenter);
-        tableMan->setItem(0, 4, itm);
+            // DeltaV (LVLH)
+            itm = new QTableWidgetItem();
+            dv = fmt.arg(manoeuvre.at(10)).arg(manoeuvre.at(11)).arg(manoeuvre.at(12));
+            if (ui->unitesKm->isChecked()) {
+                dv = fmt.arg(manoeuvre.at(10).toDouble() / PIED_PAR_METRE, 0, 'f', 2).arg(manoeuvre.at(11).toDouble() / PIED_PAR_METRE, 0, 'f', 2)
+                        .arg(manoeuvre.at(12).toDouble() / PIED_PAR_METRE, 0, 'f', 2);
+                itm->setToolTip(tr("m/s"));
+            } else {
+                itm->setToolTip(tr("fps"));
+            }
+            itm->setText(dv);
+            itm->setTextAlignment(Qt::AlignCenter);
+            tableMan->setItem(0, 4, itm);
 
-        tableMan->resizeRowsToContents();
-        tableMan->resizeColumnsToContents();
-        tableMan->viewport()->setFocusPolicy(Qt::NoFocus);
+            tableMan->resizeRowsToContents();
+            tableMan->resizeColumnsToContents();
+            tableMan->viewport()->setFocusPolicy(Qt::NoFocus);
 #if QT_VERSION >= 0x050000
-        tableMan->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+            tableMan->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 #else
-        tableMan->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+            tableMan->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
 
-        afficherManoeuvre = new QMainWindow;
-        afficherManoeuvre->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
-        afficherManoeuvre->setWindowTitle(tr("Détail de la manoeuvre"));
-        afficherManoeuvre->setCentralWidget(tableMan);
+            afficherManoeuvre = new QMainWindow;
+            afficherManoeuvre->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
+            afficherManoeuvre->setWindowTitle(tr("Détail de la manoeuvre"));
+            afficherManoeuvre->setCentralWidget(tableMan);
 #if defined (Q_OS_LINUX)
-        int lrg = 5;
+            int lrg = 5;
 #else
-        int lrg = 2;
+            int lrg = 2;
 #endif
-        for(int i=0; i<tableMan->columnCount(); i++) {
-            lrg += tableMan->columnWidth(i);
-        }
-        afficherManoeuvre->resize(lrg, tableMan->horizontalHeader()->height()+tableMan->rowHeight(0));
+            for(int i=0; i<tableMan->columnCount(); i++) {
+                lrg += tableMan->columnWidth(i);
+            }
+            afficherManoeuvre->resize(lrg, tableMan->horizontalHeader()->height()+tableMan->rowHeight(0));
 
-        afficherManoeuvre->setMinimumSize(afficherManoeuvre->size());
-        afficherManoeuvre->setMaximumSize(afficherManoeuvre->size());
-        afficherManoeuvre->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherManoeuvre->size(), geometry()));
-        afficherManoeuvre->show();
+            afficherManoeuvre->setMinimumSize(afficherManoeuvre->size());
+            afficherManoeuvre->setMaximumSize(afficherManoeuvre->size());
+            afficherManoeuvre->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherManoeuvre->size(), geometry()));
+            afficherManoeuvre->show();
+        }
     }
 
     /* Retour */

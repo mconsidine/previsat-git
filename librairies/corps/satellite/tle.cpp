@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 juin 2020
+ * >    4 juillet 2020
  *
  */
 
@@ -523,7 +523,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
         const Date dateArc2 = Date::ConversionDateNasa(dateFormatNasa);
         const QString masse2 = ligne.split(" ", QString::SkipEmptyParts).last();
 
-        if (!tabMan.isEmpty()) {
+        if (!tabMan.isEmpty() && (i < tabMan.size())) {
             date = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
                                             tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
 
@@ -535,7 +535,7 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
                 }
 
                 tabManoeuvres.append(fmt.arg(date.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
-                                     tabMan.at(tabMan.size()-1).mid(tabMan.at(i).indexOf(" ")+1));
+                                     tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
                 i++;
             }
         }
