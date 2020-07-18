@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    18 juillet 2020
  *
  */
 
@@ -117,7 +117,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
             Corps corps;
             corps.setPosition(Vecteur3D(list.at(13), list.at(14), list.at(15)));
-            int typeCorps = (int) (list.at(16) + EPSDBL100);
+            const CorpsTransit typeCorps = (CorpsTransit) ((int) (list.at(16) + EPSDBL100));
 
             // Position de l'ISS
             sat.CalculPosVit(date);
@@ -141,11 +141,11 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     sat.CalculCoordHoriz(observateur, false);
 
                     // Position du corps (Soleil ou Lune)
-                    if (typeCorps == 1) {
+                    if (typeCorps == CORPS_SOLEIL) {
                         soleil.CalculPosition(date0);
                         corps.setPosition(soleil.position());
                     }
-                    if (typeCorps == 2) {
+                    if (typeCorps == CORPS_LUNE) {
                         lune.CalculPosition(date0);
                         corps.setPosition(lune.position());
                     }
@@ -153,13 +153,15 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
 
                     // Calcul de l'angle ISS - observateur - corps
                     ang = corps.dist().Angle(sat.dist());
-                    if (ang < ang0) ang0 = ang;
+                    if (ang < ang0) {
+                        ang0 = ang;
+                    }
 
                     jj0 += PAS1;
-                } while (jj0 <= jj2 && ang < ang0 + EPSDBL100 && sat.hauteur() >= 0.);
+                } while ((jj0 <= jj2) && (ang < ang0 + EPSDBL100));
 
                 // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
-                if (jj0 <= jj2 - PAS1 && ang0 < conditions.seuilConjonction() + DEG2RAD) {
+                if ((jj0 <= jj2 - PAS1) && (ang0 < conditions.seuilConjonction() + DEG2RAD) && (sat.hauteur() >= 0.)) {
 
                     int it;
                     double jjm[3], minmax[2];
@@ -175,7 +177,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     // Iterations supplementaires pour affiner la date du minimum
                     it = 0;
                     double pasInt = PAS_INT0;
-                    while (fabs(ang - minmax[1]) > 1.e-5 && it < 10) {
+                    while ((fabs(ang - minmax[1]) > 1.e-5) && (it < 10)) {
 
                         ang = minmax[1];
                         jjm[0] = minmax[0] - pasInt;
@@ -195,18 +197,18 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                     sat.CalculPosVit(date2);
                     sat.CalculCoordHoriz(observateur, false);
 
-                    if (sat.hauteur() >= conditions.haut() && minmax[1] <= conditions.seuilConjonction()) {
+                    if ((sat.hauteur() >= conditions.haut()) && (minmax[1] <= conditions.seuilConjonction())) {
 
                         Date dates[5];
 
                         // Position du corps (Soleil ou Lune)
                         soleil.CalculPosition(date2);
                         soleil.CalculCoordHoriz(observateur, false);
-                        if (typeCorps == 1) {
+                        if (typeCorps == CORPS_SOLEIL) {
                             corps.setPosition(soleil.position());
                             rayon = RAYON_SOLAIRE;
                         }
-                        if (typeCorps == 2) {
+                        if (typeCorps == CORPS_LUNE) {
                             lune.CalculPosition(date2);
                             corps.setPosition(lune.position());
                             rayon = RAYON_LUNAIRE;
@@ -220,12 +222,15 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                         const double rayonApparent = asin(rayon / corps.distance());
 
                         const bool itr = (ang <= rayonApparent);
-                        const bool ilu = (typeCorps == 2) && (soleil.hauteur() >= 0.);
+                        const bool iconj = (ang <= conditions.seuilConjonction());
+                        const bool ilu = (typeCorps == CORPS_LUNE) && (itr || iconj) &&
+                                (conditions.calcTransitLunaireJour() || (soleil.hauteur() < 0.));
+
                         ConditionEclipse condEcl;
-                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune() && typeCorps == 2,
+                        condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune() && (typeCorps == CORPS_LUNE),
                                                        conditions.refr());
 
-                        if (!ilu && (itr || !condEcl.isEclipseTotale())) {
+                        if ((itr && (typeCorps == CORPS_SOLEIL)) || ilu) {
 
                             // Calcul des dates extremes de la conjonction ou du transit
                             dates[2] = date2;
@@ -256,7 +261,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     lune.CalculPosition(dates[j]);
 
                                 condEcl.CalculSatelliteEclipse(soleil, lune, position,
-                                                               conditions.acalcEclipseLune() && typeCorps == 2, conditions.refr());
+                                                               conditions.acalcEclipseLune() && (typeCorps == CORPS_LUNE), conditions.refr());
 
                                 // Ecriture du resultat
 
@@ -292,7 +297,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                         arg(date3.ToShortDateAMJ(FORMAT_LONG, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(ang, 5, 'f', 2).
                                         arg((itr) ? QObject::tr("T") : QObject::tr("C")).
-                                        arg((typeCorps == 1) ? QObject::tr("S") : QObject::tr("L")).
+                                        arg((typeCorps == CORPS_SOLEIL) ? QObject::tr("S") : QObject::tr("L")).
                                         arg((condEcl.isEclipseTotale()) ?
                                                 QObject::tr("Omb") : (condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ?
                                                     QObject::tr("Pen") : QObject::tr("Lum")).
@@ -307,12 +312,12 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     obsmin.CalculPosVit(dates[j]);
                                     sat.CalculCoordHoriz(obsmin, false);
 
-                                    if (typeCorps == 1) {
+                                    if (typeCorps == CORPS_SOLEIL) {
                                         soleil.CalculPosition(dates[j]);
                                         corps.setPosition(soleil.position());
                                         rayon = RAYON_SOLAIRE;
                                     }
-                                    if (typeCorps == 2) {
+                                    if (typeCorps == CORPS_LUNE) {
                                         lune.CalculPosition(dates[j]);
                                         corps.setPosition(lune.position());
                                         rayon = RAYON_LUNAIRE;
@@ -323,16 +328,16 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
                                     const double cap = observateur.CalculCap(obsmin) * RAD2DEG;
 
                                     QString dir;
-                                    if (cap >= 315. || cap < 45.) {
+                                    if ((cap >= 315.) || (cap < 45.)) {
                                         dir = QObject::tr("(N)");
                                     }
-                                    if (cap >= 45. && cap < 135.) {
+                                    if ((cap >= 45.) && (cap < 135.)) {
                                         dir = QObject::tr("(E)");
                                     }
-                                    if (cap >= 135. && cap < 225.) {
+                                    if ((cap >= 135.) && (cap < 225.)) {
                                         dir = QObject::tr("(S)");
                                     }
-                                    if (cap >= 225. && cap < 315.) {
+                                    if ((cap >= 225.) && (cap < 315.)) {
                                         dir = QObject::tr("(W)");
                                     }
 
@@ -407,7 +412,7 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
             result.append("");
             i++;
         }
-        if (res.count() > 0 && !res.at(res.count() - 1).isEmpty()) {
+        if ((res.count() > 0) && !res.at(res.count() - 1).isEmpty()) {
             flux << endl;
         }
     }
@@ -432,7 +437,7 @@ void TransitISS::FinTraitement()
 /*
  * Calcul de l'angle minimum
  */
-void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
+void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const CorpsTransit typeCorps,
                                 double minmax[])
 {
     /* Declarations des variables locales */
@@ -455,11 +460,11 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
         satellite.CalculCoordHoriz(observateur, false);
 
         // Position du corps
-        if (typeCorps == 1) {
+        if (typeCorps == CORPS_SOLEIL) {
             soleil.CalculPosition(date);
             corps.setPosition(soleil.position());
         }
-        if (typeCorps == 2) {
+        if (typeCorps == CORPS_LUNE) {
             lune.CalculPosition(date);
             corps.setPosition(lune.position());
         }
@@ -477,7 +482,7 @@ void TransitISS::CalculAngleMin(Satellite &satellite, Observateur &observateur, 
 /*
  * Calcul de la date d'une borne du transit ou conjonction
  */
-void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
+void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const CorpsTransit typeCorps,
                             const bool itransit, const double seuilConjonction, double &dateInter)
 {
     /* Declarations des variables locales */
@@ -501,11 +506,11 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
         satellite.CalculCoordHoriz(observateur, false);
 
         // Position du corps
-        if (typeCorps == 1) {
+        if (typeCorps == CORPS_SOLEIL) {
             soleil.CalculPosition(date);
             corps.setPosition(soleil.position());
         }
-        if (typeCorps == 2) {
+        if (typeCorps == CORPS_LUNE) {
             lune.CalculPosition(date);
             corps.setPosition(lune.position());
         }
@@ -516,7 +521,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
 
     if (itransit) {
 
-        const double rayon = (typeCorps == 1) ? RAYON_SOLAIRE : RAYON_LUNAIRE;
+        const double rayon = (typeCorps == CORPS_SOLEIL) ? RAYON_SOLAIRE : RAYON_LUNAIRE;
         dist = asin(rayon / corps.distance());
 
     } else {
@@ -532,7 +537,7 @@ void TransitISS::CalculDate(Satellite &satellite, Observateur &observateur, cons
 /*
  * Calcul des elements du transit ou de la conjonction
  */
-void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,
+void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const CorpsTransit typeCorps,
                                 const bool itransit, const double seuilConjonction, Date dates[])
 {
     /* Declarations des variables locales */
@@ -553,7 +558,7 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 
     // Iterations supplementaires pour affiner la date
     it = 0;
-    while (fabs(dateInf - tmp) > EPS_DATES && it < 6) {
+    while ((fabs(dateInf - tmp) > EPS_DATES) && (it < 6)) {
 
         tmp = dateInf;
         jjm[1] = dateInf;
@@ -578,7 +583,7 @@ void TransitISS::CalculElements(Satellite &satellite, Observateur &observateur, 
 
     // Iterations supplementaires pour affiner la date
     it = 0;
-    while (fabs(dateSup - tmp) > EPS_DATES && it < 6) {
+    while ((fabs(dateSup - tmp) > EPS_DATES) && (it < 6)) {
 
         tmp = dateSup;
         jjm[1] = dateSup;

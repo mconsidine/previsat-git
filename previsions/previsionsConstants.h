@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 novembre 2018
+ * >    18 juillet 2020
  *
  */
 
@@ -50,6 +50,11 @@ enum TypeCalcul {
     EVENEMENTS,
     METOP,
     TRANSITS
+};
+
+enum CorpsTransit {
+    CORPS_SOLEIL = 1,
+    CORPS_LUNE
 };
 
 /* Declaration des constantes */

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 mai 2019
+ * >    18 juillet 2020
  *
  */
 
@@ -468,7 +468,6 @@ private slots:
     void on_meteo_clicked();
     void on_meteoBasesNASA_clicked();
     void MeteoPleinEcran();
-    void ActualiseMeteo();
     void ActualiseMeteoNASA();
 
     void on_mccISS_toggled(bool checked);

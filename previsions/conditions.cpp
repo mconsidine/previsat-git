@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2019
+ * >    18 juillet 2020
  *
  */
 
@@ -199,6 +199,11 @@ bool Conditions::refr() const
 bool Conditions::acalcEclipseLune() const
 {
     return _acalcEclipseLune;
+}
+
+bool Conditions::calcTransitLunaireJour() const
+{
+    return _calcTransitLunaireJour;
 }
 
 bool Conditions::effetEclipsePartielle() const

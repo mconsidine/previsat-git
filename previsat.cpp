@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 juillet 2020
+ * >    18 juillet 2020
  *
  */
 
@@ -289,9 +289,6 @@ static QLabel *messagesStatut3;
 static QLabel *modeFonctionnement;
 static QLabel *stsDate;
 static QLabel *stsHeure;
-
-// Meteo
-static QWebView *viewMeteo;
 
 // Meteo bases NASA
 static bool iEtatMeteo;
@@ -1074,6 +1071,7 @@ void PreviSat::InitAffichageDemarrage() const
     ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
+    ui->calcTransitLunaireJour->setChecked(settings.value("previsions/calcTransitLunaireJour", false).toBool());
     ui->afficherTransit->setEnabled(false);
 
     ui->valHauteurSatMetOp->setVisible(false);
@@ -5080,7 +5078,7 @@ void PreviSat::ChargementPref() const
         ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
         ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 40).toInt());
         ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
-        ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
+        ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 5.0).toDouble());
         ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
         ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
@@ -6101,11 +6099,6 @@ void PreviSat::GestionTempsReel()
 
     if (afficherMeteo != NULL && !afficherMeteo->isVisible()) {
 
-        if (viewMeteo != NULL) {
-            viewMeteo->deleteLater();
-            viewMeteo = NULL;
-        }
-
         if (viewMeteoNASA != NULL) {
             viewMeteoNASA->deleteLater();
             viewMeteoNASA = NULL;
@@ -6621,6 +6614,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/lieuxObservation4", ui->lieuxObservation4->currentIndex());
     settings.setValue("previsions/ageMaxTLETransit", ui->ageMaxTLETransit->value());
     settings.setValue("previsions/elongationMaxCorps", ui->elongationMaxCorps->value());
+    settings.setValue("previsions/calcTransitLunaireJour", ui->calcTransitLunaireJour->isChecked());
 
     settings.setValue("previsions/hauteurSatMetOp", ui->hauteurSatMetOp->currentIndex());
     settings.setValue("previsions/hauteurSoleilMetOp", ui->hauteurSoleilMetOp->currentIndex());
@@ -7671,57 +7665,11 @@ void PreviSat::on_meteo_clicked()
             viewMeteoNASA = NULL;
         }
 
-        if (viewMeteo != NULL) {
-            viewMeteo->deleteLater();
-            viewMeteo = NULL;
-        }
-
         afficherMeteo->deleteLater();
         afficherMeteo = NULL;
     }
 
     /* Corps de la methode */
-    afficherMeteo = new QMainWindow;
-    afficherMeteo->resize(1000, 750);
-
-    const int xmax = QApplication::desktop()->availableGeometry().width();
-    const int ymax = QApplication::desktop()->availableGeometry().height() - 40;
-    int xAff = afficherMeteo->width();
-    int yAff = afficherMeteo->height();
-
-    if (afficherMeteo->x() < 0 || afficherMeteo->y() < 0) {
-        afficherMeteo->move(0, 0);
-    }
-
-    // Redimensionnement de la fenetre si necessaire
-    if (xAff > xmax)
-        xAff = xmax;
-    if (yAff > ymax)
-        yAff = ymax;
-
-    if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height()) {
-        afficherMeteo->resize(xAff, yAff);
-    }
-
-    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)));
-
-    viewMeteo = new QWebView;
-    viewMeteo->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    viewMeteo->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-    viewMeteo->settings()->globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    viewMeteo->settings()->globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-    viewMeteo->settings()->setObjectCacheCapacities(0, 0, 0);
-    viewMeteo->triggerPageAction(QWebPage::ReloadAndBypassCache);
-
-    // Definition de raccourcis
-    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F5), afficherMeteo);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(ActualiseMeteo()));
-
-    const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherMeteo);
-    connect(shortcut2, SIGNAL(activated()), this, SLOT(MeteoPleinEcran()));
-
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-
     // Affichage de la map
     QString map0;
     const QString fic = dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteo.map";
@@ -7748,10 +7696,7 @@ void PreviSat::on_meteo_clicked()
 
     // Chargement de la meteo
     const QUrl url("file:///" + fi2.fileName());
-
-    viewMeteo->load(url);
-    afficherMeteo->setCentralWidget(viewMeteo);
-    afficherMeteo->showNormal();
+    QDesktopServices::openUrl(url);
 
     /* Retour */
     return;
@@ -7767,11 +7712,6 @@ void PreviSat::on_meteoBasesNASA_clicked()
         if (viewMeteoNASA != NULL) {
             viewMeteoNASA->deleteLater();
             viewMeteoNASA = NULL;
-        }
-
-        if (viewMeteo != NULL) {
-            viewMeteo->deleteLater();
-            viewMeteo = NULL;
         }
 
         afficherMeteo->deleteLater();
@@ -7831,11 +7771,6 @@ void PreviSat::on_meteoBasesNASA_clicked()
     return;
 }
 
-
-void PreviSat::ActualiseMeteo()
-{
-    viewMeteo->reload();
-}
 
 void PreviSat::ActualiseMeteoNASA()
 {
@@ -8228,6 +8163,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->hauteurSatTransit->setPalette(palList);
     ui->valHauteurSatTransit->setPalette(palList);
     ui->elongationMaxCorps->setPalette(palList);
+    ui->calcTransitLunaireJour->setPalette(palList);
 
     ui->dateInitialeMetOp->setPalette(palList);
     ui->dateFinaleMetOp->setPalette(palList);
@@ -12320,6 +12256,7 @@ void PreviSat::on_parametrageDefautTransit_clicked()
     if (!ui->calculsTransit->isEnabled() && ! ui->afficherTransit->isEnabled() && threadCalculs == NULL) {
         ui->calculsTransit->setEnabled(true);
     }
+    ui->calcTransitLunaireJour->setChecked(false);
 
     /* Retour */
     return;
@@ -12541,6 +12478,9 @@ void PreviSat::on_calculsTransit_clicked()
         const bool calcSol = ui->soleilTransit->isChecked();
         const bool calcLune = ui->luneTransit->isChecked();
 
+        // Prise en compte des transits/conjonctions lunaires de jour
+        const bool calcTransitLunaireJour = ui->calcTransitLunaireJour->isChecked();
+
         // Prise en compte de la refraction atmospherique
         const bool refr = ui->refractionPourEclipses->isChecked();
 
@@ -12603,8 +12543,8 @@ void PreviSat::on_calculsTransit_clicked()
         ui->calculsTransit->setEnabled(false);
 
         // Lancement des calculs
-        conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, acalcEclipseLune, syst, haut, ageTLE, elong, jj1, jj2, offset1,
-                                fi.absoluteFilePath(), ficRes, unite);
+        conditions = Conditions(TRANSITS, calcLune, calcSol, ecart, refr, acalcEclipseLune, calcTransitLunaireJour, syst, haut, ageTLE, elong,
+                                jj1, jj2, offset1, fi.absoluteFilePath(), ficRes, unite);
         const Observateur obser(observateurs.at(ui->lieuxObservation4->currentIndex()));
 
         threadCalculs = new ThreadCalculs(conditions, obser);

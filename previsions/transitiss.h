@@ -41,6 +41,7 @@
 #define TRANSITISS_H
 
 #include "conditions.h"
+#include "previsionsConstants.h"
 #include "librairies/corps/satellite/satellite.h"
 
 class TransitISS
@@ -94,7 +95,7 @@ private:
      * @param typeCorps type de corps
      * @param minmax date et angle minimum
      */
-    static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
+    static void CalculAngleMin(Satellite &satellite, Observateur &observateur, const double jjm[], const CorpsTransit typeCorps,
                                double minmax[]);
 
     /**
@@ -107,7 +108,7 @@ private:
      * @param seuilConjonction seuil de conjonction
      * @param dateInter date interpolee
      */
-    static void CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const int typeCorps,
+    static void CalculDate(Satellite &satellite, Observateur &observateur, const double jjm[], const CorpsTransit typeCorps,
                            const bool itransit, const double seuilConjonction, double &dateInter);
 
     /**
@@ -120,7 +121,7 @@ private:
      * @param seuilConjonction seuil de conjonction
      * @param dates tableau de dates
      */
-    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const int typeCorps,
+    static void CalculElements(Satellite &satellite, Observateur &observateur, const double jmax, const CorpsTransit typeCorps,
                                const bool itransit, const double seuilConjonction, Date dates[]);
 
     /**

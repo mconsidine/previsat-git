@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2018
+ * >    18 juillet 2020
  *
  */
 
@@ -88,6 +88,7 @@ public:
         _offset = 0.;
         _pas0 = 0.;
         _seuilConjonction = 0.;
+        _calcTransitLunaireJour = false;
 
         /* Retour */
         return;
@@ -153,6 +154,7 @@ public:
         _ageTLE = 0.;
         _ang0 = 0.;
         _seuilConjonction = 0.;
+        _calcTransitLunaireJour = false;
 
         /* Retour */
         return;
@@ -216,6 +218,7 @@ public:
         _mgn1 = 99.;
         _pas0 = 0.;
         _seuilConjonction = 0.;
+        _calcTransitLunaireJour = false;
 
         /* Retour */
         return;
@@ -229,6 +232,7 @@ public:
      * @param pecEcart Prise en compte de l'ecart heure legale - UTC
      * @param refraction Prise en compte de la refraction
      * @param acalcEclLune prise en compte des eclipses produites par la Lune
+     * @param calcTransitLunaireJour prise en compte des transits/conjonctions lunaires de jour
      * @param systeme systeme horaire
      * @param hauteur hauteur minimale du satellite
      * @param age age du TLE
@@ -241,9 +245,9 @@ public:
      * @param unit unite de distance
      */
     Conditions(const TypeCalcul typeCalc, const bool acalculLune, const bool acalculSoleil, const bool pecEcart, const bool refraction,
-               const bool acalcEclLune, const bool systeme, const int hauteur, const double age, const double seuilConj,
-               const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt, const QString &ficOut,
-               const QString &unit) :
+               const bool acalcEclLune, const bool calcTransitLunaireJour, const bool systeme, const int hauteur, const double age,
+               const double seuilConj, const double jourJulien1, const double jourJulien2, const double offsetUTC, const QString &ficEnt,
+               const QString &ficOut, const QString &unit) :
         _fic(ficEnt), _out(ficOut), _unite(unit), _typeCalcul(typeCalc)
     {
         /* Declarations des variables locales */
@@ -256,6 +260,7 @@ public:
         _ecart = pecEcart;
         _refr = refraction;
         _acalcEclipseLune = acalcEclLune;
+        _calcTransitLunaireJour = calcTransitLunaireJour;
         _effetEclipsePartielle = false;
         _syst = systeme;
         _haut = hauteur * DEG2RAD;
@@ -344,6 +349,7 @@ public:
         _ageTLE = 0.;
         _pas0 = 0.;
         _seuilConjonction = 0.;
+        _calcTransitLunaireJour = false;
 
         /* Retour */
         return;
@@ -371,6 +377,7 @@ public:
     bool ext() const;
     bool refr() const;
     bool acalcEclipseLune() const;
+    bool calcTransitLunaireJour() const;
     bool effetEclipsePartielle() const;
     bool syst() const;
     double crep() const;
@@ -455,6 +462,7 @@ private:
     // Pour le calcul des transits ISS
     bool _acalcLune;
     bool _acalcSol;
+    bool _calcTransitLunaireJour;
     double _ageTLE;
     double _seuilConjonction;
 

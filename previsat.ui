@@ -9576,7 +9576,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>138</y>
+              <y>160</y>
               <width>111</width>
               <height>16</height>
              </rect>
@@ -9592,7 +9592,7 @@
             <property name="geometry">
              <rect>
               <x>120</x>
-              <y>134</y>
+              <y>156</y>
               <width>41</width>
               <height>22</height>
              </rect>
@@ -9799,7 +9799,7 @@
             <property name="geometry">
              <rect>
               <x>664</x>
-              <y>180</y>
+              <y>190</y>
               <width>101</width>
               <height>23</height>
              </rect>
@@ -9815,7 +9815,7 @@
             <property name="geometry">
              <rect>
               <x>556</x>
-              <y>180</y>
+              <y>190</y>
               <width>101</width>
               <height>23</height>
              </rect>
@@ -9834,7 +9834,7 @@
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>180</y>
+              <y>190</y>
               <width>161</width>
               <height>23</height>
              </rect>
@@ -9850,7 +9850,7 @@
             <property name="geometry">
              <rect>
               <x>170</x>
-              <y>138</y>
+              <y>160</y>
               <width>111</width>
               <height>16</height>
              </rect>
@@ -9866,7 +9866,7 @@
             <property name="geometry">
              <rect>
               <x>280</x>
-              <y>138</y>
+              <y>160</y>
               <width>70</width>
               <height>16</height>
              </rect>
@@ -9885,7 +9885,7 @@
             <property name="geometry">
              <rect>
               <x>180</x>
-              <y>180</y>
+              <y>190</y>
               <width>161</width>
               <height>23</height>
              </rect>
@@ -9900,7 +9900,7 @@
               <x>351</x>
               <y>6</y>
               <width>414</width>
-              <height>165</height>
+              <height>181</height>
              </rect>
             </property>
             <property name="font">
@@ -10036,6 +10036,19 @@
              <string>Fichier de manoeuvres ISS absent : cliquer sur 'Mettre à jour TLE de l'ISS'</string>
             </property>
            </widget>
+           <widget class="QCheckBox" name="calcTransitLunaireJour">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>136</y>
+              <width>291</width>
+              <height>17</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Inclure transits/conjonctions lunaires de jour</string>
+            </property>
+           </widget>
            <zorder>lbl_manoeuvresISS</zorder>
            <zorder>dateFinaleTransit</zorder>
            <zorder>dateInitialeTransit</zorder>
@@ -10059,6 +10072,7 @@
            <zorder>ageTLETransit</zorder>
            <zorder>majTleIss</zorder>
            <zorder>manoeuvresISS</zorder>
+           <zorder>calcTransitLunaireJour</zorder>
           </widget>
           <widget class="QWidget" name="options">
            <property name="font">
@@ -10095,7 +10109,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -10880,7 +10894,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-84</y>
                  <width>784</width>
                  <height>560</height>
                 </rect>
@@ -11793,7 +11807,7 @@
                   <double>0.500000000000000</double>
                  </property>
                  <property name="value">
-                  <double>4.000000000000000</double>
+                  <double>5.000000000000000</double>
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="affetoiles">
