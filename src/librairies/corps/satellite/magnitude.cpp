@@ -60,7 +60,7 @@ Magnitude::Magnitude()
 
     /* Corps du constructeur */
     _fractionIlluminee = 0.;
-    _magnitude = std::numeric_limits<double>::quiet_NaN();
+    _magnitude = 99.;
 
     /* Retour */
     return;
@@ -92,7 +92,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _magnitude = std::numeric_limits<double>::quiet_NaN();
+    _magnitude = 99.;
 
     /* Corps de la methode */
     if (!conditionEclipse.eclipseTotale()) {
@@ -101,7 +101,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
         _fractionIlluminee = 0.5 * (1. + cos(conditionEclipse.eclipseSoleil().elongation));
 
         // Magnitude visuelle
-        if (!std::isnan(magnitudeStandard)) {
+        if (magnitudeStandard < 98.) {
 
             _magnitude = magnitudeStandard - 15.75 + 2.5 * log10(distance * distance / _fractionIlluminee);
 

@@ -359,11 +359,11 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QStrin
     QFile fi(nomFichier);
     if (fi.exists() && (fi.size() != 0)) {
 
+        bool afin = false;
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
-
         QTextStream flux(&fi);
 
-        while (!flux.atEnd()) {
+        while (!flux.atEnd() && !afin) {
 
             const QString ligne = flux.readLine();
             QString lig0 = ligne;
@@ -413,6 +413,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QStrin
                     }
 
                     mapTLE.insert(tle._norad, tle);
+                    afin = (!listeSatellites.isEmpty() && (mapTLE.size() == listeSatellites.size()));
                 }
             }
         }

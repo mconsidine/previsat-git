@@ -55,7 +55,7 @@ Donnees::Donnees()
 
     /* Corps du constructeur */
     _methMagnitude = 'v';
-    _magnitudeStandard = std::numeric_limits<double>::quiet_NaN();
+    _magnitudeStandard = 99.;
     _section = 0.;
     _t1 = 0.;
     _t2 = 0.;

@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -5839,6 +5839,23 @@
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::NoButtons</enum>
       </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2020</year>
+        <month>8</month>
+        <day>15</day>
+       </datetime>
+      </property>
+      <property name="date">
+       <date>
+        <year>2020</year>
+        <month>8</month>
+        <day>15</day>
+       </date>
+      </property>
       <property name="displayFormat">
        <string>dd/MM/yyyy hh:mm:ss</string>
       </property>
@@ -5882,6 +5899,23 @@
       </property>
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2020</year>
+        <month>8</month>
+        <day>22</day>
+       </datetime>
+      </property>
+      <property name="date">
+       <date>
+        <year>2020</year>
+        <month>8</month>
+        <day>22</day>
+       </date>
       </property>
       <property name="displayFormat">
        <string>dd/MM/yyyy hh:mm:ss</string>

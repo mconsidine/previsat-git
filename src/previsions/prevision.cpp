@@ -18,16 +18,10 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    prevision.cpp
+ * >    previsions.cpp
  *
  * Localisation
  * >    previsions
- *
- * Heritage
- * >
- *
- * Description
- * >    Calcul des previsions de passage des satellites
  *
  * Auteur
  * >    Astropedia
@@ -40,124 +34,162 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wpacked"
-#include <QFile>
-#include <QSettings>
-#include <QTime>
-#include <QTextStream>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wpacked"
-#include "prevision.h"
-#include "librairies/corps/satellite/satellite.h"
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/corps/systemesolaire/TerreConstants.h"
-#include "librairies/maths/maths.h"
+#include "prevision.h"
+#include <QElapsedTimer>
+static ConditionsPrevisions _conditions;
+static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
+static DonneesPrevisions _donnees;
 
-static QVector<TLE> tabtle;
-static QList<Satellite> sats;
-static QList<QVector<double > > tabEphem;
+struct Ephemerides
+{
+    double jourJulienUTC;
+    Vecteur3D positionObservateur;
+    Matrice3D rotHz;
+    Vecteur3D positionSoleil;
+};
+
+/**********
+ * PUBLIC *
+ **********/
 
 /*
- * Calcul des previsions de passage
+ * Constructeurs
  */
-void Prevision::CalculPassages(const Conditions &conditions, Observateur &observateur, QStringList &res)
+
+/*
+ * Accesseurs
+ */
+
+/*
+ * Methodes publiques
+ */
+QMap<QString, QList<QList<ResultatPrevisions> > > &Prevision::resultats()
+{
+    return _resultats;
+}
+
+DonneesPrevisions Prevision::donnees()
+{
+    return _donnees;
+}
+
+void Prevision::setConditions(const ConditionsPrevisions &conditions)
+{
+    _conditions = conditions;
+}
+
+int Prevision::CalculPrevisions(int &number)
 {
     /* Declarations des variables locales */
-    bool pass;
-
-    QString ligne;
-    QTime tps;
+    QElapsedTimer tps;
+    QList<Ephemerides> tabEphem;
+    QList<Satellite> sats;
+    QMap<QString, TLE> tabTle;
 
     /* Initialisations */
-    pass = false;
-    const QString fmt = "%1%2 %3 %4 %5  %6 %7%8 %9 %10  %11%12";
+    double tlemin = -DATE_INFINIE;
+    double tlemax = DATE_INFINIE;
+
+    tps.start();
+    _donnees.ageTle.clear();
+    _resultats.clear();
 
     // Creation de la liste de TLE
-    TLE::LectureFichier(conditions.fic(), conditions.listeSatellites(), tabtle);
+    tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
 
     // Creation du tableau de satellites
-    QVectorIterator<TLE> it1(tabtle);
+    QMapIterator<QString, TLE> it1(tabTle);
     while (it1.hasNext()) {
-        sats.append(Satellite(it1.next()));
+        it1.next();
+
+        const TLE tle = it1.value();
+        sats.append(Satellite(tle));
+
+        const double epok = tle.epoque().jourJulienUTC();
+        if (epok > tlemin) {
+            tlemin = epok;
+        }
+
+        if (epok < tlemax) {
+            tlemax = epok;
+        }
     }
 
-    // Lecture des donnees satellite (magnitude standard)
-    Satellite::LectureDonnees(conditions.listeSatellites(), tabtle, sats);
+    if (tabTle.keys().count() == 1) {
+        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
+    } else {
+        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
+            if (tlemin > tlemax) {
+                const double tmp = tlemin;
+                tlemin = tlemax;
+                tlemax = tmp;
+            }
+        }
 
-    // Ecriture de l'entete du fichier de previsions
-    Conditions::EcrireEntete(observateur, conditions, tabtle, false);
+        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemax));
+        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
+    }
 
     /* Corps de la methode */
-    res.clear();
-    tps.start();
-
     // Calcul des ephemerides du Soleil et du lieu d'observation
-    CalculEphemSoleilObservateur(conditions, observateur);
+    tabEphem = CalculEphemSoleilObservateur();
 
-    QListIterator<QVector<double> > it3(tabEphem);
+    QListIterator<Ephemerides> it3(tabEphem);
 
     // Boucle sur les satellites
     QListIterator<Satellite> it2(sats);
     while (it2.hasNext()) {
 
+        QList<QList<ResultatPrevisions> > resultatSat;
         Satellite sat = it2.next();
-        int ent = 0;
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.tle().no()),
-                                                     DEUX_TIERS) * (1. - sat.tle().ecco());
+        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.tle().no()), DEUX_TIERS) * (1. - sat.tle().ecco());
         const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
 
-        // Boucle sur le tableau d'ephemerides du Soleil
+        // Boucle sur le tableau d'ephemerides
         it3.toFront();
         while (it3.hasNext()) {
 
-            const QVector<double> list = it3.next();
-            Date date(list.at(0), 0., false);
+            const Ephemerides ephem = it3.next();
 
-            // Donnees liees au lieu d'observation
-            const Vecteur3D obsPos(list.at(1), list.at(2), list.at(3));
-            const Vecteur3D v1(list.at(4), list.at(5), list.at(6));
-            const Vecteur3D v2(list.at(7), list.at(8), list.at(9));
-            const Vecteur3D v3(list.at(10), list.at(11), list.at(12));
-            const Matrice3D mat(v1, v2, v3);
-            const Observateur obs(obsPos, Vecteur3D(), mat, observateur.aaer(), observateur.aray());
+            // Date
+            Date date(ephem.jourJulienUTC, 0., false);
+
+            // Lieu d'observation
+            const Observateur obs(ephem.positionObservateur, Vecteur3D(), ephem.rotHz, _conditions.observateur.aaer(), _conditions.observateur.aray());
 
             // Position ECI du Soleil
-            const Vecteur3D solPos(list.at(13), list.at(14), list.at(15));
-            Soleil soleil(solPos);
+            Soleil soleil(ephem.positionSoleil);
 
-            // Position ECI du satellite
+            // Position du satellite
             sat.CalculPosVit(date);
-
-            // Position topocentrique du satellite
             sat.CalculCoordHoriz(obs, false);
 
-            // Le satellite a une hauteur superieure a celle specifiee
-            if (sat.hauteur() >= conditions.haut()) {
+            // Le satellite a une hauteur superieure a celle specifiee par l'utilisateur
+            if (sat.hauteur() >= _conditions.hauteur) {
 
                 Lune lune;
-                if (conditions.acalcEclipseLune()) {
+                if (_conditions.calcEclipseLune) {
                     lune.CalculPosition(date);
                 }
 
                 // Conditions d'eclipse du satellite
                 ConditionEclipse condEcl;
-                condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(), conditions.refr());
+                condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
 
                 // Le satellite n'est pas eclipse
-                if (!condEcl.isEclipseTotale() || !conditions.ecl()) {
+                if (!condEcl.eclipseTotale() || !_conditions.eclipse) {
 
                     // Magnitude du satellite
-                    Magnitude magn;
-                    magn.Calcul(obs, condEcl, sat.distance(), sat.hauteur(), sat.magnitudeStandard(), conditions.ext(),
-                                conditions.effetEclipsePartielle());
+                    Magnitude magnitude;
+                    magnitude.Calcul(condEcl, obs, sat.distance(), sat.hauteur(), sat.tle().donnees().magnitudeStandard(), _conditions.extinction,
+                                     _conditions.effetEclipsePartielle);
 
                     // Toutes les conditions sont remplies
-                    if (magn.magnitude() < conditions.mgn1() ||
-                            (sat.magnitudeStandard() > 98. && conditions.mgn1() > 98.) || !conditions.ecl()) {
-
-                        if (ent == 2) ent = 1;
+                    if (magnitude.magnitude() < _conditions.magnitudeLimite ||
+                            ((sat.tle().donnees().magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.)) || !_conditions.eclipse) {
 
                         sat.CalculCoordHoriz(obs);
                         soleil.CalculCoordHoriz(obs);
@@ -165,128 +197,87 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                         // Ascension droite, declinaison, constellation
                         sat.CalculCoordEquat(obs);
 
+                        QList<ResultatPrevisions> result;
+
                         bool afin = false;
                         while (!afin) {
 
-                            if ((!condEcl.isEclipseTotale() || !conditions.ecl()) &&
-                                    (magn.magnitude() < conditions.mgn1() || sat.magnitudeStandard() > 98. || !conditions.ecl())) {
+                            if ((!condEcl.eclipseTotale() ||
+                                 !_conditions.eclipse) && ((magnitude.magnitude() < _conditions.magnitudeLimite) ||
+                                                           ((sat.tle().donnees().magnitudeStandard() > 98.) || !_conditions.eclipse))) {
+
+                                ResultatPrevisions res;
+
+                                // Nom du satellite
+                                res.nom = sat.tle().nom();
 
                                 // Altitude du satellite
                                 sat.CalculLatitude(sat.position());
-                                double altitude = sat.CalculAltitude(sat.position());
+                                res.altitude = sat.CalculAltitude(sat.position());
 
-                                // Ecriture du resultat
-                                if (ent == 0) {
-
-                                    const QString nomsat = sat.tle().nom();
-
-                                    if (nomsat.toLower() == "iss") {
-                                        res.append("ISS");
-                                    } else {
-                                        ligne = nomsat;
-                                        if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
-                                            ligne = ligne.append(QObject::tr("  (numéro NORAD : %1)")).arg(sat.tle().norad());
-                                        }
-                                        res.append(ligne);
-                                    }
-
-                                    res.append(QObject::tr("   Date      Heure   Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const" \
-                                                           " Magn  Altitude  Distance  Az Soleil   Haut Soleil"));
-                                    ent = 1;
-                                }
-
-                                // Calcul de la date calendaire
-                                const double offset = (conditions.ecart()) ?
-                                            conditions.offset() :
-                                            Date::CalculOffsetUTC(Date(date.jourJulien(), conditions.offset()).ToQDateTime(1));
-
-                                const Date date2(date.jourJulien() + EPS_DATES, offset);
+                                // Date calendaire (UTC)
+                                res.date = Date(date.jourJulienUTC(), 0.);
 
                                 // Coordonnees topocentriques du satellite
-                                const QString az = Maths::ToSexagesimal(sat.azimut(), DEGRE, 3, 0, false, false);
-                                const QString ht = Maths::ToSexagesimal(sat.hauteur(), DEGRE, 2, 0, false, false);;
+                                res.azimut = sat.azimut();
+                                res.hauteur = sat.hauteur();
 
                                 // Coordonnees equatoriales du satellite
-                                const QString ad = Maths::ToSexagesimal(sat.ascensionDroite(), HEURE1, 2, 0, false, false);
-                                const QString de = Maths::ToSexagesimal(sat.declinaison(), DEGRE, 2, 0, true, false);
+                                res.ascensionDroite = sat.ascensionDroite();
+                                res.declinaison = sat.declinaison();
+                                res.constellation = sat.constellation();
 
                                 // Magnitude
-                                const double mag = magn.magnitude();
-                                QString magnSat;
-                                if (mag > 98.) {
-                                    magnSat = (conditions.ecl() || sat.magnitudeStandard() > 98.) ? " ????  " : " ----  ";
-                                } else {
-                                    const QString fmagn = "%1%2%3%4";
-                                    const QString esp = (mag < 9.95) ? " " : "";
-                                    const QString signe = (mag >= 0.) ? "+" : "-";
-                                    const QString pen = (condEcl.isEclipsePartielle() || condEcl.isEclipseAnnulaire()) ? "* " : "  ";
-                                    magnSat = fmagn.arg(esp).arg(signe).arg(fabs(mag), 0, 'f', 1, QChar('0')).arg(pen);
-                                }
+                                res.magnitude = magnitude.magnitude();
+                                res.magnitudeStd = sat.tle().donnees().magnitudeStandard();
+                                res.penombre = (condEcl.eclipsePartielle() || condEcl.eclipseAnnulaire());
 
-                                // Altitude du satellite et distance a l'observateur
-                                double distance = sat.distance();
-                                if (conditions.unite() == QObject::tr("nmi")) {
-                                    altitude *= MILE_PAR_KM;
-                                    distance *= MILE_PAR_KM;
-                                }
+                                // Distance a l'observateur
+                                res.distance = sat.distance();
 
                                 // Coordonnees topocentriques du Soleil
-                                const QString azs = Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, false);
-                                const QString hts = Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, false);
+                                res.azimutSoleil = soleil.azimut();
+                                res.hauteurSoleil = soleil.hauteur();
 
-                                const QString result
-                                        (fmt.arg(date2.ToShortDateAMJ(FORMAT_COURT, (conditions.syst()) ? SYSTEME_24H : SYSTEME_12H)).
-                                         arg(az).arg(ht).arg(ad).arg(de).arg(sat.constellation()).arg(magnSat).
-                                         arg(altitude, 8, 'f', 1).arg(distance, 9, 'f', 1).arg(azs).arg(hts).
-                                         arg(sat.tle().norad()));
-
-                                res.append(result);
-                                pass = true;
-                            } else {
-                                if (pass) {
-                                    pass = false;
-                                    res.append("");
-                                }
+                                result.append(res);
                             }
 
                             // Calcul pour le pas suivant
-                            date = Date(date.jourJulienUTC() + conditions.pas0(), 0., false);
-                            observateur.CalculPosVit(date);
+                            date = Date(date.jourJulienUTC() + _conditions.pas, 0., false);
+                            _conditions.observateur.CalculPosVit(date);
                             soleil.CalculPosition(date);
-                            soleil.CalculCoordHoriz(observateur);
+                            soleil.CalculCoordHoriz(_conditions.observateur);
 
-                            if (soleil.hauteur() > conditions.crep() || date.jourJulienUTC() > conditions.jj2() + conditions.pas0()) {
+                            if ((soleil.hauteur() > _conditions.crepuscule) || (date.jourJulienUTC() > (_conditions.jj2 + _conditions.pas))) {
                                 afin = true;
                             } else {
-
                                 sat.CalculPosVit(date);
-                                sat.CalculCoordHoriz(observateur);
-                                if (sat.hauteur() < conditions.haut()) {
+                                sat.CalculCoordHoriz(_conditions.observateur);
+
+                                if (sat.hauteur() < _conditions.hauteur) {
                                     afin = true;
                                 } else {
-                                    if (conditions.acalcEclipseLune()) {
+                                    if (_conditions.calcEclipseLune) {
                                         lune.CalculPosition(date);
                                     }
-                                    condEcl.CalculSatelliteEclipse(soleil, lune, sat.position(), conditions.acalcEclipseLune(),
-                                                                                  conditions.refr());
-                                    magn.Calcul(observateur, condEcl, sat.distance(), sat.hauteur(), sat.magnitudeStandard(),
-                                                conditions.ext(), conditions.effetEclipsePartielle());
-                                    sat.CalculCoordEquat(observateur);
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                                    magnitude.Calcul(condEcl, _conditions.observateur, sat.distance(), sat.hauteur(),
+                                                     sat.tle().donnees().magnitudeStandard(), _conditions.extinction, _conditions.effetEclipsePartielle);
+
+                                    sat.CalculCoordEquat(_conditions.observateur);
                                 }
                             }
-                        } // fin while (!afin)
+                        } // fin while afin
 
-                        ent = 2;
-                        if (pass) {
-                            pass = false;
-                            res.append("");
+                        if (!result.isEmpty()) {
+                            resultatSat.append(result);
                         }
                         date = Date(date.jourJulienUTC() + periode, 0., false);
 
                         // Recherche de la nouvelle date dans le tableau d'ephemerides
                         bool atrouve = false;
                         while (it3.hasNext() && !atrouve) {
-                            const double jj = it3.next().at(0);
+                            const double jj = it3.next().jourJulienUTC;
                             if (jj >= date.jourJulienUTC()) {
                                 atrouve = true;
                                 it3.previous();
@@ -296,98 +287,70 @@ void Prevision::CalculPassages(const Conditions &conditions, Observateur &observ
                 }
             }
         }
-    }
-    int fin = tps.elapsed();
 
-    // Ouverture du fichier de resultat
-    QFile fichier(conditions.out());
-    fichier.open(QIODevice::Append | QIODevice::Text);
-    QTextStream flux(&fichier);
-
-    if (res.count() > 0) {
-        int i = 0;
-        while (i < res.count()) {
-            const QString lig = res.at(i);
-            flux << ((lig.startsWith(' ')) ? lig : lig.mid(0, 119)) << endl;
-            i++;
+        if (!resultatSat.isEmpty()) {
+            _resultats.insert(sat.tle().nom() + " " + sat.tle().norad(), resultatSat);
         }
     }
 
-    flux << endl;
-    ligne = QObject::tr("Temps écoulé : %1s");
-    ligne = ligne.arg(1.e-3 * fin, 0, 'f', 2);
-    flux << ligne << endl;
-    fichier.close();
-    FinTraitement();
+    _donnees.tempsEcoule = tps.elapsed();
 
     /* Retour */
-    return;
+    return number;
 }
 
-void Prevision::FinTraitement()
-{
-    tabtle.clear();
-    sats.clear();
-    tabEphem.clear();
-}
+
+/*************
+ * PROTECTED *
+ *************/
 
 /*
- * Calcul des ephemerides du Soleil et de la position de l'observateur
+ * Methodes protegees
  */
-void Prevision::CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur)
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+QList<Ephemerides> Prevision::CalculEphemSoleilObservateur()
 {
     /* Declarations des variables locales */
-    QVector<double> tab;
     Soleil soleil;
+    QList<Ephemerides> tabEphem;
 
     /* Initialisations */
     const double pas = NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
-    Date date(conditions.jj1(), 0., false);
+    Date date(_conditions.jj1, 0., false);
     do {
 
         // Position ECI de l'observateur
-        observateur.CalculPosVit(date);
+        _conditions.observateur.CalculPosVit(date);
 
-        // Position ECI du Soleil
+        // Position du Soleil
         soleil.CalculPosition(date);
+        soleil.CalculCoordHoriz(_conditions.observateur, false);
 
-        // Position topocentrique du Soleil
-        soleil.CalculCoordHoriz(observateur, false);
+        if (soleil.hauteur() <= _conditions.crepuscule) {
 
-        if (soleil.hauteur() <= conditions.crep()) {
+            Ephemerides eph;
+            eph.jourJulienUTC = date.jourJulienUTC();
 
-            tab.clear();
+            eph.positionObservateur = _conditions.observateur.position();
+            eph.rotHz = _conditions.observateur.rotHz();
+            eph.positionSoleil = soleil.position();
 
-            // Remplissage du tableau d'ephemerides
-            tab.push_back(date.jourJulienUTC());
-
-            tab.push_back(observateur.position().x());
-            tab.push_back(observateur.position().y());
-            tab.push_back(observateur.position().z());
-            tab.push_back(observateur.rotHz().vecteur1().x());
-            tab.push_back(observateur.rotHz().vecteur1().y());
-            tab.push_back(observateur.rotHz().vecteur1().z());
-            tab.push_back(observateur.rotHz().vecteur2().x());
-            tab.push_back(observateur.rotHz().vecteur2().y());
-            tab.push_back(observateur.rotHz().vecteur2().z());
-            tab.push_back(observateur.rotHz().vecteur3().x());
-            tab.push_back(observateur.rotHz().vecteur3().y());
-            tab.push_back(observateur.rotHz().vecteur3().z());
-
-            tab.push_back(soleil.position().x());
-            tab.push_back(soleil.position().y());
-            tab.push_back(soleil.position().z());
-
-            tabEphem.append(tab);
+            tabEphem.append(eph);
         }
 
         date = Date(date.jourJulienUTC() + pas, 0., false);
-    } while (date.jourJulienUTC() <= conditions.jj2());
-
-    tab.clear();
+    } while (date.jourJulienUTC() <= _conditions.jj2);
 
     /* Retour */
-    return;
+    return tabEphem;
 }

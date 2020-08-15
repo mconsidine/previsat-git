@@ -46,7 +46,7 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 #-------------------------------------------------
 
 
-QT += core gui network
+QT += core gui network concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport widgets xml
 greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
@@ -71,6 +71,7 @@ LIBS += -L$$ZLIB_DIR/lib -lz
 
 SOURCES += \
     src/configuration/configuration.cpp                    \
+    src/interface/afficher.cpp                             \
     src/interface/apropos.cpp                              \
     src/interface/carte.cpp                                \
     src/interface/ciel.cpp                                 \
@@ -102,11 +103,13 @@ SOURCES += \
     src/librairies/maths/vecteur3d.cpp                     \
     src/librairies/observateur/observateur.cpp             \
     src/librairies/systeme/decompression.cpp               \
-    src/librairies/systeme/telechargement.cpp
+    src/librairies/systeme/telechargement.cpp \
+    src/previsions/prevision.cpp
 
 
 HEADERS += \
     src/configuration/configuration.h                    \
+    src/interface/afficher.h                             \
     src/interface/apropos.h                              \
     src/interface/carte.h                                \
     src/interface/ciel.h                                 \
@@ -148,16 +151,18 @@ HEADERS += \
     src/librairies/observateur/observateur.h             \
     src/librairies/systeme/decompression.h               \
     src/librairies/systeme/telechargement.h              \
+    src/previsions/prevision.h                           \
+    src/previsions/previsionsconst.h                     \
     $$ZLIB_DIR/inc/zlib.h
 
 
 FORMS += \
-#    src/interface/afficher.ui        \
+    src/interface/afficher.ui        \
     src/interface/carte.ui           \
     src/interface/apropos.ui         \
 #    src/interface/gestionnairetle.ui \
 #    src/interface/informations.ui    \
-    src/interface/ciel.ui \
+    src/interface/ciel.ui            \
     src/interface/onglets.ui         \
     src/interface/previsat.ui        \
     src/interface/radar.ui           \
@@ -185,7 +190,6 @@ equals(BUILDTEST, true) {
 
 
     HEADERS += \
-        test/src/interface/ongletstest.h                       \
         test/src/librairies/corps/satellite/satellitetest.h    \
         test/src/librairies/corps/systemesolaire/lunetest.h    \
         test/src/librairies/corps/systemesolaire/planetetest.h \
@@ -194,11 +198,11 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.h                  \
         test/src/librairies/observateur/observateurtest.h      \
         test/src/librairies/systeme/decompressiontest.h        \
+        test/src/previsions/previsiontest.h                    \
         test/src/testtools.h
 
 
     SOURCES += \
-        test/src/interface/ongletstest.cpp                       \
         test/src/librairies/corps/satellite/satellitetest.cpp    \
         test/src/librairies/corps/systemesolaire/lunetest.cpp    \
         test/src/librairies/corps/systemesolaire/planetetest.cpp \
@@ -207,6 +211,7 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.cpp                  \
         test/src/librairies/observateur/observateurtest.cpp      \
         test/src/librairies/systeme/decompressiontest.cpp        \
+        test/src/previsions/previsiontest.cpp                    \
         test/src/testtools.cpp                                   \
         test/src/tst_previsattest.cpp
 

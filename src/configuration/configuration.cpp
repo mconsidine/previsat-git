@@ -378,9 +378,6 @@ void Configuration::Initialisation()
         // Verification des arborescences
         VerificationArborescences();
 
-        // Lecture de la configuration
-        LectureConfiguration();
-
         // Lecture du fichier de categories d'orbite
         LectureCategoriesOrbite();
 
@@ -389,6 +386,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier des sites de lancement
         LectureSitesLancement();
+
+        // Lecture de la configuration
+        LectureConfiguration();
 
         // Fichiers de preferences
         InitFicPref();
