@@ -43,7 +43,6 @@
 
 #include <cmath>
 #include <QCoreApplication>
-#include <QDateTime>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>

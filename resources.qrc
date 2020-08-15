@@ -35,5 +35,6 @@
         <file>resources/icones/noaa.png</file>
         <file>resources/icones/cygnus.png</file>
         <file>resources/paypal.png</file>
+        <file>resources/enregistrer_txt.png</file>
     </qresource>
 </RCC>

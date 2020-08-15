@@ -40,59 +40,76 @@
 #ifndef PREVISION_H
 #define PREVISION_H
 
-#include <QVector>
-#include "conditions.h"
-#include "librairies/observateur/observateur.h"
+#include "librairies/dates/date.h"
+#include "previsionsconst.h"
+
+
+struct Ephemerides;
 
 class Prevision
 {
 public:
 
-    /* Constructeurs */
-
-    /* Constantes publiques */
-
-    /* Variables publiques */
-
-    /* Methodes publiques */
-    /**
-     * @brief CalculPassages Calcul des previsions de passage
-     * @param conditions conditions d'observation
-     * @param observateur observateur
-     * @param res tableau des resultats
+    /*
+     *  Constructeurs
      */
-    static void CalculPassages(const Conditions &conditions, Observateur &observateur, QStringList &res);
 
-    /**
-     * @brief FinTraitement Finalisation du traitement (liberation memoire)
+    /*
+     * Accesseurs
      */
-    static void FinTraitement();
+    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
+    static DonneesPrevisions donnees();
 
-    /* Accesseurs */
+    /*
+     * Modificateurs
+     */
+    static void setConditions(const ConditionsPrevisions &conditions);
+
+
+    /*
+     * Constantes publiques
+     */
+
+    /*
+     * Variables publiques
+     */
+
+    /*
+     * Methodes publiques
+     */
+    static int CalculPrevisions(int &number);
 
 
 protected:
 
-    /* Constantes protegees */
+    /*
+     * Constantes protegees
+     */
 
-    /* Variables protegees */
+    /*
+     * Variables protegees
+     */
 
-    /* Methodes protegees */
+    /*
+     * Methodes protegees
+     */
 
 
 private:
 
-    /* Constantes privees */
-
-    /* Variables privees */
-
-    /* Methodes privees */
-    /**
-     * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
-     * @param conditions conditions d'observation
-     * @param observateur observateur
+    /*
+     * Constantes privees
      */
-    static void CalculEphemSoleilObservateur(const Conditions &conditions, Observateur &observateur);
+
+    /*
+     * Variables privees
+     */
+
+    /*
+     * Methodes privees
+     */
+    static QList<Ephemerides> CalculEphemSoleilObservateur();
+
 
 };
 
