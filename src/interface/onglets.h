@@ -336,6 +336,7 @@ private slots:
     void on_optionSuiv_clicked();
 
 
+    void on_calculsFlashs_clicked();
 };
 
 #endif // ONGLETS_H

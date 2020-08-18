@@ -180,6 +180,14 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                                                << tr("Haut Soleil"));
         break;
 
+    case FLASHS:
+        tableDetail->setColumnCount(12);
+        tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
+                                               << tr("Decl Sat") << tr("Const") << tr("Ang") << tr("Mir") << tr("Magn") << tr("Altitude")
+                                               << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max")
+                                               << tr("Magn Max")<< tr("Distance"));
+        break;
+
     default:
         break;
     }
@@ -298,13 +306,19 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
                 nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
             }
-            flux << nomsat << endl;
 
             // Description des colonnes
             switch (_typeCalcul) {
 
             case PREVISIONS:
+                flux << nomsat << endl;
                 flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil")
+                     << endl;
+                break;
+
+            case FLASHS:
+                flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn" \
+                           "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance")
                      << endl;
                 break;
 
@@ -318,12 +332,18 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                 QListIterator<ResultatPrevisions> it3(it2.next());
                 while (it3.hasNext()) {
 
+                    int kmin = 0;
                     QStringList elems;
                     const ResultatPrevisions res = it3.next();
 
                     switch (_typeCalcul) {
                     case PREVISIONS:
+                        kmin = 1;
                         elems = ElementsDetailsPrevisions(res);
+                        break;
+
+                    case FLASHS:
+                        elems = ElementsDetailsFlashs(res);
                         break;
 
                     default:
@@ -331,7 +351,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                     }
 
                     QString ligne;
-                    for(int k=1; k<elems.count(); k++) {
+                    for(int k=kmin; k<elems.count(); k++) {
                         ligne += elems.at(k) + " ";
                     }
                     flux << ligne << endl;
@@ -374,8 +394,13 @@ void Afficher::ChargementResultats() const
 
             QStringList elems;
             switch (_typeCalcul) {
+
             case PREVISIONS:
                 elems = ElementsPrevisions(list);
+                break;
+
+            case FLASHS:
+                elems = ElementsFlashs(list);
                 break;
             }
 
@@ -498,6 +523,137 @@ void Afficher::EcrireEntete() const
 
     /* Retour */
     return;
+}
+
+QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Nom du satellite
+    elems.append(liste.first().nom);
+
+    // Date de debut
+    const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
+    elems.append(dateDeb.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    // Date de fin
+    const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
+    elems.append(dateFin.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    double htMax = -1.;
+    double magnMax = 99.;
+    double magnStd = 99.;
+    double htSolMax;
+    bool penombre;
+    QString miroir;
+    QListIterator<ResultatPrevisions> it(liste);
+    while (it.hasNext()) {
+
+        const ResultatPrevisions res = it.next();
+
+        // Hauteur max
+        if (res.hauteur >= htMax) {
+            htMax = res.hauteur;
+            htSolMax = res.hauteurSoleil;
+        }
+
+        // Magnitude maximale
+        if (res.magnitude <= magnMax) {
+            magnMax = res.magnitude;
+            magnStd = res.magnitudeStd;
+            penombre = res.penombre;
+            miroir = res.miroir;
+        }
+    }
+
+    elems.append(Maths::ToSexagesimal(htMax, DEGRE, 2, 0, false, false));
+
+    const QString fmagn = "%1%2%3";
+    const QString signe = (magnMax >= 0.) ? "+" : "-";
+    const QString pen = (penombre) ? "*" : " ";
+    elems.append(fmagn.arg(signe).arg(fabs(magnMax), 0, 'f', 1, QChar('0')).arg(pen));
+
+    elems.append(miroir);
+
+    elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
+
+    /* Retour */
+    return elems;
+}
+
+QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Nom du satellite
+    elems.append(QString("%1").arg(res.nom, -10));
+
+    // Date
+    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    elems.append(date.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    // Azimut et hauteur du satellite
+    elems.append(Maths::ToSexagesimal(res.azimut, DEGRE, 3, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.hauteur, DEGRE, 2, 0, false, false));
+
+    // Ascension droite, declinaison, constellation
+    elems.append(Maths::ToSexagesimal(res.ascensionDroite, HEURE1, 2, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.declinaison, DEGRE, 2, 0, true, false));
+    elems.append(" " + res.constellation);
+
+    // Angle de reflexion, miroir
+    elems.append(QString("%1  %2 ").arg(res.angleReflexion * RAD2DEG, 5, 'f', 2).arg(res.miroir));
+
+    // Magnitude
+    const QString fmagn = "%1%2%3";
+    QString signe = (res.magnitude >= 0.) ? "+" : "-";
+    QString pen = (res.penombre) ? "*" : " ";
+    elems.append(fmagn.arg(signe).arg(fabs(res.magnitude), 0, 'f', 1, QChar('0')).arg(pen));
+
+    // Altitude, distance
+    double altitude = res.altitude;
+    double distance = res.distance;
+    if (_conditions.unite == tr("nmi")) {
+        altitude *= MILE_PAR_KM;
+        distance *= MILE_PAR_KM;
+    }
+    elems.append(QString("%1").arg(altitude, 8, 'f', 1));
+    elems.append(QString("%1").arg(distance, 9, 'f', 1));
+
+    // Azimut et hauteur Soleil
+    elems.append(Maths::ToSexagesimal(res.azimutSoleil, DEGRE, 3, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.hauteurSoleil, DEGRE, 2, 0, true, false));
+
+    if (!res.obsmax.nomlieu().isEmpty()) {
+
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+
+        // Longitude du maximum
+        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
+
+        // Latitude du maximum
+        elems.append(QString(" %1 %2    ").arg(fabs(res.obsmax.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
+
+        // Magnitude au maximum
+        signe = (res.magnitudeMax >= 0.) ? "+" : "-";
+        pen = (res.penombreMax) ? "*" : " ";
+        elems.append(fmagn.arg(signe).arg(fabs(res.magnitudeMax), 0, 'f', 1, QChar('0')).arg(pen));
+
+        // Distance au maximum et cap
+        elems.append(QString(" %1 (%2)").arg(res.distanceObs, 6, 'f', 1).arg(res.cap));
+    }
+
+    /* Retour */
+    return elems;
 }
 
 QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste) const

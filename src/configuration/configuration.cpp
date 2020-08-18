@@ -253,6 +253,11 @@ QMap<QString, Observateur> Configuration::mapSites() const
     return _mapSites;
 }
 
+QMap<QString, SatellitesFlashs> Configuration::mapFlashs() const
+{
+    return _mapFlashs;
+}
+
 QString Configuration::noradStationSpatiale() const
 {
     return _noradStationSpatiale;
@@ -386,6 +391,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier des sites de lancement
         LectureSitesLancement();
+
+        // Lecture du fichier de statut des satellites produisant des flashs
+        LectureStatutSatellitesFlashs();
 
         // Lecture de la configuration
         LectureConfiguration();
@@ -1016,6 +1024,104 @@ void Configuration::LectureSitesLancement()
     if (_mapSites.isEmpty()) {
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Aucun site de lancement n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
+        const QFileInfo ff(fi1.fileName());
+        throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier de statut des satellites produisant des flashs
+ */
+void Configuration::LectureStatutSatellitesFlashs()
+{
+    /* Declarations des variables locales */
+    QString version;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi1(_dirCfg + QDir::separator() + "flares.xml");
+
+#if !defined (Q_OS_MAC)
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "flares.xml");
+
+    if (fi1.exists()) {
+        VerifieVersionXml(fi1, fi2, version);
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QFileInfo ff(fi1.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+        }
+    }
+    fi2.close();
+    fi1.close();
+
+#endif
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name() == "PreviSatFlashs") {
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name() == "Satellite") {
+
+                    QString norad;
+                    SatellitesFlashs satelliteFlash;
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name() == "Nom") {
+                            satelliteFlash.nomsat = cfg.readElementText();
+                        } else if (cfg.name() == "Norad") {
+                            norad = cfg.readElementText();
+                        } else if (cfg.name() == "Angles") {
+
+                            QPair<double, double> angles;
+                            while (cfg.readNextStartElement()) {
+
+                                if (cfg.name() == "Yaw") {
+                                    angles.first = cfg.readElementText().toDouble() * DEG2RAD;
+                                } else if (cfg.name() == "Pitch") {
+                                    angles.second = cfg.readElementText().toDouble() * DEG2RAD;
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+                            }
+                            satelliteFlash.angles.append(angles);
+
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+                    _mapFlashs.insert(norad, satelliteFlash);
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    // Verifications
+    if (_mapFlashs.isEmpty()) {
+        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                            "Aucun satellite produisant des flashs n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }

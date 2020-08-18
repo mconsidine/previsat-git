@@ -34,10 +34,12 @@
  *
  */
 
+#include <QElapsedTimer>
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/tle.h"
 #include "prevision.h"
-#include <QElapsedTimer>
+
+
 static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
@@ -61,10 +63,6 @@ struct Ephemerides
 /*
  * Accesseurs
  */
-
-/*
- * Methodes publiques
- */
 QMap<QString, QList<QList<ResultatPrevisions> > > &Prevision::resultats()
 {
     return _resultats;
@@ -75,18 +73,27 @@ DonneesPrevisions Prevision::donnees()
     return _donnees;
 }
 
+
+/*
+ * Modificateurs
+ */
 void Prevision::setConditions(const ConditionsPrevisions &conditions)
 {
     _conditions = conditions;
 }
 
-int Prevision::CalculPrevisions(int &number)
+
+/*
+ * Methodes publiques
+ */
+/*
+ * Calcul des previsions de passage
+ */
+int Prevision::CalculPrevisions(int &nombre)
 {
     /* Declarations des variables locales */
     QElapsedTimer tps;
-    QList<Ephemerides> tabEphem;
     QList<Satellite> sats;
-    QMap<QString, TLE> tabTle;
 
     /* Initialisations */
     double tlemin = -DATE_INFINIE;
@@ -97,7 +104,7 @@ int Prevision::CalculPrevisions(int &number)
     _resultats.clear();
 
     // Creation de la liste de TLE
-    tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
 
     // Creation du tableau de satellites
     QMapIterator<QString, TLE> it1(tabTle);
@@ -120,22 +127,24 @@ int Prevision::CalculPrevisions(int &number)
     if (tabTle.keys().count() == 1) {
         _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
     } else {
-        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
-            if (tlemin > tlemax) {
-                const double tmp = tlemin;
-                tlemin = tlemax;
-                tlemax = tmp;
-            }
-        }
+//        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
+//            if (tlemin > tlemax) {
+//                const double tmp = tlemin;
+//                tlemin = tlemax;
+//                tlemax = tmp;
+//            }
+//        }
 
-        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemax));
-        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
+        const double age1 = fabs(_conditions.jj1 - tlemin);
+        const double age2 = fabs(_conditions.jj1 - tlemax);
+        _donnees.ageTle.append(qMin(age1, age2));
+        _donnees.ageTle.append(qMax(age1, age2));
     }
 
-    /* Corps de la methode */
     // Calcul des ephemerides du Soleil et du lieu d'observation
-    tabEphem = CalculEphemSoleilObservateur();
+    const QList<Ephemerides> tabEphem = CalculEphemSoleilObservateur();
 
+    /* Corps de la methode */
     QListIterator<Ephemerides> it3(tabEphem);
 
     // Boucle sur les satellites
@@ -212,7 +221,6 @@ int Prevision::CalculPrevisions(int &number)
                                 res.nom = sat.tle().nom();
 
                                 // Altitude du satellite
-                                sat.CalculLatitude(sat.position());
                                 res.altitude = sat.CalculAltitude(sat.position());
 
                                 // Date calendaire (UTC)
@@ -296,7 +304,7 @@ int Prevision::CalculPrevisions(int &number)
     _donnees.tempsEcoule = tps.elapsed();
 
     /* Retour */
-    return number;
+    return nombre;
 }
 
 
@@ -315,6 +323,9 @@ int Prevision::CalculPrevisions(int &number)
 
 /*
  * Methodes privees
+ */
+/*
+ * Calcul des ephemerides du Soleil et de l'observateur
  */
 QList<Ephemerides> Prevision::CalculEphemSoleilObservateur()
 {

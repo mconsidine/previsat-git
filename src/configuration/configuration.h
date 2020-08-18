@@ -63,6 +63,12 @@ struct TLEdefaut
     QString l2;
 };
 
+struct SatellitesFlashs
+{
+    QString nomsat;
+    QList<QPair<double, double> > angles;
+};
+
 
 class QFile;
 
@@ -123,6 +129,7 @@ public:
     QMap<QString, QString> mapCategories() const;
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
+    QMap<QString, SatellitesFlashs> mapFlashs() const;
 
     QString noradStationSpatiale() const;
 
@@ -263,6 +270,9 @@ private:
     // Sites de lancement
     QMap<QString, Observateur> _mapSites;
 
+    // Satellites produisant des flashs
+    QMap<QString, SatellitesFlashs> _mapFlashs;
+
     // Fichier TLE par defaut
     QString _nomfic;
 
@@ -324,6 +334,11 @@ private:
      * @brief LectureSitesLancement Lecture du fichier des sites de lancement
      */
     void LectureSitesLancement();
+
+    /**
+     * @brief LectureStatutSatellitesFlashs Lecture du fichier de statut des satellites produisant des flashs
+     */
+    void LectureStatutSatellitesFlashs();
 
     /**
      * @brief VerificationArborescences Verification des arborescences

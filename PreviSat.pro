@@ -103,7 +103,8 @@ SOURCES += \
     src/librairies/maths/vecteur3d.cpp                     \
     src/librairies/observateur/observateur.cpp             \
     src/librairies/systeme/decompression.cpp               \
-    src/librairies/systeme/telechargement.cpp \
+    src/librairies/systeme/telechargement.cpp              \
+    src/previsions/flashs.cpp                              \
     src/previsions/prevision.cpp
 
 
@@ -151,6 +152,7 @@ HEADERS += \
     src/librairies/observateur/observateur.h             \
     src/librairies/systeme/decompression.h               \
     src/librairies/systeme/telechargement.h              \
+    src/previsions/flashs.h                              \
     src/previsions/prevision.h                           \
     src/previsions/previsionsconst.h                     \
     $$ZLIB_DIR/inc/zlib.h
@@ -198,6 +200,7 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.h                  \
         test/src/librairies/observateur/observateurtest.h      \
         test/src/librairies/systeme/decompressiontest.h        \
+        test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \
         test/src/testtools.h
 
@@ -211,6 +214,7 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.cpp                  \
         test/src/librairies/observateur/observateurtest.cpp      \
         test/src/librairies/systeme/decompressiontest.cpp        \
+        test/src/previsions/flashstest.cpp                       \
         test/src/previsions/previsiontest.cpp                    \
         test/src/testtools.cpp                                   \
         test/src/tst_previsattest.cpp
