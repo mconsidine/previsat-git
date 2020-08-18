@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -6421,11 +6421,21 @@
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2020</year>
+        <month>9</month>
+        <day>15</day>
+       </datetime>
+      </property>
       <property name="calendarPopup">
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="calculsMetOp">
+     <widget class="QPushButton" name="calculsFlashs">
       <property name="geometry">
        <rect>
         <x>660</x>
@@ -6447,8 +6457,8 @@
      <widget class="QCheckBox" name="ordreChronologiqueMetOp">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>150</y>
+        <x>420</x>
+        <y>90</y>
         <width>201</width>
         <height>17</height>
        </rect>
@@ -6631,60 +6641,6 @@
        <string>Hauteur du Soleil :</string>
       </property>
      </widget>
-     <widget class="QGroupBox" name="groupBoxAffichageLignesMetOp">
-      <property name="geometry">
-       <rect>
-        <x>420</x>
-        <y>94</y>
-        <width>151</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="title">
-       <string>Affichage des résultats</string>
-      </property>
-      <widget class="QRadioButton" name="affichage1ligneMetOp">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>82</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="text">
-        <string>1 ligne</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="affichage3lignesMetOp">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>82</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="text">
-        <string>3 lignes</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </widget>
      <widget class="QPushButton" name="parametrageDefautMetOp">
       <property name="geometry">
        <rect>
@@ -6731,6 +6687,16 @@
       </property>
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2020</year>
+        <month>8</month>
+        <day>15</day>
+       </datetime>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>

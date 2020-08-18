@@ -301,7 +301,7 @@ QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant)
             cap = modulo(atan2(num, den), DEUX_PI);
         }
     }
-    const int idx = static_cast<int>(cap * RAD2DEG / 22.5);
+    const int idx = static_cast<int> (cap * RAD2DEG / 22.5);
     res.first = listeCap.at(idx);
     res.second = cap;
 

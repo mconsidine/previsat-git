@@ -72,6 +72,7 @@ struct ConditionsPrevisions
     double crepuscule;
     double hauteur;
     double magnitudeLimite;
+    double angleLimite;
 
     bool calcEclipseLune;
     bool ecart;
@@ -105,6 +106,15 @@ struct ResultatPrevisions
 
     double azimutSoleil;
     double hauteurSoleil;
+
+    // Pour les flashs
+    double angleReflexion;
+    double distanceObs;
+    double magnitudeMax;
+    bool penombreMax;
+    QString miroir;
+    QString cap;
+    Observateur obsmax;
 };
 
 struct DonneesPrevisions

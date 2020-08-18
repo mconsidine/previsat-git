@@ -269,10 +269,13 @@ void PreviSat::DemarrageApplication()
     const QFileInfo fi(Configuration::instance()->nomfic());
 
     if (!Configuration::instance()->mapTLE().isEmpty()) {
+
         QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
         while (it.hasNext()) {
+
             const QString norad = it.next();
             const TLE tle = Configuration::instance()->mapTLE()[norad];
+
             if (norad == noradDefaut) {
                 satellites.insert(0, Satellite(tle));
             } else {

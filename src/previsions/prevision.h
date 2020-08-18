@@ -77,7 +77,12 @@ public:
     /*
      * Methodes publiques
      */
-    static int CalculPrevisions(int &number);
+    /**
+     * @brief CalculPrevisions Calcul des previsions de passage
+     * @param nombre nombre de satellites
+     * @return nombre de satellites
+     */
+    static int CalculPrevisions(int &nombre);
 
 
 protected:
@@ -107,6 +112,10 @@ private:
 
     /*
      * Methodes privees
+     */
+    /**
+     * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
+     * @return tableau d'ephemerides
      */
     static QList<Ephemerides> CalculEphemSoleilObservateur();
 

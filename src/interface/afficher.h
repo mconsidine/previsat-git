@@ -62,6 +62,7 @@ class Afficher : public QMainWindow
     Q_OBJECT
 #if BUILDTEST == true
     friend class PrevisionTest;
+    friend class FlashsTest;
 #endif
 public:
 
@@ -132,6 +133,9 @@ private:
     void ChargementResultats() const;
 
     void EcrireEntete() const;
+
+    QStringList ElementsFlashs(const QList<ResultatPrevisions> &liste) const;
+    QStringList ElementsDetailsFlashs(const ResultatPrevisions &res) const;
 
     QStringList ElementsPrevisions(const QList<ResultatPrevisions> &liste) const;
     QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res) const;
