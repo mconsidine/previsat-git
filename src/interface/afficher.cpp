@@ -101,7 +101,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
 
     case FLASHS:
         setWindowTitle(tr("Flashs"));
-        ui->resultatsPrevisions->setColumnCount(6);
+        ui->resultatsPrevisions->setColumnCount(7);
         titres << tr("Satellite") << tr("Date de début") << tr("Date de fin") << tr("Hauteur Max") << tr("Magn") << tr("Mir") << tr("Hauteur Soleil");
         break;
 
@@ -181,11 +181,11 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         break;
 
     case FLASHS:
-        tableDetail->setColumnCount(12);
+        tableDetail->setColumnCount(18);
         tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
                                                << tr("Decl Sat") << tr("Const") << tr("Ang") << tr("Mir") << tr("Magn") << tr("Altitude")
                                                << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max")
-                                               << tr("Magn Max")<< tr("Distance"));
+                                               << tr("Magn Max") << tr("Distance"));
         break;
 
     default:
@@ -209,6 +209,10 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         switch (_typeCalcul) {
         case PREVISIONS:
             elems = ElementsDetailsPrevisions(res);
+            break;
+
+        case FLASHS:
+            elems = ElementsDetailsFlashs(res);
             break;
 
         default:
@@ -610,7 +614,8 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
     elems.append(" " + res.constellation);
 
     // Angle de reflexion, miroir
-    elems.append(QString("%1  %2 ").arg(res.angleReflexion * RAD2DEG, 5, 'f', 2).arg(res.miroir));
+    elems.append(QString("%1  ").arg(res.angleReflexion * RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1 ").arg(res.miroir));
 
     // Magnitude
     const QString fmagn = "%1%2%3";
