@@ -74,7 +74,6 @@ static const int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
 static int _pan;
 static char _mir;
 static Vecteur3D _direction;
-static SatellitesFlashs _sts;
 static ConditionsPrevisions _conditions;
 static QList<QList<ResultatPrevisions> > _resultatSat;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
@@ -155,13 +154,13 @@ int Flashs::CalculFlashs(int &nombre)
     if (tabTle.keys().count() == 1) {
         _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
     } else {
-//        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
-//            if (tlemin > tlemax) {
-//                const double tmp = tlemin;
-//                tlemin = tlemax;
-//                tlemax = tmp;
-//            }
-//        }
+        //        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
+        //            if (tlemin > tlemax) {
+        //                const double tmp = tlemin;
+        //                tlemin = tlemax;
+        //                tlemax = tmp;
+        //            }
+        //        }
 
         const double age1 = fabs(_conditions.jj1 - tlemin);
         const double age2 = fabs(_conditions.jj1 - tlemax);
@@ -181,7 +180,6 @@ int Flashs::CalculFlashs(int &nombre)
     while (it4.hasNext()) {
 
         Satellite sat = it4.next();
-        _sts = Configuration::instance()->mapFlashs()[sat.tle().norad()];
 
         double temp = -DATE_INFINIE;
         _resultatSat.clear();
@@ -228,7 +226,7 @@ int Flashs::CalculFlashs(int &nombre)
                         QPair<double, double> minmax;
 
                         // Calcul de l'angle de reflexion
-                        _pan = -1;
+                        _pan = 0;
                         const double angref = AngleReflexion(sat, soleil);
                         const double pas = (angref < 0.5) ? PAS1 : PAS0;
 
@@ -338,20 +336,16 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     int imin, imax;
 
     /* Initialisations */
+    const SatellitesFlashs sts = Configuration::instance()->mapFlashs()[satellite.tle().norad()];
     double ang = PI;
     int j = 0;
-    if (_pan == -1) {
-        imin = 0;
-        imax = _sts.angles.count();
-    } else {
-        imin = _pan;
-        imax = _pan + 1;
-    }
+    imin = _pan;
+    imax = sts.angles.count();
 
     /* Corps de la methode */
     for(int i=imin; i<imax; i++) {
 
-        Matrice3D matrice1 = RotationYawSteering(satellite, _sts.angles.at(i).first, _sts.angles.at(i).second);
+        Matrice3D matrice1 = RotationYawSteering(satellite, sts.angles.at(i).first, sts.angles.at(i).second);
         const Matrice3D matrice2 = matrice1.Transposee();
         const Vecteur3D vecteur1 = matrice2.vecteur1();
 
@@ -370,14 +364,12 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         if (tmp < ang) {
             ang = tmp;
             j = i;
-            _mir = (_sts.nomsat.toLower().contains("metop")) ? LISTE_MIR[j] : 'S';
+            _mir = (sts.nomsat.toLower().contains("metop")) ? LISTE_MIR[j] : 'S';
             _direction = vecteur3;
         }
     }
 
-    if (_pan == -1) {
-        _pan = LISTE_PAN[j];
-    }
+    _pan = (sts.nomsat.toLower().contains("metop")) ? LISTE_PAN[j] : 0;
 
     /* Retour */
     return (ang);
@@ -688,7 +680,7 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                                 ResultatPrevisions res;
 
                                 // Nom du satellite
-                                res.nom = _sts.nomsat;
+                                res.nom = Configuration::instance()->mapFlashs()[sat.tle().norad()].nomsat;
 
                                 // Date calendaire (UTC)
                                 res.date = Date(dates[i].jourJulienUTC(), 0.);
@@ -802,8 +794,8 @@ void Flashs::LimiteFlash(const double mgn0, const QList<double> jjm, Satellite &
         ConditionEclipse condEcl;
         condEcl.CalculSatelliteEclipse(satellite.position(), soleil, lune, _conditions.refraction);
         ecl.append((condEcl.eclipseLune().luminosite < condEcl.eclipseSoleil().luminosite) ?
-                    condEcl.eclipseLune().phi - condEcl.eclipseLune().phiSoleil - condEcl.eclipseLune().elongation :
-                    condEcl.eclipseSoleil().phi - condEcl.eclipseSoleil().phiSoleil - condEcl.eclipseSoleil().elongation);
+                       condEcl.eclipseLune().phi - condEcl.eclipseLune().phiSoleil - condEcl.eclipseLune().elongation :
+                       condEcl.eclipseSoleil().phi - condEcl.eclipseSoleil().phiSoleil - condEcl.eclipseSoleil().elongation);
 
         // Angle de reflexion
         ang.append(AngleReflexion(satellite, soleil));
@@ -854,7 +846,7 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
     const double angDeg = angle * RAD2DEG;
 
     /* Corps de la methode */
-    if (_sts.nomsat.toLower().contains("metop")) {
+    if (satellite.tle().nom().toLower().contains("metop")) {
 
         // Magnitude pour l'instrument ASCAT (satellites MetOp)
         if (_pan == 1) {

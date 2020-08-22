@@ -1614,7 +1614,7 @@ void Onglets::on_calculsPrev_clicked()
         barreProgression->setAlignment(Qt::AlignHCenter);
 
         QProgressDialog fenetreProgression;
-        fenetreProgression.setWindowTitle(tr("Calculs en cours. Veuillez patienter..."));
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
         fenetreProgression.setCancelButtonText(tr("Annuler"));
         fenetreProgression.setBar(barreProgression);
         fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -2941,8 +2941,8 @@ void Onglets::on_calculsFlashs_clicked()
     /* Corps de la methode */
     try {
 
-        if (_ui->liste2->count() == 0) {
-            throw PreviSatException();
+        for(int i = 0; i < Configuration::instance()->mapFlashs().count(); i++) {
+            vecSat.append(i);
         }
 
         // Ecart heure locale - UTC
@@ -2989,6 +2989,9 @@ void Onglets::on_calculsFlashs_clicked()
         // Magnitude maximale
         conditions.magnitudeLimite = _ui->magnitudeMaxMetOp->value();
 
+        // Angle limite
+        conditions.angleLimite = PI;
+
         // Hauteur minimale du satellite
         conditions.hauteur = DEG2RAD * ((_ui->hauteurSatMetOp->currentIndex() == 5) ?
                                             abs(_ui->valHauteurSatMetOp->text().toInt()) : 5 * _ui->hauteurSatMetOp->currentIndex());
@@ -3016,7 +3019,7 @@ void Onglets::on_calculsFlashs_clicked()
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
 
         // Fichier TLE
-        conditions.fichier = Configuration::instance()->dirTle() + QDir::separator() + "flares-spctrk.txt";
+        conditions.fichier = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + "flares-spctrk.txt");
 
         // Nom du fichier resultat
         const QString chaine = tr("flashs") + "_%1_%2.txt";
@@ -3029,7 +3032,7 @@ void Onglets::on_calculsFlashs_clicked()
         barreProgression->setAlignment(Qt::AlignHCenter);
 
         QProgressDialog fenetreProgression;
-        fenetreProgression.setWindowTitle(tr("Calculs en cours. Veuillez patienter..."));
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
         fenetreProgression.setCancelButtonText(tr("Annuler"));
         fenetreProgression.setBar(barreProgression);
         fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
