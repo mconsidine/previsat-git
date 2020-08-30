@@ -57,6 +57,12 @@ enum TypeCalcul {
     TELESCOPE
 };
 
+enum CorpsTransit {
+    CORPS_SOLEIL = 1,
+    CORPS_LUNE
+};
+
+
 /* Declaration des constantes */
 
 struct ConditionsPrevisions
@@ -73,6 +79,7 @@ struct ConditionsPrevisions
     double hauteur;
     double magnitudeLimite;
     double angleLimite;
+    double seuilConjonction;
 
     bool calcEclipseLune;
     bool ecart;
@@ -80,6 +87,9 @@ struct ConditionsPrevisions
     bool effetEclipsePartielle;
     bool extinction;
     bool refraction;
+    bool calcTransitLunaireJour;
+    bool calcEphemSoleil;
+    bool calcEphemLune;
 
     QString fichier;
     QStringList listeSatellites;
@@ -115,6 +125,12 @@ struct ResultatPrevisions
     QString miroir;
     QString cap;
     Observateur obsmax;
+
+    // Pour les transits ISS
+    bool eclipse;
+    bool transit;
+    CorpsTransit typeCorps;
+    double angle;
 };
 
 struct DonneesPrevisions

@@ -154,13 +154,6 @@ int Flashs::CalculFlashs(int &nombre)
     if (tabTle.keys().count() == 1) {
         _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
     } else {
-        //        if (tlemax > _conditions.jj1 || tlemin > _conditions.jj1) {
-        //            if (tlemin > tlemax) {
-        //                const double tmp = tlemin;
-        //                tlemin = tlemax;
-        //                tlemax = tmp;
-        //            }
-        //        }
 
         const double age1 = fabs(_conditions.jj1 - tlemin);
         const double age2 = fabs(_conditions.jj1 - tlemax);

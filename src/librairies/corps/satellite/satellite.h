@@ -101,7 +101,7 @@ public:
      * @brief Satellite Constructeur a partir d'un tableau de TLE
      * @param tabtle tableau de TLE
      */
-    explicit Satellite(const QVector<TLE> &tabtle);
+    explicit Satellite(const QList<TLE> &tabtle);
 
 
     /*
@@ -202,7 +202,7 @@ private:
 
     SGP4 _sgp4;
     TLE _tle;
-    QVector<TLE> _tabtle;
+    QList<TLE> _tabtle;
 
     ElementsOsculateurs _elements;
     Phasage _phasage;
