@@ -188,6 +188,13 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                                                << tr("Magn Max") << tr("Distance"));
         break;
 
+    case TRANSITS:
+        tableDetail->setColumnCount(17);
+        tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat") << tr("Decl Sat")
+                                               << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Alt") << tr("Dist") << tr("Az Soleil")
+                                               << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max") << tr("Distance"));
+        break;
+
     default:
         break;
     }
@@ -215,6 +222,10 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             elems = ElementsDetailsFlashs(res);
             break;
 
+        case TRANSITS:
+            elems = ElementsDetailsTransits(res);
+            break;
+
         default:
             break;
         }
@@ -223,7 +234,17 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         tableDetail->insertRow(j);
         tableDetail->setRowHeight(j, 16);
 
-        for(int k=0; k<elems.count(); k++) {
+        int kmin;
+        int kmax;
+        if (_typeCalcul == TRANSITS) {
+            kmin = 1;
+            kmax = 4;
+        } else {
+            kmin = 0;
+            kmax = elems.count();
+        }
+
+        for(int k=kmin; k<kmax; k++) {
 
             // Remplissage des elements d'une ligne
             QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k));
@@ -250,7 +271,24 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
 
     afficherDetail = new QMainWindow;
     afficherDetail->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
-    afficherDetail->setWindowTitle(tr("Détail du passage"));
+
+    switch (_typeCalcul) {
+
+    case PREVISIONS:
+        afficherDetail->setWindowTitle(tr("Détail du passage"));
+        break;
+
+    case FLASHS:
+        afficherDetail->setWindowTitle(tr("Détail du flash"));
+        break;
+
+    case TRANSITS:
+        afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
+        break;
+
+    default:
+        break;
+    }
     afficherDetail->setCentralWidget(tableDetail);
 #if defined (Q_OS_LINUX)
     int lrg = 5;
@@ -301,6 +339,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
         fichier.open(QIODevice::Append | QIODevice::Text);
         QTextStream flux(&fichier);
 
+        bool ecrireNomColonnes = true;
         QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
         while (it1.hasNext()) {
             it1.next();
@@ -326,6 +365,15 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                      << endl;
                 break;
 
+            case TRANSITS:
+                if (ecrireNomColonnes) {
+                    flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps" \
+                               " Ill    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance")
+                         << endl;
+                    ecrireNomColonnes = false;
+                }
+                break;
+
             default:
                 break;
             }
@@ -333,6 +381,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             QListIterator<QList<ResultatPrevisions> > it2(it1.value());
             while (it2.hasNext()) {
 
+                int i = 0;
                 QListIterator<ResultatPrevisions> it3(it2.next());
                 while (it3.hasNext()) {
 
@@ -350,15 +399,24 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                         elems = ElementsDetailsFlashs(res);
                         break;
 
+                    case TRANSITS:
+                        if ((i > 0) && (i < 4)) {
+                            elems = ElementsDetailsTransits(res);
+                        }
+                        break;
+
                     default:
                         break;
                     }
 
-                    QString ligne;
-                    for(int k=kmin; k<elems.count(); k++) {
-                        ligne += elems.at(k) + " ";
+                    if (!elems.isEmpty()) {
+                        QString ligne;
+                        for(int k=kmin; k<elems.count(); k++) {
+                            ligne += elems.at(k) + " ";
+                        }
+                        flux << ligne << endl;
                     }
-                    flux << ligne << endl;
+                    i++;
                 }
                 flux << endl;
             }
@@ -405,6 +463,13 @@ void Afficher::ChargementResultats() const
 
             case FLASHS:
                 elems = ElementsFlashs(list);
+                break;
+
+            case TRANSITS:
+                elems = ElementsTransits(list);
+                break;
+
+            default:
                 break;
             }
 
@@ -542,11 +607,11 @@ QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) con
 
     // Date de debut
     const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
-    elems.append(dateDeb.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+    elems.append(dateDeb.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Date de fin
     const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
-    elems.append(dateFin.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+    elems.append(dateFin.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     double htMax = -1.;
     double magnMax = 99.;
@@ -769,6 +834,122 @@ QStringList Afficher::ElementsDetailsPrevisions(const ResultatPrevisions &res) c
     // Azimut et hauteur Soleil
     elems.append(Maths::ToSexagesimal(res.azimutSoleil, DEGRE, 3, 0, false, false));
     elems.append(Maths::ToSexagesimal(res.hauteurSoleil, DEGRE, 2, 0, true, false));
+
+    /* Retour */
+    return elems;
+}
+
+QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Date de debut
+    const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
+    elems.append(dateDeb.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    // Date de fin
+    const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
+    elems.append(dateFin.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    double angMin = PI;
+    QString type;
+    QString corps;
+    double htSolMax;
+    QListIterator<ResultatPrevisions> it(liste);
+    while (it.hasNext()) {
+
+        const ResultatPrevisions res = it.next();
+
+        // Hauteur max
+        if (res.angle <= angMin) {
+            angMin = res.angle;
+            htSolMax = res.hauteurSoleil;
+            type = (res.transit) ? tr("T") : tr("C");
+            corps = (res.typeCorps == CORPS_SOLEIL) ? tr("S") : tr("L");
+        }
+    }
+
+    elems.append(QString("%1").arg(angMin, 0, 'f', 2));
+
+    elems.append(type);
+    elems.append(corps);
+
+    elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
+
+    /* Retour */
+    return elems;
+}
+
+QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Date
+    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    elems.append(date.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    // Azimut et hauteur du satellite
+    elems.append(Maths::ToSexagesimal(res.azimut, DEGRE, 3, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.hauteur, DEGRE, 2, 0, false, false));
+
+    // Ascension droite, declinaison, constellation
+    elems.append(Maths::ToSexagesimal(res.ascensionDroite, HEURE1, 2, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.declinaison, DEGRE, 2, 0, true, false));
+    elems.append(" " + res.constellation);
+
+    // Angle de reflexion, type, corps
+    elems.append(QString("%1  ").arg(res.angle * RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1   ").arg((res.transit) ? tr("T") : tr("C")));
+    elems.append(QString("%1  ").arg((res.typeCorps == CORPS_SOLEIL) ? tr("S") : tr("L")));
+
+    // Illumination
+    QString illumination = tr("Lum");
+    if (res.eclipse) {
+        illumination = tr("Omb");
+    }
+
+    if (res.penombre) {
+        illumination = tr("Pen");
+    }
+
+    elems.append(illumination);
+
+    // Altitude, distance
+    double altitude = res.altitude;
+    double distance = res.distance;
+    if (_conditions.unite == tr("nmi")) {
+        altitude *= MILE_PAR_KM;
+        distance *= MILE_PAR_KM;
+    }
+    elems.append(QString("%1").arg(altitude, 6, 'f', 1));
+    elems.append(QString("%1").arg(distance, 7, 'f', 1));
+
+    // Azimut et hauteur Soleil
+    elems.append(Maths::ToSexagesimal(res.azimutSoleil, DEGRE, 3, 0, false, false));
+    elems.append(Maths::ToSexagesimal(res.hauteurSoleil, DEGRE, 2, 0, true, false));
+
+    if (!res.obsmax.nomlieu().isEmpty()) {
+
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+
+        // Longitude du maximum
+        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
+
+        // Latitude du maximum
+        elems.append(QString(" %1 %2 ").arg(fabs(res.obsmax.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
+
+        // Distance au maximum et cap
+        elems.append(QString(" %1 (%2)").arg(res.distanceObs, 5, 'f', 1).arg(res.cap));
+    }
 
     /* Retour */
     return elems;

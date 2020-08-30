@@ -63,6 +63,7 @@ class Afficher : public QMainWindow
 #if BUILDTEST == true
     friend class PrevisionTest;
     friend class FlashsTest;
+    friend class TransitsIssTest;
 #endif
 public:
 
@@ -139,6 +140,9 @@ private:
 
     QStringList ElementsPrevisions(const QList<ResultatPrevisions> &liste) const;
     QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res) const;
+
+    QStringList ElementsTransits(const QList<ResultatPrevisions> &liste) const;
+    QStringList ElementsDetailsTransits(const ResultatPrevisions &res) const;
 
 };
 

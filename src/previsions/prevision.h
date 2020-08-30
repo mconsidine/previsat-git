@@ -40,7 +40,6 @@
 #ifndef PREVISION_H
 #define PREVISION_H
 
-#include "librairies/dates/date.h"
 #include "previsionsconst.h"
 
 

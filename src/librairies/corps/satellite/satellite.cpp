@@ -70,7 +70,7 @@ Satellite::Satellite()
 /*
  * Constructeur a partir d'un tableau de TLE
  */
-Satellite::Satellite(const QVector<TLE> &tabtle) :
+Satellite::Satellite(const QList<TLE> &tabtle) :
     _tabtle(tabtle)
 {
     /* Declarations des variables locales */
@@ -194,7 +194,7 @@ void Satellite::CalculPosVit(const Date &date)
 
             const double jjsav = _tle.dateDebutValidite().jourJulienUTC();
             _tle = _tabtle.at(0);
-            QVectorIterator<TLE> it(_tabtle);
+            QListIterator<TLE> it(_tabtle);
             while (it.hasNext()) {
 
                 const TLE xtle = it.next();
