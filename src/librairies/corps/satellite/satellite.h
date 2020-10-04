@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    4 octobre 2020
  *
  */
 
@@ -142,19 +142,55 @@ public:
     void CalculBeta(const Soleil &soleil);
 
     /**
+     * @brief CalculElementsOsculateurs Calcul des elements osculateurs
+     * @param date date
+     */
+    void CalculElementsOsculateurs(const Date &date);
+
+    /**
      * @brief CalculPosVit Calcul de la position et de la vitesse du satellite
      * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 1" de David Vallado (2006)
      * @param date date
      */
     void CalculPosVit(const Date &date);
 
+    /**
+     * @brief CalculPosVitListeSatellites Calcul de la position d'une liste de satellites
+     * @param date date
+     * @param observateur observateur
+     * @param soleil soleil
+     * @param lune lune
+     * @param nbTracesAuSol nombre de traces au sol
+     * @param acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param effetEclipsePartielle prise en compte de l'effet des eclipses partielles
+     * @param extinction prise en compte de l'extinction atmospherique
+     * @param refraction prise en compte de la refraction atmospherique
+     * @param traceCiel calcul de la trace dans le ciel
+     * @param visibilite calcul de la zone de visibilite
+     * @param satellites liste de satellites
+     */
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
                                             const bool extinction, const bool refraction, const bool traceCiel, const bool visibilite,
                                             QList<Satellite> &satellites);
 
+    /**
+     * @brief CalculTraceCiel Calcul de la trace dans le ciel
+     * @param date date
+     * @param acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param refraction prise en compte de la refraction atmospherique
+     * @param observateur observateur
+     * @param sec pas en secondes
+     */
     void CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec = 0);
 
+    /**
+     * @brief CalculTracesAuSol Calcul des traces au sol
+     * @param dateInit date de depart
+     * @param nbOrb nombre d'orbites
+     * @param acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param refraction prise en compte de la refraction atmospherique
+     */
     void CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction);
 
     /**
@@ -218,11 +254,6 @@ private:
     /*
      * Methodes privees
      */
-    /**
-     * @brief CalculElementsOsculateurs Calcul des elements osculateurs
-     * @param date date
-     */
-    void CalculElementsOsculateurs(const Date &date);
 
 
 };

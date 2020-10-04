@@ -454,6 +454,9 @@ QPair<double, double> TransitsIss::CalculAngleMin(const QList<double> jjm, const
     return Maths::CalculExtremumInterpolation3(jjm, ang);
 }
 
+/*
+ * Calcul de la date ou la distance angulaire est minimale
+ */
 double TransitsIss::CalculDate(const QList<double> jjm, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite)
 {
     /* Declarations des variables locales */
@@ -505,6 +508,9 @@ double TransitsIss::CalculDate(const QList<double> jjm, const CorpsTransit &type
     return Maths::CalculValeurXInterpolation3(jjm, angle, dist, EPS_DATES);
 }
 
+/*
+ * Calcul des dates caracteristiques de la conjonction ou du transit
+ */
 QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite)
 {
     /* Declarations des variables locales */

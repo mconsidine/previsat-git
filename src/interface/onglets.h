@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >
+ * >    4 octobre 2020
  *
  */
 
@@ -335,8 +335,11 @@ private slots:
     void on_optionPrec_clicked();
     void on_optionSuiv_clicked();
 
-
     void on_calculsFlashs_clicked();
+    void on_calculsTransit_clicked();
+    void on_calculsEvt_clicked();
+
+
 };
 
 #endif // ONGLETS_H

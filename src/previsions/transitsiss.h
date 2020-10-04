@@ -124,8 +124,24 @@ private:
      */
     static QPair<double, double> CalculAngleMin(const QList<double> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
 
+    /**
+     * @brief CalculDate Calcul de la date ou la distance angulaire est minimale
+     * @param jjm tableau de dates
+     * @param typeCorps type du corps (SOLEIL ou LUNE)
+     * @param itransit cas d'un transit
+     * @param satellite satellite
+     * @return date ou la distance angulaire est minimale
+     */
     static double CalculDate(const QList<double> jjm, const CorpsTransit & typeCorps, const bool itransit, Satellite &satellite);
 
+    /**
+     * @brief CalculElements Calcul des dates caracteristiques de la conjonction ou du transit
+     * @param jmax date
+     * @param typeCorps type du corps (SOLEIL ou LUNE)
+     * @param itransit cas d'un transit
+     * @param satellite satellite
+     * @return ensemble des dates
+     */
     static QList<Date> CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite);
 
     /**

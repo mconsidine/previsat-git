@@ -90,6 +90,11 @@ struct ConditionsPrevisions
     bool calcTransitLunaireJour;
     bool calcEphemSoleil;
     bool calcEphemLune;
+    bool passageNoeuds;
+    bool passageOmbre;
+    bool passageApogee;
+    bool passagePso;
+    bool transitionsJourNuit;
 
     QString fichier;
     QStringList listeSatellites;
@@ -131,6 +136,12 @@ struct ResultatPrevisions
     bool transit;
     CorpsTransit typeCorps;
     double angle;
+
+    // Pour les evenements orbitaux
+    double pso;
+    double longitude;
+    double latitude;
+    QString typeEvenement;
 };
 
 struct DonneesPrevisions

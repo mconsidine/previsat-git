@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    4 octobre 2020
  *
  */
 
@@ -178,6 +178,51 @@ void Satellite::CalculBeta(const Soleil &soleil)
 }
 
 /*
+ * Calcul des elements osculateurs
+ */
+void Satellite::CalculElementsOsculateurs(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Elements osculateurs
+    _elements.Calcul(_position, _vitesse);
+
+    // Age du TLE
+    _ageTLE = date.jourJulienUTC() - _tle.epoque().jourJulienUTC();
+
+    // Nombre d'orbites a la date courante
+    if (_deltaNbOrb == -1) {
+
+        const QString dateLancement = _tle.donnees().dateLancement();
+        if (dateLancement.isEmpty()) {
+            _deltaNbOrb = 0;
+        } else {
+            const int annee = dateLancement.mid(0, 4).toInt();
+            const int mois = dateLancement.mid(5, 2).toInt();
+            const double jour = dateLancement.mid(8, 2).toDouble();
+            const Date dateLct(annee, mois, jour, 0.);
+
+            // Nombre theorique d'orbites a l'epoque
+            const int nbOrbTheo = static_cast<int> (_tle.no() * (_tle.epoque().jourJulienUTC() - dateLct.jourJulienUTC()));
+            int resteOrb = nbOrbTheo%100000;
+            resteOrb += (((_tle.nbOrbitesEpoque() > 50000) && (resteOrb < 50000)) ? 100000 : 0);
+            resteOrb -= (((_tle.nbOrbitesEpoque() < 50000) && (resteOrb > 50000)) ? 100000 : 0);
+            _deltaNbOrb = nbOrbTheo - resteOrb;
+        }
+    }
+
+    _nbOrbites = _tle.nbOrbitesEpoque() +
+            static_cast<unsigned int> (_deltaNbOrb + floor((_tle.no() + _ageTLE * _tle.bstar()) * _ageTLE + modulo(_tle.omegao() + _tle.mo(), DEUX_PI) / T360 -
+                         modulo(_elements.argumentPerigee() + _elements.anomalieVraie(), DEUX_PI) / DEUX_PI + 0.5));
+
+    /* Retour */
+    return;
+}
+
+/*
  * Calcul de la position et de la vitesse du satellite
  * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 1" de David Vallado (2006)
  */
@@ -220,6 +265,9 @@ void Satellite::CalculPosVit(const Date &date)
     return;
 }
 
+/*
+ * Calcul de la position d'une liste de satellites
+ */
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle, const bool extinction,
                                             const bool refraction, const bool traceCiel, const bool visibilite, QList<Satellite> &satellites)
@@ -296,6 +344,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
     return;
 }
 
+/*
+ * Calcul de la trace dans le ciel
+ */
 void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec)
 {
     /* Declarations des variables locales */
@@ -363,6 +414,9 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
     return;
 }
 
+/*
+ * Calcul des traces au sol
+ */
 void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction)
 {
     /* Declarations des variables locales */
@@ -466,44 +520,3 @@ bool Satellite::isGeo() const
 /*
  * Methodes privees
  */
-void Satellite::CalculElementsOsculateurs(const Date &date)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    // Elements osculateurs
-    _elements.Calcul(_position, _vitesse);
-
-    // Age du TLE
-    _ageTLE = date.jourJulienUTC() - _tle.epoque().jourJulienUTC();
-
-    // Nombre d'orbites a la date courante
-    if (_deltaNbOrb == -1) {
-
-        const QString dateLancement = _tle.donnees().dateLancement();
-        if (dateLancement.isEmpty()) {
-            _deltaNbOrb = 0;
-        } else {
-            const int annee = dateLancement.mid(0, 4).toInt();
-            const int mois = dateLancement.mid(5, 2).toInt();
-            const double jour = dateLancement.mid(8, 2).toDouble();
-            const Date dateLct(annee, mois, jour, 0.);
-
-            // Nombre theorique d'orbites a l'epoque
-            const int nbOrbTheo = static_cast<int> (_tle.no() * (_tle.epoque().jourJulienUTC() - dateLct.jourJulienUTC()));
-            int resteOrb = nbOrbTheo%100000;
-            resteOrb += (((_tle.nbOrbitesEpoque() > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-            resteOrb -= (((_tle.nbOrbitesEpoque() < 50000) && (resteOrb > 50000)) ? 100000 : 0);
-            _deltaNbOrb = nbOrbTheo - resteOrb;
-        }
-    }
-
-    _nbOrbites = _tle.nbOrbitesEpoque() +
-            static_cast<unsigned int> (_deltaNbOrb + floor((_tle.no() + _ageTLE * _tle.bstar()) * _ageTLE + modulo(_tle.omegao() + _tle.mo(), DEUX_PI) / T360 -
-                         modulo(_elements.argumentPerigee() + _elements.anomalieVraie(), DEUX_PI) / DEUX_PI + 0.5));
-
-    /* Retour */
-    return;
-}

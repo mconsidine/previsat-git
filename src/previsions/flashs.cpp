@@ -583,6 +583,9 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
     return;
 }
 
+/*
+ * Determination du flash
+ */
 void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp, Satellite &sat, Soleil &soleil)
 {
     /* Declarations des variables locales */
