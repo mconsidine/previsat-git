@@ -104,6 +104,7 @@ SOURCES += \
     src/librairies/observateur/observateur.cpp             \
     src/librairies/systeme/decompression.cpp               \
     src/librairies/systeme/telechargement.cpp              \
+    src/previsions/evenementsorbitaux.cpp                  \
     src/previsions/flashs.cpp                              \
     src/previsions/prevision.cpp                           \
     src/previsions/transitsiss.cpp
@@ -153,6 +154,7 @@ HEADERS += \
     src/librairies/observateur/observateur.h             \
     src/librairies/systeme/decompression.h               \
     src/librairies/systeme/telechargement.h              \
+    src/previsions/evenementsorbitaux.h                  \
     src/previsions/flashs.h                              \
     src/previsions/prevision.h                           \
     src/previsions/previsionsconst.h                     \
@@ -202,6 +204,7 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.cpp                  \
         test/src/librairies/observateur/observateurtest.cpp      \
         test/src/librairies/systeme/decompressiontest.cpp        \
+        test/src/previsions/evenementsorbitauxtest.cpp           \
         test/src/previsions/flashstest.cpp                       \
         test/src/previsions/previsiontest.cpp                    \
         test/src/previsions/transitsisstest.cpp                  \
@@ -217,6 +220,7 @@ equals(BUILDTEST, true) {
         test/src/librairies/maths/mathstest.h                  \
         test/src/librairies/observateur/observateurtest.h      \
         test/src/librairies/systeme/decompressiontest.h        \
+        test/src/previsions/evenementsorbitauxtest.h           \
         test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \
         test/src/previsions/transitsisstest.h                  \

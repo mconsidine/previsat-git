@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >
+ * >    4 octobre 2020
  *
  */
 
@@ -165,146 +165,154 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int j = 0;
-    const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
 
     /* Corps de la methode */
-    tableDetail = new QTableWidget;
+    if (_typeCalcul != EVENEMENTS) {
 
-    switch (_typeCalcul) {
+        int j = 0;
+        const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
 
-    case PREVISIONS:
-        tableDetail->setColumnCount(12);
-        tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
-                                               << tr("Decl Sat") << tr("Const") << tr("Magn") << tr("Altitude") << tr("Distance") << tr("Az Soleil")
-                                               << tr("Haut Soleil"));
-        break;
-
-    case FLASHS:
-        tableDetail->setColumnCount(18);
-        tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
-                                               << tr("Decl Sat") << tr("Const") << tr("Ang") << tr("Mir") << tr("Magn") << tr("Altitude")
-                                               << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max")
-                                               << tr("Magn Max") << tr("Distance"));
-        break;
-
-    case TRANSITS:
-        tableDetail->setColumnCount(17);
-        tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat") << tr("Decl Sat")
-                                               << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Alt") << tr("Dist") << tr("Az Soleil")
-                                               << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max") << tr("Distance"));
-        break;
-
-    default:
-        break;
-    }
-
-    tableDetail->setSelectionMode(QTableWidget::NoSelection);
-    tableDetail->setCornerButtonEnabled(false);
-    tableDetail->verticalHeader()->setVisible(false);
-
-    QFont fnt;
-    fnt.setBold(true);
-    tableDetail->horizontalHeader()->setFont(fnt);
-
-    QListIterator<ResultatPrevisions> it(list);
-    while (it.hasNext()) {
-
-        QStringList elems;
-        const ResultatPrevisions res = it.next();
+        tableDetail = new QTableWidget;
 
         switch (_typeCalcul) {
+
         case PREVISIONS:
-            elems = ElementsDetailsPrevisions(res);
+            tableDetail->setColumnCount(12);
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat")
+                                                   << tr("AD Sat") << tr("Decl Sat") << tr("Const") << tr("Magn") << tr("Altitude") << tr("Distance")
+                                                   << tr("Az Soleil") << tr("Haut Soleil"));
             break;
 
         case FLASHS:
-            elems = ElementsDetailsFlashs(res);
+            tableDetail->setColumnCount(18);
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat")
+                                                   << tr("AD Sat") << tr("Decl Sat") << tr("Const") << tr("Ang") << tr("Mir") << tr("Magn")
+                                                   << tr("Altitude") << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max")
+                                                   << tr("Lat Max") << tr("Magn Max") << tr("Distance"));
             break;
 
         case TRANSITS:
-            elems = ElementsDetailsTransits(res);
+            tableDetail->setColumnCount(17);
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
+                                                   << tr("Decl Sat") << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Alt") << tr("Dist")
+                                                   << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max") << tr("Distance"));
             break;
 
+        case EVENEMENTS:
         default:
             break;
         }
 
-        // Ajout d'une ligne dans le tableau de resultats
-        tableDetail->insertRow(j);
-        tableDetail->setRowHeight(j, 16);
+        tableDetail->setSelectionMode(QTableWidget::NoSelection);
+        tableDetail->setCornerButtonEnabled(false);
+        tableDetail->verticalHeader()->setVisible(false);
 
-        int kmin;
-        int kmax;
-        if (_typeCalcul == TRANSITS) {
-            kmin = 1;
-            kmax = 4;
-        } else {
-            kmin = 0;
-            kmax = elems.count();
-        }
+        QFont fnt;
+        fnt.setBold(true);
+        tableDetail->horizontalHeader()->setFont(fnt);
 
-        for(int k=kmin; k<kmax; k++) {
+        QListIterator<ResultatPrevisions> it(list);
+        while (it.hasNext()) {
 
-            // Remplissage des elements d'une ligne
-            QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k));
-            itm->setTextAlignment(Qt::AlignCenter);
-            itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
-            if (k == 0) {
-                itm->setToolTip(elems.at(0));
+            QStringList elems;
+            const ResultatPrevisions res = it.next();
+
+            switch (_typeCalcul) {
+            case PREVISIONS:
+                elems = ElementsDetailsPrevisions(res);
+                break;
+
+            case FLASHS:
+                elems = ElementsDetailsFlashs(res);
+                break;
+
+            case TRANSITS:
+                elems = ElementsDetailsTransits(res);
+                break;
+
+            case EVENEMENTS:
+            default:
+                break;
             }
 
-            tableDetail->setItem(j, k, itm);
-            tableDetail->resizeColumnToContents(k);
+            // Ajout d'une ligne dans le tableau de resultats
+            tableDetail->insertRow(j);
+            tableDetail->setRowHeight(j, 16);
+
+            int kmin;
+            int kmax;
+            if (_typeCalcul == TRANSITS) {
+                kmin = 1;
+                kmax = 4;
+            } else {
+                kmin = 0;
+                kmax = elems.count();
+            }
+
+            for(int k=kmin; k<kmax; k++) {
+
+                // Remplissage des elements d'une ligne
+                QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k));
+                itm->setTextAlignment(Qt::AlignCenter);
+                itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+                if (k == 0) {
+                    itm->setToolTip(elems.at(0));
+                }
+
+                tableDetail->setItem(j, k, itm);
+                tableDetail->resizeColumnToContents(k);
+            }
+
+            j++;
         }
 
-        j++;
-    }
-
-    tableDetail->setSelectionMode(QTableWidget::SingleSelection);
-    tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
+        tableDetail->setSelectionMode(QTableWidget::SingleSelection);
+        tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
 #if QT_VERSION >= 0x050000
-    tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 #else
-    tableDetail->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+        tableDetail->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
 
-    afficherDetail = new QMainWindow;
-    afficherDetail->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
+        afficherDetail = new QMainWindow;
+        afficherDetail->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
 
-    switch (_typeCalcul) {
+        switch (_typeCalcul) {
 
-    case PREVISIONS:
-        afficherDetail->setWindowTitle(tr("Détail du passage"));
-        break;
+        case PREVISIONS:
+            afficherDetail->setWindowTitle(tr("Détail du passage"));
+            break;
 
-    case FLASHS:
-        afficherDetail->setWindowTitle(tr("Détail du flash"));
-        break;
+        case FLASHS:
+            afficherDetail->setWindowTitle(tr("Détail du flash"));
+            break;
 
-    case TRANSITS:
-        afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
-        break;
+        case TRANSITS:
+            afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
+            break;
 
-    default:
-        break;
-    }
-    afficherDetail->setCentralWidget(tableDetail);
+        case EVENEMENTS:
+        default:
+            break;
+        }
+
+        afficherDetail->setCentralWidget(tableDetail);
 #if defined (Q_OS_LINUX)
-    int lrg = 5;
+        int lrg = 5;
 #else
-    int lrg = 2;
+        int lrg = 2;
 #endif
-    if (tableDetail->rowCount() > 10) {
-        lrg += 17;
-    }
-    for(int i=0; i<tableDetail->columnCount(); i++) {
-        lrg += tableDetail->columnWidth(i);
-    }
+        if (tableDetail->rowCount() > 10) {
+            lrg += 17;
+        }
+        for(int i=0; i<tableDetail->columnCount(); i++) {
+            lrg += tableDetail->columnWidth(i);
+        }
 
-    afficherDetail->setFixedSize(lrg, tableDetail->horizontalHeader()->height() + tableDetail->rowHeight(1) * qMin(10, tableDetail->rowCount()));
-    afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherDetail->size(), geometry()));
-    afficherDetail->show();
+        afficherDetail->setFixedSize(lrg, tableDetail->horizontalHeader()->height() + tableDetail->rowHeight(1) * qMin(10, tableDetail->rowCount()));
+        afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherDetail->size(), geometry()));
+        afficherDetail->show();
+    }
 
     /* Retour */
     return;
@@ -374,6 +382,11 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                 }
                 break;
 
+            case EVENEMENTS:
+                flux << nomsat << endl;
+                flux << tr("   Date      Heure      PSO    Longitude  Latitude   Évènements") << endl;
+                break;
+
             default:
                 break;
             }
@@ -382,6 +395,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             while (it2.hasNext()) {
 
                 int i = 0;
+                QStringList evts;
                 QListIterator<ResultatPrevisions> it3(it2.next());
                 while (it3.hasNext()) {
 
@@ -405,6 +419,11 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                         }
                         break;
 
+                    case EVENEMENTS:
+                        kmin = 1;
+                        elems = ElementsDetailsEvenements(res);
+                        break;
+
                     default:
                         break;
                     }
@@ -414,9 +433,23 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                         for(int k=kmin; k<elems.count(); k++) {
                             ligne += elems.at(k) + " ";
                         }
-                        flux << ligne << endl;
+
+                        if (_typeCalcul == EVENEMENTS) {
+                            evts.append(ligne);
+                        } else {
+                            flux << ligne.trimmed() << endl;
+                        }
                     }
                     i++;
+                }
+
+                if (_typeCalcul == EVENEMENTS) {
+
+                    evts.sort();
+                    QStringListIterator it4(evts);
+                    while (it4.hasNext()) {
+                        flux << it4.next().trimmed() << endl;
+                    }
                 }
                 flux << endl;
             }
@@ -437,6 +470,9 @@ void Afficher::on_actionEnregistrerTxt_triggered()
     return;
 }
 
+/*
+ * Chargement des resultats
+ */
 void Afficher::ChargementResultats() const
 {
     /* Declarations des variables locales */
@@ -469,6 +505,10 @@ void Afficher::ChargementResultats() const
                 elems = ElementsTransits(list);
                 break;
 
+            case EVENEMENTS:
+                elems = ElementsEvenements(list);
+                break;
+
             default:
                 break;
             }
@@ -483,6 +523,7 @@ void Afficher::ChargementResultats() const
                 QTableWidgetItem * const item = new QTableWidgetItem(elems.at(k));
                 item->setTextAlignment(Qt::AlignCenter);
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+
                 if (k == 0) {
                     item->setToolTip(elems.at(0));
                     item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
@@ -511,11 +552,15 @@ void Afficher::ChargementResultats() const
     return;
 }
 
+/*
+ * Ecriture de l'entete du fichier de resultats
+ */
 void Afficher::EcrireEntete() const
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
+    QString ligne;
     QFile fi(_conditions.ficRes);
     if (fi.exists()) {
         fi.remove();
@@ -538,19 +583,22 @@ void Afficher::EcrireEntete() const
 #endif
 
     // Lieu d'observation
-    QString ligne = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
-    const QString lon = Maths::ToSexagesimal(fabs(_conditions.observateur.longitude()), DEGRE, 3, 0, false, false);
-    const QString ew = (_conditions.observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
+    if (_typeCalcul != EVENEMENTS) {
 
-    const QString lat = Maths::ToSexagesimal(fabs(_conditions.observateur.latitude()), DEGRE, 2, 0, false, false);
-    const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
+        ligne = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
+        const QString lon = Maths::ToSexagesimal(fabs(_conditions.observateur.longitude()), DEGRE, 3, 0, false, false);
+        const QString ew = (_conditions.observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
-    const double alt = (_conditions.unite == QObject::tr("km")) ? _conditions.observateur.altitude() :
-                                                                  _conditions.observateur.altitude() * PIED_PAR_METRE;
-    const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
+        const QString lat = Maths::ToSexagesimal(fabs(_conditions.observateur.latitude()), DEGRE, 2, 0, false, false);
+        const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
-    ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
-    flux << ligne << endl;
+        const double alt = (_conditions.unite == QObject::tr("km")) ? _conditions.observateur.altitude() :
+                                                                      _conditions.observateur.altitude() * PIED_PAR_METRE;
+        const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
+
+        ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
+        flux << ligne << endl;
+    }
 
     // Fuseau horaire
     ligne = QObject::tr("Fuseau horaire            : %1");
@@ -564,29 +612,32 @@ void Afficher::EcrireEntete() const
     }
     flux << ligne.arg(chaine) << endl;
 
-    const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
-    const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
+    if (_typeCalcul != EVENEMENTS) {
 
-    // Conditions d'observations
-    if (_typeCalcul == TRANSITS) {
-        flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << endl;
-    } else {
-        flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << endl;
-        flux << QString(cond1.size(), ' ') << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
+        const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
+        const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
+
+        // Conditions d'observations
+        if (_typeCalcul == TRANSITS) {
+            flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << endl;
+        } else {
+            flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << endl;
+            flux << QString(cond1.size(), ' ') << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
+        }
+
+        // Unite de distance
+        flux << tr("Unité de distance         : %1").arg(_conditions.unite) << endl;
     }
-
-    // Unite de distance
-    flux << tr("Unité de distance         : %1").arg(_conditions.unite) << endl << endl;
 
     // Age des TLE
     const QString date = Date(_conditions.jj1 + _conditions.offset + EPS_DATES, 0.)
             .ToShortDate(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H).trimmed();
 
     if (_donnees.ageTle.count() == 1) {
-        flux << tr("Age du TLE                : %1 jours (au %2)").arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date) << endl << endl << endl;
+        flux << endl << tr("Age du TLE                : %1 jours (au %2)").arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date) << endl << endl << endl;
     } else {
 
-        flux << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
+        flux << endl << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
                 .arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date).arg(_donnees.ageTle.at(1), 4, 'f', 2) << endl << endl << endl;
     }
 
@@ -594,6 +645,61 @@ void Afficher::EcrireEntete() const
     return;
 }
 
+/*
+ * Elements des evenements a afficher dans la fenetre de resultats
+ */
+QStringList Afficher::ElementsEvenements(const QList<ResultatPrevisions> &liste) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QListIterator<ResultatPrevisions> it(liste);
+    while (it.hasNext()) {
+        elems.append(ElementsDetailsEvenements(it.next()));
+    }
+
+    /* Retour */
+    return elems;
+}
+
+/*
+ * Elements des evenements pour la sauvegarde dans un fichier texte
+ */
+QStringList Afficher::ElementsDetailsEvenements(const ResultatPrevisions &res) const
+{
+    /* Declarations des variables locales */
+    QStringList elems;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Nom du satellite
+    elems.append(res.nom);
+
+    // Date
+    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    elems.append(date.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
+
+    // PSO
+    elems.append(QString("%1°").arg(res.pso * RAD2DEG, 6, 'f', 2, QChar('0')));
+
+    // Longitude, latitude
+    elems.append(QString("  %1° %2").arg(fabs(res.longitude * RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ? tr("W") : tr("E")));
+    elems.append(QString(" %1° %2 ").arg(fabs(res.latitude * RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ? tr("N") : tr("S")));
+
+    // Type d'evenement
+    elems.append(res.typeEvenement);
+
+    /* Retour */
+    return elems;
+}
+
+/*
+ * Elements des flashs a afficher dans la fenetre de resultats
+ */
 QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) const
 {
     /* Declarations des variables locales */
@@ -615,7 +721,6 @@ QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) con
 
     double htMax = -1.;
     double magnMax = 99.;
-    double magnStd = 99.;
     double htSolMax;
     bool penombre;
     QString miroir;
@@ -633,27 +738,33 @@ QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) con
         // Magnitude maximale
         if (res.magnitude <= magnMax) {
             magnMax = res.magnitude;
-            magnStd = res.magnitudeStd;
             penombre = res.penombre;
             miroir = res.miroir;
         }
     }
 
+    // Hauteur maximale du satellite
     elems.append(Maths::ToSexagesimal(htMax, DEGRE, 2, 0, false, false));
 
+    // Magnitude
     const QString fmagn = "%1%2%3";
     const QString signe = (magnMax >= 0.) ? "+" : "-";
     const QString pen = (penombre) ? "*" : " ";
     elems.append(fmagn.arg(signe).arg(fabs(magnMax), 0, 'f', 1, QChar('0')).arg(pen));
 
+    // Panneau reflechissant
     elems.append(miroir);
 
+    // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
 
     /* Retour */
     return elems;
 }
 
+/*
+ * Elements des flashs pour la sauvegarde dans un fichier texte ou pour afficher des details
+ */
 QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
 {
     /* Declarations des variables locales */
@@ -726,6 +837,9 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
     return elems;
 }
 
+/*
+ * Elements des previsions de passage a afficher dans la fenetre de resultats
+ */
 QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste) const
 {
     /* Declarations des variables locales */
@@ -769,8 +883,10 @@ QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste)
         }
     }
 
+    // Hauteur maximale du satellite
     elems.append(Maths::ToSexagesimal(htMax, DEGRE, 2, 0, false, false));
 
+    // Magnitude
     if (magnMax > 98.) {
         elems.append((_conditions.eclipse || (magnStd > 98.)) ? "????" : "----");
     } else {
@@ -780,12 +896,16 @@ QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste)
         elems.append(fmagn.arg(signe).arg(fabs(magnMax), 0, 'f', 1, QChar('0')).arg(pen));
     }
 
+    // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
 
     /* Retour */
     return elems;
 }
 
+/*
+ * Elements des previsions de passage pour la sauvegarde dans un fichier texte ou pour afficher des details
+ */
 QStringList Afficher::ElementsDetailsPrevisions(const ResultatPrevisions &res) const
 {
     /* Declarations des variables locales */
@@ -839,6 +959,9 @@ QStringList Afficher::ElementsDetailsPrevisions(const ResultatPrevisions &res) c
     return elems;
 }
 
+/*
+ * Elements des transits ISS a afficher dans la fenetre de resultats
+ */
 QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) const
 {
     /* Declarations des variables locales */
@@ -873,17 +996,23 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
         }
     }
 
+    // Angle minimal
     elems.append(QString("%1").arg(angMin, 0, 'f', 2));
 
+    // Type, corps
     elems.append(type);
     elems.append(corps);
 
+    // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
 
     /* Retour */
     return elems;
 }
 
+/*
+ * Elements des transits ISS pour la sauvegarde dans un fichier texte ou pour afficher des details
+ */
 QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) const
 {
     /* Declarations des variables locales */
