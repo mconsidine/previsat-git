@@ -39,6 +39,7 @@
             <Fichier>musson.txt</Fichier>
             <Fichier>nnss.txt</Fichier>
             <Fichier>noaa.txt</Fichier>
+            <Fichier>oneweb.txt</Fichier>
             <Fichier>orbcomm.txt</Fichier>
             <Fichier>other-comm.txt</Fichier>
             <Fichier>other.txt</Fichier>
@@ -86,6 +87,7 @@
             <Fichier>molniya.txt</Fichier>
             <Fichier>iridium.txt</Fichier>
             <Fichier>iridium-NEXT.txt</Fichier>
+            <Fichier>oneweb.txt</Fichier>
             <Fichier>orbcomm.txt</Fichier>
             <Fichier>globalstar.txt</Fichier>
             <Fichier>amateur.txt</Fichier>
