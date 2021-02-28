@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    16 fevrier 2020
+# >    11 avril 2020
 
 #-------------------------------------------------
 VER_MAJ = 5.0
@@ -107,6 +107,7 @@ SOURCES += \
     src/previsions/evenementsorbitaux.cpp                  \
     src/previsions/flashs.cpp                              \
     src/previsions/prevision.cpp                           \
+    src/previsions/telescope.cpp                           \
     src/previsions/transitsiss.cpp
 
 
@@ -158,6 +159,7 @@ HEADERS += \
     src/previsions/flashs.h                              \
     src/previsions/prevision.h                           \
     src/previsions/previsionsconst.h                     \
+    src/previsions/telescope.h                           \
     src/previsions/transitsiss.h                         \
     $$ZLIB_DIR/inc/zlib.h
 
@@ -207,6 +209,7 @@ equals(BUILDTEST, true) {
         test/src/previsions/evenementsorbitauxtest.cpp           \
         test/src/previsions/flashstest.cpp                       \
         test/src/previsions/previsiontest.cpp                    \
+        test/src/previsions/telescopetest.cpp                    \
         test/src/previsions/transitsisstest.cpp                  \
         test/src/testtools.cpp                                   \
         test/src/tst_previsattest.cpp
@@ -223,6 +226,7 @@ equals(BUILDTEST, true) {
         test/src/previsions/evenementsorbitauxtest.h           \
         test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \
+        test/src/previsions/telescopetest.cpp                  \
         test/src/previsions/transitsisstest.h                  \
         test/src/testtools.h
 

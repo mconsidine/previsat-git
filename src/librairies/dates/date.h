@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 novembre 2018
+ * >    5 octobre 2020
  *
  */
 
@@ -168,6 +168,12 @@ public:
      * @return chaine de caracteres contenant la date au format court (AAAA/MM/JJ)
      */
     QString ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const;
+
+    /**
+     * @brief ToShortDateAMJmillisec Conversion en chaine de caracteres avec une precision a la milliseconde
+     * @return chaine de caracteres avec une precision a la milliseconde
+     */
+    QString ToShortDateAMJmillisec() const;
 
     /**
      * @brief ToLongDate Conversion en chaine de caracteres longue

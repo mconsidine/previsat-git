@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >
+ * >    5 octobre 2020
  *
  */
 
@@ -73,7 +73,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
     if (elements.aos) {
 
         double periode = st * NB_JOUR_PAR_MIN;
-        if ((sat.hauteur() * periode) > EPSDBL100) {
+        if ((sat.hauteur() * st) > EPSDBL100) {
             elements.typeAOS = QObject::tr("LOS");
         }
 
@@ -107,21 +107,19 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 t_ht = (atst1) ? jjm.at(1) : jjm.at(2);
 
                 if (elements.typeAOS == QObject::tr("AOS")) {
-                    jjm.clear();
-                    jjm.append(t_ht - periode);
-                    jjm.append(t_ht - 0.5 * periode);
-                    jjm.append(t_ht);
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht - 0.5 * periode;
+                    jjm[2] = t_ht;
+
                 } else {
-                    jjm.clear();
-                    jjm.append(t_ht);
-                    jjm.append(t_ht + 0.5 * periode);
-                    jjm.append(t_ht + periode);
+                    jjm[0] = t_ht;
+                    jjm[1] = t_ht + 0.5 * periode;
+                    jjm[2] = t_ht + periode;
                 }
 
                 while (fabs(tAOS - t_ht) > EPS_DATES) {
 
                     tAOS = t_ht;
-                    ht.clear();
 
                     for(int i=0; i<3; i++) {
 
@@ -129,16 +127,15 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                         obs.CalculPosVit(date);
                         sat.CalculPosVit(date);
                         sat.CalculCoordHoriz(obs, true, false);
-                        ht.append(sat.hauteur());
+                        ht[i] = sat.hauteur();
                     }
 
                     t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
                     periode *= 0.5;
 
-                    jjm.clear();
-                    jjm.append(t_ht - periode);
-                    jjm.append(t_ht);
-                    jjm.append(t_ht + periode);
+                    jjm[0] = t_ht - periode;
+                    jjm[1] = t_ht;
+                    jjm[2] = t_ht + periode;
                 }
 
                 elements.date = Date(tAOS, 0.);

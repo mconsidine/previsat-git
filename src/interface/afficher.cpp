@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    5 octobre 2020
  *
  */
 
@@ -111,6 +111,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         ui->detailsTransit->setVisible(true);
         break;
 
+    case TELESCOPE:
     default:
         break;
     }
@@ -198,6 +199,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                                                    << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max") << tr("Distance"));
             break;
 
+        case TELESCOPE:
         case EVENEMENTS:
         default:
             break;
@@ -230,6 +232,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                 elems = ElementsDetailsTransits(res);
                 break;
 
+            case TELESCOPE:
             case EVENEMENTS:
             default:
                 break;
@@ -291,6 +294,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
             break;
 
+        case TELESCOPE:
         case EVENEMENTS:
         default:
             break;
@@ -387,6 +391,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                 flux << tr("   Date      Heure      PSO    Longitude  Latitude   Évènements") << endl;
                 break;
 
+            case TELESCOPE:
             default:
                 break;
             }
@@ -424,6 +429,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                         elems = ElementsDetailsEvenements(res);
                         break;
 
+                    case TELESCOPE:
                     default:
                         break;
                     }
@@ -509,6 +515,7 @@ void Afficher::ChargementResultats() const
                 elems = ElementsEvenements(list);
                 break;
 
+            case TELESCOPE:
             default:
                 break;
             }

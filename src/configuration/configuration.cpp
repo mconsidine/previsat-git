@@ -441,6 +441,9 @@ void Configuration::EcritureConfiguration()
     // Numero NORAD de la station spatiale
     cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
 
+    // Numero NORAD de la station spatiale
+    cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
+
     // Observateurs
     cfg.writeStartElement("Observateurs");
     QListIterator<Observateur> itObs(_observateurs);
