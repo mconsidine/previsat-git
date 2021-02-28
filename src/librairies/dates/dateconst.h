@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2018
+ * >    5 octobre 2020
  *
  */
 
@@ -74,6 +74,7 @@ static const double NB_MIN_PAR_JOUR = 1440.;
 static const double NB_SEC_PAR_MIN = 60.;
 static const double NB_SEC_PAR_HEUR = 3600.;
 static const double NB_SEC_PAR_JOUR = 86400.;
+static const double NB_MILLISEC_PAR_JOUR = 86400000.;
 
 static const double NB_JOURS_PAR_ANJ = 365.25;
 static const double NB_JOURS_PAR_SIECJ = 36525.;
@@ -84,6 +85,7 @@ static const double NB_SEC_TT_TAI = 32.184;
 static const double NB_JOUR_PAR_HEUR = 1. / NB_HEUR_PAR_JOUR;
 static const double NB_JOUR_PAR_MIN = 1. / NB_MIN_PAR_JOUR;
 static const double NB_JOUR_PAR_SEC = 1. / NB_SEC_PAR_JOUR;
+static const double NB_JOUR_PAR_MILLISEC = 1. / NB_MILLISEC_PAR_JOUR;
 
 static const double NB_MIN_PAR_SEC = 1. / NB_SEC_PAR_MIN;
 static const double NB_HEUR_PAR_MIN = 1. / NB_MIN_PAR_HEUR;

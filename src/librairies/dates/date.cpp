@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juillet 2019
+ * >    5 octobre 2020
  *
  */
 
@@ -407,6 +407,9 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     return (res);
 }
 
+/*
+ * Conversion en chaine de caracteres courte (AAAA/MM/JJ)
+ */
 QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const
 {
     /* Declarations des variables locales */
@@ -434,6 +437,25 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
             arg(date._jour, 2, 10, QChar('0')).arg(hr, 2, 10, QChar('0')).
             arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(sys));
+}
+
+/*
+ * Conversion en chaine de caracteres avec une precision a la milliseconde
+ */
+QString Date::ToShortDateAMJmillisec() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmtDate = "yyyy/MM/dd HH:mm:ss.zzz";
+
+    /* Corps de la methode */
+    const int sec = static_cast<int> (_secondes + EPS_DATES);
+    const int msec = static_cast<int> (floor(1000. * (_secondes - sec) + 0.5));
+    const QDateTime date(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec, msec));
+
+    /* Retour */
+    return date.toString(fmtDate);
 }
 
 /*
