@@ -1,6 +1,6 @@
 ﻿/*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 juillet 2020
+ * >    1er mars 2021
  *
  */
 
@@ -755,40 +755,8 @@ void PreviSat::MAJTLE()
         VerifAgeTLE();
     }
 
-    // Verification du fichier iss.3le
-    const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
-    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-
-    if (ui->verifMAJ->isChecked()) {
-
-        const QFile fi(fichier3leIss);
-        if (fi.exists()) {
-
-            // Lecture du fichier iss.3le
-            TLE::LectureFichier3le(fichier3leIss, tab3le);
-        }
-
-        const QFile fi2(ficHsf);
-
-        const double jj3lemoy = (tab3le.isEmpty()) ?
-                    0. : 0.5 * (tab3le.first().dateDebutValidite().jourJulienUTC() + tab3le.last().dateDebutValidite().jourJulienUTC());
-        if (!fi2.exists() || tab3le.isEmpty() || (dateCourante.jourJulienUTC() >= jj3lemoy)) {
-
-            // Telechargement du fichier Human Space Flight
-            amajDeb = true;
-            dirDwn = dirTmp;
-            TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", false);
-            amajDeb = false;
-        }
-    }
-
-    // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
-
     // Affichage des manoeuvres ISS
-    if (!tabManoeuvresISS.isEmpty()) {
-        AffichageManoeuvresISS();
-    }
+    ui->lbl_manoeuvresISS->setText(tr("Données de manoeuvres ISS indisponibles"));
 
     /* Retour */
     return;
@@ -1073,6 +1041,7 @@ void PreviSat::InitAffichageDemarrage() const
     ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
     ui->calcTransitLunaireJour->setChecked(settings.value("previsions/calcTransitLunaireJour", false).toBool());
     ui->afficherTransit->setEnabled(false);
+    ui->majTleIss->setVisible(false);
 
     ui->valHauteurSatMetOp->setVisible(false);
     ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -4294,58 +4263,10 @@ void PreviSat::CalculAgeTLETransitISS() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fichier = dirTle + QDir::separator() + "iss.3le";
-    const int nbt = TLE::VerifieFichier(fichier, false);
 
     /* Corps de la methode */
-    if (nbt > 0) {
-
-        // Calcul de l'age du TLE de l'ISS pour l'onglet Transits ISS
-        QVector<TLE> tleISS;
-        TLE::LectureFichier3le(fichier, tleISS);
-        const double jjcour = dateCourante.jourJulienUTC();
-        const double age1 = tleISS.first().dateDebutValidite().jourJulienUTC() - jjcour;
-        const double age2 = jjcour - tleISS.last().dateDebutValidite().jourJulienUTC();
-        const double ageISS = qMax(age1, age2);
-
-        if (ageISS > 0.) {
-
-            const QString chaine = tr("%1 jours");
-            QBrush brush;
-            QPalette paletteTLE;
-            brush.setStyle(Qt::SolidPattern);
-
-            // Indicateur de l'age du TLE
-            if (fabs(ageISS) > ui->ageMaxTLETransit->value() + 8.) {
-                brush.setColor(Qt::red);
-            } else if (fabs(ageISS) > ui->ageMaxTLETransit->value() + 4.) {
-                brush.setColor(QColor("orange"));
-            } else if (fabs(ageISS) > ui->ageMaxTLETransit->value()) {
-                brush.setColor(Qt::darkYellow);
-            } else {
-                brush.setColor(QColor("forestgreen"));
-            }
-
-            paletteTLE.setBrush(QPalette::WindowText, brush);
-            ui->ageTLETransit->setPalette(paletteTLE);
-
-            if (fabs(ageISS - age1) < EPSDBL100) {
-                ui->lbl_ageTLETransit->setText(tr("Age du premier TLE :"));
-            } else {
-                ui->lbl_ageTLETransit->setText(tr("Age du dernier TLE :"));
-            }
-
-            ui->ageTLETransit->setText(chaine.arg(ageISS, 0, 'f', 2));
-            ui->lbl_ageTLETransit->setVisible(true);
-            ui->ageTLETransit->setVisible(true);
-        } else {
-            ui->lbl_ageTLETransit->setVisible(false);
-            ui->ageTLETransit->setVisible(false);
-        }
-    } else {
-        ui->lbl_ageTLETransit->setVisible(false);
-        ui->ageTLETransit->setVisible(false);
-    }
+    ui->lbl_ageTLETransit->setVisible(false);
+    ui->ageTLETransit->setVisible(false);
 
     /* Retour */
     return;
@@ -6367,19 +6288,6 @@ void PreviSat::FinEnregistrementFichier()
 
                         CalculsAffichage();
                     }
-                }
-            }
-
-            const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
-            if (ff.fileName() == "HSF.html") {
-
-                // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-                const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-                TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
-
-                // Affichage des manoeuvres ISS
-                if (!tabManoeuvresISS.isEmpty()) {
-                    AffichageManoeuvresISS();
                 }
             }
         }
@@ -11178,14 +11086,14 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", true);
 
     // Creation du fichier iss.3le (les lignes sont verifiees avant l'ecriture du fichier)
-    const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
-    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
-    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
+//    const QString ficHsf = dirTmp + QDir::separator() + "HSF.html";
+//    const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+//    TLE::LectureTrajectoryData(ficHsf, fichier3leIss, tabManoeuvresISS);
 
-    // Affichage des manoeuvres ISS
-    if (!tabManoeuvresISS.isEmpty()) {
-        AffichageManoeuvresISS();
-    }
+//    // Affichage des manoeuvres ISS
+//    if (!tabManoeuvresISS.isEmpty()) {
+//        AffichageManoeuvresISS();
+//    }
 
     // Mise a jour de tous les groupes de TLE
     const QString groupe = tr("tous");
@@ -12267,13 +12175,8 @@ void PreviSat::on_majTleIss_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    dirDwn = dirTmp;
 
     /* Corps de la methode */
-    // Mise a jour du fichier iss.3le
-    messagesStatut->setText(tr("Mise à jour du TLE de l'ISS en cours..."));
-    TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + "HSF.html", false);
-    CalculAgeTLETransitISS();
 
     /* Retour */
     return;
@@ -12428,7 +12331,7 @@ void PreviSat::on_calculsTransit_clicked()
 
     try {
 
-        const QString fichier3leIss = dirTle + QDir::separator() + "iss.3le";
+        const QString fichier3leIss = dirTle + QDir::separator() + "visual.txt";
         const QFileInfo fi(fichier3leIss);
         if (!fi.exists()) {
             throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
@@ -12517,26 +12420,12 @@ void PreviSat::on_calculsTransit_clicked()
         }
 
         // Lecture du TLE
-        TLE::LectureFichier3le(fi.absoluteFilePath(), tabtle);
+        const QStringList iss(QStringList() << NORAD_STATION_SPATIALE);
+        TLE::LectureFichier(fi.absoluteFilePath(), iss, tabtle);
         if (tabtle.at(0).norad() != NORAD_STATION_SPATIALE) {
             const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
-        }
-
-        // Age des TLE
-        const double agePremierTLE = tabtle.first().epoque().jourJulienUTC();
-        const double ageDernierTLE = tabtle.last().epoque().jourJulienUTC();
-        double age1 = 0.;
-        if (jj1 < agePremierTLE) age1 = agePremierTLE - jj1;
-        if (jj1 > ageDernierTLE) age1 = jj1 - ageDernierTLE;
-        double age2 = 0.;
-        if (jj2 < agePremierTLE) age2 = agePremierTLE - jj2;
-        if (jj2 > ageDernierTLE) age2 = jj2 - ageDernierTLE;
-
-        if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
-            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 
         messagesStatut->setText(tr("Calculs en cours. Veuillez patienter..."));

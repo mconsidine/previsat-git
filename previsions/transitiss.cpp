@@ -1,6 +1,6 @@
 ﻿/*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2019  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * >    24 juillet 2011
  *
  * Date de revision
- * >    18 juillet 2020
+ * >    1er mars 2021
  *
  */
 
@@ -81,7 +81,8 @@ void TransitISS::CalculTransitsISS(const Conditions &conditions, Observateur &ob
     const QString fmt = "%1%2 %3 %4 %5 %6 %7   %8    %9   %10 %11 %12%13  %14%15";
 
     // Lecture du TLE
-    TLE::LectureFichier3le(conditions.fic(), tabtle);
+    const QStringList iss(QStringList() << NORAD_STATION_SPATIALE);
+    TLE::LectureFichier(conditions.fic(), iss, tabtle);
 
     const double periode = 1. / tabtle.at(0).no() - temps1;
 

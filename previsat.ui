@@ -10035,6 +10035,9 @@
             <property name="text">
              <string>Fichier de manoeuvres ISS absent : cliquer sur 'Mettre à jour TLE de l'ISS'</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
            <widget class="QCheckBox" name="calcTransitLunaireJour">
             <property name="geometry">
@@ -10894,7 +10897,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-84</y>
+                 <y>0</y>
                  <width>784</width>
                  <height>560</height>
                 </rect>
