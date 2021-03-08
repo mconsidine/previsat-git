@@ -96,6 +96,13 @@ public:
      */
     void show();
 
+    /**
+     * @brief CalculCouleurCiel Determination de la couleur du ciel
+     * @param hauteurSoleil hauteur du Soleil (en degres)
+     * @return
+     */
+    static QBrush CalculCouleurCiel(const double hauteurSoleil);
+
 
 public slots:
 

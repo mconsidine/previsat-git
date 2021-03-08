@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    evenements.h
+ * >    evenementsorbitaux.h
  *
  * Localisation
  * >    previsions
@@ -44,7 +44,7 @@
 
 
 class Satellite;
-struct Ephemerides;
+struct EphemeridesEvenements;
 
 class EvenementsOrbitaux
 {
@@ -118,7 +118,7 @@ private:
      * @param satellites satellites
      * @return ephemerides
      */
-    static QMap<QString, QList<Ephemerides> > CalculEphemerides(const QList<Satellite> &satellites);
+    static QMap<QString, QList<EphemeridesEvenements> > CalculEphemerides(const QList<Satellite> &satellites);
 
     /**
      * @brief CalculEvt Calcul des elements de l'evenement orbital

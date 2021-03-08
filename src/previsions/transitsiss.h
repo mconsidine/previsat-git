@@ -45,7 +45,7 @@
 
 class Corps;
 class Satellite;
-struct Ephemerides;
+struct EphemeridesTransits;
 
 class TransitsIss
 {
@@ -148,7 +148,7 @@ private:
      * @brief CalculEphemSoleilLune Calcul des ephemerides du Soleil et de la Lune
      * @return tableau d'ephemerides
      */
-    static QMap<CorpsTransit, QList<Ephemerides> > CalculEphemSoleilLune();
+    static QMap<CorpsTransit, QList<EphemeridesTransits> > CalculEphemSoleilLune();
 
 
 };

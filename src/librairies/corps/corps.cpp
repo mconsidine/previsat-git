@@ -100,8 +100,6 @@ Corps::Corps()
 
     if (_caz.isEmpty() || _saz.isEmpty()) {
 
-        _caz.clear();
-        _saz.clear();
         for(int i=0; i<360; i++) {
             const double az = i * DEG2RAD;
             _caz.append(cos(az));
@@ -257,7 +255,9 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
             bool atrouve = false;
             int i = 0;
             while (!atrouve && (i < _tabConst.size())) {
+
                 if (_declinaison >= _tabConst.at(i).dec) {
+
                     if (_ascensionDroite < _tabConst.at(i).ad2) {
                         if (_ascensionDroite >= _tabConst.at(i).ad1) {
                             atrouve = true;
@@ -435,6 +435,7 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
         const double sph = sin(lat);
         _ct = 1. / sqrt(1. - E2 * sph * sph);
         _latitude = atan((pos.z() + re2 * _ct * sph) / _r0);
+
     } while (fabs(_latitude - lat) > 1.e-7);
 
     /* Retour */
@@ -517,13 +518,16 @@ void Corps::InitTabConstellations(const QString &dirCommonData)
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fi);
 
+            ConstElem cst;
             _tabConst.clear();
+
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
+
                 if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
                     const QStringList list = ligne.split(" ", QString::SkipEmptyParts);
-                    ConstElem cst;
+
                     cst.nom = list.at(0);
                     cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
                     cst.ad2 = list.at(2).toDouble() * HEUR2RAD;

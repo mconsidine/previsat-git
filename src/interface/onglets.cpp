@@ -416,7 +416,8 @@ void Onglets::AffichageDonneesSatellite() const
                     delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
                     delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
 
-        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).arg(cDelaiEcl));
+        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)))
+                             .arg(cDelaiEcl));
 
         _ui->lbl_prochainJN->setVisible(true);
         _ui->dateJN->setVisible(true);
@@ -850,11 +851,12 @@ void Onglets::AffichageResultatsDonnees() const
         _ui->lbl_satellitesTrouves->setText(chaine.arg(_resultatsSatellitesTrouves.count()));
 
         // Remplissage de la liste de resultats
+        QString nomsat;
         QStringListIterator it(_resultatsSatellitesTrouves);
         while (it.hasNext()) {
 
             const QString item = it.next().toUpper();
-            QString nomsat = item.mid(123).trimmed();
+            nomsat = item.mid(123).trimmed();
 
             if (nomsat.isEmpty()) {
                 nomsat = item.mid(0, 5);
@@ -1388,6 +1390,7 @@ void Onglets::InitFicObs(const bool alarme)
 void Onglets::InitFicPref(const bool majAff) const
 {
     /* Declarations des variables locales */
+    QString fichier;
 
     /* Initialisations */
 
@@ -1399,7 +1402,7 @@ void Onglets::InitFicPref(const bool majAff) const
 
         const QString fic = Configuration::instance()->dirPrf() + QDir::separator() + it.next();
         const QFileInfo fi(fic);
-        QString fichier = fi.completeBaseName();
+        fichier = fi.completeBaseName();
         fichier[0] = fichier[0].toUpper();
 
         _ui->preferences->addItem((fi.completeBaseName() == "defaut") ? tr("* Défaut") : fichier);
@@ -1642,7 +1645,7 @@ void Onglets::on_calculsPrev_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats());
+            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats());
             afficher->show();
         }
 
@@ -1868,6 +1871,7 @@ void Onglets::on_nom_returnPressed()
 
         int indx1 = 127;
         int indx2 = 0;
+        int indx3;
         _resultatsSatellitesTrouves.clear();
 
         // Recherche dans le tableau de donnees a partir du nom de l'objet
@@ -1875,7 +1879,7 @@ void Onglets::on_nom_returnPressed()
             indx1 = _donneesSat.indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
             if (indx1 >= 0) {
 
-                int indx3 = _donneesSat.lastIndexOf("\n", indx1) + 1;
+                indx3 = _donneesSat.lastIndexOf("\n", indx1) + 1;
                 indx2 = _donneesSat.indexOf("\n", indx3) - indx3;
                 if ((indx1 - indx3) >= 123) {
 
@@ -2131,7 +2135,8 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         const double jour_lct = dateLancement.mid(8, 2).toDouble();
         const Date date_lancement(annee_lct, mois_lct, jour_lct, 0.);
 
-        _ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ? tr("Inconnue") : date_lancement.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
+        _ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ?
+                                                  tr("Inconnue") : date_lancement.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
 
         // Date de rentree
         if (dateRentree.isEmpty()) {
@@ -2358,7 +2363,8 @@ void Onglets::on_actionSupprimerCategorie_triggered()
     const QString categorie = _ui->categoriesObs->currentItem()->text();
     const QString fic = categorie.toLower();
 
-    QMessageBox msgbox(tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?").arg(categorie), QMessageBox::Question, QMessageBox::Yes,
+    QMessageBox msgbox(tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?")
+                       .arg(categorie), QMessageBox::Question, QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
     msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
     msgbox.setButtonText(QMessageBox::No, tr("Non"));
@@ -2570,7 +2576,7 @@ void Onglets::on_validerObs_clicked()
             const double x2 = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
 
             QString text;
-            flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x1, atd) + nomlieu << endl;
+            flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x2, atd) + nomlieu << endl;
             fi.close();
 
             on_categoriesObs_currentRowChanged(0);
@@ -2710,7 +2716,8 @@ void Onglets::on_actionModifier_coordonnees_triggered()
     // Suppression du lieu du fichier
     QString text;
     const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-    const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
+    const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude()))
+            + lieu.nomlieu();
 
     const QString fic = Configuration::instance()->dirCoord() + QDir::separator() +
             ((_ui->categoriesObs->currentRow() == 0) ? "preferes" : _ui->categoriesObs->currentItem()->text());
@@ -2750,12 +2757,14 @@ void Onglets::on_actionRenommerLieu_triggered()
 
     /* Corps de la methode */
     const QString nvNomLieu = getText(this, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"), tr("OK"), tr("Annuler"),
-                                      QLineEdit::Normal, _ui->lieuxObs->item(_ui->lieuxObs->currentRow())->text(), Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+                                      QLineEdit::Normal, _ui->lieuxObs->item(_ui->lieuxObs->currentRow())->text(),
+                                      Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
     if (!nvNomLieu.trimmed().isEmpty()) {
 
         const QString dirCoord = Configuration::instance()->dirCoord();
-        const QString fic = dirCoord + QDir::separator() + ((_ui->categoriesObs->currentRow() == 0) ? "preferes" : _ui->categoriesObs->currentItem()->text());
+        const QString fic = dirCoord + QDir::separator() + ((_ui->categoriesObs->currentRow() == 0) ?
+                                                                "preferes" : _ui->categoriesObs->currentItem()->text());
 
         QFile sr(fic);
         sr.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -2807,7 +2816,8 @@ void Onglets::on_actionSupprimerLieu_triggered()
 
         QString text;
         const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + lieu.nomlieu();
+        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude()))
+                + lieu.nomlieu();
 
         QFile sr(fic);
         sr.open(QIODevice::ReadOnly | QIODevice::Text);

@@ -251,15 +251,18 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
             fi.open(QIODevice::ReadOnly | QIODevice::Text);
 
             int itle = 0;
+            QString lig0;
+            QString lig1;
+            QString lig2;
+            QString msg;
             QTextStream flux(&fi);
 
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
 
-                QString lig0;
-                QString lig1;
-                QString lig2;
+                lig1 = "";
+                lig2 = "";
 
                 lig0 = ligne;
                 if (ligne.mid(0, 2) == "1 ") {
@@ -284,7 +287,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                 VerifieLignes(lig1, lig2, nomsat, alarme);
 
                 if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
-                    QString msg = "";
+                    msg = "";
                     if (alarme) {
                         msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
                     }
@@ -363,12 +366,17 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QStrin
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
 
+        QString lig0;
+        QString lig1;
+        QString lig2;
+        TLE tle;
+
         while (!flux.atEnd() && !afin) {
 
             const QString ligne = flux.readLine();
-            QString lig0 = ligne;
-            QString lig1;
-            QString lig2;
+            lig0 = ligne;
+            lig1 = "";
+            lig2 = "";
 
             if (ligne.mid(0, 2) == "1 ") {
 
@@ -400,7 +408,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QStrin
             // Sauvegarde du TLE
             if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
 
-                TLE tle(lig0, lig1, lig2);
+                tle = TLE(lig0, lig1, lig2);
                 tle._nom = nomsat.trimmed();
 
                 if (!mapTLE.contains(tle._norad)) {
@@ -443,6 +451,10 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
             fichier.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fichier);
 
+            QString ligne1;
+            QString ligne2;
+
+
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
@@ -450,7 +462,8 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 
                     const QString ligne0 = ligne;
 
-                    QString ligne1, ligne2;
+                    ligne1 = "";
+                    ligne2 = "";
                     while (ligne1.trimmed().isEmpty()) {
                         ligne1 = flux.readLine();
                     }
@@ -499,10 +512,12 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
         Date debValid(-DATE_INFINIE, 0., false);
 
         QString dateFormatNasa;
+        QString ligne;
         QString orb;
+
         while (!flux.atEnd()) {
 
-            QString ligne = flux.readLine();
+            ligne = flux.readLine();
 
             // Lecture des manoeuvres
             if (ligne.contains("Maneuvers contained")) {
@@ -602,7 +617,8 @@ void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichie
             if (masse1.isEmpty()) {
                 masse1 = masse2;
             }
-            tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " + tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
+            tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
+                                 tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
             i++;
         }
         dateArc1 = dateArc2;
@@ -674,12 +690,15 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     int isat = 0;
     int res1 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
     int res2 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
+    QString norad2;
+
     while (isat < nbOld || j < nbNew) {
 
         const QString sat = QString::number(isat);
         const QString noradInf = (nomFicOld == nomFicNew) ? "99999" : "";
         const QString norad1 = (isat < nbOld) ? tleOld[sat]._norad : noradInf;
-        QString norad2;
+
+        norad2 = "";
         if (nomFicOld == nomFicNew) {
             norad2 = (j < nbNew) ? tleNew[QString::number(j)]._norad : "99999";
         } else {
@@ -787,6 +806,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
         QMapIterator<QString, TLE> it(tleOld);
         while (it.hasNext()) {
             it.next();
+
             const TLE tle = it.value();
             flux << tle._ligne0 << endl;
             flux << tle._ligne1 << endl;
@@ -922,7 +942,8 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
         if (alarme) {
-            msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat).arg(li2.mid(1, 6).trimmed());
+            msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat)
+                    .arg(li2.mid(1, 6).trimmed());
         }
         throw PreviSatException(msg, WARNING);
     }
@@ -938,7 +959,8 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     }
 
     // Verification de la ponctuation des lignes
-    if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') || (li2.at(54) != '.')) {
+    if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') ||
+            (li2.at(54) != '.')) {
         if (alarme) {
             msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
         }
@@ -948,7 +970,8 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
         if (alarme) {
-            msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)").arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5));
+            msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)").arg(nomsat).arg(li1.mid(2, 5))
+                    .arg(li2.mid(2, 5));
         }
         throw PreviSatException(msg, WARNING);
     }

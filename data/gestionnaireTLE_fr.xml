@@ -55,6 +55,7 @@
             <Fichier>spire.txt</Fichier>
             <Fichier>starlink.txt</Fichier>
             <Fichier>stations.txt</Fichier>
+            <Fichier>swarm.txt</Fichier>
             <Fichier>tdrss.txt</Fichier>
             <Fichier>tle-new.txt</Fichier>
             <Fichier>visual.txt</Fichier>
@@ -96,6 +97,7 @@
             <Fichier>ses.txt</Fichier>
             <Fichier>satnogs.txt</Fichier>
             <Fichier>starlink.txt</Fichier>
+            <Fichier>swarm.txt</Fichier>
         </Fichiers>
     </Categorie>
     <Categorie nom = "navigation">

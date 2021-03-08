@@ -151,7 +151,7 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
         while (!flux.atEnd()) {
 
             const QStringList ligne = flux.readLine().split(" ");
-            QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
+            const QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
             _tabLigCst.append(lig);
         }
     }

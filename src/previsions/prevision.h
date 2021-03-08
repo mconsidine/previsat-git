@@ -43,7 +43,7 @@
 #include "previsionsconst.h"
 
 
-struct Ephemerides;
+struct EphemeridesPrevisions;
 
 class Prevision
 {
@@ -116,7 +116,7 @@ private:
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
      * @return tableau d'ephemerides
      */
-    static QList<Ephemerides> CalculEphemSoleilObservateur();
+    static QList<EphemeridesPrevisions> CalculEphemSoleilObservateur();
 
 
 };

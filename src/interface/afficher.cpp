@@ -73,7 +73,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _resultats = resultats;
 
     /* Corps du constructeur */
-#if (BUILDTEST == false)
+#if (BUILD_TEST == false)
     ui->setupUi(this);
 
     QStyle * const styleBouton = QApplication::style();
@@ -329,7 +329,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-#if (BUILDTEST == true)
+#if (BUILD_TEST == true)
     const QString fic = _conditions.ficRes;
 #else
     const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
@@ -351,13 +351,20 @@ void Afficher::on_actionEnregistrerTxt_triggered()
         fichier.open(QIODevice::Append | QIODevice::Text);
         QTextStream flux(&fichier);
 
+        int i;
+        int kmin;
+        QString ligne;
+        QString nomsat;
+        QStringList evts;
+        QStringList elems;
+
         bool ecrireNomColonnes = true;
         QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
         while (it1.hasNext()) {
             it1.next();
 
             // Nom du satellite
-            QString nomsat = it1.value().at(0).at(0).nom;
+            nomsat = it1.value().at(0).at(0).nom;
             if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
                 nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
             }
@@ -399,13 +406,13 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             QListIterator<QList<ResultatPrevisions> > it2(it1.value());
             while (it2.hasNext()) {
 
-                int i = 0;
-                QStringList evts;
+                i = 0;
+                evts.clear();
                 QListIterator<ResultatPrevisions> it3(it2.next());
                 while (it3.hasNext()) {
 
-                    int kmin = 0;
-                    QStringList elems;
+                    kmin = 0;
+                    elems.clear();
                     const ResultatPrevisions res = it3.next();
 
                     switch (_typeCalcul) {
@@ -435,7 +442,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                     }
 
                     if (!elems.isEmpty()) {
-                        QString ligne;
+                        ligne = "";
                         for(int k=kmin; k<elems.count(); k++) {
                             ligne += elems.at(k) + " ";
                         }
@@ -461,12 +468,12 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             }
         }
 
-#if (BUILDTEST == false)
+#if (BUILD_TEST == false)
         flux << endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << endl;
 #endif
         fichier.close();
 
-#if (BUILDTEST == false)
+#if (BUILD_TEST == false)
         QFile fi2(fic);
         fichier.copy(fi2.fileName());
 #endif
@@ -482,6 +489,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 void Afficher::ChargementResultats() const
 {
     /* Declarations des variables locales */
+    QStringList elems;
 
     /* Initialisations */
     int j = 0;
@@ -496,7 +504,7 @@ void Afficher::ChargementResultats() const
 
             const QList<ResultatPrevisions> list = it2.next();
 
-            QStringList elems;
+            elems.clear();
             switch (_typeCalcul) {
 
             case PREVISIONS:
@@ -584,7 +592,7 @@ void Afficher::EcrireEntete() const
     QTextStream flux(&fichier);
 
     // Ligne d'entete
-#if (BUILDTEST == false)
+#if (BUILD_TEST == false)
     flux << QString("%1 %2 / %3 (c) %4").arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
             arg(QString(APP_ANNEES_DEV)) << endl << endl;
 #endif

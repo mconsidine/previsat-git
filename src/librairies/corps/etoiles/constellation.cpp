@@ -139,10 +139,12 @@ void Constellation::Initialisation(const QString &dirCommonData)
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlabel.dat";
     QFile fi(fic);
     if (fi.exists() && fi.size() != 0) {
+
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
 
         while (!flux.atEnd()) {
+
             const QString ligne = flux.readLine();
             const double asc = ligne.mid(0, 6).toDouble();
             const double dec = ligne.mid(7, 7).toDouble();

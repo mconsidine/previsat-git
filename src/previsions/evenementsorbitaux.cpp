@@ -45,7 +45,7 @@ static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
 
-struct Ephemerides
+struct EphemeridesEvenements
 {
     double jourJulienUTC;
 
@@ -156,42 +156,60 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     }
 
     // Calcul des ephemerides
-    const QMap<QString, QList<Ephemerides> > tabEphem = CalculEphemerides(sats);
+    const QMap<QString, QList<EphemeridesEvenements> > tabEphem = CalculEphemerides(sats);
 
     /* Corps de la methode */
+    bool passNoeuds;
+    bool passOmbre;
+    bool passPso;
+    bool transitionsJourNuit;
+    bool tmpOmbre;
+    int k;
+    int l;
+    int m;
+    int n;
+    int i;
+    int dim;
+    double rayonVecteur;
+    double altitude;
+    Satellite sat;
+    QList<double> jjm;
+    QList<double> evt;
+    ResultatPrevisions res;
+    QList<ResultatPrevisions> result;
+    QList<QList<ResultatPrevisions> > resultatSat;
+
     // Boucle sur les satellites
     int j = 0;
-    QMapIterator<QString, QList<Ephemerides> > it2(tabEphem);
+    QMapIterator<QString, QList<EphemeridesEvenements> > it2(tabEphem);
     while (it2.hasNext()) {
         it2.next();
 
-        bool passNoeuds = false;
-        bool passOmbre = false;
-        bool passPso = false;
-        bool transitionsJourNuit = false;
+        passNoeuds = false;
+        passOmbre = false;
+        passPso = false;
+        transitionsJourNuit = false;
 
-        int k = 0;
-        int l = 0;
-        int m = 0;
-        int n = 0;
+        k = 0;
+        l = 0;
+        m = 0;
+        n = 0;
 
-        Satellite sat = sats.at(j);
-        QList<QList<ResultatPrevisions> > resultatSat;
-        QList<ResultatPrevisions> result;
+        sat = sats.at(j);
+        resultatSat.clear();
+        result.clear();
 
         // Boucle sur les ephemerides
-        int i = 0;
-        int dim = it2.value().size() - 2;
-        QListIterator<Ephemerides> it3(it2.value());
+        i = 0;
+        dim = it2.value().size() - 2;
+        QListIterator<EphemeridesEvenements> it3(it2.value());
         do {
 
-            ResultatPrevisions res;
+            const EphemeridesEvenements eph1 = it3.next();
+            const EphemeridesEvenements eph2 = it3.next();
+            const EphemeridesEvenements eph3 = it3.next();
 
-            const Ephemerides eph1 = it3.next();
-            const Ephemerides eph2 = it3.next();
-            const Ephemerides eph3 = it3.next();
-
-            QList<double> jjm;
+            jjm.clear();
             jjm.append(eph1.jourJulienUTC);
             jjm.append(eph2.jourJulienUTC);
             jjm.append(eph3.jourJulienUTC);
@@ -204,8 +222,8 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
 
                     // Il y a un passage a un noeud : calcul de la date par interpolation
                     passNoeuds = true;
-                    QList<double> evt;
 
+                    evt.clear();
                     evt.append(eph1.posZ);
                     evt.append(eph2.posZ);
                     evt.append(eph3.posZ);
@@ -222,7 +240,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
             if (_conditions.passageOmbre) {
 
                 l = i;
-                bool tmpOmbre = false;
+                tmpOmbre = false;
                 const double eclipse1 = eph1.phiTerre - eph1.phiSoleil - eph1.elongationSoleil;
                 const double eclipse3 = eph3.phiTerre - eph3.phiSoleil - eph3.elongationSoleil;
 
@@ -233,7 +251,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     tmpOmbre = true;
                     const double eclipse2 = eph2.phiTerre - eph2.phiSoleil - eph2.elongationSoleil;
 
-                    QList<double> evt;
+                    evt.clear();
                     evt.append(eclipse1);
                     evt.append(eclipse2);
                     evt.append(eclipse3);
@@ -253,7 +271,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     const double penombre2 = eph2.phiTerre + eph2.phiSoleil - eph2.elongationSoleil;
 
                     // Il y a un passage lumiere->penombre ou penombre->lumiere : calcul par interpolation de la date
-                    QList<double> evt;
+                    evt.clear();
                     evt.append(penombre1);
                     evt.append(penombre2);
                     evt.append(penombre3);
@@ -276,7 +294,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         tmpOmbre = true;
                         const double eclipseLune2 = eph2.phiLune - eph2.phiSoleil - eph2.elongationLune;
 
-                        QList<double> evt;
+                        evt.clear();
                         evt.append(eclipseLune1);
                         evt.append(eclipseLune2);
                         evt.append(eclipseLune3);
@@ -296,7 +314,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         tmpOmbre = true;
                         const double penombreLune2 = eph2.phiLune + eph2.phiSoleil - eph2.elongationLune;
 
-                        QList<double> evt;
+                        evt.clear();
                         evt.append(penombreLune1);
                         evt.append(penombreLune2);
                         evt.append(penombreLune3);
@@ -320,12 +338,12 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                 if (((eph2.rayon > eph1.rayon) && (eph2.rayon > eph3.rayon)) || ((eph2.rayon < eph1.rayon) && (eph2.rayon < eph3.rayon))) {
 
                     // Il y a un passage au perigee ou a l'apogee : calcul par interpolation de la date
-                    QList<double> evt;
+                    evt.clear();
                     evt.append(eph1.rayon);
                     evt.append(eph2.rayon);
                     evt.append(eph3.rayon);
 
-                    QPair<double, double> minmax = Maths::CalculExtremumInterpolation3(jjm, evt);
+                    const QPair<double, double> minmax = Maths::CalculExtremumInterpolation3(jjm, evt);
 
                     res.nom = sat.tle().nom();
                     res.date = Date(minmax.first, 0.);
@@ -342,8 +360,8 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     res.longitude = sat.longitude();
                     res.latitude = sat.latitude();
 
-                    double rayonVecteur = minmax.second;
-                    double altitude = minmax.second - RAYON_TERRESTRE;
+                    rayonVecteur = minmax.second;
+                    altitude = minmax.second - RAYON_TERRESTRE;
                     if (_conditions.unite == QObject::tr("nmi")) {
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
@@ -365,7 +383,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     // Il y a une transition jour/nuit : calcul par interpolation de la date
                     transitionsJourNuit = true;
 
-                    QList<double> evt;
+                    evt.clear();
                     evt.append(eph1.transition);
                     evt.append(eph2.transition);
                     evt.append(eph3.transition);
@@ -391,7 +409,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         // Il y a un passage aux quadrangles : calcul par interpolation de la date
                         passPso = true;
 
-                        QList<double> evt;
+                        evt.clear();
                         evt.append(eph1.pso);
                         evt.append(eph2.pso);
                         evt.append(eph3.pso);
@@ -447,27 +465,30 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
 /*
  * Calcul des ephemerides du satellite, du Soleil et de la Lune
  */
-QMap<QString, QList<Ephemerides> > EvenementsOrbitaux::CalculEphemerides(const QList<Satellite> &satellites)
+QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerides(const QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
+    Date date;
     Soleil soleil;
     Lune lune;
-    QMap<QString, QList<Ephemerides> > tabEphem;
+    Satellite sat;
+    ConditionEclipse condEcl;
+    EphemeridesEvenements eph;
+    QList<EphemeridesEvenements> listeEphem;
+    QMap<QString, QList<EphemeridesEvenements> > tabEphem;
 
     /* Initialisations */
     const double pas = NB_JOUR_PAR_MIN;
 
-    /* Corps de la methode */
+    /* Corps de la methode */    
     QListIterator<Satellite> it(satellites);
     while (it.hasNext()) {
 
-        Satellite sat = it.next();
-        QList<Ephemerides> listeEphem;
+        sat = it.next();
+        listeEphem.clear();
 
-        Date date(_conditions.jj1, 0., false);
+        date = Date(_conditions.jj1, 0., false);
         do {
-
-            Ephemerides eph;
 
             // Position du Soleil
             soleil.CalculPosition(date);
@@ -480,7 +501,6 @@ QMap<QString, QList<Ephemerides> > EvenementsOrbitaux::CalculEphemerides(const Q
             // Position du satellite
             sat.CalculPosVit(date);
 
-            ConditionEclipse condEcl;
             condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune);
             sat.CalculElementsOsculateurs(date);
 

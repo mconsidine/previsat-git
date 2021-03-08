@@ -63,6 +63,7 @@ Observateur::Observateur()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _nomlieu = "";
     _longitude = 0.;
     _latitude = 0.;
     _altitude = 0.;
@@ -450,7 +451,4 @@ Observateur &Observateur::operator = (const Observateur &observateur)
 /*
  * Methodes privees
  */
-
-
-
 

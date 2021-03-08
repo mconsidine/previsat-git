@@ -51,7 +51,7 @@
 #define NB_PAN 3
 
 
-struct Ephemerides
+struct EphemeridesFlashs
 {
     double jourJulienUTC;
     Vecteur3D positionObservateur;
@@ -162,35 +162,47 @@ int Flashs::CalculFlashs(int &nombre)
     }
 
     // Calcul des ephemerides du Soleil et du lieu d'observation
-    const QList<Ephemerides> tabEphem = CalculEphemSoleilObservateur();
+    const QList<EphemeridesFlashs> tabEphem = CalculEphemSoleilObservateur();
 
 
     /* Corps de la methode */
-    QListIterator<Ephemerides> it2(tabEphem);
+    QListIterator<EphemeridesFlashs> it2(tabEphem);
+
+    bool atrouve;
+    double jj0;
+    double pasInt;
+    double temp;
+    Date date;
+    Soleil soleil;
+    Lune lune;
+    Satellite sat;
+    ConditionEclipse condEcl;
+    QList<double> jjm;
+    QPair<double, double> minmax;
 
     // Boucle sur les satellites
     QListIterator<Satellite> it4(sats);
     while (it4.hasNext()) {
 
-        Satellite sat = it4.next();
+        sat = it4.next();
 
-        double temp = -DATE_INFINIE;
+        temp = -DATE_INFINIE;
         _resultatSat.clear();
 
         // Bouble sur le tableau d'ephemerides
         it2.toFront();
         while (it2.hasNext()) {
 
-            const Ephemerides ephem = it2.next();
+            const EphemeridesFlashs ephem = it2.next();
 
             // Date
-            Date date(ephem.jourJulienUTC, 0., false);
+            date = Date(ephem.jourJulienUTC, 0., false);
 
             // Lieu d'observation
             const Observateur obs(ephem.positionObservateur, Vecteur3D(), ephem.rotHz, _conditions.observateur.aaer(), _conditions.observateur.aray());
 
             // Position ECI du Soleil
-            Soleil soleil(ephem.positionSoleil);
+            soleil = Soleil(ephem.positionSoleil);
 
             // Position du satellite
             sat.CalculPosVit(date);
@@ -199,24 +211,20 @@ int Flashs::CalculFlashs(int &nombre)
             // Le satellite a une hauteur superieure a celle specifiee par l'utilisateur
             if (sat.hauteur() >= _conditions.hauteur) {
 
-                Lune lune;
                 if (_conditions.calcEclipseLune) {
                     lune.CalculPosition(date);
                 }
 
                 // Determination de la condition d'eclipse du satellite
-                ConditionEclipse condEcl;
                 condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
 
                 // Le satellite n'est pas eclipse
                 if (!condEcl.eclipseTotale()) {
 
-                    double jj0 = date.jourJulienUTC();
+                    jj0 = date.jourJulienUTC();
                     const double jj2 = jj0 + TEMPS1;
 
                     do {
-
-                        QPair<double, double> minmax;
 
                         // Calcul de l'angle de reflexion
                         _pan = 0;
@@ -225,7 +233,7 @@ int Flashs::CalculFlashs(int &nombre)
 
                         if (angref <= angrefMax) {
 
-                            QList<double> jjm;
+                            jjm.clear();
                             jjm.append(jj0 - NB_JOUR_PAR_MIN);
                             jjm.append(jj0);
                             jjm.append(jj0 + NB_JOUR_PAR_MIN);
@@ -235,7 +243,7 @@ int Flashs::CalculFlashs(int &nombre)
                             minmax = CalculAngleMin(jjm, sat, soleil);
 
                             // Iterations supplementaires pour affiner la date du maximum
-                            double pasInt = PAS_INT0;
+                            pasInt = PAS_INT0;
                             for (int it=0; it<4; it++) {
 
                                 jjm[0] = minmax.first - pasInt;
@@ -281,7 +289,7 @@ int Flashs::CalculFlashs(int &nombre)
                 date = Date(date.jourJulienUTC() + PAS0, 0., false);
 
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
-                bool atrouve = false;
+                atrouve = false;
                 while (it2.hasNext() && !atrouve) {
                     const double jj = it2.next().jourJulienUTC;
                     if (jj >= date.jourJulienUTC()) {
@@ -326,7 +334,10 @@ int Flashs::CalculFlashs(int &nombre)
 double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 {
     /* Declarations des variables locales */
-    int imin, imax;
+    int imin;
+    int imax;
+    Matrice3D matrice1;
+    Matrice3D matrice3;
 
     /* Initialisations */
     const SatellitesFlashs sts = Configuration::instance()->mapFlashs()[satellite.tle().norad()];
@@ -338,14 +349,14 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
     /* Corps de la methode */
     for(int i=imin; i<imax; i++) {
 
-        Matrice3D matrice1 = RotationYawSteering(satellite, sts.angles.at(i).first, sts.angles.at(i).second);
+        matrice1 = RotationYawSteering(satellite, sts.angles.at(i).first, sts.angles.at(i).second);
         const Matrice3D matrice2 = matrice1.Transposee();
         const Vecteur3D vecteur1 = matrice2.vecteur1();
 
         const Vecteur3D solsat = soleil.position() - satellite.position();
         const double surf = solsat.Angle(vecteur1);
 
-        Matrice3D matrice3 = RotationRV(solsat, vecteur1, 0., 0., 0);
+        matrice3 = RotationRV(solsat, vecteur1, 0., 0., 0);
         const Matrice3D matrice4(AXE_Z, -surf);
         const Vecteur3D vecteur2 = matrice4.vecteur1();
         const Matrice3D matrice5 = matrice3.Transposee();
@@ -403,11 +414,12 @@ QPair<double, double> Flashs::CalculAngleMin(const QList<double> jjm, Satellite 
 /*
  * Calcul des ephemerides du Soleil et de l'observateur
  */
-QList<Ephemerides> Flashs::CalculEphemSoleilObservateur()
+QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
 {
     /* Declarations des variables locales */
     Soleil soleil;
-    QList<Ephemerides> tabEphem;
+    EphemeridesFlashs eph;
+    QList<EphemeridesFlashs> tabEphem;
 
     /* Initialisations */
     const double pas = NB_JOUR_PAR_MIN;
@@ -425,9 +437,7 @@ QList<Ephemerides> Flashs::CalculEphemSoleilObservateur()
 
         if (soleil.hauteur() <= _conditions.crepuscule) {
 
-            Ephemerides eph;
             eph.jourJulienUTC = date.jourJulienUTC();
-
             eph.positionObservateur = _conditions.observateur.position();
             eph.rotHz = _conditions.observateur.rotHz();
             eph.positionSoleil = soleil.position();
@@ -468,12 +478,15 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
     limite[1] = DATE_INFINIE;
 
+    int it;
+    double pasInt;
+
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
         if (lim0[i] < DATE_INFINIE) {
 
-            int it = 0;
-            double pasInt = PAS_INT1;
+            it = 0;
+            pasInt = PAS_INT1;
             if (fabs(mgn0 - _conditions.magnitudeLimite) <= EPSDBL100) {
                 pasInt *= 0.5;
             }
@@ -512,8 +525,8 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
         lim0[i] = limite[i];
         if (lim0[i] < DATE_INFINIE) {
 
-            int it = 0;
-            double pasInt = PAS_INT1;
+            it = 0;
+            pasInt = PAS_INT1;
             if (fabs(mgn0 - _conditions.magnitudeLimite) <= EPSDBL100) {
                 pasInt *= 0.5;
             }
@@ -548,8 +561,8 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
     minmax = CalculAngleMin(jjm, satellite, soleil);
 
     // Iterations supplementaires pour affiner la date du maximum
-    double pasInt = PAS_INT0;
-    for (int it=0; it<4; it++) {
+    pasInt = PAS_INT0;
+    for (int i=0; i<4; i++) {
 
         jjm[0] = minmax.first - pasInt;
         jjm[1] = minmax.first;
@@ -638,8 +651,13 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                     temp = minmax.first;
 
                     // Calcul des valeurs exactes pour les differentes dates
+                    Observateur obsmax;
+                    ConditionEclipse condEcl2;
+                    ResultatPrevisions res;
                     QList<ResultatPrevisions> result;
                     for(int i=0; i<3; i++) {
+
+                        res.obsmax = Observateur();
 
                         _conditions.observateur.CalculPosVit(dates[i]);
 
@@ -656,7 +674,6 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                         }
 
                         // Condition d'eclipse du satellite
-                        ConditionEclipse condEcl2;
                         condEcl2.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
 
                         // Angle de reflexion
@@ -673,7 +690,6 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                                 sat.CalculCoordEquat(_conditions.observateur);
 
                                 // Ecriture du flash
-                                ResultatPrevisions res;
 
                                 // Nom du satellite
                                 res.nom = Configuration::instance()->mapFlashs()[sat.tle().norad()].nomsat;
@@ -713,7 +729,7 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                                 // Recherche des coordonnees geographiques ou se produit le maximum du flash
                                 if (i == 1) {
 
-                                    Observateur obsmax = Observateur::CalculIntersectionEllipsoide(dates[1], sat.position(), _direction);
+                                    obsmax = Observateur::CalculIntersectionEllipsoide(dates[1], sat.position(), _direction);
 
                                     if (!obsmax.nomlieu().isEmpty()) {
 
@@ -759,6 +775,8 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
 void Flashs::LimiteFlash(const double mgn0, const QList<double> jjm, Satellite &satellite, Soleil &soleil, double limite[])
 {
     /* Declarations des variables locales */
+    Lune lune;
+    ConditionEclipse condEcl;
     QList<double> ang;
     QList<double> ecl;
     QList<double> ht;
@@ -781,13 +799,11 @@ void Flashs::LimiteFlash(const double mgn0, const QList<double> jjm, Satellite &
         // Position du Soleil
         soleil.CalculPosition(date);
 
-        Lune lune;
         if (_conditions.calcEclipseLune) {
             lune.CalculPosition(date);
         }
 
         // Conditions d'eclipse du satellite
-        ConditionEclipse condEcl;
         condEcl.CalculSatelliteEclipse(satellite.position(), soleil, lune, _conditions.refraction);
         ecl.append((condEcl.eclipseLune().luminosite < condEcl.eclipseSoleil().luminosite) ?
                        condEcl.eclipseLune().phi - condEcl.eclipseLune().phiSoleil - condEcl.eclipseLune().elongation :
@@ -879,7 +895,6 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
 Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse, const double lacet, const double tangage, const int inpl)
 {
     /* Declarations des variables locales */
-    Matrice3D matrice;
 
     /* Initialisations */
     const Vecteur3D w((position ^ vitesse).Normalise());
@@ -897,7 +912,7 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
 
     const double gamma = atan2(vecteur1.y(), vecteur1.x());
     const Matrice3D matrice4(AXE_Z, gamma);
-    matrice = matrice4 * matrice3;
+    Matrice3D matrice = matrice4 * matrice3;
 
     if (inpl != 0) {
         const Matrice3D matrice5(AXE_X, PI_SUR_DEUX);
@@ -936,13 +951,12 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
 Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double lacet, const double tangage)
 {
     /* Declarations des variables locales */
-    Matrice3D matrice;
 
     /* Initialisations */
     double yaw = lacet;
 
     /* Corps de la methode */
-    matrice = RotationRV(satellite.position(), satellite.vitesse(), 0., 0., 2);
+    Matrice3D matrice = RotationRV(satellite.position(), satellite.vitesse(), 0., 0., 2);
     const Vecteur3D vecteur1 = satellite.position().Normalise();
 
     const double cosphisq = 1. - vecteur1.z() * vecteur1.z();

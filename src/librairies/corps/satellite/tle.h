@@ -53,7 +53,7 @@ class QString;
 
 class TLE
 {
-#if BUILDTEST == true
+#if BUILD_TEST == true
     friend class SatelliteTest;
 #endif
 public:

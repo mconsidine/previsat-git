@@ -144,13 +144,18 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
 
+        double ascDte;
+        double dec;
+        double mag;
+        QString nom;
+
         while (!flux.atEnd()) {
 
             const QString ligne = flux.readLine();
-            double ascDte = 0.;
-            double dec = 0.;
-            double mag = 99.;
-            QString nom = "";
+            ascDte = 0.;
+            dec = 0.;
+            mag = 99.;
+            nom = "";
 
             if (ligne.length() > 34) {
 

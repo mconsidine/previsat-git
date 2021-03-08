@@ -448,9 +448,11 @@ void Configuration::EcritureConfiguration()
     cfg.writeStartElement("Observateurs");
     QListIterator<Observateur> itObs(_observateurs);
     while (itObs.hasNext()) {
+
         const Observateur obs = itObs.next();
         cfg.writeStartElement("Observateur");
         cfg.writeTextElement("Nom", obs.nomlieu());
+
         cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
         cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
         cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
@@ -463,6 +465,7 @@ void Configuration::EcritureConfiguration()
     QMapIterator<QString, QStringList> itTLE(_mapSatellitesFicTLE);
     while (itTLE.hasNext()) {
         itTLE.next();
+
         cfg.writeStartElement("Fichier");
         cfg.writeAttribute("nom", itTLE.key());
 
@@ -695,6 +698,13 @@ void Configuration::LectureConfiguration()
         cfg.readNextStartElement();
         if (cfg.name() == "PreviSatConfiguration") {
 
+            QString nom;
+            QStringList elements;
+
+            double lon;
+            double lat;
+            double alt;
+
             while (cfg.readNextStartElement()) {
 
                 if (cfg.name() == "NoradStationSpatiale") {
@@ -707,10 +717,11 @@ void Configuration::LectureConfiguration()
 
                         if (cfg.name() == "Observateur") {
 
-                            QString nom;
-                            double lon = 0.;
-                            double lat = 0.;
-                            double alt = 0.;
+                            nom = "";
+                            lon = 0.;
+                            lat = 0.;
+                            alt = 0.;
+
                             while (cfg.readNextStartElement()) {
 
                                 if (cfg.name() == "Nom") {
@@ -735,14 +746,14 @@ void Configuration::LectureConfiguration()
 
                     while (cfg.readNextStartElement()) {
 
-                        QString nom;
-                        QStringList elements;
+                        nom = "";
                         if ((cfg.name() == "Fichier") && (cfg.attributes().hasAttribute("nom"))) {
                             nom = cfg.attributes().value("nom").toString();
                         } else {
                             cfg.skipCurrentElement();
                         }
 
+                        elements.clear();
                         while (cfg.readNextStartElement()) {
                             if (cfg.name() == "TLE") {
                                 elements.append(cfg.readElementText());
@@ -828,14 +839,17 @@ void Configuration::LectureCategoriesOrbite()
         cfg.readNextStartElement();
         if (cfg.name() == "PreviSatCategories") {
 
+            QString acronyme;
+            QString desc;
+
             while (cfg.readNextStartElement()) {
 
                 if (cfg.name() == "Categorie") {
 
-                    QString acronyme;
-                    QString desc;
-
                     while (cfg.readNextStartElement()) {
+
+                        acronyme = "";
+                        desc = "";
 
                         if (cfg.name() == "Acronyme") {
                             acronyme = cfg.readElementText();
@@ -911,14 +925,17 @@ void Configuration::LecturePays()
         cfg.readNextStartElement();
         if (cfg.name() == "PreviSatPays") {
 
+            QString acronyme;
+            QString desc;
+
             while (cfg.readNextStartElement()) {
 
                 if (cfg.name() == "Pays") {
 
-                    QString acronyme;
-                    QString desc;
-
                     while (cfg.readNextStartElement()) {
+
+                        acronyme = "";
+                        desc = "";
 
                         if (cfg.name() == "Acronyme") {
                             acronyme = cfg.readElementText();
@@ -994,14 +1011,20 @@ void Configuration::LectureSitesLancement()
         cfg.readNextStartElement();
         if (cfg.name() == "PreviSatSites") {
 
+            QString acronyme;
+            QString desc;
+            double lon;
+            double lat;
+
             while (cfg.readNextStartElement()) {
 
                 if (cfg.name() == "Site") {
 
-                    QString acronyme;
-                    QString desc;
-                    double lon = 0.;
-                    double lat = 0.;
+                    acronyme = "";
+                    desc = "";
+                    lon = 0.;
+                    lat = 0.;
+
                     while (cfg.readNextStartElement()) {
 
                         if (cfg.name() == "Acronyme") {
@@ -1082,12 +1105,16 @@ void Configuration::LectureStatutSatellitesFlashs()
         cfg.readNextStartElement();
         if (cfg.name() == "PreviSatFlashs") {
 
+            QString norad;
+            QPair<double, double> angles;
+            SatellitesFlashs satelliteFlash;
+
             while (cfg.readNextStartElement()) {
 
                 if (cfg.name() == "Satellite") {
 
-                    QString norad;
-                    SatellitesFlashs satelliteFlash;
+                    norad = "";
+                    satelliteFlash.angles.clear();
 
                     while (cfg.readNextStartElement()) {
 
@@ -1097,7 +1124,6 @@ void Configuration::LectureStatutSatellitesFlashs()
                             norad = cfg.readElementText();
                         } else if (cfg.name() == "Angles") {
 
-                            QPair<double, double> angles;
                             while (cfg.readNextStartElement()) {
 
                                 if (cfg.name() == "Yaw") {

@@ -628,6 +628,7 @@ void Date::getDeltaAT()
             // Dates ulterieures au 1er janvier 1972
             QListIterator<QPair<double, double> > it(_ecartsTAI_UTC);
             it.toBack();
+
             while (it.hasPrevious()) {
                 const QPair<double, double> pair = it.previous();
                 if (_jourJulienUTC >= pair.first - TJ2000) {

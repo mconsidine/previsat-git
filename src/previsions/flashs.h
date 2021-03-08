@@ -46,7 +46,7 @@
 class ConditionEclipse;
 class Satellite;
 class Soleil;
-struct Ephemerides;
+struct EphemeridesFlashs;
 
 class Flashs
 {
@@ -131,7 +131,7 @@ private:
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
      * @return tableau d'ephemerides
      */
-    static QList<Ephemerides> CalculEphemSoleilObservateur();
+    static QList<EphemeridesFlashs> CalculEphemSoleilObservateur();
 
     /**
      * @brief CalculLimitesFlash Calcul des bornes inferieures et superieures du flash
