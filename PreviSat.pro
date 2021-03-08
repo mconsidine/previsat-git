@@ -41,7 +41,8 @@ VERSION = 5.0.0.11
 ANNEES_DEV = 2005-2020
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
-BUILDTEST = true
+BUILD_TEST = true
+CLEANUP_TEST = true
 DEFINES -= QT_NO_DEBUG_OUTPUT
 #-------------------------------------------------
 
@@ -62,7 +63,8 @@ DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
     APPVER_MAJ=\"$${VER_MAJSTR}\"        \
     APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\" \
     QT_DEPRECATED_WARNINGS               \
-    BUILDTEST=$$BUILDTEST
+    BUILD_TEST=$$BUILD_TEST              \
+    CLEANUP_TEST=$$CLEANUP_TEST
 
 INCLUDEPATH += src $$ZLIB_DIR/inc
 CONFIG += c++11
@@ -181,7 +183,7 @@ OTHER_FILES += icone.rc
 RESOURCES += resources.qrc
 
 
-equals(BUILDTEST, true) {
+equals(BUILD_TEST, true) {
 
     message("Building test configuration")
 

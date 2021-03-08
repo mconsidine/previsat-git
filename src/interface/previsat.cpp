@@ -274,7 +274,7 @@ void PreviSat::DemarrageApplication()
         while (it.hasNext()) {
 
             const QString norad = it.next();
-            const TLE tle = Configuration::instance()->mapTLE()[norad];
+            const TLE &tle = Configuration::instance()->mapTLE()[norad];
 
             if (norad == noradDefaut) {
                 satellites.insert(0, Satellite(tle));
@@ -634,7 +634,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
+    const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
 
     /* Corps de la methode */
     QMapIterator<QString, TLE> it(Configuration::instance()->mapTLE());

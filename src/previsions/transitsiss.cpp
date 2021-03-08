@@ -54,7 +54,7 @@ static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
 
-struct Ephemerides
+struct EphemeridesTransits
 {
     double jourJulienUTC;
     Vecteur3D positionObservateur;
@@ -125,28 +125,47 @@ int TransitsIss::CalculTransits(int &nombre)
     _donnees.ageTle.append(qMax(age1, age2));
 
     // Generation des ephemerides du Soleil et de la Lune
-    const QMap<CorpsTransit, QList<Ephemerides> > tabEphem = CalculEphemSoleilLune();
+    const QMap<CorpsTransit, QList<EphemeridesTransits> > tabEphem = CalculEphemSoleilLune();
 
     /* Corps de la methode */
+    bool atrouve;
+    int it;
+    double pasInt;
+    double jj0;
+    double jj2;
+    double ang;
+    double ang0;
+    double rayon;
+    Date date;
+    Date date2;
+    Corps corps;
+    Observateur obsmax;
+    ConditionEclipse condEcl;
+    QList<double> jjm;
+    QList<Date> dates;
+    QPair<double, double> minmax;
+    ResultatPrevisions res;
+    QList<ResultatPrevisions> result;
+    QList<QList<ResultatPrevisions> > resultatSat;
+
     // Boucle sur le tableau d'ephemerides
-    QMapIterator<CorpsTransit, QList<Ephemerides> > it1(tabEphem);
+    QMapIterator<CorpsTransit, QList<EphemeridesTransits> > it1(tabEphem);
     while (it1.hasNext()) {
         it1.next();
 
         const CorpsTransit typeCorps = it1.key();
 
-        QListIterator<Ephemerides> it2(it1.value());
+        QListIterator<EphemeridesTransits> it2(it1.value());
         while (it2.hasNext()) {
 
-            const Ephemerides ephem = it2.next();
+            const EphemeridesTransits ephem = it2.next();
 
             // Date
-            Date date(ephem.jourJulienUTC, 0., false);
+            date = Date(ephem.jourJulienUTC, 0., false);
 
             // Lieu d'observation
             const Observateur obs(ephem.positionObservateur, Vecteur3D(), ephem.rotHz, _conditions.observateur.aaer(), _conditions.observateur.aray());
 
-            Corps corps;
             corps.setPosition((typeCorps == CORPS_SOLEIL) ? ephem.positionSoleil : ephem.positionLune);
 
             // Position de l'ISS
@@ -155,14 +174,13 @@ int TransitsIss::CalculTransits(int &nombre)
 
             if (sat.hauteur() >= _conditions.hauteur) {
 
-                double jj0 = date.jourJulienUTC() - PAS0;
-                double jj2 = jj0 + TEMPS1;
+                jj0 = date.jourJulienUTC() - PAS0;
+                jj2 = jj0 + TEMPS1;
 
-                double ang;
-                double ang0 = PI;
+                ang = 0.;
+                ang0 = PI;
 
-                Date date2;
-                QList<QList<ResultatPrevisions> > resultatSat;
+                resultatSat.clear();
 
                 do {
                     const Date date0(jj0, 0., false);
@@ -198,19 +216,17 @@ int TransitsIss::CalculTransits(int &nombre)
                 // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
                 if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + DEG2RAD) && (sat.hauteur() >= 0.)) {
 
-                    QList<double> jjm;
-                    QPair<double, double> minmax;
-
                     // Recherche de l'instant precis de l'angle minimum par interpolation
                     jj0 -= 2. * PAS1;
+                    jjm.clear();
                     jjm.append(jj0 - PAS1);
                     jjm.append(jj0);
                     jjm.append(jj0 + PAS1);
 
                     minmax = CalculAngleMin(jjm, typeCorps, sat);
 
-                    int it = 0;
-                    double pasInt = PAS_INT0;
+                    it = 0;
+                    pasInt = PAS_INT0;
                     while ((fabs(ang - minmax.second) > 1.e-5) && (it < 10)) {
 
                         ang = minmax.second;
@@ -233,7 +249,7 @@ int TransitsIss::CalculTransits(int &nombre)
 
                     if ((sat.hauteur() >= _conditions.hauteur) && (minmax.second <= _conditions.seuilConjonction)) {
 
-                        QList<Date> dates;
+                        dates.clear();
                         for(int i=0; i<5; i++) {
                             dates.append(Date());
                         }
@@ -242,7 +258,6 @@ int TransitsIss::CalculTransits(int &nombre)
                         soleil.CalculPosition(date2);
                         soleil.CalculCoordHoriz(_conditions.observateur, false);
 
-                        double rayon;
                         if (typeCorps == CORPS_SOLEIL) {
                             corps.setPosition(soleil.position());
                             rayon = RAYON_SOLAIRE;
@@ -267,7 +282,6 @@ int TransitsIss::CalculTransits(int &nombre)
                         const bool ilu = (typeCorps == CORPS_LUNE) && (itr || iconj) &&
                                 (_conditions.calcTransitLunaireJour || (soleil.hauteur() < 0.));
 
-                        ConditionEclipse condEcl;
                         condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
 
                         if ((itr && (typeCorps == CORPS_SOLEIL)) || ilu) {
@@ -277,10 +291,10 @@ int TransitsIss::CalculTransits(int &nombre)
                             dates = CalculElements(minmax.first, typeCorps, itr, sat);
 
                             // Recalcul de la position pour chacune des dates
-                            QList<ResultatPrevisions> result;
+                            result.clear();
                             for(int j=0; j<5; j++) {
 
-                                ResultatPrevisions res;
+                                res.obsmax = Observateur();
 
                                 _conditions.observateur.CalculPosVit(dates[j]);
 
@@ -331,7 +345,7 @@ int TransitsIss::CalculTransits(int &nombre)
 
                                 // Recherche du maximum
                                 const Vecteur3D direction = corps.dist() - sat.dist();
-                                Observateur obsmax = Observateur::CalculIntersectionEllipsoide(dates[j], sat.position(), direction);
+                                obsmax = Observateur::CalculIntersectionEllipsoide(dates[j], sat.position(), direction);
 
                                 if (!obsmax.nomlieu().isEmpty()) {
 
@@ -374,7 +388,7 @@ int TransitsIss::CalculTransits(int &nombre)
                 date = Date(date.jourJulienUTC() + PAS0, 0., false);
 
                 // Recherche de la nouvelle date dans le tableau d'ephemerides
-                bool atrouve = false;
+                atrouve = false;
                 while (it2.hasNext() && !atrouve) {
                     const double jj = it2.next().jourJulienUTC;
                     if (jj >= date.jourJulienUTC()) {
@@ -586,14 +600,15 @@ QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &t
 /*
  * Calcul des ephemerides du Soleil et de la Lune
  */
-QMap<CorpsTransit, QList<Ephemerides> > TransitsIss::CalculEphemSoleilLune()
+QMap<CorpsTransit, QList<EphemeridesTransits> > TransitsIss::CalculEphemSoleilLune()
 {
     /* Declarations des variables locales */
     Date date;
     Soleil soleil;
     Lune lune;
-    QList<Ephemerides> tabEphem;
-    QMap<CorpsTransit, QList<Ephemerides> > res;
+    EphemeridesTransits eph;
+    QList<EphemeridesTransits> tabEphem;
+    QMap<CorpsTransit, QList<EphemeridesTransits> > res;
 
     /* Initialisations */
 
@@ -612,9 +627,7 @@ QMap<CorpsTransit, QList<Ephemerides> > TransitsIss::CalculEphemSoleilLune()
 
             if (soleil.hauteur() >= _conditions.hauteur) {
 
-                Ephemerides eph;
                 eph.jourJulienUTC = date.jourJulienUTC();
-
                 eph.positionObservateur = _conditions.observateur.position();
                 eph.rotHz = _conditions.observateur.rotHz();
                 eph.positionSoleil = soleil.position();
@@ -644,9 +657,7 @@ QMap<CorpsTransit, QList<Ephemerides> > TransitsIss::CalculEphemSoleilLune()
 
             if (lune.hauteur() >= _conditions.hauteur) {
 
-                Ephemerides eph;
                 eph.jourJulienUTC = date.jourJulienUTC();
-
                 eph.positionObservateur = _conditions.observateur.position();
                 eph.rotHz = _conditions.observateur.rotHz();
                 eph.positionLune = lune.position();

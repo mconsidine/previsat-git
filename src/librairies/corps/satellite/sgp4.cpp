@@ -1209,7 +1209,8 @@ void SGP4::SGP4Init(const TLE &tle)
             d_data->_d4 = 0.5 * temp * d_data->_ao * tsi * (221. * d_data->_ao + 31. * sfour) * d_data->_cc1;
             d_data->_t3cof = d_data->_d2 + 2. * cc1sq;
             d_data->_t4cof = 0.25 * (3. * d_data->_d3 + d_data->_cc1 * (12. * d_data->_d2 + 10. * cc1sq));
-            d_data->_t5cof = 0.2 * (3. * d_data->_d4 + 12. * d_data->_cc1 * d_data->_d3 + 6. * d_data->_d2 * d_data->_d2 + 15. * cc1sq * (2. * d_data->_d2 + cc1sq));
+            d_data->_t5cof = 0.2 * (3. * d_data->_d4 + 12. * d_data->_cc1 * d_data->_d3 + 6. * d_data->_d2 * d_data->_d2 + 15. * cc1sq *
+                                    (2. * d_data->_d2 + cc1sq));
         }
 
         _init = true;

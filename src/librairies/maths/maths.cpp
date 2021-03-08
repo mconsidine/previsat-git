@@ -180,8 +180,8 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     const QString fmt = "%1%2%3%4%5%6%7%8%9";
 
     /* Retour */
-    return (fmt.arg(signe0).arg(deg, degr, 10, chr).arg(unite1).arg(esp).arg(min, 2, 10, chr).arg(unite2).arg(esp).arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, chr)
-            .arg(unite3));
+    return (fmt.arg(signe0).arg(deg, degr, 10, chr).arg(unite1).arg(esp).arg(min, 2, 10, chr).arg(unite2).arg(esp)
+            .arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, chr).arg(unite3));
 }
 
 

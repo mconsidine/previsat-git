@@ -71,7 +71,7 @@ struct ElementsTraceSol {
 
 class Satellite : public Corps
 {
-#if BUILDTEST == true
+#if BUILD_TEST == true
     friend class SatelliteTest;
 #endif
 public:

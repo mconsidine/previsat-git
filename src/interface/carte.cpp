@@ -325,14 +325,19 @@ void Carte::show()
             const QPen stylo(/*(mcc) ? ((ui->coulTerminateur->currentIndex() == 0) ?*/
                              /* QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2)) :*/ QPen(Qt::NoBrush, 0));
 
+            QVector<QPointF> zone;
+            QVector<QPointF> zone1;
+            QVector<QPointF> zone2;
+            QList<int> idxIntersection;
+
             for(int i=0; i<imax; i++) {
 
                 //if (i==0) {
                 soleil.CalculZoneVisibilite(beta);
 
                 // Coordonnees de la zone d'ombre, en pixels
-                QVector<QPointF> zone;
-                QList<int> idxIntersection;
+                zone.clear();
+                idxIntersection.clear();
                 zone.append(QPointF(soleil.zone().at(0).x() * DEG2PXHZ, soleil.zone().at(0).y() * DEG2PXVT));
 
                 for(int j=1; j<soleil.zone().size(); j++) {
@@ -405,8 +410,9 @@ void Carte::show()
                         // Deux intersections avec les bords de la carte (la zone d'ombre est patatoide et a cheval sur les extremites de la carte)
                         // Partage en 2 zones
                         const int jmed = idxIntersection.first();
-                        QVector<QPointF> zone1;
-                        QVector<QPointF> zone2;
+                        zone1.clear();
+                        zone2.clear();
+
                         for(int j=0; j<zone.size(); j++) {
                             if ((j < idxIntersection.first()) || (j >= idxIntersection.last())) {
                                 zone1.append(zone.at(j));
@@ -462,13 +468,13 @@ void Carte::show()
 
                     if (lsol > ui->carte->width() / 4 && lsol < (3 * ui->carte->width()) / 4) {
 
-                        QVector<QPointF> zone1;
+                        zone1.clear();
                         zone1.append(QPointF(-1., -1.));
                         zone1.append(QPointF(x1, -1.));
                         zone1.append(QPointF(x1, ui->carte->height()));
                         zone1.append(QPointF(-1., ui->carte->height()));
 
-                        QVector<QPointF> zone2;
+                        zone2.clear();
                         zone2.append(QPointF(ui->carte->width(), -1.));
                         zone2.append(QPointF(x2, -1.));
                         zone2.append(QPointF(x2, ui->carte->height()));
@@ -481,7 +487,7 @@ void Carte::show()
 
                     } else {
 
-                        QVector<QPointF> zone1;
+                        zone1.clear();
                         zone1.append(QPointF(x1, -1.));
                         zone1.append(QPointF(x1, ui->carte->height()));
                         zone1.append(QPointF(x2, ui->carte->height()));
@@ -609,11 +615,14 @@ void Carte::show()
                 double bsat1 = satellite.traceAuSol().at(0).latitude * DEG2PXVT;
 
                 int nbOrb = 0;
+                double lsat2;
+                double bsat2;
+                int ils;
                 for(int j=1; j<satellite.traceAuSol().size()-1; j++) {
 
-                    double lsat2 = satellite.traceAuSol().at(j).longitude * DEG2PXHZ;
-                    double bsat2 = satellite.traceAuSol().at(j).latitude * DEG2PXVT;
-                    int ils = 99999;
+                    lsat2 = satellite.traceAuSol().at(j).longitude * DEG2PXHZ;
+                    bsat2 = satellite.traceAuSol().at(j).latitude * DEG2PXVT;
+                    ils = 99999;
 
                     if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
                         if (lsat2 < lsat1) {
@@ -723,6 +732,12 @@ void Carte::show()
         if (_onglets->ui()->affvisib->isChecked()/* || mcc*/) {
             const int nbMax2 = /*(ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 :*/ satellites.size();
 
+            int ils;
+            double lsat1;
+            double bsat1;
+            double lsat2;
+            double bsat2;
+
             for(int isat=0; isat<nbMax2; isat++) {
 
                 //if (mcc) {
@@ -767,14 +782,14 @@ void Carte::show()
 
                 if ((satellites.at(isat).altitude() >= 0.) && (!satellites.at(isat).zone().isEmpty())) {
 
-                    double lsat1 = satellites.at(isat).zone().at(0).x() * DEG2PXHZ + 1;
-                    double bsat1 = satellites.at(isat).zone().at(0).y() * DEG2PXVT + 1;
+                    lsat1 = satellites.at(isat).zone().at(0).x() * DEG2PXHZ + 1;
+                    bsat1 = satellites.at(isat).zone().at(0).y() * DEG2PXVT + 1;
 
                     for(int j=1; j<361; j++) {
 
-                        double lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
-                        double bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
-                        int ils = 99999;
+                        lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
+                        bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
+                        ils = 99999;
 
                         if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
                             if (lsat2 < lsat1) {
@@ -803,6 +818,11 @@ void Carte::show()
     }
 
     // Dessin des satellites
+    double angle;
+    QStringList listeIcones;
+    QPixmap img;
+    QTransform transform;
+
     for(int isat=satellites.size()-1; isat>=0; isat--) {
 
         if (satellites.at(isat).altitude() >= 0.) {
@@ -821,7 +841,7 @@ void Carte::show()
                 const QStringList filtre(QStringList () << norad + ".png" << nomsat + ".png");
 
                 // L'icone de l'utilisateur est prioritaire sur l'icone par defaut
-                QStringList listeIcones = di.entryList(filtre, QDir::Files);
+                listeIcones = di.entryList(filtre, QDir::Files);
                 if (listeIcones.isEmpty()) {
                     listeIcones = di2.entryList(filtre, QDir::Files).replaceInStrings(QRegExp("^"), di2.path() + "/");
                 } else {
@@ -834,16 +854,16 @@ void Carte::show()
                 } else {
 
                     // Affichage de l'icone satellite
-                    QPixmap img(listeIcones.at(0));
+                    img = QPixmap(listeIcones.at(0));
                     img = img.scaled(qMin(ui->carte->width() / 12, img.width()), qMin(ui->carte->height() / 6, img.height()));
 
                     QGraphicsPixmapItem * const pm = scene->addPixmap(img);
 
-                    QTransform transform;
+                    transform.reset();
                     transform.translate(lsat, bsat);
 
                     // Rotation de l'icone de l'ISS
-                    double angle = 0.;
+                    angle = 0.;
                     if (_onglets->ui()->rotationIconeISS->isChecked() &&
                             (satellites.at(isat).tle().norad() == Configuration::instance()->noradStationSpatiale())) {
 

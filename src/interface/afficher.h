@@ -60,7 +60,7 @@ class QTableWidgetItem;
 class Afficher : public QMainWindow
 {
     Q_OBJECT
-#if BUILDTEST == true
+#if BUILD_TEST == true
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
     friend class PrevisionTest;

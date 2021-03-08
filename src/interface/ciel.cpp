@@ -116,29 +116,8 @@ void Ciel::show()
     QWidget::show();
 
     // Determination de la couleur du ciel
-    QBrush couleurCiel(Qt::black);
-
     const double hts = Configuration::instance()->soleil().hauteur() * RAD2DEG;
-    if (hts >= 0.) {
-        // Jour
-        couleurCiel = QBrush(QColor::fromRgb(213, 255, 254));
-
-    } else {
-
-        const int red = static_cast<int> (213.15126 / (1. + 0.0018199 * exp(-0.983684 * hts)) + 0.041477);
-        const int green = static_cast<int> (qMax(qMin(256.928983 / (1. + 0.008251 * exp(-0.531535 * hts)) - 0.927648, 255.), 0.));
-
-        // Algorithme special pour le bleu
-        int blue;
-        if (hts >= -6.) {
-            blue = 254;
-        } else if (hts >= -12.) {
-            blue = static_cast<int> (-2.74359 * hts * hts - 31.551282 * hts + 163.461538);
-        } else {
-            blue = static_cast<int> (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hts)) - 1.46635, 0.));
-        }
-        couleurCiel = QBrush(QColor::fromRgb(red, green, blue));
-    }
+    const QBrush couleurCiel = CalculCouleurCiel(hts);
 
     if (scene != nullptr) {
         scene->deleteLater();
@@ -324,10 +303,14 @@ void Ciel::show()
 
             double ht1 = asin(vec1.z());
             double az1 = atan2(vec1.y(), -vec1.x());
-            if (az1 < 0.) az1 += DEUX_PI;
+            if (az1 < 0.) {
+                az1 += DEUX_PI;
+            }
 
             int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
             int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+            double az2;
 
             for(int i=1; i<49; i++) {
 
@@ -339,7 +322,7 @@ void Ciel::show()
 
                 const double ht2 = asin(vec2.z());
 
-                double az2 = atan2(vec2.y(), -vec2.x());
+                az2 = atan2(vec2.y(), -vec2.x());
                 if (az2 < 0.) {
                     az2 += DEUX_PI;
                 }
@@ -462,7 +445,11 @@ void Ciel::show()
     }
 
     // Affichage des satellites
+    int lsat1;
+    int bsat1;
+    QColor couleur;
     const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+
     for(int isat=satellites.size()-1; isat>=0; isat--) {
 
         if (satellites.at(isat).isVisible() && (satellites.at(isat).altitude() >= 0.)) {
@@ -473,8 +460,8 @@ void Ciel::show()
 
                 const double ht1 = trace.at(0).hauteur;
                 const double az1 = trace.at(0).azimut;
-                int lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
-                int bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+                lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+                bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
 
                 for(int i=1; i<trace.size(); i++) {
 
@@ -517,7 +504,6 @@ void Ciel::show()
 
             rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
 
-            QColor couleur;
             if (satellites.at(isat).conditionEclipse().eclipseTotale()) {
                 couleur = crimson;
             } else if (satellites.at(isat).conditionEclipse().eclipsePartielle() || satellites.at(isat).conditionEclipse().eclipseAnnulaire()) {
@@ -536,6 +522,42 @@ void Ciel::show()
 
     /* Retour */
     return;
+}
+
+/*
+ * Determination de la couleur du ciel
+ */
+QBrush Ciel::CalculCouleurCiel(const double hauteurSoleil)
+{
+    /* Declarations des variables locales */
+    QBrush couleurCiel;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (hauteurSoleil >= 0.) {
+        // Jour
+        couleurCiel = QBrush(QColor::fromRgb(213, 255, 254));
+
+    } else {
+
+        const int red = static_cast<int> (213.15126 / (1. + 0.0018199 * exp(-0.983684 * hauteurSoleil)) + 0.041477);
+        const int green = static_cast<int> (qMax(qMin(256.928983 / (1. + 0.008251 * exp(-0.531535 * hauteurSoleil)) - 0.927648, 255.), 0.));
+
+        // Algorithme special pour le bleu
+        int blue;
+        if (hauteurSoleil >= -6.) {
+            blue = 254;
+        } else if (hauteurSoleil >= -12.) {
+            blue = static_cast<int> (-2.74359 * hauteurSoleil * hauteurSoleil - 31.551282 * hauteurSoleil + 163.461538);
+        } else {
+            blue = static_cast<int> (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hauteurSoleil)) - 1.46635, 0.));
+        }
+        couleurCiel = QBrush(QColor::fromRgb(red, green, blue));
+    }
+
+    /* Retour */
+    return couleurCiel;
 }
 
 void Ciel::resizeEvent(QResizeEvent *evt)

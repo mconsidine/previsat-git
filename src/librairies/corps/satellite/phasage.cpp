@@ -122,13 +122,16 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double &n0)
     const double v = n0 * aper / dper;
 
     bool atrouve = false;
+    int iter;
     const double pas = 1.e-6;
     double spec = 0.01;
     double nt0 = 0.;
 
     while (!atrouve && (spec <= 0.05)) {
-        int iter = 1;
+
+        iter = 1;
         while (!atrouve && (iter <= 38)) {
+
             nt0 = iter * v;
             if (fabs(nt0 - qRound(nt0)) < spec) {
                 _ct0 = iter;

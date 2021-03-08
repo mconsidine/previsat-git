@@ -80,12 +80,15 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
         double tAOS = 0.;
         double t_ht = dateInit.jourJulienUTC();
 
+        QList<double> jjm;
+        QList<double> ht;
+
         bool afin = false;
         int iter = 0;
         while (!afin) {
 
-            QList<double> jjm;
-            QList<double> ht;
+            jjm.clear();
+            ht.clear();
 
             jjm.append(t_ht);
             jjm.append(jjm.at(0) + 0.5 * periode);
@@ -193,13 +196,17 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
         lat1 = lat;
     }
 
+
+    QList<double> jjm;
+    QList<double> lati;
+
     double t_n = date.jourJulienUTC();
     double periode = st;
     bool afin = false;
     while (!afin) {
 
-        QList<double> jjm;
-        QList<double> lati;
+        jjm.clear();
+        lati.clear();
 
         jjm.append(t_n - periode);
         jjm.append(t_n);
@@ -257,11 +264,17 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
         double t_ecl = sat.traceAuSol().at(i-1).jourJulienUTC;
         double periode = sat.traceAuSol().at(i).jourJulienUTC - t_ecl;
 
+        QList<double> jjm;
+        QList<double> ecl;
+        Soleil soleil;
+        Lune lune;
+        ConditionEclipse conditionEclipse;
+
         bool afin = false;
         while (!afin) {
 
-            QList<double> jjm;
-            QList<double> ecl;
+            jjm.clear();
+            ecl.clear();
 
             jjm.append(t_ecl - periode);
             jjm.append(t_ecl);
@@ -275,17 +288,14 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
                 sat.CalculPosVit(date);
 
                 // Position du Soleil
-                Soleil soleil;
                 soleil.CalculPosition(date);
 
                 // Position de la Lune
-                Lune lune;
                 if (acalcEclipseLune) {
                     lune.CalculPosition(date);
                 }
 
                 // Conditions d'eclipse du satellite
-                ConditionEclipse conditionEclipse;
                 conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, refraction);
                 const ElementsEclipse elements = (conditionEclipse.eclipseLune().luminosite < conditionEclipse.eclipseSoleil().luminosite) ?
                             conditionEclipse.eclipseLune() : conditionEclipse.eclipseSoleil();
@@ -295,6 +305,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
             if (((ecl.at(0) * ecl.at(2)) < 0.) || ((ecl.at(0) > 0.) && (ecl.at(2) > 0.))) {
                 tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
             }
+
             periode *= 0.5;
             if (fabs(tdn - t_ecl) < EPS_DATES) {
                 afin = true;

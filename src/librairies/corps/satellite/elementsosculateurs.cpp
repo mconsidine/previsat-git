@@ -259,7 +259,8 @@ void ElementsOsculateurs::Calcul(const Vecteur3D &position, const Vecteur3D &vit
         const double gamma = 1. + _excentricite * cos(_argumentPerigee);
         const double gamma2 = gamma * gamma;
         const double sinincl = sin(_inclinaison);
-        const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * sinincl * sinincl) / (alpha2 * sqbeta * gamma2) + gamma2 * gamma / (alpha2 * beta * beta * beta));
+        const double nn0 = 1. - 1.5 * J2 * ((2. - 2.5 * sinincl * sinincl) / (alpha2 * sqbeta * gamma2) + gamma2 * gamma /
+                                            (alpha2 * beta * beta * beta));
 
         // Apogee/perigee/periode
         _apogee = _demiGrandAxe * x1pexc;
