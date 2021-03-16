@@ -96,6 +96,8 @@ struct ConditionsPrevisions
     bool passagePso;
     bool transitionsJourNuit;
 
+    int nbIter;
+
     QString fichier;
     QStringList listeSatellites;
     Observateur observateur;
