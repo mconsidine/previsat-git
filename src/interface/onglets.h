@@ -56,6 +56,7 @@
 
 struct ElementsAOS;
 class Date;
+class QListWidget;
 class QListWidgetItem;
 
 struct Coordonnees {
@@ -248,6 +249,13 @@ private:
     void EcritureInformationsEclipse(const QString &corpsOccultant, const double fractionIlluminee) const;
 
     /**
+     * @brief getListItemChecked Compte du nombre de satellites coches dans une liste
+     * @param liste liste
+     * @return nombre de satellites coches
+     */
+    int getListItemChecked(const QListWidget * const liste) const;
+
+    /**
      * @brief InitAffichageDemarrage Affichage au demarrage
      */
     void InitAffichageDemarrage();
@@ -338,8 +346,9 @@ private slots:
     void on_calculsFlashs_clicked();
     void on_calculsTransit_clicked();
     void on_calculsEvt_clicked();
+    void on_genererPositions_clicked();
 
-
+    void on_afficherSuivi_clicked();
 };
 
 #endif // ONGLETS_H

@@ -54,7 +54,6 @@ public:
     /*
      * Accesseurs
      */
-    static QStringList &resultats();
 
     /*
      * Modificateurs

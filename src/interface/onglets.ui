@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -6756,7 +6756,7 @@
        <string>Date initiale :</string>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_lieuxObservation5">
+     <widget class="QLabel" name="lbl_lieuxObservation3">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7475,7 +7475,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_lieuxObservation6">
+     <widget class="QLabel" name="lbl_lieuxObservation5">
       <property name="geometry">
        <rect>
         <x>10</x>

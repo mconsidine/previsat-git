@@ -35,12 +35,13 @@
  */
 
 #include <cmath>
+#include <QFile>
+#include <QTextStream>
 #include "configuration/configuration.h"
 #include "telescope.h"
 
 
 static ConditionsPrevisions _conditions;
-static QStringList _resultats;
 
 
 /**********
@@ -54,10 +55,6 @@ static QStringList _resultats;
 /*
  * Accesseurs
  */
-QStringList &Telescope::resultats()
-{
-    return _resultats;
-}
 
 /*
  * Modificateurs
@@ -79,40 +76,52 @@ int Telescope::CalculSuiviTelescope(int &nombre)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = "%1,%2,%3,%4";
-    _resultats.clear();
-
-    // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
-
-    // Satellite
-    Satellite sat(tabTle.first());
 
     /* Corps de la methode */
-    _resultats.append("\"Time (UTCG)\",\"Range (km)\",\"Right Ascen (deg)\",\"Declination (deg)\"");
+    QFile fi(_conditions.ficRes);
+    fi.open(QIODevice::WriteOnly | QIODevice::Text);
 
-    Date date = Date(floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + 1000. * _conditions.pas+1.) * NB_JOUR_PAR_MILLISEC, 0.);
+    if (fi.isWritable()) {
 
-    do {
+        const QString fmt = "%1,%2,%3,%4";
+        Date date(floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + _conditions.pas) * NB_JOUR_PAR_MILLISEC, 0.);
 
-        // Position de l'observateur
-        _conditions.observateur.CalculPosVit(date);
+        // Creation de la liste de TLE
+        const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
 
-        // Position du satellite
-        sat.CalculPosVit(date);
+        // Satellite
+        Satellite sat(tabTle.first());
 
-        // Position topocentrique du satellite
-        sat.CalculCoordHoriz(_conditions.observateur);
+        const QString entete("\"Time (UTCG)\",\"Range (km)\",\"Right Ascen (deg)\",\"Declination (deg)\"");
 
-        // Ascension droite, declinaison
-        sat.CalculCoordEquat(_conditions.observateur, false);
+        QTextStream flux(&fi);
+        flux << entete << endl;
 
-        _resultats.append(fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
-                          arg(sat.ascensionDroite() * RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * RAD2DEG, 16, 'f', 6));
+        int i = 0;
+        while (i < _conditions.nbIter) {
 
-        date = Date(floor(date.jourJulienUTC() * NB_MILLISEC_PAR_JOUR + 1000. * _conditions.pas) * NB_JOUR_PAR_MILLISEC, 0.);
+            // Position de l'observateur
+            _conditions.observateur.CalculPosVit(date);
 
-    } while (date.jourJulienUTC() <= _conditions.jj2);
+            // Position du satellite
+            sat.CalculPosVit(date);
+
+            // Position topocentrique du satellite
+            sat.CalculCoordHoriz(_conditions.observateur);
+
+            // Ascension droite, declinaison
+            sat.CalculCoordEquat(_conditions.observateur, false);
+
+            const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
+                    arg(sat.ascensionDroite() * RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * RAD2DEG, 16, 'f', 6);
+
+            flux << ephem << endl;
+
+            date = Date(floor(date.jourJulienUTC() * NB_MILLISEC_PAR_JOUR + _conditions.pas) * NB_JOUR_PAR_MILLISEC, 0.);
+            i++;
+        }
+    }
+    fi.close();
 
     /* Retour */
     return nombre;

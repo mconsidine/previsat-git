@@ -34,6 +34,7 @@
  *
  */
 
+#include <QDesktopServices>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFutureWatcher>
@@ -62,6 +63,7 @@
 #include "previsions/evenementsorbitaux.h"
 #include "previsions/flashs.h"
 #include "previsions/prevision.h"
+#include "previsions/telescope.h"
 #include "previsions/transitsiss.h"
 
 
@@ -74,6 +76,8 @@ double Onglets::_htSat;
 ElementsAOS *Onglets::_elementsAOS;
 
 QString Onglets::_donneesSat;
+
+static QString _ficSuivi;
 
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
@@ -1053,6 +1057,24 @@ void Onglets::EcritureInformationsEclipse(const QString &corpsOccultant, const d
     return;
 }
 
+int Onglets::getListItemChecked(const QListWidget * const liste) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    int k = 0;
+
+    /* Corps de la methode */
+    for(int i=0; i<liste->count(); i++) {
+        if (liste->item(i)->checkState() == Qt::Checked) {
+            k++;
+        }
+    }
+
+    /* Retour */
+    return k;
+}
+
 /*
  * Affichage du lieu d'observation
  */
@@ -1648,7 +1670,6 @@ void Onglets::on_calculsPrev_clicked()
             Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats());
             afficher->show();
         }
-
 
     } catch (PreviSatException &) {
     }
@@ -3157,54 +3178,54 @@ void Onglets::on_calculsTransit_clicked()
         conditions.fichier = Configuration::instance()->dirTle() + QDir::separator() + "iss.3le";
 
         // Age maximal du TLE
-         const double ageTLE = _ui->ageMaxTLETransit->value();
+        const double ageTLE = _ui->ageMaxTLETransit->value();
 
-         // Verification du fichier TLE
-         const QFileInfo fi(conditions.fichier);
-         if (!fi.exists()) {
-             throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
-         }
+        // Verification du fichier TLE
+        const QFileInfo fi(conditions.fichier);
+        if (!fi.exists()) {
+            throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
+        }
 
-         if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-             const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                    "Le fichier %1 n'est pas un TLE");
-             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
-         }
+        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                   "Le fichier %1 n'est pas un TLE");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+        }
 
-         // Lecture du TLE
-         QList<TLE> tabtle = TLE::LectureFichier3le(fi.absoluteFilePath());
-         if (tabtle.at(0).norad() != Configuration::instance()->noradStationSpatiale()) {
-             const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
-             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
-         }
+        // Lecture du TLE
+        QList<TLE> tabtle = TLE::LectureFichier3le(fi.absoluteFilePath());
+        if (tabtle.at(0).norad() != Configuration::instance()->noradStationSpatiale()) {
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                   "Le fichier %1 ne contient pas le TLE de l'ISS");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+        }
 
-         // Age des TLE
-         const double agePremierTLE = tabtle.first().epoque().jourJulienUTC();
-         const double ageDernierTLE = tabtle.last().epoque().jourJulienUTC();
+        // Age des TLE
+        const double agePremierTLE = tabtle.first().epoque().jourJulienUTC();
+        const double ageDernierTLE = tabtle.last().epoque().jourJulienUTC();
 
-         double age1 = 0.;
-         if (conditions.jj1 < agePremierTLE) {
-             age1 = agePremierTLE - conditions.jj1;
-         }
+        double age1 = 0.;
+        if (conditions.jj1 < agePremierTLE) {
+            age1 = agePremierTLE - conditions.jj1;
+        }
 
-         if (conditions.jj1 > ageDernierTLE) {
-             age1 = conditions.jj1 - ageDernierTLE;
-         }
+        if (conditions.jj1 > ageDernierTLE) {
+            age1 = conditions.jj1 - ageDernierTLE;
+        }
 
-         double age2 = 0.;
-         if (conditions.jj2 < agePremierTLE) {
-             age2 = agePremierTLE - conditions.jj2;
-         }
+        double age2 = 0.;
+        if (conditions.jj2 < agePremierTLE) {
+            age2 = agePremierTLE - conditions.jj2;
+        }
 
-         if (conditions.jj2 > ageDernierTLE) {
-             age2 = conditions.jj2 - ageDernierTLE;
-         }
+        if (conditions.jj2 > ageDernierTLE) {
+            age2 = conditions.jj2 - ageDernierTLE;
+        }
 
-         if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
-             const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-             Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
-         }
+        if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
+            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+        }
 
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
@@ -3371,4 +3392,148 @@ void Onglets::on_calculsEvt_clicked()
 
     /* Retour */
     return;
+}
+
+void Onglets::on_genererPositions_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        if (_ui->liste4->count() == 0) {
+            throw PreviSatException();
+        }
+
+        QStringList satelliteSelectionne;
+        for(int i=0; i<_ui->liste4->count(); i++) {
+            if (_ui->liste4->item(i)->checkState() == Qt::Checked) {
+                satelliteSelectionne.append(_ui->liste4->item(i)->data(Qt::UserRole).toString());
+            }
+        }
+
+        if (satelliteSelectionne.isEmpty()) {
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+        }
+
+        // Lecture du fichier TLE
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
+                                                           satelliteSelectionne);
+
+        // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
+        Date date(_date->offsetUTC());
+        Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
+
+        obs.CalculPosVit(date);
+
+        Satellite satSuivi(tle[satelliteSelectionne.at(0)]);
+        satSuivi.CalculPosVit(date);
+        satSuivi.CalculCoordHoriz(obs);
+
+        int nbIter = 0;
+        const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs);
+        Date date1 = elementsAos.date;
+        Date date2;
+
+        if (elementsAos.aos) {
+
+            if (elementsAos.typeAOS == tr("AOS")) {
+                date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0.), satSuivi, obs).date;
+
+            } else {
+                // Le satellite est deja dans le ciel
+                date2 = date1;
+                date1 = date;
+            }
+
+            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
+
+        } else {
+
+            // Cas des satellites geostationnaires (10 minutes de suivi)
+            if (satSuivi.hauteur() > 0.) {
+                date1 = date;
+                nbIter = 600000 / _ui->pasSuivi->value();
+            }
+        }
+
+        if (nbIter > 0) {
+
+            _ui->genererPositions->setEnabled(false);
+
+            date2 = Date(date1.jourJulienUTC() + nbIter * NB_JOUR_PAR_MILLISEC, 0.);
+
+            const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";
+            const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
+                    .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
+                    .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
+                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.at(0));
+
+            ConditionsPrevisions conditions;
+            conditions.observateur = obs;
+            conditions.listeSatellites = satelliteSelectionne;
+            conditions.pas = 1000. * _ui->pasSuivi->value();
+            conditions.nbIter = nbIter;
+            conditions.fichier = Configuration::instance()->nomfic();
+            conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
+            conditions.jj1 = date1.jourJulienUTC();
+
+            _ficSuivi = conditions.ficRes;
+
+            QVector<int> vecSat;
+            vecSat.append(1);
+
+            // Barre de progression
+            auto barreProgression = new QProgressBar();
+            barreProgression->setAlignment(Qt::AlignHCenter);
+
+            QProgressDialog fenetreProgression;
+            fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+            fenetreProgression.setCancelButtonText(tr("Annuler"));
+            fenetreProgression.setBar(barreProgression);
+            fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+            // Lancement des calculs
+            Telescope::setConditions(conditions);
+            QFutureWatcher<void> calculs;
+
+            connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+            connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+            connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+            connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+            calculs.setFuture(QtConcurrent::map(vecSat, &Telescope::CalculSuiviTelescope));
+
+            fenetreProgression.exec();
+            calculs.waitForFinished();
+
+            if (calculs.isCanceled()) {
+                _ui->genererPositions->setEnabled(true);
+            } else {
+
+                _ui->genererPositions->setDefault(false);
+                _ui->afficherSuivi->setEnabled(true);
+                _ui->afficherSuivi->setDefault(true);
+                _ui->afficherSuivi->setFocus();
+                _ui->genererPositions->setEnabled(true);
+
+                // Affichage des resultats
+                emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+            }
+        }
+
+    } catch (PreviSatException &) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_afficherSuivi_clicked()
+{
+    if (!_ficSuivi.isEmpty()) {
+        QDesktopServices::openUrl(QUrl(_ficSuivi.replace("\\", "/")));
+    }
 }
