@@ -1,6 +1,6 @@
 #
 #     PreviSat, Satellite tracking software
-#     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+#     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 #-------------------------------------------------
 VER_MAJ = 5.0
 VERSION = 5.0.0.11
-ANNEES_DEV = 2005-2020
+ANNEES_DEV = 2005-2021
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
 BUILD_TEST = false
@@ -228,7 +228,7 @@ equals(BUILD_TEST, true) {
         test/src/previsions/evenementsorbitauxtest.h           \
         test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \
-        test/src/previsions/telescopetest.cpp                  \
+        test/src/previsions/telescopetest.h                    \
         test/src/previsions/transitsisstest.h                  \
         test/src/testtools.h
 

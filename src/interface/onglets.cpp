@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -206,7 +206,8 @@ void Onglets::show(const Date &date)
         }
     } else {
 
-        if (_ui->barreOnglets->count() < 9) {
+        if (_ui->barreOnglets->count() < _nbOnglets) {
+
             _ui->satellite->setVisible(true);
             _ui->barreOnglets->insertTab(1, _ui->osculateurs, tr("Éléments osculateurs"));
 
@@ -1166,6 +1167,7 @@ void Onglets::InitAffichageDemarrage()
 
     /* Initialisations */
     QStyle * const styleIcones = QApplication::style();
+    _nbOnglets = _ui->barreOnglets->count();
 
     /* Corps de la methode */
     _ui->menuBar->setVisible(false);
@@ -1184,6 +1186,9 @@ void Onglets::InitAffichageDemarrage()
     _ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     _ui->grpElementsOsculateurs->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
     _ui->grpSignal->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
+
+    _ui->barreOnglets->removeTab(_ui->barreOnglets->indexOf(_ui->telescope));
+    _nbOnglets--;
 #endif
 
 #if defined (Q_OS_WIN)

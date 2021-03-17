@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -274,7 +274,7 @@ void PreviSat::DemarrageApplication()
         while (it.hasNext()) {
 
             const QString norad = it.next();
-            const TLE &tle = Configuration::instance()->mapTLE()[norad];
+            const TLE tle = Configuration::instance()->mapTLE()[norad];
 
             if (norad == noradDefaut) {
                 satellites.insert(0, Satellite(tle));
