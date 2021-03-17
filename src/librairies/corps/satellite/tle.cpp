@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -345,17 +345,19 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QStrin
     /* Initialisations */
     // Lecture du fichier de donnees
     if (magn.isEmpty()) {
+
         const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
         QFile donneesSatellites(fic);
 
         if (donneesSatellites.exists() && (donneesSatellites.size() != 0)) {
+
             donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&donneesSatellites);
             magn = flux.readAll();
+            donneesSatellites.close();
         } else {
             magn = "";
         }
-        donneesSatellites.close();
     }
 
     /* Corps de la methode */

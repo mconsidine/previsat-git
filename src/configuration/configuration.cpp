@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -776,10 +776,6 @@ void Configuration::LectureConfiguration()
     fi1.close();
 
     // Verifications
-    if (_noradStationSpatiale.isEmpty()) {
-        _noradStationSpatiale = "25544";
-    }
-
     if (_observateurs.isEmpty()) {
         _observateurs.append(Observateur("Paris", -002.348640000, +48.853390000, 30));
     }
