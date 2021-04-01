@@ -1520,182 +1520,6 @@ void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
-void Onglets::on_liste2_itemClicked(QListWidgetItem *item)
-{
-    if (_ui->liste2->hasFocus() && (_ui->liste2->currentRow() >= 0)) {
-
-        const QString norad = item->data(Qt::UserRole).toString();
-        if (_ui->liste2->currentItem()->checkState() == Qt::Checked) {
-
-            // Suppression d'un satellite dans la liste
-            _ui->liste2->currentItem()->setCheckState(Qt::Unchecked);
-
-        } else {
-
-            // Ajout d'un satellite dans la liste
-            _ui->liste2->currentItem()->setCheckState(Qt::Checked);
-        }
-    }
-}
-
-void Onglets::on_calculsPrev_clicked()
-{
-    /* Declarations des variables locales */
-    QVector<int> vecSat;
-    ConditionsPrevisions conditions;
-
-    /* Initialisations */
-    int j = 0;
-    conditions.listeSatellites.clear();
-    vecSat.append(0);
-
-    /* Corps de la methode */
-    try {
-
-        if (_ui->liste2->count() == 0) {
-            throw PreviSatException();
-        }
-
-        for(int i = 0; i < _ui->liste2->count(); i++) {
-            if (_ui->liste2->item(i)->checkState() == Qt::Checked) {
-                conditions.listeSatellites.append(_ui->liste2->item(i)->data(Qt::UserRole).toString());
-                j++;
-            }
-        }
-
-        if (conditions.listeSatellites.isEmpty()) {
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
-        }
-
-        // Ecart heure locale - UTC
-        const bool ecart = (fabs(_date->offsetUTC() - Date::CalculOffsetUTC(_date->ToQDateTime(1))) > EPSDBL100);
-        const double offset1 = (ecart) ? _date->offsetUTC() : Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
-        const double offset2 = (ecart) ? _date->offsetUTC() : Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
-
-        // Date et heure initiales
-        const Date date1(_ui->dateInitialePrev->date().year(), _ui->dateInitialePrev->date().month(), _ui->dateInitialePrev->date().day(),
-                         _ui->dateInitialePrev->time().hour(), _ui->dateInitialePrev->time().minute(), _ui->dateInitialePrev->time().second(), 0.);
-
-        // Jour julien initial
-        conditions.jj1 = date1.jourJulien() - offset1;
-
-        // Date et heure finales
-        const Date date2(_ui->dateFinalePrev->date().year(), _ui->dateFinalePrev->date().month(), _ui->dateFinalePrev->date().day(),
-                         _ui->dateFinalePrev->time().hour(), _ui->dateFinalePrev->time().minute(), _ui->dateFinalePrev->time().second(), 0.);
-
-        // Jour julien final
-        conditions.jj2 = date2.jourJulien() - offset2;
-
-        // Cas ou la date finale precede la date initiale : on intervertit les dates
-        if (conditions.jj1 > conditions.jj2) {
-            const double tmp = conditions.jj2;
-            conditions.jj2 = conditions.jj1;
-            conditions.jj1 = tmp;
-        }
-
-        conditions.ecart = ecart;
-        conditions.offset = offset1;
-
-        // Systeme horaire
-        conditions.systeme = _ui->syst24h->isChecked();
-
-        // Pas de generation
-        conditions.pas = _ui->pasGeneration->currentText().split(" ").first().toDouble();
-        if (_ui->pasGeneration->currentIndex() < 5) {
-            conditions.pas *= NB_JOUR_PAR_SEC;
-        } else {
-            conditions.pas *= NB_JOUR_PAR_MIN;
-        }
-
-        // Lieu d'observation
-        conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation2->currentIndex());
-
-        // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
-
-        // Conditions d'eclairement du satellite
-        conditions.eclipse = _ui->illuminationPrev->isChecked();
-
-        // Magnitude maximale
-        conditions.magnitudeLimite = (_ui->magnitudeMaxPrev->isChecked()) ? _ui->valMagnitudeMaxPrev->value() : 99.;
-
-        // Hauteur minimale du satellite
-        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatPrev->currentIndex() == 5) ?
-                                            abs(_ui->valHauteurSatPrev->text().toInt()) : 5 * _ui->hauteurSatPrev->currentIndex());
-
-        // Hauteur maximale du Soleil
-        if (_ui->hauteurSoleilPrev->currentIndex() <= 3) {
-            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilPrev->currentIndex();
-        } else if (_ui->hauteurSoleilPrev->currentIndex() == 4) {
-            conditions.crepuscule = PI_SUR_DEUX;
-        } else if (_ui->hauteurSoleilPrev->currentIndex() == 5) {
-            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
-        } else {
-        }
-
-        // Prise en compte de l'extinction atmospherique
-        conditions.extinction = _ui->extinctionAtmospherique->isChecked();
-
-        // Prise en compte de la refraction atmospherique
-        conditions.refraction = _ui->refractionPourEclipses->isChecked();
-
-        // Prise en compte de l'effet des eclipses partielles sur la magnitude
-        conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
-
-        // Prise en compte des eclipses de Lune
-        conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
-
-        // Fichier TLE
-        conditions.fichier = Configuration::instance()->nomfic();
-
-        // Nom du fichier resultat
-        const QString chaine = tr("previsions") + "_%1_%2.txt";
-        conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
-
-        // Barre de progression
-        auto barreProgression = new QProgressBar();
-        barreProgression->setAlignment(Qt::AlignHCenter);
-
-        QProgressDialog fenetreProgression;
-        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
-        fenetreProgression.setCancelButtonText(tr("Annuler"));
-        fenetreProgression.setBar(barreProgression);
-        fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-        // Lancement des calculs
-        Prevision::setConditions(conditions);
-        QFutureWatcher<void> calculs;
-
-        connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
-        connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
-        connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
-        connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
-
-        calculs.setFuture(QtConcurrent::map(vecSat, &Prevision::CalculPrevisions));
-
-        fenetreProgression.exec();
-        calculs.waitForFinished();
-
-        if (calculs.isCanceled()) {
-            Prevision::resultats().clear();
-        } else {
-
-            // Affichage des resultats
-            emit AfficherMessageStatut(tr("Calculs terminés"), 10);
-
-            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
-            afficher->show();
-        }
-
-    } catch (PreviSatException &) {
-    }
-
-    /* Retour */
-    return;
-}
-
 void Onglets::on_typeParametres_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
@@ -2978,6 +2802,337 @@ void Onglets::on_optionSuiv_clicked()
     _indexOption = (_ui->configuration->currentIndex() + 1) % 4;
     _ui->configuration->setCurrentIndex(_indexOption);
 
+}
+
+void Onglets::on_actionTous_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->liste2->hasFocus()) {
+        for(int i=0; i<_ui->liste2->count(); i++) {
+            _ui->liste2->item(i)->setCheckState(Qt::Checked);
+        }
+    }
+
+    if (_ui->liste3->hasFocus()) {
+        for(int i=0; i<_ui->liste3->count(); i++) {
+            _ui->liste3->item(i)->setCheckState(Qt::Checked);
+        }
+    }
+
+    if (_ui->listeStations->hasFocus()) {
+        for(int i=0; i<_ui->listeStations->count(); i++) {
+            _ui->listeStations->item(i)->setCheckState(Qt::Checked);
+        }
+        //ModificationOption();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_actionAucun_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->liste2->hasFocus()) {
+        for(int i=0; i<_ui->liste2->count(); i++) {
+            _ui->liste2->item(i)->setCheckState(Qt::Unchecked);
+        }
+    }
+
+    if (_ui->liste3->hasFocus()) {
+        for(int i=0; i<_ui->liste3->count(); i++) {
+            _ui->liste3->item(i)->setCheckState(Qt::Unchecked);
+        }
+    }
+
+    if (_ui->listeStations->hasFocus()) {
+        for(int i=0; i<_ui->listeStations->count(); i++) {
+            _ui->listeStations->item(i)->setCheckState(Qt::Unchecked);
+        }
+        //ModificationOption();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul des previsions de passage
+ */
+void Onglets::on_calculsPrev_clicked()
+{
+    /* Declarations des variables locales */
+    QVector<int> vecSat;
+    ConditionsPrevisions conditions;
+
+    /* Initialisations */
+    int j = 0;
+    conditions.listeSatellites.clear();
+    vecSat.append(0);
+
+    /* Corps de la methode */
+    try {
+
+        if (_ui->liste2->count() == 0) {
+            throw PreviSatException();
+        }
+
+        for(int i = 0; i < _ui->liste2->count(); i++) {
+            if (_ui->liste2->item(i)->checkState() == Qt::Checked) {
+                conditions.listeSatellites.append(_ui->liste2->item(i)->data(Qt::UserRole).toString());
+                j++;
+            }
+        }
+
+        if (conditions.listeSatellites.isEmpty()) {
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+        }
+
+        // Ecart heure locale - UTC
+        const bool ecart = (fabs(_date->offsetUTC() - Date::CalculOffsetUTC(_date->ToQDateTime(1))) > EPSDBL100);
+        const double offset1 = (ecart) ? _date->offsetUTC() : Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+        const double offset2 = (ecart) ? _date->offsetUTC() : Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialePrev->date().year(), _ui->dateInitialePrev->date().month(), _ui->dateInitialePrev->date().day(),
+                         _ui->dateInitialePrev->time().hour(), _ui->dateInitialePrev->time().minute(), _ui->dateInitialePrev->time().second(), 0.);
+
+        // Jour julien initial
+        conditions.jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(_ui->dateFinalePrev->date().year(), _ui->dateFinalePrev->date().month(), _ui->dateFinalePrev->date().day(),
+                         _ui->dateFinalePrev->time().hour(), _ui->dateFinalePrev->time().minute(), _ui->dateFinalePrev->time().second(), 0.);
+
+        // Jour julien final
+        conditions.jj2 = date2.jourJulien() - offset2;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (conditions.jj1 > conditions.jj2) {
+            const double tmp = conditions.jj2;
+            conditions.jj2 = conditions.jj1;
+            conditions.jj1 = tmp;
+        }
+
+        conditions.ecart = ecart;
+        conditions.offset = offset1;
+
+        // Systeme horaire
+        conditions.systeme = _ui->syst24h->isChecked();
+
+        // Pas de generation
+        conditions.pas = _ui->pasGeneration->currentText().split(" ").first().toDouble();
+        if (_ui->pasGeneration->currentIndex() < 5) {
+            conditions.pas *= NB_JOUR_PAR_SEC;
+        } else {
+            conditions.pas *= NB_JOUR_PAR_MIN;
+        }
+
+        // Lieu d'observation
+        conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation2->currentIndex());
+
+        // Unites de longueur
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+
+        // Conditions d'eclairement du satellite
+        conditions.eclipse = _ui->illuminationPrev->isChecked();
+
+        // Magnitude maximale
+        conditions.magnitudeLimite = (_ui->magnitudeMaxPrev->isChecked()) ? _ui->valMagnitudeMaxPrev->value() : 99.;
+
+        // Hauteur minimale du satellite
+        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatPrev->currentIndex() == 5) ?
+                                            abs(_ui->valHauteurSatPrev->text().toInt()) : 5 * _ui->hauteurSatPrev->currentIndex());
+
+        // Hauteur maximale du Soleil
+        if (_ui->hauteurSoleilPrev->currentIndex() <= 3) {
+            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilPrev->currentIndex();
+        } else if (_ui->hauteurSoleilPrev->currentIndex() == 4) {
+            conditions.crepuscule = PI_SUR_DEUX;
+        } else if (_ui->hauteurSoleilPrev->currentIndex() == 5) {
+            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
+        } else {
+        }
+
+        // Prise en compte de l'extinction atmospherique
+        conditions.extinction = _ui->extinctionAtmospherique->isChecked();
+
+        // Prise en compte de la refraction atmospherique
+        conditions.refraction = _ui->refractionPourEclipses->isChecked();
+
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
+
+        // Prise en compte des eclipses de Lune
+        conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
+
+        // Fichier TLE
+        conditions.fichier = Configuration::instance()->nomfic();
+
+        // Nom du fichier resultat
+        const QString chaine = tr("previsions") + "_%1_%2.txt";
+        conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
+                chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
+
+        // Barre de progression
+        auto barreProgression = new QProgressBar();
+        barreProgression->setAlignment(Qt::AlignHCenter);
+
+        QProgressDialog fenetreProgression;
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+        fenetreProgression.setCancelButtonText(tr("Annuler"));
+        fenetreProgression.setBar(barreProgression);
+        fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+        // Lancement des calculs
+        Prevision::setConditions(conditions);
+        QFutureWatcher<void> calculs;
+
+        connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+        connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+        connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+        connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+        calculs.setFuture(QtConcurrent::map(vecSat, &Prevision::CalculPrevisions));
+
+        fenetreProgression.exec();
+        calculs.waitForFinished();
+
+        if (calculs.isCanceled()) {
+            Prevision::resultats().clear();
+        } else {
+
+            // Affichage des resultats
+            emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+
+            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
+            afficher->show();
+        }
+
+    } catch (PreviSatException &) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_liste2_itemClicked(QListWidgetItem *item)
+{
+    if (_ui->liste2->hasFocus() && (_ui->liste2->currentRow() >= 0)) {
+
+        const QString norad = item->data(Qt::UserRole).toString();
+        if (_ui->liste2->currentItem()->checkState() == Qt::Checked) {
+
+            // Suppression d'un satellite dans la liste
+            _ui->liste2->currentItem()->setCheckState(Qt::Unchecked);
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            _ui->liste2->currentItem()->setCheckState(Qt::Checked);
+        }
+    }
+}
+
+void Onglets::on_liste2_customContextMenuRequested(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+    if (_ui->liste2->currentRow() >= 0) {
+        _ui->menuContextuelListes->exec(QCursor::pos());
+    }
+}
+
+void Onglets::on_parametrageDefautPrev_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    on_barreOnglets_currentChanged(_ui->barreOnglets->indexOf(_ui->previsions));
+    _ui->pasGeneration->setCurrentIndex(5);
+    _ui->lieuxObservation2->setCurrentIndex(0);
+    _ui->hauteurSatPrev->setCurrentIndex(0);
+    _ui->hauteurSoleilPrev->setCurrentIndex(1);
+    _ui->valHauteurSatPrev->setVisible(false);
+    _ui->valHauteurSoleilPrev->setVisible(false);
+    _ui->valMagnitudeMaxPrev->setVisible(false);
+    _ui->illuminationPrev->setChecked(true);
+    _ui->magnitudeMaxPrev->setChecked(false);
+    if (!_ui->calculsPrev->isEnabled()) {
+        _ui->calculsPrev->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_effacerHeuresPrev_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialePrev->setTime(QTime(0, 0, 0));
+    _ui->dateFinalePrev->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_hauteurSatPrev_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSatPrev->count() - 1) {
+        _ui->valHauteurSatPrev->setText(settings.value("previsions/valHauteurSatPrev", 0).toString());
+        _ui->valHauteurSatPrev->setVisible(true);
+        _ui->valHauteurSatPrev->setCursorPosition(0);
+        _ui->valHauteurSatPrev->setFocus();
+    } else {
+        _ui->valHauteurSatPrev->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_hauteurSoleilPrev_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSoleilPrev->count() - 1) {
+        _ui->valHauteurSoleilPrev->setText(settings.value("previsions/valHauteurSoleilPrev", 0).toString());
+        _ui->valHauteurSoleilPrev->setVisible(true);
+        _ui->valHauteurSoleilPrev->setCursorPosition(0);
+        _ui->valHauteurSoleilPrev->setFocus();
+    } else {
+        _ui->valHauteurSoleilPrev->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_magnitudeMaxPrev_toggled(bool checked)
+{
+    _ui->valMagnitudeMaxPrev->setVisible(checked);
 }
 
 void Onglets::on_calculsFlashs_clicked()
