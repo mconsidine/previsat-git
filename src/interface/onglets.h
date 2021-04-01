@@ -284,10 +284,6 @@ private slots:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
-    void on_liste2_itemClicked(QListWidgetItem *item);
-
-    void on_calculsPrev_clicked();
-
     void on_typeParametres_currentIndexChanged(int index);
 
     void on_typeRepere_currentIndexChanged(int index);
@@ -343,6 +339,19 @@ private slots:
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_optionPrec_clicked();
     void on_optionSuiv_clicked();
+
+    void on_actionTous_triggered();
+    void on_actionAucun_triggered();
+
+    // Calcul des previsions de passage
+    void on_calculsPrev_clicked();
+    void on_liste2_itemClicked(QListWidgetItem *item);
+    void on_liste2_customContextMenuRequested(const QPoint &pos);
+    void on_parametrageDefautPrev_clicked();
+    void on_effacerHeuresPrev_clicked();
+    void on_hauteurSatPrev_currentIndexChanged(int index);
+    void on_hauteurSoleilPrev_currentIndexChanged(int index);
+    void on_magnitudeMaxPrev_toggled(bool checked);
 
     void on_calculsFlashs_clicked();
     void on_calculsTransit_clicked();
