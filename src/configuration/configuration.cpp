@@ -238,6 +238,16 @@ QList<Etoile> &Configuration::etoiles()
     return _etoiles;
 }
 
+QList<Constellation> &Configuration::constellations()
+{
+    return _constellations;
+}
+
+QList<LigneConstellation> &Configuration::lignesCst()
+{
+    return _lignesCst;
+}
+
 QMap<QString, QString> Configuration::mapCategories() const
 {
     return _mapCategories;
@@ -266,6 +276,21 @@ QString Configuration::noradStationSpatiale() const
 bool Configuration::isCarteMonde() const
 {
     return _isCarteMonde;
+}
+
+QList<double> Configuration::masseISS() const
+{
+    return _masseISS;
+}
+
+QStringList Configuration::evenementsISS() const
+{
+    return _evenementsISS;
+}
+
+QList<PositionISS> Configuration::positionsISS() const
+{
+    return _positionsISS;
 }
 
 
@@ -406,6 +431,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier taiutc.dat
         Date::Initialisation(_dirLocalData);
+
+        // Lecture du fichier NASA des positions ISS
+        LecturePositionsISS();
 
         // Lecture du fichier de constellations
         Corps::InitTabConstellations(_dirCommonData);
@@ -961,6 +989,136 @@ void Configuration::LecturePays()
 }
 
 /*
+ * Lecture du fichier NASA contenant les positions de l'ISS
+ */
+void Configuration::LecturePositionsISS()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi1(_dirTmp + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name().toString().toLower() == "ndm") {
+
+            double x = 0.;
+            double y = 0.;
+            double z = 0.;
+            double vx = 0.;
+            double vy = 0.;
+            double vz = 0.;
+            QString epoque;
+            QString version;
+            QString value;
+            PositionISS position;
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name().toString().toLower() == "oem") {
+
+                    version = cfg.attributes().value("version").toString();
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name().toString().toLower() == "body") {
+
+                            while (cfg.readNextStartElement()) {
+
+                                if (cfg.name().toString().toLower() == "segment") {
+
+                                    while (cfg.readNextStartElement()) {
+
+                                        if (cfg.name().toString().toLower() == "data") {
+
+                                            while (cfg.readNextStartElement()) {
+
+                                                value = cfg.readElementText();
+
+                                                if (value.toLower().contains("mass")) {
+
+                                                    // Masse (en kg)
+                                                    _masseISS.append(value.split("=").last().toDouble());
+
+                                                } else if (value.contains("===")) {
+
+                                                    // Recuperation des evenements
+                                                    value = "";
+                                                    while (cfg.readNextStartElement() && !value.contains("===")) {
+
+                                                        value = cfg.readElementText();
+                                                        if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
+                                                            _evenementsISS.append(value);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // Recuperation des positions
+                                            while (cfg.readNextStartElement()) {
+
+                                                if (cfg.name().toString().toLower() == "statevector") {
+
+                                                    while (cfg.readNextStartElement()) {
+
+                                                        if (cfg.name().toString().toLower() == "epoch") {
+                                                            epoque = cfg.readElementText();
+                                                        } else if (cfg.name().toString().toLower() == "x") {
+                                                            x = cfg.readElementText().toDouble();
+                                                        } else if (cfg.name().toString().toLower() == "y") {
+                                                            y = cfg.readElementText().toDouble();
+                                                        } else if (cfg.name().toString().toLower() == "z") {
+                                                            z = cfg.readElementText().toDouble();
+                                                        } else if (cfg.name().toString().toLower() == "x_dot") {
+                                                            vx = cfg.readElementText().toDouble();
+                                                        } else if (cfg.name().toString().toLower() == "y_dot") {
+                                                            vy = cfg.readElementText().toDouble();
+                                                        } else if (cfg.name().toString().toLower() == "z_dot") {
+                                                            vz = cfg.readElementText().toDouble();
+                                                        } else {
+                                                            cfg.skipCurrentElement();
+                                                        }
+                                                    }
+
+                                                    const Vecteur3D pos(x, y, z);
+                                                    const Vecteur3D vit(vx, vy, vz);
+
+                                                    position.jourJulienUTC = Date::ConversionDateNasa(epoque).jourJulienUTC();
+                                                    position.position = pos;
+                                                    position.vitesse = vit;
+
+                                                    _positionsISS.append(position);
+                                                }
+                                            }
+                                        } else {
+                                            cfg.skipCurrentElement();
+                                        }
+                                    }
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+                            }
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Lecture du fichier des sites de lancement
  */
 void Configuration::LectureSitesLancement()
@@ -1190,9 +1348,9 @@ void Configuration::VerificationArborescences()
         // Fichiers du repertoire data commun
         const QString repSon = QString("sound") + QDir::separator();
         const QString repStr = QString("stars") + QDir::separator();
-        const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav" << repSon + "los-default.wav"
-                                        << repStr + "constellations.dat" << repStr + "constlabel.dat" <<  repStr + "constlines.dat"
-                                        << repStr + "etoiles.dat");
+        const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav"
+                                        << repSon + "los-default.wav" << repStr + "constellations.dat" << repStr + "constlabel.dat"
+                                        << repStr + "constlines.dat" << repStr + "etoiles.dat");
 
         VerifieFichiersData(_dirCommonData, ficCommonData);
 

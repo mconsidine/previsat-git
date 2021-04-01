@@ -1522,7 +1522,20 @@ void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
 
 void Onglets::on_liste2_itemClicked(QListWidgetItem *item)
 {
-    const QString norad = item->data(Qt::UserRole).toString();
+    if (_ui->liste2->hasFocus() && (_ui->liste2->currentRow() >= 0)) {
+
+        const QString norad = item->data(Qt::UserRole).toString();
+        if (_ui->liste2->currentItem()->checkState() == Qt::Checked) {
+
+            // Suppression d'un satellite dans la liste
+            _ui->liste2->currentItem()->setCheckState(Qt::Unchecked);
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            _ui->liste2->currentItem()->setCheckState(Qt::Checked);
+        }
+    }
 }
 
 void Onglets::on_calculsPrev_clicked()
@@ -1534,6 +1547,7 @@ void Onglets::on_calculsPrev_clicked()
     /* Initialisations */
     int j = 0;
     conditions.listeSatellites.clear();
+    vecSat.append(0);
 
     /* Corps de la methode */
     try {
@@ -1545,7 +1559,6 @@ void Onglets::on_calculsPrev_clicked()
         for(int i = 0; i < _ui->liste2->count(); i++) {
             if (_ui->liste2->item(i)->checkState() == Qt::Checked) {
                 conditions.listeSatellites.append(_ui->liste2->item(i)->data(Qt::UserRole).toString());
-                vecSat.append(j);
                 j++;
             }
         }
@@ -1672,7 +1685,7 @@ void Onglets::on_calculsPrev_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats());
+            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
             afficher->show();
         }
 
@@ -2979,9 +2992,10 @@ void Onglets::on_calculsFlashs_clicked()
     /* Corps de la methode */
     try {
 
-        for(int i = 0; i < Configuration::instance()->mapFlashs().count(); i++) {
-            vecSat.append(i);
-        }
+//        for(int i = 0; i < Configuration::instance()->mapFlashs().count(); i++) {
+//            vecSat.append(i);
+//        }
+        vecSat.append(0);
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(_date->offsetUTC() - Date::CalculOffsetUTC(_date->ToQDateTime(1))) > EPSDBL100);
@@ -3096,7 +3110,7 @@ void Onglets::on_calculsFlashs_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats());
+            Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this);
             afficher->show();
         }
 
@@ -3269,7 +3283,7 @@ void Onglets::on_calculsTransit_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats());
+            Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this);
             afficher->show();
         }
 
@@ -3297,10 +3311,12 @@ void Onglets::on_calculsEvt_clicked()
             throw PreviSatException();
         }
 
+        vecSat.append(0);
+
         for(int i = 0; i < _ui->liste3->count(); i++) {
             if (_ui->liste3->item(i)->checkState() == Qt::Checked) {
                 conditions.listeSatellites.append(_ui->liste3->item(i)->data(Qt::UserRole).toString());
-                vecSat.append(j);
+                //vecSat.append(j);
                 j++;
             }
         }
@@ -3387,7 +3403,7 @@ void Onglets::on_calculsEvt_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats());
+            Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats(), this);
             afficher->show();
         }
 
@@ -3541,4 +3557,38 @@ void Onglets::on_afficherSuivi_clicked()
     if (!_ficSuivi.isEmpty()) {
         QDesktopServices::openUrl(QUrl(_ficSuivi.replace("\\", "/")));
     }
+}
+
+void Onglets::on_barreOnglets_currentChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
+    EffacerMessageStatut();
+    _ui->compteRenduMaj->setVisible(false);
+
+    /* Corps de la methode */
+    if (index == _ui->barreOnglets->indexOf(_ui->osculateurs)) {
+
+//        if (ui->modeManuel->isChecked()) {
+//            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
+//            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
+//        }
+    } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
+        // TODO
+    } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialePrev->setDisplayFormat(fmt);
+        _ui->dateFinalePrev->setDateTime(_ui->dateInitialePrev->dateTime().addDays(7));
+        _ui->dateFinalePrev->setDisplayFormat(fmt);
+
+        _ui->calculsPrev->setDefault(true);
+        _ui->calculsPrev->setFocus();
+    }
+
+    /* Retour */
+    return;
 }

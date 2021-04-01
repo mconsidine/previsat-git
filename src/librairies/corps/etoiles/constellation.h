@@ -74,7 +74,6 @@ public:
      * Accesseurs
      */
     QString nom() const;
-    static QList<Constellation> &constellations();
 
 
     /*
@@ -93,13 +92,13 @@ public:
      * @param observateur observateur
      * @param constellations tableau des constellations
      */
-    static void CalculConstellations(const Observateur &observateur);
+    static void CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations);
 
     /**
      * @brief Initialisation Lecture du fichier de constellations
      * @param dirCommonData chemin des donnees communes
      */
-    static void Initialisation(const QString &dirCommonData);
+    static void Initialisation(const QString &dirCommonData, QList<Constellation> &constellations);
 
 
 protected:
@@ -127,7 +126,7 @@ private:
      * Variables privees
      */
     QString _nom;
-    static QList<Constellation> _constellations;
+    QList<Constellation> _constellations;
 
     /*
      * Methodes privees

@@ -50,6 +50,14 @@
 
 class Onglets;
 class QGraphicsScene;
+class Observateur;
+class Soleil;
+class Lune;
+class LigneConstellation;
+class Constellation;
+class Etoile;
+class Planete;
+class Satellite;
 
 namespace Ui {
 class Ciel;
@@ -68,7 +76,7 @@ public:
      * @brief Ciel Constructeur par defaut
      * @param parent parent
      */
-    explicit Ciel(Onglets *onglets,QWidget *parent = nullptr);
+    explicit Ciel(Onglets *onglets, QWidget *parent = nullptr);
 
     /*
      * Destructeur
@@ -94,7 +102,17 @@ public:
     /**
      * @brief show Affichage du ciel
      */
-    void show();
+    void show(const Observateur &observateur,
+              const Soleil &soleil,
+              const Lune &lune,
+              const QList<LigneConstellation> &lignesCst,
+              const QList<Constellation> &constellations,
+              const QList<Etoile> &etoiles,
+              const QList<Planete> &planetes,
+              const QList<Satellite> &satellites,
+              const bool maxFlash = false,
+              const bool labelHeure = false,
+              const double offset = 0.);
 
     /**
      * @brief CalculCouleurCiel Determination de la couleur du ciel

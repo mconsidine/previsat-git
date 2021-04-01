@@ -298,11 +298,12 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     /* Initialisations */
 
     /* Corps de la methode */
-    const QStringList dateNasa = dateFormatNasa.split("/");
-    const int annee = dateNasa.at(0).toInt();
-    const int nbJours = dateNasa.at(1).toInt();
+    const QStringList dateNasa = dateFormatNasa.split("T");
+    const QStringList anneeNbJours = dateNasa.at(0).split("-");
+    const int annee = anneeNbJours.at(0).toInt();
+    const int nbJours = anneeNbJours.at(1).toInt();
 
-    const QStringList heures = dateNasa.at(2).split(":", QString::SkipEmptyParts);
+    const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", QString::SkipEmptyParts);
     const int heure = heures.at(0).toInt();
     const int minutes = heures.at(1).toInt();
     const double secondes = heures.at(2).toDouble();
@@ -386,22 +387,13 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     const QString chaine = " %1:%2:%3%4";
 
     /* Corps de la methode */
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), format) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    const Date date(jjsec, 0.);
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, format) * NB_JOUR_PAR_SEC + tmp;
+    const Date date(jjsec + EPSDBL100, 0.);
     const QDateTime date2 = date.ToQDateTime(0);
+    const QPair<int, QString> hr = getHrAmPm(date2.time().hour(), systeme);
 
-    int hr = date2.time().hour();
-    QString sys = " ";
-    if (systeme == SYSTEME_12H) {
-        hr = date2.time().hour()%12;
-        sys = ((hr >= 0) && (date2.time().hour() < 12)) ? "a" : "p";
-        if (hr == 0) {
-            hr = 12;
-        }
-    }
-
-    const QString res = date2.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr, 2, 10, QChar('0')).
-                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(sys);
+    const QString res = date2.toString(QObject::tr("dd/MM/yyyy")) + chaine.arg(hr.first, 2, 10, QChar('0')).
+                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second);
 
     /* Retour */
     return (res);
@@ -415,32 +407,23 @@ QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &system
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
     const double tmp = floor(_jourJulien);
     QString res = "%1/%2/%3 %4:%5:%6%7";
 
     /* Corps de la methode */
-    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp), format) * NB_JOUR_PAR_SEC + tmp + EPSDBL100;
-    const Date date(jjsec, _offsetUTC);
-    int hr = date._heure;
-    QString sys = " ";
-
-    if (systeme == SYSTEME_12H) {
-        hr = date._heure%12;
-        sys = ((hr >= 0) && (date._heure < 12)) ? "a" : "p";
-        if (hr == 0) {
-            hr = 12;
-        }
-    }
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, format) * NB_JOUR_PAR_SEC + tmp;
+    const Date date(jjsec + EPSDBL100, _offsetUTC);
+    const QPair<int, QString> hr = getHrAmPm(date._heure, systeme);
 
     /* Retour */
     return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
-            arg(date._jour, 2, 10, QChar('0')).arg(hr, 2, 10, QChar('0')).
-            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(sys));
+            arg(date._jour, 2, 10, QChar('0')).arg(hr.first, 2, 10, QChar('0')).
+            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second));
 }
 
 /*
- * Conversion en chaine de caracteres avec une precision a la milliseconde
+ * Conversion en chaine de caracteres avec une precision a la milliseconde (UTC)
  */
 QString Date::ToShortDateAMJmillisec() const
 {
@@ -643,4 +626,29 @@ void Date::getDeltaAT()
 
     /* Retour */
     return;
+}
+
+/*
+ * Obtention de l'heure AM/PM
+ */
+QPair<int, QString> Date::getHrAmPm(const int heure, const DateSysteme &systeme) const
+{
+    /* Declarations des variables locales */
+    QPair<int, QString> res;
+
+    /* Initialisations */
+    res.first = heure;
+    res.second = " ";
+
+    /* Corps de la methode */
+    if (systeme == SYSTEME_12H) {
+        res.first = heure % 12;
+        res.second = ((res.first >= 0) && (heure < 12)) ? "a" : "p";
+        if (res.first == 0) {
+            res.first = 12;
+        }
+    }
+
+    /* Retour */
+    return res;
 }

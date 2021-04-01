@@ -350,6 +350,7 @@ private slots:
     void on_genererPositions_clicked();
 
     void on_afficherSuivi_clicked();
+    void on_barreOnglets_currentChanged(int index);
 };
 
 #endif // ONGLETS_H

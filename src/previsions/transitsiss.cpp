@@ -135,7 +135,7 @@ int TransitsIss::CalculTransits(int &nombre)
     double jj2;
     double ang;
     double ang0;
-    double rayon;
+    double rayon = 0.;
     Date date;
     Date date2;
     Corps corps;

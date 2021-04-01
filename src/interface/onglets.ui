@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -5844,16 +5844,16 @@
         <hour>0</hour>
         <minute>0</minute>
         <second>0</second>
-        <year>2020</year>
-        <month>8</month>
-        <day>15</day>
+        <year>2021</year>
+        <month>3</month>
+        <day>31</day>
        </datetime>
       </property>
       <property name="date">
        <date>
-        <year>2020</year>
-        <month>8</month>
-        <day>15</day>
+        <year>2021</year>
+        <month>3</month>
+        <day>31</day>
        </date>
       </property>
       <property name="displayFormat">
@@ -5905,16 +5905,16 @@
         <hour>0</hour>
         <minute>0</minute>
         <second>0</second>
-        <year>2020</year>
-        <month>8</month>
-        <day>22</day>
+        <year>2021</year>
+        <month>4</month>
+        <day>7</day>
        </datetime>
       </property>
       <property name="date">
        <date>
-        <year>2020</year>
-        <month>8</month>
-        <day>22</day>
+        <year>2021</year>
+        <month>4</month>
+        <day>7</day>
        </date>
       </property>
       <property name="displayFormat">
@@ -6267,6 +6267,9 @@
       </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
       </property>
       <property name="textElideMode">
        <enum>Qt::ElideNone</enum>

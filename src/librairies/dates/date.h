@@ -245,6 +245,14 @@ private:
      */
     void getDeltaAT();
 
+    /**
+     * @brief getHrAmPm Obtention de l'heure AM/PM
+     * @param heure heure
+     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @return heure AM/PM
+     */
+    QPair<int, QString> getHrAmPm(const int heure, const DateSysteme &systeme) const;
+
 };
 
 

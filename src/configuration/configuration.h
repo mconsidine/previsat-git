@@ -48,7 +48,9 @@
 #include <QString>
 #include <QStringList>
 #include "librairies/observateur/observateur.h"
+#include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
+#include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
@@ -67,6 +69,12 @@ struct SatellitesFlashs
 {
     QString nomsat;
     QList<QPair<double, double> > angles;
+};
+
+struct PositionISS {
+    double jourJulienUTC;
+    Vecteur3D position;
+    Vecteur3D vitesse;
 };
 
 
@@ -125,6 +133,8 @@ public:
     Lune &lune();
     QList<Planete> &planetes();
     QList<Etoile> &etoiles();
+    QList<Constellation> &constellations();
+    QList<LigneConstellation> &lignesCst();
 
     QMap<QString, QString> mapCategories() const;
     QMap<QString, QString> mapPays() const;
@@ -135,6 +145,9 @@ public:
 
     bool isCarteMonde() const;
 
+    QList<double> masseISS() const;
+    QStringList evenementsISS() const;
+    QList<PositionISS> positionsISS() const;
 
     /*
      * Modificateurs
@@ -286,9 +299,16 @@ private:
 
     // Etoiles
     QList<Etoile> _etoiles;
+    QList<Constellation> _constellations;
+    QList<LigneConstellation> _lignesCst;
 
     // Numero NORAD de la station spatiale
     QString _noradStationSpatiale;
+
+    // Evenements et positions ISS
+    QList<double> _masseISS;
+    QStringList _evenementsISS;
+    QList<PositionISS> _positionsISS;
 
     static bool _isCarteMonde;
 
@@ -329,6 +349,11 @@ private:
      * @brief LecturePays Lecture du fichier listant les pays ou organisations
      */
     void LecturePays();
+
+    /**
+     * @brief LecturePositionsISS Lecture du fichier NASA contenant les positions de l'ISS
+     */
+    void LecturePositionsISS();
 
     /**
      * @brief LectureSitesLancement Lecture du fichier des sites de lancement

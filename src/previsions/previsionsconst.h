@@ -44,6 +44,7 @@
 #define PREVISIONSCONST_H
 
 #include <QString>
+#include "librairies/corps/satellite/tle.h"
 #include "librairies/dates/date.h"
 #include "librairies/observateur/observateur.h"
 
@@ -108,6 +109,7 @@ struct ConditionsPrevisions
 struct ResultatPrevisions
 {
     QString nom;
+    TLE tle;
 
     Date date;
     double azimut;
