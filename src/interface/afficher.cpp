@@ -43,11 +43,22 @@
 #include "ui_afficher.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QTextStream>
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include "ui_onglets.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "afficher.h"
+#include "ciel.h"
+#include "onglets.h"
 #include "configuration/configuration.h"
+#include "librairies/corps/etoiles/constellation.h"
+#include "librairies/corps/satellite/evenements.h"
 #include "librairies/maths/maths.h"
 
 Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
+
+
+QList<Etoile> etoiles;
+QList<Constellation> constellations;
 
 
 /**********
@@ -58,7 +69,7 @@ Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
  * Constructeurs
  */
 Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-                   const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats,
+                   const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets,
                    QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Afficher)
@@ -71,6 +82,11 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _conditions = conditions;
     _donnees = donnees;
     _resultats = resultats;
+    _onglets = onglets;
+    _ciel = nullptr;
+
+    Etoile::Initialisation(Configuration::instance()->dirCommonData(), etoiles);
+    Constellation::Initialisation(Configuration::instance()->dirCommonData(), constellations);
 
     /* Corps du constructeur */
 #if (BUILD_TEST == false)
@@ -108,7 +124,10 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     case TRANSITS:
         setWindowTitle(tr("Transits ISS"));
         titres << tr("Date de début") << tr("Date de fin") << tr("Angle") << tr("Type") << tr("Corps") << tr("Hauteur Soleil");
-        ui->detailsTransit->setVisible(true);
+
+        if (_resultats.size() > 0) {
+            ui->detailsTransit->setVisible(true);
+        }
         break;
 
     case TELESCOPE:
@@ -486,7 +505,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 /*
  * Chargement des resultats
  */
-void Afficher::ChargementResultats() const
+void Afficher::ChargementResultats()
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -562,6 +581,7 @@ void Afficher::ChargementResultats() const
     ui->resultatsPrevisions->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
     ui->resultatsPrevisions->setAlternatingRowColors(true);
+    ui->resultatsPrevisions->selectRow(0);
 
     /* Retour */
     return;
@@ -736,9 +756,10 @@ QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) con
 
     double htMax = -1.;
     double magnMax = 99.;
-    double htSolMax;
-    bool penombre;
+    double htSolMax = 0.;
+    bool penombre = false;
     QString miroir;
+
     QListIterator<ResultatPrevisions> it(liste);
     while (it.hasNext()) {
 
@@ -877,8 +898,9 @@ QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste)
     double htMax = -1.;
     double magnMax = 99.;
     double magnStd = 99.;
-    double htSolMax;
-    bool penombre;
+    double htSolMax = 0.;
+    bool penombre = false;
+
     QListIterator<ResultatPrevisions> it(liste);
     while (it.hasNext()) {
 
@@ -996,7 +1018,8 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     double angMin = PI;
     QString type;
     QString corps;
-    double htSolMax;
+    double htSolMax = 0.;
+
     QListIterator<ResultatPrevisions> it(liste);
     while (it.hasNext()) {
 
@@ -1097,4 +1120,74 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 
     /* Retour */
     return elems;
+}
+
+void Afficher::on_resultatsPrevisions_itemSelectionChanged()
+{
+    /* Declarations des variables locales */
+    Soleil soleil;
+    Lune lune;
+    QList<LigneConstellation> lignesCst;
+    QList<Planete> planetes;
+    QList<Satellite> satellites;
+
+    /* Initialisations */
+    const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
+            .value<QList<ResultatPrevisions> > ();
+    const Date dateDeb = list.at(0).date;
+
+    /* Corps de la methode */
+    // Calcul de la position de l'observateur
+    Observateur observateur = _conditions.observateur;
+    observateur.CalculPosVit(dateDeb);
+
+    // Calcul de la position du Soleil
+    soleil.CalculPosition(dateDeb);
+    soleil.CalculCoordHoriz(observateur);
+
+    // Calcul de la position de la Lune
+    lune.CalculPosition(dateDeb);
+    lune.CalculPhase(soleil);
+    lune.CalculCoordHoriz(observateur);
+
+    // Calcul de la position du catalogue d'etoiles
+    Etoile::CalculPositionEtoiles(observateur, etoiles);
+    if (_onglets->ui()->affconst->isChecked()) {
+        Constellation::CalculConstellations(observateur, constellations);
+    }
+    if (_onglets->ui()->affconst->checkState() != Qt::Unchecked) {
+        LigneConstellation::CalculLignesCst(etoiles, lignesCst);
+    }
+
+    // Calcul de la position des planetes
+    for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
+
+        Planete planete(static_cast<IndicePlanete>(iplanete));
+        planete.CalculPosition(dateDeb, soleil);
+        planete.CalculCoordHoriz(observateur);
+        planetes.append(planete);
+    }
+
+    // Satellite selectionne
+    Satellite sat(list.at(0).tle);
+    sat.CalculPosVit(dateDeb);
+    sat.CalculCoordHoriz(observateur);
+
+    const Date dateLever = Evenements::CalculAOS(dateDeb, sat, observateur, false).date;
+    sat.CalculTraceCiel(dateLever, true, _onglets->ui()->refractionPourEclipses->isChecked(), observateur, 1);
+    satellites.append(sat);
+
+    // Chargement du ciel
+    if (_ciel != nullptr) {
+        _ciel->deleteLater();
+        _ciel = nullptr;
+    }
+    _ciel = new Ciel(_onglets, ui->frameCiel);
+    _ciel->resize(ui->frameCiel->width(), ui->frameCiel->width() - 50);
+
+    // Affichage de la carte du ciel
+    _ciel->show(observateur, soleil, lune, lignesCst, constellations, etoiles, planetes, satellites, true, true, dateDeb.offsetUTC());
+
+    /* Retour */
+    return;
 }

@@ -80,7 +80,6 @@ public:
     bool isDessin() const;
     Etoile etoile1() const;
     Etoile etoile2() const;
-    static QList<LigneConstellation> &lignesCst();
 
 
     /*
@@ -98,7 +97,7 @@ public:
      * @brief CalculLignesCst Calcul des lignes de constellations
      * @param etoiles tableau d'etoiles
      */
-    static void CalculLignesCst(const QList<Etoile> &etoiles);
+    static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
 
     /**
      * @brief Initialisation Lecture du fichier contenant les lignes de constellations
@@ -134,7 +133,6 @@ private:
     bool _dessin;
     Etoile _etoile1;
     Etoile _etoile2;
-    static QList<LigneConstellation> _lignesCst;
     static QList<QPair<int, int> > _tabLigCst;
 
 

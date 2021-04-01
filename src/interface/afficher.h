@@ -56,6 +56,8 @@ class Afficher;
 
 class QTableWidget;
 class QTableWidgetItem;
+class Ciel;
+class Onglets;
 
 class Afficher : public QMainWindow
 {
@@ -72,7 +74,7 @@ public:
      *  Constructeurs
      */
     Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-             const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, QWidget *parent = nullptr);
+             const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets = nullptr, QWidget *parent = nullptr);
     ~Afficher();
 
     /*
@@ -111,6 +113,8 @@ private slots:
     void on_actionEnregistrerTxt_triggered();
 
 
+    void on_resultatsPrevisions_itemSelectionChanged();
+
 private:
 
     /*
@@ -123,10 +127,13 @@ private:
     Ui::Afficher *ui;
     QTableWidget *tableDetail;
     QMainWindow *afficherDetail;
+    Ciel *_ciel;
+    Onglets *_onglets;
     QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
     ConditionsPrevisions _conditions;
     DonneesPrevisions _donnees;
     TypeCalcul _typeCalcul;
+
 
     /*
      * Methodes privees
@@ -134,7 +141,7 @@ private:
     /**
      * @brief ChargementResultats Chargement des resultats
      */
-    void ChargementResultats() const;
+    void ChargementResultats();
 
     /**
      * @brief EcrireEntete Ecriture de l'entete du fichier de resultats

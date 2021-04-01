@@ -104,7 +104,16 @@ Ciel::~Ciel()
 /*
  * Affichage du ciel
  */
-void Ciel::show()
+void Ciel::show(const Observateur &observateur,
+        const Soleil &soleil,
+        const Lune &lune,
+        const QList<LigneConstellation> &lignesCst,
+        const QList<Constellation> &constellations,
+        const QList<Etoile> &etoiles,
+        const QList<Planete> &planetes,
+        const QList<Satellite> &satellites, const bool maxFlash,
+        const bool labelHeure,
+        const double offset)
 {
     /* Declarations des variables locales */
 
@@ -116,7 +125,7 @@ void Ciel::show()
     QWidget::show();
 
     // Determination de la couleur du ciel
-    const double hts = Configuration::instance()->soleil().hauteur() * RAD2DEG;
+    const double hts = soleil.hauteur() * RAD2DEG;
     const QBrush couleurCiel = CalculCouleurCiel(hts);
 
     if (scene != nullptr) {
@@ -136,12 +145,10 @@ void Ciel::show()
     const int lciel = qRound(0.5 * ui->vueCiel->width());
     const int hciel = qRound(0.5 * ui->vueCiel->height());
 
-    const Soleil &soleil = Configuration::instance()->soleil();
-
     // Affichage des constellations
     if (_onglets->ui()->affconst->checkState() != Qt::Unchecked) {
 
-        QListIterator<LigneConstellation> it(LigneConstellation::lignesCst());
+        QListIterator<LigneConstellation> it(lignesCst);
         while (it.hasNext()) {
 
             const LigneConstellation lig = it.next();
@@ -172,7 +179,7 @@ void Ciel::show()
         if (_onglets->ui()->affconst->checkState() == Qt::Checked) {
 
             //if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-            QListIterator<Constellation> it2(Constellation::constellations());
+            QListIterator<Constellation> it2(constellations);
             while (it2.hasNext()) {
 
                 const Constellation cst = it2.next();
@@ -203,7 +210,7 @@ void Ciel::show()
 
     // Affichage des etoiles
     const QBrush couleurEtoiles = (soleil.hauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
-    QListIterator<Etoile> it1(Configuration::instance()->etoiles());
+    QListIterator<Etoile> it1(etoiles);
     while (it1.hasNext()) {
 
         const Etoile etoile = it1.next();
@@ -250,7 +257,6 @@ void Ciel::show()
     }
 
     // Affichage des planetes
-    const QList<Planete> &planetes = Configuration::instance()->planetes();
     if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
         // Calcul des coordonnees radar des planetes
@@ -299,7 +305,7 @@ void Ciel::show()
             const double de1 = tabEcliptique[0][1] * DEG2RAD;
             const double cd1 = cos(de1);
             const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-            const Vecteur3D vec1 = Configuration::instance()->observateur().rotHz() * vec;
+            const Vecteur3D vec1 = observateur.rotHz() * vec;
 
             double ht1 = asin(vec1.z());
             double az1 = atan2(vec1.y(), -vec1.x());
@@ -318,7 +324,7 @@ void Ciel::show()
                 const double de2 = tabEcliptique[i][1] * DEG2RAD;
                 const double cd2 = cos(de2);
                 const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-                const Vecteur3D vec2 = Configuration::instance()->observateur().rotHz() * vec0;
+                const Vecteur3D vec2 = observateur.rotHz() * vec0;
 
                 const double ht2 = asin(vec2.z());
 
@@ -398,7 +404,6 @@ void Ciel::show()
     }
 
     // Affichage de la Lune
-    const Lune &lune = Configuration::instance()->lune();
     if (_onglets->ui()->afflune->isChecked() && lune.isVisible()) {
 
         // Calcul des coordonnees radar de la Lune
@@ -412,7 +417,7 @@ void Ciel::show()
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
-        if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
+        if (_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) {
             transform.rotate(180.);
         }
         transform.translate(-7, -7);
@@ -445,10 +450,17 @@ void Ciel::show()
     }
 
     // Affichage des satellites
+    bool aecr;
+    bool adeb;
+    bool amax;
+    int min;
+    int lsat0;
+    int bsat0;
     int lsat1;
     int bsat1;
+    int lsat3 = 0;
+    int bsat3 = 0;
     QColor couleur;
-    const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
 
     for(int isat=satellites.size()-1; isat>=0; isat--) {
 
@@ -462,6 +474,14 @@ void Ciel::show()
                 const double az1 = trace.at(0).azimut;
                 lsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
                 bsat1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+                aecr = false;
+                adeb = false;
+                min = -1;
+                lsat0 = 10000;
+                bsat0 = 10000;
+                lsat3 = 0;
+                bsat3 = 0;
 
                 for(int i=1; i<trace.size(); i++) {
 
@@ -491,27 +511,108 @@ void Ciel::show()
                     const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                     const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
 
-                    scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
+                    const QLineF lig(lsat2, bsat2, lsat1, bsat1);
+
+                    if (labelHeure) {
+
+                        // Determination des dates a afficher sur la carte du ciel
+                        const Date dateTrace(trace.at(i-1).jourJulienUTC, offset);
+                        const double norm = sqrt((lsat1 - lsat0) * (lsat1 - lsat0) + (bsat1 - bsat0) * (bsat1 - bsat0));
+
+                        if ((dateTrace.minutes() != min) && (norm > 12.)) {
+                            aecr = true;
+                            min = dateTrace.minutes();
+                            lsat3 = (i == 1) ? lsat1 : lsat0;
+                            bsat3 = (i == 1) ? bsat1 : bsat0;
+                            lsat0 = lsat1;
+                            bsat0 = bsat1;
+                        }
+
+//                        if (maxFlash) {
+
+//                            if ((dateTrace.jourJulienUTC() > dateMax.jourJulienUTC()) && !aecr) {
+//                                adeb = true;
+//                                amax = true;
+//                                aecr = true;
+//                            }
+
+//                            if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
+//                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
+//                                 crayon = QPen(crayon.color(), 4);
+//                             }
+//                        }
+
+                        // Affichage de l'heure
+                        if (aecr) {
+
+                            aecr = false;
+
+                            // Dessin d'une petite ligne correspondant a la date
+                            QLineF lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
+                            lig2.setLength(4);
+                            scene->addLine(lig2, QPen(couleurEtoiles, 1.));
+
+                            QString sdate = "";
+//                            if (amax) {
+//                                amax = false;
+
+//                                if (cond.typeCalcul() == METOP) {
+//                                    QString nomFlash = sat.tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
+//                                    nomFlash[0] = nomFlash[0].toUpper();
+//                                    nomFlash[3] = nomFlash[3].toUpper();
+//                                    sdate = tr("Flash %1").arg(nomFlash);
+//                                }
+//                            } else {
+//                                if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
+//                                        dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
+                                    const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/
+                                    sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
+                                    sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+//                                }
+//                            }
+
+                            if (!sdate.isEmpty()) {
+
+                                QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
+                                txtTrace->setBrush(couleurEtoiles);
+
+                                const double ang = -lig2.angle();
+                                const double ca = cos(ang * DEG2RAD);
+                                const double sa = sin(ang * DEG2RAD);
+                                const double xnc = lsat2 + 6. * ca + 11. * sa;
+                                const double ync = bsat2 + 6. * sa - 11. * ca;
+
+                                txtTrace->setPos(xnc, ync);
+                                txtTrace->setRotation(ang);
+                                scene->addItem(txtTrace);
+                            }
+                        }
+                    }
+
+                    scene->addLine(lig, crayon);
 
                     lsat1 = lsat2;
                     bsat1 = bsat2;
                 }
             }
 
-            // Calcul des coordonnees radar du satellite
-            const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).azimut()));
-            const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).azimut()));
+            if (!labelHeure) {
 
-            rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+                // Calcul des coordonnees radar du satellite
+                const int lsat = qRound(lciel - lciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).azimut()));
+                const int bsat = qRound(hciel - hciel * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).azimut()));
 
-            if (satellites.at(isat).conditionEclipse().eclipseTotale()) {
-                couleur = crimson;
-            } else if (satellites.at(isat).conditionEclipse().eclipsePartielle() || satellites.at(isat).conditionEclipse().eclipseAnnulaire()) {
-                couleur = Qt::green;
-            } else {
-                couleur = Qt::yellow;
+                rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+
+                if (satellites.at(isat).conditionEclipse().eclipseTotale()) {
+                    couleur = crimson;
+                } else if (satellites.at(isat).conditionEclipse().eclipsePartielle() || satellites.at(isat).conditionEclipse().eclipseAnnulaire()) {
+                    couleur = Qt::green;
+                } else {
+                    couleur = Qt::yellow;
+                }
+                scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
             }
-            scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
         }
     }
 
@@ -573,7 +674,15 @@ void Ciel::resizeEvent(QResizeEvent *evt)
         ui->ouest->setGeometry(ui->est->width() + ui->vueCiel->width(), ui->ouest->y(), ui->ouest->width(), ui->vueCiel->height());
         ui->nord->setGeometry(ui->nord->x(), ui->nord->y(), 2 * ui->est->width() + ui->vueCiel->width(), ui->nord->height());
         ui->sud->setGeometry(ui->sud->x(), ui->nord->height() + ui->vueCiel->height(), ui->nord->width(), ui->sud->height());
-        show();
+
+        show(Configuration::instance()->observateur(),
+             Configuration::instance()->soleil(),
+             Configuration::instance()->lune(),
+             Configuration::instance()->lignesCst(),
+             Configuration::instance()->constellations(),
+             Configuration::instance()->etoiles(),
+             Configuration::instance()->planetes(),
+             Configuration::instance()->listeSatellites());
     }
 }
 

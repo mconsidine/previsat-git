@@ -261,7 +261,7 @@ void PreviSat::DemarrageApplication()
     _onglets->AffichageLieuObs();
 
     Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
-    Constellation::Initialisation(Configuration::instance()->dirCommonData());
+    Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
     LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
 
     const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
@@ -298,7 +298,14 @@ void PreviSat::DemarrageApplication()
     } else {
 
         // Affichage de la carte du ciel
-        _ciel->show();
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites());
     }
 
     // Affichage du radar
@@ -717,9 +724,12 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
     /* Corps de la methode */
     _messageStatut->setText(message);
 
-    if (_timerStatut->isActive()) {
+    if (_timerStatut->isActive() && (_timerStatut->interval() > 0)) {
         _timerStatut->stop();
+        _timerStatut->deleteLater();
+        _timerStatut = nullptr;
     }
+
     _timerStatut = new QTimer(this);
     _timerStatut->setInterval(secondes * 1000);
     connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
@@ -836,10 +846,10 @@ void PreviSat::EnchainementCalculs()
              */
             Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
             if (_onglets->ui()->affconst->isChecked()) {
-                Constellation::CalculConstellations(observateur);
+                Constellation::CalculConstellations(observateur, Configuration::instance()->constellations());
             }
             if (_onglets->ui()->affconst->checkState() != Qt::Unchecked) {
-                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles());
+                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles(), Configuration::instance()->lignesCst());
             }
         }
 
@@ -893,7 +903,14 @@ void PreviSat::ChangementCarte()
         EnchainementCalculs();
 
         // Affichage de la carte du ciel
-        _ciel->show();
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites());
 
     } else {
         // Passage en carte du monde
@@ -971,7 +988,14 @@ void PreviSat::ChangementDate(const QDateTime &date)
     } else {
 
         // Affichage de la carte du ciel
-        _ciel->show();
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites());
     }
 
     // Affichage du radar
@@ -1063,7 +1087,14 @@ void PreviSat::GestionTempsReel()
         } else {
 
             // Affichage de la carte du ciel
-            _ciel->show();
+            _ciel->show(Configuration::instance()->observateur(),
+                        Configuration::instance()->soleil(),
+                        Configuration::instance()->lune(),
+                        Configuration::instance()->lignesCst(),
+                        Configuration::instance()->constellations(),
+                        Configuration::instance()->etoiles(),
+                        Configuration::instance()->planetes(),
+                        Configuration::instance()->listeSatellites());
         }
 
         // Affichage du radar
@@ -1432,7 +1463,6 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
             // Ajout d'un satellite dans la liste
             ui->liste1->currentItem()->setCheckState(Qt::Checked);
             Configuration::instance()->ajoutSatelliteFicTLE(norad);
-
         }
     }
 

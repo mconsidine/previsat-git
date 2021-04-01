@@ -217,9 +217,11 @@ int Prevision::CalculPrevisions(int &nombre)
                                  !_conditions.eclipse) && ((magnitude.magnitude() < _conditions.magnitudeLimite) ||
                                                            ((sat.tle().donnees().magnitudeStandard() > 98.) || !_conditions.eclipse))) {
 
-
                                 // Nom du satellite
                                 res.nom = sat.tle().nom();
+
+                                // Elements orbitaux
+                                res.tle = sat.tle();
 
                                 // Altitude du satellite
                                 sat.CalculLatitude(sat.position());

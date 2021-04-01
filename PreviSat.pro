@@ -198,7 +198,6 @@ equals(BUILD_TEST, true) {
         DESTDIR = TestPreviSat/release
     }
 
-
     SOURCES += \
         test/src/librairies/corps/satellite/satellitetest.cpp    \
         test/src/librairies/corps/systemesolaire/lunetest.cpp    \

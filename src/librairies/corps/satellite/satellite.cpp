@@ -399,7 +399,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 
                 elements.azimut = sat.azimut();
                 elements.hauteur = sat.hauteur();
-                elements.jourJulienUTC = date.jourJulienUTC();
+                elements.jourJulienUTC = j0.jourJulienUTC();
                 elements.eclipseTotale = sat._conditionEclipse.eclipseTotale();
                 elements.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
                 _traceCiel.append(elements);

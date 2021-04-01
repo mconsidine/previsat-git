@@ -42,9 +42,6 @@
 #include"librairies/exceptions/previsatexception.h"
 
 
-QList<Constellation> Constellation::_constellations;
-
-
 /**********
  * PUBLIC *
  **********/
@@ -94,16 +91,11 @@ QString Constellation::nom() const
     return _nom;
 }
 
-QList<Constellation> &Constellation::constellations()
-{
-    return _constellations;
-}
-
 
 /*
  * Methodes publiques
  */
-void Constellation::CalculConstellations(const Observateur &observateur)
+void Constellation::CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
 
@@ -111,12 +103,13 @@ void Constellation::CalculConstellations(const Observateur &observateur)
 
     /* Corps de la methode */
     try {
-        if (_constellations.isEmpty()) {
+
+        if (constellations.isEmpty()) {
             throw PreviSatException(QObject::tr("Le tableau de constellations n'est pas initialisé"), WARNING);
         }
 
-        for (int i=0; i<_constellations.size(); i++) {
-            _constellations[i].CalculCoordHoriz2(observateur);
+        for (int i=0; i<constellations.size(); i++) {
+            constellations[i].CalculCoordHoriz2(observateur);
         }
     } catch (PreviSatException &e) {
         throw PreviSatException();
@@ -129,7 +122,7 @@ void Constellation::CalculConstellations(const Observateur &observateur)
 /*
  * Lecture du fichier de constellations
  */
-void Constellation::Initialisation(const QString &dirCommonData)
+void Constellation::Initialisation(const QString &dirCommonData, QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
 
@@ -148,7 +141,7 @@ void Constellation::Initialisation(const QString &dirCommonData)
             const QString ligne = flux.readLine();
             const double asc = ligne.mid(0, 6).toDouble();
             const double dec = ligne.mid(7, 7).toDouble();
-            _constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
+            constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
         }
     }
     fi.close();

@@ -36,7 +36,9 @@
 
 #include <cmath>
 #include <QFile>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "telescope.h"
 
@@ -84,10 +86,12 @@ int Telescope::CalculSuiviTelescope(int &nombre)
     if (fi.isWritable()) {
 
         const QString fmt = "%1,%2,%3,%4";
-        Date date(floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + _conditions.pas) * NB_JOUR_PAR_MILLISEC, 0.);
+        double jjmsec = floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + _conditions.pas);
+        Date date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
 
         // Creation de la liste de TLE
-        const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
+        const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier,
+                                                              _conditions.listeSatellites);
 
         // Satellite
         Satellite sat(tabTle.first());
@@ -117,7 +121,8 @@ int Telescope::CalculSuiviTelescope(int &nombre)
 
             flux << ephem << endl;
 
-            date = Date(floor(date.jourJulienUTC() * NB_MILLISEC_PAR_JOUR + _conditions.pas) * NB_JOUR_PAR_MILLISEC, 0.);
+            jjmsec += _conditions.pas;
+            date = Date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
             i++;
         }
     }

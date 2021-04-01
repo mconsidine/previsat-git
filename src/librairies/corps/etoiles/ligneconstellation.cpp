@@ -42,7 +42,6 @@
 #include "ligneconstellation.h"
 
 
-QList<LigneConstellation> LigneConstellation::_lignesCst;
 QList<QPair<int, int> > LigneConstellation::_tabLigCst;
 
 /**********
@@ -87,11 +86,6 @@ Etoile LigneConstellation::etoile2() const
     return _etoile2;
 }
 
-QList<LigneConstellation> &LigneConstellation::lignesCst()
-{
-    return _lignesCst;
-}
-
 
 /*
  * Methodes publiques
@@ -99,7 +93,7 @@ QList<LigneConstellation> &LigneConstellation::lignesCst()
 /*
  * Calcul des lignes de constellations
  */
-void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles)
+void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst)
 {
     /* Declarations des variables locales */
 
@@ -115,11 +109,11 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles)
             throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), WARNING);
         }
 
-        _lignesCst.clear();
+        lignesCst.clear();
         for (int i=0; i<_tabLigCst.size(); i++) {
             const int ind1 = _tabLigCst.at(i).first - 1;
             const int ind2 = _tabLigCst.at(i).second - 1;
-            _lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
+            lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
         }
 
     } catch (PreviSatException &e) {
