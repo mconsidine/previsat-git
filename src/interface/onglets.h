@@ -194,6 +194,8 @@ private:
 
     QPoint _positionSouris;
 
+    QStringList _ficTLEMetOp;
+
 
     /*
      * Methodes privees
@@ -353,7 +355,13 @@ private slots:
     void on_hauteurSoleilPrev_currentIndexChanged(int index);
     void on_magnitudeMaxPrev_toggled(bool checked);
 
+    // Calcul des flashs
     void on_calculsFlashs_clicked();
+    void on_parametrageDefautMetOp_clicked();
+    void on_effacerHeuresMetOp_clicked();
+    void on_hauteurSatMetOp_currentIndexChanged(int index);
+    void on_hauteurSoleilMetOp_currentIndexChanged(int index);
+
     void on_calculsTransit_clicked();
     void on_calculsEvt_clicked();
     void on_genererPositions_clicked();

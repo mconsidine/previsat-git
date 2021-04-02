@@ -694,6 +694,9 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                                 // Nom du satellite
                                 res.nom = Configuration::instance()->mapFlashs()[sat.tle().norad()].nomsat;
 
+                                // Elements orbitaux
+                                res.tle = sat.tle();
+
                                 // Date calendaire (UTC)
                                 res.date = Date(dates[i].jourJulienUTC(), 0.);
 

@@ -1324,6 +1324,22 @@ void Onglets::InitAffichageDemarrage()
     _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
     _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
+    // Fichier flashs MetOp et SkyMed
+    _ficTLEMetOp.clear();
+    const QString nomFicMetOp = settings.value("fichier/fichierTLEMetOp", Configuration::instance()->dirTle() + QDir::separator() +
+                                               "flares-spctrk.txt").toString().trimmed();
+    const QFileInfo fim(nomFicMetOp);
+    if (fim.exists() && fim.size() != 0) {
+        _ui->fichierTLEMetOp->addItem(fim.fileName());
+        _ui->fichierTLEMetOp->setItemData(0, QColor(Qt::gray), Qt::BackgroundRole);
+        _ficTLEMetOp.append(QDir::toNativeSeparators(nomFicMetOp));
+    }
+
+    if (_ficTLEMetOp.isEmpty()) {
+        _ui->fichierTLEMetOp->addItem("");
+    }
+    _ui->fichierTLEMetOp->addItem(tr("Parcourir..."));
+
     /* Retour */
     return;
 }
@@ -3135,6 +3151,9 @@ void Onglets::on_magnitudeMaxPrev_toggled(bool checked)
     _ui->valMagnitudeMaxPrev->setVisible(checked);
 }
 
+/*
+ * Calcul des flashs
+ */
 void Onglets::on_calculsFlashs_clicked()
 {
     /* Declarations des variables locales */
@@ -3147,10 +3166,20 @@ void Onglets::on_calculsFlashs_clicked()
     /* Corps de la methode */
     try {
 
-//        for(int i = 0; i < Configuration::instance()->mapFlashs().count(); i++) {
-//            vecSat.append(i);
-//        }
+        //        for(int i = 0; i < Configuration::instance()->mapFlashs().count(); i++) {
+        //            vecSat.append(i);
+        //        }
         vecSat.append(0);
+
+        if (_ui->fichierTLEMetOp->currentText().trimmed().isEmpty() || (_ui->fichierTLEMetOp->currentText() == tr("Parcourir..."))) {
+            throw PreviSatException(tr("Le nom du fichier TLE n'est pas spécifié"), WARNING);
+        }
+
+        const QFileInfo fi(_ficTLEMetOp.at(_ui->fichierTLEMetOp->currentIndex()));
+        if (!fi.exists()) {
+            _ui->fichierTLEMetOp->removeItem(_ui->fichierTLEMetOp->currentIndex());
+            throw PreviSatException(tr("Le nom du fichier TLE est incorrect"), WARNING);
+        }
 
         // Ecart heure locale - UTC
         const bool ecart = (fabs(_date->offsetUTC() - Date::CalculOffsetUTC(_date->ToQDateTime(1))) > EPSDBL100);
@@ -3225,8 +3254,35 @@ void Onglets::on_calculsFlashs_clicked()
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
 
-        // Fichier TLE
-        conditions.fichier = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + "flares-spctrk.txt");
+        // Liste des satellites pouvant produire des flashs
+        QStringList listeSatellites = Configuration::instance()->mapFlashs().keys();
+
+        // Verification du fichier TLE
+        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
+            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\nLe fichier %1 n'est pas un TLE");
+            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+        }
+
+        // Lecture du fichier TLE
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), fi.filePath(), listeSatellites);
+
+        // Mise a jour de la liste de satellites et creation du tableau de satellites
+        QMutableStringListIterator it(listeSatellites);
+        while (it.hasNext()) {
+            const QString norad = it.next();
+            if (!tabtle.contains(norad)) {
+                it.remove();
+            }
+        }
+
+        // Il n'y a aucun satellite produisant des flashs dans le fichier TLE
+        if (listeSatellites.size() == 0) {
+            throw PreviSatException(tr("Erreur rencontrée lors de l'exécution\n" \
+                                       "Aucun satellite produisant des flashs n'a été trouvé dans le fichier TLE"), WARNING);
+        }
+
+        conditions.fichier = fi.filePath();
+        conditions.listeSatellites = listeSatellites;
 
         // Nom du fichier resultat
         const QString chaine = tr("flashs") + "_%1_%2.txt";
@@ -3270,6 +3326,83 @@ void Onglets::on_calculsFlashs_clicked()
         }
 
     } catch (PreviSatException &) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_parametrageDefautMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    on_barreOnglets_currentChanged(_ui->barreOnglets->indexOf(_ui->flashs));
+    _ui->hauteurSatMetOp->setCurrentIndex(2);
+    _ui->hauteurSoleilMetOp->setCurrentIndex(1);
+    _ui->valHauteurSatMetOp->setVisible(false);
+    _ui->valHauteurSoleilMetOp->setVisible(false);
+    _ui->lieuxObservation5->setCurrentIndex(0);
+    _ui->ordreChronologiqueMetOp->setChecked(true);
+    _ui->magnitudeMaxMetOp->setValue(4.);
+    if (!_ui->calculsFlashs->isEnabled()) {
+        _ui->calculsFlashs->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_effacerHeuresMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeMetOp->setTime(QTime(0, 0, 0));
+    _ui->dateFinaleMetOp->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_hauteurSatMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSatMetOp->count() - 1) {
+        _ui->valHauteurSatMetOp->setText(settings.value("previsions/valHauteurSatMetOp", 0).toString());
+        _ui->valHauteurSatMetOp->setVisible(true);
+        _ui->valHauteurSatMetOp->setCursorPosition(0);
+        _ui->valHauteurSatMetOp->setFocus();
+    } else {
+        _ui->valHauteurSatMetOp->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_hauteurSoleilMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSoleilMetOp->count() - 1) {
+        _ui->valHauteurSoleilMetOp->setText(settings.value("previsions/valHauteurSoleilMetOp", 0).toString());
+        _ui->valHauteurSoleilMetOp->setVisible(true);
+        _ui->valHauteurSoleilMetOp->setCursorPosition(0);
+        _ui->valHauteurSoleilMetOp->setFocus();
+    } else {
+        _ui->valHauteurSoleilMetOp->setVisible(false);
     }
 
     /* Retour */
@@ -3726,10 +3859,10 @@ void Onglets::on_barreOnglets_currentChanged(int index)
     /* Corps de la methode */
     if (index == _ui->barreOnglets->indexOf(_ui->osculateurs)) {
 
-//        if (ui->modeManuel->isChecked()) {
-//            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
-//            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
-//        }
+        //        if (ui->modeManuel->isChecked()) {
+        //            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
+        //            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
+        //        }
     } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
         // TODO
     } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
@@ -3742,6 +3875,18 @@ void Onglets::on_barreOnglets_currentChanged(int index)
 
         _ui->calculsPrev->setDefault(true);
         _ui->calculsPrev->setFocus();
+
+    } else if (index == _ui->barreOnglets->indexOf(_ui->flashs)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialeMetOp->setDisplayFormat(fmt);
+        _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
+        _ui->dateFinaleMetOp->setDisplayFormat(fmt);
+
+        _ui->calculsFlashs->setDefault(true);
+        _ui->calculsFlashs->setFocus();
+
     }
 
     /* Retour */

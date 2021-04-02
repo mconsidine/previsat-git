@@ -724,7 +724,7 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
     /* Corps de la methode */
     _messageStatut->setText(message);
 
-    if (_timerStatut->isActive() && (_timerStatut->interval() > 0)) {
+    if ((_timerStatut != nullptr) && _timerStatut->isActive() && (_timerStatut->interval() > 0)) {
         _timerStatut->stop();
         _timerStatut->deleteLater();
         _timerStatut = nullptr;
