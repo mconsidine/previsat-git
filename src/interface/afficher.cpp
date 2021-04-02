@@ -581,6 +581,9 @@ void Afficher::ChargementResultats()
     ui->resultatsPrevisions->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
     ui->resultatsPrevisions->setAlternatingRowColors(true);
+    if (_onglets->ui()->ordreChronologiqueMetOp->isChecked()) {
+        ui->resultatsPrevisions->sortItems(1);
+    }
     ui->resultatsPrevisions->selectRow(0);
 
     /* Retour */
@@ -1135,6 +1138,8 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
             .value<QList<ResultatPrevisions> > ();
     const Date dateDeb = list.at(0).date;
+    const Date dateMax = (_typeCalcul == FLASHS) ? list.at(1).date : Date();
+    const Date dateFin = list.last().date;
 
     /* Corps de la methode */
     // Calcul de la position de l'observateur
@@ -1186,7 +1191,8 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     _ciel->resize(ui->frameCiel->width(), ui->frameCiel->width() - 50);
 
     // Affichage de la carte du ciel
-    _ciel->show(observateur, soleil, lune, lignesCst, constellations, etoiles, planetes, satellites, true, true, dateDeb.offsetUTC());
+    _ciel->show(observateur, soleil, lune, lignesCst, constellations, etoiles, planetes, satellites, (_typeCalcul == FLASHS), true, dateDeb, dateMax,
+                dateFin);
 
     /* Retour */
     return;

@@ -105,15 +105,18 @@ Ciel::~Ciel()
  * Affichage du ciel
  */
 void Ciel::show(const Observateur &observateur,
-        const Soleil &soleil,
-        const Lune &lune,
-        const QList<LigneConstellation> &lignesCst,
-        const QList<Constellation> &constellations,
-        const QList<Etoile> &etoiles,
-        const QList<Planete> &planetes,
-        const QList<Satellite> &satellites, const bool maxFlash,
-        const bool labelHeure,
-        const double offset)
+                const Soleil &soleil,
+                const Lune &lune,
+                const QList<LigneConstellation> &lignesCst,
+                const QList<Constellation> &constellations,
+                const QList<Etoile> &etoiles,
+                const QList<Planete> &planetes,
+                const QList<Satellite> &satellites,
+                const bool maxFlash,
+                const bool labelHeure,
+                const Date &dateDeb,
+                const Date &dateMax,
+                const Date &dateFin)
 {
     /* Declarations des variables locales */
 
@@ -451,8 +454,8 @@ void Ciel::show(const Observateur &observateur,
 
     // Affichage des satellites
     bool aecr;
-    bool adeb;
-    bool amax;
+    bool adeb = false;
+    bool amax = false;
     int min;
     int lsat0;
     int bsat0;
@@ -516,7 +519,7 @@ void Ciel::show(const Observateur &observateur,
                     if (labelHeure) {
 
                         // Determination des dates a afficher sur la carte du ciel
-                        const Date dateTrace(trace.at(i-1).jourJulienUTC, offset);
+                        const Date dateTrace(trace.at(i-1).jourJulienUTC, dateDeb.offsetUTC());
                         const double norm = sqrt((lsat1 - lsat0) * (lsat1 - lsat0) + (bsat1 - bsat0) * (bsat1 - bsat0));
 
                         if ((dateTrace.minutes() != min) && (norm > 12.)) {
@@ -528,19 +531,19 @@ void Ciel::show(const Observateur &observateur,
                             bsat0 = bsat1;
                         }
 
-//                        if (maxFlash) {
+                        if (maxFlash) {
 
-//                            if ((dateTrace.jourJulienUTC() > dateMax.jourJulienUTC()) && !aecr) {
-//                                adeb = true;
-//                                amax = true;
-//                                aecr = true;
-//                            }
+                            if ((dateTrace.jourJulienUTC() > dateMax.jourJulienUTC()) && !adeb) {
+                                adeb = true;
+                                amax = true;
+                                aecr = true;
+                            }
 
-//                            if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
-//                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
-//                                 crayon = QPen(crayon.color(), 4);
-//                             }
-//                        }
+                            if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
+                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
+                                 crayon = QPen(crayon.color(), 4);
+                             }
+                        }
 
                         // Affichage de l'heure
                         if (aecr) {
@@ -553,23 +556,23 @@ void Ciel::show(const Observateur &observateur,
                             scene->addLine(lig2, QPen(couleurEtoiles, 1.));
 
                             QString sdate = "";
-//                            if (amax) {
-//                                amax = false;
+                            if (amax) {
+                                amax = false;
 
-//                                if (cond.typeCalcul() == METOP) {
-//                                    QString nomFlash = sat.tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
-//                                    nomFlash[0] = nomFlash[0].toUpper();
-//                                    nomFlash[3] = nomFlash[3].toUpper();
-//                                    sdate = tr("Flash %1").arg(nomFlash);
-//                                }
-//                            } else {
-//                                if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
-//                                        dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
-                                    const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/
+                                if (maxFlash) {
+                                    QString nomFlash = satellites.at(0).tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
+                                    nomFlash[0] = nomFlash[0].toUpper();
+                                    nomFlash[3] = nomFlash[3].toUpper();
+                                    sdate = tr("Flash %1").arg(nomFlash);
+                                }
+                            } else {
+                                if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
+                                        dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
+                                    const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/ // TODO
                                     sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
                                     sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
-//                                }
-//                            }
+                                }
+                            }
 
                             if (!sdate.isEmpty()) {
 

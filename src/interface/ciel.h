@@ -46,6 +46,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFrame>
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/dates/date.h"
 
 
 class Onglets;
@@ -112,7 +113,7 @@ public:
               const QList<Satellite> &satellites,
               const bool maxFlash = false,
               const bool labelHeure = false,
-              const double offset = 0.);
+              const Date &dateDeb = Date(), const Date &dateMax = Date(), const Date &dateFin = Date());
 
     /**
      * @brief CalculCouleurCiel Determination de la couleur du ciel
