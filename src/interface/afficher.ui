@@ -75,13 +75,13 @@
          <enum>QLayout::SetFixedSize</enum>
         </property>
         <property name="topMargin">
-         <number>8</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QGraphicsView" name="detailsTransit">
           <property name="maximumSize">
            <size>
-            <width>300</width>
+            <width>602</width>
             <height>160</height>
            </size>
           </property>

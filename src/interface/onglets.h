@@ -368,6 +368,9 @@ private slots:
     void on_actionTous_triggered();
     void on_actionAucun_triggered();
 
+    void on_barreOnglets_currentChanged(int index);
+    void on_ongletsOutils_currentChanged(int index);
+
     // Calcul des previsions de passage
     void on_calculsPrev_clicked();
     void on_liste2_itemClicked(QListWidgetItem *item);
@@ -402,9 +405,12 @@ private slots:
     void on_hauteurSatSuivi_currentIndexChanged(int index);
 #endif
 
+    // Calcul des evenements orbitaux
     void on_calculsEvt_clicked();
-
-    void on_barreOnglets_currentChanged(int index);
+    void on_parametrageDefautEvt_clicked();
+    void on_effacerHeuresEvt_clicked();
+    void on_liste3_itemClicked(QListWidgetItem *item);
+    void on_liste3_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // ONGLETS_H
