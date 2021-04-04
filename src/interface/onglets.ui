@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -6461,7 +6461,7 @@
       <property name="geometry">
        <rect>
         <x>420</x>
-        <y>90</y>
+        <y>120</y>
         <width>201</width>
         <height>17</height>
        </rect>
@@ -6542,7 +6542,7 @@
       <property name="geometry">
        <rect>
         <x>490</x>
-        <y>30</y>
+        <y>56</y>
         <width>151</width>
         <height>22</height>
        </rect>
@@ -6731,7 +6731,7 @@
       <property name="geometry">
        <rect>
         <x>420</x>
-        <y>64</y>
+        <y>90</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -6779,7 +6779,7 @@
       <property name="geometry">
        <rect>
         <x>530</x>
-        <y>61</y>
+        <y>87</y>
         <width>51</width>
         <height>22</height>
        </rect>
@@ -6823,7 +6823,7 @@
       <property name="geometry">
        <rect>
         <x>420</x>
-        <y>34</y>
+        <y>60</y>
         <width>71</width>
         <height>16</height>
        </rect>
@@ -7295,6 +7295,9 @@
       </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
       </property>
       <property name="cornerButtonEnabled">
        <bool>false</bool>

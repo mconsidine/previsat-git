@@ -872,8 +872,8 @@ void Onglets::AffichageManoeuvresISS() const
     while (it.hasNext()) {
 
         const QString evt = it.next();
-        const QString intitule = evt.mid(0, 20).trimmed();
-        const QStringList details = evt.mid(20).split(" ", Qt::SkipEmptyParts);
+        const QString intitule = evt.mid(0, 23).trimmed();
+        const QStringList details = evt.mid(23).split(" ", Qt::SkipEmptyParts);
 
         const QString dateEvt = Date::ConversionDateNasa(annee + "-" + details.at(0))
                 .ToShortDateAMJ(FORMAT_MILLISEC, (_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H);
@@ -884,17 +884,16 @@ void Onglets::AffichageManoeuvresISS() const
 
         // Intitule de l'evenement
         QTableWidgetItem * const itemEvt = new QTableWidgetItem(intitule);
-        itemEvt->setTextAlignment(Qt::AlignLeft);
+        itemEvt->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         itemEvt->setFlags(itemEvt->flags() & ~Qt::ItemIsEditable);
+        itemEvt->setToolTip(intitule);
         _ui->manoeuvresISS->setItem(j, 0, itemEvt);
-        _ui->manoeuvresISS->resizeColumnToContents(0);
 
         // Date
         QTableWidgetItem * const itemDate = new QTableWidgetItem(dateEvt);
         itemDate->setTextAlignment(Qt::AlignCenter);
         itemDate->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
         _ui->manoeuvresISS->setItem(j, 1, itemDate);
-        _ui->manoeuvresISS->resizeColumnToContents(1);
 
         // Masse
         QTableWidgetItem * const itemMasse = new QTableWidgetItem(masse);
@@ -923,10 +922,14 @@ void Onglets::AffichageManoeuvresISS() const
             _ui->manoeuvresISS->setItem(j, k + 2, item);
         }
     }
+
     _ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
-    _ui->manoeuvresISS->setColumnWidth(2, 65);
-    _ui->manoeuvresISS->setColumnWidth(3, 35);
+    _ui->manoeuvresISS->setColumnWidth(0, 75);
+    _ui->manoeuvresISS->setColumnWidth(1, 135);
+    _ui->manoeuvresISS->setColumnWidth(2, 60);
+    _ui->manoeuvresISS->setColumnWidth(3, 40);
     _ui->manoeuvresISS->setColumnWidth(4, 50);
+    _ui->manoeuvresISS->setColumnWidth(5, 50);
     _ui->manoeuvresISS->sortItems(1);
     _ui->manoeuvresISS->setVisible(true);
 
@@ -3217,6 +3220,101 @@ void Onglets::on_actionAucun_triggered()
     return;
 }
 
+void Onglets::on_barreOnglets_currentChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
+    EffacerMessageStatut();
+    _ui->compteRenduMaj->setVisible(false);
+
+    /* Corps de la methode */
+    if (index == _ui->barreOnglets->indexOf(_ui->osculateurs)) {
+
+        //        if (ui->modeManuel->isChecked()) {
+        //            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
+        //            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
+        //        }
+    } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
+        // TODO
+    } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialePrev->setDisplayFormat(fmt);
+        _ui->dateFinalePrev->setDateTime(_ui->dateInitialePrev->dateTime().addDays(7));
+        _ui->dateFinalePrev->setDisplayFormat(fmt);
+
+        _ui->calculsPrev->setDefault(true);
+        _ui->calculsPrev->setFocus();
+
+    } else if (index == _ui->barreOnglets->indexOf(_ui->flashs)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialeMetOp->setDisplayFormat(fmt);
+        _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
+        _ui->dateFinaleMetOp->setDisplayFormat(fmt);
+
+        _ui->calculsFlashs->setDefault(true);
+        _ui->calculsFlashs->setFocus();
+
+    } else if (index == _ui->barreOnglets->indexOf(_ui->transits_ISS)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialeTransit->setDisplayFormat(fmt);
+        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(7));
+        _ui->dateFinaleTransit->setDisplayFormat(fmt);
+
+        _ui->calculsTransit->setDefault(true);
+        _ui->calculsTransit->setFocus();
+
+        // TODO
+        //        if (tab3le.isEmpty()) {
+        //            ui->ageTLETransit->setVisible(false);
+        //            ui->lbl_ageTLETransit->setVisible(false);
+        //        } else {
+        //            CalculAgeTLETransitISS();
+        //        }
+
+#if defined (Q_OS_WIN)
+    } else if (index == _ui->barreOnglets->indexOf(_ui->telescope)) {
+
+        _ui->afficherSuivi->setDefault(false);
+        _ui->genererPositions->setDefault(true);
+
+#endif
+    } else if ((index == _ui->barreOnglets->indexOf(_ui->outils)) && _ui->evenementsOrbitaux->isVisible()) {
+        on_ongletsOutils_currentChanged(_ui->ongletsOutils->indexOf(_ui->evenementsOrbitaux));
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_ongletsOutils_currentChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
+
+    /* Corps de la methode */
+    if (index == _ui->ongletsOutils->indexOf(_ui->evenementsOrbitaux)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialeEvt->setDisplayFormat(fmt);
+        _ui->dateFinaleEvt->setDateTime(_ui->dateInitialeEvt->dateTime().addDays(1));
+        _ui->dateFinaleEvt->setDisplayFormat(fmt);
+
+        _ui->calculsEvt->setDefault(true);
+        _ui->calculsEvt->setFocus();
+    }
+}
+
 /*
  * Calcul des previsions de passage
  */
@@ -3384,9 +3482,10 @@ void Onglets::on_calculsPrev_clicked()
 
 void Onglets::on_liste2_itemClicked(QListWidgetItem *item)
 {
+    Q_UNUSED(item)
+
     if (_ui->liste2->hasFocus() && (_ui->liste2->currentRow() >= 0)) {
 
-        const QString norad = item->data(Qt::UserRole).toString();
         if (_ui->liste2->currentItem()->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite dans la liste
@@ -4227,6 +4326,9 @@ void Onglets::on_hauteurSatSuivi_currentIndexChanged(int index)
 }
 #endif
 
+/*
+ * Calcul des evenements orbitaux
+ */
 void Onglets::on_calculsEvt_clicked()
 {
     /* Declarations des variables locales */
@@ -4351,72 +4453,70 @@ void Onglets::on_calculsEvt_clicked()
     return;
 }
 
-void Onglets::on_barreOnglets_currentChanged(int index)
+void Onglets::on_parametrageDefautEvt_clicked()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
-    EffacerMessageStatut();
-    _ui->compteRenduMaj->setVisible(false);
 
     /* Corps de la methode */
-    if (index == _ui->barreOnglets->indexOf(_ui->osculateurs)) {
+    on_ongletsOutils_currentChanged(_ui->ongletsOutils->indexOf(_ui->evenementsOrbitaux));
+    _ui->passageApogee->setChecked(true);
+    _ui->passageNoeuds->setChecked(true);
+    _ui->passageOmbre->setChecked(true);
+    _ui->passageQuadrangles->setChecked(true);
+    _ui->transitionJourNuit->setChecked(true);
+    if (!_ui->calculsEvt->isEnabled()) {
+        _ui->calculsEvt->setEnabled(true);
+    }
 
-        //        if (ui->modeManuel->isChecked()) {
-        //            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
-        //            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
-        //        }
-    } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
-        // TODO
-    } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
+    /* Retour */
+    return;
+}
 
-        const Date date(_date->jourJulien() + EPS_DATES, 0.);
-        _ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
-        _ui->dateInitialePrev->setDisplayFormat(fmt);
-        _ui->dateFinalePrev->setDateTime(_ui->dateInitialePrev->dateTime().addDays(7));
-        _ui->dateFinalePrev->setDisplayFormat(fmt);
+void Onglets::on_effacerHeuresEvt_clicked()
+{
+    /* Declarations des variables locales */
 
-        _ui->calculsPrev->setDefault(true);
-        _ui->calculsPrev->setFocus();
+    /* Initialisations */
 
-    } else if (index == _ui->barreOnglets->indexOf(_ui->flashs)) {
+    /* Corps de la methode */
+    _ui->dateInitialeEvt->setTime(QTime(0, 0, 0));
+    _ui->dateFinaleEvt->setTime(QTime(0, 0, 0));
 
-        const Date date(_date->jourJulien() + EPS_DATES, 0.);
-        _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
-        _ui->dateInitialeMetOp->setDisplayFormat(fmt);
-        _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
-        _ui->dateFinaleMetOp->setDisplayFormat(fmt);
+    /* Retour */
+    return;
+}
 
-        _ui->calculsFlashs->setDefault(true);
-        _ui->calculsFlashs->setFocus();
+void Onglets::on_liste3_itemClicked(QListWidgetItem *item)
+{
+    Q_UNUSED(item)
 
-    } else if (index == _ui->barreOnglets->indexOf(_ui->transits_ISS)) {
+    if (_ui->liste3->hasFocus() && (_ui->liste3->currentRow() >= 0)) {
 
-        const Date date(_date->jourJulien() + EPS_DATES, 0.);
-        _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
-        _ui->dateInitialeTransit->setDisplayFormat(fmt);
-        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(27));
-        _ui->dateFinaleTransit->setDisplayFormat(fmt);
+        if (_ui->liste3->currentItem()->checkState() == Qt::Checked) {
 
-        _ui->calculsTransit->setDefault(true);
-        _ui->calculsTransit->setFocus();
+            // Suppression d'un satellite dans la liste
+            _ui->liste3->currentItem()->setCheckState(Qt::Unchecked);
 
-        // TODO
-        //        if (tab3le.isEmpty()) {
-        //            ui->ageTLETransit->setVisible(false);
-        //            ui->lbl_ageTLETransit->setVisible(false);
-        //        } else {
-        //            CalculAgeTLETransitISS();
-        //        }
+        } else {
 
-#if defined (Q_OS_WIN)
-    } else if (index == _ui->barreOnglets->indexOf(_ui->telescope)) {
+            // Ajout d'un satellite dans la liste
+            _ui->liste3->currentItem()->setCheckState(Qt::Checked);
+        }
+    }
+}
 
-        _ui->afficherSuivi->setDefault(false);
-        _ui->genererPositions->setDefault(true);
+void Onglets::on_liste3_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
 
-#endif
+    /* Initialisations */
+    Q_UNUSED(pos)
+
+    /* Corps de la methode */
+    if (_ui->liste3->currentRow() >= 0) {
+        _ui->menuContextuelListes->exec(QCursor::pos());
     }
 
     /* Retour */

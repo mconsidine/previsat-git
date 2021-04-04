@@ -174,10 +174,11 @@ private:
 
     /**
      * @brief ElementsEvenements Elements des evenements a afficher dans la fenetre de resultats
+     * @param index indice de la liste d'evenements
      * @param liste liste d'evenements
      * @return elements des evenements
      */
-    QStringList ElementsEvenements(const QList<ResultatPrevisions> &liste) const;
+    QStringList ElementsEvenements(const int index, const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsEvenements Elements des evenements pour la sauvegarde dans un fichier texte

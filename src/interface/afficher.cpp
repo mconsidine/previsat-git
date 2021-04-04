@@ -88,15 +88,25 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _ciel = nullptr;
     scene = nullptr;
 
-    Etoile::Initialisation(Configuration::instance()->dirCommonData(), etoiles);
-    Constellation::Initialisation(Configuration::instance()->dirCommonData(), constellations);
-
     /* Corps du constructeur */
 #if (BUILD_TEST == false)
     ui->setupUi(this);
 
-    QStyle * const styleBouton = QApplication::style();
-    ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
+    Etoile::Initialisation(Configuration::instance()->dirCommonData(), etoiles);
+    Constellation::Initialisation(Configuration::instance()->dirCommonData(), constellations);
+
+    if (_typeCalcul == EVENEMENTS) {
+        ui->actionEnregistrer->setVisible(false);
+        ui->frameCiel->setVisible(false);
+        setMinimumSize(620, 630);
+    } else {
+        QStyle * const styleBouton = QApplication::style();
+        ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
+        ui->actionEnregistrer->setVisible(true);
+        ui->frameCiel->setVisible(true);
+        setMinimumSize(1226, 630);
+    }
+    resize(minimumSize());
 
     ui->resultatsPrevisions->clear();
     ui->detailsTransit->setVisible(false);
@@ -142,6 +152,10 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     ui->resultatsPrevisions->setHorizontalHeaderLabels(titres);
 
     ChargementResultats();
+
+    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    raise();
+    activateWindow();
 
 #endif
 
@@ -673,7 +687,7 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
     const QString lat(QString::number(observateur.latitude() * RAD2DEG));
     const QString unite((_conditions.unite == tr("km")) ? tr("m") : tr("ft"));
     const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
-                              " " + unite);
+                      " " + unite);
 
     /* Corps de la methode */
     // Lecture du fichier balise
@@ -725,6 +739,7 @@ void Afficher::ChargementResultats()
 
     /* Initialisations */
     int j = 0;
+    int imax = 1;
 
     /* Corps de la methode */
     QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
@@ -752,7 +767,7 @@ void Afficher::ChargementResultats()
                 break;
 
             case EVENEMENTS:
-                elems = ElementsEvenements(list);
+                imax = list.size();
                 break;
 
             case TELESCOPE:
@@ -760,31 +775,38 @@ void Afficher::ChargementResultats()
                 break;
             }
 
-            // Ajout d'une ligne dans le tableau de resultats
-            ui->resultatsPrevisions->insertRow(j);
-            ui->resultatsPrevisions->setRowHeight(j, 16);
+            for(int i=0; i<imax; i++) {
 
-            for(int k=0; k<elems.count(); k++) {
-
-                // Remplissage des elements d'une ligne
-                QTableWidgetItem * const item = new QTableWidgetItem(elems.at(k));
-                item->setTextAlignment(Qt::AlignCenter);
-                item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-
-                if (k == 0) {
-                    item->setToolTip(elems.at(0));
-                    item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
+                if (_typeCalcul == EVENEMENTS) {
+                    elems = ElementsEvenements(i, list);
                 }
 
-                ui->resultatsPrevisions->setItem(j, k, item);
-                if ((k > 0) || (_typeCalcul == TRANSITS)) {
-                    ui->resultatsPrevisions->resizeColumnToContents(k);
+                // Ajout d'une ligne dans le tableau de resultats
+                ui->resultatsPrevisions->insertRow(j);
+                ui->resultatsPrevisions->setRowHeight(j, 16);
+
+                for(int k=0; k<elems.count(); k++) {
+
+                    // Remplissage des elements d'une ligne
+                    QTableWidgetItem * const item = new QTableWidgetItem(elems.at(k));
+                    item->setTextAlignment(((_typeCalcul == EVENEMENTS) && (k == (elems.count() - 1))) ? Qt::AlignLeft : Qt::AlignCenter);
+                    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+
+                    if (k == 0) {
+                        item->setToolTip(elems.at(0));
+                        item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
+                    }
+
+                    ui->resultatsPrevisions->setItem(j, k, item);
+                    if ((k > 0) || (_typeCalcul == TRANSITS)) {
+                        ui->resultatsPrevisions->resizeColumnToContents(k);
+                    }
                 }
+                j++;
             }
-
-            j++;
         }
     }
+
     ui->resultatsPrevisions->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
     ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
@@ -899,7 +921,7 @@ void Afficher::EcrireEntete() const
 /*
  * Elements des evenements a afficher dans la fenetre de resultats
  */
-QStringList Afficher::ElementsEvenements(const QList<ResultatPrevisions> &liste) const
+QStringList Afficher::ElementsEvenements(const int index, const QList<ResultatPrevisions> &liste) const
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -907,10 +929,7 @@ QStringList Afficher::ElementsEvenements(const QList<ResultatPrevisions> &liste)
     /* Initialisations */
 
     /* Corps de la methode */
-    QListIterator<ResultatPrevisions> it(liste);
-    while (it.hasNext()) {
-        elems.append(ElementsDetailsEvenements(it.next()));
-    }
+    elems.append(ElementsDetailsEvenements(liste.at(index)));
 
     /* Retour */
     return elems;
