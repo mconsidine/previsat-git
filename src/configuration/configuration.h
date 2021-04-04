@@ -145,6 +145,7 @@ public:
 
     bool isCarteMonde() const;
 
+    QString dateDebut() const;
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
     QList<PositionISS> positionsISS() const;
@@ -306,6 +307,8 @@ private:
     QString _noradStationSpatiale;
 
     // Evenements et positions ISS
+    QString _dateDebut;
+    QString _dateFin;
     QList<double> _masseISS;
     QStringList _evenementsISS;
     QList<PositionISS> _positionsISS;

@@ -225,6 +225,8 @@ private:
      */
     void AffichageInformationsSatellite() const;
 
+    void AffichageManoeuvresISS() const;
+
     /**
      * @brief AffichageResultatsDonnees Affichage des resultats de la recherche des donnees satellite
      */
@@ -362,7 +364,13 @@ private slots:
     void on_hauteurSatMetOp_currentIndexChanged(int index);
     void on_hauteurSoleilMetOp_currentIndexChanged(int index);
 
+    // Calcul des transits ISS
     void on_calculsTransit_clicked();
+    void on_parametrageDefautTransit_clicked();
+    void on_effacerHeuresTransit_clicked();
+    void on_hauteurSatTransit_currentIndexChanged(int index);
+    void on_majTleIss_clicked();
+
     void on_calculsEvt_clicked();
     void on_genererPositions_clicked();
 

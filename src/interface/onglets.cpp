@@ -834,6 +834,100 @@ void Onglets::AffichageInformationsSatellite() const
     return;
 }
 
+void Onglets::AffichageManoeuvresISS() const
+{
+    /* Declarations des variables locales */
+    QString masse;
+    QString valeur;
+    QString uniteMasse;
+    QString uniteDist;
+    QString uniteDv;
+
+    /* Initialisations */
+    int j = 0;
+
+    const QString annee = Configuration::instance()->dateDebut().split("-").at(0);
+
+    if (_ui->unitesKm->isChecked()) {
+        uniteDist = tr("km");
+        uniteDv = tr("m/s");
+        uniteMasse = tr("kg");
+        masse = QString::number(Configuration::instance()->masseISS().at(0), 'f', 2);
+
+    } else {
+        uniteDist = tr("nmi");
+        uniteDv = tr("ft/s");
+        uniteMasse = tr("lb");
+        masse = QString::number(Configuration::instance()->masseISS().at(0) / KG_PAR_LIVRE, 'f', 2);
+    }
+
+    /* Corps de la methode */
+    QStringListIterator it(Configuration::instance()->evenementsISS());
+    while (it.hasNext()) {
+
+        const QString evt = it.next();
+        const QString intitule = evt.mid(0, 20).trimmed();
+        const QStringList details = evt.mid(20).split(" ", Qt::SkipEmptyParts);
+
+        const QString dateEvt = Date::ConversionDateNasa(annee + "-" + details.at(0))
+                .ToShortDateAMJ(FORMAT_MILLISEC, (_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H);
+
+        // Ajout d'une ligne dans le tableau
+        _ui->manoeuvresISS->insertRow(j);
+        _ui->manoeuvresISS->setRowHeight(j, 16);
+
+        // Intitule de l'evenement
+        QTableWidgetItem * const itemEvt = new QTableWidgetItem(intitule);
+        itemEvt->setTextAlignment(Qt::AlignLeft);
+        itemEvt->setFlags(itemEvt->flags() & ~Qt::ItemIsEditable);
+        _ui->manoeuvresISS->setItem(j, 0, itemEvt);
+        _ui->manoeuvresISS->resizeColumnToContents(0);
+
+        // Date
+        QTableWidgetItem * const itemDate = new QTableWidgetItem(dateEvt);
+        itemDate->setTextAlignment(Qt::AlignCenter);
+        itemDate->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
+        _ui->manoeuvresISS->setItem(j, 1, itemDate);
+        _ui->manoeuvresISS->resizeColumnToContents(1);
+
+        // Masse
+        QTableWidgetItem * const itemMasse = new QTableWidgetItem(masse);
+        itemMasse->setTextAlignment(Qt::AlignCenter);
+        itemMasse->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
+        itemMasse->setToolTip(uniteMasse);
+        _ui->manoeuvresISS->setItem(j, 2, itemMasse);
+
+        for(int k=1; k<details.count(); k++) {
+
+            valeur = details.at(k);
+            if (k == 1) {
+                if (_ui->unitesMi->isChecked()) {
+                    valeur = QString::number(details.at(k).toDouble() * PIED_PAR_METRE, 'f', 1);
+                }
+            } else {
+                if (_ui->unitesMi->isChecked()) {
+                    valeur = QString::number(details.at(k).toDouble() * MILE_PAR_KM, 'f', 1);
+                }
+            }
+
+            QTableWidgetItem * const item = new QTableWidgetItem(valeur);
+            item->setTextAlignment(Qt::AlignCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            item->setToolTip((k == 1) ? uniteDv : uniteDist);
+            _ui->manoeuvresISS->setItem(j, k + 2, item);
+        }
+    }
+    _ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
+    _ui->manoeuvresISS->setColumnWidth(2, 65);
+    _ui->manoeuvresISS->setColumnWidth(3, 35);
+    _ui->manoeuvresISS->setColumnWidth(4, 50);
+    _ui->manoeuvresISS->sortItems(1);
+    _ui->manoeuvresISS->setVisible(true);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des resultats de la recherche des donnees satellite
  */
@@ -1339,6 +1433,11 @@ void Onglets::InitAffichageDemarrage()
         _ui->fichierTLEMetOp->addItem("");
     }
     _ui->fichierTLEMetOp->addItem(tr("Parcourir..."));
+
+    // Affichage des manoeuvres ISS
+    if (!Configuration::instance()->evenementsISS().isEmpty()) {
+        AffichageManoeuvresISS();
+    }
 
     /* Retour */
     return;
@@ -3030,8 +3129,12 @@ void Onglets::on_calculsPrev_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
-            afficher->show();
+            if (Prevision::resultats().isEmpty()) {
+                Message::Afficher(tr("Aucun passage n'a été trouvé sur la période donnée"), INFO);
+            } else {
+                Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
+                afficher->show();
+            }
         }
 
     } catch (PreviSatException &) {
@@ -3321,8 +3424,12 @@ void Onglets::on_calculsFlashs_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this);
-            afficher->show();
+            if (Flashs::resultats().isEmpty()) {
+                Message::Afficher(tr("Aucun flash n'a été trouvé sur la période donnée"), INFO);
+            } else {
+                Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this);
+                afficher->show();
+            }
         }
 
     } catch (PreviSatException &) {
@@ -3460,7 +3567,7 @@ void Onglets::on_calculsTransit_clicked()
                                             abs(_ui->valHauteurSatTransit->text().toInt()) : 5 * _ui->hauteurSatTransit->currentIndex());
 
         // Elongation maximale
-        conditions.seuilConjonction = _ui->elongationMaxCorps->value();
+        conditions.seuilConjonction = DEG2RAD * _ui->elongationMaxCorps->value();
 
         // Selection des corps
         conditions.calcEphemSoleil = _ui->soleilTransit->isChecked();
@@ -3478,11 +3585,14 @@ void Onglets::on_calculsTransit_clicked()
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
 
+        // Calcul des transits lunaires de jour
+        conditions.calcTransitLunaireJour = _ui->calcTransitLunaireJour->isChecked();
+
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
 
         // Fichier TLE
-        conditions.fichier = Configuration::instance()->dirTle() + QDir::separator() + "iss.3le";
+        conditions.fichier = Configuration::instance()->dirTle() + QDir::separator() + "visual.txt";
 
         // Age maximal du TLE
         const double ageTLE = _ui->ageMaxTLETransit->value();
@@ -3500,8 +3610,9 @@ void Onglets::on_calculsTransit_clicked()
         }
 
         // Lecture du TLE
-        QList<TLE> tabtle = TLE::LectureFichier3le(fi.absoluteFilePath());
-        if (tabtle.at(0).norad() != Configuration::instance()->noradStationSpatiale()) {
+        const QStringList listeSatellites(QStringList () << Configuration::instance()->noradStationSpatiale());
+        const QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), fi.absoluteFilePath(), listeSatellites);
+        if (tabtle.isEmpty()) {
             const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
                                    "Le fichier %1 ne contient pas le TLE de l'ISS");
             throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
@@ -3530,9 +3641,11 @@ void Onglets::on_calculsTransit_clicked()
         }
 
         if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
-            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+//            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+//            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
+
+        conditions.listeSatellites = listeSatellites;
 
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
@@ -3571,8 +3684,12 @@ void Onglets::on_calculsTransit_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this);
-            afficher->show();
+            if (TransitsIss::resultats().isEmpty()) {
+                Message::Afficher(tr("Aucun transit ISS n'a été trouvé sur la période donnée"), INFO);
+            } else {
+                Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this);
+                afficher->show();
+            }
         }
 
     } catch (PreviSatException &) {
@@ -3580,6 +3697,66 @@ void Onglets::on_calculsTransit_clicked()
 
     /* Retour */
     return;
+}
+
+void Onglets::on_parametrageDefautTransit_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    on_barreOnglets_currentChanged(_ui->barreOnglets->indexOf(_ui->transits_ISS));
+    _ui->hauteurSatTransit->setCurrentIndex(1);
+    _ui->valHauteurSatTransit->setVisible(false);
+    _ui->lieuxObservation4->setCurrentIndex(0);
+    _ui->ageMaxTLETransit->setValue(2.);
+    _ui->elongationMaxCorps->setValue(5.);
+    if (!_ui->calculsTransit->isEnabled()) {
+        _ui->calculsTransit->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_effacerHeuresTransit_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeTransit->setTime(QTime(0, 0, 0));
+    _ui->dateFinaleTransit->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_hauteurSatTransit_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSatTransit->count() - 1) {
+        _ui->valHauteurSatTransit->setText(settings.value("previsions/valHauteurSatTransit", 0).toString());
+        _ui->valHauteurSatTransit->setVisible(true);
+        _ui->valHauteurSatTransit->setCursorPosition(0);
+        _ui->valHauteurSatTransit->setFocus();
+    } else {
+        _ui->valHauteurSatTransit->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_majTleIss_clicked()
+{
+    // TODO
 }
 
 void Onglets::on_calculsEvt_clicked()
@@ -3691,10 +3868,13 @@ void Onglets::on_calculsEvt_clicked()
             // Affichage des resultats
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
-            Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats(), this);
-            afficher->show();
+            if (EvenementsOrbitaux::resultats().isEmpty()) {
+                Message::Afficher(tr("Aucun évènement n'a été trouvé sur la période donnée"), INFO);
+            } else {
+                Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats(), this);
+                afficher->show();
+            }
         }
-
 
     } catch (PreviSatException &) {
     }
@@ -3886,6 +4066,24 @@ void Onglets::on_barreOnglets_currentChanged(int index)
 
         _ui->calculsFlashs->setDefault(true);
         _ui->calculsFlashs->setFocus();
+
+    } else if (index == _ui->barreOnglets->indexOf(_ui->transits_ISS)) {
+
+        const Date date(_date->jourJulien() + EPS_DATES, 0.);
+        _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+        _ui->dateInitialeTransit->setDisplayFormat(fmt);
+        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(27));
+        _ui->dateFinaleTransit->setDisplayFormat(fmt);
+
+        _ui->calculsTransit->setDefault(true);
+        _ui->calculsTransit->setFocus();
+
+        //        if (tab3le.isEmpty()) {
+        //            ui->ageTLETransit->setVisible(false);
+        //            ui->lbl_ageTLETransit->setVisible(false);
+        //        } else {
+        //            CalculAgeTLETransitISS();
+        //        }
 
     }
 

@@ -34,10 +34,12 @@
  *
  */
 
+#include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
+#include <QGraphicsPixmapItem>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include "ui_afficher.h"
@@ -84,6 +86,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _resultats = resultats;
     _onglets = onglets;
     _ciel = nullptr;
+    scene = nullptr;
 
     Etoile::Initialisation(Configuration::instance()->dirCommonData(), etoiles);
     Constellation::Initialisation(Configuration::instance()->dirCommonData(), constellations);
@@ -98,11 +101,10 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     ui->resultatsPrevisions->clear();
     ui->detailsTransit->setVisible(false);
 
-    ui->resultatsPrevisions->setColumnCount(6);
-
     QFont fnt;
     fnt.setBold(true);
     ui->resultatsPrevisions->horizontalHeader()->setFont(fnt);
+    ui->afficherCarte->setVisible(false);
 
     switch (_typeCalcul) {
     case PREVISIONS:
@@ -117,13 +119,14 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
 
     case FLASHS:
         setWindowTitle(tr("Flashs"));
-        ui->resultatsPrevisions->setColumnCount(7);
+        ui->afficherCarte->setVisible(true);
         titres << tr("Satellite") << tr("Date de début") << tr("Date de fin") << tr("Hauteur Max") << tr("Magn") << tr("Mir") << tr("Hauteur Soleil");
         break;
 
     case TRANSITS:
         setWindowTitle(tr("Transits ISS"));
-        titres << tr("Date de début") << tr("Date de fin") << tr("Angle") << tr("Type") << tr("Corps") << tr("Hauteur Soleil");
+        ui->afficherCarte->setVisible(true);
+        titres << tr("Date de début") << tr("Date de fin") << tr("Cst") << tr("Angle") << tr("Type") << tr("Corps") << tr("Ill") << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             ui->detailsTransit->setVisible(true);
@@ -135,13 +138,11 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         break;
     }
 
+    ui->resultatsPrevisions->setColumnCount(titres.count());
     ui->resultatsPrevisions->setHorizontalHeaderLabels(titres);
 
-    if (_resultats.isEmpty()) {
+    ChargementResultats();
 
-    } else {
-        ChargementResultats();
-    }
 #endif
 
     /* Retour */
@@ -190,6 +191,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
     if (_typeCalcul != EVENEMENTS) {
 
         int j = 0;
+        int m = 0;
         const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
 
         tableDetail = new QTableWidget;
@@ -214,8 +216,9 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         case TRANSITS:
             tableDetail->setColumnCount(17);
             tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
-                                                   << tr("Decl Sat") << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Alt") << tr("Dist")
-                                                   << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max") << tr("Distance"));
+                                                   << tr("Decl Sat") << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Ill") << tr("Alt")
+                                                   << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max")
+                                                   << tr("Distance"));
             break;
 
         case TELESCOPE:
@@ -228,14 +231,17 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         tableDetail->setCornerButtonEnabled(false);
         tableDetail->verticalHeader()->setVisible(false);
 
+        int kmax;
+
         QFont fnt;
         fnt.setBold(true);
         tableDetail->horizontalHeader()->setFont(fnt);
 
+        QStringList elems;
         QListIterator<ResultatPrevisions> it(list);
         while (it.hasNext()) {
 
-            QStringList elems;
+            elems.clear();
             const ResultatPrevisions res = it.next();
 
             switch (_typeCalcul) {
@@ -248,7 +254,9 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                 break;
 
             case TRANSITS:
-                elems = ElementsDetailsTransits(res);
+                if ((j > 0) && (j < 4)) {
+                    elems = ElementsDetailsTransits(res);
+                }
                 break;
 
             case TELESCOPE:
@@ -258,31 +266,30 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             }
 
             // Ajout d'une ligne dans le tableau de resultats
-            tableDetail->insertRow(j);
-            tableDetail->setRowHeight(j, 16);
+            if (!elems.isEmpty()) {
 
-            int kmin;
-            int kmax;
-            if (_typeCalcul == TRANSITS) {
-                kmin = 1;
-                kmax = 4;
-            } else {
-                kmin = 0;
+                tableDetail->insertRow(m);
+                tableDetail->setRowHeight(m, 16);
+
                 kmax = elems.count();
-            }
-
-            for(int k=kmin; k<kmax; k++) {
-
-                // Remplissage des elements d'une ligne
-                QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k));
-                itm->setTextAlignment(Qt::AlignCenter);
-                itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
-                if (k == 0) {
-                    itm->setToolTip(elems.at(0));
+                if ((_typeCalcul == FLASHS) && (j != 1)) {
+                    kmax = elems.count() - 4;
                 }
 
-                tableDetail->setItem(j, k, itm);
-                tableDetail->resizeColumnToContents(k);
+                for(int k=0; k<kmax; k++) {
+
+                    // Remplissage des elements d'une ligne
+                    QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k).trimmed());
+                    itm->setTextAlignment(Qt::AlignCenter);
+                    itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+                    if ((k == 0) && (_typeCalcul != TRANSITS)) {
+                        itm->setToolTip(elems.at(0));
+                    }
+
+                    tableDetail->setItem(m, k, itm);
+                    tableDetail->resizeColumnToContents(k);
+                }
+                m++;
             }
 
             j++;
@@ -503,6 +510,212 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 }
 
 /*
+ * Affichage du détail d'un transit ISS
+ */
+void Afficher::AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const int lciel = qRound(0.5 * ui->detailsTransit->width());
+    const int hciel = qRound(0.5 * ui->detailsTransit->height());
+
+    // Determination de la couleur du ciel
+    const double hts = soleil.hauteur() * RAD2DEG;
+    const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
+
+    if (scene != nullptr) {
+        scene->deleteLater();
+    }
+
+    scene = new QGraphicsScene;
+    scene->setBackgroundBrush(Qt::white);
+
+    // Affichage de la carte du ciel
+    QRect rectangle(0, 0, ui->detailsTransit->width(), ui->detailsTransit->height());
+    scene->setSceneRect(rectangle);
+
+    /* Corps de la methode */
+    // Dessin de la Lune ou du Soleil
+    if (list.at(0).typeCorps == CORPS_SOLEIL) {
+
+        QPixmap pixsol;
+        pixsol.load(":/resources/soleil.png");
+        pixsol = pixsol.scaled(100, 100);
+
+        QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
+        QTransform transform;
+        transform.translate(lciel - 50, hciel - 50);
+        sol->setTransform(transform);
+
+    } else {
+
+        // Angle horaire
+        const double angleHoraire = observateur.tempsSideralGreenwich() - observateur.longitude() - lune.ascensionDroite();
+
+        // Angle parallactique
+        const double angleParallactique = RAD2DEG *
+                atan(sin(angleHoraire) / (tan(observateur.latitude()) * cos(lune.declinaison()) - sin(lune.declinaison()) * cos(angleHoraire)));
+
+        QPixmap pixlun;
+        pixlun.load(":/resources/lune.png");
+        pixlun = pixlun.scaled(100, 100);
+
+        // Dessin de la Lune et rotations
+        QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
+        QTransform transform;
+        transform.translate(lciel, hciel);
+        transform.rotate(angleParallactique);
+        if (_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) {
+            transform.rotate(180.);
+        }
+        transform.translate(-50, -50);
+        lun->setTransform(transform);
+
+        // Dessin de la phase
+        if (_onglets->ui()->affphaselune->isChecked()) {
+
+            QVector<QPointF> pt;
+            const int rayonX = 50;
+            const int rayonY = static_cast<int> (-cos(lune.anglePhase()) * rayonX);
+            const int sph = (lune.luneCroissante()) ? -1 : 1;
+            double ang = PI_SUR_DEUX;
+
+            for(int i=0; i<36; i++) {
+
+                const double x = sph * ((i < 19) ? rayonY : rayonX) * cos(ang) + 50;
+                const double y = rayonX * sin(ang) + 50;
+
+                pt.append(QPointF(x, y));
+                ang += PI / 18.;
+            }
+
+            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 255));
+            const QPen stylo(Qt::NoBrush, 0);
+            const QPolygonF poly(pt);
+
+            QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
+            omb->setTransform(transform);
+        }
+    }
+
+    double deltaAzimut;
+    double deltaHauteur;
+    QList<QPair<double, double> > coord;
+    QListIterator<ResultatPrevisions> it(list);
+    while (it.hasNext()) {
+
+        const ResultatPrevisions res = it.next();
+
+        // Coordonnees relatives de l'ISS par rapport a la Lune ou au Soleil
+        if (res.typeCorps == CORPS_SOLEIL) {
+
+            deltaAzimut = RAD2DEG * (res.azimut - res.azimutSoleil);
+            deltaHauteur = RAD2DEG * (res.hauteur - res.hauteurSoleil);
+
+        } else {
+            deltaAzimut = RAD2DEG * (res.azimut - lune.azimut());
+            deltaHauteur = RAD2DEG * (res.hauteur - lune.hauteur());
+        }
+
+        const double lsat = lciel + static_cast<int> (200. * deltaAzimut);
+        const double hsat = hciel - static_cast<int> (200. * deltaHauteur);
+        const QPair<double, double> xy(lsat, hsat);
+        coord.append(xy);
+    }
+
+    double lsat1 = coord.at(0).first;
+    double hsat1 = coord.at(0).second;
+
+    const QPen couleur((list.at(0).typeCorps == CORPS_SOLEIL) ? Qt::black : Qt::lightGray, list.at(0).typeCorps);
+    QListIterator<QPair<double, double> > it2(coord);
+    it2.next();
+    while (it2.hasNext()) {
+
+        const QPair<double, double> xy = it2.next();
+        const QLineF lig(xy.first, xy.second, lsat1, hsat1);
+        scene->addLine(lig, couleur);
+
+        if (xy == coord.last()) {
+
+            QLineF lig1 = lig.normalVector();
+            QLineF lig2 = lig1;
+
+            lig1.setAngle(lig1.angle() - 60.);
+            lig1.setLength(12.);
+            lig2.setAngle(lig2.angle() - 120.);
+            lig2.setLength(12.);
+
+            scene->addLine(lig1, couleur);
+            scene->addLine(lig2, couleur);
+        }
+
+        lsat1 = xy.first;
+        hsat1 = xy.second;
+    }
+
+    ui->detailsTransit->setScene(scene);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement de la carte representant la trace du maximum
+ */
+void Afficher::ChargementCarte(const Observateur &observateur, const QList<ResultatPrevisions> &list)
+{
+    /* Declarations des variables locales */
+    static QString map;
+
+    /* Initialisations */
+    const QString lon(QString::number(-observateur.longitude() * RAD2DEG));
+    const QString lat(QString::number(observateur.latitude() * RAD2DEG));
+    const QString unite((_conditions.unite == tr("km")) ? tr("m") : tr("ft"));
+    const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
+                              " " + unite);
+
+    /* Corps de la methode */
+    // Lecture du fichier balise
+    if (map.isEmpty()) {
+        const QString ficMap = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "resultat.map";
+        QFile fi(ficMap);
+
+        if (fi.exists() && (fi.size() != 0)) {
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            map = flux.readAll();
+            fi.close();
+        }
+    }
+
+    // Remplacement des balises par les donnees
+    _mapResultats = map;
+    _mapResultats = _mapResultats
+            .replace("NOMLIEU_CENTRE", observateur.nomlieu().toUtf8())
+            .replace("LONGITUDE_CENTRE", lon)
+            .replace("LATITUDE_CENTRE", lat)
+            .replace("ALTITUDE_CENTRE", alt)
+            .replace("CHAINE_LONGITUDE", tr("Longitude"))
+            .replace("CHAINE_LATITUDE", tr("Latitude"))
+            .replace("CHAINE_ALTITUDE", tr("Altitude"))
+            .replace("LONGITUDE1", QString::number(-list.first().obsmax.longitude() * RAD2DEG))
+            .replace("LONGITUDE2", QString::number(-list.last().obsmax.longitude() * RAD2DEG))
+            .replace("LATITUDE1", QString::number(list.first().obsmax.latitude() * RAD2DEG))
+            .replace("LATITUDE2", QString::number(list.last().obsmax.latitude() * RAD2DEG));
+
+    // Creation du fichier html
+    QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "resultat.html");
+    fr.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream flux(&fr);
+    flux << _mapResultats;
+    fr.close();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Chargement des resultats
  */
 void Afficher::ChargementResultats()
@@ -564,7 +777,7 @@ void Afficher::ChargementResultats()
                 }
 
                 ui->resultatsPrevisions->setItem(j, k, item);
-                if (k > 0) {
+                if ((k > 0) || (_typeCalcul == TRANSITS)) {
                     ui->resultatsPrevisions->resizeColumnToContents(k);
                 }
             }
@@ -1018,7 +1231,10 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
     elems.append(dateFin.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
+    bool eclipse = false;
+    bool penombre = false;
     double angMin = PI;
+    QString cst;
     QString type;
     QString corps;
     double htSolMax = 0.;
@@ -1032,17 +1248,35 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
         if (res.angle <= angMin) {
             angMin = res.angle;
             htSolMax = res.hauteurSoleil;
+            cst = res.constellation;
+            eclipse = res.eclipse;
+            penombre = res.penombre;
             type = (res.transit) ? tr("T") : tr("C");
             corps = (res.typeCorps == CORPS_SOLEIL) ? tr("S") : tr("L");
         }
     }
 
+    // Constellation
+    elems.append(cst);
+
     // Angle minimal
-    elems.append(QString("%1").arg(angMin, 0, 'f', 2));
+    elems.append(QString("%1").arg(angMin * RAD2DEG, 5, 'f', 2));
 
     // Type, corps
     elems.append(type);
     elems.append(corps);
+
+    // Illumination
+    QString illumination = tr("Lum");
+    if (eclipse) {
+        illumination = tr("Omb");
+    }
+
+    if (penombre) {
+        illumination = tr("Pen");
+    }
+
+    elems.append(illumination);
 
     // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
@@ -1154,6 +1388,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     lune.CalculPosition(dateDeb);
     lune.CalculPhase(soleil);
     lune.CalculCoordHoriz(observateur);
+    lune.CalculCoordEquat(observateur, false);
 
     // Calcul de la position du catalogue d'etoiles
     Etoile::CalculPositionEtoiles(observateur, etoiles);
@@ -1194,6 +1429,31 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     _ciel->show(observateur, soleil, lune, lignesCst, constellations, etoiles, planetes, satellites, (_typeCalcul == FLASHS), true, dateDeb, dateMax,
                 dateFin);
 
+    // Affichage du detail du transit ISS
+    if (_typeCalcul == TRANSITS) {
+
+        const bool proximiteCorps = (list.at(2).angle * RAD2DEG) < 1.;
+        ui->detailsTransit->setVisible(proximiteCorps);
+
+        if (proximiteCorps) {
+            AffichageDetailTransit(observateur, soleil, lune, list);
+        }
+    }
+
+    if ((_typeCalcul == FLASHS) || (_typeCalcul == TRANSITS)) {
+        ChargementCarte(observateur, list);
+    }
+
     /* Retour */
     return;
+}
+
+
+void Afficher::on_afficherCarte_clicked()
+{
+    // Ouverture du navigateur
+    QFile fi(Configuration::instance()->dirTmp() + "resultat.html");
+    if (fi.exists() && (fi.size() != 0)) {
+        QDesktopServices::openUrl(QUrl("file:///" + fi.fileName()));
+    }
 }
