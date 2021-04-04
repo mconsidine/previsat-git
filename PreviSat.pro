@@ -193,6 +193,7 @@ equals(BUILD_TEST, true) {
     CONFIG += qt warn_on depend_includepath testcase
 
     CONFIG(debug, debug|release) {
+        QMAKE_CXXFLAGS += -O2
         DESTDIR = TestPreviSat/debug
     } else {
         DESTDIR = TestPreviSat/release
