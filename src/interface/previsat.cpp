@@ -289,6 +289,9 @@ void PreviSat::DemarrageApplication()
 
     // Affichage des donnees numeriques dans la barre d'onglets
     _onglets->show(*_dateCourante);
+#if defined (Q_OS_WIN)
+    _onglets->CalculAosSatSuivi();
+#endif
 
     if (Configuration::instance()->isCarteMonde()) {
 
@@ -685,7 +688,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
             elem4->setData(Qt::UserRole, it.key());
             elem4->setToolTip(tooltip);
             elem4->setFlags(Qt::ItemIsEnabled);
-            elem4->setCheckState(((nomsat == Configuration::instance()->tleDefaut().nomsat) && check) ? Qt::Checked : Qt::Unchecked);
+            elem4->setCheckState(((norad == it.key()) && check) ? Qt::Checked : Qt::Unchecked);
 #endif
 
             if (it.key() == norad) {

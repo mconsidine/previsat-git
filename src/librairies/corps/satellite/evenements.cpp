@@ -58,7 +58,8 @@
 /*
  * Calcul de l'AOS (ou LOS) suivant ou precedent
  */
-ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul)
+ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul,
+                                  const double hauteurMin)
 {
     /* Declarations des variables locales */
     ElementsAOS elements;
@@ -100,7 +101,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 obs.CalculPosVit(date);
                 sat.CalculPosVit(date);
                 sat.CalculCoordHoriz(obs, false, false);
-                ht.append(sat.hauteur());
+                ht.append(sat.hauteur() - hauteurMin);
             }
 
             const bool atst1 = (ht.at(0) * ht.at(1) < 0.);
@@ -130,7 +131,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                         obs.CalculPosVit(date);
                         sat.CalculPosVit(date);
                         sat.CalculCoordHoriz(obs, true, false);
-                        ht[i] = sat.hauteur();
+                        ht[i] = sat.hauteur() - hauteurMin;
                     }
 
                     t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
@@ -148,7 +149,9 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 sat.CalculCoordHoriz(obs, true, false);
                 elements.azimut = sat.azimut();
                 afin = true;
+
             } else {
+
                 t_ht += periode;
                 iter++;
 

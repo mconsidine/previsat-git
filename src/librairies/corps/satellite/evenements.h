@@ -86,9 +86,11 @@ public:
      * @param satellite satellite
      * @param observateur observateur
      * @param sensCalcul sens de calcul (vrai pour l'AOS suivant)
+     * @param hauteurMin hauteur minimale du satellite
      * @return elements de l'AOS (ou LOS) suivant ou precedent
      */
-    static ElementsAOS CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul = true);
+    static ElementsAOS CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul = true,
+                                 const double hauteurMin = 0.);
 
     /**
      * @brief CalculNoeudOrbite Calcul du noeud (ascendant ou descendant) precedent ou suivant

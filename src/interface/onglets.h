@@ -56,6 +56,7 @@
 
 struct ElementsAOS;
 class Date;
+class Satellite;
 class QListWidget;
 class QListWidgetItem;
 
@@ -126,6 +127,12 @@ public:
      */
     void AffichageLieuObs() const;
 
+#if defined (Q_OS_WIN)
+    /**
+     * @brief CalculAosSatSuivi Calcul des informations AOS/LOS pour le suivi d'un satellite
+     */
+    void CalculAosSatSuivi() const;
+#endif
 
 public slots:
 
@@ -225,6 +232,9 @@ private:
      */
     void AffichageInformationsSatellite() const;
 
+    /**
+     * @brief AffichageManoeuvresISS Affichage des manoeuvres ISS
+     */
     void AffichageManoeuvresISS() const;
 
     /**
@@ -242,6 +252,17 @@ private:
      * @param index indice du lieu dans la liste
      */
     void AfficherLieuSelectionne(const int index);
+
+#if defined (Q_OS_WIN)
+    /**
+     * @brief CalculHauteurMax Calcul de la hauteur maximale d'un satellite dans le ciel
+     * @param jjm dates
+     * @param obs observateur
+     * @param satSuivi satellite
+     * @return jour et hauteur maximale
+     */
+    QPair<double, double> CalculHauteurMax(const QList<double> &jjm, Observateur &obs, Satellite &satSuivi) const;
+#endif
 
     /**
      * @brief ChargementPref Chargement des preferences
@@ -371,10 +392,18 @@ private slots:
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_majTleIss_clicked();
 
-    void on_calculsEvt_clicked();
+#if defined (Q_OS_WIN)
+    // Suivi d'un satellite
     void on_genererPositions_clicked();
-
     void on_afficherSuivi_clicked();
+    void on_liste4_itemClicked(QListWidgetItem *item);
+    void on_liste4_currentRowChanged(int currentRow);
+    void on_lieuxObservation5_currentIndexChanged(int index);
+    void on_hauteurSatSuivi_currentIndexChanged(int index);
+#endif
+
+    void on_calculsEvt_clicked();
+
     void on_barreOnglets_currentChanged(int index);
 };
 

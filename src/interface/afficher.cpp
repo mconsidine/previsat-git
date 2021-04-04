@@ -636,7 +636,7 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
         const QLineF lig(xy.first, xy.second, lsat1, hsat1);
         scene->addLine(lig, couleur);
 
-        if (xy == coord.last()) {
+        if ((fabs(xy.first - coord.last().first) < EPSDBL100) && (fabs(xy.second - coord.last().second) < EPSDBL100)) {
 
             QLineF lig1 = lig.normalVector();
             QLineF lig2 = lig1;
@@ -1432,10 +1432,9 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     // Affichage du detail du transit ISS
     if (_typeCalcul == TRANSITS) {
 
-        const bool proximiteCorps = (list.at(2).angle * RAD2DEG) < 1.;
-        ui->detailsTransit->setVisible(proximiteCorps);
+        ui->detailsTransit->setVisible(list.at(2).transit);
 
-        if (proximiteCorps) {
+        if (list.at(2).transit) {
             AffichageDetailTransit(observateur, soleil, lune, list);
         }
     }
