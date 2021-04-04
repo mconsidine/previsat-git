@@ -417,21 +417,29 @@ void Ciel::show(const Observateur &observateur,
         pixlun.load(":/resources/lune.png");
         pixlun = pixlun.scaled(17, 17);
 
+        // Angle horaire
+        const double angleHoraire = observateur.tempsSideralGreenwich() - observateur.longitude() - lune.ascensionDroite();
+
+        // Angle parallactique
+        const double angleParallactique = RAD2DEG *
+                atan(sin(angleHoraire) / (tan(observateur.latitude()) * cos(lune.declinaison()) - sin(lune.declinaison()) * cos(angleHoraire)));
+
+        // Dessin de la Lune et rotations
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
-        if (_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) {
-            transform.rotate(180.);
-        }
+        transform.rotate((PI - lune.azimut()) * RAD2DEG);
+        transform.rotate(angleParallactique);
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
+        // Dessin de la phase
         if (_onglets->ui()->affphaselune->isChecked()) {
 
             QVector<QPointF> pt;
             const int rayonX = 9;
-            const int rayonY = static_cast<int> (-cos(Configuration::instance()->lune().anglePhase()) * rayonX);
-            const int sph = (Configuration::instance()->lune().luneCroissante()) ? -1 : 1;
+            const int rayonY = static_cast<int> (-cos(lune.anglePhase()) * rayonX);
+            const int sph = (lune.luneCroissante()) ? -1 : 1;
             double ang = PI_SUR_DEUX;
 
             for(int i=0; i<36; i++) {
@@ -440,7 +448,7 @@ void Ciel::show(const Observateur &observateur,
                 const double y = rayonX * sin(ang) + 8;
 
                 pt.append(QPointF(x, y));
-                ang += 10. * M_PI / 180.;
+                ang += PI / 18.;
             }
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 255));
@@ -499,7 +507,7 @@ void Ciel::show(const Observateur &observateur,
 
                     } else {
 
-                        const double hauteurSoleil = Configuration::instance()->soleil().hauteur();
+                        const double hauteurSoleil = soleil.hauteur();
                         if (hauteurSoleil > -0.08) {
                             crayon = bleuClair;
 

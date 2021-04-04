@@ -730,29 +730,26 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                                 res.hauteurSoleil = soleil.hauteur();
 
                                 // Recherche des coordonnees geographiques ou se produit le maximum du flash
-                                if (i == 1) {
+                                obsmax = Observateur::CalculIntersectionEllipsoide(dates[1], sat.position(), _direction);
 
-                                    obsmax = Observateur::CalculIntersectionEllipsoide(dates[1], sat.position(), _direction);
+                                if (!obsmax.nomlieu().isEmpty()) {
 
-                                    if (!obsmax.nomlieu().isEmpty()) {
+                                    res.obsmax = obsmax;
+                                    obsmax.CalculPosVit(dates[1]);
+                                    sat.CalculCoordHoriz(obsmax, false);
 
-                                        res.obsmax = obsmax;
-                                        obsmax.CalculPosVit(dates[1]);
-                                        sat.CalculCoordHoriz(obsmax, false);
+                                    // Distance entre les 2 lieux d'observation
+                                    res.distanceObs = _conditions.observateur.CalculDistance(obsmax);
 
-                                        // Distance entre les 2 lieux d'observation
-                                        res.distanceObs = _conditions.observateur.CalculDistance(obsmax);
+                                    // Cap en direction du maximum
+                                    res.cap = _conditions.observateur.CalculCap(obsmax).first;
 
-                                        // Cap en direction du maximum
-                                        res.cap = _conditions.observateur.CalculCap(obsmax).first;
+                                    // Angle de reflexion pour le lieu du maximum
+                                    const double angRefMax = AngleReflexion(sat, soleil);
 
-                                        // Angle de reflexion pour le lieu du maximum
-                                        const double angRefMax = AngleReflexion(sat, soleil);
-
-                                        // Magnitude du flash et penombre
-                                        res.magnitudeMax = MagnitudeFlash(angRefMax, condEcl, sat);
-                                        res.penombreMax = (condEcl.eclipsePartielle() || condEcl.eclipseAnnulaire());
-                                    }
+                                    // Magnitude du flash et penombre
+                                    res.magnitudeMax = MagnitudeFlash(angRefMax, condEcl, sat);
+                                    res.penombreMax = (condEcl.eclipsePartielle() || condEcl.eclipseAnnulaire());
                                 }
 
                                 result.append(res);

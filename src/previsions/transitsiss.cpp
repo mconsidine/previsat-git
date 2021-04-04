@@ -36,6 +36,7 @@
 
 #include <QElapsedTimer>
 #include <QMap>
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
@@ -46,7 +47,7 @@
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;
-static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
+static const double PAS1 = 3. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 
@@ -115,9 +116,9 @@ int TransitsIss::CalculTransits(int &nombre)
     _resultats.clear();
 
     // Lecture du TLE de l'ISS
-    const QList<TLE> tabtle = TLE::LectureFichier3le(_conditions.fichier);
-    const double periode = 1. / tabtle.at(0).no() - TEMPS1;
-    Satellite sat(tabtle);
+    const QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
+    const double periode = 1. / tabtle[Configuration::instance()->noradStationSpatiale()].no() - TEMPS1;
+    Satellite sat(tabtle[Configuration::instance()->noradStationSpatiale()]);
 
     const double age1 = fabs(_conditions.jj1 - tabtle.first().epoque().jourJulienUTC());
     const double age2 = fabs(_conditions.jj1 - tabtle.last().epoque().jourJulienUTC());
@@ -297,6 +298,9 @@ int TransitsIss::CalculTransits(int &nombre)
                                 res.obsmax = Observateur();
 
                                 _conditions.observateur.CalculPosVit(dates[j]);
+
+                                // Elements orbitaux
+                                res.tle = sat.tle();
 
                                 // Position de l'ISS
                                 sat.CalculPosVit(dates[j]);
@@ -543,19 +547,22 @@ QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &t
     // Iterations supplementaires pour affiner la date
     int it = 0;
     double tmp = 0.;
-    while ((fabs(dateInf - tmp) > EPS_DATES) && (it < 6)) {
+    double pas = 0.5 * PAS1;
+    while ((fabs(dateInf - tmp) > EPS_DATES) && (it < 20)) {
 
         tmp = dateInf;
-        jjm[1] = dateInf;
+        jjm[0] = jmax - pas;
         jjm[2] = jmax;
-        jjm[0] = 2. * jjm[1] - jjm[2];
+        jjm[1] = 0.5 * (jjm[0] + jjm[2]);
 
         dateInf = CalculDate(jjm, typeCorps, itransit, satellite);
+
+        pas *= 0.5;
         it++;
     }
 
     // Premiere date pour le trace sur la map
-    double date1 = 0.2 * (4. * jmax + dateInf);
+    double date1 = dateInf - 0.8 * NB_JOUR_PAR_SEC;
 
     // Date de fin
     jjm[0] = jmax;
@@ -567,24 +574,22 @@ QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &t
     // Iterations supplementaires pour affiner la date
     it = 0;
     tmp = 0.;
-    while ((fabs(dateSup - tmp) > EPS_DATES) && (it < 6)) {
+    pas = 0.5 * PAS1;
+    while ((fabs(dateSup - tmp) > EPS_DATES) && (it < 20)) {
 
         tmp = dateSup;
-        jjm[1] = dateSup;
         jjm[0] = jmax;
-        jjm[2] = 2. * jjm[1] - jjm[0];
+        jjm[2] = jmax + pas;
+        jjm[1] = 0.5 * (jjm[0] + jjm[2]);
 
         dateSup = CalculDate(jjm, typeCorps, itransit, satellite);
+
+        pas *= 0.5;
         it++;
     }
 
     // Deuxieme date pour le trace sur la map
-    double date2 = 0.2 * (4. * jmax + dateSup);
-
-    if ((fabs(date2 - date1) * NB_SEC_PAR_JOUR) < 2.) {
-        date1 = dateInf;
-        date2 = dateSup;
-    }
+    double date2 = dateSup + 0.8 * NB_JOUR_PAR_SEC;
 
     QList<Date> dates;
     dates.append(Date(date1, 0., false));

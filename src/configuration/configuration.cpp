@@ -278,6 +278,11 @@ bool Configuration::isCarteMonde() const
     return _isCarteMonde;
 }
 
+QString Configuration::dateDebut() const
+{
+    return _dateDebut;
+}
+
 QList<double> Configuration::masseISS() const
 {
     return _masseISS;
@@ -1035,7 +1040,26 @@ void Configuration::LecturePositionsISS()
 
                                     while (cfg.readNextStartElement()) {
 
-                                        if (cfg.name().toString().toLower() == "data") {
+                                        if (cfg.name().toString().toLower() == "metadata") {
+
+                                            while (cfg.readNextStartElement()) {
+
+                                                if (cfg.name().toString().toLower() == "start_time") {
+
+                                                    // Date de debut
+                                                    _dateDebut = cfg.readElementText();
+
+                                                } else if (cfg.name().toString().toLower() == "stop_time") {
+
+                                                    // Date de fin
+                                                    _dateFin = cfg.readElementText();
+
+                                                } else {
+                                                    cfg.skipCurrentElement();
+                                                }
+                                            }
+
+                                        } else if (cfg.name().toString().toLower() == "data") {
 
                                             while (cfg.readNextStartElement()) {
 
@@ -1044,7 +1068,7 @@ void Configuration::LecturePositionsISS()
                                                 if (value.toLower().contains("mass")) {
 
                                                     // Masse (en kg)
-                                                    _masseISS.append(value.split("=").last().toDouble());
+                                                    _masseISS.append(value.split("=").last().toDouble()); 
 
                                                 } else if (value.contains("===")) {
 
@@ -1054,6 +1078,7 @@ void Configuration::LecturePositionsISS()
 
                                                         value = cfg.readElementText();
                                                         if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
+                                                            value.replace(26, 1, "T");
                                                             _evenementsISS.append(value);
                                                         }
                                                     }

@@ -54,10 +54,13 @@ namespace Ui {
 class Afficher;
 }
 
+class QGraphicsScene;
 class QTableWidget;
 class QTableWidgetItem;
 class Ciel;
+class Lune;
 class Onglets;
+class Soleil;
 
 class Afficher : public QMainWindow
 {
@@ -115,6 +118,8 @@ private slots:
 
     void on_resultatsPrevisions_itemSelectionChanged();
 
+    void on_afficherCarte_clicked();
+
 private:
 
     /*
@@ -129,15 +134,34 @@ private:
     QMainWindow *afficherDetail;
     Ciel *_ciel;
     Onglets *_onglets;
+    QGraphicsScene *scene;
+
     QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
     ConditionsPrevisions _conditions;
     DonneesPrevisions _donnees;
     TypeCalcul _typeCalcul;
+    QString _mapResultats;
 
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief AffichageDetailTransit Affichage du détail d'un transit ISS
+     * @param observateur observateur
+     * @param soleil soleil
+     * @param lune lune
+     * @param list informations sur le transit
+     */
+    void AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list);
+
+    /**
+     * @brief ChargementCarte Chargement de la carte representant la trace du maximum
+     * @param observateur observateur
+     * @param list informations sur le maximum
+     */
+    void ChargementCarte(const Observateur &observateur, const QList<ResultatPrevisions> &list);
+
     /**
      * @brief ChargementResultats Chargement des resultats
      */

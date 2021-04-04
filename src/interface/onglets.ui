@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -6968,7 +6968,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>138</y>
+        <y>160</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -6984,7 +6984,7 @@
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>134</y>
+        <y>156</y>
         <width>41</width>
         <height>22</height>
        </rect>
@@ -7226,7 +7226,7 @@
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>138</y>
+        <y>160</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -7242,7 +7242,7 @@
       <property name="geometry">
        <rect>
         <x>280</x>
-        <y>138</y>
+        <y>160</y>
         <width>70</width>
         <height>16</height>
        </rect>
@@ -7281,7 +7281,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>7</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="horizontalScrollBarPolicy">
@@ -7300,10 +7300,10 @@
        <bool>false</bool>
       </property>
       <property name="columnCount">
-       <number>7</number>
+       <number>6</number>
       </property>
       <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>43</number>
+       <number>8</number>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>60</number>
@@ -7316,11 +7316,10 @@
       </attribute>
       <column>
        <property name="text">
-        <string>Date</string>
+        <string>Évènement</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>7</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -7328,11 +7327,10 @@
       </column>
       <column>
        <property name="text">
-        <string>Orbite</string>
+        <string>Date</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>7</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -7344,7 +7342,17 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>7</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>ΔV</string>
+       </property>
+       <property name="font">
+        <font>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -7356,7 +7364,6 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>7</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -7368,31 +7375,6 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>7</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string notr="true">ΔV</string>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Durée</string>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -7410,6 +7392,22 @@
       </property>
       <property name="text">
        <string>Fichier de manoeuvres ISS absent : cliquer sur 'Mettre à jour TLE de l'ISS'</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="calcTransitLunaireJour">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>135</y>
+        <width>251</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Inclure transits/conjonctions lunaires de jour</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <zorder>lbl_manoeuvresISS</zorder>
@@ -7434,6 +7432,7 @@
      <zorder>ageTLETransit</zorder>
      <zorder>majTleIss</zorder>
      <zorder>manoeuvresISS</zorder>
+     <zorder>calcTransitLunaireJour</zorder>
     </widget>
     <widget class="QWidget" name="telescope">
      <property name="autoFillBackground">
