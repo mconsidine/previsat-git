@@ -923,6 +923,7 @@ void Onglets::AffichageManoeuvresISS() const
         }
     }
 
+    _ui->manoeuvresISS->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235); font-size: 12px; font-weight: 600 }");
     _ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
     _ui->manoeuvresISS->setColumnWidth(0, 75);
     _ui->manoeuvresISS->setColumnWidth(1, 135);

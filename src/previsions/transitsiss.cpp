@@ -47,7 +47,7 @@
 
 // Pas de calcul ou d'interpolation
 static const double PAS0 = NB_JOUR_PAR_MIN;
-static const double PAS1 = 3. * NB_JOUR_PAR_SEC;
+static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 
@@ -117,8 +117,8 @@ int TransitsIss::CalculTransits(int &nombre)
 
     // Lecture du TLE de l'ISS
     const QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
-    const double periode = 1. / tabtle[Configuration::instance()->noradStationSpatiale()].no() - TEMPS1;
-    Satellite sat(tabtle[Configuration::instance()->noradStationSpatiale()]);
+    const double periode = 1. / tabtle.first().no() - TEMPS1;
+    Satellite sat(tabtle.first());
 
     const double age1 = fabs(_conditions.jj1 - tabtle.first().epoque().jourJulienUTC());
     const double age2 = fabs(_conditions.jj1 - tabtle.last().epoque().jourJulienUTC());
@@ -212,7 +212,7 @@ int TransitsIss::CalculTransits(int &nombre)
                     }
 
                     jj0 += PAS1;
-                } while ((jj0 <= jj2) && (ang < ang0 + EPSDBL100));
+                } while ((jj0 <= jj2) && (ang < (ang0 + EPSDBL100)));
 
                 // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
                 if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + DEG2RAD) && (sat.hauteur() >= 0.)) {
@@ -547,17 +547,14 @@ QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &t
     // Iterations supplementaires pour affiner la date
     int it = 0;
     double tmp = 0.;
-    double pas = 0.5 * PAS1;
     while ((fabs(dateInf - tmp) > EPS_DATES) && (it < 20)) {
 
         tmp = dateInf;
-        jjm[0] = jmax - pas;
+        jjm[1] = dateInf;
         jjm[2] = jmax;
-        jjm[1] = 0.5 * (jjm[0] + jjm[2]);
+        jjm[0] = 2. * jjm[1] - jjm[2];
 
         dateInf = CalculDate(jjm, typeCorps, itransit, satellite);
-
-        pas *= 0.5;
         it++;
     }
 
@@ -574,17 +571,14 @@ QList<Date> TransitsIss::CalculElements(const double jmax, const CorpsTransit &t
     // Iterations supplementaires pour affiner la date
     it = 0;
     tmp = 0.;
-    pas = 0.5 * PAS1;
     while ((fabs(dateSup - tmp) > EPS_DATES) && (it < 20)) {
 
         tmp = dateSup;
-        jjm[0] = jmax;
-        jjm[2] = jmax + pas;
-        jjm[1] = 0.5 * (jjm[0] + jjm[2]);
+        jjm[1] = dateSup;
+        jjm[0] = jmax ;
+        jjm[2] = 2. * jjm[1] - jjm[0];
 
         dateSup = CalculDate(jjm, typeCorps, itransit, satellite);
-
-        pas *= 0.5;
         it++;
     }
 

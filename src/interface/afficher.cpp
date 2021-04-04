@@ -393,6 +393,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
         int i;
         int kmin;
+        int kmax;
         QString ligne;
         QString nomsat;
         QStringList evts;
@@ -482,8 +483,14 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                     }
 
                     if (!elems.isEmpty()) {
+
+                        kmax = elems.count();
+                        if ((_typeCalcul == FLASHS) && (i != 1)) {
+                            kmax = elems.count() - 4;
+                        }
+
                         ligne = "";
-                        for(int k=kmin; k<elems.count(); k++) {
+                        for(int k=kmin; k<kmax; k++) {
                             ligne += elems.at(k) + " ";
                         }
 
