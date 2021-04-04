@@ -40,7 +40,7 @@
         <property name="minimumSize">
          <size>
           <width>602</width>
-          <height>0</height>
+          <height>360</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -67,20 +67,33 @@
        </widget>
       </item>
       <item>
-       <widget class="QGraphicsView" name="detailsTransit">
-        <property name="maximumSize">
-         <size>
-          <width>602</width>
-          <height>150</height>
-         </size>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
         </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
+        <property name="topMargin">
+         <number>8</number>
         </property>
-       </widget>
+        <item>
+         <widget class="QGraphicsView" name="detailsTransit">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>160</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">

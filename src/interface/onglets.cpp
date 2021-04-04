@@ -231,6 +231,12 @@ void Onglets::show(const Date &date)
         }
     }
 
+#if defined (Q_OS_WIN)
+    if ((_ui->telescope->isVisible()) && (getListItemChecked(_ui->liste4) > 0)) {
+        CalculAosSatSuivi();
+    }
+#endif
+
     /* Retour */
     return;
 }
@@ -1035,6 +1041,37 @@ void Onglets::AfficherLieuSelectionne(const int index)
     return;
 }
 
+#if defined (Q_OS_WIN)
+/*
+ * Calcul de la hauteur maximale d'un satellite dans le ciel
+ */
+QPair<double, double> Onglets::CalculHauteurMax(const QList<double> &jjm, Observateur &obs, Satellite &satSuivi) const
+{
+    /* Declarations des variables locales */
+    QList<double> ht;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    for (int i=0; i<3; i++) {
+
+        const Date date(jjm[i], 0., false);
+
+        obs.CalculPosVit(date);
+
+        // Position du satellite
+        satSuivi.CalculPosVit(date);
+        satSuivi.CalculCoordHoriz(obs);
+
+        // Hauteur
+        ht.append(satSuivi.hauteur());
+    }
+
+    /* Retour */
+    return Maths::CalculExtremumInterpolation3(jjm, ht);;
+}
+#endif
+
 /*
  * Chargement des preferences
  */
@@ -1231,6 +1268,203 @@ void Onglets::AffichageLieuObs() const
     return;
 }
 
+/*
+ * Calcul des informations AOS/LOS pour le suivi d'un satellite
+ */
+#if defined (Q_OS_WIN)
+void Onglets::CalculAosSatSuivi() const
+{
+    /* Declarations des variables locales */
+    double azim;
+    double delai;
+    QFont bld;
+    ConditionEclipse condEcl;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        Date date(_date->offsetUTC());
+        Observateur obs = Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
+
+        if (_ui->liste4->count() == 0) {
+            throw PreviSatException();
+        }
+
+        const int nsat = getListItemChecked(_ui->liste4);
+        if ((nsat == 0) && (_ui->liste4->count() > 0)) {
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+        }
+
+        _ui->frameSatSelectionne->setVisible(true);
+
+        QStringList satelliteSelectionne;
+        for (int i=0; i<_ui->liste4->count(); i++) {
+            if (_ui->liste4->item(i)->checkState() == Qt::Checked) {
+                satelliteSelectionne.append(_ui->liste4->item(i)->data(Qt::UserRole).toString());
+            }
+        }
+
+        // Position de l'observateur
+        obs.CalculPosVit(date);
+
+        // Position du satellite
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
+                                                           satelliteSelectionne);
+        _ui->nomsatSuivi->setText(tle.first().nom());
+
+        Satellite satSuivi(tle.first());
+        satSuivi.CalculPosVit(date);
+        satSuivi.CalculCoordHoriz(obs);
+        satSuivi.CalculElementsOsculateurs(date);
+
+        Soleil sol;
+        sol.CalculPosition(date);
+
+        Lune lun;
+        lun.CalculPosition(date);
+
+        condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, lun, true);
+        const QString ecl = (condEcl.eclipseTotale()) ? tr("Satellite en éclipse") : tr("Satellite éclairé");
+
+        // Hauteur minimale du satellite
+        const double hauteurMin = DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+                                                 abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
+
+        // Date de lever
+        const ElementsAOS elemAos = Evenements::CalculAOS(date, satSuivi, obs, true, hauteurMin);
+        Date dateAosSuivi(elemAos.date.jourJulienUTC(), _date->offsetUTC());
+        if (elemAos.aos) {
+
+            Date dateLosSuivi;
+            const QString chaine = tr("%1 (dans %2). Azimut : %3");
+
+            if (elemAos.typeAOS == tr("AOS")) {
+
+                const ElementsAOS elemLos = Evenements::CalculAOS(Date(dateAosSuivi.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
+                                                                  satSuivi, obs, true, hauteurMin);
+
+                // Date de coucher
+                dateLosSuivi = Date(elemLos.date, _date->offsetUTC());
+                azim = elemLos.azimut;
+
+                // Lever
+                delai = dateAosSuivi.jourJulienUTC() - date.jourJulienUTC();
+                const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
+                const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+
+                _ui->leverSatSuivi->setText(
+                            chaine.arg(dateAosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                            arg(cDelaiAOS).arg(Maths::ToSexagesimal(elemAos.azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
+
+                _ui->lbl_leverSatSuivi->setVisible(true);
+                bld.setBold(false);
+                _ui->leverSatSuivi->setFont(bld);
+                _ui->leverSatSuivi->move(_ui->hauteurMaxSatSuivi->x(), _ui->leverSatSuivi->y());
+
+            } else {
+
+                // Le satellite est deja dans le ciel
+                satSuivi.CalculElementsOsculateurs(date);
+
+                dateLosSuivi = dateAosSuivi;
+
+                const ElementsAOS elem =
+                        Evenements::CalculAOS(Date(dateLosSuivi.jourJulienUTC() - 0.9 * satSuivi.elements().periode() * NB_JOUR_PAR_HEUR,
+                                                   _date->offsetUTC()), satSuivi, obs, true, hauteurMin);
+
+                dateAosSuivi = elem.date;
+                azim = elemAos.azimut;
+
+                const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
+                _ui->leverSatSuivi->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, false).mid(0, 7).trimmed())
+                                            .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
+
+                bld.setBold(true);
+                _ui->leverSatSuivi->setFont(bld);
+                _ui->lbl_leverSatSuivi->setVisible(false);
+                _ui->leverSatSuivi->move(0, _ui->leverSatSuivi->y());
+            }
+
+            // Coucher
+            delai = dateLosSuivi.jourJulienUTC() - date.jourJulienUTC();
+            const Date delaiLOS = Date(delai - 0.5 + EPS_DATES, 0.);
+            const QString cDelaiLOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
+                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
+                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+
+            _ui->coucherSatSuivi->setText(
+                        chaine.arg(dateLosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                        arg(cDelaiLOS).arg(Maths::ToSexagesimal(azim, DEGRE, 3, 0, false, true).mid(0, 9)));
+
+            // Hauteur max
+            QList<double> jjm;
+            QPair<double, double> minmax;
+            double jj0 = 0.5 * (dateAosSuivi.jourJulienUTC() + dateLosSuivi.jourJulienUTC());
+            double pas = NB_JOUR_PAR_MIN;
+
+            jjm.append(jj0 - pas);
+            jjm.append(jj0);
+            jjm.append(jj0 + pas);
+
+            minmax = CalculHauteurMax(jjm, obs, satSuivi);
+            pas *= 0.5;
+
+            for(int i=0; i<4; i++) {
+                jjm[0] = minmax.first - pas;
+                jjm[1] = minmax.first;
+                jjm[2] = minmax.first + pas;
+
+                minmax = CalculHauteurMax(jjm, obs, satSuivi);
+                pas *= 0.5;
+            }
+            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, DEGRE, 2, 0, false, false).mid(0, 7).trimmed()));
+
+            _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
+            _ui->lbl_coucherSatSuivi->setVisible(true);
+            _ui->hauteurMaxSatSuivi->setVisible(true);
+            _ui->coucherSatSuivi->setVisible(true);
+            _ui->visibiliteSatSuivi->setVisible(false);
+            _ui->frameSatSuivi->setVisible(true);
+
+        } else {
+
+            // Cas des satellites geostationnaires (10 minutes de suivi)
+            if (satSuivi.hauteur() > 0.) {
+                dateAosSuivi = date;
+
+                const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
+                _ui->leverSatSuivi->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, false).mid(0, 7).trimmed())
+                                            .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
+
+                bld.setBold(true);
+                _ui->leverSatSuivi->setFont(bld);
+                _ui->lbl_leverSatSuivi->setVisible(false);
+                _ui->leverSatSuivi->move(0, _ui->leverSatSuivi->y());
+                _ui->lbl_hauteurMaxSatSuivi->setVisible(false);
+                _ui->lbl_coucherSatSuivi->setVisible(false);
+                _ui->hauteurMaxSatSuivi->setVisible(false);
+                _ui->coucherSatSuivi->setVisible(false);
+                _ui->visibiliteSatSuivi->setVisible(false);
+                _ui->frameSatSuivi->setVisible(true);
+
+            } else {
+                _ui->visibiliteSatSuivi->setVisible(true);
+                _ui->frameSatSuivi->setVisible(false);
+            }
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+#endif
+
 void Onglets::on_pause_clicked()
 {
     /* Declarations des variables locales */
@@ -1397,11 +1631,13 @@ void Onglets::InitAffichageDemarrage()
     _ui->frameIncl->setVisible(false);
     _ui->frameNORAD->setVisible(false);
 
-    _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
-    _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
-    _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
-    _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
-    _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
+    _ui->valHauteurSatMetOp->setVisible(false);
+    _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
+    _ui->valHauteurSoleilMetOp->setVisible(false);
+    _ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
+    _ui->lieuxObservation3->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
+    _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
+    _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
     _ui->valHauteurSatTransit->setVisible(false);
     _ui->manoeuvresISS->setVisible(false);
@@ -1409,14 +1645,6 @@ void Onglets::InitAffichageDemarrage()
     _ui->lieuxObservation4->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
     _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
-
-    _ui->valHauteurSatMetOp->setVisible(false);
-    _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
-    _ui->valHauteurSoleilMetOp->setVisible(false);
-    _ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
-    _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
-    _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
-    _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
     // Fichier flashs MetOp et SkyMed
     _ficTLEMetOp.clear();
@@ -1438,6 +1666,16 @@ void Onglets::InitAffichageDemarrage()
     if (!Configuration::instance()->evenementsISS().isEmpty()) {
         AffichageManoeuvresISS();
     }
+
+    _ui->valHauteurSatSuivi->setVisible(false);
+    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
+    _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+
+    _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
+    _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
+    _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
+    _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
+    _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
 
     /* Retour */
     return;
@@ -3641,8 +3879,8 @@ void Onglets::on_calculsTransit_clicked()
         }
 
         if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
-//            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-//            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+            //            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+            //            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
         }
 
         conditions.listeSatellites = listeSatellites;
@@ -3758,6 +3996,236 @@ void Onglets::on_majTleIss_clicked()
 {
     // TODO
 }
+
+/*
+ * Suivi d'un satellite
+ */
+#if defined (Q_OS_WIN)
+void Onglets::on_genererPositions_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        if (_ui->liste4->count() == 0) {
+            throw PreviSatException();
+        }
+
+        QStringList satelliteSelectionne;
+        for(int i=0; i<_ui->liste4->count(); i++) {
+            if (_ui->liste4->item(i)->checkState() == Qt::Checked) {
+                satelliteSelectionne.append(_ui->liste4->item(i)->data(Qt::UserRole).toString());
+            }
+        }
+
+        if (satelliteSelectionne.isEmpty()) {
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+        }
+
+        // Lecture du fichier TLE
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
+                                                           satelliteSelectionne);
+
+        // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
+        const Date date(_date->offsetUTC());
+        Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
+
+        obs.CalculPosVit(date);
+
+        Satellite satSuivi(tle[satelliteSelectionne.at(0)]);
+        satSuivi.CalculPosVit(date);
+        satSuivi.CalculCoordHoriz(obs);
+        satSuivi.CalculElementsOsculateurs(date);
+
+        // Hauteur minimale du satellite
+        const double hauteurMin = DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+                                                 abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
+
+
+        int nbIter = 0;
+        const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs, true, hauteurMin);
+        Date date1 = elementsAos.date;
+        Date date2;
+
+        if (elementsAos.aos) {
+
+            if (elementsAos.typeAOS == tr("AOS")) {
+                date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0.), satSuivi, obs, true, hauteurMin).date;
+
+            } else {
+                // Le satellite est deja dans le ciel
+                date2 = date1;
+                date1 = date;
+            }
+
+            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
+
+        } else {
+
+            // Cas des satellites geostationnaires (10 minutes de suivi)
+            if (satSuivi.hauteur() > 0.) {
+                date1 = date;
+                nbIter = 600000 / _ui->pasSuivi->value();
+                date2 = Date(date1.jourJulienUTC() + nbIter * NB_JOUR_PAR_MILLISEC, 0.);
+            }
+        }
+
+        if (nbIter > 0) {
+
+            _ui->genererPositions->setEnabled(false);
+
+            const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";
+            const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
+                    .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
+                    .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
+                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.at(0));
+
+            ConditionsPrevisions conditions;
+            conditions.observateur = obs;
+            conditions.listeSatellites = satelliteSelectionne;
+            conditions.pas = _ui->pasSuivi->value();
+            conditions.nbIter = nbIter;
+            conditions.fichier = Configuration::instance()->nomfic();
+            conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
+            conditions.jj1 = date1.jourJulienUTC();
+
+            _ficSuivi = conditions.ficRes;
+
+            QVector<int> vecSat;
+            vecSat.append(1);
+
+            // Barre de progression
+            auto barreProgression = new QProgressBar();
+            barreProgression->setAlignment(Qt::AlignHCenter);
+
+            QProgressDialog fenetreProgression;
+            fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+            fenetreProgression.setCancelButtonText(tr("Annuler"));
+            fenetreProgression.setBar(barreProgression);
+            fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+            // Lancement des calculs
+            Telescope::setConditions(conditions);
+            QFutureWatcher<void> calculs;
+
+            connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+            connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+            connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+            connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+            calculs.setFuture(QtConcurrent::map(vecSat, &Telescope::CalculSuiviTelescope));
+
+            fenetreProgression.exec();
+            calculs.waitForFinished();
+
+            if (calculs.isCanceled()) {
+                _ui->genererPositions->setEnabled(true);
+            } else {
+
+                _ui->genererPositions->setDefault(false);
+                _ui->afficherSuivi->setEnabled(true);
+                _ui->afficherSuivi->setDefault(true);
+                _ui->afficherSuivi->setFocus();
+                _ui->genererPositions->setEnabled(true);
+
+                // Affichage des resultats
+                emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+            }
+        }
+
+    } catch (PreviSatException &) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_afficherSuivi_clicked()
+{
+    if (!_ficSuivi.isEmpty()) {
+        QDesktopServices::openUrl(QUrl(_ficSuivi.replace("\\", "/")));
+    }
+}
+
+
+void Onglets::on_liste4_itemClicked(QListWidgetItem *item)
+{
+    if (item != nullptr) {
+        for(int i=0; i<_ui->liste4->count(); i++) {
+            if ((_ui->liste4->item(i)->checkState() == Qt::Checked) && (item != _ui->liste4->item(i))) {
+                _ui->liste4->item(i)->setCheckState(Qt::Unchecked);
+            }
+        }
+        item->setSelected(true);
+        item->setCheckState(Qt::Checked);
+    }
+
+    _ui->frameSatSelectionne->setVisible(false);
+    CalculAosSatSuivi();
+
+    _ui->genererPositions->setDefault(true);
+    _ui->afficherSuivi->setEnabled(false);
+}
+
+void Onglets::on_liste4_currentRowChanged(int currentRow)
+{
+    Q_UNUSED(currentRow)
+
+    _ui->frameSatSelectionne->setVisible(false);
+    if (_ui->telescope->isVisible()) {
+        if ((currentRow >= 0) && (getListItemChecked(_ui->liste4) > 0)) {
+
+            CalculAosSatSuivi();
+            _ui->genererPositions->setDefault(true);
+            _ui->afficherSuivi->setEnabled(false);
+        }
+    }
+}
+
+void Onglets::on_lieuxObservation5_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+
+    _ui->frameSatSelectionne->setVisible(false);
+    if (_ui->telescope->isVisible()) {
+        if ((index >= 0) && (getListItemChecked(_ui->liste4) > 0)) {
+
+            CalculAosSatSuivi();
+            _ui->genererPositions->setDefault(true);
+            _ui->afficherSuivi->setEnabled(false);
+        }
+    }
+}
+
+void Onglets::on_hauteurSatSuivi_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->telescope->isVisible()) {
+        if (index == _ui->hauteurSatSuivi->count() - 1) {
+            _ui->valHauteurSatSuivi->setText(settings.value("previsions/valHauteurSatSuivi", 0).toString());
+            _ui->valHauteurSatSuivi->setVisible(true);
+            _ui->valHauteurSatSuivi->setCursorPosition(0);
+            _ui->valHauteurSatSuivi->setFocus();
+        } else {
+            _ui->valHauteurSatSuivi->setVisible(false);
+        }
+
+        CalculAosSatSuivi();
+        _ui->genererPositions->setDefault(true);
+        _ui->afficherSuivi->setEnabled(false);
+    }
+
+    /* Retour */
+    return;
+}
+#endif
 
 void Onglets::on_calculsEvt_clicked()
 {
@@ -3883,150 +4351,6 @@ void Onglets::on_calculsEvt_clicked()
     return;
 }
 
-void Onglets::on_genererPositions_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        if (_ui->liste4->count() == 0) {
-            throw PreviSatException();
-        }
-
-        QStringList satelliteSelectionne;
-        for(int i=0; i<_ui->liste4->count(); i++) {
-            if (_ui->liste4->item(i)->checkState() == Qt::Checked) {
-                satelliteSelectionne.append(_ui->liste4->item(i)->data(Qt::UserRole).toString());
-            }
-        }
-
-        if (satelliteSelectionne.isEmpty()) {
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
-        }
-
-        // Lecture du fichier TLE
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
-                                                           satelliteSelectionne);
-
-        // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
-        Date date(_date->offsetUTC());
-        Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
-
-        obs.CalculPosVit(date);
-
-        Satellite satSuivi(tle[satelliteSelectionne.at(0)]);
-        satSuivi.CalculPosVit(date);
-        satSuivi.CalculCoordHoriz(obs);
-
-        int nbIter = 0;
-        const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs);
-        Date date1 = elementsAos.date;
-        Date date2;
-
-        if (elementsAos.aos) {
-
-            if (elementsAos.typeAOS == tr("AOS")) {
-                date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0.), satSuivi, obs).date;
-
-            } else {
-                // Le satellite est deja dans le ciel
-                date2 = date1;
-                date1 = date;
-            }
-
-            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
-
-        } else {
-
-            // Cas des satellites geostationnaires (10 minutes de suivi)
-            if (satSuivi.hauteur() > 0.) {
-                date1 = date;
-                nbIter = 600000 / _ui->pasSuivi->value();
-            }
-        }
-
-        if (nbIter > 0) {
-
-            _ui->genererPositions->setEnabled(false);
-
-            date2 = Date(date1.jourJulienUTC() + nbIter * NB_JOUR_PAR_MILLISEC, 0.);
-
-            const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";
-            const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
-                    .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
-                    .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
-                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.at(0));
-
-            ConditionsPrevisions conditions;
-            conditions.observateur = obs;
-            conditions.listeSatellites = satelliteSelectionne;
-            conditions.pas = 1000. * _ui->pasSuivi->value();
-            conditions.nbIter = nbIter;
-            conditions.fichier = Configuration::instance()->nomfic();
-            conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
-            conditions.jj1 = date1.jourJulienUTC();
-
-            _ficSuivi = conditions.ficRes;
-
-            QVector<int> vecSat;
-            vecSat.append(1);
-
-            // Barre de progression
-            auto barreProgression = new QProgressBar();
-            barreProgression->setAlignment(Qt::AlignHCenter);
-
-            QProgressDialog fenetreProgression;
-            fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
-            fenetreProgression.setCancelButtonText(tr("Annuler"));
-            fenetreProgression.setBar(barreProgression);
-            fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-            // Lancement des calculs
-            Telescope::setConditions(conditions);
-            QFutureWatcher<void> calculs;
-
-            connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
-            connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
-            connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
-            connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
-
-            calculs.setFuture(QtConcurrent::map(vecSat, &Telescope::CalculSuiviTelescope));
-
-            fenetreProgression.exec();
-            calculs.waitForFinished();
-
-            if (calculs.isCanceled()) {
-                _ui->genererPositions->setEnabled(true);
-            } else {
-
-                _ui->genererPositions->setDefault(false);
-                _ui->afficherSuivi->setEnabled(true);
-                _ui->afficherSuivi->setDefault(true);
-                _ui->afficherSuivi->setFocus();
-                _ui->genererPositions->setEnabled(true);
-
-                // Affichage des resultats
-                emit AfficherMessageStatut(tr("Calculs terminés"), 10);
-            }
-        }
-
-    } catch (PreviSatException &) {
-    }
-
-    /* Retour */
-    return;
-}
-
-void Onglets::on_afficherSuivi_clicked()
-{
-    if (!_ficSuivi.isEmpty()) {
-        QDesktopServices::openUrl(QUrl(_ficSuivi.replace("\\", "/")));
-    }
-}
-
 void Onglets::on_barreOnglets_currentChanged(int index)
 {
     /* Declarations des variables locales */
@@ -4078,6 +4402,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         _ui->calculsTransit->setDefault(true);
         _ui->calculsTransit->setFocus();
 
+        // TODO
         //        if (tab3le.isEmpty()) {
         //            ui->ageTLETransit->setVisible(false);
         //            ui->lbl_ageTLETransit->setVisible(false);
@@ -4085,6 +4410,13 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         //            CalculAgeTLETransitISS();
         //        }
 
+#if defined (Q_OS_WIN)
+    } else if (index == _ui->barreOnglets->indexOf(_ui->telescope)) {
+
+        _ui->afficherSuivi->setDefault(false);
+        _ui->genererPositions->setDefault(true);
+
+#endif
     }
 
     /* Retour */
