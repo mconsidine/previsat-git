@@ -35,6 +35,7 @@
  */
 
 #include <cmath>
+#include <QObject>
 #include <QStringList>
 #include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/dates/date.h"
@@ -46,8 +47,7 @@
  * PUBLIC *
  **********/
 
-static QStringList listeCap(QStringList() << "N" << "NNE" << "NE" << "ENE" << "E" << "ESE" << "SE" << "SSE" << "S" << "SSW" << "SW" << "WSW" << "W"
-                            << "WNW" << "NW" << "NNW");
+static QStringList listeCap;
 
 
 /*
@@ -74,6 +74,25 @@ Observateur::Observateur()
     _aaer = 0.;
     _aray = 0.;
     _tempsSideralGreenwich = 0.;
+
+    if (listeCap.isEmpty()) {
+        listeCap << QObject::tr("N", "cardinal point")
+                 << QObject::tr("NNE", "cardinal point")
+                 << QObject::tr("NE", "cardinal point")
+                 << QObject::tr("ENE", "cardinal point")
+                 << QObject::tr("E", "cardinal point")
+                 << QObject::tr("ESE", "cardinal point")
+                 << QObject::tr("SE", "cardinal point")
+                 << QObject::tr("SSE", "cardinal point")
+                 << QObject::tr("S", "cardinal point")
+                 << QObject::tr("SSW", "cardinal point")
+                 << QObject::tr("SW", "cardinal point")
+                 << QObject::tr("WSW", "cardinal point")
+                 << QObject::tr("W", "cardinal point")
+                 << QObject::tr("WNW", "cardinal point")
+                 << QObject::tr("NW", "cardinal point")
+                 << QObject::tr("NNW", "cardinal point");
+    }
 
     /* Retour */
     return;

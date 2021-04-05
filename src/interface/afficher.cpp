@@ -692,8 +692,8 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
     /* Initialisations */
     const QString lon(QString::number(-observateur.longitude() * RAD2DEG));
     const QString lat(QString::number(observateur.latitude() * RAD2DEG));
-    const QString unite((_conditions.unite == tr("km")) ? tr("m") : tr("ft"));
-    const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
+    const QString unite((_conditions.unite == tr("km")) ? tr("m", "meter") : tr("ft", "foot"));
+    const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m", "meter")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
                       " " + unite);
 
     /* Corps de la methode */
@@ -872,9 +872,9 @@ void Afficher::EcrireEntete() const
         const QString lat = Maths::ToSexagesimal(fabs(_conditions.observateur.latitude()), DEGRE, 2, 0, false, false);
         const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
-        const double alt = (_conditions.unite == QObject::tr("km")) ? _conditions.observateur.altitude() :
+        const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
                                                                       _conditions.observateur.altitude() * PIED_PAR_METRE;
-        const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m") : QObject::tr("ft");
+        const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
         ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
         flux << ligne << endl;
@@ -964,8 +964,12 @@ QStringList Afficher::ElementsDetailsEvenements(const ResultatPrevisions &res) c
     elems.append(QString("%1°").arg(res.pso * RAD2DEG, 6, 'f', 2, QChar('0')));
 
     // Longitude, latitude
-    elems.append(QString("  %1° %2").arg(fabs(res.longitude * RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ? tr("W") : tr("E")));
-    elems.append(QString(" %1° %2 ").arg(fabs(res.latitude * RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ? tr("N") : tr("S")));
+    elems.append(QString("  %1° %2")
+                 .arg(fabs(res.longitude * RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ?
+                                                                                    tr("W", "cardinal point") : tr("E", "cardinal point")));
+    elems.append(QString(" %1° %2 ")
+                 .arg(fabs(res.latitude * RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ?
+                                                                                   tr("N", "cardinal point") : tr("S", "cardinal point")));
 
     // Type d'evenement
     elems.append(res.typeEvenement);
@@ -1080,7 +1084,7 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
     // Altitude, distance
     double altitude = res.altitude;
     double distance = res.distance;
-    if (_conditions.unite == tr("nmi")) {
+    if (_conditions.unite == tr("nmi", "nautical mile")) {
         altitude *= MILE_PAR_KM;
         distance *= MILE_PAR_KM;
     }
@@ -1093,8 +1097,8 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
 
     if (!res.obsmax.nomlieu().isEmpty()) {
 
-        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "cardinal point") : QObject::tr("E", "cardinal point");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "cardinal point") : QObject::tr("S", "cardinal point");
 
         // Longitude du maximum
         elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
@@ -1223,7 +1227,7 @@ QStringList Afficher::ElementsDetailsPrevisions(const ResultatPrevisions &res) c
     // Altitude, distance
     double altitude = res.altitude;
     double distance = res.distance;
-    if (_conditions.unite == tr("nmi")) {
+    if (_conditions.unite == tr("nmi", "nautical mile")) {
         altitude *= MILE_PAR_KM;
         distance *= MILE_PAR_KM;
     }
@@ -1277,8 +1281,8 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
             cst = res.constellation;
             eclipse = res.eclipse;
             penombre = res.penombre;
-            type = (res.transit) ? tr("T") : tr("C");
-            corps = (res.typeCorps == CORPS_SOLEIL) ? tr("S") : tr("L");
+            type = (res.transit) ? tr("T", "transit") : tr("C", "conjunction");
+            corps = (res.typeCorps == CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon");
         }
     }
 
@@ -1293,13 +1297,13 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     elems.append(corps);
 
     // Illumination
-    QString illumination = tr("Lum");
+    QString illumination = tr("Lum", "illumination");
     if (eclipse) {
-        illumination = tr("Omb");
+        illumination = tr("Omb", "illumination");
     }
 
     if (penombre) {
-        illumination = tr("Pen");
+        illumination = tr("Pen", "illumination");
     }
 
     elems.append(illumination);
@@ -1337,17 +1341,17 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 
     // Angle de reflexion, type, corps
     elems.append(QString("%1  ").arg(res.angle * RAD2DEG, 5, 'f', 2));
-    elems.append(QString("%1   ").arg((res.transit) ? tr("T") : tr("C")));
-    elems.append(QString("%1  ").arg((res.typeCorps == CORPS_SOLEIL) ? tr("S") : tr("L")));
+    elems.append(QString("%1   ").arg((res.transit) ? tr("T", "transit") : tr("C", "conjunction")));
+    elems.append(QString("%1  ").arg((res.typeCorps == CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon")));
 
     // Illumination
-    QString illumination = tr("Lum");
+    QString illumination = tr("Lum", "illumination");
     if (res.eclipse) {
-        illumination = tr("Omb");
+        illumination = tr("Omb", "illumination");
     }
 
     if (res.penombre) {
-        illumination = tr("Pen");
+        illumination = tr("Pen", "illumination");
     }
 
     elems.append(illumination);
@@ -1355,7 +1359,7 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
     // Altitude, distance
     double altitude = res.altitude;
     double distance = res.distance;
-    if (_conditions.unite == tr("nmi")) {
+    if (_conditions.unite == tr("nmi", "nautical mile")) {
         altitude *= MILE_PAR_KM;
         distance *= MILE_PAR_KM;
     }
@@ -1368,8 +1372,8 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 
     if (!res.obsmax.nomlieu().isEmpty()) {
 
-        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W") : QObject::tr("E");
-        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N") : QObject::tr("S");
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "cardinal point") : QObject::tr("E", "cardinal point");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "cardinal point") : QObject::tr("S", "cardinal point");
 
         // Longitude du maximum
         elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));

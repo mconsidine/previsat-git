@@ -362,7 +362,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
 
                     rayonVecteur = minmax.second;
                     altitude = minmax.second - RAYON_TERRESTRE;
-                    if (_conditions.unite == QObject::tr("nmi")) {
+                    if (_conditions.unite == QObject::tr("nmi", "nautical mile")) {
                         rayonVecteur *= MILE_PAR_KM;
                         altitude *= MILE_PAR_KM;
                     }

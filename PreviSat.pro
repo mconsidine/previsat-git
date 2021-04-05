@@ -41,9 +41,9 @@ VERSION = 5.0.0.11
 ANNEES_DEV = 2005-2021
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
-BUILD_TEST = false
+BUILD_TEST = true
 CLEANUP_TEST = true
-DEFINES -= QT_NO_DEBUG_OUTPUT
+OPTIM_DEBUG_TEST = true
 #-------------------------------------------------
 
 
@@ -63,8 +63,7 @@ DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
     APPVER_MAJ=\"$${VER_MAJSTR}\"        \
     APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\" \
     QT_DEPRECATED_WARNINGS               \
-    BUILD_TEST=$$BUILD_TEST              \
-    CLEANUP_TEST=$$CLEANUP_TEST
+    BUILD_TEST=$$BUILD_TEST
 
 INCLUDEPATH += src $$ZLIB_DIR/inc
 CONFIG += c++11
@@ -192,8 +191,12 @@ equals(BUILD_TEST, true) {
 
     CONFIG += qt warn_on depend_includepath testcase
 
+    DEFINES += CLEANUP_TEST=$$CLEANUP_TEST
+
     CONFIG(debug, debug|release) {
-        QMAKE_CXXFLAGS += -O2
+        equals(OPTIM_DEBUG_TEST, true) {
+            QMAKE_CXXFLAGS += -O2
+        }
         DESTDIR = TestPreviSat/debug
     } else {
         DESTDIR = TestPreviSat/release
