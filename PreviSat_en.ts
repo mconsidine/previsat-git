@@ -3760,7 +3760,6 @@ The directory %1 does not exist, please re-install %2</translation>
     <message>
         <location filename="src/interface/afficher.cpp" line="1100"/>
         <location filename="src/interface/afficher.cpp" line="1375"/>
-        <location filename="src/librairies/observateur/observateur.cpp" line="91"/>
         <source>W</source>
         <comment>cardinal point</comment>
         <translatorcomment>Symbol for West</translatorcomment>
@@ -3769,7 +3768,6 @@ The directory %1 does not exist, please re-install %2</translation>
     <message>
         <location filename="src/interface/afficher.cpp" line="1100"/>
         <location filename="src/interface/afficher.cpp" line="1375"/>
-        <location filename="src/librairies/observateur/observateur.cpp" line="83"/>
         <source>E</source>
         <comment>cardinal point</comment>
         <translatorcomment>Symbol for East</translatorcomment>
@@ -3778,7 +3776,6 @@ The directory %1 does not exist, please re-install %2</translation>
     <message>
         <location filename="src/interface/afficher.cpp" line="1101"/>
         <location filename="src/interface/afficher.cpp" line="1376"/>
-        <location filename="src/librairies/observateur/observateur.cpp" line="79"/>
         <source>N</source>
         <comment>cardinal point</comment>
         <translatorcomment>Symbol for North</translatorcomment>
@@ -3787,7 +3784,6 @@ The directory %1 does not exist, please re-install %2</translation>
     <message>
         <location filename="src/interface/afficher.cpp" line="1101"/>
         <location filename="src/interface/afficher.cpp" line="1376"/>
-        <location filename="src/librairies/observateur/observateur.cpp" line="87"/>
         <source>S</source>
         <comment>cardinal point</comment>
         <translatorcomment>Symbol for South</translatorcomment>
@@ -4031,41 +4027,6 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Full Moon</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="130"/>
-        <source>Mercure</source>
-        <translation>Mercury</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="130"/>
-        <source>Vénus</source>
-        <translation>Venus</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="130"/>
-        <source>Mars</source>
-        <translation>Mars</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="130"/>
-        <source>Jupiter</source>
-        <translation>Jupiter</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="130"/>
-        <source>Saturne</source>
-        <translation>Saturn</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="131"/>
-        <source>Uranus</source>
-        <translation>Uranus</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="131"/>
-        <source>Neptune</source>
-        <translation>Neptune</translation>
-    </message>
-    <message>
         <location filename="src/librairies/dates/date.cpp" line="395"/>
         <source>dd/MM/yyyy</source>
         <translation>MM/dd/yyyy</translation>
@@ -4223,78 +4184,6 @@ Satellite %1 - NORAD number : %2</translation>
         <translatorcomment>Symbol for second (angle)</translatorcomment>
         <translation>s</translation>
     </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="80"/>
-        <source>NNE</source>
-        <comment>cardinal point</comment>
-        <translation>NNE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="81"/>
-        <source>NE</source>
-        <comment>cardinal point</comment>
-        <translation>NE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="82"/>
-        <source>ENE</source>
-        <comment>cardinal point</comment>
-        <translation>ENE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="84"/>
-        <source>ESE</source>
-        <comment>cardinal point</comment>
-        <translation>ESE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="85"/>
-        <source>SE</source>
-        <comment>cardinal point</comment>
-        <translation>SE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="86"/>
-        <source>SSE</source>
-        <comment>cardinal point</comment>
-        <translation>SSE</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="88"/>
-        <source>SSW</source>
-        <comment>cardinal point</comment>
-        <translation>SSW</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="89"/>
-        <source>SW</source>
-        <comment>cardinal point</comment>
-        <translation>SW</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="90"/>
-        <source>WSW</source>
-        <comment>cardinal point</comment>
-        <translation>WSW</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="92"/>
-        <source>WNW</source>
-        <comment>cardinal point</comment>
-        <translation>WNW</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="93"/>
-        <source>NW</source>
-        <comment>cardinal point</comment>
-        <translation>NW</translation>
-    </message>
-    <message>
-        <location filename="src/librairies/observateur/observateur.cpp" line="94"/>
-        <source>NNW</source>
-        <comment>cardinal point</comment>
-        <translation>NNW</translation>
-    </message>
 </context>
 <context>
     <name>Radar</name>
@@ -4374,6 +4263,127 @@ Satellite %1 - NORAD number : %2</translation>
         <location filename="src/interface/telecharger.ui" line="128"/>
         <source>Fermer</source>
         <translation>Close</translation>
+    </message>
+</context>
+<context>
+    <name>cardinal point</name>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="47"/>
+        <source>N</source>
+        <translation>N</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="48"/>
+        <source>NNE</source>
+        <translation>NNE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="49"/>
+        <source>NE</source>
+        <translation>NE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="50"/>
+        <source>ENE</source>
+        <translation>ENE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="51"/>
+        <source>E</source>
+        <translation>E</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="52"/>
+        <source>ESE</source>
+        <translation>ESE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="53"/>
+        <source>SE</source>
+        <translation>SE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="54"/>
+        <source>SSE</source>
+        <translation>SSE</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="55"/>
+        <source>S</source>
+        <translation>S</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="56"/>
+        <source>SSW</source>
+        <translation>SSW</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="57"/>
+        <source>SW</source>
+        <translation>SW</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="58"/>
+        <source>WSW</source>
+        <translation>WSW</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="59"/>
+        <source>W</source>
+        <translation>W</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="60"/>
+        <source>WNW</source>
+        <translation>WNW</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="61"/>
+        <source>NW</source>
+        <translation>NW</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/observateur/observateur.cpp" line="62"/>
+        <source>NNW</source>
+        <translation>NNW</translation>
+    </message>
+</context>
+<context>
+    <name>planet</name>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="46"/>
+        <source>Mercure</source>
+        <translation>Mercury</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="47"/>
+        <source>Vénus</source>
+        <translation>Venus</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="48"/>
+        <source>Mars</source>
+        <translation>Mars</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="49"/>
+        <source>Jupiter</source>
+        <translation>Jupiter</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="50"/>
+        <source>Saturne</source>
+        <translation>Saturn</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="51"/>
+        <source>Uranus</source>
+        <translation>Uranus</translation>
+    </message>
+    <message>
+        <location filename="src/librairies/corps/systemesolaire/planete.cpp" line="52"/>
+        <source>Neptune</source>
+        <translation>Neptune</translation>
     </message>
 </context>
 </TS>

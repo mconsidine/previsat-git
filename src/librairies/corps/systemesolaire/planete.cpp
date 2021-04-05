@@ -42,7 +42,14 @@
 #include "soleil.h"
 
 
-static QStringList nomPlanetes;
+static QStringList nomPlanetes(QStringList ()
+                               << QT_TRANSLATE_NOOP("planet", "Mercure")
+                               << QT_TRANSLATE_NOOP("planet", "Vénus")
+                               << QT_TRANSLATE_NOOP("planet", "Mars")
+                               << QT_TRANSLATE_NOOP("planet", "Jupiter")
+                               << QT_TRANSLATE_NOOP("planet", "Saturne")
+                               << QT_TRANSLATE_NOOP("planet", "Uranus")
+                               << QT_TRANSLATE_NOOP("planet", "Neptune"));
 
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
@@ -126,10 +133,6 @@ Planete::Planete(const IndicePlanete &iplanete)
 
     /* Corps du constructeur */
     _iplanete = iplanete;
-    if (nomPlanetes.isEmpty()) {
-        nomPlanetes << QObject::tr("Mercure") << QObject::tr("Vénus") << QObject::tr("Mars") << QObject::tr("Jupiter") << QObject::tr("Saturne")
-                    << QObject::tr("Uranus") << QObject::tr("Neptune");
-    }
 
     for(int i=0; i<6; i++) {
         _elem[i] = 0.;

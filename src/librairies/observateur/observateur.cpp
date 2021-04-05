@@ -43,11 +43,28 @@
 #include "observateur.h"
 
 
+static const QStringList listeCap(QStringList ()
+                 << QT_TRANSLATE_NOOP("cardinal point", "N")
+                 << QT_TRANSLATE_NOOP("cardinal point", "NNE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "NE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "ENE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "E")
+                 << QT_TRANSLATE_NOOP("cardinal point", "ESE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "SE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "SSE")
+                 << QT_TRANSLATE_NOOP("cardinal point", "S")
+                 << QT_TRANSLATE_NOOP("cardinal point", "SSW")
+                 << QT_TRANSLATE_NOOP("cardinal point", "SW")
+                 << QT_TRANSLATE_NOOP("cardinal point", "WSW")
+                 << QT_TRANSLATE_NOOP("cardinal point", "W")
+                 << QT_TRANSLATE_NOOP("cardinal point", "WNW")
+                 << QT_TRANSLATE_NOOP("cardinal point", "NW")
+                 << QT_TRANSLATE_NOOP("cardinal point", "NNW"));
+
+
 /**********
  * PUBLIC *
  **********/
-
-static QStringList listeCap;
 
 
 /*
@@ -74,25 +91,6 @@ Observateur::Observateur()
     _aaer = 0.;
     _aray = 0.;
     _tempsSideralGreenwich = 0.;
-
-    if (listeCap.isEmpty()) {
-        listeCap << QObject::tr("N", "cardinal point")
-                 << QObject::tr("NNE", "cardinal point")
-                 << QObject::tr("NE", "cardinal point")
-                 << QObject::tr("ENE", "cardinal point")
-                 << QObject::tr("E", "cardinal point")
-                 << QObject::tr("ESE", "cardinal point")
-                 << QObject::tr("SE", "cardinal point")
-                 << QObject::tr("SSE", "cardinal point")
-                 << QObject::tr("S", "cardinal point")
-                 << QObject::tr("SSW", "cardinal point")
-                 << QObject::tr("SW", "cardinal point")
-                 << QObject::tr("WSW", "cardinal point")
-                 << QObject::tr("W", "cardinal point")
-                 << QObject::tr("WNW", "cardinal point")
-                 << QObject::tr("NW", "cardinal point")
-                 << QObject::tr("NNW", "cardinal point");
-    }
 
     /* Retour */
     return;
