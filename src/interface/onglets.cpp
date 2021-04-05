@@ -300,7 +300,7 @@ void Onglets::AffichageDonneesSatellite() const
 
     /* Initialisations */
     const QString fmt = "%1 %2";
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
     const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
 
     /* Corps de la methode */
@@ -388,14 +388,14 @@ void Onglets::AffichageDonneesSatellite() const
 
                 QString eclipse;
                 const QString fmt2 = " %1/%2";
-                const QString corps = (corpsOccultant.isEmpty()) ? tr("T") : tr("L");
+                const QString corps = (corpsOccultant.isEmpty()) ? tr("S", "Sun") : tr("L", "Moon");
 
                 if (conditionEclipse.eclipsePartielle()) {
-                    eclipse = fmt2.arg(corps).arg(tr("P"));
+                    eclipse = fmt2.arg(corps).arg(tr("P", "partial eclipse"));
                 }
 
                 if (conditionEclipse.eclipseAnnulaire()) {
-                    eclipse = fmt2.arg(corps).arg(tr("A"));
+                    eclipse = fmt2.arg(corps).arg(tr("A", "annular eclipse"));
                 }
 
                 _ui->magnitudeSat->setText(magnitude + eclipse);
@@ -424,8 +424,10 @@ void Onglets::AffichageDonneesSatellite() const
         transitionJN = tr("%1 (dans %2).");
         const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
         const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                    delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                    delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+                    delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
+                    delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+                    .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
         _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)))
                              .arg(cDelaiEcl));
@@ -461,8 +463,10 @@ void Onglets::AffichageDonneesSatellite() const
         delai = dateAOS.jourJulienUTC() - _date->jourJulienUTC();
         const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
         const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
+                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+                    .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
         _ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
                               arg(cDelaiAOS).arg(Maths::ToSexagesimal(_elementsAOS->azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
@@ -542,7 +546,8 @@ void Onglets::AffichageDonneesSoleilLune() const
     // Hauteur/azimut/distance de la Lune
     _ui->hauteurLune->setText(Maths::ToSexagesimal(lune.hauteur(), DEGRE, 2, 0, true, true));
     _ui->azimutLune->setText(Maths::ToSexagesimal(lune.azimut(), DEGRE, 3, 0, false, true));
-    _ui->distanceLune->setText(QString("%1 %2").arg(lune.distance(), 0, 'f', 0).arg((_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi")));
+    _ui->distanceLune->setText(QString("%1 %2").arg(lune.distance(), 0, 'f', 0)
+                               .arg((_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile")));
 
     // Ascension droite/declinaison/constellation de la Lune
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), HEURE1, 2, 0, false, true).trimmed());
@@ -570,7 +575,7 @@ void Onglets::AffichageElementsOSculateurs() const
 
     /* Initialisations */
     const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
 
     if (_ui->typeRepere->currentIndex() == 0) {
         position = satellite.position();
@@ -798,7 +803,7 @@ void Onglets::AffichageInformationsSatellite() const
     double t2 = donnee.t2();
     double t3 = donnee.t3();
     double section = donnee.section();
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("m") : tr("ft");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot");
     if (_ui->unitesMi->isChecked()) {
         t1 *= PIED_PAR_METRE;
         t2 *= PIED_PAR_METRE;
@@ -861,7 +866,7 @@ void Onglets::AffichageManoeuvresISS() const
         masse = QString::number(Configuration::instance()->masseISS().at(0), 'f', 2);
 
     } else {
-        uniteDist = tr("nmi");
+        uniteDist = tr("nmi", "nautical mile");
         uniteDv = tr("ft/s");
         uniteMasse = tr("lb");
         masse = QString::number(Configuration::instance()->masseISS().at(0) / KG_PAR_LIVRE, 'f', 2);
@@ -1257,7 +1262,7 @@ void Onglets::AffichageLieuObs() const
             _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), DEGRE, 3, 0, false, true)).arg(ew));
             _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), DEGRE, 2, 0,false, true)).arg(ns));
             _ui->altitudeObs->setText(fmt.arg((_ui->unitesKm->isChecked()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
-                                      arg((_ui->unitesKm->isChecked()) ? tr("m") : tr("ft")));
+                                      arg((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot")));
             premier = false;
         }
     }
@@ -1357,8 +1362,10 @@ void Onglets::CalculAosSatSuivi() const
                 delai = dateAosSuivi.jourJulienUTC() - date.jourJulienUTC();
                 const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
                 const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                            .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
+                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+                            .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
                 _ui->leverSatSuivi->setText(
                             chaine.arg(dateAosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
@@ -1397,8 +1404,10 @@ void Onglets::CalculAosSatSuivi() const
             delai = dateLosSuivi.jourJulienUTC() - date.jourJulienUTC();
             const Date delaiLOS = Date(delai - 0.5 + EPS_DATES, 0.);
             const QString cDelaiLOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5).replace(":", tr("h").append(" ")).append(tr("min")) :
-                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5).replace(":", tr("min").append(" ")).append(tr("s"));
+                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                        .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
+                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+                        .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
             _ui->coucherSatSuivi->setText(
                         chaine.arg(dateLosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
@@ -1562,7 +1571,7 @@ void Onglets::InitAffichageDemarrage()
     const QRegExpValidator *valLat = new QRegExpValidator(QRegExp("((0\\d|[0-8]\\d)°[0-5]\\d'[0-5]\\d\"|90°0?0'0?0\")"));
     _ui->nvLatitude->setValidator(valLat);
 
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("m") : tr("ft");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot");
     QIntValidator *valAlt;
     if (_ui->unitesKm->isChecked()) {
         valAlt = new QIntValidator(-500, 8900);
@@ -2279,7 +2288,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         double t2 = ligne.mid(24, 4).toDouble();
         double t3 = ligne.mid(29, 4).toDouble();
         double section = ligne.mid(41, 6).toDouble();
-        QString unite1 = tr("m");
+        QString unite1 = tr("m", "meter");
         QString unite2 = tr("km");
         if (_ui->unitesMi->isChecked()) {
 
@@ -2292,8 +2301,8 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
             t2 *= PIED_PAR_METRE;
             t3 *= PIED_PAR_METRE;
             section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
-            unite1 = tr("ft");
-            unite2 = tr("nmi");
+            unite1 = tr("ft", "foot");
+            unite2 = tr("nmi", "nautical mile");
         }
 
         QString dimensions;
@@ -2716,7 +2725,7 @@ void Onglets::on_actionCreer_un_nouveau_lieu_triggered()
         _ui->nvAltitude->setInputMask("#####");
     }
 
-    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
     _ui->lbl_ajouterDans->setVisible(true);
     _ui->ajdfic->setVisible(true);
     _ui->ajdfic->setCurrentIndex(_ui->categoriesObs->currentRow());
@@ -2925,7 +2934,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
         _ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
     }
     _ui->nvAltitude->setPalette(QPalette());
-    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m") : tr("ft"));
+    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
     _ligneCoord.lon = _ui->nvLongitude->text();
     _ligneCoord.lat = _ui->nvLatitude->text();
     _ligneCoord.alt = _ui->nvAltitude->text();
@@ -3392,7 +3401,7 @@ void Onglets::on_calculsPrev_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation2->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
 
         // Conditions d'eclairement du satellite
         conditions.eclipse = _ui->illuminationPrev->isChecked();
@@ -3658,7 +3667,7 @@ void Onglets::on_calculsFlashs_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation3->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
 
         // Conditions d'eclairement du satellite
         conditions.eclipse = _ui->illuminationPrev->isChecked();
@@ -3915,7 +3924,7 @@ void Onglets::on_calculsTransit_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation4->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
 
         // Prise en compte de la refraction atmospherique
         conditions.refraction = _ui->refractionPourEclipses->isChecked();
@@ -4394,7 +4403,7 @@ void Onglets::on_calculsEvt_clicked()
         conditions.systeme = _ui->syst24h->isChecked();
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
 
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();

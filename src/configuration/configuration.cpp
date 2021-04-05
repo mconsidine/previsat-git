@@ -474,9 +474,6 @@ void Configuration::EcritureConfiguration()
     // Numero NORAD de la station spatiale
     cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
 
-    // Numero NORAD de la station spatiale
-    cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
-
     // Observateurs
     cfg.writeStartElement("Observateurs");
     QListIterator<Observateur> itObs(_observateurs);
@@ -698,9 +695,9 @@ void Configuration::LectureConfiguration()
 
     if (fi1.exists()) {
 
-        const QString msg = "Le fichier de configuration de PreviSat a évolué.\n"
+        const QString msg = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
                             "Certaines informations de configuration "
-                            "(par exemple les lieux d'observation sélectionnés) seront perdues.";
+                            "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(QCoreApplication::applicationName());
 
         VerifieVersionXml(fi1, fi2, _versionCfg, msg);
 
@@ -1457,7 +1454,7 @@ void Configuration::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, 
             if (versionNew != _versionCfg) {
 
                 if (!msg.isEmpty()) {
-                    Message::Afficher(QT_TR_NOOP(msg), WARNING);
+                    Message::Afficher(msg, WARNING);
                 }
 
                 // Copie du fichier xml

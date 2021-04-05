@@ -159,9 +159,9 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
     const QChar chr = QChar('0');
     const QString esp = (espace && (typeAngle != HEURE2)) ? " " : "";
     const QString signe0 = (sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
-    const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h") : ":";
-    const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m") : ":";
-    const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s") : "";
+    const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h", "hour (angle)") : ":";
+    const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m", "minute (angle)") : ":";
+    const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s", "second (angle)") : "";
 
     /* Corps de la methode */
     int deg = static_cast<int>(y);
