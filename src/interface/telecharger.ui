@@ -35,7 +35,7 @@
    <string>Téléchargement de fichiers</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -131,7 +131,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

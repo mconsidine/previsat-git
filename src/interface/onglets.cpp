@@ -52,8 +52,9 @@
 #include <QTextStream>
 #include <QToolTip>
 #include "afficher.h"
-#include "configuration/configuration.h"
+#include "gestionnairetle.h"
 #include "onglets.h"
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/dates/date.h"
@@ -1824,8 +1825,8 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
         if (_ui->categorieOrbite->underMouse() || _ui->categorieOrbiteDonneesSat->underMouse()) {
 
             const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().categorieOrbite();
-            _ui->categorieOrbite->setToolTip(Configuration::instance()->mapCategories()[acronyme]);
-            _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategories()[acronyme]);
+            _ui->categorieOrbite->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
+            _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
         }
 
         // Affichage du pays ou de l'organisation
@@ -3323,6 +3324,21 @@ void Onglets::on_ongletsOutils_currentChanged(int index)
         _ui->calculsEvt->setDefault(true);
         _ui->calculsEvt->setFocus();
     }
+}
+
+void Onglets::on_gestionnaireMajTLE_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    GestionnaireTLE * const gestionnaire = new GestionnaireTLE;
+    gestionnaire->setWindowModality(Qt::ApplicationModal);
+    gestionnaire->show();
+
+    /* Retour */
+    return;
 }
 
 /*

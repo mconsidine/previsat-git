@@ -35,7 +35,7 @@
    <string notr="true"/>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/resources/icone.ico</normaloff>:/resources/icone.ico</iconset>
   </property>
   <property name="autoFillBackground">
@@ -201,7 +201,7 @@ PreviSat est entièrement gratuit!</string>
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

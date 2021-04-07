@@ -248,9 +248,9 @@ QList<LigneConstellation> &Configuration::lignesCst()
     return _lignesCst;
 }
 
-QMap<QString, QString> Configuration::mapCategories() const
+QMap<QString, QString> Configuration::mapCategoriesOrbite() const
 {
-    return _mapCategories;
+    return _mapCategoriesOrbite;
 }
 
 QMap<QString, QString> Configuration::mapPays() const
@@ -296,6 +296,11 @@ QStringList Configuration::evenementsISS() const
 QList<PositionISS> Configuration::positionsISS() const
 {
     return _positionsISS;
+}
+
+QList<CategorieTLE> &Configuration::mapCategoriesTLE()
+{
+    return _mapCategoriesTLE;
 }
 
 
@@ -425,6 +430,9 @@ void Configuration::Initialisation()
         // Lecture du fichier de statut des satellites produisant des flashs
         LectureStatutSatellitesFlashs();
 
+        // Lecture du fichier de gestionnaire de TLE
+        LectureGestionnaireTLE();
+
         // Lecture de la configuration
         LectureConfiguration();
 
@@ -515,6 +523,62 @@ void Configuration::EcritureConfiguration()
     return;
 }
 
+/*
+ * Ecriture du fichier de gestionnaire des TLE
+ */
+void Configuration::EcritureGestionnaireTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi(_dirCfg + QDir::separator() + "gestionnaireTLE.xml");
+
+    fi.open(QIODevice::WriteOnly | QIODevice::Text);
+    QXmlStreamWriter cfg(&fi);
+
+    cfg.setAutoFormatting(true);
+    cfg.writeStartDocument();
+    cfg.writeStartElement("PreviSatGestionTLE");
+    cfg.writeAttribute("version", _versionCategoriesTLE);
+
+    // Categories
+    QListIterator<CategorieTLE> it(_mapCategoriesTLE);
+    while (it.hasNext()) {
+
+        const CategorieTLE categorie = it.next();
+
+        cfg.writeStartElement("Categorie");
+
+        QMapIterator<QString, QString> it2(categorie.nom);
+        while (it2.hasNext()) {
+            it2.next();
+
+            cfg.writeStartElement("Langue");
+            cfg.writeAttribute("lang", it2.key());
+            cfg.writeTextElement("Nom", it2.value().split("@").at(0).toLower());
+            cfg.writeEndElement();
+        }
+        cfg.writeTextElement("Site", categorie.site);
+
+        cfg.writeStartElement("Fichiers");
+        QStringListIterator it3(categorie.fichiers);
+        while (it3.hasNext()) {
+            cfg.writeTextElement("Fichier", it3.next());
+        }
+        cfg.writeEndElement();
+
+        cfg.writeEndElement();
+    }
+
+    cfg.writeEndElement();
+    cfg.writeEndDocument();
+    fi.close();
+
+    /* Retour */
+    return;
+}
 
 /*************
  * PROTECTED *
@@ -885,7 +949,7 @@ void Configuration::LectureCategoriesOrbite()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapCategories.insert(acronyme, desc);
+                    _mapCategoriesOrbite.insert(acronyme, desc);
                 }
             }
         }
@@ -893,12 +957,135 @@ void Configuration::LectureCategoriesOrbite()
     fi1.close();
 
     // Verifications
-    if (_mapCategories.isEmpty()) {
+    if (_mapCategoriesOrbite.isEmpty()) {
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier de gestionnaire de TLE
+ */
+void Configuration::LectureGestionnaireTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi1(_dirCfg + QDir::separator() + "gestionnaireTLE.xml");
+
+#if !defined (Q_OS_MAC)
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + "gestionnaireTLE.xml");
+
+    if (fi1.exists()) {
+        VerifieVersionXml(fi1, fi2, _versionCategoriesTLE);
+    } else {
+
+        if (fi2.exists()) {
+
+            // Copie du fichier xml
+            fi2.copy(fi1.fileName());
+
+        } else {
+            const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                                "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+            const QFileInfo ff(fi1.fileName());
+            throw PreviSatException(message.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+        }
+    }
+    fi2.close();
+    fi1.close();
+
+#endif
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name() == "PreviSatGestionTLE") {
+
+            QString langue;
+            QString nom;
+            QString site;
+            QStringList fichiers;
+            QMap<QString, QString> nomCategorie;
+
+            while (cfg.readNextStartElement()) {
+
+                fichiers.clear();
+                nomCategorie.clear();
+
+                if (cfg.name() == "Categorie") {
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name() == "Langue") {
+
+                            // Nom de la categorie
+                            if (cfg.attributes().hasAttribute("lang")) {
+                                langue = cfg.attributes().value("lang").toString();
+
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name() == "Nom") {
+                                        nom = cfg.readElementText();
+                                        nom[0] = nom[0].toUpper();
+                                    } else {
+                                        cfg.skipCurrentElement();
+                                    }
+                                }
+
+                                nomCategorie.insert(langue, nom);
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
+
+                        } else if (cfg.name() == "Site") {
+
+                            // Site web
+                            site = cfg.readElementText();
+
+                        } else if (cfg.name() == "Fichiers") {
+
+                            // Nom des fichiers de la categorie
+                            while (cfg.readNextStartElement()) {
+
+                                if (cfg.name() == "Fichier") {
+                                    fichiers.append(cfg.readElementText());
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+                            }
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+
+                    QMapIterator<QString, QString> it(nomCategorie);
+                    while (it.hasNext()) {
+                        it.next();
+                        nomCategorie[it.key()] += "@" + site;
+                    }
+
+                    _mapCategoriesTLE.append({ nomCategorie, site, fichiers });
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    // Verifications
+
 
     /* Retour */
     return;

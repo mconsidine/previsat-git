@@ -370,6 +370,8 @@ private slots:
 
     void on_barreOnglets_currentChanged(int index);
     void on_ongletsOutils_currentChanged(int index);
+    void on_gestionnaireMajTLE_clicked();
+
 
     // Calcul des previsions de passage
     void on_calculsPrev_clicked();
@@ -411,6 +413,7 @@ private slots:
     void on_effacerHeuresEvt_clicked();
     void on_liste3_itemClicked(QListWidgetItem *item);
     void on_liste3_customContextMenuRequested(const QPoint &pos);
+
 };
 
 #endif // ONGLETS_H
