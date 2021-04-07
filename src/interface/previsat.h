@@ -301,9 +301,6 @@ private slots:
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
 
-
-
-
 };
 
 #endif // PREVISAT_H

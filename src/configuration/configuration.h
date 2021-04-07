@@ -77,6 +77,12 @@ struct PositionISS {
     Vecteur3D vitesse;
 };
 
+struct CategorieTLE {
+    QMap<QString, QString> nom;
+    QString site;
+    QStringList fichiers;
+};
+
 
 class QFile;
 
@@ -136,7 +142,7 @@ public:
     QList<Constellation> &constellations();
     QList<LigneConstellation> &lignesCst();
 
-    QMap<QString, QString> mapCategories() const;
+    QMap<QString, QString> mapCategoriesOrbite() const;
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
     QMap<QString, SatellitesFlashs> mapFlashs() const;
@@ -149,6 +155,9 @@ public:
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
     QList<PositionISS> positionsISS() const;
+
+    QList<CategorieTLE> &mapCategoriesTLE();
+
 
     /*
      * Modificateurs
@@ -168,7 +177,6 @@ public:
     void suppressionSatelliteFicTLE(const QString &norad);
 
     void setIsCarteMonde(bool isCarteMonde);
-
 
     /*
      * Constantes publiques
@@ -191,6 +199,10 @@ public:
      */
     void EcritureConfiguration();
 
+    /**
+     * @brief EcritureGestionnaireTLE Ecriture du fichier de gestionnaire des TLE
+     */
+    void EcritureGestionnaireTLE();
 
 protected:
 
@@ -276,7 +288,7 @@ private:
     QList<Satellite> _listeSatellites;
 
     // Categories d'orbite
-    QMap<QString, QString> _mapCategories;
+    QMap<QString, QString> _mapCategoriesOrbite;
 
     // Pays ou organisations
     QMap<QString, QString> _mapPays;
@@ -313,6 +325,10 @@ private:
     QStringList _evenementsISS;
     QList<PositionISS> _positionsISS;
 
+    // Pour le gestionnaire de fichiers TLE
+    QString _versionCategoriesTLE;
+    QList<CategorieTLE> _mapCategoriesTLE;
+
     static bool _isCarteMonde;
 
     /*
@@ -347,6 +363,11 @@ private:
      * @brief LectureCategoriesOrbite Lecture du fichier de categories d'orbite
      */
     void LectureCategoriesOrbite();
+
+    /**
+     * @brief LectureGestionnaireTLE Lecture du fichier de gestionnaire de TLE
+     */
+    void LectureGestionnaireTLE();
 
     /**
      * @brief LecturePays Lecture du fichier listant les pays ou organisations
