@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,12 +41,12 @@
 #define INFORMATIONS_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
+
 
 class QUrl;
+class Onglets;
 
 namespace Ui {
 class Informations;
@@ -57,9 +57,36 @@ class Informations : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Informations(const QString &localePreviSat, QWidget *fenetreParent = 0);
+
+    /*
+     *  Constructeurs
+     */
+    /**
+     * @brief Informations Constructeur par defaut
+     * @param fenetreParent fenetre parent
+     */
+    explicit Informations(QWidget *fenetreParent, Onglets *onglets);
+
+    /*
+     * Destructeur
+     */
     ~Informations();
 
+    /*
+     * Accesseurs
+     */
+
+    /*
+     * Constantes publiques
+     */
+
+    /*
+     * Variables publiques
+     */
+
+    /*
+     * Methodes publiques
+     */
     /**
      * @brief UrlExiste Verifie si l'url existe
      * @param url url
@@ -67,11 +94,41 @@ public:
      */
     static bool UrlExiste(const QUrl &url);
 
-private slots:
-    void on_ok_clicked();
+
+protected:
+
+    /*
+     * Constantes protegees
+     */
+
+    /*
+     * Variables protegees
+     */
+
+    /*
+     * Methodes protegees
+     */
+
 
 private:
+
+    /*
+     * Constantes privees
+     */
+
+    /*
+     * Variables privees
+     */
     Ui::Informations *ui;
+    Onglets *_onglets;
+
+    /*
+     * Methodes privees
+     */
+private slots:
+
+    void on_ok_clicked();
+
 
 };
 

@@ -77,6 +77,7 @@ SOURCES += \
     src/interface/carte.cpp                                \
     src/interface/ciel.cpp                                 \
     src/interface/gestionnairetle.cpp                      \
+    src/interface/informations.cpp                         \
     src/interface/onglets.cpp                              \
     src/interface/previsat.cpp                             \
     src/interface/radar.cpp                                \
@@ -121,6 +122,7 @@ HEADERS += \
     src/interface/ciel.h                                 \
     src/interface/gestionnairetle.h                      \
     src/interface/listwidgetitem.h                       \
+    src/interface/informations.h                         \
     src/interface/onglets.h                              \
     src/interface/previsat.h                             \
     src/interface/radar.h                                \
@@ -172,7 +174,7 @@ FORMS += \
     src/interface/carte.ui           \
     src/interface/apropos.ui         \
     src/interface/gestionnairetle.ui \
-#    src/interface/informations.ui    \
+    src/interface/informations.ui    \
     src/interface/ciel.ui            \
     src/interface/onglets.ui         \
     src/interface/previsat.ui        \
