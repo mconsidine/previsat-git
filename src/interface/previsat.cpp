@@ -48,17 +48,19 @@
 #include "apropos.h"
 #include "carte.h"
 #include "ciel.h"
-#include "configuration/configuration.h"
+#include "informations.h"
 #include "listwidgetitem.h"
 #include "onglets.h"
 #include "previsat.h"
 #include "radar.h"
+#include "configuration/configuration.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/dates/date.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/systeme/decompression.h"
@@ -327,6 +329,12 @@ void PreviSat::DemarrageApplication()
     _chronometreMs->setInterval(200);
     connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
     _chronometreMs->start();
+
+    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
+                           + "informations/last_news_" + Configuration::instance()->locale() + ".html");
+    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+        on_actionInformations_triggered();
+    }
 
     /* Retour */
     return;
@@ -1280,6 +1288,40 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     return;
 }
 
+
+void PreviSat::on_actionInformations_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
+                           + "informations/last_news_" + Configuration::instance()->locale() + ".html");
+
+    if (Informations::UrlExiste(urlLastNews)) {
+
+        Informations * const infos = new Informations(this, _onglets);
+        infos->setWindowModality(Qt::ApplicationModal);
+        infos->show();
+
+        QFont fnt;
+        fnt.setBold(false);
+        ui->actionInformations->setFont(fnt);
+
+        if (!_majInfosDate.isEmpty()) {
+            settings.setValue("temps/lastInfos", _majInfosDate);
+        }
+
+    } else {
+        if (!_majInfosDate.isEmpty()) {
+            Message::Afficher(tr("Pas d'informations à afficher"), INFO);
+        }
+    }
+
+    /* Retour */
+    return;
+}
 
 void PreviSat::on_actionFaire_triggered()
 {

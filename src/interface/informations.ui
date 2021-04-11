@@ -57,6 +57,9 @@
       <height>491</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
@@ -64,19 +67,22 @@
      <attribute name="title">
       <string>Dernière Information</string>
      </attribute>
-     <widget class="QWebView" name="derniereInfo" native="true">
+     <widget class="QTextEdit" name="derniereInfo">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>776</width>
-        <height>466</height>
+        <width>775</width>
+        <height>465</height>
        </rect>
       </property>
-      <property name="url" stdset="0">
-       <url>
-        <string>about:blank</string>
-       </url>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -84,19 +90,22 @@
      <attribute name="title">
       <string>Informations plus anciennes</string>
      </attribute>
-     <widget class="QWebView" name="anciennesInfos" native="true">
+     <widget class="QTextEdit" name="anciennesInfos">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>776</width>
-        <height>466</height>
+        <width>775</width>
+        <height>465</height>
        </rect>
       </property>
-      <property name="url" stdset="0">
-       <url>
-        <string>about:blank</string>
-       </url>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -119,13 +128,6 @@
    </widget>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header location="global">QtWebKitWidgets/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

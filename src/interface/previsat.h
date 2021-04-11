@@ -185,7 +185,6 @@ private:
     QLabel *_stsDate;
     QLabel *_stsHeure;
 
-
     QTranslator _qtTraduction;
     QTranslator _appTraduction;
 
@@ -194,6 +193,7 @@ private:
     QTimer *_chronometreMs;
     QTimer *_timerStatut;
 
+    QString _majInfosDate;
 
     /*
      * Methodes privees
@@ -284,6 +284,7 @@ private slots:
     void resizeEvent(QResizeEvent *evt);
 
     // Menu deroulant
+    void on_actionInformations_triggered();
     void on_actionFaire_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
