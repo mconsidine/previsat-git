@@ -47,6 +47,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QLineEdit>
 #include <QMainWindow>
+#include <QtNetwork>
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QLabel>
@@ -103,6 +104,7 @@ public:
     static void setAcalcDN(bool acalcDN);
     static void setAcalcAOS(bool acalcAOS);
     void setInfo(bool info);
+    void setDirDwn(const QString &dirDwn);
 
 
     /*
@@ -134,6 +136,29 @@ public:
     void CalculAosSatSuivi() const;
 #endif
 
+    /******************
+     * Telechargement *
+     * ***************/
+    /**
+     * @brief AjoutFichier Ajout d'un fichier dans la liste de telechargement (telechargement asynchrone)
+     * @param url url
+     */
+    void AjoutFichier(const QUrl &url);
+
+    /**
+     * @brief AjoutListeFichiers Ajout d'une liste de fichiers a telecharger (telechargement asynchrone)
+     * @param listeFichiers liste de fichiers
+     */
+    void AjoutListeFichiers(const QStringList &listeFichiers);
+
+    /**
+     * @brief TelechargementFichier Telechargement d'un fichier
+     * @param fichier nom du fichier
+     * @param async telechargement asynchrone
+     */
+    void TelechargementFichier(const QString &fichier, const bool async = true);
+
+
 public slots:
 
     void on_pause_clicked();
@@ -146,6 +171,10 @@ signals:
     void EffacerMessageStatut();
     void ModeManuel(bool enabled);
     void ChangementDate(const QDateTime &dateTime);
+    void MiseAJourCarte();
+
+    void Progression(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
+    void TelechargementFini();
 
 
 protected:
@@ -201,7 +230,19 @@ private:
 
     QPoint _positionSouris;
 
+    QStringList _ficMap;
+    QStringList _ficSonAOS;
+    QStringList _ficSonLOS;
     QStringList _ficTLEMetOp;
+
+    // Telechargement de fichiers
+    bool _async;
+    QString _dirDwn;
+    QFile _fichier;
+    QNetworkAccessManager _mng;
+    QNetworkReply *_rep = nullptr;
+    QQueue<QUrl> _listeFichiersTelechargement;
+    QElapsedTimer _tempsEcoule;
 
 
     /*
@@ -287,22 +328,55 @@ private:
     void InitAffichageDemarrage();
 
     /**
-     * @brief InitFicObs
-     */
-    /**
      * @brief InitFicObs Chargement des fichiers de lieux d'observation
      * @param alarme Affichage des messages d'erreur
      */
     void InitFicObs(const bool alarme);
 
     /**
+     * @brief InitFicMap Chargement de la liste de cartes du monde
+     * @param majAff mise a jour de l'affichage
+     */
+    void InitFicMap(const bool majAff);
+
+    /**
      * @brief InitFicPref Chargement de la liste de fichiers de preferences
      * @param majAff mise a jour de l'affichage
      */
-    void InitFicPref(const bool majAff) const;
+    void InitFicPref(const bool majAff);
+
+    /**
+     * @brief InitFicSon Chargement de la liste de notifications sonores
+     */
+    void InitFicSon(void);
 
 
 private slots:
+
+    /******************
+     * Telechargement *
+     * ***************/
+    /**
+     * @brief EcritureFichier Ecriture du fichier
+     */
+    void EcritureFichier();
+
+    /**
+     * @brief ProgressionTelechargement Progression du telechargement
+     * @param octetsRecus octets recus
+     * @param octetsTotal octets du fichier total
+     */
+    void ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal);
+
+    /**
+     * @brief FinEnregistrementFichier Fin de l'enregistrement du fichier
+     */
+    void FinEnregistrementFichier();
+
+    /**
+     * @brief TelechargementSuivant Telechargement du fichier suivant
+     */
+    void TelechargementSuivant();
 
     bool eventFilter(QObject *object, QEvent *evt) override;
     void mousePressEvent(QMouseEvent *event) override;
@@ -372,6 +446,8 @@ private slots:
     void on_ongletsOutils_currentChanged(int index);
     void on_gestionnaireMajTLE_clicked();
 
+    void on_listeMap_currentIndexChanged(int index);
+    void on_listeSons_currentIndexChanged(int index);
 
     // Calcul des previsions de passage
     void on_calculsPrev_clicked();

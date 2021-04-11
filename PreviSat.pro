@@ -43,7 +43,7 @@ ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
 BUILD_TEST = false
 CLEANUP_TEST = true
-OPTIM_DEBUG_TEST = true
+OPTIM_DEBUG_TEST = false
 #-------------------------------------------------
 
 
@@ -80,6 +80,7 @@ SOURCES += \
     src/interface/onglets.cpp                              \
     src/interface/previsat.cpp                             \
     src/interface/radar.cpp                                \
+    src/interface/telecharger.cpp                          \
     src/librairies/corps/corps.cpp                         \
     src/librairies/corps/etoiles/constellation.cpp         \
     src/librairies/corps/etoiles/etoile.cpp                \
@@ -105,7 +106,6 @@ SOURCES += \
     src/librairies/maths/vecteur3d.cpp                     \
     src/librairies/observateur/observateur.cpp             \
     src/librairies/systeme/decompression.cpp               \
-    src/librairies/systeme/telechargement.cpp              \
     src/previsions/evenementsorbitaux.cpp                  \
     src/previsions/flashs.cpp                              \
     src/previsions/prevision.cpp                           \
@@ -124,6 +124,7 @@ HEADERS += \
     src/interface/onglets.h                              \
     src/interface/previsat.h                             \
     src/interface/radar.h                                \
+    src/interface/telecharger.h                          \
     src/librairies/corps/corps.h                         \
     src/librairies/corps/etoiles/constellation.h         \
     src/librairies/corps/etoiles/etoile.h                \
@@ -157,7 +158,6 @@ HEADERS += \
     src/librairies/maths/vecteur3d.h                     \
     src/librairies/observateur/observateur.h             \
     src/librairies/systeme/decompression.h               \
-    src/librairies/systeme/telechargement.h              \
     src/previsions/evenementsorbitaux.h                  \
     src/previsions/flashs.h                              \
     src/previsions/prevision.h                           \

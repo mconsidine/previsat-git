@@ -83,6 +83,12 @@ struct CategorieTLE {
     QStringList fichiers;
 };
 
+enum AdressesTelechargement {
+    COORDONNEES = 0,
+    CARTES,
+    NOTIFICATIONS
+};
+
 
 class QFile;
 
@@ -158,6 +164,8 @@ public:
 
     QList<CategorieTLE> &mapCategoriesTLE();
 
+    QMap<AdressesTelechargement, QString> mapAdressesTelechargement() const;
+
 
     /*
      * Modificateurs
@@ -203,6 +211,7 @@ public:
      * @brief EcritureGestionnaireTLE Ecriture du fichier de gestionnaire des TLE
      */
     void EcritureGestionnaireTLE();
+
 
 protected:
 
@@ -328,6 +337,10 @@ private:
     // Pour le gestionnaire de fichiers TLE
     QString _versionCategoriesTLE;
     QList<CategorieTLE> _mapCategoriesTLE;
+
+    // Adresses de telechargement
+    QMap<AdressesTelechargement, QString> _mapAdressesTelechargement;
+
 
     static bool _isCarteMonde;
 

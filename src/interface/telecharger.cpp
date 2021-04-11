@@ -1,6 +1,6 @@
 ﻿/*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -40,114 +40,42 @@
  *
  */
 
-#include <QtGlobal>
-#if QT_VERSION >= 0x050000
-#include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
-
-#include <QCoreApplication>
-#include <QDir>
-#include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#pragma GCC diagnostic ignored "-Wpacked"
 #include <QMessageBox>
 #include <QSettings>
-#include <QTimer>
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
-#include <QQueue>
-#include <QTextStream>
-#pragma GCC diagnostic warning "-Wpacked"
+#include "onglets.h"
 #include "telecharger.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "ui_telecharger.h"
 
-static int dirHttp;
-static QString fic;
-static QString dirCoo;
-static QString dirMap;
-static QString dirSon;
-static QString dirTmp;
-static QFile ficDwn;
-static QNetworkAccessManager mng;
-static QQueue<QUrl> downQueue;
-static QNetworkReply *rep;
 
 static QSettings settings("Astropedia", "previsat");
-static const QString httpDir = settings.value("fichier/dirHttpPrevi").toString() + "commun/data/";
-static const QString httpDirList1 = httpDir + "coordinates/";
-static const QString httpDirList2 = httpDir + "map/";
-static const QString httpDirList3 = httpDir + "sound/";
 
-Telecharger::Telecharger(const int idirHttp, QWidget *fenetreParent) :
-    QMainWindow(fenetreParent),
+
+/**********
+ * PUBLIC *
+ **********/
+
+/*
+ * Constructeurs
+ */
+Telecharger::Telecharger(const AdressesTelechargement &adresse, Onglets *onglets) :
     ui(new Ui::Telecharger)
 {
     ui->setupUi(this);
 
-    dirHttp = idirHttp;
-    mng.setNetworkAccessible(QNetworkAccessManager::Accessible);
-
-    QFont police;
-
-#if QT_VERSION >= 0x050000
-    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    QString dirLocalData =
-            QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory).at(0) +
-            dirAstr + QDir::separator() + "data";
-    dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
-#else
-
-#if defined (Q_OS_WIN)
-    const QString dirLocalData = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QDir::separator() + "data";
-#endif
-
-    dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-#endif
-
-#if defined (Q_OS_LINUX)
-    const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
-    const QString dirLocalData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
-#endif
-
-#if defined (Q_OS_WIN)
-
-    police.setFamily("MS Shell Dlg 2");
-    police.setPointSize(8);
-
-#elif defined (Q_OS_LINUX)
-
-    police.setFamily("Sans Serif");
-    police.setPointSize(7);
-
-#elif defined (Q_OS_MAC)
-#if QT_VERSION < 0x050000
-    QString dirLocalData;
-#endif
-    dirLocalData = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
-
-    police.setFamily("Marion");
-    police.setPointSize(11);
-#else
-#endif
-
-    if (dirTmp.trimmed().isEmpty()) {
-        dirTmp = dirLocalData.mid(0, dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
-    }
-
-    setFont(police);
-
-    dirCoo = dirLocalData + QDir::separator() + "coordinates";
-    dirMap = dirLocalData + QDir::separator() + "map";
-    dirSon = dirLocalData + QDir::separator() + "sound";
+    _adresse = adresse;
+    _onglets = onglets;
+    setFont(Configuration::instance()->police());
 
     ui->listeFichiers->clear();
     ui->barreProgression->setVisible(false);
     ui->telecharger->setVisible(false);
+    ui->interrogerServeur->setDefault(true);
+
+    connect(_onglets, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargement()));
 
     if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
 
@@ -169,6 +97,32 @@ Telecharger::~Telecharger()
     delete ui;
 }
 
+
+/*
+ * Accesseurs
+ */
+
+/*
+ * Methodes publiques
+ */
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
 void Telecharger::on_fermer_clicked()
 {
     close();
@@ -180,33 +134,16 @@ void Telecharger::on_interrogerServeur_clicked()
 
     /* Initialisations */
     ui->listeFichiers->clear();
-    QString httpDirList;
-    switch (dirHttp) {
-    case 1:
-        httpDirList = httpDirList1;
-        break;
-
-    case 2:
-        httpDirList = httpDirList2;
-        break;
-
-    case 3:
-        httpDirList = httpDirList3;
-        break;
-
-    default:
-        break;
-    };
+    const QString httpDirList = Configuration::instance()->mapAdressesTelechargement()[_adresse];
 
     /* Corps de la methode */
     try {
-        const QUrl url(httpDirList + "liste");
-        fic = dirTmp + QDir::separator() + "liste.tmp";
-        const QNetworkRequest requete(url);
-        rep = mng.get(requete);
 
-        connect(rep, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(MessageErreur(QNetworkReply::NetworkError)));
-        connect(rep, SIGNAL(finished()), this, SLOT(Enregistrer()));
+        _typeTelechargement = TELECHARGEMENT_LISTE;
+        const QUrl url(httpDirList + "liste");
+        _onglets->setDirDwn(Configuration::instance()->dirTmp());
+        _onglets->AjoutFichier(url);
+
     } catch (PreviSatException &e) {
     }
 
@@ -214,60 +151,41 @@ void Telecharger::on_interrogerServeur_clicked()
     return;
 }
 
-void Telecharger::MessageErreur(QNetworkReply::NetworkError) const
+void Telecharger::FinTelechargement()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString msg = tr("Erreur lors du téléchargement du fichier :\n%1");
-    Message::Afficher(msg.arg(rep->errorString()), WARNING);
+    if (_typeTelechargement == TELECHARGEMENT_LISTE) {
 
-    /* Retour */
-    return;
-}
+        QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + "liste");
 
-void Telecharger::Enregistrer() const
-{
-    /* Declarations des variables locales */
+        if (fi.exists() && (fi.size() != 0)) {
 
-    /* Initialisations */
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
 
-    /* Corps de la methode */
-    QFile fi(fic);
-    fi.open(QIODevice::WriteOnly | QIODevice::Text);
-    fi.write(rep->readAll());
-    fi.close();
-    rep->deleteLater();
+            QString ligne;
+            while (!flux.atEnd()) {
 
-    fi.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fi);
+                ligne = flux.readLine();
+                ligne[0] = ligne[0].toUpper();
 
-    while (!flux.atEnd()) {
-        QString ligne = flux.readLine();
-        ligne[0] = ligne[0].toUpper();
+                QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeFichiers);
+                elem1->setCheckState(Qt::Unchecked);
+            }
+            fi.close();
 
-        QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeFichiers);
-        elem1->setCheckState(Qt::Unchecked);
-    }
-
-    ui->telecharger->setVisible(true);
-
-    /* Retour */
-    return;
-}
-
-void Telecharger::ProgressionTelechargement(qint64 recu, qint64 total) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (total != -1) {
-        ui->barreProgression->setRange(0, (int) total);
-        ui->barreProgression->setValue((int) recu);
+            ui->telecharger->setVisible(true);
+            ui->telecharger->setDefault(true);
+            ui->interrogerServeur->setDefault(false);
+        }
+    } else if (_typeTelechargement == TELECHARGEMENT_FICHIERS) {
+        const QString msg = tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour");
+        QMessageBox::information(0, tr("Information"), msg.arg(QCoreApplication::applicationName()));
+        close();
     }
 
     /* Retour */
@@ -277,147 +195,58 @@ void Telecharger::ProgressionTelechargement(qint64 recu, qint64 total) const
 void Telecharger::on_telecharger_clicked()
 {
     /* Declarations des variables locales */
+    QString fic;
+    QStringList listeFic;
 
     /* Initialisations */
+    const QString httpDirList = Configuration::instance()->mapAdressesTelechargement()[_adresse];
 
     /* Corps de la methode */
     for(int i=0; i<ui->listeFichiers->count(); i++) {
 
         if (ui->listeFichiers->item(i)->checkState() == Qt::Checked) {
 
-            QString httpDirList, dest, fichier;
-
             fic = ui->listeFichiers->item(i)->text();
-            fichier = fic;
-            switch (dirHttp) {
-            case 1:
-                httpDirList = httpDirList1;
-                dest = dirCoo + QDir::separator();
-                break;
-
-            case 2:
-                httpDirList = httpDirList2;
-                dest = dirMap + QDir::separator();
+            if (_adresse != COORDONNEES) {
                 fic = fic.toLower();
-                break;
-
-            case 3:
-            {
-                httpDirList = httpDirList3;
-                dest = dirSon + QDir::separator();
-                fic = "aos-" + fichier.toLower() + ".wav";
-
-                const QUrl url(httpDirList + fic);
-                fic = fic.toLower().insert(0, dest);
-                AjoutFichier(url);
-
-                fic = "los-" + fichier.toLower() + ".wav";
-                break;
             }
 
-            default:
-                break;
+            if (_adresse == NOTIFICATIONS) {
+
+                listeFic.append(httpDirList + "aos-" + fic + ".wav");
+                listeFic.append(httpDirList + "los-" + fic + ".wav");
+
+            } else {
+                listeFic.append(httpDirList + fic);
             }
-
-            const QUrl url(httpDirList + fic);
-            fic = fic.toLower().insert(0, dest);
-
-            AjoutFichier(url);
-        }
-
-        if (downQueue.isEmpty()) {
-            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
         }
     }
 
-    /* Retour */
-    return;
-}
+    if (!listeFic.isEmpty()) {
+        _typeTelechargement = TELECHARGEMENT_FICHIERS;
 
-void Telecharger::AjoutFichier(const QUrl &url)
-{
-    /* Declarations des variables locales */
+        QString repDest;
+        switch (_adresse) {
 
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty()) {
-        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
-    }
-    downQueue.enqueue(url);
-
-    /* Retour */
-    return;
-}
-
-void Telecharger::TelechargementSuivant()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (downQueue.isEmpty()) {
-        emit TelechargementFini();
-        ui->barreProgression->setVisible(false);
-
-        const QString msg = tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour");
-        QMessageBox::information(0, tr("Information"), msg.arg(QCoreApplication::applicationName()));
-    } else {
-
-        ui->barreProgression->setVisible(true);
-        ui->barreProgression->setValue(0);
-        QUrl url = downQueue.dequeue();
-        QString dest;
-        switch (dirHttp) {
-        case 1:
-            dest = dirCoo + QDir::separator();
+        case COORDONNEES:
+            repDest = Configuration::instance()->dirCoord();
             break;
 
-        case 2:
-            dest = dirMap + QDir::separator();
+        case CARTES:
+            repDest = Configuration::instance()->dirMap();
             break;
 
-        case 3:
-            dest = dirSon + QDir::separator();
+        case NOTIFICATIONS:
+            repDest = Configuration::instance()->dirSon();
             break;
 
         default:
             break;
         }
-
-        ficDwn.setFileName(dest + QDir::separator() + QFileInfo(url.path()).fileName());
-
-        if (ficDwn.open(QIODevice::WriteOnly)) {
-
-            const QNetworkRequest requete(url);
-            rep = mng.get(requete);
-            connect(rep, SIGNAL(downloadProgress(qint64,qint64)), SLOT(ProgressionTelechargement(qint64,qint64)));
-            connect(rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
-            connect(rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
-        }
+        _onglets->setDirDwn(repDest);
+        _onglets->AjoutListeFichiers(listeFic);
     }
 
     /* Retour */
     return;
-}
-
-void Telecharger::FinEnregistrementFichier()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    ficDwn.close();
-
-    /* Corps de la methode */
-    rep->deleteLater();
-    TelechargementSuivant();
-
-    /* Retour */
-    return;
-}
-
-void Telecharger::EcritureFichier()
-{
-    ficDwn.write(rep->readAll());
 }

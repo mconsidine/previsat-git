@@ -1057,6 +1057,7 @@ void PreviSat::ChargementFenetre()
     connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
+    connect(_onglets, SIGNAL(MiseAJourCarte()), _carte, SLOT(show()));
     connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
     connect(_onglets, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
 

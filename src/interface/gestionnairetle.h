@@ -110,7 +110,8 @@ private:
 
     /*
      * Methodes privees
-     */    /**
+     */
+    /**
      * @brief load Chargement des elements dans la fenetre
      */
     void load();

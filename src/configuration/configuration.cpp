@@ -53,7 +53,6 @@
 #include "configuration.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
-#include "librairies/systeme/telechargement.h"
 
 
 // Registre
@@ -303,6 +302,11 @@ QList<CategorieTLE> &Configuration::mapCategoriesTLE()
     return _mapCategoriesTLE;
 }
 
+QMap<AdressesTelechargement, QString> Configuration::mapAdressesTelechargement() const
+{
+    return _mapAdressesTelechargement;
+}
+
 
 /*
  * Modificateurs
@@ -451,6 +455,11 @@ void Configuration::Initialisation()
         // Lecture du fichier de constellations
         Corps::InitTabConstellations(_dirCommonData);
 
+        const QString httpDir = settings.value("fichier/dirHttpPrevi").toString() + "commun/data/";
+        _mapAdressesTelechargement.insert(COORDONNEES, httpDir + "coordinates/");
+        _mapAdressesTelechargement.insert(CARTES, httpDir + "map/");
+        _mapAdressesTelechargement.insert(NOTIFICATIONS, httpDir + "sound/");
+
     } catch (PreviSatException &e) {
         throw PreviSatException();
     }
@@ -580,6 +589,7 @@ void Configuration::EcritureGestionnaireTLE()
     return;
 }
 
+
 /*************
  * PROTECTED *
  *************/
@@ -670,8 +680,6 @@ void Configuration::DefinitionArborescences()
     _dirRsc = _dirLocalData + QDir::separator() + "resources";
     _dirSon = _dirLocalData + QDir::separator() + "sound";
     _dirOut = QDir::toNativeSeparators(_dirOut);
-
-    Telechargement::setDirTmp(_dirTmp);
 
     /* Retour */
     return;
