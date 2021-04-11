@@ -90,16 +90,16 @@ public:
      * Variables publiques
      */
 
+
+public slots:
+
     /*
      * Methodes publiques
-     */
+     */    
     /**
      * @brief show Affichage des courbes sur la carte du monde
      */
     void show();
-
-
-public slots:
 
     void resizeEvent(QResizeEvent *evt);
 

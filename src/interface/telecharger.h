@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2020  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,15 +41,21 @@
 #define TELECHARGER_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
 #include <QMainWindow>
-#include <QNetworkReply>
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wfloat-equal"
+#include "configuration/configuration.h"
+
+
+class Onglets;
 
 namespace Ui {
     class Telecharger;
 }
+
+enum TypeTelechargement {
+    TELECHARGEMENT_LISTE,
+    TELECHARGEMENT_FICHIERS
+};
 
 class Telecharger : public QMainWindow
 {
@@ -57,28 +63,41 @@ class Telecharger : public QMainWindow
 
 public:
 
-    /* Constructeurs */
+    /*
+     *  Constructeurs
+     */
     /**
      * @brief Telecharger Constructeur pour la fenetre de telechargement
-     * @param idirHttp indice du repertoire cible
+     * @param adresse indice du repertoire cible
      * @param fenetreParent fenetre
      */
-    explicit Telecharger(const int idirHttp, QWidget *fenetreParent = 0);
+    explicit Telecharger(const AdressesTelechargement &adresse, Onglets *onglets);
 
-    /* Constantes publiques */
+    /*
+     * Destructeur
+     */
+    ~Telecharger();
 
-    /* Variables publiques */
+    /*
+     * Accesseurs
+     */
 
-    /* Methodes publiques */
+    /*
+     * Constantes publiques
+     */
+
+    /*
+     * Variables publiques
+     */
+
+    /*
+     * Methodes publiques
+     */
     /**
      * @brief AjoutFichier Ajout d'un fichier dans la liste de fichiers a telecharger
      * @param url adresse du fichier
      */
     void AjoutFichier(const QUrl &url);
-
-    ~Telecharger();
-
-    /* Accesseurs */
 
 
 signals:
@@ -91,11 +110,36 @@ signals:
 
 protected:
 
-    /* Constantes protegees */
+    /*
+     * Constantes protegees
+     */
 
-    /* Variables protegees */
+    /*
+     * Variables protegees
+     */
 
-    /* Methodes protegees */
+    /*
+     * Methodes protegees
+     */
+
+
+private:
+
+    /*
+     * Constantes privees
+     */
+
+    /*
+     * Variables privees
+     */
+    Ui::Telecharger *ui;
+    Onglets *_onglets;
+    AdressesTelechargement _adresse;
+    TypeTelechargement _typeTelechargement;
+
+    /*
+     * Methodes privees
+     */
 
 
 private slots:
@@ -110,51 +154,13 @@ private slots:
      */
     void on_interrogerServeur_clicked();
 
-    /**
-     * @brief MessageErreur Message d'erreur pour le telechargement
-     */
-    void MessageErreur(QNetworkReply::NetworkError) const;
 
-    /**
-     * @brief Enregistrer Enregistrement du fichier
-     */
-    void Enregistrer() const;
-
-    /**
-     * @brief ProgressionTelechargement Progression du telechargement
-     * @param recu nombre d'octets recus
-     * @param total nombre d'octets total
-     */
-    void ProgressionTelechargement(qint64 recu, qint64 total) const;
-
-    /**
-     * @brief TelechargementSuivant Demarrage du telechargement suivant
-     */
-    void TelechargementSuivant();
-
-    /**
-     * @brief FinEnregistrementFichier Gestion de l'enregistrement des fichiers telecharges
-     */
-    void FinEnregistrementFichier();
-
-    /**
-     * @brief EcritureFichier Ecriture du fichier telecharge
-     */
-    void EcritureFichier();
+    void FinTelechargement();
 
     /**
      * @brief on_telecharger_clicked Lancement du telechargement
      */
     void on_telecharger_clicked();
-
-private:
-
-    /* Constantes privees */
-
-    /* Variables privees */
-    Ui::Telecharger *ui;
-
-    /* Methodes privees */
 
 
 };

@@ -54,6 +54,7 @@
 #include "afficher.h"
 #include "gestionnairetle.h"
 #include "onglets.h"
+#include "telecharger.h"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/systemesolaire/terreconst.h"
@@ -131,6 +132,12 @@ Onglets::Onglets(QWidget *parent) :
     // Chargement des fichiers d'observation
     InitFicObs(true);
     _ui->categoriesObs->setCurrentRow(0);
+
+    // Chargement des fichiers images de cartes du monde
+    InitFicMap(false);
+
+    // Chargement des fichiers sons (pour les AOS et LOS)
+    InitFicSon();
 }
 
 /*
@@ -166,6 +173,11 @@ void Onglets::setAcalcDN(bool acalcDN)
 void Onglets::setInfo(bool info)
 {
     _info = info;
+}
+
+void Onglets::setDirDwn(const QString &dirDwn)
+{
+    _dirDwn = dirDwn;
 }
 
 
@@ -1479,6 +1491,82 @@ void Onglets::CalculAosSatSuivi() const
 }
 #endif
 
+
+/*
+ * Ajout d'un fichier dans la liste de telechargement (telechargement asynchrone)
+ */
+void Onglets::AjoutFichier(const QUrl &url)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_listeFichiersTelechargement.isEmpty()) {
+        QTimer::singleShot(0, this, SLOT(TelechargementSuivant()));
+    }
+
+    _listeFichiersTelechargement.enqueue(url);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ajout d'une liste de fichiers a telecharger (telechargement asynchrone)
+ */
+void Onglets::AjoutListeFichiers(const QStringList &listeFichiers)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    for(const QString &url : listeFichiers) {
+        AjoutFichier(QUrl::fromEncoded(url.toLocal8Bit()));
+    }
+
+    if (_listeFichiersTelechargement.isEmpty()) {
+        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Telechargement d'un fichier
+ */
+void Onglets::TelechargementFichier(const QString &fichier, const bool async)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QUrl url(fichier);
+
+    /* Corps de la methode */
+    AjoutFichier(url);
+
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+    const QNetworkRequest requete(url);
+    _rep = _mng.get(requete);
+
+    if (!async) {
+        // Creation d'une boucle pour rendre le telechargement synchrone
+        QEventLoop loop;
+        connect(_rep, SIGNAL(finished()), &loop, SLOT(quit()));
+        loop.exec();
+    }
+
+    if (_listeFichiersTelechargement.isEmpty()) {
+        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+    }
+
+    /* Retour */
+    return;
+}
+
+
 void Onglets::on_pause_clicked()
 {
     /* Declarations des variables locales */
@@ -1779,9 +1867,52 @@ void Onglets::InitFicObs(const bool alarme)
 }
 
 /*
+ * Chargement de la liste de cartes du monde
+ */
+void Onglets::InitFicMap(const bool majAff)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDir di(Configuration::instance()->dirMap());
+    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
+
+    /* Corps de la methode */
+    _ficMap.clear();
+    _ui->listeMap->clear();
+    _ui->listeMap->addItem(tr("* Défaut"));
+    _ui->listeMap->setCurrentIndex(0);
+
+    const QStringList listMap = di.entryList(filtres, QDir::Files);
+    if (listMap.count() == 0) {
+        _ui->listeMap->addItem(tr("Télécharger..."));
+    } else {
+
+        foreach(QString fic, listMap) {
+
+            const QString file = Configuration::instance()->dirMap() + QDir::separator() + fic;
+            _ficMap.append(file);
+            _ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
+
+            if (settings.value("fichier/listeMap", "").toString() == file) {
+                _ui->listeMap->setCurrentIndex(_ficMap.indexOf(file)+1);
+            }
+        }
+
+        _ui->listeMap->addItem(tr("Télécharger..."));
+        if ((_ui->listeMap->currentIndex() > 0) && majAff) {
+            emit MiseAJourCarte();
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Chargement de la liste de fichiers de preferences
  */
-void Onglets::InitFicPref(const bool majAff) const
+void Onglets::InitFicPref(const bool majAff)
 {
     /* Declarations des variables locales */
     QString fichier;
@@ -1807,13 +1938,182 @@ void Onglets::InitFicPref(const bool majAff) const
 
     _ui->preferences->addItem(tr("Enregistrer sous..."));
     if (majAff) {
-        //            AffichageCourbes();
+        emit MiseAJourCarte();
     }
     _ui->preferences->addItem(tr("Supprimer..."));
 
     /* Retour */
     return;
 }
+
+/*
+ * Chargement de la liste de notifications sonores
+ */
+void Onglets::InitFicSon()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDir di(Configuration::instance()->dirSon());
+    const QStringList filtresAOS(QStringList () << "aos-*.wav");
+    const QStringList filtresLOS(QStringList () << "los-*.wav");
+
+    /* Corps de la methode */
+    _ficSonAOS.clear();
+    _ui->listeSons->clear();
+    _ui->listeSons->addItem(tr("* Défaut"));
+    _ui->listeSons->setCurrentIndex(0);
+
+    QStringList listSonsAOS = di.entryList(filtresAOS, QDir::Files);
+    listSonsAOS.removeAll("aos-default.wav");
+    QStringList listSonsLOS = di.entryList(filtresLOS, QDir::Files);
+    listSonsLOS.removeAll("los-default.wav");
+
+    if ((listSonsAOS.count() == 0) || (listSonsLOS.count() == 0)) {
+        _ui->listeSons->addItem(tr("Télécharger..."));
+    } else {
+
+        foreach(QString fic, listSonsAOS) {
+
+            const QString file = Configuration::instance()->dirSon() + QDir::separator() + fic;
+            _ficSonAOS.append(file);
+            _ui->listeSons->addItem(fic.at(4).toUpper() + fic.mid(5, fic.mid(4).lastIndexOf(".")-1));
+            if (settings.value("fichier/listeSon", "").toString() == file) {
+                _ui->listeSons->setCurrentIndex(_ficSonAOS.indexOf(file)+1);
+            }
+        }
+
+        foreach(QString fic, listSonsLOS) {
+            const QString file = Configuration::instance()->dirSon() + QDir::separator() + fic;
+            _ficSonLOS.append(file);
+        }
+        _ui->listeSons->addItem(tr("Télécharger..."));
+    }
+
+    /* Retour */
+    return;
+}
+
+
+/*
+ * Ecriture du fichier
+ */
+void Onglets::EcritureFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _fichier.write(_rep->readAll());
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Progression du telechargement
+ */
+void Onglets::ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal)
+{
+    /* Declarations des variables locales */
+    QString unite;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Calcul de la vitesse de telechargement
+    double vitesse = static_cast<double> (octetsRecus) * 1000. / static_cast<double> (_tempsEcoule.elapsed());
+
+    if (vitesse < 1024.) {
+        unite = tr("o/s");
+    } else if (vitesse < 1048576.) {
+        vitesse /= 1024.;
+        unite = tr("ko/s");
+    } else {
+        vitesse /= 1048576.;
+        unite = tr("Mo/s");
+    }
+
+    emit Progression(static_cast<int>(octetsRecus), static_cast<int>(octetsTotal), vitesse, unite);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Fin de l'enregistrement du fichier
+ */
+void Onglets::FinEnregistrementFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _fichier.close();
+
+    if (_rep->error()) {
+        // Erreur lors du telechargement
+        _fichier.remove();
+    } else {
+
+        if (_dirDwn != Configuration::instance()->dirTmp()) {
+
+            // Deplacement du fichier vers le repertoire de destination
+            const QFileInfo f(_fichier);
+            QFile fi(_dirDwn + QDir::separator() + f.fileName());
+            if (fi.exists()) {
+                fi.remove();
+            }
+            _fichier.rename(fi.fileName());
+        }
+    }
+    _rep->deleteLater();
+    TelechargementSuivant();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Telechargement du fichier suivant
+ */
+void Onglets::TelechargementSuivant()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_listeFichiersTelechargement.isEmpty()) {
+        emit TelechargementFini();
+    } else {
+
+        const QUrl url = _listeFichiersTelechargement.dequeue();
+        const QString fic = QFileInfo(url.path()).fileName();
+
+        _fichier.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+
+        if (_fichier.open(QIODevice::WriteOnly)) {
+
+            const QNetworkRequest requete(url);
+            _rep = _mng.get(requete);
+            connect(_rep, SIGNAL(downloadProgress(qint64, qint64)), SLOT(ProgressionTelechargement(qint64, qint64)));
+            connect(_rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
+            connect(_rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
+            _tempsEcoule.start();
+        } else {
+            // Erreur
+            TelechargementSuivant();
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+
 
 bool Onglets::eventFilter(QObject *object, QEvent *evt)
 {
@@ -2657,7 +2957,17 @@ void Onglets::on_actionRenommerCategorie_triggered()
 
 void Onglets::on_actionTelechargerCategorie_triggered()
 {
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    Telecharger * const telechargerLieux = new Telecharger(COORDONNEES, this);
+    telechargerLieux->setWindowModality(Qt::ApplicationModal);
+    telechargerLieux->show();
+
+    /* Retour */
+    return;
 }
 
 void Onglets::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
@@ -3340,6 +3650,74 @@ void Onglets::on_gestionnaireMajTLE_clicked()
     /* Retour */
     return;
 }
+
+void Onglets::on_listeMap_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->optionConfig->isVisible()) {
+
+        if (index == 0) {
+            settings.setValue("fichier/listeMap", "");
+        } else {
+
+            if (index == (_ui->listeMap->count() - 1)) {
+
+                Telecharger * const telecharger = new Telecharger(CARTES, this);
+                telecharger->setWindowModality(Qt::ApplicationModal);
+                telecharger->show();
+
+                const bool etat = _ui->listeMap->blockSignals(true);
+                _ui->listeMap->setCurrentIndex(_ui->listeMap->findText(settings.value("fichier/listeMap", "").toString()));
+                _ui->listeMap->blockSignals(etat);
+                InitFicMap(true);
+
+            } else {
+                settings.setValue("fichier/listeMap", (index == 0) ? "" : _ficMap.at(qMax(0, _ui->listeMap->currentIndex()-1)));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_listeSons_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->optionConfig->isVisible()) {
+
+        if (index == 0) {
+            settings.setValue("fichier/listeSon", "");
+        } else {
+
+            if (index == (_ui->listeSons->count() - 1)) {
+
+                Telecharger * const telecharger = new Telecharger(NOTIFICATIONS, this);
+                telecharger->setWindowModality(Qt::ApplicationModal);
+                telecharger->show();
+
+                const bool etat = _ui->listeSons->blockSignals(true);
+                _ui->listeSons->setCurrentIndex(_ui->listeSons->findText(settings.value("fichier/listeSon", "").toString()));
+                _ui->listeSons->blockSignals(etat);
+                InitFicSon();
+            } else {
+                settings.setValue("fichier/listeSon", (index == 0) ? "" : _ficSonAOS.at(qMax(0, _ui->listeSons->currentIndex()-1)));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Calcul des previsions de passage
