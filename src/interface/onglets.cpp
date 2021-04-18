@@ -146,6 +146,10 @@ Onglets::Onglets(QWidget *parent) :
 Onglets::~Onglets()
 {
     delete _ui;
+    if (_date != nullptr) {
+        delete _date;
+        _date = nullptr;
+    }
 }
 
 
@@ -194,6 +198,7 @@ void Onglets::show(const Date &date)
     /* Initialisations */
     if (_date != nullptr) {
         delete _date;
+        _date = nullptr;
     }
     _date = new Date(date, date.offsetUTC());
 
@@ -245,7 +250,7 @@ void Onglets::show(const Date &date)
     }
 
 #if defined (Q_OS_WIN)
-    if ((_ui->telescope->isVisible()) && (getListItemChecked(_ui->liste4) > 0)) {
+    if (_ui->telescope->isVisible() && (getListItemChecked(_ui->liste4) > 0)) {
         CalculAosSatSuivi();
     }
 #endif
@@ -1396,9 +1401,7 @@ void Onglets::CalculAosSatSuivi() const
 
                 dateLosSuivi = dateAosSuivi;
 
-                const ElementsAOS elem =
-                        Evenements::CalculAOS(Date(dateLosSuivi.jourJulienUTC() - 0.9 * satSuivi.elements().periode() * NB_JOUR_PAR_HEUR,
-                                                   _date->offsetUTC()), satSuivi, obs, true, hauteurMin);
+                const ElementsAOS elem = Evenements::CalculAOS(dateLosSuivi, satSuivi, obs, false, hauteurMin);
 
                 dateAosSuivi = elem.date;
                 azim = elemAos.azimut;
@@ -1430,7 +1433,7 @@ void Onglets::CalculAosSatSuivi() const
             QList<double> jjm;
             QPair<double, double> minmax;
             double jj0 = 0.5 * (dateAosSuivi.jourJulienUTC() + dateLosSuivi.jourJulienUTC());
-            double pas = NB_JOUR_PAR_MIN;
+            double pas = dateLosSuivi.jourJulienUTC() - jj0;
 
             jjm.append(jj0 - pas);
             jjm.append(jj0);
@@ -3557,6 +3560,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         //            _ui->dateHeure4->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((ui->syst12h->isChecked()) ? "a" : ""));
         //            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
         //        }
+
     } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
         // TODO
     } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
@@ -4727,6 +4731,11 @@ void Onglets::on_hauteurSatSuivi_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void Onglets::on_skywatcher_clicked()
+{
+    QDesktopServices::openUrl(QUrl("http://skywatcher.com/"));
 }
 #endif
 

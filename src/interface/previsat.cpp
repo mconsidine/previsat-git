@@ -1288,6 +1288,34 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     return;
 }
 
+void PreviSat::on_directHelp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString ficDoc = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDoc()).arg(Configuration::instance()->locale());
+
+    /* Corps de la methode */
+    if (!QDesktopServices::openUrl("file:///" + ficDoc)) {
+        Message::Afficher(tr("Impossible d'afficher l'aide en ligne"), WARNING);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_faireDon_clicked()
+{
+    on_actionFaire_triggered();
+}
+
+/*
+ * Menu deroulant
+ */
+void PreviSat::on_actionFichier_d_aide_triggered()
+{
+    on_directHelp_clicked();
+}
 
 void PreviSat::on_actionInformations_triggered()
 {
@@ -1335,7 +1363,7 @@ void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
 
 void PreviSat::on_actionRapport_de_bug_triggered()
 {
-    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseAstropedia() + "rapport.html"));
+    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseAstropedia() + "rapport_" + Configuration::instance()->locale() + ".html"));
 }
 
 void PreviSat::on_actionWww_celestrak_com_triggered()
@@ -1361,13 +1389,6 @@ void PreviSat::on_actionA_propos_triggered()
 
     /* Retour */
     return;
-}
-
-
-
-void PreviSat::on_faireDon_clicked()
-{
-    on_actionFaire_triggered();
 }
 
 void PreviSat::on_tempsReel_toggled(bool checked)

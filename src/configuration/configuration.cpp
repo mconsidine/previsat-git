@@ -82,6 +82,11 @@ Configuration *Configuration::instance()
     return _instance;
 }
 
+QString Configuration::dirDoc() const
+{
+    return _dirDoc;
+}
+
 QString Configuration::dirExe() const
 {
     return _dirExe;
@@ -612,6 +617,7 @@ void Configuration::EcritureGestionnaireTLE()
 void Configuration::DefinitionArborescences()
 {
     /* Declarations des variables locales */
+    QString dirCommon;
 
     /* Initialisations */
     const QString dirAstr = QCoreApplication::organizationName() + QDir::separator() + QCoreApplication::applicationName();
@@ -631,9 +637,9 @@ void Configuration::DefinitionArborescences()
     _dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
 #if defined (Q_OS_WIN)
-    _dirCommonData = listeGenericDir.at(1) + dirAstr + QDir::separator() + "data";
+    dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
-    _dirCommonData = listeGenericDir.at(2) + dirAstr + QDir::separator() + "data";
+    dirCommon = listeGenericDir.at(2) + dirAstr;
 #endif
 
 #else
@@ -646,16 +652,16 @@ void Configuration::DefinitionArborescences()
     _dirTle = QDir::toNativeSeparators(listeGenericDir + QDir::separator() + "tle");
 
 #if defined (Q_OS_WIN)
-    _dirCommonData = QDir::rootPath() + "ProgramData" + QDir::separator() + dirAstr + QDir::separator() + "data";
+    dirCommon = QDir::rootPath() + "ProgramData" + QDir::separator() + dirAstr;
 #elif defined (Q_OS_LINUX)
-    _dirCommonData = QString("/usr/share") + QDir::separator() + dirAstr + QDir::separator() + "data";
+    dirCommon = QString("/usr/share") + QDir::separator() + dirAstr;
 #endif
 
 #endif
 
     // Cas particulier de Mac OS X
 #if defined (Q_OS_MAC)
-    _dirCommonData = _dirExe + QDir::separator() + "data";
+    dirCommon = _dirExe;
     _dirLocalData = _dirCommonData;
     _dirTle = _dirExe + QDir::separator() + "tle";
     _adresseAstropedia = "http://astropedia.free.fr/";
@@ -673,6 +679,8 @@ void Configuration::DefinitionArborescences()
     }
 
     // Autres repertoires
+    _dirCommonData = dirCommon + QDir::separator() + "data";
+    _dirDoc = dirCommon + QDir::separator() + "dox";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";
     _dirCfg = _dirLocalData + QDir::separator() + "config";
     _dirMap = _dirLocalData + QDir::separator() + "map";
