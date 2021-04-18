@@ -283,7 +283,11 @@ private slots:
     void mousePressEvent(QMouseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
 
+    void on_directHelp_clicked();
+    void on_faireDon_clicked();
+
     // Menu deroulant
+    void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();
     void on_actionFaire_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
@@ -292,8 +296,6 @@ private slots:
     void on_actionWww_space_track_org_triggered();
     void on_actionA_propos_triggered();
 
-
-    void on_faireDon_clicked();
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
     void on_pasReel_currentIndexChanged(int index);

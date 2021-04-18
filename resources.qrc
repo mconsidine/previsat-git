@@ -36,5 +36,6 @@
         <file>resources/icones/cygnus.png</file>
         <file>resources/paypal.png</file>
         <file>resources/enregistrer_txt.png</file>
+        <file>resources/logo-skywatcher.png</file>
     </qresource>
 </RCC>

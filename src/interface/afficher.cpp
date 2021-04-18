@@ -436,7 +436,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
             case EVENEMENTS:
                 flux << nomsat << endl;
-                flux << tr("   Date      Heure      PSO    Longitude  Latitude   Évènements") << endl;
+                flux << tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
                 break;
 
             case TELESCOPE:
@@ -1382,7 +1382,7 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
         elems.append(QString(" %1 %2 ").arg(fabs(res.obsmax.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
 
         // Distance au maximum et cap
-        elems.append(QString(" %1 (%2)").arg(res.distanceObs, 5, 'f', 1).arg(res.cap));
+        elems.append(QString(" %1 (%2)").arg(res.distanceObs, 6, 'f', 1).arg(res.cap));
     }
 
     /* Retour */

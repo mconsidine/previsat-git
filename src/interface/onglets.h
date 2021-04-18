@@ -481,6 +481,7 @@ private slots:
     void on_liste4_currentRowChanged(int currentRow);
     void on_lieuxObservation5_currentIndexChanged(int index);
     void on_hauteurSatSuivi_currentIndexChanged(int index);
+    void on_skywatcher_clicked();
 #endif
 
     // Calcul des evenements orbitaux

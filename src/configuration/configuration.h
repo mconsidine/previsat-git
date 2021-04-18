@@ -105,6 +105,7 @@ public:
      */
     static Configuration *instance();
 
+    QString dirDoc() const;
     QString dirExe() const;
     QString dirCoord() const;
     QString dirCommonData() const;
@@ -251,6 +252,7 @@ private:
     QString _versionCfg;
 
     // Repertoires
+    QString _dirDoc;
     QString _dirExe;
     QString _dirCoord;
     QString _dirCommonData;
