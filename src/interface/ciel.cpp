@@ -413,23 +413,21 @@ void Ciel::show(const Observateur &observateur,
         const int llun = qRound(lciel - lciel * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
         const int blun = qRound(hciel - hciel * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
+        const int lpol = lciel;
+        const int bpol = qRound(hciel - hciel * (1. - observateur.latitude() * DEUX_SUR_PI));
+
         QPixmap pixlun;
         pixlun.load(":/resources/lune.png");
         pixlun = pixlun.scaled(17, 17);
-
-        // Angle horaire
-        const double angleHoraire = observateur.tempsSideralGreenwich() - observateur.longitude() - lune.ascensionDroite();
-
-        // Angle parallactique
-        const double angleParallactique = RAD2DEG *
-                atan(sin(angleHoraire) / (tan(observateur.latitude()) * cos(lune.declinaison()) - sin(lune.declinaison()) * cos(angleHoraire)));
 
         // Dessin de la Lune et rotations
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
-        transform.rotate((PI - lune.azimut()) * RAD2DEG);
-        transform.rotate(angleParallactique);
+        transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
+        if (_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) {
+            transform.rotate(180.);
+        }
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
