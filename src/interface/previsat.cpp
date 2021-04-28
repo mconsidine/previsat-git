@@ -1309,6 +1309,46 @@ void PreviSat::on_faireDon_clicked()
     on_actionFaire_triggered();
 }
 
+void PreviSat::on_meteo_clicked()
+{
+    /* Declarations des variables locales */
+    QString map;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Affichage de la map
+    const QString fic = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "meteo.map";
+    QFile fi(fic);
+
+    if (fi.exists() && (fi.size() != 0)) {
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+        map = flux.readAll();
+    }
+    fi.close();
+
+
+    const QString lon(QString::number(-Configuration::instance()->observateur().longitude() * RAD2DEG));
+    const QString lat(QString::number(Configuration::instance()->observateur().latitude() * RAD2DEG));
+    map = map.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
+            .replace("UNITE_TEMP", (_onglets->ui()->unitesKm->isChecked()) ? "C" : "F")
+            .replace("UNITE_VENT", (_onglets->ui()->unitesKm->isChecked()) ? "kmh" : "mph");
+
+    QFile fi2(Configuration::instance()->dirTmp() + QDir::separator() + "meteo.html");
+    fi2.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream flux(&fi2);
+    flux << map;
+    fi2.close();
+
+    // Chargement de la meteo
+    const QUrl url("file:///" + fi2.fileName());
+    QDesktopServices::openUrl(url);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Menu deroulant
  */
@@ -1364,6 +1404,11 @@ void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
 void PreviSat::on_actionRapport_de_bug_triggered()
 {
     QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseAstropedia() + "rapport_" + Configuration::instance()->locale() + ".html"));
+}
+
+void PreviSat::on_actionSkywatcher_com_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://skywatcher.com/"));
 }
 
 void PreviSat::on_actionWww_celestrak_com_triggered()

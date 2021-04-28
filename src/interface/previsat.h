@@ -285,6 +285,7 @@ private slots:
 
     void on_directHelp_clicked();
     void on_faireDon_clicked();
+    void on_meteo_clicked();
 
     // Menu deroulant
     void on_actionFichier_d_aide_triggered();
@@ -292,6 +293,7 @@ private slots:
     void on_actionFaire_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
+    void on_actionSkywatcher_com_triggered();
     void on_actionWww_celestrak_com_triggered();
     void on_actionWww_space_track_org_triggered();
     void on_actionA_propos_triggered();

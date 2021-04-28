@@ -176,6 +176,9 @@ void Radar::show()
         const int llun = qRound(100. - 100. * xf * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
         const int blun = qRound(100. - 100. * yf * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
 
+        const int lpol = 100;
+        const int bpol = qRound(100 - 100 * (1. - Configuration::instance()->observateurs().at(0).latitude() * DEUX_SUR_PI));
+
         QPixmap pixlun;
         pixlun.load(":/resources/lune.png");
         pixlun = pixlun.scaled(17, 17);
@@ -183,6 +186,7 @@ void Radar::show()
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
         transform.translate(llun, blun);
+        transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
         if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
             transform.rotate(180.);
         }

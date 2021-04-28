@@ -862,6 +862,9 @@
        <property name="mouseTracking">
         <bool>true</bool>
        </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
+       </property>
        <property name="text">
         <string>7.777 km/s</string>
        </property>
@@ -902,6 +905,9 @@
        </property>
        <property name="mouseTracking">
         <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
        </property>
        <property name="text">
         <string>+28000 km/h</string>
@@ -2526,6 +2532,9 @@
        <property name="font">
         <font/>
        </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
+       </property>
        <property name="text">
         <string>+29.000000 km/s</string>
        </property>
@@ -2544,6 +2553,9 @@
        </property>
        <property name="font">
         <font/>
+       </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
        </property>
        <property name="text">
         <string>+29.000000 km/s</string>
@@ -2595,6 +2607,9 @@
        </property>
        <property name="font">
         <font/>
+       </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
        </property>
        <property name="text">
         <string>+29.000000 km/s</string>
