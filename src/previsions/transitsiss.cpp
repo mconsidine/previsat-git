@@ -115,15 +115,11 @@ int TransitsIss::CalculTransits(int &nombre)
     _donnees.ageTle.clear();
     _resultats.clear();
 
-    // Lecture du TLE de l'ISS
-    const QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
-    const double periode = 1. / tabtle.first().no() - TEMPS1;
-    Satellite sat(tabtle.first());
+    const double periode = 1. / _conditions.tabtle.first().no() - TEMPS1;
+    Satellite sat(_conditions.tabtle);
 
-    const double age1 = fabs(_conditions.jj1 - tabtle.first().epoque().jourJulienUTC());
-    const double age2 = fabs(_conditions.jj1 - tabtle.last().epoque().jourJulienUTC());
-    _donnees.ageTle.append(qMin(age1, age2));
-    _donnees.ageTle.append(qMax(age1, age2));
+    _donnees.ageTle.append(fabs(_conditions.jj1 - _conditions.tabtle.first().epoque().jourJulienUTC()));
+    _donnees.ageTle.append(fabs(_conditions.jj1 - _conditions.tabtle.last().epoque().jourJulienUTC()));
 
     // Generation des ephemerides du Soleil et de la Lune
     const QMap<CorpsTransit, QList<EphemeridesTransits> > tabEphem = CalculEphemSoleilLune();
@@ -139,6 +135,7 @@ int TransitsIss::CalculTransits(int &nombre)
     double rayon = 0.;
     Date date;
     Date date2;
+    Date date3;
     Corps corps;
     Observateur obsmax;
     ConditionEclipse condEcl;
@@ -320,8 +317,11 @@ int TransitsIss::CalculTransits(int &nombre)
                                 lune.CalculPosition(dates[j]);
                                 condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
 
-                                // Date calendaire (UTC)
-                                res.date = Date(dates[j].jourJulienUTC(), 0.);
+                                // Date calendaire
+                                res.date = Date(dates[j].jourJulien() + EPS_DATES, 0.);
+                                if (j == 2) {
+                                    date3 = res.date;
+                                }
 
                                 // Coordonnees topocentriques du satellite
                                 res.azimut = sat.azimut();
@@ -402,7 +402,7 @@ int TransitsIss::CalculTransits(int &nombre)
                 }
 
                 if (!resultatSat.isEmpty()) {
-                    _resultats.insert(date2.ToShortDateAMJ(FORMAT_LONG, SYSTEME_24H), resultatSat);
+                    _resultats.insert(date3.ToShortDateAMJ(FORMAT_LONG, SYSTEME_24H), resultatSat);
                 }
             }
         }

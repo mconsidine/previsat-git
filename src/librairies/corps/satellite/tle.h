@@ -71,16 +71,14 @@ public:
      * @param lig0 ligne 0 du TLE (nom du satellite)
      * @param lig1 ligne 1 du TLE
      * @param lig2 ligne 2 du TLE
-     * @param dateDebValid date de debut de validite du TLE
      */
-    TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid = Date(-DATE_INFINIE, 0.));
+    TLE(const QString &lig0, const QString &lig1, const QString &lig2);
 
 
     /*
      * Accesseurs
      */
     unsigned int nbOrbitesEpoque() const;
-    Date dateDebutValidite() const;
 
     double argpo() const;
     double bstar() const;
@@ -124,27 +122,19 @@ public:
 
     /**
      * @brief LectureFichier Lecture du fichier TLE
-     * @param dirLocalData chemin de donnees locales
      * @param nomFichier nom du fichier TLE
+     * @param dirLocalData chemin de donnees locales
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @return tableau de TLE
      */
-    static QMap<QString, TLE> LectureFichier(const QString &dirLocalData, const QString &nomFichier, const QStringList &listeSatellites = QStringList());
+    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites = QStringList());
 
     /**
      * @brief LectureFichier3le Lecture du fichier 3le
      * @param nomFichier3le nom du fichier 3le
-     * @param tabtle tableau de TLE
+     * @return tableau de TLE
      */
     static QList<TLE> LectureFichier3le(const QString &nomFichier3le);
-
-    /**
-     * @brief LectureTrajectoryData Lecture du fichier Human Space Flight
-     * @param fichierHsf nom du fichier html
-     * @param fichier3le nom du fichier 3le
-     * @param tabManoeuvres tableau des manoeuvres
-     */
-    static void LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le, QStringList &tabManoeuvres);
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
@@ -182,7 +172,6 @@ private:
      * Variables privees
      */
     unsigned int _nbOrbitesEpoque;
-    Date _dateDebutValidite;
 
     double _argpo;
     double _bstar;

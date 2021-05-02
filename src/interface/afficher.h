@@ -78,6 +78,10 @@ public:
      */
     Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
              const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets = nullptr, QWidget *parent = nullptr);
+
+    /*
+     * Destructeur
+     */
     ~Afficher();
 
     /*

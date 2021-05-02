@@ -161,7 +161,6 @@ public:
     QString dateDebut() const;
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
-    QList<PositionISS> positionsISS() const;
 
     QList<CategorieTLE> &mapCategoriesTLE();
 
@@ -329,12 +328,11 @@ private:
     // Numero NORAD de la station spatiale
     QString _noradStationSpatiale;
 
-    // Evenements et positions ISS
+    // Evenements ISS
     QString _dateDebut;
     QString _dateFin;
     QList<double> _masseISS;
     QStringList _evenementsISS;
-    QList<PositionISS> _positionsISS;
 
     // Pour le gestionnaire de fichiers TLE
     QString _versionCategoriesTLE;

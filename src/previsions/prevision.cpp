@@ -104,7 +104,7 @@ int Prevision::CalculPrevisions(int &nombre)
     _resultats.clear();
 
     // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier, _conditions.listeSatellites);
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->dirLocalData(), _conditions.listeSatellites);
 
     // Creation du tableau de satellites
     QMapIterator<QString, TLE> it1(tabTle);

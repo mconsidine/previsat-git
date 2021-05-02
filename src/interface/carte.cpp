@@ -89,10 +89,17 @@ Carte::Carte(Onglets *onglets, QWidget *parent) :
  */
 Carte::~Carte()
 {
-    delete ui;
     if (scene != nullptr) {
         delete scene;
+        scene = nullptr;
     }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
+    delete ui;
 }
 
 

@@ -297,11 +297,6 @@ QStringList Configuration::evenementsISS() const
     return _evenementsISS;
 }
 
-QList<PositionISS> Configuration::positionsISS() const
-{
-    return _positionsISS;
-}
-
 QList<CategorieTLE> &Configuration::mapCategoriesTLE()
 {
     return _mapCategoriesTLE;
@@ -1213,12 +1208,6 @@ void Configuration::LecturePositionsISS()
         cfg.readNextStartElement();
         if (cfg.name().toString().toLower() == "ndm") {
 
-            double x = 0.;
-            double y = 0.;
-            double z = 0.;
-            double vx = 0.;
-            double vy = 0.;
-            double vz = 0.;
             QString epoque;
             QString version;
             QString value;
@@ -1282,43 +1271,6 @@ void Configuration::LecturePositionsISS()
                                                             _evenementsISS.append(value);
                                                         }
                                                     }
-                                                }
-                                            }
-
-                                            // Recuperation des positions
-                                            while (cfg.readNextStartElement()) {
-
-                                                if (cfg.name().toString().toLower() == "statevector") {
-
-                                                    while (cfg.readNextStartElement()) {
-
-                                                        if (cfg.name().toString().toLower() == "epoch") {
-                                                            epoque = cfg.readElementText();
-                                                        } else if (cfg.name().toString().toLower() == "x") {
-                                                            x = cfg.readElementText().toDouble();
-                                                        } else if (cfg.name().toString().toLower() == "y") {
-                                                            y = cfg.readElementText().toDouble();
-                                                        } else if (cfg.name().toString().toLower() == "z") {
-                                                            z = cfg.readElementText().toDouble();
-                                                        } else if (cfg.name().toString().toLower() == "x_dot") {
-                                                            vx = cfg.readElementText().toDouble();
-                                                        } else if (cfg.name().toString().toLower() == "y_dot") {
-                                                            vy = cfg.readElementText().toDouble();
-                                                        } else if (cfg.name().toString().toLower() == "z_dot") {
-                                                            vz = cfg.readElementText().toDouble();
-                                                        } else {
-                                                            cfg.skipCurrentElement();
-                                                        }
-                                                    }
-
-                                                    const Vecteur3D pos(x, y, z);
-                                                    const Vecteur3D vit(vx, vy, vz);
-
-                                                    position.jourJulienUTC = Date::ConversionDateNasa(epoque).jourJulienUTC();
-                                                    position.position = pos;
-                                                    position.vitesse = vit;
-
-                                                    _positionsISS.append(position);
                                                 }
                                             }
                                         } else {

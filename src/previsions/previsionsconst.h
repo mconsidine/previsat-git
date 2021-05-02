@@ -103,6 +103,8 @@ struct ConditionsPrevisions
     QStringList listeSatellites;
     Observateur observateur;
 
+    QList<TLE> tabtle;
+
     QString ficRes;
 };
 

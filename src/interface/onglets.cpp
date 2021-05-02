@@ -108,6 +108,8 @@ Onglets::Onglets(QWidget *parent) :
     _ui->siteLancement->installEventFilter(this);
     _ui->siteLancementDonneesSat->installEventFilter(this);
 
+    _date = nullptr;
+
     _info = true;
     _uniteVitesse = false;
     _acalcDN = true;
@@ -145,11 +147,27 @@ Onglets::Onglets(QWidget *parent) :
  */
 Onglets::~Onglets()
 {
-    delete _ui;
     if (_date != nullptr) {
         delete _date;
         _date = nullptr;
     }
+
+    if (_dateEclipse != nullptr) {
+        delete _dateEclipse;
+        _dateEclipse = nullptr;
+    }
+
+    if (_elementsAOS != nullptr) {
+        delete _elementsAOS;
+        _elementsAOS = nullptr;
+    }
+
+    if (_rep != nullptr) {
+        delete _rep;
+        _rep = nullptr;
+    }
+
+    delete _ui;
 }
 
 
@@ -426,6 +444,10 @@ void Onglets::AffichageDonneesSatellite() const
     // Prochaine transition jour/nuit
     _acalcDN = !(_isEclipse && satellite.conditionEclipse().eclipseTotale());
     if (_acalcDN) {
+        if (_dateEclipse != nullptr) {
+            delete _dateEclipse;
+            _dateEclipse = nullptr;
+        }
         _dateEclipse = new Date(Evenements::CalculOmbrePenombre(*_date, satellite, _ui->nombreTrajectoires->value(), _ui->eclipsesLune->isChecked(),
                                                                 _ui->refractionPourEclipses->isChecked()), _date->offsetUTC());
         _acalcDN = false;
@@ -463,6 +485,10 @@ void Onglets::AffichageDonneesSatellite() const
     _acalcAOS = ((_htSat * satellite.hauteur()) <= 0.);
     if (_acalcAOS) {
 
+        if (_elementsAOS != nullptr) {
+            delete _elementsAOS;
+            _elementsAOS = nullptr;
+        }
         _elementsAOS = new ElementsAOS();
         *_elementsAOS = Evenements::CalculAOS(*_date, satellite, Configuration::instance()->observateur());
         _acalcAOS = false;
@@ -1337,7 +1363,7 @@ void Onglets::CalculAosSatSuivi() const
         obs.CalculPosVit(date);
 
         // Position du satellite
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->dirLocalData(),
                                                            satelliteSelectionne);
         _ui->nomsatSuivi->setText(tle.first().nom());
 
@@ -1642,7 +1668,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->enregistrerPref->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
 
     _ui->lbl_ageTLE->adjustSize();
-    _ui->ageTLE->move(_ui->lbl_ageTLE->x() + _ui->lbl_ageTLE->width() + 7, _ui->ageTLE->y());
+    _ui->ageTLE->move(_ui->lbl_ageTLE->x() + _ui->lbl_ageTLE->width() + 3, _ui->ageTLE->y());
 
     _ui->lbl_nbOrbitesSat->adjustSize();
     _ui->lbl_nbOrbitesSat->resize(_ui->lbl_nbOrbitesSat->width(), 16);
@@ -3590,7 +3616,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         const Date date(_date->jourJulien() + EPS_DATES, 0.);
         _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         _ui->dateInitialeTransit->setDisplayFormat(fmt);
-        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(7));
+        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(14));
         _ui->dateFinaleTransit->setDisplayFormat(fmt);
 
         _ui->calculsTransit->setDefault(true);
@@ -4112,7 +4138,7 @@ void Onglets::on_calculsFlashs_clicked()
         }
 
         // Lecture du fichier TLE
-        QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), fi.filePath(), listeSatellites);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fi.filePath(), Configuration::instance()->dirLocalData(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);
@@ -4336,61 +4362,130 @@ void Onglets::on_calculsTransit_clicked()
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
 
-        // Fichier TLE
-        conditions.fichier = Configuration::instance()->dirTle() + QDir::separator() + "visual.txt";
-
         // Age maximal du TLE
         const double ageTLE = _ui->ageMaxTLETransit->value();
 
-        // Verification du fichier TLE
-        const QFileInfo fi(conditions.fichier);
-        if (!fi.exists()) {
-            throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
-        }
-
-        if (TLE::VerifieFichier(fi.absoluteFilePath(), false) == 0) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                   "Le fichier %1 n'est pas un TLE");
-            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
-        }
-
-        // Lecture du TLE
+        // Selection du fichier d'elements orbitaux
+        const QFileInfo fi1(Configuration::instance()->dirTle() + QDir::separator() + "visual.txt");
+        const QFileInfo fi2(Configuration::instance()->dirTle() + QDir::separator() + "iss.3le");
         const QStringList listeSatellites(QStringList () << Configuration::instance()->noradStationSpatiale());
-        const QMap<QString, TLE> tabtle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), fi.absoluteFilePath(), listeSatellites);
-        if (tabtle.isEmpty()) {
-            const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                   "Le fichier %1 ne contient pas le TLE de l'ISS");
-            throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+        QList<TLE> tabtle;
+
+        if (fi2.exists() && (fi2.size() != 0)) {
+
+            // Verification du fichier
+            if (TLE::VerifieFichier(fi2.absoluteFilePath()) == 0) {
+
+                const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                       "Le fichier %1 n'est pas un TLE");
+                throw PreviSatException(msg.arg(fi2.absoluteFilePath()), WARNING);
+            }
+
+            // Lecture du fichier iss.3le
+            tabtle = TLE::LectureFichier3le(fi2.absoluteFilePath());
+
+            // Verification des dates
+            const double datePremierTLE = tabtle.first().epoque().jourJulienUTC();
+            const double dateDernierTLE = tabtle.last().epoque().jourJulienUTC();
+
+            double age1 = 0.;
+            if (conditions.jj1 < datePremierTLE) {
+                age1 = datePremierTLE - conditions.jj1;
+            }
+
+            if (conditions.jj1 > dateDernierTLE) {
+                age1 = conditions.jj1 - dateDernierTLE;
+            }
+
+            double age2 = 0.;
+            if (conditions.jj2 < datePremierTLE) {
+                age2 = datePremierTLE - conditions.jj2;
+            }
+
+            if (conditions.jj2 > dateDernierTLE) {
+                age2 = conditions.jj2 - dateDernierTLE;
+            }
+
+            if ((fabs(age1) > EPSDBL100) && (fabs(age2) > EPSDBL100)) {
+
+                if (fi1.exists() && (fi1.size() != 0)) {
+
+                    // Verification du fichier
+                    if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
+
+                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                               "Le fichier %1 n'est pas un TLE");
+                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                    }
+
+                    // Utilisation des elements orbitaux du fichier visual.txt
+                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->dirLocalData(),
+                                                                              listeSatellites).first());
+
+                    if (tle.isEmpty()) {
+
+                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                               "Le fichier %1 ne contient pas le TLE de l'ISS");
+                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+
+                    } else {
+
+                        // Age du TLE de l'ISS contenu dans visual.txt
+                        const double ageIss1 = fabs(conditions.jj1 - tle.first().epoque().jourJulienUTC());
+                        const double ageIss2 = fabs(conditions.jj2 - tle.first().epoque().jourJulienUTC());
+
+                        if (((age1 > 0.) || (age2 > 0.))
+                                && (ageIss1 < (conditions.jj1 - datePremierTLE)) && (ageIss2 < (conditions.jj2 - datePremierTLE))) {
+
+                            // Utilisation du TLE du fichier visual.txt
+                            age1 = qMin(ageIss1, ageIss2);
+                            age2 = age1;
+                            conditions.tabtle = tle;
+
+                        } else {
+
+                            // Utilisation des TLE du fichier iss.3le
+                            conditions.tabtle = tabtle;
+                        }
+                    }
+                }
+            } else {
+                conditions.tabtle = tabtle;
+            }
+
+            if ((age1 > (ageTLE + 0.05)) || (age2 > (ageTLE + 0.05))) {
+                const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+                Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
+            }
+
+        } else {
+
+            if (fi1.exists() && (fi1.size() != 0)) {
+
+                // Verification du fichier
+                if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
+
+                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                           "Le fichier %1 n'est pas un TLE");
+                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                }
+
+                // Utilisation des elements orbitaux du fichier visual.txt
+                tabtle.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->dirLocalData(), listeSatellites).first());
+
+                if (tabtle.isEmpty()) {
+
+                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                           "Le fichier %1 ne contient pas le TLE de l'ISS");
+                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+
+                } else {
+                    conditions.tabtle = tabtle;
+                }
+            } else {
+                throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
+            }
         }
-
-        // Age des TLE
-        const double agePremierTLE = tabtle.first().epoque().jourJulienUTC();
-        const double ageDernierTLE = tabtle.last().epoque().jourJulienUTC();
-
-        double age1 = 0.;
-        if (conditions.jj1 < agePremierTLE) {
-            age1 = agePremierTLE - conditions.jj1;
-        }
-
-        if (conditions.jj1 > ageDernierTLE) {
-            age1 = conditions.jj1 - ageDernierTLE;
-        }
-
-        double age2 = 0.;
-        if (conditions.jj2 < agePremierTLE) {
-            age2 = agePremierTLE - conditions.jj2;
-        }
-
-        if (conditions.jj2 > ageDernierTLE) {
-            age2 = conditions.jj2 - ageDernierTLE;
-        }
-
-        if ((age1 > ageTLE + 0.05) || (age2 > ageTLE + 0.05)) {
-            //            const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-            //            Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageTLE, 0, 'f', 1), INFO);
-        }
-
-        conditions.listeSatellites = listeSatellites;
 
         // Nom du fichier resultat
         const QString chaine = tr("transits") + "_%1_%2.txt";
@@ -4533,7 +4628,7 @@ void Onglets::on_genererPositions_clicked()
         }
 
         // Lecture du fichier TLE
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), Configuration::instance()->nomfic(),
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->dirLocalData(),
                                                            satelliteSelectionne);
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon

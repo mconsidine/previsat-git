@@ -90,7 +90,7 @@ int Telescope::CalculSuiviTelescope(int &nombre)
         Date date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
 
         // Creation de la liste de TLE
-        const QMap<QString, TLE> tabTle = TLE::LectureFichier(Configuration::instance()->dirLocalData(), _conditions.fichier,
+        const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->dirLocalData(),
                                                               _conditions.listeSatellites);
 
         // Satellite

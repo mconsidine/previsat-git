@@ -82,6 +82,7 @@ Satellite::Satellite(const QList<TLE> &tabtle) :
     _ageTLE = 0.;
     _beta = 0.;
     _deltaNbOrb = -1;
+    _tle = _tabtle.at(0);
 
     /* Retour */
     return;
@@ -238,23 +239,28 @@ void Satellite::CalculPosVit(const Date &date)
 
         if (!_tabtle.isEmpty()) {
 
-            const double jjsav = _tle.dateDebutValidite().jourJulienUTC();
+            const double jjsav = _tle.epoque().jourJulienUTC();
             _tle = _tabtle.at(0);
+
+            // Recherche du TLE le plus recent
             QListIterator<TLE> it(_tabtle);
             while (it.hasNext()) {
 
                 const TLE xtle = it.next();
-                if (date.jourJulienUTC() >= xtle.dateDebutValidite().jourJulienUTC()) {
+                if (date.jourJulienUTC() >= xtle.epoque().jourJulienUTC()) {
                     _tle = xtle;
                 } else {
                     it.toBack();
                 }
             }
-            if (fabs(_tle.dateDebutValidite().jourJulienUTC() - jjsav) > EPS_DATES) {
+
+            // Reinitialisation des valeurs du modele SGP4 en cas de changement de TLE
+            if (fabs(_tle.epoque().jourJulienUTC() - jjsav) > EPS_DATES) {
                 _sgp4.setInit(false);
             }
         }
 
+        // Calcul de la position et de la vitesse
         _sgp4.Calcul(date, _tle);
         _position = _sgp4.position();
         _vitesse = _sgp4.vitesse();

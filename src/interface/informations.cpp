@@ -119,8 +119,16 @@ Informations::Informations(QWidget *fenetreParent, Onglets *onglets) :
     }
 }
 
+/*
+ * Destructeur
+ */
 Informations::~Informations()
 {
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
     delete ui;
 }
 
