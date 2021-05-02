@@ -7967,6 +7967,32 @@
          </property>
         </item>
        </widget>
+       <widget class="QToolButton" name="skywatcher">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>70</y>
+          <width>132</width>
+          <height>62</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string notr="true">http://skywatcher.com/</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/resources/logo-skywatcher.png</normaloff>:/resources/logo-skywatcher.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>131</width>
+          <height>61</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QLabel" name="visibiliteSatSuivi">
        <property name="geometry">
@@ -7981,32 +8007,6 @@
         <string>Le satellite n'est pas visible depuis le lieu d'observation</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QToolButton" name="skywatcher">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>100</y>
-        <width>132</width>
-        <height>62</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string notr="true">http://skywatcher.com/</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../resources.qrc">
-        <normaloff>:/resources/logo-skywatcher.png</normaloff>:/resources/logo-skywatcher.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>131</width>
-        <height>61</height>
-       </size>
-      </property>
-      <property name="autoRaise">
-       <bool>true</bool>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="options">

@@ -86,10 +86,17 @@ Ciel::Ciel(Onglets *onglets, QWidget *parent) :
  */
 Ciel::~Ciel()
 {
-    delete ui;
     if (scene != nullptr) {
         delete scene;
+        scene = nullptr;
     }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
+    delete ui;
 }
 
 

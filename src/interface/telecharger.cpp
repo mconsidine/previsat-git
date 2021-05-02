@@ -92,8 +92,16 @@ Telecharger::Telecharger(const AdressesTelechargement &adresse, Onglets *onglets
     }
 }
 
+/*
+ * Destructeur
+ */
 Telecharger::~Telecharger()
 {
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
     delete ui;
 }
 

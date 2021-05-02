@@ -102,6 +102,9 @@ Apropos::Apropos(QWidget *fenetreParent) :
                                    toString(Qt::SystemLocaleShortDate)));
 }
 
+/*
+ * Destructeur
+ */
 Apropos::~Apropos()
 {
     delete ui;

@@ -94,6 +94,8 @@ PreviSat::PreviSat(QWidget *parent) :
     /* Corps du constructeur */
     ui->setupUi(this);
 
+    _dateCourante = nullptr;
+
     try {
 
         // Initialisation de la configuration generale
@@ -115,6 +117,86 @@ PreviSat::PreviSat(QWidget *parent) :
  */
 PreviSat::~PreviSat()
 {
+    if (_carte != nullptr) {
+        delete _carte;
+        _carte = nullptr;
+    }
+
+    if (_ciel != nullptr) {
+        delete _ciel;
+        _ciel = nullptr;
+    }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
+    if (_radar != nullptr) {
+        delete _radar;
+        _radar = nullptr;
+    }
+
+    if (_maximise != nullptr) {
+        delete _maximise;
+        _maximise = nullptr;
+    }
+
+    if (_affichageCiel != nullptr) {
+        delete _affichageCiel;
+        _affichageCiel = nullptr;
+    }
+
+    if (_messageStatut != nullptr) {
+        delete _messageStatut;
+        _messageStatut = nullptr;
+    }
+
+    if (_messageStatut2 != nullptr) {
+        delete _messageStatut2;
+        _messageStatut2 = nullptr;
+    }
+
+    if (_messageStatut3 != nullptr) {
+        delete _messageStatut3;
+        _messageStatut3 = nullptr;
+    }
+
+    if (_modeFonctionnement != nullptr) {
+        delete _modeFonctionnement;
+        _modeFonctionnement = nullptr;
+    }
+
+    if (_stsDate != nullptr) {
+        delete _stsDate;
+        _stsDate = nullptr;
+    }
+
+    if (_stsHeure != nullptr) {
+        delete _stsHeure;
+        _stsHeure = nullptr;
+    }
+
+    if (_dateCourante != nullptr) {
+        delete _dateCourante;
+        _dateCourante = nullptr;
+    }
+
+    if (_chronometre != nullptr) {
+        delete _chronometre;
+        _chronometre = nullptr;
+    }
+
+    if (_chronometreMs != nullptr) {
+        delete _chronometreMs;
+        _chronometreMs = nullptr;
+    }
+
+    if (_timerStatut != nullptr) {
+        delete _timerStatut;
+        _timerStatut = nullptr;
+    }
+
     delete ui;
 }
 
@@ -205,7 +287,7 @@ void PreviSat::ChargementTLE()
             TLE::VerifieFichier(nomfic, true);
 
             // Lecture du fichier TLE en entier
-            Configuration::instance()->setMapTLE(TLE::LectureFichier(Configuration::instance()->dirLocalData(), nomfic));
+            Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic, Configuration::instance()->dirLocalData()));
 
             // Mise a jour de la liste de satellites
             QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()];
@@ -567,6 +649,7 @@ void PreviSat::InitFicTLE() const
     /* Declarations des variables locales */
 
     /* Initialisations */
+    bool defaut = false;
     int idx = 0;
     QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
@@ -587,6 +670,9 @@ void PreviSat::InitFicTLE() const
             }
         } else {
             // Suppression dans la liste des fichiers qui ne sont pas des TLE
+            if (fic == Configuration::instance()->nomfic()) {
+                defaut = true;
+            }
             listeTLE.removeAt(idx);
         }
         idx++;
@@ -594,6 +680,10 @@ void PreviSat::InitFicTLE() const
 
     if (listeTLE.count() == 0) {
         ui->listeFichiersTLE->addItem("");
+    } else {
+        if (defaut) {
+            Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() + listeTLE.at(0);
+        }
     }
     ui->listeFichiersTLE->addItem(tr("Parcourir..."));
 
@@ -974,7 +1064,12 @@ void PreviSat::ChangementDate(const QDateTime &date)
                     date.time().hour(), date.time().minute(), date.time().second(), 0.);
 
     /* Corps de la methode */
-    _dateCourante = new Date(datp.jourJulienUTC() - _dateCourante->offsetUTC(), _dateCourante->offsetUTC());
+    const double offset = _dateCourante->offsetUTC();
+    if (_dateCourante != nullptr) {
+        delete _dateCourante;
+        _dateCourante = nullptr;
+    }
+    _dateCourante = new Date(datp.jourJulienUTC() - offset, offset);
 
     if (ui->modeManuel->isChecked()) {
         _onglets->setInfo(true);
@@ -1140,7 +1235,12 @@ void PreviSat::GestionTempsReel()
                     jd += pas;
                 }
 
-                _dateCourante = new Date(jd + EPS_DATES, _dateCourante->offsetUTC());
+                const double offset = _dateCourante->offsetUTC();
+                if (_dateCourante != nullptr) {
+                    delete _dateCourante;
+                    _dateCourante = nullptr;
+                }
+                _dateCourante = new Date(jd + EPS_DATES, offset);
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
@@ -1171,8 +1271,15 @@ void PreviSat::TempsReel()
     if (ui->tempsReel->isChecked()) {
 
         // Date actuelle
-        _dateCourante = new Date(_dateCourante->offsetUTC());
+        const double offset = _dateCourante->offsetUTC();
+        if (_dateCourante != nullptr) {
+            delete _dateCourante;
+            _dateCourante = nullptr;
+        }
+
+        _dateCourante = new Date(offset);
         _modeFonctionnement->setText(tr("Temps réel"));
+
     } else {
         _modeFonctionnement->setText(tr("Mode manuel"));
     }

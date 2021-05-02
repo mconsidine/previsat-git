@@ -63,6 +63,9 @@ public:
      */
     explicit Apropos(QWidget *fenetreParent = 0);
 
+    /*
+     * Destructeur
+     */
     ~Apropos();
 
     /*

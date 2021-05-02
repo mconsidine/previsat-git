@@ -70,10 +70,17 @@ Radar::Radar(Onglets *onglets, QWidget *parent) :
  */
 Radar::~Radar()
 {
-    delete ui;
     if (scene != nullptr) {
         delete scene;
+        scene = nullptr;
     }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
+    delete ui;
 }
 
 

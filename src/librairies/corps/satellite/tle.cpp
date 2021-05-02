@@ -80,7 +80,7 @@ TLE::TLE()
 /*
  * Definition a partir des composantes du TLE
  */
-TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Date &dateDebValid) :
+TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2) :
     _ligne0(lig0), _ligne1(lig1), _ligne2(lig2)
 {
     /* Declarations des variables locales */
@@ -90,9 +90,6 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Da
     /* Corps du constructeur */
     // Numero NORAD
     _norad = _ligne1.mid(2, 5);
-
-    // Date de debut de validite du TLE
-    _dateDebutValidite = dateDebValid;
 
     // Designation COSPAR
     int annee = _ligne1.mid(9, 2).toInt();
@@ -146,11 +143,6 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2, const Da
 unsigned int TLE::nbOrbitesEpoque() const
 {
     return _nbOrbitesEpoque;
-}
-
-Date TLE::dateDebutValidite() const
-{
-    return _dateDebutValidite;
 }
 
 double TLE::argpo() const
@@ -336,7 +328,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, TLE> TLE::LectureFichier(const QString &dirLocalData, const QString &nomFichier, const QStringList &listeSatellites)
+QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites)
 {
     /* Declarations des variables locales */
     static QString magn;
@@ -456,7 +448,6 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
             QString ligne1;
             QString ligne2;
 
-
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
@@ -474,9 +465,7 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
                         ligne2 = flux.readLine();
                     }
 
-                    const Date dateDeb(ligne0.mid(15).toDouble(), 0., false);
-
-                    const TLE tle(ligne0.mid(0, 15).trimmed(), ligne1, ligne2, dateDeb);
+                    const TLE tle(ligne0, ligne1, ligne2);
                     tabtle.append(tle);
                 }
             }
@@ -488,168 +477,6 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 
     /* Retour */
     return tabtle;
-}
-
-/*
- * Lecture du fichier Human Space Flight
- */
-void TLE::LectureTrajectoryData(const QString &fichierHsf, const QString &fichier3le, QStringList &tabManoeuvres)
-{
-    /* Declarations des variables locales */
-    QStringList tabMan;
-    QStringList tabMasse;
-    QVector<TLE> tabtle;
-
-    /* Initialisations */
-    tabManoeuvres.clear();
-    tabtle.clear();
-
-    /* Corps de la methode */
-    QFile fi(fichierHsf);
-    if (fi.exists() && (fi.size() != 0)) {
-
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-
-        Date debValid(-DATE_INFINIE, 0., false);
-
-        QString dateFormatNasa;
-        QString ligne;
-        QString orb;
-
-        while (!flux.atEnd()) {
-
-            ligne = flux.readLine();
-
-            // Lecture des manoeuvres
-            if (ligne.contains("Maneuvers contained")) {
-
-                while (!flux.readLine().contains("---")) {
-                }
-
-                while (!(ligne = flux.readLine()).contains("Coasting Arc")) {
-
-                    if (!ligne.trimmed().isEmpty()) {
-
-                        // Premiere ligne
-                        const QStringList tab1 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString date = tab1.at(0);
-                        const QString dvx_m50 = tab1.at(1);
-                        const QString dvx_lvlh = tab1.at(2);
-                        const QString deltaV = tab1.last();
-
-                        // Deuxieme ligne
-                        ligne = flux.readLine();
-                        const QStringList tab2 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString dvy_m50 = tab2.at(1);
-                        const QString dvy_lvlh = tab2.at(2);
-                        const QString apogee = tab2.last();
-
-                        // Troisieme ligne
-                        ligne = flux.readLine();
-                        const QStringList tab3 = ligne.split(" ", QString::SkipEmptyParts);
-                        const QString dvz_m50 = tab3.at(1);
-                        const QString dvz_lvlh = tab3.at(2);
-                        const QString duree = QString("%1").arg((Date::ConversionDateNasa("2000/" + tab3.at(0)).jourJulienUTC() + 1.5) *
-                                                                NB_SEC_PAR_JOUR, 0, 'f', 3);
-                        const QString perigee = tab3.last();
-                        tabMan.append(date + " " + apogee + " " + perigee + " " + deltaV + " " + duree + " " + dvx_m50 + " " + dvy_m50 + " " +
-                                      dvz_m50 + " " + dvx_lvlh + " " + dvy_lvlh + " " + dvz_lvlh);
-                    }
-                }
-            }
-
-            // Nombre d'orbites NASA
-            if (ligne.contains("Coasting Arc")) {
-                orb = ligne.split(" ", QString::SkipEmptyParts).last().replace(")", "");
-            }
-
-            // Date du TLE
-            if (ligne.contains("Vector Time (GMT)")) {
-                dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).last();
-                debValid = Date::ConversionDateNasa(dateFormatNasa);
-            }
-
-            // Masse
-            if (ligne.contains("Weight")) {
-                tabMasse.append(dateFormatNasa + " " + orb + " " + ligne.split(" ", QString::SkipEmptyParts).last());
-            }
-
-            // TLE
-            if (ligne.trimmed() == "TWO LINE MEAN ELEMENT SET") {
-
-                bool afin = false;
-                while (!afin) {
-
-                    const QString lig = flux.readLine().trimmed();
-
-                    if (lig.size() > 0) {
-                        afin = true;
-                        const QString li0 = lig;
-                        const QString li1 = flux.readLine().trimmed();
-                        const QString li2 = flux.readLine().trimmed();
-
-                        VerifieLignes(li1, li2, li0, false);
-                        tabtle.append(TLE(li0, li1, li2, debValid));
-                    }
-                }
-            }
-        }
-        fi.close();
-    }
-
-    // Tableau de manoeuvres
-    int i = 0;
-    Date dateArc1(-DATE_INFINIE, 0.);
-    QString masse1;
-    QStringListIterator it(tabMasse);
-    while (it.hasNext() && (i < tabMan.size())) {
-
-        const QString ligne = it.next();
-        const QString dateFormatNasa = ligne.split(" ", QString::SkipEmptyParts).first();
-        const QString orb = ligne.split(" ", QString::SkipEmptyParts).at(1);
-
-        const Date dateArc2 = Date::ConversionDateNasa(dateFormatNasa);
-        const QString masse2 = ligne.split(" ", QString::SkipEmptyParts).last();
-        const Date dateMan = Date::ConversionDateNasa(dateFormatNasa.split("/", QString::SkipEmptyParts).first() + "/" +
-                                                      tabMan.at(i).split(" ", QString::SkipEmptyParts).first());
-
-        if ((dateMan.jourJulienUTC() >= dateArc1.jourJulienUTC()) && (dateMan.jourJulienUTC() < dateArc2.jourJulienUTC())) {
-            QString fmt = "%1";
-            if (masse1.isEmpty()) {
-                masse1 = masse2;
-            }
-            tabManoeuvres.append(fmt.arg(dateMan.jourJulienUTC(), 0, 'f', 12) + " " + orb + " " + masse1 + " " +
-                                 tabMan.at(i).mid(tabMan.at(i).indexOf(" ")+1));
-            i++;
-        }
-        dateArc1 = dateArc2;
-        masse1 = masse2;
-    }
-
-    if (!tabtle.isEmpty()) {
-
-        QFile fichier(fichier3le);
-        if (fichier.exists() && (fichier.size() != 0)) {
-
-            fichier.open(QIODevice::WriteOnly | QIODevice::Text);
-            QTextStream flux(&fichier);
-
-            const QString fmt = "%1";
-            QVectorIterator<TLE> it2(tabtle);
-            while (it2.hasNext()) {
-                const TLE tle = it2.next();
-                flux << tle._ligne0 << QString(15 - tle._ligne0.length(), QChar(' '))
-                     << fmt.arg(tle._dateDebutValidite.jourJulienUTC(), 0, 'f', 12) << endl;
-                flux << tle._ligne1 << endl;
-                flux << tle._ligne2 << endl;
-            }
-            fichier.close();
-        }
-    }
-
-    /* Retour */
-    return;
 }
 
 /*
@@ -671,7 +498,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleOld = LectureFichier(dirLocalData, ficOld);
+    QMap<QString, TLE> tleOld = LectureFichier(ficOld, dirLocalData);
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
@@ -681,7 +508,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleNew = LectureFichier(dirLocalData, ficNew);
+    QMap<QString, TLE> tleNew = LectureFichier(ficNew, dirLocalData);
 
     /* Corps de la methode */
     // Mise a jour

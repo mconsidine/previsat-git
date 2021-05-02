@@ -163,8 +163,36 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     return;
 }
 
+/*
+ * Destructeur
+ */
 Afficher::~Afficher()
 {
+    if (_ciel != nullptr) {
+        delete _ciel;
+        _ciel = nullptr;
+    }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
+    if (tableDetail != nullptr) {
+        delete tableDetail;
+        tableDetail = nullptr;
+    }
+
+    if (afficherDetail != nullptr) {
+        delete afficherDetail;
+        afficherDetail = nullptr;
+    }
+
+    if (scene != nullptr) {
+        delete scene;
+        scene = nullptr;
+    }
+
     delete ui;
 }
 
@@ -1401,9 +1429,9 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     /* Initialisations */
     const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
             .value<QList<ResultatPrevisions> > ();
-    const Date dateDeb = list.at(0).date;
-    const Date dateMax = (_typeCalcul == FLASHS) ? list.at(1).date : Date();
-    const Date dateFin = list.last().date;
+    const Date dateDeb = Date(list.first().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+    const Date dateMax = (_typeCalcul == FLASHS) ? Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1))) : Date();
+    const Date dateFin = Date(list.last().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
 
     /* Corps de la methode */
     // Calcul de la position de l'observateur
