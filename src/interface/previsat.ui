@@ -1555,7 +1555,6 @@
     <addaction name="actionInformations"/>
     <addaction name="separator"/>
     <addaction name="actionTelecharger_la_mise_a_jour"/>
-    <addaction name="actionMettre_jour_fichiers_internes"/>
     <addaction name="separator"/>
     <addaction name="actionFaire"/>
     <addaction name="separator"/>
@@ -1832,14 +1831,6 @@
     <string>Ctrl+N</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionMettre_jour_fichiers_internes">
-   <property name="text">
-    <string>Mettre à jour les fichiers internes</string>
-   </property>
-   <property name="visible">
     <bool>false</bool>
    </property>
   </action>

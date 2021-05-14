@@ -107,11 +107,6 @@ public:
     void ChargementConfig();
 
     /**
-     * @brief ChargementTLE Chargement du fichier TLE par defaut
-     */
-    void ChargementTLE();
-
-    /**
      * @brief MAJTLE Mise a jour des TLE lors du demarrage
      */
     void MAJTLE();
@@ -125,17 +120,22 @@ public:
 public slots:
 
     /**
+     * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
+     * @param message message
+     * @param secondes nombre de secondes pendant lesquelles le message est affiche
+     */
+    void AfficherMessageStatut(const QString &message, const int secondes= -1);
+
+    /**
      * @brief ChangementLangue Changement dynamique de la langue
      * @param index indice
      */
     void ChangementLangue(const int index);
 
     /**
-     * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
-     * @param message message
-     * @param secondes nombre de secondes pendant lesquelles le message est affiche
+     * @brief ChargementTLE Chargement du fichier TLE par defaut
      */
-    void AfficherMessageStatut(const QString &message, const int secondes);
+    void ChargementTLE();
 
     /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut
@@ -244,6 +244,31 @@ private:
     void InstallationTraduction(const QString &langue, QTranslator &traduction);
 
 
+    /***********
+     * Calculs *
+     * ********/
+    /**
+     * @brief EnchainementCalculs Enchainement des calculs
+     */
+    void EnchainementCalculs();
+
+    /**
+     * @brief MajFichierTLE Mise a jour du fichier TLE courant
+     */
+    void MajFichierTLE();
+
+    /**
+     * @brief MettreAJourGroupeTLE Mettre a jour un groupe de TLE
+     * @param groupe nom du groupe
+     */
+    void MettreAJourGroupeTLE(const QString &groupe);
+
+private slots:
+
+    void ChangementCarte();
+    void ChangementZoom();
+    void ChangementDate(const QDateTime &date);
+
     /*************
      * Affichage *
      ************/
@@ -253,23 +278,6 @@ private:
      * @param majListesOnglets mise a jour des listes dans les onglets
      */
     void AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets = true);
-
-
-    /***********
-     * Calculs *
-     * ********/
-    /**
-     * @brief EnchainementCalculs Enchainement des calculs
-     */
-    void EnchainementCalculs();
-
-
-private slots:
-
-    void ChangementCarte();
-    void ChangementZoom();
-    void ChangementDate(const QDateTime &date);
-
 
     /**
      * @brief ChargementFenetre Chargement des elements de la fenetre
@@ -288,6 +296,12 @@ private slots:
     void on_meteo_clicked();
 
     // Menu deroulant
+    void on_actionMettre_jour_TLE_courant_triggered();
+    void on_actionMettre_jour_groupe_TLE_triggered();
+    void on_actionMettre_jour_TLE_communs_triggered();
+    void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();
+    void on_actionMettre_jour_les_fichiers_de_donnees_triggered();
+
     void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();
     void on_actionFaire_triggered();
