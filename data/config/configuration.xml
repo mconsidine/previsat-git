@@ -8,11 +8,23 @@
             <Latitude>48.853390000</Latitude>
             <Altitude>30</Altitude>
         </Observateur>
+        <Observateur>
+            <Nom>Toulouse</Nom>
+            <Longitude>-001.443670000</Longitude>
+            <Latitude>43.604260000</Latitude>
+            <Altitude>146</Altitude>
+        </Observateur>
+        <Observateur>
+            <Nom>Lyon</Nom>
+            <Longitude>-004.850000000</Longitude>
+            <Latitude>45.750000000</Latitude>
+            <Altitude>175</Altitude>
+        </Observateur>
     </Observateurs>
     <FichiersTLE>
         <Fichier nom="visual.txt">
-            <TLE>25544</TLE>
             <TLE>20580</TLE>
+            <TLE>25544</TLE>
         </Fichier>
     </FichiersTLE>
 </PreviSatConfiguration>

@@ -62,6 +62,7 @@ Satellite::Satellite()
     _ageTLE = 0.;
     _beta = 0.;
     _deltaNbOrb = -1;
+    _sgp4.setInit(false);
 
     /* Retour */
     return;
@@ -83,6 +84,7 @@ Satellite::Satellite(const QList<TLE> &tabtle) :
     _beta = 0.;
     _deltaNbOrb = -1;
     _tle = _tabtle.at(0);
+    _sgp4.setInit(false);
 
     /* Retour */
     return;

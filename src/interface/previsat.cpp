@@ -95,6 +95,9 @@ PreviSat::PreviSat(QWidget *parent) :
     ui->setupUi(this);
 
     _dateCourante = nullptr;
+    _chronometre = nullptr;
+    _chronometreMs = nullptr;
+    _timerStatut = nullptr;
 
     try {
 
@@ -125,11 +128,6 @@ PreviSat::~PreviSat()
     if (_ciel != nullptr) {
         delete _ciel;
         _ciel = nullptr;
-    }
-
-    if (_onglets != nullptr) {
-        delete _onglets;
-        _onglets = nullptr;
     }
 
     if (_radar != nullptr) {
@@ -195,6 +193,11 @@ PreviSat::~PreviSat()
     if (_timerStatut != nullptr) {
         delete _timerStatut;
         _timerStatut = nullptr;
+    }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
     }
 
     delete ui;
@@ -742,6 +745,12 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     /* Declarations des variables locales */
 
     /* Initialisations */
+    ui->liste1->clear();
+    _onglets->ui()->liste2->clear();
+    _onglets->ui()->liste3->clear();
+#if defined (Q_OS_WIN)
+    _onglets->ui()->liste4->clear();
+#endif
     const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
 
     /* Corps de la methode */
@@ -825,16 +834,23 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
     /* Corps de la methode */
     _messageStatut->setText(message);
 
-    if ((_timerStatut != nullptr) && _timerStatut->isActive() && (_timerStatut->interval() > 0)) {
-        _timerStatut->stop();
+    if ((_timerStatut != nullptr) && (_timerStatut->interval() > 0)) {
+
+        if (_timerStatut->isActive()) {
+            _timerStatut->stop();
+        }
+
         _timerStatut->deleteLater();
         _timerStatut = nullptr;
     }
 
-    _timerStatut = new QTimer(this);
-    _timerStatut->setInterval(secondes * 1000);
-    connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
-    _timerStatut->start();
+    if (secondes > 0) {
+
+        _timerStatut = new QTimer(this);
+        _timerStatut->setInterval(secondes * 1000);
+        connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
+        _timerStatut->start();
+    }
 
     /* Retour */
     return;
@@ -981,6 +997,39 @@ void PreviSat::EnchainementCalculs()
     return;
 }
 
+/*
+ * Mise a jour du fichier TLE courant
+ */
+void PreviSat::MajFichierTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QFileInfo fi(Configuration::instance()->nomfic());
+
+    /* Corps de la methode */
+    if (QDir::toNativeSeparators(fi.absolutePath()) == Configuration::instance()->dirTle()) {
+
+        connect(_onglets, SIGNAL(TelechargementFini()), _onglets, SLOT(FinTelechargementTle()));
+
+        _messageStatut->setText(tr("Mise à jour du fichier TLE %1 en cours...").arg(fi.fileName()));
+        const QString adresse = (fi.fileName().contains("spctrk")) ?
+                    Configuration::instance()->adresseAstropedia() + "previsat/tle/" : Configuration::instance()->adresseCelestrakNorad();
+        const QString ficMaj = adresse + fi.fileName();
+
+        _onglets->setDirDwn(Configuration::instance()->dirTle());
+        _onglets->TelechargementFichier(ficMaj, true);
+        settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::MettreAJourGroupeTLE(const QString &groupe)
+{
+    _onglets->MettreAJourGroupeTLE(groupe);
+}
 
 void PreviSat::ChangementCarte()
 {
@@ -1166,6 +1215,8 @@ void PreviSat::ChargementFenetre()
 
     connect(_onglets, SIGNAL(ModeManuel(bool)), this, SLOT(on_modeManuel_toggled(bool)));
     connect(_onglets, SIGNAL(ChangementDate(const QDateTime &)), this, SLOT(ChangementDate(const QDateTime &)));
+    connect(_onglets, SIGNAL(RechargerTLE()), this, SLOT(ChargementTLE()));
+    connect(_onglets, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
     /* Retour */
     return;
@@ -1459,6 +1510,77 @@ void PreviSat::on_meteo_clicked()
 /*
  * Menu deroulant
  */
+void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
+{
+    MajFichierTLE();
+}
+
+void PreviSat::on_actionMettre_jour_groupe_TLE_triggered()
+{
+    _onglets->on_majMaintenant_clicked();
+}
+
+void PreviSat::on_actionMettre_jour_TLE_communs_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Mise a jour des groupes de TLE communs
+    _messageStatut->setText(tr("Mise à jour des fichiers TLE communs..."));
+    MettreAJourGroupeTLE(tr("commun"));
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Mise a jour de tous les groupes de TLE
+    _messageStatut->setText(tr("Mise à jour des groupes de TLE en cours..."));
+    MettreAJourGroupeTLE(tr("tous"));
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionMettre_jour_les_fichiers_de_donnees_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut->setText(tr("Mise à jour du fichier de données en cours..."));
+    _onglets->setDirDwn(Configuration::instance()->dirLocalData());
+    connect(_onglets, SIGNAL(TelechargementFini()), _onglets, SLOT(FinTelechargementDonnees()));
+
+    foreach(QString fic, Configuration::instance()->listeFicLocalData()) {
+
+        if (!fic.contains("gestionnaireTLE") && !fic.contains("preferences")) {
+            const QString ficMaj = Configuration::instance()->adresseAstropedia() + "previsat/Qt/commun/data/" + fic.replace("\\", "/");
+            _onglets->TelechargementFichier(ficMaj, true);
+        }
+    }
+
+    QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + "majFicInt");
+    if (fi.exists()) {
+        fi.remove();
+    }
+
+    ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
+    settings.setValue("fichier/majPrevi", "0");
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_actionFichier_d_aide_triggered()
 {
     on_directHelp_clicked();
@@ -1696,10 +1818,11 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     /* Initialisations */
     const QString nomsat = item->text();
     const QString norad = item->data(Qt::UserRole).toString();
+    const QString cospar = item->toolTip().split("\n").last();
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        AfficherMessageStatut(tr("%1 (numéro NORAD : %2)").arg(nomsat).arg(norad), 5);
+        AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  %3)").arg(nomsat).arg(norad).arg(cospar), 5);
     }
 
     /* Retour */

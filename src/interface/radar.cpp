@@ -75,11 +75,6 @@ Radar::~Radar()
         scene = nullptr;
     }
 
-    if (_onglets != nullptr) {
-        delete _onglets;
-        _onglets = nullptr;
-    }
-
     delete ui;
 }
 

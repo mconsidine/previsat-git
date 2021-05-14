@@ -127,6 +127,9 @@ Onglets::Onglets(QWidget *parent) :
     // Initialisation au demarrage
     InitAffichageDemarrage();
 
+    // Chargement des groupes de TLE (onglet Outils)
+    AffichageGroupesTLE();
+
     // Chargement des fichiers de preference
     InitFicPref(false);
     ChargementPref();
@@ -160,11 +163,6 @@ Onglets::~Onglets()
     if (_elementsAOS != nullptr) {
         delete _elementsAOS;
         _elementsAOS = nullptr;
-    }
-
-    if (_rep != nullptr) {
-        delete _rep;
-        _rep = nullptr;
     }
 
     delete _ui;
@@ -737,6 +735,28 @@ void Onglets::AffichageElementsOSculateurs() const
     } else {
         _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des groupes de TLE
+ */
+void Onglets::AffichageGroupesTLE() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->groupeTLE->clear();
+
+    /* Corps de la methode */
+    QListIterator<CategorieTLE> it(Configuration::instance()->mapCategoriesTLE());
+    while (it.hasNext()) {
+        const QString nomCategorie = it.next().nom[Configuration::instance()->locale()];
+        _ui->groupeTLE->addItem(nomCategorie);
+    }
+    _ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
 
     /* Retour */
     return;
@@ -1520,6 +1540,39 @@ void Onglets::CalculAosSatSuivi() const
 }
 #endif
 
+void Onglets::MettreAJourGroupeTLE(const QString &groupe)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _dirDwn = Configuration::instance()->dirTle();
+    _ui->majMaintenant->setEnabled(false);
+    connect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
+
+    /* Corps de la methode */
+    QListIterator<CategorieTLE> it1(Configuration::instance()->mapCategoriesTLE());
+    while (it1.hasNext()) {
+
+        const CategorieTLE categorie = it1.next();
+        if (categorie.nom[Configuration::instance()->locale()].toLower().contains(groupe)) {
+
+            const QString adresse = (categorie.site.contains("celestrak")) ?
+                        Configuration::instance()->adresseCelestrakNorad() : Configuration::instance()->adresseAstropedia() + "previsat/tle/";
+
+            QStringListIterator it2(categorie.fichiers);
+            while (it2.hasNext()) {
+                AjoutFichier(QUrl(adresse + it2.next()));
+            }
+
+            if (_listeFichiersTelechargement.isEmpty()) {
+                QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
 
 /*
  * Ajout d'un fichier dans la liste de telechargement (telechargement asynchrone)
@@ -1595,6 +1648,37 @@ void Onglets::TelechargementFichier(const QString &fichier, const bool async)
     return;
 }
 
+
+void Onglets::on_majMaintenant_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const CategorieTLE categorie = Configuration::instance()->mapCategoriesTLE().at(_ui->groupeTLE->currentIndex());
+    const QString nom = categorie.nom[Configuration::instance()->locale()].split("@").at(0);
+    const QString adresse = (categorie.site.contains("celestrak")) ?
+                Configuration::instance()->adresseCelestrakNorad() : Configuration::instance()->adresseAstropedia() + "previsat/tle/";
+    connect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
+
+    /* Corps de la methode */
+    _dirDwn = Configuration::instance()->dirTle();
+    _ui->majMaintenant->setEnabled(false);
+
+    const QString chaine = tr("Mise à jour du groupe de TLE \"%1\" (à partir de %2) en cours...");
+    emit AfficherMessageStatut(chaine.arg(nom).arg(categorie.site), 10);
+
+    QStringListIterator it(categorie.fichiers);
+    while (it.hasNext()) {
+        AjoutFichier(QUrl(adresse + it.next()));
+    }
+
+    if (_listeFichiersTelechargement.isEmpty()) {
+        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+    }
+
+    /* Retour */
+    return;
+}
 
 void Onglets::on_pause_clicked()
 {
@@ -1807,6 +1891,10 @@ void Onglets::InitAffichageDemarrage()
     _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
     _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
+
+    _ui->affichageMsgMAJ->addItem(tr("Affichage des messages informatifs"));
+    _ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
+    _ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
 
     /* Retour */
     return;
@@ -2082,24 +2170,114 @@ void Onglets::FinEnregistrementFichier()
     /* Corps de la methode */
     _fichier.close();
 
-    if (_rep->error()) {
+    QFile fd(_fichier.fileName());
+    fd.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&fd);
+    const QString lg = flux.readLine();
+    fd.close();
+
+    if (_rep->error() || lg.toLower().contains("doctype") || lg.trimmed().isEmpty()) {
         // Erreur lors du telechargement
         _fichier.remove();
     } else {
 
         if (_dirDwn != Configuration::instance()->dirTmp()) {
 
-            // Deplacement du fichier vers le repertoire de destination
             const QFileInfo f(_fichier);
-            QFile fi(_dirDwn + QDir::separator() + f.fileName());
+            const QString fic = _dirDwn + QDir::separator() +
+                    ((_dirDwn == Configuration::instance()->dirLocalData()) ?
+                         Configuration::instance()->listeFicLocalData().filter(f.fileName()).first() :
+                         f.fileName());
+
+            // Deplacement du fichier vers le repertoire de destination
+            QFile fi(fic);
             if (fi.exists()) {
                 fi.remove();
             }
             _fichier.rename(fi.fileName());
         }
+
+        // Verification et chargement du fichier TLE courant
+        if (QDir::toNativeSeparators(_fichier.fileName()) == Configuration::instance()->nomfic()) {
+
+            const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
+            if (nb == 0) {
+                const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
+                //ui->compteRenduMaj->setVisible(false);
+            } else {
+
+                _info = true;
+                _acalcAOS = true;
+                _acalcDN = true;
+
+                emit RechargerTLE();
+
+                const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+                QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+                const QFileInfo fi(Configuration::instance()->nomfic());
+
+                if (!Configuration::instance()->mapTLE().isEmpty()) {
+
+                    satellites.clear();
+                    QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
+                    while (it.hasNext()) {
+
+                        const QString norad = it.next();
+                        const TLE tle = Configuration::instance()->mapTLE()[norad];
+
+                        if (norad == noradDefaut) {
+                            satellites.insert(0, Satellite(tle));
+                        } else {
+                            satellites.append(Satellite(tle));
+                        }
+                    }
+                }
+
+                emit RecalculerPositions();
+            }
+        }
     }
     _rep->deleteLater();
     TelechargementSuivant();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Traitements a effectuer apres le telechargement des fichiers de donnees
+ */
+void Onglets::FinTelechargementDonnees()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+    Message::Afficher(tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour des fichiers"), INFO);
+
+    disconnect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementDonnees()));
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Traitements a effectuer apres le telechargement des fichiers TLE
+ */
+void Onglets::FinTelechargementTle()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->majMaintenant->setEnabled(true);
+    emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+
+    disconnect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
 
     /* Retour */
     return;

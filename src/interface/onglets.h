@@ -136,6 +136,12 @@ public:
     void CalculAosSatSuivi() const;
 #endif
 
+    /**
+     * @brief MettreAJourGroupesTLE Mettre a jour un groupe de TLE
+     * @param groupe nom du groupe
+     */
+    void MettreAJourGroupeTLE(const QString &groupe);
+
     /******************
      * Telechargement *
      * ***************/
@@ -161,17 +167,20 @@ public:
 
 public slots:
 
+    void on_majMaintenant_clicked();
     void on_pause_clicked();
 
 
 signals:
 
     void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
-    void AfficherMessageStatut(const QString &message, const int secondes);
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
     void EffacerMessageStatut();
     void ModeManuel(bool enabled);
     void ChangementDate(const QDateTime &dateTime);
     void MiseAJourCarte();
+    void RechargerTLE();
+    void RecalculerPositions();
 
     void Progression(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
     void TelechargementFini();
@@ -267,6 +276,11 @@ private:
      * @brief AffichageElementsOSculateurs Affichage des elements osculateurs du satellite par defaut
      */
     void AffichageElementsOSculateurs() const;
+
+    /**
+     * @brief AffichageGroupesTLE Affichage des groupes de TLE
+     */
+    void AffichageGroupesTLE() const;
 
     /**
      * @brief AffichageInformationsSatellite Affichage des informations sur le satellite
@@ -372,6 +386,16 @@ private slots:
      * @brief FinEnregistrementFichier Fin de l'enregistrement du fichier
      */
     void FinEnregistrementFichier();
+
+    /**
+     * @brief FinTelechargementDonnees Traitements a effectuer apres le telechargement des fichiers de donnees
+     */
+    void FinTelechargementDonnees();
+
+    /**
+     * @brief FinTelechargementTle Traitements a effectuer apres le telechargement des fichiers TLE
+     */
+    void FinTelechargementTle();
 
     /**
      * @brief TelechargementSuivant Telechargement du fichier suivant
