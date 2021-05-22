@@ -75,6 +75,10 @@ class Onglets : public QMainWindow
 {
     Q_OBJECT
 
+#if (BUILD_TEST == true)
+    friend class OngletsTest;
+#endif
+
 public:
 
     /*
@@ -141,6 +145,25 @@ public:
      * @param groupe nom du groupe
      */
     void MettreAJourGroupeTLE(const QString &groupe);
+
+    /**
+     * @brief SauveOngletElementsOsculateurs Sauvegarde des donnees de l'onglet Elements osculateurs
+     * @param fic nom du fichier
+     */
+    void SauveOngletElementsOsculateurs(const QString &fic) const;
+
+    /**
+     * @brief SauveOngletGeneral Sauvegarde des donnees de l'onglet General
+     * @param fic nom du fichier
+     */
+    void SauveOngletGeneral(const QString &fic) const;
+
+    /**
+     * @brief SauveOngletInformations Sauvegarde des donnees de l'onglet Informations
+     * @param fic nom du fichier
+     */
+    void SauveOngletInformations(const QString &fic) const;
+
 
     /******************
      * Telechargement *
