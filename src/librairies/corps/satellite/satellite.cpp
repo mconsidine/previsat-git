@@ -339,13 +339,13 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             }
 
             // Calcul du phasage
-            satellites[i]._phasage.Calcul(satellites[i]._elements, satellites[i].tle().no());
+            satellites[i]._phasage.Calcul(satellites[i]._elements, satellites[i]._tle.no());
 
             // Calcul de l'angle beta
             satellites[i].CalculBeta(soleil);
 
             // Calcul des proprietes du signal (Doppler@100MHz, attenuation@100MHz et delai)
-            satellites[i]._signal.Calcul(satellites[i].rangeRate(), satellites[i].distance());
+            satellites[i]._signal.Calcul(satellites[i]._rangeRate, satellites[i]._distance);
         }
     }
 

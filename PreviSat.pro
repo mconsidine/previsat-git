@@ -41,9 +41,9 @@ VERSION = 5.0.0.11
 ANNEES_DEV = 2005-2021
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
-BUILD_TEST = false
+BUILD_TEST = true
 CLEANUP_TEST = true
-OPTIM_DEBUG_TEST = false
+OPTIM_DEBUG_TEST = true
 #-------------------------------------------------
 
 
@@ -215,6 +215,7 @@ equals(BUILD_TEST, true) {
         test/src/librairies/maths/mathstest.cpp                  \
         test/src/librairies/observateur/observateurtest.cpp      \
         test/src/librairies/systeme/decompressiontest.cpp        \
+        test/src/interface/ongletstest.cpp                       \
         test/src/previsions/evenementsorbitauxtest.cpp           \
         test/src/previsions/flashstest.cpp                       \
         test/src/previsions/previsiontest.cpp                    \
@@ -232,6 +233,7 @@ equals(BUILD_TEST, true) {
         test/src/librairies/maths/mathstest.h                  \
         test/src/librairies/observateur/observateurtest.h      \
         test/src/librairies/systeme/decompressiontest.h        \
+        test/src/interface/ongletstest.h                       \
         test/src/previsions/evenementsorbitauxtest.h           \
         test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \

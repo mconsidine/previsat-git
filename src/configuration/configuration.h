@@ -94,6 +94,10 @@ class QFile;
 
 class Configuration
 {
+#if (BUILD_TEST == true)
+    friend class OngletsTest;
+#endif
+
 public:
 
     /*

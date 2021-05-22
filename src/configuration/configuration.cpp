@@ -673,6 +673,7 @@ void Configuration::DefinitionArborescences()
         _dirTmp = _dirLocalData.mid(0, _dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
     }
 
+    _dirOut = QDir::toNativeSeparators(_dirOut);
     _dirTle = QDir::toNativeSeparators(_dirTle);
 
     // Autres repertoires

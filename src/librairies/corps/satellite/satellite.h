@@ -72,6 +72,7 @@ struct ElementsTraceSol {
 class Satellite : public Corps
 {
 #if BUILD_TEST == true
+    friend class OngletsTest;
     friend class SatelliteTest;
 #endif
 public:
@@ -95,6 +96,7 @@ public:
         _ageTLE = 0.;
         _beta = 0.;
         _deltaNbOrb = -1;
+        _sgp4.setInit(false);
     }
 
     /**
