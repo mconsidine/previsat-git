@@ -306,49 +306,49 @@ void Ciel::show(const Observateur &observateur,
         // Dessin de l'ecliptique
         //if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
 
-            const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
-            const double de1 = tabEcliptique[0][1] * DEG2RAD;
-            const double cd1 = cos(de1);
-            const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-            const Vecteur3D vec1 = observateur.rotHz() * vec;
+        const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
+        const double de1 = tabEcliptique[0][1] * DEG2RAD;
+        const double cd1 = cos(de1);
+        const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+        const Vecteur3D vec1 = observateur.rotHz() * vec;
 
-            double ht1 = asin(vec1.z());
-            double az1 = atan2(vec1.y(), -vec1.x());
-            if (az1 < 0.) {
-                az1 += DEUX_PI;
+        double ht1 = asin(vec1.z());
+        double az1 = atan2(vec1.y(), -vec1.x());
+        if (az1 < 0.) {
+            az1 += DEUX_PI;
+        }
+
+        int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+        int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+
+        double az2;
+
+        for(int i=1; i<49; i++) {
+
+            const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
+            const double de2 = tabEcliptique[i][1] * DEG2RAD;
+            const double cd2 = cos(de2);
+            const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+            const Vecteur3D vec2 = observateur.rotHz() * vec0;
+
+            const double ht2 = asin(vec2.z());
+
+            az2 = atan2(vec2.y(), -vec2.x());
+            if (az2 < 0.) {
+                az2 += DEUX_PI;
             }
 
-            int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
-            int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+            const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+            const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
 
-            double az2;
-
-            for(int i=1; i<49; i++) {
-
-                const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
-                const double de2 = tabEcliptique[i][1] * DEG2RAD;
-                const double cd2 = cos(de2);
-                const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-                const Vecteur3D vec2 = observateur.rotHz() * vec0;
-
-                const double ht2 = asin(vec2.z());
-
-                az2 = atan2(vec2.y(), -vec2.x());
-                if (az2 < 0.) {
-                    az2 += DEUX_PI;
-                }
-
-                const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
-                const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
-
-                if ((ht1 >= 0.) || (ht2 >= 0.)) {
-                    scene->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
-                }
-
-                lecl1 = lecl2;
-                becl1 = becl2;
-                ht1 = ht2;
+            if ((ht1 >= 0.) || (ht2 >= 0.)) {
+                scene->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
             }
+
+            lecl1 = lecl2;
+            becl1 = becl2;
+            ht1 = ht2;
+        }
         //}
 
         if (soleil.isVisible()) {
@@ -386,22 +386,22 @@ void Ciel::show(const Observateur &observateur,
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(rectangle, QPen(couleurPlanetes[iplanete]), coulPlanete);
 
-//                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
-//                            ui->affplanetes->checkState() == Qt::Checked) {
-                        const int lpl = lpla - lciel;
-                        const int bpl = hciel - bpla;
-                        const QString nompla = planetes.at(iplanete).nom();
-                        QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
-                        const int lng = static_cast<int> (txtPla->boundingRect().width());
+                    //                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
+                    //                            ui->affplanetes->checkState() == Qt::Checked) {
+                    const int lpl = lpla - lciel;
+                    const int bpl = hciel - bpla;
+                    const QString nompla = planetes.at(iplanete).nom();
+                    QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
+                    const int lng = static_cast<int> (txtPla->boundingRect().width());
 
-                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
-                        const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
+                    const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                    const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
 
-                        txtPla->setBrush(coulPlanete);
-                        txtPla->setPos(xnpla, ynpla);
-                        txtPla->setFont(font());
-                        txtPla->setScale(0.9);
-                        scene->addItem(txtPla);
+                    txtPla->setBrush(coulPlanete);
+                    txtPla->setPos(xnpla, ynpla);
+                    txtPla->setFont(font());
+                    txtPla->setScale(0.9);
+                    scene->addItem(txtPla);
                     //}
                 }
             }
@@ -548,9 +548,9 @@ void Ciel::show(const Observateur &observateur,
                             }
 
                             if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
-                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
-                                 crayon = QPen(crayon.color(), 4);
-                             }
+                                    dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
+                                crayon = QPen(crayon.color(), 4);
+                            }
                         }
 
                         // Affichage de l'heure
@@ -574,12 +574,9 @@ void Ciel::show(const Observateur &observateur,
                                     sdate = tr("Flash %1").arg(nomFlash);
                                 }
                             } else {
-                                if (dateTrace.jourJulienUTC() < dateDeb.jourJulienUTC() ||
-                                        dateTrace.jourJulienUTC() > dateFin.jourJulienUTC()) {
-                                    const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/ // TODO
-                                    sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
-                                    sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
-                                }
+                                const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/ // TODO
+                                sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
+                                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
                             }
 
                             if (!sdate.isEmpty()) {
