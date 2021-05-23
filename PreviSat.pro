@@ -41,7 +41,7 @@ VERSION = 5.0.0.11
 ANNEES_DEV = 2005-2021
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
-BUILD_TEST = true
+BUILD_TEST = false
 CLEANUP_TEST = true
 OPTIM_DEBUG_TEST = true
 #-------------------------------------------------
