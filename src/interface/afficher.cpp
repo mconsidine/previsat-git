@@ -901,7 +901,7 @@ void Afficher::EcrireEntete() const
         const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
         const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
-                                                                      _conditions.observateur.altitude() * PIED_PAR_METRE;
+                                                                                   _conditions.observateur.altitude() * PIED_PAR_METRE;
         const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
         ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
