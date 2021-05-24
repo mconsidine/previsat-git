@@ -309,9 +309,11 @@ void Carte::show()
                 if ((lsol + 7) > ui->carte->width()) {
                     transform.translate(lsol - ui->carte->width(), bsol);
                 }
+
                 if ((lsol - 7) < 0) {
                     transform.translate(lsol + ui->carte->width(), bsol);
                 }
+
                 transform.translate(-7, -7);
                 sol2->setTransform(transform);
             }
@@ -508,6 +510,7 @@ void Carte::show()
         // TODO
 
         // Lieux d'observation
+        QGraphicsSimpleTextItem * txtObs;
         const int nbMax = (_onglets->ui()->affnomlieu->checkState() == Qt::Unchecked) ? 0 : Configuration::instance()->observateurs().size() - 1;
         for(int j=nbMax; j>=0; j--) {
 
@@ -519,7 +522,7 @@ void Carte::show()
 
             if ((j == 0) || (_onglets->ui()->affnomlieu->checkState() == Qt::Checked)) {
 
-                QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
+                txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
                 const int lng = static_cast<int> (txtObs->boundingRect().width());
                 const int xnobs = ((lobs + 7 + lng) > ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
                 const int ynobs = ((bobs + 12) > ui->carte->height()) ? bobs - 12 : bobs;
@@ -824,6 +827,8 @@ void Carte::show()
     QStringList listeIcones;
     QPixmap img;
     QTransform transform;
+    QGraphicsPixmapItem * pm;
+    QGraphicsPixmapItem * pm2;
 
     for(int isat=satellites.size()-1; isat>=0; isat--) {
 
@@ -859,7 +864,7 @@ void Carte::show()
                     img = QPixmap(listeIcones.at(0));
                     img = img.scaled(qMin(ui->carte->width() / 12, img.width()), qMin(ui->carte->height() / 6, img.height()));
 
-                    QGraphicsPixmapItem * const pm = scene->addPixmap(img);
+                    pm = scene->addPixmap(img);
 
                     transform.reset();
                     transform.translate(lsat, bsat);
@@ -881,7 +886,7 @@ void Carte::show()
 
                     // Icone sur le bord de la carte du monde
                     if (als.at(isat)) {
-                        QGraphicsPixmapItem * const pm2 = scene->addPixmap(img);
+                        pm2 = scene->addPixmap(img);
                         transform.reset();
 
                         if (lsat > ui->carte->width() / 2) {

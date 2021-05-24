@@ -319,7 +319,7 @@ void Onglets::AffichageDate() const
         date = Date(_date->jourJulienUTC(), 0., true);
     }
 
-    QString chaine = QString("%1  %2").arg(date.ToLongDate((_ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H)).arg(chaineUTC);
+    const QString chaine = QString("%1  %2").arg(date.ToLongDate((_ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H)).arg(chaineUTC);
     _ui->dateHeure1->setText(chaine);
     _ui->dateHeure2->setText(chaine);
 
@@ -721,7 +721,6 @@ void Onglets::AffichageElementsOSculateurs() const
     double perigeeAlt = satellite.elements().perigee() - RAYON_TERRESTRE;
     perigeeAlt = (_ui->unitesKm->isChecked()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
     _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
-
     _ui->periode->setText(Maths::ToSexagesimal(satellite.elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
 
     // Informations de signal
@@ -942,6 +941,11 @@ void Onglets::AffichageManoeuvresISS() const
     }
 
     /* Corps de la methode */
+    QTableWidgetItem * itemEvt;
+    QTableWidgetItem * itemDate;
+    QTableWidgetItem * itemMasse;
+    QTableWidgetItem * item;
+
     QStringListIterator it(Configuration::instance()->evenementsISS());
     while (it.hasNext()) {
 
@@ -957,20 +961,20 @@ void Onglets::AffichageManoeuvresISS() const
         _ui->manoeuvresISS->setRowHeight(j, 16);
 
         // Intitule de l'evenement
-        QTableWidgetItem * const itemEvt = new QTableWidgetItem(intitule);
+        itemEvt = new QTableWidgetItem(intitule);
         itemEvt->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         itemEvt->setFlags(itemEvt->flags() & ~Qt::ItemIsEditable);
         itemEvt->setToolTip(intitule);
         _ui->manoeuvresISS->setItem(j, 0, itemEvt);
 
         // Date
-        QTableWidgetItem * const itemDate = new QTableWidgetItem(dateEvt);
+        itemDate = new QTableWidgetItem(dateEvt);
         itemDate->setTextAlignment(Qt::AlignCenter);
         itemDate->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
         _ui->manoeuvresISS->setItem(j, 1, itemDate);
 
         // Masse
-        QTableWidgetItem * const itemMasse = new QTableWidgetItem(masse);
+        itemMasse = new QTableWidgetItem(masse);
         itemMasse->setTextAlignment(Qt::AlignCenter);
         itemMasse->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
         itemMasse->setToolTip(uniteMasse);
@@ -989,7 +993,7 @@ void Onglets::AffichageManoeuvresISS() const
                 }
             }
 
-            QTableWidgetItem * const item = new QTableWidgetItem(valeur);
+            item = new QTableWidgetItem(valeur);
             item->setTextAlignment(Qt::AlignCenter);
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
             item->setToolTip((k == 1) ? uniteDv : uniteDist);
@@ -1181,6 +1185,7 @@ void Onglets::ChargementPref() const
 
         QStringListIterator it(listePrf);
         while (it.hasNext()) {
+
             const QStringList item = it.next().split(" ", QString::SkipEmptyParts);
 
             if (item.at(1) == "true") {
@@ -1379,7 +1384,7 @@ void Onglets::CalculAosSatSuivi() const
         }
 
         const int nsat = getListItemChecked(_ui->liste4);
-        if ((nsat == 0) && (_ui->liste4->count() > 0)) {
+        if ((nsat == 0) && (_ui->liste4->count() > 0) && _ui->liste4->isVisible()) {
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
         }
 

@@ -215,6 +215,7 @@ void Ciel::show(const Observateur &observateur,
 
     // Affichage des etoiles
     const QBrush couleurEtoiles = (soleil.hauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
+    QGraphicsSimpleTextItem * txtStr;
     QListIterator<Etoile> it1(etoiles);
     while (it1.hasNext()) {
 
@@ -243,7 +244,7 @@ void Ciel::show(const Observateur &observateur,
                         const int bst = hciel - bstr;
                         const QString nomstr = etoile.nom().mid(0, 1) + etoile.nom().mid(1).toLower();
 
-                        QGraphicsSimpleTextItem * const txtStr = new QGraphicsSimpleTextItem(nomstr);
+                        txtStr = new QGraphicsSimpleTextItem(nomstr);
                         const int lng = static_cast<int> (txtStr->boundingRect().width());
 
                         const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
@@ -265,6 +266,7 @@ void Ciel::show(const Observateur &observateur,
     if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
         // Calcul des coordonnees radar des planetes
+        QGraphicsSimpleTextItem * txtPla;
         for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
             if (planetes.at(iplanete).hauteur() >= 0.) {
@@ -283,7 +285,7 @@ void Ciel::show(const Observateur &observateur,
                     const int lpl = lpla - lciel;
                     const int bpl = hciel - bpla;
                     const QString nompla = planetes.at(iplanete).nom();
-                    QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
+                    txtPla = new QGraphicsSimpleTextItem(nompla);
                     const int lng = static_cast<int> (txtPla->boundingRect().width());
 
                     const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
@@ -373,6 +375,7 @@ void Ciel::show(const Observateur &observateur,
     if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
         // Calcul des coordonnees radar des planetes Mercure et Venus
+        QGraphicsSimpleTextItem * txtPla;
         for(int iplanete=MERCURE; iplanete<=VENUS; iplanete++) {
 
             if (planetes.at(iplanete).hauteur() >= 0.) {
@@ -391,7 +394,7 @@ void Ciel::show(const Observateur &observateur,
                     const int lpl = lpla - lciel;
                     const int bpl = hciel - bpla;
                     const QString nompla = planetes.at(iplanete).nom();
-                    QGraphicsSimpleTextItem * const txtPla = new QGraphicsSimpleTextItem(nompla);
+                    txtPla = new QGraphicsSimpleTextItem(nompla);
                     const int lng = static_cast<int> (txtPla->boundingRect().width());
 
                     const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
@@ -493,6 +496,10 @@ void Ciel::show(const Observateur &observateur,
                 bsat0 = 10000;
                 lsat3 = 0;
                 bsat3 = 0;
+                QLineF lig2;
+                QString sdate;
+                QString nomFlash;
+                QGraphicsSimpleTextItem * txtTrace;
 
                 for(int i=1; i<trace.size(); i++) {
 
@@ -559,16 +566,16 @@ void Ciel::show(const Observateur &observateur,
                             aecr = false;
 
                             // Dessin d'une petite ligne correspondant a la date
-                            QLineF lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
+                            lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
                             lig2.setLength(4);
                             scene->addLine(lig2, QPen(couleurEtoiles, 1.));
 
-                            QString sdate = "";
+                            sdate = "";
                             if (amax) {
                                 amax = false;
 
                                 if (maxFlash) {
-                                    QString nomFlash = satellites.at(0).tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
+                                    nomFlash = satellites.at(0).tle().nom().section(QRegExp("[ -]"), 0, 0).toLower();
                                     nomFlash[0] = nomFlash[0].toUpper();
                                     nomFlash[3] = nomFlash[3].toUpper();
                                     sdate = tr("Flash %1").arg(nomFlash);
@@ -581,7 +588,7 @@ void Ciel::show(const Observateur &observateur,
 
                             if (!sdate.isEmpty()) {
 
-                                QGraphicsSimpleTextItem * const txtTrace = new QGraphicsSimpleTextItem(sdate);
+                                txtTrace = new QGraphicsSimpleTextItem(sdate);
                                 txtTrace->setBrush(couleurEtoiles);
 
                                 const double ang = -lig2.angle();

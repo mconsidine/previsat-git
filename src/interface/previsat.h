@@ -263,6 +263,12 @@ private:
      */
     void MettreAJourGroupeTLE(const QString &groupe);
 
+    /**
+     * @brief OuvertureFichierTLE Ouverture d'un fichier TLE
+     * @param fichier nom du fichier
+     */
+    void OuvertureFichierTLE(const QString &fichier);
+
 private slots:
 
     void ChangementCarte();
@@ -296,6 +302,8 @@ private slots:
     void on_meteo_clicked();
 
     // Menu deroulant
+    void on_actionOuvrir_fichier_TLE_triggered();
+    void on_actionEnregistrer_triggered();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
     void on_actionMettre_jour_TLE_communs_triggered();
@@ -320,6 +328,7 @@ private slots:
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
 
+    void on_listeFichiersTLE_currentIndexChanged(int index);
 };
 
 #endif // PREVISAT_H
