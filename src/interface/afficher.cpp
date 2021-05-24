@@ -628,24 +628,9 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
         // Dessin de la phase
         if (_onglets->ui()->affphaselune->isChecked()) {
 
-            QVector<QPointF> pt;
-            const int rayonX = 50;
-            const int rayonY = static_cast<int> (-cos(lune.anglePhase()) * rayonX);
-            const int sph = (lune.luneCroissante()) ? -1 : 1;
-            double ang = PI_SUR_DEUX;
-
-            for(int i=0; i<36; i++) {
-
-                const double x = sph * ((i < 19) ? rayonY : rayonX) * cos(ang) + 50;
-                const double y = rayonX * sin(ang) + 50;
-
-                pt.append(QPointF(x, y));
-                ang += PI / 18.;
-            }
-
-            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 255));
+            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             const QPen stylo(Qt::NoBrush, 0);
-            const QPolygonF poly(pt);
+            const QPolygonF poly = Ciel::AffichagePhaseLune(lune, 51);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
             omb->setTransform(transform);
@@ -1430,6 +1415,7 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 void Afficher::on_resultatsPrevisions_itemSelectionChanged()
 {
     /* Declarations des variables locales */
+    Date dateMax;
     Soleil soleil;
     Lune lune;
     QList<LigneConstellation> lignesCst;
@@ -1440,8 +1426,15 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
             .value<QList<ResultatPrevisions> > ();
     const Date dateDeb = Date(list.first().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
-    const Date dateMax = (_typeCalcul == FLASHS) ? Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1))) : Date();
     const Date dateFin = Date(list.last().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+
+    if (_typeCalcul == FLASHS) {
+        dateMax = Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+    } else if (_typeCalcul == TRANSITS) {
+        dateMax = Date(list.at(2).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+    } else {
+        dateMax = dateDeb;
+    }
 
     /* Corps de la methode */
     // Calcul de la position de l'observateur
@@ -1477,10 +1470,10 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
 
     // Satellite selectionne
     Satellite sat(list.at(0).tle);
-    sat.CalculPosVit(dateDeb);
+    sat.CalculPosVit(dateMax);
     sat.CalculCoordHoriz(observateur);
 
-    const Date dateLever = Evenements::CalculAOS(dateDeb, sat, observateur, false).date;
+    const Date dateLever = Evenements::CalculAOS(dateMax, sat, observateur, false).date;
     sat.CalculTraceCiel(dateLever, true, _onglets->ui()->refractionPourEclipses->isChecked(), observateur, 1);
     satellites.append(sat);
 

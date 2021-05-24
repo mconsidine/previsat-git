@@ -49,6 +49,7 @@
 #include "librairies/dates/date.h"
 
 
+class QPolygonF;
 class Onglets;
 class QGraphicsScene;
 class Observateur;
@@ -114,6 +115,14 @@ public:
               const bool maxFlash = false,
               const bool labelHeure = false,
               const Date &dateDeb = Date(), const Date &dateMax = Date(), const Date &dateFin = Date());
+
+    /**
+     * @brief AffichagePhaseLune Affichage de la phase lunaire
+     * @param lune lune
+     * @param dimensionPx rayon de la lune (en pixels)
+     * @return ensemble des points decrivant la partie dans l'ombre
+     */
+    static QPolygonF AffichagePhaseLune(const Lune &lune, const int dimensionPx);
 
     /**
      * @brief CalculCouleurCiel Determination de la couleur du ciel

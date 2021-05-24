@@ -439,24 +439,9 @@ void Ciel::show(const Observateur &observateur,
         // Dessin de la phase
         if (_onglets->ui()->affphaselune->isChecked()) {
 
-            QVector<QPointF> pt;
-            const int rayonX = 9;
-            const int rayonY = static_cast<int> (-cos(lune.anglePhase()) * rayonX);
-            const int sph = (lune.luneCroissante()) ? -1 : 1;
-            double ang = PI_SUR_DEUX;
-
-            for(int i=0; i<36; i++) {
-
-                const double x = sph * ((i < 19) ? rayonY : rayonX) * cos(ang) + 8;
-                const double y = rayonX * sin(ang) + 8;
-
-                pt.append(QPointF(x, y));
-                ang += PI / 18.;
-            }
-
-            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 255));
+            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             const QPen stylo(Qt::NoBrush, 0);
-            const QPolygonF poly(pt);
+            const QPolygonF poly = AffichagePhaseLune(lune, 9);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
             omb->setTransform(transform);
@@ -638,6 +623,36 @@ void Ciel::show(const Observateur &observateur,
 
     /* Retour */
     return;
+}
+
+/*
+ * Affichage de la phase lunaire
+ */
+QPolygonF Ciel::AffichagePhaseLune(const Lune &lune, const int dimensionPx)
+{
+    /* Declarations des variables locales */
+    QVector<QPointF> pt;
+
+    /* Initialisations */
+    const int rayonX = dimensionPx;
+    const int rayonY = static_cast<int> (-cos(lune.anglePhase()) * rayonX);
+    const int sph = (lune.luneCroissante()) ? -1 : 1;
+    double ang = PI_SUR_DEUX;
+
+    /* Corps de la methode */
+    for(int i=0; i<36; i++) {
+
+        const double x = sph * ((i < 19) ? rayonY : rayonX) * cos(ang) + dimensionPx - 1;
+        const double y = rayonX * sin(ang) + 8;
+
+        pt.append(QPointF(x, y));
+        ang += 10. * DEG2RAD;
+    }
+
+    const QPolygonF poly(pt);
+
+    /* Retour */
+    return poly;
 }
 
 /*
