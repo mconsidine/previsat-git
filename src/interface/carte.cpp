@@ -37,6 +37,7 @@
 #include <QDir>
 #include "configuration/configuration.h"
 #include "carte.h"
+#include "ciel.h"
 #include "onglets.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QGraphicsScene>
@@ -577,24 +578,9 @@ void Carte::show()
 
             if (_onglets->ui()->affphaselune->isChecked()) {
 
-                QVector<QPointF> pt;
-                const int rayonX = 9;
-                const int rayonY = static_cast<int> (-cos(Configuration::instance()->lune().anglePhase()) * rayonX);
-                const int sph = (Configuration::instance()->lune().luneCroissante()) ? -1 : 1;
-                double ang = PI_SUR_DEUX;
-
-                for(int i=0; i<36; i++) {
-
-                    const double x = sph * ((i < 19) ? rayonY : rayonX) * cos(ang) + 8;
-                    const double y = rayonX * sin(ang) + 8;
-
-                    pt.append(QPointF(x, y));
-                    ang += 10. * M_PI / 180.;
-                }
-
-                const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 255));
+                const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
                 const QPen stylo(Qt::NoBrush, 0);
-                const QPolygonF poly(pt);
+                const QPolygonF poly = Ciel::AffichagePhaseLune(Configuration::instance()->lune(), 9);
 
                 QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
                 omb->setTransform(transform);
