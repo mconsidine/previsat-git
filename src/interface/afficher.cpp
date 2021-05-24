@@ -136,7 +136,8 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     case TRANSITS:
         setWindowTitle(tr("Transits ISS"));
         ui->afficherCarte->setVisible(true);
-        titres << tr("Date de début") << tr("Date de fin") << tr("Cst") << tr("Angle") << tr("Type") << tr("Corps") << tr("Ill") << tr("Hauteur Soleil");
+        titres << tr("Date de début") << tr("Date de fin") << tr("Cst") << tr("Angle") << tr("Type") << tr("Corps") << tr("Ill")
+               << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             ui->detailsTransit->setVisible(true);
@@ -280,6 +281,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         tableDetail->horizontalHeader()->setFont(fnt);
 
         QStringList elems;
+        QTableWidgetItem * itm;
         QListIterator<ResultatPrevisions> it(list);
         while (it.hasNext()) {
 
@@ -321,9 +323,10 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                 for(int k=0; k<kmax; k++) {
 
                     // Remplissage des elements d'une ligne
-                    QTableWidgetItem * const itm = new QTableWidgetItem(elems.at(k).trimmed());
+                    itm = new QTableWidgetItem(elems.at(k).trimmed());
                     itm->setTextAlignment(Qt::AlignCenter);
                     itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+
                     if ((k == 0) && (_typeCalcul != TRANSITS)) {
                         itm->setToolTip(elems.at(0));
                     }
@@ -574,7 +577,8 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
     const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
 
     if (scene != nullptr) {
-        scene->deleteLater();
+        delete scene;
+        scene = nullptr;
     }
 
     scene = new QGraphicsScene;
@@ -677,6 +681,10 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
     double hsat1 = coord.at(0).second;
 
     const QPen couleur((list.at(0).typeCorps == CORPS_SOLEIL) ? Qt::black : Qt::lightGray, list.at(0).typeCorps);
+
+    QLineF lig1;
+    QLineF lig2;
+
     QListIterator<QPair<double, double> > it2(coord);
     it2.next();
     while (it2.hasNext()) {
@@ -687,8 +695,8 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
 
         if ((fabs(xy.first - coord.last().first) < EPSDBL100) && (fabs(xy.second - coord.last().second) < EPSDBL100)) {
 
-            QLineF lig1 = lig.normalVector();
-            QLineF lig2 = lig1;
+            lig1 = lig.normalVector();
+            lig2 = lig1;
 
             lig1.setAngle(lig1.angle() - 60.);
             lig1.setLength(12.);
@@ -727,6 +735,7 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
     /* Corps de la methode */
     // Lecture du fichier balise
     if (map.isEmpty()) {
+
         const QString ficMap = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "resultat.map";
         QFile fi(ficMap);
 
@@ -777,6 +786,7 @@ void Afficher::ChargementResultats()
     int imax = 1;
 
     /* Corps de la methode */
+    QTableWidgetItem * item;
     QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
     while (it1.hasNext()) {
         it1.next();
@@ -823,7 +833,7 @@ void Afficher::ChargementResultats()
                 for(int k=0; k<elems.count(); k++) {
 
                     // Remplissage des elements d'une ligne
-                    QTableWidgetItem * const item = new QTableWidgetItem(elems.at(k));
+                    item = new QTableWidgetItem(elems.at(k));
                     item->setTextAlignment(((_typeCalcul == EVENEMENTS) && (k == (elems.count() - 1))) ? Qt::AlignLeft : Qt::AlignCenter);
                     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
@@ -1460,10 +1470,9 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     // Calcul de la position des planetes
     for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-        Planete planete(static_cast<IndicePlanete>(iplanete));
-        planete.CalculPosition(dateDeb, soleil);
-        planete.CalculCoordHoriz(observateur);
-        planetes.append(planete);
+        planetes.append(Planete(static_cast<IndicePlanete>(iplanete)));
+        planetes.last().CalculPosition(dateDeb, soleil);
+        planetes.last().CalculCoordHoriz(observateur);
     }
 
     // Satellite selectionne
@@ -1477,7 +1486,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
 
     // Chargement du ciel
     if (_ciel != nullptr) {
-        _ciel->deleteLater();
+        delete _ciel;
         _ciel = nullptr;
     }
     _ciel = new Ciel(_onglets, ui->frameCiel);

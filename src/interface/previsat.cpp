@@ -38,6 +38,7 @@
 #include <QDir>
 #include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
+#include <QFileDialog>
 #include <QSettings>
 #include <QTimer>
 #include "ui_previsat.h"
@@ -294,6 +295,7 @@ void PreviSat::ChargementTLE()
 
             // Mise a jour de la liste de satellites
             QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()];
+
             QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
 
             while (it.hasNext()) {
@@ -326,10 +328,6 @@ void PreviSat::MAJTLE()
     InitDate();
 
     /* Corps de la methode */
-    //    Telechargement tel(Configuration::instance()->dirTle());
-    //    tel.TelechargementFichier("http://celestrak.com/NORAD/elements/visual.txt", false);
-
-
 
     /* Retour */
     return;
@@ -347,9 +345,14 @@ void PreviSat::DemarrageApplication()
     /* Corps de la methode */
     _onglets->AffichageLieuObs();
 
-    Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
-    Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
-    LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
+    if (Configuration::instance()->etoiles().isEmpty()) {
+        Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
+    }
+
+    if (Configuration::instance()->constellations().isEmpty()) {
+        Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
+        LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
+    }
 
     const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
@@ -403,22 +406,26 @@ void PreviSat::DemarrageApplication()
         _radar->show();
     }
 
-    // Lancement du chronometre
-    _chronometre = new QTimer(this);
-    _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
-    connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
-    _chronometre->start();
-
-    // Lancement du chronometreMs
-    _chronometreMs = new QTimer(this);
-    _chronometreMs->setInterval(200);
-    connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
-    _chronometreMs->start();
-
     const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
                            + "informations/last_news_" + Configuration::instance()->locale() + ".html");
     if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
+    }
+
+    // Lancement du chronometre
+    if (_chronometre == nullptr) {
+        _chronometre = new QTimer(this);
+        _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
+        connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
+        _chronometre->start();
+    }
+
+    // Lancement du chronometreMs
+    if (_chronometreMs == nullptr) {
+        _chronometreMs = new QTimer(this);
+        _chronometreMs->setInterval(200);
+        connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
+        _chronometreMs->start();
     }
 
     /* Retour */
@@ -657,6 +664,7 @@ void PreviSat::InitFicTLE() const
     QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
     /* Corps de la methode */
+    bool etat = ui->listeFichiersTLE->blockSignals(true);
     QStringListIterator it(Configuration::instance()->listeFicTLE());
     while (it.hasNext()) {
 
@@ -689,6 +697,7 @@ void PreviSat::InitFicTLE() const
         }
     }
     ui->listeFichiersTLE->addItem(tr("Parcourir..."));
+    ui->listeFichiersTLE->blockSignals(etat);
 
     // Mise a jour de la liste de fichiers TLE
     Configuration::instance()->setListeFicTLE(listeTLE);
@@ -752,19 +761,24 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     _onglets->ui()->liste4->clear();
 #endif
     const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
+    const QString norad = Configuration::instance()->tleDefaut().l1.mid(2, 5);
 
     /* Corps de la methode */
+    ListWidgetItem * elem1;
+    ListWidgetItem * elem2;
+    ListWidgetItem * elem3;
+    ListWidgetItem * elem4;
+
     QMapIterator<QString, TLE> it(Configuration::instance()->mapTLE());
     while (it.hasNext()) {
         it.next();
 
         const QString nomsat = it.value().nom().trimmed();
-        const QString norad = Configuration::instance()->tleDefaut().l1.mid(2, 5);
         const bool check = listeSatellites.contains(it.key());
         const QString tooltip = tr("%1\nNORAD : %2\nCOSPAR : %3").arg(nomsat).arg(it.key()).arg(it.value().donnees().cospar());
 
         // Liste principale de satellites
-        ListWidgetItem * const elem1 = new ListWidgetItem(nomsat, ui->liste1);
+        elem1 = new ListWidgetItem(nomsat, ui->liste1);
         elem1->setData(Qt::UserRole, it.key());
         elem1->setToolTip(tooltip);
         elem1->setFlags(Qt::ItemIsEnabled);
@@ -776,14 +790,14 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         if (majListesOnglets) {
 
             // Liste pour les previsions de passage
-            ListWidgetItem * const elem2 = new ListWidgetItem(nomsat, _onglets->ui()->liste2);
+            elem2 = new ListWidgetItem(nomsat, _onglets->ui()->liste2);
             elem2->setData(Qt::UserRole, it.key());
             elem2->setToolTip(tooltip);
             elem2->setFlags(Qt::ItemIsEnabled);
             elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
 
             // Liste pour les evenements orbitaux
-            ListWidgetItem * const elem3 = new ListWidgetItem(nomsat, _onglets->ui()->liste3);
+            elem3 = new ListWidgetItem(nomsat, _onglets->ui()->liste3);
             elem3->setData(Qt::UserRole, it.key());
             elem3->setToolTip(tooltip);
             elem3->setFlags(Qt::ItemIsEnabled);
@@ -791,7 +805,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
 
 #if defined (Q_OS_WIN)
             // Liste pour le suivi de telescope
-            ListWidgetItem * const elem4 = new ListWidgetItem(nomsat, _onglets->ui()->liste4);
+            elem4 = new ListWidgetItem(nomsat, _onglets->ui()->liste4);
             elem4->setData(Qt::UserRole, it.key());
             elem4->setToolTip(tooltip);
             elem4->setFlags(Qt::ItemIsEnabled);
@@ -951,10 +965,9 @@ void PreviSat::EnchainementCalculs()
                 planetes.clear();
                 for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-                    Planete planete(static_cast<IndicePlanete>(iplanete));
-                    planete.CalculPosition(*_dateCourante, soleil);
-                    planete.CalculCoordHoriz(observateur);
-                    planetes.append(planete);
+                    planetes.append(Planete(static_cast<IndicePlanete>(iplanete)));
+                    planetes.last().CalculPosition(*_dateCourante, soleil);
+                    planetes.last().CalculCoordHoriz(observateur);
                 }
             }
 
@@ -965,6 +978,7 @@ void PreviSat::EnchainementCalculs()
             if (_onglets->ui()->affconst->isChecked()) {
                 Constellation::CalculConstellations(observateur, Configuration::instance()->constellations());
             }
+
             if (_onglets->ui()->affconst->checkState() != Qt::Unchecked) {
                 LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles(), Configuration::instance()->lignesCst());
             }
@@ -1026,13 +1040,38 @@ void PreviSat::MajFichierTLE()
     return;
 }
 
+/*
+ * Mettre a jour un groupe de TLE
+ */
 void PreviSat::MettreAJourGroupeTLE(const QString &groupe)
 {
     _onglets->MettreAJourGroupeTLE(groupe);
 }
 
+/*
+ * Ouverture d'un fichier TLE
+ */
+void PreviSat::OuvertureFichierTLE(const QString &fichier)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    Configuration::instance()->nomfic() = fichier;
+    ChargementTLE();
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::ChangementCarte()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (Configuration::instance()->isCarteMonde()) {
 
         // Passage en carte du ciel
@@ -1075,10 +1114,18 @@ void PreviSat::ChangementCarte()
             _ciel = nullptr;
         }
     }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::ChangementZoom()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (isMaximise) {
 
         // Passage en affichage minimise
@@ -1102,6 +1149,9 @@ void PreviSat::ChangementZoom()
     }
 
     resizeEvent(NULL);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::ChangementDate(const QDateTime &date)
@@ -1510,6 +1560,83 @@ void PreviSat::on_meteo_clicked()
 /*
  * Menu deroulant
  */
+void PreviSat::on_actionOuvrir_fichier_TLE_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Ouverture d'un fichier TLE
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                             settings.value("fichier/repTLE", Configuration::instance()->dirTle()).toString(),
+                                                             tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;" \
+                                                                "Fichiers gz (*.gz)"));
+
+        if (fichier.isEmpty()) {
+            if (!ui->listeFichiersTLE->currentText().isEmpty()) {
+                ui->listeFichiersTLE->setCurrentIndex(Configuration::instance()->listeFicTLE().indexOf(Configuration::instance()->nomfic()));
+            }
+        } else {
+            OuvertureFichierTLE(fichier);
+        }
+    } catch (PreviSatException &ex) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionEnregistrer_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (ui->actionEnregistrer->isVisible() && (_onglets->ui()->barreOnglets->currentIndex() < 3)) {
+
+        const QStringList listeNoms(QStringList() << tr("onglet_general") << tr("onglet_elements") << tr("onglet_informations"));
+
+        const QString nomFicDefaut = settings.value("fichier/sauvegarde", Configuration::instance()->dirOut()).toString() + QDir::separator() +
+                listeNoms.at(_onglets->ui()->barreOnglets->currentIndex()) + ".txt";
+
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
+                                                             tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+
+        if (!fichier.isEmpty()) {
+            switch (_onglets->ui()->barreOnglets->currentIndex()) {
+            case 0:
+                // Sauvegarde de l'onglet General
+                _onglets->SauveOngletGeneral(fichier);
+                break;
+
+            case 1:
+                // Sauvegarde de l'onglet Elements osculateurs
+                _onglets->SauveOngletElementsOsculateurs(fichier);
+                break;
+
+            case 2:
+                // Sauvegarde de l'onglet Informations satellite
+                _onglets->SauveOngletInformations(fichier);
+                break;
+
+            default:
+                break;
+            }
+
+            const QFileInfo fi(fichier);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+
 void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
 {
     MajFichierTLE();
@@ -1824,6 +1951,25 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     if (nomsat != norad) {
         AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  %3)").arg(nomsat).arg(norad).arg(cospar), 5);
     }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() +
+            Configuration::instance()->listeFicTLE().at(index);
+    Configuration::instance()->listeSatellites().clear();
+
+    ChargementTLE();
+
+    DemarrageApplication();
 
     /* Retour */
     return;

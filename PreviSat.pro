@@ -55,14 +55,14 @@ greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSIONSTR = '\\"$${VERSION}\\"'
-VER_MAJSTR = '\\"$${VER_MAJ}\\"'
-ANNEES_DEVSTR = '\\"$${ANNEES_DEV}\\"'
+VERSION_STR = '\\"$${VERSION}\\"'
+VER_MAJ_STR = '\\"$${VER_MAJ}\\"'
+ANNEES_DEV_STR = '\\"$${ANNEES_DEV}\\"'
 
-DEFINES += APPVERSION=\"$${VERSIONSTR}\" \
-    APPVER_MAJ=\"$${VER_MAJSTR}\"        \
-    APP_ANNEES_DEV=\"$${ANNEES_DEVSTR}\" \
-    QT_DEPRECATED_WARNINGS               \
+DEFINES += APPVERSION=\"$${VERSION_STR}\" \
+    APPVER_MAJ=\"$${VER_MAJ_STR}\"        \
+    APP_ANNEES_DEV=\"$${ANNEES_DEV_STR}\" \
+    QT_DEPRECATED_WARNINGS                \
     BUILD_TEST=$$BUILD_TEST
 
 INCLUDEPATH += src $$ZLIB_DIR/inc

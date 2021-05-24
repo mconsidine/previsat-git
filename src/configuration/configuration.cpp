@@ -340,6 +340,7 @@ void Configuration::ajoutObservateur(const Observateur &obs)
             ajout = false;
         }
     }
+
     if (ajout) {
         _observateurs.append(obs);
         EcritureConfiguration();
@@ -353,6 +354,7 @@ void Configuration::suppressionObservateur(const Observateur &obs)
 
     QListIterator<Observateur> it(_observateurs);
     while (it.hasNext() && !suppression) {
+
         if (it.next().nomlieu().trimmed().toLower() == obs.nomlieu().trimmed().toLower()) {
             _observateurs.removeAt(i);
             suppression = true;
