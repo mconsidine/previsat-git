@@ -726,7 +726,7 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
 
     /* Corps de la methode */
     qApp->removeTranslator(&traduction);
-    if (traduction.load(langue, qApp->applicationDirPath())) {
+    if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
     }
 

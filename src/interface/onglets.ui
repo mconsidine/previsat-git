@@ -141,6 +141,9 @@
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
+      <property name="currentText">
+       <string notr="true"/>
+      </property>
      </widget>
      <widget class="QLabel" name="lbl_altitudeObs">
       <property name="geometry">
@@ -6048,6 +6051,9 @@
       <property name="mouseTracking">
        <bool>true</bool>
       </property>
+      <property name="currentText">
+       <string notr="true"/>
+      </property>
      </widget>
      <widget class="QLabel" name="lbl_hauteurSoleilPrev">
       <property name="geometry">
@@ -6423,6 +6429,9 @@
       <property name="font">
        <font/>
       </property>
+      <property name="currentText">
+       <string notr="true"/>
+      </property>
      </widget>
      <widget class="QDateTimeEdit" name="dateFinaleMetOp">
       <property name="geometry">
@@ -6567,6 +6576,9 @@
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string notr="true"/>
       </property>
      </widget>
      <widget class="QComboBox" name="hauteurSoleilMetOp">
@@ -6961,6 +6973,9 @@
       </property>
       <property name="font">
        <font/>
+      </property>
+      <property name="currentText">
+       <string notr="true"/>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_lieuxObservation4">
@@ -7528,6 +7543,9 @@
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string notr="true"/>
       </property>
      </widget>
      <widget class="QFrame" name="frameSatSelectionne">
@@ -8289,7 +8307,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="coordonnees">
          <widget class="QLabel" name="lbl_nLongitude">
@@ -8466,6 +8484,9 @@
           <property name="font">
            <font/>
           </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="nouveauLieu">
@@ -8575,6 +8596,9 @@
           </property>
           <property name="font">
            <font/>
+          </property>
+          <property name="currentText">
+           <string notr="true"/>
           </property>
          </widget>
          <widget class="QComboBox" name="nvEw">
@@ -8767,7 +8791,7 @@
          <string>Enregistrer les préférences d'affichage</string>
         </property>
         <property name="text">
-         <string/>
+         <string notr="true"/>
         </property>
        </widget>
        <widget class="QComboBox" name="preferences">
@@ -8778,6 +8802,9 @@
           <width>191</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="currentText">
+         <string notr="true"/>
         </property>
        </widget>
        <widget class="QComboBox" name="langue">
@@ -8791,6 +8818,9 @@
         </property>
         <property name="autoFillBackground">
          <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true"/>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_langue">
@@ -8829,7 +8859,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="satellites">
          <widget class="QCheckBox" name="affnotif">
@@ -8985,6 +9015,9 @@
            <font/>
           </property>
           <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="currentText">
            <string notr="true"/>
           </property>
          </widget>
@@ -9230,6 +9263,9 @@
            <font/>
           </property>
           <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="currentText">
            <string notr="true"/>
           </property>
          </widget>
@@ -9867,6 +9903,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="currentText">
+         <string notr="true">Lucida Console</string>
+        </property>
         <item>
          <property name="text">
           <string>Lucida Console</string>
@@ -10285,6 +10324,9 @@
         <property name="font">
          <font/>
         </property>
+        <property name="currentText">
+         <string notr="true"/>
+        </property>
        </widget>
        <widget class="QPushButton" name="gestionnaireMajTLE">
         <property name="geometry">
@@ -10335,6 +10377,9 @@
         </property>
         <property name="font">
          <font/>
+        </property>
+        <property name="currentText">
+         <string notr="true"/>
         </property>
         <property name="iconSize">
          <size>

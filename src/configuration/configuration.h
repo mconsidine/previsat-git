@@ -114,6 +114,7 @@ public:
     QString dirCoord() const;
     QString dirCommonData() const;
     QString dirLocalData() const;
+    QString dirLang() const;
     QString dirMap() const;
     QString dirOut() const;
     QString dirPrf() const;
@@ -262,6 +263,7 @@ private:
     QString _dirCommonData;
     QString _dirLocalData;
     QString _dirCfg;
+    QString _dirLang;
     QString _dirMap;
     QString _dirOut;
     QString _dirPrf;

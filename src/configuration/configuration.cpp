@@ -107,6 +107,11 @@ QString Configuration::dirLocalData() const
     return _dirLocalData;
 }
 
+QString Configuration::dirLang() const
+{
+    return _dirLang;
+}
+
 QString Configuration::dirMap() const
 {
     return _dirMap;
@@ -686,6 +691,7 @@ void Configuration::DefinitionArborescences()
     // Autres repertoires
     _dirCommonData = dirCommon + QDir::separator() + "data";
     _dirDoc = dirCommon + QDir::separator() + "dox";
+    _dirLang = _dirExe + QDir::separator() + "translations";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";
     _dirCfg = _dirLocalData + QDir::separator() + "config";
     _dirMap = _dirLocalData + QDir::separator() + "map";
@@ -707,13 +713,13 @@ void Configuration::DeterminationLocale()
 
     /* Initialisations */
     _locale = QLocale::system().name().section('_', 0, 0);
-    const QDir di(QCoreApplication::applicationDirPath());
+    const QDir di(QCoreApplication::applicationDirPath() + QDir::separator() + "translations");
     const QStringList filtres(QStringList () << QCoreApplication::applicationName() + "_*.qm");
     _listeFicLang = di.entryList(filtres, QDir::Files).replaceInStrings(QCoreApplication::applicationName() + "_", "").replaceInStrings(".qm", "");
     _listeFicLang.insert(0, "fr");
 
     /* Corps de la methode */
-    const QFile fi(QCoreApplication::applicationDirPath() + QDir::separator() + QCoreApplication::applicationName() + "_" + _locale + ".qm");
+    const QFile fi(di.path() + QCoreApplication::applicationName() + "_" + _locale + ".qm");
     if (!fi.exists() && (_locale != "fr")) {
         _locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
     }
