@@ -441,22 +441,11 @@ void PreviSat::DemarrageApplication()
 void PreviSat::ChangementLangue(const int index)
 {
     /* Declarations des variables locales */
-    QString langue;
 
     /* Initialisations */
+    const QString langue = Configuration::instance()->listeFicLang().at(index);
 
     /* Corps de la methode */
-    switch (index) {
-    case 0:
-        langue = "fr";
-        break;
-
-    default:
-    case 1:
-        langue = "en";
-        break;
-    }
-
     InstallationTraduction(QString("%1_%2").arg(qApp->applicationName()).arg(langue), _appTraduction);
     InstallationTraduction(QString("qtbase_%1").arg(langue), _qtTraduction);
     ui->retranslateUi(this);

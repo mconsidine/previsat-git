@@ -123,6 +123,7 @@ public:
     QString dirTmp() const;
 
     QString locale() const;
+    QStringList listeFicLang() const;
     QFont police() const;
 
     QString adresseAstropedia() const;
@@ -271,6 +272,7 @@ private:
 
     // Locale
     QString _locale;
+    QStringList _listeFicLang;
 
     // Adresses internet
     QString _adresseAstropedia;

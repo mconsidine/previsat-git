@@ -2265,6 +2265,33 @@ void Onglets::InitAffichageDemarrage()
     _ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
     _ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
 
+    // Chargement des langues
+    const bool etat = _ui->langue->blockSignals(true);
+    _ui->langue->clear();
+    _ui->langue->addItem(QIcon(":/resources/drapeaux/fr.png"), "Français");
+
+    const QDir di(QCoreApplication::applicationDirPath());
+    const QStringList filtres(QStringList () << QCoreApplication::applicationName() + "_*.qm");
+    QStringList listeFicTrad = di.entryList(filtres, QDir::Files);
+    QTranslator trad;
+    QPixmap fond(30, 20);
+    fond.fill(_ui->langue->palette().window().color());
+
+    for(int i = 0; i < listeFicTrad.size(); i++) {
+
+        const QString locale = Configuration::instance()->listeFicLang().at(i + 1);
+
+        trad.load(listeFicTrad.at(i));
+        const QString langue = trad.translate("Onglets", "Langue");
+
+        const QFileInfo fi(":/resources/drapeaux/" + locale + ".png");
+        const QIcon drapeau = (fi.exists()) ? QIcon(fi.filePath()) : fond;
+
+        _ui->langue->addItem(drapeau, langue);
+    }
+
+    _ui->langue->blockSignals(etat);
+
     /* Retour */
     return;
 }

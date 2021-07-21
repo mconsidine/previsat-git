@@ -147,6 +147,11 @@ QString Configuration::locale() const
     return _locale;
 }
 
+QStringList Configuration::listeFicLang() const
+{
+    return _listeFicLang;
+}
+
 QFont Configuration::police() const
 {
     return _police;
@@ -702,6 +707,10 @@ void Configuration::DeterminationLocale()
 
     /* Initialisations */
     _locale = QLocale::system().name().section('_', 0, 0);
+    const QDir di(QCoreApplication::applicationDirPath());
+    const QStringList filtres(QStringList () << QCoreApplication::applicationName() + "_*.qm");
+    _listeFicLang = di.entryList(filtres, QDir::Files).replaceInStrings(QCoreApplication::applicationName() + "_", "").replaceInStrings(".qm", "");
+    _listeFicLang.insert(0, "fr");
 
     /* Corps de la methode */
     const QFile fi(QCoreApplication::applicationDirPath() + QDir::separator() + QCoreApplication::applicationName() + "_" + _locale + ".qm");
