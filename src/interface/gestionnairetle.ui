@@ -152,6 +152,12 @@
      <property name="font">
       <font/>
      </property>
+     <property name="inputMask">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
     </widget>
     <widget class="QLineEdit" name="nomGroupe">
      <property name="geometry">
@@ -164,6 +170,12 @@
      </property>
      <property name="font">
       <font/>
+     </property>
+     <property name="inputMask">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string notr="true"/>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_nomGroupe">

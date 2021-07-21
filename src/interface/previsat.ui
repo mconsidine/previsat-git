@@ -940,7 +940,7 @@
               <enum>Qt::RightToLeft</enum>
              </property>
              <property name="text">
-              <string/>
+              <string notr="true"/>
              </property>
              <property name="shortcut">
               <string notr="true"/>
@@ -1235,6 +1235,9 @@
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
+             <property name="currentText">
+              <string notr="true"/>
+             </property>
             </widget>
             <widget class="QToolButton" name="meteoBasesNASA">
              <property name="geometry">
@@ -1288,6 +1291,9 @@
              </property>
              <property name="mouseTracking">
               <bool>true</bool>
+             </property>
+             <property name="currentText">
+              <string notr="true">1</string>
              </property>
              <item>
               <property name="text">

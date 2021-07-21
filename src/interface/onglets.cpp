@@ -2270,7 +2270,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->langue->clear();
     _ui->langue->addItem(QIcon(":/resources/drapeaux/fr.png"), "Français");
 
-    const QDir di(QCoreApplication::applicationDirPath());
+    const QDir di(Configuration::instance()->dirLang());
     const QStringList filtres(QStringList () << QCoreApplication::applicationName() + "_*.qm");
     QStringList listeFicTrad = di.entryList(filtres, QDir::Files);
     QTranslator trad;
@@ -2281,7 +2281,7 @@ void Onglets::InitAffichageDemarrage()
 
         const QString locale = Configuration::instance()->listeFicLang().at(i + 1);
 
-        trad.load(listeFicTrad.at(i));
+        trad.load(Configuration::instance()->dirLang() + QDir::separator() + listeFicTrad.at(i));
         const QString langue = trad.translate("Onglets", "Langue");
 
         const QFileInfo fi(":/resources/drapeaux/" + locale + ".png");
