@@ -37,5 +37,8 @@
         <file>resources/paypal.png</file>
         <file>resources/enregistrer_txt.png</file>
         <file>resources/logo-skywatcher.png</file>
+        <file>resources/drapeaux/fr.png</file>
+        <file>resources/drapeaux/en.png</file>
+        <file>resources/drapeaux/jp.png</file>
     </qresource>
 </RCC>
