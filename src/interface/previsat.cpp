@@ -39,6 +39,9 @@
 #include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
+#include <QPainter>
+#include <QPrintDialog>
+#include <QPrinter>
 #include <QSettings>
 #include <QTimer>
 #include "ui_previsat.h"
@@ -1636,6 +1639,44 @@ void PreviSat::on_actionEnregistrer_triggered()
     return;
 }
 
+void PreviSat::on_actionImprimer_carte_triggered()
+{
+    /* Declarations des variables locales */
+    QPrinter printer;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    printer.setOrientation((_carte->isVisible()) ? QPrinter::Landscape : QPrinter::Portrait);
+    QPrintDialog dial(&printer, this);
+
+    if (dial.exec() == QDialog::Accepted) {
+
+        printer.newPage();
+        QPainter p(&printer);
+
+        QRect rect;
+
+        if (_carte->isVisible()) {
+            rect = _carte->rect();
+            rect.moveTo(6, 6);
+        } else {
+            rect = _ciel->rect();
+            rect.moveTo((ui->frameCarteLon->width() - _ciel->width()) / 2 - 20, 6);
+        }
+
+        const QPixmap pixmap = QWidget::grab(rect);
+        const QPixmap pixscl = (pixmap.width() > printer.pageRect().width()) ? pixmap.scaledToWidth(printer.pageRect().width()) : pixmap;
+        const int xPrt = (pixscl.width() == pixmap.width()) ? (printer.pageRect().width() - pixscl.width()) / 2 : 50;
+
+        p.drawPixmap(xPrt, 50, pixscl);
+        p.end();
+    }
+
+    /* Retour */
+    return;
+}
+
 
 void PreviSat::on_actionMettre_jour_TLE_courant_triggered()
 {
@@ -1910,6 +1951,25 @@ void PreviSat::on_pasManuel_currentIndexChanged(int index)
     ui->valManuel->setItemText(3, (aindx) ? tr("jour") : tr("jours"));
 }
 
+void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() +
+            Configuration::instance()->listeFicTLE().at(index);
+    Configuration::instance()->listeSatellites().clear();
+
+    ChargementTLE();
+
+    DemarrageApplication();
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
 {
     /* Declarations des variables locales */
@@ -1951,25 +2011,6 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     if (nomsat != norad) {
         AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  %3)").arg(nomsat).arg(norad).arg(cospar), 5);
     }
-
-    /* Retour */
-    return;
-}
-
-void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() +
-            Configuration::instance()->listeFicTLE().at(index);
-    Configuration::instance()->listeSatellites().clear();
-
-    ChargementTLE();
-
-    DemarrageApplication();
 
     /* Retour */
     return;

@@ -304,12 +304,12 @@ private slots:
     // Menu deroulant
     void on_actionOuvrir_fichier_TLE_triggered();
     void on_actionEnregistrer_triggered();
+    void on_actionImprimer_carte_triggered();
     void on_actionMettre_jour_TLE_courant_triggered();
     void on_actionMettre_jour_groupe_TLE_triggered();
     void on_actionMettre_jour_TLE_communs_triggered();
     void on_actionMettre_jour_tous_les_groupes_de_TLE_triggered();
     void on_actionMettre_jour_les_fichiers_de_donnees_triggered();
-
     void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();
     void on_actionFaire_triggered();
@@ -325,10 +325,11 @@ private slots:
     void on_pasReel_currentIndexChanged(int index);
     void on_pasManuel_currentIndexChanged(int index);
 
+    void on_listeFichiersTLE_currentIndexChanged(int index);
+
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
 
-    void on_listeFichiersTLE_currentIndexChanged(int index);
 };
 
 #endif // PREVISAT_H
