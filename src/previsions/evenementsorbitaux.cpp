@@ -229,7 +229,9 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     evt.append(eph3.posZ);
 
                     res = CalculEvt(jjm, evt, 0., sat);
-                    res.typeEvenement = (eph3.posZ >= 0.) ? QObject::tr("Noeud Ascendant - PSO = 0°") : QObject::tr("Noeud Descendant - PSO = 180°");
+                    res.typeEvenement = (eph3.posZ >= 0.) ?
+                                QObject::tr("Noeud Ascendant - PSO = 0°", "In orbit position") :
+                                QObject::tr("Noeud Descendant - PSO = 180°", "In orbit position");
 
                     result.append(res);
                     k++;
@@ -415,7 +417,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         evt.append(eph3.pso);
 
                         res = CalculEvt(jjm, evt, noeud, sat);
-                        res.typeEvenement = QObject::tr("Passage à PSO = %1°").arg(noeud * RAD2DEG);
+                        res.typeEvenement = QObject::tr("Passage à PSO = %1°", "In orbit position").arg(noeud * RAD2DEG);
 
                         result.append(res);
                         n++;

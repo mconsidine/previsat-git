@@ -68,7 +68,7 @@ static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 static const double TEMPS2 = 76. * NB_JOUR_PAR_MIN;
 
 // Nom et numeros des panneaux
-static const QByteArray LISTE_MIR = QObject::tr("FCB").toLatin1();
+static const QByteArray LISTE_MIR = QObject::tr("FCB", "Front, Central, Backward panels of MetOp satellite").toLatin1();
 static const int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
 
 static int _pan;

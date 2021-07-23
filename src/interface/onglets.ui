@@ -82,7 +82,7 @@
        <bool>true</bool>
       </property>
       <property name="text">
-       <string>Date :</string>
+       <string extracomment="Date and hour">Date :</string>
       </property>
      </widget>
      <widget class="QLabel" name="dateHeure1">
@@ -610,7 +610,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Azimut (N) :</string>
+        <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
        </property>
       </widget>
       <widget class="QLabel" name="azimutSat">
@@ -1144,7 +1144,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-123</y>
          <width>190</width>
          <height>316</height>
         </rect>
@@ -1256,7 +1256,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Azimut (N) :</string>
+         <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_distanceSol">
@@ -1613,7 +1613,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Azimut (N) :</string>
+         <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
         </property>
        </widget>
        <widget class="QLabel" name="distanceLune">
@@ -1689,7 +1689,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Phase :</string>
+         <string extracomment="Moon phase">Phase :</string>
         </property>
        </widget>
        <widget class="QLabel" name="phaseLune">
@@ -1818,7 +1818,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string>dddd dd MMMM yyyy  hh:mm:ss</string>
+       <string extracomment="Date format">dddd dd MMMM yyyy  hh:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -2093,7 +2093,7 @@
        <bool>true</bool>
       </property>
       <property name="text">
-       <string>Conditions :</string>
+       <string extracomment="Conditions of observations">Conditions :</string>
       </property>
      </widget>
     </widget>
@@ -2136,7 +2136,7 @@
        <font/>
       </property>
       <property name="text">
-       <string>Date :</string>
+       <string extracomment="Date and hour">Date :</string>
       </property>
      </widget>
      <widget class="QLabel" name="ligne1">
@@ -2351,7 +2351,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string>dddd dd MMMM yyyy  hh:mm:ss</string>
+       <string extracomment="Date format">dddd dd MMMM yyyy  hh:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -2424,6 +2424,9 @@
       <property name="font">
        <font/>
       </property>
+      <property name="currentText">
+       <string>ECI</string>
+      </property>
       <property name="iconSize">
        <size>
         <width>0</width>
@@ -2432,12 +2435,12 @@
       </property>
       <item>
        <property name="text">
-        <string>ECI</string>
+        <string extracomment="Earth Centered Inertial">ECI</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>ECEF</string>
+        <string extracomment="Earth Centered Earth Fixed">ECEF</string>
        </property>
       </item>
      </widget>
@@ -2466,7 +2469,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>y :</string>
+        <string extracomment="Component Y of the position vector">y :</string>
        </property>
       </widget>
       <widget class="QLabel" name="zsat">
@@ -2501,7 +2504,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>vz :</string>
+        <string extracomment="Component Z of the velocity vector">vz :</string>
        </property>
       </widget>
       <widget class="QLabel" name="ysat">
@@ -2580,7 +2583,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>vx :</string>
+        <string extracomment="Component X of the velocity vector">vx :</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_zsat">
@@ -2596,7 +2599,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>z :</string>
+        <string extracomment="Component Z of the position vector">z :</string>
        </property>
       </widget>
       <widget class="QLabel" name="vxsat">
@@ -2634,7 +2637,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>vy :</string>
+        <string extracomment="Component Y of the velocity vector">vy :</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_xsat">
@@ -2650,7 +2653,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>x :</string>
+        <string extracomment="Component X of the position vector">x :</string>
        </property>
       </widget>
       <widget class="QLabel" name="xsat">
@@ -2716,7 +2719,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ix :</string>
+         <string extracomment="Component X of inclination vector">Ix :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_argumentLongitudeVraie2">
@@ -2786,7 +2789,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ex :</string>
+         <string extracomment="Component X of eccentricity vector">Ex :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_iy2">
@@ -2802,7 +2805,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Iy :</string>
+         <string extracomment="Component Y of inclination vector">Iy :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_ey2">
@@ -2818,7 +2821,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ey :</string>
+         <string extracomment="Component Y of eccentricity vector">Ey :</string>
         </property>
        </widget>
        <widget class="QLabel" name="ey2">
@@ -2910,7 +2913,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ix :</string>
+         <string extracomment="Component X of inclination vector">Ix :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_anomalieMoyenne2">
@@ -2993,7 +2996,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Iy :</string>
+         <string extracomment="Component Y of inclination vector">Iy :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_longitudePerigee">
@@ -3101,7 +3104,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>AD noeud ascendant :</string>
+         <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_inclinaison">
@@ -3295,7 +3298,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>AD noeud ascendant :</string>
+         <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_ey1">
@@ -3311,7 +3314,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ey :</string>
+         <string extracomment="Component Y of eccentricity vector">Ey :</string>
         </property>
        </widget>
        <widget class="QLabel" name="ADNoeudAscendant2">
@@ -3400,7 +3403,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>Ex :</string>
+         <string extracomment="Component X of eccentricity vector">Ex :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_inclinaison2">
@@ -3726,7 +3729,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Doppler@100MHz :</string>
+        <string extracomment="Doppler effect at 100 Mega Hertz">Doppler@100MHz :</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_attenuation">
@@ -3778,7 +3781,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Délai :</string>
+        <string extracomment="Delay of signal at light speed">Délai :</string>
        </property>
       </widget>
       <widget class="QLabel" name="attenuation">
@@ -3912,7 +3915,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Coeff pseudo-balistique :</string>
+         <string extracomment="Pseudo-ballistic coefficient">Coeff pseudo-balistique :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_nbOrbitesEpoque">
@@ -4088,7 +4091,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Magnitude std/max :</string>
+         <string extracomment="Standard/maximal magnitude">Magnitude std/max :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_nbRev3">
@@ -4107,7 +4110,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>n&quot; / 6 :</string>
+         <string extracomment="second derivative of the mean motion divided by six (in revolution per day cube)">n&quot; / 6 :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_nbRev">
@@ -4145,7 +4148,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Époque (UTC) :</string>
+         <string extracomment="Universal Time Coordinated">Époque (UTC) :</string>
         </property>
        </widget>
        <widget class="QLabel" name="anomalieMoy">
@@ -4473,7 +4476,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>rev/jour</string>
+         <string extracomment="revolution per day">rev/jour</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_inclinaisonMoy">
@@ -4511,7 +4514,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>AD noeud ascendant :</string>
+         <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_excentriciteMoy">
@@ -4781,7 +4784,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>n' / 2 :</string>
+         <string extracomment="derivative of the mean motion divided by two (in revolution per day square)">n' / 2 :</string>
         </property>
        </widget>
        <widget class="QLabel" name="sq">
@@ -4942,7 +4945,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>(1/Re)</string>
+         <string extracomment="1 / Earth radius">(1/Re)</string>
         </property>
        </widget>
        <widget class="QLabel" name="nbRev2">
@@ -5875,7 +5878,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string>dd/MM/yyyy hh:mm:ss</string>
+       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -5936,7 +5939,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string>dd/MM/yyyy hh:mm:ss</string>
+       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -5975,6 +5978,9 @@
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string notr="true">1 seconde</string>
       </property>
       <item>
        <property name="text">
@@ -6089,6 +6095,9 @@
       <property name="mouseTracking">
        <bool>true</bool>
       </property>
+      <property name="currentText">
+       <string notr="true">Crépuscule civil (-6°)</string>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -6162,6 +6171,9 @@
       </property>
       <property name="mouseTracking">
        <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string notr="true">0°</string>
       </property>
       <item>
        <property name="text">
@@ -6356,7 +6368,7 @@
        <bool>true</bool>
       </property>
       <property name="inputMask">
-       <string>###</string>
+       <string notr="true">###</string>
       </property>
       <property name="text">
        <string notr="true"/>
@@ -6381,7 +6393,7 @@
        <bool>true</bool>
       </property>
       <property name="inputMask">
-       <string>99</string>
+       <string notr="true">99</string>
       </property>
       <property name="text">
        <string notr="true"/>
@@ -6458,6 +6470,9 @@
         <day>15</day>
        </datetime>
       </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+      </property>
       <property name="calendarPopup">
        <bool>true</bool>
       </property>
@@ -6528,6 +6543,9 @@
       <property name="font">
        <font/>
       </property>
+      <property name="currentText">
+       <string notr="true">10°</string>
+      </property>
       <property name="currentIndex">
        <number>2</number>
       </property>
@@ -6593,6 +6611,9 @@
       <property name="font">
        <font/>
       </property>
+      <property name="currentText">
+       <string notr="true">Crépuscule civil (-6°)</string>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -6646,7 +6667,7 @@
        <font/>
       </property>
       <property name="inputMask">
-       <string>###</string>
+       <string notr="true">###</string>
       </property>
       <property name="text">
        <string notr="true"/>
@@ -6728,6 +6749,9 @@
         <day>15</day>
        </datetime>
       </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+      </property>
       <property name="calendarPopup">
        <bool>true</bool>
       </property>
@@ -6745,7 +6769,7 @@
        <font/>
       </property>
       <property name="inputMask">
-       <string>99</string>
+       <string notr="true">99</string>
       </property>
       <property name="text">
        <string notr="true"/>
@@ -6891,6 +6915,9 @@
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+      </property>
       <property name="calendarPopup">
        <bool>true</bool>
       </property>
@@ -6909,6 +6936,9 @@
       </property>
       <property name="buttonSymbols">
        <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -7046,6 +7076,9 @@
       </property>
       <property name="font">
        <font/>
+      </property>
+      <property name="currentText">
+       <string notr="true">10°</string>
       </property>
       <property name="currentIndex">
        <number>2</number>
@@ -7360,7 +7393,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Date</string>
+        <string extracomment="Date and hour">Date</string>
        </property>
        <property name="font">
         <font>
@@ -7879,7 +7912,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>ms</string>
+         <string extracomment="milliseconde">ms</string>
         </property>
        </widget>
        <widget class="QLabel" name="leverSatSuivi">
@@ -7953,6 +7986,9 @@
         </property>
         <property name="mouseTracking">
          <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true">0°</string>
         </property>
         <item>
          <property name="text">
@@ -8307,7 +8343,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="coordonnees">
          <widget class="QLabel" name="lbl_nLongitude">
@@ -8557,7 +8593,7 @@
            <font/>
           </property>
           <property name="text">
-           <string>m</string>
+           <string extracomment="Meter">m</string>
           </property>
          </widget>
          <widget class="QLineEdit" name="nvLatitude">
@@ -8833,7 +8869,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Langue :</string>
+         <string extracomment="Name of language">Langue :</string>
         </property>
        </widget>
        <widget class="QLabel" name="lbl_preferences">
@@ -9760,7 +9796,7 @@
             <font/>
            </property>
            <property name="text">
-            <string>Auto</string>
+            <string extracomment="Automatic">Auto</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -9908,12 +9944,12 @@
         </property>
         <item>
          <property name="text">
-          <string>Lucida Console</string>
+          <string notr="true">Lucida Console</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>MS Shell Dlg 2</string>
+          <string notr="true">MS Shell Dlg 2</string>
          </property>
         </item>
        </widget>
@@ -9955,7 +9991,7 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>SAA et ZOE</string>
+          <string extracomment="South Atlantic Anomaly and Zone of Exclusion">SAA et ZOE</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -9996,7 +10032,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Angle beta</string>
+          <string extracomment="Beta angle (angle between orbit plane and direction of Sun)">Angle beta</string>
          </property>
         </widget>
        </widget>
@@ -10035,7 +10071,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>ZOE :</string>
+          <string extracomment="Zone of exclusion">ZOE :</string>
          </property>
         </widget>
         <widget class="QLabel" name="lbl_coulCercleVisibilite">
@@ -10159,7 +10195,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>GMT :</string>
+          <string extracomment="Greenwich Mean Time">GMT :</string>
          </property>
         </widget>
         <widget class="QComboBox" name="coulTerminateur">
@@ -10716,7 +10752,7 @@
          <font/>
         </property>
         <property name="text">
-         <string>AD noeud ascendant :</string>
+         <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
         </property>
        </widget>
        <widget class="QComboBox" name="ADNoeudAscendantCreerTLE">
@@ -11669,6 +11705,9 @@
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::UpDownArrows</enum>
         </property>
+        <property name="displayFormat">
+         <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+        </property>
         <property name="calendarPopup">
          <bool>true</bool>
         </property>
@@ -11735,6 +11774,9 @@
         </property>
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::UpDownArrows</enum>
+        </property>
+        <property name="displayFormat">
+         <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
         </property>
         <property name="calendarPopup">
          <bool>true</bool>

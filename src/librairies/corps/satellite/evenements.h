@@ -53,7 +53,7 @@ class Observateur;
 struct ElementsAOS {
     Date date;
     double azimut;
-    QString typeAOS = QObject::tr("AOS");
+    QString typeAOS = QObject::tr("AOS", "Acquisition of signal");
     bool aos;
 };
 

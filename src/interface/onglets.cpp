@@ -122,7 +122,7 @@ Onglets::Onglets(QWidget *parent) :
     _indexInfo = 0;
     _indexOption = 0;
     _titreInformations << tr("Informations satellite") << tr("Recherche données") << tr("Rentrées atmosphériques");
-    _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système");
+    _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
 
     // Initialisation au demarrage
     InitAffichageDemarrage();
@@ -310,11 +310,11 @@ void Onglets::AffichageDate() const
     if (fabs(_date->offsetUTC()) > EPSDBL100) {
         QTime heur(0, 0);
         heur = heur.addSecs(qRound(fabs(_date->offsetUTC()) * NB_SEC_PAR_JOUR));
-        chaineUTC = tr("UTC %1 %2").arg((_date->offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("hh:mm"));
+        chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((_date->offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("hh:mm"));
         _ui->utcManuel->setText(chaineUTC);
         date = *_date;
     } else {
-        chaineUTC = tr("UTC");
+        chaineUTC = tr("UTC", "Universal Time Coordinated");
         _ui->utcManuel->setText(chaineUTC);
         date = Date(_date->jourJulienUTC(), 0., true);
     }
@@ -337,7 +337,7 @@ void Onglets::AffichageDonneesSatellite() const
 
     /* Initialisations */
     const QString fmt = "%1 %2";
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
     const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
 
     /* Corps de la methode */
@@ -459,10 +459,11 @@ void Onglets::AffichageDonneesSatellite() const
     if ((delai >= -EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
 
         QString transitionJN = tr("Prochain %1 :");
-        _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ? tr("N>J") : tr("J>N")));
+        _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ?
+                                                          tr("N>J", "Night to day") : tr("J>N", "Day to night")));
 
         // Delai de l'evenement
-        transitionJN = tr("%1 (dans %2).");
+        transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
         const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
         const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
                     delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
@@ -503,7 +504,7 @@ void Onglets::AffichageDonneesSatellite() const
         _ui->lbl_prochainAOS->setText(chaine.arg(_elementsAOS->typeAOS));
 
         // Delai de l'evenement
-        chaine = tr("%1 (dans %2). Azimut : %3");
+        chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hours, minutes or seconds");
         Date dateAOS = Date(_elementsAOS->date, _date->offsetUTC());
         delai = dateAOS.jourJulienUTC() - _date->jourJulienUTC();
         const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
@@ -527,7 +528,7 @@ void Onglets::AffichageDonneesSatellite() const
     }
 
     // Angle beta
-    const QString angleBeta = tr("Beta : %1");
+    const QString angleBeta = tr("Beta : %1", "Beta angle (angle between orbit plane and direction of Sun)");
     _ui->lbl_beta->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), DEGRE, 2, 0, false, true).mid(0, 9)));
 
     _ui->magnitudeSat->adjustSize();
@@ -592,7 +593,7 @@ void Onglets::AffichageDonneesSoleilLune() const
     _ui->hauteurLune->setText(Maths::ToSexagesimal(lune.hauteur(), DEGRE, 2, 0, true, true));
     _ui->azimutLune->setText(Maths::ToSexagesimal(lune.azimut(), DEGRE, 3, 0, false, true));
     _ui->distanceLune->setText(QString("%1 %2").arg(lune.distance(), 0, 'f', 0)
-                               .arg((_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile")));
+                               .arg((_ui->unitesKm->isChecked()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile")));
 
     // Ascension droite/declinaison/constellation de la Lune
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), HEURE1, 2, 0, false, true).trimmed());
@@ -620,7 +621,7 @@ void Onglets::AffichageElementsOSculateurs() const
 
     /* Initialisations */
     const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
     double demiGrandAxe = satellite.elements().demiGrandAxe();
 
     if (_ui->typeRepere->currentIndex() == 0) {
@@ -735,7 +736,7 @@ void Onglets::AffichageElementsOSculateurs() const
     const int ct0 = satellite.phasage().ct0();
     const int nbOrb = satellite.phasage().nbOrb();
     if ((nu0 < -98) || (dt0 < -98) || (ct0 < -98) || (nbOrb < -98)) {
-        _ui->phasage->setText(tr("N/A"));
+        _ui->phasage->setText(tr("N/A", "Not applicable"));
     } else {
         _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
     }
@@ -881,11 +882,11 @@ void Onglets::AffichageInformationsSatellite() const
 
     QString dimensions;
     if ((fabs(t2) < EPSDBL100) && (fabs(t3) < EPSDBL100)) {
-        const QString fmt3 = tr("Sphérique. R=%1 %2");
+        const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
         dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite);
     }
     if ((fabs(t2) >= EPSDBL100) && (fabs(t3) < EPSDBL100)) {
-        const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2");
+        const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height; R = radius");
         dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite).arg(t2, 0, 'f', 1);
     }
     if ((fabs(t2) >= EPSDBL100) && (fabs(t3) >= EPSDBL100)) {
@@ -928,15 +929,15 @@ void Onglets::AffichageManoeuvresISS() const
     const QString annee = Configuration::instance()->dateDebut().split("-").at(0);
 
     if (_ui->unitesKm->isChecked()) {
-        uniteDist = tr("km");
-        uniteDv = tr("m/s");
-        uniteMasse = tr("kg");
+        uniteDist = tr("km", "Kilometer");
+        uniteDv = tr("m/s", "meter per second");
+        uniteMasse = tr("kg", "Kilogram");
         masse = QString::number(Configuration::instance()->masseISS().at(0), 'f', 2);
 
     } else {
         uniteDist = tr("nmi", "nautical mile");
-        uniteDv = tr("ft/s");
-        uniteMasse = tr("lb");
+        uniteDv = tr("ft/s", "foot per second");
+        uniteMasse = tr("lb", "pound");
         masse = QString::number(Configuration::instance()->masseISS().at(0) / KG_PAR_LIVRE, 'f', 2);
     }
 
@@ -1081,9 +1082,9 @@ void Onglets::AffichageVitesses() const
     double rangeRate = satellite.rangeRate();
 
     if (_ui->unitesKm->isChecked()) {
-        unite = (_uniteVitesse) ? tr("km/h") : tr("km/s");
+        unite = (_uniteVitesse) ? tr("km/h", "Kilometer per hour") : tr("km/s", "Kilometer per second");
     } else {
-        unite = (_uniteVitesse) ? tr("nmi/h") : tr("nmi/s");
+        unite = (_uniteVitesse) ? tr("kn", "Knot") : tr("nmi/s", "Nautical mile per second");
         vitesse *= MILE_PAR_KM;
         rangeRate *= MILE_PAR_KM;
     }
@@ -1429,9 +1430,9 @@ void Onglets::CalculAosSatSuivi() const
         if (elemAos.aos) {
 
             Date dateLosSuivi;
-            const QString chaine = tr("%1 (dans %2). Azimut : %3");
+            const QString chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hour, minutes, seconds");
 
-            if (elemAos.typeAOS == tr("AOS")) {
+            if (elemAos.typeAOS == tr("AOS", "Acquisition of signal")) {
 
                 const ElementsAOS elemLos = Evenements::CalculAOS(Date(dateAosSuivi.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
                                                                   satSuivi, obs, true, hauteurMin);
@@ -1618,7 +1619,7 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 #endif
-        flux << tr("Date :") << " " << _ui->dateHeure2->text() << endl << endl;
+        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure2->text() << endl << endl;
 
         // Donnees sur le satellite
         flux << tr("Nom du satellite :") + " " + _ui->nomsat2->text() << endl;
@@ -1626,13 +1627,13 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         flux << _ui->ligne2->text() << endl << endl;
 
         flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << endl;
-        QString chaine = tr("x : %1\tvx : %2");
+        QString chaine = tr("x : %1\tvx : %2", "Position, velocity");
         flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << endl;
 
-        chaine = tr("y : %1\tvy : %2");
+        chaine = tr("y : %1\tvy : %2", "Position, velocity");
         flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << endl;
 
-        chaine = tr("z : %1\tvz : %2");
+        chaine = tr("z : %1\tvz : %2", "Position, velocity");
         flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << endl << endl;
 
         flux << tr("Éléments osculateurs :") << endl;
@@ -1656,20 +1657,20 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
             chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
             flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Ex                   : %1\tInclinaison                         : %2");
+            chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
             flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2");
+            chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
             flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
                  << endl << endl;
             break;
 
         case 2:
             // Parametres equatoriaux
-            chaine = tr("Demi-grand axe       : %1\tIx                 : %2");
+            chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
             flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité         : %1\tIy                 : %2");
+            chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
             flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << endl;
 
             chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
@@ -1679,13 +1680,14 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
 
         case 3:
             // Parametres circulaires equatoriaux
-            chaine = tr("Demi-grand axe       : %1\tIx                          : %2");
+            chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
             flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << endl;
 
-            chaine = tr("Ex                   : %1\tIy                          : %2");
+            chaine = tr("Ex                   : %1\tIy                          : %2",
+                        "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
             flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << endl;
 
-            chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2");
+            chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
             flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
                  << endl << endl;
             break;
@@ -1705,13 +1707,13 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
 
 
         flux << tr("Divers :") << endl;
-        chaine = tr("Doppler @ 100 MHz    : %1");
+        chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
         flux << chaine.arg(_ui->doppler->text()) << endl;
 
         chaine = tr("Atténuation          : %1");
         flux << chaine.arg(_ui->attenuation->text()) << endl;
 
-        chaine = tr("Délai                : %1");
+        chaine = tr("Délai                : %1", "Delay of signal at light speed");
         flux << chaine.arg(_ui->delai->text()) << endl << endl;
 
         chaine = tr("Phasage              : %1");
@@ -1753,12 +1755,12 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
                 arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 #endif
 
-        flux << tr("Date :") << " " << _ui->dateHeure1->text() << endl << endl;
+        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << endl << endl;
 
         flux << tr("Lieu d'observation :") << " " << _ui->lieuxObservation1->currentText() << endl;
         QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3");
         flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << endl;
-        chaine = tr("Conditions : %1");
+        chaine = tr("Conditions : %1", "Conditions of observation");
         flux << chaine.arg(_ui->conditionsObservation->text()) << endl << endl << endl;
 
         if (_ui->barreOnglets->count() == _nbOnglets) {
@@ -1791,7 +1793,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
                     .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_beta->text() : "").trimmed() << endl;
 #endif
 
-            chaine = tr("Variation distance : %1  \t%2");
+            chaine = tr("Variation distance : %1  \t%2", "Range rate");
             flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
                     .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text())
@@ -1807,7 +1809,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
         chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
         flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()) << endl;
 
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
         flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()) << endl;
 
         chaine = tr("Distance   : %1   \t\tConstellation    : %2");
@@ -1818,12 +1820,12 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
         chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
         flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()) << endl;
 
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
         flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()) << endl;
 
         chaine = tr("Distance   : %1  \t\tConstellation    : %2");
         flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()) << endl << endl;
-        flux << tr("Phase        :") + " " + _ui->phaseLune->text() << endl;
+        flux << tr("Phase        :", "Moon phase") + " " + _ui->phaseLune->text() << endl;
         flux << tr("Illumination :") + " " + _ui->illuminationLune->text() << endl;
         flux << tr("Magnitude    :") + " " + _ui->magnitudeLune->text() << endl;
 
@@ -1870,23 +1872,27 @@ void Onglets::SauveOngletInformations(const QString &fic) const
             flux << _ui->line1->text() << endl;
             flux << _ui->line2->text() << endl << endl;
 
-            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3");
+            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3", "revolution per day");
             flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << endl;
 
-            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3");
+            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
+                        "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
             flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << endl;
 
-            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3");
+            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3",
+                        "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
             flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << endl;
 
-            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3");
+            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3",
+                        "Pseudo-ballistic coefficient in 1/Earth radius");
             flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << endl << endl;
 
             chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
             flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
                     .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << endl;
 
-            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2");
+            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
+                        "Right ascension of the ascending node, Standard/Maximal magnitude");
             flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << endl;
 
             chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
@@ -1901,7 +1907,7 @@ void Onglets::SauveOngletInformations(const QString &fic) const
             // Donnees sur le satellite
             flux << tr("Nom                :") + " " + _ui->nomsat->text() << endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2");
+            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximal magnitude");
             flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << endl;
 
             chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
@@ -2539,13 +2545,13 @@ void Onglets::ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal)
     double vitesse = static_cast<double> (octetsRecus) * 1000. / static_cast<double> (_tempsEcoule.elapsed());
 
     if (vitesse < 1024.) {
-        unite = tr("o/s");
+        unite = tr("o/s", "Octet per second");
     } else if (vitesse < 1048576.) {
         vitesse /= 1024.;
-        unite = tr("ko/s");
+        unite = tr("ko/s", "kilo-octet per second");
     } else {
         vitesse /= 1048576.;
-        unite = tr("Mo/s");
+        unite = tr("Mo/s", "Mega-octet per second");
     }
 
     emit Progression(static_cast<int>(octetsRecus), static_cast<int>(octetsTotal), vitesse, unite);
@@ -3179,7 +3185,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Modele orbital
         const bool modeleDS = (periode.toDouble() > 225.);
-        const QString modele = (modeleDS) ? tr("SGP4 (DS)") : tr("SGP4 (NE)");
+        const QString modele = (modeleDS) ? tr("SGP4 (DS)", "Orbital model SGP4 (deep space)") : tr("SGP4 (NE)", "Orbital model SGP4 (near Earth)");
         _ui->modeleDonneesSat->setText((periode.isEmpty()) ? tr("Non applicable") : modele);
         if (!periode.isEmpty()) {
             _ui->modeleDonneesSat->adjustSize();
@@ -3193,7 +3199,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         double t3 = ligne.mid(29, 4).toDouble();
         double section = ligne.mid(41, 6).toDouble();
         QString unite1 = tr("m", "meter");
-        QString unite2 = tr("km");
+        QString unite2 = tr("km", "kilometer");
         if (_ui->unitesMi->isChecked()) {
 
             apogee *= MILE_PAR_KM;
@@ -3211,11 +3217,11 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         QString dimensions;
         if ((fabs(t2) < EPSDBL100) && (fabs(t3) < EPSDBL100)) {
-            const QString fmt3 = tr("Sphérique. R=%1 %2");
+            const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1);
         }
         if ((fabs(t2) >= EPSDBL100) && (fabs(t3) < EPSDBL100)) {
-            const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2");
+            const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height, R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1).arg(t2, 0, 'f', 1);
         }
         if ((fabs(t2) >= EPSDBL100) && (fabs(t3) >= EPSDBL100)) {
@@ -4149,7 +4155,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss", "date format") + ((_ui->syst12h->isChecked()) ? "a" : "");
     EffacerMessageStatut();
     _ui->compteRenduMaj->setVisible(false);
 
@@ -4224,7 +4230,7 @@ void Onglets::on_ongletsOutils_currentChanged(int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fmt = tr("dd/MM/yyyy hh:mm:ss") + ((_ui->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dd/MM/yyyy hh:mm:ss", "date format") + ((_ui->syst12h->isChecked()) ? "a" : "");
 
     /* Corps de la methode */
     if (index == _ui->ongletsOutils->indexOf(_ui->evenementsOrbitaux)) {
@@ -4399,7 +4405,7 @@ void Onglets::on_calculsPrev_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation2->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
         // Conditions d'eclairement du satellite
         conditions.eclipse = _ui->illuminationPrev->isChecked();
@@ -4437,7 +4443,7 @@ void Onglets::on_calculsPrev_clicked()
         conditions.fichier = Configuration::instance()->nomfic();
 
         // Nom du fichier resultat
-        const QString chaine = tr("previsions") + "_%1_%2.txt";
+        const QString chaine = tr("previsions", "filename (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
                 chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
@@ -4665,7 +4671,7 @@ void Onglets::on_calculsFlashs_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation3->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
         // Conditions d'eclairement du satellite
         conditions.eclipse = _ui->illuminationPrev->isChecked();
@@ -4733,7 +4739,7 @@ void Onglets::on_calculsFlashs_clicked()
         conditions.listeSatellites = listeSatellites;
 
         // Nom du fichier resultat
-        const QString chaine = tr("flashs") + "_%1_%2.txt";
+        const QString chaine = tr("flashs", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
                 chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
@@ -4922,7 +4928,7 @@ void Onglets::on_calculsTransit_clicked()
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation4->currentIndex());
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
         // Prise en compte de la refraction atmospherique
         conditions.refraction = _ui->refractionPourEclipses->isChecked();
@@ -5062,7 +5068,7 @@ void Onglets::on_calculsTransit_clicked()
         }
 
         // Nom du fichier resultat
-        const QString chaine = tr("transits") + "_%1_%2.txt";
+        const QString chaine = tr("transits", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
                 chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
@@ -5228,7 +5234,7 @@ void Onglets::on_genererPositions_clicked()
 
         if (elementsAos.aos) {
 
-            if (elementsAos.typeAOS == tr("AOS")) {
+            if (elementsAos.typeAOS == tr("AOS", "Acquisition of signal")) {
                 date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0.), satSuivi, obs, true, hauteurMin).date;
 
             } else {
@@ -5475,7 +5481,7 @@ void Onglets::on_calculsEvt_clicked()
         conditions.systeme = _ui->syst24h->isChecked();
 
         // Unites de longueur
-        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km") : tr("nmi", "nautical mile");
+        conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = _ui->eclipsesLune->isChecked();
@@ -5484,7 +5490,7 @@ void Onglets::on_calculsEvt_clicked()
         conditions.fichier = Configuration::instance()->nomfic();
 
         // Nom du fichier resultat
-        const QString chaine = tr("evenements") + "_%1_%2.txt";
+        const QString chaine = tr("evenements", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
                 chaine.arg(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0)).
                 arg(date2.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").split(" ").at(0));
