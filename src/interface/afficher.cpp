@@ -119,25 +119,28 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     switch (_typeCalcul) {
     case PREVISIONS:
         setWindowTitle(tr("Prévisions de passage"));
-        titres << tr("Satellite") << tr("Date de début") << tr("Date de fin") << tr("Hauteur max") << tr("Magn") << tr("Hauteur Soleil");
+        titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
+               << tr("Hauteur max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Hauteur Soleil");
         break;
 
     case EVENEMENTS:
         setWindowTitle(tr("Évènements orbitaux"));
-        titres << tr("Satellite") << tr("Date") << tr("PSO") << tr("Longitude") << tr("Latitude") << tr("Évènement");
+        titres << tr("Satellite") << tr("Date", "Date and hour") << tr("PSO", "In orbit position") << tr("Longitude") << tr("Latitude")
+               << tr("Évènement");
         break;
 
     case FLASHS:
         setWindowTitle(tr("Flashs"));
         ui->afficherCarte->setVisible(true);
-        titres << tr("Satellite") << tr("Date de début") << tr("Date de fin") << tr("Hauteur Max") << tr("Magn") << tr("Mir") << tr("Hauteur Soleil");
+        titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
+               << tr("Hauteur Max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Mir", "Mirror") << tr("Hauteur Soleil");
         break;
 
     case TRANSITS:
         setWindowTitle(tr("Transits ISS"));
         ui->afficherCarte->setVisible(true);
-        titres << tr("Date de début") << tr("Date de fin") << tr("Cst") << tr("Angle") << tr("Type") << tr("Corps") << tr("Ill")
-               << tr("Hauteur Soleil");
+        titres << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour") << tr("Cst", "Constellation") << tr("Angle")
+               << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             ui->detailsTransit->setVisible(true);
@@ -243,25 +246,34 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
 
         case PREVISIONS:
             tableDetail->setColumnCount(12);
-            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat")
-                                                   << tr("AD Sat") << tr("Decl Sat") << tr("Const") << tr("Magn") << tr("Altitude") << tr("Distance")
-                                                   << tr("Az Soleil") << tr("Haut Soleil"));
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                   << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                   << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                   << tr("Const", "Constellation") << tr("Magn", "Magnitude") << tr("Altitude") << tr("Distance")
+                                                   << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation"));
             break;
 
         case FLASHS:
             tableDetail->setColumnCount(18);
-            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat")
-                                                   << tr("AD Sat") << tr("Decl Sat") << tr("Const") << tr("Ang") << tr("Mir") << tr("Magn")
-                                                   << tr("Altitude") << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max")
-                                                   << tr("Lat Max") << tr("Magn Max") << tr("Distance"));
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                   << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                   << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                   << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
+                                                   << tr("Magn", "Magnitude") << tr("Altitude") << tr("Dist", "Range")
+                                                   << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
+                                                   << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
+                                                   << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
             break;
 
         case TRANSITS:
             tableDetail->setColumnCount(17);
-            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date") << tr("Azimut Sat") << tr("Hauteur Sat") << tr("AD Sat")
-                                                   << tr("Decl Sat") << tr("Cst") << tr("Ang") << tr("Type") << tr("Corps") << tr("Ill") << tr("Alt")
-                                                   << tr("Dist") << tr("Az Soleil") << tr("Haut Soleil") << tr("Long Max") << tr("Lat Max")
-                                                   << tr("Distance"));
+            tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date", "Date and hour") << tr("Azimut Sat", "Satellite azimuth")
+                                                   << tr("Hauteur Sat", "Satellite elevation") << tr("AD Sat", "Satellite right ascension")
+                                                   << tr("Decl Sat", "Satellite declination") << tr("Cst", "Constellation") << tr("Ang", "Angle")
+                                                   << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination")
+                                                   << tr("Alt", "Altitude") << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth")
+                                                   << tr("Haut Soleil", "Solar elevation") << tr("Long Max", "Longitude of the maximum")
+                                                   << tr("Lat Max", "Latitude of the maximum") << tr("Distance"));
             break;
 
         case TELESCOPE:
@@ -446,20 +458,28 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
             case PREVISIONS:
                 flux << nomsat << endl;
-                flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil")
+                flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil",
+                           "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, " \
+                           "Magnitude, Altitude, Range, Solar azimuth, Solar elevation")
                      << endl;
                 break;
 
             case FLASHS:
                 flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn" \
-                           "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance")
+                           "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
+                           "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                           "Constellation, Angle, Mirror, Magnitude, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
+                           "Latitude of the maximum, Magnitude at the maximum, Range")
                      << endl;
                 break;
 
             case TRANSITS:
                 if (ecrireNomColonnes) {
                     flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps" \
-                               " Ill    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance")
+                               " Ill    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, "
+                               "Angle, Type, Body, Illumination, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
+                               "Latitude of the maximum, Range")
                          << endl;
                     ecrireNomColonnes = false;
                 }
@@ -467,7 +487,8 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
             case EVENEMENTS:
                 flux << nomsat << endl;
-                flux << tr("   Date      Heure      PSO    Longitude  Latitude  Évènements") << endl;
+                flux << tr("   Date      Heure      PSO    Longitude  Latitude  Évènements",
+                           "Date, Hour, In orbit position, Longitude, Latitude, Events") << endl;
                 break;
 
             case TELESCOPE:
@@ -713,7 +734,7 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
     /* Initialisations */
     const QString lon(QString::number(-observateur.longitude() * RAD2DEG));
     const QString lat(QString::number(observateur.latitude() * RAD2DEG));
-    const QString unite((_conditions.unite == tr("km")) ? tr("m", "meter") : tr("ft", "foot"));
+    const QString unite((_conditions.unite == tr("km", "Kilometer")) ? tr("m", "meter") : tr("ft", "foot"));
     const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m", "meter")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
                       " " + unite);
 
@@ -897,7 +918,7 @@ void Afficher::EcrireEntete() const
 
         const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
                                                                                    _conditions.observateur.altitude() * PIED_PAR_METRE;
-        const QString unite = (_conditions.unite == QObject::tr("km")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
+        const QString unite = (_conditions.unite == QObject::tr("km", "kilometer")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
         ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
         flux << ligne << endl;
@@ -905,7 +926,7 @@ void Afficher::EcrireEntete() const
 
     // Fuseau horaire
     ligne = QObject::tr("Fuseau horaire            : %1");
-    QString chaine = QObject::tr("UTC");
+    QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
     if (_conditions.ecart) {
         if (fabs(_conditions.offset) > EPSDBL100) {
             QTime heur(0, 0);
@@ -989,10 +1010,10 @@ QStringList Afficher::ElementsDetailsEvenements(const ResultatPrevisions &res) c
     // Longitude, latitude
     elems.append(QString("  %1° %2")
                  .arg(fabs(res.longitude * RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ?
-                                                                                    tr("W", "cardinal point") : tr("E", "cardinal point")));
+                                                                                    tr("W", "West") : tr("E", "East")));
     elems.append(QString(" %1° %2 ")
                  .arg(fabs(res.latitude * RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ?
-                                                                                   tr("N", "cardinal point") : tr("S", "cardinal point")));
+                                                                                   tr("N", "North") : tr("S", "South")));
 
     // Type d'evenement
     elems.append(res.typeEvenement);
@@ -1120,8 +1141,8 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
 
     if (!res.obsmax.nomlieu().isEmpty()) {
 
-        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "cardinal point") : QObject::tr("E", "cardinal point");
-        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "cardinal point") : QObject::tr("S", "cardinal point");
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "West") : QObject::tr("E", "East");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "North") : QObject::tr("S", "South");
 
         // Longitude du maximum
         elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
@@ -1320,13 +1341,13 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     elems.append(corps);
 
     // Illumination
-    QString illumination = tr("Lum", "illumination");
+    QString illumination = tr("Lum", "Lit");
     if (eclipse) {
-        illumination = tr("Omb", "illumination");
+        illumination = tr("Omb", "Shadow");
     }
 
     if (penombre) {
-        illumination = tr("Pen", "illumination");
+        illumination = tr("Pen", "Penumbra");
     }
 
     elems.append(illumination);
@@ -1368,13 +1389,13 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
     elems.append(QString("%1  ").arg((res.typeCorps == CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon")));
 
     // Illumination
-    QString illumination = tr("Lum", "illumination");
+    QString illumination = tr("Lum", "Lit");
     if (res.eclipse) {
-        illumination = tr("Omb", "illumination");
+        illumination = tr("Omb", "Shadow");
     }
 
     if (res.penombre) {
-        illumination = tr("Pen", "illumination");
+        illumination = tr("Pen", "Penumbra");
     }
 
     elems.append(illumination);
@@ -1395,8 +1416,8 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 
     if (!res.obsmax.nomlieu().isEmpty()) {
 
-        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "cardinal point") : QObject::tr("E", "cardinal point");
-        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "cardinal point") : QObject::tr("S", "cardinal point");
+        const QString ew = (res.obsmax.longitude() >= 0.) ? QObject::tr("W", "West") : QObject::tr("E", "East");
+        const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "North") : QObject::tr("S", "South");
 
         // Longitude du maximum
         elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));

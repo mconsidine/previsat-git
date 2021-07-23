@@ -1338,7 +1338,7 @@ void PreviSat::GestionTempsReel()
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
-                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss", "date format") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
                 if (_onglets->ui()->dateHeure4->isVisible()) {
                     _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
                     _onglets->ui()->dateHeure4->setDateTime(_dateCourante->ToQDateTime(1));
@@ -1390,7 +1390,7 @@ void PreviSat::TempsReel()
 
         // Affichage de la date et l'heure dans la barre de statut
         const QDateTime d = _dateCourante->ToQDateTime(1);
-        _stsDate->setText(d.toString(tr("dd/MM/yyyy")));
+        _stsDate->setText(d.toString(tr("dd/MM/yyyy", "date format")));
         _stsHeure->setText(d.toString("hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : ""));
         _stsDate->setToolTip(tr("Date"));
         _stsHeure->setToolTip(tr("Heure"));
@@ -1590,7 +1590,8 @@ void PreviSat::on_actionEnregistrer_triggered()
     /* Corps de la methode */
     if (ui->actionEnregistrer->isVisible() && (_onglets->ui()->barreOnglets->currentIndex() < 3)) {
 
-        const QStringList listeNoms(QStringList() << tr("onglet_general") << tr("onglet_elements") << tr("onglet_informations"));
+        const QStringList listeNoms(QStringList() << tr("onglet_general", "file name (without accent)")
+                                    << tr("onglet_elements", "file name (without accent)") << tr("onglet_informations", "file name (without accent)"));
 
         const QString nomFicDefaut = settings.value("fichier/sauvegarde", Configuration::instance()->dirOut()).toString() + QDir::separator() +
                 listeNoms.at(_onglets->ui()->barreOnglets->currentIndex()) + ".txt";
@@ -1686,7 +1687,7 @@ void PreviSat::on_actionMettre_jour_TLE_communs_triggered()
     /* Corps de la methode */
     // Mise a jour des groupes de TLE communs
     _messageStatut->setText(tr("Mise à jour des fichiers TLE communs..."));
-    MettreAJourGroupeTLE(tr("commun"));
+    MettreAJourGroupeTLE(tr("commun", "do not translate for now"));
 
     /* Retour */
     return;
@@ -1701,7 +1702,7 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     /* Corps de la methode */
     // Mise a jour de tous les groupes de TLE
     _messageStatut->setText(tr("Mise à jour des groupes de TLE en cours..."));
-    MettreAJourGroupeTLE(tr("tous"));
+    MettreAJourGroupeTLE(tr("tous", "do not translate for now"));
 
     /* Retour */
     return;
@@ -1896,7 +1897,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->pasManuel->setVisible(true);
         ui->valManuel->setVisible(true);
 
-        const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+        const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss", "date format") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
         _onglets->ui()->dateHeure3->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
         _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
         _onglets->ui()->dateHeure3->setVisible(true);

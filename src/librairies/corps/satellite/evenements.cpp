@@ -75,7 +75,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
 
         double periode = st * NB_JOUR_PAR_MIN;
         if ((sat.hauteur() * st) > EPSDBL100) {
-            elements.typeAOS = QObject::tr("LOS");
+            elements.typeAOS = QObject::tr("LOS", "Loss of signal");
         }
 
         double tAOS = 0.;
@@ -110,7 +110,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
 
                 t_ht = (atst1) ? jjm.at(1) : jjm.at(2);
 
-                if (elements.typeAOS == QObject::tr("AOS")) {
+                if (elements.typeAOS == QObject::tr("AOS", "Acquisition of signal")) {
                     jjm[0] = t_ht - periode;
                     jjm[1] = t_ht - 0.5 * periode;
                     jjm[2] = t_ht;
