@@ -535,14 +535,14 @@ void Onglets::AffichageDonneesSatellite() const
     if (_ui->magnitudeSat->x() == 177) {
 
         const int posMag = _ui->magnitudeSat->x() + _ui->magnitudeSat->width();
-        _ui->lbl_beta->move((posMag > 321) ? posMag + 10 : 333, _ui->dateJN->y());
+        _ui->lbl_beta->move((posMag > 321) ? posMag + 10 : 333, 93 + _ui->dateJN->y());
         if (!_elementsAOS->aos) {
             _ui->lbl_beta->move(_ui->lbl_prochainAOS->pos());
         }
 
     } else {
         _ui->lbl_beta->adjustSize();
-        _ui->lbl_beta->move(_ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, _ui->dateJN->y());
+        _ui->lbl_beta->move(177 + _ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, 93 + _ui->dateJN->y());
     }
 
     /* Retour */
@@ -808,14 +808,7 @@ void Onglets::AffichageInformationsSatellite() const
 
     // Derivees du moyen mouvement
     _ui->nbRev2->setText(fmt1.arg(tle.ndt20(), 0, 'f', 8));
-    _ui->lbl_revjour2->adjustSize();
-    _ui->lbl_revjour2->setFixedHeight(16);
-    _ui->lbl_revjour2_2->move(_ui->lbl_revjour2->x() + _ui->lbl_revjour2->width() + 1, _ui->lbl_revjour2_2->y());
-
     _ui->nbRev3->setText(fmt1.arg(tle.ndd60(), 0, 'f', 8));
-    _ui->lbl_revjour3->adjustSize();
-    _ui->lbl_revjour3->setFixedHeight(16);
-    _ui->lbl_revjour3_3->move(_ui->lbl_revjour3->x() + _ui->lbl_revjour3->width() + 1, _ui->lbl_revjour3_3->y());
 
     // Nombre d'orbites a l'epoque
     _ui->nbOrbitesEpoque->setText(fmt1.arg(tle.nbOrbitesEpoque() + static_cast<unsigned int> (satellite.deltaNbOrb())));
@@ -906,9 +899,6 @@ void Onglets::AffichageInformationsSatellite() const
     }
 
     _ui->dimensions->setText(dimensions);
-    _ui->dimensions->adjustSize();
-    _ui->dimensions->setFixedHeight(16);
-    _ui->sq->move(_ui->dimensions->x() + _ui->dimensions->width() + 1, _ui->sq->y());
 
     /* Retour */
     return;
@@ -2137,7 +2127,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->lbl_prochainAOS->resize(_ui->lbl_prochainAOS->width(), 16);
     _ui->dateAOS->move(_ui->lbl_prochainAOS->x() + _ui->lbl_prochainAOS->width() + 7, _ui->dateAOS->y());
     _ui->dateJN->move(_ui->dateAOS->x(), _ui->dateJN->y());
-    _ui->lbl_beta->move(_ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, _ui->dateJN->y());
+    _ui->lbl_beta->move(177 + _ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, 93 + _ui->dateJN->y());
 
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
@@ -2207,19 +2197,19 @@ void Onglets::InitAffichageDemarrage()
     _ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
 
     _ui->numeroNORADCreerTLE->setCurrentIndex(0);
-    _ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
-    _ui->excentriciteCreerTLE->setCurrentIndex(0);
-    _ui->inclinaisonCreerTLE->setCurrentIndex(0);
-    _ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
+//    _ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
+//    _ui->excentriciteCreerTLE->setCurrentIndex(0);
+//    _ui->inclinaisonCreerTLE->setCurrentIndex(0);
+//    _ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
     _ui->fichierTelechargement->setText("");
     _ui->barreProgression->setValue(0);
     _ui->frameBarreProgression->setVisible(false);
     _ui->compteRenduMaj->setVisible(false);
-    _ui->frameADNA->setVisible(false);
-    _ui->frameArgumentPerigee->setVisible(false);
-    _ui->frameExcentricite->setVisible(false);
-    _ui->frameIncl->setVisible(false);
-    _ui->frameNORAD->setVisible(false);
+//    _ui->frameADNA->setVisible(false);
+//    _ui->frameArgumentPerigee->setVisible(false);
+//    _ui->frameExcentricite->setVisible(false);
+//    _ui->frameIncl->setVisible(false);
+//    _ui->frameNORAD->setVisible(false);
 
     _ui->valHauteurSatMetOp->setVisible(false);
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -2288,7 +2278,7 @@ void Onglets::InitAffichageDemarrage()
         const QString locale = Configuration::instance()->listeFicLang().at(i + 1);
 
         trad.load(Configuration::instance()->dirLang() + QDir::separator() + listeFicTrad.at(i));
-        const QString langue = trad.translate("Onglets", "Langue");
+        const QString langue = trad.translate("Onglets", "Langue", "Translate by the name of language, for example : English, Français, Español");
 
         const QFileInfo fi(":/resources/drapeaux/" + locale + ".png");
         const QIcon drapeau = (fi.exists()) ? QIcon(fi.filePath()) : fond;
@@ -3241,9 +3231,6 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         }
 
         _ui->dimensionsDonneesSat->setText(dimensions);
-        _ui->dimensionsDonneesSat->adjustSize();
-        _ui->dimensionsDonneesSat->setFixedHeight(16);
-        _ui->sqDonneesSat->move(_ui->dimensionsDonneesSat->x() + _ui->dimensionsDonneesSat->width() + 1, _ui->sqDonneesSat->y());
 
         // Apogee/perigee/periode orbitale
         const QString fmt = "%1 %2 (%3 %2)";

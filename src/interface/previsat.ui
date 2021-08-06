@@ -1046,25 +1046,6 @@
               <string>ISS Live</string>
              </property>
             </widget>
-            <widget class="QLabel" name="lbl_nomFichierTLE">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>128</y>
-               <width>41</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="text">
-              <string>Fichier :</string>
-             </property>
-            </widget>
             <widget class="QLabel" name="secondes">
              <property name="geometry">
               <rect>
@@ -1223,25 +1204,6 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QComboBox" name="listeFichiersTLE">
-             <property name="geometry">
-              <rect>
-               <x>50</x>
-               <y>124</y>
-               <width>170</width>
-               <height>22</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="currentText">
-              <string notr="true"/>
-             </property>
-            </widget>
             <widget class="QToolButton" name="meteoBasesNASA">
              <property name="geometry">
               <rect>
@@ -1364,6 +1326,50 @@
                <string>jours</string>
               </property>
              </item>
+            </widget>
+            <widget class="QWidget" name="formLayoutWidget_11">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>124</y>
+               <width>211</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <layout class="QFormLayout" name="formLayout_fichierTLE">
+              <property name="horizontalSpacing">
+               <number>3</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lbl_nomFichierTLE">
+                <property name="font">
+                 <font/>
+                </property>
+                <property name="mouseTracking">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Fichier :</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="listeFichiersTLE">
+                <property name="font">
+                 <font/>
+                </property>
+                <property name="mouseTracking">
+                 <bool>true</bool>
+                </property>
+                <property name="currentText">
+                 <string notr="true"/>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </widget>
           </item>

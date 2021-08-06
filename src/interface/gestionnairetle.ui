@@ -124,76 +124,6 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_domaine">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>51</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font/>
-     </property>
-     <property name="text">
-      <string>Domaine :</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="domaine">
-     <property name="geometry">
-      <rect>
-       <x>64</x>
-       <y>8</y>
-       <width>141</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font/>
-     </property>
-     <property name="inputMask">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string notr="true"/>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="nomGroupe">
-     <property name="geometry">
-      <rect>
-       <x>96</x>
-       <y>33</y>
-       <width>109</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font/>
-     </property>
-     <property name="inputMask">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string notr="true"/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lbl_nomGroupe">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>35</y>
-       <width>91</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font/>
-     </property>
-     <property name="text">
-      <string>Nom du groupe :</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="lbl_listeFichiers">
      <property name="geometry">
       <rect>
@@ -255,6 +185,88 @@
       <font/>
      </property>
     </widget>
+    <widget class="QWidget" name="formLayoutWidget_11">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>195</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_gestionnaireTLE1">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_domaine">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Domaine :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="domaine">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="inputMask">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_12">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>35</y>
+       <width>195</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_gestionnaireTLE2">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_nomGroupe">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Nom du groupe :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nomGroupe">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="inputMask">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QPushButton" name="fermer">
     <property name="geometry">
@@ -292,44 +304,6 @@
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="ageMaxTLE">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>262</y>
-      <width>181</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font/>
-    </property>
-    <property name="text">
-     <string>Age maximal des TLE (en jours) :</string>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="nbJoursAgeMaxTLE">
-    <property name="geometry">
-     <rect>
-      <x>195</x>
-      <y>260</y>
-      <width>42</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font/>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>60</number>
-    </property>
-    <property name="value">
-     <number>15</number>
     </property>
    </widget>
    <widget class="QToolButton" name="creationGroupe">
@@ -375,6 +349,50 @@
     <property name="autoRaise">
      <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_11">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>233</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_gestionnaireTLE3">
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="ageMaxTLE">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Age maximal des TLE (en jours) :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="nbJoursAgeMaxTLE">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>60</number>
+       </property>
+       <property name="value">
+        <number>15</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="barreMenu">
