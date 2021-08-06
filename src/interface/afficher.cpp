@@ -469,7 +469,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                            "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
                            "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
                            "Constellation, Angle, Mirror, Magnitude, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
-                           "Latitude of the maximum, Magnitude at the maximum, Range")
+                           "Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
                      << endl;
                 break;
 
@@ -479,7 +479,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                                " Ill    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
                                "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, "
                                "Angle, Type, Body, Illumination, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
-                               "Latitude of the maximum, Range")
+                               "Latitude of the maximum, Range from the maximum")
                          << endl;
                     ecrireNomColonnes = false;
                 }
