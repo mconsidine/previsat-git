@@ -267,7 +267,6 @@ static QString majInfosDate;
 static QTimer *chronometre;
 static ThreadCalculs *threadCalculs;
 static Afficher *afficherResultats;
-static QMainWindow *afficherMeteo;
 static QMainWindow *afficherManoeuvre;
 static GestionnaireTLE *gestionnaire;
 static QString localePreviSat;
@@ -289,10 +288,6 @@ static QLabel *messagesStatut3;
 static QLabel *modeFonctionnement;
 static QLabel *stsDate;
 static QLabel *stsHeure;
-
-// Meteo bases NASA
-static bool iEtatMeteo;
-static QWebView *viewMeteoNASA;
 
 // Live ISS
 static QStringList listeChaines;
@@ -864,10 +859,6 @@ PreviSat::~PreviSat()
 {
     if (afficherResultats != NULL) {
         afficherResultats->close();
-    }
-
-    if (afficherMeteo != NULL) {
-        afficherMeteo->close();
     }
 
 #if !defined (Q_OS_WIN)
@@ -6018,17 +6009,6 @@ void PreviSat::GestionTempsReel()
         afficherResultats = NULL;
     }
 
-    if (afficherMeteo != NULL && !afficherMeteo->isVisible()) {
-
-        if (viewMeteoNASA != NULL) {
-            viewMeteoNASA->deleteLater();
-            viewMeteoNASA = NULL;
-        }
-
-        afficherMeteo->deleteLater();
-        afficherMeteo = NULL;
-    }
-
     if (afficherManoeuvre != NULL && afficherManoeuvre->isHidden()) {
 
         if (tableMan != NULL) {
@@ -6543,10 +6523,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     if (afficherResultats != NULL) {
         afficherResultats->close();
-    }
-
-    if (afficherMeteo != NULL) {
-        afficherMeteo->close();
     }
 
     if (afficherManoeuvre != NULL) {
@@ -7566,16 +7542,6 @@ void PreviSat::on_meteo_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherMeteo != NULL) {
-
-        if (viewMeteoNASA != NULL) {
-            viewMeteoNASA->deleteLater();
-            viewMeteoNASA = NULL;
-        }
-
-        afficherMeteo->deleteLater();
-        afficherMeteo = NULL;
-    }
 
     /* Corps de la methode */
     // Affichage de la map
@@ -7615,100 +7581,15 @@ void PreviSat::on_meteoBasesNASA_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (afficherMeteo != NULL) {
-
-        if (viewMeteoNASA != NULL) {
-            viewMeteoNASA->deleteLater();
-            viewMeteoNASA = NULL;
-        }
-
-        afficherMeteo->deleteLater();
-        afficherMeteo = NULL;
-    }
 
     /* Corps de la methode */
-    afficherMeteo = new QMainWindow;
-    afficherMeteo->resize(1280, 960);
-
-    const int xmax = QApplication::desktop()->availableGeometry().width();
-    const int ymax = QApplication::desktop()->availableGeometry().height() - 40;
-    int xAff = afficherMeteo->width();
-    int yAff = afficherMeteo->height();
-
-    if (afficherMeteo->x() < 0 || afficherMeteo->y() < 0) {
-        afficherMeteo->move(0, 0);
-    }
-
-    // Redimensionnement de la fenetre si necessaire
-    if (xAff > xmax)
-        xAff = xmax;
-    if (yAff > ymax)
-        yAff = ymax;
-
-    if (xAff < afficherMeteo->width() || yAff < afficherMeteo->height()) {
-        afficherMeteo->resize(xAff, yAff);
-    }
-
-    afficherMeteo->setWindowTitle(QString("%1 %2 - Météo des bases de la NASA").arg(QCoreApplication::applicationName())
-                                  .arg(QString(APPVER_MAJ)));
-
-    viewMeteoNASA = new QWebView;
-    viewMeteoNASA->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    viewMeteoNASA->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
-    viewMeteoNASA->settings()->setObjectCacheCapacities(0, 0, 0);
-    viewMeteoNASA->triggerPageAction(QWebPage::ReloadAndBypassCache);
-
-    // Definition de raccourcis
-    const QShortcut * const shortcut = new QShortcut(QKeySequence(Qt::Key_F5), afficherMeteo);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(ActualiseMeteoNASA()));
-
-    const QShortcut * const shortcut2 = new QShortcut(QKeySequence(Qt::Key_F11), afficherMeteo);
-    connect(shortcut2, SIGNAL(activated()), this, SLOT(MeteoPleinEcran()));
-
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-
-    // Chargement de la meteo
-    const QString fic("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteoNASA.html");
-    const QUrl url(fic);
-
-    viewMeteoNASA->load(url);
-    afficherMeteo->setCentralWidget(viewMeteoNASA);
-    afficherMeteo->showNormal();
+    // Chargement de la meteo des bases NASA
+    const QUrl url("file:///" + dirLocalData + QDir::separator() + "html" + QDir::separator() + "meteoNASA.html");
+    QDesktopServices::openUrl(url);
 
     /* Retour */
     return;
 }
-
-
-void PreviSat::ActualiseMeteoNASA()
-{
-    viewMeteoNASA->reload();
-}
-
-void PreviSat::MeteoPleinEcran()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (afficherMeteo->isFullScreen()) {
-
-        if (iEtatMeteo) {
-            afficherMeteo->showMaximized();
-        } else {
-            afficherMeteo->showNormal();
-        }
-
-    } else {
-        iEtatMeteo = afficherMeteo->isMaximized();
-        afficherMeteo->showFullScreen();
-    }
-
-    /* Retour */
-    return;
-}
-
 
 void PreviSat::on_mccISS_toggled(bool checked)
 {

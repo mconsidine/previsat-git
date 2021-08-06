@@ -467,8 +467,6 @@ private slots:
     void on_faireDon_clicked();
     void on_meteo_clicked();
     void on_meteoBasesNASA_clicked();
-    void MeteoPleinEcran();
-    void ActualiseMeteoNASA();
 
     void on_mccISS_toggled(bool checked);
     void on_chaine_valueChanged(int arg1);
