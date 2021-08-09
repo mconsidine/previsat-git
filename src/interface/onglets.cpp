@@ -651,7 +651,11 @@ void Onglets::AffichageElementsOSculateurs() const
     // Elements osculateurs
     const QString fmt1 = "%1";
     const QString fmt2 = "%1°";
-    _ui->demiGrandAxe->setText(text.asprintf("%.1f ", demiGrandAxe) + unite);
+    const QString demiGdAxe = text.asprintf("%.1f ", demiGrandAxe) + unite;
+    _ui->demiGrandAxeKeplerien->setText(demiGdAxe);
+    _ui->demiGrandAxeCirc->setText(demiGdAxe);
+    _ui->demiGrandAxeEquat->setText(demiGdAxe);
+    _ui->demiGrandAxeCircEquat->setText(demiGdAxe);
 
     _ui->frameCirculaire->setVisible(false);
     _ui->frameCirculaireEquatorial->setVisible(false);
@@ -1632,7 +1636,7 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         case 0:
             // Parametres kepleriens
             chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-            flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << endl;
+            flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << endl;
 
             chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
             flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << endl;
@@ -1645,7 +1649,7 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         case 1:
             // Parametres circulaires
             chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-            flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << endl;
+            flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << endl;
 
             chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
             flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << endl;
@@ -1658,7 +1662,7 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         case 2:
             // Parametres equatoriaux
             chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
-            flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ix1->text()) << endl;
+            flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << endl;
 
             chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
             flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << endl;
@@ -1671,7 +1675,7 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
         case 3:
             // Parametres circulaires equatoriaux
             chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
-            flux << chaine.arg(_ui->demiGrandAxe->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << endl;
+            flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << endl;
 
             chaine = tr("Ex                   : %1\tIy                          : %2",
                         "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
