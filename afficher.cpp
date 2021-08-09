@@ -679,14 +679,9 @@ void Afficher::loadSky(const int j)
     QVector<TLE> tabtle;
     Satellite sat;
 
-    if (cond.typeCalcul() == TRANSITS) {
-        TLE::LectureFichier3le(cond.fic(), tabtle);
-        sat = Satellite(tabtle);
-    } else {
-        const QStringList listeTLEs(tab.at(0));
-        TLE::LectureFichier(cond.fic(), listeTLEs, tabtle);
-        sat = Satellite(tabtle.at(0));
-    }
+    const QStringList listeTLEs(tab.at(0));
+    TLE::LectureFichier(cond.fic(), listeTLEs, tabtle);
+    sat = Satellite(tabtle.at(0));
 
     // Date de debut du passage
     QString date = tab.at(1).trimmed();
