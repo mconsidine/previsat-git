@@ -654,6 +654,8 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
             const QPolygonF poly = Ciel::AffichagePhaseLune(lune, 51);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
+            const QRectF rect = poly.boundingRect();
+            transform.translate(-rect.x(), -rect.y());
             omb->setTransform(transform);
         }
     }
