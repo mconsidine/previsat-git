@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mars 2021
+ * >    9 aout 2021
  *
  */
 
@@ -751,7 +751,8 @@ void PreviSat::MAJTLE()
     }
 
     // Affichage des manoeuvres ISS
-    ui->lbl_manoeuvresISS->setText(tr("Données de manoeuvres ISS indisponibles"));
+    ui->lbl_manoeuvresISS->setText(tr("Données de manoeuvres ISS indisponibles\n" \
+                                      "Ces informations seront de nouveau disponibles dans la prochaine version"));
 
     /* Retour */
     return;
@@ -4956,7 +4957,8 @@ void PreviSat::ChargementPref() const
 
                 } else if (item.at(0) == "affichage/affconst" || item.at(0) == "affichage/affnomlieu" || item.at(0) == "affichage/affnomsat" ||
                            item.at(0) == "affichage/affplanetes" || item.at(0) == "affichage/affradar" || item.at(0) == "affichage/affvisib" ||
-                           item.at(0) == "affichage/intensiteOmbre" || item.at(0) == "affichage/intensiteVision") {
+                           item.at(0) == "affichage/intensiteOmbre" || item.at(0) == "affichage/intensiteVision" ||
+                           item.at(0) == "affichage/valeurZoomMap") {
                     settings.setValue(item.at(0), item.at(1).toUInt());
                 } else {
                 }
@@ -4998,6 +5000,7 @@ void PreviSat::ChargementPref() const
         ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
         ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
+        ui->valeurZoomMap->setValue(settings.value("affichage/valeurZoomMap", 9).toInt());
         ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 1).toInt());
         ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
     }
@@ -5742,6 +5745,7 @@ void PreviSat::SauvePreferences(const QString &fic) const
                 "affichage/unite " << BOOL_STR(ui->unitesKm->isChecked()) << endl <<
                 "affichage/utc " << BOOL_STR(ui->utc->isChecked()) << endl <<
                 "affichage/utcAuto " << BOOL_STR(ui->utcAuto->isChecked()) << endl <<
+                "affichage/valeurZoomMap " << ui->valeurZoomMap->value() << endl <<
                 "affichage/verifMAJ " << BOOL_STR(ui->verifMAJ->isChecked()) << endl <<
                 "fichier/affichageMsgMAJ " << ui->affichageMsgMAJ->currentIndex() << endl <<
                 "affichage/mccISS " << BOOL_STR(ui->mccISS->isChecked()) << endl <<
@@ -6451,6 +6455,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/unite", ui->unitesKm->isChecked());
     settings.setValue("affichage/utc", ui->utc->isChecked());
     settings.setValue("affichage/utcAuto", ui->utcAuto->isChecked());
+    settings.setValue("affichage/valeurZoomMap", ui->valeurZoomMap->value());
     settings.setValue("affichage/verifMAJ", ui->verifMAJ->isChecked());
 
     settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
@@ -7560,7 +7565,8 @@ void PreviSat::on_meteo_clicked()
     const QString lat(QString::number(observateurs.at(0).latitude() * RAD2DEG));
     map0 = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
             .replace("UNITE_TEMP", (ui->unitesKm->isChecked()) ? "C" : "F")
-            .replace("UNITE_VENT", (ui->unitesKm->isChecked()) ? "kmh" : "mph");
+            .replace("UNITE_VENT", (ui->unitesKm->isChecked()) ? "kmh" : "mph")
+            .replace("VALEUR_ZOOM", QString::number(ui->valeurZoomMap->value()));
 
     QFile fi2(dirTmp + QDir::separator() + "meteo.html");
     fi2.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -7912,6 +7918,7 @@ void PreviSat::on_actionVision_nocturne_toggled(bool arg1)
     ui->nombreTrajectoires->setPalette(palList);
     ui->listeMap->setPalette(palList);
     ui->magnitudeEtoiles->setPalette(palList);
+    ui->valeurZoomMap->setPalette(palList);
 
     ui->groupeTLE->setPalette(palList);
     ui->affichageMsgMAJ->setPalette(palList);
@@ -12336,7 +12343,7 @@ void PreviSat::on_afficherTransit_clicked()
 
     /* Corps de la methode */
     QStringList result = threadCalculs->res();
-    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result, ui->valeurZoomMap->value());
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
                                       tr("Transits ISS"));
     afficherResultats->show(ficRes);
@@ -12668,7 +12675,7 @@ void PreviSat::on_afficherMetOp_clicked()
 
     /* Corps de la methode */
     QStringList result = threadCalculs->res();
-    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result);
+    afficherResultats = new Afficher(conditions, threadCalculs->observateur(), result, ui->valeurZoomMap->value());
     afficherResultats->setWindowTitle(QString("%1 %2 - ").arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)) +
                                       tr("Prévisions des flashs"));
     afficherResultats->show(ficRes);

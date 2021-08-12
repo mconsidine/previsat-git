@@ -21,15 +21,16 @@
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=IJIOhD3abkHkZSklL6U1cPxvKaEOdOnX"></script>
     <script src="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.js"></script>
-    <script src="http://astropedia.free.fr/previsat/html/map.js"></script>
+    <script src="http://astropedia.free.fr/previsat/html/map2.js"></script>
     <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.css" />
     <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/map.css" />
     <script>
         var lon = LONGITUDE_CENTRE;
         var lat = LATITUDE_CENTRE;
+		var zoom = VALEUR_ZOOM;
         var uniteTemp = 'UNITE_TEMP';
         var uniteVent = 'UNITE_VENT';
-        initMap(lon, lat, uniteTemp, uniteVent);
+        initMap(lon, lat, uniteTemp, uniteVent, zoom);
     </script>
 </body>
 </html>

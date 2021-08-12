@@ -10029,7 +10029,7 @@
               <x>380</x>
               <y>70</y>
               <width>361</width>
-              <height>16</height>
+              <height>41</height>
              </rect>
             </property>
             <property name="text">
@@ -10112,7 +10112,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="optionLieuObservation">
              <property name="font">
@@ -10897,7 +10897,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-275</y>
                  <width>784</width>
                  <height>560</height>
                 </rect>
@@ -11468,6 +11468,44 @@
                  </property>
                  <property name="text">
                   <string>Prise en compte des éclipses partielles sur la magnitude</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="lbl_valeurZoomMap">
+                 <property name="geometry">
+                  <rect>
+                   <x>548</x>
+                   <y>123</y>
+                   <width>145</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="text">
+                  <string>Valeur zoom pour les cartes :</string>
+                 </property>
+                </widget>
+                <widget class="QSpinBox" name="valeurZoomMap">
+                 <property name="geometry">
+                  <rect>
+                   <x>690</x>
+                   <y>120</y>
+                   <width>40</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <property name="font">
+                  <font/>
+                 </property>
+                 <property name="minimum">
+                  <number>5</number>
+                 </property>
+                 <property name="maximum">
+                  <number>18</number>
+                 </property>
+                 <property name="value">
+                  <number>9</number>
                  </property>
                 </widget>
                </widget>

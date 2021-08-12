@@ -36,7 +36,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 decembre 2019
+ * >    9 aout 2021
  *
  */
 
@@ -111,7 +111,7 @@ static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6
 QGraphicsScene *sceneSky;
 QScrollArea *scrollAreaRes;
 
-Afficher::Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, QWidget *fenetreParent) :
+Afficher::Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, const int zoom, QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
     ui(new Ui::Afficher)
 {
@@ -121,6 +121,7 @@ Afficher::Afficher(const Conditions &conditions, const Observateur &observateur,
 
     /* Corps du constructeur */
     ui->setupUi(this);
+    _zoom = zoom;
 
     const int xmax = QApplication::desktop()->availableGeometry().width();
     const int ymax = QApplication::desktop()->availableGeometry().height();
@@ -512,7 +513,8 @@ void Afficher::load()
                           " " + unite);
         map0 = map0.replace("NOMLIEU_CENTRE", obs.nomlieu().toUtf8()).replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat).
                 replace("ALTITUDE_CENTRE", alt).replace("CHAINE_LONGITUDE", tr("Longitude")).
-                replace("CHAINE_LATITUDE", tr("Latitude")).replace("CHAINE_ALTITUDE", tr("Altitude"));
+                replace("CHAINE_LATITUDE", tr("Latitude")).replace("CHAINE_ALTITUDE", tr("Altitude")).
+                replace("VALEUR_ZOOM", QString::number(_zoom));
 
         ui->frame->setVisible(true);
         ui->webView->setContextMenuPolicy(Qt::CustomContextMenu);

@@ -62,7 +62,7 @@ class Afficher : public QMainWindow
 public:
 
     /* Constructeurs */
-    explicit Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, QWidget *fenetreParent = 0);
+    explicit Afficher(const Conditions &conditions, const Observateur &observateur, QStringList &result, const int zoom = 9, QWidget *fenetreParent = 0);
     ~Afficher();
 
     /* Constantes publiques */
@@ -95,6 +95,7 @@ private:
     /* Variables privees */
     Ui::Afficher *ui;
     QString _fichier;
+    int _zoom;
 
     /* Methodes privees */
     /**
