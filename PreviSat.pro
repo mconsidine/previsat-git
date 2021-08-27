@@ -37,7 +37,7 @@
 
 #-------------------------------------------------
 VER_MAJ = 4.0
-VERSION = 4.0.7.3
+VERSION = 4.0.8.1
 ANNEES_DEV = 2005-2021
 ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts
