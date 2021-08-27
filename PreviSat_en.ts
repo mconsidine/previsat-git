@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.1" language="en_US">
 <context>
     <name>Afficher</name>
     <message>
@@ -8,7 +8,7 @@
         <source>Fichier texte</source>
         <translation>Text file</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="afficher.ui" line="143"/>
         <source>Prévisions</source>
         <translation>Predictions</translation>
@@ -18,7 +18,7 @@
         <source>Satellite</source>
         <translation>Satellite</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="afficher.ui" line="216"/>
         <source>Date de début</source>
         <translation>Start date</translation>
@@ -250,7 +250,7 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="apropos.ui" line="163"/>
         <source>PreviSat est un logiciel de suivi des satellites artificiels afin de les observer.
 
@@ -263,7 +263,7 @@ It shows positions of artificial satellites in real time or manual mode. PreviSa
 
 PreviSat is free !</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="apropos.ui" line="189"/>
         <source>Un immense merci à Michel Casabonne pour ses contributions à PreviSat.</source>
         <translation>A great thank to Michel Casabonne for his contributions to PreviSat.</translation>
@@ -281,7 +281,7 @@ PreviSat is free !</translation>
 </context>
 <context>
     <name>GestionnaireTLE</name>
-    <message utf8="true">
+    <message>
         <location filename="gestionnairetle.ui" line="35"/>
         <source>Gestionnaire de téléchargement des TLE</source>
         <translation>Management of TLE downloading</translation>
@@ -296,7 +296,7 @@ PreviSat is free !</translation>
         <source>Fichiers TLE :</source>
         <translation>TLE files :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="gestionnairetle.ui" line="106"/>
         <source>Mise à jour automatique du groupe</source>
         <translation>Automatic update of the group</translation>
@@ -341,7 +341,7 @@ PreviSat is free !</translation>
         <source>MenuContextuelFichiersTLE</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="gestionnairetle.ui" line="405"/>
         <source>Créer un groupe</source>
         <translation>Create a group</translation>
@@ -418,7 +418,7 @@ PreviSat is free !</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="informations.ui" line="65"/>
         <source>Dernière Information</source>
         <translation>Latest informations</translation>
@@ -434,7 +434,7 @@ PreviSat is free !</translation>
         <source>Informations plus anciennes</source>
         <translation>Older informations</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="informations.ui" line="114"/>
         <source>Afficher les informations au démarrage</source>
         <translation>Display informations at startup</translation>
@@ -462,7 +462,7 @@ PreviSat is free !</translation>
         <source>Fichier :</source>
         <translation>File :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2710"/>
         <source>Général</source>
         <translation>Main</translation>
@@ -503,7 +503,7 @@ PreviSat is free !</translation>
         <source>Longitude :</source>
         <translation>Longitude :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2823"/>
         <location filename="previsat.ui" line="3117"/>
         <source>000° 00&apos; 00&quot; Ouest</source>
@@ -517,7 +517,7 @@ PreviSat is free !</translation>
         <source>Latitude :</source>
         <translation>Latitude :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2880"/>
         <location filename="previsat.ui" line="3155"/>
         <source>00° 00&apos; 00&quot; Nord</source>
@@ -544,7 +544,7 @@ PreviSat is free !</translation>
         <source>Hauteur :</source>
         <translation>Elevation :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3231"/>
         <location filename="previsat.ui" line="3389"/>
         <location filename="previsat.ui" line="3852"/>
@@ -561,7 +561,7 @@ PreviSat is free !</translation>
         <source>Azimut (N) :</source>
         <translation>Azimuth (N) :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3272"/>
         <location filename="previsat.ui" line="3830"/>
         <location filename="previsat.ui" line="4190"/>
@@ -640,7 +640,7 @@ PreviSat is free !</translation>
         <source>Magnitude (Illumination) : -2.2 (50%)</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3591"/>
         <source>Orbite n°</source>
         <translation>Orbit #</translation>
@@ -650,13 +650,13 @@ PreviSat is free !</translation>
         <source>99999</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="4711"/>
         <location filename="previsat.cpp" line="3018"/>
         <source>Crépuscule astronomique</source>
         <translation>Astronomical twilight</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3629"/>
         <source>Temps écoulé depuis l&apos;époque :</source>
         <translation>Time elapsed since epoch :</translation>
@@ -680,7 +680,7 @@ PreviSat is free !</translation>
         <source>0000 m</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3811"/>
         <location filename="previsat.cpp" line="5550"/>
         <source>Coordonnées du Soleil :</source>
@@ -691,7 +691,7 @@ PreviSat is free !</translation>
         <source>1.017 UA</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="4070"/>
         <location filename="previsat.cpp" line="5561"/>
         <source>Coordonnées de la Lune :</source>
@@ -707,7 +707,7 @@ PreviSat is free !</translation>
         <source>Phase :</source>
         <translation>Phase :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="4345"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning gibbous</translation>
@@ -723,7 +723,7 @@ PreviSat is free !</translation>
         <source>100%</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="4745"/>
         <location filename="previsat.ui" line="5314"/>
         <location filename="previsat.cpp" line="2982"/>
@@ -740,7 +740,7 @@ PreviSat is free !</translation>
         <source>ligne2</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5091"/>
         <location filename="previsat.cpp" line="5369"/>
         <source>Vecteur d&apos;état</source>
@@ -805,7 +805,7 @@ PreviSat is free !</translation>
         <source>36000.0 km</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5608"/>
         <location filename="previsat.ui" line="5872"/>
         <location filename="previsat.ui" line="6898"/>
@@ -838,7 +838,7 @@ PreviSat is free !</translation>
         <source>Inclinaison :</source>
         <translation>Inclination :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5379"/>
         <location filename="previsat.ui" line="5573"/>
         <location filename="previsat.ui" line="5656"/>
@@ -883,7 +883,7 @@ PreviSat is free !</translation>
         <source>AD noeud ascendant :</source>
         <translation>RA of ascending node :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5837"/>
         <location filename="previsat.ui" line="7220"/>
         <location filename="previsat.ui" line="13520"/>
@@ -897,7 +897,7 @@ PreviSat is free !</translation>
         <source>Anomalie moyenne :</source>
         <translation>Mean anomaly :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6175"/>
         <location filename="previsat.ui" line="8061"/>
         <source>Apogée (Altitude) :</source>
@@ -909,13 +909,13 @@ PreviSat is free !</translation>
         <source>36000.0 km (36000.0 km)</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6191"/>
         <location filename="previsat.ui" line="8045"/>
         <source>Périgée (Altitude) :</source>
         <translation>Perigee (Altitude) :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6207"/>
         <location filename="previsat.ui" line="8010"/>
         <source>Période orbitale :</source>
@@ -933,20 +933,20 @@ PreviSat is free !</translation>
         <source>Informations satellite</source>
         <translation>Satellite informations</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6700"/>
         <location filename="previsat.ui" line="7727"/>
         <location filename="previsat.ui" line="12672"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD number :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="7505"/>
         <location filename="previsat.ui" line="7708"/>
         <source>Désignation COSPAR :</source>
         <translation>COSPAR Designation :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="7334"/>
         <source>Époque (UTC) :</source>
         <translation>Epoch (UTC) :</translation>
@@ -1025,7 +1025,7 @@ PreviSat is free !</translation>
         <source>n&quot; / 6 :</source>
         <translation>n&quot; / 6 :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="7448"/>
         <source>Nb orbites à l&apos;époque :</source>
         <translation>Orbit # at epoch :</translation>
@@ -1042,7 +1042,7 @@ PreviSat is free !</translation>
         <source>-0.5v/-2.9</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6838"/>
         <location filename="previsat.ui" line="7899"/>
         <source>Modèle orbital :</source>
@@ -1068,7 +1068,7 @@ PreviSat is free !</translation>
         <source>Cylindrique. L=30.0m, R=20.0m / 350.00 m</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8381"/>
         <source>Prévisions</source>
         <translation>Predictions</translation>
@@ -1100,7 +1100,7 @@ PreviSat is free !</translation>
         <source>Lieu d&apos;observation</source>
         <translation>Location</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10497"/>
         <source>Sélection de la catégorie :</source>
         <translation>Category selection :</translation>
@@ -1110,7 +1110,7 @@ PreviSat is free !</translation>
         <source>Lieux d&apos;observation :</source>
         <translation>Locations in the category :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10784"/>
         <source>Lieux sélectionnés :</source>
         <translation>Selected locations :</translation>
@@ -1293,7 +1293,7 @@ PreviSat is free !</translation>
         <source>Mode de fonctionnement</source>
         <translation>Mode</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2747"/>
         <location filename="previsat.ui" line="4760"/>
         <source>Mercredi 31 décembre 2022  00:00:00                UTC + 01:00</source>
@@ -1310,7 +1310,7 @@ PreviSat is free !</translation>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2198"/>
         <location filename="previsat.cpp" line="6030"/>
         <source>Temps réel</source>
@@ -1361,7 +1361,7 @@ PreviSat is free !</translation>
         <source>BETA = 75.3</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2537"/>
         <source>Météo bases NASA</source>
         <translation>Weather of NASA bases</translation>
@@ -1371,7 +1371,7 @@ PreviSat is free !</translation>
         <source>NASA</source>
         <translation>NASA</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3370"/>
         <location filename="previsat.ui" line="4029"/>
         <location filename="previsat.ui" line="4212"/>
@@ -1384,7 +1384,7 @@ PreviSat is free !</translation>
         <source>Prochain AOS :</source>
         <translation>Next AOS :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3683"/>
         <source>2011/07/31 00:00:00 (dans 00min 00s). Azimut : 000° 00&apos;</source>
         <translation>2011/07/31 00:00:00 (in 00min 00s). Azimuth : 000° 00&apos;</translation>
@@ -1416,22 +1416,22 @@ PreviSat is free !</translation>
         <source>036000.0 km (036000.0 km)</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5033"/>
         <source>Paramètres képlériens</source>
         <translation>Keplerian parameters</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5038"/>
         <source>Paramètres circulaires</source>
         <translation>Circular parameters</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5043"/>
         <source>Paramètres équatoriaux</source>
         <translation>Equatorial parameters</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5048"/>
         <source>Paramètres circulaires équatoriaux</source>
         <translation>Circular equatorial parameters</translation>
@@ -1465,7 +1465,7 @@ PreviSat is free !</translation>
         <source>Iy :</source>
         <translation>Iy :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="5640"/>
         <source>Longitude du périgée :</source>
         <translation>Longitude of perigee :</translation>
@@ -1490,7 +1490,7 @@ PreviSat is free !</translation>
         <source>Doppler@100MHz :</source>
         <translation>Doppler@100MHz :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6370"/>
         <source>Atténuation :</source>
         <translation>Free-space loss :</translation>
@@ -1505,7 +1505,7 @@ PreviSat is free !</translation>
         <source>27.57 ms</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6409"/>
         <source>Délai :</source>
         <translation>Delay :</translation>
@@ -1528,7 +1528,7 @@ PreviSat is free !</translation>
         <source>2013/07/08</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="7061"/>
         <location filename="previsat.ui" line="7842"/>
         <source>Catégorie d&apos;orbite :</source>
@@ -1562,7 +1562,7 @@ PreviSat is free !</translation>
         <source>2011/07/31 00:00:00 (dans 00min 00s).</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="3731"/>
         <source>Beta : 000° 00&apos;</source>
         <translation></translation>
@@ -1595,7 +1595,7 @@ PreviSat is free !</translation>
         <source>dd/MM/yyyy hh:mm:ss</source>
         <translation>MM/dd/yyyy hh:mm:ss</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8487"/>
         <source>Pas de génération :</source>
         <translation>Output step :</translation>
@@ -1646,31 +1646,31 @@ PreviSat is free !</translation>
         <source>Hauteur du Soleil :</source>
         <translation>Sun elevation :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8626"/>
         <location filename="previsat.ui" line="9144"/>
         <source>Horizon (0°)</source>
         <translation>Horizon (0°)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8631"/>
         <location filename="previsat.ui" line="9149"/>
         <source>Crépuscule civil (-6°)</source>
         <translation>Civil twilight (-6°)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8636"/>
         <location filename="previsat.ui" line="9154"/>
         <source>Crépuscule nautique (-12°)</source>
         <translation>Nautical twilight (-12°)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8641"/>
         <location filename="previsat.ui" line="9159"/>
         <source>Crépuscule astronomique (-18°)</source>
         <translation>Astronomical twilight (-18°)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8646"/>
         <location filename="previsat.ui" line="9164"/>
         <source>Indifférent</source>
@@ -1695,35 +1695,35 @@ PreviSat is free !</translation>
         <source>Hauteur minimale du satellite :</source>
         <translation>Minimal elevation of satellite :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8691"/>
         <location filename="previsat.ui" line="9076"/>
         <location filename="previsat.ui" line="9633"/>
         <source>0°</source>
         <translation>0°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8696"/>
         <location filename="previsat.ui" line="9081"/>
         <location filename="previsat.ui" line="9638"/>
         <source>5°</source>
         <translation>5°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8701"/>
         <location filename="previsat.ui" line="9086"/>
         <location filename="previsat.ui" line="9643"/>
         <source>10°</source>
         <translation>10°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8706"/>
         <location filename="previsat.ui" line="9091"/>
         <location filename="previsat.ui" line="9648"/>
         <source>15°</source>
         <translation>15°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8711"/>
         <location filename="previsat.ui" line="9096"/>
         <location filename="previsat.ui" line="9653"/>
@@ -1764,7 +1764,7 @@ PreviSat is free !</translation>
         <source>Afficher</source>
         <translation>Show results</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8943"/>
         <location filename="previsat.ui" line="9278"/>
         <location filename="previsat.ui" line="9846"/>
@@ -1808,7 +1808,7 @@ PreviSat is free !</translation>
         <source>Faire un don</source>
         <translation>Donate</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14828"/>
         <location filename="previsat.ui" line="14831"/>
         <source>Mettre à jour TLE communs</source>
@@ -1834,23 +1834,23 @@ PreviSat is free !</translation>
         <source>Masse</source>
         <translation>Weight</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="9979"/>
         <source>Apogée</source>
         <translation>Apogee</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="9991"/>
         <source>Périgée</source>
         <translation>Perigee</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10015"/>
         <location filename="previsat.cpp" line="12104"/>
         <source>Durée</source>
         <translation>Duration</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10036"/>
         <source>Fichier de manoeuvres ISS absent : cliquer sur &apos;Mettre à jour TLE de l&apos;ISS&apos;</source>
         <translation>ISS maneuver file missing : click on &apos;Update ISS TLE&apos;</translation>
@@ -1860,7 +1860,7 @@ PreviSat is free !</translation>
         <source>Configuration</source>
         <translation>Settings</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10921"/>
         <source>Système</source>
         <translation>System</translation>
@@ -1875,22 +1875,22 @@ PreviSat is free !</translation>
         <source>Vision nocturne :</source>
         <translation>Night vision :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11454"/>
         <source>Prise en compte des éclipses produites par la Lune</source>
         <translation>Set eclipses produced by the Moon</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11470"/>
         <source>Prise en compte des éclipses partielles sur la magnitude</source>
         <translation>Set the effect of partial eclipses on the magnitude</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11926"/>
         <source>Préférences d&apos;affichage :</source>
         <translation>Display preferences :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11939"/>
         <source>Enregistrer les préférences d&apos;affichage</source>
         <translation>Save dispaly preferences</translation>
@@ -1900,12 +1900,12 @@ PreviSat is free !</translation>
         <source>Age du dernier TLE : </source>
         <translation>Last TLE age : </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="9894"/>
         <source>Mettre à jour TLE de l&apos;ISS...</source>
         <translation>Update ISS TLE...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14795"/>
         <source>Mettre à jour TLE courant</source>
         <translation>Update current TLE file</translation>
@@ -1915,7 +1915,7 @@ PreviSat is free !</translation>
         <source>F5</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14811"/>
         <source>Mettre à jour tous les groupes de TLE</source>
         <translation>Update all TLE groups</translation>
@@ -1925,7 +1925,7 @@ PreviSat is free !</translation>
         <source>Shift+F5</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11164"/>
         <source>Vérification des mises à jour au démarrage</source>
         <translation>Check for updates at startup</translation>
@@ -1935,23 +1935,23 @@ PreviSat is free !</translation>
         <source>Garder les proportions de la carte du monde</source>
         <translation>Preserve proportions of world map</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11422"/>
         <source>Prise en compte de la réfraction terrestre pour les éclipses</source>
         <translation>Set the terrestrial refraction for eclipses</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11110"/>
         <source>Système horaire</source>
         <translation>Time convention</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="6489"/>
         <location filename="previsat.cpp" line="8759"/>
         <source>Recherche données satellite...</source>
         <translation>Satellite data search...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8150"/>
         <source>Date de rentrée :</source>
         <translation>Decay date :</translation>
@@ -1968,7 +1968,7 @@ PreviSat is free !</translation>
         <source>Site de lancement :</source>
         <translation>Launch site :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="8225"/>
         <location filename="previsat.cpp" line="9151"/>
         <source>Objets trouvés :</source>
@@ -2012,7 +2012,7 @@ PreviSat is free !</translation>
         <source>12 heures (AM/PM)</source>
         <translation>12 hours (AM/PM)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11559"/>
         <source>Icône des satellites</source>
         <translation>Satellite icons</translation>
@@ -2097,7 +2097,7 @@ PreviSat is free !</translation>
         <source>MS Shell Dlg 2</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12193"/>
         <source>Couleur de l&apos;équateur :</source>
         <translation>Color of equator :</translation>
@@ -2117,7 +2117,7 @@ PreviSat is free !</translation>
         <source>Couleur du terminateur :</source>
         <translation>Color of terminator :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12259"/>
         <source>Couleur du cercle de visibilité :</source>
         <translation>Color of ISS footprint :</translation>
@@ -2149,24 +2149,24 @@ PreviSat is free !</translation>
         <source>99.999999999</source>
         <translation>99.999999999</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14281"/>
         <source>Chaîne :</source>
         <translation>Channel :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14403"/>
         <source>Cliquer pour activer
 le flux vidéo</source>
         <translation>Click here to activate
 the video stream</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14765"/>
         <source>Mettre à jour les fichiers internes</source>
         <translation>Update internal files</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14779"/>
         <location filename="previsat.ui" line="14782"/>
         <source>Fenêtre séparée</source>
@@ -2178,7 +2178,7 @@ the video stream</translation>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="9227"/>
         <source>Affichage des résultats</source>
         <translation>Output display</translation>
@@ -2199,12 +2199,12 @@ the video stream</translation>
         <source>Lieu :</source>
         <translation>Location :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10626"/>
         <source>179° 59&apos; 59&quot; Ouest</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10642"/>
         <source>79° 59&apos; 59&quot; Nord</source>
         <translation></translation>
@@ -2231,7 +2231,7 @@ the video stream</translation>
         <source>Phase de la Lune</source>
         <translation>Moon phase</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11788"/>
         <source>Rotation de la Lune pour l&apos;hémisphère Sud</source>
         <translation>Moon rotation for southern hemisphere</translation>
@@ -2241,7 +2241,7 @@ the video stream</translation>
         <source>Nom des satellites</source>
         <translation>Name of satellites</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11575"/>
         <source>Zone de visibilité</source>
         <translation>Satellite footprint</translation>
@@ -2266,12 +2266,12 @@ the video stream</translation>
         <source>Nom des lieux d&apos;observation</source>
         <translation>Name of locations</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11438"/>
         <source>Prise en compte de l&apos;extinction atmosphérique</source>
         <translation>Set the atmospheric extinction</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11244"/>
         <source>Affichage des coordonnées</source>
         <translation>Display of coordinates</translation>
@@ -2281,27 +2281,27 @@ the video stream</translation>
         <source>Carte du monde :</source>
         <translation>World map :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10942"/>
         <source>Unités</source>
         <translation>Units</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10957"/>
         <source>Système métrique</source>
         <translation>Metric system</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10976"/>
         <source>Système anglo-saxon</source>
         <translation>Anglo-Saxon system</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="10996"/>
         <source>Écart Heure locale - UTC</source>
         <translation>Local hour - UTC offset</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11030"/>
         <source>Temps Universel Coordonné (UTC)</source>
         <translation>Universal Time Coordinated (UTC)</translation>
@@ -2316,13 +2316,13 @@ the video stream</translation>
         <source>F1</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14632"/>
         <location filename="previsat.ui" line="14635"/>
         <source>Télécharger la mise à jour</source>
         <translation>Download software update</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14699"/>
         <location filename="previsat.cpp" line="1283"/>
         <location filename="previsat.cpp" line="1295"/>
@@ -2347,7 +2347,7 @@ the video stream</translation>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14746"/>
         <source>Modifier coordonnées</source>
         <translation>Modify coordinates</translation>
@@ -2403,12 +2403,12 @@ the video stream</translation>
         <source>Radar</source>
         <translation>Radar</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11867"/>
         <source>Nom des étoiles</source>
         <translation>Name of stars</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11902"/>
         <source>Magnitude limite des étoiles :</source>
         <translation>Limiting magnitude of stars :</translation>
@@ -2439,7 +2439,7 @@ the video stream</translation>
         <source>Affichage de la SAA</source>
         <translation>Display of SAA</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11820"/>
         <source>Affichage des planètes</source>
         <translation>Display of planets</translation>
@@ -2449,28 +2449,28 @@ the video stream</translation>
         <source>Outils</source>
         <translation>Tools</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12330"/>
         <source>Mise à jour TLE</source>
         <translation>TLE update</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12551"/>
         <source>Fichier à mettre à jour :</source>
         <translation>TLE file to update :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12535"/>
         <location filename="previsat.ui" line="12627"/>
         <source>Fichier TLE à lire :</source>
         <translation>TLE File to read :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12567"/>
         <source>Mettre à jour</source>
         <translation>Update</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12437"/>
         <source>Paramétrage...</source>
         <translation>Settings...</translation>
@@ -2480,7 +2480,7 @@ the video stream</translation>
         <source>ISS Live</source>
         <translation>ISS Live</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="2489"/>
         <source>Météo du lieu d&apos;observation</source>
         <translation>Weather of user location</translation>
@@ -2495,12 +2495,12 @@ the video stream</translation>
         <source>Trace dans le ciel</source>
         <translation>Sky track</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11680"/>
         <source>Rotation de l&apos;icône ISS</source>
         <translation>Rotate ISS icon</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="11694"/>
         <source>Système solaire, étoiles</source>
         <translation>Solar system, stars</translation>
@@ -2510,7 +2510,7 @@ the video stream</translation>
         <source>Wall Command Center</source>
         <translation>Wall Command Center</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14803"/>
         <source>Mettre à jour groupe TLE courant</source>
         <translation>Update current TLE group</translation>
@@ -2520,7 +2520,7 @@ the video stream</translation>
         <source>Ctrl+F5</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12491"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>Manual TLE update</translation>
@@ -2536,7 +2536,7 @@ the video stream</translation>
         <source>Tous</source>
         <translation>All</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12694"/>
         <source>Sélection...</source>
         <translation>Selection...</translation>
@@ -2551,7 +2551,7 @@ the video stream</translation>
         <source>de</source>
         <translation>from</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12770"/>
         <location filename="previsat.ui" line="12907"/>
         <location filename="previsat.ui" line="13054"/>
@@ -2562,13 +2562,13 @@ the video stream</translation>
         <source>à</source>
         <translation>to</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12826"/>
         <location filename="previsat.ui" line="13724"/>
         <source>De 0° à 360°</source>
         <translation>From 0° to 360°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12945"/>
         <location filename="previsat.ui" line="12961"/>
         <location filename="previsat.ui" line="13186"/>
@@ -2580,7 +2580,7 @@ the video stream</translation>
         <source>°</source>
         <translation>°</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12995"/>
         <source>De 0 à 1</source>
         <translation>From 0 to 1</translation>
@@ -2610,7 +2610,7 @@ the video stream</translation>
         <source>Nom du fichier personnel :</source>
         <translation>Name of personal file :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="13434"/>
         <source>Nombre de révolutions par jour :</source>
         <translation>Number of revolutions per day :</translation>
@@ -2637,13 +2637,13 @@ the video stream</translation>
         <source>Recherche</source>
         <translation>Search</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="13745"/>
         <location filename="previsat.cpp" line="11993"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="13849"/>
         <source>Évènements</source>
         <translation>Events</translation>
@@ -2658,12 +2658,12 @@ the video stream</translation>
         <source>Passages aux quadrangles</source>
         <translation>Passes to quadrangles</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="13902"/>
         <source>Passages apogée/périgée</source>
         <translation>Passes to apogee/perigee</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="13921"/>
         <source>Passages ombre/pénombre/lumière</source>
         <translation>Passes to shadow/penumbra/light</translation>
@@ -2679,7 +2679,7 @@ the video stream</translation>
         <source>Age maximal du TLE :</source>
         <translation>TLE maximal age :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="9713"/>
         <source>Élongation maximale avec le corps :</source>
         <translation>Maximal elongation with the body :</translation>
@@ -2694,7 +2694,7 @@ the video stream</translation>
         <source>Aide</source>
         <translation>Help</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="12345"/>
         <source>Mettre à jour maintenant</source>
         <translation>Update now</translation>
@@ -2704,7 +2704,7 @@ the video stream</translation>
         <source>Passages terminateur</source>
         <translation>Terminator passes</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14532"/>
         <source>Ajouter sélection dans</source>
         <translation>Add selection in</translation>
@@ -2740,12 +2740,12 @@ the video stream</translation>
         <source>www.space-track.org</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14659"/>
         <source>À propos</source>
         <translation>About</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14664"/>
         <source>Définir par défaut</source>
         <translation>Define as default</translation>
@@ -2765,7 +2765,7 @@ the video stream</translation>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14689"/>
         <location filename="previsat.cpp" line="998"/>
         <source>Créer une catégorie</source>
@@ -2779,13 +2779,13 @@ the video stream</translation>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14704"/>
         <location filename="previsat.cpp" line="1001"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="previsat.ui" line="14709"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
@@ -3773,7 +3773,7 @@ These informations will be available in the next main version</translation>
     <message>
         <location filename="previsat.cpp" line="5661"/>
         <source>Date de rentrée    : %1		</source>
-        <translation>Decay date           : %1	</translation>
+        <translation>Decay date           : %1		</translation>
     </message>
     <message>
         <location filename="previsat.cpp" line="5662"/>
@@ -4580,8 +4580,12 @@ Age of the oldest TLE      : %3 days</translation>
     </message>
     <message>
         <location filename="librairies/corps/systemesolaire/planete.cpp" line="120"/>
-        <source>VÃ©nus</source>
+        <source>Vénus</source>
         <translation>Venus</translation>
+    </message>
+    <message>
+        <source>VÃ©nus</source>
+        <translation type="vanished">Venus</translation>
     </message>
     <message>
         <location filename="librairies/corps/systemesolaire/planete.cpp" line="121"/>
@@ -4662,7 +4666,7 @@ Age of the oldest TLE      : %3 days</translation>
 </context>
 <context>
     <name>Telecharger</name>
-    <message utf8="true">
+    <message>
         <location filename="telecharger.ui" line="35"/>
         <source>Téléchargement de fichiers</source>
         <translation>File downloader</translation>
@@ -4672,7 +4676,7 @@ Age of the oldest TLE      : %3 days</translation>
         <source>Interroger le serveur...</source>
         <translation>Interrogate the server...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="telecharger.ui" line="112"/>
         <source>Télécharger...</source>
         <translation>Download...</translation>
