@@ -3167,7 +3167,7 @@
             <font/>
            </property>
            <property name="toolTip">
-            <string> Somme de l'argument du périgée et de l'anomalie moyenne</string>
+            <string>Somme de l'argument du périgée et de l'anomalie moyenne</string>
            </property>
            <property name="text">
             <string notr="true">000.0000°</string>
