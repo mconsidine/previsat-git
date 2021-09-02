@@ -1854,23 +1854,6 @@
     <string>Supprimer</string>
    </property>
   </action>
-  <action name="actionMuetVideo"/>
-  <action name="actionAgrandirVideo">
-   <property name="text">
-    <string>Fenêtre séparée</string>
-   </property>
-   <property name="toolTip">
-    <string>Fenêtre séparée</string>
-   </property>
-  </action>
-  <action name="actionFermerVideo">
-   <property name="text">
-    <string>Fermer</string>
-   </property>
-   <property name="toolTip">
-    <string>Fermer</string>
-   </property>
-  </action>
   <action name="actionMettre_jour_TLE_courant">
    <property name="text">
     <string>Mettre à jour TLE courant</string>
