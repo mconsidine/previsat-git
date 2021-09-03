@@ -293,8 +293,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
     const double ht = asin(vec.z() / _distance);
 
     // Prise en compte de la refraction atmospherique
-    const double htd = RAD2DEG * ht;
-    const double refraction = (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
+    const double refraction = CalculRefractionAtmospherique(ht);
 
     _hauteur = ht + refraction;
 
@@ -349,8 +348,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
     if (ht > -DEG2RAD) {
 
         // Prise en compte de la refraction atmospherique
-        const double htd = ht * RAD2DEG;
-        const double refraction = (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
+        const double refraction = CalculRefractionAtmospherique(ht);
 
         _hauteur = ht + refraction;
         if (_hauteur >= 0.) {
@@ -456,6 +454,22 @@ void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3
 
     /* Retour */
     return;
+}
+
+/*
+ * Calcul de la refraction atmospherique
+ */
+double Corps::CalculRefractionAtmospherique(const double ht) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double htd = ht * RAD2DEG;
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
 }
 
 /*

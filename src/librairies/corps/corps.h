@@ -157,6 +157,13 @@ public:
     void CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const;
 
     /**
+     * @brief CalculRefractionAtmospherique Calcul de la refraction atmospherique
+     * @param ht hauteur du corps (en radians)
+     * @return refraction atmospherique (en radians)
+     */
+    double CalculRefractionAtmospherique(const double ht) const;
+
+    /**
      * @brief CalculZoneVisibilite Calcul de la zone de visibilite du corps
      * @param beta rayon apparent du corps
      */
