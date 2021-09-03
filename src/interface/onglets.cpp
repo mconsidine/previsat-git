@@ -136,6 +136,9 @@ Onglets::Onglets(QWidget *parent) :
     InitFicPref(false);
     ChargementPref();
 
+    // Chargement des stations
+    InitChargementStations();
+
     // Chargement des fichiers d'observation
     InitFicObs(true);
     _ui->categoriesObs->setCurrentRow(0);
@@ -1779,7 +1782,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
             chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
             flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+        #if (BUILD_TEST == true)
                     .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
                     .arg(_ui->lbl_beta->text()).trimmed() << endl;
 #else
@@ -1789,7 +1792,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
             chaine = tr("Variation distance : %1  \t%2", "Range rate");
             flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+        #if (BUILD_TEST == true)
                     .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text())
                     .trimmed() << endl << endl << endl;
 #else
@@ -1915,15 +1918,15 @@ void Onglets::SauveOngletInformations(const QString &fic) const
             flux << chaine.arg(_ui->dateLancementDonneesSat->text()).arg(_ui->apogeeDonneesSat->text()) << endl;
 
             chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(_ui->dateRentree->text()) :
-                                                      tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
+                                                       tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
             flux << chaine + tr("Périgée (Altitude) : %1").arg(_ui->perigeeDonneesSat->text()) << endl;
 
             chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
-                                                      tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
+                                                       tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
             flux << chaine + tr("Période orbitale   : %1").arg(_ui->periodeDonneesSat->text()) << endl;
 
             chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text()) :
-                                                      tr("Site de lancement  : %1\t\t").arg(_ui->siteLancement->text());
+                                                       tr("Site de lancement  : %1\t\t").arg(_ui->siteLancement->text());
             flux << chaine + tr("Inclinaison        : %1").arg(_ui->inclinaisonDonneesSat->text()) << endl;
 
             if (_ui->dateRentree->isVisible()) {
@@ -2201,19 +2204,19 @@ void Onglets::InitAffichageDemarrage()
     _ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
 
     _ui->numeroNORADCreerTLE->setCurrentIndex(0);
-//    _ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
-//    _ui->excentriciteCreerTLE->setCurrentIndex(0);
-//    _ui->inclinaisonCreerTLE->setCurrentIndex(0);
-//    _ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
+    //    _ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
+    //    _ui->excentriciteCreerTLE->setCurrentIndex(0);
+    //    _ui->inclinaisonCreerTLE->setCurrentIndex(0);
+    //    _ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
     _ui->fichierTelechargement->setText("");
     _ui->barreProgression->setValue(0);
     _ui->frameBarreProgression->setVisible(false);
     _ui->compteRenduMaj->setVisible(false);
-//    _ui->frameADNA->setVisible(false);
-//    _ui->frameArgumentPerigee->setVisible(false);
-//    _ui->frameExcentricite->setVisible(false);
-//    _ui->frameIncl->setVisible(false);
-//    _ui->frameNORAD->setVisible(false);
+    //    _ui->frameADNA->setVisible(false);
+    //    _ui->frameArgumentPerigee->setVisible(false);
+    //    _ui->frameExcentricite->setVisible(false);
+    //    _ui->frameIncl->setVisible(false);
+    //    _ui->frameNORAD->setVisible(false);
 
     _ui->valHauteurSatMetOp->setVisible(false);
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -2291,6 +2294,33 @@ void Onglets::InitAffichageDemarrage()
     }
 
     _ui->langue->blockSignals(etat);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement des stations
+ */
+void Onglets::InitChargementStations()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->listeStations->clear();
+
+    /* Corps de la methode */
+    QMapIterator<QString, Observateur> it(Configuration::instance()->mapStations());
+    while (it.hasNext()) {
+        it.next();
+
+        const QString acronyme = it.key();
+        const QString nom = it.value().nomlieu();
+
+        QListWidgetItem * const station = new QListWidgetItem(QString("%1 (%2)").arg(nom).arg(acronyme), _ui->listeStations);
+        station->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + acronyme, Qt::Checked).
+                                                             toUInt())) ? Qt::Checked : Qt::Unchecked);
+    }
 
     /* Retour */
     return;
