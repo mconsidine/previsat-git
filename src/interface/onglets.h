@@ -365,6 +365,11 @@ private:
     void InitAffichageDemarrage();
 
     /**
+     * @brief InitChargementStations Chargement des stations
+     */
+    void InitChargementStations();
+
+    /**
      * @brief InitFicObs Chargement des fichiers de lieux d'observation
      * @param alarme Affichage des messages d'erreur
      */

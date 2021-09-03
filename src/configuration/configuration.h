@@ -56,6 +56,7 @@
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/corps/systemesolaire/soleil.h"
+#include "librairies/exceptions/message.h"
 
 
 struct TLEdefaut
@@ -158,6 +159,7 @@ public:
     QMap<QString, QString> mapCategoriesOrbite() const;
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
+    QMap<QString, Observateur> mapStations() const;
     QMap<QString, SatellitesFlashs> mapFlashs() const;
 
     QString noradStationSpatiale() const;
@@ -314,6 +316,9 @@ private:
     // Sites de lancement
     QMap<QString, Observateur> _mapSites;
 
+    // Stations
+    QMap<QString, Observateur> _mapStations;
+
     // Satellites produisant des flashs
     QMap<QString, SatellitesFlashs> _mapFlashs;
 
@@ -406,6 +411,11 @@ private:
     void LectureSitesLancement();
 
     /**
+     * @brief LectureStations Lecture du fichier de stations
+     */
+    void LectureStations();
+
+    /**
      * @brief LectureStatutSatellitesFlashs Lecture du fichier de statut des satellites produisant des flashs
      */
     void LectureStatutSatellitesFlashs();
@@ -421,6 +431,17 @@ private:
      * @param listeFicData liste de fichiers du repertoire data
      */
     void VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const;
+
+    /**
+     * @brief VerifieFichierXml Verification du fichier xml
+     * @param nomficXml nom du fichier xml
+     * @param version numero de version
+     * @param typeMessage type de message
+     * @param message1 message 1 a afficher
+     * @param message2 message 2 a afficher
+     */
+    void VerifieFichierXml(const QString &nomficXml, QString &version, const MessageType &typeMessage, const QString &message1 = QString(),
+                           const QString &message2 = QString());
 
     /**
      * @brief VerifieVersionXml Verification du numero de version du fichier xml
