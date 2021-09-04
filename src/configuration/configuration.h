@@ -72,6 +72,14 @@ struct SatellitesFlashs
     QList<QPair<double, double> > angles;
 };
 
+struct SatelliteTDRS
+{
+    QString denomination;
+    int rouge;
+    int vert;
+    int bleu;
+};
+
 struct PositionISS {
     double jourJulienUTC;
     Vecteur3D position;
@@ -160,6 +168,7 @@ public:
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
     QMap<QString, Observateur> mapStations() const;
+    QMap<int, SatelliteTDRS> mapTDRS() const;
     QMap<QString, SatellitesFlashs> mapFlashs() const;
 
     QString noradStationSpatiale() const;
@@ -313,6 +322,9 @@ private:
     // Pays ou organisations
     QMap<QString, QString> _mapPays;
 
+    // Satellites TDRS
+    QMap<int, SatelliteTDRS> _mapTDRS;
+
     // Sites de lancement
     QMap<QString, Observateur> _mapSites;
 
@@ -404,6 +416,11 @@ private:
      * @brief LecturePositionsISS Lecture du fichier NASA contenant les positions de l'ISS
      */
     void LecturePositionsISS();
+
+    /**
+     * @brief LectureSatellitesTDRS Lecture du fichier de satellites TDRS
+     */
+    void LectureSatellitesTDRS();
 
     /**
      * @brief LectureSitesLancement Lecture du fichier des sites de lancement

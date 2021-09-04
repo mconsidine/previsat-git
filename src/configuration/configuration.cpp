@@ -281,6 +281,11 @@ QMap<QString, Observateur> Configuration::mapStations() const
     return _mapStations;
 }
 
+QMap<int, SatelliteTDRS> Configuration::mapTDRS() const
+{
+    return _mapTDRS;
+}
+
 QMap<QString, SatellitesFlashs> Configuration::mapFlashs() const
 {
     return _mapFlashs;
@@ -443,6 +448,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier listant les pays ou organisations
         LecturePays();
+
+        // Lecture du fichier de satellites TDRS
+        LectureSatellitesTDRS();
 
         // Lecture du fichier des sites de lancement
         LectureSitesLancement();
@@ -788,8 +796,8 @@ void Configuration::LectureConfiguration()
     /* Initialisations */
     const QString nomficXml = "configuration.xml";
     const QString msg1 = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
-                        "Certaines informations de configuration "
-                        "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(QCoreApplication::applicationName());
+                                     "Certaines informations de configuration "
+                                     "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(QCoreApplication::applicationName());
     const QString msg2 = QObject::tr("Le fichier %1 n'existe pas :\nUtilisation de la configuration par défaut");
 
     VerifieFichierXml(nomficXml, _versionCfg, WARNING, msg1, msg2);
@@ -906,7 +914,7 @@ void Configuration::LectureCategoriesOrbite()
     /* Initialisations */
     const QString nomficXml = "categories.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                     "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+                                        "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
     VerifieFichierXml(nomficXml, version, ERREUR, "", message);
 
@@ -951,7 +959,7 @@ void Configuration::LectureCategoriesOrbite()
     // Verifications
     if (_mapCategoriesOrbite.isEmpty()) {
         const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
+                                        "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
@@ -1119,7 +1127,7 @@ void Configuration::LecturePays()
     // Verifications
     if (_mapPays.isEmpty()) {
         const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun pays ou organisation n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
+                                        "Aucun pays ou organisation n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
@@ -1197,7 +1205,7 @@ void Configuration::LecturePositionsISS()
                                                 if (value.toLower().contains("mass")) {
 
                                                     // Masse (en kg)
-                                                    _masseISS.append(value.split("=").last().toDouble()); 
+                                                    _masseISS.append(value.split("=").last().toDouble());
 
                                                 } else if (value.contains("===")) {
 
@@ -1230,6 +1238,84 @@ void Configuration::LecturePositionsISS()
         }
     }
     fi1.close();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier de satellites TDRS
+ */
+void Configuration::LectureSatellitesTDRS()
+{
+    /* Declarations des variables locales */
+    QString version;
+
+    /* Initialisations */
+    const QString nomficXml = "tdrs.xml";
+    const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                        "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+
+    VerifieFichierXml(nomficXml, version, ERREUR, "", message);
+
+    /* Corps de la methode */
+    QFile fi1(_dirCfg + QDir::separator() + nomficXml);
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name() == "PreviSatTDRS") {
+
+            int numero;
+            QString denomination;
+            int rouge;
+            int vert;
+            int bleu;
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name() == "TDRS") {
+
+                    numero = 0;
+                    denomination = "";
+                    rouge = 0;
+                    vert = 0;
+                    bleu = 0;
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name() == "Numero") {
+                            numero = cfg.readElementText().toInt();
+                        } else if (cfg.name() == "Denomination") {
+                            denomination = cfg.readElementText();
+                        } else if (cfg.name() == "CouleurR") {
+                            rouge = cfg.readElementText().toInt();
+                        } else if (cfg.name() == "CouleurV") {
+                            vert = cfg.readElementText().toInt();
+                        } else if (cfg.name() == "CouleurB") {
+                            bleu = cfg.readElementText().toInt();
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+
+                    _mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
+                }
+            }
+        }
+    }
+    fi1.close();
+
+    // Verifications
+    if (_mapTDRS.isEmpty()) {
+        const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
+                                        "Aucun satellite TDRS n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
+        const QFileInfo ff(fi1.fileName());
+        throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+    }
 
     /* Retour */
     return;
@@ -1299,7 +1385,7 @@ void Configuration::LectureSitesLancement()
     // Verifications
     if (_mapSites.isEmpty()) {
         const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun site de lancement n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
+                                        "Aucun site de lancement n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
@@ -1376,7 +1462,7 @@ void Configuration::LectureStations()
     // Verifications
     if (_mapStations.isEmpty()) {
         const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucune station n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
+                                        "Aucune station n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
@@ -1456,7 +1542,7 @@ void Configuration::LectureStatutSatellitesFlashs()
     // Verifications
     if (_mapFlashs.isEmpty()) {
         const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun satellite produisant des flashs n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
+                                        "Aucun satellite produisant des flashs n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
