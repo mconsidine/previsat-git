@@ -2321,6 +2321,7 @@ void Onglets::InitChargementStations()
         station->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + acronyme, Qt::Checked).
                                                              toUInt())) ? Qt::Checked : Qt::Unchecked);
     }
+    _ui->listeStations->sortItems();
 
     /* Retour */
     return;
