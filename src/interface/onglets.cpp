@@ -822,7 +822,7 @@ void Onglets::AffichageInformationsSatellite() const
 
 
     // Date de lancement
-    _ui->dateLancement->setText(donnee.dateLancement());
+    _ui->dateLancement->setText(QDate::fromString(donnee.dateLancement(), "yyyy/MM/dd").toString(tr("yyyy/MM/dd")));
 
     // Categorie d'orbite
     _ui->categorieOrbite->setText(donnee.categorieOrbite());

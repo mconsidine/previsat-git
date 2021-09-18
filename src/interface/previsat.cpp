@@ -448,8 +448,12 @@ void PreviSat::ChangementLangue(const int index)
     /* Corps de la methode */
     InstallationTraduction(QString("%1_%2").arg(qApp->applicationName()).arg(langue), _appTraduction);
     InstallationTraduction(QString("qtbase_%1").arg(langue), _qtTraduction);
+
     ui->retranslateUi(this);
     _onglets->ui()->retranslateUi(_onglets);
+
+    _onglets->setInfo(true);
+    GestionTempsReel();
 
     /* Retour */
     return;

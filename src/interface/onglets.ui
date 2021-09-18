@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>8</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -10502,7 +10502,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="miseAJourTLE">
        <property name="font">

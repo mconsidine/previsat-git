@@ -34,7 +34,7 @@
  *
  */
 
-#include <limits>
+
 #include "donnees.h"
 
 /**********
@@ -76,6 +76,7 @@ Donnees::Donnees(const QString &donnee)
 
     /* Corps du constructeur */
     if (!donnee.isEmpty()) {
+
         _cospar = donnee.mid(6, 11).trimmed();
         _t1 = donnee.mid(18, 5).toDouble();
         _t2 = donnee.mid(24, 4).toDouble();
