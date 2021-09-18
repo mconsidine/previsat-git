@@ -364,7 +364,7 @@ void Onglets::AffichageDonneesSatellite() const
     couleur.setStyle(Qt::SolidPattern);
     palette.setBrush(QPalette::WindowText, couleur);
     _ui->ageTLE->setPalette(palette);
-    _ui->ageTLE->setText(fmt.arg(satellite.ageTLE(), 0, 'f', 2).arg("jours"));
+    _ui->ageTLE->setText(fmt.arg(satellite.ageTLE(), 0, 'f', 2).arg(tr("jours")));
 
     // Longitude/Latitude/Altitude
     const QString ews = (satellite.longitude() >= 0.) ? tr("Ouest") : tr("Est");

@@ -803,7 +803,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="456"/>
         <source>Temps écoulé depuis l&apos;époque :</source>
-        <translation>元期からの経過時間</translation>
+        <translation>元期からの経過時間 :</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="397"/>
@@ -1318,7 +1318,6 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="3170"/>
         <source>Somme de l&apos;argument du périgée et de l&apos;anomalie moyenne</source>
-        <oldsource> Somme de l&apos;argument du périgée et de l&apos;anomalie moyenne</oldsource>
         <translation type="unfinished">近地点引数と平均近点角の和</translation>
     </message>
     <message>
@@ -2836,6 +2835,11 @@ PreviSatは、完全無料です!</translation>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation type="unfinished">UTC</translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="367"/>
+        <source>jours</source>
+        <translation type="unfinished">日</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.cpp" line="587"/>
