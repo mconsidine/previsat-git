@@ -39,6 +39,6 @@
         <file>resources/logo-skywatcher.png</file>
         <file>resources/drapeaux/fr.png</file>
         <file>resources/drapeaux/en.png</file>
-        <file>resources/drapeaux/jp.png</file>
+        <file>resources/drapeaux/ja.png</file>
     </qresource>
 </RCC>

@@ -9151,8 +9151,8 @@
             <widget class="QCheckBox" name="afftraj">
              <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>0</height>
+               <width>0</width>
+               <height>20</height>
               </size>
              </property>
              <property name="font">
@@ -9167,6 +9167,18 @@
             <widget class="QSpinBox" name="nombreTrajectoires">
              <property name="enabled">
               <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>43</width>
+               <height>16777215</height>
+              </size>
              </property>
              <property name="font">
               <font/>
