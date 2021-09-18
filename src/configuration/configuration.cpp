@@ -734,7 +734,7 @@ void Configuration::DeterminationLocale()
     _listeFicLang.insert(0, "fr");
 
     /* Corps de la methode */
-    const QFile fi(di.path() + QCoreApplication::applicationName() + "_" + _locale + ".qm");
+    const QFile fi(di.path() + QDir::separator() + QCoreApplication::applicationName() + "_" + _locale + ".qm");
     if (!fi.exists() && (_locale != "fr")) {
         _locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
     }
@@ -851,7 +851,10 @@ void Configuration::LectureConfiguration()
                                     cfg.skipCurrentElement();
                                 }
                             }
-                            _observateurs.append(Observateur(nom, lon, lat, alt));
+
+                            if (!nom.isEmpty()) {
+                                _observateurs.append(Observateur(nom, lon, lat, alt));
+                            }
 
                         } else {
                             cfg.skipCurrentElement();
@@ -936,10 +939,10 @@ void Configuration::LectureCategoriesOrbite()
 
                 if (cfg.name() == "Categorie") {
 
-                    while (cfg.readNextStartElement()) {
+                    acronyme = "";
+                    desc = "";
 
-                        acronyme = "";
-                        desc = "";
+                    while (cfg.readNextStartElement()) {
 
                         if (cfg.name() == "Acronyme") {
                             acronyme = cfg.readElementText();
@@ -949,7 +952,10 @@ void Configuration::LectureCategoriesOrbite()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapCategoriesOrbite.insert(acronyme, desc);
+
+                    if (!acronyme.isEmpty()) {
+                        _mapCategoriesOrbite.insert(acronyme, desc);
+                    }
                 }
             }
         }
@@ -1025,7 +1031,9 @@ void Configuration::LectureGestionnaireTLE()
                                     }
                                 }
 
-                                nomCategorie.insert(langue, nom);
+                                if (!langue.isEmpty()) {
+                                    nomCategorie.insert(langue, nom);
+                                }
                             } else {
                                 cfg.skipCurrentElement();
                             }
@@ -1057,7 +1065,9 @@ void Configuration::LectureGestionnaireTLE()
                         nomCategorie[it.key()] += "@" + site;
                     }
 
-                    _mapCategoriesTLE.append({ nomCategorie, site, fichiers });
+                    if (!nomCategorie.isEmpty()) {
+                        _mapCategoriesTLE.append({ nomCategorie, site, fichiers });
+                    }
                 }
             }
         }
@@ -1104,10 +1114,10 @@ void Configuration::LecturePays()
 
                 if (cfg.name() == "Pays") {
 
-                    while (cfg.readNextStartElement()) {
+                    acronyme = "";
+                    desc = "";
 
-                        acronyme = "";
-                        desc = "";
+                    while (cfg.readNextStartElement()) {
 
                         if (cfg.name() == "Acronyme") {
                             acronyme = cfg.readElementText();
@@ -1117,7 +1127,10 @@ void Configuration::LecturePays()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapPays.insert(acronyme, desc);
+
+                    if (!acronyme.isEmpty()) {
+                        _mapPays.insert(acronyme, desc);
+                    }
                 }
             }
         }
@@ -1302,7 +1315,9 @@ void Configuration::LectureSatellitesTDRS()
                         }
                     }
 
-                    _mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
+                    if (!denomination.isEmpty()) {
+                        _mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
+                    }
                 }
             }
         }
@@ -1375,7 +1390,10 @@ void Configuration::LectureSitesLancement()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapSites.insert(acronyme, Observateur(desc, lon, lat));
+
+                    if (!acronyme.isEmpty()) {
+                        _mapSites.insert(acronyme, Observateur(desc, lon, lat));
+                    }
                 }
             }
         }
@@ -1452,7 +1470,10 @@ void Configuration::LectureStations()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
+
+                    if (!acronyme.isEmpty()) {
+                        _mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
+                    }
                 }
             }
         }
@@ -1532,7 +1553,10 @@ void Configuration::LectureStatutSatellitesFlashs()
                             cfg.skipCurrentElement();
                         }
                     }
-                    _mapFlashs.insert(norad, satelliteFlash);
+
+                    if (!norad.isEmpty()) {
+                        _mapFlashs.insert(norad, satelliteFlash);
+                    }
                 }
             }
         }
@@ -1586,8 +1610,8 @@ void Configuration::VerificationArborescences()
         // Fichiers du repertoire data commun
         const QString repSon = QString("sound") + QDir::separator();
         const QString repStr = QString("stars") + QDir::separator();
-        const QStringList ficCommonData(QStringList () << "gestionnaireTLE_" + _locale + ".xml" << repSon + "aos-default.wav"
-                                        << repSon + "los-default.wav" << repStr + "constellations.dat" << repStr + "constlabel.dat"
+        const QStringList ficCommonData(QStringList () << repSon + "aos-default.wav" << repSon + "los-default.wav"
+                                        << repStr + "constellations.dat" << repStr + "constlabel.dat"
                                         << repStr + "constlines.dat" << repStr + "etoiles.dat");
 
         VerifieFichiersData(_dirCommonData, ficCommonData);
