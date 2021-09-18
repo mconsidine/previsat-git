@@ -453,6 +453,7 @@ void PreviSat::ChangementLangue(const int index)
     _onglets->ui()->retranslateUi(_onglets);
 
     _onglets->setInfo(true);
+    _onglets->AffichageLieuObs();
     GestionTempsReel();
 
     /* Retour */
