@@ -2454,6 +2454,11 @@ PreviSat is free !</translation>
         <translation>km</translation>
     </message>
     <message>
+        <location filename="src/interface/onglets.cpp" line="367"/>
+        <source>jours</source>
+        <translation>days</translation>
+    </message>
+    <message>
         <location filename="src/interface/onglets.cpp" line="395"/>
         <source>Descendant</source>
         <translation>Descending</translation>
