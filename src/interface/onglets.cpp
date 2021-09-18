@@ -584,7 +584,7 @@ void Onglets::AffichageDonneesSoleilLune() const
     // Hauteur/azimut/distance du Soleil
     _ui->hauteurSoleil->setText(Maths::ToSexagesimal(soleil.hauteur(), DEGRE, 2, 0, true, true));
     _ui->azimutSoleil->setText(Maths::ToSexagesimal(soleil.azimut(), DEGRE, 3, 0, false, true));
-    _ui->distanceSoleil->setText(QString("%1 UA").arg(soleil.distanceUA(), 0, 'f', 3));
+    _ui->distanceSoleil->setText(tr("%1 UA").arg(soleil.distanceUA(), 0, 'f', 3));
 
     // Ascension droite/declinaison/constellation du Soleil
     _ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.ascensionDroite(), HEURE1, 2, 0, false, true).trimmed());
