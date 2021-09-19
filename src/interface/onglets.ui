@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>8</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -8500,7 +8500,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="coordonnees">
          <widget class="QLabel" name="nLieu">
@@ -10502,7 +10502,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="miseAJourTLE">
        <property name="font">
@@ -10779,8 +10779,8 @@
         <property name="geometry">
          <rect>
           <x>560</x>
-          <y>157</y>
-          <width>91</width>
+          <y>160</y>
+          <width>161</width>
           <height>23</height>
          </rect>
         </property>
@@ -10793,80 +10793,6 @@
         <property name="default">
          <bool>true</bool>
         </property>
-       </widget>
-       <widget class="QWidget" name="gridLayoutWidget_10">
-        <property name="geometry">
-         <rect>
-          <x>380</x>
-          <y>38</y>
-          <width>361</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_extraction3">
-         <property name="horizontalSpacing">
-          <number>3</number>
-         </property>
-         <property name="verticalSpacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="lbl_nbRevCreeTLE">
-           <property name="font">
-            <font/>
-           </property>
-           <property name="text">
-            <string>Nombre de révolutions par jour :</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="lbl_revMax">
-           <property name="font">
-            <font/>
-           </property>
-           <property name="text">
-            <string>à</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="lbl_revMin">
-           <property name="font">
-            <font/>
-           </property>
-           <property name="text">
-            <string>de</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="revMin">
-           <property name="font">
-            <font/>
-           </property>
-           <property name="inputMask">
-            <string notr="true">99.999999999</string>
-           </property>
-           <property name="text">
-            <string notr="true">00.000000000</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLineEdit" name="revMax">
-           <property name="font">
-            <font/>
-           </property>
-           <property name="inputMask">
-            <string notr="true">99.999999999</string>
-           </property>
-           <property name="text">
-            <string notr="true">18.000000000</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
        <widget class="QWidget" name="formLayoutWidget_73">
         <property name="geometry">
@@ -10961,6 +10887,9 @@
            <property name="font">
             <font/>
            </property>
+           <property name="text">
+            <string/>
+           </property>
           </widget>
          </item>
          <item row="0" column="2">
@@ -10986,7 +10915,7 @@
          <rect>
           <x>10</x>
           <y>160</y>
-          <width>469</width>
+          <width>479</width>
           <height>25</height>
          </rect>
         </property>
@@ -11008,6 +10937,9 @@
            <property name="font">
             <font/>
            </property>
+           <property name="text">
+            <string/>
+           </property>
           </widget>
          </item>
          <item row="0" column="0">
@@ -11022,6 +10954,12 @@
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="parcourir2CreerTLE">
+           <property name="minimumSize">
+            <size>
+             <width>91</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="font">
             <font/>
            </property>
@@ -11032,16 +10970,16 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="gridLayoutWidget_8">
+       <widget class="QWidget" name="formLayoutWidget_74">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>37</y>
-          <width>341</width>
-          <height>25</height>
+          <y>38</y>
+          <width>211</width>
+          <height>23</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_extraction2">
+        <layout class="QFormLayout" name="formLayout_extraction2">
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11049,21 +10987,12 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="lbl_numeroNORADCreerTLE">
+          <widget class="QLabel" name="lbl_numerosNorad">
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>23</height>
+             <height>21</height>
             </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>91</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font/>
            </property>
            <property name="text">
             <string>Numéro NORAD :</string>
@@ -11071,144 +11000,74 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="numeroNORADCreerTLE">
-           <property name="minimumSize">
-            <size>
-             <width>90</width>
-             <height>0</height>
-            </size>
+          <widget class="QLineEdit" name="valeursNorad">
+           <property name="inputMask">
+            <string>\De 999999 à 999999</string>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>90</width>
-             <height>16777215</height>
-            </size>
+           <property name="text">
+            <string>De 000001 à 999999</string>
            </property>
-           <property name="font">
-            <font/>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <item>
-            <property name="text">
-             <string>Tous</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Sélection...</string>
-            </property>
-           </item>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QFrame" name="frameNORAD">
+        </layout>
+       </widget>
+       <widget class="QWidget" name="formLayoutWidget_75">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>38</y>
+          <width>351</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_extraction3">
+         <property name="horizontalSpacing">
+          <number>3</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="lbl_nbRevParJour">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>21</height>
             </size>
            </property>
-           <property name="font">
-            <font/>
+           <property name="text">
+            <string>Nombre de révolutions par jour :</string>
            </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="valeursRevParJour">
+           <property name="inputMask">
+            <string>\De 99.999999999 à 99.999999999</string>
            </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
+           <property name="text">
+            <string>De 00.000000000 à 18.000000000</string>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="gridLayoutWidget_9">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>153</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_extNorad">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="noradMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>99999</number>
-               </property>
-               <property name="value">
-                <number>1</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_noradMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>de</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="lbl_noradMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>à</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QSpinBox" name="noradMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>99999</number>
-               </property>
-               <property name="value">
-                <number>99999</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="gridLayoutWidget_12">
+       <widget class="QWidget" name="formLayoutWidget_76">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>67</y>
-          <width>371</width>
-          <height>25</height>
+          <width>211</width>
+          <height>23</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_extraction4">
+        <layout class="QFormLayout" name="formLayout_extraction4">
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11216,368 +11075,106 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="lbl_ADNoeudAscendantCreerTLE">
+          <widget class="QLabel" name="lbl_ADNoeudAscendantExtraxtion">
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>23</height>
+             <height>21</height>
             </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>112</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font/>
            </property>
            <property name="text">
-            <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
+            <string>AD noeud ascendant :</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="ADNoeudAscendantCreerTLE">
-           <property name="minimumSize">
-            <size>
-             <width>95</width>
-             <height>0</height>
-            </size>
+          <widget class="QLineEdit" name="valeursADnoeudAscendant">
+           <property name="inputMask">
+            <string>\De 999° à 999°</string>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>95</width>
-             <height>16777215</height>
-            </size>
+           <property name="text">
+            <string>De 000° à 360°</string>
            </property>
-           <property name="font">
-            <font/>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <item>
-            <property name="text">
-             <string>De 0° à 360°</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Autre...</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QFrame" name="frameADNA">
-           <property name="minimumSize">
-            <size>
-             <width>151</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="font">
-            <font/>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <widget class="QWidget" name="gridLayoutWidget_19">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>151</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_ADNA">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="4">
-              <widget class="QSpinBox" name="ADNAMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>360</number>
-               </property>
-               <property name="value">
-                <number>360</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="ADNAMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>360</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="lbl_ADNAMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>à</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_ADNAMin">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>de</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="5">
-              <widget class="QLabel" name="deg2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="deg1">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="gridLayoutWidget_14">
+       <widget class="QWidget" name="formLayoutWidget_77">
         <property name="geometry">
          <rect>
           <x>380</x>
           <y>67</y>
-          <width>371</width>
-          <height>25</height>
+          <width>213</width>
+          <height>23</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_extraction5">
+        <layout class="QFormLayout" name="formLayout_extraction5">
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
          <property name="verticalSpacing">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="argumentPerigeeCreerTLE">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lbl_argumentPerigeeExtraction">
            <property name="minimumSize">
             <size>
-             <width>95</width>
-             <height>0</height>
+             <width>0</width>
+             <height>21</height>
             </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>95</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font/>
-           </property>
-           <item>
-            <property name="text">
-             <string>De 0° à 360°</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Autre...</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="lbl_argumentPerigee_2">
-           <property name="font">
-            <font/>
            </property>
            <property name="text">
             <string>Argument du périgée :</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QFrame" name="frameArgumentPerigee">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="valeursArgumentPerigee">
            <property name="minimumSize">
             <size>
-             <width>151</width>
-             <height>22</height>
+             <width>98</width>
+             <height>0</height>
             </size>
            </property>
-           <property name="font">
-            <font/>
+           <property name="inputMask">
+            <string>\De 999° à 999°</string>
            </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
+           <property name="text">
+            <string>De 000° à 360°</string>
            </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="gridLayoutWidget_20">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>151</width>
-              <height>24</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_argPerigee">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="5">
-              <widget class="QLabel" name="deg8">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="deg7">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_ArgMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>de</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="4">
-              <widget class="QSpinBox" name="argMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>360</number>
-               </property>
-               <property name="value">
-                <number>360</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="lbl_argMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>à</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="argMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>360</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="gridLayoutWidget_15">
+       <widget class="QWidget" name="formLayoutWidget_78">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>96</y>
-          <width>341</width>
-          <height>25</height>
+          <y>97</y>
+          <width>211</width>
+          <height>23</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_extraction6">
+        <layout class="QFormLayout" name="formLayout_extraction6">
+         <property name="horizontalSpacing">
+          <number>3</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="lbl_excentriciteCreerTLE">
+          <widget class="QLabel" name="lbl_excentriciteExtraction">
            <property name="minimumSize">
             <size>
-             <width>64</width>
-             <height>0</height>
+             <width>0</width>
+             <height>21</height>
             </size>
-           </property>
-           <property name="font">
-            <font/>
            </property>
            <property name="text">
             <string>Excentricité :</string>
@@ -11585,385 +11182,134 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="excentriciteCreerTLE">
-           <property name="minimumSize">
-            <size>
-             <width>81</width>
-             <height>0</height>
-            </size>
+          <widget class="QLineEdit" name="valeursExcentricite">
+           <property name="inputMask">
+            <string>\De 9.9999999 à 9.9999999</string>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>81</width>
-             <height>16777215</height>
-            </size>
+           <property name="text">
+            <string>De 0.0000000 à 1.0000000</string>
            </property>
-           <property name="font">
-            <font/>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <item>
-            <property name="text">
-             <string>De 0 à 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Autre...</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QFrame" name="frameExcentricite">
-           <property name="minimumSize">
-            <size>
-             <width>173</width>
-             <height>22</height>
-            </size>
-           </property>
-           <property name="font">
-            <font/>
-           </property>
-           <property name="mouseTracking">
-            <bool>true</bool>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <widget class="QWidget" name="gridLayoutWidget_16">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>171</width>
-              <height>24</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_exventricite">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="2">
-              <widget class="QLabel" name="lbl_excMax">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>à</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_excMin">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>de</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLineEdit" name="excMax">
-               <property name="minimumSize">
-                <size>
-                 <width>67</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>67</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="font">
-                <font/>
-               </property>
-               <property name="inputMask">
-                <string notr="true">9.9999999</string>
-               </property>
-               <property name="text">
-                <string notr="true">1.0000000</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="excMin">
-               <property name="minimumSize">
-                <size>
-                 <width>66</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>66</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="font">
-                <font/>
-               </property>
-               <property name="inputMask">
-                <string notr="true">9.9999999</string>
-               </property>
-               <property name="text">
-                <string notr="true">0.0000000</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="gridLayoutWidget_17">
+       <widget class="QWidget" name="formLayoutWidget_79">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>127</y>
-          <width>501</width>
-          <height>26</height>
+          <width>351</width>
+          <height>24</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_extraction8_2">
+        <layout class="QFormLayout" name="formLayout_extraction8">
+         <property name="horizontalSpacing">
+          <number>3</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
          <item row="0" column="0">
-          <widget class="QFrame" name="frame_13">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
+          <widget class="QLabel" name="lbl_inclinaisonExtraction">
+           <property name="font">
+            <font/>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <property name="text">
+            <string>Inclinaison :</string>
            </property>
-           <widget class="QWidget" name="layoutWidget_2">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>149</width>
-              <height>22</height>
-             </rect>
-            </property>
-            <layout class="QFormLayout" name="formLayout_incl_2">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_inclinaisonCreerTLE_2">
-               <property name="minimumSize">
-                <size>
-                 <width>59</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>Inclinaison :</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="inclinaisonCreerTLE_2">
-               <property name="font">
-                <font/>
-               </property>
-               <item>
-                <property name="text">
-                 <string>1 intervalle</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2 intervalles</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
          <item row="0" column="1">
-          <layout class="QGridLayout" name="gridLayout_3">
+          <layout class="QGridLayout" name="gridLayout_extraction8">
+           <property name="horizontalSpacing">
+            <number>3</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>0</number>
+           </property>
            <item row="0" column="0">
-            <widget class="QLabel" name="lbl_inclMin1_2">
+            <widget class="QComboBox" name="inclinaisonExtraction">
+             <property name="maximumSize">
+              <size>
+               <width>85</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="font">
               <font/>
              </property>
-             <property name="text">
-              <string>de</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="5">
-            <widget class="QLabel" name="deg4_2">
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>°</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QSpinBox" name="inclMax1_2">
-             <property name="font">
-              <font/>
-             </property>
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>180</number>
-             </property>
-             <property name="value">
-              <number>180</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="lbl_inclMax1_2">
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>à</string>
-             </property>
+             <item>
+              <property name="text">
+               <string>1 intervalle</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>2 intervalles</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item row="0" column="2">
-            <widget class="QLabel" name="deg3_2">
-             <property name="font">
-              <font/>
+            <widget class="QLineEdit" name="valeursInclinaison2">
+             <property name="maximumSize">
+              <size>
+               <width>98</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string>\De 999° à 999°</string>
              </property>
              <property name="text">
-              <string>°</string>
+              <string>De 000° à 180°</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="inclMin1_2">
-             <property name="font">
-              <font/>
+            <widget class="QLineEdit" name="valeursInclinaison1">
+             <property name="maximumSize">
+              <size>
+               <width>98</width>
+               <height>16777215</height>
+              </size>
              </property>
-             <property name="minimum">
-              <number>0</number>
+             <property name="inputMask">
+              <string>\De 999° à 999°</string>
              </property>
-             <property name="maximum">
-              <number>360</number>
+             <property name="text">
+              <string>De 000° à 180°</string>
              </property>
-             <property name="value">
-              <number>0</number>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
-           </item>
-           <item row="0" column="6">
-            <layout class="QGridLayout" name="gridLayout_incl_2">
-             <property name="horizontalSpacing">
-              <number>3</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>0</number>
-             </property>
-             <item row="0" column="2">
-              <widget class="QLabel" name="deg5_2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="lbl_inclMax2_2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>à</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="4">
-              <widget class="QSpinBox" name="inclMax2_2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>180</number>
-               </property>
-               <property name="value">
-                <number>180</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="inclMin2_2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>360</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="lbl_inclMin2_2">
-               <property name="minimumSize">
-                <size>
-                 <width>41</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>et de</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="5">
-              <widget class="QLabel" name="deg6_2">
-               <property name="font">
-                <font/>
-               </property>
-               <property name="text">
-                <string>°</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
            </item>
           </layout>
          </item>
         </layout>
+       </widget>
+       <widget class="QPushButton" name="parametrageDefautExtraction">
+        <property name="geometry">
+         <rect>
+          <x>560</x>
+          <y>127</y>
+          <width>161</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Paramétrage par défaut</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="evenementsOrbitaux">
