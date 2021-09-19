@@ -124,7 +124,7 @@ public slots:
      * @param message message
      * @param secondes nombre de secondes pendant lesquelles le message est affiche
      */
-    void AfficherMessageStatut(const QString &message, const int secondes= -1);
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
 
     /**
      * @brief ChangementLangue Changement dynamique de la langue

@@ -2203,20 +2203,12 @@ void Onglets::InitAffichageDemarrage()
     _ui->actionModifier_coordonnees->setIcon(QIcon(":/resources/editer.png"));
     _ui->actionAjouter_Mes_Preferes->setIcon(QIcon(":/resources/pref.png"));
 
-    _ui->numeroNORADCreerTLE->setCurrentIndex(0);
-    //    _ui->ADNoeudAscendantCreerTLE->setCurrentIndex(0);
-    //    _ui->excentriciteCreerTLE->setCurrentIndex(0);
-    //    _ui->inclinaisonCreerTLE->setCurrentIndex(0);
-    //    _ui->argumentPerigeeCreerTLE->setCurrentIndex(0);
+    _ui->inclinaisonExtraction->setCurrentIndex(0);
+    _ui->valeursInclinaison2->setVisible(false);
     _ui->fichierTelechargement->setText("");
     _ui->barreProgression->setValue(0);
     _ui->frameBarreProgression->setVisible(false);
     _ui->compteRenduMaj->setVisible(false);
-    //    _ui->frameADNA->setVisible(false);
-    //    _ui->frameArgumentPerigee->setVisible(false);
-    //    _ui->frameExcentricite->setVisible(false);
-    //    _ui->frameIncl->setVisible(false);
-    //    _ui->frameNORAD->setVisible(false);
 
     _ui->valHauteurSatMetOp->setVisible(false);
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -5628,6 +5620,254 @@ void Onglets::on_liste3_customContextMenuRequested(const QPoint &pos)
     if (_ui->liste3->currentRow() >= 0) {
         _ui->menuContextuelListes->exec(QCursor::pos());
     }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_rechercheCreerTLE_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    emit EffacerMessageStatut();
+
+    /* Corps de la methode */
+    try {
+
+        // Verification des fichiers
+        QString ficlu = _ui->fichierALireCreerTLE->text();
+        if (ficlu.isEmpty()) {
+            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
+        }
+
+        QFileInfo fi(ficlu);
+        if (fi.exists()) {
+            if (fi.suffix() == "gz") {
+
+                // Cas d'un fichier compresse au format gz
+//                const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
+
+//                if (DecompressionFichierGz(ficlu, fic)) {
+
+//                    const int nsat = TLE::VerifieFichier(fic, false);
+//                    if (nsat == 0) {
+//                        const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+//                        throw PreviSatException(msg.arg(ficlu), WARNING);
+//                    }
+//                    ficlu = fic;
+//                } else {
+//                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+//                    throw PreviSatException(msg.arg(ficlu), WARNING);
+//                }
+            }
+        } else {
+            const QString msg = tr("Le fichier %1 n'existe pas");
+            throw PreviSatException(msg.arg(ficlu), WARNING);
+        }
+
+        const int nbs = TLE::VerifieFichier(ficlu, false);
+        if (nbs == 0) {
+            throw PreviSatException(tr("Erreur rencontrée lors du chargement du fichier %1").arg(ficlu), WARNING);
+        }
+
+        const QString ficperso = _ui->nomFichierPerso->text();
+        if (ficperso.isEmpty()) {
+            throw PreviSatException(tr("Le nom du fichier personnel n'est pas spécifié"), WARNING);
+        }
+
+        QFileInfo fi2(ficperso);
+        QDir di(fi2.absolutePath());
+        if (!di.exists()) {
+            di.mkpath(fi2.absolutePath());
+        }
+
+        if (fi.filePath() == fi2.filePath()) {
+            throw PreviSatException(tr("Nom du fichier personnel et nom du fichier à lire identiques"), WARNING);
+        }
+
+        // Verification des numeros NORAD
+        const QStringList valeursNorad = _ui->valeursNorad->text().split(QRegExp("(\\D+)"), QString::SkipEmptyParts);
+        if (valeursNorad.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des numéros NORAD"), WARNING);
+        }
+
+        const int noradMin = valeursNorad.at(0).toInt();
+        const int noradMax = valeursNorad.at(1).toInt();
+        if ((noradMin < 1) || (noradMin > 999999) || (noradMax < 1) || (noradMax > 999999) || (noradMax < noradMin)) {
+            throw PreviSatException(tr("Erreur dans la saisie des numéros NORAD"), WARNING);
+        }
+
+        // Verification du nombre de revolutions par jour
+        const QStringList valeursRevParJour = _ui->valeursRevParJour->text().split(QRegExp("(\\D+).(\\D+)"), QString::SkipEmptyParts);
+        if (valeursRevParJour.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des nombres de révolutions par jour"), WARNING);
+        }
+
+        const double revMin = valeursRevParJour.at(0).toDouble();
+        const double revMax = valeursRevParJour.at(1).toDouble();
+        if ((revMin < 0.) || (revMin > 18.) || (revMax < 0.) || (revMax > 18.) || (revMax < revMin)) {
+            throw PreviSatException(tr("Erreur dans la saisie des nombres de révolutions par jour"), WARNING);
+        }
+
+        // Verification de l'ascension droite du noeud ascendant
+        const QStringList valeursADNoeudAscendant = _ui->valeursADnoeudAscendant->text().split(QRegExp("(\\D+)"), QString::SkipEmptyParts);
+        if (valeursADNoeudAscendant.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des ascensions droites du noeud ascendant"), WARNING);
+        }
+
+        const double adnaMin = valeursADNoeudAscendant.at(0).toDouble();
+        const double adnaMax = valeursADNoeudAscendant.at(1).toDouble();
+        if ((adnaMin < 0.) || (adnaMin > 359.) || (adnaMax < 0.) || (adnaMax > 360.) || (adnaMax < adnaMin)) {
+            throw PreviSatException(tr("Erreur dans la saisie des ascensions droites du noeud ascendant"), WARNING);
+        }
+
+        // Verification de l'argument du perigee
+        const QStringList valeursArgumentPerigee = _ui->valeursArgumentPerigee->text().split(QRegExp("(\\D+)"), QString::SkipEmptyParts);
+        if (valeursArgumentPerigee.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des arguments du périgée"), WARNING);
+        }
+
+        const double argPerigeeMin = valeursArgumentPerigee.at(0).toDouble();
+        const double argPerigeeMax = valeursArgumentPerigee.at(1).toDouble();
+        if ((argPerigeeMin < 0.) || (argPerigeeMin > 359.) || (argPerigeeMax < 0.) || (argPerigeeMax > 360.) || (argPerigeeMax < argPerigeeMin)) {
+            throw PreviSatException(tr("Erreur dans la saisie des arguments du périgée"), WARNING);
+        }
+
+        // Verification de l'excentricite
+        const QStringList valeursExcentricite = _ui->valeursExcentricite->text().split(QRegExp("(\\D).(\\D+)"), QString::SkipEmptyParts);
+        if (valeursExcentricite.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des excentricités"), WARNING);
+        }
+
+        const double excMin = valeursExcentricite.at(0).toDouble();
+        const double excMax = valeursExcentricite.at(1).toDouble();
+        if ((excMin < 0.) || (excMin > 0.9999999) || (excMax < 0.) || (excMax > 360.) || (excMax < excMin)) {
+            throw PreviSatException(tr("Erreur dans la saisie des excentricités"), WARNING);
+        }
+
+        // Verification de l'inclinaison orbitale
+        const QStringList valeursInclinaison1 = _ui->valeursInclinaison1->text().split(QRegExp("(\\D+)"), QString::SkipEmptyParts);
+        if (valeursInclinaison1.size() != 2) {
+            throw PreviSatException(tr("Erreur dans la saisie des inclinaisons (premier intervalle)"), WARNING);
+        }
+
+        const double incMin1 = valeursInclinaison1.at(0).toDouble();
+        const double incMax1 = valeursInclinaison1.at(1).toDouble();
+        if ((incMin1 < 0.) || (incMin1 > 179.) || (incMax1 < 0.) || (incMax1 > 180.) || (incMax1 < incMin1)) {
+            throw PreviSatException(tr("Erreur dans la saisie des inclinaisons (premier intervalle)"), WARNING);
+        }
+
+        double incMin2 = 0.;
+        double incMax2 = 180.;
+
+        if (_ui->valeursInclinaison2->isVisible()) {
+
+            const QStringList valeursInclinaison2 = _ui->valeursInclinaison2->text().split(QRegExp("(\\D+)"), QString::SkipEmptyParts);
+            if (valeursInclinaison2.size() != 2) {
+                throw PreviSatException(tr("Erreur dans la saisie des inclinaisons (deuxième intervalle)"), WARNING);
+            }
+
+            incMin2 = valeursInclinaison2.at(0).toDouble();
+            incMax2 = valeursInclinaison2.at(1).toDouble();
+            if ((incMin2 < 0.) || (incMin2 > 179.) || (incMax2 < 0.) || (incMax2 > 180.) || (incMax2 < incMin2)) {
+                throw PreviSatException(tr("Erreur dans la saisie des inclinaisons (deuxième intervalle)"), WARNING);
+            }
+        }
+
+        // Lecture du fichier TLE
+        const QMap<QString, TLE> tabtle = TLE::LectureFichier(ficlu, Configuration::instance()->dirLocalData());
+
+        // Ouverture du fichier personnel en ecriture
+        QFile sw(ficperso);
+        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+
+        if (!sw.isWritable()) {
+            const QString msg = tr("Problème de droits d'écriture du fichier %1");
+            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+        }
+        QTextStream flux(&sw);
+
+        bool ecritureTLE;
+        double mag;
+
+        QMapIterator<QString, TLE> it(tabtle);
+        while (it.hasNext()) {
+            it.next();
+
+            const int norad = it.key().toInt();
+            ecritureTLE = ((norad >= noradMin) && (norad <= noradMax));
+
+            if (ecritureTLE) {
+
+                const TLE tle = it.value();
+
+                // Nombre de revolutions par jour
+                ecritureTLE &= ((tle.no() >= revMin) && (tle.no() <= revMax));
+
+                // Ascension droite du noeud ascendant
+                ecritureTLE &= ((tle.omegao() >= adnaMin) && (tle.omegao() <= adnaMax));
+
+                // Argument du perigee
+                ecritureTLE &= ((tle.argpo() >= argPerigeeMin) && (tle.argpo() <= argPerigeeMax));
+
+                // Excentricite
+                ecritureTLE &= ((tle.ecco() >= excMin) && (tle.ecco() <= excMax));
+
+                // Inclinaison orbitale
+                ecritureTLE &= (((tle.inclo() >= incMin1) && (tle.inclo() <= incMax1)) ||
+                        (((tle.inclo() >= incMin2) && (tle.inclo() <= incMax2)) && _ui->valeursInclinaison2->isVisible()));
+
+                // Magnitude maximale
+                if (tle.donnees().magnitudeStandard() < 99.) {
+                    const double ax = RAYON_TERRESTRE * qPow(KE / (tle.no() * DEUX_PI * NB_JOUR_PAR_MIN), DEUX_TIERS);
+                    mag = tle.donnees().magnitudeStandard() - 15.75 + 5. * log10(1.45 * (ax * (1. - tle.ecco()) - RAYON_TERRESTRE));
+                } else {
+                    mag = -10.;
+                }
+                ecritureTLE &= (mag <= _ui->magnitudeMaxCreerTLE->value());
+
+                if (ecritureTLE) {
+
+                    flux << tle.ligne0() << endl;
+                    flux << tle.ligne1() << endl;
+                    flux << tle.ligne2() << endl;
+                }
+            }
+        }
+
+        sw.close();
+
+        if (sw.size() > 0) {
+            emit AfficherMessageStatut(tr("Fichier %1 écrit").arg(ficperso), 10);
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_inclinaisonExtraction_currentIndexChanged(int index)
+{
+    _ui->valeursInclinaison2->setVisible(index == 1);
+}
+
+void Onglets::on_parametrageDefautExtraction_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->valeursNorad->setText(tr("De 000001 à 999999"));
+    _ui->valeursRevParJour->setText(tr("De 00.000000000 à 18.000000000"));
+    _ui->valeursADnoeudAscendant->setText(tr("De 000° à 360°"));
+    _ui->valeursArgumentPerigee->setText(tr("De 000° à 360°"));
+    _ui->magnitudeMaxCreerTLE->setValue(99);
+    _ui->valeursInclinaison1->setText(tr("De 000° à 180°"));
+    _ui->valeursInclinaison2->setText(tr("De 000° à 180°"));
 
     /* Retour */
     return;

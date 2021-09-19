@@ -543,6 +543,9 @@ private slots:
     void on_liste3_itemClicked(QListWidgetItem *item);
     void on_liste3_customContextMenuRequested(const QPoint &pos);
 
+    void on_rechercheCreerTLE_clicked();
+    void on_inclinaisonExtraction_currentIndexChanged(int index);
+    void on_parametrageDefautExtraction_clicked();
 };
 
 #endif // ONGLETS_H
