@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2019
+ * >    25 septembre 2021
  *
  */
 
@@ -292,25 +292,19 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
         } else {
 
             // Le fichier n'existe pas
-            QString msg = "";
-            if (alarme) {
-                msg = QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier);
-            }
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "";
             throw PreviSatException(msg, WARNING);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
-            QString msg = "";
-            if (alarme) {
-                msg = QObject::tr("Le fichier %1 est vide").arg(nomFichier);
-            }
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "";
             throw PreviSatException(msg, WARNING);
         }
 
         // Aucun satellite dans le fichier
         if (nb == 0) {
-            const QString msg = (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : QString();
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "";
             throw PreviSatException(msg, WARNING);
         }
 
@@ -489,6 +483,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     /* Initialisations */
     const QString nomFicOld = ficOld.mid(ficOld.lastIndexOf(QDir::separator())+1).trimmed();
     const QString nomFicNew = ficNew.mid(ficNew.lastIndexOf(QDir::separator())+1).trimmed();
+    const QString noradInf = (nomFicOld == nomFicNew) ? "999999" : "";
 
     // Verification du fichier contenant les anciens TLE
     int nbOld = VerifieFichier(ficOld, false);
@@ -521,19 +516,17 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     int res2 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
     QString norad2;
 
-    while (isat < nbOld || j < nbNew) {
+    while ((isat < nbOld) || (j < nbNew)) {
 
-        const QString sat = QString::number(isat);
-        const QString noradInf = (nomFicOld == nomFicNew) ? "99999" : "";
-        const QString norad1 = (isat < nbOld) ? tleOld[sat]._norad : noradInf;
+        const QString norad1 = (isat < nbOld) ? tleOld.keys().at(isat) : noradInf;
 
         norad2 = "";
         if (nomFicOld == nomFicNew) {
-            norad2 = (j < nbNew) ? tleNew[QString::number(j)]._norad : "99999";
+            norad2 = (j < nbNew) ? tleNew.keys().at(j) : "999999";
         } else {
 
             if ((j < nbNew) && !norad1.isEmpty()) {
-                while ((j < nbNew) && ((norad2 = tleNew[QString::number(j)]._norad).compare(norad1) < 0)) {
+                while ((j < nbNew) && ((norad2 = tleNew.keys().at(j)).compare(norad1) < 0)) {
                     j++;
                 }
             } else {
@@ -541,16 +534,15 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                 norad2 = "0";
             }
         }
-        const QString js = QString::number(j);
 
         if (norad1 == norad2) {
 
-            if (tleOld[sat]._epoque.jourJulienUTC() < tleNew[js]._epoque.jourJulienUTC()) {
-                tleOld[sat] = tleNew[js];
-                tleOld[sat]._ligne0 = (tleNew[js]._nom == norad2) ? tleOld[sat]._ligne0 : tleNew[js]._ligne0;
+            if (tleOld[norad1]._epoque.jourJulienUTC() < tleNew[norad2]._epoque.jourJulienUTC()) {
+                tleOld[norad1] = tleNew[norad2];
+                tleOld[norad1]._ligne0 = (tleNew[norad2]._nom == norad2) ? tleOld[norad1]._ligne0 : tleNew[norad2]._ligne0;
                 nbMaj++;
             } else {
-                compteRendu.append(tleOld[sat]._nom + "#" + tleOld[sat]._norad);
+                compteRendu.append(tleOld[norad1]._nom + "#" + tleOld[norad1]._norad);
             }
             j++;
 
@@ -566,7 +558,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                                                             "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
 
                         QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
-                                           message.arg(tleNew[js]._nom).arg(tleNew[js]._norad), QMessageBox::Yes |
+                                           message.arg(tleNew[norad2]._nom).arg(tleNew[norad2]._norad), QMessageBox::Yes |
                                            QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                         msgbox.setDefaultButton(QMessageBox::No);
@@ -578,7 +570,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                         res1 = msgbox.result();
                     }
                     if ((res1 == QMessageBox::Yes) || (res1 == QMessageBox::YesToAll)) {
-                        tleOld.insert(sat, tleNew[js]);
+                        tleOld.insert(norad2, tleNew[norad2]);
                         nbOld++;
                         nbAdd++;
                     }
@@ -592,7 +584,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                                                             "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                         QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
-                                           message.arg(tleNew[js]._nom).arg(tleNew[js]._norad), QMessageBox::Yes |
+                                           message.arg(tleNew[norad2]._nom).arg(tleNew[norad2]._norad), QMessageBox::Yes |
                                            QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                         msgbox.setDefaultButton(QMessageBox::No);
@@ -604,7 +596,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                         res2 = msgbox.result();
                     }
                     if ((res2 == QMessageBox::Yes) || (res2 == QMessageBox::YesToAll)) {
-                        tleOld.remove(sat);
+                        tleOld.remove(norad1);
                         isat--;
                         nbOld--;
                         nbSup++;
@@ -612,7 +604,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
                 }
             } else {
                 if (!norad1.isEmpty()) {
-                    compteRendu.append(tleOld[sat]._nom + "#" + tleOld[sat]._norad);
+                    compteRendu.append(tleOld[norad1]._nom + "#" + tleOld[norad1]._norad);
                 }
             }
         }
@@ -700,10 +692,9 @@ bool TLE::CheckSum(const QString &ligne)
             }
         }
     }
-    chr = ligne.at(68).digitValue();
 
     /* Retour */
-    return ((check % 10) == chr);
+    return ((check % 10) == ligne.at(68).digitValue());
 }
 
 /*
@@ -749,31 +740,25 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QString msg = "";
 
     /* Corps de la methode */
     // Verification si les lignes sont vides
     if (li1.isEmpty() || li2.isEmpty()) {
-        if (alarme) {
-            msg = QObject::tr("Une des lignes du TLE est vide");
-        }
+        const QString msg = (alarme) ? QObject::tr("Une des lignes du TLE est vide") : "";
         throw PreviSatException(msg, WARNING);
     }
 
     // Verification du numero des lignes
     if ((li1.mid(0, 2) != "1 ") || (li2.mid(0, 2) != "2 ")) {
-        if (alarme) {
-            msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).arg(li2.mid(2, 5));
-        }
+        const QString msg = (alarme) ?
+                    QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).arg(li2.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
-        if (alarme) {
-            msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat)
-                    .arg(li2.mid(1, 6).trimmed());
-        }
+        const QString msg = (alarme) ? QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat)
+                                       .arg(li2.mid(1, 6).trimmed()) : "";
         throw PreviSatException(msg, WARNING);
     }
 
@@ -781,42 +766,33 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     if ((li1.at(1) != ' ') || (li1.at(8) != ' ') || (li1.at(17) != ' ') || (li1.at(32) != ' ') || (li1.at(43) != ' ') ||
             (li1.at(52) != ' ') || (li1.at(61) != ' ') || (li1.at(63) != ' ') || (li2.at(1) != ' ') || (li2.at(7) != ' ') ||
             (li2.at(16) != ' ') || (li2.at(25) != ' ') || (li2.at(33) != ' ') || (li2.at(42) != ' ') || (li2.at(51) != ' ')) {
-        if (alarme) {
-            msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
-        }
+        const QString msg = (alarme) ?
+                    QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
     // Verification de la ponctuation des lignes
     if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') ||
             (li2.at(54) != '.')) {
-        if (alarme) {
-            msg = QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
-        }
+        const QString msg = (alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
-        if (alarme) {
-            msg = QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)").arg(nomsat).arg(li1.mid(2, 5))
-                    .arg(li2.mid(2, 5));
-        }
+        const QString msg = (alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)").arg(nomsat)
+                                       .arg(li1.mid(2, 5)).arg(li2.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1)) {
-        if (alarme) {
-            msg = QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5));
-        }
+        const QString msg = (alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
     if (!CheckSum(li2)) {
-        if (alarme) {
-            msg = QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5));
-        }
+        const QString msg = (alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);
     }
 
