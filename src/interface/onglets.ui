@@ -10729,12 +10729,18 @@
             <property name="font">
              <font/>
             </property>
+            <property name="text">
+             <string/>
+            </property>
            </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLineEdit" name="fichierALire">
             <property name="font">
              <font/>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -10975,7 +10981,7 @@
          <rect>
           <x>10</x>
           <y>38</y>
-          <width>211</width>
+          <width>221</width>
           <height>23</height>
          </rect>
         </property>
@@ -11063,7 +11069,7 @@
          <rect>
           <x>10</x>
           <y>67</y>
-          <width>211</width>
+          <width>221</width>
           <height>23</height>
          </rect>
         </property>
@@ -11107,7 +11113,7 @@
          <rect>
           <x>380</x>
           <y>67</y>
-          <width>213</width>
+          <width>221</width>
           <height>23</height>
          </rect>
         </property>
@@ -11157,7 +11163,7 @@
          <rect>
           <x>10</x>
           <y>97</y>
-          <width>211</width>
+          <width>221</width>
           <height>23</height>
          </rect>
         </property>
@@ -11257,7 +11263,7 @@
             <widget class="QLineEdit" name="valeursInclinaison2">
              <property name="maximumSize">
               <size>
-               <width>98</width>
+               <width>108</width>
                <height>16777215</height>
               </size>
              </property>
@@ -11276,7 +11282,7 @@
             <widget class="QLineEdit" name="valeursInclinaison1">
              <property name="maximumSize">
               <size>
-               <width>98</width>
+               <width>108</width>
                <height>16777215</height>
               </size>
              </property>
