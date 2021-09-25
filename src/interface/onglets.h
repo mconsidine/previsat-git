@@ -392,6 +392,11 @@ private:
      */
     void InitFicSon(void);
 
+    /**
+     * @brief ReactualiserAffichage Rechargement du fichier TLE et rafraichissement de l'affichage
+     */
+    void ReactualiserAffichage();
+
 
 private slots:
 
@@ -546,6 +551,21 @@ private slots:
     void on_rechercheCreerTLE_clicked();
     void on_inclinaisonExtraction_currentIndexChanged(int index);
     void on_parametrageDefautExtraction_clicked();
+
+    void on_parcourirMaj1_clicked();
+    void on_parcourirMaj2_clicked();
+    void on_mettreAJourTLE_clicked();
+
+    /*
+     *
+     */
+    /**
+     * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
+     * @param compteRendu compte rendu de la mise a jour
+     * @return ecriture du compte rendu
+     */
+    bool EcritureCompteRenduMaj(const QStringList &compteRendu);
+
 };
 
 #endif // ONGLETS_H

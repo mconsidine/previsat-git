@@ -37,6 +37,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#include <QFileDialog>
 #include <QFutureWatcher>
 #include <QMessageBox>
 #include <QSettings>
@@ -49,6 +50,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QProgressDialog>
+#include <QScrollBar>
 #include <QTextStream>
 #include <QToolTip>
 #include "afficher.h"
@@ -2046,6 +2048,10 @@ void Onglets::on_majMaintenant_clicked()
 
     if (_listeFichiersTelechargement.isEmpty()) {
         QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+
+        if (categorie.fichiers.contains(Configuration::instance()->nomfic())) {
+            emit RechargerTLE();
+        }
     }
 
     /* Retour */
@@ -2530,6 +2536,48 @@ void Onglets::InitFicSon()
     return;
 }
 
+/*
+ * Rechargement du fichier TLE et rafraichissement de l'affichage
+ */
+void Onglets::ReactualiserAffichage()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _info = true;
+    _acalcAOS = true;
+    _acalcDN = true;
+
+    /* Corps de la methode */
+    emit RechargerTLE();
+
+    const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+    QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+    const QFileInfo fi(Configuration::instance()->nomfic());
+
+    if (!Configuration::instance()->mapTLE().isEmpty()) {
+
+        satellites.clear();
+        QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
+        while (it.hasNext()) {
+
+            const QString norad = it.next();
+            const TLE tle = Configuration::instance()->mapTLE()[norad];
+
+            if (norad == noradDefaut) {
+                satellites.insert(0, Satellite(tle));
+            } else {
+                satellites.append(Satellite(tle));
+            }
+        }
+    }
+
+    emit RecalculerPositions();
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Ecriture du fichier
@@ -2623,37 +2671,9 @@ void Onglets::FinEnregistrementFichier()
             if (nb == 0) {
                 const QString msg = tr("Erreur lors du téléchargement du fichier %1");
                 Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
-                //ui->compteRenduMaj->setVisible(false);
+                _ui->compteRenduMaj->setVisible(false);
             } else {
-
-                _info = true;
-                _acalcAOS = true;
-                _acalcDN = true;
-
-                emit RechargerTLE();
-
-                const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
-                QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
-                const QFileInfo fi(Configuration::instance()->nomfic());
-
-                if (!Configuration::instance()->mapTLE().isEmpty()) {
-
-                    satellites.clear();
-                    QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()]);
-                    while (it.hasNext()) {
-
-                        const QString norad = it.next();
-                        const TLE tle = Configuration::instance()->mapTLE()[norad];
-
-                        if (norad == noradDefaut) {
-                            satellites.insert(0, Satellite(tle));
-                        } else {
-                            satellites.append(Satellite(tle));
-                        }
-                    }
-                }
-
-                emit RecalculerPositions();
+                ReactualiserAffichage();
             }
         }
     }
@@ -5871,4 +5891,189 @@ void Onglets::on_parametrageDefautExtraction_clicked()
 
     /* Retour */
     return;
+}
+
+void Onglets::on_parcourirMaj1_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                   settings.value("fichier/fichierMaj", Configuration::instance()->dirTle()).toString(),
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
+
+    if (!fichier.isEmpty()) {
+        fichier = QDir::toNativeSeparators(fichier);
+        _ui->fichierAMettreAJour->setText(fichier);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_parcourirMaj2_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"),
+                                                   settings.value("fichier/fichierALire", Configuration::instance()->dirTle()).toString(),
+                                                   tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)"));
+
+    if (!fichier.isEmpty()) {
+        fichier = QDir::toNativeSeparators(fichier);
+        _ui->fichierALire->setText(fichier);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_mettreAJourTLE_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    emit EffacerMessageStatut();
+    _ui->compteRenduMaj->clear();
+    _ui->compteRenduMaj->setVisible(false);
+
+    /* Corps de la methode */
+    try {
+        bool agz = false;
+        if (_ui->fichierAMettreAJour->text().isEmpty()) {
+            throw PreviSatException(tr("Le nom du fichier à mettre à jour n'est pas spécifié"), WARNING);
+        }
+
+        if (_ui->fichierALire->text().isEmpty()) {
+            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), WARNING);
+        }
+
+        // Fichier a lire au format gz
+        QFileInfo fi(_ui->fichierALire->text());
+        QString fic;
+        if (fi.suffix() == "gz") {
+
+            // Cas d'un fichier compresse au format gz
+//            fic = dirTmp + QDir::separator() + fi.completeBaseName();
+
+//            if (DecompressionFichierGz(ui->fichierALire->text(), fic)) {
+
+//                const int nsat = TLE::VerifieFichier(fic, false);
+//                if (nsat == 0) {
+//                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+//                    throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
+//                }
+//                agz = true;
+//            } else {
+//                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+//                throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
+//            }
+        } else {
+            fic = QDir::toNativeSeparators(fi.absoluteFilePath());
+        }
+
+        const QStringList listeFic(QStringList () << _ui->fichierAMettreAJour->text() << fic);
+        foreach(QString file, listeFic) {
+            fi = QFileInfo(file);
+            if (!fi.exists()) {
+                const QString msg = tr("Le fichier %1 n'existe pas");
+                throw PreviSatException(msg.arg(fi.absoluteFilePath()), WARNING);
+            }
+        }
+
+        QStringList compteRendu;
+        const int affMsg = _ui->affichageMsgMAJ->currentIndex();
+        TLE::MiseAJourFichier(Configuration::instance()->dirLocalData(), _ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
+
+        const bool aecr = EcritureCompteRenduMaj(compteRendu);
+
+        if (agz) {
+            QFile fich(fic);
+            fich.remove();
+        }
+
+        emit AfficherMessageStatut(tr("Terminé !"), 10);
+        _ui->compteRenduMaj->setVisible(true);
+
+        if ((Configuration::instance()->nomfic() == _ui->fichierAMettreAJour->text().trimmed()) && aecr) {
+            ReactualiserAffichage();
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ecriture du compte-rendu de mise a jour des TLE
+ */
+bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int nbsup = compteRendu.at(compteRendu.count()-1).toInt();
+    const int nbadd = compteRendu.at(compteRendu.count()-2).toInt();
+    const int nbold = compteRendu.at(compteRendu.count()-3).toInt();
+    const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
+    const QString fic = compteRendu.at(compteRendu.count()-5);
+
+    if (!_ui->compteRenduMaj->toPlainText().isEmpty()) {
+        if (!_ui->compteRenduMaj->toPlainText().split("\n").last().trimmed().isEmpty()) {
+            _ui->compteRenduMaj->appendPlainText("");
+        }
+    }
+
+    _ui->compteRenduMaj->appendPlainText(QString(tr("Fichier %1 :").arg(fic)));
+
+    QString msgcpt;
+    if ((nbmaj < nbold) && (nbmaj > 0)) {
+
+        msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
+
+        for(int i=0; i<compteRendu.count()-5; i++) {
+            const QString nomsat = compteRendu.at(i).split("#").at(0);
+            const QString norad = compteRendu.at(i).split("#").at(1);
+            _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
+        }
+    }
+
+    if (nbsup > 0) {
+        msgcpt = tr("Nombre de TLE(s) supprimés : %1");
+        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbsup));
+    }
+
+    if (nbadd > 0) {
+        msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
+        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbadd));
+    }
+
+    if ((nbmaj < nbold) && (nbmaj > 0)) {
+        msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
+        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbmaj).arg(nbold));
+    }
+
+    if ((nbmaj == nbold) && (nbold != 0)) {
+        msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
+        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbold));
+    }
+
+    if ((nbmaj == 0) && (nbold != 0)) {
+        _ui->compteRenduMaj->appendPlainText(tr("Aucun TLE mis à jour"));
+    }
+
+    _ui->compteRenduMaj->appendPlainText("");
+    _ui->compteRenduMaj->verticalScrollBar()->setValue(_ui->compteRenduMaj->blockCount());
+
+    /* Retour */
+    return ((nbold > 0) && ((nbmaj > 0) || (nbsup > 0) || (nbadd > 0)));;
 }
