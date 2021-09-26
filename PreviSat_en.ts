@@ -4324,104 +4324,104 @@ The directory %1 does not exist, please re-install %2</translation>
         <translation>The file %1 does not contain satellites</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="491"/>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="501"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="497"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="507"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="557"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="563"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the file to update.
 Do you want to add this TLE in the file to update?</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="560"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="566"/>
         <source>Ajout du nouveau TLE</source>
         <translation>Add of the new TLE</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="565"/>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="591"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="571"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="597"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="566"/>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="592"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="572"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="598"/>
         <source>Oui à tout</source>
         <translation>Yes to all</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="567"/>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="593"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="573"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="599"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="568"/>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="594"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="574"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="600"/>
         <source>Non à tout</source>
         <translation>No to all</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="583"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="589"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>The satellite %1 (NORAD number : %2) does not exist in the TLE file to read.
 Do you want to remove this TLE from the file to update?</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="586"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="592"/>
         <source>Suppression du TLE</source>
         <translation>Deletion of the TLE</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="747"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="753"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>One of the TLE line is empty</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="754"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="760"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="760"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="766"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="770"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="776"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="777"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="783"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="783"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="789"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="790"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="796"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>CheckSum Error line 1 :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="src/librairies/corps/satellite/tle.cpp" line="795"/>
+        <location filename="src/librairies/corps/satellite/tle.cpp" line="801"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>CheckSum Error line 2 :
