@@ -227,11 +227,6 @@ private:
     void InitDate();
 
     /**
-     * @brief InitFicTLE Liste des fichiers TLE
-     */
-    void InitFicTLE() const;
-
-    /**
      * @brief InitMenus Initialisation des menus
      */
     void InitMenus() const;
@@ -274,6 +269,11 @@ private slots:
     void ChangementCarte();
     void ChangementZoom();
     void ChangementDate(const QDateTime &date);
+
+    /**
+     * @brief InitFicTLE Liste des fichiers TLE
+     */
+    void InitFicTLE() const;
 
     /*************
      * Affichage *

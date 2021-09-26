@@ -1264,6 +1264,7 @@ void PreviSat::ChargementFenetre()
     connect(_onglets, SIGNAL(ChangementDate(const QDateTime &)), this, SLOT(ChangementDate(const QDateTime &)));
     connect(_onglets, SIGNAL(RechargerTLE()), this, SLOT(ChargementTLE()));
     connect(_onglets, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
+    connect(_onglets, SIGNAL(InitFicTLE()), this, SLOT(InitFicTLE()));
 
     /* Retour */
     return;

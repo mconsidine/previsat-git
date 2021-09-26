@@ -60,6 +60,7 @@ class Date;
 class Satellite;
 class QListWidget;
 class QListWidgetItem;
+class QPlainTextEdit;
 
 struct Coordonnees {
     QString lon;
@@ -204,6 +205,7 @@ signals:
     void MiseAJourCarte();
     void RechargerTLE();
     void RecalculerPositions();
+    void InitFicTLE();
 
     void Progression(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
     void TelechargementFini();
@@ -248,9 +250,11 @@ private:
     bool _info;
     int _indexInfo;
     int _indexOption;
+    int _indexMajTLE;
     int _nbOnglets;
     QStringList _titreInformations;
     QStringList _titreOptions;
+    QStringList _titreMajTLE;
 
     static QString _donneesSat;
     QStringList _resultatsSatellitesTrouves;
@@ -556,16 +560,20 @@ private slots:
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
 
-    /*
-     *
-     */
     /**
      * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
      * @param compteRendu compte rendu de la mise a jour
+     * @param compteRenduMaj zone de texte a ecrire
      * @return ecriture du compte rendu
      */
-    bool EcritureCompteRenduMaj(const QStringList &compteRendu);
+    bool EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit *compteRenduMaj);
 
+    void on_majPrec_clicked();
+    void on_majSuiv_clicked();
+    void on_miseAJourTLE_currentChanged(int arg1);
+    void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
+    void on_compteRenduMaj2_customContextMenuRequested(const QPoint &pos);
+    void on_actionCopier_dans_le_presse_papier_triggered();
 };
 
 #endif // ONGLETS_H

@@ -34,6 +34,7 @@
  *
  */
 
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -123,8 +124,10 @@ Onglets::Onglets(QWidget *parent) :
     // TODO sauvegarder les index
     _indexInfo = 0;
     _indexOption = 0;
-    _titreInformations << tr("Informations satellite") << tr("Recherche données") << tr("Rentrées atmosphériques");
+    _indexMajTLE = 0;
+    _titreInformations << tr("Informations satellite") << tr("Recherche données");
     _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
+    _titreMajTLE << tr("Mise à jour TLE auto") << tr("Mise à jour TLE manuelle");
 
     // Initialisation au demarrage
     InitAffichageDemarrage();
@@ -239,7 +242,7 @@ void Onglets::show(const Date &date)
         _ui->barreOnglets->removeTab(_ui->barreOnglets->indexOf(_ui->osculateurs));
         _ui->informations->removeWidget(_ui->infos);
 
-        if (_titreInformations.size() == 3) {
+        if (_titreInformations.size() == 2) {
             _titreInformations.removeAt(0);
             _indexInfo = 0;
             _ui->informations->setCurrentIndex(_indexInfo);
@@ -253,7 +256,7 @@ void Onglets::show(const Date &date)
             _ui->satellite->setVisible(true);
             _ui->barreOnglets->insertTab(1, _ui->osculateurs, tr("Éléments osculateurs"));
 
-            if (_titreInformations.size() < 3) {
+            if (_titreInformations.size() < 2) {
                 _titreInformations.insert(0, tr("Informations satellite"));
             }
             _ui->barreOnglets->insertTab(2, _ui->infos, _titreInformations.at(_indexInfo));
@@ -1935,7 +1938,7 @@ void Onglets::SauveOngletInformations(const QString &fic) const
                 flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text());
             }
 
-        } else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
+        //} else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
             // TODO
         }
 
@@ -2028,6 +2031,9 @@ void Onglets::on_majMaintenant_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _ui->compteRenduMaj->clear();
+    _ui->compteRenduMaj->setVisible(true);
+
     const CategorieTLE categorie = Configuration::instance()->mapCategoriesTLE().at(_ui->groupeTLE->currentIndex());
     const QString nom = categorie.nom[Configuration::instance()->locale()].split("@").at(0);
     const QString adresse = (categorie.site.contains("celestrak")) ?
@@ -2041,12 +2047,14 @@ void Onglets::on_majMaintenant_clicked()
     const QString chaine = tr("Mise à jour du groupe de TLE \"%1\" (à partir de %2) en cours...");
     emit AfficherMessageStatut(chaine.arg(nom).arg(categorie.site), 10);
 
+    _ui->frameBarreProgression->setVisible(true);
     QStringListIterator it(categorie.fichiers);
     while (it.hasNext()) {
         AjoutFichier(QUrl(adresse + it.next()));
     }
 
     if (_listeFichiersTelechargement.isEmpty()) {
+
         QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
 
         if (categorie.fichiers.contains(Configuration::instance()->nomfic())) {
@@ -2095,6 +2103,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->barreOnglets->setCurrentIndex(0);
     _ui->ongletsOptions->setCurrentIndex(0);
     _ui->ongletsOutils->setCurrentIndex(0);
+
     _ui->informations->setCurrentIndex(_indexInfo);
     _ui->infoPrec->setToolTip(_titreInformations.at((_indexInfo + _ui->informations->count() - 1) % _ui->informations->count()));
     _ui->infoSuiv->setToolTip(_titreInformations.at((_indexInfo + 1) % _ui->informations->count()));
@@ -2102,6 +2111,11 @@ void Onglets::InitAffichageDemarrage()
     _ui->configuration->setCurrentIndex(_indexOption);
     _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % 4));
     _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % 4));
+
+    on_miseAJourTLE_currentChanged(_indexMajTLE);
+    _ui->majPrec->setToolTip(_titreMajTLE.at((_indexMajTLE + 2) % 2));
+    _ui->majSuiv->setToolTip(_titreMajTLE.at((_indexMajTLE + 1) % 2));
+
 
 #if !defined (Q_OS_WIN)
     _ui->grpVecteurEtat->setStyleSheet("QGroupBox::title {subcontrol-position: top left; padding: 2px;}");
@@ -2215,6 +2229,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->barreProgression->setValue(0);
     _ui->frameBarreProgression->setVisible(false);
     _ui->compteRenduMaj->setVisible(false);
+    _ui->compteRenduMaj2->setVisible(false);
 
     _ui->valHauteurSatMetOp->setVisible(false);
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -2610,16 +2625,24 @@ void Onglets::ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal)
     double vitesse = static_cast<double> (octetsRecus) * 1000. / static_cast<double> (_tempsEcoule.elapsed());
 
     if (vitesse < 1024.) {
-        unite = tr("o/s", "Octet per second");
+        unite = tr("o/s", "Byte per second");
     } else if (vitesse < 1048576.) {
         vitesse /= 1024.;
-        unite = tr("ko/s", "kilo-octet per second");
+        unite = tr("ko/s", "kilo-byte per second");
     } else {
         vitesse /= 1048576.;
-        unite = tr("Mo/s", "Mega-octet per second");
+        unite = tr("Mo/s", "Mega-byte per second");
     }
 
     emit Progression(static_cast<int>(octetsRecus), static_cast<int>(octetsTotal), vitesse, unite);
+
+    if ((octetsTotal != -1) && (_ui->miseAJourTLEauto->isVisible())) {
+
+        _ui->barreProgression->setRange(0, (int) octetsTotal);
+        _ui->barreProgression->setValue((int) octetsRecus);
+
+        _ui->vitesseTelechargement->setText(QString("%1 %2").arg(vitesse, 0, 'f', 1).arg(unite));
+    }
 
     /* Retour */
     return;
@@ -2648,7 +2671,50 @@ void Onglets::FinEnregistrementFichier()
         _fichier.remove();
     } else {
 
-        if (_dirDwn != Configuration::instance()->dirTmp()) {
+        if (_dirDwn == Configuration::instance()->dirTle()) {
+
+            QString fichierALire = QDir::toNativeSeparators(_fichier.fileName());
+            QFileInfo ff(fichierALire);
+            QString fichierAMettreAJour = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + ff.fileName());
+
+            QFile fi(fichierAMettreAJour);
+            if (fi.exists() && fi.size() > 0) {
+
+                QStringList compteRendu;
+                const int affMsg = _ui->affichageMsgMAJ->currentIndex();
+                try {
+                    TLE::MiseAJourFichier(Configuration::instance()->dirLocalData(), fichierAMettreAJour, fichierALire, affMsg, compteRendu);
+                    EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj);
+
+                } catch (PreviSatException &ex) {
+                }
+
+            } else {
+
+                const QString msg = (fi.exists() && (fi.size() == 0)) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1");
+
+                if (fi.size() == 0) {
+                    fi.remove();
+                }
+
+                fi.copy(fichierALire, fichierAMettreAJour);
+                _ui->compteRenduMaj->appendPlainText(msg.arg(fd.fileName()));
+                InitFicTLE();
+            }
+
+            // Verification et chargement du fichier TLE courant
+            if (QDir::toNativeSeparators(_fichier.fileName()) == Configuration::instance()->nomfic()) {
+
+                const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
+                if (nb == 0) {
+                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                    Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
+                    _ui->compteRenduMaj->setVisible(false);
+                } else {
+                    ReactualiserAffichage();
+                }
+            }
+        } else if (_dirDwn != Configuration::instance()->dirTmp()) {
 
             const QFileInfo f(_fichier);
             const QString fic = _dirDwn + QDir::separator() +
@@ -2662,19 +2728,6 @@ void Onglets::FinEnregistrementFichier()
                 fi.remove();
             }
             _fichier.rename(fi.fileName());
-        }
-
-        // Verification et chargement du fichier TLE courant
-        if (QDir::toNativeSeparators(_fichier.fileName()) == Configuration::instance()->nomfic()) {
-
-            const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
-            if (nb == 0) {
-                const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
-                _ui->compteRenduMaj->setVisible(false);
-            } else {
-                ReactualiserAffichage();
-            }
         }
     }
     _rep->deleteLater();
@@ -2714,6 +2767,7 @@ void Onglets::FinTelechargementTle()
 
     /* Corps de la methode */
     _ui->majMaintenant->setEnabled(true);
+    _ui->frameBarreProgression->setVisible(false);
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
 
     disconnect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
@@ -2739,7 +2793,20 @@ void Onglets::TelechargementSuivant()
         const QUrl url = _listeFichiersTelechargement.dequeue();
         const QString fic = QFileInfo(url.path()).fileName();
 
-        _fichier.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+        QFile toto(Configuration::instance()->dirTmp() + "/" + fic);
+        _fichier.setFileName(Configuration::instance()->dirTmp() + "/" + fic);
+
+        if (fic.endsWith("txt")) {
+            _ui->fichierTelechargement->setText(fic.mid(fic.indexOf("/") + 1));
+        } else {
+            _ui->fichierTelechargement->setText("TLE ISS");
+        }
+
+        if (_ui->miseAJourTLEauto->isVisible()) {
+            _ui->barreProgression->setValue(0);
+            _ui->frameBarreProgression->setVisible(true);
+            _ui->compteRenduMaj->setVisible(true);
+        }
 
         if (_fichier.open(QIODevice::WriteOnly)) {
 
@@ -2749,6 +2816,7 @@ void Onglets::TelechargementSuivant()
             connect(_rep, SIGNAL(finished()), SLOT(FinEnregistrementFichier()));
             connect(_rep, SIGNAL(readyRead()), SLOT(EcritureFichier()));
             _tempsEcoule.start();
+
         } else {
             // Erreur
             TelechargementSuivant();
@@ -4192,6 +4260,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
     const QString fmt = tr("dd/MM/yyyy hh:mm:ss", "date format") + ((_ui->syst12h->isChecked()) ? "a" : "");
     EffacerMessageStatut();
     _ui->compteRenduMaj->setVisible(false);
+    _ui->compteRenduMaj2->setVisible(false);
 
     /* Corps de la methode */
     if (index == _ui->barreOnglets->indexOf(_ui->osculateurs)) {
@@ -5939,8 +6008,8 @@ void Onglets::on_mettreAJourTLE_clicked()
 
     /* Initialisations */
     emit EffacerMessageStatut();
-    _ui->compteRenduMaj->clear();
-    _ui->compteRenduMaj->setVisible(false);
+    _ui->compteRenduMaj2->clear();
+    _ui->compteRenduMaj2->setVisible(false);
 
     /* Corps de la methode */
     try {
@@ -5990,7 +6059,7 @@ void Onglets::on_mettreAJourTLE_clicked()
         const int affMsg = _ui->affichageMsgMAJ->currentIndex();
         TLE::MiseAJourFichier(Configuration::instance()->dirLocalData(), _ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
 
-        const bool aecr = EcritureCompteRenduMaj(compteRendu);
+        const bool aecr = EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj2);
 
         if (agz) {
             QFile fich(fic);
@@ -5998,7 +6067,7 @@ void Onglets::on_mettreAJourTLE_clicked()
         }
 
         emit AfficherMessageStatut(tr("Terminé !"), 10);
-        _ui->compteRenduMaj->setVisible(true);
+        _ui->compteRenduMaj2->setVisible(true);
 
         if ((Configuration::instance()->nomfic() == _ui->fichierAMettreAJour->text().trimmed()) && aecr) {
             ReactualiserAffichage();
@@ -6014,7 +6083,7 @@ void Onglets::on_mettreAJourTLE_clicked()
 /*
  * Ecriture du compte-rendu de mise a jour des TLE
  */
-bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu)
+bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit * compteRenduMaj)
 {
     /* Declarations des variables locales */
 
@@ -6027,13 +6096,13 @@ bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu)
     const int nbmaj = compteRendu.at(compteRendu.count()-4).toInt();
     const QString fic = compteRendu.at(compteRendu.count()-5);
 
-    if (!_ui->compteRenduMaj->toPlainText().isEmpty()) {
-        if (!_ui->compteRenduMaj->toPlainText().split("\n").last().trimmed().isEmpty()) {
-            _ui->compteRenduMaj->appendPlainText("");
+    if (!compteRenduMaj->toPlainText().isEmpty()) {
+        if (!compteRenduMaj->toPlainText().split("\n").last().trimmed().isEmpty()) {
+            compteRenduMaj->appendPlainText("");
         }
     }
 
-    _ui->compteRenduMaj->appendPlainText(QString(tr("Fichier %1 :").arg(fic)));
+    compteRenduMaj->appendPlainText(QString(tr("Fichier %1 :").arg(fic)));
 
     QString msgcpt;
     if ((nbmaj < nbold) && (nbmaj > 0)) {
@@ -6043,37 +6112,101 @@ bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu)
         for(int i=0; i<compteRendu.count()-5; i++) {
             const QString nomsat = compteRendu.at(i).split("#").at(0);
             const QString norad = compteRendu.at(i).split("#").at(1);
-            _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
+            compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
         }
     }
 
     if (nbsup > 0) {
         msgcpt = tr("Nombre de TLE(s) supprimés : %1");
-        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbsup));
+        compteRenduMaj->appendPlainText(msgcpt.arg(nbsup));
     }
 
     if (nbadd > 0) {
         msgcpt = tr("Nombre de TLE(s) ajoutés : %1");
-        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbadd));
+        compteRenduMaj->appendPlainText(msgcpt.arg(nbadd));
     }
 
     if ((nbmaj < nbold) && (nbmaj > 0)) {
         msgcpt = tr("%1 TLE(s) sur %2 mis à jour");
-        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbmaj).arg(nbold));
+        compteRenduMaj->appendPlainText(msgcpt.arg(nbmaj).arg(nbold));
     }
 
     if ((nbmaj == nbold) && (nbold != 0)) {
         msgcpt = tr("Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))");
-        _ui->compteRenduMaj->appendPlainText(msgcpt.arg(nbold));
+        compteRenduMaj->appendPlainText(msgcpt.arg(nbold));
     }
 
     if ((nbmaj == 0) && (nbold != 0)) {
-        _ui->compteRenduMaj->appendPlainText(tr("Aucun TLE mis à jour"));
+        compteRenduMaj->appendPlainText(tr("Aucun TLE mis à jour"));
     }
 
-    _ui->compteRenduMaj->appendPlainText("");
-    _ui->compteRenduMaj->verticalScrollBar()->setValue(_ui->compteRenduMaj->blockCount());
+    compteRenduMaj->appendPlainText("");
+    compteRenduMaj->verticalScrollBar()->setValue(compteRenduMaj->blockCount());
 
     /* Retour */
     return ((nbold > 0) && ((nbmaj > 0) || (nbsup > 0) || (nbadd > 0)));;
+}
+
+void Onglets::on_majPrec_clicked()
+{
+    if (_ui->miseAJourTLE->isVisible()) {
+        _indexMajTLE = (_ui->miseAJourTLE->currentIndex() + _ui->miseAJourTLE->count() - 1) % _ui->miseAJourTLE->count();
+        _ui->miseAJourTLE->setCurrentIndex(_indexMajTLE);
+        _ui->ongletsOutils->setTabText(0, _titreMajTLE.at(_indexMajTLE));
+    }
+}
+
+void Onglets::on_majSuiv_clicked()
+{
+    if (_ui->miseAJourTLE->isVisible()) {
+        _indexMajTLE = (_ui->miseAJourTLE->currentIndex() + 1) % _ui->miseAJourTLE->count();
+        _ui->miseAJourTLE->setCurrentIndex(_indexMajTLE);
+        _ui->ongletsOutils->setTabText(0, _titreMajTLE.at(_indexMajTLE));
+    }
+}
+
+void Onglets::on_miseAJourTLE_currentChanged(int arg1)
+{
+    if (arg1 == 0) {
+        _ui->majPrec->setVisible(false);
+        _ui->majSuiv->setVisible(true);
+        _ui->majSuiv->setToolTip(_titreMajTLE.at(1));
+    } else {
+        _ui->majPrec->setVisible(true);
+        _ui->majPrec->setToolTip(_titreMajTLE.at(0));
+        _ui->majSuiv->setVisible(false);
+    }
+}
+
+void Onglets::on_compteRenduMaj_customContextMenuRequested(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+    _ui->menuContextuelCompteRenduMaj->exec(QCursor::pos());
+}
+
+void Onglets::on_compteRenduMaj2_customContextMenuRequested(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+    _ui->menuContextuelCompteRenduMaj->exec(QCursor::pos());
+}
+
+void Onglets::on_actionCopier_dans_le_presse_papier_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QClipboard * const clipboard = QApplication::clipboard();
+
+    /* Corps de la methode */
+    if (_ui->compteRenduMaj->isVisible()) {
+        clipboard->setText(_ui->compteRenduMaj->toPlainText());
+
+    } else if (_ui->compteRenduMaj2->isVisible()) {
+        clipboard->setText(_ui->compteRenduMaj2->toPlainText());
+    }
+
+
+
+    /* Retour */
+    return;
 }
