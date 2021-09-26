@@ -658,6 +658,10 @@ void Configuration::DefinitionArborescences()
     _dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) + dirAstr;
     _dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
 
+    if (_dirTmp.endsWith("/")) {
+        _dirTmp.resize(_dirTmp.size() - 1);
+    }
+
 #if defined (Q_OS_WIN)
     dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
