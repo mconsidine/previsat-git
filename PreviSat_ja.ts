@@ -859,7 +859,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="src/interface/onglets.ui" line="2139"/>
         <source>Conditions :</source>
         <extracomment>Conditions of observations</extracomment>
-        <translation>状況 :</translation>
+        <translation>現在の状況 :</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="2154"/>
@@ -871,17 +871,17 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="2233"/>
         <source>Paramètres circulaires</source>
-        <translation>円軌道要素</translation>
+        <translation>円軌道の軌道要素</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="2238"/>
         <source>Paramètres équatoriaux</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">赤道軌道の軌道要素</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="2243"/>
         <source>Paramètres circulaires équatoriaux</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">赤道円軌道の軌道要素</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="2260"/>
@@ -1359,7 +1359,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="src/interface/onglets.ui" line="6120"/>
         <location filename="src/interface/onglets.ui" line="6663"/>
         <source>Indifférent</source>
-        <translation type="unfinished"></translation>
+        <translation>太陽の角は関係ありません</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="6125"/>
@@ -1438,24 +1438,24 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="11116"/>
         <source>\De 999999 à 999999</source>
-        <translation type="unfinished"></translation>
+        <translation>999999から999999まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11119"/>
         <location filename="src/interface/onglets.cpp" line="5953"/>
         <source>De 000001 à 999999</source>
-        <translation type="unfinished">0から999999まで {000001 ?}</translation>
+        <translation>000001から999999まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11160"/>
         <source>\De 99.999999999 à 99.999999999</source>
-        <translation type="unfinished"></translation>
+        <translation>99.999999999から99.999999999まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11163"/>
         <location filename="src/interface/onglets.cpp" line="5954"/>
         <source>De 00.000000000 à 18.000000000</source>
-        <translation type="unfinished">0から18.000000000まで {00.000000000 ?}</translation>
+        <translation>00.000000000から18.000000000まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11207"/>
@@ -1463,17 +1463,17 @@ PreviSatは、完全無料です!</translation>
         <location filename="src/interface/onglets.cpp" line="5955"/>
         <location filename="src/interface/onglets.cpp" line="5956"/>
         <source>De 000° à 360°</source>
-        <translation type="unfinished"></translation>
+        <translation>000°から360°まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11298"/>
         <source>\De 9.9999999 à 9.9999999</source>
-        <translation type="unfinished"></translation>
+        <translation>9.9999999から9.9999999まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11301"/>
         <source>De 0.0000000 à 1.0000000</source>
-        <translation type="unfinished">0から1.0000000まで {0.0000000 ?}</translation>
+        <translation>0.0000000から1.0000000まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11379"/>
@@ -1481,7 +1481,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="src/interface/onglets.cpp" line="5958"/>
         <location filename="src/interface/onglets.cpp" line="5959"/>
         <source>De 000° à 180°</source>
-        <translation type="unfinished"></translation>
+        <translation>000°から180°まで</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11470"/>
@@ -1558,7 +1558,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="7452"/>
         <source>Élongation maximale avec le corps :</source>
-        <translation type="unfinished"></translation>
+        <translation>天体からの最大離角 :</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="6949"/>
@@ -1966,12 +1966,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="9868"/>
         <source>Vérification des mises à jour au démarrage</source>
-        <translation type="unfinished"></translation>
+        <translation>起動時に更新を確認する</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="9884"/>
         <source>Écart Heure locale - UTC</source>
-        <translation type="unfinished"></translation>
+        <translation>現地時間とUTCの差</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="9927"/>
@@ -2436,7 +2436,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.cpp" line="577"/>
         <source>Jour</source>
-        <translation type="unfinished">日</translation>
+        <translation>昼間</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.cpp" line="579"/>
@@ -2456,7 +2456,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.cpp" line="585"/>
         <source>Nuit</source>
-        <translation type="unfinished">夜</translation>
+        <translation>夜間</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.cpp" line="751"/>
@@ -2758,7 +2758,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="src/interface/onglets.cpp" line="1765"/>
         <source>Conditions : %1</source>
         <comment>Conditions of observation</comment>
-        <translation type="unfinished"></translation>
+        <translation>現在の状況 : %1</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.cpp" line="1773"/>
@@ -2844,6 +2844,67 @@ PreviSatは、完全無料です!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="src/interface/onglets.cpp" line="5972"/>
+        <location filename="src/interface/onglets.cpp" line="5992"/>
+        <source>Ouvrir fichier TLE</source>
+        <translation type="unfinished">TLEファイルを開く</translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="5974"/>
+        <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="5994"/>
+        <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)</source>
+        <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle);;gzファイル (*.gz)</translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6018"/>
+        <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6069"/>
+        <source>Terminé !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6105"/>
+        <source>Fichier %1 :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6110"/>
+        <source>TLE du satellite %1 (%2) non réactualisé</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6120"/>
+        <source>Nombre de TLE(s) supprimés : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6125"/>
+        <source>Nombre de TLE(s) ajoutés : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6130"/>
+        <source>%1 TLE(s) sur %2 mis à jour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6135"/>
+        <source>Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/onglets.cpp" line="6140"/>
+        <source>Aucun TLE mis à jour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/interface/onglets.cpp" line="1817"/>
         <source>Distance   : %1   		Constellation    : %2</source>
         <translation>距離   : %1   		星座    : %2</translation>
@@ -2868,7 +2929,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="src/interface/onglets.cpp" line="592"/>
         <source>%1 UA</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 AU</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.cpp" line="830"/>
@@ -3478,67 +3539,6 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
     <message>
         <location filename="src/interface/onglets.cpp" line="5931"/>
         <source>Fichier %1 écrit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="5972"/>
-        <location filename="src/interface/onglets.cpp" line="5992"/>
-        <source>Ouvrir fichier TLE</source>
-        <translation type="unfinished">TLEファイルを開く</translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="5974"/>
-        <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="5994"/>
-        <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)</source>
-        <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle);;gzファイル (*.gz)</translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6018"/>
-        <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6069"/>
-        <source>Terminé !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6105"/>
-        <source>Fichier %1 :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6110"/>
-        <source>TLE du satellite %1 (%2) non réactualisé</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6120"/>
-        <source>Nombre de TLE(s) supprimés : %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6125"/>
-        <source>Nombre de TLE(s) ajoutés : %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6130"/>
-        <source>%1 TLE(s) sur %2 mis à jour</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6135"/>
-        <source>Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.cpp" line="6140"/>
-        <source>Aucun TLE mis à jour</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4437,7 +4437,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="src/librairies/dates/date.cpp" line="547"/>
         <source>Ecarts TAI-UTC non initialisés</source>
-        <translation type="unfinished"></translation>
+        <translation>TAIとUTCの差が初期化されていません</translation>
     </message>
     <message>
         <location filename="src/librairies/exceptions/message.cpp" line="74"/>
