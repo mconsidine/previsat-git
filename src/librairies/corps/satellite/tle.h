@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 novembre 2018
+ * >    26 septembre 2021
  *
  */
 
@@ -125,9 +125,11 @@ public:
      * @param nomFichier nom du fichier TLE
      * @param dirLocalData chemin de donnees locales
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
+     * @param ajoutDonnees ajout des donnees satellite
      * @return tableau de TLE
      */
-    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites = QStringList());
+    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites = QStringList(),
+                                             const bool ajoutDonnees = true);
 
     /**
      * @brief LectureFichier3le Lecture du fichier 3le

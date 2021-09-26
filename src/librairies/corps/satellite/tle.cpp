@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 septembre 2021
+ * >    26 septembre 2021
  *
  */
 
@@ -322,7 +322,8 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites)
+QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites,
+                                       const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
     static QString magn;
@@ -330,7 +331,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
     /* Initialisations */
     // Lecture du fichier de donnees
-    if (magn.isEmpty()) {
+    if (magn.isEmpty() && ajoutDonnees) {
 
         const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
         QFile donneesSatellites(fic);
@@ -371,12 +372,14 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                 // Cas des fichiers a 2 lignes : on recupere le nom du satellite a partir du fichier de donnees
                 lig1 = ligne;
 
-                const int indx1 = magn.indexOf('\n' + lig1.mid(2, 5)) + 1;
-                if (indx1 > 0) {
-                    const int indx2 = magn.indexOf('\n', indx1) - indx1;
-                    lig0 = magn.mid(indx1 + 123, indx2 - 123).trimmed();
-                } else {
-                    lig0 = lig1.mid(2, 5);
+                if (ajoutDonnees) {
+                    const int indx1 = magn.indexOf('\n' + lig1.mid(2, 5)) + 1;
+                    if (indx1 > 0) {
+                        const int indx2 = magn.indexOf('\n', indx1) - indx1;
+                        lig0 = magn.mid(indx1 + 123, indx2 - 123).trimmed();
+                    } else {
+                        lig0 = lig1.mid(2, 5);
+                    }
                 }
             } else {
 
@@ -401,11 +404,14 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                 if (!mapTLE.contains(tle._norad)) {
 
-                    // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                    const int indx1 = magn.indexOf('\n' + tle._norad) + 1;
-                    if (indx1 > 0) {
-                        const int indx2 = magn.indexOf('\n', indx1);
-                        tle._donnees = Donnees(magn.mid(indx1, indx2));
+                    if (ajoutDonnees) {
+
+                        // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
+                        const int indx1 = magn.indexOf('\n' + tle._norad) + 1;
+                        if (indx1 > 0) {
+                            const int indx2 = magn.indexOf('\n', indx1);
+                            tle._donnees = Donnees(magn.mid(indx1, indx2));
+                        }
                     }
 
                     mapTLE.insert(tle._norad, tle);
@@ -493,7 +499,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleOld = LectureFichier(ficOld, dirLocalData);
+    QMap<QString, TLE> tleOld = LectureFichier(ficOld, dirLocalData, QStringList(), false);
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
@@ -503,7 +509,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleNew = LectureFichier(ficNew, dirLocalData);
+    QMap<QString, TLE> tleNew = LectureFichier(ficNew, dirLocalData, QStringList(), false);
 
     /* Corps de la methode */
     // Mise a jour
