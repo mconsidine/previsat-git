@@ -1621,11 +1621,9 @@ void Configuration::VerificationArborescences()
         VerifieFichiersData(_dirCommonData, ficCommonData);
 
         // Fichiers du repertoire data local
-        const QString repFlr = QString("flares") + QDir::separator();
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.sat" << repFlr + "flares.sts" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
-                           << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat"
-                           << "tdrs.sat";
+        _listeFicLocalData << "donnees.sat" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
+                           << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
@@ -1682,9 +1680,14 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
     /* Initialisations */
 
     /* Corps de la methode */
-#if !defined (Q_OS_MAC)
-
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
+
+#if defined (Q_OS_MAC)
+    if (!fi1.exists()) {
+        const QFileInfo ff(fi1.fileName());
+        Message::Afficher(message2.arg(ff.fileName()), typeMessage);
+    }
+#else
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + nomficXml);
@@ -1698,7 +1701,6 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
         if (fi2.exists()) {
 
             // Copie du fichier xml
-            fi1.remove();
             fi2.copy(fi1.fileName());
 
         } else {
@@ -1707,9 +1709,8 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
         }
     }
     fi2.close();
-    fi1.close();
-
 #endif
+    fi1.close();
 
     /* Retour */
     return;

@@ -352,6 +352,14 @@ private:
     void ChargementPref() const;
 
     /**
+     * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
+     * @param compteRendu compte rendu de la mise a jour
+     * @param compteRenduMaj zone de texte a ecrire
+     * @return ecriture du compte rendu
+     */
+    bool EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit *compteRenduMaj);
+
+    /**
      * @brief EcritureInformationsEclipse Ecriture des informations d'eclipse dans l'onglet General
      */
     void EcritureInformationsEclipse(const QString &corpsOccultant, const double fractionIlluminee) const;
@@ -510,6 +518,19 @@ private slots:
     void on_listeMap_currentIndexChanged(int index);
     void on_listeSons_currentIndexChanged(int index);
 
+    void on_parcourirMaj1_clicked();
+    void on_parcourirMaj2_clicked();
+    void on_mettreAJourTLE_clicked();
+
+
+    void on_majPrec_clicked();
+    void on_majSuiv_clicked();
+    void on_miseAJourTLE_currentChanged(int arg1);
+    void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
+    void on_compteRenduMaj2_customContextMenuRequested(const QPoint &pos);
+    void on_actionCopier_dans_le_presse_papier_triggered();
+
+
     // Calcul des previsions de passage
     void on_calculsPrev_clicked();
     void on_liste2_itemClicked(QListWidgetItem *item);
@@ -556,24 +577,6 @@ private slots:
     void on_inclinaisonExtraction_currentIndexChanged(int index);
     void on_parametrageDefautExtraction_clicked();
 
-    void on_parcourirMaj1_clicked();
-    void on_parcourirMaj2_clicked();
-    void on_mettreAJourTLE_clicked();
-
-    /**
-     * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
-     * @param compteRendu compte rendu de la mise a jour
-     * @param compteRenduMaj zone de texte a ecrire
-     * @return ecriture du compte rendu
-     */
-    bool EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit *compteRenduMaj);
-
-    void on_majPrec_clicked();
-    void on_majSuiv_clicked();
-    void on_miseAJourTLE_currentChanged(int arg1);
-    void on_compteRenduMaj_customContextMenuRequested(const QPoint &pos);
-    void on_compteRenduMaj2_customContextMenuRequested(const QPoint &pos);
-    void on_actionCopier_dans_le_presse_papier_triggered();
 };
 
 #endif // ONGLETS_H
