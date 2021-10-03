@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    3 octobre 2021
  *
  */
 
@@ -346,6 +346,11 @@ int TransitsIss::CalculTransits(int &nombre)
                                 res.typeCorps = typeCorps;
                                 res.eclipse = condEcl.eclipseTotale();
                                 res.penombre = (condEcl.eclipseAnnulaire() || condEcl.eclipsePartielle());
+                                if (j == 2) {
+                                    res.duree = fabs(dates[3].jourJulienUTC() - dates[1].jourJulienUTC()) * NB_SEC_PAR_JOUR;
+                                } else {
+                                    res.duree = 0.;
+                                }
 
                                 // Recherche du maximum
                                 const Vecteur3D direction = corps.dist() - sat.dist();

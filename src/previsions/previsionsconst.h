@@ -33,10 +33,10 @@
  * >    Astropedia
  *
  * Date de creation
- * >
+ * >    15 aout 2020
  *
  * Date de revision
- * >
+ * >    3 octobre 2021
  *
  */
 
@@ -142,6 +142,7 @@ struct ResultatPrevisions
     bool transit;
     CorpsTransit typeCorps;
     double angle;
+    double duree;
 
     // Pour les evenements orbitaux
     double pso;
