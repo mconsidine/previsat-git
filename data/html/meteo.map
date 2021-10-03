@@ -27,9 +27,10 @@
     <script>
         var lon = LONGITUDE_CENTRE;
         var lat = LATITUDE_CENTRE;
+		var zoom = VALEUR_ZOOM;
         var uniteTemp = 'UNITE_TEMP';
         var uniteVent = 'UNITE_VENT';
-        initMap(lon, lat, uniteTemp, uniteVent);
+        initMap(lon, lat, uniteTemp, uniteVent, zoom);
     </script>
 </body>
 </html>

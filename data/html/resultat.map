@@ -52,7 +52,7 @@
         });
 
         var map = L.map('map', {
-		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: 9,
+		    center: new L.LatLng(LATITUDE_CENTRE, LONGITUDE_CENTRE), zoom: VALEUR_ZOOM,
 		    layers: [standard]
 	    });
 
