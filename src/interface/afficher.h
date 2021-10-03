@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    3 octobre 2021
  *
  */
 
@@ -116,13 +116,12 @@ protected:
      */
 
 private slots:
+
     void on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item);
     void on_actionEnregistrerTxt_triggered();
-
-
     void on_resultatsPrevisions_itemSelectionChanged();
-
     void on_afficherCarte_clicked();
+
 
 private:
 

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    5 octobre 2020
+ * >    3 octobre 2021
  *
  */
 
@@ -120,7 +120,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     case PREVISIONS:
         setWindowTitle(tr("Prévisions de passage"));
         titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
-               << tr("Hauteur max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Hauteur Soleil");
+               << tr("Hauteur max", "Maximal elevation") << tr("Magnitude") << tr("Hauteur Soleil");
         break;
 
     case EVENEMENTS:
@@ -133,14 +133,14 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         setWindowTitle(tr("Flashs"));
         ui->afficherCarte->setVisible(true);
         titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
-               << tr("Hauteur Max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Mir", "Mirror") << tr("Hauteur Soleil");
+               << tr("Hauteur Max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Mir", "Mirror") << tr("Haut Soleil", "Solar elevation");
         break;
 
     case TRANSITS:
         setWindowTitle(tr("Transits ISS"));
         ui->afficherCarte->setVisible(true);
         titres << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour") << tr("Cst", "Constellation") << tr("Angle")
-               << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Hauteur Soleil");
+               << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             ui->detailsTransit->setVisible(true);
@@ -154,6 +154,33 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
 
     ui->resultatsPrevisions->setColumnCount(titres.count());
     ui->resultatsPrevisions->setHorizontalHeaderLabels(titres);
+    ui->resultatsPrevisions->horizontalHeader()->setToolTip("");
+
+    switch (_typeCalcul) {
+
+    case EVENEMENTS:
+        ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Position sur orbite"));
+        break;
+
+    case FLASHS:
+        ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Hauteur maximale"));
+        ui->resultatsPrevisions->horizontalHeaderItem(4)->setToolTip(tr("Magnitude"));
+        ui->resultatsPrevisions->horizontalHeaderItem(5)->setToolTip(tr("Miroir"));
+        ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Hauteur Soleil"));
+
+        break;
+
+    case TRANSITS:
+        ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Constellation"));
+        ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Illumination"));
+        ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("secondes"));
+        break;
+
+    case PREVISIONS:
+    case TELESCOPE:
+    default:
+        break;
+    }
 
     ChargementResultats();
 
@@ -266,11 +293,11 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             break;
 
         case TRANSITS:
-            tableDetail->setColumnCount(17);
+            tableDetail->setColumnCount(18);
             tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date", "Date and hour") << tr("Azimut Sat", "Satellite azimuth")
                                                    << tr("Hauteur Sat", "Satellite elevation") << tr("AD Sat", "Satellite right ascension")
                                                    << tr("Decl Sat", "Satellite declination") << tr("Cst", "Constellation") << tr("Ang", "Angle")
-                                                   << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination")
+                                                   << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée")
                                                    << tr("Alt", "Altitude") << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth")
                                                    << tr("Haut Soleil", "Solar elevation") << tr("Long Max", "Longitude of the maximum")
                                                    << tr("Lat Max", "Latitude of the maximum") << tr("Distance"));
@@ -285,6 +312,53 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         tableDetail->setSelectionMode(QTableWidget::NoSelection);
         tableDetail->setCornerButtonEnabled(false);
         tableDetail->verticalHeader()->setVisible(false);
+
+        const int idx = (_typeCalcul == TRANSITS) ? 1 : 2;
+        tableDetail->horizontalHeader()->setToolTip("");
+        tableDetail->horizontalHeaderItem(idx)->setToolTip(tr("Azimut satellite"));
+        tableDetail->horizontalHeaderItem(idx + 1)->setToolTip(tr("Hauteur satellite"));
+        tableDetail->horizontalHeaderItem(idx + 2)->setToolTip(tr("Ascension droite satellite"));
+        tableDetail->horizontalHeaderItem(idx + 3)->setToolTip(tr("Déclinaison satellite"));
+        tableDetail->horizontalHeaderItem(idx + 4)->setToolTip(tr("Constellation"));
+
+        switch (_typeCalcul) {
+        case PREVISIONS:
+            tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Magnitude"));
+            tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Azimut Soleil"));
+            tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Hauteur Soleil"));
+            break;
+
+        case FLASHS:
+            tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
+            tableDetail->horizontalHeaderItem(8)->setToolTip(tr("Miroir"));
+            tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Magnitude"));
+            tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Distance"));
+            tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Azimut Soleil"));
+            tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Hauteur Soleil"));
+            tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Longitude du maximum"));
+            tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Latitude du maximum"));
+            tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Magnitude au maximum"));
+            tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Distance au maximum"));
+            break;
+
+        case TRANSITS:
+            tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Angle"));
+            tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Illumination"));
+            tableDetail->horizontalHeaderItem(10)->setToolTip(tr("secondes"));
+            tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Altitude"));
+            tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Distance"));
+            tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Azimut Soleil"));
+            tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Hauteur Soleil"));
+            tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Longitude du maximum"));
+            tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Latitude du maximum"));
+            tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Distance au maximum"));
+            break;
+
+        case EVENEMENTS:
+        case TELESCOPE:
+        default:
+            break;
+        }
 
         int kmax;
 
@@ -863,6 +937,7 @@ void Afficher::ChargementResultats()
     ui->resultatsPrevisions->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
     ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
+
 #if QT_VERSION >= 0x050000
     ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 #else
@@ -1310,6 +1385,7 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     bool eclipse = false;
     bool penombre = false;
     double angMin = PI;
+    double duree = 0.;
     QString cst;
     QString type;
     QString corps;
@@ -1329,6 +1405,7 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
             penombre = res.penombre;
             type = (res.transit) ? tr("T", "transit") : tr("C", "conjunction");
             corps = (res.typeCorps == CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon");
+            duree = res.duree;
         }
     }
 
@@ -1353,6 +1430,9 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
     }
 
     elems.append(illumination);
+
+    // Duree du transit ou de la conjonction
+    elems.append(QString("%1").arg(duree, 4, 'f', 1));
 
     // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, DEGRE, 2, 0, true, false));
@@ -1401,6 +1481,9 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
     }
 
     elems.append(illumination);
+
+    // Duree du transit ou de la conjonction
+    elems.append((res.duree > 0.) ? QString("%1  ").arg(res.duree, 4, 'f', 1) : "");
 
     // Altitude, distance
     double altitude = res.altitude;
