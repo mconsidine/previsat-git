@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>8</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -131,6 +131,9 @@
        <layout class="QFormLayout" name="formLayout_nomsat1">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -324,6 +327,9 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
         </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -426,6 +432,9 @@
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_tempsEpoque">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -487,6 +496,9 @@
        <layout class="QFormLayout" name="formLayout_topoSat">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -595,6 +607,9 @@
        <layout class="QFormLayout" name="formLayout_equatSat">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -709,6 +724,9 @@
        <layout class="QFormLayout" name="formLayout_deplacementSat">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -825,11 +843,14 @@
         <rect>
          <x>177</x>
          <y>92</y>
-         <width>362</width>
+         <width>371</width>
          <height>45</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_AOS">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -894,6 +915,9 @@
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_orbiteSat">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>2</number>
         </property>
@@ -1043,6 +1067,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -1150,6 +1177,9 @@
         <layout class="QFormLayout" name="formLayout_equatSol">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -1265,6 +1295,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -1373,6 +1406,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -1478,6 +1514,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -1570,10 +1609,16 @@
       <property name="geometry">
        <rect>
         <x>281</x>
-        <y>6</y>
+        <y>2</y>
         <width>71</width>
-        <height>16</height>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="font">
        <font/>
@@ -1810,6 +1855,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_lieuObs1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -1857,6 +1905,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_longitudeObs1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -1901,6 +1952,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_latitudeObs1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -1945,6 +1999,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_altitudeObs1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -1985,10 +2042,13 @@
         <x>10</x>
         <y>2</y>
         <width>266</width>
-        <height>24</height>
+        <height>22</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_date3">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -2000,7 +2060,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>21</height>
+           <height>20</height>
           </size>
          </property>
          <property name="font">
@@ -2019,7 +2079,7 @@
          <property name="minimumSize">
           <size>
            <width>231</width>
-           <height>0</height>
+           <height>20</height>
           </size>
          </property>
          <property name="font">
@@ -2055,12 +2115,15 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>6</y>
+        <y>2</y>
         <width>351</width>
         <height>22</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_date1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -2069,6 +2132,12 @@
        </property>
        <item row="0" column="1">
         <widget class="QLabel" name="dateHeure1">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -2085,6 +2154,12 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="lbl_dateHeure1">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -2103,11 +2178,14 @@
        <rect>
         <x>340</x>
         <y>30</y>
-        <width>186</width>
+        <width>201</width>
         <height>16</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_conditions">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -2193,10 +2271,16 @@
       <property name="geometry">
        <rect>
         <x>281</x>
-        <y>6</y>
+        <y>2</y>
         <width>71</width>
-        <height>16</height>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="font">
        <font/>
@@ -2301,6 +2385,9 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
         </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -2390,6 +2477,9 @@
        <layout class="QFormLayout" name="formLayout_vitesseSat">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -2521,6 +2611,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -2607,6 +2700,9 @@
         <layout class="QFormLayout" name="formLayout_circEquat2">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -2702,6 +2798,9 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
         </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -2791,6 +2890,9 @@
        <layout class="QFormLayout" name="formLayout_elemOsc2">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -2900,6 +3002,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -2989,6 +3094,9 @@
         <layout class="QFormLayout" name="formLayout_equat1">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -3099,6 +3207,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>2</number>
          </property>
@@ -3191,6 +3302,9 @@
         <layout class="QFormLayout" name="formLayout_circ1">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>2</number>
@@ -3298,6 +3412,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -3387,6 +3504,9 @@
         <layout class="QFormLayout" name="formLayout_kepler1">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -3492,6 +3612,9 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
         </property>
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -3552,6 +3675,9 @@
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_phasage">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>2</number>
         </property>
@@ -3581,10 +3707,13 @@
         <x>10</x>
         <y>2</y>
         <width>266</width>
-        <height>24</height>
+        <height>22</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_date4">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -3596,7 +3725,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>21</height>
+           <height>20</height>
           </size>
          </property>
          <property name="font">
@@ -3615,7 +3744,7 @@
          <property name="minimumSize">
           <size>
            <width>231</width>
-           <height>0</height>
+           <height>20</height>
           </size>
          </property>
          <property name="font">
@@ -3651,12 +3780,15 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>6</y>
+        <y>2</y>
         <width>351</width>
         <height>22</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_date2">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -3665,6 +3797,12 @@
        </property>
        <item row="0" column="1">
         <widget class="QLabel" name="dateHeure2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -3681,6 +3819,12 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="lbl_dateHeure2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -3706,6 +3850,9 @@
       <layout class="QFormLayout" name="formLayout_nomsat2">
        <property name="sizeConstraint">
         <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="horizontalSpacing">
         <number>3</number>
@@ -3915,7 +4062,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="infos">
        <property name="autoFillBackground">
@@ -4000,6 +4147,9 @@
         <layout class="QFormLayout" name="formLayout_nomsat3">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -4193,6 +4343,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -4318,6 +4471,9 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -4427,6 +4583,9 @@
         <layout class="QFormLayout" name="formLayout_info4">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="horizontalSpacing">
           <number>3</number>
@@ -4798,6 +4957,9 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetFixedSize</enum>
            </property>
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -5012,6 +5174,9 @@
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_RechercheNomsat">
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -5044,6 +5209,9 @@
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_rechercheNorad_2">
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -5121,6 +5289,9 @@
            <layout class="QFormLayout" name="formLayout_rechercheSat1">
             <property name="sizeConstraint">
              <enum>QLayout::SetFixedSize</enum>
+            </property>
+            <property name="labelAlignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="horizontalSpacing">
              <number>3</number>
@@ -5255,6 +5426,9 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetFixedSize</enum>
           </property>
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -5385,6 +5559,9 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetFixedSize</enum>
           </property>
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -5498,6 +5675,9 @@
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_rechercheSat4">
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -5540,6 +5720,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_nomRechercheSat">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -5581,6 +5764,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_noradRechercheSat">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -5619,6 +5805,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_cosparRechercheSat">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -6196,6 +6385,9 @@
        </property>
        <item>
         <layout class="QFormLayout" name="formLayout_prev2">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -6319,6 +6511,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_prev3">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -6724,6 +6919,9 @@
        </property>
        <item>
         <layout class="QFormLayout" name="formLayout_flashs2">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -6835,6 +7033,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_tle">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -6876,6 +7077,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_magn">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -7283,6 +7487,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_lieuTransit">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -7332,6 +7539,9 @@
        </property>
        <item>
         <layout class="QFormLayout" name="formLayout_transit1">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -7437,6 +7647,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_transit2">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -7490,6 +7703,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_transit3">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -7543,6 +7759,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_transit4">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -7726,6 +7945,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_telescope3">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -7791,6 +8013,9 @@
          </property>
          <item>
           <layout class="QFormLayout" name="formLayout_telescope4">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -7919,6 +8144,9 @@
          </property>
          <item>
           <layout class="QFormLayout" name="formLayout_telescope5">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -8008,6 +8236,9 @@
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_telescope2">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <property name="horizontalSpacing">
          <number>3</number>
         </property>
@@ -8174,6 +8405,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_telescope1">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <property name="horizontalSpacing">
         <number>3</number>
        </property>
@@ -8527,6 +8761,9 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetFixedSize</enum>
            </property>
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -8639,6 +8876,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_categorieConf">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>2</number>
            </property>
@@ -8717,6 +8957,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_nomlieuConf">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -8860,7 +9103,7 @@
            <rect>
             <x>0</x>
             <y>70</y>
-            <width>113</width>
+            <width>122</width>
             <height>24</height>
            </rect>
           </property>
@@ -8870,6 +9113,9 @@
            </property>
            <item>
             <layout class="QFormLayout" name="formLayout_coordConf2">
+             <property name="labelAlignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
              <property name="horizontalSpacing">
               <number>3</number>
              </property>
@@ -8942,6 +9188,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_conf1">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9089,6 +9338,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_notif">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9136,6 +9388,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_traceSol">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9324,6 +9579,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_ombre">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9386,6 +9644,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_magnEtoiles">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9658,6 +9919,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_carte">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -9699,6 +9963,9 @@
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_vision">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -10038,6 +10305,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_langue">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -10078,6 +10348,9 @@
          </property>
          <item>
           <layout class="QFormLayout" name="formLayout_conf">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
            <property name="horizontalSpacing">
             <number>3</number>
            </property>
@@ -10301,6 +10574,9 @@
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_couleursWcc">
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="horizontalSpacing">
            <number>3</number>
           </property>
@@ -10430,6 +10706,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_police">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -10915,6 +11194,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction7">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11091,6 +11373,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction2">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11135,6 +11420,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction3">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11179,6 +11467,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction4">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11223,6 +11514,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction5">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11273,6 +11567,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction6">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11317,6 +11614,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_extraction8">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="horizontalSpacing">
           <number>3</number>
          </property>
@@ -11718,7 +12018,7 @@
      <x>0</x>
      <y>0</y>
      <width>792</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
