@@ -665,7 +665,7 @@ void Configuration::DefinitionArborescences()
 #if defined (Q_OS_WIN)
     dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
-    dirCommon = listeGenericDir.at(2) + dirAstr;
+    dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
 #endif
 
 #else
@@ -1591,6 +1591,36 @@ void Configuration::VerificationArborescences()
 
     /* Corps de la methode */
     try {
+
+#if defined (Q_OS_LINUX)
+        const QDir di = QDir(_dirLocalData);
+        if (!di.exists()) {
+            di.mkpath(_dirLocalData);
+
+            const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
+                                    << _dirCommonData + QDir::separator() + "html"
+                                    << _dirCommonData + QDir::separator() + "preferences"
+                                    << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "tle");
+
+            foreach(QString orig, listeDirOrig) {
+                QDir dir(orig);
+                const QString dest = orig.replace(_dirCommonData, _dirLocalData);
+                QDir di;
+                di.rename(dir.path(), dest);
+            }
+
+            const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.sat"
+                                    << _dirCommonData + QDir::separator() + "taiutc.dat");
+
+            foreach(QString fic, listeFics) {
+                QString file(fic);
+                const QString dest = fic.replace(_dirCommonData, _dirLocalData);
+                QFile fi;
+                fi.rename(file, dest);
+                fi.remove(file);
+            }
+        }
+#endif
 
         // Verification et creation des arborescences
         foreach(const QString dirDat, listeDirDat) {
