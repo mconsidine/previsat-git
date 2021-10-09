@@ -936,6 +936,9 @@
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
+             <property name="toolTip">
+              <string>Menu</string>
+             </property>
              <property name="layoutDirection">
               <enum>Qt::RightToLeft</enum>
              </property>
@@ -995,44 +998,6 @@
               </property>
              </item>
             </widget>
-            <widget class="QToolButton" name="faireDon">
-             <property name="geometry">
-              <rect>
-               <x>198</x>
-               <y>37</y>
-               <width>24</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string>Faire un don</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../../resources.qrc">
-               <normaloff>:/resources/paypal.png</normaloff>:/resources/paypal.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="autoRaise">
-              <bool>true</bool>
-             </property>
-            </widget>
             <widget class="QCheckBox" name="mccISS">
              <property name="geometry">
               <rect>
@@ -1085,6 +1050,9 @@
              </property>
              <property name="toolTip">
               <string>Météo du lieu d'observation</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
              </property>
              <property name="text">
               <string/>
@@ -1371,6 +1339,47 @@
               </item>
              </layout>
             </widget>
+            <widget class="QToolButton" name="don">
+             <property name="geometry">
+              <rect>
+               <x>198</x>
+               <y>38</y>
+               <width>24</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="toolTip">
+              <string>Donations</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../../resources.qrc">
+               <normaloff>:/resources/gift.png</normaloff>:/resources/gift.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="shortcut">
+              <string notr="true"/>
+             </property>
+             <property name="popupMode">
+              <enum>QToolButton::InstantPopup</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
@@ -1540,7 +1549,7 @@
      <x>0</x>
      <y>0</y>
      <width>1068</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -1572,6 +1581,7 @@
     <addaction name="actionTelecharger_la_mise_a_jour"/>
     <addaction name="separator"/>
     <addaction name="actionFaire"/>
+    <addaction name="actionDonation_Tipeee"/>
     <addaction name="separator"/>
     <addaction name="actionRapport_de_bug"/>
     <addaction name="actionPrevisat_sourceforge_net"/>
@@ -1638,6 +1648,16 @@
     </property>
     <addaction name="actionSupprimerLieuSelec"/>
    </widget>
+   <widget class="QMenu" name="menuDon">
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="title">
+     <string notr="true">MenuDon</string>
+    </property>
+    <addaction name="actionPaypal"/>
+    <addaction name="actionTipeee"/>
+   </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuContextuelListe1"/>
    <addaction name="menuContextuelListes"/>
@@ -1645,6 +1665,7 @@
    <addaction name="menuContextuelLieux"/>
    <addaction name="menuContextuelLieuxSelec"/>
    <addaction name="menuContextuelCompteRenduMaj"/>
+   <addaction name="menuDon"/>
   </widget>
   <widget class="QStatusBar" name="barreStatut">
    <property name="sizePolicy">
@@ -1884,7 +1905,10 @@
      <normaloff>:/resources/paypal.png</normaloff>:/resources/paypal.png</iconset>
    </property>
    <property name="text">
-    <string>Faire un don</string>
+    <string>Donation PayPal</string>
+   </property>
+   <property name="toolTip">
+    <string>Donation PayPal</string>
    </property>
   </action>
   <action name="actionMettre_jour_TLE_communs">
@@ -1920,6 +1944,45 @@
    </property>
    <property name="toolTip">
     <string notr="true">skywatcher.com</string>
+   </property>
+  </action>
+  <action name="actionPaypal">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/paypal.png</normaloff>:/resources/paypal.png</iconset>
+   </property>
+   <property name="text">
+    <string notr="true">Paypal</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">Paypal</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">Paypal</string>
+   </property>
+  </action>
+  <action name="actionTipeee">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/tipeee.png</normaloff>:/resources/tipeee.png</iconset>
+   </property>
+   <property name="text">
+    <string notr="true">Tipeee</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">Tipeee</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">Tipeee</string>
+   </property>
+  </action>
+  <action name="actionDonation_Tipeee">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/tipeee.png</normaloff>:/resources/tipeee.png</iconset>
+   </property>
+   <property name="text">
+    <string>Donation Tipeee</string>
    </property>
   </action>
  </widget>

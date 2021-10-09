@@ -709,7 +709,7 @@ void Configuration::DefinitionArborescences()
 
     // Autres repertoires
     _dirCommonData = dirCommon + QDir::separator() + "data";
-    _dirDoc = dirCommon + QDir::separator() + "dox";
+    _dirDoc = _dirExe + QDir::separator() + "dox";
     _dirLang = _dirExe + QDir::separator() + "translations";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";
     _dirCfg = _dirLocalData + QDir::separator() + "config";

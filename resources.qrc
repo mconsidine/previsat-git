@@ -21,6 +21,12 @@
         <file>resources/pref.png</file>
         <file>resources/editer.png</file>
         <file>resources/NASA.bmp</file>
+        <file>resources/meteo.png</file>
+        <file>resources/paypal.png</file>
+        <file>resources/enregistrer_txt.png</file>
+        <file>resources/logo-skywatcher.png</file>
+        <file>resources/gift.png</file>
+        <file>resources/tipeee.png</file>
         <file>resources/icones/25544.png</file>
         <file>resources/icones/20580.png</file>
         <file>resources/icones/soleil.png</file>
@@ -30,13 +36,9 @@
         <file>resources/icones/progress.png</file>
         <file>resources/icones/tiangong.png</file>
         <file>resources/icones/soyuz.png</file>
-        <file>resources/meteo.png</file>
         <file>resources/icones/otv.png</file>
         <file>resources/icones/noaa.png</file>
         <file>resources/icones/cygnus.png</file>
-        <file>resources/paypal.png</file>
-        <file>resources/enregistrer_txt.png</file>
-        <file>resources/logo-skywatcher.png</file>
         <file>resources/drapeaux/fr.png</file>
         <file>resources/drapeaux/en.png</file>
         <file>resources/drapeaux/ja.png</file>

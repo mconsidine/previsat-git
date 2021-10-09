@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 mai 2019
+ * >    9 octobre 2021
  *
  */
 
@@ -298,7 +298,8 @@ private slots:
     void resizeEvent(QResizeEvent *evt);
 
     void on_directHelp_clicked();
-    void on_faireDon_clicked();
+    void on_actionPaypal_triggered();
+    void on_actionTipeee_triggered();
     void on_meteo_clicked();
 
     // Menu deroulant
@@ -313,6 +314,7 @@ private slots:
     void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();
     void on_actionFaire_triggered();
+    void on_actionDonation_Tipeee_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
     void on_actionSkywatcher_com_triggered();
