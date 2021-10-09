@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 mai 2019
+ * >    9 octobre 2021
  *
  */
 
@@ -714,6 +714,7 @@ void PreviSat::InitMenus() const
 
     /* Corps de la methode */
     ui->barreMenu->setMenu(ui->menuPrincipal);
+    ui->don->setMenu(ui->menuDon);
     ui->menuBar->setVisible(false);
 
     /* Retour */
@@ -1510,10 +1511,16 @@ void PreviSat::on_directHelp_clicked()
     return;
 }
 
-void PreviSat::on_faireDon_clicked()
+void PreviSat::on_actionPaypal_triggered()
 {
     on_actionFaire_triggered();
 }
+
+void PreviSat::on_actionTipeee_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://tipeee.com/previsat"));
+}
+
 
 void PreviSat::on_meteo_clicked()
 {
@@ -1787,6 +1794,11 @@ void PreviSat::on_actionInformations_triggered()
 void PreviSat::on_actionFaire_triggered()
 {
     QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
+}
+
+void PreviSat::on_actionDonation_Tipeee_triggered()
+{
+    on_actionTipeee_triggered();
 }
 
 void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
