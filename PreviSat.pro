@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    11 avril 2020
+# >    10 octobre 2021
 
 #-------------------------------------------------
 VER_MAJ = 5.0
@@ -43,13 +43,11 @@ ZLIB_DIR = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts PreviSat_ja.ts
 BUILD_TEST = false
 CLEANUP_TEST = true
-OPTIM_DEBUG_TEST = true
 #-------------------------------------------------
 
+QT += concurrent
 
-QT += core gui network concurrent
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia printsupport widgets xml
+equals(QT_MAJOR_VERSION, 5): QT += multimedia printsupport widgets xml
 greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 
 TARGET = PreviSat
@@ -198,9 +196,6 @@ equals(BUILD_TEST, true) {
     DEFINES += CLEANUP_TEST=$$CLEANUP_TEST
 
     CONFIG(debug, debug|release) {
-        equals(OPTIM_DEBUG_TEST, true) {
-            QMAKE_CXXFLAGS += -O2
-        }
         DESTDIR = TestPreviSat/debug
     } else {
         DESTDIR = TestPreviSat/release
@@ -246,7 +241,7 @@ equals(BUILD_TEST, true) {
 
     message("Building software configuration")
 
-    QT += core
+    QT += core gui network
     TARGET = PreviSat
 
     CONFIG(debug, debug|release) {
@@ -268,21 +263,15 @@ OBJECTS_DIR = $$DESTDIR/obj
 MOC_DIR = $$DESTDIR/moc
 UI_DIR = $$DESTDIR/ui
 
+CONFIG(debug, debug|release) {
+    QMAKE_CXXFLAGS += -Wmissing-declarations
+}
 
-#CONFIG(debug, debug|release) {
-#    QMAKE_CXXFLAGS += -Wmissing-declarations
-#    mac {
-#        QMAKE_CXXFLAGS += -O
-#        QMAKE_CXXFLAGS -= -Wmissing-declarations
-#    }
-#}
-
-QMAKE_CXXFLAGS += -std=c++0x -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment \
-    -Wextra -Wformat -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain \
-    -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations \
-    -Wpacked -Wparentheses -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector -Wswitch \
-    -Wswitch-default -Wswitch-enum -Wtrigraphs -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused -Wunused-parameter \
-    -Wvariadic-macros -Wwrite-strings
+QMAKE_CXXFLAGS += -std=c++0x -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wextra -Wformat \
+    -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain -Wmissing-field-initializers \
+    -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations -Wpacked -Wparentheses -Wpointer-arith \
+    -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector -Wswitch -Wswitch-default -Wswitch-enum -Wtrigraphs \
+    -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused -Wunused-parameter -Wvariadic-macros -Wwrite-strings
 
 QMAKE_CXXFLAGS_RELEASE += -Os -fbounds-check -fbranch-target-load-optimize -fcaller-saves -fcommon -fcprop-registers -fcrossjumping -floop-optimize \
     -foptimize-register-move -fpeephole -fpeephole2 -frerun-cse-after-loop -fstrength-reduce -malign-double -s
