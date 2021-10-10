@@ -1237,6 +1237,7 @@ void Onglets::ChargementPref() const
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
         _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 30).toInt());
         _ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
+        _ui->langue->setCurrentIndex(Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue", "en")));
         _ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         _ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
@@ -2373,6 +2374,7 @@ void Onglets::InitAffichageDemarrage()
         _ui->langue->addItem(drapeau, langue);
     }
 
+    _ui->langue->setCurrentIndex(Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue", "en").toString()));
     _ui->langue->blockSignals(etat);
 
     /* Retour */
