@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 octobre 2021
+ * >    10 octobre 2021
  *
  */
 
@@ -119,28 +119,11 @@ public:
 
 public slots:
 
-    /**
-     * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
-     * @param message message
-     * @param secondes nombre de secondes pendant lesquelles le message est affiche
-     */
-    void AfficherMessageStatut(const QString &message, const int secondes = -1);
-
-    /**
-     * @brief ChangementLangue Changement dynamique de la langue
-     * @param index indice
-     */
-    void ChangementLangue(const int index);
 
     /**
      * @brief ChargementTLE Chargement du fichier TLE par defaut
      */
     void ChargementTLE();
-
-    /**
-     * @brief EffacerMessageStatut Effacer la zone de message de statut
-     */
-    void EffacerMessageStatut();
 
 
 protected:
@@ -201,6 +184,12 @@ private:
     /*******************
      * Initialisations *
      ******************/
+    /**
+     * @brief ChargementTraduction Chargement de la traduction
+     * @param langue langue
+     */
+    void ChargementTraduction(const QString &langue);
+
     /**
      * @brief GestionPolice Gestion de la police
      */
@@ -266,14 +255,33 @@ private:
 
 private slots:
 
+    /**
+     * @brief ChangementCarte Mise a jour de l'affichage suite a un changement de carte
+     */
     void ChangementCarte();
-    void ChangementZoom();
+
+    /**
+     * @brief ChangementDate Mise a jour de l'affichage suite a un changement de date
+     * @param date date
+     */
     void ChangementDate(const QDateTime &date);
+
+    /**
+     * @brief ChangementLangue Changement dynamique de la langue
+     * @param index indice
+     */
+    void ChangementLangue(const int index);
+
+    /**
+     * @brief ChangementZoom Mise a jour de l'affichage suite a un changement de zoom
+     */
+    void ChangementZoom();
 
     /**
      * @brief InitFicTLE Liste des fichiers TLE
      */
     void InitFicTLE() const;
+
 
     /*************
      * Affichage *
@@ -286,13 +294,32 @@ private slots:
     void AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets = true);
 
     /**
+     * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
+     * @param message message
+     * @param secondes nombre de secondes pendant lesquelles le message est affiche
+     */
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+
+    /**
      * @brief ChargementFenetre Chargement des elements de la fenetre
      */
     void ChargementFenetre();
 
+    /**
+     * @brief EffacerMessageStatut Effacer la zone de message de statut
+     */
+    void EffacerMessageStatut();
+
+    /**
+     * @brief GestionTempsReel Gestion du temps reel
+     */
     void GestionTempsReel();
 
+    /**
+     * @brief TempsReel Affichage en temps reel
+     */
     void TempsReel();
+
 
     void mousePressEvent(QMouseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
