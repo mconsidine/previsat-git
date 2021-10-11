@@ -30,12 +30,12 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    6 juillet 2019
+ * >    11 octobre 2021
  *
  */
 
 #include <cmath>
-#include <QObject>
+#include <QCoreApplication>
 #include <QStringList>
 #include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/dates/date.h"
@@ -43,23 +43,23 @@
 #include "observateur.h"
 
 
-static const QStringList listeCap(QStringList ()
-                 << QT_TRANSLATE_NOOP("cardinal point", "N")
-                 << QT_TRANSLATE_NOOP("cardinal point", "NNE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "NE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "ENE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "E")
-                 << QT_TRANSLATE_NOOP("cardinal point", "ESE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "SE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "SSE")
-                 << QT_TRANSLATE_NOOP("cardinal point", "S")
-                 << QT_TRANSLATE_NOOP("cardinal point", "SSW")
-                 << QT_TRANSLATE_NOOP("cardinal point", "SW")
-                 << QT_TRANSLATE_NOOP("cardinal point", "WSW")
-                 << QT_TRANSLATE_NOOP("cardinal point", "W")
-                 << QT_TRANSLATE_NOOP("cardinal point", "WNW")
-                 << QT_TRANSLATE_NOOP("cardinal point", "NW")
-                 << QT_TRANSLATE_NOOP("cardinal point", "NNW"));
+static const char* listeCap[] = {
+                 QT_TRANSLATE_NOOP("cardinal point", "N"),
+                 QT_TRANSLATE_NOOP("cardinal point", "NNE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "NE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "ENE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "E"),
+                 QT_TRANSLATE_NOOP("cardinal point", "ESE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "SE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "SSE"),
+                 QT_TRANSLATE_NOOP("cardinal point", "S"),
+                 QT_TRANSLATE_NOOP("cardinal point", "SSW"),
+                 QT_TRANSLATE_NOOP("cardinal point", "SW"),
+                 QT_TRANSLATE_NOOP("cardinal point", "WSW"),
+                 QT_TRANSLATE_NOOP("cardinal point", "W"),
+                 QT_TRANSLATE_NOOP("cardinal point", "WNW"),
+                 QT_TRANSLATE_NOOP("cardinal point", "NW"),
+                 QT_TRANSLATE_NOOP("cardinal point", "NNW") };
 
 
 /**********
@@ -320,7 +320,7 @@ QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant)
         }
     }
     const int idx = static_cast<int> (cap * RAD2DEG / 22.5);
-    res.first = listeCap.at(idx);
+    res.first = QCoreApplication::translate("cardinal point", listeCap[idx]);
     res.second = cap;
 
     /* Retour */

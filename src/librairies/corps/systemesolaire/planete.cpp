@@ -30,26 +30,26 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    11 octobre 2021
  *
  */
 
 #include <cmath>
-#include <QObject>
+#include <QCoreApplication>
 #include <QStringList>
 #include "librairies/dates/date.h"
 #include "planete.h"
 #include "soleil.h"
 
 
-static QStringList nomPlanetes(QStringList ()
-                               << QT_TRANSLATE_NOOP("planet", "Mercure")
-                               << QT_TRANSLATE_NOOP("planet", "Vénus")
-                               << QT_TRANSLATE_NOOP("planet", "Mars")
-                               << QT_TRANSLATE_NOOP("planet", "Jupiter")
-                               << QT_TRANSLATE_NOOP("planet", "Saturne")
-                               << QT_TRANSLATE_NOOP("planet", "Uranus")
-                               << QT_TRANSLATE_NOOP("planet", "Neptune"));
+static const char* nomPlanetes[] = {
+                               QT_TRANSLATE_NOOP("planet", "Mercure"),
+                               QT_TRANSLATE_NOOP("planet", "Vénus"),
+                               QT_TRANSLATE_NOOP("planet", "Mars"),
+                               QT_TRANSLATE_NOOP("planet", "Jupiter"),
+                               QT_TRANSLATE_NOOP("planet", "Saturne"),
+                               QT_TRANSLATE_NOOP("planet", "Uranus"),
+                               QT_TRANSLATE_NOOP("planet", "Neptune") };
 
 static const double _tabPlanetes[7][6][4] = {
     // Mercure
@@ -148,7 +148,7 @@ Planete::Planete(const IndicePlanete &iplanete)
  */
 QString Planete::nom() const
 {
-    return (nomPlanetes.at(_iplanete));
+    return QCoreApplication::translate("planet", nomPlanetes[_iplanete]);
 }
 
 
