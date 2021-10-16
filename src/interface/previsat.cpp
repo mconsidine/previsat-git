@@ -1557,6 +1557,12 @@ void PreviSat::on_actionTipeee_triggered()
 }
 
 
+void PreviSat::on_meteoBasesNASA_clicked()
+{
+    QDesktopServices::openUrl(QUrl("file:///" + Configuration::instance()->dirLocalData() + QDir::separator() + "html" +
+                                   QDir::separator() + "meteoNASA.html"));
+}
+
 void PreviSat::on_meteo_clicked()
 {
     /* Declarations des variables locales */
@@ -1591,8 +1597,7 @@ void PreviSat::on_meteo_clicked()
     fi2.close();
 
     // Chargement de la meteo
-    const QUrl url("file:///" + fi2.fileName());
-    QDesktopServices::openUrl(url);
+    QDesktopServices::openUrl(QUrl("file:///" + fi2.fileName()));
 
     /* Retour */
     return;
