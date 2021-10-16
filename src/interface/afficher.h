@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 octobre 2021
+ * >    16 octobre 2021
  *
  */
 
@@ -77,7 +77,8 @@ public:
      *  Constructeurs
      */
     Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-             const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets = nullptr, QWidget *parent = nullptr);
+             const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets = nullptr, const int zoom = 9,
+             QWidget *parent = nullptr);
 
     /*
      * Destructeur
@@ -144,6 +145,7 @@ private:
     DonneesPrevisions _donnees;
     TypeCalcul _typeCalcul;
     QString _mapResultats;
+    int _zoom;
 
 
     /*
@@ -152,11 +154,10 @@ private:
     /**
      * @brief AffichageDetailTransit Affichage du détail d'un transit ISS
      * @param observateur observateur
-     * @param soleil soleil
      * @param lune lune
      * @param list informations sur le transit
      */
-    void AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list);
+    void AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list);
 
     /**
      * @brief ChargementCarte Chargement de la carte representant la trace du maximum
