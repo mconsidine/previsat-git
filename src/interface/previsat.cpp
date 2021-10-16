@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2021
+ * >    16 octobre 2021
  *
  */
 
@@ -1581,7 +1581,8 @@ void PreviSat::on_meteo_clicked()
     const QString lat(QString::number(Configuration::instance()->observateur().latitude() * RAD2DEG));
     map = map.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
             .replace("UNITE_TEMP", (_onglets->ui()->unitesKm->isChecked()) ? "C" : "F")
-            .replace("UNITE_VENT", (_onglets->ui()->unitesKm->isChecked()) ? "kmh" : "mph");
+            .replace("UNITE_VENT", (_onglets->ui()->unitesKm->isChecked()) ? "kmh" : "mph")
+            .replace("VALEUR_ZOOM", QString::number(_onglets->ui()->valeurZoomMap->value()));
 
     QFile fi2(Configuration::instance()->dirTmp() + QDir::separator() + "meteo.html");
     fi2.open(QIODevice::WriteOnly | QIODevice::Text);

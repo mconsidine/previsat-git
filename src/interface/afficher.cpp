@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    3 octobre 2021
+ * >    16 octobre 2021
  *
  */
 
@@ -71,7 +71,7 @@ QList<Constellation> constellations;
  * Constructeurs
  */
 Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-                   const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets,
+                   const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, Onglets *onglets, const int zoom,
                    QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Afficher)
@@ -87,6 +87,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _onglets = onglets;
     _ciel = nullptr;
     scene = nullptr;
+    _zoom = zoom;
 
     /* Corps du constructeur */
 #if (BUILD_TEST == false)
@@ -659,17 +660,13 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 /*
  * Affichage du détail d'un transit ISS
  */
-void Afficher::AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list)
+void Afficher::AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     const int lciel = qRound(0.5 * ui->detailsTransit->width());
     const int hciel = qRound(0.5 * ui->detailsTransit->height());
-
-    // Determination de la couleur du ciel
-    const double hts = soleil.hauteur() * RAD2DEG;
-    const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
 
     if (scene != nullptr) {
         delete scene;
@@ -680,7 +677,7 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
     scene->setBackgroundBrush(Qt::white);
 
     // Affichage de la carte du ciel
-    QRect rectangle(0, 0, ui->detailsTransit->width(), ui->detailsTransit->height());
+    const QRect rectangle(-lciel, -hciel, ui->detailsTransit->width(), ui->detailsTransit->height());
     scene->setSceneRect(rectangle);
 
     /* Corps de la methode */
@@ -692,8 +689,7 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
         pixsol = pixsol.scaled(100, 100);
 
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
-        QTransform transform;
-        transform.translate(lciel - 50, hciel - 50);
+        const QTransform transform = QTransform().translate(-pixsol.width() / 2, -pixsol.height() / 2);
         sol->setTransform(transform);
 
     } else {
@@ -711,26 +707,28 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
 
         // Dessin de la Lune et rotations
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
-        QTransform transform;
-        transform.translate(lciel, hciel);
-        transform.rotate(angleParallactique);
-        if (_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) {
-            transform.rotate(180.);
-        }
-        transform.translate(-50, -50);
-        lun->setTransform(transform);
+
+        const QRectF rect = pixlun.rect();
+        const QPointF centre = rect.center();
+        const double angle = angleParallactique + ((_onglets->ui()->rotationLune->isChecked() && (observateur.latitude() < 0.)) ? 180. : 0.);
+
+        const QTransform transform1 = QTransform().translate(centre.x() - pixlun.width() / 2, centre.y() - pixlun.height() / 2)
+                .rotate(angle).translate(-centre.x(), -centre.y());
+        lun->setTransform(transform1);
 
         // Dessin de la phase
         if (_onglets->ui()->affphaselune->isChecked()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             const QPen stylo(Qt::NoBrush, 0);
-            const QPolygonF poly = Ciel::AffichagePhaseLune(lune, 51);
+            const QPolygonF poly = Ciel::AffichagePhaseLune(lune, 50);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
-            const QRectF rect = poly.boundingRect();
-            transform.translate(-rect.x(), -rect.y());
-            omb->setTransform(transform);
+
+            const QTransform transform2 = QTransform().translate(-49, -8);
+            omb->setTransform(transform2);
+            omb->setTransformOriginPoint(49, 8);
+            omb->setRotation(angle);
         }
     }
 
@@ -753,8 +751,8 @@ void Afficher::AffichageDetailTransit(const Observateur &observateur, const Sole
             deltaHauteur = RAD2DEG * (res.hauteur - lune.hauteur());
         }
 
-        const double lsat = lciel + static_cast<int> (200. * deltaAzimut);
-        const double hsat = hciel - static_cast<int> (200. * deltaHauteur);
+        const double lsat = static_cast<int> (180. * deltaAzimut);
+        const double hsat = -static_cast<int> (180. * deltaHauteur);
         const QPair<double, double> xy(lsat, hsat);
         coord.append(xy);
     }
@@ -842,7 +840,8 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
             .replace("LONGITUDE1", QString::number(-list.first().obsmax.longitude() * RAD2DEG))
             .replace("LONGITUDE2", QString::number(-list.last().obsmax.longitude() * RAD2DEG))
             .replace("LATITUDE1", QString::number(list.first().obsmax.latitude() * RAD2DEG))
-            .replace("LATITUDE2", QString::number(list.last().obsmax.latitude() * RAD2DEG));
+            .replace("LATITUDE2", QString::number(list.last().obsmax.latitude() * RAD2DEG))
+            .replace("VALEUR_ZOOM", QString::number(_zoom));
 
     // Creation du fichier html
     QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "resultat.html");
@@ -1601,7 +1600,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
         ui->detailsTransit->setVisible(list.at(2).transit);
 
         if (list.at(2).transit) {
-            AffichageDetailTransit(observateur, soleil, lune, list);
+            AffichageDetailTransit(observateur, lune, list);
         }
     }
 
@@ -1617,7 +1616,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
 void Afficher::on_afficherCarte_clicked()
 {
     // Ouverture du navigateur
-    QFile fi(Configuration::instance()->dirTmp() + "resultat.html");
+    QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + "resultat.html");
     if (fi.exists() && (fi.size() != 0)) {
         QDesktopServices::openUrl(QUrl("file:///" + fi.fileName()));
     }

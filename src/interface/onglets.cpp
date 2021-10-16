@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    16 octobre 2021
  *
  */
 
@@ -2862,7 +2862,6 @@ void Onglets::TelechargementSuivant()
         const QUrl url = _listeFichiersTelechargement.dequeue();
         const QString fic = QFileInfo(url.path()).fileName();
 
-        QFile toto(Configuration::instance()->dirTmp() + "/" + fic);
         _fichier.setFileName(Configuration::instance()->dirTmp() + "/" + fic);
 
         if (fic.endsWith("txt")) {
@@ -5131,7 +5130,7 @@ void Onglets::on_calculsFlashs_clicked()
             if (Flashs::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun flash n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this);
+                Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this, _ui->valeurZoomMap->value());
                 afficher->show();
             }
         }
@@ -5460,7 +5459,8 @@ void Onglets::on_calculsTransit_clicked()
             if (TransitsIss::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun transit ISS n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this);
+                Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this,
+                                                  _ui->valeurZoomMap->value());
                 afficher->show();
             }
         }
