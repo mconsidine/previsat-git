@@ -327,6 +327,7 @@ private slots:
     void on_directHelp_clicked();
     void on_actionPaypal_triggered();
     void on_actionTipeee_triggered();
+    void on_meteoBasesNASA_clicked();
     void on_meteo_clicked();
 
     // Menu deroulant
