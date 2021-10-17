@@ -628,7 +628,7 @@ void Configuration::LectureManoeuvresISS()
     _evenementsISS.clear();
 
     /* Corps de la methode */
-    QFile fi1(_dirTmp + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
+    QFile fi1(_dirLocalData + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
 
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
     if (fi1.exists()) {
