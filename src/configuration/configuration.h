@@ -175,7 +175,7 @@ public:
 
     bool isCarteMonde() const;
 
-    QString dateDebut() const;
+    QString dateDebutISS() const;
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
 
@@ -228,6 +228,11 @@ public:
      * @brief EcritureGestionnaireTLE Ecriture du fichier de gestionnaire des TLE
      */
     void EcritureGestionnaireTLE();
+
+    /**
+     * @brief LectureManoeuvresISS Lecture du fichier NASA contenant les manoeuvres de l'ISS
+     */
+    void LectureManoeuvresISS();
 
 
 protected:
@@ -354,8 +359,8 @@ private:
     QString _noradStationSpatiale;
 
     // Evenements ISS
-    QString _dateDebut;
-    QString _dateFin;
+    QString _dateDebutISS;
+    QString _dateFinISS;
     QList<double> _masseISS;
     QStringList _evenementsISS;
 
@@ -411,11 +416,6 @@ private:
      * @brief LecturePays Lecture du fichier listant les pays ou organisations
      */
     void LecturePays();
-
-    /**
-     * @brief LecturePositionsISS Lecture du fichier NASA contenant les positions de l'ISS
-     */
-    void LecturePositionsISS();
 
     /**
      * @brief LectureSatellitesTDRS Lecture du fichier de satellites TDRS

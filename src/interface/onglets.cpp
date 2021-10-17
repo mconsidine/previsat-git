@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    16 octobre 2021
+ * >    17 octobre 2021
  *
  */
 
@@ -927,8 +927,9 @@ void Onglets::AffichageManoeuvresISS() const
 
     /* Initialisations */
     int j = 0;
-
-    const QString annee = Configuration::instance()->dateDebut().split("-").at(0);
+    _ui->manoeuvresISS->disconnect();
+    _ui->manoeuvresISS->model()->removeRows(0, _ui->manoeuvresISS->rowCount());
+    const QString annee = Configuration::instance()->dateDebutISS().split("-").at(0);
 
     if (_ui->unitesKm->isChecked()) {
         uniteDist = tr("km", "Kilometer");
@@ -1129,6 +1130,87 @@ void Onglets::AfficherLieuSelectionne(const int index)
     QString nomlieu = "";
 
     /* Corps de la methode */
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul de l'age des TLE de l'ISS pour transits ISS
+ */
+void Onglets::CalculAgeTLETransitISS()
+{
+    /* Declarations des variables locales */
+    double age1;
+
+    /* Initialisations */
+    double ageISS = 0.;
+    const double jjcour = _date->jourJulienUTC();
+
+    QString fichier = Configuration::instance()->dirTle() + QDir::separator() + "iss.3le";
+    const int nbt = TLE::VerifieFichier(fichier, false);
+
+    /* Corps de la methode */
+    if (nbt == 0) {
+
+        fichier = Configuration::instance()->dirTle() + QDir::separator() + "visual.txt";
+        const int nbt2 = TLE::VerifieFichier(fichier, false);
+
+        if (nbt2 > 0) {
+            const QStringList listeSat(QStringList() << Configuration::instance()->noradStationSpatiale());
+            const QMap<QString, TLE> mapTle = TLE::LectureFichier(fichier, Configuration::instance()->dirLocalData(), listeSat, false);
+
+            age1 = fabs(mapTle.first().epoque().jourJulienUTC() - jjcour);
+            ageISS = age1;
+        }
+
+    } else {
+
+        // Calcul de l'age du TLE de l'ISS
+        const QList<TLE> tabTle = TLE::LectureFichier3le(fichier);
+
+        age1 = tabTle.first().epoque().jourJulienUTC() - jjcour;
+        const double age2 = jjcour - tabTle.last().epoque().jourJulienUTC();
+        ageISS = fabs(qMax(age1, age2));
+    }
+
+    if (ageISS > 0) {
+
+        QPalette paletteTLE;
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+
+        // Indicateur de l'age du TLE
+        if (ageISS > _ui->ageMaxTLETransit->value() + 8.) {
+            brush.setColor(Qt::red);
+        } else if (ageISS > _ui->ageMaxTLETransit->value() + 4.) {
+            brush.setColor(QColor("orange"));
+        } else if (ageISS > _ui->ageMaxTLETransit->value()) {
+            brush.setColor(Qt::darkYellow);
+        } else {
+            brush.setColor(QColor("forestgreen"));
+        }
+
+        paletteTLE.setBrush(QPalette::WindowText, brush);
+        _ui->ageTLETransit->setPalette(paletteTLE);
+
+        if (nbt == 0) {
+            _ui->lbl_ageTLETransit->setText(tr("Age du TLE :"));
+        } else {
+            if (fabs(ageISS - age1) < EPSDBL100) {
+                _ui->lbl_ageTLETransit->setText(tr("Age du premier TLE :"));
+            } else {
+                _ui->lbl_ageTLETransit->setText(tr("Age du dernier TLE :"));
+            }
+        }
+
+        _ui->ageTLETransit->setText(QString(tr("%1 jours")).arg(ageISS, 0, 'f', 2));
+        _ui->ageTLETransit->setVisible(true);
+        _ui->lbl_ageTLETransit->setVisible(true);
+    } else {
+        _ui->ageTLETransit->setVisible(false);
+        _ui->lbl_ageTLETransit->setVisible(false);
+    }
 
     /* Retour */
     return;
@@ -2006,7 +2088,7 @@ void Onglets::SauveOngletInformations(const QString &fic) const
                 flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text());
             }
 
-        //} else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
+            //} else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
             // TODO
         }
 
@@ -4367,19 +4449,14 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         const Date date(_date->jourJulien() + EPS_DATES, 0.);
         _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
         _ui->dateInitialeTransit->setDisplayFormat(fmt);
-        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(14));
+        _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(7));
         _ui->dateFinaleTransit->setDisplayFormat(fmt);
 
         _ui->calculsTransit->setDefault(true);
         _ui->calculsTransit->setFocus();
 
-        // TODO
-        //        if (tab3le.isEmpty()) {
-        //            ui->ageTLETransit->setVisible(false);
-        //            ui->lbl_ageTLETransit->setVisible(false);
-        //        } else {
-        //            CalculAgeTLETransitISS();
-        //        }
+        CalculAgeTLETransitISS();
+
 
 #if defined (Q_OS_WIN)
     } else if (index == _ui->barreOnglets->indexOf(_ui->telescope)) {
@@ -4566,20 +4643,20 @@ void Onglets::on_mettreAJourTLE_clicked()
         if (fi.suffix() == "gz") {
 
             // Cas d'un fichier compresse au format gz
-//            fic = dirTmp + QDir::separator() + fi.completeBaseName();
+            //            fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
-//            if (DecompressionFichierGz(ui->fichierALire->text(), fic)) {
+            //            if (DecompressionFichierGz(ui->fichierALire->text(), fic)) {
 
-//                const int nsat = TLE::VerifieFichier(fic, false);
-//                if (nsat == 0) {
-//                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-//                    throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
-//                }
-//                agz = true;
-//            } else {
-//                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-//                throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
-//            }
+            //                const int nsat = TLE::VerifieFichier(fic, false);
+            //                if (nsat == 0) {
+            //                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+            //                    throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
+            //                }
+            //                agz = true;
+            //            } else {
+            //                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+            //                throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
+            //            }
         } else {
             fic = QDir::toNativeSeparators(fi.absoluteFilePath());
         }
@@ -5529,7 +5606,44 @@ void Onglets::on_hauteurSatTransit_currentIndexChanged(int index)
 
 void Onglets::on_majTleIss_clicked()
 {
-    // TODO
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Mise a jour du fichier d'elements orbitaux
+        const QString ficTle = Configuration::instance()->adresseCelestrakNorad() + "supplemental/iss.txt";
+        setDirDwn(Configuration::instance()->dirTmp());
+        TelechargementFichier(ficTle, false);
+
+        // Verification du fichier
+        const QString fic = Configuration::instance()->dirTmp() + QDir::separator() + "iss.txt";
+        const QString fic3le = Configuration::instance()->dirTle() + QDir::separator() + "iss.3le";
+        TLE::VerifieFichier(fic);
+
+        QFile fi(fic);
+        fi.rename(fic3le);
+
+        // Mise a jour de l'age du TLE de l'ISS
+        CalculAgeTLETransitISS();
+
+
+        // Mise a jour du fichier de manoeuvres
+        TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
+
+        // Lecture du fichier de manoeuvres
+        Configuration::instance()->LectureManoeuvresISS();
+        if (!Configuration::instance()->evenementsISS().isEmpty()) {
+            AffichageManoeuvresISS();
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -5985,20 +6099,20 @@ void Onglets::on_rechercheCreerTLE_clicked()
             if (fi.suffix() == "gz") {
 
                 // Cas d'un fichier compresse au format gz
-//                const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
+                //                const QString fic = dirTmp + QDir::separator() + fi.completeBaseName();
 
-//                if (DecompressionFichierGz(ficlu, fic)) {
+                //                if (DecompressionFichierGz(ficlu, fic)) {
 
-//                    const int nsat = TLE::VerifieFichier(fic, false);
-//                    if (nsat == 0) {
-//                        const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-//                        throw PreviSatException(msg.arg(ficlu), WARNING);
-//                    }
-//                    ficlu = fic;
-//                } else {
-//                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-//                    throw PreviSatException(msg.arg(ficlu), WARNING);
-//                }
+                //                    const int nsat = TLE::VerifieFichier(fic, false);
+                //                    if (nsat == 0) {
+                //                        const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                //                        throw PreviSatException(msg.arg(ficlu), WARNING);
+                //                    }
+                //                    ficlu = fic;
+                //                } else {
+                //                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                //                    throw PreviSatException(msg.arg(ficlu), WARNING);
+                //                }
             }
         } else {
             const QString msg = tr("Le fichier %1 n'existe pas");
@@ -6155,7 +6269,7 @@ void Onglets::on_rechercheCreerTLE_clicked()
 
                 // Inclinaison orbitale
                 ecritureTLE &= (((tle.inclo() >= incMin1) && (tle.inclo() <= incMax1)) ||
-                        (((tle.inclo() >= incMin2) && (tle.inclo() <= incMax2)) && _ui->valeursInclinaison2->isVisible()));
+                                (((tle.inclo() >= incMin2) && (tle.inclo() <= incMax2)) && _ui->valeursInclinaison2->isVisible()));
 
                 // Magnitude maximale
                 if (tle.donnees().magnitudeStandard() < 99.) {

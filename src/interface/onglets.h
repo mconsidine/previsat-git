@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    17 octobre 2021
  *
  */
 
@@ -334,6 +334,11 @@ private:
      * @param index indice du lieu dans la liste
      */
     void AfficherLieuSelectionne(const int index);
+
+    /**
+     * @brief CalculAgeTLETransitISS Calcul de l'age des TLE de l'ISS pour transits ISS
+     */
+    void CalculAgeTLETransitISS();
 
 #if defined (Q_OS_WIN)
     /**
