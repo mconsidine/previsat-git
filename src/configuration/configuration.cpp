@@ -301,9 +301,9 @@ bool Configuration::isCarteMonde() const
     return _isCarteMonde;
 }
 
-QString Configuration::dateDebut() const
+QString Configuration::dateDebutISS() const
 {
-    return _dateDebut;
+    return _dateDebutISS;
 }
 
 QList<double> Configuration::masseISS() const
@@ -476,8 +476,8 @@ void Configuration::Initialisation()
         // Lecture du fichier taiutc.dat
         Date::Initialisation(_dirLocalData);
 
-        // Lecture du fichier NASA des positions ISS
-        LecturePositionsISS();
+        // Lecture du fichier NASA des manoeuvres ISS
+        LectureManoeuvresISS();
 
         // Lecture du fichier de constellations
         Corps::InitTabConstellations(_dirCommonData);
@@ -611,6 +611,113 @@ void Configuration::EcritureGestionnaireTLE()
     cfg.writeEndElement();
     cfg.writeEndDocument();
     fi.close();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier NASA contenant les manoeuvres de l'ISS
+ */
+void Configuration::LectureManoeuvresISS()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _masseISS.clear();
+    _evenementsISS.clear();
+
+    /* Corps de la methode */
+    QFile fi1(_dirTmp + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
+
+    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (fi1.exists()) {
+
+        QXmlStreamReader cfg(&fi1);
+
+        cfg.readNextStartElement();
+        if (cfg.name().toString().toLower() == "ndm") {
+
+            QString version;
+            QString value;
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name().toString().toLower() == "oem") {
+
+                    version = cfg.attributes().value("version").toString();
+
+                    while (cfg.readNextStartElement()) {
+
+                        if (cfg.name().toString().toLower() == "body") {
+
+                            while (cfg.readNextStartElement()) {
+
+                                if (cfg.name().toString().toLower() == "segment") {
+
+                                    while (cfg.readNextStartElement()) {
+
+                                        if (cfg.name().toString().toLower() == "metadata") {
+
+                                            while (cfg.readNextStartElement()) {
+
+                                                if (cfg.name().toString().toLower() == "start_time") {
+
+                                                    // Date de debut
+                                                    _dateDebutISS = cfg.readElementText();
+
+                                                } else if (cfg.name().toString().toLower() == "stop_time") {
+
+                                                    // Date de fin
+                                                    _dateFinISS = cfg.readElementText();
+
+                                                } else {
+                                                    cfg.skipCurrentElement();
+                                                }
+                                            }
+
+                                        } else if (cfg.name().toString().toLower() == "data") {
+
+                                            while (cfg.readNextStartElement()) {
+
+                                                value = cfg.readElementText();
+
+                                                if (value.toLower().contains("mass")) {
+
+                                                    // Masse (en kg)
+                                                    _masseISS.append(value.split("=").last().toDouble());
+
+                                                } else if (value.contains("===")) {
+
+                                                    // Recuperation des evenements
+                                                    value = "";
+                                                    while (cfg.readNextStartElement() && !value.contains("===")) {
+
+                                                        value = cfg.readElementText();
+                                                        if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
+                                                            value.replace(26, 1, "T");
+                                                            _evenementsISS.append(value);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            cfg.skipCurrentElement();
+                                        }
+                                    }
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+                            }
+                        } else {
+                            cfg.skipCurrentElement();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fi1.close();
 
     /* Retour */
     return;
@@ -798,6 +905,9 @@ void Configuration::LectureConfiguration()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _observateurs.clear();
+    _mapSatellitesFicTLE.clear();
+
     const QString nomficXml = "configuration.xml";
     const QString msg1 = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
                                      "Certaines informations de configuration "
@@ -919,6 +1029,8 @@ void Configuration::LectureCategoriesOrbite()
     QString version;
 
     /* Initialisations */
+    _mapCategoriesOrbite.clear();
+
     const QString nomficXml = "categories.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -987,6 +1099,8 @@ void Configuration::LectureGestionnaireTLE()
     QString version;
 
     /* Initialisations */
+    _mapCategoriesTLE.clear();
+
     const QString nomficXml = "gestionnaireTLE.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -1094,6 +1208,8 @@ void Configuration::LecturePays()
     QString version;
 
     /* Initialisations */
+    _mapPays.clear();
+
     const QString nomficXml = "pays.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -1154,113 +1270,6 @@ void Configuration::LecturePays()
 }
 
 /*
- * Lecture du fichier NASA contenant les positions de l'ISS
- */
-void Configuration::LecturePositionsISS()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    QFile fi1(_dirTmp + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
-
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-    if (fi1.exists()) {
-
-        QXmlStreamReader cfg(&fi1);
-
-        cfg.readNextStartElement();
-        if (cfg.name().toString().toLower() == "ndm") {
-
-            QString epoque;
-            QString version;
-            QString value;
-            PositionISS position;
-
-            while (cfg.readNextStartElement()) {
-
-                if (cfg.name().toString().toLower() == "oem") {
-
-                    version = cfg.attributes().value("version").toString();
-
-                    while (cfg.readNextStartElement()) {
-
-                        if (cfg.name().toString().toLower() == "body") {
-
-                            while (cfg.readNextStartElement()) {
-
-                                if (cfg.name().toString().toLower() == "segment") {
-
-                                    while (cfg.readNextStartElement()) {
-
-                                        if (cfg.name().toString().toLower() == "metadata") {
-
-                                            while (cfg.readNextStartElement()) {
-
-                                                if (cfg.name().toString().toLower() == "start_time") {
-
-                                                    // Date de debut
-                                                    _dateDebut = cfg.readElementText();
-
-                                                } else if (cfg.name().toString().toLower() == "stop_time") {
-
-                                                    // Date de fin
-                                                    _dateFin = cfg.readElementText();
-
-                                                } else {
-                                                    cfg.skipCurrentElement();
-                                                }
-                                            }
-
-                                        } else if (cfg.name().toString().toLower() == "data") {
-
-                                            while (cfg.readNextStartElement()) {
-
-                                                value = cfg.readElementText();
-
-                                                if (value.toLower().contains("mass")) {
-
-                                                    // Masse (en kg)
-                                                    _masseISS.append(value.split("=").last().toDouble());
-
-                                                } else if (value.contains("===")) {
-
-                                                    // Recuperation des evenements
-                                                    value = "";
-                                                    while (cfg.readNextStartElement() && !value.contains("===")) {
-
-                                                        value = cfg.readElementText();
-                                                        if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
-                                                            value.replace(26, 1, "T");
-                                                            _evenementsISS.append(value);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            cfg.skipCurrentElement();
-                                        }
-                                    }
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
-                            }
-                        } else {
-                            cfg.skipCurrentElement();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    fi1.close();
-
-    /* Retour */
-    return;
-}
-
-/*
  * Lecture du fichier de satellites TDRS
  */
 void Configuration::LectureSatellitesTDRS()
@@ -1269,6 +1278,8 @@ void Configuration::LectureSatellitesTDRS()
     QString version;
 
     /* Initialisations */
+    _mapTDRS.clear();
+
     const QString nomficXml = "tdrs.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -1349,6 +1360,8 @@ void Configuration::LectureSitesLancement()
     QString version;
 
     /* Initialisations */
+    _mapSites.clear();
+
     const QString nomficXml = "sites.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -1425,6 +1438,8 @@ void Configuration::LectureStations()
     QString version;
 
     /* Initialisations */
+    _mapStations.clear();
+
     const QString nomficXml = "stations.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
@@ -1505,6 +1520,8 @@ void Configuration::LectureStatutSatellitesFlashs()
     QString version;
 
     /* Initialisations */
+    _mapFlashs.clear();
+
     const QString nomficXml = "flares.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                         "Le fichier %1 n'existe pas, veuillez réinstaller %2");
