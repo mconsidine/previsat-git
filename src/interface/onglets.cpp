@@ -1171,7 +1171,7 @@ void Onglets::CalculAgeTLETransitISS()
 
         age1 = tabTle.first().epoque().jourJulienUTC() - jjcour;
         const double age2 = jjcour - tabTle.last().epoque().jourJulienUTC();
-        ageISS = fabs(qMax(age1, age2));
+        ageISS = qMax(age1, age2);
     }
 
     if (ageISS > 0) {
@@ -1181,11 +1181,12 @@ void Onglets::CalculAgeTLETransitISS()
         brush.setStyle(Qt::SolidPattern);
 
         // Indicateur de l'age du TLE
-        if (ageISS > _ui->ageMaxTLETransit->value() + 8.) {
+        const double ageTleIss = fabs(ageISS);
+        if (ageTleIss > (_ui->ageMaxTLETransit->value() + 8.)) {
             brush.setColor(Qt::red);
-        } else if (ageISS > _ui->ageMaxTLETransit->value() + 4.) {
+        } else if (ageTleIss > (_ui->ageMaxTLETransit->value() + 4.)) {
             brush.setColor(QColor("orange"));
-        } else if (ageISS > _ui->ageMaxTLETransit->value()) {
+        } else if (ageTleIss > _ui->ageMaxTLETransit->value()) {
             brush.setColor(Qt::darkYellow);
         } else {
             brush.setColor(QColor("forestgreen"));
@@ -5443,8 +5444,7 @@ void Onglets::on_calculsTransit_clicked()
                         const double ageIss1 = fabs(conditions.jj1 - tle.first().epoque().jourJulienUTC());
                         const double ageIss2 = fabs(conditions.jj2 - tle.first().epoque().jourJulienUTC());
 
-                        if (((age1 > 0.) || (age2 > 0.))
-                                && (ageIss1 < (conditions.jj1 - datePremierTLE)) && (ageIss2 < (conditions.jj2 - datePremierTLE))) {
+                        if (((age1 > 0.) || (age2 > 0.)) && (ageIss1 < age1) && (ageIss2 < age2)) {
 
                             // Utilisation du TLE du fichier visual.txt
                             age1 = qMin(ageIss1, ageIss2);
@@ -5631,6 +5631,7 @@ void Onglets::on_majTleIss_clicked()
 
 
         // Mise a jour du fichier de manoeuvres
+        setDirDwn(Configuration::instance()->dirLocalData());
         TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
 
         // Lecture du fichier de manoeuvres
