@@ -2855,7 +2855,7 @@ void Onglets::FinEnregistrementFichier()
             }
 
             // Verification et chargement du fichier TLE courant
-            if (QDir::toNativeSeparators(_fichier.fileName()) == Configuration::instance()->nomfic()) {
+            if (fichierAMettreAJour == Configuration::instance()->nomfic()) {
 
                 const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
                 if (nb == 0) {

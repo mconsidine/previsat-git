@@ -157,8 +157,8 @@ private:
     Ciel *_ciel;
     Onglets *_onglets;
     Radar *_radar;
-    QToolButton* _maximise;
-    QToolButton* _affichageCiel;
+    QToolButton *_maximise;
+    QToolButton *_affichageCiel;
 
     // Barre de statut
     QLabel *_messageStatut;
