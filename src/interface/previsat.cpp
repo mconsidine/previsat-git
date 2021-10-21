@@ -827,7 +827,7 @@ void PreviSat::MajFichierTLE()
         const QString ficMaj = adresse + fi.fileName();
 
         _onglets->setDirDwn(Configuration::instance()->dirTle());
-        _onglets->TelechargementFichier(ficMaj, true);
+        _onglets->TelechargementFichier(ficMaj, false);
         settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
     }
 

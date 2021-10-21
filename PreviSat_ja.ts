@@ -3814,204 +3814,204 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1355"/>
+        <location filename="src/interface/previsat.ui" line="1358"/>
         <source>Donations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1605"/>
+        <location filename="src/interface/previsat.ui" line="1608"/>
         <source>Ajouter sélection dans</source>
         <translation type="unfinished">OOに選択を追加する。(TBC)</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1698"/>
+        <location filename="src/interface/previsat.ui" line="1701"/>
         <location filename="src/interface/previsat.cpp" line="1619"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1706"/>
+        <location filename="src/interface/previsat.ui" line="1709"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1718"/>
+        <location filename="src/interface/previsat.ui" line="1721"/>
         <source>Fichier d&apos;aide</source>
         <translation>ヘルプファイル</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1721"/>
+        <location filename="src/interface/previsat.ui" line="1724"/>
         <source>F1</source>
         <translation>F1キー</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1737"/>
+        <location filename="src/interface/previsat.ui" line="1740"/>
         <source>Rapport de bug</source>
         <translation>バグレポート</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1742"/>
         <location filename="src/interface/previsat.ui" line="1745"/>
+        <location filename="src/interface/previsat.ui" line="1748"/>
         <source>Télécharger la mise à jour</source>
         <translation>更新をダウンロードする。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1769"/>
+        <location filename="src/interface/previsat.ui" line="1772"/>
         <source>À propos</source>
         <translation type="unfinished">PreviSatについて (TBC)</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1774"/>
+        <location filename="src/interface/previsat.ui" line="1777"/>
         <source>Définir par défaut</source>
         <translation type="unfinished">デフォルトとして設定する</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1779"/>
+        <location filename="src/interface/previsat.ui" line="1782"/>
         <source>Nouveau fichier TLE</source>
         <translation>新しいTLEファイル</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1784"/>
+        <location filename="src/interface/previsat.ui" line="1787"/>
         <source>Fichier TLE existant</source>
         <translation>既存のTLEファイル</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1789"/>
+        <location filename="src/interface/previsat.ui" line="1792"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1794"/>
+        <location filename="src/interface/previsat.ui" line="1797"/>
         <source>Aucun</source>
         <translation type="unfinished">無し</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1799"/>
+        <location filename="src/interface/previsat.ui" line="1802"/>
         <source>Créer une catégorie</source>
         <translation>カテゴリを作成する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1804"/>
-        <location filename="src/interface/previsat.ui" line="1824"/>
-        <location filename="src/interface/previsat.ui" line="1875"/>
+        <location filename="src/interface/previsat.ui" line="1807"/>
+        <location filename="src/interface/previsat.ui" line="1827"/>
+        <location filename="src/interface/previsat.ui" line="1878"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1809"/>
+        <location filename="src/interface/previsat.ui" line="1812"/>
         <source>Télécharger...</source>
         <translation>ダウンロード...</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1814"/>
+        <location filename="src/interface/previsat.ui" line="1817"/>
         <source>Créer un nouveau lieu</source>
         <translation>新しい場所を作成する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1819"/>
+        <location filename="src/interface/previsat.ui" line="1822"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>お気に入りに追加</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1829"/>
+        <location filename="src/interface/previsat.ui" line="1832"/>
         <source>Copier dans le presse-papier</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1838"/>
+        <location filename="src/interface/previsat.ui" line="1841"/>
         <source>Imprimer carte</source>
         <translation>地図を印刷する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1841"/>
+        <location filename="src/interface/previsat.ui" line="1844"/>
         <source>Ctrl+P</source>
         <translation>Ctrl + P</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1846"/>
-        <location filename="src/interface/previsat.ui" line="1851"/>
+        <location filename="src/interface/previsat.ui" line="1849"/>
+        <location filename="src/interface/previsat.ui" line="1854"/>
         <source>Renommer</source>
         <translation>名前を変更する</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1856"/>
+        <location filename="src/interface/previsat.ui" line="1859"/>
         <source>Modifier coordonnées</source>
         <translation>座標を編集する</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1864"/>
+        <location filename="src/interface/previsat.ui" line="1867"/>
         <source>Vision nocturne</source>
         <translation type="unfinished">夜間視力</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1867"/>
+        <location filename="src/interface/previsat.ui" line="1870"/>
         <source>Ctrl+N</source>
         <translation>Ctrl + N</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1880"/>
+        <location filename="src/interface/previsat.ui" line="1883"/>
         <source>Mettre à jour TLE courant</source>
         <translation>現在のTLEを更新する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1883"/>
+        <location filename="src/interface/previsat.ui" line="1886"/>
         <source>F5</source>
         <translation>F5キー</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1888"/>
+        <location filename="src/interface/previsat.ui" line="1891"/>
         <source>Mettre à jour groupe TLE courant</source>
         <translation>現在のTLEグループを更新する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1891"/>
+        <location filename="src/interface/previsat.ui" line="1894"/>
         <source>Ctrl+F5</source>
         <translation>Ctrl + F5</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1896"/>
+        <location filename="src/interface/previsat.ui" line="1899"/>
         <source>Mettre à jour tous les groupes de TLE</source>
         <translation>すべてのTLEグループを更新する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1899"/>
+        <location filename="src/interface/previsat.ui" line="1902"/>
         <source>Shift+F5</source>
         <translation>Shift + F5</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1908"/>
         <location filename="src/interface/previsat.ui" line="1911"/>
+        <location filename="src/interface/previsat.ui" line="1914"/>
         <source>Donation PayPal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1916"/>
         <location filename="src/interface/previsat.ui" line="1919"/>
+        <location filename="src/interface/previsat.ui" line="1922"/>
         <source>Mettre à jour TLE communs</source>
         <translation>共通TLEを更新する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1922"/>
+        <location filename="src/interface/previsat.ui" line="1925"/>
         <source>Alt+F5</source>
         <translation>Alt + F5</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1927"/>
+        <location filename="src/interface/previsat.ui" line="1930"/>
         <source>Informations</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1930"/>
+        <location filename="src/interface/previsat.ui" line="1933"/>
         <source>F2</source>
         <translation>F2キー</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1935"/>
+        <location filename="src/interface/previsat.ui" line="1938"/>
         <source>Mettre à jour les fichiers de données</source>
         <translation>データファイルを更新する。</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.ui" line="1985"/>
+        <location filename="src/interface/previsat.ui" line="1988"/>
         <source>Donation Tipeee</source>
         <translation type="unfinished"></translation>
     </message>
