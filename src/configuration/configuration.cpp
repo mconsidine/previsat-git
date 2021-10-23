@@ -206,7 +206,7 @@ QString &Configuration::nomfic()
     return _nomfic;
 }
 
-TLEdefaut Configuration::tleDefaut() const
+TLEdefaut &Configuration::tleDefaut()
 {
     return _tleDefaut;
 }
@@ -340,6 +340,12 @@ void Configuration::setListeFicTLE(const QStringList &listeFic)
     _listeFicTLE = listeFic;
 }
 
+void Configuration::ajoutListeFicTLE(const QString &fic)
+{
+    _listeFicTLE.append(fic);
+    _listeFicTLE.sort();
+}
+
 void Configuration::setMapTLE(const QMap<QString, TLE> &map)
 {
     _mapTLE = map;
@@ -401,15 +407,21 @@ void Configuration::setObservateurs(const QList<Observateur> &obs)
 
 void Configuration::ajoutSatelliteFicTLE(const QString &norad)
 {
-    if (!_mapSatellitesFicTLE[_nomfic].contains(norad)) {
-        _mapSatellitesFicTLE[_nomfic].append(norad);
+    const QFileInfo fi(_nomfic);
+    const QString fic = _nomfic.contains(Configuration::instance()->dirTle()) ? fi.fileName() : _nomfic;
+
+    if (!_mapSatellitesFicTLE[fic].contains(norad)) {
+        _mapSatellitesFicTLE[fic].append(norad);
     }
 }
 
 void Configuration::suppressionSatelliteFicTLE(const QString &norad)
 {
-    if (_mapSatellitesFicTLE[_nomfic].contains(norad)) {
-        _mapSatellitesFicTLE[_nomfic].removeOne(norad);
+    const QFileInfo fi(_nomfic);
+    const QString fic = _nomfic.contains(Configuration::instance()->dirTle()) ? fi.fileName() : _nomfic;
+
+    if (_mapSatellitesFicTLE[fic].contains(norad)) {
+        _mapSatellitesFicTLE[fic].removeOne(norad);
     }
 }
 
@@ -987,7 +999,7 @@ void Configuration::LectureConfiguration()
 
                         elements.clear();
                         while (cfg.readNextStartElement()) {
-                            if (cfg.name() == "TLE") {
+                            if (cfg.name() == "Norad") {
                                 elements.append(cfg.readElementText());
                             } else {
                                 cfg.skipCurrentElement();

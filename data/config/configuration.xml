@@ -23,8 +23,8 @@
     </Observateurs>
     <FichiersTLE>
         <Fichier nom="visual.txt">
-            <TLE>20580</TLE>
-            <TLE>25544</TLE>
+            <Norad>20580</Norad>
+            <Norad>25544</Norad>
         </Fichier>
     </FichiersTLE>
 </PreviSatConfiguration>

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 octobre 2021
+ * >    23 octobre 2021
  *
  */
 
@@ -191,6 +191,11 @@ private:
     void ChargementTraduction(const QString &langue);
 
     /**
+     * @brief EcritureTleDefautRegistre Ecriture du TLE par defaut en registre
+     */
+    void EcritureTleDefautRegistre();
+
+    /**
      * @brief GestionPolice Gestion de la police
      */
     void GestionPolice();
@@ -252,6 +257,7 @@ private:
      * @param fichier nom du fichier
      */
     void OuvertureFichierTLE(const QString &fichier);
+
 
 private slots:
 
@@ -359,6 +365,11 @@ private slots:
 
     void on_liste1_itemClicked(QListWidgetItem *item);
     void on_liste1_itemEntered(QListWidgetItem *item);
+    void on_liste1_customContextMenuRequested(const QPoint &pos);
+
+    void on_actionDefinir_par_defaut_triggered();
+    void on_actionNouveau_fichier_TLE_triggered();
+    void on_actionFichier_TLE_existant_triggered();
 
 };
 

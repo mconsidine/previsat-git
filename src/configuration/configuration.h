@@ -148,7 +148,7 @@ public:
     QMap<QString, TLE> mapTLE() const;
 
     QString &nomfic();
-    TLEdefaut tleDefaut() const;
+    TLEdefaut &tleDefaut();
 
     QList<Satellite> &listeSatellites();
 
@@ -190,6 +190,7 @@ public:
     void setPolice(const QFont &police);
 
     void setListeFicTLE(const QStringList &listeFic);
+    void ajoutListeFicTLE(const QString &fic);
     void setMapTLE(const QMap<QString, TLE> &map);
     void setNomfic(const QString &nom);
 

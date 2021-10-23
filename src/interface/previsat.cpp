@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2021
+ * >    23 octobre 2021
  *
  */
 
@@ -676,6 +676,24 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     ui->retranslateUi(this);
     _onglets->ui()->retranslateUi(_onglets);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ecriture du TLE par defaut en registre
+ */
+void PreviSat::EcritureTleDefautRegistre()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    settings.setValue("TLE/nom", Configuration::instance()->tleDefaut().nomsat);
+    settings.setValue("TLE/l1", Configuration::instance()->tleDefaut().l1);
+    settings.setValue("TLE/l2", Configuration::instance()->tleDefaut().l2);
 
     /* Retour */
     return;
@@ -2029,6 +2047,7 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
     if (ui->liste1->hasFocus() && (ui->liste1->currentRow() >= 0)) {
 
         const QString norad = item->data(Qt::UserRole).toString();
+
         if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite dans la liste
@@ -2059,6 +2078,173 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     /* Corps de la methode */
     if (nomsat != norad) {
         AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  %3)").arg(nomsat).arg(norad).arg(cospar), 5);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(pos)
+
+    /* Corps de la methode */
+    if (ui->liste1->currentRow() >= 0) {
+        ui->menuContextuelListe1->exec(QCursor::pos());
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionDefinir_par_defaut_triggered()
+{
+    /* Declarations des variables locales */
+    int i;
+
+    /* Initialisations */
+    const QString norad = ui->liste1->currentItem()->data(Qt::UserRole).toString();
+    const QFileInfo fi(Configuration::instance()->nomfic());
+    const bool atrouve = Configuration::instance()->mapSatellitesFicTLE().value(fi.fileName()).contains(norad);
+    const TLE tle = Configuration::instance()->mapTLE()[norad];
+
+    /* Corps de la methode */
+    if (atrouve) {
+
+        bool afin = false;
+        int i;
+        for(i = 1; i < Configuration::instance()->listeSatellites().size() && !afin; i++) {
+            afin = (Configuration::instance()->listeSatellites().at(i).tle().norad() == norad);
+        }
+
+#if QT_VERSION < 0x050D00
+        Configuration::instance()->listeSatellites().swap(--i, 0);
+#else
+        Configuration::instance()->listeSatellites().swapItemsAt(--i, 0);
+#endif
+
+    } else {
+        // Le satellite choisi ne fait pas partie de la liste de satellites, on l'ajoute
+        Configuration::instance()->listeSatellites().insert(0, Satellite(tle));
+        Configuration::instance()->ajoutSatelliteFicTLE(norad);
+    }
+
+    // On definit le satellite choisi comme satellite par defaut
+    Configuration::instance()->tleDefaut().nomsat = tle.nom();
+    Configuration::instance()->tleDefaut().l1 = tle.ligne1();
+    Configuration::instance()->tleDefaut().l2 = tle.ligne2();
+
+    ui->liste1->currentItem()->setCheckState(Qt::Checked);
+
+    GestionTempsReel();
+
+    Configuration::instance()->EcritureConfiguration();
+    EcritureTleDefautRegistre();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionNouveau_fichier_TLE_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QFileInfo fich(Configuration::instance()->nomfic());
+    QStringList listeNorad = Configuration::instance()->mapSatellitesFicTLE().value(fich.fileName());
+    listeNorad.sort();
+
+    /* Corps de la methode */
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirTle(),
+                                                     tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
+
+    QFile fi(fic);
+    fi.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream flux(&fi);
+
+    QStringListIterator it(listeNorad);
+    while (it.hasNext()) {
+
+        const TLE tle = Configuration::instance()->mapTLE()[it.next()];
+        flux << tle.ligne0() << endl
+             << tle.ligne1() << endl
+             << tle.ligne2() << endl;
+    }
+    fi.close();
+
+    // Ajout du fichier dans la liste de fichiers TLE
+    const QFileInfo f(fic);
+    const QString fichier = (QDir::toNativeSeparators(fic).contains(Configuration::instance()->dirTle()) ? f.fileName() : fic);
+    Configuration::instance()->ajoutListeFicTLE(fichier);
+    InitFicTLE();
+
+    AfficherMessageStatut(tr("Fichier %1 créé").arg(fichier), 10);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionFichier_TLE_existant_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QFileInfo fich(Configuration::instance()->nomfic());
+    QStringList listeNorad = Configuration::instance()->mapSatellitesFicTLE().value(fich.fileName());
+    listeNorad.sort();
+
+    /* Corps de la methode */
+    try {
+
+        const QString fic = QFileDialog::getOpenFileName(this, tr("Ouvrir fichier TLE"), Configuration::instance()->dirTle(),
+                                                         tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
+
+        // Verification que le fichier est un TLE
+        TLE::VerifieFichier(fic, true);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fic, Configuration::instance()->dirTle(), QStringList(), false);
+
+        // Age des nouveaux numeros NORAD dans la liste
+        int nb = 0;
+        QStringListIterator it(listeNorad);
+        while (it.hasNext()) {
+
+            const QString norad = it.next();
+            if (!tabtle.keys().contains(norad)) {
+
+                const TLE tle = Configuration::instance()->mapTLE()[norad];
+                tabtle.insert(norad, tle);
+                nb++;
+            }
+        }
+
+        // Ecriture du fichier
+        QFile fi(fic);
+        fi.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+
+        QMapIterator<QString, TLE> it2(tabtle);
+        while (it2.hasNext()) {
+            it2.next();
+
+            flux << it2.value().ligne0() << endl;
+            flux << it2.value().ligne1() << endl;
+            flux << it2.value().ligne2() << endl;
+        }
+        fi.close();
+
+        const QFileInfo f(fic);
+        const QString fichier = (QDir::toNativeSeparators(fic).contains(Configuration::instance()->dirTle()) ? f.fileName() : fic);
+
+        if (nb == 0) {
+            AfficherMessageStatut(tr("Aucun satellite ajouté dans le fichier %1").arg(fichier), 10);
+        } else {
+            AfficherMessageStatut(tr("Fichier %1 augmenté de %2 nouveaux satellites").arg(fichier).arg(nb), 10);
+        }
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */

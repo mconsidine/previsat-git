@@ -1409,11 +1409,17 @@
               <property name="mouseTracking">
                <bool>true</bool>
               </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
               <property name="autoFillBackground">
                <bool>true</bool>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ContiguousSelection</enum>
               </property>
               <property name="textElideMode">
                <enum>Qt::ElideNone</enum>
