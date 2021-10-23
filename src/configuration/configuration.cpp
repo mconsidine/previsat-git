@@ -557,7 +557,7 @@ void Configuration::EcritureConfiguration()
 
         QStringListIterator itNorad(itTLE.value());
         while (itNorad.hasNext()) {
-            cfg.writeTextElement("TLE", itNorad.next());
+            cfg.writeTextElement("Norad", itNorad.next());
         }
         cfg.writeEndElement();
     }

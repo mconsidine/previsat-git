@@ -3861,7 +3861,7 @@ The file %1 does not contain the TLE of ISS</translation>
     <message>
         <location filename="src/interface/previsat.ui" line="1707"/>
         <location filename="src/interface/previsat.cpp" line="1637"/>
-        <location filename="src/interface/previsat.cpp" line="2202"/>
+        <location filename="src/interface/previsat.cpp" line="2215"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
@@ -4174,7 +4174,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="src/interface/previsat.cpp" line="1671"/>
-        <location filename="src/interface/previsat.cpp" line="2161"/>
+        <location filename="src/interface/previsat.cpp" line="2174"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -4225,28 +4225,28 @@ COSPAR : %3</translation>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.cpp" line="2080"/>
+        <location filename="src/interface/previsat.cpp" line="2093"/>
         <source>%1 (numéro NORAD : %2  -  %3)</source>
         <translation>%1 (NORAD number : %2  -  %3)</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.cpp" line="2162"/>
-        <location filename="src/interface/previsat.cpp" line="2203"/>
+        <location filename="src/interface/previsat.cpp" line="2175"/>
+        <location filename="src/interface/previsat.cpp" line="2216"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.cpp" line="2184"/>
+        <location filename="src/interface/previsat.cpp" line="2197"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.cpp" line="2242"/>
+        <location filename="src/interface/previsat.cpp" line="2255"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="src/interface/previsat.cpp" line="2244"/>
+        <location filename="src/interface/previsat.cpp" line="2257"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>

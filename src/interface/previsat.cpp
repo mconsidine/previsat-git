@@ -2047,19 +2047,32 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
     if (ui->liste1->hasFocus() && (ui->liste1->currentRow() >= 0)) {
 
         const QString norad = item->data(Qt::UserRole).toString();
+        const TLE tle = Configuration::instance()->mapTLE()[norad];
 
         if (ui->liste1->currentItem()->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite dans la liste
             ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
+
+            bool afin = false;
+            int i;
+            for(i = 1; i < Configuration::instance()->listeSatellites().size() && !afin; i++) {
+                afin = (Configuration::instance()->listeSatellites().at(i).tle().norad() == norad);
+            }
+
+            Configuration::instance()->listeSatellites().removeAt(--i);
             Configuration::instance()->suppressionSatelliteFicTLE(norad);
 
         } else {
 
             // Ajout d'un satellite dans la liste
             ui->liste1->currentItem()->setCheckState(Qt::Checked);
+            Configuration::instance()->listeSatellites().append(Satellite(tle));
             Configuration::instance()->ajoutSatelliteFicTLE(norad);
         }
+
+        GestionTempsReel();
+        Configuration::instance()->EcritureConfiguration();
     }
 
     /* Retour */
