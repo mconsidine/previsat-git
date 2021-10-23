@@ -36,12 +36,12 @@
 # >    10 octobre 2021
 
 #-------------------------------------------------
-VER_MAJ = 5.0
-VERSION = 5.0.0.10
-ANNEES_DEV = 2005-2021
-ZLIB_DIR = $$PWD/../../externe/zlib
+VER_MAJ      = 5.0
+VERSION      = 5.0.0.10
+ANNEES_DEV   = 2005-2021
+ZLIB_DIR     = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts PreviSat_ja.ts
-BUILD_TEST = false
+BUILD_TEST   = false
 CLEANUP_TEST = true
 #-------------------------------------------------
 
@@ -53,8 +53,8 @@ greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION_STR = '\\"$${VERSION}\\"'
-VER_MAJ_STR = '\\"$${VER_MAJ}\\"'
+VERSION_STR    = '\\"$${VERSION}\\"'
+VER_MAJ_STR    = '\\"$${VER_MAJ}\\"'
 ANNEES_DEV_STR = '\\"$${ANNEES_DEV}\\"'
 
 DEFINES += APPVERSION=\"$${VERSION_STR}\" \
@@ -260,14 +260,14 @@ equals(BUILD_TEST, true) {
 
 
 OBJECTS_DIR = $$DESTDIR/obj
-MOC_DIR = $$DESTDIR/moc
-UI_DIR = $$DESTDIR/ui
+MOC_DIR     = $$DESTDIR/moc
+UI_DIR      = $$DESTDIR/ui
 
 CONFIG(debug, debug|release) {
     QMAKE_CXXFLAGS += -Wmissing-declarations
 }
 
-QMAKE_CXXFLAGS += -std=c++0x -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wextra -Wformat \
+QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wextra -Wformat \
     -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain -Wmissing-field-initializers \
     -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations -Wpacked -Wparentheses -Wpointer-arith \
     -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector -Wswitch -Wswitch-default -Wswitch-enum -Wtrigraphs \
