@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 novembre 2017
+ * >    23 octobre 2021
  *
  */
 
@@ -41,8 +41,11 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QApplication>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QMessageBox>
+#include <QSharedMemory>
 #include <QSplashScreen>
 #include <QTranslator>
+#include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -66,6 +69,24 @@ int main(int argc, char *argv[])
         splash->show();
 
         PreviSat w;
+
+        // Verification si une instance de PreviSat existe
+        const qint64 pid = a.applicationPid();
+        QSharedMemory mem;
+        mem.setKey("pidPreviSat");
+
+        if (!mem.create(sizeof(pid))) {
+            if (mem.error() == QSharedMemory::AlreadyExists) {
+                if (mem.attach(QSharedMemory::ReadOnly)) {
+
+                    const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
+                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
+                    return EXIT_FAILURE;
+                }
+            } else {
+                QMessageBox::warning(0, QObject::tr("Information"), mem.errorString());
+            }
+        }
 
         const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
         splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
