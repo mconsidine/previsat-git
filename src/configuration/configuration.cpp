@@ -81,9 +81,9 @@ Configuration *Configuration::instance()
     return _instance;
 }
 
-QString Configuration::dirDoc() const
+QString Configuration::dirDox() const
 {
-    return _dirDoc;
+    return _dirDox;
 }
 
 QString Configuration::dirExe() const
@@ -146,7 +146,7 @@ QString Configuration::dirTmp() const
     return _dirTmp;
 }
 
-QString Configuration::locale() const
+QString &Configuration::locale()
 {
     return _locale;
 }
@@ -828,7 +828,7 @@ void Configuration::DefinitionArborescences()
 
     // Autres repertoires
     _dirCommonData = dirCommon + QDir::separator() + "data";
-    _dirDoc = _dirExe + QDir::separator() + "dox";
+    _dirDox = _dirExe + QDir::separator() + "dox";
     _dirLang = _dirExe + QDir::separator() + "translations";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";
     _dirCfg = _dirLocalData + QDir::separator() + "config";

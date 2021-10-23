@@ -1004,10 +1004,10 @@ void PreviSat::ChangementLangue(const int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString langue = Configuration::instance()->listeFicLang().at(index);
+    Configuration::instance()->locale() = Configuration::instance()->listeFicLang().at(index);
 
     /* Corps de la methode */
-    ChargementTraduction(langue);
+    ChargementTraduction(Configuration::instance()->locale());
 
     _onglets->setInfo(true);
     _onglets->AffichageLieuObs();
@@ -1553,10 +1553,10 @@ void PreviSat::on_directHelp_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString ficDoc = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDoc()).arg(Configuration::instance()->locale());
+    const QString ficDox = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDox()).arg(Configuration::instance()->locale());
 
     /* Corps de la methode */
-    if (!QDesktopServices::openUrl("file:///" + ficDoc)) {
+    if (!QDesktopServices::openUrl("file:///" + ficDox)) {
         Message::Afficher(tr("Impossible d'afficher l'aide en ligne"), WARNING);
     }
 
