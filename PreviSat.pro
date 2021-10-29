@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    10 octobre 2021
+# >    29 octobre 2021
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
@@ -64,7 +64,6 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
 
 INCLUDEPATH += src
 CONFIG += c++11
-LIBS += -lz
 
 
 SOURCES += \
