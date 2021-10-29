@@ -39,7 +39,6 @@
 VER_MAJ      = 5.0
 VERSION      = 5.0.0.10
 ANNEES_DEV   = 2005-2021
-ZLIB_DIR     = $$PWD/../../externe/zlib
 TRANSLATIONS = PreviSat_en.ts PreviSat_ja.ts
 BUILD_TEST   = false
 CLEANUP_TEST = true
@@ -63,9 +62,9 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     QT_DEPRECATED_WARNINGS                \
     BUILD_TEST=$$BUILD_TEST
 
-INCLUDEPATH += src $$ZLIB_DIR/inc
+INCLUDEPATH += src
 CONFIG += c++11
-LIBS += -L$$ZLIB_DIR/lib -lz
+LIBS += -lz
 
 
 SOURCES += \
@@ -163,8 +162,7 @@ HEADERS += \
     src/previsions/prevision.h                           \
     src/previsions/previsionsconst.h                     \
     src/previsions/telescope.h                           \
-    src/previsions/transitsiss.h                         \
-    $$ZLIB_DIR/inc/zlib.h
+    src/previsions/transitsiss.h
 
 
 FORMS += \

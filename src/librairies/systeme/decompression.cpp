@@ -34,13 +34,13 @@
  *
  */
 
+#include <zlib.h>
 #include <QDir>
 #include <QFileInfo>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "decompression.h"
-#include "zlib.h"
 
 
 /**********
