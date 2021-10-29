@@ -4687,8 +4687,8 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="src/main.cpp" line="83"/>
-        <location filename="src/main.cpp" line="87"/>
+        <location filename="src/main.cpp" line="82"/>
+        <location filename="src/main.cpp" line="86"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -4703,27 +4703,27 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="82"/>
+        <location filename="src/main.cpp" line="81"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation>An instance of %1 is already launched</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="92"/>
+        <location filename="src/main.cpp" line="91"/>
         <source>Initialisation de la configuration...</source>
         <translation>Initialisation of configuration...</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="96"/>
+        <location filename="src/main.cpp" line="95"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>Loading TLE file...</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="100"/>
+        <location filename="src/main.cpp" line="99"/>
         <source>Mise à jour des TLE...</source>
         <translation>Updating TLEs...</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="104"/>
+        <location filename="src/main.cpp" line="103"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>Launching application...</translation>
     </message>

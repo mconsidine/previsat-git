@@ -33,19 +33,18 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 octobre 2021
+ * >    29 octobre 2021
  *
  */
 
-#include "interface/previsat.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QApplication>
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QMessageBox>
+#pragma GCC diagnostic warning "-Wconversion"
 #include <QSharedMemory>
 #include <QSplashScreen>
-#include <QTranslator>
 #include "configuration/configuration.h"
+#include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
 
 

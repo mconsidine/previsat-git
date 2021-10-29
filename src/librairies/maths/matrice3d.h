@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    29 octobre 2021
  *
  */
 
@@ -117,6 +117,13 @@ public:
     Matrice3D Transposee() const;
 
     /**
+     * @brief operator = Copie d'une matrice
+     * @param matrice matrice
+     * @return copie de la matrice
+     */
+    inline Matrice3D operator = (const Matrice3D &matrice);
+
+    /**
      * @brief operator * produit d'une matrice 3x3 par un vecteur 3D
      * @param matrice matrice 3x3
      * @param vecteur 3D
@@ -169,6 +176,14 @@ private:
 
 };
 
+
+/*
+ * Copie d'une matrice
+ */
+inline Matrice3D Matrice3D::operator = (const Matrice3D &matrice)
+{
+    return (Matrice3D(matrice._vecteur1, matrice._vecteur2, matrice._vecteur3));
+}
 
 /*
  * Produit d'une Matrice3D avec un vecteur 3D

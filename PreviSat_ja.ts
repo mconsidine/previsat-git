@@ -4642,8 +4642,8 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="src/main.cpp" line="83"/>
-        <location filename="src/main.cpp" line="87"/>
+        <location filename="src/main.cpp" line="82"/>
+        <location filename="src/main.cpp" line="86"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -4676,27 +4676,27 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="82"/>
+        <location filename="src/main.cpp" line="81"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="92"/>
+        <location filename="src/main.cpp" line="91"/>
         <source>Initialisation de la configuration...</source>
         <translation type="unfinished">構成を初期化しています...</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="96"/>
+        <location filename="src/main.cpp" line="95"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>TLEファイルを読み込んでいます。</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="100"/>
+        <location filename="src/main.cpp" line="99"/>
         <source>Mise à jour des TLE...</source>
         <translation type="unfinished">TLEファイルの更新...</translation>
     </message>
     <message>
-        <location filename="src/main.cpp" line="104"/>
+        <location filename="src/main.cpp" line="103"/>
         <source>Démarrage de l&apos;application...</source>
         <translation type="unfinished">アプリが起動しています...</translation>
     </message>
