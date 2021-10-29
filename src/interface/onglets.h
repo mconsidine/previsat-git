@@ -101,6 +101,7 @@ public:
     /*
      * Accesseurs
      */
+    QString dirDwn() const;
     Ui::Onglets *ui();
 
     /*

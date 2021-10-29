@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 octobre 2021
+ * >    29 octobre 2021
  *
  */
 
@@ -226,6 +226,11 @@ private:
     void InitMenus() const;
 
     /**
+     * @brief InitVerificationsMAJ Verification des mises a jour au demarrage
+     */
+    void InitVerificationsMAJ();
+
+    /**
      * @brief InstallationTraduction Installation de la traduction
      * @param langue langue
      * @param traduction traduction
@@ -253,10 +258,23 @@ private:
     void MettreAJourGroupeTLE(const QString &groupe);
 
     /**
+     * @brief MiseAJourFichiers Mise a jour des fichiers internes et du logiciel
+     * @param action type de mise a jour
+     * @param nomMAJ nom de la mise a jour
+     */
+    void MiseAJourFichiers(QAction *action, const QString &nomMAJ);
+
+    /**
      * @brief OuvertureFichierTLE Ouverture d'un fichier TLE
      * @param fichier nom du fichier
      */
     void OuvertureFichierTLE(const QString &fichier);
+
+    /**
+     * @brief VerifMAJPreviSat Verification des mises a jour (logiciel, fichiers internes)
+     */
+    void VerifMAJPreviSat();
+
 
 
 private slots:
@@ -370,6 +388,8 @@ private slots:
     void on_actionDefinir_par_defaut_triggered();
     void on_actionNouveau_fichier_TLE_triggered();
     void on_actionFichier_TLE_existant_triggered();
+
+    void on_actionTelecharger_la_mise_a_jour_triggered();
 
 };
 

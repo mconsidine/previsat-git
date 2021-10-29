@@ -77,21 +77,21 @@ Donnees::Donnees(const QString &donnee)
     /* Corps du constructeur */
     if (!donnee.isEmpty()) {
 
-        _cospar = donnee.mid(6, 11).trimmed();
-        _t1 = donnee.mid(18, 5).toDouble();
-        _t2 = donnee.mid(24, 4).toDouble();
-        _t3 = donnee.mid(29, 4).toDouble();
-        _magnitudeStandard = donnee.mid(34, 4).toDouble();
-        _methMagnitude = donnee.at(39).toLatin1();
-        _section = donnee.mid(41, 6).toDouble();
-        _dateLancement = donnee.mid(48, 10);
-        _periode = donnee.mid(70, 10).trimmed();
-        _perigee = donnee.mid(81, 7).trimmed();
-        _apogee = donnee.mid(89, 7).trimmed();
-        _inclinaison = donnee.mid(97, 6).trimmed();
-        _categorieOrbite = donnee.mid(104, 6).trimmed();
-        _pays = donnee.mid(111, 5).trimmed();
-        _siteLancement = donnee.mid(117, 5).trimmed();
+        _cospar = donnee.mid(7, 11).trimmed();
+        _t1 = donnee.mid(19, 5).toDouble();
+        _t2 = donnee.mid(25, 4).toDouble();
+        _t3 = donnee.mid(30, 4).toDouble();
+        _magnitudeStandard = donnee.mid(35, 4).toDouble();
+        _methMagnitude = donnee.at(40).toLatin1();
+        _section = donnee.mid(42, 6).toDouble();
+        _dateLancement = donnee.mid(49, 10);
+        _periode = donnee.mid(71, 10).trimmed();
+        _perigee = donnee.mid(82, 7).trimmed();
+        _apogee = donnee.mid(90, 7).trimmed();
+        _inclinaison = donnee.mid(98, 6).trimmed();
+        _categorieOrbite = donnee.mid(105, 6).trimmed();
+        _pays = donnee.mid(112, 5).trimmed();
+        _siteLancement = donnee.mid(118, 5).trimmed();
     }
 
     /* Retour */
