@@ -34,7 +34,7 @@
  *
  */
 
-#include <zlib.h>
+#include <QtZlib/zlib.h>
 #include <QDir>
 #include <QFileInfo>
 #pragma GCC diagnostic ignored "-Wconversion"
