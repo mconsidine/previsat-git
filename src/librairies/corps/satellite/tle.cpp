@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 septembre 2021
+ * >    29 octobre 2021
  *
  */
 
@@ -333,15 +333,15 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
     // Lecture du fichier de donnees
     if (magn.isEmpty() && ajoutDonnees) {
 
-        const QString fic = dirLocalData + QDir::separator() + "donnees.sat";
+        const QString fic = dirLocalData + QDir::separator() + "donnees.bin";
         QFile donneesSatellites(fic);
 
         if (donneesSatellites.exists() && (donneesSatellites.size() != 0)) {
 
-            donneesSatellites.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&donneesSatellites);
-            magn = flux.readAll();
+            donneesSatellites.open(QIODevice::ReadOnly);
+            const QByteArray donneesCompressees = donneesSatellites.readAll();
             donneesSatellites.close();
+            magn = QString(qUncompress(donneesCompressees));
         } else {
             magn = "";
         }
@@ -355,6 +355,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
 
+        QString norad;
         QString lig0;
         QString lig1;
         QString lig2;
@@ -373,12 +374,15 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                 lig1 = ligne;
 
                 if (ajoutDonnees) {
-                    const int indx1 = magn.indexOf('\n' + lig1.mid(2, 5)) + 1;
+
+                    norad = QString("%1").arg(lig1.mid(2, 5), 6, QChar('0'));
+
+                    const int indx1 = magn.indexOf('\n' + norad) + 1;
                     if (indx1 > 0) {
                         const int indx2 = magn.indexOf('\n', indx1) - indx1;
                         lig0 = magn.mid(indx1 + 123, indx2 - 123).trimmed();
                     } else {
-                        lig0 = lig1.mid(2, 5);
+                        lig0 = norad;
                     }
                 }
             } else {
@@ -406,8 +410,10 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                     if (ajoutDonnees) {
 
+                       norad = QString("%1").arg(tle._norad, 6, QChar('0'));
+
                         // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                        const int indx1 = magn.indexOf('\n' + tle._norad) + 1;
+                        const int indx1 = magn.indexOf('\n' + tle._norad);
                         if (indx1 > 0) {
                             const int indx2 = magn.indexOf('\n', indx1);
                             tle._donnees = Donnees(magn.mid(indx1, indx2));

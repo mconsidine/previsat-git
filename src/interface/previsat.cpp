@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 octobre 2021
+ * >    29 octobre 2021
  *
  */
 
@@ -39,6 +39,7 @@
 #include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -234,6 +235,9 @@ void PreviSat::ChargementConfig()
 
     // Affichage au demarrage
     InitAffichageDemarrage();
+
+    // Verification des mises a jour au demarrage
+    InitVerificationsMAJ();
 
     // Initialisation des menus
     InitMenus();
@@ -642,6 +646,48 @@ void PreviSat::InitMenus() const
 }
 
 /*
+ * Verification des mises a jour (logiciel, fichiers internes)
+ */
+void PreviSat::InitVerificationsMAJ()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+#if defined (Q_OS_MAC)
+    settings.setValue("affichage/verifMAJ", false);
+    _onglets->ui()->verifMAJ->setVisible(false);
+#else
+    if (_onglets->ui()->verifMAJ->isChecked()) {
+        VerifMAJPreviSat();
+    }
+#endif
+
+#if !defined (Q_OS_WIN)
+    if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
+
+        _onglets->setDirDwn(Configuration::instance()->dirTmp());
+
+        QString fic("don");
+        TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + fic, false);
+
+        QFile fi(_dirDwn + QDir::separator() + fic);
+        if (fi.exists() && (fi.size() != 0)) {
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            settings.setValue("fichier/dirHttpPreviDon", flux.readLine());
+            fi.close();
+        }
+    }
+#endif
+
+    /* Retour */
+    return;
+}
+
+/*
  * Installation de la traduction
  */
 void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduction)
@@ -861,6 +907,41 @@ void PreviSat::MettreAJourGroupeTLE(const QString &groupe)
     _onglets->MettreAJourGroupeTLE(groupe);
 }
 
+void PreviSat::MiseAJourFichiers(QAction *action, const QString &nomMAJ)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    action->setVisible(true);
+
+    const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+
+    QMessageBox msgbox(tr("Information"), msg.arg(nomMAJ), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                       QMessageBox::No, QMessageBox::NoButton, this);
+    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    msgbox.exec();
+    const int res = msgbox.result();
+
+    if (res == QMessageBox::Yes) {
+
+        if (action == ui->actionTelecharger_la_mise_a_jour) {
+            on_actionTelecharger_la_mise_a_jour_triggered();
+            ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+        }
+
+        if (action == ui->actionMettre_jour_les_fichiers_de_donnees) {
+            on_actionMettre_jour_les_fichiers_de_donnees_triggered();
+            ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Ouverture d'un fichier TLE
  */
@@ -873,6 +954,119 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
     /* Corps de la methode */
     Configuration::instance()->nomfic() = fichier;
     ChargementTLE();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification des mises a jour (logiciel, fichiers internes)
+ */
+void PreviSat::VerifMAJPreviSat()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool anewVersion = false;
+    _onglets->setDirDwn(Configuration::instance()->dirTmp());
+    const QString dirHttpPrevi = Configuration::instance()->adresseAstropedia() + "previsat/Qt/";
+    const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt" << "majInfos");
+
+    /* Corps de la methode */
+    foreach(QString fic, listeFic) {
+
+        const QString ficMaj = dirHttpPrevi + fic;
+        _onglets->TelechargementFichier(ficMaj, false);
+
+        QString ligne;
+        QFile fi(_onglets->dirDwn() + QDir::separator() + fic);
+        if (fi.exists() && (fi.size() != 0)) {
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            ligne = flux.readLine();
+            fi.close();
+        }
+
+        if (!ligne.isEmpty()) {
+
+            if (fic == "versionPreviSat") {
+
+                const QStringList newVersion = ligne.split(".");
+                const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
+
+                int inew[4], iold[4];
+                for(int i=0; i<4; i++) {
+                    inew[i] = newVersion.at(i).toInt();
+                    iold[i] = oldVersion.at(i).toInt();
+                }
+
+                anewVersion = std::lexicographical_compare(iold, iold + 4, inew, inew + 4);
+
+                if (anewVersion) {
+                    MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, tr("de %1", "for downloading PreviSat revision")
+                                      .arg(QCoreApplication::applicationName()));
+                    settings.setValue("fichier/majPrevi", "1");
+                } else {
+                    ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                }
+
+            } else if (((fic == "majFicInt") || (fic == "majInfos")) && !anewVersion) {
+
+                const int an = ligne.mid(0, 4).toInt();
+                const int mo = ligne.mid(5, 2).toInt();
+                const int jo = ligne.mid(8, 2).toInt();
+
+                const QDateTime dateHttp(QDate(an, mo, jo), QTime(0, 0, 0));
+
+                if (fic == "majFicInt") {
+
+                    QDateTime dateMax;
+                    for(int i=0; i<Configuration::instance()->listeFicLocalData().size(); i++) {
+
+                        const QString fichier = Configuration::instance()->listeFicLocalData().at(i);
+                        if (!fichier.contains("preferences")) {
+
+                            const QString fich = Configuration::instance()->dirLocalData() + QDir::separator() + fichier;
+                            const QFileInfo fi2(fich);
+
+                            if (fi2.lastModified().date() > dateMax.date()) {
+                                dateMax.setDate(fi2.lastModified().date());
+                            }
+                        }
+                    }
+
+                    const bool anew = (dateHttp > dateMax);
+
+                    if (anew && !ui->actionTelecharger_la_mise_a_jour->isVisible()) {
+                        MiseAJourFichiers(ui->actionMettre_jour_les_fichiers_de_donnees, tr("des fichiers internes",
+                                                                                            "for downloading internal files"));
+                        settings.setValue("fichier/majPrevi", "1");
+                    } else {
+                        ui->actionMettre_jour_les_fichiers_de_donnees->setVisible(false);
+                    }
+                }
+
+                if (fic == "majInfos") {
+
+                    //majInfosDate = ligne;
+                    QFont fnt;
+
+                    if (settings.value("affichage/informationsDemarrage", true).toBool()) {
+                        fnt.setBold(false);
+                        ui->actionInformations->setFont(fnt);
+
+                    } else {
+                        const QDateTime lastInfos = QDateTime::fromString(settings.value("temps/lastInfos", "").toString(), "yyyy-MM-dd");
+                        if (dateHttp > lastInfos) {
+                            fnt.setBold(true);
+                            ui->actionInformations->setFont(fnt);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /* Retour */
     return;
@@ -1297,6 +1491,14 @@ void PreviSat::ChargementFenetre()
     connect(_onglets, SIGNAL(InitFicTLE()), this, SLOT(InitFicTLE()));
 
     ChargementTraduction(settings.value("affichage/langue", "en").toString());
+
+    if (settings.value("fichier/sauvegarde").toString().isEmpty()) {
+        settings.setValue("fichier/sauvegarde", Configuration::instance()->dirOut());
+    }
+
+    settings.setValue("fichier/path", Configuration::instance()->dirExe());
+    settings.setValue("fichier/version", QString(APPVERSION));
+    settings.setValue("affichage/flagIntensiteVision", false);
 
     /* Retour */
     return;
@@ -1795,7 +1997,7 @@ void PreviSat::on_actionMettre_jour_les_fichiers_de_donnees_triggered()
 
         if (!fic.contains("gestionnaireTLE") && !fic.contains("preferences")) {
             const QString ficMaj = Configuration::instance()->adresseAstropedia() + "previsat/Qt/commun/data/" + fic.replace("\\", "/");
-            _onglets->TelechargementFichier(ficMaj, true);
+            _onglets->TelechargementFichier(ficMaj, false);
         }
     }
 
@@ -2116,7 +2318,6 @@ void PreviSat::on_liste1_customContextMenuRequested(const QPoint &pos)
 void PreviSat::on_actionDefinir_par_defaut_triggered()
 {
     /* Declarations des variables locales */
-    int i;
 
     /* Initialisations */
     const QString norad = ui->liste1->currentItem()->data(Qt::UserRole).toString();
@@ -2262,4 +2463,9 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/latest/download"));
 }

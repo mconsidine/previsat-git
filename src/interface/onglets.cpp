@@ -183,6 +183,11 @@ Onglets::~Onglets()
 /*
  * Accesseurs
  */
+QString Onglets::dirDwn() const
+{
+    return _dirDwn;
+}
+
 Ui::Onglets *Onglets::ui()
 {
     return _ui;
@@ -2460,6 +2465,24 @@ void Onglets::InitAffichageDemarrage()
     _ui->langue->setCurrentIndex(Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue", "en").toString()));
     _ui->langue->blockSignals(etat);
 
+    if (settings.value("affichage/utc", false).toBool()) {
+        _ui->utc->setChecked(true);
+    } else {
+        _ui->heureLegale->setChecked(true);
+    }
+
+    if (settings.value("affichage/unite", true).toBool()) {
+        _ui->unitesKm->setChecked(true);
+    } else {
+        _ui->unitesMi->setChecked(true);
+    }
+
+    if (settings.value("affichage/systemeHoraire", true).toBool()) {
+        _ui->syst24h->setChecked(true);
+    } else {
+        _ui->syst12h->setChecked(true);
+    }
+
     /* Retour */
     return;
 }
@@ -2989,28 +3012,39 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
         // Affichage de la categorie d'orbite
         if (_ui->categorieOrbite->underMouse() || _ui->categorieOrbiteDonneesSat->underMouse()) {
 
-            const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().categorieOrbite();
+            QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().categorieOrbite();
             _ui->categorieOrbite->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
+
+            acronyme = _ui->categorieOrbiteDonneesSat->text();
             _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
         }
 
         // Affichage du pays ou de l'organisation
         if (_ui->pays->underMouse() || _ui->paysDonneesSat->underMouse()) {
 
-            const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().pays();
+            QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().pays();
             _ui->pays->setToolTip(Configuration::instance()->mapPays()[acronyme]);
+
+            acronyme = _ui->paysDonneesSat->text();
             _ui->paysDonneesSat->setToolTip(Configuration::instance()->mapPays()[acronyme]);
         }
 
         // Affichage du site de lancement
         if (_ui->siteLancement->underMouse() || _ui->siteLancementDonneesSat->underMouse()) {
 
-            const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().siteLancement();
-            const Observateur site = Configuration::instance()->mapSites()[acronyme];
+            if (_ui->siteLancement->underMouse()) {
+                const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().siteLancement();
+                const Observateur site = Configuration::instance()->mapSites()[acronyme];
+                _ui->siteLancement->setToolTip(site.nomlieu());
+                emit AffichageSiteLancement(acronyme, site);
+            }
 
-            _ui->siteLancement->setToolTip(site.nomlieu());
-            _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
-            emit AffichageSiteLancement(acronyme, site);
+            if (_ui->siteLancementDonneesSat->underMouse()) {
+                const QString acronyme = _ui->siteLancementDonneesSat->text();
+                const Observateur site = Configuration::instance()->mapSites()[acronyme];
+                _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
+                emit AffichageSiteLancement(acronyme, site);
+            }
         } else {
             emit AffichageSiteLancement("", Observateur());
         }
@@ -3093,16 +3127,16 @@ void Onglets::on_informations_currentChanged(int arg1)
 
         _ui->noradDonneesSat->setValue(0);
 
-        // Lecture du fichier donnees.sat en entier
+        // Lecture du fichier donnees.bin en entier
         if (_donneesSat.isEmpty()) {
 
-            const QString fic = Configuration::instance()->dirLocalData() + QDir::separator() + "donnees.sat";
+            const QString fic = Configuration::instance()->dirLocalData() + QDir::separator() + "donnees.bin";
 
             QFile fi(fic);
             if (fi.exists() && (fi.size() != 0)) {
-                fi.open(QIODevice::ReadOnly | QIODevice::Text);
-                QTextStream flux(&fi);
-                _donneesSat = flux.readAll().toLower();
+                fi.open(QIODevice::ReadOnly);
+                const QByteArray donneesCompressees = fi.readAll();
+                _donneesSat = QString(qUncompress(donneesCompressees));
             } else {
                 _donneesSat = "";
             }
@@ -3317,7 +3351,7 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
 
         _resultatsSatellitesTrouves.clear();
         int indx1 = 0;
-        const QString norad = QString("%1 ").arg(arg1, 5, 10, QChar('0'));
+        const QString norad = QString("%1 ").arg(arg1, 6, 10, QChar('0'));
 
         // Recherche dans le tableau de donnees a partir du numero NORAD
         do {
@@ -3417,7 +3451,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         _ui->nomsat->setText((nomsat.isEmpty()) ? tr("Inconnu") : nomsat);
 
         // Numero NORAD
-        const QString norad = ligne.mid(0, 5);
+        const QString norad = ligne.mid(0, 6);
         _ui->numNorad->setText(norad);
 
         // Designation COSPAR
@@ -3535,14 +3569,15 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
             _ui->lbl_dateRentree->setVisible(false);
             _ui->dateRentree->setVisible(false);
 
-            _ui->lbl_categorieOrbiteDonneesSat->move(0, 70);
-            _ui->categorieOrbiteDonneesSat->move(111, 70);
+            _ui->lbl_categorieOrbiteDonneesSat->move(0, 15);
+            _ui->categorieOrbiteDonneesSat->move(_ui->categorieOrbiteDonneesSat->x(), 15);
 
-            _ui->lbl_paysDonneesSat->move(0, 85);
-            _ui->paysDonneesSat->move(111, 85);
+            _ui->lbl_paysDonneesSat->move(0, 30);
+            _ui->paysDonneesSat->move(_ui->paysDonneesSat->x(), 30);
 
-            _ui->lbl_siteLancementDonneesSat->move(0, 100);
-            _ui->siteLancementDonneesSat->move(111, 100);
+            _ui->lbl_siteLancementDonneesSat->move(0, 45);
+            _ui->siteLancementDonneesSat->move( _ui->siteLancementDonneesSat->x(), 45);
+
         } else {
 
             const int annee_rentree = dateRentree.mid(0, 4).toInt();
@@ -5615,7 +5650,7 @@ void Onglets::on_majTleIss_clicked()
 
         // Mise a jour du fichier d'elements orbitaux
         const QString ficTle = Configuration::instance()->adresseCelestrakNorad() + "supplemental/iss.txt";
-        setDirDwn(Configuration::instance()->dirTmp());
+        _dirDwn = Configuration::instance()->dirTmp();
         TelechargementFichier(ficTle, false);
 
         // Verification du fichier
@@ -5631,7 +5666,7 @@ void Onglets::on_majTleIss_clicked()
 
 
         // Mise a jour du fichier de manoeuvres
-        setDirDwn(Configuration::instance()->dirLocalData());
+        _dirDwn = Configuration::instance()->dirLocalData();
         TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
 
         // Lecture du fichier de manoeuvres

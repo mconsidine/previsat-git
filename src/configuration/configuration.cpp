@@ -1638,7 +1638,7 @@ void Configuration::VerificationArborescences()
                 di.rename(dir.path(), dest);
             }
 
-            const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.sat"
+            const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
                                     << _dirCommonData + QDir::separator() + "taiutc.dat");
 
             foreach(QString fic, listeFics) {
@@ -1681,7 +1681,7 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.sat" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
+        _listeFicLocalData << "donnees.bin" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
                            << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);

@@ -939,20 +939,24 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
     /* Corps de la methode */
     show();
-    const int lobs = qRound((180. - siteLancement.longitude() * RAD2DEG) * DEG2PXHZ)+1;
-    const int bobs = qRound((90. - siteLancement.latitude() * RAD2DEG) * DEG2PXVT)+1;
 
-    scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
-    scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+    if (!acronyme.isEmpty()) {
 
-    QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(acronyme);
-    const int lng = static_cast<int> (txtObs->boundingRect().width());
-    const int xnobs = ((lobs + 7 + lng) > ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
-    const int ynobs = ((bobs + 12) > ui->carte->height()) ? bobs - 12 : bobs;
+        const int lobs = qRound((180. - siteLancement.longitude() * RAD2DEG) * DEG2PXHZ)+1;
+        const int bobs = qRound((90. - siteLancement.latitude() * RAD2DEG) * DEG2PXVT)+1;
 
-    txtObs->setBrush(Qt::white);
-    txtObs->setPos(xnobs, ynobs);
-    scene->addItem(txtObs);
+        scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
+        scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+
+        QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(acronyme);
+        const int lng = static_cast<int> (txtObs->boundingRect().width());
+        const int xnobs = ((lobs + 7 + lng) > ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
+        const int ynobs = ((bobs + 12) > ui->carte->height()) ? bobs - 12 : bobs;
+
+        txtObs->setBrush(Qt::white);
+        txtObs->setPos(xnobs, ynobs);
+        scene->addItem(txtObs);
+    }
 
     /* Retour */
     return;
