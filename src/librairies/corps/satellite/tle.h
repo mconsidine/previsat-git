@@ -49,8 +49,6 @@
 #include "donnees.h"
 
 
-class QString;
-
 class TLE
 {
 #if BUILD_TEST == true
@@ -94,10 +92,8 @@ public:
     QString norad() const;
     QString cospar() const;
     double omegao() const;
-
     double ndt20() const;
     double ndd60() const;
-
     Donnees donnees() const;
 
 
@@ -112,14 +108,6 @@ public:
     /*
      * Methodes publiques
      */
-    /**
-     * @brief VerifieFichier Verification du fichier TLE
-     * @param nomFichier nom du fichier TLE
-     * @param alarme affichage d'une boite de message
-     * @return nombre de satellites dans le fichier
-     */
-    static int VerifieFichier(const QString &nomFichier, const bool alarme = false);
-
     /**
      * @brief LectureFichier Lecture du fichier TLE
      * @param nomFichier nom du fichier TLE
@@ -145,6 +133,14 @@ public:
      * @param compteRendu compte rendu de mise a jour
      */
     static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
+
+    /**
+     * @brief VerifieFichier Verification du fichier TLE
+     * @param nomFichier nom du fichier TLE
+     * @param alarme affichage d'une boite de message
+     * @return nombre de satellites dans le fichier
+     */
+    static int VerifieFichier(const QString &nomFichier, const bool alarme = false);
 
 
 protected:
@@ -220,7 +216,6 @@ private:
      * @param alarme affichage d'une boite de message
      */
     static void VerifieLignes(const QString &li1, const QString &li2, const QString &nomsat, const bool alarme);
-
 
 };
 

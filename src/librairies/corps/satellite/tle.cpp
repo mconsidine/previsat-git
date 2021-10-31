@@ -216,6 +216,16 @@ QString TLE::cospar() const
     return _cospar;
 }
 
+double TLE::ndt20() const
+{
+    return _ndt20;
+}
+
+double TLE::ndd60() const
+{
+    return _ndd60;
+}
+
 Donnees TLE::donnees() const
 {
     return _donnees;
@@ -225,101 +235,6 @@ Donnees TLE::donnees() const
 /*
  * Methodes publiques
  */
-/*
- * Verification du fichier TLE
- */
-int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    int nb = 0;
-
-    /* Corps de la methode */
-    try {
-
-        QFile fi(nomFichier);
-        if (fi.exists()) {
-
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-
-            int itle = 0;
-            QString lig0;
-            QString lig1;
-            QString lig2;
-            QString msg;
-            QTextStream flux(&fi);
-
-            while (!flux.atEnd()) {
-
-                const QString ligne = flux.readLine();
-
-                lig1 = "";
-                lig2 = "";
-
-                lig0 = ligne;
-                if (ligne.mid(0, 2) == "1 ") {
-
-                    // Cas des fichiers a 2 lignes
-                    lig1 = ligne;
-
-                } else {
-
-                    // Lecture ligne 1
-                    do {
-                        lig1 = flux.readLine();
-                    } while ((lig1.trimmed().length() == 0) && !flux.atEnd());
-                }
-
-                // Lecture ligne 2
-                do {
-                    lig2 = flux.readLine();
-                } while ((lig2.trimmed().length() == 0) && !flux.atEnd());
-
-                const QString nomsat = RecupereNomsat(lig0);
-                VerifieLignes(lig1, lig2, nomsat, alarme);
-
-                if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
-                    msg = "";
-                    if (alarme) {
-                        msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
-                    }
-                    throw PreviSatException(msg, WARNING);
-                }
-
-                itle = (lig1 == lig0) ? 2 : 3;
-                nb++;
-            }
-        } else {
-
-            // Le fichier n'existe pas
-            const QString msg = (alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
-        }
-
-        // Le fichier est vide
-        if (fi.size() == 0) {
-            const QString msg = (alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
-        }
-
-        // Aucun satellite dans le fichier
-        if (nb == 0) {
-            const QString msg = (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
-        }
-
-    } catch (PreviSatException &e) {
-        nb = 0;
-        if (alarme) {
-            throw PreviSatException();
-        }
-    }
-
-    /* Retour */
-    return nb;
-}
-
 /*
  * Lecture du fichier TLE
  */
@@ -334,53 +249,51 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringL
     QFile fi(nomFichier);
     if (fi.exists() && (fi.size() != 0)) {
 
-        bool afin = false;
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-
-        QString norad;
         QString lig0;
         QString lig1;
         QString lig2;
+        QString norad;
         TLE tle;
-        const QString &donneesSat = Configuration::instance()->donneesSatellites();
         const int lgRec = Configuration::instance()->lgRec();
+        const QString &donneesSat = Configuration::instance()->donneesSatellites();
 
-        while (!flux.atEnd() && !afin) {
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+        const QString contenuFichier = flux.readAll();
+        fi.close();
 
-            const QString ligne = flux.readLine();
-            lig0 = ligne;
-            lig1 = "";
-            lig2 = "";
+        QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+        while (it.hasNext()) {
 
-            if (ligne.mid(0, 2) == "1 ") {
+            const QString ligne = it.next();
 
-                // Cas des fichiers a 2 lignes : on recupere le nom du satellite a partir du fichier de donnees
+            if (ligne.startsWith("1 ")) {
+
+                // Cas des TLE a 2 lignes
                 lig1 = ligne;
+                lig2 = it.next();
+
+                // Recuperation du nom du satellite dans le fichier de donnees
+                norad = lig1.mid(2, 5);
+                lig0 = norad;
 
                 if (ajoutDonnees) {
 
-                    norad = lig1.mid(2, 5);
-
                     const int idx = lgRec * norad.toInt();
                     if ((idx >= 0) && (idx < donneesSat.size())) {
-                        tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
-                    } else {
-                        lig0 = norad;
+
+                        const QString donnee = donneesSat.mid(idx, lgRec);
+                        tle._donnees = Donnees(donnee);
+                        lig0 = donnee.mid(124).trimmed();
                     }
                 }
             } else {
 
-                // Lecture ligne 1
-                do {
-                    lig1 = flux.readLine();
-                } while (lig1.trimmed().length() == 0);
+                // Cas des TLE a 3 lignes
+                lig0 = ligne;
+                lig1 = it.next();
+                lig2 = it.next();
             }
-
-            // Lecture ligne 2
-            do {
-                lig2 = flux.readLine();
-            } while (lig2.trimmed().length() == 0);
 
             const QString nomsat = RecupereNomsat(lig0);
 
@@ -402,12 +315,10 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringL
                     }
 
                     mapTLE.insert(tle._norad, tle);
-                    afin = (!listeSatellites.isEmpty() && (mapTLE.size() == listeSatellites.size()));
                 }
             }
         }
     }
-    fi.close();
 
     /* Retour */
     return mapTLE;
@@ -431,32 +342,19 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 
             fichier.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream flux(&fichier);
-
-            QString ligne1;
-            QString ligne2;
-
-            while (!flux.atEnd()) {
-
-                const QString ligne = flux.readLine();
-                if (!ligne.trimmed().isEmpty()) {
-
-                    const QString ligne0 = ligne;
-
-                    ligne1 = "";
-                    ligne2 = "";
-                    while (ligne1.trimmed().isEmpty()) {
-                        ligne1 = flux.readLine();
-                    }
-
-                    while (ligne2.trimmed().isEmpty()) {
-                        ligne2 = flux.readLine();
-                    }
-
-                    const TLE tle(ligne0, ligne1, ligne2);
-                    tabtle.append(tle);
-                }
-            }
+            const QString contenuFichier = flux.readAll();
             fichier.close();
+
+            QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+            while (it.hasNext()) {
+
+                const QString ligne0 = it.next();
+                const QString ligne1 = it.next();
+                const QString ligne2 = it.next();
+
+                const TLE tle(ligne0, ligne1, ligne2);
+                tabtle.append(tle);
+            }
         }
 
     } catch (PreviSatException &e) {
@@ -635,14 +533,95 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     return;
 }
 
-double TLE::ndt20() const
+/*
+ * Verification du fichier TLE
+ */
+int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 {
-    return _ndt20;
-}
+    /* Declarations des variables locales */
 
-double TLE::ndd60() const
-{
-    return _ndd60;
+    /* Initialisations */
+    int nb = 0;
+
+    /* Corps de la methode */
+    try {
+
+        QFile fi(nomFichier);
+        if (fi.exists()) {
+
+            int itle = 0;
+            QString lig0;
+            QString lig1;
+            QString lig2;
+            QString msg;
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            const QString contenuFichier = flux.readAll();
+            fi.close();
+
+            QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+            while (it.hasNext()) {
+
+                const QString ligne = it.next();
+
+                if (ligne.startsWith("1 ")) {
+
+                    // Cas des TLE a 2 lignes
+                    lig1 = ligne;
+                    lig2 = it.next();
+                    lig0 = lig1;
+
+                } else {
+
+                    // Cas des TLE a 3 lignes
+                    lig0 = ligne;
+                    lig1 = it.next();
+                    lig2 = it.next();
+                }
+
+                const QString nomsat = RecupereNomsat(lig0);
+                VerifieLignes(lig1, lig2, nomsat, alarme);
+
+                if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
+                    msg = "";
+                    if (alarme) {
+                        msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
+                    }
+                    throw PreviSatException(msg, WARNING);
+                }
+
+                itle = (lig1 == lig0) ? 2 : 3;
+                nb++;
+            }
+        } else {
+
+            // Le fichier n'existe pas
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "";
+            throw PreviSatException(msg, WARNING);
+        }
+
+        // Le fichier est vide
+        if (fi.size() == 0) {
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "";
+            throw PreviSatException(msg, WARNING);
+        }
+
+        // Aucun satellite dans le fichier
+        if (nb == 0) {
+            const QString msg = (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "";
+            throw PreviSatException(msg, WARNING);
+        }
+
+    } catch (PreviSatException &e) {
+        nb = 0;
+        if (alarme) {
+            throw PreviSatException();
+        }
+    }
+
+    /* Retour */
+    return nb;
 }
 
 
@@ -705,11 +684,11 @@ QString TLE::RecupereNomsat(const QString &lig0)
         nomsat = nomsat.mid(0, 15).trimmed();
     }
 
-    if (nomsat.mid(0, 2) == "0 ") {
+    if (nomsat.startsWith("0 ")) {
         nomsat = nomsat.mid(2);
     }
 
-    if (nomsat.mid(0, 2) == "1 ") {
+    if (nomsat.startsWith("1 ")) {
         nomsat = nomsat.mid(2, 5);
     }
 
@@ -742,7 +721,7 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     }
 
     // Verification du numero des lignes
-    if ((li1.mid(0, 2) != "1 ") || (li2.mid(0, 2) != "2 ")) {
+    if (!li1.startsWith("1 ") || !li2.startsWith("2 ")) {
         const QString msg = (alarme) ?
                     QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).arg(li2.mid(2, 5)) : "";
         throw PreviSatException(msg, WARNING);

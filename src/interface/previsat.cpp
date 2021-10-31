@@ -221,7 +221,9 @@ void PreviSat::ChargementTLE()
             }
 
             // Verification du fichier TLE
-            TLE::VerifieFichier(nomfic, true);
+            if (!nomfic.contains(Configuration::instance()->dirTle())) {
+                TLE::VerifieFichier(nomfic, true);
+            }
 
             // Lecture du fichier TLE en entier
             Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic));
