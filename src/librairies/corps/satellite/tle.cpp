@@ -39,6 +39,7 @@
 #include <QMessageBox>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
+#include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "donnees.h"
 #include "satellite.h"
@@ -322,30 +323,12 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites,
-                                       const bool ajoutDonnees)
+QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
-    static QString magn;
     QMap<QString, TLE> mapTLE;
 
     /* Initialisations */
-    // Lecture du fichier de donnees
-    if (magn.isEmpty() && ajoutDonnees) {
-
-        const QString fic = dirLocalData + QDir::separator() + "donnees.bin";
-        QFile donneesSatellites(fic);
-
-        if (donneesSatellites.exists() && (donneesSatellites.size() != 0)) {
-
-            donneesSatellites.open(QIODevice::ReadOnly);
-            const QByteArray donneesCompressees = donneesSatellites.readAll();
-            donneesSatellites.close();
-            magn = QString(qUncompress(donneesCompressees));
-        } else {
-            magn = "";
-        }
-    }
 
     /* Corps de la methode */
     QFile fi(nomFichier);
@@ -360,6 +343,8 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
         QString lig1;
         QString lig2;
         TLE tle;
+        const QString &donneesSat = Configuration::instance()->donneesSatellites();
+        const int lgRec = Configuration::instance()->lgRec();
 
         while (!flux.atEnd() && !afin) {
 
@@ -375,12 +360,11 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                 if (ajoutDonnees) {
 
-                    norad = QString("%1").arg(lig1.mid(2, 5), 6, QChar('0'));
+                    norad = lig1.mid(2, 5);
 
-                    const int indx1 = magn.indexOf('\n' + norad) + 1;
-                    if (indx1 > 0) {
-                        const int indx2 = magn.indexOf('\n', indx1) - indx1;
-                        lig0 = magn.mid(indx1 + 124, indx2 - 124).trimmed();
+                    const int idx = lgRec * norad.toInt();
+                    if ((idx >= 0) && (idx < donneesSat.size())) {
+                        tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
                     } else {
                         lig0 = norad;
                     }
@@ -410,13 +394,10 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                     if (ajoutDonnees) {
 
-                       norad = QString("%1").arg(tle._norad, 6, QChar('0'));
-
                         // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                        const int indx1 = magn.indexOf('\n' + norad) + 1;
-                        if (indx1 > 0) {
-                            const int indx2 = magn.indexOf('\n', indx1);
-                            tle._donnees = Donnees(magn.mid(indx1, indx2));
+                        const int idx = lgRec * tle._norad.toInt();
+                        if ((idx >= 0) && (idx < donneesSat.size())) {
+                            tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
                         }
                     }
 
@@ -488,7 +469,7 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 /*
  * Mise a jour du fichier TLE
  */
-void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu)
+void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu)
 {
     /* Declarations des variables locales */
 
@@ -505,7 +486,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleOld = LectureFichier(ficOld, dirLocalData, QStringList(), false);
+    QMap<QString, TLE> tleOld = LectureFichier(ficOld, QStringList(), false);
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
@@ -515,7 +496,7 @@ void TLE::MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, c
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleNew = LectureFichier(ficNew, dirLocalData, QStringList(), false);
+    QMap<QString, TLE> tleNew = LectureFichier(ficNew, QStringList(), false);
 
     /* Corps de la methode */
     // Mise a jour

@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    30 octobre 2021
+ * >    31 octobre 2021
  *
  */
 
@@ -79,8 +79,6 @@ Date *Onglets::_dateEclipse;
 bool Onglets::_acalcAOS;
 double Onglets::_htSat;
 ElementsAOS *Onglets::_elementsAOS;
-
-QString Onglets::_donneesSat;
 
 static QString _ficSuivi;
 
@@ -263,6 +261,8 @@ void Onglets::show(const Date &date)
             _ui->informations->setCurrentIndex(_indexInfo);
             _ui->barreOnglets->setTabText(_ui->barreOnglets->indexOf(_ui->informationsSatellite), _titreInformations.at(0));
             on_informations_currentChanged(_indexInfo);
+            _ui->infoPrec->setVisible(false);
+            _ui->infoSuiv->setVisible(false);
         }
     } else {
 
@@ -274,8 +274,9 @@ void Onglets::show(const Date &date)
             if (_titreInformations.size() < 2) {
                 _titreInformations.insert(0, tr("Informations satellite"));
             }
-            _ui->barreOnglets->insertTab(2, _ui->infos, _titreInformations.at(_indexInfo));
-            on_informations_currentChanged(_indexInfo);
+            _ui->informations->insertWidget(0, _ui->infos);
+            on_infoSuiv_clicked();
+            on_informations_currentChanged(0);
         }
 
         // Affichage des donnees relatives au satellite par defaut
@@ -1075,7 +1076,7 @@ void Onglets::AffichageResultatsDonnees() const
             nomsat = item.mid(124).trimmed();
 
             if (nomsat.isEmpty()) {
-                nomsat = item.mid(0, 5);
+                nomsat = item.mid(0, 6);
             }
 
             _ui->satellitesTrouves->addItem(nomsat);
@@ -1183,7 +1184,7 @@ void Onglets::CalculAgeTLETransitISS()
 
         if (nbt2 > 0) {
             const QStringList listeSat(QStringList() << Configuration::instance()->noradStationSpatiale());
-            const QMap<QString, TLE> mapTle = TLE::LectureFichier(fichier, Configuration::instance()->dirLocalData(), listeSat, false);
+            const QMap<QString, TLE> mapTle = TLE::LectureFichier(fichier, listeSat, false);
 
             age1 = fabs(mapTle.first().epoque().jourJulienUTC() - jjcour);
             ageISS = age1;
@@ -1580,8 +1581,7 @@ void Onglets::CalculAosSatSuivi() const
         obs.CalculPosVit(date);
 
         // Position du satellite
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->dirLocalData(),
-                                                           satelliteSelectionne);
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), satelliteSelectionne);
         _ui->nomsatSuivi->setText(tle.first().nom());
 
         Satellite satSuivi(tle.first());
@@ -2878,7 +2878,7 @@ void Onglets::FinEnregistrementFichier()
                 QStringList compteRendu;
                 const int affMsg = _ui->affichageMsgMAJ->currentIndex();
                 try {
-                    TLE::MiseAJourFichier(Configuration::instance()->dirLocalData(), fichierAMettreAJour, fichierALire, affMsg, compteRendu);
+                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
                     EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj);
 
                 } catch (PreviSatException &ex) {
@@ -3147,22 +3147,6 @@ void Onglets::on_informations_currentChanged(int arg1)
 
         _ui->noradDonneesSat->setValue(0);
 
-        // Lecture du fichier donnees.bin en entier
-        if (_donneesSat.isEmpty()) {
-
-            const QString fic = Configuration::instance()->dirLocalData() + QDir::separator() + "donnees.bin";
-
-            QFile fi(fic);
-            if (fi.exists() && (fi.size() != 0)) {
-                fi.open(QIODevice::ReadOnly);
-                const QByteArray donneesCompressees = fi.readAll();
-                _donneesSat = QString(qUncompress(donneesCompressees));
-            } else {
-                _donneesSat = "";
-            }
-            fi.close();
-        }
-
         _ui->frameResultats->setVisible(false);
         if (!Configuration::instance()->listeSatellites().isEmpty()) {
             _ui->noradDonneesSat->setValue(Configuration::instance()->listeSatellites().at(0).tle().norad().toInt());
@@ -3322,17 +3306,18 @@ void Onglets::on_nom_returnPressed()
         int indx2 = 0;
         int indx3;
         _resultatsSatellitesTrouves.clear();
+        const QString &donneesSat = Configuration::instance()->donneesSatellites();
 
         // Recherche dans le tableau de donnees a partir du nom de l'objet
         do {
-            indx1 = _donneesSat.indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
+            indx1 = donneesSat.toLower().indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
             if (indx1 >= 0) {
 
-                indx3 = _donneesSat.lastIndexOf("\n", indx1) + 1;
-                indx2 = _donneesSat.indexOf("\n", indx3) - indx3;
+                indx3 = donneesSat.lastIndexOf("\n", indx1) + 1;
+                indx2 = donneesSat.indexOf("\n", indx3) - indx3;
                 if ((indx1 - indx3) >= 124) {
 
-                    const QString ligne = _donneesSat.mid(indx3, indx2);
+                    const QString ligne = donneesSat.mid(indx3, indx2);
                     if (!ligne.isEmpty()) {
                         _resultatsSatellitesTrouves.append(ligne);
                     }
@@ -3344,9 +3329,9 @@ void Onglets::on_nom_returnPressed()
         } while (indx1 >= 0);
 
         if (!_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.at(0).mid(6, 11).toUpper().trimmed());
+            _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.at(0).mid(7, 11).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 5).toInt());
+            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
             _ui->noradDonneesSat->blockSignals(false);
         }
 
@@ -3370,21 +3355,14 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
     if (arg1 > 0) {
 
         _resultatsSatellitesTrouves.clear();
-        int indx1 = 0;
-        const QString norad = QString("%1 ").arg(arg1, 6, 10, QChar('0'));
+        const QString &donneesSat = Configuration::instance()->donneesSatellites();
+        const int lgRec = Configuration::instance()->lgRec();
 
-        // Recherche dans le tableau de donnees a partir du numero NORAD
-        do {
-            indx1 = _donneesSat.indexOf(norad, indx1 + 1);
-        } while ((indx1 >= 0) && (_donneesSat.at(qMax(0, indx1 - 1)) != '\n'));
+        const int idx = lgRec * arg1;
+        if ((idx >= 0) && (idx < donneesSat.size())) {
 
-        if (indx1 >= 0) {
-
-            int indx2 = _donneesSat.indexOf("\n", indx1) - indx1;
-            const QString ligne = _donneesSat.mid(indx1, indx2).trimmed();
-            if (!ligne.isEmpty()) {
-                _resultatsSatellitesTrouves.append(ligne);
-            }
+            const QString ligne = donneesSat.mid(idx, lgRec);
+            _resultatsSatellitesTrouves.append(ligne);
 
             QString nomsat = ligne.mid(124).trimmed();
             if (nomsat == "iss (zarya)") {
@@ -3392,7 +3370,7 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
             }
 
             _ui->nom->setText(nomsat.toUpper());
-            _ui->cosparDonneesSat->setText(ligne.mid(6, 11).toUpper().trimmed());
+            _ui->cosparDonneesSat->setText(ligne.mid(7, 11).toUpper().trimmed());
         }
 
         AffichageResultatsDonnees();
@@ -3414,15 +3392,17 @@ void Onglets::on_cosparDonneesSat_returnPressed()
         int indx1 = 0;
         int indx2 = 1;
         _resultatsSatellitesTrouves.clear();
+        const QString &donneesSat = Configuration::instance()->donneesSatellites();
 
         // Recherche dans le tableau de donnees a partir de la designation COSPAR
         do {
-            indx1 = _donneesSat.indexOf(_ui->cosparDonneesSat->text().toLower().trimmed(), indx1 + indx2);
-            if ((indx1 >= 0) && (_donneesSat.at(qMax(0, indx1 - 7)) == '\n')) {
+            indx1 = donneesSat.indexOf(_ui->cosparDonneesSat->text().toLower().trimmed(), indx1 + indx2);
+            if ((indx1 >= 0) && (donneesSat.at(qMax(0, indx1 - 7)) == '\n')) {
 
-                indx1 = _donneesSat.lastIndexOf("\n", indx1) + 1;
-                indx2 = _donneesSat.indexOf("\n", indx1) - indx1;
-                const QString ligne = _donneesSat.mid(indx1, indx2);
+                indx1 = donneesSat.lastIndexOf("\n", indx1) + 1;
+                indx2 = donneesSat.indexOf("\n", indx1) - indx1;
+                const QString ligne = donneesSat.mid(indx1, indx2);
+
                 if (!ligne.isEmpty()) {
                     _resultatsSatellitesTrouves.append(ligne);
                 }
@@ -3432,7 +3412,7 @@ void Onglets::on_cosparDonneesSat_returnPressed()
         if (!_resultatsSatellitesTrouves.isEmpty()) {
             _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(124).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 5).toInt());
+            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
             _ui->noradDonneesSat->blockSignals(false);
         }
 
@@ -4728,7 +4708,7 @@ void Onglets::on_mettreAJourTLE_clicked()
 
         QStringList compteRendu;
         const int affMsg = _ui->affichageMsgMAJ->currentIndex();
-        TLE::MiseAJourFichier(Configuration::instance()->dirLocalData(), _ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
+        TLE::MiseAJourFichier(_ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
 
         const bool aecr = EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj2);
 
@@ -5203,7 +5183,7 @@ void Onglets::on_calculsFlashs_clicked()
         }
 
         // Lecture du fichier TLE
-        QMap<QString, TLE> tabtle = TLE::LectureFichier(fi.filePath(), Configuration::instance()->dirLocalData(), listeSatellites);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fi.filePath(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);
@@ -5484,8 +5464,7 @@ void Onglets::on_calculsTransit_clicked()
                     }
 
                     // Utilisation des elements orbitaux du fichier visual.txt
-                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->dirLocalData(),
-                                                                              listeSatellites).first());
+                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), listeSatellites).first());
 
                     if (tle.isEmpty()) {
 
@@ -5535,7 +5514,7 @@ void Onglets::on_calculsTransit_clicked()
                 }
 
                 // Utilisation des elements orbitaux du fichier visual.txt
-                tabtle.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->dirLocalData(), listeSatellites).first());
+                tabtle.append(TLE::LectureFichier(fi1.absoluteFilePath(), listeSatellites).first());
 
                 if (tabtle.isEmpty()) {
 
@@ -5731,8 +5710,7 @@ void Onglets::on_genererPositions_clicked()
         }
 
         // Lecture du fichier TLE
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->dirLocalData(),
-                                                           satelliteSelectionne);
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), satelliteSelectionne);
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
         const Date date(_date->offsetUTC());
@@ -6285,7 +6263,7 @@ void Onglets::on_rechercheCreerTLE_clicked()
         }
 
         // Lecture du fichier TLE
-        const QMap<QString, TLE> tabtle = TLE::LectureFichier(ficlu, Configuration::instance()->dirLocalData());
+        const QMap<QString, TLE> tabtle = TLE::LectureFichier(ficlu);
 
         // Ouverture du fichier personnel en ecriture
         QFile sw(ficperso);
