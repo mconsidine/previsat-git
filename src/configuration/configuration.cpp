@@ -1144,7 +1144,7 @@ void Configuration::LectureDonneesSatellites()
         _donneesSatellites = "";
     }
 
-    _lgrec = (_donneesSatellites.size() > 0) ? _donneesSatellites.size() / _donneesSatellites.count('\n') : -1;
+    _lgRec = (_donneesSatellites.size() > 0) ? _donneesSatellites.size() / _donneesSatellites.count('\n') : -1;
 
     /* Retour */
     return;
