@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    17 octobre 2021
+ * >    31 octobre 2021
  *
  */
 
@@ -257,7 +257,6 @@ private:
     QStringList _titreOptions;
     QStringList _titreMajTLE;
 
-    static QString _donneesSat;
     QStringList _resultatsSatellitesTrouves;
 
     Date *_date;

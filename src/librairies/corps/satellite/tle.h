@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 septembre 2021
+ * >    31 octobre 2021
  *
  */
 
@@ -123,12 +123,11 @@ public:
     /**
      * @brief LectureFichier Lecture du fichier TLE
      * @param nomFichier nom du fichier TLE
-     * @param dirLocalData chemin de donnees locales
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @param ajoutDonnees ajout des donnees satellite
      * @return tableau de TLE
      */
-    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &dirLocalData, const QStringList &listeSatellites = QStringList(),
+    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QStringList &listeSatellites = QStringList(),
                                              const bool ajoutDonnees = true);
 
     /**
@@ -140,13 +139,12 @@ public:
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
-     * @param dirLocalData chemin de donnees locales
      * @param ficOld fichier avec les anciens TLE
      * @param ficNew fichier avec les nouveaux TLE
      * @param affMsg affichage des messages
      * @param compteRendu compte rendu de mise a jour
      */
-    static void MiseAJourFichier(const QString &dirLocalData, const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
+    static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
 
 
 protected:
@@ -199,7 +197,7 @@ private:
 
     /*
      * Methodes privees
-     */
+     */    
     /**
      * @brief CheckSum Verification du checksum d'une ligne de TLE
      * @param ligne ligne d'un TLE

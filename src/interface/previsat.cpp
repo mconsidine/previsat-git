@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 octobre 2021
+ * >    31 octobre 2021
  *
  */
 
@@ -224,7 +224,7 @@ void PreviSat::ChargementTLE()
             TLE::VerifieFichier(nomfic, true);
 
             // Lecture du fichier TLE en entier
-            Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic, Configuration::instance()->dirLocalData()));
+            Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic));
 
             // Mise a jour de la liste de satellites
             QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()];
@@ -2342,11 +2342,15 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QFileInfo fi(Configuration::instance()->nomfic());
+    const int idx = Configuration::instance()->listeFicTLE().indexOf(fi.fileName());
+    ui->listeFichiersTLE->setItemData(idx, QColor(Qt::white), Qt::BackgroundRole);
 
     /* Corps de la methode */
     Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() +
             Configuration::instance()->listeFicTLE().at(index);
     Configuration::instance()->listeSatellites().clear();
+    ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
 
     ChargementTLE();
 
@@ -2535,7 +2539,7 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
 
         // Verification que le fichier est un TLE
         TLE::VerifieFichier(fic, true);
-        QMap<QString, TLE> tabtle = TLE::LectureFichier(fic, Configuration::instance()->dirTle(), QStringList(), false);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fic, QStringList(), false);
 
         // Age des nouveaux numeros NORAD dans la liste
         int nb = 0;

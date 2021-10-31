@@ -316,6 +316,16 @@ QStringList Configuration::evenementsISS() const
     return _evenementsISS;
 }
 
+QString Configuration::donneesSatellites() const
+{
+    return _donneesSatellites;
+}
+
+int Configuration::lgRec() const
+{
+    return _lgRec;
+}
+
 QList<CategorieTLE> &Configuration::listeCategoriesTLE()
 {
     return _listeCategoriesTLE;
@@ -477,6 +487,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier de statut des satellites produisant des flashs
         LectureStatutSatellitesFlashs();
+
+        // Lecture du fichier de donnees satellites
+        LectureDonneesSatellites();
 
         // Lecture du fichier de gestionnaire de TLE
         LectureGestionnaireTLE();
@@ -1102,6 +1115,36 @@ void Configuration::LectureCategoriesOrbite()
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier de donnees satellites
+ */
+void Configuration::LectureDonneesSatellites()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fic = _dirLocalData + QDir::separator() + "donnees.bin";
+
+    /* Corps de la methode */
+    QFile fi(fic);
+
+    if (fi.exists() && (fi.size() != 0)) {
+
+        fi.open(QIODevice::ReadOnly);
+        const QByteArray donneesCompressees = fi.readAll();
+        fi.close();
+
+        _donneesSatellites = QString(qUncompress(donneesCompressees));
+    } else {
+        _donneesSatellites = "";
+    }
+
+    _lgrec = (_donneesSatellites.size() > 0) ? _donneesSatellites.size() / _donneesSatellites.count('\n') : -1;
 
     /* Retour */
     return;

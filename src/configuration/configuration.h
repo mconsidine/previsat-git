@@ -179,6 +179,9 @@ public:
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
 
+    QString donneesSatellites() const;
+    int lgRec() const;
+
     QList<CategorieTLE> &listeCategoriesTLE();
     QList<CategorieTLE> &listeCategoriesMajTLE();
 
@@ -366,6 +369,10 @@ private:
     QList<double> _masseISS;
     QStringList _evenementsISS;
 
+    // Donnees satellites
+    QString _donneesSatellites;
+    int _lgRec;
+
     // Pour le gestionnaire de fichiers TLE
     QString _versionCategoriesTLE;
     QList<CategorieTLE> _listeCategoriesTLE;
@@ -409,6 +416,11 @@ private:
      * @brief LectureCategoriesOrbite Lecture du fichier de categories d'orbite
      */
     void LectureCategoriesOrbite();
+
+    /**
+     * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites
+     */
+    void LectureDonneesSatellites();
 
     /**
      * @brief LectureGestionnaireTLE Lecture du fichier de gestionnaire de TLE
