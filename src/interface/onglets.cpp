@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    17 octobre 2021
+ * >    30 octobre 2021
  *
  */
 
@@ -83,6 +83,8 @@ ElementsAOS *Onglets::_elementsAOS;
 QString Onglets::_donneesSat;
 
 static QString _ficSuivi;
+
+static Afficher *afficherResultats = nullptr;
 
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
@@ -146,7 +148,10 @@ Onglets::Onglets(QWidget *parent) :
 
     // Chargement des fichiers d'observation
     InitFicObs(true);
-    _ui->categoriesObs->setCurrentRow(0);
+    if (_ui->categoriesObs->count() > 0) {
+        _ui->categoriesObs->setCurrentRow(0);
+        _ui->ajdfic->setCurrentIndex(0);
+    }
 
     // Chargement des fichiers images de cartes du monde
     InitFicMap(false);
@@ -174,6 +179,11 @@ Onglets::~Onglets()
     if (_elementsAOS != nullptr) {
         delete _elementsAOS;
         _elementsAOS = nullptr;
+    }
+
+    if (afficherResultats != nullptr) {
+        delete afficherResultats;
+        afficherResultats = nullptr;
     }
 
     delete _ui;
@@ -771,12 +781,22 @@ void Onglets::AffichageGroupesTLE() const
 
     /* Initialisations */
     _ui->groupeTLE->clear();
+    QList<CategorieTLE> &listeCategorieMajTLE = Configuration::instance()->listeCategoriesMajTLE();
+    listeCategorieMajTLE.clear();
 
     /* Corps de la methode */
-    QListIterator<CategorieTLE> it(Configuration::instance()->mapCategoriesTLE());
+    QListIterator<CategorieTLE> it(Configuration::instance()->listeCategoriesTLE());
     while (it.hasNext()) {
-        const QString nomCategorie = it.next().nom[Configuration::instance()->locale()];
+
+        const CategorieTLE categorie = it.next();
+        const QString nomCategorie = categorie.nom[Configuration::instance()->locale()];
         _ui->groupeTLE->addItem(nomCategorie);
+
+#if !defined (Q_OS_MAC)
+        if (settings.value("TLE/" + nomCategorie, 0).toInt() == 1) {
+            listeCategorieMajTLE.append(categorie);
+        }
+#endif
     }
     _ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
 
@@ -1052,7 +1072,7 @@ void Onglets::AffichageResultatsDonnees() const
         while (it.hasNext()) {
 
             const QString item = it.next().toUpper();
-            nomsat = item.mid(123).trimmed();
+            nomsat = item.mid(124).trimmed();
 
             if (nomsat.isEmpty()) {
                 nomsat = item.mid(0, 5);
@@ -1727,7 +1747,7 @@ void Onglets::MettreAJourGroupeTLE(const QString &groupe)
     connect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
 
     /* Corps de la methode */
-    QListIterator<CategorieTLE> it1(Configuration::instance()->mapCategoriesTLE());
+    QListIterator<CategorieTLE> it1(Configuration::instance()->listeCategoriesTLE());
     while (it1.hasNext()) {
 
         const CategorieTLE categorie = it1.next();
@@ -2190,7 +2210,7 @@ void Onglets::on_majMaintenant_clicked()
     _ui->compteRenduMaj->clear();
     _ui->compteRenduMaj->setVisible(true);
 
-    const CategorieTLE categorie = Configuration::instance()->mapCategoriesTLE().at(_ui->groupeTLE->currentIndex());
+    const CategorieTLE categorie = Configuration::instance()->listeCategoriesTLE().at(_ui->groupeTLE->currentIndex());
     const QString nom = categorie.nom[Configuration::instance()->locale()].split("@").at(0);
     const QString adresse = (categorie.site.contains("celestrak")) ?
                 Configuration::instance()->adresseCelestrakNorad() : Configuration::instance()->adresseAstropedia() + "previsat/tle/";
@@ -3310,7 +3330,7 @@ void Onglets::on_nom_returnPressed()
 
                 indx3 = _donneesSat.lastIndexOf("\n", indx1) + 1;
                 indx2 = _donneesSat.indexOf("\n", indx3) - indx3;
-                if ((indx1 - indx3) >= 123) {
+                if ((indx1 - indx3) >= 124) {
 
                     const QString ligne = _donneesSat.mid(indx3, indx2);
                     if (!ligne.isEmpty()) {
@@ -3366,7 +3386,7 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
                 _resultatsSatellitesTrouves.append(ligne);
             }
 
-            QString nomsat = ligne.mid(123).trimmed();
+            QString nomsat = ligne.mid(124).trimmed();
             if (nomsat == "iss (zarya)") {
                 nomsat = "ISS";
             }
@@ -3410,7 +3430,7 @@ void Onglets::on_cosparDonneesSat_returnPressed()
         } while (indx1 >= 0);
 
         if (!_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(123).toUpper().trimmed());
+            _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(124).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
             _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 5).toInt());
             _ui->noradDonneesSat->blockSignals(false);
@@ -3444,7 +3464,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         double per = perigee + RAYON_TERRESTRE;
 
         // Nom du satellite
-        QString nomsat = ligne.mid(123).trimmed();
+        QString nomsat = ligne.mid(124).trimmed();
         if (nomsat.toLower() == "iss (zarya)") {
             nomsat = "ISS";
         }
@@ -4947,8 +4967,8 @@ void Onglets::on_calculsPrev_clicked()
             if (Prevision::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun passage n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher * const afficher = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
-                afficher->show();
+                afficherResultats = new Afficher(PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats(), this);
+                afficherResultats->show();
             }
         }
 
@@ -5243,8 +5263,8 @@ void Onglets::on_calculsFlashs_clicked()
             if (Flashs::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun flash n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this, _ui->valeurZoomMap->value());
-                afficher->show();
+                afficherResultats = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats(), this, _ui->valeurZoomMap->value());
+                afficherResultats->show();
             }
         }
 
@@ -5571,9 +5591,9 @@ void Onglets::on_calculsTransit_clicked()
             if (TransitsIss::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun transit ISS n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this,
+                afficherResultats = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this,
                                                   _ui->valeurZoomMap->value());
-                afficher->show();
+                afficherResultats->show();
             }
         }
 
@@ -6032,8 +6052,8 @@ void Onglets::on_calculsEvt_clicked()
             if (EvenementsOrbitaux::resultats().isEmpty()) {
                 Message::Afficher(tr("Aucun évènement n'a été trouvé sur la période donnée"), INFO);
             } else {
-                Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats(), this);
-                afficher->show();
+                afficherResultats = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats(), this);
+                afficherResultats->show();
             }
         }
 

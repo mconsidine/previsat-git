@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    16 octobre 2021
+ * >    30 octobre 2021
  *
  */
 
@@ -86,6 +86,8 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     _resultats = resultats;
     _onglets = onglets;
     _ciel = nullptr;
+    tableDetail = nullptr;
+    afficherDetail = nullptr;
     scene = nullptr;
     _zoom = zoom;
 
@@ -203,11 +205,6 @@ Afficher::~Afficher()
     if (_ciel != nullptr) {
         delete _ciel;
         _ciel = nullptr;
-    }
-
-    if (_onglets != nullptr) {
-        delete _onglets;
-        _onglets = nullptr;
     }
 
     if (tableDetail != nullptr) {

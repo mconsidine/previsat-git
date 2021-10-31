@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2021
+ * >    31 octobre 2021
  *
  */
 
@@ -380,7 +380,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                     const int indx1 = magn.indexOf('\n' + norad) + 1;
                     if (indx1 > 0) {
                         const int indx2 = magn.indexOf('\n', indx1) - indx1;
-                        lig0 = magn.mid(indx1 + 123, indx2 - 123).trimmed();
+                        lig0 = magn.mid(indx1 + 124, indx2 - 124).trimmed();
                     } else {
                         lig0 = norad;
                     }
@@ -413,7 +413,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                        norad = QString("%1").arg(tle._norad, 6, QChar('0'));
 
                         // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                        const int indx1 = magn.indexOf('\n' + tle._norad);
+                        const int indx1 = magn.indexOf('\n' + norad) + 1;
                         if (indx1 > 0) {
                             const int indx2 = magn.indexOf('\n', indx1);
                             tle._donnees = Donnees(magn.mid(indx1, indx2));

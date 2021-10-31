@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2021
+ * >    30 octobre 2021
  *
  */
 
@@ -118,7 +118,6 @@ public:
 
 
 public slots:
-
 
     /**
      * @brief ChargementTLE Chargement du fichier TLE par defaut
@@ -252,6 +251,11 @@ private:
     void MajFichierTLE();
 
     /**
+     * @brief MajWebTLE Mise a jour automatique des TLE
+     */
+    void MajWebTLE();
+
+    /**
      * @brief MettreAJourGroupeTLE Mettre a jour un groupe de TLE
      * @param groupe nom du groupe
      */
@@ -269,6 +273,11 @@ private:
      * @param fichier nom du fichier
      */
     void OuvertureFichierTLE(const QString &fichier);
+
+    /**
+     * @brief VerifAgeTLE Verification de l'age d'un TLE
+     */
+    void VerifAgeTLE();
 
     /**
      * @brief VerifMAJPreviSat Verification des mises a jour (logiciel, fichiers internes)
@@ -345,6 +354,7 @@ private slots:
     void TempsReel();
 
 
+    void closeEvent(QCloseEvent *evt);
     void mousePressEvent(QMouseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
 
