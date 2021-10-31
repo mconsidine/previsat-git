@@ -316,9 +316,14 @@ QStringList Configuration::evenementsISS() const
     return _evenementsISS;
 }
 
-QList<CategorieTLE> &Configuration::mapCategoriesTLE()
+QList<CategorieTLE> &Configuration::listeCategoriesTLE()
 {
-    return _mapCategoriesTLE;
+    return _listeCategoriesTLE;
+}
+
+QList<CategorieTLE> &Configuration::listeCategoriesMajTLE()
+{
+    return _listeCategoriesMajTLE;
 }
 
 QMap<AdressesTelechargement, QString> Configuration::mapAdressesTelechargement() const
@@ -592,7 +597,7 @@ void Configuration::EcritureGestionnaireTLE()
     cfg.writeAttribute("version", _versionCategoriesTLE);
 
     // Categories
-    QListIterator<CategorieTLE> it(_mapCategoriesTLE);
+    QListIterator<CategorieTLE> it(_listeCategoriesTLE);
     while (it.hasNext()) {
 
         const CategorieTLE categorie = it.next();
@@ -900,7 +905,7 @@ void Configuration::InitFicTLE()
     _listeFicTLE = di.entryList(filtres, QDir::Files);
 
     // TLE par defaut
-    _nomfic = settings.value("fichier/nom", _dirTle + QDir::separator() + "visual.txt").toString();
+    _nomfic = QDir::toNativeSeparators(settings.value("fichier/nom", _dirTle + QDir::separator() + "visual.txt").toString());
     _tleDefaut.nomsat = settings.value("TLE/nom", "").toString();
     _tleDefaut.l1 = settings.value("TLE/l1", "").toString();
     _tleDefaut.l2 = settings.value("TLE/l2", "").toString();
@@ -1111,7 +1116,7 @@ void Configuration::LectureGestionnaireTLE()
     QString version;
 
     /* Initialisations */
-    _mapCategoriesTLE.clear();
+    _listeCategoriesTLE.clear();
 
     const QString nomficXml = "gestionnaireTLE.xml";
     const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
@@ -1196,7 +1201,7 @@ void Configuration::LectureGestionnaireTLE()
                     }
 
                     if (!nomCategorie.isEmpty()) {
-                        _mapCategoriesTLE.append({ nomCategorie, site, fichiers });
+                        _listeCategoriesTLE.append({ nomCategorie, site, fichiers });
                     }
                 }
             }

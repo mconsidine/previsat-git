@@ -179,7 +179,8 @@ public:
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
 
-    QList<CategorieTLE> &mapCategoriesTLE();
+    QList<CategorieTLE> &listeCategoriesTLE();
+    QList<CategorieTLE> &listeCategoriesMajTLE();
 
     QMap<AdressesTelechargement, QString> mapAdressesTelechargement() const;
 
@@ -367,7 +368,8 @@ private:
 
     // Pour le gestionnaire de fichiers TLE
     QString _versionCategoriesTLE;
-    QList<CategorieTLE> _mapCategoriesTLE;
+    QList<CategorieTLE> _listeCategoriesTLE;
+    QList<CategorieTLE> _listeCategoriesMajTLE;
 
     // Adresses de telechargement
     QMap<AdressesTelechargement, QString> _mapAdressesTelechargement;

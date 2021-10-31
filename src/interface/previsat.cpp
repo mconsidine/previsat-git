@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2021
+ * >    30 octobre 2021
  *
  */
 
@@ -102,6 +102,12 @@ PreviSat::PreviSat(QWidget *parent) :
     _dateCourante = nullptr;
     _chronometre = nullptr;
     _chronometreMs = nullptr;
+    _messageStatut = nullptr;
+    _messageStatut2 = nullptr;
+    _messageStatut3 = nullptr;
+    _modeFonctionnement = nullptr;
+    _stsDate = nullptr;
+    _stsHeure = nullptr;
     _timerStatut = nullptr;
 
     try {
@@ -125,86 +131,7 @@ PreviSat::PreviSat(QWidget *parent) :
  */
 PreviSat::~PreviSat()
 {
-    if (_carte != nullptr) {
-        delete _carte;
-        _carte = nullptr;
-    }
-
-    if (_ciel != nullptr) {
-        delete _ciel;
-        _ciel = nullptr;
-    }
-
-    if (_radar != nullptr) {
-        delete _radar;
-        _radar = nullptr;
-    }
-
-    if (_maximise != nullptr) {
-        delete _maximise;
-        _maximise = nullptr;
-    }
-
-    if (_affichageCiel != nullptr) {
-        delete _affichageCiel;
-        _affichageCiel = nullptr;
-    }
-
-    if (_messageStatut != nullptr) {
-        delete _messageStatut;
-        _messageStatut = nullptr;
-    }
-
-    if (_messageStatut2 != nullptr) {
-        delete _messageStatut2;
-        _messageStatut2 = nullptr;
-    }
-
-    if (_messageStatut3 != nullptr) {
-        delete _messageStatut3;
-        _messageStatut3 = nullptr;
-    }
-
-    if (_modeFonctionnement != nullptr) {
-        delete _modeFonctionnement;
-        _modeFonctionnement = nullptr;
-    }
-
-    if (_stsDate != nullptr) {
-        delete _stsDate;
-        _stsDate = nullptr;
-    }
-
-    if (_stsHeure != nullptr) {
-        delete _stsHeure;
-        _stsHeure = nullptr;
-    }
-
-    if (_dateCourante != nullptr) {
-        delete _dateCourante;
-        _dateCourante = nullptr;
-    }
-
-    if (_chronometre != nullptr) {
-        delete _chronometre;
-        _chronometre = nullptr;
-    }
-
-    if (_chronometreMs != nullptr) {
-        delete _chronometreMs;
-        _chronometreMs = nullptr;
-    }
-
-    if (_timerStatut != nullptr) {
-        delete _timerStatut;
-        _timerStatut = nullptr;
-    }
-
-    if (_onglets != nullptr) {
-        delete _onglets;
-        _onglets = nullptr;
-    }
-
+    closeEvent(nullptr);
     delete ui;
 }
 
@@ -268,7 +195,7 @@ void PreviSat::ChargementTLE()
     // Lecture du fichier TLE par defaut
     try {
 
-        QString &nomfic = Configuration::instance()->nomfic();
+        QString nomfic = Configuration::instance()->nomfic();
         QFileInfo fi(nomfic);
 
         if (!Configuration::instance()->listeFicTLE().isEmpty() && !Configuration::instance()->listeFicTLE().contains(fi.fileName())) {
@@ -284,14 +211,13 @@ void PreviSat::ChargementTLE()
                 // Cas d'un fichier compresse au format gz
                 const QString fic = Configuration::instance()->dirTmp() + QDir::separator() + fi.completeBaseName();
 
-                //                if (DecompressionFichierGz(nomfic, fic)) {
-                //                    ficgz = nomfic;
-                //                    nomfic = fic;
-                //                    fi = QFileInfo(nomfic);
-                //                } else {
-                //                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-                //                    throw PreviSatException(msg.arg(nomfic), WARNING);
-                //                }
+                if (Decompression::DecompressionFichierGz(Configuration::instance()->nomfic())) {
+                    nomfic = fic;
+                    fi = QFileInfo(nomfic);
+                } else {
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    throw PreviSatException(msg.arg(nomfic), WARNING);
+                }
             }
 
             // Verification du fichier TLE
@@ -335,6 +261,29 @@ void PreviSat::MAJTLE()
     InitDate();
 
     /* Corps de la methode */
+    // Mise a jour des TLE si necessaire
+    if (Configuration::instance()->listeCategoriesTLE().size() > 0) {
+
+        const bool ageMaxTLE = settings.value("temps/ageMaxTLE", true).toBool();
+        if (ageMaxTLE) {
+
+            const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
+            const int ageMax = settings.value("temps/ageMax", 15).toInt();
+            const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+
+            if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
+                    ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapTLE()[noradDefaut].epoque().jourJulienUTC()) > ageMax)) {
+                MajWebTLE();
+                settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+            }
+        } else {
+            emit AfficherMessageStatut(tr("Mise à jour automatique des TLE"), 10);
+            MajWebTLE();
+            settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+        }
+    } else {
+        VerifAgeTLE();
+    }
 
     /* Retour */
     return;
@@ -900,6 +849,45 @@ void PreviSat::MajFichierTLE()
 }
 
 /*
+ * Mise a jour automatique des TLE
+ */
+void PreviSat::MajWebTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _onglets->setDirDwn(Configuration::instance()->dirTle());
+
+    /* Corps de la methode */
+    QListIterator<CategorieTLE> it(Configuration::instance()->listeCategoriesMajTLE());
+    while (it.hasNext()) {
+
+        const CategorieTLE categorie = it.next();
+        QString adresse = categorie.site;
+
+        if (adresse.contains("celestrak")) {
+            adresse = Configuration::instance()->adresseCelestrakNorad();
+        }
+
+        if (adresse.contains("astropedia")) {
+            adresse = Configuration::instance()->adresseAstropedia() + "previsat/tle/";
+        }
+
+        if (!adresse.endsWith("/")) {
+            adresse.append("/");
+        }
+
+        foreach (const QString fic, categorie.fichiers) {
+            const QString ficMaj = adresse + fic;
+            _onglets->TelechargementFichier(ficMaj, false);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Mettre a jour un groupe de TLE
  */
 void PreviSat::MettreAJourGroupeTLE(const QString &groupe)
@@ -954,6 +942,43 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
     /* Corps de la methode */
     Configuration::instance()->nomfic() = fichier;
     ChargementTLE();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification de l'age d'un TLE
+ */
+void PreviSat::VerifAgeTLE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (Configuration::instance()->mapTLE().count() > 0) {
+
+        const int ageMax = settings.value("temps/ageMax", 15).toInt();
+        const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+
+        if ((fabs(_dateCourante->jourJulienUTC() - Configuration::instance()->mapTLE()[noradDefaut].epoque().jourJulienUTC()) > ageMax) &&
+                ui->tempsReel->isChecked()) {
+
+            const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
+
+            QMessageBox msgbox(tr("Information"), msg.arg(ageMax), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                               QMessageBox::No, QMessageBox::NoButton, this);
+            msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+            msgbox.setButtonText(QMessageBox::No, tr("Non"));
+            msgbox.exec();
+
+            const int res = msgbox.result();
+            if (res == QMessageBox::Yes) {
+                MajFichierTLE();
+            }
+        }
+    }
 
     /* Retour */
     return;
@@ -1656,6 +1681,98 @@ void PreviSat::TempsReel()
         _stsHeure->setText(d.toString("hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : ""));
         _stsDate->setToolTip(tr("Date"));
         _stsHeure->setToolTip(tr("Heure"));
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::closeEvent(QCloseEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    if (_carte != nullptr) {
+        delete _carte;
+        _carte = nullptr;
+    }
+
+    if (_ciel != nullptr) {
+        delete _ciel;
+        _ciel = nullptr;
+    }
+
+    if (_radar != nullptr) {
+        delete _radar;
+        _radar = nullptr;
+    }
+
+    if (_maximise != nullptr) {
+        delete _maximise;
+        _maximise = nullptr;
+    }
+
+    if (_affichageCiel != nullptr) {
+        delete _affichageCiel;
+        _affichageCiel = nullptr;
+    }
+
+    if (_messageStatut != nullptr) {
+        delete _messageStatut;
+        _messageStatut = nullptr;
+    }
+
+    if (_messageStatut2 != nullptr) {
+        delete _messageStatut2;
+        _messageStatut2 = nullptr;
+    }
+
+    if (_messageStatut3 != nullptr) {
+        delete _messageStatut3;
+        _messageStatut3 = nullptr;
+    }
+
+    if (_modeFonctionnement != nullptr) {
+        delete _modeFonctionnement;
+        _modeFonctionnement = nullptr;
+    }
+
+    if (_stsDate != nullptr) {
+        delete _stsDate;
+        _stsDate = nullptr;
+    }
+
+    if (_stsHeure != nullptr) {
+        delete _stsHeure;
+        _stsHeure = nullptr;
+    }
+
+    if (_dateCourante != nullptr) {
+        delete _dateCourante;
+        _dateCourante = nullptr;
+    }
+
+    if (_chronometre != nullptr) {
+        delete _chronometre;
+        _chronometre = nullptr;
+    }
+
+    if (_chronometreMs != nullptr) {
+        delete _chronometreMs;
+        _chronometreMs = nullptr;
+    }
+
+    if (_timerStatut != nullptr) {
+        delete _timerStatut;
+        _timerStatut = nullptr;
+    }
+
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
     }
 
     /* Retour */

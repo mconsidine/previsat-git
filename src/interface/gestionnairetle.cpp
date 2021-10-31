@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    11 fevrier 2017
+ * >    30 octobre 2021
  *
  */
 
@@ -160,7 +160,7 @@ void GestionnaireTLE::load()
     }
 
     /* Corps de la methode */
-    QListIterator<CategorieTLE> it(Configuration::instance()->mapCategoriesTLE());
+    QListIterator<CategorieTLE> it(Configuration::instance()->listeCategoriesTLE());
     while (it.hasNext()) {
         ui->listeGroupeTLE->addItem(it.next().nom[Configuration::instance()->locale()]);
     }
@@ -226,7 +226,7 @@ void GestionnaireTLE::on_actionSupprimerGroupe_triggered()
 
         if (res == QMessageBox::Yes) {
 
-            Configuration::instance()->mapCategoriesTLE().removeAt(index);
+            Configuration::instance()->listeCategoriesTLE().removeAt(index);
 
             const bool etat = ui->listeGroupeTLE->blockSignals(true);
             load();
@@ -269,10 +269,10 @@ void GestionnaireTLE::on_listeGroupeTLE_currentRowChanged(int currentRow)
     }
 
     if (currentRow >= 0) {
-        QStringListIterator it(Configuration::instance()->mapCategoriesTLE().at(currentRow).fichiers);
+        QStringListIterator it(Configuration::instance()->listeCategoriesTLE().at(currentRow).fichiers);
         while (it.hasNext()) {
             ui->listeFichiersTLE->addItem(it.next());
-            ui->MajAutoGroupe->setChecked(settings.value("TLE/" + Configuration::instance()->mapCategoriesTLE().at(currentRow)
+            ui->MajAutoGroupe->setChecked(settings.value("TLE/" + Configuration::instance()->listeCategoriesTLE().at(currentRow)
                                                          .nom[Configuration::instance()->locale()], 0).toInt() == 1);
         }
     }
@@ -304,7 +304,7 @@ void GestionnaireTLE::on_valider_clicked()
         groupeDomaine[Configuration::instance()->locale()] = nomGroupe + "@" + domaine;
         const QStringList listeFics = ui->listeFichiers->document()->toPlainText().split("\n");
 
-        Configuration::instance()->mapCategoriesTLE().append({ groupeDomaine, domaine, listeFics });
+        Configuration::instance()->listeCategoriesTLE().append({ groupeDomaine, domaine, listeFics });
 
         const bool etat = ui->listeGroupeTLE->blockSignals(true);
         load();
@@ -387,7 +387,7 @@ void GestionnaireTLE::on_actionSupprimer_triggered()
 
         if (idxGrp >= 0) {
 
-            QStringList &fichiers = Configuration::instance()->mapCategoriesTLE()[idxGrp].fichiers;
+            QStringList &fichiers = Configuration::instance()->listeCategoriesTLE()[idxGrp].fichiers;
 
             const int idxFic = ui->listeFichiersTLE->currentRow();
             if (idxFic >= 0) {
