@@ -65,6 +65,7 @@
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
+#include "librairies/systeme/decompression.h"
 #include "previsions/evenementsorbitaux.h"
 #include "previsions/flashs.h"
 #include "previsions/prevision.h"
@@ -4686,20 +4687,19 @@ void Onglets::on_mettreAJourTLE_clicked()
         if (fi.suffix() == "gz") {
 
             // Cas d'un fichier compresse au format gz
-            //            fic = dirTmp + QDir::separator() + fi.completeBaseName();
+            fic = Configuration::instance()->dirTmp() + QDir::separator() + fi.completeBaseName();
 
-            //            if (DecompressionFichierGz(ui->fichierALire->text(), fic)) {
+            if (Decompression::DecompressionFichierGz(_ui->fichierALire->text())) {
 
-            //                const int nsat = TLE::VerifieFichier(fic, false);
-            //                if (nsat == 0) {
-            //                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-            //                    throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
-            //                }
-            //                agz = true;
-            //            } else {
-            //                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
-            //                throw PreviSatException(msg.arg(ui->fichierALire->text()), WARNING);
-            //            }
+                const int nsat = TLE::VerifieFichier(fic, false);
+                if (nsat == 0) {
+                    const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                    throw PreviSatException(msg.arg(fi.fileName()), WARNING);
+                }
+            } else {
+                const QString msg = tr("Erreur rencontrée lors de la décompression du fichier %1");
+                throw PreviSatException(msg.arg(fi.fileName()), WARNING);
+            }
         } else {
             fic = QDir::toNativeSeparators(fi.absoluteFilePath());
         }

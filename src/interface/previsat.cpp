@@ -222,7 +222,9 @@ void PreviSat::ChargementTLE()
 
             // Verification du fichier TLE
             if (!nomfic.contains(Configuration::instance()->dirTle())) {
+                AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(fi.fileName()));
                 TLE::VerifieFichier(nomfic, true);
+                AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(fi.fileName()), 5);
             }
 
             // Lecture du fichier TLE en entier
@@ -1348,10 +1350,14 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
 
     /* Initialisations */
     ui->liste1->clear();
+    ui->liste1->scrollToTop();
     _onglets->ui()->liste2->clear();
+    _onglets->ui()->liste2->scrollToTop();
     _onglets->ui()->liste3->clear();
+    _onglets->ui()->liste3->scrollToTop();
 #if defined (Q_OS_WIN)
     _onglets->ui()->liste4->clear();
+    _onglets->ui()->liste4->scrollToTop();
 #endif
     const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
     const QString norad = Configuration::instance()->tleDefaut().l1.mid(2, 5);
@@ -1416,14 +1422,15 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     }
 
     ui->liste1->sortItems();
+    ui->liste1->scrollToItem(ui->liste1->currentItem(), QAbstractItemView::PositionAtTop);
     _onglets->ui()->liste2->sortItems();
+    _onglets->ui()->liste2->scrollToItem(_onglets->ui()->liste2->currentItem(), QAbstractItemView::PositionAtTop);
     _onglets->ui()->liste3->sortItems();
+    _onglets->ui()->liste3->scrollToItem(_onglets->ui()->liste3->currentItem(), QAbstractItemView::PositionAtTop);
 #if defined (Q_OS_WIN)
     _onglets->ui()->liste4->sortItems();
+    _onglets->ui()->liste4->scrollToItem(_onglets->ui()->liste4->currentItem(), QAbstractItemView::PositionAtTop);
 #endif
-
-    //ui->liste1->scrollToItem(ui->liste1->currentItem());
-    //_onglets->ui()->liste2->scrollToItem(_onglets->ui()->liste2->currentItem());
 
     /* Retour */
     return;
