@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    30 octobre 2021
+ * >    1er novembre 2021
  *
  */
 
@@ -113,10 +113,6 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
 
     ui->resultatsPrevisions->clear();
     ui->detailsTransit->setVisible(false);
-
-    QFont fnt;
-    fnt.setBold(true);
-    ui->resultatsPrevisions->horizontalHeader()->setFont(fnt);
     ui->afficherCarte->setVisible(false);
 
     switch (_typeCalcul) {
@@ -265,6 +261,11 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         int m = 0;
         const QList<ResultatPrevisions> list = ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
 
+        if (tableDetail != nullptr) {
+            delete tableDetail;
+            tableDetail = nullptr;
+        }
+
         tableDetail = new QTableWidget;
 
         switch (_typeCalcul) {
@@ -359,11 +360,6 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         }
 
         int kmax;
-
-        QFont fnt;
-        fnt.setBold(true);
-        tableDetail->horizontalHeader()->setFont(fnt);
-
         QStringList elems;
         QTableWidgetItem * itm;
         QListIterator<ResultatPrevisions> it(list);
@@ -432,8 +428,19 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
         tableDetail->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
 
+        if (afficherDetail != nullptr) {
+            delete afficherDetail;
+            afficherDetail = nullptr;
+        }
+
         afficherDetail = new QMainWindow;
-        afficherDetail->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
+        afficherDetail->setStyleSheet("QHeaderView::section {" \
+                "background-color:rgb(235, 235, 235);" \
+                "border-top: 0px solid grey;" \
+                "border-bottom: 1px solid grey;" \
+                "border-right: 1px solid grey;" \
+                "font-size: 12px;" \
+                "font-weight: 600 }");
 
         switch (_typeCalcul) {
 
@@ -468,7 +475,8 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             lrg += tableDetail->columnWidth(i);
         }
 
-        afficherDetail->setFixedSize(lrg, tableDetail->horizontalHeader()->height() + tableDetail->rowHeight(1) * qMin(10, tableDetail->rowCount()));
+        const int ind = (tableDetail->rowCount() == 1) ? 0 : 1;
+        afficherDetail->setFixedSize(lrg, tableDetail->horizontalHeader()->height() + tableDetail->rowHeight(ind) * qMin(10, tableDetail->rowCount()));
         afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, afficherDetail->size(), geometry()));
         afficherDetail->show();
     }
@@ -930,9 +938,18 @@ void Afficher::ChargementResultats()
         }
     }
 
-    ui->resultatsPrevisions->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235) }");
+    ui->resultatsPrevisions->setStyleSheet("QHeaderView::section {" \
+            "background-color:rgb(235, 235, 235);" \
+            "border-top: 0px solid grey;" \
+            "border-bottom: 1px solid grey;" \
+            "border-right: 1px solid grey;" \
+            "font-size: 12px;" \
+            "font-weight: 600 }");
+
     ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
-    ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
+    if (_typeCalcul != EVENEMENTS) {
+        ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
+    }
 
 #if QT_VERSION >= 0x050000
     ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
