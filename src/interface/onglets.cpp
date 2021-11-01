@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    1er novembre 2021
  *
  */
 
@@ -1031,7 +1031,14 @@ void Onglets::AffichageManoeuvresISS() const
         }
     }
 
-    _ui->manoeuvresISS->setStyleSheet("QHeaderView::section { background-color:rgb(235, 235, 235); font-size: 12px; font-weight: 600 }");
+    _ui->manoeuvresISS->setStyleSheet("QHeaderView::section {" \
+            "background-color:rgb(235, 235, 235);" \
+            "border-top: 0px solid grey;" \
+            "border-bottom: 1px solid grey;" \
+            "border-right: 1px solid grey;" \
+            "font-size: 12px;" \
+            "font-weight: 600 }");
+
     _ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
     _ui->manoeuvresISS->setColumnWidth(0, 75);
     _ui->manoeuvresISS->setColumnWidth(1, 135);
@@ -5493,6 +5500,8 @@ void Onglets::on_calculsTransit_clicked()
                     }
                 }
             } else {
+
+                // Utilisation des TLE du fichier iss.3le
                 conditions.tabtle = tabtle;
             }
 
@@ -5571,7 +5580,7 @@ void Onglets::on_calculsTransit_clicked()
                 Message::Afficher(tr("Aucun transit ISS n'a été trouvé sur la période donnée"), INFO);
             } else {
                 afficherResultats = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats(), this,
-                                                  _ui->valeurZoomMap->value());
+                                                 _ui->valeurZoomMap->value());
                 afficherResultats->show();
             }
         }

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    1er novembre 2021
  *
  */
 
@@ -943,7 +943,10 @@ void PreviSat::OuvertureFichierTLE(const QString &fichier)
 
     /* Corps de la methode */
     Configuration::instance()->nomfic() = fichier;
+    const QFileInfo fi(fichier);
+    AfficherMessageStatut(tr("Ouverture du fichier TLE %1 ...").arg(fi.fileName()));
     ChargementTLE();
+    AfficherMessageStatut(tr("Fichier TLE de %1 satellites").arg(Configuration::instance()->mapTLE().size()), 5);
 
     /* Retour */
     return;
@@ -1437,6 +1440,7 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
 
     /* Corps de la methode */
     _messageStatut->setText(message);
+    _messageStatut->repaint();
 
     if ((_timerStatut != nullptr) && (_timerStatut->interval() > 0)) {
 
@@ -2354,7 +2358,9 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     Configuration::instance()->listeSatellites().clear();
     ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
 
+    AfficherMessageStatut(tr("Ouverture du fichier TLE %1 ...").arg(fi.fileName()));
     ChargementTLE();
+    AfficherMessageStatut(tr("Fichier TLE de %1 satellites").arg(Configuration::instance()->mapTLE().size()), 5);
 
     DemarrageApplication();
 
