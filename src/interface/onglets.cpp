@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er novembre 2021
+ * >    5 novembre 2021
  *
  */
 
@@ -3078,7 +3078,7 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
         }
     }
 
-    return false;
+    return QMainWindow::eventFilter(object, evt);
 }
 
 void Onglets::mousePressEvent(QMouseEvent *event)

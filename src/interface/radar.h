@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >
+ * >    5 novembre 2021
  *
  */
 
@@ -98,6 +98,14 @@ public:
     void show();
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+    void AfficherMessageStatut2(const QString &message);
+    void AfficherMessageStatut3(const QString &message);
+    void EffacerMessageStatut();
+
+
 protected:
 
     /*
@@ -129,6 +137,11 @@ private:
     /*
      * Methodes privees
      */
+
+
+private slots:
+
+    bool eventFilter(QObject *watched, QEvent *event);
 
 
 };

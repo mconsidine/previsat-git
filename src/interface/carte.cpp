@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >
+ * >    5 novembre 2021
  *
  */
 
@@ -80,6 +80,9 @@ Carte::Carte(Onglets *onglets, QWidget *parent) :
     scene = nullptr;
     _onglets = onglets;
 
+    ui->carte->installEventFilter(this);
+    ui->carte->viewport()->installEventFilter(this);
+
     DEG2PXHZ = (1. / 0.45);
     DEG2PXVT = (1. / 0.45);
 }
@@ -124,7 +127,8 @@ void Carte::show()
         scene->deleteLater();
     }
     scene = new QGraphicsScene;
-    scene->setSceneRect(ui->carte->rect());
+    const QRect rect = QRect(ui->carte->x(), ui->carte->y(), ui->carte->width() - 2, ui->carte->height() - 2);
+    scene->setSceneRect(rect);
 
     /* Corps de la methode */
     // Chargement de la carte
@@ -907,14 +911,14 @@ void Carte::resizeEvent(QResizeEvent *evt)
     /* Corps de la methode */
     if (_onglets->ui()->proportionsCarte->isChecked()) {
 
-        const int href = 2 * height() - 3;
+        const int href = 2 * height() - 1;
         const int lref = width();
         const int lc = qMin(href, lref);
-        const int hc = (lc + 3) / 2;
+        const int hc = (lc + 1) / 2;
         ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
     }
-    const int hcarte = ui->carte->height() - 3;
-    const int lcarte = ui->carte->width() - 3;
+    const int hcarte = ui->carte->height() - 1;
+    const int lcarte = ui->carte->width() - 1;
 
     DEG2PXHZ = lcarte * (1. / T360);
     DEG2PXVT = hcarte * (2. / T360);
@@ -979,6 +983,127 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 /*
  * Methodes privees
  */
+bool Carte::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(watched)
+
+    /* Corps de la methode */
+    if ((event->type() == QEvent::MouseMove) || (event->type() == QEvent::HoverEnter)) {
+
+        if (ui->carte->underMouse()) {
+
+            const QMouseEvent* const evt = static_cast<const QMouseEvent*>(event);
+            const int xCur = evt->x() + 1;
+            const int yCur = evt->y() + 1;
+
+            if (_onglets->ui()->affcoord->isChecked()) {
+
+                // Longitude
+                const double lo0 = 180. - xCur / DEG2PXHZ;
+                const QString ew = (lo0 < 0.) ? tr("Est") : tr("Ouest");
+
+                // Latitude
+                const double la0 = 90. - yCur / DEG2PXVT;
+                const QString ns = (la0 < 0.) ? tr("Sud") : tr("Nord");
+
+                // Affichage des coordonnees dans la barre de statut
+                emit AfficherMessageStatut2(tr("Longitude : %1° %2").arg(fabs(lo0), 6, 'f', 2, QChar('0')).arg(ew));
+                emit AfficherMessageStatut3(tr("Latitude : %1° %2").arg(fabs(la0), 6, 'f', 2, QChar('0')).arg(ns));
+            }
+
+            // Survol d'un satellite avec le curseur
+            QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+            bool atrouve = false;
+            while (it.hasNext() && !atrouve) {
+
+                const Satellite sat = it.next();
+                const int lsat = qRound((180. - sat.longitude() * RAD2DEG) * DEG2PXHZ) + 2;
+                const int bsat = qRound((90. - sat.latitude() * RAD2DEG) * DEG2PXVT) + 2;
+
+                // Distance au carre du curseur au satellite
+                const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
+
+                // Le curseur est au(dessus d'un satellite
+                if ((dt <= 16) && (sat.altitude() > 0.)) {
+                    atrouve = true;
+                    setToolTip(tr("%1\nNORAD : %2\nCOSPAR : %3").arg(sat.tle().nom()).arg(sat.tle().norad()).arg(sat.tle().cospar()));
+                    emit AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  COSPAR : %3)").arg(sat.tle().nom()).arg(sat.tle().norad())
+                                               .arg(sat.tle().cospar()));
+                    setCursor(Qt::CrossCursor);
+                } else {
+                    emit EffacerMessageStatut();
+                    setToolTip("");
+                    setCursor(Qt::ArrowCursor);
+                }
+            }
+
+            // Survol du Soleil avec le curseur
+            static bool asoleil = false;
+            if (_onglets->ui()->affsoleil->isChecked()) {
+
+                const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
+                const int bsol = qRound((90. - Configuration::instance()->soleil().latitude() * RAD2DEG) * DEG2PXVT) + 2;
+
+                // Distance au carre du curseur au Soleil
+                const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
+
+                // Le curseur est au-dessus du Soleil
+                if (dt <= 81) {
+                    emit AfficherMessageStatut(tr("Soleil"));
+                    setToolTip(tr("Soleil"));
+                    setCursor(Qt::CrossCursor);
+                    asoleil = true;
+                } else {
+                    if (asoleil) {
+                        emit EffacerMessageStatut();
+                        setToolTip("");
+                        setCursor(Qt::ArrowCursor);
+                        asoleil = false;
+                    }
+                }
+            }
+
+            // Survol de la Lune avec le curseur
+            static bool alune = false;
+            if (_onglets->ui()->afflune->isChecked()) {
+
+                const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
+                const int blun = qRound((90. - Configuration::instance()->lune().latitude() * RAD2DEG) * DEG2PXVT) + 2;
+
+                // Distance au carre du curseur a la Lune
+                const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
+
+                // Le curseur est au-dessus de la Lune
+                if (dt <= 81) {
+                    emit AfficherMessageStatut(tr("Lune"));
+                    setToolTip(tr("Lune"));
+                    setCursor(Qt::CrossCursor);
+                    alune = true;
+                } else {
+                    if (alune) {
+                        emit EffacerMessageStatut();
+                        setToolTip("");
+                        setCursor(Qt::ArrowCursor);
+                        alune = false;
+                    }
+                }
+            }
+        }
+    } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
+        setCursor(Qt::ArrowCursor);
+        setToolTip("");
+        emit EffacerMessageStatut();
+        emit AfficherMessageStatut2("");
+        emit AfficherMessageStatut3("");
+    }
+
+    /* Retour */
+    return QFrame::eventFilter(watched, event);
+}
+
 /*
  * Affichage par defaut d'un satellite (sans icone)
  */

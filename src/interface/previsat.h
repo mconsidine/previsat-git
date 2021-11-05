@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 octobre 2021
+ * >    5 novembre 2021
  *
  */
 
@@ -332,6 +332,10 @@ private slots:
      * @param secondes nombre de secondes pendant lesquelles le message est affiche
      */
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
+
+    void AfficherMessageStatut2(const QString &message);
+
+    void AfficherMessageStatut3(const QString &message);
 
     /**
      * @brief ChargementFenetre Chargement des elements de la fenetre
