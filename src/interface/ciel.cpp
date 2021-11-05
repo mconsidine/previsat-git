@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >
+ * >    5 novembre 2021
  *
  */
 
@@ -39,6 +39,7 @@
 #include "onglets.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
+#include "librairies/maths/maths.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
@@ -79,6 +80,8 @@ Ciel::Ciel(Onglets *onglets, QWidget *parent) :
     ui->setupUi(this);
     scene = nullptr;
     _onglets = onglets;
+    ui->vueCiel->installEventFilter(this);
+    ui->vueCiel->viewport()->installEventFilter(this);
 }
 
 /*
@@ -123,6 +126,12 @@ void Ciel::show(const Observateur &observateur,
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _labelHeure = labelHeure;
+    _planetes = planetes;
+    _observateur = observateur;
+    _soleil = soleil;
+    _lune = lune;
+
     const QColor crimson(220, 20, 60);
     const QColor bleuClair(173, 216, 230);
     const QPen noir(Qt::black);
@@ -269,12 +278,12 @@ void Ciel::show(const Observateur &observateur,
         QGraphicsSimpleTextItem * txtPla;
         for(int iplanete=MERCURE; iplanete<=NEPTUNE; iplanete++) {
 
-            if (planetes.at(iplanete).hauteur() >= 0.) {
+            if (_planetes.at(iplanete).hauteur() >= 0.) {
 
-                if ((((iplanete == MERCURE) || (iplanete == VENUS)) && (planetes.at(iplanete).distance() > soleil.distance())) || (iplanete >= MARS)) {
+                if ((((iplanete == MERCURE) || (iplanete == VENUS)) && (_planetes.at(iplanete).distance() > soleil.distance())) || (iplanete >= MARS)) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * sin(planetes.at(iplanete).azimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * cos(planetes.at(iplanete).azimut()));
+                    const int lpla = qRound(lciel - lciel * (1. - _planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * sin(_planetes.at(iplanete).azimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - _planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * cos(_planetes.at(iplanete).azimut()));
 
                     const QBrush coulPlanete(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -284,7 +293,7 @@ void Ciel::show(const Observateur &observateur,
                     //                                ui->affplanetes->checkState() == Qt::Checked) {
                     const int lpl = lpla - lciel;
                     const int bpl = hciel - bpla;
-                    const QString nompla = planetes.at(iplanete).nom();
+                    const QString nompla = _planetes.at(iplanete).nom();
                     txtPla = new QGraphicsSimpleTextItem(nompla);
                     const int lng = static_cast<int> (txtPla->boundingRect().width());
 
@@ -378,12 +387,12 @@ void Ciel::show(const Observateur &observateur,
         QGraphicsSimpleTextItem * txtPla;
         for(int iplanete=MERCURE; iplanete<=VENUS; iplanete++) {
 
-            if (planetes.at(iplanete).hauteur() >= 0.) {
+            if (_planetes.at(iplanete).hauteur() >= 0.) {
 
-                if (planetes.at(iplanete).distance() < soleil.distance()) {
+                if (_planetes.at(iplanete).distance() < soleil.distance()) {
 
-                    const int lpla = qRound(lciel - lciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * sin(planetes.at(iplanete).azimut()));
-                    const int bpla = qRound(hciel - hciel * (1. - planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * cos(planetes.at(iplanete).azimut()));
+                    const int lpla = qRound(lciel - lciel * (1. - _planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * sin(_planetes.at(iplanete).azimut()));
+                    const int bpla = qRound(hciel - hciel * (1. - _planetes.at(iplanete).hauteur() * DEUX_SUR_PI) * cos(_planetes.at(iplanete).azimut()));
 
                     const QBrush coulPlanete(QBrush(couleurPlanetes[iplanete], Qt::SolidPattern));
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
@@ -393,7 +402,7 @@ void Ciel::show(const Observateur &observateur,
                     //                            ui->affplanetes->checkState() == Qt::Checked) {
                     const int lpl = lpla - lciel;
                     const int bpl = hciel - bpla;
-                    const QString nompla = planetes.at(iplanete).nom();
+                    const QString nompla = _planetes.at(iplanete).nom();
                     txtPla = new QGraphicsSimpleTextItem(nompla);
                     const int lng = static_cast<int> (txtPla->boundingRect().width());
 
@@ -733,3 +742,174 @@ void Ciel::resizeEvent(QResizeEvent *evt)
 /*
  * Methodes privees
  */
+bool Ciel::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(watched)
+
+    /* Corps de la methode */
+    if ((event->type() == QEvent::MouseMove) || (event->type() == QEvent::HoverEnter)) {
+
+        if (!_labelHeure) {
+
+            const QMouseEvent* const evt = static_cast<const QMouseEvent*>(event);
+
+            const int lciel = qRound(0.5 * ui->vueCiel->width());
+            const int hciel = qRound(0.5 * ui->vueCiel->height());
+            const int x1 = evt->x() - lciel;
+            const int y1 = evt->y() - hciel;
+
+            // Le curseur est au-dessus de la carte du ciel
+            if ((x1 * x1 + y1 * y1) <= (hciel * lciel)) {
+
+                const double x2 = -x1 / (double) lciel;
+                const double y2 = -y1 / (double) hciel;
+
+                const double ht = PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
+                double az = atan2(x2, y2);
+                if (az < 0.) {
+                    az += DEUX_PI;
+                }
+
+                const double ch = cos(ht);
+                const Vecteur3D vec1(-cos(az) * ch, sin(az) * ch, sin(ht));
+                const Vecteur3D vec2(_observateur.rotHz().Transposee() * vec1);
+
+                // Declinaison
+                const double dec = asin(vec2.z());
+
+                // Ascension droite
+                double ad = atan2(vec2.y(), vec2.x());
+                if (ad < 0.) {
+                    ad += DEUX_PI;
+                }
+
+                // Affichage des coordonnees dans la barre de statut
+                emit AfficherMessageStatut2(tr("Ascension droite : %1").arg(Maths::ToSexagesimal(ad, HEURE1, 2, 0, false, false).mid(0, 7)));
+                emit AfficherMessageStatut3(tr("Déclinaison : %1").arg(Maths::ToSexagesimal(dec, DEGRE, 2, 0, true, false).mid(0, 7)));
+
+                // Survol d'un satellite avec le curseur
+                bool atrouve = false;
+                QListIterator<Satellite> it(_satellites);
+                while (it.hasNext() && !atrouve) {
+
+                    const Satellite sat = it.next();
+                    const int lsat = qRound(-0.5 * ui->vueCiel->width() * (1. - sat.hauteur() * DEUX_SUR_PI) * sin(sat.azimut()));
+                    const int bsat = qRound(-0.5 * ui->vueCiel->height() * (1. - sat.hauteur() * DEUX_SUR_PI) * cos(sat.azimut()));
+
+                    // Distance au carre du satellite au curseur
+                    const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
+
+                    // Le curseur est au(dessus d'un satellite
+                    if ((dt <= 16) && (sat.altitude() > 0.)) {
+                        atrouve = true;
+                        setToolTip(tr("%1\nNORAD : %2\nCOSPAR : %3").arg(sat.tle().nom()).arg(sat.tle().norad()).arg(sat.tle().cospar()));
+                        emit AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  COSPAR : %3)").arg(sat.tle().nom()).arg(sat.tle().norad())
+                                                   .arg(sat.tle().cospar()));
+                        setCursor(Qt::CrossCursor);
+                    } else {
+                        emit EffacerMessageStatut();
+                        setToolTip("");
+                        setCursor(Qt::ArrowCursor);
+                    }
+                }
+
+                // Survol des planetes avec le curseur
+                static bool aplanete = false;
+                atrouve = false;
+                if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
+
+                    for(int ipla=MERCURE; ipla<=NEPTUNE && !atrouve; ipla++) {
+
+                        const int lpla = qRound(-0.5 * ui->vueCiel->width() * (1. - _planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
+                                                sin(_planetes.at(ipla).azimut()));
+                        const int bpla = qRound(-0.5 * ui->vueCiel->height() * (1. - _planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
+                                                cos(_planetes.at(ipla).azimut()));
+
+                        // Distance au carre de la planete au curseur
+                        const int dt = (x1 - lpla) * (x1 - lpla) + (y1 - bpla) * (y1 - bpla);
+
+                        // Le curseur est au-dessus d'une planete
+                        if (dt <= 16) {
+                            aplanete = true;
+                            atrouve = true;
+                            emit AfficherMessageStatut(_planetes.at(ipla).nom());
+                            setToolTip(_planetes.at(ipla).nom());
+                            setCursor(Qt::CrossCursor);
+                        } else {
+                            if (aplanete) {
+                                emit EffacerMessageStatut();
+                                setToolTip("");
+                                setCursor(Qt::ArrowCursor);
+                                aplanete = false;
+                            }
+                        }
+                    }
+                }
+
+                // Survol du Soleil avec le curseur
+                static bool asoleil = false;
+                if (_onglets->ui()->affsoleil->isChecked()) {
+
+                    const int lsol = qRound(-0.5 * ui->vueCiel->width() * (1. - _soleil.hauteur() * DEUX_SUR_PI) * sin(_soleil.azimut()));
+                    const int bsol = qRound(-0.5 * ui->vueCiel->height() * (1. - _soleil.hauteur() * DEUX_SUR_PI) * cos(_soleil.azimut()));
+
+                    // Distance au carre du Soleil au curseur
+                    const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
+
+                    // Le curseur est au-dessus du Soleil
+                    if (dt <= 81) {
+                        emit AfficherMessageStatut(tr("Soleil"));
+                        setToolTip(tr("Soleil"));
+                        setCursor(Qt::CrossCursor);
+                        asoleil = true;
+                    } else {
+                        if (asoleil) {
+                            emit EffacerMessageStatut();
+                            setToolTip("");
+                            setCursor(Qt::ArrowCursor);
+                            asoleil = false;
+                        }
+                    }
+                }
+
+                // Survol de la Lune avec le curseur
+                static bool alune = false;
+                if (_onglets->ui()->afflune->isChecked()) {
+
+                    const int llun = qRound(-0.5 * ui->vueCiel->width() * (1. - _lune.hauteur() * DEUX_SUR_PI) * sin(_lune.azimut()));
+                    const int blun = qRound(-0.5 * ui->vueCiel->height() * (1. - _lune.hauteur() * DEUX_SUR_PI) * cos(_lune.azimut()));
+
+                    // Distance au carre de la Lune au curseur
+                    const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
+
+                    // Le curseur est au-dessus de la Lune
+                    if (dt <= 81) {
+                        emit AfficherMessageStatut(tr("Lune"));
+                        setToolTip(tr("Lune"));
+                        setCursor(Qt::CrossCursor);
+                        alune = true;
+                    } else {
+                        if (alune) {
+                            emit EffacerMessageStatut();
+                            setToolTip("");
+                            setCursor(Qt::ArrowCursor);
+                            alune = false;
+                        }
+                    }
+                }
+            } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
+                setCursor(Qt::ArrowCursor);
+                setToolTip("");
+                emit EffacerMessageStatut();
+                emit AfficherMessageStatut2("");
+                emit AfficherMessageStatut3("");
+            }
+        }
+    }
+
+    /* Retour */
+    return QFrame::eventFilter(watched, event);
+}

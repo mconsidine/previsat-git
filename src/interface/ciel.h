@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >
+ * >    5 novembre 2021
  *
  */
 
@@ -47,19 +47,19 @@
 #include <QFrame>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/dates/date.h"
+#include "librairies/observateur/observateur.h"
+#include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/systemesolaire/lune.h"
+#include "librairies/corps/systemesolaire/soleil.h"
 
 
 class QPolygonF;
 class Onglets;
 class QGraphicsScene;
-class Observateur;
-class Soleil;
-class Lune;
 class LigneConstellation;
 class Constellation;
 class Etoile;
 class Planete;
-class Satellite;
 
 namespace Ui {
 class Ciel;
@@ -137,6 +137,14 @@ public slots:
     void resizeEvent(QResizeEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+    void AfficherMessageStatut2(const QString &message);
+    void AfficherMessageStatut3(const QString &message);
+    void EffacerMessageStatut();
+
+
 protected:
 
     /*
@@ -165,10 +173,21 @@ private:
     QGraphicsScene *scene;
     Onglets *_onglets;
 
+    bool _labelHeure;
+    QList<Satellite> _satellites;
+    QList<Planete> _planetes;
+    Observateur _observateur;
+    Soleil _soleil;
+    Lune _lune;
+
     /*
      * Methodes privees
      */
 
+
+private slots:
+
+    bool eventFilter(QObject *watched, QEvent *event);
 
 };
 

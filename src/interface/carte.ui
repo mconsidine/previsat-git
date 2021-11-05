@@ -10,6 +10,9 @@
     <height>403</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string notr="true">Frame</string>
   </property>
@@ -31,6 +34,9 @@
    </property>
    <item>
     <widget class="QGraphicsView" name="carte">
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>

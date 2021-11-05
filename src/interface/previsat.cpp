@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er novembre 2021
+ * >    5 novembre 2021
  *
  */
 
@@ -1130,6 +1130,11 @@ void PreviSat::ChangementCarte()
         }
         _ciel = new Ciel(_onglets, ui->frameCarteLon);
 
+        connect(_ciel, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+        connect(_ciel, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
+        connect(_ciel, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
+        connect(_ciel, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
+
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
         EnchainementCalculs();
 
@@ -1471,6 +1476,44 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
     return;
 }
 
+void PreviSat::AfficherMessageStatut2(const QString &message)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (message.isEmpty()) {
+        _messageStatut2->setVisible(false);
+    } else {
+        _messageStatut2->setText(message);
+        _messageStatut2->repaint();
+        _messageStatut2->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::AfficherMessageStatut3(const QString &message)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (message.isEmpty()) {
+        _messageStatut3->setVisible(false);
+    } else {
+        _messageStatut3->setText(message);
+        _messageStatut3->repaint();
+        _messageStatut3->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Chargement des elements de la fenetre
  */
@@ -1527,6 +1570,16 @@ void PreviSat::ChargementFenetre()
     connect(_onglets, SIGNAL(RechargerTLE()), this, SLOT(ChargementTLE()));
     connect(_onglets, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
     connect(_onglets, SIGNAL(InitFicTLE()), this, SLOT(InitFicTLE()));
+
+    connect(_carte, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+    connect(_carte, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
+    connect(_carte, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
+    connect(_carte, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
+
+    connect(_radar, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
+    connect(_radar, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
+    connect(_radar, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
+    connect(_radar, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
 
     ChargementTraduction(settings.value("affichage/langue", "en").toString());
 
