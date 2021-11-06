@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    6 novembre 2021
  *
  */
 
@@ -116,7 +116,9 @@ signals:
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
     void AfficherMessageStatut2(const QString &message);
     void AfficherMessageStatut3(const QString &message);
+    void EcritureTleDefautRegistre();
     void EffacerMessageStatut();
+    void RecalculerPositions();
 
 
 protected:
