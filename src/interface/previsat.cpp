@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    6 novembre 2021
  *
  */
 
@@ -1134,6 +1134,8 @@ void PreviSat::ChangementCarte()
         connect(_ciel, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
         connect(_ciel, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
         connect(_ciel, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
+        connect(_ciel, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
+        connect(_ciel, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
         EnchainementCalculs();
@@ -1476,6 +1478,9 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
     return;
 }
 
+/*
+ * Affichage d'un message dans la zone de statut 2
+ */
 void PreviSat::AfficherMessageStatut2(const QString &message)
 {
     /* Declarations des variables locales */
@@ -1495,6 +1500,9 @@ void PreviSat::AfficherMessageStatut2(const QString &message)
     return;
 }
 
+/*
+ * Affichage d'un message dans la zone de statut 3
+ */
 void PreviSat::AfficherMessageStatut3(const QString &message)
 {
     /* Declarations des variables locales */
@@ -1575,11 +1583,15 @@ void PreviSat::ChargementFenetre()
     connect(_carte, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
     connect(_carte, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
     connect(_carte, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
+    connect(_carte, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
+    connect(_carte, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
     connect(_radar, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
     connect(_radar, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
     connect(_radar, SIGNAL(AfficherMessageStatut3(const QString &)), this, SLOT(AfficherMessageStatut3(const QString &)));
     connect(_radar, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
+    connect(_radar, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
+    connect(_radar, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
     ChargementTraduction(settings.value("affichage/langue", "en").toString());
 
@@ -2445,14 +2457,23 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
             // Suppression d'un satellite dans la liste
             ui->liste1->currentItem()->setCheckState(Qt::Unchecked);
 
+            QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
             bool afin = false;
             int i;
-            for(i = 1; i < Configuration::instance()->listeSatellites().size() && !afin; i++) {
-                afin = (Configuration::instance()->listeSatellites().at(i).tle().norad() == norad);
+            for(i = 0; i < listeSatellites.size() && !afin; i++) {
+                afin = (listeSatellites.at(i).tle().norad() == norad);
             }
 
-            Configuration::instance()->listeSatellites().removeAt(--i);
+            listeSatellites.removeAt(--i);
             Configuration::instance()->suppressionSatelliteFicTLE(norad);
+
+            if (i == 0) {
+                // On definit le satellite suivant dans la liste comme satellite par defaut
+                Configuration::instance()->tleDefaut().nomsat = listeSatellites.at(0).tle().nom();
+                Configuration::instance()->tleDefaut().l1 = listeSatellites.at(0).tle().ligne1();
+                Configuration::instance()->tleDefaut().l2 = listeSatellites.at(0).tle().ligne2();
+                EcritureTleDefautRegistre();
+            }
 
         } else {
 

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    6 novembre 2021
  *
  */
 
@@ -991,13 +991,13 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
     Q_UNUSED(watched)
 
     /* Corps de la methode */
-    if ((event->type() == QEvent::MouseMove) || (event->type() == QEvent::HoverEnter)) {
+    if (ui->carte->underMouse()) {
 
-        if (ui->carte->underMouse()) {
+        const QMouseEvent* const evt = static_cast<const QMouseEvent*>(event);
+        const int xCur = evt->x() + 1;
+        const int yCur = evt->y() + 1;
 
-            const QMouseEvent* const evt = static_cast<const QMouseEvent*>(event);
-            const int xCur = evt->x() + 1;
-            const int yCur = evt->y() + 1;
+        if ((event->type() == QEvent::MouseMove) || (event->type() == QEvent::HoverEnter)) {
 
             if (_onglets->ui()->affcoord->isChecked()) {
 
@@ -1091,13 +1091,54 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
                     }
                 }
             }
+        } else if (event->type() == QEvent::MouseButtonPress) {
+
+            if (evt->button() == Qt::LeftButton) {
+
+                // Clic sur un satellite
+                QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+                bool atrouve = false;
+                int idx = 1;
+                while (it.hasNext() && !atrouve) {
+
+                    const Satellite sat = it.next();
+                    const int lsat = qRound((180. - sat.longitude() * RAD2DEG) * DEG2PXHZ) + 2;
+                    const int bsat = qRound((90. - sat.latitude() * RAD2DEG) * DEG2PXVT) + 2;
+
+                    // Distance au carre du curseur au satellite
+                    const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
+
+                    // Le curseur est au(dessus d'un satellite
+                    if ((dt <= 16) && (sat.altitude() > 0.)) {
+
+                        atrouve = true;
+
+#if QT_VERSION < 0x050D00
+                        Configuration::instance()->listeSatellites().swap(--idx, 0);
+#else
+                        Configuration::instance()->listeSatellites().swapItemsAt(--idx, 0);
+#endif
+                        // On definit le satellite choisi comme satellite par defaut
+                        Configuration::instance()->tleDefaut().nomsat = sat.tle().nom();
+                        Configuration::instance()->tleDefaut().l1 = sat.tle().ligne1();
+                        Configuration::instance()->tleDefaut().l2 = sat.tle().ligne2();
+
+                        emit RecalculerPositions();
+
+                        Configuration::instance()->EcritureConfiguration();
+                        emit EcritureTleDefautRegistre();
+                    }
+                    idx++;
+                }
+            }
+
+        } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
+            setCursor(Qt::ArrowCursor);
+            setToolTip("");
+            emit EffacerMessageStatut();
+            emit AfficherMessageStatut2("");
+            emit AfficherMessageStatut3("");
         }
-    } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
-        setCursor(Qt::ArrowCursor);
-        setToolTip("");
-        emit EffacerMessageStatut();
-        emit AfficherMessageStatut2("");
-        emit AfficherMessageStatut3("");
     }
 
     /* Retour */

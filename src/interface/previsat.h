@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    6 novembre 2021
  *
  */
 
@@ -190,11 +190,6 @@ private:
     void ChargementTraduction(const QString &langue);
 
     /**
-     * @brief EcritureTleDefautRegistre Ecriture du TLE par defaut en registre
-     */
-    void EcritureTleDefautRegistre();
-
-    /**
      * @brief GestionPolice Gestion de la police
      */
     void GestionPolice();
@@ -311,6 +306,11 @@ private slots:
     void ChangementZoom();
 
     /**
+     * @brief EcritureTleDefautRegistre Ecriture du TLE par defaut en registre
+     */
+    void EcritureTleDefautRegistre();
+
+    /**
      * @brief InitFicTLE Liste des fichiers TLE
      */
     void InitFicTLE() const;
@@ -333,8 +333,16 @@ private slots:
      */
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
 
+    /**
+     * @brief AfficherMessageStatut2 Affichage d'un message dans la zone de statut 2
+     * @param message message
+     */
     void AfficherMessageStatut2(const QString &message);
 
+    /**
+     * @brief AfficherMessageStatut2 Affichage d'un message dans la zone de statut 3
+     * @param message message
+     */
     void AfficherMessageStatut3(const QString &message);
 
     /**
