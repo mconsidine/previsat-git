@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2021
+ * >    7 novembre 2021
  *
  */
 
@@ -146,6 +146,7 @@ private:
     TypeCalcul _typeCalcul;
     QString _mapResultats;
     int _zoom;
+    bool _afficherEvt;
 
 
     /*

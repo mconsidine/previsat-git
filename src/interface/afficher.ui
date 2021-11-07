@@ -36,6 +36,19 @@
        <number>0</number>
       </property>
       <item>
+       <widget class="QTextEdit" name="fichierTexte">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTableWidget" name="resultatsPrevisions">
         <property name="minimumSize">
          <size>
