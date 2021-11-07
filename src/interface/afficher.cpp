@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    1er novembre 2021
+ * >    7 novembre 2021
  *
  */
 
@@ -42,12 +42,12 @@
 #include <QGraphicsPixmapItem>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-#include "ui_afficher.h"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QTextStream>
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include "ui_afficher.h"
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "afficher.h"
 #include "ciel.h"
 #include "onglets.h"
@@ -101,13 +101,19 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
     if (_typeCalcul == EVENEMENTS) {
         ui->actionEnregistrer->setVisible(false);
         ui->frameCiel->setVisible(false);
-        setMinimumSize(620, 630);
+        ui->resultatsPrevisions->setVisible(false);
+        ui->fichierTexte->setVisible(true);
+        setMinimumSize(630, 630);
+        _afficherEvt = true;
     } else {
         QStyle * const styleBouton = QApplication::style();
         ui->actionEnregistrer->setIcon(styleBouton->standardIcon(QStyle::SP_DialogSaveButton));
         ui->actionEnregistrer->setVisible(true);
         ui->frameCiel->setVisible(true);
+        ui->resultatsPrevisions->setVisible(true);
+        ui->fichierTexte->setVisible(false);
         setMinimumSize(1226, 630);
+        _afficherEvt = false;
     }
     resize(minimumSize());
 
@@ -124,8 +130,6 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
 
     case EVENEMENTS:
         setWindowTitle(tr("Évènements orbitaux"));
-        titres << tr("Satellite") << tr("Date", "Date and hour") << tr("PSO", "In orbit position") << tr("Longitude") << tr("Latitude")
-               << tr("Évènement");
         break;
 
     case FLASHS:
@@ -151,37 +155,49 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         break;
     }
 
-    ui->resultatsPrevisions->setColumnCount(titres.count());
-    ui->resultatsPrevisions->setHorizontalHeaderLabels(titres);
-    ui->resultatsPrevisions->horizontalHeader()->setToolTip("");
+    if (_typeCalcul == EVENEMENTS) {
 
-    switch (_typeCalcul) {
+        on_actionEnregistrerTxt_triggered();
 
-    case EVENEMENTS:
-        ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Position sur orbite"));
-        break;
+        QFile fi(_conditions.ficRes);
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+        const QString contenuFic = flux.readAll();
+        fi.close();
 
-    case FLASHS:
-        ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Hauteur maximale"));
-        ui->resultatsPrevisions->horizontalHeaderItem(4)->setToolTip(tr("Magnitude"));
-        ui->resultatsPrevisions->horizontalHeaderItem(5)->setToolTip(tr("Miroir"));
-        ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Hauteur Soleil"));
+        ui->fichierTexte->setText(contenuFic);
 
-        break;
+    } else {
 
-    case TRANSITS:
-        ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Constellation"));
-        ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Illumination"));
-        ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("secondes"));
-        break;
+        ui->resultatsPrevisions->setColumnCount(titres.count());
+        ui->resultatsPrevisions->setHorizontalHeaderLabels(titres);
+        ui->resultatsPrevisions->horizontalHeader()->setToolTip("");
 
-    case PREVISIONS:
-    case TELESCOPE:
-    default:
-        break;
+        switch (_typeCalcul) {
+
+        case FLASHS:
+            ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Hauteur maximale"));
+            ui->resultatsPrevisions->horizontalHeaderItem(4)->setToolTip(tr("Magnitude"));
+            ui->resultatsPrevisions->horizontalHeaderItem(5)->setToolTip(tr("Miroir"));
+            ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Hauteur Soleil"));
+
+            break;
+
+        case TRANSITS:
+            ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Constellation"));
+            ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Illumination"));
+            ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("secondes"));
+            break;
+
+        case PREVISIONS:
+        case EVENEMENTS:
+        case TELESCOPE:
+        default:
+            break;
+        }
+
+        ChargementResultats();
     }
-
-    ChargementResultats();
 
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     raise();
@@ -495,9 +511,15 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 #if (BUILD_TEST == true)
     const QString fic = _conditions.ficRes;
 #else
-    const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
-    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirOut() + QDir::separator() +
-                                                     nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    QString fic;
+    if (_afficherEvt) {
+        fic = _conditions.ficRes;
+        _afficherEvt = false;
+    } else {
+        const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
+        fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirOut() + QDir::separator() +
+                                           nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    }
 #endif
 
     if (!fic.isEmpty()) {
@@ -567,7 +589,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
             case EVENEMENTS:
                 flux << nomsat << endl;
-                flux << tr("   Date      Heure      PSO    Longitude  Latitude  Évènements",
+                flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
                            "Date, Hour, In orbit position, Longitude, Latitude, Events") << endl;
                 break;
 
@@ -623,7 +645,11 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
                         ligne = "";
                         for(int k=kmin; k<kmax; k++) {
-                            ligne += elems.at(k) + " ";
+                            if (_typeCalcul == EVENEMENTS) {
+                                ligne += elems.at(k).trimmed() + "  ";
+                            } else {
+                                ligne += elems.at(k) + " ";
+                            }
                         }
 
                         if (_typeCalcul == EVENEMENTS) {
@@ -637,7 +663,6 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
                 if (_typeCalcul == EVENEMENTS) {
 
-                    evts.sort();
                     QStringListIterator it4(evts);
                     while (it4.hasNext()) {
                         flux << it4.next().trimmed() << endl;
@@ -957,7 +982,7 @@ void Afficher::ChargementResultats()
     ui->resultatsPrevisions->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 #endif
     ui->resultatsPrevisions->setAlternatingRowColors(true);
-    if (_onglets->ui()->ordreChronologiqueMetOp->isChecked()) {
+    if (_onglets->ui()->ordreChronologiqueMetOp->isChecked() && (_typeCalcul == FLASHS)) {
         ui->resultatsPrevisions->sortItems(1);
     }
     ui->resultatsPrevisions->selectRow(0);
@@ -1054,6 +1079,7 @@ void Afficher::EcrireEntete() const
         flux << endl << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
                 .arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date).arg(_donnees.ageTle.at(1), 4, 'f', 2) << endl << endl << endl;
     }
+    fichier.close();
 
     /* Retour */
     return;

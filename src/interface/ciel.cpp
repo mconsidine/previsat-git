@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    radar.cpp
+ * >    ciel.cpp
  *
  * Localisation
  * >    interface
@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    7 novembre 2021
  *
  */
 
@@ -825,10 +825,10 @@ bool Ciel::eventFilter(QObject *watched, QEvent *event)
 
                     // Survol des planetes avec le curseur
                     static bool aplanete = false;
-                    atrouve = false;
+                    bool atrouve2 = false;
                     if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
-                        for(int ipla=MERCURE; ipla<=NEPTUNE && !atrouve; ipla++) {
+                        for(int ipla=MERCURE; ipla<=NEPTUNE && !atrouve2; ipla++) {
 
                             const int lpla = qRound(-0.5 * ui->vueCiel->width() * (1. - _planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
                                                     sin(_planetes.at(ipla).azimut()));
@@ -841,7 +841,7 @@ bool Ciel::eventFilter(QObject *watched, QEvent *event)
                             // Le curseur est au-dessus d'une planete
                             if (dt <= 16) {
                                 aplanete = true;
-                                atrouve = true;
+                                atrouve2 = true;
                                 emit AfficherMessageStatut(_planetes.at(ipla).nom());
                                 setToolTip(_planetes.at(ipla).nom());
                                 setCursor(Qt::CrossCursor);
