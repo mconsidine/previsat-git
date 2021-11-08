@@ -2347,6 +2347,11 @@ COSPAR : %3</translation>
         <translation>TLEファイルを抽出する</translation>
     </message>
     <message>
+        <location filename="src/interface/onglets.ui" line="11850"/>
+        <source>Passages à PSO = 90° et 270°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/interface/onglets.ui" line="12134"/>
         <source>Tous</source>
         <translation>すべて</translation>
@@ -2392,12 +2397,6 @@ COSPAR : %3</translation>
     <message>
         <location filename="src/interface/onglets.ui" line="11816"/>
         <source>Évènements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.ui" line="11850"/>
-        <source>Passages aux latitudes maximales</source>
-        <oldsource>Passages aux quadrangles</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -5691,7 +5691,7 @@ void Onglets::on_majManIss_clicked()
     // Mise a jour du fichier de manoeuvres
     emit AfficherMessageStatut(tr("Téléchargement du fichier de manoeuvres ISS..."));
     _dirDwn = Configuration::instance()->dirLocalData();
-    TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
+    TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/commun/data/ISS.OEM_J2K_EPH.xml", false);
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
 
     // Lecture du fichier de manoeuvres
