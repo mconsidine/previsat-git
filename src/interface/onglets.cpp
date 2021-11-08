@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    8 novembre 2021
  *
  */
 
@@ -5657,9 +5657,11 @@ void Onglets::on_majTleIss_clicked()
     try {
 
         // Mise a jour du fichier d'elements orbitaux
+        emit AfficherMessageStatut(tr("Téléchargement du fichier TLE de l'ISS..."));
         const QString ficTle = Configuration::instance()->adresseCelestrakNorad() + "supplemental/iss.txt";
         _dirDwn = Configuration::instance()->dirTmp();
         TelechargementFichier(ficTle, false);
+        emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
 
         // Verification du fichier
         const QString fic = Configuration::instance()->dirTmp() + QDir::separator() + "iss.txt";
@@ -5672,23 +5674,36 @@ void Onglets::on_majTleIss_clicked()
         // Mise a jour de l'age du TLE de l'ISS
         CalculAgeTLETransitISS();
 
-
-        // Mise a jour du fichier de manoeuvres
-        _dirDwn = Configuration::instance()->dirLocalData();
-        TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
-
-        // Lecture du fichier de manoeuvres
-        Configuration::instance()->LectureManoeuvresISS();
-        if (!Configuration::instance()->evenementsISS().isEmpty()) {
-            AffichageManoeuvresISS();
-        }
-
     } catch (PreviSatException &e) {
     }
 
     /* Retour */
     return;
 }
+
+void Onglets::on_majManIss_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Mise a jour du fichier de manoeuvres
+    emit AfficherMessageStatut(tr("Téléchargement du fichier de manoeuvres ISS..."));
+    _dirDwn = Configuration::instance()->dirLocalData();
+    TelechargementFichier(Configuration::instance()->adresseAstropedia() + "previsat/Qt/ISS.OEM_J2K_EPH.xml", false);
+    emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
+
+    // Lecture du fichier de manoeuvres
+    Configuration::instance()->LectureManoeuvresISS();
+    if (!Configuration::instance()->evenementsISS().isEmpty()) {
+        AffichageManoeuvresISS();
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Suivi d'un satellite

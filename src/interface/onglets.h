@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 novembre 2021
+ * >    8 novembre 2021
  *
  */
 
@@ -559,6 +559,7 @@ private slots:
     void on_effacerHeuresTransit_clicked();
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_majTleIss_clicked();
+    void on_majManIss_clicked();
 
 #if defined (Q_OS_WIN)
     // Suivi d'un satellite
