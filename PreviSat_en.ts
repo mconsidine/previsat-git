@@ -2282,6 +2282,11 @@ COSPAR : %3</translation>
         <translation>TLE file extraction</translation>
     </message>
     <message>
+        <location filename="src/interface/onglets.ui" line="11850"/>
+        <source>Passages à PSO = 90° et 270°</source>
+        <translation>Passes to Position = 90° and 270°</translation>
+    </message>
+    <message>
         <location filename="src/interface/onglets.ui" line="12134"/>
         <source>Tous</source>
         <translation>All</translation>
@@ -2426,12 +2431,6 @@ COSPAR : %3</translation>
         <location filename="src/interface/onglets.ui" line="11831"/>
         <source>Passages aux noeuds</source>
         <translation>Passes to nodes</translation>
-    </message>
-    <message>
-        <location filename="src/interface/onglets.ui" line="11850"/>
-        <source>Passages aux latitudes maximales</source>
-        <oldsource>Passages aux quadrangles</oldsource>
-        <translation>Passes to maximal latitudes</translation>
     </message>
     <message>
         <location filename="src/interface/onglets.ui" line="11869"/>

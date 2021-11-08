@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -11847,7 +11847,7 @@
           <font/>
          </property>
          <property name="text">
-          <string>Passages aux latitudes maximales</string>
+          <string>Passages à PSO = 90° et 270°</string>
          </property>
          <property name="checked">
           <bool>true</bool>

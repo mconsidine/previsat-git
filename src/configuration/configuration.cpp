@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >
+ * >    8 novembre 2021
  *
  */
 
@@ -1729,7 +1729,7 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.bin" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
+        _listeFicLocalData << "donnees.bin" << "ISS.OEM_J2K_EPH.xml" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
                            << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
