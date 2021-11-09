@@ -1971,6 +1971,11 @@ void PreviSat::on_actionTipeee_triggered()
     QDesktopServices::openUrl(QUrl("https://tipeee.com/previsat"));
 }
 
+void PreviSat::on_actionUtip_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://utip.io/previsat/"));
+}
+
 
 void PreviSat::on_meteoBasesNASA_clicked()
 {
@@ -2255,6 +2260,11 @@ void PreviSat::on_actionFaire_triggered()
 void PreviSat::on_actionDonation_Tipeee_triggered()
 {
     on_actionTipeee_triggered();
+}
+
+void PreviSat::on_actionDonation_Utip_triggered()
+{
+    on_actionUtip_triggered();
 }
 
 void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
