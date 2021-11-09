@@ -373,6 +373,7 @@ private slots:
     void on_directHelp_clicked();
     void on_actionPaypal_triggered();
     void on_actionTipeee_triggered();
+    void on_actionUtip_triggered();
     void on_meteoBasesNASA_clicked();
     void on_meteo_clicked();
 
@@ -389,6 +390,7 @@ private slots:
     void on_actionInformations_triggered();
     void on_actionFaire_triggered();
     void on_actionDonation_Tipeee_triggered();
+    void on_actionDonation_Utip_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
     void on_actionSkywatcher_com_triggered();

@@ -1591,6 +1591,7 @@
     <addaction name="separator"/>
     <addaction name="actionFaire"/>
     <addaction name="actionDonation_Tipeee"/>
+    <addaction name="actionDonation_Utip"/>
     <addaction name="separator"/>
     <addaction name="actionRapport_de_bug"/>
     <addaction name="actionPrevisat_sourceforge_net"/>
@@ -1666,6 +1667,7 @@
     </property>
     <addaction name="actionPaypal"/>
     <addaction name="actionTipeee"/>
+    <addaction name="actionUtip"/>
    </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuContextuelListe1"/>
@@ -1992,6 +1994,24 @@
    </property>
    <property name="text">
     <string>Donation Tipeee</string>
+   </property>
+  </action>
+  <action name="actionDonation_Utip">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/utip.png</normaloff>:/resources/utip.png</iconset>
+   </property>
+   <property name="text">
+    <string>Donation Utip</string>
+   </property>
+  </action>
+  <action name="actionUtip">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/utip.png</normaloff>:/resources/utip.png</iconset>
+   </property>
+   <property name="text">
+    <string notr="true">Utip</string>
    </property>
   </action>
  </widget>
