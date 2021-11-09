@@ -6383,3 +6383,20 @@ void Onglets::on_parametrageDefautExtraction_clicked()
     /* Retour */
     return;
 }
+
+void Onglets::on_lieuxObservation1_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->lieuxObservation1->hasFocus() && (index > 0)) {
+        Configuration::instance()->setObservateurDefaut(index);
+        AffichageLieuObs();
+        emit RecalculerPositions();
+    }
+
+    /* Retour */
+    return;
+}

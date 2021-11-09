@@ -583,6 +583,7 @@ private slots:
     void on_inclinaisonExtraction_currentIndexChanged(int index);
     void on_parametrageDefautExtraction_clicked();
 
+    void on_lieuxObservation1_currentIndexChanged(int index);
 };
 
 #endif // ONGLETS_H
