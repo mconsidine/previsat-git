@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 novembre 2021
+ * >    13 novembre 2021
  *
  */
 
@@ -149,6 +149,11 @@ public:
     void MettreAJourGroupeTLE(const QString &groupe);
 
     /**
+     * @brief RechargerListes Rechargement des listes suite a un changement de langue
+     */
+    void RechargerListes();
+
+    /**
      * @brief SauveOngletElementsOsculateurs Sauvegarde des donnees de l'onglet Elements osculateurs
      * @param fic nom du fichier
      */
@@ -253,9 +258,8 @@ private:
     int _indexOption;
     int _indexMajTLE;
     int _nbOnglets;
-    QStringList _titreInformations;
+    int _nbInformations;
     QStringList _titreOptions;
-    QStringList _titreMajTLE;
 
     QStringList _resultatsSatellitesTrouves;
 
@@ -318,6 +322,11 @@ private:
      * @brief AffichageManoeuvresISS Affichage des manoeuvres ISS
      */
     void AffichageManoeuvresISS() const;
+
+    /**
+     * @brief AffichageMessagesMaj Affichage des elements de la liste deroulante pour l'affichage des messages lors de la mise a jour des TLE
+     */
+    void AffichageMessagesMaj();
 
     /**
      * @brief AffichageResultatsDonnees Affichage des resultats de la recherche des donnees satellite

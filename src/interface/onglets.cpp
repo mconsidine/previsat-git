@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 novembre 2021
+ * >    13 novembre 2021
  *
  */
 
@@ -88,6 +88,13 @@ static Afficher *afficherResultats = nullptr;
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
 
+static const char* _titreInformations[] = {
+                               QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
+                               QT_TRANSLATE_NOOP("Onglets", "Recherche données") };
+
+static const char* _titreMajTLE[] = {
+                               QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE auto"),
+                               QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE manuelle") };
 
 /**********
  * PUBLIC *
@@ -126,9 +133,8 @@ Onglets::Onglets(QWidget *parent) :
     _indexInfo = 0;
     _indexOption = 0;
     _indexMajTLE = 0;
-    _titreInformations << tr("Informations satellite") << tr("Recherche données");
+    _nbInformations = 2;
     _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
-    _titreMajTLE << tr("Mise à jour TLE auto") << tr("Mise à jour TLE manuelle");
 
     // Initialisation au demarrage
     InitAffichageDemarrage();
@@ -256,11 +262,12 @@ void Onglets::show(const Date &date)
         _ui->barreOnglets->removeTab(_ui->barreOnglets->indexOf(_ui->osculateurs));
         _ui->informations->removeWidget(_ui->infos);
 
-        if (_titreInformations.size() == 2) {
-            _titreInformations.removeAt(0);
+        if (_nbInformations == 2) {
             _indexInfo = 0;
+            _nbInformations = 1;
             _ui->informations->setCurrentIndex(_indexInfo);
-            _ui->barreOnglets->setTabText(_ui->barreOnglets->indexOf(_ui->informationsSatellite), _titreInformations.at(0));
+            _ui->barreOnglets->setTabText(_ui->barreOnglets->indexOf(_ui->informationsSatellite),
+                                          QCoreApplication::translate("Onglets", _titreInformations[0]));
             on_informations_currentChanged(_indexInfo);
             _ui->infoPrec->setVisible(false);
             _ui->infoSuiv->setVisible(false);
@@ -269,12 +276,9 @@ void Onglets::show(const Date &date)
 
         if (_ui->barreOnglets->count() < _nbOnglets) {
 
+            _nbInformations = 2;
             _ui->satellite->setVisible(true);
             _ui->barreOnglets->insertTab(1, _ui->osculateurs, tr("Éléments osculateurs"));
-
-            if (_titreInformations.size() < 2) {
-                _titreInformations.insert(0, tr("Informations satellite"));
-            }
             _ui->informations->insertWidget(0, _ui->infos);
             on_infoSuiv_clicked();
             on_informations_currentChanged(0);
@@ -782,6 +786,7 @@ void Onglets::AffichageGroupesTLE() const
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool etat = _ui->groupeTLE->blockSignals(true);
     _ui->groupeTLE->clear();
     QList<CategorieTLE> &listeCategorieMajTLE = Configuration::instance()->listeCategoriesMajTLE();
     listeCategorieMajTLE.clear();
@@ -800,7 +805,9 @@ void Onglets::AffichageGroupesTLE() const
         }
 #endif
     }
+
     _ui->groupeTLE->setCurrentIndex(settings.value("affichage/groupeTLE", 0).toInt());
+    _ui->groupeTLE->blockSignals(etat);
 
     /* Retour */
     return;
@@ -1049,6 +1056,27 @@ void Onglets::AffichageManoeuvresISS() const
     _ui->manoeuvresISS->setColumnWidth(5, 50);
     _ui->manoeuvresISS->sortItems(1);
     _ui->manoeuvresISS->setVisible(true);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des elements de la liste deroulante pour l'affichage des messages lors de la mise a jour des TLE
+ */
+void Onglets::AffichageMessagesMaj()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const bool etat = _ui->affichageMsgMAJ->blockSignals(true);
+    _ui->affichageMsgMAJ->clear();
+    _ui->affichageMsgMAJ->addItem(tr("Affichage des messages informatifs"));
+    _ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
+    _ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
+    _ui->affichageMsgMAJ->blockSignals(etat);
 
     /* Retour */
     return;
@@ -1780,6 +1808,28 @@ void Onglets::MettreAJourGroupeTLE(const QString &groupe)
 }
 
 /*
+ * Rechargement des listes suite a un changement de langue
+ */
+void Onglets::RechargerListes()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    InitFicMap(false);
+    InitFicObs(false);
+    InitFicPref(false);
+    InitFicSon();
+    AffichageGroupesTLE();
+    AffichageLieuObs();
+    AffichageMessagesMaj();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Sauvegarde des donnees de l'onglet Elements osculateurs
  */
 void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
@@ -2289,16 +2339,17 @@ void Onglets::InitAffichageDemarrage()
     _ui->ongletsOutils->setCurrentIndex(0);
 
     _ui->informations->setCurrentIndex(_indexInfo);
-    _ui->infoPrec->setToolTip(_titreInformations.at((_indexInfo + _ui->informations->count() - 1) % _ui->informations->count()));
-    _ui->infoSuiv->setToolTip(_titreInformations.at((_indexInfo + 1) % _ui->informations->count()));
+    _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + _ui->informations->count() - 1)
+                              % _ui->informations->count()]));
+    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + 1) % _ui->informations->count()]));
 
     _ui->configuration->setCurrentIndex(_indexOption);
     _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % 4));
     _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % 4));
 
     on_miseAJourTLE_currentChanged(_indexMajTLE);
-    _ui->majPrec->setToolTip(_titreMajTLE.at((_indexMajTLE + 2) % 2));
-    _ui->majSuiv->setToolTip(_titreMajTLE.at((_indexMajTLE + 1) % 2));
+    _ui->majPrec->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[(_indexMajTLE + 2) % 2]));
+    _ui->majSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[(_indexMajTLE + 1) % 2]));
 
 
 #if !defined (Q_OS_WIN)
@@ -2310,6 +2361,7 @@ void Onglets::InitAffichageDemarrage()
     _nbOnglets--;
 #endif
 
+    _ui->policeWCC->clear();
 #if defined (Q_OS_WIN)
     _ui->policeWCC->addItem("Lucida Console");
     _ui->policeWCC->addItem("MS Shell Dlg 2");
@@ -2461,9 +2513,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
 
-    _ui->affichageMsgMAJ->addItem(tr("Affichage des messages informatifs"));
-    _ui->affichageMsgMAJ->addItem(tr("Accepter ajout/suppression de TLE"));
-    _ui->affichageMsgMAJ->addItem(tr("Refuser ajout/suppression de TLE"));
+    AffichageMessagesMaj();
 
     // Chargement des langues
     const bool etat = _ui->langue->blockSignals(true);
@@ -2551,6 +2601,8 @@ void Onglets::InitFicObs(const bool alarme)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool etat1 = _ui->categoriesObs->blockSignals(true);
+    const bool etat2 = _ui->ajdfic->blockSignals(true);
     _ui->categoriesObs->clear();
     _ui->ajdfic->clear();
 
@@ -2622,6 +2674,9 @@ void Onglets::InitFicObs(const bool alarme)
         }
     }
 
+    _ui->categoriesObs->blockSignals(etat1);
+    _ui->ajdfic->blockSignals(etat2);
+
     /* Retour */
     return;
 }
@@ -2639,6 +2694,7 @@ void Onglets::InitFicMap(const bool majAff)
 
     /* Corps de la methode */
     _ficMap.clear();
+    const bool etat = _ui->listeMap->blockSignals(true);
     _ui->listeMap->clear();
     _ui->listeMap->addItem(tr("* Défaut"));
     _ui->listeMap->setCurrentIndex(0);
@@ -2664,6 +2720,7 @@ void Onglets::InitFicMap(const bool majAff)
             emit MiseAJourCarte();
         }
     }
+    _ui->listeMap->blockSignals(etat);
 
     /* Retour */
     return;
@@ -2678,10 +2735,10 @@ void Onglets::InitFicPref(const bool majAff)
     QString fichier;
 
     /* Initialisations */
-
-    /* Corps de la methode */
+    const bool etat = _ui->preferences->blockSignals(true);
     _ui->preferences->clear();
 
+    /* Corps de la methode */
     QStringListIterator it(Configuration::instance()->listeFicPref());
     while (it.hasNext()) {
 
@@ -2700,7 +2757,9 @@ void Onglets::InitFicPref(const bool majAff)
     if (majAff) {
         emit MiseAJourCarte();
     }
+
     _ui->preferences->addItem(tr("Supprimer..."));
+    _ui->preferences->blockSignals(etat);
 
     /* Retour */
     return;
@@ -2720,6 +2779,7 @@ void Onglets::InitFicSon()
 
     /* Corps de la methode */
     _ficSonAOS.clear();
+    const bool etat = _ui->listeSons->blockSignals(true);
     _ui->listeSons->clear();
     _ui->listeSons->addItem(tr("* Défaut"));
     _ui->listeSons->setCurrentIndex(0);
@@ -2749,6 +2809,8 @@ void Onglets::InitFicSon()
         }
         _ui->listeSons->addItem(tr("Télécharger..."));
     }
+
+    _ui->listeSons->blockSignals(etat);
 
     /* Retour */
     return;
@@ -3102,7 +3164,7 @@ void Onglets::mouseMoveEvent(QMouseEvent *event)
 
 void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if ((_ui->dateHeure1->underMouse() && _ui->dateHeure1->isVisible()) || (_ui->dateHeure3->underMouse() && _ui->dateHeure3->isVisible())) {
+    if ((_ui->dateHeure1->underMouse() && _ui->dateHeure1->isVisible()) || (_ui->dateHeure2->underMouse() && _ui->dateHeure2->isVisible())) {
         emit ModeManuel(true);
     }
 
@@ -3137,17 +3199,18 @@ void Onglets::on_informations_currentChanged(int arg1)
         if (arg1 == 0) {
             _ui->infoPrec->setVisible(false);
             _ui->infoSuiv->setVisible(true);
-            _ui->infoSuiv->setToolTip(_titreInformations.at(1));
+            _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[1]));
         } else {
             _ui->infoPrec->setVisible(true);
-            _ui->infoPrec->setToolTip(_titreInformations.at(0));
+            _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[0]));
             _ui->infoSuiv->setVisible(false);
         }
     } else {
         _ui->infoPrec->setVisible(true);
         _ui->infoSuiv->setVisible(true);
-        _ui->infoPrec->setToolTip(_titreInformations.at((arg1 + _ui->informations->count() - 1) % _ui->informations->count()));
-        _ui->infoSuiv->setToolTip(_titreInformations.at((arg1 + 1) % _ui->informations->count()));
+        _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(arg1 + _ui->informations->count() - 1)
+                                  % _ui->informations->count()]));
+        _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(arg1 + 1) % _ui->informations->count()]));
     }
 
     // Recherche donnees satellite
@@ -3285,7 +3348,7 @@ void Onglets::on_infoPrec_clicked()
     if (_ui->informations->isVisible()) {
         _indexInfo = (_ui->informations->currentIndex() + _ui->informations->count() - 1) % _ui->informations->count();
         _ui->informations->setCurrentIndex(_indexInfo);
-        _ui->barreOnglets->setTabText(2, _titreInformations.at(_indexInfo));
+        _ui->barreOnglets->setTabText(2, QCoreApplication::translate("Onglets", _titreInformations[_indexInfo]));
         on_informations_currentChanged(_indexInfo);
     }
 }
@@ -3295,7 +3358,7 @@ void Onglets::on_infoSuiv_clicked()
     if (_ui->informations->isVisible()) {
         _indexInfo = (_ui->informations->currentIndex() + 1) % _ui->informations->count();
         _ui->informations->setCurrentIndex(_indexInfo);
-        _ui->barreOnglets->setTabText(2, _titreInformations.at(_indexInfo));
+        _ui->barreOnglets->setTabText(2, QCoreApplication::translate("Onglets", _titreInformations[_indexInfo]));
         on_informations_currentChanged(_indexInfo);
     }
 }
@@ -4743,7 +4806,7 @@ void Onglets::on_majPrec_clicked()
     if (_ui->miseAJourTLE->isVisible()) {
         _indexMajTLE = (_ui->miseAJourTLE->currentIndex() + _ui->miseAJourTLE->count() - 1) % _ui->miseAJourTLE->count();
         _ui->miseAJourTLE->setCurrentIndex(_indexMajTLE);
-        _ui->ongletsOutils->setTabText(0, _titreMajTLE.at(_indexMajTLE));
+        _ui->ongletsOutils->setTabText(0, QCoreApplication::translate("Onglets", _titreMajTLE[_indexMajTLE]));
     }
 }
 
@@ -4752,7 +4815,7 @@ void Onglets::on_majSuiv_clicked()
     if (_ui->miseAJourTLE->isVisible()) {
         _indexMajTLE = (_ui->miseAJourTLE->currentIndex() + 1) % _ui->miseAJourTLE->count();
         _ui->miseAJourTLE->setCurrentIndex(_indexMajTLE);
-        _ui->ongletsOutils->setTabText(0, _titreMajTLE.at(_indexMajTLE));
+        _ui->ongletsOutils->setTabText(0, QCoreApplication::translate("Onglets", _titreMajTLE[_indexMajTLE]));
     }
 }
 
@@ -4761,10 +4824,10 @@ void Onglets::on_miseAJourTLE_currentChanged(int arg1)
     if (arg1 == 0) {
         _ui->majPrec->setVisible(false);
         _ui->majSuiv->setVisible(true);
-        _ui->majSuiv->setToolTip(_titreMajTLE.at(1));
+        _ui->majSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[1]));
     } else {
         _ui->majPrec->setVisible(true);
-        _ui->majPrec->setToolTip(_titreMajTLE.at(0));
+        _ui->majPrec->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[0]));
         _ui->majSuiv->setVisible(false);
     }
 }

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    13 novembre 2021
  *
  */
 
@@ -1243,7 +1243,8 @@ void PreviSat::ChangementLangue(const int index)
     ChargementTraduction(Configuration::instance()->locale());
 
     _onglets->setInfo(true);
-    _onglets->AffichageLieuObs();
+    _onglets->RechargerListes();
+    InitFicTLE();
     GestionTempsReel();
 
     /* Retour */
@@ -1303,6 +1304,7 @@ void PreviSat::InitFicTLE() const
 
     /* Corps de la methode */
     bool etat = ui->listeFichiersTLE->blockSignals(true);
+    ui->listeFichiersTLE->clear();
     QStringListIterator it(Configuration::instance()->listeFicTLE());
     while (it.hasNext()) {
 

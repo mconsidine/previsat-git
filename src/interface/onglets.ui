@@ -4062,7 +4062,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="infos">
        <property name="autoFillBackground">
@@ -10786,18 +10786,8 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="policeWCC">
            <property name="currentText">
-            <string notr="true">Lucida Console</string>
+            <string notr="true"/>
            </property>
-           <item>
-            <property name="text">
-             <string notr="true">Lucida Console</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true">MS Shell Dlg 2</string>
-            </property>
-           </item>
           </widget>
          </item>
         </layout>

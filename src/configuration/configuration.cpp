@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 novembre 2021
+ * >    13 novembre 2021
  *
  */
 
@@ -1847,7 +1847,7 @@ void Configuration::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, 
             version = doc.documentElement().attribute("version");
             fi1.seek(0);
 
-            if (versionNew != _versionCfg) {
+            if (versionNew != version) {
 
                 if (!msg.isEmpty()) {
                     Message::Afficher(msg, WARNING);
