@@ -25,12 +25,19 @@
     <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/leaflet-openweathermap.css" />
     <link rel="stylesheet" type="text/css" href="http://astropedia.free.fr/previsat/html/map.css" />
     <script>
+
+        var idx = Math.floor(Math.random() * 5);
+        var tab = [ '1b7b680f6d1531b2cea93b44f0fc2c70',
+                    'f893df6ed6414f8f448eef2fb39412c7',
+                    '1f1dbe3c5cd5d51424eb864f2ec21de9',
+                    '96c72072e85d1369d502b6f00d9f6d60',
+                    'b992986a370491297070ecfa6d22cf3c' ];
         var lon = LONGITUDE_CENTRE;
         var lat = LATITUDE_CENTRE;
 		var zoom = VALEUR_ZOOM;
         var uniteTemp = 'UNITE_TEMP';
         var uniteVent = 'UNITE_VENT';
-        initMap(lon, lat, uniteTemp, uniteVent, zoom);
+        initMap(lon, lat, uniteTemp, uniteVent, zoom, tab[idx]);
     </script>
 </body>
 </html>
