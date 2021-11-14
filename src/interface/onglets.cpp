@@ -2335,7 +2335,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->ongletsOptions->setCurrentIndex(0);
     _ui->ongletsOutils->setCurrentIndex(0);
 
-    _ui->informations->setCurrentIndex(_indexInfo);
+    on_informations_currentChanged(_indexInfo);
     _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + _ui->informations->count() - 1)
                               % _ui->informations->count()]));
     _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + 1) % _ui->informations->count()]));
@@ -3119,17 +3119,25 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
         if (_ui->siteLancement->underMouse() || _ui->siteLancementDonneesSat->underMouse()) {
 
             if (_ui->siteLancement->underMouse()) {
+
                 const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().siteLancement();
                 const Observateur site = Configuration::instance()->mapSites()[acronyme];
-                _ui->siteLancement->setToolTip(site.nomlieu());
-                emit AffichageSiteLancement(acronyme, site);
+
+                if (!site.nomlieu().isEmpty()) {
+                    _ui->siteLancement->setToolTip(site.nomlieu());
+                    emit AffichageSiteLancement(acronyme, site);
+                }
             }
 
             if (_ui->siteLancementDonneesSat->underMouse()) {
+
                 const QString acronyme = _ui->siteLancementDonneesSat->text();
                 const Observateur site = Configuration::instance()->mapSites()[acronyme];
-                _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
-                emit AffichageSiteLancement(acronyme, site);
+
+                if (!site.nomlieu().isEmpty()) {
+                    _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
+                    emit AffichageSiteLancement(acronyme, site);
+                }
             }
         } else {
             emit AffichageSiteLancement("", Observateur());
@@ -3500,12 +3508,12 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
     if (currentRow >= 0) {
 
         const QString ligne = _resultatsSatellitesTrouves.at(currentRow).toUpper();
-        const double magnitudeStandard = ligne.mid(34, 4).toDouble();
+        const double magnitudeStandard = ligne.mid(35, 4).toDouble();
 
-        const QString dateRentree = ligne.mid(59, 10).trimmed();
-        const QString periode = ligne.mid(70, 10).trimmed();
-        double perigee = ligne.mid(81, 7).trimmed().toDouble();
-        double apogee = ligne.mid(89, 7).trimmed().toDouble();
+        const QString dateRentree = ligne.mid(60, 10).trimmed();
+        const QString periode = ligne.mid(71, 10).trimmed();
+        double perigee = ligne.mid(82, 7).trimmed().toDouble();
+        double apogee = ligne.mid(90, 7).trimmed().toDouble();
 
         double ap = apogee + RAYON_TERRESTRE;
         double per = perigee + RAYON_TERRESTRE;
@@ -3522,7 +3530,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         _ui->numNorad->setText(norad);
 
         // Designation COSPAR
-        const QString cospar = ligne.mid(6, 11).trimmed();
+        const QString cospar = ligne.mid(7, 11).trimmed();
         _ui->desigCospar->setText((cospar.isEmpty()) ? tr("Inconnue") : cospar);
 
         // Magnitude standard/maximale
@@ -3534,7 +3542,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
             const double demiGrandAxe = 0.5 * (ap + per);
             const double exc = 2. * ap / (ap + per) - 1.;
             const double magMax = magnitudeStandard - 15.75 + 5. * log10(1.45 * (demiGrandAxe * (1. - exc) - RAYON_TERRESTRE));
-            char methMagnitude = ligne.at(39).toLower().toLatin1();
+            char methMagnitude = ligne.at(40).toLower().toLatin1();
 
             QString text;
             _ui->magnitudeStdMaxDonneesSat->setText(text.asprintf("%+.1f%c/%+.1f", magnitudeStandard, methMagnitude, magMax));
@@ -3551,10 +3559,10 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         }
 
         // Dimensions du satellite
-        double t1 = ligne.mid(18, 5).toDouble();
-        double t2 = ligne.mid(24, 4).toDouble();
-        double t3 = ligne.mid(29, 4).toDouble();
-        double section = ligne.mid(41, 6).toDouble();
+        double t1 = ligne.mid(19, 5).toDouble();
+        double t2 = ligne.mid(25, 4).toDouble();
+        double t3 = ligne.mid(30, 4).toDouble();
+        double section = ligne.mid(42, 6).toDouble();
         QString unite1 = tr("m", "meter");
         QString unite2 = tr("km", "kilometer");
         if (_ui->unitesMi->isChecked()) {
@@ -3667,15 +3675,15 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         }
 
         // Categorie d'orbite
-        const QString categorie = ligne.mid(104, 6).trimmed();
+        const QString categorie = ligne.mid(105, 6).trimmed();
         _ui->categorieOrbiteDonneesSat->setText((categorie.isEmpty()) ? tr("Inconnue") : categorie);
 
         // Pays/Organisation
-        const QString pays = ligne.mid(111, 5).trimmed();
+        const QString pays = ligne.mid(112, 5).trimmed();
         _ui->paysDonneesSat->setText((pays.isEmpty()) ? tr("Inconnu") : pays);
 
         // Site de lancement
-        const QString siteLancement = ligne.mid(117, 5).trimmed();
+        const QString siteLancement = ligne.mid(118, 5).trimmed();
         _ui->siteLancementDonneesSat->setText((siteLancement.isEmpty()) ? tr("Inconnu") : siteLancement);
         _ui->siteLancementDonneesSat->adjustSize();
         _ui->siteLancementDonneesSat->setFixedHeight(16);
@@ -3693,11 +3701,12 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
             QTextStream flux(&fi);
 
             bool atr = false;
+            const int nor = norad.toInt();
             while (!flux.atEnd() && !atr) {
 
                 const QString lig = flux.readLine();
                 if (lig.mid(0, 2) == "1 ") {
-                    if (lig.mid(2, 5) == norad) {
+                    if (lig.mid(2, 5).toInt() == nor) {
                         atr = true;
                     }
                 }
