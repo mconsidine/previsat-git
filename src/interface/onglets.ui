@@ -91,7 +91,7 @@
        <property name="geometry">
         <rect>
          <x>333</x>
-         <y>78</y>
+         <y>75</y>
          <width>221</width>
          <height>16</height>
         </rect>
@@ -104,19 +104,6 @@
        </property>
        <property name="text">
         <string notr="true">Magnitude (Illumination) : -2.2 (50%)</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_beta">
-       <property name="geometry">
-        <rect>
-         <x>460</x>
-         <y>93</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string notr="true">Beta : 000° 00'</string>
        </property>
       </widget>
       <widget class="QWidget" name="formLayoutWidget_2">
@@ -838,73 +825,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="formLayoutWidget_19">
-       <property name="geometry">
-        <rect>
-         <x>177</x>
-         <y>92</y>
-         <width>371</width>
-         <height>45</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="formLayout_AOS">
-        <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-        <property name="horizontalSpacing">
-         <number>3</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="1">
-         <widget class="QLabel" name="dateJN">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_prochainJN">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string notr="true">Prochain J&gt;N :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_prochainAOS">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string notr="true">Prochain AOS :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="dateAOS">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string notr="true">2011/07/31 00:00:00 (dans 00min 00s). Azimut : 000° 00'</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="formLayoutWidget_20">
        <property name="geometry">
         <rect>
@@ -947,6 +867,144 @@
           </property>
           <property name="text">
            <string>Orbite n°</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_9">
+       <property name="geometry">
+        <rect>
+         <x>177</x>
+         <y>90</y>
+         <width>371</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_AOS" rowstretch="1,0">
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>3</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>0</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_prochainAOS">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string notr="true">Prochain AOS :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="dateAOS">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="dateJN">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_prochainJN">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string notr="true">Prochain J&gt;N :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="lbl_azimut">
+          <property name="text">
+           <string notr="true">Azimut : 000° 00'</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="lbl_beta">
+          <property name="text">
+           <string notr="true">Beta : 000° 00'</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="vide">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="formLayoutWidget_19">
+       <property name="geometry">
+        <rect>
+         <x>177</x>
+         <y>92</y>
+         <width>301</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout_magnitude2">
+        <property name="horizontalSpacing">
+         <number>3</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="magnitudeSat2">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string notr="true">Magnitude (Illumination) : -2.2 (50%)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="lbl_beta2">
+          <property name="text">
+           <string notr="true">Beta : 000° 00'</string>
           </property>
          </widget>
         </item>
@@ -2667,7 +2725,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="demiGrandAxe">
            <property name="text">
             <string>Demi-grand axe :</string>
            </property>

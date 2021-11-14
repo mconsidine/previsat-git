@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    13 novembre 2021
+ * >    14 novembre 2021
  *
  */
 
@@ -470,6 +470,7 @@ void Onglets::AffichageDonneesSatellite() const
             EcritureInformationsEclipse(corpsOccultant, fractionIlluminee);
         }
     }
+    _ui->magnitudeSat2->setText(_ui->magnitudeSat->text() + ".");
 
     // Prochaine transition jour/nuit
     _acalcDN = !(_isEclipse && satellite.conditionEclipse().eclipseTotale());
@@ -490,6 +491,7 @@ void Onglets::AffichageDonneesSatellite() const
         QString transitionJN = tr("Prochain %1 :");
         _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ?
                                                           tr("N>J", "Night to day") : tr("J>N", "Day to night")));
+        _ui->lbl_prochainJN->setToolTip(satellite.conditionEclipse().eclipseTotale() ? tr("Nuit > Jour") : tr("Jour > Nuit"));
 
         // Delai de l'evenement
         transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
@@ -503,13 +505,19 @@ void Onglets::AffichageDonneesSatellite() const
         _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)))
                              .arg(cDelaiEcl));
 
+        _ui->dateJN->adjustSize();
+        _ui->dateJN->resize(_ui->dateJN->width(), 16);
         _ui->lbl_prochainJN->setVisible(true);
         _ui->dateJN->setVisible(true);
-        _ui->magnitudeSat->move(333, 78);
+        _ui->magnitudeSat->setVisible(true);
+        _ui->lbl_beta->setVisible(true);
+        _ui->formLayoutWidget_19->setVisible(false);
     } else {
         _ui->lbl_prochainJN->setVisible(false);
         _ui->dateJN->setVisible(false);
-        _ui->magnitudeSat->move(177, 93);
+        _ui->magnitudeSat->setVisible(false);
+        _ui->lbl_beta->setVisible(false);
+        _ui->formLayoutWidget_19->setVisible(true);
     }
 
     // Prochain AOS/LOS
@@ -529,11 +537,12 @@ void Onglets::AffichageDonneesSatellite() const
     if (_elementsAOS->aos) {
 
         // Type d'evenement (AOS ou LOS)
-        QString chaine = tr("Prochain %1 :");
-        _ui->lbl_prochainAOS->setText(chaine.arg(_elementsAOS->typeAOS));
+        QString chaine = tr("Prochain %1 :").arg(_elementsAOS->typeAOS);
+        _ui->lbl_prochainAOS->setText(chaine);
+        _ui->lbl_prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
 
         // Delai de l'evenement
-        chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hours, minutes or seconds");
+        chaine = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
         Date dateAOS = Date(_elementsAOS->date, _date->offsetUTC());
         delai = dateAOS.jourJulienUTC() - _date->jourJulienUTC();
         const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
@@ -544,7 +553,8 @@ void Onglets::AffichageDonneesSatellite() const
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
         _ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
-                              arg(cDelaiAOS).arg(Maths::ToSexagesimal(_elementsAOS->azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
+                              arg(cDelaiAOS));
+        _ui->lbl_azimut->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
 
         _ui->lbl_prochainAOS->setVisible(true);
         _ui->dateAOS->adjustSize();
@@ -558,21 +568,8 @@ void Onglets::AffichageDonneesSatellite() const
 
     // Angle beta
     const QString angleBeta = tr("Beta : %1", "Beta angle (angle between orbit plane and direction of Sun)");
-    _ui->lbl_beta->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), DEGRE, 2, 0, false, true).mid(0, 9)));
-
-    _ui->magnitudeSat->adjustSize();
-    if (_ui->magnitudeSat->x() == 177) {
-
-        const int posMag = _ui->magnitudeSat->x() + _ui->magnitudeSat->width();
-        _ui->lbl_beta->move((posMag > 321) ? posMag + 10 : 333, 93 + _ui->dateJN->y());
-        if (!_elementsAOS->aos) {
-            _ui->lbl_beta->move(_ui->lbl_prochainAOS->pos());
-        }
-
-    } else {
-        _ui->lbl_beta->adjustSize();
-        _ui->lbl_beta->move(177 + _ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, 93 + _ui->dateJN->y());
-    }
+    _ui->lbl_beta->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), DEGRE, 3, 0, false, true).mid(0, 9)));
+    _ui->lbl_beta2->setText(_ui->lbl_beta->text());
 
     /* Retour */
     return;
@@ -2390,7 +2387,6 @@ void Onglets::InitAffichageDemarrage()
     _ui->lbl_prochainAOS->resize(_ui->lbl_prochainAOS->width(), 16);
     _ui->dateAOS->move(_ui->lbl_prochainAOS->x() + _ui->lbl_prochainAOS->width() + 7, _ui->dateAOS->y());
     _ui->dateJN->move(_ui->dateAOS->x(), _ui->dateJN->y());
-    _ui->lbl_beta->move(177 + _ui->dateAOS->x() + _ui->dateAOS->width() - _ui->lbl_beta->width() + 2, 93 + _ui->dateJN->y());
 
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
