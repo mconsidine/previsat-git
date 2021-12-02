@@ -59,6 +59,11 @@ Apropos::Apropos(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
     ui(new Ui::Apropos)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->setupUi(this);
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 
@@ -100,6 +105,9 @@ Apropos::Apropos(QWidget *fenetreParent) :
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).
                                    toString(Qt::SystemLocaleShortDate)));
+
+    /* Retour */
+    return;
 }
 
 /*

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2021
+ * >    2 decembre 2021
  *
  */
 
@@ -43,6 +43,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QSharedMemory>
 #include <QSplashScreen>
+#include <QTextCodec>
 #include "configuration/configuration.h"
 #include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -61,6 +62,12 @@ int main(int argc, char *argv[])
         a.setOrganizationName("Astropedia");
         a.setApplicationName("PreviSat");
         a.setOrganizationDomain("http://astropedia.free.fr/");
+
+#if QT_VERSION < 0x050000
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
         // Lancement du splash screen et demarrage de l'application
         QSplashScreen * const splash = new QSplashScreen;
