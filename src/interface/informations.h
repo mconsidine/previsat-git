@@ -33,7 +33,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    20 octobre 2019
+ * >    2 decembre 2021
  *
  */
 
@@ -45,6 +45,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 
 
+class QTextBrowser;
 class QUrl;
 class Onglets;
 
@@ -88,7 +89,7 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief UrlExiste Verifie si l'url existe
+     * @brief UrlExiste Verification de l'existence d'une adresse
      * @param url url
      * @return vrai si l'url existe
      */
@@ -125,6 +126,15 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief OuvertureInfo Ouverture du fichier d'informations
+     * @param nomfic nom du fichier
+     * @param onglet onglet
+     * @param zoneTexte zone de texte
+     */
+    void OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte);
+
+
 private slots:
 
     void on_ok_clicked();

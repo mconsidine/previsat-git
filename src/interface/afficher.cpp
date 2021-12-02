@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    7 novembre 2021
+ * >    2 decembre 2021
  *
  */
 
@@ -103,7 +103,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         ui->frameCiel->setVisible(false);
         ui->resultatsPrevisions->setVisible(false);
         ui->fichierTexte->setVisible(true);
-        setMinimumSize(630, 630);
+        setMinimumSize(640, 630);
         _afficherEvt = true;
     } else {
         QStyle * const styleBouton = QApplication::style();
@@ -165,6 +165,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         const QString contenuFic = flux.readAll();
         fi.close();
 
+        ui->fichierTexte->setReadOnly(true);
         ui->fichierTexte->setText(contenuFic);
 
     } else {
@@ -291,8 +292,9 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                   << tr("Const", "Constellation") << tr("Magn", "Magnitude") << tr("Altitude") << tr("Distance")
-                                                   << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation"));
+                                                   << tr("Const", "Constellation") << tr("Magn", "Magnitude")
+                                                   << tr("Altitude", "Altitude of satellite") << tr("Distance") << tr("Az Soleil", "Solar azimuth")
+                                                   << tr("Haut Soleil", "Solar elevation"));
             break;
 
         case FLASHS:
@@ -301,7 +303,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
                                                    << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
-                                                   << tr("Magn", "Magnitude") << tr("Altitude") << tr("Dist", "Range")
+                                                   << tr("Magn", "Magnitude") << tr("Altitude", "Altitude of satellite") << tr("Dist", "Range")
                                                    << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
                                                    << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
@@ -313,7 +315,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
                                                    << tr("Hauteur Sat", "Satellite elevation") << tr("AD Sat", "Satellite right ascension")
                                                    << tr("Decl Sat", "Satellite declination") << tr("Cst", "Constellation") << tr("Ang", "Angle")
                                                    << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée")
-                                                   << tr("Alt", "Altitude") << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth")
+                                                   << tr("Alt", "Altitude of satellite") << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth")
                                                    << tr("Haut Soleil", "Solar elevation") << tr("Long Max", "Longitude of the maximum")
                                                    << tr("Lat Max", "Latitude of the maximum") << tr("Distance"));
             break;
@@ -360,7 +362,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
             tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Angle"));
             tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Illumination"));
             tableDetail->horizontalHeaderItem(10)->setToolTip(tr("secondes"));
-            tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Altitude"));
+            tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Altitude", "Altitude of satellite"));
             tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Distance"));
             tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Azimut Soleil"));
             tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Hauteur Soleil"));
@@ -562,7 +564,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                 flux << nomsat << endl;
                 flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil",
                            "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, " \
-                           "Magnitude, Altitude, Range, Solar azimuth, Solar elevation")
+                           "Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
                      << endl;
                 break;
 
@@ -570,7 +572,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                 flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn" \
                            "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
                            "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                           "Constellation, Angle, Mirror, Magnitude, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
+                           "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
                            "Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
                      << endl;
                 break;
@@ -578,9 +580,9 @@ void Afficher::on_actionEnregistrerTxt_triggered()
             case TRANSITS:
                 if (ecrireNomColonnes) {
                     flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps" \
-                               " Ill    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                               " Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
                                "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, "
-                               "Angle, Type, Body, Illumination, Altitude, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
+                               "Angle, Type, Body, Illumination, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
                                "Latitude of the maximum, Range from the maximum")
                          << endl;
                     ecrireNomColonnes = false;
@@ -648,7 +650,11 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                             if (_typeCalcul == EVENEMENTS) {
                                 ligne += elems.at(k).trimmed() + "  ";
                             } else {
-                                ligne += elems.at(k) + " ";
+                                if (elems.at(k).isEmpty()) {
+                                    ligne += "      ";
+                                } else {
+                                    ligne += elems.at(k) + " ";
+                                }
                             }
                         }
 
@@ -679,6 +685,9 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
 #if (BUILD_TEST == false)
         QFile fi2(fic);
+        if (fi2.exists() && (fic != _conditions.ficRes)) {
+            fi2.remove();
+        }
         fichier.copy(fi2.fileName());
 #endif
     }
@@ -1060,8 +1069,8 @@ void Afficher::EcrireEntete() const
         if (_typeCalcul == TRANSITS) {
             flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << endl;
         } else {
-            flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << endl;
-            flux << QString(cond1.size(), ' ') << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
+            flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << " / ";
+            flux << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
         }
 
         // Unite de distance
@@ -1522,7 +1531,7 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
     elems.append(illumination);
 
     // Duree du transit ou de la conjonction
-    elems.append((res.duree > 0.) ? QString("%1  ").arg(res.duree, 4, 'f', 1) : "");
+    elems.append((res.duree > 0.) ? QString("%1").arg(res.duree, 4, 'f', 1) : "");
 
     // Altitude, distance
     double altitude = res.altitude;

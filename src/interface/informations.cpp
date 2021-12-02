@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    10 avril 2020
+ * >    2 decembre 2021
  *
  */
 
@@ -46,6 +46,7 @@
 #include <QStyle>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QTcpSocket>
+#include <QTextBrowser>
 #include "informations.h"
 #include "onglets.h"
 #include "ui_informations.h"
@@ -69,6 +70,11 @@ static QSettings settings("Astropedia", "previsat");
 Informations::Informations(QWidget *fenetreParent, Onglets *onglets) :
     ui(new Ui::Informations)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     ui->setupUi(this);
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 
@@ -80,43 +86,18 @@ Informations::Informations(QWidget *fenetreParent, Onglets *onglets) :
 
     // Derniere information
     const QString nomDerniereInfo = "last_news_" + Configuration::instance()->locale() + ".html";
-    const QString urlLastNews = settings.value("fichier/dirHttpPrevi", "").toString() + "informations/" + nomDerniereInfo;
-
-    if (UrlExiste(urlLastNews)) {
-
-        _onglets->TelechargementFichier(urlLastNews, false);
-
-        QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomDerniereInfo);
-        if (fi.exists() && (fi.size() > 0)) {
-
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            ui->derniereInfo->setHtml(flux.readAll());
-            fi.close();
-        }
-    } else {
-        deleteLater();
-    }
+    OuvertureInfo(nomDerniereInfo, ui->ongletDerniereInfo, ui->derniereInfo);
 
     // Anciennes informations
     const QString nomInfosAnciennes = "histo_news_" + Configuration::instance()->locale() + ".html";
-    const QString urlHistoNews = settings.value("fichier/dirHttpPrevi", "").toString() + "informations/" + nomInfosAnciennes;
+    OuvertureInfo(nomInfosAnciennes, ui->ongletAnciennesInfos, ui->anciennesInfos);
 
-    if (UrlExiste(urlHistoNews)) {
+    // Versions
+    const QString nomVersions = "histo_versions_" + Configuration::instance()->locale() + ".html";
+    OuvertureInfo(nomVersions, ui->ongletVersions, ui->versions);
 
-        _onglets->TelechargementFichier(urlHistoNews, false);
-
-        QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomInfosAnciennes);
-        if (fi.exists() && (fi.size() > 0)) {
-
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            ui->anciennesInfos->setHtml(flux.readAll());
-            fi.close();
-        }
-    } else {
-        ui->ongletsInfos->removeTab(1);
-    }
+    /* Retour */
+    return;
 }
 
 /*
@@ -140,6 +121,33 @@ Informations::~Informations()
 /*
  * Methodes publiques
  */
+/*
+ * Verification de l'existence d'une adresse
+ */
+bool Informations::UrlExiste(const QUrl &url)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QTcpSocket socket;
+    socket.connectToHost(url.host(), 80);
+    if (socket.waitForConnected()) {
+        socket.write("HEAD " + url.path().toUtf8() + " HTTP/1.1\r\n"
+                                                     "Host: " + url.host().toUtf8() + "\r\n"
+                                                                                      "\r\n");
+        if (socket.waitForReadyRead()) {
+            QByteArray bytes = socket.readAll();
+            if (bytes.contains("200 OK")) {
+                return true;
+            }
+        }
+    }
+
+    /* Retour */
+    return false;
+}
 
 
 /*************
@@ -158,26 +166,44 @@ Informations::~Informations()
 /*
  * Methodes privees
  */
+/*
+ * Ouverture du fichier d'informations
+ */
+void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString url = settings.value("fichier/dirHttpPrevi", "").toString() + "informations/" + nomfic;
+
+    /* Corps de la methode */
+    if (UrlExiste(url)) {
+
+        _onglets->TelechargementFichier(url, false);
+
+        QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomfic);
+        if (fi.exists() && (fi.size() > 0)) {
+
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream flux(&fi);
+            zoneTexte->setHtml(flux.readAll());
+            fi.close();
+        }
+
+    } else {
+        if (onglet == ui->ongletDerniereInfo) {
+            deleteLater();
+        } else {
+            ui->ongletsInfos->removeTab(ui->ongletsInfos->indexOf(onglet));
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 void Informations::on_ok_clicked()
 {
     settings.setValue("affichage/informationsDemarrage", ui->afficherInfosDemarrage->isChecked());
     close();
-}
-
-bool Informations::UrlExiste(const QUrl &url)
-{
-    QTcpSocket socket;
-    socket.connectToHost(url.host(), 80);
-    if (socket.waitForConnected()) {
-        socket.write("HEAD " + url.path().toUtf8() + " HTTP/1.1\r\n"
-                                                     "Host: " + url.host().toUtf8() + "\r\n"
-                                                                                      "\r\n");
-        if (socket.waitForReadyRead()) {
-            QByteArray bytes = socket.readAll();
-            if (bytes.contains("200 OK")) {
-                return true;
-            }
-        }
-    }
-    return false;
 }

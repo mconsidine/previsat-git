@@ -6036,7 +6036,7 @@
        <rect>
         <x>10</x>
         <y>6</y>
-        <width>361</width>
+        <width>369</width>
         <height>51</height>
        </rect>
       </property>
@@ -6049,6 +6049,12 @@
        </property>
        <item row="0" column="1">
         <widget class="QDateTimeEdit" name="dateInitialePrev">
+         <property name="minimumSize">
+          <size>
+           <width>152</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -6710,7 +6716,7 @@
        <rect>
         <x>10</x>
         <y>6</y>
-        <width>333</width>
+        <width>341</width>
         <height>51</height>
        </rect>
       </property>
@@ -6733,6 +6739,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QDateTimeEdit" name="dateInitialeMetOp">
+         <property name="minimumSize">
+          <size>
+           <width>152</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -7448,7 +7460,7 @@
        <rect>
         <x>10</x>
         <y>6</y>
-        <width>333</width>
+        <width>336</width>
         <height>51</height>
        </rect>
       </property>
@@ -7503,6 +7515,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QDateTimeEdit" name="dateInitialeTransit">
+         <property name="minimumSize">
+          <size>
+           <width>152</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="font">
           <font/>
          </property>
@@ -7521,7 +7539,7 @@
         <widget class="QPushButton" name="effacerHeuresTransit">
          <property name="minimumSize">
           <size>
-           <width>115</width>
+           <width>110</width>
            <height>0</height>
           </size>
          </property>
@@ -9311,7 +9329,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="satellites">
          <widget class="QCheckBox" name="affvisib">
@@ -10625,6 +10643,9 @@
          <property name="mouseTracking">
           <bool>true</bool>
          </property>
+         <property name="toolTip">
+          <string>Anomalie Atlantique Sud et Zone d'exclusion</string>
+         </property>
          <property name="text">
           <string extracomment="South Atlantic Anomaly and Zone of Exclusion">SAA et ZOE</string>
          </property>
@@ -10666,6 +10687,9 @@
            <height>23</height>
           </rect>
          </property>
+         <property name="toolTip">
+          <string>Angle entre le plan de l'orbite et la direction du Soleil</string>
+         </property>
          <property name="text">
           <string extracomment="Beta angle (angle between orbit plane and direction of Sun)">Angle beta</string>
          </property>
@@ -10704,6 +10728,9 @@
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lbl_coulGMT">
+            <property name="toolTip">
+             <string>Greenwich Mean Time</string>
+            </property>
             <property name="text">
              <string extracomment="Greenwich Mean Time">GMT :</string>
             </property>
@@ -10711,6 +10738,9 @@
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="lbl_coulZOE">
+            <property name="toolTip">
+             <string>Zone d'exclusion</string>
+            </property>
             <property name="text">
              <string extracomment="Zone of exclusion">ZOE :</string>
             </property>
@@ -12029,7 +12059,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>333</width>
+          <width>336</width>
           <height>51</height>
          </rect>
         </property>
@@ -12084,6 +12114,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QDateTimeEdit" name="dateInitialeEvt">
+           <property name="minimumSize">
+            <size>
+             <width>152</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="font">
             <font/>
            </property>
@@ -12102,7 +12138,7 @@
           <widget class="QPushButton" name="effacerHeuresEvt">
            <property name="minimumSize">
             <size>
-             <width>115</width>
+             <width>110</width>
              <height>0</height>
             </size>
            </property>

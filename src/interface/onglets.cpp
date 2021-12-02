@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    14 novembre 2021
+ * >    2 decembre 2021
  *
  */
 
@@ -1991,7 +1991,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
         flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << endl << endl;
 
         flux << tr("Lieu d'observation :") << " " << _ui->lieuxObservation1->currentText() << endl;
-        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3");
+        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
         flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << endl;
         chaine = tr("Conditions : %1", "Conditions of observation");
         flux << chaine.arg(_ui->conditionsObservation->text()) << endl << endl << endl;
@@ -2008,7 +2008,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
             chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
             flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text()) << endl;
 
-            chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3");
+            chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
             flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
                     .arg(_ui->constellationSat->text()) << endl << endl;
 
@@ -2406,7 +2406,7 @@ void Onglets::InitAffichageDemarrage()
         valAlt = new QIntValidator(-1640, 29200);
         _ui->nvAltitude->setValidator(valAlt);
     }
-    const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2");
+    const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2", "Observer altitude");
     _ui->nvAltitude->setToolTip(fmt.arg(valAlt->bottom()).arg(unite).arg(valAlt->top()));
 
     _ui->dateHeure3->setVisible(false);
@@ -4934,7 +4934,7 @@ void Onglets::on_calculsPrev_clicked()
         conditions.systeme = _ui->syst24h->isChecked();
 
         // Pas de generation
-        conditions.pas = _ui->pasGeneration->currentText().split(" ").first().toDouble();
+        conditions.pas = _ui->pasGeneration->currentText().split(QRegExp("[^0-9]+")).first().toDouble();
         if (_ui->pasGeneration->currentIndex() < 5) {
             conditions.pas *= NB_JOUR_PAR_SEC;
         } else {

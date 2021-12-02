@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    7 novembre 2021
+ * >    2 decembre 2021
  *
  */
 
@@ -581,8 +581,8 @@ void Ciel::show(const Observateur &observateur,
                                 }
                             } else {
                                 const DateSysteme sys = SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/ // TODO
-                                sdate = dateTrace.ToShortDate(FORMAT_COURT, sys);
-                                sdate = (sys == SYSTEME_12H) ? sdate.mid(11, 5) + sdate.right(1) : sdate.mid(11, 5);
+                                sdate = dateTrace.ToShortDate(FORMAT_COURT, sys).split(" ", Qt::SkipEmptyParts).last();
+                                sdate = (sys == SYSTEME_12H) ? sdate.mid(0, 5) + sdate.right(1) : sdate.mid(0, 5);
                             }
 
                             if (!sdate.isEmpty()) {
