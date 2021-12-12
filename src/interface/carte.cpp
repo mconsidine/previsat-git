@@ -988,7 +988,6 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(watched)
 
     /* Corps de la methode */
     if (ui->carte->underMouse()) {

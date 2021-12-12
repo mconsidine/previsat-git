@@ -30,14 +30,15 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    13 novembre 2021
+ * >    12 decembre 2021
  *
  */
 
-#include <QDesktopServices>
-#include <QDir>
 #include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPainter>
@@ -46,7 +47,6 @@
 #include <QSettings>
 #include <QTimer>
 #include "ui_previsat.h"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
@@ -109,6 +109,8 @@ PreviSat::PreviSat(QWidget *parent) :
     _stsDate = nullptr;
     _stsHeure = nullptr;
     _timerStatut = nullptr;
+
+    ui->lancementVideoNasa->installEventFilter(this);
 
     try {
 
@@ -474,6 +476,15 @@ void PreviSat::InitAffichageDemarrage() const
     ui->pasManuel->setVisible(false);
     ui->valManuel->setVisible(false);
 
+    auto lineEdit = ui->chaineNasa->findChild<QLineEdit*>();
+    lineEdit->setReadOnly(true);
+    lineEdit->setFocusPolicy(Qt::NoFocus);
+    connect(ui->chaineNasa, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->chaineNasa,
+            [&, lineEdit](){lineEdit->deselect();}, Qt::QueuedConnection);
+
+    ui->frameVideo->setVisible(ui->mccISS->isChecked());
+    _radar->setVisible(!ui->mccISS->isChecked());
+
     ui->frameLatGauche->setVisible(false);
 
     /* Retour */
@@ -549,9 +560,12 @@ void PreviSat::InitChampsDefaut()
     /* Corps de la methode */
     on_pasReel_currentIndexChanged(0);
     ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
+
     on_pasManuel_currentIndexChanged(0);
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
+
+    ui->chaineNasa->setMaximum(Configuration::instance()->listeChainesNasa().size());
 
     /* Retour */
     return;
@@ -1859,6 +1873,26 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     return;
 }
 
+bool PreviSat::eventFilter(QObject *object, QEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (evt->type() == QEvent::MouseMove) {
+
+        if (ui->lancementVideoNasa->underMouse()) {
+            setCursor(Qt::PointingHandCursor);
+        }
+    } else if (evt->type() == QEvent::Leave) {
+        setCursor(Qt::ArrowCursor);
+    }
+
+    /* Retour */
+    return QMainWindow::eventFilter(object, evt);
+}
+
 void PreviSat::mousePressEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -1978,6 +2012,19 @@ void PreviSat::on_actionUtip_triggered()
     QDesktopServices::openUrl(QUrl("https://utip.io/previsat/"));
 }
 
+void PreviSat::on_mccISS_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _radar->setVisible(!checked);
+    ui->frameVideo->setVisible(checked);
+
+    /* Retour */
+    return;
+}
 
 void PreviSat::on_meteoBasesNASA_clicked()
 {
@@ -2252,6 +2299,11 @@ void PreviSat::on_actionInformations_triggered()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/latest/download"));
 }
 
 void PreviSat::on_actionFaire_triggered()
@@ -2687,7 +2739,32 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
     return;
 }
 
-void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
+void PreviSat::on_lancementVideoNasa_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/latest/download"));
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        const QString fic = Configuration::instance()->listeChainesNasa().at(ui->chaineNasa->value() - 1);
+
+        // Verification de la connexion
+        QTcpSocket socket;
+        QString adresse = Configuration::instance()->adresseAstropedia();
+        socket.connectToHost(adresse.remove("http://").remove("/"), 80);
+        if (!socket.waitForConnected(1000)) {
+            throw PreviSatException(tr("Impossible de lancer le flux vidéo : " \
+                                       "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
+        }
+
+        setCursor(Qt::ArrowCursor);
+        QDesktopServices::openUrl(QUrl(fic));
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
 }

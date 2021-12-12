@@ -44,9 +44,11 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QSettings>
 #include <QStyle>
+#pragma GCC diagnostic ignored "-Wswitch-default"*
+#include <QTextBrowser>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QTcpSocket>
-#include <QTextBrowser>
 #include "informations.h"
 #include "onglets.h"
 #include "ui_informations.h"

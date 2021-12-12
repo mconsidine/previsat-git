@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    12 decembre 2021
  *
  */
 
@@ -367,6 +367,7 @@ private slots:
 
 
     void closeEvent(QCloseEvent *evt);
+    bool eventFilter(QObject *object, QEvent *evt) override;
     void mousePressEvent(QMouseEvent *evt);
     void resizeEvent(QResizeEvent *evt);
 
@@ -374,6 +375,7 @@ private slots:
     void on_actionPaypal_triggered();
     void on_actionTipeee_triggered();
     void on_actionUtip_triggered();
+    void on_mccISS_toggled(bool checked);
     void on_meteoBasesNASA_clicked();
     void on_meteo_clicked();
 
@@ -388,6 +390,8 @@ private slots:
     void on_actionMettre_jour_les_fichiers_de_donnees_triggered();
     void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();
+    void on_actionTelecharger_la_mise_a_jour_triggered();
+
     void on_actionFaire_triggered();
     void on_actionDonation_Tipeee_triggered();
     void on_actionDonation_Utip_triggered();
@@ -413,8 +417,7 @@ private slots:
     void on_actionNouveau_fichier_TLE_triggered();
     void on_actionFichier_TLE_existant_triggered();
 
-    void on_actionTelecharger_la_mise_a_jour_triggered();
-
+    void on_lancementVideoNasa_clicked();
 };
 
 #endif // PREVISAT_H
