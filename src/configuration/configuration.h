@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >
+ * >    12 decembre 2021
  *
  */
 
@@ -112,6 +112,7 @@ public:
     /*
      *  Constructeurs
      */
+    Configuration(const Configuration &) = delete;
 
     /*
      * Accesseurs
@@ -187,6 +188,8 @@ public:
 
     QMap<AdressesTelechargement, QString> mapAdressesTelechargement() const;
 
+    QStringList listeChainesNasa() const;
+
 
     /*
      * Modificateurs
@@ -219,6 +222,8 @@ public:
     /*
      * Methodes publiques
      */
+    Configuration& operator = (const Configuration &) = delete;
+
     /**
      * @brief Initialisation Initialisation de la configuration generale
      */
@@ -284,6 +289,7 @@ private:
     QString _dirCommonData;
     QString _dirLocalData;
     QString _dirCfg;
+    QString _dirHtml;
     QString _dirLang;
     QString _dirMap;
     QString _dirOut;
@@ -381,6 +387,9 @@ private:
     // Adresses de telechargement
     QMap<AdressesTelechargement, QString> _mapAdressesTelechargement;
 
+    // Liste des chaines de la NASA
+    QStringList _listeChainesNasa;
+
 
     static bool _isCarteMonde;
 
@@ -416,6 +425,11 @@ private:
      * @brief LectureCategoriesOrbite Lecture du fichier de categories d'orbite
      */
     void LectureCategoriesOrbite();
+
+    /**
+     * @brief LectureChainesNasa Lecture du fichier des chaines NASA
+     */
+    void LectureChainesNasa();
 
     /**
      * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites

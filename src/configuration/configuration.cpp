@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    13 novembre 2021
+ * >    12 decembre 2021
  *
  */
 
@@ -48,6 +48,7 @@
 #include <QLocale>
 #include <QSettings>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QTextStream>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include "configuration.h"
@@ -341,6 +342,11 @@ QMap<AdressesTelechargement, QString> Configuration::mapAdressesTelechargement()
     return _mapAdressesTelechargement;
 }
 
+QStringList Configuration::listeChainesNasa() const
+{
+    return _listeChainesNasa;
+}
+
 
 /*
  * Modificateurs
@@ -496,6 +502,9 @@ void Configuration::Initialisation()
 
         // Lecture de la configuration
         LectureConfiguration();
+
+        // Lecture du fichier des chaines NASA
+        LectureChainesNasa();
 
         // Fichiers de preferences
         InitFicPref();
@@ -850,6 +859,7 @@ void Configuration::DefinitionArborescences()
     _dirLang = _dirExe + QDir::separator() + "translations";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";
     _dirCfg = _dirLocalData + QDir::separator() + "config";
+    _dirHtml = _dirLocalData + QDir::separator() + "html";
     _dirMap = _dirLocalData + QDir::separator() + "map";
     _dirPrf = _dirLocalData + QDir::separator() + "preferences";
     _dirRsc = _dirLocalData + QDir::separator() + "resources";
@@ -1039,7 +1049,7 @@ void Configuration::LectureConfiguration()
 
     // Verifications
     if (_observateurs.isEmpty()) {
-        _observateurs.append(Observateur("Paris", -002.348640000, +48.853390000, 30));
+        _observateurs.append(Observateur("Paris", -2.348640000, +48.853390000, 30));
     }
 
     if (_mapSatellitesFicTLE.isEmpty()) {
@@ -1114,6 +1124,31 @@ void Configuration::LectureCategoriesOrbite()
                                         "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
         const QFileInfo ff(fi1.fileName());
         throw PreviSatException(msg.arg(ff.fileName()).arg(QCoreApplication::applicationName()), ERREUR);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture du fichier des chaines NASA
+ */
+void Configuration::LectureChainesNasa()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fic = _dirHtml + QDir::separator() + "chaines.chnl";
+
+    /* Corps de la methode */
+    QFile fi(fic);
+
+    if (fi.exists() && (fi.size() != 0)) {
+
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fi);
+        _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
+        fi.close();
     }
 
     /* Retour */

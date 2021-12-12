@@ -3087,8 +3087,6 @@ void Onglets::TelechargementSuivant()
     return;
 }
 
-
-
 bool Onglets::eventFilter(QObject *object, QEvent *evt)
 {
     Q_UNUSED(object)
