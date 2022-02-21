@@ -947,6 +947,9 @@ void Onglets::AffichageInformationsSatellite() const
     return;
 }
 
+/*
+ * Affichage des manoeuvres ISS
+ */
 void Onglets::AffichageManoeuvresISS() const
 {
     /* Declarations des variables locales */
@@ -1452,7 +1455,7 @@ bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextE
         compteRenduMaj->appendPlainText(msgcpt.arg(nbold));
     }
 
-    if ((nbmaj == 0) && (nbold != 0)) {
+    if ((nbmaj == 0) && (nbold != 0) && (nbadd == 0) && (nbsup == 0)) {
         compteRenduMaj->appendPlainText(tr("Aucun TLE mis à jour"));
     }
 
@@ -1460,7 +1463,7 @@ bool Onglets::EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextE
     compteRenduMaj->verticalScrollBar()->setValue(compteRenduMaj->blockCount());
 
     /* Retour */
-    return ((nbold > 0) && ((nbmaj > 0) || (nbsup > 0) || (nbadd > 0)));;
+    return ((nbold > 0) && ((nbmaj > 0) || (nbsup > 0) || (nbadd > 0)));
 }
 
 /*
@@ -1770,6 +1773,9 @@ void Onglets::CalculAosSatSuivi() const
 }
 #endif
 
+/*
+ * Mettre a jour un groupe de TLE
+ */
 void Onglets::MettreAJourGroupeTLE(const QString &groupe)
 {
     /* Declarations des variables locales */
@@ -1777,6 +1783,7 @@ void Onglets::MettreAJourGroupeTLE(const QString &groupe)
     /* Initialisations */
     _dirDwn = Configuration::instance()->dirTle();
     _ui->majMaintenant->setEnabled(false);
+    _ui->compteRenduMaj->clear();
     connect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
 
     /* Corps de la methode */

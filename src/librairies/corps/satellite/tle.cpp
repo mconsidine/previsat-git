@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    20 fevrier 2022
  *
  */
 
@@ -372,12 +372,14 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     /* Declarations des variables locales */
 
     /* Initialisations */
+    int res1 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
+    int res2 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
+
     const QString nomFicOld = ficOld.mid(ficOld.lastIndexOf(QDir::separator())+1).trimmed();
     const QString nomFicNew = ficNew.mid(ficNew.lastIndexOf(QDir::separator())+1).trimmed();
-    const QString noradInf = (nomFicOld == nomFicNew) ? "999999" : "";
 
     // Verification du fichier contenant les anciens TLE
-    int nbOld = VerifieFichier(ficOld, false);
+    const int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0) {
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
                                             "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
@@ -397,114 +399,110 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     QMap<QString, TLE> tleNew = LectureFichier(ficNew, QStringList(), false);
 
     /* Corps de la methode */
-    // Mise a jour
-    int j = 0;
     int nbMaj = 0;
+
+    QStringList listeNoradOld = tleOld.keys();
+    QStringList listeNoradNew = tleNew.keys();
+
+    // Mise a jour des TLE communs aux 2 fichiers
+    QStringListIterator it1(tleNew.keys());
+    while (it1.hasNext()) {
+
+        const QString norad = it1.next();
+        if (listeNoradOld.contains(norad)) {
+
+            // Mise a jour du TLE
+            if (tleOld[norad]._epoque.jourJulienUTC() < tleNew[norad]._epoque.jourJulienUTC()) {
+
+                tleOld[norad] = tleNew[norad];
+                tleOld[norad]._ligne0 = (tleNew[norad]._nom == norad) ? tleOld[norad]._ligne0 : tleNew[norad]._ligne0;
+                nbMaj++;
+
+            } else {
+                compteRendu.append(tleOld[norad]._nom + "#" + tleOld[norad]._norad);
+            }
+
+            listeNoradNew.removeOne(norad);
+            listeNoradOld.removeOne(norad);
+
+        } else {
+            if (nomFicOld != nomFicNew) {
+                compteRendu.append(tleOld[norad]._nom + "#" + tleOld[norad]._norad);
+            }
+        }
+    }
+
     int nbAdd = 0;
     int nbSup = 0;
-    int isat = 0;
-    int res1 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
-    int res2 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
-    QString norad2;
 
-    while ((isat < nbOld) || (j < nbNew)) {
+    if (nomFicOld == nomFicNew) {
 
-        const QString norad1 = (isat < nbOld) ? tleOld.keys().at(isat) : noradInf;
+        // Suppression des TLE non mis a jour
+        QStringListIterator it2(listeNoradOld);
+        while (it2.hasNext()) {
 
-        norad2 = "";
-        if (nomFicOld == nomFicNew) {
-            norad2 = (j < nbNew) ? tleNew.keys().at(j) : "999999";
-        } else {
+            const QString norad = it2.next();
 
-            if ((j < nbNew) && !norad1.isEmpty()) {
-                while ((j < nbNew) && ((norad2 = tleNew.keys().at(j)).compare(norad1) < 0)) {
-                    j++;
-                }
-            } else {
-                j = nbNew;
-                norad2 = "0";
+            // TLE absent du fichier de TLE recents
+            // Demande de suppression
+            if ((res2 != QMessageBox::YesToAll) && (res2 != QMessageBox::NoToAll)) {
+                const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
+                                                "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
+
+                QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
+                                   message.arg(tleOld[norad]._nom).arg(tleOld[norad]._norad), QMessageBox::Yes |
+                                   QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
+
+                msgbox.setDefaultButton(QMessageBox::No);
+                msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
+                msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
+                msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
+                msgbox.exec();
+                res2 = msgbox.result();
+            }
+
+            if ((res2 == QMessageBox::Yes) || (res2 == QMessageBox::YesToAll)) {
+                tleOld.remove(norad);
+                nbSup++;
             }
         }
 
-        if (norad1 == norad2) {
+        // Ajout des nouveaux TLE
+        QStringListIterator it3(listeNoradNew);
+        while (it3.hasNext()) {
 
-            if (tleOld[norad1]._epoque.jourJulienUTC() < tleNew[norad2]._epoque.jourJulienUTC()) {
-                tleOld[norad1] = tleNew[norad2];
-                tleOld[norad1]._ligne0 = (tleNew[norad2]._nom == norad2) ? tleOld[norad1]._ligne0 : tleNew[norad2]._ligne0;
-                nbMaj++;
-            } else {
-                compteRendu.append(tleOld[norad1]._nom + "#" + tleOld[norad1]._norad);
+            const QString norad = it3.next();
+
+            // TLE absent du fichier de TLE anciens
+            // Demande d'ajout
+            if ((res1 != QMessageBox::YesToAll) && (res1 != QMessageBox::NoToAll)) {
+                const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
+                                                "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
+
+                QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
+                                   message.arg(tleNew[norad]._nom).arg(tleNew[norad]._norad), QMessageBox::Yes |
+                                   QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
+
+                msgbox.setDefaultButton(QMessageBox::No);
+                msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
+                msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
+                msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
+                msgbox.exec();
+                res1 = msgbox.result();
             }
-            j++;
 
-        } else {
-            if (nomFicOld == nomFicNew) {
-
-                if (norad1.toInt() > norad2.toInt()) {
-
-                    // TLE absent du fichier de TLE anciens
-                    // Demande d'ajout
-                    if ((res1 != QMessageBox::YesToAll) && (res1 != QMessageBox::NoToAll)) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
-                                                            "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
-
-                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
-                                           message.arg(tleNew[norad2]._nom).arg(tleNew[norad2]._norad), QMessageBox::Yes |
-                                           QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
-
-                        msgbox.setDefaultButton(QMessageBox::No);
-                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
-                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
-                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
-                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
-                        msgbox.exec();
-                        res1 = msgbox.result();
-                    }
-                    if ((res1 == QMessageBox::Yes) || (res1 == QMessageBox::YesToAll)) {
-                        tleOld.insert(norad2, tleNew[norad2]);
-                        nbOld++;
-                        nbAdd++;
-                    }
-                    j++;
-                } else {
-
-                    // TLE absent du fichier de TLE recents
-                    // Demande de suppression
-                    if ((res2 != QMessageBox::YesToAll) && (res2 != QMessageBox::NoToAll)) {
-                        const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
-                                                            "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
-
-                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
-                                           message.arg(tleNew[norad2]._nom).arg(tleNew[norad2]._norad), QMessageBox::Yes |
-                                           QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
-
-                        msgbox.setDefaultButton(QMessageBox::No);
-                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
-                        msgbox.setButtonText(QMessageBox::YesToAll, QObject::tr("Oui à tout"));
-                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
-                        msgbox.setButtonText(QMessageBox::NoToAll, QObject::tr("Non à tout"));
-                        msgbox.exec();
-                        res2 = msgbox.result();
-                    }
-                    if ((res2 == QMessageBox::Yes) || (res2 == QMessageBox::YesToAll)) {
-                        tleOld.remove(norad1);
-                        isat--;
-                        nbOld--;
-                        nbSup++;
-                    }
-                }
-            } else {
-                if (!norad1.isEmpty()) {
-                    compteRendu.append(tleOld[norad1]._nom + "#" + tleOld[norad1]._norad);
-                }
+            if ((res1 == QMessageBox::Yes) || (res1 == QMessageBox::YesToAll)) {
+                tleOld.insert(norad, tleNew[norad]);
+                nbAdd++;
             }
         }
-        isat++;
     }
 
     compteRendu.append(nomFicOld);
     compteRendu.append(QString::number(nbMaj));
-    compteRendu.append(QString::number(nbOld));
+    compteRendu.append(QString::number(tleOld.keys().size()));
     compteRendu.append(QString::number(nbAdd));
     compteRendu.append(QString::number(nbSup));
 
@@ -526,6 +524,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
         }
         fichier.close();
     }
+
     tleOld.clear();
     tleNew.clear();
 
