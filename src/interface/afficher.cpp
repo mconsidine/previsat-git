@@ -875,7 +875,7 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
             .replace("ALTITUDE_CENTRE", alt)
             .replace("CHAINE_LONGITUDE", tr("Longitude"))
             .replace("CHAINE_LATITUDE", tr("Latitude"))
-            .replace("CHAINE_ALTITUDE", tr("Altitude"))
+            .replace("CHAINE_ALTITUDE", tr("Altitude", "Altitude of observer"))
             .replace("LONGITUDE1", QString::number(-list.first().obsmax.longitude() * RAD2DEG))
             .replace("LONGITUDE2", QString::number(-list.last().obsmax.longitude() * RAD2DEG))
             .replace("LATITUDE1", QString::number(list.first().obsmax.latitude() * RAD2DEG))
