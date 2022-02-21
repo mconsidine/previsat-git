@@ -669,9 +669,9 @@ void Configuration::LectureManoeuvresISS()
     /* Corps de la methode */
     QFile fi1(_dirLocalData + QDir::separator() + "ISS.OEM_J2K_EPH.xml");
 
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -755,8 +755,8 @@ void Configuration::LectureManoeuvresISS()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     /* Retour */
     return;
@@ -958,10 +958,10 @@ void Configuration::LectureConfiguration()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1044,8 +1044,8 @@ void Configuration::LectureConfiguration()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_observateurs.isEmpty()) {
@@ -1079,10 +1079,10 @@ void Configuration::LectureCategoriesOrbite()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1115,8 +1115,8 @@ void Configuration::LectureCategoriesOrbite()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapCategoriesOrbite.isEmpty()) {
@@ -1204,10 +1204,10 @@ void Configuration::LectureGestionnaireTLE()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1284,8 +1284,8 @@ void Configuration::LectureGestionnaireTLE()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
 
@@ -1313,10 +1313,10 @@ void Configuration::LecturePays()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1349,8 +1349,8 @@ void Configuration::LecturePays()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapPays.isEmpty()) {
@@ -1383,10 +1383,10 @@ void Configuration::LectureSatellitesTDRS()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1431,8 +1431,8 @@ void Configuration::LectureSatellitesTDRS()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapTDRS.isEmpty()) {
@@ -1465,10 +1465,10 @@ void Configuration::LectureSitesLancement()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1509,8 +1509,8 @@ void Configuration::LectureSitesLancement()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapSites.isEmpty()) {
@@ -1543,10 +1543,10 @@ void Configuration::LectureStations()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1591,8 +1591,8 @@ void Configuration::LectureStations()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapStations.isEmpty()) {
@@ -1625,10 +1625,10 @@ void Configuration::LectureStatutSatellitesFlashs()
 
     /* Corps de la methode */
     QFile fi1(_dirCfg + QDir::separator() + nomficXml);
-    fi1.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    if (fi1.exists()) {
+    if (fi1.exists() && (fi1.size() != 0)) {
 
+        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
         QXmlStreamReader cfg(&fi1);
 
         cfg.readNextStartElement();
@@ -1676,8 +1676,8 @@ void Configuration::LectureStatutSatellitesFlashs()
                 }
             }
         }
+        fi1.close();
     }
-    fi1.close();
 
     // Verifications
     if (_mapFlashs.isEmpty()) {

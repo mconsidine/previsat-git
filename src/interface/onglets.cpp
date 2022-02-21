@@ -5742,6 +5742,10 @@ void Onglets::on_majTleIss_clicked()
         TLE::VerifieFichier(fic);
 
         QFile fi(fic);
+        QFile fi2(fic3le);
+        if (fi2.exists()) {
+            fi2.remove();
+        }
         fi.rename(fic3le);
 
         // Mise a jour de l'age du TLE de l'ISS
