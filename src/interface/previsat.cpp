@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 decembre 2021
+ * >    4 avril 2022
  *
  */
 
@@ -1479,9 +1479,10 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     _onglets->ui()->liste4->scrollToTop();
 #endif
     const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[nomfic];
-    const QString norad = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+    const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
 
     /* Corps de la methode */
+    QString nomsatComplet;
     ListWidgetItem * elem1;
     ListWidgetItem * elem2;
     ListWidgetItem * elem3;
@@ -1492,45 +1493,61 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         it.next();
 
         const QString nomsat = it.value().nom().trimmed();
-        const bool check = listeSatellites.contains(it.key());
-        const QString tooltip = tr("%1\nNORAD : %2\nCOSPAR : %3").arg(nomsat).arg(it.key()).arg(it.value().donnees().cospar());
+        const QString norad = it.key();
+        const bool check = listeSatellites.contains(norad);
+        const QString tooltip = tr("%1\nNORAD : %2\nCOSPAR : %3").arg(nomsat).arg(norad).arg(it.value().donnees().cospar());
+
+        switch (_onglets->ui()->affNoradListes->checkState()) {
+        default:
+        case Qt::Unchecked:
+            nomsatComplet = nomsat;
+            break;
+
+        case Qt::Checked:
+            nomsatComplet = QString("%1     (%2)").arg(nomsat).arg(norad);
+            break;
+
+        case Qt::PartiallyChecked:
+            nomsatComplet = (nomsat.contains("R/B") || nomsat.contains(" DEB")) ? QString("%1     (%2)").arg(nomsat).arg(norad) : nomsat;
+            break;
+        }
 
         // Liste principale de satellites
-        elem1 = new ListWidgetItem(nomsat, ui->liste1);
-        elem1->setData(Qt::UserRole, it.key());
+        elem1 = new ListWidgetItem(nomsatComplet, ui->liste1);
+        elem1->setData(Qt::UserRole, norad);
         elem1->setToolTip(tooltip);
         elem1->setFlags(Qt::ItemIsEnabled);
         elem1->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-        if (it.key() == norad) {
+        if (norad == noradDefaut) {
             ui->liste1->setCurrentItem(elem1);
         }
 
         if (majListesOnglets) {
 
             // Liste pour les previsions de passage
-            elem2 = new ListWidgetItem(nomsat, _onglets->ui()->liste2);
-            elem2->setData(Qt::UserRole, it.key());
+            elem2 = new ListWidgetItem(nomsatComplet, _onglets->ui()->liste2);
+            elem2->setData(Qt::UserRole, norad);
             elem2->setToolTip(tooltip);
             elem2->setFlags(Qt::ItemIsEnabled);
             elem2->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
 
             // Liste pour les evenements orbitaux
-            elem3 = new ListWidgetItem(nomsat, _onglets->ui()->liste3);
-            elem3->setData(Qt::UserRole, it.key());
+            elem3 = new ListWidgetItem(nomsatComplet, _onglets->ui()->liste3);
+            elem3->setData(Qt::UserRole, norad);
             elem3->setToolTip(tooltip);
             elem3->setFlags(Qt::ItemIsEnabled);
             elem3->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
 
 #if defined (Q_OS_WIN)
             // Liste pour le suivi de telescope
-            elem4 = new ListWidgetItem(nomsat, _onglets->ui()->liste4);
-            elem4->setData(Qt::UserRole, it.key());
+            elem4 = new ListWidgetItem(nomsatComplet, _onglets->ui()->liste4);
+            elem4->setData(Qt::UserRole, norad);
             elem4->setToolTip(tooltip);
             elem4->setFlags(Qt::ItemIsEnabled);
-            elem4->setCheckState(((norad == it.key()) && check) ? Qt::Checked : Qt::Unchecked);
+            elem4->setCheckState(((noradDefaut == norad) && check) ? Qt::Checked : Qt::Unchecked);
 #endif
 
-            if (it.key() == norad) {
+            if (norad == noradDefaut) {
                 _onglets->ui()->liste2->setCurrentItem(elem2);
                 _onglets->ui()->liste3->setCurrentItem(elem3);
 #if defined (Q_OS_WIN)
@@ -1647,12 +1664,15 @@ void PreviSat::ChargementFenetre()
     _gmt = nullptr;
 
     /* Corps de la methode */
+    // TEMP
     setMaximumSize(minimumSize());
     ui->actionVision_nocturne->setVisible(false);
+    //
 
     // Bouton pour maximiser la carte
     isMaximise = false;
     _maximise = new QToolButton(ui->frameCarteLon);
+    _maximise->setVisible(false); // TEMP
     _maximise->setMaximumSize(20, 20);
     _maximise->setToolTip(tr("Agrandir"));
     _maximise->setIcon(QIcon(":/resources/maxi.png"));
@@ -2086,6 +2106,9 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         _maximise->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 0, 20, 20);
         _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 28, 20, 20);
     }
+
+    // TEMP
+    _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 0, 20, 20);
 
     /* Retour */
     return;
