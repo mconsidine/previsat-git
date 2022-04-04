@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -38,7 +38,9 @@
 #include "configuration/configuration.h"
 #include "carte.h"
 #include "ciel.h"
+#include "coordiss.h"
 #include "onglets.h"
+#include "librairies/corps/satellite/evenements.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
@@ -48,19 +50,20 @@
 
 
 // SAA
-static const double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. },
-                                      { -75., -3.5 }, { -70., 0. }, { -65., 4. }, { -60., 6.5 }, { -55., 8. },
-                                      { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. },
-                                      { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. }, { -5., 6. }, { 0., 4. },
-                                      { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. },
-                                      { 35., -11.5 }, { 40., -14. }, { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 },
-                                      { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. }, { 10., -33.5 },
-                                      { 5., -35. }, { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 },
-                                      { -20., -44.5 }, { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 },
-                                      { -45., -49. }, { -50., -48.5 }, { -55., -47.5 }, { -60., -47. }, { -65., -46.5 },
-                                      { -70., -45.5 }, { -75., -43.5 }, { -80., -42. }, { -85., -38.5 }, { -90., -36. },
-                                      { -95., -33. }, { -96.5, -29. } };
+static const double tabSAA[59][2] = { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. }, { -75., -3.5 }, { -70., 0. },
+                                      { -65., 4. }, { -60., 6.5 }, { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. },
+                                      { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. }, { -5., 6. }, { 0., 4. }, { 5., 2. },
+                                      { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
+                                      { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 }, { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. },
+                                      { 10., -33.5 }, { 5., -35. }, { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 }, { -20., -44.5 },
+                                      { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 }, { -45., -49. }, { -50., -48.5 },
+                                      { -55., -47.5 }, { -60., -47. }, { -65., -46.5 }, { -70., -45.5 }, { -75., -43.5 }, { -80., -42. },
+                                      { -85., -38.5 }, { -90., -36. }, { -95., -33. }, { -96.5, -29. } };
 
+// SAA pour la visualisation Wall Command Center
+static const double tabSAA_ISS[16][2] = { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 }, { -26.5, -35.5 },
+                                          { -28.3, -40.6 }, { -21.6, -45.6 }, { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. },
+                                          { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } };
 
 /**********
  * PUBLIC *
@@ -118,6 +121,7 @@ void Carte::show()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool mcc = Configuration::instance()->issLive() && _onglets->ui()->styleWCC->isChecked();
     const QColor crimson(220, 20, 60);
     const QColor bleuClair(173, 216, 230);
     const QPen noir(Qt::black);
@@ -132,9 +136,9 @@ void Carte::show()
 
     /* Corps de la methode */
     // Chargement de la carte
-    //    const QString nomMap = (_onglets->ui()->listeMap->currentIndex() == 0) ?
-    //                ":/resources/map.png" : ficMap.at(_onglets->ui()->listeMap->currentIndex()-1);
-    const QString nomMap = ":/resources/map.png";
+    const QString nomMap = (_onglets->ui()->listeMap->currentIndex() == 0) ?
+                ":/resources/map.png" : Configuration::instance()->listeFicMap().at(_onglets->ui()->listeMap->currentIndex() - 1);
+
     QPixmap pixMap;
     pixMap.load(nomMap);
     pixMap = pixMap.scaled(ui->carte->size());
@@ -148,8 +152,10 @@ void Carte::show()
         // Affichage de la grille de coordonnees
         if (_onglets->ui()->affgrille->isChecked()) {
 
-            const QPen pen = QPen(/*(!satellites.isEmpty() && mcc && satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) ?*/
-                                  /*((ui->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) :*/ Qt::white);
+            const bool conditionIss = !Configuration::instance()->listeSatellites().isEmpty() && mcc
+                    && (Configuration::instance()->listeSatellites().at(0).tle().norad() == Configuration::instance()->noradStationSpatiale());
+            const QPen pen = QPen((conditionIss) ? ((_onglets->ui()->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
+
             const int lcarte = ui->carte->width();
             const int hcarte = ui->carte->height();
             const int lcarte2 = lcarte / 2;
@@ -161,77 +167,78 @@ void Carte::show()
             QPen stylo(Qt::lightGray);
             QList<int> tabLat, tabLon;
 
-            //            if (mcc) {
-            //                tabLat << hcarte / 12 << hcarte / 6 << static_cast<int> (hcarte * 0.25) << hcarte / 3 << static_cast<int> (hcarte / 2.4) <<
-            //                          static_cast<int> (7. * hcarte / 12.) << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte * 0.75) <<
-            //                          static_cast<int> (hcarte / 1.2) <<
-            //                          static_cast<int> (11. * hcarte / 12.);
-            //                tabLon << lcarte / 24 << lcarte / 12 << lcarte / 8 << lcarte / 6 << static_cast<int> (lcarte / 4.8) << static_cast<int> (lcarte * 0.25) <<
-            //                          static_cast<int> (7. * lcarte / 24.) << lcarte / 3 << static_cast<int> (3. * lcarte / 8.) << static_cast<int> (lcarte / 2.4) <<
-            //                          static_cast<int> (11. * lcarte / 24.) << static_cast<int> (13. * lcarte / 24.) << static_cast<int> (7. * lcarte / 12.) <<
-            //                          static_cast<int> (15. * lcarte / 24.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (17. * lcarte / 24.) <<
-            //                          static_cast<int> (lcarte * 0.75) <<
-            //                          static_cast<int> (19. * lcarte / 24.) << static_cast<int> (lcarte / 1.2) << static_cast<int> (21. * lcarte / 24.) <<
-            //                          static_cast<int> (11. * lcarte / 12.) << static_cast<int> (23. * lcarte / 24.);
+            if (mcc) {
 
-            //                ui->W150->setText("-150");
-            //                ui->W120->setText("-120");
-            //                ui->W90->setText("-90");
-            //                ui->W60->setText("-60");
-            //                ui->W30->setText("-30");
+                tabLat << hcarte / 12 << hcarte / 6 << static_cast<int> (hcarte * 0.25) << hcarte / 3 << static_cast<int> (hcarte / 2.4)
+                       << static_cast<int> (7. * hcarte / 12.) << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte * 0.75)
+                       << static_cast<int> (hcarte / 1.2) << static_cast<int> (11. * hcarte / 12.);
 
-            //                QPalette coul;
-            //                coul.setColor(QPalette::WindowText, Qt::white);
-            //                ui->N60->setPalette(coul);
-            //                ui->N30->setPalette(coul);
-            //                ui->N0->setPalette(coul);
-            //                ui->S30->setPalette(coul);
-            //                ui->S60->setPalette(coul);
-            //                ui->S30->setText("-30");
-            //                ui->S60->setText("-60");
-            //                ui->N60->setAlignment(Qt::AlignRight);
-            //                ui->N30->setAlignment(Qt::AlignRight);
-            //                ui->N0->setAlignment(Qt::AlignRight);
+                tabLon << lcarte / 24 << lcarte / 12 << lcarte / 8 << lcarte / 6 << static_cast<int> (lcarte / 4.8) << static_cast<int> (lcarte * 0.25)
+                       << static_cast<int> (7. * lcarte / 24.) << lcarte / 3 << static_cast<int> (3. * lcarte / 8.) << static_cast<int> (lcarte / 2.4)
+                       << static_cast<int> (11. * lcarte / 24.) << static_cast<int> (13. * lcarte / 24.) << static_cast<int> (7. * lcarte / 12.)
+                       << static_cast<int> (15. * lcarte / 24.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (17. * lcarte / 24.)
+                       << static_cast<int> (lcarte * 0.75) << static_cast<int> (19. * lcarte / 24.) << static_cast<int> (lcarte / 1.2)
+                       << static_cast<int> (21. * lcarte / 24.) << static_cast<int> (11. * lcarte / 12.) << static_cast<int> (23. * lcarte / 24.);
 
-            //            } else {
-            tabLat << hcarte / 6 << hcarte / 3 << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte / 1.2);
-            tabLon << lcarte / 12 << lcarte / 6 << static_cast<int> (lcarte * 0.25) << lcarte / 3 << static_cast<int> (lcarte / 2.4)
-                   << static_cast<int> (7. * lcarte / 12.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (lcarte * 0.75)
-                   << static_cast<int> (lcarte / 1.2) << static_cast<int> (11. * lcarte / 12.);
-            /*
-                ui->W150->setText("150");
-                ui->W120->setText("120");
-                ui->W90->setText("90");
-                ui->W60->setText("60");
-                ui->W30->setText("30");
+                //                ui->W150->setText("-150");
+                //                ui->W120->setText("-120");
+                //                ui->W90->setText("-90");
+                //                ui->W60->setText("-60");
+                //                ui->W30->setText("-30");
 
-                QPalette coul;
-                coul.setColor(QPalette::WindowText, Qt::black);
-                ui->N60->setPalette(coul);
-                ui->N30->setPalette(coul);
-                ui->N0->setPalette(coul);
-                ui->S30->setPalette(coul);
-                ui->S60->setPalette(coul);
-                ui->S30->setText("30");
-                ui->S60->setText("60");
-                ui->N60->setAlignment(Qt::AlignLeft);
-                ui->N30->setAlignment(Qt::AlignLeft);
-                ui->N0->setAlignment(Qt::AlignLeft);
-*/
-            // Tropiques
-            stylo.setStyle(Qt::DashLine);
-            scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
-            scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
-            //            }
-            /*
-            const int dec1 = (mcc) ? 12 : 8;
-            const int dec2 = (mcc) ? 9 : 5;
-            ui->W150->move(static_cast<int> (lcarte / 12.) - dec1, 0);
-            ui->W120->move(static_cast<int> (lcarte / 6.) - dec1, 0);
-            ui->W90->move(static_cast<int> (lcarte / 4.) - dec2, 0);
-            ui->W60->move(static_cast<int> (lcarte / 3.) - dec2, 0);
-            ui->W30->move(static_cast<int> (lcarte / 2.4) - dec2, 0);
-*/
+                //                QPalette coul;
+                //                coul.setColor(QPalette::WindowText, Qt::white);
+                //                ui->N60->setPalette(coul);
+                //                ui->N30->setPalette(coul);
+                //                ui->N0->setPalette(coul);
+                //                ui->S30->setPalette(coul);
+                //                ui->S60->setPalette(coul);
+                //                ui->S30->setText("-30");
+                //                ui->S60->setText("-60");
+                //                ui->N60->setAlignment(Qt::AlignRight);
+                //                ui->N30->setAlignment(Qt::AlignRight);
+                //                ui->N0->setAlignment(Qt::AlignRight);
+
+            } else {
+
+                tabLat << hcarte / 6 << hcarte / 3 << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte / 1.2);
+                tabLon << lcarte / 12 << lcarte / 6 << static_cast<int> (lcarte * 0.25) << lcarte / 3 << static_cast<int> (lcarte / 2.4)
+                       << static_cast<int> (7. * lcarte / 12.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (lcarte * 0.75)
+                       << static_cast<int> (lcarte / 1.2) << static_cast<int> (11. * lcarte / 12.);
+
+                //                ui->W150->setText("150");
+                //                ui->W120->setText("120");
+                //                ui->W90->setText("90");
+                //                ui->W60->setText("60");
+                //                ui->W30->setText("30");
+
+                //                QPalette coul;
+                //                coul.setColor(QPalette::WindowText, Qt::black);
+                //                ui->N60->setPalette(coul);
+                //                ui->N30->setPalette(coul);
+                //                ui->N0->setPalette(coul);
+                //                ui->S30->setPalette(coul);
+                //                ui->S60->setPalette(coul);
+                //                ui->S30->setText("30");
+                //                ui->S60->setText("60");
+                //                ui->N60->setAlignment(Qt::AlignLeft);
+                //                ui->N30->setAlignment(Qt::AlignLeft);
+                //                ui->N0->setAlignment(Qt::AlignLeft);
+
+                // Tropiques
+                stylo.setStyle(Qt::DashLine);
+                scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
+                scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
+            }
+
+            //            const int dec1 = (mcc) ? 12 : 8;
+            //            const int dec2 = (mcc) ? 9 : 5;
+            //            ui->W150->move(static_cast<int> (lcarte / 12.) - dec1, 0);
+            //            ui->W120->move(static_cast<int> (lcarte / 6.) - dec1, 0);
+            //            ui->W90->move(static_cast<int> (lcarte / 4.) - dec2, 0);
+            //            ui->W60->move(static_cast<int> (lcarte / 3.) - dec2, 0);
+            //            ui->W30->move(static_cast<int> (lcarte / 2.4) - dec2, 0);
+
             stylo.setStyle(Qt::SolidLine);
             for(int j=0; j<tabLat.size(); j++) {
                 scene->addLine(0, tabLat.at(j), lcarte, tabLat.at(j), stylo);
@@ -267,7 +274,7 @@ void Carte::show()
 
 
         // Affichage de la SAA
-        if (_onglets->ui()->affSAA->isChecked()/* && !ui->mccISS->isChecked()*/) {
+        if (_onglets->ui()->affSAA->isChecked() && !Configuration::instance()->issLive()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
             QVector<QPointF> zoneSAA;
@@ -285,17 +292,19 @@ void Carte::show()
         const int bsol = qRound((90. - soleil.latitude() * RAD2DEG) * DEG2PXVT);
 
         if (_onglets->ui()->affsoleil->isChecked()) {
-            //            if (mcc) {
 
-            //                const QString iconeSoleil = ":/resources/icones/soleil.png";
-            //                QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
-            //                pm->setPos(lsol - 15, bsol - 10);
+            const QString iconeSoleil = (mcc) ? ":/resources/icones/soleil.png" : ":/resources/soleil.png";
 
-            //            } else {
-            //            QRect rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
-            //            scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
-            const QString iconeSoleil = ":/resources/soleil.png";
-            //            }
+            if (mcc) {
+
+                QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
+                pm->setPos(lsol - 15, bsol - 10);
+
+            } else {
+                QRect rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
+                scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
+            }
+
             QPixmap pixsol;
             pixsol.load(iconeSoleil);
             pixsol = pixsol.scaled(17, 17);
@@ -328,11 +337,13 @@ void Carte::show()
         if (_onglets->ui()->affnuit->checkState() != Qt::Unchecked) {
 
             double beta = PI_SUR_DEUX - REFRACTION_HZ;
-            const int imax = (_onglets->ui()->affnuit->checkState() == Qt::PartiallyChecked) ? 1 : 4;
+            const int imax = (_onglets->ui()->affnuit->checkState() == Qt::PartiallyChecked || mcc) ? 1 : 4;
 
-            const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * _onglets->ui()->intensiteOmbre->value())));
-            const QPen stylo(/*(mcc) ? ((ui->coulTerminateur->currentIndex() == 0) ?*/
-                             /* QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2)) :*/ QPen(Qt::NoBrush, 0));
+            const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * _onglets->ui()->intensiteOmbre->value())));
+            const QBrush alpha = (mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 3 * alpha1.color().alpha()))) : alpha1;
+
+            const QPen stylo1 = (_onglets->ui()->coulTerminateur->currentIndex() == 0) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
+            QPen stylo((mcc) ? stylo1 : QPen(Qt::NoBrush, 0));
 
             QVector<QPointF> zone;
             QVector<QPointF> zone1;
@@ -341,7 +352,10 @@ void Carte::show()
 
             for(int i=0; i<imax; i++) {
 
-                //if (i==0) {
+                if (mcc && (i != 0)) {
+                    stylo = QPen(Qt::NoBrush, 0);
+                }
+
                 soleil.CalculZoneVisibilite(beta);
 
                 // Coordonnees de la zone d'ombre, en pixels
@@ -506,13 +520,51 @@ void Carte::show()
                         scene->addPolygon(poly1, stylo, alpha);
                     }
                 }
-                //}
+
                 beta += 6. * DEG2RAD;
             }
         }
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
-        // TODO
+        if (_onglets->ui()->affSAA_ZOE->isChecked() && Configuration::instance()->issLive() && !Configuration::instance()->listeSatellites().isEmpty()
+                && (Configuration::instance()->listeSatellites().at(0).tle().norad() == Configuration::instance()->noradStationSpatiale())) {
+
+            // Zone Of Exclusion (ZOE)
+            QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
+            const double xnZOE = 252. * DEG2PXHZ;
+            const double ynZOE = 66. * DEG2PXVT;
+
+            txtZOE->setBrush((_onglets->ui()->coulZOE->currentIndex() == 0) ? Qt::black : Qt::white);
+            const QFont policeZOE(_onglets->ui()->policeWCC->currentText(), 14);
+            txtZOE->setFont(policeZOE);
+            const int htt = (int) txtZOE->boundingRect().height();
+
+            txtZOE->setPos(xnZOE, ynZOE - htt);
+            scene->addItem(txtZOE);
+
+            // South Atlantic Anomaly (SAA)
+            QGraphicsSimpleTextItem * const txtSAA = new QGraphicsSimpleTextItem("SAA");
+            const double xnSAA = 150. * DEG2PXHZ;
+            const double ynSAA = 125. * DEG2PXVT;
+
+            txtSAA->setBrush(Qt::white);
+            const QFont policeSAA(_onglets->ui()->policeWCC->currentText(), 11);
+            txtSAA->setFont(policeSAA);
+            txtSAA->setPos(xnSAA, ynSAA);
+            scene->addItem(txtSAA);
+
+            // Dessin du contour de la SAA
+            QVector<QPoint> zoneSAA_ISS;
+            zoneSAA_ISS.resize(16);
+
+            for(int i=0; i<zoneSAA_ISS.size(); i++) {
+                zoneSAA_ISS[i].setX(qRound((180. - tabSAA_ISS[i][0]) * DEG2PXHZ));
+                zoneSAA_ISS[i].setY(qRound((90. - tabSAA_ISS[i][1]) * DEG2PXVT));
+            }
+
+            const QPolygonF poly1(zoneSAA_ISS);
+            scene->addPolygon(poly1, QPen(Qt::white, (_onglets->ui()->styleWCC->isChecked()) ? 2 : 1));
+        }
 
         // Lieux d'observation
         QGraphicsSimpleTextItem * txtObs;
@@ -539,7 +591,83 @@ void Carte::show()
         }
 
         // Stations
-        // TODO
+        if (Configuration::instance()->issLive()) {
+
+            int ils;
+            double lsat1;
+            double bsat1;
+            double lsat2;
+            double bsat2;
+
+            crayon = QPen(Qt::yellow);
+
+            for(int j=0; j<Configuration::instance()->mapStations().count(); j++) {
+
+                if (_onglets->ui()->listeStations->item(j)->checkState() == Qt::Checked) {
+
+                    const QString acronyme = _onglets->ui()->listeStations->item(j)->data(Qt::UserRole).toString();
+                    const Observateur station = Configuration::instance()->mapStations()[acronyme];
+
+                    const int lsta = qRound((180. - station.longitude() * RAD2DEG) * DEG2PXHZ);
+                    const int bsta = qRound((90. - station.latitude() * RAD2DEG) * DEG2PXVT);
+
+                    scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
+                    scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
+
+                    QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(acronyme);
+                    const QFont policeSta(_onglets->ui()->policeWCC->currentText(), 10);
+                    txtSta->setFont(policeSta);
+
+                    const int lng = (int) txtSta->boundingRect().width();
+                    const int xnsta = lsta - lng / 2 + 1;
+                    const int ynsta = (bsta > 16) ? bsta - 16 : bsta + 3;
+
+                    txtSta->setBrush(Qt::yellow);
+                    txtSta->setPos(xnsta, ynsta);
+                    scene->addItem(txtSta);
+
+                    if (_onglets->ui()->affCerclesAcq->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()
+                            && (Configuration::instance()->listeSatellites().at(0).altitude() > 0.)
+                            && (Configuration::instance()->listeSatellites().at(0).tle().norad() ==
+                                Configuration::instance()->noradStationSpatiale())) {
+
+                        const QPen crayon2 = (_onglets->ui()->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
+                        Satellite sat = Configuration::instance()->listeSatellites().at(0);
+                        sat.CalculCercleAcquisition(station);
+
+                        lsat1 = sat.zone().at(0).x() * DEG2PXHZ;
+                        bsat1 = sat.zone().at(0).y() * DEG2PXVT + 1;
+
+                        for(int k=1; k<361; k++) {
+
+                            lsat2 = sat.zone().at(k).x() * DEG2PXHZ;
+                            bsat2 = sat.zone().at(k).y() * DEG2PXVT + 1;
+                            ils = 99999;
+
+                            if (fabs(lsat2 - lsat1) > (ui->carte->width() / 2)) {
+                                if (lsat2 < lsat1) {
+                                    lsat2 += ui->carte->width();
+                                } else {
+                                    lsat1 += ui->carte->width();
+                                }
+                                ils = k;
+                            }
+
+                            scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
+
+                            if (ils == k) {
+                                lsat1 -= ui->carte->width() + 1;
+                                lsat2 -= ui->carte->width() + 1;
+                                scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
+                                ils = 0;
+                            }
+                            lsat1 = sat.zone().at(k).x() * DEG2PXHZ;
+                            bsat1 = sat.zone().at(k).y() * DEG2PXVT + 1;
+                        }
+                    }
+                }
+            }
+        }
 
         // Affichage de la Lune
         if (_onglets->ui()->afflune->isChecked()) {
@@ -560,6 +688,7 @@ void Carte::show()
             if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
                 transform.rotate(180.);
             }
+
             transform.translate(-7, -7);
             lun->setTransform(transform);
 
@@ -594,12 +723,11 @@ void Carte::show()
                     omb2->setTransform(transform2);
                 }
             }
-            //}
         }
     }
 
     // Affichage de la trace au sol du satellite par defaut
-    if (_onglets->ui()->afftraj->isChecked()/* || mcc*/) {
+    if (_onglets->ui()->afftraj->isChecked() || mcc) {
 
         if (Configuration::instance()->listeSatellites().size() > 0) {
 
@@ -609,9 +737,11 @@ void Carte::show()
                 double lsat1 = satellite.traceAuSol().at(0).longitude * DEG2PXHZ;
                 double bsat1 = satellite.traceAuSol().at(0).latitude * DEG2PXVT;
 
+
                 int nbOrb = 0;
                 double lsat2;
                 double bsat2;
+                QString txt;
                 int ils;
                 for(int j=1; j<satellite.traceAuSol().size()-1; j++) {
 
@@ -638,68 +768,75 @@ void Carte::show()
                         crayon = bleuClair;
                     }
 
-                    //                    if (ui->mccISS->isChecked()) {
+                    if (Configuration::instance()->issLive()) {
 
-                    //                        if (satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) {
+                        if (satellite.tle().norad() == Configuration::instance()->noradStationSpatiale()) {
 
-                    //                            // Affichage du numero d'orbite
-                    //                            if (satellites.at(0).traceAuSol().at(j).at(1) < 90. &&
-                    //                                    satellites.at(0).traceAuSol().at(j-1).at(1) > 90. && nbOrb < 3) {
+                            // Affichage du numero d'orbite
+                            if ((satellite.traceAuSol().at(j).latitude < 90.)
+                                    && (satellite.traceAuSol().at(j-1).latitude > 90.) && (nbOrb < 3)) {
 
-                    //                                nbOrb++;
-                    //                                const Date dateISS(Date(satellites.at(0).traceAuSol().at(j+1).at(3), 0., false));
-                    //                                const int numOrb = CalculNumeroOrbiteISS(dateISS);
-                    //                                QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
+                                nbOrb++;
+                                const Date dateISS(Date(satellite.traceAuSol().at(j+1).jourJulienUTC, 0., false));
+                                const int numOrb = CoordISS::CalculNumeroOrbiteISS(dateISS);
 
-                    //                                const QFont policeOrb(PreviSat::font().family(), 10, (ui->styleWCC->isChecked()) ?
-                    //                                                          QFont::Bold : QFont::Normal);
-                    //                                txtOrb->setFont(policeOrb);
-                    //                                txtOrb->setBrush(Qt::white);
+                                QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
 
-                    //                                const int lng = static_cast<int> txtOrb->boundingRect().width();
-                    //                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + lcarte - lng - 8 : lsat2 - lng;
-                    //                                txtOrb->setPos(xnorb, hcarte2 - 18);
-                    //                                scene->addItem(txtOrb);
-                    //                            }
+                                const QFont policeOrb(Configuration::instance()->police().family(), 10, (_onglets->ui()->styleWCC->isChecked()) ?
+                                                          QFont::Bold : QFont::Normal);
+                                txtOrb->setFont(policeOrb);
+                                txtOrb->setBrush(Qt::white);
 
-                    //                            if (ui->styleWCC->isChecked()) {
+                                const int lng = static_cast<int> (txtOrb->boundingRect().width());
+                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + ui->carte->width() - lng - 8 : lsat2 - lng;
+                                txtOrb->setPos(xnorb, ui->carte->height() / 2 - 18);
+                                scene->addItem(txtOrb);
+                            }
 
-                    //                                if (satellites.at(0).tle().norad() == NORAD_STATION_SPATIALE) {
-                    //                                    crayon = QPen(Qt::white, 2);
-                    //                                }
+                            if (_onglets->ui()->styleWCC->isChecked()) {
 
-                    //                                // Affichage des crochets des transitions jour/nuit
-                    //                                const double ecl = satellites.at(0).traceAuSol().at(j).at(2);
-                    //                                if (fabs(ecl - satellites.at(0).traceAuSol().at(j+1).at(2)) > 1.5) {
+                                crayon = QPen(Qt::white, 2);
 
-                    //                                    const double ang = fmod(-fabs(lig.angle()), T360);
-                    //                                    const double ca = cos(ang * DEG2RAD);
-                    //                                    const double sa = sin(ang * DEG2RAD);
+                                // Affichage des crochets des transitions jour/nuit
+                                txt = "";
+                                if (satellite.traceAuSol().at(j).eclipseTotale && !satellite.traceAuSol().at(j-1).eclipseTotale) {
+                                    txt = "[";
+                                }
 
-                    //#if defined (Q_OS_MAC)
-                    //                                    const QFont policeOmb(PreviSat::font().family(), 24);
-                    //                                    const double fact = (ecl > EPSDBL100) ? 3. : 1.;
-                    //                                    const double xnc = lsat2 - fact * ca + 10. * sa;
-                    //                                    const double ync = bsat2 - fact * sa - 10. * ca;
-                    //#else
-                    //                                    const QFont policeOmb(PreviSat::font().family(), 14);
-                    //                                    const double fact = (ecl > EPSDBL100) ? 4. : 2.;
-                    //                                    const double xnc = lsat2 - fact * ca + 14. * sa;
-                    //                                    const double ync = bsat2 - fact * sa - 13. * ca;
-                    //#endif
+                                if (satellite.traceAuSol().at(j-1).eclipseTotale && !satellite.traceAuSol().at(j).eclipseTotale) {
+                                    txt = "]";
+                                }
 
-                    //                                    QGraphicsSimpleTextItem * const txtOmb =
-                    //                                            new QGraphicsSimpleTextItem((ecl > EPSDBL100) ? "[" : "]");
+                                if (!txt.isEmpty()) {
 
-                    //                                    txtOmb->setFont(policeOmb);
-                    //                                    txtOmb->setBrush(Qt::white);
-                    //                                    txtOmb->setPos(xnc, ync);
-                    //                                    txtOmb->setRotation(ang);
-                    //                                    scene->addItem(txtOmb);
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
+                                    const double ang = fmod(180. - lig.angle(), T360);
+                                    const double ca = cos(ang * DEG2RAD);
+                                    const double sa = sin(ang * DEG2RAD);
+
+#if defined (Q_OS_MAC)
+                                    const QFont policeOmb(Configuration::instance()->police().family(), 24);
+                                    const double fact = (satellite.traceAuSol().at(j).eclipsePartielle) ? 3. : 1.;
+                                    const double xnc = lsat2 - fact * ca + 10. * sa;
+                                    const double ync = bsat2 - fact * sa - 10. * ca;
+#else
+                                    const QFont policeOmb(Configuration::instance()->police().family(), 14);
+                                    const double fact = (satellite.traceAuSol().at(j).eclipsePartielle) ? 4. : 2.;
+                                    const double xnc = lsat2 - fact * ca + 14. * sa;
+                                    const double ync = bsat2 - fact * sa - 13. * ca;
+#endif
+
+                                    QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem(txt);
+
+                                    txtOmb->setFont(policeOmb);
+                                    txtOmb->setBrush(Qt::white);
+                                    txtOmb->setPos(xnc, ync);
+                                    txtOmb->setRotation(ang);
+                                    scene->addItem(txtOmb);
+                                }
+                            }
+                        }
+                    }
+
                     scene->addLine(lig, crayon);
 
                     if (ils == j) {
@@ -725,7 +862,7 @@ void Carte::show()
     if (Configuration::instance()->listeSatellites().size() > 0) {
 
         if (_onglets->ui()->affvisib->isChecked()/* || mcc*/) {
-            const int nbMax2 = /*(ui->affvisib->checkState() == Qt::PartiallyChecked) ? 1 :*/ satellites.size();
+            const int nbMax2 = (_onglets->ui()->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : satellites.size();
 
             int ils;
             double lsat1;
@@ -735,45 +872,43 @@ void Carte::show()
 
             for(int isat=0; isat<nbMax2; isat++) {
 
-                //if (mcc) {
+                if (mcc) {
 
-                //                    crayon = QPen((ui->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
-                //                    if (satellites.at(isat).tle().nom().toLower().startsWith("tdrs")) {
+                    crayon = QPen((_onglets->ui()->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
+                    if (Configuration::instance()->listeSatellites().at(isat).tle().nom().toLower().startsWith("tdrs")) {
 
-                //                        const int numeroTDRS = satellites.at(isat).tle().nom().section(" ", 1).toInt();
+                        const int numeroTDRS = Configuration::instance()->listeSatellites().at(isat).tle().nom().section(" ", 1).toInt();
 
-                //                        QStringListIterator it(tabTDRS);
-                //                        while (it.hasNext()) {
+                        QMapIterator<int, SatelliteTDRS> it(Configuration::instance()->mapTDRS());
+                        while (it.hasNext()) {
+                            it.next();
 
-                //                            const QString ligne = it.next().trimmed();
-                //                            if (ligne.section(" ", 0, 0).toInt() == numeroTDRS) {
+                            if (it.key() == numeroTDRS) {
 
-                //                                const QString nomTDRS = ligne.section(" ", 1, 1);
-                //                                const int r = ligne.section(" ", 2, 2).toInt();
-                //                                const int v = ligne.section(" ", 3, 3).toInt();
-                //                                const int b = ligne.section(" ", 4, 4).toInt();
+                                const SatelliteTDRS satTDRS = it.value();
 
-                //                                // Affichage du nom du satellite TDRS
-                //                                QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(nomTDRS);
-                //                                const QFont policeSat(ui->policeWCC->currentText(), 11);
-                //                                txtSat->setFont(policeSat);
+                                // Affichage du nom du satellite TDRS
+                                QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satTDRS.denomination);
+                                const QFont policeSat(_onglets->ui()->policeWCC->currentText(), 11);
+                                txtSat->setFont(policeSat);
 
-                //                                const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
-                //                                const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT);
+                                const int lsat = qRound((180.
+                                                         - Configuration::instance()->listeSatellites().at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                                const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
-                //                                crayon = QPen(QColor(r, v, b), 2);
-                //                                txtSat->setBrush(crayon.color());
+                                crayon = QPen(QColor(satTDRS.rouge, satTDRS.vert, satTDRS.bleu), 2);
+                                txtSat->setBrush(crayon.color());
 
-                //                                const int lng = static_cast<int> txtSat->boundingRect().width();
-                //                                const int xnsat = lsat - lng / 2 + 1;
-                //                                txtSat->setPos(xnsat, bsat + 19);
-                //                                scene->addItem(txtSat);
-                //                            }
-                //                        }
-                //                    }
-                //} else {
-                crayon = QPen(Qt::white);
-                //}
+                                const int lng = static_cast<int> (txtSat->boundingRect().width());
+                                const int xnsat = lsat - lng / 2 + 1;
+                                txtSat->setPos(xnsat, bsat + 28);
+                                scene->addItem(txtSat);
+                            }
+                        }
+                    }
+                } else {
+                    crayon = QPen(Qt::white);
+                }
 
                 if ((satellites.at(isat).altitude() >= 0.) && (!satellites.at(isat).zone().isEmpty())) {
 
@@ -895,6 +1030,7 @@ void Carte::show()
             }
         }
     }
+
     ui->carte->setScene(scene);
 
     /* Retour */
@@ -1190,3 +1326,4 @@ void Carte::AffichageSatellite(const Satellite &satellite, const int lsat, const
     /* Retour */
     return;
 }
+

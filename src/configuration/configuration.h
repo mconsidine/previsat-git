@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -100,6 +100,7 @@ enum AdressesTelechargement {
 
 
 class QFile;
+class QXmlStreamReader;
 
 class Configuration
 {
@@ -136,12 +137,14 @@ public:
     QString &locale();
     QStringList listeFicLang() const;
     QFont police() const;
+    QFont policeWcc() const;
 
     QString adresseAstropedia() const;
     QString adresseCelestrak() const;
     QString adresseCelestrakNorad() const;
 
     QStringList listeFicLocalData() const;
+    QStringList listeFicMap() const;
     QStringList &listeFicObs();
     QStringList listeFicPref() const;
     QStringList listeFicTLE() const;
@@ -190,11 +193,14 @@ public:
 
     QStringList listeChainesNasa() const;
 
+    bool &issLive();
+
 
     /*
      * Modificateurs
      */
-    void setPolice(const QFont &police);
+    void setPolice(const QFont &p);
+    void setPoliceWcc(const QFont &p);
 
     void setListeFicTLE(const QStringList &listeFic);
     void ajoutListeFicTLE(const QString &fic);
@@ -308,6 +314,7 @@ private:
 
     // Police
     QFont _police;
+    QFont _policeWcc;
 
     // Fichiers du repertoire data local
     QStringList _listeFicLocalData;
@@ -326,6 +333,9 @@ private:
 
     // Liste des fichiers TLE
     QStringList _listeFicTLE;
+
+    // Liste des cartes du monde
+    QStringList _listeFicMap;
 
     // Map des TLE d'un fichier
     QMap<QString, TLE> _mapTLE;
@@ -390,6 +400,7 @@ private:
     // Liste des chaines de la NASA
     QStringList _listeChainesNasa;
 
+    bool _issLive;
 
     static bool _isCarteMonde;
 
@@ -407,6 +418,11 @@ private:
     void DeterminationLocale();
 
     /**
+     * @brief InitFicMap Cartes du monde
+     */
+    void InitFicMap();
+
+    /**
      * @brief InitFicPref Fichiers de preferences
      */
     void InitFicPref();
@@ -415,6 +431,12 @@ private:
      * @brief InitFicTLE Fichiers TLE
      */
     void InitFicTLE();
+
+    /**
+     * @brief LectureBody Lecture de la section body du fichier ISS
+     * @param cfg lecteur xml
+     */
+    void LectureBody(QXmlStreamReader &cfg);
 
     /**
      * @brief LectureConfiguration Lecture de la configuration
@@ -432,6 +454,12 @@ private:
     void LectureChainesNasa();
 
     /**
+     * @brief LectureData Lecture de la section data du fichier ISS
+     * @param cfg lecteur xml
+     */
+    void LectureData(QXmlStreamReader &cfg);
+
+    /**
      * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites
      */
     void LectureDonneesSatellites();
@@ -440,6 +468,12 @@ private:
      * @brief LectureGestionnaireTLE Lecture du fichier de gestionnaire de TLE
      */
     void LectureGestionnaireTLE();
+
+    /**
+     * @brief LectureMetadata Lecture de la section metadata du fichier ISS
+     * @param cfg lecteur xml
+     */
+    void LectureMetadata(QXmlStreamReader &cfg);
 
     /**
      * @brief LecturePays Lecture du fichier listant les pays ou organisations

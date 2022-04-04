@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -47,12 +47,14 @@
 #include <QSettings>
 #include <QTimer>
 #include "ui_previsat.h"
+#include "ui_coordiss.h"
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "carte.h"
 #include "ciel.h"
+#include "coordiss.h"
 #include "informations.h"
 #include "listwidgetitem.h"
 #include "onglets.h"
@@ -76,6 +78,8 @@ static bool isMaximise;
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
 
+// Couleurs GMT
+static const QColor coulGmt[3] = { Qt::red, Qt::white, Qt::cyan };
 
 
 /**********
@@ -99,9 +103,9 @@ PreviSat::PreviSat(QWidget *parent) :
     /* Corps du constructeur */
     ui->setupUi(this);
 
-    _dateCourante = nullptr;
     _chronometre = nullptr;
     _chronometreMs = nullptr;
+    _dateCourante = nullptr;
     _messageStatut = nullptr;
     _messageStatut2 = nullptr;
     _messageStatut3 = nullptr;
@@ -821,11 +825,26 @@ void PreviSat::EnchainementCalculs()
             const QString titre = "%1 %2 - %3";
             setWindowTitle(titre.arg(qApp->applicationName()).arg(QString(APPVER_MAJ)).arg(Configuration::instance()->tleDefaut().nomsat));
 
-            Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, _onglets->ui()->nombreTrajectoires->value(),
-                                                   _onglets->ui()->eclipsesLune->isChecked(), _onglets->ui()->effetEclipsesMagnitude->isChecked(),
+            // Calculs specifiques lors de l'affichage du Wall Command Center
+            const bool mcc = ui->mccISS->isChecked();
+
+            // Nombre de traces au sol a afficher
+            int nbTraces = _onglets->ui()->nombreTrajectoires->value();
+
+            if (satellites.isEmpty() || !_onglets->ui()->afftraj->isChecked()) {
+                nbTraces = 0;
+            } else {
+                if (mcc && satellites.at(0).tle().norad() == Configuration::instance()->noradStationSpatiale()) {
+                    nbTraces = 3;
+                }
+            }
+
+            Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, nbTraces, _onglets->ui()->eclipsesLune->isChecked(),
+                                                   _onglets->ui()->effetEclipsesMagnitude->isChecked(),
                                                    _onglets->ui()->extinctionAtmospherique->isChecked(),
+                                                   satellites.at(0).tle().norad() == Configuration::instance()->noradStationSpatiale(), mcc,
                                                    _onglets->ui()->refractionPourEclipses->isChecked(), _onglets->ui()->afftraceCiel->isChecked(),
-                                                   _onglets->ui()->affvisib, satellites);
+                                                   _onglets->ui()->affvisib->isChecked(), satellites);
         }
 
 
@@ -858,7 +877,7 @@ void PreviSat::MajFichierTLE()
         const QString ficMaj = adresse + fi.fileName();
 
         _onglets->setDirDwn(Configuration::instance()->dirTle());
-        _onglets->TelechargementFichier(ficMaj, false);
+        _onglets->TelechargementFichier(ficMaj);
         settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
     }
 
@@ -1317,7 +1336,7 @@ void PreviSat::InitFicTLE() const
     QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
     /* Corps de la methode */
-    bool etat = ui->listeFichiersTLE->blockSignals(true);
+    const bool etat = ui->listeFichiersTLE->blockSignals(true);
     ui->listeFichiersTLE->clear();
     QStringListIterator it(Configuration::instance()->listeFicTLE());
     while (it.hasNext()) {
@@ -1364,6 +1383,83 @@ void PreviSat::InitFicTLE() const
 /*************
  * Affichage *
  ************/
+void PreviSat::AfficherCoordIssGmt()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    if (_gmt != nullptr) {
+        delete _gmt;
+        _gmt = nullptr;
+    }
+
+    /* Corps de la methode */
+    if (Configuration::instance()->issLive()) {
+
+        // Coordonnees ISS
+        if (_onglets->ui()->affNbOrbWCC->isChecked() && _onglets->ui()->affBetaWCC->isChecked()) {
+
+            _coordISS->ui()->inclinaisonISS->move(5, 39);
+            _coordISS->ui()->nextTransitionISS->move(112, 0);
+            _coordISS->ui()->orbiteISS->move(112, 13);
+            _coordISS->ui()->orbiteISS->setVisible(true);
+            _coordISS->ui()->betaISS->move(112, 26);
+            _coordISS->ui()->betaISS->setVisible(true);
+            _coordISS->resize(223, 59);
+
+        } else {
+
+            _coordISS->ui()->inclinaisonISS->move(112, 0);
+            _coordISS->ui()->nextTransitionISS->move(112, 13);
+            _coordISS->ui()->orbiteISS->setVisible(false);
+            _coordISS->ui()->betaISS->setVisible(false);
+
+            if (_onglets->ui()->affNbOrbWCC->isChecked()) {
+
+                _coordISS->ui()->orbiteISS->move(112, 26);
+                _coordISS->ui()->orbiteISS->setVisible(true);
+                _coordISS->ui()->betaISS->setVisible(false);
+
+            } else if (_onglets->ui()->affBetaWCC->isChecked()) {
+
+                _coordISS->ui()->betaISS->move(112, 26);
+                _coordISS->ui()->betaISS->setVisible(true);
+                _coordISS->ui()->orbiteISS->setVisible(false);
+            }
+            _coordISS->resize(223, 46);
+        }
+
+        _coordISS->show(*_dateCourante, Onglets::dateEclipse());
+
+        // GMT
+        const QString chaine = "GMT = %1/%2:%3:%4";
+        const Date date2 = Date(_dateCourante->annee(), 1, 1., 0.);
+        const double jourDsAnnee = _dateCourante->jourJulienUTC() - date2.jourJulienUTC() + 1.;
+        const int numJour = (int) jourDsAnnee;
+        const int heure = (int) floor(NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
+        const int min = _dateCourante->minutes();
+        const int sec = (int) floor(_dateCourante->secondes());
+        const QString texte =
+                chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
+
+        QPalette coul;
+        coul.setColor(QPalette::WindowText, coulGmt[_onglets->ui()->coulGMT->currentIndex()]);
+        _gmt = new QLabel(texte, _carte);
+        _gmt->setGeometry(340, 30, 151, 16);
+        _gmt->setPalette(coul);
+
+        QFont police = Configuration::instance()->policeWcc();
+        police.setPointSize(12);
+        police.setBold(true);
+        _gmt->setFont(police);
+        _gmt->adjustSize();
+        _gmt->show();
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Afficher les noms des satellites dans les listes
  */
@@ -1547,8 +1643,13 @@ void PreviSat::ChargementFenetre()
 
     /* Initialisations */
     _ciel = nullptr;
+    _coordISS = nullptr;
+    _gmt = nullptr;
 
     /* Corps de la methode */
+    setMaximumSize(minimumSize());
+    ui->actionVision_nocturne->setVisible(false);
+
     // Bouton pour maximiser la carte
     isMaximise = false;
     _maximise = new QToolButton(ui->frameCarteLon);
@@ -1577,6 +1678,10 @@ void PreviSat::ChargementFenetre()
     _carte = new Carte(_onglets, ui->frameCarteLon);
     ui->layoutCarte->addWidget(_carte);
 
+    // Coordonnees de l'ISS
+    _coordISS = new CoordISS(_carte);
+    _coordISS->setVisible(false);
+
     // Radar
     _radar = new Radar(_onglets, this);
     ui->layoutRadar->addWidget(_radar);
@@ -1586,6 +1691,8 @@ void PreviSat::ChargementFenetre()
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
     connect(_onglets, SIGNAL(MiseAJourCarte()), _carte, SLOT(show()));
+    connect(_onglets, SIGNAL(MiseAJourCarte()), _coordISS, SLOT(setPolice()));
+    connect(_onglets, SIGNAL(MiseAJourCarte()), this, SLOT(AfficherCoordIssGmt()));
     connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
     connect(_onglets, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
 
@@ -1661,6 +1768,9 @@ void PreviSat::GestionTempsReel()
 
             // Affichage des courbes sur la carte du monde
             _carte->show();
+            if (Configuration::instance()->issLive()) {
+                AfficherCoordIssGmt();
+            }
 
         } else {
 
@@ -2019,8 +2129,16 @@ void PreviSat::on_mccISS_toggled(bool checked)
     /* Initialisations */
 
     /* Corps de la methode */
+    Configuration::instance()->issLive() = checked;
+    GestionTempsReel();
+    _carte->show();
     _radar->setVisible(!checked);
     ui->frameVideo->setVisible(checked);
+    if (checked) {
+        AfficherCoordIssGmt();
+    }
+    _coordISS->setVisible(checked);
+    _gmt->setVisible(checked);
 
     /* Retour */
     return;
@@ -2048,8 +2166,8 @@ void PreviSat::on_meteo_clicked()
         fi.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream flux(&fi);
         map = flux.readAll();
+        fi.close();
     }
-    fi.close();
 
 
     const QString lon(QString::number(-Configuration::instance()->observateur().longitude() * RAD2DEG));
@@ -2238,9 +2356,11 @@ void PreviSat::on_actionMettre_jour_les_fichiers_de_donnees_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-    _messageStatut->setText(tr("Mise à jour du fichier de données en cours..."));
     _onglets->setDirDwn(Configuration::instance()->dirLocalData());
-    connect(_onglets, SIGNAL(TelechargementFini()), _onglets, SLOT(FinTelechargementDonnees()));
+    if (_messageStatut != nullptr) {
+        _messageStatut->setText(tr("Mise à jour du fichier de données en cours..."));
+        connect(_onglets, SIGNAL(TelechargementFini()), _onglets, SLOT(FinTelechargementDonnees()));
+    }
 
     foreach(QString fic, Configuration::instance()->listeFicLocalData()) {
 
@@ -2531,12 +2651,17 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
             listeSatellites.removeAt(--i);
             Configuration::instance()->suppressionSatelliteFicTLE(norad);
 
-            if (i == 0) {
+            if ((i == 0) && !listeSatellites.isEmpty()) {
                 // On definit le satellite suivant dans la liste comme satellite par defaut
                 Configuration::instance()->tleDefaut().nomsat = listeSatellites.at(0).tle().nom();
                 Configuration::instance()->tleDefaut().l1 = listeSatellites.at(0).tle().ligne1();
                 Configuration::instance()->tleDefaut().l2 = listeSatellites.at(0).tle().ligne2();
                 EcritureTleDefautRegistre();
+
+            } else if (listeSatellites.isEmpty()) {
+                settings.setValue("TLE/nom", "");
+                settings.setValue("TLE/l1", "");
+                settings.setValue("TLE/l2", "");
             }
 
         } else {

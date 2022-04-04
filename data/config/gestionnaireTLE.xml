@@ -7,6 +7,9 @@
         <Langue lang="fr">
             <Nom>commun</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>common</Nom>
+        </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
             <Fichier>visual.txt</Fichier>
@@ -20,8 +23,12 @@
         <Langue lang="fr">
             <Nom>tous</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>全て</Nom>
+        </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
+            <Fichier>1982-092.txt</Fichier>
             <Fichier>1999-025.txt</Fichier>
             <Fichier>2012-044.txt</Fichier>
             <Fichier>2019-006.txt</Fichier>
@@ -83,6 +90,9 @@
         <Langue lang="fr">
             <Nom>meteo</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>weather</Nom>
+        </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
             <Fichier>weather.txt</Fichier>
@@ -102,6 +112,9 @@
             <Nom>communications</Nom>
         </Langue>
         <Langue lang="fr">
+            <Nom>communications</Nom>
+        </Langue>
+        <Langue lang="ja">
             <Nom>communications</Nom>
         </Langue>
         <Site>www.celestrak.com</Site>
@@ -132,6 +145,9 @@
         <Langue lang="fr">
             <Nom>navigation</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>navigation</Nom>
+        </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
             <Fichier>gps-ops.txt</Fichier>
@@ -150,6 +166,9 @@
         <Langue lang="fr">
             <Nom>scientifique</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>scientific</Nom>
+        </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
             <Fichier>science.txt</Fichier>
@@ -164,6 +183,9 @@
         </Langue>
         <Langue lang="fr">
             <Nom>divers</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>miscellaneous</Nom>
         </Langue>
         <Site>www.celestrak.com</Site>
         <Fichiers>
@@ -180,6 +202,9 @@
         <Langue lang="fr">
             <Nom>commun</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>common</Nom>
+        </Langue>
         <Site>astropedia.free.fr</Site>
         <Fichiers>
             <Fichier>visible-spctrk.txt</Fichier>
@@ -194,6 +219,9 @@
         </Langue>
         <Langue lang="fr">
             <Nom>tous</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>all</Nom>
         </Langue>
         <Site>astropedia.free.fr</Site>
         <Fichiers>
@@ -220,6 +248,9 @@
         <Langue lang="fr">
             <Nom>geo</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>geo</Nom>
+        </Langue>
         <Site>astropedia.free.fr</Site>
         <Fichiers>
             <Fichier>bright-geo-spctrk.txt</Fichier>
@@ -233,6 +264,9 @@
         <Langue lang="fr">
             <Nom>communications</Nom>
         </Langue>
+        <Langue lang="ja">
+            <Nom>communications</Nom>
+        </Langue>
         <Site>astropedia.free.fr</Site>
         <Fichiers>
             <Fichier>inmarsat-spctrk.txt</Fichier>
@@ -244,6 +278,9 @@
             <Nom>navigation</Nom>
         </Langue>
         <Langue lang="fr">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Langue lang="ja">
             <Nom>navigation</Nom>
         </Langue>
         <Site>astropedia.free.fr</Site>

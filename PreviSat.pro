@@ -1,6 +1,6 @@
 #
 #     PreviSat, Satellite tracking software
-#     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+#     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    29 octobre 2021
+# >    26 mars 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
 VERSION      = 5.0.0.10
-ANNEES_DEV   = 2005-2021
+ANNEES_DEV   = 2005-2022
 TRANSLATIONS = PreviSat_en.ts PreviSat_ja.ts
 BUILD_TEST   = false
 CLEANUP_TEST = true
@@ -72,6 +72,7 @@ SOURCES += \
     src/interface/apropos.cpp                              \
     src/interface/carte.cpp                                \
     src/interface/ciel.cpp                                 \
+    src/interface/coordiss.cpp                             \
     src/interface/gestionnairetle.cpp                      \
     src/interface/informations.cpp                         \
     src/interface/onglets.cpp                              \
@@ -116,6 +117,7 @@ HEADERS += \
     src/interface/apropos.h                              \
     src/interface/carte.h                                \
     src/interface/ciel.h                                 \
+    src/interface/coordiss.h                             \
     src/interface/gestionnairetle.h                      \
     src/interface/listwidgetitem.h                       \
     src/interface/informations.h                         \
@@ -166,11 +168,12 @@ HEADERS += \
 
 FORMS += \
     src/interface/afficher.ui        \
-    src/interface/carte.ui           \
     src/interface/apropos.ui         \
+    src/interface/carte.ui           \
+    src/interface/ciel.ui            \
+    src/interface/coordiss.ui \
     src/interface/gestionnairetle.ui \
     src/interface/informations.ui    \
-    src/interface/ciel.ui            \
     src/interface/onglets.ui         \
     src/interface/previsat.ui        \
     src/interface/radar.ui           \

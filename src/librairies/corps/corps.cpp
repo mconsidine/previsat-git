@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -549,10 +549,11 @@ void Corps::InitTabConstellations(const QString &dirCommonData)
                     _tabConst.append(cst);
                 }
             }
+            fi.close();
+
         } else {
             throw PreviSatException(QObject::tr("Fichier %1 absent").arg(QDir::toNativeSeparators(fic)), WARNING);
         }
-        fi.close();
     } catch (PreviSatException &e) {
     }
 

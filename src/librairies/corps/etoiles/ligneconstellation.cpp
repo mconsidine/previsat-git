@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -148,8 +148,8 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
             const QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
             _tabLigCst.append(lig);
         }
+        fichier.close();
     }
-    fichier.close();
 
     /* Retour */
     return;
