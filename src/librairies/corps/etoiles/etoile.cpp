@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -175,8 +175,8 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
             }
             etoiles.append(Etoile(nom, ascDte, dec, mag));
         }
+        fi.close();
     }
-    fi.close();
 
     /* Retour */
     return;

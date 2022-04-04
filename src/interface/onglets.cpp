@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -89,12 +89,12 @@ static Afficher *afficherResultats = nullptr;
 static QSettings settings("Astropedia", "PreviSat");
 
 static const char* _titreInformations[] = {
-                               QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
-                               QT_TRANSLATE_NOOP("Onglets", "Recherche données") };
+    QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
+    QT_TRANSLATE_NOOP("Onglets", "Recherche données") };
 
 static const char* _titreMajTLE[] = {
-                               QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE auto"),
-                               QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE manuelle") };
+    QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE auto"),
+    QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE manuelle") };
 
 /**********
  * PUBLIC *
@@ -201,6 +201,11 @@ Onglets::~Onglets()
 QString Onglets::dirDwn() const
 {
     return _dirDwn;
+}
+
+Date Onglets::dateEclipse()
+{
+    return *_dateEclipse;
 }
 
 Ui::Onglets *Onglets::ui()
@@ -2242,21 +2247,31 @@ void Onglets::TelechargementFichier(const QString &fichier, const bool async)
     const QUrl url(fichier);
 
     /* Corps de la methode */
-    AjoutFichier(url);
+    if (async) {
+        AjoutFichier(url);
+    }
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     const QNetworkRequest requete(url);
     _rep = _mng.get(requete);
 
-    if (!async) {
+    if (async) {
+        if (_listeFichiersTelechargement.isEmpty()) {
+            QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        }
+    } else {
+
         // Creation d'une boucle pour rendre le telechargement synchrone
         QEventLoop loop;
         connect(_rep, SIGNAL(finished()), &loop, SLOT(quit()));
         loop.exec();
-    }
 
-    if (_listeFichiersTelechargement.isEmpty()) {
-        QTimer::singleShot(0, this, SIGNAL(TelechargementFini()));
+        const QString fic = QFileInfo(url.path()).fileName();
+        _fichier.setFileName(_dirDwn + QDir::separator() + fic);
+        if (_fichier.open(QIODevice::WriteOnly)) {
+            _fichier.write(_rep->readAll());
+            _fichier.close();
+        }
     }
 
     /* Retour */
@@ -2589,6 +2604,7 @@ void Onglets::InitChargementStations()
         QListWidgetItem * const station = new QListWidgetItem(QString("%1 (%2)").arg(nom).arg(acronyme), _ui->listeStations);
         station->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + acronyme, Qt::Checked).
                                                              toUInt())) ? Qt::Checked : Qt::Unchecked);
+        station->setData(Qt::UserRole, acronyme);
     }
     _ui->listeStations->sortItems();
 
@@ -2692,29 +2708,24 @@ void Onglets::InitFicMap(const bool majAff)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDir di(Configuration::instance()->dirMap());
-    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
 
     /* Corps de la methode */
-    _ficMap.clear();
     const bool etat = _ui->listeMap->blockSignals(true);
     _ui->listeMap->clear();
     _ui->listeMap->addItem(tr("* Défaut"));
     _ui->listeMap->setCurrentIndex(0);
 
-    const QStringList listMap = di.entryList(filtres, QDir::Files);
-    if (listMap.count() == 0) {
+    if (Configuration::instance()->listeFicMap().count() == 0) {
         _ui->listeMap->addItem(tr("Télécharger..."));
     } else {
 
-        foreach(QString fic, listMap) {
+        foreach(QString fic, Configuration::instance()->listeFicMap()) {
 
             const QString file = Configuration::instance()->dirMap() + QDir::separator() + fic;
-            _ficMap.append(file);
             _ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
 
             if (settings.value("fichier/listeMap", "").toString() == file) {
-                _ui->listeMap->setCurrentIndex(_ficMap.indexOf(file)+1);
+                _ui->listeMap->setCurrentIndex(Configuration::instance()->listeFicMap().indexOf(file)+1);
             }
         }
 
@@ -3039,6 +3050,8 @@ void Onglets::FinTelechargementTle()
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
 
     disconnect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementTle()));
+    emit RecalculerPositions();
+    emit MiseAJourCarte();
 
     /* Retour */
     return;
@@ -4651,7 +4664,8 @@ void Onglets::on_listeMap_currentIndexChanged(int index)
                 InitFicMap(true);
 
             } else {
-                settings.setValue("fichier/listeMap", (index == 0) ? "" : _ficMap.at(qMax(0, _ui->listeMap->currentIndex()-1)));
+                settings.setValue("fichier/listeMap", (index == 0) ?
+                                      "" : Configuration::instance()->listeFicMap().at(qMax(0, _ui->listeMap->currentIndex()-1)));
             }
         }
     }
@@ -6476,4 +6490,61 @@ void Onglets::on_lieuxObservation1_currentIndexChanged(int index)
 
     /* Retour */
     return;
+}
+
+void Onglets::on_styleWCC_toggled(bool checked)
+{
+    emit RecalculerPositions();
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affCerclesAcq_toggled(bool checked)
+{
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_policeWCC_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+#if defined (Q_OS_WIN)
+    const int taille = 10;
+    QFont police(_ui->policeWCC->itemText(index), taille, ((_ui->policeWCC->currentIndex() == 0) ? QFont::Normal : QFont::Bold));
+
+#elif defined (Q_OS_LINUX)
+    const int taille = 11;
+    QFont police(_ui->policeWCC->itemText(index), taille);
+
+#elif defined (Q_OS_MAC)
+    const int taille = 13;
+    QFont police(_ui->policeWCC->itemText(index), taille, ((_ui->policeWCC->currentIndex() == 0) ? QFont::Normal : QFont::Bold));
+
+#else
+    const int taille = 11;
+    QFont police(_ui->policeWCC->itemText(index), taille);
+#endif
+
+    Configuration::instance()->setPoliceWcc(police);
+    emit MiseAJourCarte();
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_coulGMT_currentIndexChanged(int index)
+{
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affBetaWCC_toggled(bool checked)
+{
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affNbOrbWCC_toggled(bool checked)
+{
+    emit MiseAJourCarte();
 }

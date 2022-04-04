@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@
 #include "librairies/maths/maths.h"
 
 Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
-
+#include <QMessageBox>
 
 QList<Etoile> etoiles;
 QList<Constellation> constellations;
@@ -904,6 +904,7 @@ void Afficher::ChargementResultats()
     /* Initialisations */
     int j = 0;
     int imax = 1;
+    const bool etat = ui->resultatsPrevisions->blockSignals(true);
 
     /* Corps de la methode */
     QTableWidgetItem * item;
@@ -994,6 +995,7 @@ void Afficher::ChargementResultats()
     if (_onglets->ui()->ordreChronologiqueMetOp->isChecked() && (_typeCalcul == FLASHS)) {
         ui->resultatsPrevisions->sortItems(1);
     }
+    ui->resultatsPrevisions->blockSignals(etat);
     ui->resultatsPrevisions->selectRow(0);
 
     /* Retour */

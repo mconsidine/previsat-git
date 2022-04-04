@@ -411,6 +411,16 @@
                  <string notr="true">-60</string>
                 </property>
                </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>271</width>
+                  <height>80</height>
+                 </rect>
+                </property>
+               </widget>
               </widget>
              </item>
              <item>

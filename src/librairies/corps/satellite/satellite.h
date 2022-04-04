@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -144,6 +144,12 @@ public:
     void CalculBeta(const Soleil &soleil);
 
     /**
+     * @brief CalculCercleAcquisition Calcul du cercle d'acquisition d'une station
+     * @param station sation
+     */
+    void CalculCercleAcquisition(const Observateur &station);
+
+    /**
      * @brief CalculElementsOsculateurs Calcul des elements osculateurs
      * @param date date
      */
@@ -173,8 +179,8 @@ public:
      */
     static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
                                             const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
-                                            const bool extinction, const bool refraction, const bool traceCiel, const bool visibilite,
-                                            QList<Satellite> &satellites);
+                                            const bool extinction, const bool isISS, const bool mcc, const bool refraction, const bool traceCiel,
+                                            const bool visibilite, QList<Satellite> &satellites);
 
     /**
      * @brief CalculTraceCiel Calcul de la trace dans le ciel

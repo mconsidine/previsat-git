@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@
 
 class Carte;
 class Ciel;
+class CoordISS;
 class Date;
 class Onglets;
 class Radar;
@@ -154,6 +155,8 @@ private:
     // Elements de la fenetre
     Carte *_carte;
     Ciel *_ciel;
+    CoordISS *_coordISS;
+    QLabel *_gmt;
     Onglets *_onglets;
     Radar *_radar;
     QToolButton *_maximise;
@@ -319,6 +322,11 @@ private slots:
     /*************
      * Affichage *
      ************/
+    /**
+     * @brief AfficherCoordIssGmt Afficher les coordonnees ISS et le label GMT
+     */
+    void AfficherCoordIssGmt();
+
     /**
      * @brief AfficherListeSatellites Afficher les noms des satellites dans les listes
      * @param nomfic nom du fichier TLE

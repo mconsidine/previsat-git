@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
+#include "evenements.h"
 #include "satellite.h"
 
 
@@ -181,6 +182,25 @@ void Satellite::CalculBeta(const Soleil &soleil)
 }
 
 /*
+ * Calcul du cercle d'acquisition d'une station
+ */
+void Satellite::CalculCercleAcquisition(const Observateur &station)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _longitude = station.longitude();
+    _latitude = station.latitude();
+
+    /* Corps de la methode */
+    const double angleBeta = acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _altitude)) - 0.5 * REFRACTION_HZ;
+    CalculZoneVisibilite(angleBeta);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Calcul des elements osculateurs
  */
 void Satellite::CalculElementsOsculateurs(const Date &date)
@@ -278,8 +298,9 @@ void Satellite::CalculPosVit(const Date &date)
  * Calcul de la position d'une liste de satellites
  */
 void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
-                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle, const bool extinction,
-                                            const bool refraction, const bool traceCiel, const bool visibilite, QList<Satellite> &satellites)
+                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
+                                            const bool extinction, const bool isISS, const bool mcc, const bool refraction, const bool traceCiel,
+                                            const bool visibilite, QList<Satellite> &satellites)
 
 {
     /* Declarations des variables locales */
@@ -304,9 +325,9 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
-            const double beta = /*(mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
-                                PI_SUR_DEUX + 8.7 * DEG2RAD :*/
-                    acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
+            const double beta = (mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
+                        PI_SUR_DEUX + 8.7 * DEG2RAD :
+                        acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
             satellites[i].CalculZoneVisibilite(beta);
         }
 
@@ -330,11 +351,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
             // Calcul des traces au sol
             if (nbTracesAuSol > 0) {
 
-                // TODO
-                //                const Date dateInit = (mcc && satellites.at(isat).tle().norad() == NORAD_STATION_SPATIALE) ?
-                //                            Date(satellites[isat].CalculDateNoeudAscPrec(date).jourJulienUTC() - EPS_DATES, 0.,
-                //                                 false) : Date(date.jourJulienUTC(), 0., false);
-                const Date dateInit = Date(date.jourJulienUTC(), 0., false);
+                const Date dateInit = (mcc && isISS) ?
+                            Date(Evenements::CalculNoeudOrbite(date, satellites[i], false).jourJulienUTC() - EPS_DATES, 0., false) :
+                            Date(date.jourJulienUTC(), 0., false);
+
                 satellites[i].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refraction);
             }
 

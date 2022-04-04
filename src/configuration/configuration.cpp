@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -162,6 +162,11 @@ QFont Configuration::police() const
     return _police;
 }
 
+QFont Configuration::policeWcc() const
+{
+    return _policeWcc;
+}
+
 QString Configuration::adresseAstropedia() const
 {
     return _adresseAstropedia;
@@ -180,6 +185,11 @@ QString Configuration::adresseCelestrakNorad() const
 QStringList Configuration::listeFicLocalData() const
 {
     return _listeFicLocalData;
+}
+
+QStringList Configuration::listeFicMap() const
+{
+    return _listeFicMap;
 }
 
 QStringList &Configuration::listeFicObs()
@@ -347,6 +357,11 @@ QStringList Configuration::listeChainesNasa() const
     return _listeChainesNasa;
 }
 
+bool &Configuration::issLive()
+{
+    return _issLive;
+}
+
 
 /*
  * Modificateurs
@@ -354,6 +369,11 @@ QStringList Configuration::listeChainesNasa() const
 void Configuration::setPolice(const QFont &p)
 {
     _police = p;
+}
+
+void Configuration::setPoliceWcc(const QFont &p)
+{
+    _policeWcc = p;
 }
 
 void Configuration::setListeFicTLE(const QStringList &listeFic)
@@ -506,6 +526,9 @@ void Configuration::Initialisation()
         // Lecture du fichier des chaines NASA
         LectureChainesNasa();
 
+        // Cartes du monde
+        InitFicMap();
+
         // Fichiers de preferences
         InitFicPref();
 
@@ -546,53 +569,55 @@ void Configuration::EcritureConfiguration()
     /* Corps de la methode */
     QFile fi(_dirCfg + QDir::separator() + "configuration.xml");
 
-    fi.open(QIODevice::WriteOnly | QIODevice::Text);
-    QXmlStreamWriter cfg(&fi);
+    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-    cfg.setAutoFormatting(true);
-    cfg.writeStartDocument();
-    cfg.writeStartElement("PreviSatConfiguration");
-    cfg.writeAttribute("version", _versionCfg);
+        QXmlStreamWriter cfg(&fi);
 
-    // Numero NORAD de la station spatiale
-    cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
+        cfg.setAutoFormatting(true);
+        cfg.writeStartDocument();
+        cfg.writeStartElement("PreviSatConfiguration");
+        cfg.writeAttribute("version", _versionCfg);
 
-    // Observateurs
-    cfg.writeStartElement("Observateurs");
-    QListIterator<Observateur> itObs(_observateurs);
-    while (itObs.hasNext()) {
+        // Numero NORAD de la station spatiale
+        cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
 
-        const Observateur obs = itObs.next();
-        cfg.writeStartElement("Observateur");
-        cfg.writeTextElement("Nom", obs.nomlieu());
+        // Observateurs
+        cfg.writeStartElement("Observateurs");
+        QListIterator<Observateur> itObs(_observateurs);
+        while (itObs.hasNext()) {
 
-        cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
-        cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
-        cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
-        cfg.writeEndElement();
-    }
-    cfg.writeEndElement();
+            const Observateur obs = itObs.next();
+            cfg.writeStartElement("Observateur");
+            cfg.writeTextElement("Nom", obs.nomlieu());
 
-    // Listes de satellites selon le fichier TLE
-    cfg.writeStartElement("FichiersTLE");
-    QMapIterator<QString, QStringList> itTLE(_mapSatellitesFicTLE);
-    while (itTLE.hasNext()) {
-        itTLE.next();
-
-        cfg.writeStartElement("Fichier");
-        cfg.writeAttribute("nom", itTLE.key());
-
-        QStringListIterator itNorad(itTLE.value());
-        while (itNorad.hasNext()) {
-            cfg.writeTextElement("Norad", itNorad.next());
+            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
+            cfg.writeEndElement();
         }
         cfg.writeEndElement();
-    }
-    cfg.writeEndElement();
 
-    cfg.writeEndElement();
-    cfg.writeEndDocument();
-    fi.close();
+        // Listes de satellites selon le fichier TLE
+        cfg.writeStartElement("FichiersTLE");
+        QMapIterator<QString, QStringList> itTLE(_mapSatellitesFicTLE);
+        while (itTLE.hasNext()) {
+            itTLE.next();
+
+            cfg.writeStartElement("Fichier");
+            cfg.writeAttribute("nom", itTLE.key());
+
+            QStringListIterator itNorad(itTLE.value());
+            while (itNorad.hasNext()) {
+                cfg.writeTextElement("Norad", itNorad.next());
+            }
+            cfg.writeEndElement();
+        }
+        cfg.writeEndElement();
+
+        cfg.writeEndElement();
+        cfg.writeEndDocument();
+        fi.close();
+    }
 
     /* Retour */
     return;
@@ -610,46 +635,48 @@ void Configuration::EcritureGestionnaireTLE()
     /* Corps de la methode */
     QFile fi(_dirCfg + QDir::separator() + "gestionnaireTLE.xml");
 
-    fi.open(QIODevice::WriteOnly | QIODevice::Text);
-    QXmlStreamWriter cfg(&fi);
+    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-    cfg.setAutoFormatting(true);
-    cfg.writeStartDocument();
-    cfg.writeStartElement("PreviSatGestionTLE");
-    cfg.writeAttribute("version", _versionCategoriesTLE);
+        QXmlStreamWriter cfg(&fi);
 
-    // Categories
-    QListIterator<CategorieTLE> it(_listeCategoriesTLE);
-    while (it.hasNext()) {
+        cfg.setAutoFormatting(true);
+        cfg.writeStartDocument();
+        cfg.writeStartElement("PreviSatGestionTLE");
+        cfg.writeAttribute("version", _versionCategoriesTLE);
 
-        const CategorieTLE categorie = it.next();
+        // Categories
+        QListIterator<CategorieTLE> it(_listeCategoriesTLE);
+        while (it.hasNext()) {
 
-        cfg.writeStartElement("Categorie");
+            const CategorieTLE categorie = it.next();
 
-        QMapIterator<QString, QString> it2(categorie.nom);
-        while (it2.hasNext()) {
-            it2.next();
+            cfg.writeStartElement("Categorie");
 
-            cfg.writeStartElement("Langue");
-            cfg.writeAttribute("lang", it2.key());
-            cfg.writeTextElement("Nom", it2.value().split("@").at(0).toLower());
+            QMapIterator<QString, QString> it2(categorie.nom);
+            while (it2.hasNext()) {
+                it2.next();
+
+                cfg.writeStartElement("Langue");
+                cfg.writeAttribute("lang", it2.key());
+                cfg.writeTextElement("Nom", it2.value().split("@").at(0).toLower());
+                cfg.writeEndElement();
+            }
+            cfg.writeTextElement("Site", categorie.site);
+
+            cfg.writeStartElement("Fichiers");
+            QStringListIterator it3(categorie.fichiers);
+            while (it3.hasNext()) {
+                cfg.writeTextElement("Fichier", it3.next());
+            }
+            cfg.writeEndElement();
+
             cfg.writeEndElement();
         }
-        cfg.writeTextElement("Site", categorie.site);
-
-        cfg.writeStartElement("Fichiers");
-        QStringListIterator it3(categorie.fichiers);
-        while (it3.hasNext()) {
-            cfg.writeTextElement("Fichier", it3.next());
-        }
-        cfg.writeEndElement();
 
         cfg.writeEndElement();
+        cfg.writeEndDocument();
+        fi.close();
     }
-
-    cfg.writeEndElement();
-    cfg.writeEndDocument();
-    fi.close();
 
     /* Retour */
     return;
@@ -671,91 +698,36 @@ void Configuration::LectureManoeuvresISS()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name().toString().toLower() == "ndm") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString version;
-            QString value;
+            cfg.readNextStartElement();
+            if (cfg.name().toString().toLower() == "ndm") {
 
-            while (cfg.readNextStartElement()) {
+                QString version;
 
-                if (cfg.name().toString().toLower() == "oem") {
+                while (cfg.readNextStartElement()) {
 
-                    version = cfg.attributes().value("version").toString();
+                    if (cfg.name().toString().toLower() == "oem") {
 
-                    while (cfg.readNextStartElement()) {
+                        version = cfg.attributes().value("version").toString();
 
-                        if (cfg.name().toString().toLower() == "body") {
+                        while (cfg.readNextStartElement()) {
 
-                            while (cfg.readNextStartElement()) {
+                            if (cfg.name().toString().toLower() == "body") {
 
-                                if (cfg.name().toString().toLower() == "segment") {
+                                LectureBody(cfg);
 
-                                    while (cfg.readNextStartElement()) {
-
-                                        if (cfg.name().toString().toLower() == "metadata") {
-
-                                            while (cfg.readNextStartElement()) {
-
-                                                if (cfg.name().toString().toLower() == "start_time") {
-
-                                                    // Date de debut
-                                                    _dateDebutISS = cfg.readElementText();
-
-                                                } else if (cfg.name().toString().toLower() == "stop_time") {
-
-                                                    // Date de fin
-                                                    _dateFinISS = cfg.readElementText();
-
-                                                } else {
-                                                    cfg.skipCurrentElement();
-                                                }
-                                            }
-
-                                        } else if (cfg.name().toString().toLower() == "data") {
-
-                                            while (cfg.readNextStartElement()) {
-
-                                                value = cfg.readElementText();
-
-                                                if (value.toLower().contains("mass")) {
-
-                                                    // Masse (en kg)
-                                                    _masseISS.append(value.split("=").last().toDouble());
-
-                                                } else if (value.contains("===")) {
-
-                                                    // Recuperation des evenements
-                                                    value = "";
-                                                    while (cfg.readNextStartElement() && !value.contains("===")) {
-
-                                                        value = cfg.readElementText();
-                                                        if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
-                                                            value.replace(26, 1, "T");
-                                                            _evenementsISS.append(value);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            cfg.skipCurrentElement();
-                                        }
-                                    }
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            } else {
+                                cfg.skipCurrentElement();
                             }
-                        } else {
-                            cfg.skipCurrentElement();
                         }
                     }
                 }
             }
+            fi1.close();
         }
-        fi1.close();
     }
 
     /* Retour */
@@ -895,6 +867,25 @@ void Configuration::DeterminationLocale()
 }
 
 /*
+ * Cartes du monde
+ */
+void Configuration::InitFicMap()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QDir di(_dirMap);
+    const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
+    _listeFicMap = di.entryList(filtres, QDir::Files);
+    _listeFicMap.insert(0, "defaut");
+
+    /* Retour */
+    return;
+}
+
+/*
  * Fichiers de preferences
  */
 void Configuration::InitFicPref()
@@ -932,6 +923,43 @@ void Configuration::InitFicTLE()
     _tleDefaut.nomsat = settings.value("TLE/nom", "").toString();
     _tleDefaut.l1 = settings.value("TLE/l1", "").toString();
     _tleDefaut.l2 = settings.value("TLE/l2", "").toString();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture de la section body du fichier ISS
+ */
+void Configuration::LectureBody(QXmlStreamReader &cfg)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    while (cfg.readNextStartElement()) {
+
+        if (cfg.name().toString().toLower() == "segment") {
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name().toString().toLower() == "metadata") {
+
+                    LectureMetadata(cfg);
+
+                } else if (cfg.name().toString().toLower() == "data") {
+
+                    LectureData(cfg);
+
+                } else {
+                    cfg.skipCurrentElement();
+                }
+            }
+        } else {
+            cfg.skipCurrentElement();
+        }
+    }
 
     /* Retour */
     return;
@@ -1156,6 +1184,45 @@ void Configuration::LectureChainesNasa()
 }
 
 /*
+ * Lecture de la section data du fichier ISS
+ */
+void Configuration::LectureData(QXmlStreamReader &cfg)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString value;
+
+    /* Corps de la methode */
+    while (cfg.readNextStartElement()) {
+
+        value = cfg.readElementText();
+
+        if (value.toLower().contains("mass")) {
+
+            // Masse (en kg)
+            _masseISS.append(value.split("=").last().toDouble());
+
+        } else if (value.contains("===")) {
+
+            // Recuperation des evenements
+            value = "";
+            while (cfg.readNextStartElement() && !value.contains("===")) {
+
+                value = cfg.readElementText();
+                if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
+                    value.replace(26, 1, "T");
+                    _evenementsISS.append(value);
+                }
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Lecture du fichier de donnees satellites
  */
 void Configuration::LectureDonneesSatellites()
@@ -1289,6 +1356,37 @@ void Configuration::LectureGestionnaireTLE()
 
     // Verifications
 
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture de la section data du fichier ISS
+ */
+void Configuration::LectureMetadata(QXmlStreamReader &cfg)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    while (cfg.readNextStartElement()) {
+
+        if (cfg.name().toString().toLower() == "start_time") {
+
+            // Date de debut
+            _dateDebutISS = cfg.readElementText();
+
+        } else if (cfg.name().toString().toLower() == "stop_time") {
+
+            // Date de fin
+            _dateFinISS = cfg.readElementText();
+
+        } else {
+            cfg.skipCurrentElement();
+        }
+    }
 
     /* Retour */
     return;

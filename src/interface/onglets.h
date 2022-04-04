@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2021  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -102,6 +102,7 @@ public:
      * Accesseurs
      */
     QString dirDwn() const;
+    static Date dateEclipse();
     Ui::Onglets *ui();
 
     /*
@@ -270,7 +271,6 @@ private:
 
     QPoint _positionSouris;
 
-    QStringList _ficMap;
     QStringList _ficSonAOS;
     QStringList _ficSonLOS;
     QStringList _ficTLEMetOp;
@@ -593,6 +593,12 @@ private slots:
     void on_parametrageDefautExtraction_clicked();
 
     void on_lieuxObservation1_currentIndexChanged(int index);
+    void on_styleWCC_toggled(bool checked);
+    void on_affCerclesAcq_toggled(bool checked);
+    void on_policeWCC_currentIndexChanged(int index);
+    void on_coulGMT_currentIndexChanged(int index);
+    void on_affBetaWCC_toggled(bool checked);
+    void on_affNbOrbWCC_toggled(bool checked);
 };
 
 #endif // ONGLETS_H
