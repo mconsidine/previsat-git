@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    13 novembre 2021
+ * >    4 avril 2022
  *
  */
 
@@ -599,6 +599,7 @@ private slots:
     void on_coulGMT_currentIndexChanged(int index);
     void on_affBetaWCC_toggled(bool checked);
     void on_affNbOrbWCC_toggled(bool checked);
+    void on_affNoradListes_stateChanged(int arg1);
 };
 
 #endif // ONGLETS_H

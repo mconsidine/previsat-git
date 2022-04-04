@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    2 decembre 2021
+ * >    4 avril 2022
  *
  */
 
@@ -6547,4 +6547,9 @@ void Onglets::on_affBetaWCC_toggled(bool checked)
 void Onglets::on_affNbOrbWCC_toggled(bool checked)
 {
     emit MiseAJourCarte();
+}
+
+void Onglets::on_affNoradListes_stateChanged(int arg1)
+{
+    emit RechargerTLE();
 }
