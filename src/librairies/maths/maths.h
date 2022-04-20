@@ -80,7 +80,7 @@ public:
      * @param ytab Tableau des ordonnees
      * @return Coordonnees de l'extremum
      */
-    static QPair<double, double> CalculExtremumInterpolation3(const QList<double> xtab, const QList<double> ytab);
+    static QPair<double, double> CalculExtremumInterpolation3(const QList<double> &xtab, const QList<double> &ytab);
 
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
@@ -91,7 +91,7 @@ public:
      * @param Epsilon Seuil de comparaison
      * @return valeur x correspondante
      */
-    static double CalculValeurXInterpolation3(const QList<double> xtab, const QList<double> ytab, const double yval, const double epsilon);
+    static double CalculValeurXInterpolation3(const QList<double> &xtab, const QList<double> &ytab, const double yval, const double epsilon);
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee

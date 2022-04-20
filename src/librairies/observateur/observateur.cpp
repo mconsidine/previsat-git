@@ -373,7 +373,7 @@ double Observateur::CalculDistance(const Observateur &observateur) const
 /*
  * Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant vers la Terre et de l'ellipsoide terrestre
  */
-Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Vecteur3D origine, const Vecteur3D direction)
+Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Vecteur3D &origine, const Vecteur3D &direction)
 {
     /* Declarations des variables locales */
 

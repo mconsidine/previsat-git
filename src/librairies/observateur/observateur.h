@@ -154,7 +154,7 @@ public:
      * @param direction direction du vecteur vers l'ellipsoide
      * @return lieu pointe par le vecteur
      */
-    static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D origine, const Vecteur3D direction);
+    static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D &origine, const Vecteur3D &direction);
 
     /**
      * @brief operator = Affectation d'un observateur
