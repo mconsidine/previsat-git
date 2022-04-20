@@ -1,0 +1,32 @@
+Date : Samedi 15 août 2020 12:00:00  UTC + 02:00
+
+Lieu d'observation : Paris
+Longitude  :  002° 20' 55" Est	Latitude :  48° 51' 12" Nord	Altitude : 30 m
+Conditions : Jour
+
+
+Nom du satellite : ISS
+
+Longitude : 093° 11' 15" Ouest		Hauteur    : -58° 31' 33"	Ascension droite :  23h 03m 51s
+Latitude  :  35° 34' 14" Sud		Azimut (N) : 248° 32' 47"	Déclinaison      : -50° 09' 53"
+Altitude  :  430.4 km     		Distance   : 11355.5 km   	Constellation    : Gru
+
+Direction          : Ascendant  	Orbite n°124119      		Satellite en éclipse totale
+Vitesse orbitale   :  7.653 km/s	Prochain N>J : 15/08/2020 12:05:30  (dans 05min 30s). 	Beta : -37° 48'
+Variation distance : -3.601 km/s  	Prochain AOS : 15/08/2020 12:26:25  (dans 26min 25s). Azimut :  255° 01'
+
+
+Coordonnées du Soleil :
+Hauteur    : +47° 45' 52"		Ascension droite :  09h 41m 28s
+Azimut (N) : 136° 00' 03"		Déclinaison      : +13° 50' 59"
+Distance   : 1.013 UA   		Constellation    : Leo
+
+
+Coordonnées de la Lune :
+Hauteur    : +59° 56' 36"		Ascension droite :  06h 23m 38s
+Azimut (N) : 220° 19' 19"		Déclinaison      : +23° 36' 36"
+Distance   : 379864 km  		Constellation    : Gem
+
+Phase        : Dernier croissant
+Illumination : 16%
+Magnitude    : -7.77
