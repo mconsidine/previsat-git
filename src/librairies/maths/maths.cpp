@@ -57,7 +57,7 @@
 /*
  * Calcul d'un extremum par interpolation a l'ordre 3
  */
-QPair<double, double> Maths::CalculExtremumInterpolation3(const QList<double> xtab, const QList<double> ytab)
+QPair<double, double> Maths::CalculExtremumInterpolation3(const QList<double> &xtab, const QList<double> &ytab)
 {
     /* Declarations des variables locales */
     QPair<double, double> res;
@@ -78,7 +78,7 @@ QPair<double, double> Maths::CalculExtremumInterpolation3(const QList<double> xt
 /*
  * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3
  */
-double Maths::CalculValeurXInterpolation3(const QList<double> xtab, const QList<double> ytab, const double yval, const double epsilon)
+double Maths::CalculValeurXInterpolation3(const QList<double> &xtab, const QList<double> &ytab, const double yval, const double epsilon)
 {
     /* Declarations des variables locales */
     QList<double> yy;

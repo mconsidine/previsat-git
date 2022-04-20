@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 decembre 2021
+ * >    20 avril 2022
  *
  */
 
@@ -59,9 +59,9 @@ int main(int argc, char *argv[])
     try {
 
         QApplication a(argc, argv);
-        a.setOrganizationName("Astropedia");
-        a.setApplicationName("PreviSat");
-        a.setOrganizationDomain("http://astropedia.free.fr/");
+        a.setOrganizationName(ORG_NAME);
+        a.setApplicationName(APP_NAME);
+        a.setOrganizationDomain(DOMAIN_NAME);
 
 #if QT_VERSION < 0x050000
         QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));

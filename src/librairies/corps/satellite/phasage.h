@@ -82,7 +82,7 @@ public:
      * @param elements elements osculateurs
      * @param n0 nombre d'orbites par jour (TLE)
      */
-    void Calcul(const ElementsOsculateurs &elements, const double &n0);
+    void Calcul(const ElementsOsculateurs &elements, const double n0);
 
 
 protected:

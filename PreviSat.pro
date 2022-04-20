@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    26 mars 2022
+# >    20 avril 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
@@ -44,6 +44,10 @@ BUILD_TEST   = false
 CLEANUP_TEST = true
 #-------------------------------------------------
 
+!equals(QT_MAJOR_VERSION, 4):!equals(QT_MAJOR_VERSION, 5) {
+    error("Qt $${QT_VERSION} is not suited to compile PreviSat. Use Qt 5.15.2 in preference")
+}
+
 QT += concurrent
 
 equals(QT_MAJOR_VERSION, 5): QT += multimedia printsupport widgets xml
@@ -52,13 +56,22 @@ greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
 TARGET = PreviSat
 TEMPLATE = app
 
-VERSION_STR    = '\\"$${VERSION}\\"'
-VER_MAJ_STR    = '\\"$${VER_MAJ}\\"'
-ANNEES_DEV_STR = '\\"$${ANNEES_DEV}\\"'
+ORG_NAME = Astropedia
+DOMAIN_NAME = http://astropedia.free.fr/
+
+VERSION_STR     = '\\"$${VERSION}\\"'
+VER_MAJ_STR     = '\\"$${VER_MAJ}\\"'
+ANNEES_DEV_STR  = '\\"$${ANNEES_DEV}\\"'
+APP_NAME_STR    = '\\"$${TARGET}\\"'
+ORG_NAME_STR    = '\\"$${ORG_NAME}\\"'
+DOMAIN_NAME_STR = '\\"$${DOMAIN_NAME}\\"'
 
 DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     APPVER_MAJ=\"$${VER_MAJ_STR}\"        \
     APP_ANNEES_DEV=\"$${ANNEES_DEV_STR}\" \
+    APP_NAME=\"$${APP_NAME_STR}\"         \
+    ORG_NAME=\"$${ORG_NAME_STR}\"         \
+    DOMAIN_NAME=\"$${DOMAIN_NAME_STR}\"   \
     QT_DEPRECATED_WARNINGS                \
     BUILD_TEST=$$BUILD_TEST
 

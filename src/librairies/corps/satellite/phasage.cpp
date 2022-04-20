@@ -98,7 +98,7 @@ int Phasage::nbOrb() const
 /*
  *
  */
-void Phasage::Calcul(const ElementsOsculateurs &elements, const double &n0)
+void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
 {
     /* Declarations des variables locales */
 
