@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 avril 2022
+ * >    21 avril 2022
  *
  */
 
@@ -2137,11 +2137,13 @@ void PreviSat::on_actionPaypal_triggered()
 
 void PreviSat::on_actionTipeee_triggered()
 {
+    Message::Afficher(tr("Attention : Il est possible d'effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires"), INFO);
     QDesktopServices::openUrl(QUrl("https://tipeee.com/previsat"));
 }
 
 void PreviSat::on_actionUtip_triggered()
 {
+    Message::Afficher(tr("Attention : Il est possible d'effectuer un don PayPal via Utip, mais ceci induira des frais supplémentaires"), INFO);
     QDesktopServices::openUrl(QUrl("https://utip.io/previsat/"));
 }
 
