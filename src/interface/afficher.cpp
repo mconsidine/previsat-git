@@ -160,13 +160,14 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         on_actionEnregistrerTxt_triggered();
 
         QFile fi(_conditions.ficRes);
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-        const QString contenuFic = flux.readAll();
-        fi.close();
 
-        ui->fichierTexte->setReadOnly(true);
-        ui->fichierTexte->setText(contenuFic);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream flux(&fi);
+            const QString contenuFic = flux.readAll();
+            ui->fichierTexte->setReadOnly(true);
+            ui->fichierTexte->setText(contenuFic);
+        }
+        fi.close();
 
     } else {
 
@@ -453,12 +454,12 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
 
         afficherDetail = new QMainWindow;
         afficherDetail->setStyleSheet("QHeaderView::section {" \
-                "background-color:rgb(235, 235, 235);" \
-                "border-top: 0px solid grey;" \
-                "border-bottom: 1px solid grey;" \
-                "border-right: 1px solid grey;" \
-                "font-size: 12px;" \
-                "font-weight: 600 }");
+                                      "background-color:rgb(235, 235, 235);" \
+                                      "border-top: 0px solid grey;" \
+                                      "border-bottom: 1px solid grey;" \
+                                      "border-right: 1px solid grey;" \
+                                      "font-size: 12px;" \
+                                      "font-weight: 600 }");
 
         switch (_typeCalcul) {
 
@@ -535,152 +536,155 @@ void Afficher::on_actionEnregistrerTxt_triggered()
         EcrireEntete();
 
         // Ouverture du fichier de resultat
-        fichier.open(QIODevice::Append | QIODevice::Text);
-        QTextStream flux(&fichier);
+        if (fichier.open(QIODevice::Append | QIODevice::Text)) {
 
-        int i;
-        int kmin;
-        int kmax;
-        QString ligne;
-        QString nomsat;
-        QStringList evts;
-        QStringList elems;
+            QTextStream flux(&fichier);
 
-        bool ecrireNomColonnes = true;
-        QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
-        while (it1.hasNext()) {
-            it1.next();
+            int i;
+            int kmin;
+            int kmax;
+            QString ligne;
+            QString nomsat;
+            QStringList evts;
+            QStringList elems;
 
-            // Nom du satellite
-            nomsat = it1.value().at(0).at(0).nom;
-            if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
-                nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
-            }
+            bool ecrireNomColonnes = true;
+            QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
+            while (it1.hasNext()) {
+                it1.next();
 
-            // Description des colonnes
-            switch (_typeCalcul) {
-
-            case PREVISIONS:
-                flux << nomsat << endl;
-                flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil",
-                           "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, " \
-                           "Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
-                     << endl;
-                break;
-
-            case FLASHS:
-                flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn" \
-                           "       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
-                           "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                           "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
-                           "Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
-                     << endl;
-                break;
-
-            case TRANSITS:
-                if (ecrireNomColonnes) {
-                    flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps" \
-                               " Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
-                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, "
-                               "Angle, Type, Body, Illumination, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, " \
-                               "Latitude of the maximum, Range from the maximum")
-                         << endl;
-                    ecrireNomColonnes = false;
+                // Nom du satellite
+                nomsat = it1.value().at(0).at(0).nom;
+                if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
+                    nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
                 }
-                break;
 
-            case EVENEMENTS:
-                flux << nomsat << endl;
-                flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
-                           "Date, Hour, In orbit position, Longitude, Latitude, Events") << endl;
-                break;
+                // Description des colonnes
+                switch (_typeCalcul) {
 
-            case TELESCOPE:
-            default:
-                break;
-            }
+                case PREVISIONS:
+                    flux << nomsat << endl;
+                    flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
+                               "Haut Soleil",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
+                         << endl;
+                    break;
 
-            QListIterator<QList<ResultatPrevisions> > it2(it1.value());
-            while (it2.hasNext()) {
+                case FLASHS:
+                    flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       " \
+                               "Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
+                               "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
+                               "Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
+                         << endl;
+                    break;
 
-                i = 0;
-                evts.clear();
-                QListIterator<ResultatPrevisions> it3(it2.next());
-                while (it3.hasNext()) {
-
-                    kmin = 0;
-                    elems.clear();
-                    const ResultatPrevisions res = it3.next();
-
-                    switch (_typeCalcul) {
-                    case PREVISIONS:
-                        kmin = 1;
-                        elems = ElementsDetailsPrevisions(res);
-                        break;
-
-                    case FLASHS:
-                        elems = ElementsDetailsFlashs(res);
-                        break;
-
-                    case TRANSITS:
-                        if ((i > 0) && (i < 4)) {
-                            elems = ElementsDetailsTransits(res);
-                        }
-                        break;
-
-                    case EVENEMENTS:
-                        kmin = 1;
-                        elems = ElementsDetailsEvenements(res);
-                        break;
-
-                    case TELESCOPE:
-                    default:
-                        break;
+                case TRANSITS:
+                    if (ecrireNomColonnes) {
+                        flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
+                                   "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                                   "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                                   "Constellation, Angle, Type, Body, Illumination, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
+                                   "Longitude of the maximum, Latitude of the maximum, Range from the maximum")
+                             << endl;
+                        ecrireNomColonnes = false;
                     }
+                    break;
 
-                    if (!elems.isEmpty()) {
+                case EVENEMENTS:
+                    flux << nomsat << endl;
+                    flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
+                               "Date, Hour, In orbit position, Longitude, Latitude, Events") << endl;
+                    break;
 
-                        kmax = elems.count();
-                        if ((_typeCalcul == FLASHS) && (i != 1)) {
-                            kmax = elems.count() - 4;
+                case TELESCOPE:
+                default:
+                    break;
+                }
+
+                QListIterator<QList<ResultatPrevisions> > it2(it1.value());
+                while (it2.hasNext()) {
+
+                    i = 0;
+                    evts.clear();
+                    QListIterator<ResultatPrevisions> it3(it2.next());
+                    while (it3.hasNext()) {
+
+                        kmin = 0;
+                        elems.clear();
+                        const ResultatPrevisions res = it3.next();
+
+                        switch (_typeCalcul) {
+                        case PREVISIONS:
+                            kmin = 1;
+                            elems = ElementsDetailsPrevisions(res);
+                            break;
+
+                        case FLASHS:
+                            elems = ElementsDetailsFlashs(res);
+                            break;
+
+                        case TRANSITS:
+                            if ((i > 0) && (i < 4)) {
+                                elems = ElementsDetailsTransits(res);
+                            }
+                            break;
+
+                        case EVENEMENTS:
+                            kmin = 1;
+                            elems = ElementsDetailsEvenements(res);
+                            break;
+
+                        case TELESCOPE:
+                        default:
+                            break;
                         }
 
-                        ligne = "";
-                        for(int k=kmin; k<kmax; k++) {
-                            if (_typeCalcul == EVENEMENTS) {
-                                ligne += elems.at(k).trimmed() + "  ";
-                            } else {
-                                if (elems.at(k).isEmpty()) {
-                                    ligne += "      ";
+                        if (!elems.isEmpty()) {
+
+                            kmax = elems.count();
+                            if ((_typeCalcul == FLASHS) && (i != 1)) {
+                                kmax = elems.count() - 4;
+                            }
+
+                            ligne = "";
+                            for(int k=kmin; k<kmax; k++) {
+                                if (_typeCalcul == EVENEMENTS) {
+                                    ligne += elems.at(k).trimmed() + "  ";
                                 } else {
-                                    ligne += elems.at(k) + " ";
+                                    if (elems.at(k).isEmpty()) {
+                                        ligne += "      ";
+                                    } else {
+                                        ligne += elems.at(k) + " ";
+                                    }
                                 }
                             }
-                        }
 
-                        if (_typeCalcul == EVENEMENTS) {
-                            evts.append(ligne);
-                        } else {
-                            flux << ligne.trimmed() << endl;
+                            if (_typeCalcul == EVENEMENTS) {
+                                evts.append(ligne);
+                            } else {
+                                flux << ligne.trimmed() << endl;
+                            }
+                        }
+                        i++;
+                    }
+
+                    if (_typeCalcul == EVENEMENTS) {
+
+                        QStringListIterator it4(evts);
+                        while (it4.hasNext()) {
+                            flux << it4.next().trimmed() << endl;
                         }
                     }
-                    i++;
+                    flux << endl;
                 }
-
-                if (_typeCalcul == EVENEMENTS) {
-
-                    QStringListIterator it4(evts);
-                    while (it4.hasNext()) {
-                        flux << it4.next().trimmed() << endl;
-                    }
-                }
-                flux << endl;
             }
-        }
 
 #if (BUILD_TEST == false)
-        flux << endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << endl;
+            flux << endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << endl;
 #endif
+        }
         fichier.close();
 
 #if (BUILD_TEST == false)
@@ -859,9 +863,10 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
         QFile fi(ficMap);
 
         if (fi.exists() && (fi.size() != 0)) {
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            map = flux.readAll();
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream flux(&fi);
+                map = flux.readAll();
+            }
             fi.close();
         }
     }
@@ -884,9 +889,10 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
 
     // Creation du fichier html
     QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "resultat.html");
-    fr.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream flux(&fr);
-    flux << _mapResultats;
+    if (fr.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream flux(&fr);
+        flux << _mapResultats;
+    }
     fr.close();
 
     /* Retour */
@@ -974,12 +980,12 @@ void Afficher::ChargementResultats()
     }
 
     ui->resultatsPrevisions->setStyleSheet("QHeaderView::section {" \
-            "background-color:rgb(235, 235, 235);" \
-            "border-top: 0px solid grey;" \
-            "border-bottom: 1px solid grey;" \
-            "border-right: 1px solid grey;" \
-            "font-size: 12px;" \
-            "font-weight: 600 }");
+                                           "background-color:rgb(235, 235, 235);" \
+                                           "border-top: 0px solid grey;" \
+                                           "border-bottom: 1px solid grey;" \
+                                           "border-right: 1px solid grey;" \
+                                           "font-size: 12px;" \
+                                           "font-weight: 600 }");
 
     ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     if (_typeCalcul != EVENEMENTS) {
@@ -1023,72 +1029,74 @@ void Afficher::EcrireEntete() const
 
     /* Corps de la methode */
     QFile fichier(_conditions.ficRes);
-    fichier.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream flux(&fichier);
+    if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-    // Ligne d'entete
+        QTextStream flux(&fichier);
+
+        // Ligne d'entete
 #if (BUILD_TEST == false)
-    flux << QString("%1 %2 / %3 (c) %4").arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
-            arg(QString(APP_ANNEES_DEV)) << endl << endl;
+        flux << QString("%1 %2 / %3 (c) %4").arg(QCoreApplication::applicationName()).arg(QString(APPVERSION)).arg(QCoreApplication::organizationName()).
+                arg(QString(APP_ANNEES_DEV)) << endl << endl;
 #endif
 
-    // Lieu d'observation
-    if (_typeCalcul != EVENEMENTS) {
+        // Lieu d'observation
+        if (_typeCalcul != EVENEMENTS) {
 
-        ligne = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
-        const QString lon = Maths::ToSexagesimal(fabs(_conditions.observateur.longitude()), DEGRE, 3, 0, false, false);
-        const QString ew = (_conditions.observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
+            ligne = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
+            const QString lon = Maths::ToSexagesimal(fabs(_conditions.observateur.longitude()), DEGRE, 3, 0, false, false);
+            const QString ew = (_conditions.observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
-        const QString lat = Maths::ToSexagesimal(fabs(_conditions.observateur.latitude()), DEGRE, 2, 0, false, false);
-        const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
+            const QString lat = Maths::ToSexagesimal(fabs(_conditions.observateur.latitude()), DEGRE, 2, 0, false, false);
+            const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
-        const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
-                                                                                   _conditions.observateur.altitude() * PIED_PAR_METRE;
-        const QString unite = (_conditions.unite == QObject::tr("km", "kilometer")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
+            const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
+                                                                                       _conditions.observateur.altitude() * PIED_PAR_METRE;
+            const QString unite = (_conditions.unite == QObject::tr("km", "kilometer")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
-        ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
-        flux << ligne << endl;
-    }
-
-    // Fuseau horaire
-    ligne = QObject::tr("Fuseau horaire            : %1");
-    QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
-    if (_conditions.ecart) {
-        if (fabs(_conditions.offset) > EPSDBL100) {
-            QTime heur(0, 0);
-            heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
-            chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
+            ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
+            flux << ligne << endl;
         }
-    }
-    flux << ligne.arg(chaine) << endl;
 
-    if (_typeCalcul != EVENEMENTS) {
+        // Fuseau horaire
+        ligne = QObject::tr("Fuseau horaire            : %1");
+        QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
+        if (_conditions.ecart) {
+            if (fabs(_conditions.offset) > EPSDBL100) {
+                QTime heur(0, 0);
+                heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
+                chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
+            }
+        }
+        flux << ligne.arg(chaine) << endl;
 
-        const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
-        const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
+        if (_typeCalcul != EVENEMENTS) {
 
-        // Conditions d'observations
-        if (_typeCalcul == TRANSITS) {
-            flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << endl;
+            const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
+            const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
+
+            // Conditions d'observations
+            if (_typeCalcul == TRANSITS) {
+                flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << endl;
+            } else {
+                flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << " / ";
+                flux << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
+            }
+
+            // Unite de distance
+            flux << tr("Unité de distance         : %1").arg(_conditions.unite) << endl;
+        }
+
+        // Age des TLE
+        const QString date = Date(_conditions.jj1 + _conditions.offset + EPS_DATES, 0.)
+                .ToShortDate(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H).trimmed();
+
+        if (_donnees.ageTle.count() == 1) {
+            flux << endl << tr("Age du TLE                : %1 jours (au %2)").arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date) << endl << endl << endl;
         } else {
-            flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << " / ";
-            flux << cond2.arg(_conditions.hauteur * RAD2DEG) << endl;
+
+            flux << endl << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
+                    .arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date).arg(_donnees.ageTle.at(1), 4, 'f', 2) << endl << endl << endl;
         }
-
-        // Unite de distance
-        flux << tr("Unité de distance         : %1").arg(_conditions.unite) << endl;
-    }
-
-    // Age des TLE
-    const QString date = Date(_conditions.jj1 + _conditions.offset + EPS_DATES, 0.)
-            .ToShortDate(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H).trimmed();
-
-    if (_donnees.ageTle.count() == 1) {
-        flux << endl << tr("Age du TLE                : %1 jours (au %2)").arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date) << endl << endl << endl;
-    } else {
-
-        flux << endl << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
-                .arg(_donnees.ageTle.at(0), 4, 'f', 2).arg(date).arg(_donnees.ageTle.at(1), 4, 'f', 2) << endl << endl << endl;
     }
     fichier.close();
 

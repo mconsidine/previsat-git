@@ -257,67 +257,69 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringL
         const int lgRec = Configuration::instance()->lgRec();
         const QString &donneesSat = Configuration::instance()->donneesSatellites();
 
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-        const QString contenuFichier = flux.readAll();
-        fi.close();
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-        while (it.hasNext()) {
+            QTextStream flux(&fi);
+            const QString contenuFichier = flux.readAll();
 
-            const QString ligne = it.next();
+            QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+            while (it.hasNext()) {
 
-            if (ligne.startsWith("1 ")) {
+                const QString ligne = it.next();
 
-                // Cas des TLE a 2 lignes
-                lig1 = ligne;
-                lig2 = it.next();
+                if (ligne.startsWith("1 ")) {
 
-                // Recuperation du nom du satellite dans le fichier de donnees
-                norad = lig1.mid(2, 5);
-                lig0 = norad;
+                    // Cas des TLE a 2 lignes
+                    lig1 = ligne;
+                    lig2 = it.next();
 
-                if (ajoutDonnees) {
-
-                    const int idx = lgRec * norad.toInt();
-                    if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                        const QString donnee = donneesSat.mid(idx, lgRec);
-                        tle._donnees = Donnees(donnee);
-                        lig0 = donnee.mid(124).trimmed();
-                    }
-                }
-            } else {
-
-                // Cas des TLE a 3 lignes
-                lig0 = ligne;
-                lig1 = it.next();
-                lig2 = it.next();
-            }
-
-            const QString nomsat = RecupereNomsat(lig0);
-
-            // Sauvegarde du TLE
-            if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
-
-                tle = TLE(lig0, lig1, lig2);
-                tle._nom = nomsat.trimmed();
-
-                if (!mapTLE.contains(tle._norad)) {
+                    // Recuperation du nom du satellite dans le fichier de donnees
+                    norad = lig1.mid(2, 5);
+                    lig0 = norad;
 
                     if (ajoutDonnees) {
 
-                        // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                        const int idx = lgRec * tle._norad.toInt();
+                        const int idx = lgRec * norad.toInt();
                         if ((idx >= 0) && (idx < donneesSat.size())) {
-                            tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
+
+                            const QString donnee = donneesSat.mid(idx, lgRec);
+                            tle._donnees = Donnees(donnee);
+                            lig0 = donnee.mid(124).trimmed();
                         }
                     }
+                } else {
 
-                    mapTLE.insert(tle._norad, tle);
+                    // Cas des TLE a 3 lignes
+                    lig0 = ligne;
+                    lig1 = it.next();
+                    lig2 = it.next();
+                }
+
+                const QString nomsat = RecupereNomsat(lig0);
+
+                // Sauvegarde du TLE
+                if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
+
+                    tle = TLE(lig0, lig1, lig2);
+                    tle._nom = nomsat.trimmed();
+
+                    if (!mapTLE.contains(tle._norad)) {
+
+                        if (ajoutDonnees) {
+
+                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
+                            const int idx = lgRec * tle._norad.toInt();
+                            if ((idx >= 0) && (idx < donneesSat.size())) {
+                                tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
+                            }
+                        }
+
+                        mapTLE.insert(tle._norad, tle);
+                    }
                 }
             }
         }
+        fi.close();
     }
 
     /* Retour */
@@ -340,21 +342,23 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
         QFile fichier(nomFichier3le);
         if (fichier.exists() && (fichier.size() != 0)) {
 
-            fichier.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fichier);
-            const QString contenuFichier = flux.readAll();
-            fichier.close();
+            if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-            while (it.hasNext()) {
+                QTextStream flux(&fichier);
+                const QString contenuFichier = flux.readAll();
 
-                const QString ligne0 = it.next();
-                const QString ligne1 = it.next();
-                const QString ligne2 = it.next();
+                QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+                while (it.hasNext()) {
 
-                const TLE tle(ligne0, ligne1, ligne2);
-                tabtle.append(tle);
+                    const QString ligne0 = it.next();
+                    const QString ligne1 = it.next();
+                    const QString ligne2 = it.next();
+
+                    const TLE tle(ligne0, ligne1, ligne2);
+                    tabtle.append(tle);
+                }
             }
+            fichier.close();
         }
 
     } catch (PreviSatException &e) {
@@ -447,7 +451,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
             // Demande de suppression
             if ((res2 != QMessageBox::YesToAll) && (res2 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
-                                                "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
+                                                    "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
                                    message.arg(tleOld[norad]._nom).arg(tleOld[norad]._norad), QMessageBox::Yes |
@@ -478,7 +482,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
             // Demande d'ajout
             if ((res1 != QMessageBox::YesToAll) && (res1 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
-                                                "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
+                                                    "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
                                    message.arg(tleNew[norad]._nom).arg(tleNew[norad]._norad), QMessageBox::Yes |
@@ -510,17 +514,19 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     if ((nbMaj > 0) || (nbAdd > 0) || (nbSup > 0)) {
 
         QFile fichier(ficOld);
-        fichier.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux(&fichier);
+        if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        QMapIterator<QString, TLE> it(tleOld);
-        while (it.hasNext()) {
-            it.next();
+            QTextStream flux(&fichier);
 
-            const TLE tle = it.value();
-            flux << tle._ligne0 << endl;
-            flux << tle._ligne1 << endl;
-            flux << tle._ligne2 << endl;
+            QMapIterator<QString, TLE> it(tleOld);
+            while (it.hasNext()) {
+                it.next();
+
+                const TLE tle = it.value();
+                flux << tle._ligne0 << endl;
+                flux << tle._ligne1 << endl;
+                flux << tle._ligne2 << endl;
+            }
         }
         fichier.close();
     }
@@ -554,45 +560,48 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
             QString lig2;
             QString msg;
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            const QString contenuFichier = flux.readAll();
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+                QTextStream flux(&fi);
+                const QString contenuFichier = flux.readAll();
+
+                QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
+                while (it.hasNext()) {
+
+                    const QString ligne = it.next();
+
+                    if (ligne.startsWith("1 ")) {
+
+                        // Cas des TLE a 2 lignes
+                        lig1 = ligne;
+                        lig2 = it.next();
+                        lig0 = lig1;
+
+                    } else {
+
+                        // Cas des TLE a 3 lignes
+                        lig0 = ligne;
+                        lig1 = it.next();
+                        lig2 = it.next();
+                    }
+
+                    const QString nomsat = RecupereNomsat(lig0);
+                    VerifieLignes(lig1, lig2, nomsat, alarme);
+
+                    if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
+                        msg = "";
+                        if (alarme) {
+                            msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
+                        }
+                        throw PreviSatException(msg, WARNING);
+                    }
+
+                    itle = (lig1 == lig0) ? 2 : 3;
+                    nb++;
+                }
+            }
             fi.close();
 
-            QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-            while (it.hasNext()) {
-
-                const QString ligne = it.next();
-
-                if (ligne.startsWith("1 ")) {
-
-                    // Cas des TLE a 2 lignes
-                    lig1 = ligne;
-                    lig2 = it.next();
-                    lig0 = lig1;
-
-                } else {
-
-                    // Cas des TLE a 3 lignes
-                    lig0 = ligne;
-                    lig1 = it.next();
-                    lig2 = it.next();
-                }
-
-                const QString nomsat = RecupereNomsat(lig0);
-                VerifieLignes(lig1, lig2, nomsat, alarme);
-
-                if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
-                    msg = "";
-                    if (alarme) {
-                        msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
-                    }
-                    throw PreviSatException(msg, WARNING);
-                }
-
-                itle = (lig1 == lig0) ? 2 : 3;
-                nb++;
-            }
         } else {
 
             // Le fichier n'existe pas

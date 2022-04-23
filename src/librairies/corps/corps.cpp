@@ -529,24 +529,26 @@ void Corps::InitTabConstellations(const QString &dirCommonData)
         QFile fi(fic);
         if (fi.exists() && fi.size() != 0) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            ConstElem cst;
-            _tabConst.clear();
+                QTextStream flux(&fi);
 
-            while (!flux.atEnd()) {
+                ConstElem cst;
+                _tabConst.clear();
 
-                const QString ligne = flux.readLine();
+                while (!flux.atEnd()) {
 
-                if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                    const QStringList list = ligne.split(" ", QString::SkipEmptyParts);
+                    const QString ligne = flux.readLine();
 
-                    cst.nom = list.at(0);
-                    cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
-                    cst.ad2 = list.at(2).toDouble() * HEUR2RAD;
-                    cst.dec = list.at(3).toDouble() * DEG2RAD;
-                    _tabConst.append(cst);
+                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+                        const QStringList list = ligne.split(" ", QString::SkipEmptyParts);
+
+                        cst.nom = list.at(0);
+                        cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
+                        cst.ad2 = list.at(2).toDouble() * HEUR2RAD;
+                        cst.dec = list.at(3).toDouble() * DEG2RAD;
+                        _tabConst.append(cst);
+                    }
                 }
             }
             fi.close();

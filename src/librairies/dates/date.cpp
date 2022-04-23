@@ -333,16 +333,18 @@ void Date::Initialisation(const QString &dirLocalData)
         QFile fi(fic);
         if (fi.exists() && (fi.size() != 0)) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            _ecartsTAI_UTC.clear();
-            while (!flux.atEnd()) {
-                const QString ligne = flux.readLine();
+                QTextStream flux(&fi);
 
-                if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                    const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
-                    _ecartsTAI_UTC.append(pair);
+                _ecartsTAI_UTC.clear();
+                while (!flux.atEnd()) {
+                    const QString ligne = flux.readLine();
+
+                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+                        const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
+                        _ecartsTAI_UTC.append(pair);
+                    }
                 }
             }
             fi.close();
@@ -394,7 +396,7 @@ QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) 
     const QPair<int, QString> hr = getHrAmPm(date2.time().hour(), systeme);
 
     const QString res = date2.toString(QObject::tr("dd/MM/yyyy", "Date format")) + chaine.arg(hr.first, 2, 10, QChar('0')).
-                        arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second);
+            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second);
 
     /* Retour */
     return (res);

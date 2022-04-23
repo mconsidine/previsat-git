@@ -646,9 +646,10 @@ void PreviSat::InitVerificationsMAJ()
         QFile fi(_dirDwn + QDir::separator() + fic);
         if (fi.exists() && (fi.size() != 0)) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            settings.setValue("fichier/dirHttpPreviDon", flux.readLine());
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream flux(&fi);
+                settings.setValue("fichier/dirHttpPreviDon", flux.readLine());
+            }
             fi.close();
         }
     }
@@ -1047,9 +1048,10 @@ void PreviSat::VerifMAJPreviSat()
         QFile fi(_onglets->dirDwn() + QDir::separator() + fic);
         if (fi.exists() && (fi.size() != 0)) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            ligne = flux.readLine();
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream flux(&fi);
+                ligne = flux.readLine();
+            }
             fi.close();
         }
 
@@ -2188,9 +2190,10 @@ void PreviSat::on_meteo_clicked()
     QFile fi(fic);
 
     if (fi.exists() && (fi.size() != 0)) {
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-        map = flux.readAll();
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream flux(&fi);
+            map = flux.readAll();
+        }
         fi.close();
     }
 
@@ -2203,9 +2206,10 @@ void PreviSat::on_meteo_clicked()
             .replace("VALEUR_ZOOM", QString::number(_onglets->ui()->valeurZoomMap->value()));
 
     QFile fi2(Configuration::instance()->dirTmp() + QDir::separator() + "meteo.html");
-    fi2.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream flux(&fi2);
-    flux << map;
+    if (fi2.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream flux(&fi2);
+        flux << map;
+    }
     fi2.close();
 
     // Chargement de la meteo
@@ -2800,16 +2804,17 @@ void PreviSat::on_actionNouveau_fichier_TLE_triggered()
                                                      tr("Fichiers texte (*.txt);;Fichiers TLE (*.tle)"));
 
     QFile fi(fic);
-    fi.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream flux(&fi);
+    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream flux(&fi);
 
-    QStringListIterator it(listeNorad);
-    while (it.hasNext()) {
+        QStringListIterator it(listeNorad);
+        while (it.hasNext()) {
 
-        const TLE tle = Configuration::instance()->mapTLE()[it.next()];
-        flux << tle.ligne0() << endl
-             << tle.ligne1() << endl
-             << tle.ligne2() << endl;
+            const TLE tle = Configuration::instance()->mapTLE()[it.next()];
+            flux << tle.ligne0() << endl
+                 << tle.ligne1() << endl
+                 << tle.ligne2() << endl;
+        }
     }
     fi.close();
 
@@ -2860,16 +2865,18 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
 
         // Ecriture du fichier
         QFile fi(fic);
-        fi.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux(&fi);
+        if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        QMapIterator<QString, TLE> it2(tabtle);
-        while (it2.hasNext()) {
-            it2.next();
+            QTextStream flux(&fi);
 
-            flux << it2.value().ligne0() << endl;
-            flux << it2.value().ligne1() << endl;
-            flux << it2.value().ligne2() << endl;
+            QMapIterator<QString, TLE> it2(tabtle);
+            while (it2.hasNext()) {
+                it2.next();
+
+                flux << it2.value().ligne0() << endl;
+                flux << it2.value().ligne1() << endl;
+                flux << it2.value().ligne2() << endl;
+            }
         }
         fi.close();
 
