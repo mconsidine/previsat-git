@@ -186,9 +186,10 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
         QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomfic);
         if (fi.exists() && (fi.size() > 0)) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
-            zoneTexte->setHtml(flux.readAll());
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream flux(&fi);
+                zoneTexte->setHtml(flux.readAll());
+            }
             fi.close();
         }
 

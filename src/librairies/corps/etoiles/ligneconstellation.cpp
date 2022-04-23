@@ -138,15 +138,16 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
     QFile fichier(ficLig);
     if (fichier.exists() && (fichier.size() != 0)) {
 
-        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fichier);
+        if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream flux(&fichier);
 
-        _tabLigCst.clear();
-        while (!flux.atEnd()) {
+            _tabLigCst.clear();
+            while (!flux.atEnd()) {
 
-            const QStringList ligne = flux.readLine().split(" ");
-            const QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
-            _tabLigCst.append(lig);
+                const QStringList ligne = flux.readLine().split(" ");
+                const QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
+                _tabLigCst.append(lig);
+            }
         }
         fichier.close();
     }

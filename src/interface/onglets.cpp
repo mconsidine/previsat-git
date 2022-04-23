@@ -1045,12 +1045,12 @@ void Onglets::AffichageManoeuvresISS() const
     }
 
     _ui->manoeuvresISS->setStyleSheet("QHeaderView::section {" \
-            "background-color:rgb(235, 235, 235);" \
-            "border-top: 0px solid grey;" \
-            "border-bottom: 1px solid grey;" \
-            "border-right: 1px solid grey;" \
-            "font-size: 12px;" \
-            "font-weight: 600 }");
+                                      "background-color:rgb(235, 235, 235);" \
+                                      "border-top: 0px solid grey;" \
+                                      "border-bottom: 1px solid grey;" \
+                                      "border-right: 1px solid grey;" \
+                                      "font-size: 12px;" \
+                                      "font-weight: 600 }");
 
     _ui->manoeuvresISS->horizontalHeader()->setStretchLastSection(true);
     _ui->manoeuvresISS->setColumnWidth(0, 75);
@@ -1331,31 +1331,33 @@ void Onglets::ChargementPref() const
     if (fichier.exists() && (fichier.size() != 0)) {
 
         // Lecture du fichier de preferences
-        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fichier);
-        const QStringList listePrf = flux.readAll().split("\n", QString::SkipEmptyParts);
-        fichier.close();
+        if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream flux(&fichier);
+            const QStringList listePrf = flux.readAll().split("\n", QString::SkipEmptyParts);
 
-        QStringListIterator it(listePrf);
-        while (it.hasNext()) {
+            fichier.close();
 
-            const QStringList item = it.next().split(" ", QString::SkipEmptyParts);
+            QStringListIterator it(listePrf);
+            while (it.hasNext()) {
 
-            if (item.at(1) == "true") {
-                settings.setValue(item.at(0), true);
+                const QStringList item = it.next().split(" ", QString::SkipEmptyParts);
 
-            } else if (item.at(1) == "false") {
-                settings.setValue(item.at(0), false);
+                if (item.at(1) == "true") {
+                    settings.setValue(item.at(0), true);
 
-            } else {
-                if (item.at(0) == "affichage/magnitudeEtoiles") {
-                    settings.setValue(item.at(0), item.at(1).toDouble());
+                } else if (item.at(1) == "false") {
+                    settings.setValue(item.at(0), false);
 
-                } else if ((item.at(0) == "affichage/affconst") || (item.at(0) == "affichage/affnomlieu") || (item.at(0) == "affichage/affnomsat") ||
-                           (item.at(0) == "affichage/affplanetes") || (item.at(0) == "affichage/affradar") || (item.at(0) == "affichage/affvisib") ||
-                           (item.at(0) == "affichage/intensiteOmbre") || (item.at(0) == "affichage/intensiteVision")) {
-                    settings.setValue(item.at(0), item.at(1).toUInt());
                 } else {
+                    if (item.at(0) == "affichage/magnitudeEtoiles") {
+                        settings.setValue(item.at(0), item.at(1).toDouble());
+
+                    } else if ((item.at(0) == "affichage/affconst") || (item.at(0) == "affichage/affnomlieu") || (item.at(0) == "affichage/affnomsat") ||
+                               (item.at(0) == "affichage/affplanetes") || (item.at(0) == "affichage/affradar") || (item.at(0) == "affichage/affvisib") ||
+                               (item.at(0) == "affichage/intensiteOmbre") || (item.at(0) == "affichage/intensiteVision")) {
+                        settings.setValue(item.at(0), item.at(1).toUInt());
+                    } else {
+                    }
                 }
             }
         }
@@ -1851,119 +1853,119 @@ void Onglets::SauveOngletElementsOsculateurs(const QString &fic) const
     try {
 
         QFile sw(fic);
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
-            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
-        }
-        QTextStream flux(&sw);
+            if (!sw.isWritable()) {
+                const QString msg = tr("Problème de droits d'écriture du fichier %1");
+                throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+            }
+            QTextStream flux(&sw);
 
 #if (BUILD_TEST == false)
-        const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
-                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                    arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 #endif
-        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure2->text() << endl << endl;
+            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure2->text() << endl << endl;
 
-        // Donnees sur le satellite
-        flux << tr("Nom du satellite :") + " " + _ui->nomsat2->text() << endl;
-        flux << _ui->ligne1->text() << endl;
-        flux << _ui->ligne2->text() << endl << endl;
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat2->text() << endl;
+            flux << _ui->ligne1->text() << endl;
+            flux << _ui->ligne2->text() << endl << endl;
 
-        flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << endl;
-        QString chaine = tr("x : %1\tvx : %2", "Position, velocity");
-        flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << endl;
+            flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << endl;
+            QString chaine = tr("x : %1\tvx : %2", "Position, velocity");
+            flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << endl;
 
-        chaine = tr("y : %1\tvy : %2", "Position, velocity");
-        flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << endl;
+            chaine = tr("y : %1\tvy : %2", "Position, velocity");
+            flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << endl;
 
-        chaine = tr("z : %1\tvz : %2", "Position, velocity");
-        flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << endl << endl;
+            chaine = tr("z : %1\tvz : %2", "Position, velocity");
+            flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << endl << endl;
 
-        flux << tr("Éléments osculateurs :") << endl;
-        switch (_ui->typeParametres->currentIndex()) {
+            flux << tr("Éléments osculateurs :") << endl;
+            switch (_ui->typeParametres->currentIndex()) {
 
-        case 0:
-            // Parametres kepleriens
-            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-            flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << endl;
+            case 0:
+                // Parametres kepleriens
+                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+                flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
-            flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << endl;
+                chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
+                flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Inclinaison          : %1\tAnomalie moyenne                    : %2");
-            flux << chaine.arg(_ui->inclinaison->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne->text().rightJustified(9, '0'))
-                 << endl << endl;
-            break;
+                chaine = tr("Inclinaison          : %1\tAnomalie moyenne                    : %2");
+                flux << chaine.arg(_ui->inclinaison->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne->text().rightJustified(9, '0'))
+                     << endl << endl;
+                break;
 
-        case 1:
-            // Parametres circulaires
-            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-            flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << endl;
+            case 1:
+                // Parametres circulaires
+                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+                flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
-            flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << endl;
+                chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
+                flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << endl;
 
-            chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
-            flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
-                 << endl << endl;
-            break;
+                chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
+                flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
+                     << endl << endl;
+                break;
 
-        case 2:
-            // Parametres equatoriaux
-            chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
-            flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << endl;
+            case 2:
+                // Parametres equatoriaux
+                chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
+                flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << endl;
 
-            chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
-            flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << endl;
+                chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
+                flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << endl;
 
-            chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
-            flux << chaine.arg(_ui->longitudePerigee->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne2->text().rightJustified(9, '0'))
-                 << endl << endl;
-            break;
+                chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
+                flux << chaine.arg(_ui->longitudePerigee->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne2->text().rightJustified(9, '0'))
+                     << endl << endl;
+                break;
 
-        case 3:
-            // Parametres circulaires equatoriaux
-            chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
-            flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << endl;
+            case 3:
+                // Parametres circulaires equatoriaux
+                chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
+                flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << endl;
 
-            chaine = tr("Ex                   : %1\tIy                          : %2",
-                        "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
-            flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << endl;
+                chaine = tr("Ex                   : %1\tIy                          : %2",
+                            "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
+                flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << endl;
 
-            chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
-            flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
-                 << endl << endl;
-            break;
+                chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
+                flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
+                     << endl << endl;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+
+            chaine = tr("Anomalie vraie       : %1\tApogée  (Altitude) : %2");
+            flux << chaine.arg(_ui->anomalieVraie->text().rightJustified(9, '0')).arg(_ui->apogee->text()) << endl;
+
+            chaine = tr("Anomalie excentrique : %1\tPérigée (Altitude) : %2");
+            flux << chaine.arg(_ui->anomalieExcentrique->text().rightJustified(9, '0')).arg(_ui->perigee->text()) << endl;
+
+            chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
+            flux << chaine.arg(_ui->champDeVue->text()).arg(_ui->periode->text().replace(" ", "")) << endl << endl;
+
+
+            flux << tr("Divers :") << endl;
+            chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
+            flux << chaine.arg(_ui->doppler->text()) << endl;
+
+            chaine = tr("Atténuation          : %1");
+            flux << chaine.arg(_ui->attenuation->text()) << endl;
+
+            chaine = tr("Délai                : %1", "Delay of signal at light speed");
+            flux << chaine.arg(_ui->delai->text()) << endl << endl;
+
+            chaine = tr("Phasage              : %1");
+            flux << chaine.arg(_ui->phasage->text()) << endl;
         }
-
-        chaine = tr("Anomalie vraie       : %1\tApogée  (Altitude) : %2");
-        flux << chaine.arg(_ui->anomalieVraie->text().rightJustified(9, '0')).arg(_ui->apogee->text()) << endl;
-
-        chaine = tr("Anomalie excentrique : %1\tPérigée (Altitude) : %2");
-        flux << chaine.arg(_ui->anomalieExcentrique->text().rightJustified(9, '0')).arg(_ui->perigee->text()) << endl;
-
-        chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
-        flux << chaine.arg(_ui->champDeVue->text()).arg(_ui->periode->text().replace(" ", "")) << endl << endl;
-
-
-        flux << tr("Divers :") << endl;
-        chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
-        flux << chaine.arg(_ui->doppler->text()) << endl;
-
-        chaine = tr("Atténuation          : %1");
-        flux << chaine.arg(_ui->attenuation->text()) << endl;
-
-        chaine = tr("Délai                : %1", "Delay of signal at light speed");
-        flux << chaine.arg(_ui->delai->text()) << endl << endl;
-
-        chaine = tr("Phasage              : %1");
-        flux << chaine.arg(_ui->phasage->text()) << endl;
-
         sw.close();
 
     } catch (PreviSatException &e) {
@@ -1986,94 +1988,94 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
     try {
 
         QFile sw(fic);
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
-            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
-        }
-        QTextStream flux(&sw);
+            if (!sw.isWritable()) {
+                const QString msg = tr("Problème de droits d'écriture du fichier %1");
+                throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+            }
+            QTextStream flux(&sw);
 
 #if (BUILD_TEST == false)
-        const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
-                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                    arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 #endif
 
-        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << endl << endl;
+            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << endl << endl;
 
-        flux << tr("Lieu d'observation :") << " " << _ui->lieuxObservation1->currentText() << endl;
-        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
-        flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << endl;
-        chaine = tr("Conditions : %1", "Conditions of observation");
-        flux << chaine.arg(_ui->conditionsObservation->text()) << endl << endl << endl;
+            flux << tr("Lieu d'observation :") << " " << _ui->lieuxObservation1->currentText() << endl;
+            QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
+            flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << endl;
+            chaine = tr("Conditions : %1", "Conditions of observation");
+            flux << chaine.arg(_ui->conditionsObservation->text()) << endl << endl << endl;
 
-        if (_ui->barreOnglets->count() == _nbOnglets) {
+            if (_ui->barreOnglets->count() == _nbOnglets) {
 
-            // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + _ui->nomsat1->text() << endl << endl;
+                // Donnees sur le satellite
+                flux << tr("Nom du satellite :") + " " + _ui->nomsat1->text() << endl << endl;
 
-            chaine = tr("Longitude : %1\t\tHauteur    : %2\tAscension droite :  %3");
-            flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
-                 << endl;
+                chaine = tr("Longitude : %1\t\tHauteur    : %2\tAscension droite :  %3");
+                flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
+                     << endl;
 
-            chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
-            flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text()) << endl;
+                chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
+                flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text()) << endl;
 
-            chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
-            flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
-                    .arg(_ui->constellationSat->text()) << endl << endl;
+                chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
+                flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
+                        .arg(_ui->constellationSat->text()) << endl << endl;
 
-            chaine = tr("Direction          : %1  \tOrbite n°%2      \t\t%3");
-            flux << chaine.arg(_ui->directionSat->text()).arg(_ui->nbOrbitesSat->text())
-                    .arg((_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed() << endl;
+                chaine = tr("Direction          : %1  \tOrbite n°%2      \t\t%3");
+                flux << chaine.arg(_ui->directionSat->text()).arg(_ui->nbOrbitesSat->text())
+                        .arg((_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed() << endl;
 
-            chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
-            flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
+                chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
+                flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
         #if (BUILD_TEST == true)
-                    .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
-                    .arg(_ui->lbl_beta->text()).trimmed() << endl;
+                        .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
+                        .arg(_ui->lbl_beta->text()).trimmed() << endl;
 #else
-                    .arg((_ui->dateJN->isVisible()) ? _ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " " : _ui->magnitudeSat->text())
-                    .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_beta->text() : "").trimmed() << endl;
+                        .arg((_ui->dateJN->isVisible()) ? _ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " " : _ui->magnitudeSat->text())
+                        .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_beta->text() : "").trimmed() << endl;
 #endif
 
-            chaine = tr("Variation distance : %1  \t%2", "Range rate");
-            flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
+                chaine = tr("Variation distance : %1  \t%2", "Range rate");
+                flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
         #if (BUILD_TEST == true)
-                    .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text())
-                    .trimmed() << endl << endl << endl;
+                        .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text())
+                        .trimmed() << endl << endl << endl;
 #else
-                    .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text() : _ui->lbl_beta->text())
-                    .trimmed() << endl << endl << endl;
+                        .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text() : _ui->lbl_beta->text())
+                        .trimmed() << endl << endl << endl;
 #endif
+            }
+
+            // Donnees sur le Soleil
+            flux << tr("Coordonnées du Soleil :") << endl;
+            chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
+            flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()) << endl;
+
+            chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
+            flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()) << endl;
+
+            chaine = tr("Distance   : %1   \t\tConstellation    : %2");
+            flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text()) << endl << endl << endl;
+
+            // Donnees sur la Lune
+            flux << tr("Coordonnées de la Lune :") << endl;
+            chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
+            flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()) << endl;
+
+            chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
+            flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()) << endl;
+
+            chaine = tr("Distance   : %1  \t\tConstellation    : %2");
+            flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()) << endl << endl;
+            flux << tr("Phase        :", "Moon phase") + " " + _ui->phaseLune->text() << endl;
+            flux << tr("Illumination :") + " " + _ui->illuminationLune->text() << endl;
+            flux << tr("Magnitude    :") + " " + _ui->magnitudeLune->text() << endl;
         }
-
-        // Donnees sur le Soleil
-        flux << tr("Coordonnées du Soleil :") << endl;
-        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
-        flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()) << endl;
-
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
-        flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()) << endl;
-
-        chaine = tr("Distance   : %1   \t\tConstellation    : %2");
-        flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text()) << endl << endl << endl;
-
-        // Donnees sur la Lune
-        flux << tr("Coordonnées de la Lune :") << endl;
-        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2");
-        flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()) << endl;
-
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2", "Azimuth from the North");
-        flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()) << endl;
-
-        chaine = tr("Distance   : %1  \t\tConstellation    : %2");
-        flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()) << endl << endl;
-        flux << tr("Phase        :", "Moon phase") + " " + _ui->phaseLune->text() << endl;
-        flux << tr("Illumination :") + " " + _ui->illuminationLune->text() << endl;
-        flux << tr("Magnitude    :") + " " + _ui->magnitudeLune->text() << endl;
-
         sw.close();
 
     } catch (PreviSatException &e) {
@@ -2096,95 +2098,95 @@ void Onglets::SauveOngletInformations(const QString &fic) const
     try {
 
         QFile sw(fic);
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        if (!sw.isWritable()) {
-            const QString msg = tr("Problème de droits d'écriture du fichier %1");
-            throw PreviSatException(msg.arg(sw.fileName()), WARNING);
-        }
-        QTextStream flux(&sw);
+            if (!sw.isWritable()) {
+                const QString msg = tr("Problème de droits d'écriture du fichier %1");
+                throw PreviSatException(msg.arg(sw.fileName()), WARNING);
+            }
+            QTextStream flux(&sw);
 
 #if (BUILD_TEST == false)
-        const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
-                arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APPVER_MAJ)).arg(QCoreApplication::organizationName()).
+                    arg(QString(APP_ANNEES_DEV)) << endl << endl << endl;
 #endif
 
-        if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->infos)) {
+            if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->infos)) {
 
-            // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + _ui->nomsat3->text() << endl;
-            flux << _ui->line1->text() << endl;
-            flux << _ui->line2->text() << endl << endl;
+                // Donnees sur le satellite
+                flux << tr("Nom du satellite :") + " " + _ui->nomsat3->text() << endl;
+                flux << _ui->line1->text() << endl;
+                flux << _ui->line2->text() << endl << endl;
 
-            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3", "revolution per day");
-            flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << endl;
+                QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3", "revolution per day");
+                flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << endl;
 
-            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
-                        "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
-            flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << endl;
+                chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
+                            "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
+                flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << endl;
 
-            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3",
-                        "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
-            flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << endl;
+                chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3",
+                            "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
+                flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << endl;
 
-            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3",
-                        "Pseudo-ballistic coefficient in 1/Earth radius");
-            flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << endl << endl;
+                chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3",
+                            "Pseudo-ballistic coefficient in 1/Earth radius");
+                flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << endl << endl;
 
-            chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
-            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
-                    .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << endl;
+                chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
+                flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
+                        .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << endl;
 
-            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
-                        "Right ascension of the ascending node, Standard/Maximal magnitude");
-            flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << endl;
+                chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
+                            "Right ascension of the ascending node, Standard/Maximal magnitude");
+                flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << endl;
 
-            chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
-            flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << endl;
+                chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+                flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << endl;
 
-            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section    : %2%3");
-            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text())
-                    .arg((_ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
+                chaine = tr("Argument du périgée     : %1\t\tDimensions/Section    : %2%3");
+                flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text())
+                        .arg((_ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << endl;
 
-        } else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->recherche)) {
+            } else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->recherche)) {
 
-            // Donnees sur le satellite
-            flux << tr("Nom                :") + " " + _ui->nomsat->text() << endl;
+                // Donnees sur le satellite
+                flux << tr("Nom                :") + " " + _ui->nomsat->text() << endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximal magnitude");
-            flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << endl;
+                QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximal magnitude");
+                flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << endl;
 
-            chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
-            flux << chaine.arg(_ui->desigCospar->text()).arg(_ui->modele->text()) << endl;
+                chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
+                flux << chaine.arg(_ui->desigCospar->text()).arg(_ui->modele->text()) << endl;
 
-            chaine = tr("Dimensions/Section : %1%2");
-            flux << chaine.arg(_ui->dimensionsDonneesSat->text()).
-                    arg((_ui->dimensionsDonneesSat->text() == tr("Inconnues")) ? "" : "^2") << endl << endl;
+                chaine = tr("Dimensions/Section : %1%2");
+                flux << chaine.arg(_ui->dimensionsDonneesSat->text()).
+                        arg((_ui->dimensionsDonneesSat->text() == tr("Inconnues")) ? "" : "^2") << endl << endl;
 
-            chaine = tr("Date de lancement  : %1\t\tApogée  (Altitude) : %2");
-            flux << chaine.arg(_ui->dateLancementDonneesSat->text()).arg(_ui->apogeeDonneesSat->text()) << endl;
+                chaine = tr("Date de lancement  : %1\t\tApogée  (Altitude) : %2");
+                flux << chaine.arg(_ui->dateLancementDonneesSat->text()).arg(_ui->apogeeDonneesSat->text()) << endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(_ui->dateRentree->text()) :
-                                                       tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
-            flux << chaine + tr("Périgée (Altitude) : %1").arg(_ui->perigeeDonneesSat->text()) << endl;
+                chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(_ui->dateRentree->text()) :
+                                                           tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
+                flux << chaine + tr("Périgée (Altitude) : %1").arg(_ui->perigeeDonneesSat->text()) << endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
-                                                       tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
-            flux << chaine + tr("Période orbitale   : %1").arg(_ui->periodeDonneesSat->text()) << endl;
+                chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
+                                                           tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
+                flux << chaine + tr("Période orbitale   : %1").arg(_ui->periodeDonneesSat->text()) << endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text()) :
-                                                       tr("Site de lancement  : %1\t\t").arg(_ui->siteLancement->text());
-            flux << chaine + tr("Inclinaison        : %1").arg(_ui->inclinaisonDonneesSat->text()) << endl;
+                chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text()) :
+                                                           tr("Site de lancement  : %1\t\t").arg(_ui->siteLancement->text());
+                flux << chaine + tr("Inclinaison        : %1").arg(_ui->inclinaisonDonneesSat->text()) << endl;
 
-            if (_ui->dateRentree->isVisible()) {
-                flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text());
+                if (_ui->dateRentree->isVisible()) {
+                    flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text());
+                }
+
+                //} else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
+                // TODO
             }
-
-            //} else if (_ui->informations->currentIndex() == _ui->informations->indexOf(_ui->rentrees)) {
-            // TODO
         }
-
         sw.close();
 
     } catch (PreviSatException &e) {
@@ -2270,8 +2272,8 @@ void Onglets::TelechargementFichier(const QString &fichier, const bool async)
         _fichier.setFileName(_dirDwn + QDir::separator() + fic);
         if (_fichier.open(QIODevice::WriteOnly)) {
             _fichier.write(_rep->readAll());
-            _fichier.close();
         }
+        _fichier.close();
     }
 
     /* Retour */
@@ -2649,30 +2651,33 @@ void Onglets::InitFicObs(const bool alarme)
                     QFile fi(fichier);
                     if (fi.exists()) {
 
-                        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-                        QTextStream flux(&fi);
-                        while (!flux.atEnd()) {
+                        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                            const QString lieu = flux.readLine();
-                            if (lieu.size() > 33) {
-                                if ((lieu.at(14) != ' ') || (lieu.at(28) != ' ') || (lieu.at(33) != ' ')) {
+                            QTextStream flux(&fi);
+                            while (!flux.atEnd()) {
+
+                                const QString lieu = flux.readLine();
+                                if (lieu.size() > 33) {
+                                    if ((lieu.at(14) != ' ') || (lieu.at(28) != ' ') || (lieu.at(33) != ' ')) {
+                                        throw PreviSatException();
+                                    }
+                                } else {
                                     throw PreviSatException();
                                 }
+                            }
+
+                            if (fic == "preferes") {
+                                ficObs.insert(0, fichier);
+                                _ui->categoriesObs->insertItem(0, tr("Mes Préférés"));
+                                _ui->ajdfic->insertItem(0, tr("Mes Préférés"));
                             } else {
-                                throw PreviSatException();
+                                ficObs.append(fichier);
+                                fic[0] = fic[0].toUpper();
+                                _ui->categoriesObs->addItem(fic);
+                                _ui->ajdfic->addItem(fic);
                             }
                         }
-
-                        if (fic == "preferes") {
-                            ficObs.insert(0, fichier);
-                            _ui->categoriesObs->insertItem(0, tr("Mes Préférés"));
-                            _ui->ajdfic->insertItem(0, tr("Mes Préférés"));
-                        } else {
-                            ficObs.append(fichier);
-                            fic[0] = fic[0].toUpper();
-                            _ui->categoriesObs->addItem(fic);
-                            _ui->ajdfic->addItem(fic);
-                        }
+                        fi.close();
                     }
 
                 } catch (PreviSatException &e) {
@@ -2940,75 +2945,78 @@ void Onglets::FinEnregistrementFichier()
     _fichier.close();
 
     QFile fd(_fichier.fileName());
-    fd.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fd);
-    const QString lg = flux.readLine();
-    fd.close();
+    if (fd.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-    if (_rep->error() || lg.toLower().contains("doctype") || lg.trimmed().isEmpty()) {
-        // Erreur lors du telechargement
-        _fichier.remove();
-    } else {
+        QTextStream flux(&fd);
+        const QString lg = flux.readLine();
+        fd.close();
 
-        if (_dirDwn == Configuration::instance()->dirTle()) {
+        if (_rep->error() || lg.toLower().contains("doctype") || lg.trimmed().isEmpty()) {
+            // Erreur lors du telechargement
+            _fichier.remove();
+        } else {
 
-            QString fichierALire = QDir::toNativeSeparators(_fichier.fileName());
-            QFileInfo ff(fichierALire);
-            QString fichierAMettreAJour = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + ff.fileName());
+            if (_dirDwn == Configuration::instance()->dirTle()) {
 
-            QFile fi(fichierAMettreAJour);
-            if (fi.exists() && fi.size() > 0) {
+                QString fichierALire = QDir::toNativeSeparators(_fichier.fileName());
+                QFileInfo ff(fichierALire);
+                QString fichierAMettreAJour = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + ff.fileName());
 
-                QStringList compteRendu;
-                const int affMsg = _ui->affichageMsgMAJ->currentIndex();
-                try {
-                    TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
-                    EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj);
+                QFile fi(fichierAMettreAJour);
+                if (fi.exists() && (fi.size() > 0)) {
 
-                } catch (PreviSatException &ex) {
+                    QStringList compteRendu;
+                    const int affMsg = _ui->affichageMsgMAJ->currentIndex();
+                    try {
+                        TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
+                        EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj);
+
+                    } catch (PreviSatException &ex) {
+                    }
+
+                } else {
+
+                    const QString msg = (fi.exists() && (fi.size() == 0)) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1");
+
+                    if (fi.size() == 0) {
+                        fi.remove();
+                    }
+
+                    fi.copy(fichierALire, fichierAMettreAJour);
+                    _ui->compteRenduMaj->appendPlainText(msg.arg(fd.fileName()));
+                    InitFicTLE();
                 }
 
-            } else {
+                // Verification et chargement du fichier TLE courant
+                if (fichierAMettreAJour == Configuration::instance()->nomfic()) {
 
-                const QString msg = (fi.exists() && (fi.size() == 0)) ? tr("Remplacement du fichier %1") : tr("Ajout du fichier %1");
+                    const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
+                    if (nb == 0) {
+                        const QString msg = tr("Erreur lors du téléchargement du fichier %1");
+                        Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
+                        _ui->compteRenduMaj->setVisible(false);
+                    } else {
+                        ReactualiserAffichage();
+                    }
+                }
+            } else if (_dirDwn != Configuration::instance()->dirTmp()) {
 
-                if (fi.size() == 0) {
+                const QFileInfo f(_fichier);
+                const QString fic = _dirDwn + QDir::separator() +
+                        ((_dirDwn == Configuration::instance()->dirLocalData()) ?
+                             Configuration::instance()->listeFicLocalData().filter(f.fileName()).first() :
+                             f.fileName());
+
+                // Deplacement du fichier vers le repertoire de destination
+                QFile fi(fic);
+                if (fi.exists()) {
                     fi.remove();
                 }
-
-                fi.copy(fichierALire, fichierAMettreAJour);
-                _ui->compteRenduMaj->appendPlainText(msg.arg(fd.fileName()));
-                InitFicTLE();
+                _fichier.rename(fi.fileName());
             }
-
-            // Verification et chargement du fichier TLE courant
-            if (fichierAMettreAJour == Configuration::instance()->nomfic()) {
-
-                const int nb = TLE::VerifieFichier(Configuration::instance()->nomfic(), false);
-                if (nb == 0) {
-                    const QString msg = tr("Erreur lors du téléchargement du fichier %1");
-                    Message::Afficher(msg.arg(Configuration::instance()->nomfic()), WARNING);
-                    _ui->compteRenduMaj->setVisible(false);
-                } else {
-                    ReactualiserAffichage();
-                }
-            }
-        } else if (_dirDwn != Configuration::instance()->dirTmp()) {
-
-            const QFileInfo f(_fichier);
-            const QString fic = _dirDwn + QDir::separator() +
-                    ((_dirDwn == Configuration::instance()->dirLocalData()) ?
-                         Configuration::instance()->listeFicLocalData().filter(f.fileName()).first() :
-                         f.fileName());
-
-            // Deplacement du fichier vers le repertoire de destination
-            QFile fi(fic);
-            if (fi.exists()) {
-                fi.remove();
-            }
-            _fichier.rename(fi.fileName());
         }
     }
+
     _rep->deleteLater();
     TelechargementSuivant();
 
@@ -3715,25 +3723,27 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         foreach(const QString fic, listeFicTle) {
 
             QFile fi(Configuration::instance()->dirTle() + QDir::separator() + fic);
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            bool atr = false;
-            const int nor = norad.toInt();
-            while (!flux.atEnd() && !atr) {
+                QTextStream flux(&fi);
 
-                const QString lig = flux.readLine();
-                if (lig.mid(0, 2) == "1 ") {
-                    if (lig.mid(2, 5).toInt() == nor) {
-                        atr = true;
+                bool atr = false;
+                const int nor = norad.toInt();
+                while (!flux.atEnd() && !atr) {
+
+                    const QString lig = flux.readLine();
+                    if (lig.mid(0, 2) == "1 ") {
+                        if (lig.mid(2, 5).toInt() == nor) {
+                            atr = true;
+                        }
                     }
+                }
+
+                if (atr) {
+                    _ui->fichiersTle->addItem(fic);
                 }
             }
             fi.close();
-
-            if (atr) {
-                _ui->fichiersTle->addItem(fic);
-            }
         }
 
         if (_ui->fichiersTle->count() > 0) {
@@ -3786,22 +3796,25 @@ void Onglets::on_categoriesObs_currentRowChanged(int currentRow)
     QFile fi(Configuration::instance()->listeFicObs().at(currentRow));
     if (fi.exists()) {
 
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        while (!flux.atEnd()) {
+            QTextStream flux(&fi);
 
-            const QString ligne = flux.readLine();
-            const QString nom = ligne.mid(34).trimmed();
+            while (!flux.atEnd()) {
 
-            const QStringList coord = ligne.split(" ", QString::SkipEmptyParts);
-            const double lon = coord.at(0).toDouble();
-            const double lat = coord.at(1).toDouble();
-            const double alt = coord.at(2).toDouble();
+                const QString ligne = flux.readLine();
+                const QString nom = ligne.mid(34).trimmed();
 
-            _mapObs.insert(nom, Observateur(nom, lon, lat, alt));
-            _ui->lieuxObs->addItem(nom.toLatin1());
+                const QStringList coord = ligne.split(" ", QString::SkipEmptyParts);
+                const double lon = coord.at(0).toDouble();
+                const double lat = coord.at(1).toDouble();
+                const double alt = coord.at(2).toDouble();
+
+                _mapObs.insert(nom, Observateur(nom, lon, lat, alt));
+                _ui->lieuxObs->addItem(nom.toUtf8());
+            }
         }
+        fi.close();
     }
 
     /* Retour */
@@ -3849,9 +3862,11 @@ void Onglets::on_validerCategorie_clicked()
             }
 
             QFile fi(dirCoord + QDir::separator() + _ui->nvCategorie->text().toLower());
-            fi.open(QIODevice::WriteOnly | QIODevice::Text);
-            fi.write("");
+            if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                fi.write("");
+            }
             fi.close();
+
             InitFicObs(false);
 
             if (_ui->categoriesObs->count() > 0) {
@@ -4091,24 +4106,28 @@ void Onglets::on_validerObs_clicked()
 
             // Ajout du lieu d'observation dans le fichier de coordonnees selectionne
             QFile fi(fic);
-            fi.open(QIODevice::ReadWrite | QIODevice::Text);
-            QTextStream flux(&fi);
+            if (fi.exists()) {
+                if (fi.open(QIODevice::ReadWrite | QIODevice::Text)) {
 
-            while (!flux.atEnd()) {
+                    QTextStream flux(&fi);
 
-                const QString ligne = flux.readLine();
+                    while (!flux.atEnd()) {
 
-                if ((ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed()) && _ui->ajdfic->isVisible()) {
-                    const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
-                    throw PreviSatException(msg.arg(_ui->ajdfic->currentText()), WARNING);
+                        const QString ligne = flux.readLine();
+
+                        if ((ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed()) && _ui->ajdfic->isVisible()) {
+                            const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
+                            throw PreviSatException(msg.arg(_ui->ajdfic->currentText()), WARNING);
+                        }
+                    }
+                    const double x1 = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
+                    const double x2 = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
+
+                    QString text;
+                    flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x2, atd) + nomlieu << endl;
                 }
+                fi.close();
             }
-            const double x1 = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
-            const double x2 = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
-
-            QString text;
-            flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x2, atd) + nomlieu << endl;
-            fi.close();
 
             on_categoriesObs_currentRowChanged(0);
             AffichageLieuObs();
@@ -4158,9 +4177,12 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
         fic = Configuration::instance()->listeFicObs().at(0);
 
         QFile fi(fic);
-        fi.open(QIODevice::WriteOnly | QIODevice::Text);
-        fi.write("");
+
+        if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            fi.write("");
+        }
         fi.close();
+
         InitFicObs(false);
     }
 
@@ -4171,31 +4193,34 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
 
     // Verification que le lieu d'observation n'existe pas deja dans Mes Preferes
     QFile fichier(fic);
-    fichier.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream flux(&fichier);
-    bool atrouve = false;
-    while (!flux.atEnd() && !atrouve) {
-        const QString ligne = flux.readLine().mid(34).toLower().trimmed();
-        atrouve = (nom == ligne);
+    if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+        QTextStream flux(&fichier);
+        bool atrouve = false;
+        while (!flux.atEnd() && !atrouve) {
+            const QString ligne = flux.readLine().mid(34).toLower().trimmed();
+            atrouve = (nom == ligne);
+        }
+
+        if (atrouve) {
+            const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
+            Message::Afficher(msg.arg(nom), WARNING);
+        } else {
+
+            QString text;
+            const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + nom;
+
+            // Ajout du lieu d'observation dans Mes Preferes
+            QFile fich(fic);
+            fich.open(QIODevice::Append | QIODevice::Text);
+            QTextStream flux2(&fich);
+            flux2 << ligne << endl;
+            fich.close();
+
+            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nom), 10);
+        }
     }
-
-    if (atrouve) {
-        const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
-        Message::Afficher(msg.arg(nom), WARNING);
-    } else {
-
-        QString text;
-        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + nom;
-
-        // Ajout du lieu d'observation dans Mes Preferes
-        QFile fich(fic);
-        fich.open(QIODevice::Append | QIODevice::Text);
-        QTextStream flux2(&fich);
-        flux2 << ligne << endl;
-        fich.close();
-
-        emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nom), 10);
-    }
+    fichier.close();
 
     /* Retour */
     return;

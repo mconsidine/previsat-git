@@ -74,14 +74,17 @@ bool Decompression::DecompressionFichierGz(const QString &fichierGz)
 
         const QFileInfo fi(fichierGz);
         QFile fd(fi.path() + QDir::separator() + fi.completeBaseName());
-        fd.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream flux(&fd);
 
-        char buffer[8192];
-        while (gzgets(ficGz, buffer, 8192) != NULL) {
-            flux << QString(buffer).replace("\r\n", "\n");
+        if (fd.open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+            QTextStream flux(&fd);
+
+            char buffer[8192];
+            while (gzgets(ficGz, buffer, 8192) != NULL) {
+                flux << QString(buffer).replace("\r\n", "\n");
+            }
+            gzclose(ficGz);
         }
-        gzclose(ficGz);
         fd.close();
         res = true;
     }

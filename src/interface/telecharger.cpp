@@ -172,17 +172,19 @@ void Telecharger::FinTelechargement()
 
         if (fi.exists() && (fi.size() != 0)) {
 
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream flux(&fi);
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            QString ligne;
-            while (!flux.atEnd()) {
+                QTextStream flux(&fi);
 
-                ligne = flux.readLine();
-                ligne[0] = ligne[0].toUpper();
+                QString ligne;
+                while (!flux.atEnd()) {
 
-                QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeFichiers);
-                elem1->setCheckState(Qt::Unchecked);
+                    ligne = flux.readLine();
+                    ligne[0] = ligne[0].toUpper();
+
+                    QListWidgetItem * const elem1 = new QListWidgetItem(ligne, ui->listeFichiers);
+                    elem1->setCheckState(Qt::Unchecked);
+                }
             }
             fi.close();
 

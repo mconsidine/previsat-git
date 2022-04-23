@@ -141,39 +141,41 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
     QFile fi(fic);
     if (fi.exists() && (fi.size() != 0)) {
 
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        double ascDte;
-        double dec;
-        double mag;
-        QString nom;
+            QTextStream flux(&fi);
 
-        while (!flux.atEnd()) {
+            double ascDte;
+            double dec;
+            double mag;
+            QString nom;
 
-            const QString ligne = flux.readLine();
-            ascDte = 0.;
-            dec = 0.;
-            mag = 99.;
-            nom = "";
+            while (!flux.atEnd()) {
 
-            if (ligne.length() > 34) {
+                const QString ligne = flux.readLine();
+                ascDte = 0.;
+                dec = 0.;
+                mag = 99.;
+                nom = "";
 
-                const int ad1 = ligne.mid(0, 2).toInt();
-                const int ad2 = ligne.mid(2, 2).toInt();
-                const double ad3 = ligne.mid(4, 4).toDouble();
-                ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
+                if (ligne.length() > 34) {
 
-                const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
-                const int de1 = ligne.mid(10, 2).toInt();
-                const int de2 = ligne.mid(12, 2).toInt();
-                const int de3 = ligne.mid(14, 2).toInt();
-                dec = sgnd * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
+                    const int ad1 = ligne.mid(0, 2).toInt();
+                    const int ad2 = ligne.mid(2, 2).toInt();
+                    const double ad3 = ligne.mid(4, 4).toDouble();
+                    ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
 
-                mag = ligne.mid(31, 5).toDouble();
-                nom = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+                    const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
+                    const int de1 = ligne.mid(10, 2).toInt();
+                    const int de2 = ligne.mid(12, 2).toInt();
+                    const int de3 = ligne.mid(14, 2).toInt();
+                    dec = sgnd * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
+
+                    mag = ligne.mid(31, 5).toDouble();
+                    nom = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+                }
+                etoiles.append(Etoile(nom, ascDte, dec, mag));
             }
-            etoiles.append(Etoile(nom, ascDte, dec, mag));
         }
         fi.close();
     }

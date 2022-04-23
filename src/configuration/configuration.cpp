@@ -726,8 +726,8 @@ void Configuration::LectureManoeuvresISS()
                     }
                 }
             }
-            fi1.close();
         }
+        fi1.close();
     }
 
     /* Retour */
@@ -989,86 +989,88 @@ void Configuration::LectureConfiguration()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatConfiguration") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString nom;
-            QStringList elements;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatConfiguration") {
 
-            double lon;
-            double lat;
-            double alt;
+                QString nom;
+                QStringList elements;
 
-            while (cfg.readNextStartElement()) {
+                double lon;
+                double lat;
+                double alt;
 
-                if (cfg.name() == "NoradStationSpatiale") {
+                while (cfg.readNextStartElement()) {
 
-                    _noradStationSpatiale = cfg.readElementText();
+                    if (cfg.name() == "NoradStationSpatiale") {
 
-                } else if (cfg.name() == "Observateurs") {
+                        _noradStationSpatiale = cfg.readElementText();
 
-                    while (cfg.readNextStartElement()) {
+                    } else if (cfg.name() == "Observateurs") {
 
-                        if (cfg.name() == "Observateur") {
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Observateur") {
+
+                                nom = "";
+                                lon = 0.;
+                                lat = 0.;
+                                alt = 0.;
+
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name() == "Nom") {
+                                        nom = cfg.readElementText();
+                                    } else if (cfg.name() == "Longitude") {
+                                        lon = cfg.readElementText().toDouble();
+                                    } else if (cfg.name() == "Latitude") {
+                                        lat = cfg.readElementText().toDouble();
+                                    } else if (cfg.name() == "Altitude") {
+                                        alt = cfg.readElementText().toDouble();
+                                    } else {
+                                        cfg.skipCurrentElement();
+                                    }
+                                }
+
+                                if (!nom.isEmpty()) {
+                                    _observateurs.append(Observateur(nom, lon, lat, alt));
+                                }
+
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
+                        }
+                    } else if (cfg.name() == "FichiersTLE") {
+
+                        while (cfg.readNextStartElement()) {
 
                             nom = "";
-                            lon = 0.;
-                            lat = 0.;
-                            alt = 0.;
+                            if ((cfg.name() == "Fichier") && (cfg.attributes().hasAttribute("nom"))) {
+                                nom = cfg.attributes().value("nom").toString();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
 
+                            elements.clear();
                             while (cfg.readNextStartElement()) {
-
-                                if (cfg.name() == "Nom") {
-                                    nom = cfg.readElementText();
-                                } else if (cfg.name() == "Longitude") {
-                                    lon = cfg.readElementText().toDouble();
-                                } else if (cfg.name() == "Latitude") {
-                                    lat = cfg.readElementText().toDouble();
-                                } else if (cfg.name() == "Altitude") {
-                                    alt = cfg.readElementText().toDouble();
+                                if (cfg.name() == "Norad") {
+                                    elements.append(cfg.readElementText());
                                 } else {
                                     cfg.skipCurrentElement();
                                 }
                             }
 
-                            if (!nom.isEmpty()) {
-                                _observateurs.append(Observateur(nom, lon, lat, alt));
-                            }
-
-                        } else {
-                            cfg.skipCurrentElement();
-                        }
-                    }
-                } else if (cfg.name() == "FichiersTLE") {
-
-                    while (cfg.readNextStartElement()) {
-
-                        nom = "";
-                        if ((cfg.name() == "Fichier") && (cfg.attributes().hasAttribute("nom"))) {
-                            nom = cfg.attributes().value("nom").toString();
-                        } else {
-                            cfg.skipCurrentElement();
-                        }
-
-                        elements.clear();
-                        while (cfg.readNextStartElement()) {
-                            if (cfg.name() == "Norad") {
-                                elements.append(cfg.readElementText());
-                            } else {
-                                cfg.skipCurrentElement();
+                            if (!_mapSatellitesFicTLE.contains(nom)) {
+                                _mapSatellitesFicTLE.insert(nom, elements);
                             }
                         }
 
-                        if (!_mapSatellitesFicTLE.contains(nom)) {
-                            _mapSatellitesFicTLE.insert(nom, elements);
-                        }
+                    } else {
+                        cfg.skipCurrentElement();
                     }
-
-                } else {
-                    cfg.skipCurrentElement();
                 }
             }
         }
@@ -1110,35 +1112,37 @@ void Configuration::LectureCategoriesOrbite()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatCategories") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString acronyme;
-            QString desc;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatCategories") {
 
-            while (cfg.readNextStartElement()) {
+                QString acronyme;
+                QString desc;
 
-                if (cfg.name() == "Categorie") {
+                while (cfg.readNextStartElement()) {
 
-                    acronyme = "";
-                    desc = "";
+                    if (cfg.name() == "Categorie") {
 
-                    while (cfg.readNextStartElement()) {
+                        acronyme = "";
+                        desc = "";
 
-                        if (cfg.name() == "Acronyme") {
-                            acronyme = cfg.readElementText();
-                        } else if (cfg.name() == "Description") {
-                            desc = cfg.readElementText();
-                        } else {
-                            cfg.skipCurrentElement();
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name() == "Description") {
+                                desc = cfg.readElementText();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
                         }
-                    }
 
-                    if (!acronyme.isEmpty()) {
-                        _mapCategoriesOrbite.insert(acronyme, desc);
+                        if (!acronyme.isEmpty()) {
+                            _mapCategoriesOrbite.insert(acronyme, desc);
+                        }
                     }
                 }
             }
@@ -1173,9 +1177,10 @@ void Configuration::LectureChainesNasa()
 
     if (fi.exists() && (fi.size() != 0)) {
 
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
-        _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream flux(&fi);
+            _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
+        }
         fi.close();
     }
 
@@ -1231,22 +1236,21 @@ void Configuration::LectureDonneesSatellites()
 
     /* Initialisations */
     const QString fic = _dirLocalData + QDir::separator() + "donnees.bin";
+    _donneesSatellites = "";
 
     /* Corps de la methode */
     QFile fi(fic);
 
     if (fi.exists() && (fi.size() != 0)) {
 
-        fi.open(QIODevice::ReadOnly);
-        const QByteArray donneesCompressees = fi.readAll();
+        if (fi.open(QIODevice::ReadOnly)) {
+            const QByteArray donneesCompressees = fi.readAll();
+            _donneesSatellites = QString(qUncompress(donneesCompressees));
+        }
         fi.close();
-
-        _donneesSatellites = QString(qUncompress(donneesCompressees));
-    } else {
-        _donneesSatellites = "";
     }
 
-    _lgRec = (_donneesSatellites.size() > 0) ? _donneesSatellites.size() / _donneesSatellites.count('\n') : -1;
+    _lgRec = (_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n');
 
     /* Retour */
     return;
@@ -1274,79 +1278,81 @@ void Configuration::LectureGestionnaireTLE()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatGestionTLE") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString langue;
-            QString nom;
-            QString site;
-            QStringList fichiers;
-            QMap<QString, QString> nomCategorie;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatGestionTLE") {
 
-            while (cfg.readNextStartElement()) {
+                QString langue;
+                QString nom;
+                QString site;
+                QStringList fichiers;
+                QMap<QString, QString> nomCategorie;
 
-                fichiers.clear();
-                nomCategorie.clear();
+                while (cfg.readNextStartElement()) {
 
-                if (cfg.name() == "Categorie") {
+                    fichiers.clear();
+                    nomCategorie.clear();
 
-                    while (cfg.readNextStartElement()) {
+                    if (cfg.name() == "Categorie") {
 
-                        if (cfg.name() == "Langue") {
+                        while (cfg.readNextStartElement()) {
 
-                            // Nom de la categorie
-                            if (cfg.attributes().hasAttribute("lang")) {
-                                langue = cfg.attributes().value("lang").toString();
+                            if (cfg.name() == "Langue") {
 
+                                // Nom de la categorie
+                                if (cfg.attributes().hasAttribute("lang")) {
+                                    langue = cfg.attributes().value("lang").toString();
+
+                                    while (cfg.readNextStartElement()) {
+
+                                        if (cfg.name() == "Nom") {
+                                            nom = cfg.readElementText();
+                                            nom[0] = nom[0].toUpper();
+                                        } else {
+                                            cfg.skipCurrentElement();
+                                        }
+                                    }
+
+                                    if (!langue.isEmpty()) {
+                                        nomCategorie.insert(langue, nom);
+                                    }
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+
+                            } else if (cfg.name() == "Site") {
+
+                                // Site web
+                                site = cfg.readElementText();
+
+                            } else if (cfg.name() == "Fichiers") {
+
+                                // Nom des fichiers de la categorie
                                 while (cfg.readNextStartElement()) {
 
-                                    if (cfg.name() == "Nom") {
-                                        nom = cfg.readElementText();
-                                        nom[0] = nom[0].toUpper();
+                                    if (cfg.name() == "Fichier") {
+                                        fichiers.append(cfg.readElementText());
                                     } else {
                                         cfg.skipCurrentElement();
                                     }
                                 }
-
-                                if (!langue.isEmpty()) {
-                                    nomCategorie.insert(langue, nom);
-                                }
                             } else {
                                 cfg.skipCurrentElement();
                             }
-
-                        } else if (cfg.name() == "Site") {
-
-                            // Site web
-                            site = cfg.readElementText();
-
-                        } else if (cfg.name() == "Fichiers") {
-
-                            // Nom des fichiers de la categorie
-                            while (cfg.readNextStartElement()) {
-
-                                if (cfg.name() == "Fichier") {
-                                    fichiers.append(cfg.readElementText());
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
-                            }
-                        } else {
-                            cfg.skipCurrentElement();
                         }
-                    }
 
-                    QMapIterator<QString, QString> it(nomCategorie);
-                    while (it.hasNext()) {
-                        it.next();
-                        nomCategorie[it.key()] += "@" + site;
-                    }
+                        QMapIterator<QString, QString> it(nomCategorie);
+                        while (it.hasNext()) {
+                            it.next();
+                            nomCategorie[it.key()] += "@" + site;
+                        }
 
-                    if (!nomCategorie.isEmpty()) {
-                        _listeCategoriesTLE.append({ nomCategorie, site, fichiers });
+                        if (!nomCategorie.isEmpty()) {
+                            _listeCategoriesTLE.append({ nomCategorie, site, fichiers });
+                        }
                     }
                 }
             }
@@ -1414,35 +1420,37 @@ void Configuration::LecturePays()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatPays") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString acronyme;
-            QString desc;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatPays") {
 
-            while (cfg.readNextStartElement()) {
+                QString acronyme;
+                QString desc;
 
-                if (cfg.name() == "Pays") {
+                while (cfg.readNextStartElement()) {
 
-                    acronyme = "";
-                    desc = "";
+                    if (cfg.name() == "Pays") {
 
-                    while (cfg.readNextStartElement()) {
+                        acronyme = "";
+                        desc = "";
 
-                        if (cfg.name() == "Acronyme") {
-                            acronyme = cfg.readElementText();
-                        } else if (cfg.name() == "Description") {
-                            desc = cfg.readElementText();
-                        } else {
-                            cfg.skipCurrentElement();
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name() == "Description") {
+                                desc = cfg.readElementText();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
                         }
-                    }
 
-                    if (!acronyme.isEmpty()) {
-                        _mapPays.insert(acronyme, desc);
+                        if (!acronyme.isEmpty()) {
+                            _mapPays.insert(acronyme, desc);
+                        }
                     }
                 }
             }
@@ -1484,47 +1492,49 @@ void Configuration::LectureSatellitesTDRS()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatTDRS") {
+            QXmlStreamReader cfg(&fi1);
 
-            int numero;
-            QString denomination;
-            int rouge;
-            int vert;
-            int bleu;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatTDRS") {
 
-            while (cfg.readNextStartElement()) {
+                int numero;
+                QString denomination;
+                int rouge;
+                int vert;
+                int bleu;
 
-                if (cfg.name() == "TDRS") {
+                while (cfg.readNextStartElement()) {
 
-                    numero = 0;
-                    denomination = "";
-                    rouge = 0;
-                    vert = 0;
-                    bleu = 0;
+                    if (cfg.name() == "TDRS") {
 
-                    while (cfg.readNextStartElement()) {
+                        numero = 0;
+                        denomination = "";
+                        rouge = 0;
+                        vert = 0;
+                        bleu = 0;
 
-                        if (cfg.name() == "Numero") {
-                            numero = cfg.readElementText().toInt();
-                        } else if (cfg.name() == "Denomination") {
-                            denomination = cfg.readElementText();
-                        } else if (cfg.name() == "CouleurR") {
-                            rouge = cfg.readElementText().toInt();
-                        } else if (cfg.name() == "CouleurV") {
-                            vert = cfg.readElementText().toInt();
-                        } else if (cfg.name() == "CouleurB") {
-                            bleu = cfg.readElementText().toInt();
-                        } else {
-                            cfg.skipCurrentElement();
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Numero") {
+                                numero = cfg.readElementText().toInt();
+                            } else if (cfg.name() == "Denomination") {
+                                denomination = cfg.readElementText();
+                            } else if (cfg.name() == "CouleurR") {
+                                rouge = cfg.readElementText().toInt();
+                            } else if (cfg.name() == "CouleurV") {
+                                vert = cfg.readElementText().toInt();
+                            } else if (cfg.name() == "CouleurB") {
+                                bleu = cfg.readElementText().toInt();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
                         }
-                    }
 
-                    if (!denomination.isEmpty()) {
-                        _mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
+                        if (!denomination.isEmpty()) {
+                            _mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
+                        }
                     }
                 }
             }
@@ -1566,43 +1576,45 @@ void Configuration::LectureSitesLancement()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatSites") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString acronyme;
-            QString desc;
-            double lon;
-            double lat;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatSites") {
 
-            while (cfg.readNextStartElement()) {
+                QString acronyme;
+                QString desc;
+                double lon;
+                double lat;
 
-                if (cfg.name() == "Site") {
+                while (cfg.readNextStartElement()) {
 
-                    acronyme = "";
-                    desc = "";
-                    lon = 0.;
-                    lat = 0.;
+                    if (cfg.name() == "Site") {
 
-                    while (cfg.readNextStartElement()) {
+                        acronyme = "";
+                        desc = "";
+                        lon = 0.;
+                        lat = 0.;
 
-                        if (cfg.name() == "Acronyme") {
-                            acronyme = cfg.readElementText();
-                        } else if (cfg.name() == "Description") {
-                            desc = cfg.readElementText();
-                        } else if (cfg.name() == "Longitude") {
-                            lon = cfg.readElementText().toDouble();
-                        } else if (cfg.name() == "Latitude") {
-                            lat = cfg.readElementText().toDouble();
-                        } else {
-                            cfg.skipCurrentElement();
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name() == "Description") {
+                                desc = cfg.readElementText();
+                            } else if (cfg.name() == "Longitude") {
+                                lon = cfg.readElementText().toDouble();
+                            } else if (cfg.name() == "Latitude") {
+                                lat = cfg.readElementText().toDouble();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
                         }
-                    }
 
-                    if (!acronyme.isEmpty()) {
-                        _mapSites.insert(acronyme, Observateur(desc, lon, lat));
+                        if (!acronyme.isEmpty()) {
+                            _mapSites.insert(acronyme, Observateur(desc, lon, lat));
+                        }
                     }
                 }
             }
@@ -1644,47 +1656,49 @@ void Configuration::LectureStations()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatStations") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString acronyme;
-            QString nom;
-            double lon;
-            double lat;
-            double alt;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatStations") {
 
-            while (cfg.readNextStartElement()) {
+                QString acronyme;
+                QString nom;
+                double lon;
+                double lat;
+                double alt;
 
-                if (cfg.name() == "Station") {
+                while (cfg.readNextStartElement()) {
 
-                    acronyme = "";
-                    nom = "";
-                    lon = 0.;
-                    lat = 0.;
-                    alt = 0.;
+                    if (cfg.name() == "Station") {
 
-                    while (cfg.readNextStartElement()) {
+                        acronyme = "";
+                        nom = "";
+                        lon = 0.;
+                        lat = 0.;
+                        alt = 0.;
 
-                        if (cfg.name() == "Acronyme") {
-                            acronyme = cfg.readElementText();
-                        } else if (cfg.name() == "Nom") {
-                            nom = cfg.readElementText();
-                        } else if (cfg.name() == "Longitude") {
-                            lon = cfg.readElementText().toDouble();
-                        } else if (cfg.name() == "Latitude") {
-                            lat = cfg.readElementText().toDouble();
-                        } else if (cfg.name() == "Altitude") {
-                            alt = cfg.readElementText().toDouble();
-                        } else {
-                            cfg.skipCurrentElement();
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name() == "Nom") {
+                                nom = cfg.readElementText();
+                            } else if (cfg.name() == "Longitude") {
+                                lon = cfg.readElementText().toDouble();
+                            } else if (cfg.name() == "Latitude") {
+                                lat = cfg.readElementText().toDouble();
+                            } else if (cfg.name() == "Altitude") {
+                                alt = cfg.readElementText().toDouble();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
                         }
-                    }
 
-                    if (!acronyme.isEmpty()) {
-                        _mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
+                        if (!acronyme.isEmpty()) {
+                            _mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
+                        }
                     }
                 }
             }
@@ -1726,50 +1740,52 @@ void Configuration::LectureStatutSatellitesFlashs()
 
     if (fi1.exists() && (fi1.size() != 0)) {
 
-        fi1.open(QIODevice::ReadOnly | QIODevice::Text);
-        QXmlStreamReader cfg(&fi1);
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        cfg.readNextStartElement();
-        if (cfg.name() == "PreviSatFlashs") {
+            QXmlStreamReader cfg(&fi1);
 
-            QString norad;
-            QPair<double, double> angles;
-            SatellitesFlashs satelliteFlash;
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatFlashs") {
 
-            while (cfg.readNextStartElement()) {
+                QString norad;
+                QPair<double, double> angles;
+                SatellitesFlashs satelliteFlash;
 
-                if (cfg.name() == "Satellite") {
+                while (cfg.readNextStartElement()) {
 
-                    norad = "";
-                    satelliteFlash.angles.clear();
+                    if (cfg.name() == "Satellite") {
 
-                    while (cfg.readNextStartElement()) {
+                        norad = "";
+                        satelliteFlash.angles.clear();
 
-                        if (cfg.name() == "Nom") {
-                            satelliteFlash.nomsat = cfg.readElementText();
-                        } else if (cfg.name() == "Norad") {
-                            norad = cfg.readElementText();
-                        } else if (cfg.name() == "Angles") {
+                        while (cfg.readNextStartElement()) {
 
-                            while (cfg.readNextStartElement()) {
+                            if (cfg.name() == "Nom") {
+                                satelliteFlash.nomsat = cfg.readElementText();
+                            } else if (cfg.name() == "Norad") {
+                                norad = cfg.readElementText();
+                            } else if (cfg.name() == "Angles") {
 
-                                if (cfg.name() == "Yaw") {
-                                    angles.first = cfg.readElementText().toDouble() * DEG2RAD;
-                                } else if (cfg.name() == "Pitch") {
-                                    angles.second = cfg.readElementText().toDouble() * DEG2RAD;
-                                } else {
-                                    cfg.skipCurrentElement();
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name() == "Yaw") {
+                                        angles.first = cfg.readElementText().toDouble() * DEG2RAD;
+                                    } else if (cfg.name() == "Pitch") {
+                                        angles.second = cfg.readElementText().toDouble() * DEG2RAD;
+                                    } else {
+                                        cfg.skipCurrentElement();
+                                    }
                                 }
+                                satelliteFlash.angles.append(angles);
+
+                            } else {
+                                cfg.skipCurrentElement();
                             }
-                            satelliteFlash.angles.append(angles);
-
-                        } else {
-                            cfg.skipCurrentElement();
                         }
-                    }
 
-                    if (!norad.isEmpty()) {
-                        _mapFlashs.insert(norad, satelliteFlash);
+                        if (!norad.isEmpty()) {
+                            _mapFlashs.insert(norad, satelliteFlash);
+                        }
                     }
                 }
             }
@@ -1808,9 +1824,9 @@ void Configuration::VerificationArborescences()
             di.mkpath(_dirLocalData);
 
             const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
-                                    << _dirCommonData + QDir::separator() + "html"
-                                    << _dirCommonData + QDir::separator() + "preferences"
-                                    << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "tle");
+                                           << _dirCommonData + QDir::separator() + "html"
+                                           << _dirCommonData + QDir::separator() + "preferences"
+                                           << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "tle");
 
             foreach(QString orig, listeDirOrig) {
                 QDir dir(orig);
@@ -1820,7 +1836,7 @@ void Configuration::VerificationArborescences()
             }
 
             const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
-                                    << _dirCommonData + QDir::separator() + "taiutc.dat");
+                                        << _dirCommonData + QDir::separator() + "taiutc.dat");
 
             foreach(QString fic, listeFics) {
                 QString file(fic);

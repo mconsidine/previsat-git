@@ -133,15 +133,17 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
     QFile fi(fic);
     if (fi.exists() && fi.size() != 0) {
 
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream flux(&fi);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        while (!flux.atEnd()) {
+            QTextStream flux(&fi);
 
-            const QString ligne = flux.readLine();
-            const double asc = ligne.mid(0, 6).toDouble();
-            const double dec = ligne.mid(7, 7).toDouble();
-            constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
+            while (!flux.atEnd()) {
+
+                const QString ligne = flux.readLine();
+                const double asc = ligne.mid(0, 6).toDouble();
+                const double dec = ligne.mid(7, 7).toDouble();
+                constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
+            }
         }
         fi.close();
     }
