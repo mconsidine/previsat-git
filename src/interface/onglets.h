@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 avril 2022
+ * >    30 avril 2022
  *
  */
 
@@ -61,12 +61,6 @@ class Satellite;
 class QListWidget;
 class QListWidgetItem;
 class QPlainTextEdit;
-
-struct Coordonnees {
-    QString lon;
-    QString lat;
-    QString alt;
-};
 
 namespace Ui {
 class Onglets;
@@ -134,7 +128,7 @@ public:
     /**
      * @brief AffichageLieuObs Affichage du lieu d'observation
      */
-    void AffichageLieuObs() const;
+    void AffichageLieuObs();
 
 #if defined (Q_OS_WIN)
     /**
@@ -265,9 +259,8 @@ private:
     QStringList _resultatsSatellitesTrouves;
 
     Date *_date;
-    QMap<QString, Observateur> _mapObs;
 
-    Coordonnees _ligneCoord;
+    QList<Observateur> _listeObs;
 
     QPoint _positionSouris;
 

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 avril 2022
+ * >    30 avril 2022
  *
  */
 
@@ -690,7 +690,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     /* Corps de la methode */
     InstallationTraduction(QString("%1_%2").arg(qApp->applicationName()).arg(langue), _appTraduction);
-    InstallationTraduction(QString("qtbase_%1").arg(langue), _qtTraduction);
+    InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
 
     ui->retranslateUi(this);
     _onglets->ui()->retranslateUi(_onglets);
@@ -1738,7 +1738,7 @@ void PreviSat::ChargementFenetre()
     connect(_radar, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
     connect(_radar, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
-    ChargementTraduction(settings.value("affichage/langue", "en").toString());
+    ChargementTraduction(Configuration::instance()->locale());
 
     if (settings.value("fichier/sauvegarde").toString().isEmpty()) {
         settings.setValue("fichier/sauvegarde", Configuration::instance()->dirOut());

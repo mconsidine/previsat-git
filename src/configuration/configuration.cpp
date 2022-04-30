@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 decembre 2021
+ * >    30 avril 2022
  *
  */
 
@@ -290,6 +290,11 @@ QMap<QString, Observateur> Configuration::mapSites() const
 QMap<QString, Observateur> Configuration::mapStations() const
 {
     return _mapStations;
+}
+
+QMap<QString, Observateur> &Configuration::mapObs()
+{
+    return _mapObs;
 }
 
 QMap<int, SatelliteTDRS> Configuration::mapTDRS() const
@@ -624,6 +629,50 @@ void Configuration::EcritureConfiguration()
 }
 
 /*
+ * Ecriture du fichier de lieu d'observation
+ */
+void Configuration::EcritureFicObs(const QString &ficObsXml)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi(_dirCoord + QDir::separator() + ficObsXml);
+
+    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+        QXmlStreamWriter cfg(&fi);
+
+        cfg.setAutoFormatting(true);
+        cfg.writeStartDocument();
+        cfg.writeStartElement("PreviSatObservateurs");
+
+        // Observateurs
+        QMapIterator<QString, Observateur> it(_mapObs);
+        while (it.hasNext()) {
+            it.next();
+
+            const Observateur obs = it.value();
+            cfg.writeStartElement("Observateur");
+            cfg.writeTextElement("Nom", obs.nomlieu());
+
+            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
+            cfg.writeEndElement();
+        }
+
+        cfg.writeEndElement();
+        cfg.writeEndDocument();
+        fi.close();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Ecriture du fichier de gestionnaire des TLE
  */
 void Configuration::EcritureGestionnaireTLE()
@@ -677,6 +726,83 @@ void Configuration::EcritureGestionnaireTLE()
         cfg.writeEndDocument();
         fi.close();
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture d'un fichier de lieux d'observation
+ */
+void Configuration::LectureFicObs(const QString &ficObsXml, const bool alarme)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _mapObs.clear();
+
+    /* Corps de la methode */
+    QFile fi1(_dirCoord + QDir::separator() + ficObsXml);
+
+    if (fi1.exists() && (fi1.size() != 0)) {
+
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            QXmlStreamReader cfg(&fi1);
+
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatObservateurs") {
+
+                QString nom;
+                double lon;
+                double lat;
+                double alt;
+
+                while (cfg.readNextStartElement()) {
+
+                    if (cfg.name() == "Observateur") {
+
+                        nom = "";
+                        lon = 0.;
+                        lat = 0.;
+                        alt = 0.;
+
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Nom") {
+                                nom = cfg.readElementText();
+                            } else if (cfg.name() == "Longitude") {
+                                lon = cfg.readElementText().toDouble();
+                            } else if (cfg.name() == "Latitude") {
+                                lat = cfg.readElementText().toDouble();
+                            } else if (cfg.name() == "Altitude") {
+                                alt = cfg.readElementText().toDouble();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
+                        }
+
+                        if (!nom.isEmpty()) {
+                            _mapObs.insert(nom, Observateur(nom, lon, lat, alt));
+                        }
+                    } else {
+                        cfg.skipCurrentElement();
+                    }
+                }
+            } else {
+                fi1.close();
+                if (alarme) {
+                    throw PreviSatException(QObject::tr("Le fichier ne contient pas de lieux d'observation"), WARNING);
+                } else {
+                    throw PreviSatException();
+                }
+            }
+        }
+        fi1.close();
+    }
+
+    // Verifications
+
 
     /* Retour */
     return;

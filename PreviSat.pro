@@ -215,6 +215,7 @@ equals(BUILD_TEST, true) {
     }
 
     SOURCES += \
+        test/src/interface/ongletstest.cpp                       \
         test/src/librairies/corps/satellite/satellitetest.cpp    \
         test/src/librairies/corps/systemesolaire/lunetest.cpp    \
         test/src/librairies/corps/systemesolaire/planetetest.cpp \
@@ -223,7 +224,6 @@ equals(BUILD_TEST, true) {
         test/src/librairies/maths/mathstest.cpp                  \
         test/src/librairies/observateur/observateurtest.cpp      \
         test/src/librairies/systeme/decompressiontest.cpp        \
-        test/src/interface/ongletstest.cpp                       \
         test/src/previsions/evenementsorbitauxtest.cpp           \
         test/src/previsions/flashstest.cpp                       \
         test/src/previsions/previsiontest.cpp                    \
@@ -233,6 +233,7 @@ equals(BUILD_TEST, true) {
         test/src/tst_previsattest.cpp
 
     HEADERS += \
+        test/src/interface/ongletstest.h                       \
         test/src/librairies/corps/satellite/satellitetest.h    \
         test/src/librairies/corps/systemesolaire/lunetest.h    \
         test/src/librairies/corps/systemesolaire/planetetest.h \
@@ -241,7 +242,6 @@ equals(BUILD_TEST, true) {
         test/src/librairies/maths/mathstest.h                  \
         test/src/librairies/observateur/observateurtest.h      \
         test/src/librairies/systeme/decompressiontest.h        \
-        test/src/interface/ongletstest.h                       \
         test/src/previsions/evenementsorbitauxtest.h           \
         test/src/previsions/flashstest.h                       \
         test/src/previsions/previsiontest.h                    \

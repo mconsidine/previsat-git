@@ -30,7 +30,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    3 decembre 2019
+ * >    30 avril 2022
  *
  */
 
@@ -46,9 +46,8 @@
  * PUBLIC *
  **********/
 
-class SGP4Private
+struct SGP4Private
 {
-public:
     bool _isimp;
     char _method;
     int _irez;

@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 avril 2022
+ * >    30 avril 2022
  *
  */
 
@@ -1192,11 +1192,53 @@ void Onglets::AffichageVitesses() const
 void Onglets::AfficherLieuSelectionne(const int index)
 {
     /* Declarations des variables locales */
+    Observateur obs;
 
     /* Initialisations */
-    QString nomlieu = "";
+    _ui->nouveauLieu->setVisible(false);
+    _ui->nouvelleCategorie->setVisible(false);
+    EffacerMessageStatut();
 
     /* Corps de la methode */
+    try {
+
+        // Recuperation du lieu d'observation de la liste
+        if (_ui->lieuxObs->hasFocus() && (index >= 0)) {
+
+            Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row()));
+            QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
+            obs = mapObs.value(_ui->lieuxObs->currentItem()->text());
+            _ui->selecLieux->setCurrentRow(-1);
+        }
+
+        if (_ui->selecLieux->hasFocus() && (index >= 0)) {
+            obs = _listeObs.at(_ui->selecLieux->currentRow());
+            _ui->lieuxObs->setCurrentRow(-1);
+        }
+
+        if (!obs.nomlieu().isEmpty()) {
+
+            _ui->outilsLieuxObservation->setCurrentWidget(_ui->coordonnees);
+            _ui->outilsLieuxObservation->setVisible(true);
+
+            // Longitude/Latitude/Altitude
+            const double lon = obs.longitude() * RAD2DEG;
+            const double lat = obs.latitude() * RAD2DEG;
+            const int atd = static_cast<int> (qRound(obs.altitude() * 1.e3));
+
+            const QString ew = (lon < 0.) ? tr("Est") : tr("Ouest");
+            const QString ns = (lat < 0.) ? tr("Sud") : tr("Nord");
+
+            // Affichage des coordonnees du lieu d'observation
+            _ui->nLieu->setText(tr("Lieu :") + " " + obs.nomlieu());
+            _ui->nLongitude->setText(Maths::ToSexagesimal(fabs(lon), NO_TYPE, 3, 0, false, true) + " " + ew);
+            _ui->nLatitude->setText(Maths::ToSexagesimal(fabs(lat), NO_TYPE, 2, 0, false, true) + " " + ns);
+            const QString msg = "%1 ";
+            _ui->nAltitude->setText((_ui->unitesKm->isChecked()) ? msg.arg(atd).append(tr("m")) :
+                                                                   msg.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).append(tr("ft")));
+        }
+    } catch (PreviSatException &e) {
+    }
 
     /* Retour */
     return;
@@ -1524,7 +1566,7 @@ int Onglets::getListItemChecked(const QListWidget * const liste) const
 /*
  * Affichage du lieu d'observation
  */
-void Onglets::AffichageLieuObs() const
+void Onglets::AffichageLieuObs()
 {
     /* Declarations des variables locales */
 
@@ -1537,6 +1579,7 @@ void Onglets::AffichageLieuObs() const
     _ui->lieuxObservation4->clear();
     _ui->lieuxObservation5->clear();
     _ui->selecLieux->clear();
+    _listeObs.clear();
 
     QListIterator<Observateur> it(Configuration::instance()->observateurs());
     bool premier = true;
@@ -1551,6 +1594,7 @@ void Onglets::AffichageLieuObs() const
         _ui->lieuxObservation4->addItem(nomlieu);
         _ui->lieuxObservation5->addItem(nomlieu);
         _ui->selecLieux->addItem(nomlieu);
+        _listeObs.append(obs);
 
         if (premier) {
 
@@ -2119,7 +2163,8 @@ void Onglets::SauveOngletInformations(const QString &fic) const
                 flux << _ui->line1->text() << endl;
                 flux << _ui->line2->text() << endl << endl;
 
-                QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3", "revolution per day");
+                QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
+                                    "revolution per day");
                 flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << endl;
 
                 chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
@@ -2647,37 +2692,22 @@ void Onglets::InitFicObs(const bool alarme)
 
                 try {
 
-                    const QString fichier = Configuration::instance()->dirCoord() + QDir::separator() + fic;
-                    QFile fi(fichier);
-                    if (fi.exists()) {
+                    Configuration::instance()->LectureFicObs(fic, false);
 
-                        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    if (fic == "preferes.xml") {
+                        ficObs.insert(0, fic);
+                        _ui->categoriesObs->insertItem(0, tr("Mes Préférés"));
+                        _ui->ajdfic->insertItem(0, tr("Mes Préférés"));
 
-                            QTextStream flux(&fi);
-                            while (!flux.atEnd()) {
+                    } else {
+                        ficObs.append(fic);
 
-                                const QString lieu = flux.readLine();
-                                if (lieu.size() > 33) {
-                                    if ((lieu.at(14) != ' ') || (lieu.at(28) != ' ') || (lieu.at(33) != ' ')) {
-                                        throw PreviSatException();
-                                    }
-                                } else {
-                                    throw PreviSatException();
-                                }
-                            }
+                        const QFileInfo ff(fic);
+                        QString fich = ff.baseName();
+                        fich[0] = fich[0].toUpper();
 
-                            if (fic == "preferes") {
-                                ficObs.insert(0, fichier);
-                                _ui->categoriesObs->insertItem(0, tr("Mes Préférés"));
-                                _ui->ajdfic->insertItem(0, tr("Mes Préférés"));
-                            } else {
-                                ficObs.append(fichier);
-                                fic[0] = fic[0].toUpper();
-                                _ui->categoriesObs->addItem(fic);
-                                _ui->ajdfic->addItem(fic);
-                            }
-                        }
-                        fi.close();
+                        _ui->categoriesObs->addItem(fich);
+                        _ui->ajdfic->addItem(fich);
                     }
 
                 } catch (PreviSatException &e) {
@@ -3783,38 +3813,21 @@ void Onglets::on_categoriesObs_currentRowChanged(int currentRow)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (_ui->outilsLieuxObservation->isVisible() && !_ui->ajdfic->isVisible()) {
-        _ui->outilsLieuxObservation->setVisible(false);
-        on_validerObs_clicked();
-    }
-
     _ui->lieuxObs->clear();
-    _mapObs.clear();
-    emit AfficherMessageStatut("", 0);
+    emit EffacerMessageStatut();
 
     /* Corps de la methode */
-    QFile fi(Configuration::instance()->listeFicObs().at(currentRow));
-    if (fi.exists()) {
+    try {
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(currentRow), false);
 
-            QTextStream flux(&fi);
-
-            while (!flux.atEnd()) {
-
-                const QString ligne = flux.readLine();
-                const QString nom = ligne.mid(34).trimmed();
-
-                const QStringList coord = ligne.split(" ", QString::SkipEmptyParts);
-                const double lon = coord.at(0).toDouble();
-                const double lat = coord.at(1).toDouble();
-                const double alt = coord.at(2).toDouble();
-
-                _mapObs.insert(nom, Observateur(nom, lon, lat, alt));
-                _ui->lieuxObs->addItem(nom.toUtf8());
-            }
+        QMapIterator<QString, Observateur> it(Configuration::instance()->mapObs());
+        while (it.hasNext()) {
+            it.next();
+            _ui->lieuxObs->addItem(it.key());
         }
-        fi.close();
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -3992,9 +4005,10 @@ void Onglets::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
         _ui->actionRenommerLieu->setVisible(true);
         _ui->actionModifier_coordonnees->setVisible(true);
         _ui->actionSupprimerLieu->setVisible(true);
-        const QFileInfo fi(Configuration::instance()->dirCoord() + QDir::separator() + "preferes");
-        _ui->actionAjouter_Mes_Preferes->setVisible((fi.exists()) ? (_ui->categoriesObs->currentRow() > 0) : (_ui->categoriesObs->currentRow() >= 0));
+        const bool aff = Configuration::instance()->listeFicObs().contains("preferes.xml");
+        _ui->actionAjouter_Mes_Preferes->setVisible((aff) ? (_ui->categoriesObs->currentRow() > 0) : (_ui->categoriesObs->currentRow() >= 0));
     }
+
     _ui->actionCreer_un_nouveau_lieu->setVisible(_ui->categoriesObs->count() > 0);
     _ui->menuContextuelLieux->exec(QCursor::pos());
 
@@ -4004,20 +4018,7 @@ void Onglets::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
 void Onglets::on_lieuxObs_currentRowChanged(int currentRow)
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    emit EffacerMessageStatut();
-
-    /* Corps de la methode */
-    if (_ui->outilsLieuxObservation->isVisible() && !_ui->ajdfic->isVisible()) {
-        _ui->outilsLieuxObservation->setVisible(false);
-        on_validerObs_clicked();
-    }
     AfficherLieuSelectionne(currentRow);
-
-    /* Retour */
-    return;
 }
 
 void Onglets::on_actionCreer_un_nouveau_lieu_triggered()
@@ -4066,6 +4067,7 @@ void Onglets::on_validerObs_clicked()
 
     /* Corps de la methode */
     try {
+
         QString nomlieu = _ui->nvLieu->text().trimmed();
         if (nomlieu.isEmpty()) {
             throw PreviSatException(tr("Le nom du lieu d'observation n'est pas spécifié"), WARNING);
@@ -4074,7 +4076,7 @@ void Onglets::on_validerObs_clicked()
             nomlieu[0] = nomlieu.at(0).toUpper();
 
             // Recuperation de la longitude
-            const QStringList lon = _ui->nvLongitude->text().split(QRegExp("[°'\""), QString::SkipEmptyParts);
+            const QStringList lon = _ui->nvLongitude->text().split(QRegExp("[°'\"]"), QString::SkipEmptyParts);
             const int lo1 = lon.at(0).toInt();
             const int lo2 = lon.at(1).toInt();
             const int lo3 = lon.at(2).toInt();
@@ -4084,7 +4086,7 @@ void Onglets::on_validerObs_clicked()
             }
 
             // Recuperation de la latitude
-            const QStringList lat = _ui->nvLatitude->text().split(QRegExp("[°'\""), QString::SkipEmptyParts);
+            const QStringList lat = _ui->nvLatitude->text().split(QRegExp("[°'\"]"), QString::SkipEmptyParts);
             const int la1 = lat.at(0).toInt();
             const int la2 = lat.at(1).toInt();
             const int la3 = lat.at(2).toInt();
@@ -4105,31 +4107,22 @@ void Onglets::on_validerObs_clicked()
             const QString fic = Configuration::instance()->listeFicObs().at(_ui->ajdfic->currentIndex());
 
             // Ajout du lieu d'observation dans le fichier de coordonnees selectionne
-            QFile fi(fic);
-            if (fi.exists()) {
-                if (fi.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            Configuration::instance()->LectureFicObs(fic, false);
+            QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
 
-                    QTextStream flux(&fi);
+            if (mapObs.contains(nomlieu) && _ui->ajdfic->isVisible()) {
+                const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
+                throw PreviSatException(msg.arg(_ui->ajdfic->currentText()), WARNING);
+            } else {
 
-                    while (!flux.atEnd()) {
+                const double longitude = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
+                const double latitude = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
+                mapObs.insert(nomlieu, Observateur(nomlieu, longitude, latitude, atd));
 
-                        const QString ligne = flux.readLine();
-
-                        if ((ligne.mid(34).toLower().trimmed() == nomlieu.toLower().trimmed()) && _ui->ajdfic->isVisible()) {
-                            const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
-                            throw PreviSatException(msg.arg(_ui->ajdfic->currentText()), WARNING);
-                        }
-                    }
-                    const double x1 = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
-                    const double x2 = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
-
-                    QString text;
-                    flux << text.asprintf("%+13.9f %+12.9f %04d ", x1, x2, atd) + nomlieu << endl;
-                }
-                fi.close();
+                Configuration::instance()->EcritureFicObs(fic);
             }
 
-            on_categoriesObs_currentRowChanged(0);
+            _ui->categoriesObs->setCurrentRow(0);
             AffichageLieuObs();
             _ui->outilsLieuxObservation->setVisible(false);
         }
@@ -4150,14 +4143,6 @@ void Onglets::on_annulerObs_clicked()
     /* Corps de la methode */
     if (_ui->outilsLieuxObservation->isVisible() && !_ui->ajdfic->isVisible()) {
         _ui->outilsLieuxObservation->setVisible(false);
-
-        // En cas de modification des coordonnees
-        if (!_ligneCoord.lon.isEmpty() || !_ligneCoord.lat.isEmpty() || !_ligneCoord.alt.isEmpty()) {
-            _ui->nvLongitude->setText(_ligneCoord.lon);
-            _ui->nvLatitude->setText(_ligneCoord.lat);
-            _ui->nvAltitude->setText(_ligneCoord.alt);
-        }
-        on_validerObs_clicked();
     }
     _ui->outilsLieuxObservation->setVisible(false);
 
@@ -4170,57 +4155,37 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QString fic = Configuration::instance()->listeFicObs().at(0);
-    if (!fic.contains("preferes")) {
-        // Le fichier preferes n'existe pas, on le cree
-        Configuration::instance()->listeFicObs().insert(0, Configuration::instance()->dirCoord() + QDir::separator() + "preferes");
-        fic = Configuration::instance()->listeFicObs().at(0);
-
-        QFile fi(fic);
-
-        if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            fi.write("");
-        }
-        fi.close();
-
-        InitFicObs(false);
-    }
+    QStringList &listeFicObs = Configuration::instance()->listeFicObs();
 
     /* Corps de la methode */
-    const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-    QString nom = lieu.nomlieu();
-    nom[0] = nom[0].toUpper();
+    try {
 
-    // Verification que le lieu d'observation n'existe pas deja dans Mes Preferes
-    QFile fichier(fic);
-    if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Configuration::instance()->LectureFicObs(listeFicObs.at(_ui->categoriesObs->currentIndex().row()));
+        QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
+        const Observateur lieu = mapObs.value(_ui->lieuxObs->currentItem()->text());
 
-        QTextStream flux(&fichier);
-        bool atrouve = false;
-        while (!flux.atEnd() && !atrouve) {
-            const QString ligne = flux.readLine().mid(34).toLower().trimmed();
-            atrouve = (nom == ligne);
+        if (!listeFicObs.at(0).contains("preferes.xml")) {
+            listeFicObs.insert(0, "preferes.xml");
         }
 
-        if (atrouve) {
+        Configuration::instance()->LectureFicObs(listeFicObs.at(0));
+
+        // Verification que le lieu d'observation n'existe pas deja dans Mes Preferes
+        const QString nomlieu = lieu.nomlieu();
+        if (mapObs.contains(nomlieu)) {
+
             const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
-            Message::Afficher(msg.arg(nom), WARNING);
+            Message::Afficher(msg.arg(nomlieu), WARNING);
+
         } else {
 
-            QString text;
-            const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude())) + nom;
-
-            // Ajout du lieu d'observation dans Mes Preferes
-            QFile fich(fic);
-            fich.open(QIODevice::Append | QIODevice::Text);
-            QTextStream flux2(&fich);
-            flux2 << ligne << endl;
-            fich.close();
-
-            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nom), 10);
+            mapObs.insert(nomlieu, lieu);
+            Configuration::instance()->EcritureFicObs(listeFicObs.at(0));
+            InitFicObs(false);
+            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nomlieu), 10);
         }
+    } catch (PreviSatException &e) {
     }
-    fichier.close();
 
     /* Retour */
     return;
@@ -4242,64 +4207,36 @@ void Onglets::on_actionModifier_coordonnees_triggered()
         _ui->nvAltitude->setInputMask("#####");
     }
 
-    const Observateur obs = _mapObs[_ui->lieuxObs->currentItem()->text()];
-    _ui->nvLieu->setText(obs.nomlieu().trimmed());
+    try {
 
-    _ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()) * DEG2RAD, DEGRE, 3, 0, false, true));
-    _ui->nvLongitude->setPalette(QPalette());
-    _ui->nvEw->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
+        Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row()));
+        const Observateur obs = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
 
-    _ui->nvLatitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()) * DEG2RAD, DEGRE, 2, 0,false, true));
-    _ui->nvLatitude->setPalette(QPalette());
-    _ui->nvNs->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
+        _ui->nvLieu->setText(obs.nomlieu().trimmed());
 
-    const QString alt = "%1";
-    const int atd = static_cast<int> (obs.altitude());
-    if (_ui->unitesKm->isChecked()) {
-        _ui->nvAltitude->setText(alt.arg(atd, 4, 10, QChar('0')));
-    } else {
-        _ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
-    }
-    _ui->nvAltitude->setPalette(QPalette());
-    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
-    _ligneCoord.lon = _ui->nvLongitude->text();
-    _ligneCoord.lat = _ui->nvLatitude->text();
-    _ligneCoord.alt = _ui->nvAltitude->text();
+        _ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()), DEGRE, 3, 0, false, true));
+        _ui->nvLongitude->setPalette(QPalette());
+        _ui->nvEw->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
 
-    _ui->lbl_ajouterDans->setVisible(false);
-    _ui->ajdfic->setVisible(false);
+        _ui->nvLatitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), DEGRE, 2, 0,false, true));
+        _ui->nvLatitude->setPalette(QPalette());
+        _ui->nvNs->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
 
-    // Suppression du lieu du fichier
-    QString text;
-    const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-    const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude()))
-            + lieu.nomlieu();
-
-    const QString fic = Configuration::instance()->dirCoord() + QDir::separator() +
-            ((_ui->categoriesObs->currentRow() == 0) ? "preferes" : _ui->categoriesObs->currentItem()->text());
-
-    QFile sr(fic);
-    sr.open(QIODevice::ReadOnly | QIODevice::Text);
-
-    QFile sw(Configuration::instance()->dirTmp() + QDir::separator() + "obs.tmp");
-    sw.open(QIODevice::WriteOnly | QIODevice::Text);
-
-    QTextStream flux(&sr);
-    QTextStream flux2(&sw);
-    while (!flux.atEnd()) {
-        const QString ligne2 = flux.readLine();
-        if (ligne.mid(34).trimmed() != ligne2.mid(34).trimmed()) {
-            flux2 << ligne2 << endl;
+        const QString alt = "%1";
+        const int atd = static_cast<int> (qRound(obs.altitude() * 1.e3));
+        if (_ui->unitesKm->isChecked()) {
+            _ui->nvAltitude->setText(alt.arg(atd, 4, 10, QChar('0')));
+        } else {
+            _ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
         }
+        _ui->nvAltitude->setPalette(QPalette());
+        _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
+
+        emit AfficherMessageStatut("", 0);
+        _ui->nvLieu->setFocus();
+
+    } catch (PreviSatException &e) {
     }
-    sw.close();
-    sr.close();
-
-    sr.remove();
-    sw.rename(fic);
-
-    emit AfficherMessageStatut("", 0);
-    _ui->nvLieu->setFocus();
 
     /* Retour */
     return;
@@ -4312,38 +4249,28 @@ void Onglets::on_actionRenommerLieu_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString nvNomLieu = getText(this, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"), tr("OK"), tr("Annuler"),
-                                      QLineEdit::Normal, _ui->lieuxObs->item(_ui->lieuxObs->currentRow())->text(),
-                                      Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+    try {
 
-    if (!nvNomLieu.trimmed().isEmpty()) {
+        const QString nvNomLieu = getText(this, tr("Lieu d'observation"), tr("Nouveau nom du lieu d'observation :"), tr("OK"), tr("Annuler"),
+                                          QLineEdit::Normal, _ui->lieuxObs->item(_ui->lieuxObs->currentRow())->text(),
+                                          Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-        const QString dirCoord = Configuration::instance()->dirCoord();
-        const QString fic = dirCoord + QDir::separator() + ((_ui->categoriesObs->currentRow() == 0) ?
-                                                                "preferes" : _ui->categoriesObs->currentItem()->text());
+        if (!nvNomLieu.trimmed().isEmpty()) {
 
-        QFile sr(fic);
-        sr.open(QIODevice::ReadOnly | QIODevice::Text);
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            Configuration::instance()->LectureFicObs(fic, false);
+            QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
+            const Observateur obs = mapObs.value(_ui->lieuxObs->currentItem()->text());
+            const QString nomlieu = obs.nomlieu();
 
-        QFile sw(Configuration::instance()->dirTmp() + QDir::separator() + "obs.tmp");
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
+            const Observateur nvObs(nvNomLieu, obs.longitude(), obs.latitude(), obs.altitude());
+            mapObs.remove(nomlieu);
+            mapObs.insert(nvNomLieu, nvObs);
+            Configuration::instance()->EcritureFicObs(fic);
 
-        QTextStream flux(&sr);
-        QTextStream flux2(&sw);
-        while (!flux.atEnd()) {
-            const QString ligne = flux.readLine();
-            if (ligne.mid(34).toLower().trimmed() == _ui->lieuxObs->currentItem()->text().toLower().trimmed()) {
-                flux2 << ligne.mid(0, 34) << nvNomLieu.trimmed() << endl;
-            } else {
-                flux2 << ligne << endl;
-            }
+            on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
         }
-        sw.close();
-        sr.close();
-
-        sr.remove();
-        sw.rename(fic);
-        on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -4355,50 +4282,34 @@ void Onglets::on_actionSupprimerLieu_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
-
-    /* Corps de la methode */
-    const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow());
     const QString nomlieu = _ui->lieuxObs->currentItem()->text();
     const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catégorie \"%2\"?");
 
-    QMessageBox msgbox(tr("Avertissement"), msg.arg(nomlieu).arg(_ui->categoriesObs->currentItem()->text()), QMessageBox::Question,
-                       QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
-    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
-    msgbox.setButtonText(QMessageBox::No, tr("Non"));
-    msgbox.exec();
-    const int res = msgbox.result();
+    /* Corps de la methode */
+    try {
 
-    if (res == QMessageBox::Yes) {
+        QMessageBox msgbox(tr("Avertissement"), msg.arg(nomlieu).arg(_ui->categoriesObs->currentItem()->text()), QMessageBox::Question,
+                           QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+        msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+        msgbox.setButtonText(QMessageBox::No, tr("Non"));
+        msgbox.exec();
+        const int res = msgbox.result();
 
-        QString text;
-        const Observateur lieu = _mapObs[_ui->lieuxObs->currentItem()->text()];
-        const QString ligne = text.asprintf("%+13.9f %+12.9f %04d ", lieu.longitude(), lieu.latitude(), static_cast<int> (lieu.altitude()))
-                + lieu.nomlieu();
+        if (res == QMessageBox::Yes) {
 
-        QFile sr(fic);
-        sr.open(QIODevice::ReadOnly | QIODevice::Text);
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            Configuration::instance()->LectureFicObs(fic, false);
+            QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
+            mapObs.remove(nomlieu);
+            Configuration::instance()->EcritureFicObs(fic);
 
-        QFile sw(Configuration::instance()->dirTmp() + QDir::separator() + "obs.tmp");
-        sw.open(QIODevice::WriteOnly | QIODevice::Text);
-
-        QTextStream flux(&sr);
-        QTextStream flux2(&sw);
-        while (!flux.atEnd()) {
-            const QString ligne2 = flux.readLine();
-            if (ligne.trimmed() != ligne2.trimmed()) {
-                flux2 << ligne2 << endl;
-            }
+            on_categoriesObs_currentRowChanged(0);
+            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"").arg(nomlieu)
+                                       .arg(_ui->categoriesObs->currentItem()->text()), 10);
+        } else {
+            emit AfficherMessageStatut("", 0);
         }
-        sw.close();
-        sr.close();
-
-        sr.remove();
-        sw.rename(fic);
-        on_categoriesObs_currentRowChanged(0);
-        emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"").arg(nomlieu)
-                                   .arg(_ui->categoriesObs->currentItem()->text()), 10);
-    } else {
-        emit AfficherMessageStatut("", 0);
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -4418,14 +4329,24 @@ void Onglets::on_ajoutLieu_clicked()
 
     /* Corps de la methode */
     try {
+
         if (_ui->lieuxObs->currentRow() >= 0) {
-            if (!_ui->selecLieux->findItems(_ui->lieuxObs->currentItem()->text(), Qt::MatchExactly).isEmpty()) {
+
+            const QString nomlieu = _ui->lieuxObs->currentItem()->text();
+
+            if (!_ui->selecLieux->findItems(nomlieu, Qt::MatchExactly).isEmpty()) {
                 emit AfficherMessageStatut(tr("Lieu d'observation déjà sélectionné"), 10);
                 throw PreviSatException();
             }
 
-            _ui->selecLieux->addItem(_ui->lieuxObs->currentItem()->text());
-            Configuration::instance()->observateurs().append(_mapObs[_ui->lieuxObs->currentItem()->text()]);
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            Configuration::instance()->LectureFicObs(fic, false);
+            const QMap<QString, Observateur> mapObs = Configuration::instance()->mapObs();
+
+            _ui->selecLieux->addItem(nomlieu);
+            _listeObs.append(mapObs.value(nomlieu));
+
+            Configuration::instance()->observateurs().append(mapObs.value(nomlieu));
             Configuration::instance()->EcritureConfiguration();
             _ui->lieuxObs->setFocus();
         }
@@ -4469,19 +4390,7 @@ void Onglets::on_selecLieux_customContextMenuRequested(const QPoint &pos)
 
 void Onglets::on_selecLieux_currentRowChanged(int currentRow)
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (_ui->outilsLieuxObservation->isVisible() && !_ui->ajdfic->isVisible()) {
-        _ui->outilsLieuxObservation->setVisible(false);
-        on_validerObs_clicked();
-    }
     AfficherLieuSelectionne(currentRow);
-
-    /* Retour */
-    return;
 }
 
 void Onglets::on_optionPrec_clicked()
