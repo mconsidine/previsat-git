@@ -56,7 +56,8 @@ void DateTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString locale = QLocale::system().name().section('_', 0, 0);
+    const  QLocale locale(QLocale("fr_FR"));
+    QLocale::setDefault(locale);
     const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 

@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 decembre 2021
+ * >    30 avril 2022
  *
  */
 
@@ -172,6 +172,7 @@ public:
     QMap<QString, QString> mapPays() const;
     QMap<QString, Observateur> mapSites() const;
     QMap<QString, Observateur> mapStations() const;
+    QMap<QString, Observateur> &mapObs();
     QMap<int, SatelliteTDRS> mapTDRS() const;
     QMap<QString, SatellitesFlashs> mapFlashs() const;
 
@@ -241,9 +242,22 @@ public:
     void EcritureConfiguration();
 
     /**
+     * @brief EcritureFicObs Ecriture du fichier de lieu d'observation
+     * @param ficObsXml fichier de lieux d'observation
+     */
+    void EcritureFicObs(const QString &ficObsXml);
+
+    /**
      * @brief EcritureGestionnaireTLE Ecriture du fichier de gestionnaire des TLE
      */
     void EcritureGestionnaireTLE();
+
+    /**
+     * @brief LectureFicObs Lecture d'un fichier de lieux d'observation
+     * @param ficObsXml fichier de lieux d'observation
+     * @param alarme affichage d'un message si le fichier ne contient pas de lieux d'observations
+     */
+    void LectureFicObs(const QString &ficObsXml, const bool alarme = true);
 
     /**
      * @brief LectureManoeuvresISS Lecture du fichier NASA contenant les manoeuvres de l'ISS
@@ -353,6 +367,9 @@ private:
 
     // Sites de lancement
     QMap<QString, Observateur> _mapSites;
+
+    // Lieux d'observation d'un fichier
+    QMap<QString, Observateur> _mapObs;
 
     // Stations
     QMap<QString, Observateur> _mapStations;

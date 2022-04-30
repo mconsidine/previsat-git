@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 octobre 2020
+ * >    30 avril 2022
  *
  */
 
@@ -456,7 +456,7 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
     const QDateTime qdate = Date((*this).jourJulienUTC() + offset + EPS_DATES, 0.).ToQDateTime(1);
 
     /* Corps de la methode */
-    QString res = qdate.toString(QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") + ((systeme == SYSTEME_12H) ? "a" : ""));
+    QString res = QLocale().toString(qdate, QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") + ((systeme == SYSTEME_12H) ? "a" : ""));
     res[0] = res[0].toUpper();
 
     /* Retour */

@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    3 decembre 2019
+ * >    30 avril 2022
  *
  */
 
@@ -48,7 +48,7 @@
 #include "sgp4const.h"
 
 
-class SGP4Private;
+struct SGP4Private;
 class TLE;
 
 class SGP4
