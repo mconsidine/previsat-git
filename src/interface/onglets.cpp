@@ -1084,7 +1084,7 @@ void Onglets::AffichageResultatsDonnees() const
         while (it.hasNext()) {
 
             const QString item = it.next().toUpper();
-            nomsat = item.mid(124).trimmed();
+            nomsat = item.mid(125).trimmed();
 
             if (nomsat.isEmpty()) {
                 nomsat = item.mid(0, 6);
@@ -1809,8 +1809,6 @@ void Onglets::InitChargementOnglets()
     // Initialisation au demarrage
     InitAffichageDemarrage();
 
-#if (BUILD_TEST == false)
-
     // Chargement des groupes de TLE (onglet Outils)
     AffichageGroupesTLE();
 
@@ -1833,7 +1831,6 @@ void Onglets::InitChargementOnglets()
 
     // Chargement des fichiers sons (pour les AOS et LOS)
     InitFicSon();
-#endif
 
     /* Retour */
     return;
@@ -1857,7 +1854,7 @@ void Onglets::MettreAJourGroupeTLE(const QString &groupe)
     while (it1.hasNext()) {
 
         const CategorieTLE categorie = it1.next();
-        if (categorie.nom[Configuration::instance()->locale()].toLower().contains(groupe)) {
+        if (categorie.nom[Configuration::instance()->locale()].contains(groupe, Qt::CaseInsensitive)) {
 
             const QString adresse = (categorie.site.contains("celestrak")) ?
                         Configuration::instance()->adresseCelestrakNorad() : Configuration::instance()->adresseAstropedia() + "previsat/tle/";
@@ -2999,7 +2996,7 @@ void Onglets::FinEnregistrementFichier()
         const QString lg = flux.readLine();
         fd.close();
 
-        if (_rep->error() || lg.toLower().contains("doctype") || lg.trimmed().isEmpty()) {
+        if (_rep->error() || lg.contains("doctype", Qt::CaseInsensitive) || lg.trimmed().isEmpty()) {
             // Erreur lors du telechargement
             _fichier.remove();
         } else {
@@ -3447,35 +3444,23 @@ void Onglets::on_nom_returnPressed()
 
     /* Initialisations */
     const QString nomsat = _ui->nom->text();
+    _resultatsSatellitesTrouves.clear();
 
     /* Corps de la methode */
     if (nomsat.length() >= 3) {
 
-        int indx1 = 127;
-        int indx2 = 0;
-        int indx3;
-        _resultatsSatellitesTrouves.clear();
-        const QString &donneesSat = Configuration::instance()->donneesSatellites();
-
         // Recherche dans le tableau de donnees a partir du nom de l'objet
-        do {
-            indx1 = donneesSat.toLower().indexOf(nomsat.toLower().trimmed(), indx1 + indx2);
-            if (indx1 >= 0) {
+        QStringList donneesSat = Configuration::instance()->donneesSatellites().split('\n');
+        donneesSat.removeFirst();
 
-                indx3 = donneesSat.lastIndexOf("\n", indx1) + 1;
-                indx2 = donneesSat.indexOf("\n", indx3) - indx3;
-                if ((indx1 - indx3) >= 124) {
+        QStringListIterator it(donneesSat);
+        while (it.hasNext()) {
 
-                    const QString ligne = donneesSat.mid(indx3, indx2);
-                    if (!ligne.isEmpty()) {
-                        _resultatsSatellitesTrouves.append(ligne);
-                    }
-                    indx1 = indx3;
-                } else {
-                    indx1 += nomsat.trimmed().length() - indx2;
-                }
+            const QString ligne = it.next();
+            if (ligne.mid(125).contains(nomsat, Qt::CaseInsensitive)) {
+                _resultatsSatellitesTrouves.append(ligne);
             }
-        } while (indx1 >= 0);
+        }
 
         if (!_resultatsSatellitesTrouves.isEmpty()) {
             _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.at(0).mid(7, 11).toUpper().trimmed());
@@ -3513,8 +3498,8 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
             const QString ligne = donneesSat.mid(idx, lgRec);
             _resultatsSatellitesTrouves.append(ligne);
 
-            QString nomsat = ligne.mid(124).trimmed();
-            if (nomsat == "iss (zarya)") {
+            QString nomsat = ligne.mid(125).trimmed();
+            if (nomsat.contains("iss (zarya)", Qt::CaseInsensitive)) {
                 nomsat = "ISS";
             }
 
@@ -3534,32 +3519,27 @@ void Onglets::on_cosparDonneesSat_returnPressed()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString cospar = _ui->cosparDonneesSat->text();
+    _resultatsSatellitesTrouves.clear();
 
     /* Corps de la methode */
-    if ((_ui->cosparDonneesSat->text().length() > 1) && (_ui->cosparDonneesSat->text().contains("-"))) {
-
-        int indx1 = 0;
-        int indx2 = 1;
-        _resultatsSatellitesTrouves.clear();
-        const QString &donneesSat = Configuration::instance()->donneesSatellites();
+    if ((cospar.length() > 1) && (cospar.contains("-"))) {
 
         // Recherche dans le tableau de donnees a partir de la designation COSPAR
-        do {
-            indx1 = donneesSat.indexOf(_ui->cosparDonneesSat->text().toLower().trimmed(), indx1 + indx2);
-            if ((indx1 >= 0) && (donneesSat.at(qMax(0, indx1 - 7)) == '\n')) {
+        QStringList donneesSat = Configuration::instance()->donneesSatellites().split('\n');
+        donneesSat.removeFirst();
 
-                indx1 = donneesSat.lastIndexOf("\n", indx1) + 1;
-                indx2 = donneesSat.indexOf("\n", indx1) - indx1;
-                const QString ligne = donneesSat.mid(indx1, indx2);
+        QStringListIterator it(donneesSat);
+        while (it.hasNext()) {
 
-                if (!ligne.isEmpty()) {
-                    _resultatsSatellitesTrouves.append(ligne);
-                }
+            const QString ligne = it.next();
+            if (ligne.mid(7, 11).contains(cospar, Qt::CaseInsensitive)) {
+                _resultatsSatellitesTrouves.append(ligne);
             }
-        } while (indx1 >= 0);
+        }
 
         if (!_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(124).toUpper().trimmed());
+            _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(125).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
             _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
             _ui->noradDonneesSat->blockSignals(false);
@@ -3593,7 +3573,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         double per = perigee + RAYON_TERRESTRE;
 
         // Nom du satellite
-        QString nomsat = ligne.mid(124).trimmed();
+        QString nomsat = ligne.mid(125).trimmed();
         if (nomsat.toLower() == "iss (zarya)") {
             nomsat = "ISS";
         }
