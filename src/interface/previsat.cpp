@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 avril 2022
+ * >    1er mai 2022
  *
  */
 
@@ -183,6 +183,8 @@ void PreviSat::ChargementConfig()
 
     // Liste des fichiers TLE
     InitFicTLE();
+
+    _onglets->InitChargementOnglets();
 
     /* Retour */
     return;

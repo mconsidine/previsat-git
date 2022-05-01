@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    30 avril 2022
+ * >    1er mai 2022
  *
  */
 
@@ -136,6 +136,11 @@ public:
      */
     void CalculAosSatSuivi() const;
 #endif
+
+    /**
+     * @brief InitChargementOnglets Initialisation du chargement des onglets
+     */
+    void InitChargementOnglets();
 
     /**
      * @brief MettreAJourGroupesTLE Mettre a jour un groupe de TLE
