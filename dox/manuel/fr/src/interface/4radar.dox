@@ -1,0 +1,10 @@
+/**
+\page Radar Radar
+
+Le radar représente le ciel de l'observateur projeté sur un plan.
+
+\image html radar.png
+
+Le cercle extérieur reproduit l'horizon (idéal) de l'observateur et le centre du radar est le zénith du lieu. Les autres cercles concentriques sont les cercles de hauteur 30 et 60 degrés. Les azimuts sont gradués de 30° en 30°. Il est dessiné sur le radar, lorsque ceux-ci sont dans le ciel de l'observateur, le Soleil, la Lune et les satellites sélectionnés. La couleur du fond du radar, qui varie selon la hauteur du Soleil, est purement indicative et ne saurait représenter fidèlement la couleur du ciel.
+
+*/

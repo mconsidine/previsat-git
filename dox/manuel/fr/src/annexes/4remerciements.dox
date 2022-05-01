@@ -1,0 +1,21 @@
+/**
+\page Remerciements Remerciements
+
+Je tiens à remercier tout particulièrement :
+- <b>T.S. Kelso</b> pour les renseignements qu'il m'a communiqués et les nombreuses informations disponibles sur son site www.celestrak.com,
+- <b>David Vallado</b> pour la publication du modèle SGP4 (version 2006) et les méthodes de calcul présentées dans son Fundamental of Astrodynamics and Applications (consulter le site www.celestrak.com pour se le procurer),
+- <b>Jean Meeus</b>, dont l'Astronomical Algorithms fournit des calculs astronomiques indispensables (calcul du jour julien, position du Soleil, temps sidéral...),
+- <b>Michel Casabonne</b>, dont l'aide et les contributions ont permis d'apporter à PreviSat de nouvelles fonctionnalités et d'importantes améliorations,
+- Et les personnes qui ont contribué et m'ont aidé au développement de PreviSat, pour leurs conseils et les tests du logiciel (merci Claudia, Yannis, Rémi, JB, Benoît, Maurice, Jean-Louis, Georges !).
+
+J'adresse également des remerciements aux personnes qui m'ont fait part de leurs appréciations du logiciel.	
+
+Je remercie aussi les personnes qui ont apporté les contributions suivantes au logiciel :
+
+- Traductions<br />
+Anglais : <b> Mr O'Donoghe</b><br /><br />
+
+- Graphisme (icônes, écran de démarrage)<br />
+<b>Claudia Martinez</b>
+
+*/

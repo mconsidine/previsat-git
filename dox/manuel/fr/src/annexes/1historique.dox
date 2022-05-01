@@ -1,0 +1,216 @@
+/**
+\page Historique Historique des versions
+
+<b><span style="color:red;">Version 5.0 (révision 0) :</span><br />
+Février 2019 - Mai 2022 :</b>
+<ul>
+<li>Ajout du suivi des satellites avec un télescope Skywatcher (Windows uniquement).
+<li>Ajout de la vue détaillée pour les transits ISS.
+<li>Ajout de l'affichage des crépuscules civils/nautiques/astronomiques sur la carte du monde.
+<li>Ajout de la phase exacte de la Lune.
+<li>Ajout de nouvelles unités pour les vitesses.
+<li>Ajout de la signification des acronymes pour les catégories d'orbite, les pays ou organisations, et les sites de lancement.
+<li>Ajout de l'affichage des sites de lancement sur la carte du monde.
+<li>Modification de l'affichage des onglets Informations satellite et Options.
+<li>Modification de plusieurs fichiers internes (utilisation du format xml).
+<li>Migration vers Qt5 et refonte entière du logiciel.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 4.0 (révision 8) :</span><br />
+Septembre 2016 – Août 2021</b>
+<ul>
+<li>Ajout des données de phasage.
+<li>Ajout de la fenêtre d’informations.
+<li>Ajout de la NASA TV.
+<li>Ajout des informations des manœuvres ISS.
+<li>Modifications dans le calcul des transits ISS.
+<li>Sauvegarde des préférences d’affichage dans un fichier.
+<li>Mise à jour de tous les groupes de TLE.
+<li>Correction de l’affichage de la ligne du maximum pour les transits ISS.
+<li>Correction de l’affichage du warning lors du téléchargement des TLEs.
+<li>Correction de l’affichage de l’heure locale (cas rares).
+<li>Modification de l’affichage de la fenêtre principale (suppression des flashs Iridium).
+<li>Correction de bugs mineurs.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.5 (révision 5) :</span><br />
+Septembre 2015 – Décembre 2017</b>
+<ul>
+<li>Gestion des grands numéros d'orbite.
+<li>Ajout de l'altitude du marqueur dans les maps des flashs Iridium/MetOp/SkyMed et des transits ISS.
+<li>Ajout des flashs produits par les panneaux solaires des Iridium.
+<li>Ajout des flashs MetOp et SkyMed.
+<li>Ajout de la notification sonore pour le LOS et téléchargement de notifications sonores.
+<li>Ajout de la recherche des données satellites.
+<li>Ajout des informations du signal.
+<li>Ajout de la rotation de l'icône de l'ISS.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.4 (révision 5) :</span><br />
+Octobre 2014 - Septembre 2015</b>
+<ul>
+<li>Ajout de la météo pour le lieu d'observation et pour les bases de la NASA.
+<li>Suppression du flux vidéo Live ISS obsolète.
+<li>Modification de l'affichage du Live ISS pour la plateforme MacOS X.
+<li>Ajout de la magnitude de la Lune.
+<li>Petites améliorations dans le code source.
+<li>Corrections d'affichage.
+<li>Corrections dans la vérification de mise à jour logiciel.
+<li>Corrections dans le gestionnaire de TLE.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.3 (révision 1) :</span><br />
+Novembre 2013 - Septembre 2014</b>
+<ul>
+<li>Ajout de l'ISS Live.
+<li>Ajout de la visualisation du Wall Command Center.
+<li>Ajout de l'option 12h (AM-PM) - 24h.
+<li>Ajout de l'affichage de cartes pour les résultats des prévisions.
+<li>Nouvelle méthode de calcul des éclipses satellite (avec réfraction atmosphérique).
+<li>Correction de l'écart heure légale - UTC dans les calculs de prévisions.
+<li>Correction dans la mise à jour des TLE.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.2 (révision 1) :</span><br />
+Juillet - Novembre 2013</b>
+<ul>
+<li>Modification dans la vérification des mises à jour.
+<li>Ajout d'informations supplémentaires sur les satellites.
+<li>Conservation de la liste des satellites pour chaque fichier du répertoire TLE.
+<li>Affichage de l'âge du TLE dans l'onglet Transits ISS.
+<li>Affichage du statut des satellites Iridium.
+<li>Calcul de la magnitude des satellites Iridium dans la fenêtre principale.
+<li>Correction mineure dans les prévisions de passage.
+<li>Uniformisation du code source pour les plateformes Windows/Linux/MacOS X.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.1 (révision 3) :</span><br />
+Octobre 2012 - Juillet 2013</b>
+<ul>
+<li>Modification de la gestion des fichiers TLE dans l'interface graphique.
+<li>Mode vision nocturne.
+<li>Calcul des paramètres orbitaux adaptés.
+<li>Installateur en ligne (permet également la mise à jour de PreviSat).
+<li>Sauvegarde du paramétrage pour les calculs de prévisions.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 3.0 (révision 5) :</span><br />
+Juillet 2011 - Octobre 2012</b>
+<ul>
+<li>Développement en C++/Qt.
+<li>Nouvelles implémentations des calculs de prévisions, des flashs Iridium, des évènements orbitaux et des transits ISS.
+<li>Calcul des coordonnées du maximum pour les flashs Iridium et les transits ISS.
+<li>Modifications dans l'interface graphique : ajout des planètes, affichage de la SAA (South Atlantic Anomaly).
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 2.3 (révision 4) :</span><br />
+Janvier - Octobre 2011</b>
+<ul>
+<li>Nombreuses modifications internes.
+<li>Ajout de la carte du ciel (avec les constellations et le nom des principales étoiles).
+<li>Affichage maximisé de la carte du monde ou de la carte du ciel.
+<li>Ajout du mode simulation.
+<li>Téléchargement de nouveaux lieux d'observation et de cartes du monde, gestionnaire de téléchargement de TLE.
+<li>Gestion du nom des satellites pour des TLE à 2 lignes.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 2.2 (révision 2) :</span><br />
+Octobre 2009 - Novembre 2010</b>
+<ul>
+<li>Redimensionnement de la fenêtre principale.
+<li>Ajout de l'affichage de la Lune.
+<li>Gestion de plusieurs lieux d'observation sur la carte du monde.
+<li>Calcul des transits de l'ISS devant le Soleil et la Lune.
+<li>Nouvelles options d'affichage.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 2.1 (révision 8) :</span><br />
+Avril - Octobre 2009</b>
+<ul>
+<li>Écriture du modèle SGP4 version 2006 (utilisation de la programmation orientée objet).
+<li>Élaboration de la gestion multi-satellite (enchaînements des calculs, affichage).
+<li>Nouvelle implémentation du calcul des flashs Iridium, de la mise à jour des TLE et de la création de fichiers TLE personnels.
+<li>Ajouts et diverses modifications concernant l'affichage.
+<li>Nombreuses optimisations du code source (utilisation fluide du mode manuel, affichage, prévisions, flashs Iridium, ...).
+<li>Calcul des évènements orbitaux des satellites.
+<li>Capture de la fenêtre au format JPEG ou BMP.
+<li>Téléchargement automatique des TLE.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 2.0 (révision 8) :</span><br />
+Janvier 2008 - Avril 2009</b>
+<ul>
+<li>Nouvelle interface graphique avec VB2005, simplification de son utilisation.
+<li>Réécriture de toutes les procédures : adaptation au langage VB2005, traduction en langage C des procédures contenant de nombreuses opérations mathématiques.
+<li>Nouvelle gestion des lieux d'observation.
+<li>Optimisation significative des prévisions et des flashs Iridium.
+<li>Nouvelles options d'affichage.
+<li>Affichage de la zone d'ombre.
+<li>Variation graduelle du fond coloré du radar en fonction de la hauteur du Soleil.
+<li>Nouvelle méthode de calcul de la zone de visibilité du satellite et de la zone d'ombre.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 1.2 (révision 11) :</span><br />
+Juin - Décembre 2006</b>
+<ul>
+<li>Modification de la disposition des éléments dans l'interface graphique.
+<li>Ajout du radar.
+<li>Création de fichiers TLE personnels et leur mise à jour.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 1.1 (révision 15) :</span><br />
+Décembre 2005 - Juin 2006</b>
+<ul>
+<li>Prévisions des flashs Iridiums (algorithme personnel concernant la magnitude).
+<li>Ajout de la notification sonore et de la zone de visibilité du satellite.
+<li>Ajout du Soleil, du terminateur et de la liste de satellites dans la fenêtre principale.
+<li>Affichage de la trajectoire future du satellite.
+<li>Ajout des Informations satellite.
+<li>Décompression des fichiers TLE au format gz.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 1.0 (révision 114) :</span><br />
+Septembre 2005 - Février 2006</b>
+<ul>
+<li>Écriture du module calculant les modèles orbitaux SGP4/SDP4.
+<li>Affichage numérique de la position (vecteurs position et vitesse, puis dans les différents repères).
+<li>Calcul des prévisions de passage d'un satellite.
+<li>Ajout de la carte du monde.
+<li>Ajout des boutons de raccourcis sur l'interface graphique.
+<li>Ajout du mode Temps réel, de la barre d'état et du calcul des éléments osculateurs.
+<li>Prévision de plusieurs satellites.
+<li>Ajout du mode manuel.
+<li>Sauvegarde des résultats dans un fichier texte.
+<li>Choix parmi plusieurs pas en mode manuel.
+<li>Optimisation du calcul des prévisions.
+</ul>
+
+*/

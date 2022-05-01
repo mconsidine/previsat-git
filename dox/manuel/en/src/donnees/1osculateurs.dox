@@ -1,0 +1,64 @@
+/**
+\page Osculateurs Osculating elements tab
+
+The <b>Osculating elements</b> tab contains the data concerning the position and the velocity of the satellite.
+
+\image html osculateur.png
+
+In this tab, we recall the date, which is identical to that of the Main tab, then the name of the satellite and the 2 lines of the orbital elements of the TLE. These orbital elements are known average, that is to say they do not represent the real orbite at the instant of epoch of the TLE. The osculating elements, true characteristics of the orbit at a given moment, vary with time and represent the orbit that the satellite would follow if all the disturbances which the satellite undergoes disappeared suddenly.
+
+We give first of all under the name of state vector the results provided by the SGP4 model, namely the components of the position vector and the velocity vector in the ECI frame (Earth Centered Inertial). It is possible to have components of the position vector and the velocity vector in the ECEF frame (Earth Centered, Earth Fixed). Then starting from the components given in the ECI frame, we calculate the following osculating elements :
+
+- The <b>semi-major axis (a)</b> of the ellipse, characterizing the size of the orbit,<br />
+
+- The <b>eccentricity (e)</b>, characterizing the shape of the ellipse,<br />
+
+- The <b>inclination (i)</b> of the orbit measured from the celestial equator, always ranging between 0 and 180°. The types of orbit according to the value of the inclination are the following :<br />
+    + The equatorial orbits have an inclination of 0° or 180°,
+    + The direct orbits have an inclination ranging between 0 and 90°,
+    + The retrograde orbits have an inclination ranging between 90° and 180°,
+    + The polar orbits have an inclination of 90°.
+
+- •	The <b>right ascension of ascending node (Ω)</b> is the angle measured between the vernal point and the ascending node of the orbit (point where the satellite crosses the celestial equator plane from the South to the North) and counted along the celestial equator.<br />
+
+- The <b>argument of perigee (ω)</b> is the angle counted along the orbital plane between the ascending node and the perigee (point where the radius vector passes to a minimum).<br />
+
+- The <b>mean anomaly (M)</b> is the angle counted from the perigee to the mean position of the satellite, considering a mean circular orbit.<br />
+
+- The <b>true anomaly (ν)</b> is the angle counted from the perigee to the true position of the satellite.
+
+One deduces from the preceding osculating elements, the <b>perigee</b> (minimum of the radius vector), the <b>apogee</b> (maximum of the radius vector), the <b>orbital period</b> as well as the <b>field of view</b>. The altitudes for perigee and apogee are calculated with the equatorial radius of the Earth.
+
+\image html elements.png
+
+Other orbital elements are available for circular and/or equatorial orbits. For a circular orbit, we define the following elements :
+
+\image html circulaire.png
+
+where &alpha; is named in-orbit position.
+
+For an equatorial orbit, we define :
+
+\image html equatoriale.png
+
+<img src="omega.png" /> is named longitude of perigee.
+
+For a circular equatorial orbit, we define :
+
+\image html equacirc.png
+
+<i>l</i> is named true longitude argument.
+
+We also give some characteristics regarding a possible signal from the satellite :
+- the <b>Doppler shift</b> for a 100 MHz frequency,
+- the <b>free-space path loss</b> for a 100 MHz frequency,
+- the <b>propagation delay</b> in the vacuum (in milliseconds),
+- the <b>orbit phasing</b> written in the following form [ n ; p ; q ] r
+    + n = integer part of the daily phasing frequency,
+    + p / q = fractional part of the daily phasing frequency,
+    + The satellite performs r revolutions in q days,
+    + The approximate number of orbits per day is represented by n + (p / q).
+
+It is possible to save in a text file the values provided in ths tab by clicking on the <b>Save</b> item in the main menu or with the shortcut Ctrl + S.
+
+*/

@@ -1,0 +1,37 @@
+/**
+\page Caracteristiques Technical features
+
+<ol>
+<li>Software development
+
+| Software | Version | Comment |
+|----------|---------|---------|
+| PreviSat | VERSION_PREVISAT | NB_LIGNES_CODE lines of source code |
+| Qt Creator | VERSION_QTCREATOR | IDE |
+| Qt Library | VERSION_LIB_QT | GUI library |
+| CppCheck | VERSION_CPPCHECK | Checking and analyzing of source code |
+| Inno Setup Compiler | VERSION_INNOSETUP | Installation setup for Windows |
+| Tortoise Hg | VERSION_TORTOISEHG | Version control software |
+| UPX | VERSION_UPX | Version control software |
+| doxygen | VERSION_DOXYGEN | Documentation generator |
+<br />
+
+<li>Used Models and constants
+
+| Component | Reference | Author | Comments |
+|-----------|-----------|--------|----------|
+| <center>Propagation model</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev2</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
+| <center>Sun position<br />Moon position<br />Planets position<br />Greenwich sidereal time</center> | <center>Astronomical Algorithms 2nd edition</center> | Meeus | Simplified model. pp163-164<br />Simplified model. pp337-342<br />Simplified model. pp209-216<br />From the formula p88 |
+| <center>Osculating elements</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
+| <center>Atmospheric extinction</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |
+| <center>Catalog of main stars</center> | <center>Bright Star Catalog 5, 1991</center> | Hoffleit | |
+<br />
+
+| Constant | Symbol | Value | Origin |
+|----------|--------|-------|--------|
+| Gravitational geocentric constant<br />Second zonal harmonic<br />Third zonal harmonic<br />Fourth zonal harmonic<br />Flatness of Earth globe<br />Terrestrial equatorial radius | GM<br />J2<br />J3<br />J4<br />f<br />Re | 398,600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
+| Astronomical unit | AU | 149,597,870 km | IAU 1976 |
+| Solar equatorial radius<br />Lunar equatorial radius<br />Magnitude of solar disc center | R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub>| 696,342 km<br />1737.4 km<br />-26.98 | |
+</ol>
+
+*/

@@ -1,0 +1,14 @@
+/**
+\page WCC Visualisation Wall Command Center
+
+Lorsque la case "ISS Live" est cochée, la représentation de la carte du monde est modifiée.
+
+\image html wcc.png
+
+Il est alors possible d'afficher le flux vidéo en direct de l'ISS en cliquant sur le bouton "NASA". La plupart du temps, la caméra à bord de l'ISS pointe en direction du sol. Parfois, elle montre l'intérieur de la station, et on peut voir l'équipage. Lors d'une sortie extravéhiculaire (EVA), la caméra est placée sur le casque d'un astronaute.
+
+\image html iss-live.png
+
+Note : parce qu'il y a un délai dans la diffusion du flux ISS Live, les dates des entrées et de sorties d'éclipse observées sur la vidéo ne sont pas simultanées avec les valeurs affichées par PreviSat.
+
+*/

@@ -1,0 +1,83 @@
+/**
+\page Transits Transits ISS
+
+L’onglet <b>Transits ISS</b> permet de déterminer les conjonctions et les transits de l'ISS devant la Lune et/ou le Soleil. Il est nécessaire de renseigner les dates et heures initiales et finales, le lieu d'observation et le fichier TLE contenant les éléments orbitaux de l'ISS. Il faut également indiquer les corps pour lesquels il faut calculer les transits (Soleil et/ou Lune), la hauteur minimale du satellite et l'élongation maximale avec le corps.
+
+\image html transits.png
+
+Cet onglet fournit également les informations sur les évolutions de la masse de l’ISS (avant manœuvre s’il y en a une), la taille de son orbite (apogée et périgée) et les manœuvres planifiées (variation de vitesse ΔV et durée).
+
+<br />
+\image html resultats-transits.png
+
+Le tableau à gauche résume chaque transit ISS (ou conjonction) avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le transit (ou conjonction) correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît.
+
+Il est possible de sauvegarder un transit ou conjonction sous forme d'image (ligne sélectionnée avec la carte du ciel associée), ou bien de sauvegarder tous les résultats calculés sous forme de fichier texte, présenté de la manière suivante.
+
+\htmlonly
+<font size="2">
+<div style="border: 1px solid grey; padding: 10px">
+<pre>
+PreviSat 5.0.0.10 / Astropedia (c) 2005-2022
+
+Lieu d'observation        : Paris      002°20'55" Est    48°51'12" Nord   30 m
+Fuseau horaire            : UTC
+Conditions d'observations : Hauteur minimale du satellite = 5°
+Unité de distance         : km
+
+Age du TLE le plus récent : 0.19 jours (au 15/01/2022 11:14:00)
+Age du TLE le plus ancien : 0.19 jours
+
+
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2022/01/16 21:28:01.0   126°40'33"  69°45'16"  05h41m26s +34°47'08"  Aur 20.00   C    L   Omb        420.0   445.8  284°09'56" -39°33'14"   000.2990 W  49.1114 N    195.9 (W)
+2022/01/16 21:28:20.6   097°22'53"  58°17'15"  07h04m43s +36°35'44"  Aur 10.81   C    L   Omb 45.1   420.2   488.3  284°14'16" -39°36'21"   001.5495 E  49.6607 N    107.0 (NW)
+2022/01/16 21:28:46.1   084°05'10"  43°33'05"  08h27m47s +34°36'33"  Lyn 20.00   C    L   Omb        420.4   590.8  284°19'56" -39°40'25"   004.0258 E  50.3326 N    204.4 (NNE)
+
+2022/01/17 20:40:33.1   114°50'40"  43°30'45"  06h34m37s +18°32'26"  Gem 20.00   C    L   Omb        419.6   590.0  274°24'35" -31°39'58"   000.3415 W  47.3373 N    261.8 (SW)
+2022/01/17 20:41:09.2   094°42'19"  32°10'38"  07h57m19s +20°48'50"  Cnc  3.80   C    L   Omb 100.8  419.9   735.4  274°31'41" -31°45'53"   003.1576 E  48.5298 N     69.6 (ESE)
+2022/01/17 20:42:13.8   080°17'12"  17°57'01"  09h20m29s +19°44'10"  Leo 20.00   C    L   Omb        420.4  1103.0  274°44'23" -31°56'29"   009.6630 E  50.3683 N    554.6 (ENE)
+
+2022/01/18 01:30:32.6   214°22'05"  48°23'43"  06h59m33s +11°40'48"  Gem 20.00   C    L   Omb        422.1   551.4  014°30'05" -61°06'45"   000.1884 E  47.8045 N    198.1 (SW)
+2022/01/18 01:30:45.9   199°11'22"  48°00'26"  07h38m26s +08°16'28"  CMi 17.29   C    L   Omb 26.9   422.1   554.3  014°36'24" -61°06'12"   001.3344 E  47.3839 N    180.0 (SSW)
+2022/01/18 01:30:59.6   184°54'21"  45°37'10"  08h16m15s +04°34'11"  Hya 20.00   C    L   Omb        422.0   574.0  014°42'55" -61°05'38"   002.4989 E  46.9370 N    213.4 (SSE)
+
+2022/01/18 19:53:41.7   097°10'49"  21°48'21"  07h36m30s +11°44'02"  CMi 20.00   C    L   Omb        419.4   969.8  265°40'16" -23°46'29"   000.7375 W  45.2981 N    459.4 (SSW)
+2022/01/18 19:54:56.0   082°02'56"  11°52'13"  08h49m05s +14°07'15"  Cnc  8.21   C    L   Omb 232.1  420.0  1386.6  265°53'52" -23°58'40"   008.4628 E  48.4519 N    452.6 (E)
+2022/01/18 19:57:33.8   070°29'48"  00°03'01"  09h59m13s +12°43'44"  Leo 20.00   C    L   Omb        421.1  2415.6  266°22'48" -24°24'33"   026.9776 E  52.3538 N   1777.2 (ENE)
+
+2022/01/19 00:42:50.6   188°09'29"  69°26'18"  07h32m41s +28°26'38"  Gem 20.00   C    L   Omb        421.9   448.6  351°02'28" -61°17'49"   000.1430 E  49.2817 N    168.1 (W)
+2022/01/19 00:43:13.3   150°21'15"  58°01'53"  08h50m38s +19°38'11"  Cnc  2.62   C    L   Omb 53.3   421.8   491.4  351°13'27" -61°18'23"   002.2581 E  48.6482 N     23.8 (S)
+2022/01/19 00:43:44.0   134°00'15"  41°16'18"  09h59m14s +08°48'36"  Leo 20.00   C    L   Omb        421.8   615.7  351°28'20" -61°19'09"   005.0281 E  47.7296 N    234.8 (ESE)
+
+2022/01/19 20:42:15.1   067°30'52"  32°28'49"  09h16m07s +38°04'23"  LMi 20.00   C    L   Omb        420.4   731.2  274°57'46" -31°32'47"   016.5278 W  45.7768 N   1463.5 (WSW)
+2022/01/19 20:43:32.4   069°09'29"  15°08'04"  10h11m39s +24°59'53"  Leo  9.53   C    L   Omb 276.3  420.9  1222.1  275°13'01" -31°45'26"   001.8555 E  50.6511 N    203.1 (NNW)
+2022/01/19 20:46:51.4   070°40'29" -01°56'28"  10h57m12s +11°04'35"  Leo 20.00   C    L   Omb        421.6  2585.4  275°52'29" -32°17'59"   029.1883 E  52.5893 N   1928.4 (NE)
+
+2022/01/19 23:55:18.2   102°36'13"  63°04'04"  09h17m02s +37°19'28"  LMi 20.00   C    L   Omb        421.6   469.2  329°20'17" -58°24'45"   000.0401 E  50.1917 N    223.8 (WNW)
+2022/01/19 23:55:45.1   106°17'26"  45°00'40"  10h13m43s +23°42'32"  Leo  8.32   C    L   Omb 73.2   421.6   578.8  329°31'32" -58°26'59"   002.8052 E  49.5476 N     84.1 (NNE)
+2022/01/19 23:56:31.4   108°11'44"  26°58'07"  10h59m20s +09°06'46"  Leo 20.00   C    L   Omb        421.5   839.4  329°50'59" -58°30'50"   007.3400 E  48.2948 N    373.5 (E)
+
+2022/01/20 21:31:44.1   063°58'24"  21°59'27"  10h58m24s +33°20'45"  LMi 20.00   C    L   Omb        421.2   967.8  285°26'50" -39°20'14"
+2022/01/20 21:33:26.2   074°08'26"  08°14'34"  11h09m50s +16°36'49"  Leo  9.57   C    L   Omb 334.9  421.4  1621.7  285°49'47" -39°36'23"   008.6354 E  51.3693 N    529.4 (NE)
+2022/01/20 21:37:19.0   081°10'12" -06°35'38"  11h31m26s +00°47'40"  Vir 20.00   C    L   Omb        421.2  3203.3  286°42'36" -40°13'06"   037.4957 E  47.2183 N   2603.9 (ENE)
+
+2022/01/20 23:07:49.4   083°23'27"  41°55'18"  10h30m39s +34°01'06"  LMi 20.00   C    L   Omb        421.4   608.3  311°34'06" -53°12'23"   002.4714 W  50.5351 N    394.8 (WNW)
+2022/01/20 23:08:38.4   093°13'42"  25°12'55"  11h01m22s +16°41'43"  Leo  7.03   C    L   Omb 163.8  421.3   880.4  311°50'30" -53°18'24"   003.5962 E  49.6298 N    125.3 (NE)
+2022/01/20 23:10:33.3   099°54'41"  08°04'14"  11h30m01s -00°22'04"  Leo 20.00   C    L   Omb        421.1  1633.4  312°29'13" -53°32'23"   015.7753 E  46.5334 N   1038.8 (E)
+
+2022/01/21 22:20:25.6   078°41'23"  27°38'34"  10h49m17s +27°37'32"  LMi 20.00   C    L   Omb        421.1   823.9  297°29'36" -46°33'59"
+2022/01/21 22:22:04.8   089°54'12"  10°50'43"  11h07m54s +08°12'31"  Leo  3.30   C    L   Omb 376.1  421.1  1449.1  297°56'21" -46°48'25"   001.1631 W  47.9944 N    276.9 (WSW)
+2022/01/21 22:26:41.6   097°22'15" -07°30'52"  11h38m43s -10°29'45"  Crt 20.00   C    L   Omb        420.3  3333.9  299°11'57" -47°28'22"   034.0507 E  39.7788 N   2698.4 (E)
+
+
+Temps écoulé : 0.22s
+</pre>
+</font>
+</div>
+\endhtmlonly
+
+<br />
+Le fichier contenant les résultats rappelle dans son entête les conditions d'observation. Les résultats sont présentés sous forme de colonnes qui contiennent la date et l'heure puis les coordonnées de l'ISS (azimut et hauteur, ascension droite, déclinaison et constellation). Nous donnons ensuite l'écart angulaire entre l'ISS et le centre du corps considéré, le type de phénomène (C = Conjonction; T = Transit), le corps (S = Soleil; L = Lune), ainsi que l'état d'éclairement de l'ISS (Ill = Illuminé; Pen = Pénombre; Ecl = Éclipsé). Enfin, nous fournissons l'altitude et la distance du satellite, et les coordonnées topocentriques du Soleil. Les conjonctions de jour avec la Lune ne sont pas affichées dans le fichier résultat, tandis que les conjonctions avec le Soleil sont indiquées (bien que non observables, elles permettent de localiser les endroits où il y a un transit devant le Soleil).
+
+*/

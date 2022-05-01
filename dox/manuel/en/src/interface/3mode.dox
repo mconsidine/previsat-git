@@ -1,0 +1,21 @@
+/**
+\page Mode Mode of use
+
+By default and with each starting, PreviSat is in the <b>Real-time mode</b>, that is to say that the display of the elements of the maps, as well as the numeric data of the Main and Osculating elements tabs, follow the system hour. Various time steps ranging between 1 and 60 seconds can be selected in the drop-down list in the <b>Real time mode</b> for the update of the curves on the maps and the data on the tabs.
+
+The <b>Manual mode</b> can be activated by several different manners :
+
+- By selecting the manual mode in the 'Mode of use' choice list,
+- By pressing the keys :
+
+    + F10 : jump between Real-time and Manual mode and vice versa.
+    + F11 : move back in time by time step specified in the drop-down list. 
+    + F12 : move up in time by time step specified in the drop-down list.
+
+- By double-clicking the date in the \ref "Main" or \ref "Osculating elements" tab.
+
+One can also use the manual mode by modifying the value(s) of the date of the <b>Main</b> tab or the <b>Osculating elements</b> tab (month, day, year, hour, minutes or seconds).
+
+When the manual mode is activated, a toolbar appears on the <b>Main</b> tab making it possible to move automatically during time, from any date.
+
+*/

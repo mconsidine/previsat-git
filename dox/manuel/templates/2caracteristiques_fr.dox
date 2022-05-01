@@ -1,0 +1,37 @@
+/**
+\page Caracteristiques Caractéristiques techniques
+
+<ol>
+<li>Développement informatique
+
+| Logiciel | Version | Commentaires |
+|----------|---------|--------------|
+| PreviSat | VERSION_PREVISAT | NB_LIGNES_CODE lignes de code source |
+| Qt Creator | VERSION_QTCREATOR | EDI |
+| Librairie Qt | VERSION_LIB_QT | Librairie d'interface graphique |
+| CppCheck | VERSION_CPPCHECK | Contrôle et analyse du code source |
+| Inno Setup Compiler | VERSION_INNOSETUP | Setup d'installation pour Windows |
+| Tortoise Hg | VERSION_TORTOISEHG | Logiciel de gestion de version |
+| UPX | VERSION_UPX | Logiciel de compression d'exécutable |
+| doxygen | VERSION_DOXYGEN | Générateur de documentation |
+<br />
+
+<li>Modèles et constantes utilisées
+
+| Composant | Référence | Auteur | Commentaires |
+|-----------|-----------|--------|--------------|
+| <center>Modèle orbital</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev2</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
+| <center>Position du Soleil<br />Position de la Lune<br />Position des planètes<br />Temps sidéral de Greenwich</center> | <center>Astronomical Algorithms 2nd edition</center> | Meeus | Modèle simplifié. pp163-164<br />Modèle simplifié. pp337-342<br />Modèle simplifié. pp209-216<br />D'après la formule p88 |
+| <center>Éléments osculateurs</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
+| <center>Extinction atmosphérique</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |
+| <center>Catalogue d'étoiles</center> | <center>Bright Star Catalog 5, 1991</center> | Hoffleit | |
+<br />
+
+| Constante | Symbole | Valeur | Origine |
+|-----------|---------|--------|---------|
+| Constante gravitationnelle géocentrique<br />Constante d'ellipticité géopotentielle<br />Troisième harmonique zonal<br />Quatrième harmonique zonal<br />Aplatissement du globe terrestre<br />Rayon équatorial terrestre | GM<br />J2<br />J3<br />J4<br />f<br />Re | 398 600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
+| Unité astronomique | UA | 149 597 870 km | UAI 1976 |
+| Rayon équatorial solaire<br />Rayon équatorial lunaire<br />Magnitude du centre du disque solaire | R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub>| 696 342 km<br />1737.4 km<br />-26.98 | |
+</ol>
+
+*/

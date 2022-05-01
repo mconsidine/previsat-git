@@ -1,0 +1,24 @@
+/**
+\page Perso Extraction fichier TLE
+
+L'onglet <b>Extraction fichier TLE</b> permet de créer ses propres fichiers TLE selon différents critères. Il faut indiquer le nom du fichier à lire et le nom du fichier personnel. On peut créer un fichier selon les critères suivants (entre crochets, les entrées par défaut, qui sont aussi les valeurs maximales tolérées) :
+- Le numéro NORAD [Tous],
+- L’ascension droite du noeud ascendant [De 0 à 360°],
+- L’excentricité [De 0 à 1] (la valeur 1 est exclue),
+- Le nombre de révolutions par jour [De 0 à 18],
+- L’inclinaison [De 0 à 180°] (il est possible de définir 2 intervalles),
+- L’argument du périgée [De 0 à 360°],
+- La magnitude maximale [99] (La valeur 99 indique que la magnitude n'est pas un critère de sélection).
+
+\image html extraction.png
+
+Par exemple, on veut construire un fichier contenant les satellites les plus brillants (ceux dont la magnitude standard est connue). On peut alors retenir les critères suivants :
+- Numéro NORAD : Tous
+- Ascension droite du noeud ascendant : De 0 à 360°
+- Excentricité : De 0 à 0.001 (faiblement excentrique; on pourrait tolérer des satellites dont l'orbite est plus excentrique et prendre de 0 à 0.2)
+- Nombre de révolutions par jour : De 14 à 18 (pour garder les satellites à basse altitude, potentiellement les plus brillants)
+- Inclinaison : De 35 à 145° (afin d'être visible des zones tempérées de l'hémisphère Nord du globe)
+- Argument du périgée : De 0 à 360°
+- Magnitude maximale : 4 (Tous les satellites dont la magnitude minimale est en dessous de 4 seront gardés)
+
+*/

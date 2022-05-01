@@ -1,0 +1,14 @@
+/**
+\page WCC Wall Command Center visualization
+
+When the "ISS Live" box is checked, the representation of the world map is changed.
+
+\image html wcc.png
+
+It is then possible to view the live video stream of the ISS by clicking on the "NASA" button. Most of the time, the camera on board the ISS is pointing towards the ground. Sometimes it shows inside of the station, and you may see the crew. During a spacewalk (EVA), the camera is placed on the helmet of an astronaut.
+
+\image html iss-live.png
+
+Note : because there is some delay in the broadcast of Live ISS stream, times of eclipses observed on the video are not simultaneous with values displayed by PreviSat.
+
+*/

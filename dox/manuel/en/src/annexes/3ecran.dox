@@ -1,0 +1,14 @@
+/**
+\page Ecran Screen resolution
+
+The display of text zones can be incorrect in the user interface. In order to solve this problem, you should follow these steps (under Windows 10) :
+<ul>
+<li>Right click on PreviSat icon and choose Properties in the contextual menu,
+<li>Click on the Compatibility tab,
+<li>Click Change high DPI settings,
+<li>Check the thick box under High DPI scaling override,
+<li>In the selection box below it, select System,
+<li>Validate your choices.
+</ul>
+
+*/

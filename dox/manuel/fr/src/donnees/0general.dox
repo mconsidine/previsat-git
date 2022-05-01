@@ -1,0 +1,42 @@
+/**
+\page General Onglet Général
+
+L'onglet <b>Général</b> contient toutes les informations nécessaires pour connaître la position du satellite par défaut par rapport au lieu d'observation.
+
+\image html general.png
+
+Tout d'abord, il est indiqué la date courante, qui peut être celle du système ou bien celle choisie par l'utilisateur. Il est possible de passer du mode Temps réel au mode Manuel en double-cliquant sur l'étiquette contenant la date. Nous rappelons ensuite les coordonnées du lieu d'observation par défaut (nom, longitude, latitude et altitude). Nous affichons également les <b>conditions d'observations</b>, c'est-à-dire une indication sur la hauteur du Soleil (H<sub>S</sub>) :
+- Jour (H<sub>S</sub> > 0°),
+- Crépuscule civil (-6° < H<sub>S</sub> < 0°),
+- Crépuscule nautique (-12° < H<sub>S</sub> < -6°),
+- Crépuscule astronomique (-18° < H<sub>S</sub> < -12°),
+- Nuit (H<sub>S</sub> < -18°).
+
+Nous donnons ensuite le nom du satellite par défaut, ainsi que l'écart en jours entre la date courante et l'époque du TLE. La couleur affectée à l'âge du TLE donne une indication approximative de la qualité du TLE (la couleur verte indique un TLE récent, tandis que la couleur rouge indique un TLE vieux).
+
+Puis, nous avons regroupé les coordonnées du satellite dans différents repères :
+
+- <b>Longitude, latitude et altitude</b> : <br />Ce sont les coordonnées terrestres survolées par le satellite, où l'altitude est calculée par rapport au niveau de la mer en tenant compte de l'aplatissement du globe terrestre. Il s'agit donc du point du globe où le satellite passe au zénith.<br /><br />
+- <b>Hauteur, azimut et distance</b> :<br />Ce sont sans doute les coordonnées les plus utiles pour l'observation, puisqu'elles sont liées directement au lieu d'observation. La hauteur, également appelée angle d'élévation ou angle de site, est l'angle compté verticalement entre l'horizon et le satellite. Cet angle est compris entre 0 et 90° lorsque le satellite est dans le ciel de l'observateur, et négatif lorsqu'il est en-dessous de l'horizon . L'azimut est l'angle compté horizontalement depuis le Nord et croissant vers l'Est. Cet angle, compris entre 0 et 360°, est celui que l'on retrouve sur les boussoles (Nord = 0°, Est = 90°, Sud = 180°, Ouest = 270°). Enfin, on indique la distance entre le satellite et le lieu d'observation (tenant compte de l'aplatissement de la Terre).<br /><br />
+- <b>Ascension droite, déclinaison et constellation</b> :<br />Ces coordonnées servent à repérer le satellite parmi les étoiles. L'ascension droite, dont l'origine est le point vernal situé dans la constellation des Poissons, est comptée par convention de 0 à 24 heures et croissant vers l'Est le long de l'équateur céleste. La déclinaison est l'angle mesuré en degrés de part et d'autre de l'équateur céleste (de 0 à +90° dans l'hémisphère céleste boréal, et de 0 à -90° dans l'hémisphère céleste austral).	
+
+Sont ensuite données diverses informations concernant le mouvement du satellite, c'est-à-dire la direction du satellite sur son orbite (ascendant s'il se déplace du Sud vers le Nord, et descendant dans le cas contraire), la <b>vitesse orbitale</b> et le <b>taux de variation de la distance satellite - observateur</b> (négatif si le satellite se rapproche de l'observateur).
+
+Il est affiché ensuite le <b>nombre d'orbites</b> effectuées depuis le lancement (nombre incrémenté chaque fois que le satellite passe au nœud ascendant). On fournit, lorsque le satellite possède une hauteur positive et n'est pas éclipsé, la magnitude et l'illumination (en %). La valeur de la <b>magnitude</b> et de l’<b>illumination</b> est parfois suivie de lettres (sous la forme X/Y) indiquant si le satellite est en éclipse partielle ou annulaire (Y = P ou Y = A), ainsi que le corps responsable de l’éclipse (X = T pour la Terre, X = L pour la Lune). Par défaut, le calcul de la magnitude prend en compte la luminosité réduite lors des éclipses partielles ou annulaires.
+
+On affiche ensuite la date de la prochaine <b>transition Jour/Nuit</b> (resp. Nuit/Jour), c'est-à-dire les passages pénombre->ombre (resp. ombre->pénombre), ainsi que le délai par rapport à la date courante. On affiche également l'<b>angle beta</b>, c'est-à-dire l'angle entre le plan de l'orbite et la direction du Soleil.
+
+Enfin, on fournit la date du <b>prochain AOS</b> (Acquisition of signal), c'est-à-dire la prochaine date où le satellite sélectionné sera au-dessus de l'horizon du lieu d'observation. Le prochain LOS (Loss of signal) correspond au moment où le satellite disparaît derrière l'horizon. On donne également le délai de l'AOS (resp. du LOS) par rapport à la date courante, ainsi que l'azimut où apparaîtra (resp. disparaîtra) le satellite.
+
+Nous donnons ensuite les coordonnées du Soleil et de la Lune  dans les repères suivants : 
+- Hauteur, azimut, distance,
+- Ascension droite, déclinaison, constellation.
+
+La distance affichée ici est la distance à l'observateur, qui est en général différente de la distance géocentrique. Nous donnons également les informations concernant la phase de la Lune, sa fraction illuminée (en %) et sa magnitude.	
+
+Il est possible d'enregistrer dans un fichier texte les valeurs fournies dans cet onglet en cliquant sur le bouton <b>Enregistrer</b> dans le menu principal ou avec le raccourci Ctrl + S.
+
+
+
+
+*/

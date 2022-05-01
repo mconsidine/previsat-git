@@ -1,0 +1,23 @@
+/**
+\page Raccourcis Key shortcuts
+
+| Key | Shortcurs |
+|-----|-----------|
+| <b><center>F1</center></b> | Displays the help file. |
+| <b><center>F2</center></b> | Displays the information window. |
+| <b><center>F5</center></b> | Update the current TLE file. |
+| <b><center>Ctrl + F5</center></b> | Update the current group of TLE. |
+| <b><center>Alt + F5</center></b> | Update of common TLE groups. |
+| <b><center>Maj + F5</center></b> | Update of all TLE groups. |
+| <b><center>F8</center></b> | Screenshot of main window. |
+| <b><center>F9</center></b> | Toggle world map / sky map. |
+| <b><center>F10</center></b> | Toggle Real-time / Manual mode. |
+| <b><center>F11 (F6 sur MacOS X)</center></b> | Previous step. |
+| <b><center>F12 (F7 sur MacOS X)</center></b> | Next step. |
+| <b><center>Ctrl + M</center></b> | Maximization / Minimization of the map. |
+| <b><center>Ctrl + N</center></b> | Night vision. |
+| <b><center>Ctrl + O</center></b> | Open a TLE file. |
+| <b><center>Ctrl + S</center></b> | Save the tab data in a text file. |
+| <b><center>A…Z</center></b> | Allows to move in the list of satellites when this one is active. |
+
+*/

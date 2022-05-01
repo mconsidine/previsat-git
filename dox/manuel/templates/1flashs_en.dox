@@ -1,0 +1,95 @@
+/**
+\page Flashs Flares
+
+The <b>Flares</b> tab allows to carry out the search of flares produced by MetOp and COSMO-SkyMed satellites, and also by some other satellites.
+
+\image html flashs.png
+
+MetOp satellites (for instance MetOp-A et MetOp-B are orbiting) are big size meteorological satellites (deployed dimensions : 17.6 x 6.6 x 5.0 m), developped by ESA and EUMETSAT. These satellites have an instrument named ASCAT (Advanced Scatterometer) which some antennas can produce flares. The ASCAT instrument measure wind speeds and their direction over oceans. There are 6 of these antennas, 3 pointing left to the ground track, and 3 pointing to right. Those pointing left to the ground track are never illuminated by the Sun and then can't produce flares. MetOp flares can reach a -5 magnitude. MetOp satellites are sun-synchronous, which implies some particularities :
+- There are no flares during winter (except for high latitudes),
+- Flares produced by central antenna are visible in early spring (and will be visible to the tropics during summer),
+- Flares produced by the forward surface of the left antenna are only visible from the Northern hemisphere, while those produced by the backward surface of the left antenna are visible from the Southern hemisphere.
+
+More informations on MetOp satellites are available on the EUMETSAT web site :<br />
+http://www.eumetsat.int/website/home/Satellites/CurrentSatellites/Metop/index.html
+
+\htmlonly <style>div.image img[src="metop-fd.png"]{width:80%; height:80%;}</style> \endhtmlonly 
+@image html metop-fd.png "MetOp satellite model at Cité de l'Espace in Toulouse, France (Source FD)"
+
+\htmlonly <style>div.image img[src="metop.png"]{height:60%;}</style> \endhtmlonly 
+@image html metop.png "Instruments of MetOp satellite (Source EUMETSAT)"
+
+\htmlonly <style>div.image img[src="IMG_JPG_ASCAT_BIG.jpg"]{width:30%; height:30%;}</style> \endhtmlonly 
+@image html IMG_JPG_ASCAT_BIG.jpg "ASCAT instrument (Source EUMETSAT)"
+<br />
+
+COSMO-SkyMed satellites, 4 in number, are managed by the Italian Space Agency (ASI). Placed on a sun-synchronous orbit with a right ascension of the ascending node next to 90° (an approximately 6am local time), they are never in the shadow of the Earth. They are equipped with a synthetic aperture radar (SAR), producing flares when sunlight is reflecting off the surface of the instrument. SkyMed flares can reach a -4 magnitude.
+
+More informations are available on Earth Observation Portal web site :<br />
+https://directory.eoportal.org/web/eoportal/satellite-missions/c-missions/cosmo-skymed
+
+\image html COSMO_SkyMed_satellite.png "COSMO-SkyMed satellite and its SAR antenna  (Source : www.e-geos.it)"
+<br />
+
+It is necessary to give the initial and final dates and hours, and also the location. You have to specify the path of the file containing MetOp and SkyMed satellites. By default, the used file is flares-spctrk.txt. Just like for the Predictions tab, it is necessary to indicate the minimal elevation of the satellite (by default 10°) and the elevation of the Sun, which will make possible to determine the day/night transition. By default, the maximum magnitude for a flare is equal to 2. We can choose to publish the results in the form of one line (the moment when the magnitude value passes by a minimum), or in three lines (the moment of the value of the minimum is surrounded by the dates corresponding to the limiting conditions imposed by the settings of calculation.
+
+\image html resultats-flashs.png
+
+The table summarizes each flare with the most significant informations. By clicking on a row of the table, we display the corresponding flare on the sky map. By double-clicking on a row, a small window displays more informations of the flare.
+
+It is possible to save the selected flare as an image, or save all flares as a text file under the following form.
+
+\htmlonly
+<font size="2">
+<div style="border: 1px solid grey; padding: 10px">
+<pre>
+PreviSat VERSION_PREVISAT / Astropedia (c) ANNEES_DEV
+
+Location                   : Paris 002°20'55" East 48°51'12" North 98 ft
+Timezone                   : UTC + 02:00
+Conditions of observations : Maximal elevation of the Sun = -6°
+                             Minimal elevation of the satellite = 10°
+Range unit                 : nmi
+
+Age of the most recent TLE : 9.52 days (at 12/24/2018 07:08:00p)
+Age of the oldest TLE      : 9.81 days
+
+
+Satellite  Date       Hour    Sat Azimuth Sat Elev    RA Sat   Decl Sat  Cst  Ang Mir Magn  Alt  Range  Sun Azim   Sun Elev  Max Long    Max Lat Range  Max Magn
+SkyMed3 2018/12/24 07:20:07.8p 231°55'15" 68°52'09" 23h22m35s +33°47'11" Peg 15.03 S  +2.0 340.0 362.1 259°19'18" -22°11'12"
+SkyMed3 2018/12/24 07:20:29.5p 217°26'14" 57°54'20" 23h21m46s +21°07'20" Peg 10.61 S  +0.7 339.9 394.4 259°23'07" -22°14'43" 000.5127 E 48.9514 N 135.0 (W) -2.6
+SkyMed3 2018/12/24 07:20:56.3p 210°08'13" 46°05'43" 23h20m48s +08°30'28" Peg 14.74 S  +2.0 339.7 453.4 259°27'49" -22°19'02"
+
+SkyMed1 2018/12/25 07:08:03.5p 160°24'03" 74°49'05" 00h58m43s +34°21'42" And 15.06 S  +2.0 340.1 351.3 257°08'19" -20°08'42"
+SkyMed1 2018/12/25 07:08:29.4p 178°22'39" 60°24'37" 00h38m06s +19°16'18" Psc  6.79 S  -0.5 340.0 385.4 257°12'51" -20°12'52" 003.4530 E 48.6459 N 84.4 (E) -2.6
+SkyMed1 2018/12/25 07:09:03.4p 184°59'18" 44°53'01" 00h21m07s +03°50'18" Psc 14.72 S  +2.0 339.7 461.4 257°18'48" -20°18'19"
+
+SkyMed1 2018/12/26 06:05:10.8a 181°22'25" 51°41'04" 11h29m44s +10°32'41" Leo 13.14 S  +2.0* 339.3 421.0 097°49'43" -24°44'46"
+SkyMed1 2018/12/26 06:05:38.1a 192°11'13" 65°13'26" 11h11m20s +24°28'04" Leo  5.07 S  +0.1* 339.5 370.4 097°54'35" -24°40'19" 001.5537 E 48.6964 N 61.0 (W) -1.5*
+SkyMed1 2018/12/26 06:05:53.7a 208°09'19" 73°20'25" 10h56m28s +33°43'05" LMi  9.75 S  +2.0* 339.6 353.1 097°57'21" -24°37'46"
+
+SkyMed4 2018/12/27 05:59:05.9a 165°50'28" 53°27'55" 12h05m25s +13°01'03" Vir 12.67 S  +2.0* 339.3 412.4 096°37'35" -25°47'32"
+SkyMed4 2018/12/27 05:59:32.2a 166°16'57" 67°47'35" 11h54m36s +27°06'07" Com  4.27 S  +0.0* 339.5 364.0 096°42'17" -25°43'15" 003.0202 E 48.9465 N 50.3 (E) -1.3*
+SkyMed4 2018/12/27 05:59:46.6a 166°56'50" 76°58'15" 11h46m10s +36°05'44" Uma  8.89 S  +2.0* 339.6 347.7 096°44'51" -25°40'54"
+
+SkyMed4 2018/12/27 07:20:05.3p 232°08'20" 69°03'48" 23h34m39s +33°59'13" And 15.03 S  +2.0 340.2 361.9 259°07'51" -21°52'05"
+SkyMed4 2018/12/27 07:20:27.7p 217°11'38" 57°44'37" 23h33m46s +20°55'13" Peg 10.24 S  +0.6 340.1 395.2 259°11'47" -21°55'42" 000.5701 E 48.9469 N 130.8 (W) -2.6
+SkyMed4 2018/12/27 07:20:55.6p 209°47'53" 45°30'13" 23h32m43s +07°52'16" Peg 14.73 S  +2.0 339.9 457.5 259°16'42" -22°00'13"
+
+Elapsed time : 0.11s
+</pre>
+</div>
+</font>
+\endhtmlonly
+
+<br />
+The first column gives the number of the satellite responsible of the flare. Then, successively, there is the date, the hour, the coordinates of the satellite and the constellation. One then give the angle of reflection of the panel, as well as the designation of the concerned panel (cf. fereafter for details). Next are specified the visual magnitude of the flare, the altitude and the range to the satellite, and the coordinates of the Sun. Finally, we give the terrestrial coordinates where the reflection angle reaches a minimum, the range (at the East or at the West to the observer) and its visual magnitude (it is frequently the most luminous magnitude).
+
+For MetOp flares, there are 3 antennas which can produce flares :
+- The central antenna "C",
+- The forward left antenna "F",
+- The backward left antenna "B".
+
+For SkyMed flares, the denomination of the antenna responsible of the flare is given by "S" letter (SAR).
+
+*/

@@ -1,0 +1,49 @@
+/**
+\page Contact Contact - Licence
+
+Ce logiciel est distribué sous la licence GNU GPL version 3. Les données numériques calculées par PreviSat ainsi que les prévisions (passage des satellites, flashs, évènements orbitaux et transits ISS) ne sont soumises à aucune restriction et peuvent être diffusées librement. La dernière version du logiciel peut être téléchargée sur le site de diffusion officielle https://sourceforge.net/projects/previsat/.
+
+Pour toute information, suggestion ou en cas de problème,  n’hésitez pas à envoyer un mail à l'auteur du logiciel à l'adresse suivante : previsat.app@gmail.com.
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+<hr />
+<h3>Donation</h3>
+PreviSat est développé sur mon temps libre et il est entièrement gratuit à l'utilisation (aucune publicité). Toutes les fonctionnalités sont accessibles gratuitement.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+Le développement de PreviSat et sa maintenance sur les principaux systèmes d'exploitation (Windows, Linux et macOS) prennent énormément de temps et de ressources matérielles et logicielles.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+Votre soutien est pour moi une grande motivation pour continuer ce projet et le faire évoluer.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+N'hésitez pas à faire un don par l'un des moyens suivants :<br />
+
+
+\htmlonly
+<div style="text-align: center;>
+<a href="https://www.paypal.com/donate/?hosted_button_id=S34KES6TSVLLN" style="text-decoration: none; color: black">
+<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="S34KES6TSVLLN" />
+<input type="image" src="https://www.paypalobjects.com/en_US/FR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_FR/i/scr/pixel.gif" width="1" height="1" />
+</form><br />
+<b>PayPal</b></a>
+</div>
+\endhtmlonly
+
+<br /><br />
+<a href="https://tipeee.com/previsat" style="text-decoration: none; color: black">
+\htmlonly <style>div.image img[src="tipeee.png"]{width:25%;}</style> \endhtmlonly 
+@image html tipeee.png "Tipeee"</a>
+
+<br /><br />
+<a href="https://utip.io/previsat" style="text-decoration: none; color: black">
+\htmlonly <style>div.image img[src="utip_logo.png"]{width:5%;}</style> \endhtmlonly 
+@image html utip_logo.png "Utip"</a>
+</div>
+
+*/

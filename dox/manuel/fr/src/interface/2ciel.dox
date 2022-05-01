@@ -1,0 +1,12 @@
+/**
+\page Ciel Carte du ciel
+
+La <b>carte du ciel</b> représente le ciel vu depuis le lieu d'observation sélectionné à l'instant donné.
+
+Lorsque ceux-ci ont une hauteur positive, on peut y voir représentés les satellites, le Soleil, la Lune, les principales planètes (de Mercure à Neptune) et les étoiles.
+
+\image html ciel.png
+
+Sur cette capture d’écran prise le 19 juillet 2015, on peut apercevoir l'ISS (horizon Sud-Ouest). Le long de l'écliptique (en jaune), se trouvent les planètes Neptune dans la constellation du Verseau (A	qr) et Uranus dans la constellation des Poissons (Psc).
+
+*/
