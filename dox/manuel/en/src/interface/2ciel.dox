@@ -1,0 +1,12 @@
+/**
+\page Ciel Sky map
+
+The <b>sky map</b> represents the sky seen the place of observation selected at the given instant.
+
+When they have a positive elevation, satellites, the Sun, the Moon, the main planets (from Mercury to Neptun) and stars are displayed.
+
+\image html ciel.png
+
+On this screenshot taken the July 19th, 2015, we can see the satellite ISS near the South-West horizon and it will across the sky. Along the ecliptic (in yellow), we can see Neptun in the Water Bearer constellation (Aqr) and Uranus in the Fishes constellation (Psc).
+
+*/

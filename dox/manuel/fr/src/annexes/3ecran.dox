@@ -1,0 +1,14 @@
+/**
+\page Ecran Résolution d'écran
+
+Il peut arriver que l’affichage des zones de texte ne soit pas correct dans l’interface graphique. Pour régler ce problème d’affichage, il faut procéder de la manière suivante (sur Windows 10) :
+<ul>
+<li>Cliquer droit sur l’icône de PreviSat et choisir Propriétés dans le menu contextuel,
+<li>Cliquer sur l’onglet Compatibilité,
+<li>Cliquer sur le bouton Modifier les paramètres PPP élevés,
+<li>Cocher la case Remplacez le comportement de mise à l’échelle PPP élevée,
+<li>Dans la liste déroulante en-dessous, sélectionner Système,
+<li>Valider les choix effectués.
+</ul>
+
+*/

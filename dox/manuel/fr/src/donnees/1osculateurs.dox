@@ -1,0 +1,64 @@
+/**
+\page Osculateurs Onglet Éléments osculateurs
+
+L'onglet <b>Éléments osculateurs</b> contient les données concernant la position et la vitesse du satellite.
+
+\image html osculateur.png
+
+Dans cet onglet, nous rappelons la date, qui est identique à celle de l'onglet Général, puis le nom du satellite et les 2 lignes des éléments orbitaux du TLE. Ces éléments orbitaux sont dits moyens, c'est-à-dire qu'ils ne représentent pas l'orbite réelle au moment de l'époque du TLE. Les éléments osculateurs, caractéristiques vraies de l'orbite à un instant donné, varient avec le temps et représentent l'orbite que le satellite suivrait si toutes les perturbations que subit le satellite disparaissaient soudainement.
+
+Nous donnons tout d'abord sous le nom de vecteur d'état les valeurs fournies par le modèle SGP4, à savoir les composantes du vecteur position et du vecteur vitesse dans le repère ECI (Earth Centered Inertial). Il est possible d'avoir les composantes des vecteurs position et vitesse dans un repère lié à la Terre (ECEF  Earth Centered, Earth Fixed). Puis à partir des composantes de ces vecteurs exprimées dans le repère ECI, nous calculons les éléments osculateurs suivants :
+
+- <b>Le demi-grand axe (a)</b> de l'ellipse, caractérisant la taille de l'orbite,<br />
+
+- <b>L'excentricité (e)</b>, caractérisant la forme de l'ellipse,<br />
+
+- <b>L’inclinaison (i)</b> de l'orbite par rapport au plan de l'équateur céleste, toujours comprise entre 0 et 180°. Les types d'orbite selon la valeur de l'inclinaison sont les suivants :<br />
+    + Les orbites équatoriales ont une inclinaison de 0° ou de 180°,
+    + Les orbites directes ont une inclinaison comprise entre 0 et 90°,
+    + Les orbites rétrogrades ont une inclinaison comprise entre 90 et 180°,
+    + Les orbites polaires ont une inclinaison de 90°.
+
+- <b>L’ascension droite du nœud ascendant (Ω)</b> est l'angle exprimé en degrés entre le point vernal et le nœud ascendant de l'orbite (point où le satellite traverse le plan de l'équateur céleste du Sud vers le Nord) et compté le long de l'équateur céleste.<br />
+
+- <b>L’argument du périgée (ω)</b> est l'angle en degrés compté le long du plan orbital entre le nœud ascendant et le périgée (point où le rayon vecteur passe par un minimum).<br />
+
+- <b>L’anomalie moyenne (M)</b> est l'angle compté le long du plan orbital depuis le périgée jusqu'à la position moyenne du satellite.<br />
+
+- <b>L’anomalie vraie (ν)</b> est l'angle compté le long du plan orbital depuis le périgée jusqu'à la position vraie du satellite.
+
+On déduit des éléments osculateurs précédents, le <b>périgée</b> (minimum du rayon vecteur), l'<b>apogée</b> (maximum du rayon vecteur), la <b>période orbitale</b> ainsi que le champ de vue. Les altitudes du périgée et de l'apogée sont calculées avec le rayon équatorial terrestre.
+
+\image html elements.png
+
+D'autres éléments orbitaux sont disponibles pour des orbites circulaires et/ou équatoriales. Pour une orbite circulaire on définit les éléments suivants :
+
+\image html circulaire.png
+
+où &alpha; est la position sur orbite (PSO).
+
+Pour une orbite équatoriale, on définit :
+
+\image html equatoriale.png
+
+<img src="omega.png" /> est appelée longitude du périgée.
+
+Pour une orbite circulaire équatoriale, on définit :
+
+\image html equacirc.png
+
+<i>l</i> est appelée argument de longitude vraie.
+
+Nous fournissons également quelques caractéristiques concernant un éventuel signal émis par le satellite :
+- Le <b>décalage Doppler</b> pour une fréquence de 100 MHz,
+- L’<b>atténuation du signal</b> pour une fréquence de 100 MHz,
+- Le <b>délai de propagation</b> du signal dans le vide (en millisecondes),
+- Le <b>phasage de l’orbite</b> écrit sous la forme [ n ; p ; q ] r
+    + n = partie entière de la fréquence de phasage journalière,
+    + p / q = partie fractionnaire de la fréquence de phasage journalière,
+    + Le satellite parcourt r orbites en q jours,
+    + Le nombre moyen d’orbites par jour est représenté par n + (p / q).
+
+Il est possible d'enregistrer dans un fichier texte les valeurs fournies dans cet onglet en cliquant sur le bouton <b>Enregistrer</b> dans le menu principal ou avec le raccourci Ctrl + S.
+
+*/

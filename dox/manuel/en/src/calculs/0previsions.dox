@@ -1,0 +1,103 @@
+/**
+\page Previsions Prediction of passes
+
+The <b>Predictions</b> tab allows to make predictions of passes for one or more satellites above a given place of observation.
+
+\image html previsions.png
+
+It is necessary to supply the initial and final dates and hours, the calculation step as well as the place of location. By default, the initial date is the current date and the initial hour is the current hour truncated to the minute; the date by default is initial date increased by 7 days. The calculation step is initially fixed at one minute.
+
+It is possible to take into account of the magnitude of the satellite by ticking the Maximal magnitude box and by indicating the desired magnitude. This option will only apply to the satellites of which the standard magnitude is known.
+
+Then, it is possible to regulate the minimal elevationwhich the satellite must have for the calculation of the predictions (for example, if the horizon of your place of observation is masked by a building, a mountain or luminous urban pollution). If you choose 'Other' in the drop-down list, you are then invited to select a positive integer value in the adjacent text field.
+
+In the same way, you can parameterize the elevation of the Sun following the criteria below : 
+<ul>
+<li>Horizon (0°),
+<li>Civil twilight (-6°), default value,
+<li>Nautical twilight (-12°),
+<li>Astronomical twilight (-18°),
+<li>Indifferent, all passes will be displayed, including those of day,
+<li>Other..., you are then invited to select an integer value ranging between -90° and +90° in the adjacent text field.
+</ul>
+
+By default the list of satellites dedicated to predictions is filled by the satellites of the main list of satellites. It is possible to add or to eliminate satellites. By right clicking on the list, we can check all the satellites or none. Then just click on the Run button to run the search.
+
+Once calculations are finished, an explicit message appears in the task bar and the results window displays.
+
+\image html resultats-previsions.png
+
+The table summarizes each pass of satellite with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass.
+
+It is possible to save the selected pass as an image, or save all passes as a text file under the following form.
+
+\htmlonly
+<div style="border: 1px solid grey; padding: 10px">
+<center><b>Calculation for the ISS and only for one day</b></center>
+<font size="2">
+<pre>
+PreviSat 5.0.0.10 / Astropedia (c) 2005-2022
+
+Location                   : Paris      002°20'55" East    48°51'12" North   30 m
+Timezone                   : UTC + 02:00
+Conditions of observations : Maximal elevation of the Sun = -6°
+                             Minimal elevation of the satellite = 0°
+Range unit                 : km
+
+Age of the TLE             : 0.13 days (at 05/30/2014 08:03:00)
+
+
+ISS
+   Date      Hour   Sat Azimuth  Sat Elev    RA Sat    Decl Sat  Const Magn  Altitude     Range   Sun Azim    Sun Elev
+2014/05/30 23:27:00  084°05'02"  00°28'42"  20h26m14s +04°14'59"  Del  +9.9*    417.4    2347.7  326°39'55"  -12°35'54"
+
+2014/05/31 01:00:00  105°20'41"  31°55'49"  19h33m45s +14°30'24"  Aql  -1.0*    417.5     735.6  348°12'46"  -18°28'06"
+2014/05/31 01:01:00  086°22'39"  19°31'45"  21h01m43s +16°54'45"  Del  +0.1*    417.9    1040.1  348°27'17"  -18°30'05"
+2014/05/31 01:02:00  078°02'33"  11°23'20"  21h50m24s +16°24'00"  Peg  +1.3     418.3    1409.7  348°41'49"  -18°32'02"
+2014/05/31 01:03:00  073°35'26"  05°47'59"  22h20m30s +15°07'51"  Peg  +3.1     418.6    1803.8  348°56'22"  -18°33'56"
+2014/05/31 01:04:00  070°52'48"  01°39'27"  22h41m05s +13°43'20"  Peg  +6.9     418.8    2208.0  349°10'55"  -18°35'48"
+
+2014/05/31 02:33:00  268°08'57"  14°31'46"  12h00m16s +09°41'30"  Vir  +0.7*    417.6    1242.5  010°57'29"  -18°34'11"
+2014/05/31 02:34:00  274°33'19"  25°36'50"  12h14m41s +21°52'47"  Com  -0.5*    418.0     864.3  011°12'02"  -18°32'17"
+2014/05/31 02:35:00  294°38'41"  46°48'58"  12h50m25s +47°27'48"  CVn  -1.7     418.3     559.1  011°26'34"  -18°30'21"
+2014/05/31 02:36:00  018°13'56"  57°08'34"  20h22m37s +76°19'11"  Cep  -2.0     418.6     492.1  011°41'06"  -18°28'22"
+2014/05/31 02:37:00  056°17'25"  32°15'46"  23h20m52s +45°17'49"  And  -0.9     418.9     732.3  011°55'37"  -18°26'20"
+2014/05/31 02:38:00  065°34'18"  18°09'00"  23h45m10s +29°32'52"  Peg  +0.4     419.0    1092.4  012°10'07"  -18°24'16"
+2014/05/31 02:39:00  069°36'03"  10°09'22"  23h57m15s +21°00'37"  Peg  +1.7     419.1    1486.8  012°24'37"  -18°22'10"
+2014/05/31 02:40:00  071°54'29"  04°47'29"  00h05m45s +15°27'26"  Peg  +3.7     419.2    1893.1  012°39'06"  -18°20'01"
+2014/05/31 02:41:00  073°26'55"  00°51'47"  00h12m22s +11°27'54"  Psc  +8.8     419.2    2303.7  012°53'35"  -18°17'50"
+
+2014/05/31 04:08:00  285°00'21"  03°05'10"  12h13m54s +12°09'39"  Vir  +4.9     418.4    2053.4  033°00'47"  -12°42'00"
+2014/05/31 04:09:00  287°27'45"  07°47'22"  12h19m58s +17°19'08"  Com  +2.3     418.7    1647.3  033°13'56"  -12°36'37"
+2014/05/31 04:10:00  291°28'58"  14°25'19"  12h27m17s +24°53'35"  Com  +0.9     418.9    1250.8  033°27'03"  -12°31'11"
+2014/05/31 04:11:00  299°31'38"  25°04'25"  12h37m47s +37°47'43"  CVn  -0.3     419.1     879.5  033°40'10"  -12°25'43"
+2014/05/31 04:12:00  322°42'32"  43°47'43"  13h07m26s +64°01'42"  Dra  -1.4     419.1     586.7  033°53'15"  -12°20'14"
+2014/05/31 04:13:00  033°08'11"  51°12'19"  23h40m31s +68°46'01"  Cep  -1.7     419.2     527.6  034°06'20"  -12°14'42"
+2014/05/31 04:14:00  070°59'20"  30°44'58"  00h22m16s +34°41'45"  And  -0.7     419.1     759.1  034°19'23"  -12°09'09"
+2014/05/31 04:15:00  082°10'11"  17°38'26"  00h33m51s +18°16'41"  Psc  +0.5     419.0    1112.0  034°32'26"  -12°03'34"
+2014/05/31 04:16:00  087°10'57"  09°54'19"  00h41m36s +09°17'17"  Psc  +1.9     418.9    1502.2  034°45'27"  -11°57'57"
+2014/05/31 04:17:00  090°03'42"  04°38'06"  00h48m02s +03°26'53"  Psc  +3.9     418.7    1905.8  034°58'27"  -11°52'18"
+2014/05/31 04:18:00  091°58'14"  00°45'31"  00h53m30s -00°43'30"  Cet  +9.3     418.5    2314.6  035°11'26"  -11°46'37"
+
+
+Elapsed time : 0.01s
+</pre>
+</font>
+</div>
+\endhtmlonly
+
+We point out in the header of the results file the place of location, the time zone, as well as the conditions of observation (here, conditions by default).
+
+We then display for each satellite the list of its passes (here 4 passes), separated one from another by a line jump. Each pass is made up, as we can see, from date and hour, followed by its characteristics. First of all, the azimuth and the elevation of the satellite, then the right ascension, the declination and the constellation. If the standard magnitude of the satellite is known, the visual is then calculated by means of the following formula :
+
+\image html magnitude.png
+
+where d is the range to the observer and I the illumination. The magnitude is sometimes followed by an asterisk, meaning that the satellite is in the penumbra of the Earth. If standard magnitude is not known, the magnitude column only contains question marks (????). In the case that the satellite illumination is not required, for the instants where the satellite is in the shadow of the Earth, the magnitude column only contains dashes (----).
+
+Next are given the altitude and the range to the satellite, then horizontal coordinates of the Sun (azimuth and elevation).
+
+The nonvisible satellites for the search period are not mentionned in the result file.
+
+Finally the time necessary to carry out the search is specified. This time depends in particuliar on the machine and the availability of its resources, as well as quality of search algorithm. This time is lenghtened if one chooses a long time interval and/or a short calculation step and/or a great number of satellites.
+
+*/

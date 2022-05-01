@@ -1,0 +1,45 @@
+/**
+\page Configuration Configuration
+
+\image html configuration.png
+
+Cet onglet contient une liste de cases à cocher permettant d'activer ou de désactiver l'affichage des éléments de l'interface graphique et de la configuration du logiciel. Plusieurs cases à cocher comportent 3 états possibles :
+
+Case <b>Nom des satellites</b> :
+- <b>Coché</b> : les noms des satellites sélectionnés sont affichés,
+- <b>Partiellement coché</b> (l'affichage varie suivant la configuration du système) : le nom du satellite par défaut est affiché,
+- <b>Décoché</b> : l'affichage des noms des satellites est désactivé.
+
+Case <b>Zone de visibilité</b> :
+- <b>Coché</b> : les zones de visibilité de tous les satellites sélectionnés sont affichées,
+- <b>Partiellement coché</b> : la zone de visibilité du satellite par défaut est affichée,
+- <b>Décoché</b> : l'affichage des zones de visibilité est désactivé.
+
+Case <b>Radar</b> :
+- <b>Coché</b> : le radar ne s'affiche que si un satellite est présent dans le ciel du lieu d'observation,
+- <b>Partiellement coché</b> : le radar s'affiche en permanence,
+- <b>Décoché</b> : l'affichage du radar est désactivé.
+
+Case <b>Affichage des constellations</b> :
+- <b>Coché</b> : les lignes de constellation sont affichées, ainsi que les noms des constellations lorsque l'affichage maximisé de la carte est activé,
+- <b>Partiellement coché</b> : les lignes de constellation sont affichées,
+- <b>Décoché</b> : l'affichage des lignes de constellation et les noms des constellations sont désactivés.
+
+Case <b>Nom des lieux d'observation</b> :
+- <b>Coché</b> : les noms de tous les lieux d'observation sont affichés,
+- <b>Partiellement coché</b> : le nom du lieu d'observation par défaut est affiché, les autres lieux d'observation sont uniquement indiqués par une croix blanche,
+- <b>Décoché</b> : le nom du lieu d'observation par défaut est affiché.
+
+Une première liste de choix permet de choisir les unités de distance affichées dans PreviSat. Pour les satellites ainsi que la Lune, l'unité peut être soit kilomètres, soit miles (1 mile = 1.609344 km); l'altitude du lieu d'observation et les dimensions du satellite sont alors exprimées respectivement en mètres ou en pieds (1 pied (ft) = 0.3048 m). La distance du Soleil est toujours donnée en unités astronomiques (1 UA = 149 597 870 km = 92 955 807 miles).
+
+<b>Note</b> : Après la saisie d'un nouveau lieu d'observation lorsque l'unité est le pied, l'altitude affichée peut différer légèrement par rapport à la valeur entrée, car PreviSat sauvegarde l'altitude en mètres avec une valeur entière. Cela n'a aucune incidence sur les calculs effectués par PreviSat.
+
+Une deuxième liste de choix permet d'afficher les heures au format 24h ou au format 12h (AM/PM).
+
+Une troisième liste de choix permet de sélectionner l'écart Heure locale - UTC; il est possible de changer la valeur de cet écart. La case Auto, lorsqu'elle est cochée, permet de déterminer automatiquement cet écart :
+- Si la case Auto est cochée au moment de la fermeture de PreviSat, l'écart sera déterminé avec la valeur système lors du prochain démarrage du logiciel.
+- Sinon, l'écart sera donné par la valeur indiquée dans le champ lors du prochain démarrage de PreviSat.
+
+Il est possible de sauvegarder les préférences d’affichage dans un fichier.
+
+*/

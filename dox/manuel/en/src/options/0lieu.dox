@@ -1,0 +1,16 @@
+/**
+\page Lieu Location
+
+\image html observateur.png
+
+The first list in the Location tab contains the various categories of places of observation (initially France, World and My Favorites).
+- The category France comprises the main towns of Metropolitan France.
+- The category World contains the coordinates of almost 1700 cities in the world.
+
+While clicking on an element of this first list, one reveals in the second list the names of the places of the category. When a place of observation is selected, its coordinates are displayed on the right-hand side of the tab. While clicking on the small arrows, one can select the locations for the application.
+
+By right-clicking on an element in the Location in the category list, one can choose to remove it or to add it in the My Favorites category. For the manual addition of a place in a category, it is necessary to seize the name of the place of observation, its longitude and its latitutde. (given for example by a GPS device). The altitude can be neglected if it is not known because its value has small effect on calculations.
+
+It is possible to create or remove a category (except the category My Favorites), or to download new categories by right-clicking on the list Selection of the category.
+
+*/

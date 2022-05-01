@@ -1,0 +1,48 @@
+/**
+\page Contact Contact - License
+
+This software is under the GNU GPL license version 3. The numerical results can be distributed freely, as well as predictions (passes of the satellites, flares, orbital events and ISS transits) have no restrictions. The lastest version of the software can be downloaded freely on the official release web site https://sourceforge.net/projects/previsat/.
+
+For any information, suggestion or in the event of a problem, send an e-mail to the author of the software at the following address : astropedia@free.fr.
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+<hr />
+<h3>Donation</h3>
+PreviSat is developed in my spare time and is completely free to use (no ads). All functionalities are accessible free of charge.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+The development of PreviSat and its maintenance on the main operating systems (Windows, Linux and macOS) take an enormous amount of time and hardware and software resources.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+Your support is a great motivation for me to continue this project and make it evolve.
+</div>
+
+<div style="text-align: justify; margin-right: 15%; margin-bottom: 5px">
+Feel free to make a donation by one of the following means :<br />
+
+
+\htmlonly
+<div style="text-align: center;>
+<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="S34KES6TSVLLN" />
+<input type="image" src="https://www.paypalobjects.com/en_US/FR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_FR/i/scr/pixel.gif" width="1" height="1" />
+</form><br />
+<b>PayPal</b>
+</div>
+\endhtmlonly
+
+<br /><br />
+<a href="https://tipeee.com/previsat" style="text-decoration: none; color: black">
+\htmlonly <style>div.image img[src="tipeee.png"]{width:25%;}</style> \endhtmlonly 
+@image html tipeee.png "Tipeee"</a>
+
+<br /><br />
+<a href="https://utip.io/previsat" style="text-decoration: none; color: black">
+\htmlonly <style>div.image img[src="utip_logo.png"]{width:5%;}</style> \endhtmlonly 
+@image html utip_logo.png "Utip"</a>
+</div>
+
+*/

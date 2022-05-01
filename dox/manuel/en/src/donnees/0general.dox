@@ -1,0 +1,39 @@
+/**
+\page General Main tab
+
+The <b>Main</b> tab contains all necessary information to know the position of the satellite with regards to the place of observation.
+
+\image html general.png
+
+First of all, the current date is indicated, which can be that of the system or that chosen by the user. It is possible to pass from the Real-time mode to the Manual mode by double-clicking on the label containing the date. We then point out the coordinates of the default place of observation (name, longitude, latitude, altitude). We also give the conditions of observation, that is an indication about the Sun's elevation (H<sub>S</sub>) :
+- Day (H<sub>S</sub> > 0°),
+- Civil twilight (-6° < H<sub>S</sub> < 0°),
+- Nautical twilight (-12° < H<sub>S</sub> < -6°),
+- Astronomical twilight (-18° < H<sub>S</sub> < -12°),
+- Night (H<sub>S</sub> < -18°).
+
+We then give the name of the default satellite, as well as the time elapsed since the epoch of the TLE. The color assigned to the age of the TLE give an approximative indication about its accuracy (the green color indicates a recent TLE, instead of the red color indicates an old TLE).
+
+Then, we grouped the coordinates of the satellite in various reference frames :
+
+- <b>Longitude, latitude et altitude</b> : <br />They are the terrestrial coordinates over flown by the satellite, where the altitude is calculated compared to the sea level by taking into account the flatness of the terrestrial globe. Longitude and latitude over flown are thus the point of the globe where the satellite passes to the zenith.<br /><br />
+- <b>	Elevation, azimuth and range</b> :<br />They are undoubtly the most useful coordinates for the observation, since they are related to the place of observation. The elevation, also called site angle, is the angle counted vertically between the horizon and the satellite. This angle is between 0 and 90° when the satellite is above the horizon, and negative when it is below the horizon . The azimuth is the angle counted horizontally from North and increasing towards the East. This angle, ranging between 0 and 360°, is that which one finds on compasses (North = 0°, East = 90°, South = 180°, West = 270°). Finally, we put the range between the satellite and the place of observation (taking into account of the flatness of the Earth).<br /><br />
+- <b>	Right ascension, declination and constellation</b> :<br />These coordinates are used to locate the satellite among stars. The right ascension, of which the origin is the vernal point located in the constellation of Fishes, is counted by convention from 0 to 24h and increasing towards the east along the celestial equator. The declination is the angle measured indegrees from one side of the celestial equator to the other (from 0 to +90° in the boreal celestial hemisphere, and from 0 to -90° in the southern celestial hemisphere).
+
+Given next is various information concerning the motion of the satellite, that is to say the direction of the satellite on its orbit (ascending as it moves from South to North, and descending in the contrary case), the <b>orbital velocity</b> and the <b>range rate</b> (negative if the satellite is approaching the observer).
+
+The number of orbits carried out since the launch is then displayed (number increased each time the satellite passes to the ascending node). One provides, when the satellite has a positive elevation and is not eclipsed, the <b>magnitude</b> and the <b>illumination</b> (in %). The magnitude and illumination values are sometimes followed by letters (for instance X/Y) if the satellite is in partial or annular eclipse (Y = P or Y = A), and also the body responsible of the eclipse (X = E for the Earth, X = M for the Moon). By default, the calculation of the magnitude takes into account the reduced luminosity when the satellite is in partial or annular eclipses.
+
+We then display the next Day/Night transition (resp. Night/Day), that is to say passes penumbra->shadow (resp. shadow->penumbra), and also the delay to the current date. We show beta angle, which is the angle between orbital plane and Sun's direction.
+
+Finally, we show the next AOS date (Acquisition of signal), that is to say the next date when the selected satellite will be above the horizon of the location. The next LOS (Loss of signal) is the time when the satellite passes below the horizon. We also give the delay of the AOS (resp. LOS) relative to the current date, and the azimuth where the satellite will appear (resp. disappear).
+
+We then give the coordinates of the Sun and the Moon  in the following reference frames : 
+- Elevation, azimuth, range,
+- Right ascension, declination, constellation.
+
+The range given here is the range to the observer, which is generally different from geocentric range. We also give the informations about the Moon phase, its illuminated fraction (in %) and its magnitude.
+
+It is possible to save in a text file the values provided in ths tab by clicking on the Save item in the main menu or with the shortcut Ctrl + S.
+
+*/

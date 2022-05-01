@@ -1,0 +1,19 @@
+/**
+\page Lieu Lieu d'observation
+
+\image html observateur.png
+
+La première liste de l'onglet <b>Lieu d'observation</b> contient les différentes catégories de lieux d'observation (initialement : France, Monde et Mes Préférés).
+
+<ul>
+<li>La catégorie France comporte les principales communes de la France Métropolitaine.
+<li>La catégorie Monde contient les coordonnées de près de 1700 villes du monde.
+</ul>
+
+En cliquant sur un élément de cette première liste, on fait apparaître dans la seconde liste les noms des lieux d'observation de la catégorie. Lorsqu'on sélectionne un lieu d'observation, ses coordonnées s'affichent à la droite de l'onglet. En cliquant sur les petites flèches, on peut sélectionner les lieux d'observation pour l'application.
+
+En cliquant droit sur un élément de la liste <b>Lieux d'observation</b>, on peut choisir de le supprimer ou de l'ajouter à la catégorie <b>Mes Préférés</b>. Pour l'ajout manuel d'un lieu dans une catégorie, il faut saisir le nom du lieu d'observation, ainsi que sa longitude et sa latitude (donnés par exemple par un GPS). L'altitude peut être négligée si elle n'est pas connue, en effet, sa valeur n'a que peu d'influence sur les calculs.
+
+Il est possible de créer, de supprimer une catégorie (sauf la catégorie <b>Mes Préférés</b>), ou de télécharger de nouvelles catégories en cliquant droit sur la liste <b>Sélection de la catégorie</b>.
+
+*/

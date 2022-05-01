@@ -1,0 +1,21 @@
+/**
+\page Mode Mode de fonctionnement
+
+Par défaut et à chaque démarrage, PreviSat est dans le mode <b>Temps réel</b>, c'est-à-dire que l'affichage des éléments de la carte du monde, ainsi que les données numériques des onglets Général et Éléments osculateurs, suivent l'heure du système d’exploitation. Différents pas de temps compris entre 1 et 60 secondes peuvent être choisis dans la liste déroulante en mode <b>Temps réel</b> pour le rafraichissement des données numériques ainsi que les courbes sur la carte du monde ou la carte du ciel.
+
+Le <b>Mode manuel</b> est activable de plusieurs manières différentes :
+
+- En cochant le Mode manuel dans la liste de choix 'Mode de fonctionnement',
+- En appuyant sur les touches :
+
+    + F10 : basculer du Temps réel vers le Mode manuel et vice versa.
+    + F11 : reculer dans le temps par pas de temps spécifié dans la liste déroulante. 
+    + F12 : avancer dans le temps par pas de temps spécifié dans la liste déroulante.
+	
+- En double-cliquant sur la date dans l'onglet \ref General "Général" ou \ref Osculateurs "Éléments osculateurs".
+
+On peut également utiliser le mode manuel en modifiant la (les) valeur(s) de la date de l'onglet \ref General "Général" ou \ref Osculateurs "Éléments osculateurs" (jour, mois, année, heures, minutes ou secondes).
+
+Lorsque le mode manuel est activé, une barre d'outils de simulation apparaît sur l'onglet \ref General "Général" permettant de se déplacer automatiquement au cours du temps, à partir de n'importe quelle date.
+
+*/

@@ -1,0 +1,19 @@
+/**
+\page Telescope Suivi avec un télescope
+
+Cette fonctionnalité, uniquement sous Windows, permet de suivre un satellite artificiel au moyen d'un télescope Skywatcher.
+
+\image html telescope.png
+
+Sur cet onglet est affiché le prochain passage du satellite sélectionné dans la liste, à savoir :
+<ul>
+<li>la date de lever et l'azimut correspondant (si le satellite est déjà dans le ciel, on affiche sa hauteur et son azimut)
+<li>la hauteur maximale du passage
+<li>la date de coucher et l'azimut correspondant
+</ul>
+
+Si on choisit une hauteur minimale différente de 0°, les dates de lever et de coucher sont alors les dates pour lesquelles le satellite passe à la hauteur choisie.
+
+En cliquant sur le bouton <b>Générer les positions</b>, PreviSat produit un fichier contenant les positions du satellite avec le pas spécifié. Ce fichier devra être ouvert avec le logiciel de Skywatcher pour être envoyé à la monture pour suivre le satellite.
+
+*/

@@ -1,0 +1,10 @@
+/**
+\page Radar Radar
+
+The radar represents the sky of the observer projected on a plan.
+
+\image html radar.png
+
+The external circle reproduces the (ideal) horizon of the observer and the center of the radar is the zenith of the place. The other concentric circles are the circles of a height of 30 and 60 degrees. The azimuths are graduated by steps of 30 degrees. It is drawn on the radar, when they are in the sky of the observer, the Sun, the Moon and the selected satellites. The color of the radar is purely indicative and should not represent exactly the color of the sky.
+
+*/

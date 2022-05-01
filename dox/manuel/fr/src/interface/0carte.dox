@@ -1,0 +1,31 @@
+/**
+\page Carte Carte du monde
+
+Lorsqu'elle est affichée, la carte du monde est le principal élément visuel de l'interface graphique.
+
+\image html monde.png
+
+Sur celle-ci apparaissent de nombreux éléments dont les plus importants sont les lieux d'observation, représentés par une croix blanche et les satellites, représentés par un petit disque coloré. Des étiquettes avec leurs noms sont assignées respectivement à ces deux types d’éléments. La couleur du disque représentant le satellite varie selon l'état d'éclairement du satellite :<br />
+- Le disque est jaune si le satellite est éclairé par le Soleil,
+- Le disque est vert si le satellite est situé dans la pénombre de la Terre (ou de la Lune),
+- Le disque est rouge si le satellite est situé dans l'ombre de la Terre (ou de la Lune).
+
+Le contour blanc autour du satellite représente la <b>zone de visibilité</b> du satellite, celui-ci est donc visible depuis l'ensemble des points du globe situés à l'intérieur de cette zone. Dans la réalité, la forme de la zone de visibilité est toujours un cercle (abstraction faite de l'aplatissement du globe terrestre), mais la projection sur le planisphère peut donner lieu à des formes variées.
+
+On dessine également la <b>trace</b> au sol des orbites futures du satellite. La couleur de cette courbe est bleue claire lorsque le satellite est éclairé par le Soleil, verte lorsque le satellite est dans la pénombre de la Terre, et rouge lorsque le satellite est dans l'ombre de la Terre.
+
+Le <b>Soleil</b> est dessiné par un disque jaune sur la carte. Pour un lieu d'observation dont les coordonnées géographiques se confondent avec le centre du disque solaire, ce dernier se trouve au zénith du lieu d'observation considéré.
+
+La <b>zone d'ombre</b> est la région du globe située dans la nuit. On peut observer l'évolution de la position de la zone d'ombre au cours de la journée (alternance jour/nuit) et de sa forme au cours de l'année (saisons).
+
+La <b>Lune</b> est également représentée sur la carte du monde, et sa phase y est dessinée telle qu'elle apparaît dans le ciel de l'observateur.
+
+La taille du disque solaire n'est pas représentative de la réalité, tout comme la taille des disques représentant les satellites et la Lune.
+
+Sur la carte du monde est également affichée la grille des coordonnées géographiques graduée de 30 en 30 degrés, ainsi que les tropiques. Le méridien au centre de la carte est le méridien de Greenwich.
+
+Tous les éléments décrits ci-dessus (sauf le lieu d'observation par défaut) peuvent être masqués en décochant les cases de l'onglet \link Configuration \endlink.
+
+Il est aussi possible de sélectionner le satellite par défaut en cliquant sur le dessin du satellite sur la carte du monde (ou sur le radar), ou bien en faisant clic droit sur la liste de satellites.
+
+*/

@@ -1,0 +1,8 @@
+/**
+\page Wall Wall Command Center
+
+Cet onglet permet de gérer les options d'affichage lorsque la visualisation du Wall Command Center est activée (lorsque la case "ISS Live" est cochée).
+
+\image html wcc-options.png
+
+*/
