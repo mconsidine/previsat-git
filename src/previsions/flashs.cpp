@@ -368,12 +368,12 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
         if (tmp < ang) {
             ang = tmp;
             j = i;
-            _mir = (sts.nomsat.toLower().contains("metop")) ? LISTE_MIR[j] : 'S';
+            _mir = (sts.nomsat.contains("metop", Qt::CaseInsensitive)) ? LISTE_MIR[j] : 'S';
             _direction = vecteur3;
         }
     }
 
-    _pan = (sts.nomsat.toLower().contains("metop")) ? LISTE_PAN[j] : 0;
+    _pan = (sts.nomsat.contains("metop", Qt::CaseInsensitive)) ? LISTE_PAN[j] : 0;
 
     /* Retour */
     return (ang);
@@ -858,7 +858,7 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
     const double angDeg = angle * RAD2DEG;
 
     /* Corps de la methode */
-    if (satellite.tle().nom().toLower().contains("metop")) {
+    if (satellite.tle().nom().contains("metop", Qt::CaseInsensitive)) {
 
         // Magnitude pour l'instrument ASCAT (satellites MetOp)
         if (_pan == 1) {

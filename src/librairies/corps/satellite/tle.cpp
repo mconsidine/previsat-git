@@ -284,7 +284,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringL
 
                             const QString donnee = donneesSat.mid(idx, lgRec);
                             tle._donnees = Donnees(donnee);
-                            lig0 = donnee.mid(124).trimmed();
+                            lig0 = donnee.mid(125).trimmed();
                         }
                     }
                 } else {
@@ -704,7 +704,7 @@ QString TLE::RecupereNomsat(const QString &lig0)
         nomsat = "ISS";
     }
 
-    if ((nomsat.toLower().contains("iridium")) && (nomsat.contains("["))) {
+    if ((nomsat.contains("iridium", Qt::CaseInsensitive)) && (nomsat.contains("["))) {
         nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
     }
 
