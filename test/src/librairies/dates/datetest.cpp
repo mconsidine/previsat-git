@@ -62,11 +62,7 @@ void DateTest::testAll()
     Date::Initialisation(dirLocalData);
 
     testDates();
-    if (locale == "fr") {
-        testToLongDate();
-    } else {
-        qInfo("Fonction ToLongDate non testee");
-    }
+    testToLongDate();
     testToQDateTime();
     testToShortDate();
     testToShortDateAMJ();

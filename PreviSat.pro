@@ -184,7 +184,7 @@ FORMS += \
     src/interface/apropos.ui         \
     src/interface/carte.ui           \
     src/interface/ciel.ui            \
-    src/interface/coordiss.ui \
+    src/interface/coordiss.ui        \
     src/interface/gestionnairetle.ui \
     src/interface/informations.ui    \
     src/interface/onglets.ui         \

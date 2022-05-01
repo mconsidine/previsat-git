@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    30 avril 2022
+ * >    1er mai 2022
  *
  */
 
@@ -134,36 +134,6 @@ Onglets::Onglets(QWidget *parent) :
     _indexOption = 0;
     _indexMajTLE = 0;
     _nbInformations = 2;
-    _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
-
-    // Initialisation au demarrage
-    InitAffichageDemarrage();
-
-#if (BUILD_TEST == false)
-
-    // Chargement des groupes de TLE (onglet Outils)
-    AffichageGroupesTLE();
-
-    // Chargement des fichiers de preference
-    InitFicPref(false);
-    ChargementPref();
-
-    // Chargement des stations
-    InitChargementStations();
-
-    // Chargement des fichiers d'observation
-    InitFicObs(true);
-    if (_ui->categoriesObs->count() > 0) {
-        _ui->categoriesObs->setCurrentRow(0);
-        _ui->ajdfic->setCurrentIndex(0);
-    }
-
-    // Chargement des fichiers images de cartes du monde
-    InitFicMap(false);
-
-    // Chargement des fichiers sons (pour les AOS et LOS)
-    InitFicSon();
-#endif
 }
 
 /*
@@ -1825,6 +1795,51 @@ void Onglets::CalculAosSatSuivi() const
 #endif
 
 /*
+ * Initialisation du chargement des onglets
+ */
+void Onglets::InitChargementOnglets()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
+
+    // Initialisation au demarrage
+    InitAffichageDemarrage();
+
+#if (BUILD_TEST == false)
+
+    // Chargement des groupes de TLE (onglet Outils)
+    AffichageGroupesTLE();
+
+    // Chargement des fichiers de preference
+    InitFicPref(false);
+    ChargementPref();
+
+    // Chargement des stations
+    InitChargementStations();
+
+    // Chargement des fichiers d'observation
+    InitFicObs(true);
+    if (_ui->categoriesObs->count() > 0) {
+        _ui->categoriesObs->setCurrentRow(0);
+        _ui->ajdfic->setCurrentIndex(0);
+    }
+
+    // Chargement des fichiers images de cartes du monde
+    InitFicMap(false);
+
+    // Chargement des fichiers sons (pour les AOS et LOS)
+    InitFicSon();
+#endif
+
+    /* Retour */
+    return;
+}
+
+/*
  * Mettre a jour un groupe de TLE
  */
 void Onglets::MettreAJourGroupeTLE(const QString &groupe)
@@ -2427,6 +2442,7 @@ void Onglets::InitAffichageDemarrage()
     _nbOnglets--;
 #endif
 
+    const bool etat1 = _ui->policeWCC->blockSignals(true);
     _ui->policeWCC->clear();
 #if defined (Q_OS_WIN)
     _ui->policeWCC->addItem("Lucida Console");
@@ -2442,6 +2458,7 @@ void Onglets::InitAffichageDemarrage()
 #endif
 
     _ui->policeWCC->setCurrentIndex(settings.value("affichage/policeWCC", 0).toInt());
+    _ui->policeWCC->blockSignals(etat1);
 
     _ui->enregistrerPref->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
 
@@ -2696,8 +2713,9 @@ void Onglets::InitFicObs(const bool alarme)
 
                     if (fic == "preferes.xml") {
                         ficObs.insert(0, fic);
-                        _ui->categoriesObs->insertItem(0, tr("Mes Préférés"));
-                        _ui->ajdfic->insertItem(0, tr("Mes Préférés"));
+                        const QString categorie = tr("Mes Préférés");
+                        _ui->categoriesObs->insertItem(0, categorie);
+                        _ui->ajdfic->insertItem(0, categorie);
 
                     } else {
                         ficObs.append(fic);
