@@ -585,8 +585,8 @@ void Afficher::on_actionEnregistrerTxt_triggered()
                         flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
                                    "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
                                    "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                                   "Constellation, Angle, Type, Body, Illumination, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
-                                   "Longitude of the maximum, Latitude of the maximum, Range from the maximum")
+                                   "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
+                                   "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")
                              << endl;
                         ecrireNomColonnes = false;
                     }
