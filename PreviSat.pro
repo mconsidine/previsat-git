@@ -263,6 +263,8 @@ equals(BUILD_TEST, true) {
         DESTDIR = release
     }
 
+    CONFIG += lrelease
+
     ICON = resources/icone.ico
     win32:RC_FILE = icone.rc
     mac:ICON = resources/icone.icns
