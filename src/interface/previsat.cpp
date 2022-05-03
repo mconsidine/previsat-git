@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mai 2022
+ * >    3 mai 2022
  *
  */
 
@@ -455,10 +455,43 @@ void PreviSat::GestionPolice()
             afin = true;
         }
     }
+
     police.setPointSize(taillePolice);
     setFont(police);
-
     Configuration::instance()->setPolice(police);
+
+    const int index = settings.value("affichage/policeWCC", 0).toInt();
+    const bool etat = _onglets->ui()->policeWCC->blockSignals(true);
+    _onglets->ui()->policeWCC->clear();
+
+#if defined (Q_OS_WIN)
+    _onglets->ui()->policeWCC->addItem("Lucida Console");
+    _onglets->ui()->policeWCC->addItem("MS Shell Dlg 2");
+
+    const int taille = 10;
+    QFont policeWcc(_onglets->ui()->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+
+#elif defined (Q_OS_LINUX)
+    _onglets->ui()->policeWCC->addItem("FreeSans");
+    _onglets->ui()->policeWCC->addItem("Sans Serif");
+
+    const int taille = 11;
+    QFont policeWcc(_onglets->ui()->policeWCC->itemText(index), taille);
+
+#elif defined (Q_OS_MAC)
+    _onglets->ui()->policeWCC->addItem("Lucida Grande");
+    _onglets->ui()->policeWCC->addItem("Marion");
+
+    const int taille = 13;
+    QFont policeWcc(_onglets->ui()->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+
+#else
+    const int taille = 11;
+    QFont policeWcc(_onglets->ui()->policeWCC->itemText(index), taille);
+#endif
+
+    Configuration::instance()->setPoliceWcc(policeWcc);
+    _onglets->ui()->policeWCC->blockSignals(etat);
 
     /* Retour */
     return;
@@ -1401,6 +1434,7 @@ void PreviSat::AfficherCoordIssGmt()
     if (Configuration::instance()->issLive()) {
 
         // Coordonnees ISS
+        _coordISS->setPolice();
         if (_onglets->ui()->affNbOrbWCC->isChecked() && _onglets->ui()->affBetaWCC->isChecked()) {
 
             _coordISS->ui()->inclinaisonISS->move(5, 39);
