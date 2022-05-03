@@ -1957,8 +1957,7 @@ void Configuration::VerificationArborescences()
             foreach(QString orig, listeDirOrig) {
                 QDir dir(orig);
                 const QString dest = orig.replace(_dirCommonData, _dirLocalData);
-                QDir di;
-                di.rename(dir.path(), dest);
+                QDir::rename(dir.path(), dest);
             }
 
             const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
@@ -1976,8 +1975,8 @@ void Configuration::VerificationArborescences()
 
         // Verification et creation des arborescences
         foreach(const QString dirDat, listeDirDat) {
-            const QDir di(dirDat);
-            if (!di.exists()) {
+            const QDir dir(dirDat);
+            if (!dir.exists()) {
                 const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                                     "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
                 throw PreviSatException(message.arg(QDir::toNativeSeparators(dirDat)).arg(QCoreApplication::applicationName()), ERREUR);
@@ -1986,9 +1985,9 @@ void Configuration::VerificationArborescences()
 
         const QStringList listeDir(QStringList () << _dirCfg << _dirMap << _dirOut << _dirPrf << _dirRsc << _dirSon << _dirTle << _dirTmp);
         foreach(const QString dir, listeDir) {
-            const QDir di = QDir(dir);
-            if (!di.exists()) {
-                di.mkpath(dir);
+            const QDir direc = QDir(dir);
+            if (!direc.exists()) {
+                direc.mkpath(dir);
             }
         }
 

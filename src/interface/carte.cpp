@@ -638,11 +638,11 @@ void Carte::show()
                         lsat1 = sat.zone().at(0).x() * DEG2PXHZ;
                         bsat1 = sat.zone().at(0).y() * DEG2PXVT + 1;
 
+                        ils = 99999;
                         for(int k=1; k<361; k++) {
 
                             lsat2 = sat.zone().at(k).x() * DEG2PXHZ;
                             bsat2 = sat.zone().at(k).y() * DEG2PXVT + 1;
-                            ils = 99999;
 
                             if (fabs(lsat2 - lsat1) > (ui->carte->width() / 2)) {
                                 if (lsat2 < lsat1) {
@@ -742,12 +742,11 @@ void Carte::show()
                 double lsat2;
                 double bsat2;
                 QString txt;
-                int ils;
+                int ils = 99999;
                 for(int j=1; j<satellite.traceAuSol().size()-1; j++) {
 
                     lsat2 = satellite.traceAuSol().at(j).longitude * DEG2PXHZ;
                     bsat2 = satellite.traceAuSol().at(j).latitude * DEG2PXVT;
-                    ils = 99999;
 
                     if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
                         if (lsat2 < lsat1) {
@@ -864,7 +863,7 @@ void Carte::show()
         if (_onglets->ui()->affvisib->isChecked()/* || mcc*/) {
             const int nbMax2 = (_onglets->ui()->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : satellites.size();
 
-            int ils;
+            int ils = 99999;
             double lsat1;
             double bsat1;
             double lsat2;
@@ -919,7 +918,6 @@ void Carte::show()
 
                         lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
                         bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
-                        ils = 99999;
 
                         if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
                             if (lsat2 < lsat1) {
@@ -1176,9 +1174,9 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
             }
 
             // Survol du Soleil avec le curseur
-            static bool asoleil = false;
             if (_onglets->ui()->affsoleil->isChecked()) {
 
+                static bool asoleil = false;
                 const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
                 const int bsol = qRound((90. - Configuration::instance()->soleil().latitude() * RAD2DEG) * DEG2PXVT) + 2;
 
@@ -1202,9 +1200,9 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
             }
 
             // Survol de la Lune avec le curseur
-            static bool alune = false;
             if (_onglets->ui()->afflune->isChecked()) {
 
+                static bool alune = false;
                 const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
                 const int blun = qRound((90. - Configuration::instance()->lune().latitude() * RAD2DEG) * DEG2PXVT) + 2;
 

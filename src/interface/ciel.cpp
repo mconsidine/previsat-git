@@ -824,10 +824,10 @@ bool Ciel::eventFilter(QObject *watched, QEvent *event)
                     }
 
                     // Survol des planetes avec le curseur
-                    static bool aplanete = false;
-                    bool atrouve2 = false;
                     if (_onglets->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
+                        bool atrouve2 = false;
+                        static bool aplanete = false;
                         for(int ipla=MERCURE; ipla<=NEPTUNE && !atrouve2; ipla++) {
 
                             const int lpla = qRound(-0.5 * ui->vueCiel->width() * (1. - _planetes.at(ipla).hauteur() * DEUX_SUR_PI) *
@@ -857,9 +857,9 @@ bool Ciel::eventFilter(QObject *watched, QEvent *event)
                     }
 
                     // Survol du Soleil avec le curseur
-                    static bool asoleil = false;
                     if (_onglets->ui()->affsoleil->isChecked()) {
 
+                        static bool asoleil = false;
                         const int lsol = qRound(-0.5 * ui->vueCiel->width() * (1. - _soleil.hauteur() * DEUX_SUR_PI) * sin(_soleil.azimut()));
                         const int bsol = qRound(-0.5 * ui->vueCiel->height() * (1. - _soleil.hauteur() * DEUX_SUR_PI) * cos(_soleil.azimut()));
 
@@ -883,9 +883,9 @@ bool Ciel::eventFilter(QObject *watched, QEvent *event)
                     }
 
                     // Survol de la Lune avec le curseur
-                    static bool alune = false;
                     if (_onglets->ui()->afflune->isChecked()) {
 
+                        static bool alune = false;
                         const int llun = qRound(-0.5 * ui->vueCiel->width() * (1. - _lune.hauteur() * DEUX_SUR_PI) * sin(_lune.azimut()));
                         const int blun = qRound(-0.5 * ui->vueCiel->height() * (1. - _lune.hauteur() * DEUX_SUR_PI) * cos(_lune.azimut()));
 

@@ -375,9 +375,9 @@ bool Radar::eventFilter(QObject *watched, QEvent *event)
                 }
 
                 // Survol du Soleil avec le curseur
-                static bool asoleil = false;
                 if (_onglets->ui()->affsoleil->isChecked()) {
 
+                    static bool asoleil = false;
                     const Soleil &soleil = Configuration::instance()->soleil();
 
                     const int lsol = qRound(-lciel2 * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
@@ -403,9 +403,9 @@ bool Radar::eventFilter(QObject *watched, QEvent *event)
                 }
 
                 // Survol de la Lune avec le curseur
-                static bool alune = false;
                 if (_onglets->ui()->afflune->isChecked()) {
 
+                    static bool alune = false;
                     const Lune &lune = Configuration::instance()->lune();
 
                     const int llun = qRound(-lciel2 * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));

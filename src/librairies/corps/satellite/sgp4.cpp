@@ -954,9 +954,6 @@ void SGP4::Dspace(const double tc) {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double xldot = 0.;
-    double xnddt = 0.;
-    double xndt = 0.;
 
     /* Corps de la methode */
     // Calcul des effets de resonance haute orbite
@@ -979,7 +976,11 @@ void SGP4::Dspace(const double tc) {
     // Integration numerique (Euler-MacLaurin)
     if (d_data->_irez != 0) {
 
+        double xldot = 0.;
+        double xnddt = 0.;
+        double xndt = 0.;
         double ft = 0.;
+
         if (fabs(d_data->_atime) <= EPSDBL100 || d_data->_t * d_data->_atime <= 0. || fabs(d_data->_t) < fabs(d_data->_atime)) {
             d_data->_atime = 0.;
             d_data->_xni = _no;

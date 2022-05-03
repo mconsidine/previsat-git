@@ -554,13 +554,13 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
         QFile fi(nomFichier);
         if (fi.exists()) {
 
-            int itle = 0;
-            QString lig0;
-            QString lig1;
-            QString lig2;
-            QString msg;
-
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+                int itle = 0;
+                QString lig0;
+                QString lig1;
+                QString lig2;
+                QString msg;
 
                 QTextStream flux(&fi);
                 const QString contenuFichier = flux.readAll();
