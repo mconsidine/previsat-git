@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mai 2022
+ * >    4 mai 2022
  *
  */
 
@@ -185,6 +185,7 @@ void PreviSat::ChargementConfig()
     InitFicTLE();
 
     _onglets->InitChargementOnglets();
+    ConnexionsSignauxSlots();
 
     /* Retour */
     return;
@@ -1744,6 +1745,12 @@ void PreviSat::ChargementFenetre()
     _radar = new Radar(_onglets, this);
     ui->layoutRadar->addWidget(_radar);
 
+    /* Retour */
+    return;
+}
+
+void PreviSat::ConnexionsSignauxSlots()
+{
     // Connexions signaux-slots
     connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
@@ -1783,9 +1790,6 @@ void PreviSat::ChargementFenetre()
     settings.setValue("fichier/path", Configuration::instance()->dirExe());
     settings.setValue("fichier/version", QString(APPVERSION));
     settings.setValue("affichage/flagIntensiteVision", false);
-
-    /* Retour */
-    return;
 }
 
 /*
@@ -2066,6 +2070,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    Q_UNUSED(evt)
 
     /* Corps de la methode */
     if (_modeFonctionnement->underMouse()) {
