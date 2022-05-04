@@ -218,7 +218,7 @@ void Telecharger::on_telecharger_clicked()
 
             fic = ui->listeFichiers->item(i)->text();
             if (_adresse != COORDONNEES) {
-                fic = fic.toLower();
+                fic = fic.toLower() + ".xml";
             }
 
             if (_adresse == NOTIFICATIONS) {
