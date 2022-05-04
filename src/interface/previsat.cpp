@@ -2634,7 +2634,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
 
         _onglets->ui()->utcManuel->setVisible(true);
         _onglets->ui()->utcManuel2->setVisible(true);
-        _onglets->ui()->frameSimu->setVisible(true);
+        //_onglets->ui()->frameSimu->setVisible(true);
         ui->pasManuel->setFocus();
 
         _onglets->setAcalcDN(true);
