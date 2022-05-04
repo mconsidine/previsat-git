@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 decembre 2021
+ * >    4 mai 2022
  *
  */
 
@@ -357,6 +357,8 @@ private slots:
      * @brief ChargementFenetre Chargement des elements de la fenetre
      */
     void ChargementFenetre();
+
+    void ConnexionsSignauxSlots();
 
     /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut

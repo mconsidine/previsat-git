@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er mai 2022
+ * >    4 mai 2022
  *
  */
 
@@ -2410,6 +2410,10 @@ void Onglets::InitAffichageDemarrage()
     QStyle * const styleIcones = QApplication::style();
     _nbOnglets = _ui->barreOnglets->count();
 
+    // TEMPORAIRE
+    _ui->intensiteVision->setVisible(false);
+    _ui->lbl_intensiteVision->setVisible(false);
+
     /* Corps de la methode */
     _ui->menuBar->setVisible(false);
     _ui->barreOnglets->setCurrentIndex(0);
@@ -3239,6 +3243,8 @@ void Onglets::mouseMoveEvent(QMouseEvent *event)
 
 void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
+
     if ((_ui->dateHeure1->underMouse() && _ui->dateHeure1->isVisible()) || (_ui->dateHeure2->underMouse() && _ui->dateHeure2->isVisible())) {
         emit ModeManuel(true);
     }
@@ -4600,6 +4606,7 @@ void Onglets::on_listeMap_currentIndexChanged(int index)
                                       "" : Configuration::instance()->listeFicMap().at(qMax(0, _ui->listeMap->currentIndex()-1)));
             }
         }
+        emit MiseAJourCarte();
     }
 
     /* Retour */
@@ -6426,12 +6433,14 @@ void Onglets::on_lieuxObservation1_currentIndexChanged(int index)
 
 void Onglets::on_styleWCC_toggled(bool checked)
 {
+    Q_UNUSED(checked)
     emit RecalculerPositions();
     emit MiseAJourCarte();
 }
 
 void Onglets::on_affCerclesAcq_toggled(bool checked)
 {
+    Q_UNUSED(checked)
     emit MiseAJourCarte();
 }
 
@@ -6468,20 +6477,347 @@ void Onglets::on_policeWCC_currentIndexChanged(int index)
 
 void Onglets::on_coulGMT_currentIndexChanged(int index)
 {
+    Q_UNUSED(index)
     emit MiseAJourCarte();
 }
 
 void Onglets::on_affBetaWCC_toggled(bool checked)
 {
+    Q_UNUSED(checked)
     emit MiseAJourCarte();
 }
 
 void Onglets::on_affNbOrbWCC_toggled(bool checked)
 {
+    Q_UNUSED(checked)
+    emit MiseAJourCarte();
+}
+
+/*
+ * Options d'affichage
+ */
+void Onglets::on_affnomsat_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_afficone_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_rotationIconeISS_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
     emit MiseAJourCarte();
 }
 
 void Onglets::on_affNoradListes_stateChanged(int arg1)
 {
+    Q_UNUSED(arg1)
     emit RechargerTLE();
+}
+
+void Onglets::on_afftraceCiel_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_afftraj_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_nombreTrajectoires_valueChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit RecalculerPositions();
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affnotif_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affvisib_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affsoleil_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affnuit_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_intensiteOmbre_valueChanged(int value)
+{
+    emit MiseAJourCarte();
+    _ui->intensiteOmbre->setToolTip(QString::number(value));
+}
+
+void Onglets::on_affplanetes_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_afflune_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affphaselune_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_rotationLune_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affetoiles_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affconst_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_magnitudeEtoiles_valueChanged(double arg1)
+{
+    settings.setValue("affichage/magnitudeEtoiles", arg1);
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affgrille_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_proportionsCarte_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_extinctionAtmospherique_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_eclipsesLune_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_effetEclipsesMagnitude_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affradar_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affinvns_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affinvew_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affcoord_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_refractionPourEclipses_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_affnomlieu_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_unitesKm_toggled(bool checked)
+{
+    if (checked) {
+        _ui->nvAltitude->setText("0000");
+        _ui->nvAltitude->setInputMask("####");
+        const QIntValidator *valAlt = new QIntValidator(-500, 8900);
+        _ui->nvAltitude->setValidator(valAlt);
+    } else {
+        _ui->nvAltitude->setText("00000");
+        _ui->nvAltitude->setInputMask("#####");
+        const QIntValidator *valAlt = new QIntValidator(-1640, 29200);
+        _ui->nvAltitude->setValidator(valAlt);
+    }
+
+    emit MiseAJourCarte();
+
+    if (!Configuration::instance()->evenementsISS().isEmpty()) {
+        AffichageManoeuvresISS();
+    }
+}
+
+void Onglets::on_unitesMi_toggled(bool checked)
+{
+    if (checked) {
+        _ui->nvAltitude->setText("00000");
+        _ui->nvAltitude->setInputMask("#####");
+        const QIntValidator *valAlt = new QIntValidator(-1640, 29200);
+        _ui->nvAltitude->setValidator(valAlt);
+    } else {
+        _ui->nvAltitude->setText("0000");
+        _ui->nvAltitude->setInputMask("####");
+        const QIntValidator *valAlt = new QIntValidator(-500, 8900);
+        _ui->nvAltitude->setValidator(valAlt);
+    }
+
+    emit MiseAJourCarte();
+
+    if (!Configuration::instance()->evenementsISS().isEmpty()) {
+        AffichageManoeuvresISS();
+    }
+}
+
+void Onglets::on_syst24h_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_syst12h_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_updown_valueChanged(int arg1)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(arg1)
+
+    /* Corps de la methode */
+    if (_ui->options->isVisible() && _ui->heureLegale->isChecked()) {
+
+        QTime heur(0, 0);
+        heur = heur.addSecs((int) fabs(arg1 * NB_SEC_PAR_MIN));
+        const QString sgnh = (arg1 >= 0) ? " + " : " - ";
+        _ui->tuc->setText(tr("UTC", "Universal Time Coordinated") + sgnh + heur.toString("hh:mm"));
+        const double jjutc = _date->jourJulienUTC();
+        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_MIN;
+
+        if (_date != nullptr) {
+            delete _date;
+            _date = nullptr;
+        }
+
+        _date = new Date(jjutc, offsetUTC);
+        emit RecalculerPositions();
+        emit MiseAJourCarte();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_utcAuto_stateChanged(int arg1)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(arg1)
+
+    /* Corps de la methode */
+    if (_ui->options->isVisible() && _ui->utcAuto->isChecked()) {
+
+        const QDateTime dateLocale = QDateTime::currentDateTime();
+        QDateTime dateUTC(dateLocale);
+        dateUTC.setTimeSpec(Qt::UTC);
+
+        const int ecart = (int) ((double) dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
+        _ui->updown->setValue(ecart);
+
+        const double jjutc = _date->jourJulienUTC();
+        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_MIN;
+
+        if (_date != nullptr) {
+            delete _date;
+            _date = nullptr;
+        }
+
+        _date = new Date(jjutc, offsetUTC);
+
+        emit RecalculerPositions();
+        emit MiseAJourCarte();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_utc_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->options->isVisible() && checked) {
+
+        const double jjutc = _date->jourJulienUTC();
+        if (_date != nullptr) {
+            delete _date;
+            _date = nullptr;
+        }
+
+        _date = new Date(jjutc, 0.);
+
+        emit RecalculerPositions();
+        emit MiseAJourCarte();
+    }
+
+    /* Retour */
+    return;
 }

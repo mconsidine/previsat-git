@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er mai 2022
+ * >    4 mai 2022
  *
  */
 
@@ -591,13 +591,54 @@ private slots:
     void on_parametrageDefautExtraction_clicked();
 
     void on_lieuxObservation1_currentIndexChanged(int index);
+
+    // Options WCC
     void on_styleWCC_toggled(bool checked);
     void on_affCerclesAcq_toggled(bool checked);
     void on_policeWCC_currentIndexChanged(int index);
     void on_coulGMT_currentIndexChanged(int index);
     void on_affBetaWCC_toggled(bool checked);
     void on_affNbOrbWCC_toggled(bool checked);
+
+    // Options d'affichage
+    void on_affnomsat_stateChanged(int arg1);
+    void on_afficone_stateChanged(int arg1);
+    void on_rotationIconeISS_stateChanged(int arg1);
     void on_affNoradListes_stateChanged(int arg1);
+    void on_afftraceCiel_stateChanged(int arg1);
+    void on_afftraj_stateChanged(int arg1);
+    void on_nombreTrajectoires_valueChanged(int arg1);
+    void on_affnotif_stateChanged(int arg1);
+    void on_affvisib_stateChanged(int arg1);
+    void on_affsoleil_stateChanged(int arg1);
+    void on_affnuit_stateChanged(int arg1);
+    void on_intensiteOmbre_valueChanged(int value);
+    void on_affplanetes_stateChanged(int arg1);
+    void on_afflune_stateChanged(int arg1);
+    void on_affphaselune_stateChanged(int arg1);
+    void on_rotationLune_stateChanged(int arg1);
+    void on_affetoiles_stateChanged(int arg1);
+    void on_affconst_stateChanged(int arg1);
+    void on_magnitudeEtoiles_valueChanged(double arg1);
+    void on_affgrille_stateChanged(int arg1);
+    void on_proportionsCarte_stateChanged(int arg1);
+    void on_extinctionAtmospherique_stateChanged(int arg1);
+    void on_eclipsesLune_stateChanged(int arg1);
+    void on_effetEclipsesMagnitude_stateChanged(int arg1);
+    void on_affradar_stateChanged(int arg1);
+    void on_affinvns_stateChanged(int arg1);
+    void on_affinvew_stateChanged(int arg1);
+    void on_affcoord_stateChanged(int arg1);
+    void on_refractionPourEclipses_stateChanged(int arg1);
+    void on_affnomlieu_stateChanged(int arg1);
+    void on_unitesKm_toggled(bool checked);
+    void on_unitesMi_toggled(bool checked);
+    void on_syst24h_toggled(bool checked);
+    void on_syst12h_toggled(bool checked);
+    void on_updown_valueChanged(int arg1);
+    void on_utcAuto_stateChanged(int arg1);
+    void on_utc_toggled(bool checked);
+
 };
 
 #endif // ONGLETS_H
