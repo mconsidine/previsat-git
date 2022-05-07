@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    7 mai 2022
  *
  */
 
@@ -44,7 +44,6 @@
 #define TLE_H
 
 #include <QMap>
-#include <QStringList>
 #include "librairies/dates/date.h"
 #include "donnees.h"
 
@@ -109,14 +108,19 @@ public:
      * Methodes publiques
      */
     /**
+
+     */
+    /**
      * @brief LectureFichier Lecture du fichier TLE
      * @param nomFichier nom du fichier TLE
+     * @param donneesSat donnees satellites
+     * @param lgRec longueur d'une ligne dans les donnees satellite
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @param ajoutDonnees ajout des donnees satellite
      * @return tableau de TLE
      */
-    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QStringList &listeSatellites = QStringList(),
-                                             const bool ajoutDonnees = true);
+    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
+                                             const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
 
     /**
      * @brief LectureFichier3le Lecture du fichier 3le
@@ -129,10 +133,13 @@ public:
      * @brief MiseAJourFichier Mise a jour du fichier TLE
      * @param ficOld fichier avec les anciens TLE
      * @param ficNew fichier avec les nouveaux TLE
+     * @param donneesSat donnees satellites
+     * @param lgRec longueur d'une ligne dans les donnees satellite
      * @param affMsg affichage des messages
      * @param compteRendu compte rendu de mise a jour
      */
-    static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu);
+    static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec, const int affMsg,
+                                 QStringList &compteRendu);
 
     /**
      * @brief VerifieFichier Verification du fichier TLE

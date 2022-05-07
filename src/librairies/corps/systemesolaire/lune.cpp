@@ -98,7 +98,7 @@ Lune::Lune()
     _luneCroissante = false;
     _anglePhase = 0.;
     _fractionIlluminee = 0.;
-    _magnitude = std::numeric_limits<double>::quiet_NaN();
+    _magnitude = 99.;
 
     /* Retour */
     return;

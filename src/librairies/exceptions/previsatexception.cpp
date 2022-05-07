@@ -34,6 +34,7 @@
  *
  */
 
+#include <QString>
 #include "message.h"
 #include "previsatexception.h"
 

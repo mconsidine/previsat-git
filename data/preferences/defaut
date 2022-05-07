@@ -1,40 +1,35 @@
-affichage/affMax false
 affichage/affSAA false
-affichage/affconst 2
-affichage/affcoord true
-affichage/affetoiles true
-affichage/affgrille true
-affichage/afficone true
+affichage/affconst 0
+affichage/affcoord false
+affichage/affetoiles false
+affichage/affgrille false
+affichage/afficone false
 affichage/affinvew false
 affichage/affinvns false
-affichage/afflune true
-affichage/affnomlieu 2
-affichage/affnomsat 2
-affichage/affnotif true
-affichage/affnuit true
-affichage/affphaselune true
+affichage/afflune false
+affichage/affnomlieu 0
+affichage/affnomsat 0
+affichage/affnotif false
+affichage/affnuit false
+affichage/affphaselune false
 affichage/affplanetes 2
-affichage/affradar 2
-affichage/affsoleil true
-affichage/afftraceCiel true
-affichage/afftraj true
-affichage/affvisib 2
+affichage/affradar 0
+affichage/affsoleil false
+affichage/afftraceCiel false
+affichage/afftraj false
+affichage/affvisib 0
 affichage/calJulien false
 affichage/eclipsesLune false
-affichage/effetEclipsesMagnitude true
-affichage/extinction true
-affichage/fenetreMax false
+affichage/effetEclipsesMagnitude false
+affichage/extinction false
 affichage/groupeTLE 0
-affichage/hauteur 690
-affichage/intensiteOmbre 25
+affichage/intensiteOmbre 30
 affichage/intensiteVision 50
-affichage/largeur 1068
-affichage/langue en
 affichage/magnitudeEtoiles 4
-affichage/nombreTrajectoires 2
-affichage/proportionsCarte true
-affichage/refractionPourEclipses true
-affichage/rotationIconeISS true
+affichage/nombreTrajectoires 1
+affichage/proportionsCarte false
+affichage/refractionPourEclipses false
+affichage/rotationIconeISS false
 affichage/rotationLune false
 affichage/systemeHoraire true
 affichage/typeParametres 0
@@ -42,29 +37,28 @@ affichage/typeRepere 0
 affichage/unite true
 affichage/utc false
 affichage/utcAuto true
-affichage/verifMAJ true
+affichage/valeurZoomMap 9
+affichage/verifMAJ false
 fichier/affichageMsgMAJ 0
-affichage/mccISS false
 affichage/affBetaWCC false
-affichage/affCerclesAcq true
-affichage/affNbOrbWCC true
-affichage/aff_ZOE true
-affichage/chaine 1
-affichage/styleWCC true
+affichage/affCerclesAcq false
+affichage/affNbOrbWCC false
+affichage/aff_ZOE false
+affichage/styleWCC false
 affichage/coulGMT 0
 affichage/coulZOE 0
 affichage/coulCercleVisibilite 0
 affichage/coulEquateur 0
 affichage/coulTerminateur 0
 affichage/policeWCC 0
-affichage/station0 2
-affichage/station1 2
-affichage/station2 2
-affichage/station3 2
-affichage/station4 2
-affichage/station5 2
-affichage/station6 2
-affichage/station7 2
-affichage/station8 2
-affichage/station9 2
-affichage/station10 2
+affichage/stationCSG 
+affichage/stationDJSR 
+affichage/stationEDW 
+affichage/stationJSC 
+affichage/stationKLPR 
+affichage/stationKSC 
+affichage/stationPPKR 
+affichage/stationSHKR 
+affichage/stationULDR 
+affichage/stationUSKR 
+affichage/stationWAL 

@@ -34,11 +34,8 @@
  *
  */
 
-#include <cmath>
 #include "conditioneclipse.h"
-#include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/terreconst.h"
-#include "librairies/maths/vecteur3d.h"
 
 
 /**********

@@ -34,7 +34,6 @@
  *
  */
 
-#include <cmath>
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"

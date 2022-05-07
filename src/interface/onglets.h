@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 mai 2022
+ * >    7 mai 2022
  *
  */
 
@@ -46,12 +46,10 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QLineEdit>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMainWindow>
 #include <QtNetwork>
 #pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#include <QLabel>
-#include <QMap>
 #include "librairies/observateur/observateur.h"
 
 
@@ -170,6 +168,12 @@ public:
      * @param fic nom du fichier
      */
     void SauveOngletInformations(const QString &fic) const;
+
+    /**
+     * @brief SauvePreferences Sauvegarde des preferences
+     * @param fichierPref nom du fichier
+     */
+    void SauvePreferences(const QString &fichierPref);
 
 
     /******************
@@ -638,6 +642,8 @@ private slots:
     void on_updown_valueChanged(int arg1);
     void on_utcAuto_stateChanged(int arg1);
     void on_utc_toggled(bool checked);
+    void on_preferences_currentIndexChanged(int index);
+    void on_enregistrerPref_clicked();
 
 };
 

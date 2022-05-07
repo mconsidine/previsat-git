@@ -35,10 +35,7 @@
  */
 
 #include <QElapsedTimer>
-#include <QMap>
-#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/maths/maths.h"

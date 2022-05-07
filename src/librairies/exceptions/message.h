@@ -43,11 +43,11 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include <QString>
 #include "messageconst.h"
 
 
 class QMainWindow;
+class QString;
 
 class Message
 {

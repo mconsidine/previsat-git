@@ -30,11 +30,10 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mai 2022
+ * >    7 mai 2022
  *
  */
 
-#include <QtMath>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
@@ -45,12 +44,11 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QSettings>
-#include <QTimer>
-#include "ui_previsat.h"
-#include "ui_coordiss.h"
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "ui_coordiss.h"
 #include "apropos.h"
 #include "carte.h"
 #include "ciel.h"
@@ -61,13 +59,6 @@
 #include "previsat.h"
 #include "radar.h"
 #include "configuration/configuration.h"
-#include "librairies/corps/etoiles/constellation.h"
-#include "librairies/corps/etoiles/etoile.h"
-#include "librairies/corps/etoiles/ligneconstellation.h"
-#include "librairies/corps/satellite/tle.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
-#include "librairies/dates/date.h"
-#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/systeme/decompression.h"
@@ -237,7 +228,8 @@ void PreviSat::ChargementTLE()
             }
 
             // Lecture du fichier TLE en entier
-            Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic));
+            Configuration::instance()->setMapTLE(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                     Configuration::instance()->lgRec()));
 
             // Mise a jour de la liste de satellites
             QStringList listeSatellites = Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()];
@@ -1961,6 +1953,136 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     Q_UNUSED(evt)
 
     /* Corps de la methode */
+    // Suppression des fichiers du cache
+    const QDir di = QDir(Configuration::instance()->dirTmp());
+    const QStringList listeFic = di.entryList(QDir::Files);
+    foreach(const QString fic, listeFic) {
+        if (!(_onglets->ui()->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt"))) {
+            QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+            fi.remove();
+        }
+    }
+
+    // Sauvegarde des donnees du logiciel
+    settings.setValue("temps/valManuel", ui->valManuel->currentIndex());
+    settings.setValue("temps/pasManuel", ui->pasManuel->currentIndex());
+    settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
+    settings.setValue("temps/dtu", _onglets->ui()->updown->value() * NB_JOUR_PAR_MIN);
+
+    settings.setValue("affichage/affSAA", _onglets->ui()->affSAA->isChecked());
+    settings.setValue("affichage/affconst", _onglets->ui()->affconst->checkState());
+    settings.setValue("affichage/affcoord", _onglets->ui()->affcoord->isChecked());
+    settings.setValue("affichage/affetoiles", _onglets->ui()->affetoiles->isChecked());
+    settings.setValue("affichage/affgrille", _onglets->ui()->affgrille->isChecked());
+    settings.setValue("affichage/afficone", _onglets->ui()->afficone->isChecked());
+    settings.setValue("affichage/affinvew", _onglets->ui()->affinvew->isChecked());
+    settings.setValue("affichage/affinvns", _onglets->ui()->affinvns->isChecked());
+    settings.setValue("affichage/afflune", _onglets->ui()->afflune->isChecked());
+    settings.setValue("affichage/affnomlieu", _onglets->ui()->affnomlieu->checkState());
+    settings.setValue("affichage/affnomsat", _onglets->ui()->affnomsat->checkState());
+    settings.setValue("affichage/affnotif", _onglets->ui()->affnotif->isChecked());
+    settings.setValue("affichage/affnuit", _onglets->ui()->affnuit->isChecked());
+    settings.setValue("affichage/affphaselune", _onglets->ui()->affphaselune->isChecked());
+    settings.setValue("affichage/affplanetes", _onglets->ui()->affplanetes->checkState());
+    settings.setValue("affichage/affradar", _onglets->ui()->affradar->checkState());
+    settings.setValue("affichage/affsoleil", _onglets->ui()->affsoleil->isChecked());
+    settings.setValue("affichage/afftraceCiel", _onglets->ui()->afftraceCiel->isChecked());
+    settings.setValue("affichage/afftraj", _onglets->ui()->afftraj->isChecked());
+    settings.setValue("affichage/affvisib", _onglets->ui()->affvisib->checkState());
+    settings.setValue("affichage/calJulien", _onglets->ui()->calJulien->isChecked());
+    settings.setValue("affichage/eclipsesLune", _onglets->ui()->eclipsesLune->isChecked());
+    settings.setValue("affichage/effetEclipsesMagnitude", _onglets->ui()->effetEclipsesMagnitude->isChecked());
+    settings.setValue("affichage/extinction", _onglets->ui()->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/fenetreMax", isMaximized());
+    settings.setValue("affichage/groupeTLE", _onglets->ui()->groupeTLE->currentIndex());
+    settings.setValue("affichage/hauteur", height());
+    settings.setValue("affichage/intensiteOmbre", _onglets->ui()->intensiteOmbre->value());
+    settings.setValue("affichage/intensiteVision", _onglets->ui()->intensiteVision->value());
+    settings.setValue("affichage/largeur", width());
+    settings.setValue("affichage/magnitudeEtoiles", _onglets->ui()->magnitudeEtoiles->value());
+    settings.setValue("affichage/nombreTrajectoires", _onglets->ui()->nombreTrajectoires->value());
+    settings.setValue("affichage/proportionsCarte", _onglets->ui()->proportionsCarte->isChecked());
+    settings.setValue("affichage/refractionPourEclipses", _onglets->ui()->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/rotationIconeISS", _onglets->ui()->rotationIconeISS->isChecked());
+    settings.setValue("affichage/affNoradListes", _onglets->ui()->affNoradListes->isChecked());
+    settings.setValue("affichage/rotationLune", _onglets->ui()->rotationLune->isChecked());
+    settings.setValue("affichage/systemeHoraire", _onglets->ui()->syst24h->isChecked());
+    settings.setValue("affichage/typeParametres", _onglets->ui()->typeParametres->currentIndex());
+    settings.setValue("affichage/typeRepere", _onglets->ui()->typeRepere->currentIndex());
+    settings.setValue("affichage/unite", _onglets->ui()->unitesKm->isChecked());
+    settings.setValue("affichage/utc", _onglets->ui()->utc->isChecked());
+    settings.setValue("affichage/utcAuto", _onglets->ui()->utcAuto->isChecked());
+    settings.setValue("affichage/valeurZoomMap", _onglets->ui()->valeurZoomMap->value());
+    settings.setValue("affichage/verifMAJ", _onglets->ui()->verifMAJ->isChecked());
+
+    settings.setValue("affichage/mccISS", ui->mccISS->isChecked());
+    settings.setValue("affichage/affBetaWCC", _onglets->ui()->affBetaWCC->isChecked());
+    settings.setValue("affichage/affCerclesAcq", _onglets->ui()->affCerclesAcq->isChecked());
+    settings.setValue("affichage/affNbOrbWCC", _onglets->ui()->affNbOrbWCC->isChecked());
+    settings.setValue("affichage/affSAA_ZOE", _onglets->ui()->affSAA_ZOE->isChecked());
+    settings.setValue("affichage/chaine", ui->chaineNasa->value());
+    settings.setValue("affichage/styleWCC", _onglets->ui()->styleWCC->isChecked());
+    settings.setValue("affichage/coulGMT", _onglets->ui()->coulGMT->currentIndex());
+    settings.setValue("affichage/coulZOE", _onglets->ui()->coulZOE->currentIndex());
+    settings.setValue("affichage/coulCercleVisibilite", _onglets->ui()->coulCercleVisibilite->currentIndex());
+    settings.setValue("affichage/coulEquateur", _onglets->ui()->coulEquateur->currentIndex());
+    settings.setValue("affichage/coulTerminateur", _onglets->ui()->coulTerminateur->currentIndex());
+    settings.setValue("affichage/policeWCC", _onglets->ui()->policeWCC->currentIndex());
+
+    for(int i=0; i<_onglets->ui()->listeStations->count(); i++) {
+        settings.setValue("affichage/station" + _onglets->ui()->listeStations->item(i)->data(Qt::UserRole).toString(),
+                          _onglets->ui()->listeStations->item(i)->checkState());
+    }
+
+    settings.setValue("fichier/listeMap", (_onglets->ui()->listeMap->currentIndex() > 0) ?
+                          Configuration::instance()->listeFicMap().at(qMax(0, _onglets->ui()->listeMap->currentIndex() - 1)) : "");
+//    settings.setValue("fichier/listeSon", (_onglets->ui()->listeSons->currentIndex() > 0) ?
+//                          ficSonAOS.at(qMax(0, ui->listeSons->currentIndex() - 1)) : "");
+    settings.setValue("fichier/nom", QDir::toNativeSeparators(Configuration::instance()->nomfic()));
+    settings.setValue("fichier/fichierAMettreAJour", _onglets->ui()->fichierAMettreAJour->text());
+    settings.setValue("fichier/fichierALire", _onglets->ui()->fichierALire->text());
+    settings.setValue("fichier/affichageMsgMAJ", _onglets->ui()->affichageMsgMAJ->currentIndex());
+    settings.setValue("fichier/fichierALireCreerTLE", _onglets->ui()->fichierALireCreerTLE->text());
+    settings.setValue("fichier/nomFichierPerso", _onglets->ui()->nomFichierPerso->text());
+
+    settings.setValue("previsions/pasGeneration", _onglets->ui()->pasGeneration->currentIndex());
+    settings.setValue("previsions/lieuxObservation2", _onglets->ui()->lieuxObservation2->currentIndex());
+    settings.setValue("previsions/hauteurSatPrev", _onglets->ui()->hauteurSatPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSatPrev", _onglets->ui()->valHauteurSatPrev->text().toInt());
+    settings.setValue("previsions/hauteurSoleilPrev", _onglets->ui()->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilPrev", _onglets->ui()->valHauteurSoleilPrev->text().toInt());
+    settings.setValue("previsions/illuminationPrev", _onglets->ui()->illuminationPrev->isChecked());
+    settings.setValue("previsions/magnitudeMaxPrev", _onglets->ui()->magnitudeMaxPrev->isChecked());
+
+    settings.setValue("previsions/passageApogee", _onglets->ui()->passageApogee->isChecked());
+    settings.setValue("previsions/passageNoeuds", _onglets->ui()->passageNoeuds->isChecked());
+    settings.setValue("previsions/passageOmbre", _onglets->ui()->passageOmbre->isChecked());
+    settings.setValue("previsions/passageQuadrangles", _onglets->ui()->passageQuadrangles->isChecked());
+    settings.setValue("previsions/transitionJourNuit", _onglets->ui()->transitionJourNuit->isChecked());
+
+    settings.setValue("previsions/hauteurSatTransit", _onglets->ui()->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/valHauteurSatTransit", _onglets->ui()->valHauteurSatTransit->text().toInt());
+    settings.setValue("previsions/lieuxObservation4", _onglets->ui()->lieuxObservation4->currentIndex());
+    settings.setValue("previsions/ageMaxTLETransit", _onglets->ui()->ageMaxTLETransit->value());
+    settings.setValue("previsions/elongationMaxCorps", _onglets->ui()->elongationMaxCorps->value());
+    settings.setValue("previsions/calcTransitLunaireJour", _onglets->ui()->calcTransitLunaireJour->isChecked());
+
+    settings.setValue("previsions/hauteurSatMetOp", _onglets->ui()->hauteurSatMetOp->currentIndex());
+    settings.setValue("previsions/hauteurSoleilMetOp", _onglets->ui()->hauteurSoleilMetOp->currentIndex());
+    settings.setValue("previsions/lieuxObservation5", _onglets->ui()->lieuxObservation5->currentIndex());
+    settings.setValue("previsions/ordreChronologiqueMetOp", _onglets->ui()->ordreChronologiqueMetOp->isChecked());
+    settings.setValue("previsions/magnitudeMaxMetOp", _onglets->ui()->magnitudeMaxMetOp->value());
+
+    if (!_onglets->ui()->verifMAJ->isChecked()) {
+        settings.setValue("fichier/majPrevi", "0");
+    }
+
+    Configuration::instance()->EcritureConfiguration();
+
+    if (_onglets->ui()->preferences->currentIndex() < _onglets->ui()->preferences->count() - 2) {
+        _onglets->SauvePreferences(Configuration::instance()->listeFicPref().at(_onglets->ui()->preferences->currentIndex()));
+    }
+
     if (_carte != nullptr) {
         delete _carte;
         _carte = nullptr;
@@ -2888,7 +3010,8 @@ void PreviSat::on_actionFichier_TLE_existant_triggered()
 
         // Verification que le fichier est un TLE
         TLE::VerifieFichier(fic, true);
-        QMap<QString, TLE> tabtle = TLE::LectureFichier(fic, QStringList(), false);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                                        QStringList(), false);
 
         // Age des nouveaux numeros NORAD dans la liste
         int nb = 0;

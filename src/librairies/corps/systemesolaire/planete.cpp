@@ -36,7 +36,6 @@
 
 #include <cmath>
 #include <QCoreApplication>
-#include <QStringList>
 #include "librairies/dates/date.h"
 #include "planete.h"
 #include "soleil.h"

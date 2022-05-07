@@ -41,14 +41,11 @@
  */
 
 #include <QElapsedTimer>
-#include <QMap>
 #include "configuration/configuration.h"
 #include "flashs.h"
-#include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/maths/maths.h"
 
-#define NB_PAN 3
+#define NB_PAN (3)
 
 
 struct EphemeridesFlashs
@@ -131,7 +128,8 @@ int Flashs::CalculFlashs(int &nombre)
     _resultats.clear();
 
     // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, _conditions.listeSatellites);
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                          Configuration::instance()->lgRec(), _conditions.listeSatellites);
 
     // Creation du tableau de satellites
     QMapIterator<QString, TLE> it1(tabTle);

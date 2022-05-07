@@ -46,7 +46,6 @@
 #include <QPair>
 #include <QString>
 #include "librairies/maths/matrice3d.h"
-#include "librairies/maths/vecteur3d.h"
 
 
 class Date;

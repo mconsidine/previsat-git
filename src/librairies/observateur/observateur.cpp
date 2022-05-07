@@ -36,7 +36,6 @@
 
 #include <cmath>
 #include <QCoreApplication>
-#include <QStringList>
 #include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"

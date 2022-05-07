@@ -46,7 +46,6 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QMainWindow>
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QMap>
 #include "previsions/prevision.h"
 
 

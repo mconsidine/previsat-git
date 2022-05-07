@@ -38,10 +38,9 @@
 #include "ciel.h"
 #include "onglets.h"
 #include "radar.h"
-#pragma GCC diagnostic ignored "-Wconversion"
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include "ui_onglets.h"
+#pragma GCC diagnostic ignored "-Wconversion"
 #include "ui_radar.h"
 #pragma GCC diagnostic warning "-Wconversion"
 

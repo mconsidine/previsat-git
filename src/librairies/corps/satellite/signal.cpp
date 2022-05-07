@@ -35,7 +35,6 @@
  */
 
 #include <cmath>
-#include <limits>
 #include "librairies/corps/systemesolaire/soleilconst.h"
 #include "signal.h"
 
@@ -58,9 +57,9 @@ Signal::Signal()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _attenuation = std::numeric_limits<double>::quiet_NaN();
-    _delai = std::numeric_limits<double>::quiet_NaN();
-    _doppler = std::numeric_limits<double>::quiet_NaN();
+    _attenuation = -999999.;
+    _delai = -999999.;
+    _doppler = -999999.;
 
     /* Retour */
     return;

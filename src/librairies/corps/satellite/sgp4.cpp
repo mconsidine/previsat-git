@@ -34,9 +34,7 @@
  *
  */
 
-#include "librairies/corps/systemesolaire/terreconst.h"
 #include "librairies/exceptions/previsatexception.h"
-#include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "sgp4.h"
 #include "tle.h"

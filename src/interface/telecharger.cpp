@@ -42,13 +42,13 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QMessageBox>
-#include <QSettings>
+#include "ui_telecharger.h"
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QSettings>
 #include "onglets.h"
 #include "telecharger.h"
-#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
-#include "ui_telecharger.h"
+
 
 
 static QSettings settings("Astropedia", "previsat");
