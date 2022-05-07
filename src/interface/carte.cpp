@@ -34,19 +34,14 @@
  *
  */
 
-#include <QDir>
 #include "configuration/configuration.h"
 #include "carte.h"
 #include "ciel.h"
 #include "coordiss.h"
 #include "onglets.h"
-#include "librairies/corps/satellite/evenements.h"
-#pragma GCC diagnostic ignored "-Wconversion"
-#include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
 #include "ui_carte.h"
 #include "ui_onglets.h"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 // SAA

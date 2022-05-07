@@ -44,7 +44,6 @@
 #define PREVISAT_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
-#include <QLabel>
 #include <QMainWindow>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QTranslator>
@@ -56,6 +55,7 @@ class CoordISS;
 class Date;
 class Onglets;
 class Radar;
+class QLabel;
 class QListWidgetItem;
 class QToolButton;
 
@@ -358,6 +358,9 @@ private slots:
      */
     void ChargementFenetre();
 
+    /**
+     * @brief ConnexionsSignauxSlots Connexions entre les differents elements de l'interface
+     */
     void ConnexionsSignauxSlots();
 
     /**

@@ -144,7 +144,8 @@ private:
      * @param refraction prise en compte de la refraction (cas de la Terre)
      * @return elements de l'eclipse
      */
-    ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant, const bool refraction);
+    ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,
+                                  const bool refraction);
 
 
 };

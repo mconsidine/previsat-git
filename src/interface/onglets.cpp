@@ -30,18 +30,15 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 mai 2022
+ * >    7 mai 2022
  *
  */
 
 #include <QClipboard>
 #include <QDesktopServices>
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
-#include <QFutureWatcher>
 #include <QMessageBox>
-#include <QSettings>
 #pragma GCC diagnostic ignored "-Wshadow"
 #include <QtConcurrent>
 #pragma GCC diagnostic warning "-Wshadow"
@@ -52,7 +49,6 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QProgressDialog>
 #include <QScrollBar>
-#include <QTextStream>
 #include <QToolTip>
 #include "afficher.h"
 #include "gestionnairetle.h"
@@ -60,15 +56,11 @@
 #include "telecharger.h"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
-#include "librairies/dates/date.h"
-#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/systeme/decompression.h"
 #include "previsions/evenementsorbitaux.h"
 #include "previsions/flashs.h"
-#include "previsions/prevision.h"
 #include "previsions/telescope.h"
 #include "previsions/transitsiss.h"
 
@@ -1237,7 +1229,8 @@ void Onglets::CalculAgeTLETransitISS()
 
         if (nbt2 > 0) {
             const QStringList listeSat(QStringList() << Configuration::instance()->noradStationSpatiale());
-            const QMap<QString, TLE> mapTle = TLE::LectureFichier(fichier, listeSat, false);
+            const QMap<QString, TLE> mapTle = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
+                                                                  Configuration::instance()->lgRec(), listeSat, false);
 
             age1 = fabs(mapTle.first().epoque().jourJulienUTC() - jjcour);
             ageISS = age1;
@@ -1406,6 +1399,7 @@ void Onglets::ChargementPref() const
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         _ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
+        _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", true).toBool());
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
@@ -1638,7 +1632,8 @@ void Onglets::CalculAosSatSuivi() const
         obs.CalculPosVit(date);
 
         // Position du satellite
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), satelliteSelectionne);
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->donneesSatellites(),
+                                                           Configuration::instance()->lgRec(), satelliteSelectionne);
         _ui->nomsatSuivi->setText(tle.first().nom());
 
         Satellite satSuivi(tle.first());
@@ -2252,6 +2247,99 @@ void Onglets::SauveOngletInformations(const QString &fic) const
     /* Retour */
     return;
 }
+
+/*
+ * Sauvegarde des preferences
+ */
+void Onglets::SauvePreferences(const QString &fichierPref)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QFile fi(fichierPref);
+
+        if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+            if (!fi.isWritable()) {
+                const QString msg = tr("Problème de droits d'écriture du fichier %1");
+                throw PreviSatException(msg.arg(fi.fileName()), WARNING);
+            }
+
+            QTextStream flux(&fi);
+
+            flux << "affichage/affSAA " << QVariant(_ui->affSAA->isChecked()).toString() << endl
+                 << "affichage/affconst " << _ui->affconst->checkState() << endl
+                 << "affichage/affcoord " << QVariant(_ui->affcoord->isChecked()).toString() << endl
+                 << "affichage/affetoiles " << QVariant(_ui->affetoiles->isChecked()).toString() << endl
+                 << "affichage/affgrille " << QVariant(_ui->affgrille->isChecked()).toString() << endl
+                 << "affichage/afficone " << QVariant(_ui->afficone->isChecked()).toString() << endl
+                 << "affichage/affinvew " << QVariant(_ui->affinvew->isChecked()).toString() << endl
+                 << "affichage/affinvns " << QVariant(_ui->affinvns->isChecked()).toString() << endl
+                 << "affichage/afflune " << QVariant(_ui->afflune->isChecked()).toString() << endl
+                 << "affichage/affnomlieu " << _ui->affnomlieu->checkState() << endl
+                 << "affichage/affnomsat " << _ui->affnomsat->checkState() << endl
+                 << "affichage/affnotif " << QVariant(_ui->affnotif->isChecked()).toString() << endl
+                 << "affichage/affnuit " << QVariant(_ui->affnuit->isChecked()).toString() << endl
+                 << "affichage/affphaselune " << QVariant(_ui->affphaselune->isChecked()).toString() << endl
+                 << "affichage/affplanetes " << _ui->affplanetes->checkState() << endl
+                 << "affichage/affradar " << _ui->affradar->checkState() << endl
+                 << "affichage/affsoleil " << QVariant(_ui->affsoleil->isChecked()).toString() << endl
+                 << "affichage/afftraceCiel " << QVariant(_ui->afftraceCiel->isChecked()).toString() << endl
+                 << "affichage/afftraj " << QVariant(_ui->afftraj->isChecked()).toString() << endl
+                 << "affichage/affvisib " << _ui->affvisib->checkState() << endl
+                 << "affichage/calJulien " << QVariant(_ui->calJulien->isChecked()).toString() << endl
+                 << "affichage/eclipsesLune " << QVariant(_ui->calJulien->isChecked()).toString() << endl
+                 << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << endl
+                 << "affichage/extinction " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << endl
+                 << "affichage/groupeTLE " << _ui->groupeTLE->currentIndex() << endl
+                 << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << endl
+                 << "affichage/intensiteVision " << _ui->intensiteVision->value() << endl
+                 << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << endl
+                 << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << endl
+                 << "affichage/proportionsCarte " << QVariant(_ui->proportionsCarte->isChecked()).toString() << endl
+                 << "affichage/refractionPourEclipses " << QVariant(_ui->refractionPourEclipses->isChecked()).toString() << endl
+                 << "affichage/rotationIconeISS " << QVariant(_ui->rotationIconeISS->isChecked()).toString() << endl
+                 << "affichage/affNoradListes " << QVariant(_ui->affNoradListes->isChecked()).toString() << endl
+                 << "affichage/rotationLune " << QVariant(_ui->rotationLune->isChecked()).toString() << endl
+                 << "affichage/systemeHoraire " << QVariant(_ui->syst24h->isChecked()).toString() << endl
+                 << "affichage/typeParametres " << _ui->typeParametres->currentIndex() << endl
+                 << "affichage/typeRepere " << _ui->typeRepere->currentIndex() << endl
+                 << "affichage/unite " << QVariant(_ui->unitesKm->isChecked()).toString() << endl
+                 << "affichage/utc " << QVariant(_ui->utc->isChecked()).toString() << endl
+                 << "affichage/utcAuto " << QVariant(_ui->utcAuto->isChecked()).toString() << endl
+                 << "affichage/valeurZoomMap " << _ui->valeurZoomMap->value() << endl
+                 << "affichage/verifMAJ " << QVariant(_ui->verifMAJ->isChecked()).toString() << endl
+                 << "fichier/affichageMsgMAJ " << _ui->affichageMsgMAJ->currentIndex() << endl
+                 << "affichage/affBetaWCC " << QVariant(_ui->affBetaWCC->isChecked()).toString() << endl
+                 << "affichage/affCerclesAcq " << QVariant(_ui->affCerclesAcq->isChecked()).toString() << endl
+                 << "affichage/affNbOrbWCC " << QVariant(_ui->affNbOrbWCC->isChecked()).toString() << endl
+                 << "affichage/aff_ZOE " << QVariant(_ui->affSAA_ZOE->isChecked()).toString() << endl
+                 << "affichage/styleWCC " << QVariant(_ui->styleWCC->isChecked()).toString() << endl
+                 << "affichage/coulGMT " << _ui->coulGMT->currentIndex() << endl
+                 << "affichage/coulZOE " << _ui->coulZOE->currentIndex() << endl
+                 << "affichage/coulCercleVisibilite " << _ui->coulCercleVisibilite->currentIndex() << endl
+                 << "affichage/coulEquateur " << _ui->coulEquateur->currentIndex() << endl
+                 << "affichage/coulTerminateur " << _ui->coulTerminateur->currentIndex() << endl
+                 << "affichage/policeWCC " << _ui->policeWCC->currentIndex() << endl;
+
+            for(const QString station : Configuration::instance()->mapStations().keys()) {
+                flux << "affichage/station" + station + " " + settings.value("affichage/station" + station).toString() << endl;
+            }
+
+            fi.close();
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Ajout d'un fichier dans la liste de telechargement (telechargement asynchrone)
@@ -2926,7 +3014,6 @@ void Onglets::ReactualiserAffichage()
     return;
 }
 
-
 /*
  * Ecriture du fichier
  */
@@ -3017,7 +3104,8 @@ void Onglets::FinEnregistrementFichier()
                     QStringList compteRendu;
                     const int affMsg = _ui->affichageMsgMAJ->currentIndex();
                     try {
-                        TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, affMsg, compteRendu);
+                        TLE::MiseAJourFichier(fichierAMettreAJour, fichierALire, Configuration::instance()->donneesSatellites(),
+                                              Configuration::instance()->lgRec(), affMsg, compteRendu);
                         EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj);
 
                     } catch (PreviSatException &ex) {
@@ -4741,7 +4829,8 @@ void Onglets::on_mettreAJourTLE_clicked()
 
         QStringList compteRendu;
         const int affMsg = _ui->affichageMsgMAJ->currentIndex();
-        TLE::MiseAJourFichier(_ui->fichierAMettreAJour->text(), fic, affMsg, compteRendu);
+        TLE::MiseAJourFichier(_ui->fichierAMettreAJour->text(), fic, Configuration::instance()->donneesSatellites(),
+                              Configuration::instance()->lgRec(), affMsg, compteRendu);
 
         const bool aecr = EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMaj2);
 
@@ -5216,7 +5305,8 @@ void Onglets::on_calculsFlashs_clicked()
         }
 
         // Lecture du fichier TLE
-        QMap<QString, TLE> tabtle = TLE::LectureFichier(fi.filePath(), listeSatellites);
+        QMap<QString, TLE> tabtle = TLE::LectureFichier(fi.filePath(), Configuration::instance()->donneesSatellites(),
+                                                        Configuration::instance()->lgRec(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);
@@ -5497,7 +5587,8 @@ void Onglets::on_calculsTransit_clicked()
                     }
 
                     // Utilisation des elements orbitaux du fichier visual.txt
-                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), listeSatellites).first());
+                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
+                                                                              Configuration::instance()->lgRec(), listeSatellites).first());
 
                     if (tle.isEmpty()) {
 
@@ -5549,7 +5640,8 @@ void Onglets::on_calculsTransit_clicked()
                 }
 
                 // Utilisation des elements orbitaux du fichier visual.txt
-                tabtle.append(TLE::LectureFichier(fi1.absoluteFilePath(), listeSatellites).first());
+                tabtle.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
+                                                  Configuration::instance()->lgRec(), listeSatellites).first());
 
                 if (tabtle.isEmpty()) {
 
@@ -5764,7 +5856,8 @@ void Onglets::on_genererPositions_clicked()
         }
 
         // Lecture du fichier TLE
-        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), satelliteSelectionne);
+        const QMap<QString, TLE> tle = TLE::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->donneesSatellites(),
+                                                           Configuration::instance()->lgRec(), satelliteSelectionne);
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
         const Date date(_date->offsetUTC());
@@ -6317,7 +6410,8 @@ void Onglets::on_rechercheCreerTLE_clicked()
         }
 
         // Lecture du fichier TLE
-        const QMap<QString, TLE> tabtle = TLE::LectureFichier(ficlu);
+        const QMap<QString, TLE> tabtle = TLE::LectureFichier(ficlu, Configuration::instance()->donneesSatellites(),
+                                                              Configuration::instance()->lgRec());
 
         // Ouverture du fichier personnel en ecriture
         QFile sw(ficperso);
@@ -6820,4 +6914,124 @@ void Onglets::on_utc_toggled(bool checked)
 
     /* Retour */
     return;
+}
+
+void Onglets::on_preferences_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool etat = _ui->preferences->blockSignals(true);
+
+    /* Corps de la methode */
+    if (_ui->optionConfig->isVisible()) {
+
+        if (index == _ui->preferences->count() - 2) {
+
+            // Sauvegarde d'un fichier de preferences
+            QString fichier = getText(this, tr("Enregistrer sous..."), tr("Nom du fichier :"), tr("OK"), tr("Annuler"), QLineEdit::Normal,
+                                      QString(), Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+            if (fichier.isEmpty()) {
+
+                const QFileInfo fi(settings.value("fichier/preferences", Configuration::instance()->dirPrf() + QDir::separator() + "defaut").toString());
+                const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1).toLower();
+                _ui->preferences->setCurrentIndex(qMax(0, _ui->preferences->findText(fic)));
+                ChargementPref();
+
+            } else {
+
+                fichier = Configuration::instance()->dirPrf() + QDir::separator() + fichier.toLower() + ".prf";
+                const QFileInfo fi(fichier);
+                bool ok = true;
+
+                if (fi.exists()) {
+
+                    QMessageBox msgbox(tr("Information"), tr("Le fichier existe déjà. Voulez-vous l'écraser ?"), QMessageBox::Question,
+                                       QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
+                    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+                    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+                    msgbox.exec();
+                    ok = (msgbox.result() == QMessageBox::Yes);
+
+                } else {
+                    ok = true;
+                }
+
+                if (ok) {
+                    SauvePreferences(fichier);
+                    InitFicPref(true);
+                    const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1);
+                    _ui->preferences->setCurrentIndex(_ui->preferences->findText(fic));
+                }
+            }
+
+        } else if (index == _ui->preferences->count() - 1) {
+
+            // Suppression d'un fichier de preferences
+            const QDir di(Configuration::instance()->dirPrf());
+            const QStringList filtres(QStringList () << "*.prf");
+            const QStringList items = di.entryList(filtres, QDir::Files).replaceInStrings(".prf", "");
+
+            if (items.count() > 0) {
+
+                QStringList listePrf;
+                foreach(QString item, items) {
+                    listePrf.append(item.at(0).toUpper() + item.mid(1));
+                }
+
+                const QString text(listePrf.value(_ui->preferences->currentIndex()));
+                QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+                input.setWindowTitle(tr("Supprimer un fichier..."));
+                input.setLabelText(tr("Fichier :"));
+                input.setComboBoxItems(listePrf);
+                input.setTextValue(text);
+                input.setComboBoxEditable(false);
+                input.setOkButtonText(tr("Supprimer"));
+                input.setCancelButtonText(tr("Annuler"));
+                input.setOption(QInputDialog::UseListViewForComboBoxItems, true);
+
+                const int ret = input.exec();
+                const QString fichier = (ret) ? input.textValue() : "";
+
+                if (fichier.isEmpty()) {
+                    const QFileInfo fi(settings.value("fichier/preferences",
+                                                      Configuration::instance()->dirPrf() + QDir::separator() + "defaut").toString());
+                    const QString fic = fi.completeBaseName().at(0).toUpper() + fi.completeBaseName().mid(1);
+                    _ui->preferences->setCurrentIndex(qMax(0, _ui->preferences->findText(fic)));
+
+                } else {
+
+                    if (ret && (fichier != "defaut")) {
+                        const QString fic = Configuration::instance()->dirPrf() + QDir::separator() + fichier.toLower() + ".prf";
+                        QFile fi(fic);
+                        fi.remove();
+                        InitFicPref(true);
+                        _ui->preferences->setCurrentIndex(qMax(0, _ui->preferences->currentIndex() - 1));
+                        ChargementPref();
+                    }
+                }
+            } else {
+                _ui->preferences->setCurrentIndex(0);
+            }
+
+        } else {
+            ChargementPref();
+            settings.setValue("fichier/preferences", Configuration::instance()->listeFicPref().at(qMax(0, _ui->preferences->currentIndex())));
+        }
+
+        emit MiseAJourCarte();
+    }
+    _ui->preferences->blockSignals(etat);
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_enregistrerPref_clicked()
+{
+    if (_ui->preferences->currentIndex() < (_ui->preferences->count() - 2)) {
+        SauvePreferences(Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex()));
+    }
 }

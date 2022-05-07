@@ -44,9 +44,7 @@
 #define DATE_H
 
 #include <QDateTime>
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QList>
-#pragma GCC diagnostic warning "-Wconversion"
 #include "dateconst.h"
 
 

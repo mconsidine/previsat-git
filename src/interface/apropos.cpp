@@ -34,9 +34,7 @@
  *
  */
 
-#include <QDate>
 #pragma GCC diagnostic ignored "-Wconversion"
-#include <QLocale>
 #include <QStyle>
 #include "ui_apropos.h"
 #pragma GCC diagnostic warning "-Wconversion"

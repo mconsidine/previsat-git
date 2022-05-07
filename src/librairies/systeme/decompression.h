@@ -43,8 +43,8 @@
 #ifndef DECOMPRESSION_H
 #define DECOMPRESSION_H
 
-#include <QString>
 
+class QString;
 
 class Decompression
 {

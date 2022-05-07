@@ -44,12 +44,12 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QDomDocument>
+#include <QFileInfo>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QLocale>
-#include <QSettings>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QSettings>
 #include <QTextStream>
-#include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include "configuration.h"
 #include "librairies/exceptions/previsatexception.h"

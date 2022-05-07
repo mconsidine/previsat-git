@@ -40,6 +40,7 @@
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "telescope.h"
 
 
@@ -91,7 +92,8 @@ int Telescope::CalculSuiviTelescope(int &nombre)
             Date date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
 
             // Creation de la liste de TLE
-            const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, _conditions.listeSatellites);
+            const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                                  Configuration::instance()->lgRec(), _conditions.listeSatellites);
 
             // Satellite
             Satellite sat(tabTle.first());

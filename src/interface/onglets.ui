@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>7</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -8346,7 +8346,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="optionLieuObservation">
        <property name="font">
@@ -9097,7 +9097,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="satellites">
          <widget class="QCheckBox" name="affvisib">

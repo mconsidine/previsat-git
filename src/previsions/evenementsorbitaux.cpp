@@ -35,6 +35,7 @@
  */
 
 #include <QElapsedTimer>
+#include <QObject>
 #include "configuration/configuration.h"
 #include "evenementsorbitaux.h"
 #include "librairies/corps/satellite/satellite.h"
@@ -125,7 +126,8 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     _resultats.clear();
 
     // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, _conditions.listeSatellites);
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                          Configuration::instance()->lgRec(), _conditions.listeSatellites);
 
     // Creation du tableau de satellites
     QMapIterator<QString, TLE> it1(tabTle);

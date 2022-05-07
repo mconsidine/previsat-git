@@ -30,19 +30,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 fevrier 2022
+ * >    7 mai 2022
  *
  */
 
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QMessageBox>
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>
-#include "configuration/configuration.h"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
-#include "donnees.h"
-#include "satellite.h"
 #include "tle.h"
 
 
@@ -238,7 +235,8 @@ Donnees TLE::donnees() const
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringList &listeSatellites, const bool ajoutDonnees)
+QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec, const QStringList &listeSatellites,
+                                       const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
     QMap<QString, TLE> mapTLE;
@@ -254,8 +252,6 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QStringL
         QString lig2;
         QString norad;
         TLE tle;
-        const int lgRec = Configuration::instance()->lgRec();
-        const QString &donneesSat = Configuration::instance()->donneesSatellites();
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
@@ -371,7 +367,8 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 /*
  * Mise a jour du fichier TLE
  */
-void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const int affMsg, QStringList &compteRendu)
+void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec,  const int affMsg,
+                           QStringList &compteRendu)
 {
     /* Declarations des variables locales */
 
@@ -390,7 +387,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleOld = LectureFichier(ficOld, QStringList(), false);
+    QMap<QString, TLE> tleOld = LectureFichier(ficOld, donneesSat, lgRec, QStringList(), false);
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
@@ -400,7 +397,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const i
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleNew = LectureFichier(ficNew, QStringList(), false);
+    QMap<QString, TLE> tleNew = LectureFichier(ficNew, donneesSat, lgRec, QStringList(), false);
 
     /* Corps de la methode */
     int nbMaj = 0;

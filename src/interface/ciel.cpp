@@ -40,12 +40,11 @@
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/maths/maths.h"
-#pragma GCC diagnostic ignored "-Wconversion"
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include "ui_ciel.h"
-#include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "ui_onglets.h"
 
 
 // Couleur des planetes

@@ -34,8 +34,6 @@
  *
  */
 
-#include <cmath>
-#include <limits>
 #include <QtMath>
 #include "elementsosculateurs.h"
 #include "librairies/corps/systemesolaire/terreconst.h"

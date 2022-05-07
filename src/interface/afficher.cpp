@@ -34,30 +34,28 @@
  *
  */
 
+#include <QtGlobal>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
-#include <QTableWidget>
-#include <QTableWidgetItem>
 #include <QTextStream>
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include "ui_afficher.h"
-#include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "ui_onglets.h"
 #include "afficher.h"
 #include "ciel.h"
 #include "onglets.h"
 #include "configuration/configuration.h"
-#include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/maths/maths.h"
 
 Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
-#include <QMessageBox>
+
 
 QList<Etoile> etoiles;
 QList<Constellation> constellations;

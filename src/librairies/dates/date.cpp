@@ -34,15 +34,6 @@
  *
  */
 
-#include <QtGlobal>
-#if QT_VERSION >= 0x050000
-#include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
-
-#include <cmath>
-#include <QCoreApplication>
 #include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QTextStream>

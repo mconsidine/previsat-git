@@ -44,19 +44,14 @@
 #define CONFIGURATION_H
 
 #include <QFont>
-#include <QMap>
 #include <QString>
-#include <QStringList>
-#include "librairies/observateur/observateur.h"
 #include "librairies/corps/etoiles/constellation.h"
-#include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/planete.h"
-#include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/exceptions/message.h"
+#include "librairies/observateur/observateur.h"
 
 
 struct TLEdefaut

@@ -35,11 +35,10 @@
  */
 
 #include <cmath>
-#include <limits>
 #include "librairies/maths/mathsconst.h"
 #include "librairies/observateur/observateur.h"
+#include "conditioneclipse.h"
 #include "magnitude.h"
-#include "satellite.h"
 
 
 /**********

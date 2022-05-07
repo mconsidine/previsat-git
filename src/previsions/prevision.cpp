@@ -36,7 +36,7 @@
 
 #include <QElapsedTimer>
 #include "configuration/configuration.h"
-#include "librairies/corps/satellite/tle.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "prevision.h"
 
 
@@ -104,7 +104,8 @@ int Prevision::CalculPrevisions(int &nombre)
     _resultats.clear();
 
     // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, _conditions.listeSatellites);
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                          Configuration::instance()->lgRec(), _conditions.listeSatellites);
 
     // Creation du tableau de satellites
     QMapIterator<QString, TLE> it1(tabTle);
