@@ -894,7 +894,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="6692"/>
         <location filename="../src/interface/onglets.ui" line="7408"/>
         <location filename="../src/interface/onglets.ui" line="8288"/>
-        <location filename="../src/interface/onglets.cpp" line="2063"/>
+        <location filename="../src/interface/onglets.cpp" line="2066"/>
         <source>Lieu d&apos;observation :</source>
         <translation>Name of location :</translation>
     </message>
@@ -1005,13 +1005,13 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="1035"/>
-        <location filename="../src/interface/onglets.cpp" line="2111"/>
+        <location filename="../src/interface/onglets.cpp" line="2114"/>
         <source>Coordonnées du Soleil :</source>
         <translation>Sun coordinates :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="1057"/>
-        <location filename="../src/interface/onglets.cpp" line="2122"/>
+        <location filename="../src/interface/onglets.cpp" line="2125"/>
         <source>Coordonnées de la Lune :</source>
         <translation>Moon coordinates :</translation>
     </message>
@@ -1023,7 +1023,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="1551"/>
-        <location filename="../src/interface/onglets.cpp" line="2132"/>
+        <location filename="../src/interface/onglets.cpp" line="2135"/>
         <source>Illumination :</source>
         <translation>Illumination :</translation>
     </message>
@@ -1094,7 +1094,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="2376"/>
-        <location filename="../src/interface/onglets.cpp" line="1932"/>
+        <location filename="../src/interface/onglets.cpp" line="1935"/>
         <source>Vecteur d&apos;état</source>
         <translation>State vector</translation>
     </message>
@@ -1810,7 +1810,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="8362"/>
-        <location filename="../src/interface/onglets.cpp" line="4353"/>
+        <location filename="../src/interface/onglets.cpp" line="4384"/>
         <source>Lieu d&apos;observation</source>
         <translation>Name of location</translation>
     </message>
@@ -1850,15 +1850,15 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="8724"/>
         <location filename="../src/interface/onglets.ui" line="8789"/>
-        <location filename="../src/interface/onglets.cpp" line="4043"/>
-        <location filename="../src/interface/onglets.cpp" line="4353"/>
-        <location filename="../src/interface/onglets.cpp" line="5050"/>
-        <location filename="../src/interface/onglets.cpp" line="5347"/>
-        <location filename="../src/interface/onglets.cpp" line="5678"/>
-        <location filename="../src/interface/onglets.cpp" line="5942"/>
-        <location filename="../src/interface/onglets.cpp" line="6158"/>
-        <location filename="../src/interface/onglets.cpp" line="6938"/>
-        <location filename="../src/interface/onglets.cpp" line="6998"/>
+        <location filename="../src/interface/onglets.cpp" line="4074"/>
+        <location filename="../src/interface/onglets.cpp" line="4384"/>
+        <location filename="../src/interface/onglets.cpp" line="5082"/>
+        <location filename="../src/interface/onglets.cpp" line="5379"/>
+        <location filename="../src/interface/onglets.cpp" line="5710"/>
+        <location filename="../src/interface/onglets.cpp" line="5974"/>
+        <location filename="../src/interface/onglets.cpp" line="6190"/>
+        <location filename="../src/interface/onglets.cpp" line="7007"/>
+        <location filename="../src/interface/onglets.cpp" line="7067"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -1875,7 +1875,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="363"/>
         <location filename="../src/interface/onglets.cpp" line="1196"/>
         <location filename="../src/interface/onglets.cpp" line="1575"/>
-        <location filename="../src/interface/onglets.cpp" line="4216"/>
+        <location filename="../src/interface/onglets.cpp" line="4247"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
@@ -1900,7 +1900,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="365"/>
         <location filename="../src/interface/onglets.cpp" line="1197"/>
         <location filename="../src/interface/onglets.cpp" line="1576"/>
-        <location filename="../src/interface/onglets.cpp" line="4217"/>
+        <location filename="../src/interface/onglets.cpp" line="4248"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
@@ -2273,8 +2273,8 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="10981"/>
         <location filename="../src/interface/onglets.ui" line="11219"/>
         <location filename="../src/interface/onglets.ui" line="11279"/>
-        <location filename="../src/interface/onglets.cpp" line="2676"/>
-        <location filename="../src/interface/onglets.cpp" line="5221"/>
+        <location filename="../src/interface/onglets.cpp" line="2679"/>
+        <location filename="../src/interface/onglets.cpp" line="5253"/>
         <source>Parcourir...</source>
         <translation>Browse...</translation>
     </message>
@@ -2419,7 +2419,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="11323"/>
-        <location filename="../src/interface/onglets.cpp" line="6505"/>
+        <location filename="../src/interface/onglets.cpp" line="6537"/>
         <source>De 000001 à 999999</source>
         <translation>From 000001 to 999999</translation>
     </message>
@@ -2430,15 +2430,15 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="11370"/>
-        <location filename="../src/interface/onglets.cpp" line="6506"/>
+        <location filename="../src/interface/onglets.cpp" line="6538"/>
         <source>De 00.000000000 à 18.000000000</source>
         <translation>From 00.000000000 to 18.000000000</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="11417"/>
         <location filename="../src/interface/onglets.ui" line="11470"/>
-        <location filename="../src/interface/onglets.cpp" line="6507"/>
-        <location filename="../src/interface/onglets.cpp" line="6508"/>
+        <location filename="../src/interface/onglets.cpp" line="6539"/>
+        <location filename="../src/interface/onglets.cpp" line="6540"/>
         <source>De 000° à 360°</source>
         <translation>From 000° to 360°</translation>
     </message>
@@ -2455,8 +2455,8 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="11598"/>
         <location filename="../src/interface/onglets.ui" line="11617"/>
-        <location filename="../src/interface/onglets.cpp" line="6510"/>
-        <location filename="../src/interface/onglets.cpp" line="6511"/>
+        <location filename="../src/interface/onglets.cpp" line="6542"/>
+        <location filename="../src/interface/onglets.cpp" line="6543"/>
         <source>De 000° à 180°</source>
         <translation>From 000° to 180°</translation>
     </message>
@@ -2497,7 +2497,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="12008"/>
-        <location filename="../src/interface/onglets.cpp" line="2631"/>
+        <location filename="../src/interface/onglets.cpp" line="2634"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
@@ -2505,22 +2505,22 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="12013"/>
         <location filename="../src/interface/onglets.ui" line="12033"/>
         <location filename="../src/interface/onglets.ui" line="12058"/>
-        <location filename="../src/interface/onglets.cpp" line="6997"/>
+        <location filename="../src/interface/onglets.cpp" line="7066"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="12018"/>
-        <location filename="../src/interface/onglets.cpp" line="2867"/>
-        <location filename="../src/interface/onglets.cpp" line="2880"/>
-        <location filename="../src/interface/onglets.cpp" line="2955"/>
-        <location filename="../src/interface/onglets.cpp" line="2972"/>
+        <location filename="../src/interface/onglets.cpp" line="2870"/>
+        <location filename="../src/interface/onglets.cpp" line="2883"/>
+        <location filename="../src/interface/onglets.cpp" line="2958"/>
+        <location filename="../src/interface/onglets.cpp" line="2975"/>
         <source>Télécharger...</source>
         <translation>Download...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="12023"/>
-        <location filename="../src/interface/onglets.cpp" line="2634"/>
+        <location filename="../src/interface/onglets.cpp" line="2637"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
@@ -2632,13 +2632,13 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="876"/>
-        <location filename="../src/interface/onglets.cpp" line="3712"/>
+        <location filename="../src/interface/onglets.cpp" line="3743"/>
         <source>Modèle haute orbite</source>
         <translation>High orbit model</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="876"/>
-        <location filename="../src/interface/onglets.cpp" line="3712"/>
+        <location filename="../src/interface/onglets.cpp" line="3743"/>
         <source>Modèle basse orbite</source>
         <translation>Low orbit model</translation>
     </message>
@@ -2647,11 +2647,11 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="589"/>
         <location filename="../src/interface/onglets.cpp" line="622"/>
         <location filename="../src/interface/onglets.cpp" line="947"/>
-        <location filename="../src/interface/onglets.cpp" line="3734"/>
-        <location filename="../src/interface/onglets.cpp" line="5001"/>
-        <location filename="../src/interface/onglets.cpp" line="5267"/>
-        <location filename="../src/interface/onglets.cpp" line="5525"/>
-        <location filename="../src/interface/onglets.cpp" line="6138"/>
+        <location filename="../src/interface/onglets.cpp" line="3765"/>
+        <location filename="../src/interface/onglets.cpp" line="5033"/>
+        <location filename="../src/interface/onglets.cpp" line="5299"/>
+        <location filename="../src/interface/onglets.cpp" line="5557"/>
+        <location filename="../src/interface/onglets.cpp" line="6170"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
@@ -2670,7 +2670,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="313"/>
-        <location filename="../src/interface/onglets.cpp" line="6847"/>
+        <location filename="../src/interface/onglets.cpp" line="6916"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
@@ -2772,10 +2772,10 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.cpp" line="883"/>
         <location filename="../src/interface/onglets.cpp" line="1583"/>
-        <location filename="../src/interface/onglets.cpp" line="2581"/>
-        <location filename="../src/interface/onglets.cpp" line="3720"/>
-        <location filename="../src/interface/onglets.cpp" line="4144"/>
-        <location filename="../src/interface/onglets.cpp" line="4332"/>
+        <location filename="../src/interface/onglets.cpp" line="2584"/>
+        <location filename="../src/interface/onglets.cpp" line="3751"/>
+        <location filename="../src/interface/onglets.cpp" line="4175"/>
+        <location filename="../src/interface/onglets.cpp" line="4363"/>
         <source>m</source>
         <comment>meter</comment>
         <translatorcomment>Symbol for meter</translatorcomment>
@@ -2784,10 +2784,10 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.cpp" line="883"/>
         <location filename="../src/interface/onglets.cpp" line="1583"/>
-        <location filename="../src/interface/onglets.cpp" line="2581"/>
-        <location filename="../src/interface/onglets.cpp" line="3733"/>
-        <location filename="../src/interface/onglets.cpp" line="4144"/>
-        <location filename="../src/interface/onglets.cpp" line="4332"/>
+        <location filename="../src/interface/onglets.cpp" line="2584"/>
+        <location filename="../src/interface/onglets.cpp" line="3764"/>
+        <location filename="../src/interface/onglets.cpp" line="4175"/>
+        <location filename="../src/interface/onglets.cpp" line="4363"/>
         <source>ft</source>
         <comment>foot</comment>
         <translatorcomment>Symbol for foot unit</translatorcomment>
@@ -2795,15 +2795,15 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="901"/>
-        <location filename="../src/interface/onglets.cpp" line="3747"/>
+        <location filename="../src/interface/onglets.cpp" line="3778"/>
         <source>Boîte. %1 x %2 x %3 %4</source>
         <translation>Box. %1 x %2 x %3 %4</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="905"/>
-        <location filename="../src/interface/onglets.cpp" line="2207"/>
-        <location filename="../src/interface/onglets.cpp" line="2222"/>
-        <location filename="../src/interface/onglets.cpp" line="3751"/>
+        <location filename="../src/interface/onglets.cpp" line="2210"/>
+        <location filename="../src/interface/onglets.cpp" line="2225"/>
+        <location filename="../src/interface/onglets.cpp" line="3782"/>
         <source>Inconnues</source>
         <translation>Unknown</translation>
     </message>
@@ -2849,9 +2849,9 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="1624"/>
-        <location filename="../src/interface/onglets.cpp" line="4954"/>
-        <location filename="../src/interface/onglets.cpp" line="5861"/>
-        <location filename="../src/interface/onglets.cpp" line="6102"/>
+        <location filename="../src/interface/onglets.cpp" line="4986"/>
+        <location filename="../src/interface/onglets.cpp" line="5893"/>
+        <location filename="../src/interface/onglets.cpp" line="6134"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
@@ -2872,197 +2872,197 @@ COSPAR : %3</translation>
         <translation>Satellite in the sky. Current elevation : %1. Azimuth : %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1915"/>
-        <location filename="../src/interface/onglets.cpp" line="2050"/>
-        <location filename="../src/interface/onglets.cpp" line="2160"/>
-        <location filename="../src/interface/onglets.cpp" line="2273"/>
-        <location filename="../src/interface/onglets.cpp" line="6427"/>
+        <location filename="../src/interface/onglets.cpp" line="1918"/>
+        <location filename="../src/interface/onglets.cpp" line="2053"/>
+        <location filename="../src/interface/onglets.cpp" line="2163"/>
+        <location filename="../src/interface/onglets.cpp" line="2276"/>
+        <location filename="../src/interface/onglets.cpp" line="6459"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Unable to write file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1928"/>
-        <location filename="../src/interface/onglets.cpp" line="2072"/>
-        <location filename="../src/interface/onglets.cpp" line="2174"/>
+        <location filename="../src/interface/onglets.cpp" line="1931"/>
+        <location filename="../src/interface/onglets.cpp" line="2075"/>
+        <location filename="../src/interface/onglets.cpp" line="2177"/>
         <source>Nom du satellite :</source>
         <translation>Name of satellite :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1942"/>
+        <location filename="../src/interface/onglets.cpp" line="1945"/>
         <source>Éléments osculateurs :</source>
         <translation>Osculating elements :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1947"/>
-        <location filename="../src/interface/onglets.cpp" line="1960"/>
+        <location filename="../src/interface/onglets.cpp" line="1950"/>
+        <location filename="../src/interface/onglets.cpp" line="1963"/>
         <source>Demi-grand axe       : %1	Ascension droite du noeud ascendant : %2</source>
         <translation>Semi-major axis     : %1 	Right ascension of the ascending node : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1950"/>
+        <location filename="../src/interface/onglets.cpp" line="1953"/>
         <source>Excentricité         : %1	Argument du périgée                 : %2</source>
         <translation>Eccentricity        : %1 	Argument of perigee                   : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1953"/>
+        <location filename="../src/interface/onglets.cpp" line="1956"/>
         <source>Inclinaison          : %1	Anomalie moyenne                    : %2</source>
         <translation>Inclination         : %1	Mean anomaly                          : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1979"/>
+        <location filename="../src/interface/onglets.cpp" line="1982"/>
         <source>Longitude du périgée : %1	Anomalie moyenne   : %2</source>
         <translation>Longitude of perigee: %1	Mean anomaly       : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2002"/>
+        <location filename="../src/interface/onglets.cpp" line="2005"/>
         <source>Anomalie vraie       : %1	Apogée  (Altitude) : %2</source>
         <translation>True anomaly        : %1	Apogee  (Altitude) : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2005"/>
+        <location filename="../src/interface/onglets.cpp" line="2008"/>
         <source>Anomalie excentrique : %1	Périgée (Altitude) : %2</source>
         <translation>Eccentric anomaly   : %1	Perigee (Altitude) : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2008"/>
+        <location filename="../src/interface/onglets.cpp" line="2011"/>
         <source>Champ de vue         : %1  	Période orbitale   : %2</source>
         <translation>Field of view       : %1   	Orbital period     : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2012"/>
+        <location filename="../src/interface/onglets.cpp" line="2015"/>
         <source>Divers :</source>
         <translation>Miscellaneous :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2016"/>
+        <location filename="../src/interface/onglets.cpp" line="2019"/>
         <source>Atténuation          : %1</source>
         <translation>Free-space loss      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2022"/>
+        <location filename="../src/interface/onglets.cpp" line="2025"/>
         <source>Phasage              : %1</source>
         <translation>Phasing             : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2074"/>
+        <location filename="../src/interface/onglets.cpp" line="2077"/>
         <source>Longitude : %1		Hauteur    : %2	Ascension droite :  %3</source>
         <translation>Longitude : %1		Elevation   : %2	Right ascension  : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2078"/>
+        <location filename="../src/interface/onglets.cpp" line="2081"/>
         <source>Latitude  :  %1		Azimut (N) : %2	Déclinaison      : %3</source>
         <translation>Latitude  :  %1		Azimuth (N) : %2	Declination      : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2085"/>
+        <location filename="../src/interface/onglets.cpp" line="2088"/>
         <source>Direction          : %1  	Orbite n°%2      		%3</source>
         <translation>Direction        : %1  		Orbit #%2      		%3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2089"/>
+        <location filename="../src/interface/onglets.cpp" line="2092"/>
         <source>Vitesse orbitale   : %1	%2	%3</source>
         <translation>Orbital velocity : %1	%2	%3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2112"/>
-        <location filename="../src/interface/onglets.cpp" line="2123"/>
+        <location filename="../src/interface/onglets.cpp" line="2115"/>
+        <location filename="../src/interface/onglets.cpp" line="2126"/>
         <source>Hauteur    : %1		Ascension droite :  %2</source>
         <translation>Elevation   : %1		Right ascension :  %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2118"/>
+        <location filename="../src/interface/onglets.cpp" line="2121"/>
         <source>Distance   : %1   		Constellation    : %2</source>
         <translation>Range       : %1   		Constellation   : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2129"/>
+        <location filename="../src/interface/onglets.cpp" line="2132"/>
         <source>Distance   : %1  		Constellation    : %2</source>
         <translation>Range       : %1   		Constellation   : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2133"/>
+        <location filename="../src/interface/onglets.cpp" line="2136"/>
         <source>Magnitude    :</source>
         <translation>Magnitude    :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2194"/>
+        <location filename="../src/interface/onglets.cpp" line="2197"/>
         <source>Inclinaison             : %1		Anomalie moyenne      : %2</source>
         <translation>Inclination         : %1 		Mean anomaly       : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2202"/>
+        <location filename="../src/interface/onglets.cpp" line="2205"/>
         <source>Excentricité            : %1		Modèle orbital        : %2</source>
         <translation>Eccentricity        : %1 		Propagation model  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2205"/>
+        <location filename="../src/interface/onglets.cpp" line="2208"/>
         <source>Argument du périgée     : %1		Dimensions/Section    : %2%3</source>
         <translation>Argument of perigee : %1 		Dimensions/Section : %2%3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2212"/>
+        <location filename="../src/interface/onglets.cpp" line="2215"/>
         <source>Nom                :</source>
         <translation>Name                 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2217"/>
+        <location filename="../src/interface/onglets.cpp" line="2220"/>
         <source>Désignation COSPAR : %1		Modèle orbital     : %2</source>
         <translation>COSPAR designation   : %1		Propagation model  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2220"/>
+        <location filename="../src/interface/onglets.cpp" line="2223"/>
         <source>Dimensions/Section : %1%2</source>
         <translation>Dimensions/Section   : %1%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2224"/>
+        <location filename="../src/interface/onglets.cpp" line="2227"/>
         <source>Date de lancement  : %1		Apogée  (Altitude) : %2</source>
         <translation>Launch date          : %1		Apogee  (Altitude) : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2227"/>
+        <location filename="../src/interface/onglets.cpp" line="2230"/>
         <source>Date de rentrée    : %1		</source>
         <translation>Decay date           : %1		</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2228"/>
         <location filename="../src/interface/onglets.cpp" line="2231"/>
+        <location filename="../src/interface/onglets.cpp" line="2234"/>
         <source>Catégorie d&apos;orbite : %1		</source>
         <translation>Orbital category     : %1		</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2229"/>
+        <location filename="../src/interface/onglets.cpp" line="2232"/>
         <source>Périgée (Altitude) : %1</source>
         <translation>Perigee (Altitude) : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2232"/>
         <location filename="../src/interface/onglets.cpp" line="2235"/>
+        <location filename="../src/interface/onglets.cpp" line="2238"/>
         <source>Pays/Organisation  : %1		</source>
         <translation>Country/Organization : %1		</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2233"/>
+        <location filename="../src/interface/onglets.cpp" line="2236"/>
         <source>Période orbitale   : %1</source>
         <translation>Orbital period     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2236"/>
+        <location filename="../src/interface/onglets.cpp" line="2239"/>
         <source>Site de lancement  : %1		</source>
         <translation>Launch site          : %1		</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2237"/>
+        <location filename="../src/interface/onglets.cpp" line="2240"/>
         <source>Inclinaison        : %1</source>
         <translation>Inclination        : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2240"/>
+        <location filename="../src/interface/onglets.cpp" line="2243"/>
         <source>Site de lancement  : %1</source>
         <translation>Launch site          : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2453"/>
+        <location filename="../src/interface/onglets.cpp" line="2456"/>
         <source>Mise à jour du groupe de TLE &quot;%1&quot; (à partir de %2) en cours...</source>
         <translation>Updating TLE group &amp;quot;%1&amp;quot; (from %2)...</translation>
     </message>
@@ -3082,226 +3082,226 @@ COSPAR : %3</translation>
         <translation>Disallow TLE add/remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2712"/>
+        <location filename="../src/interface/onglets.cpp" line="2715"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2795"/>
-        <location filename="../src/interface/onglets.cpp" line="2832"/>
+        <location filename="../src/interface/onglets.cpp" line="2798"/>
+        <location filename="../src/interface/onglets.cpp" line="2835"/>
         <source>Erreur rencontrée lors de l&apos;initialisation
 Il n&apos;existe aucun fichier de lieux d&apos;observation</source>
         <translation>Error occured while initialization
 There is no observation files</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2811"/>
+        <location filename="../src/interface/onglets.cpp" line="2814"/>
         <source>Mes Préférés</source>
         <translation>My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2839"/>
+        <location filename="../src/interface/onglets.cpp" line="2842"/>
         <source>Erreur rencontrée lors de l&apos;initialisation
 Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe pas</source>
         <translation>Error occured while initialization
 The directory containing the observation sites does not exist</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2863"/>
-        <location filename="../src/interface/onglets.cpp" line="2912"/>
-        <location filename="../src/interface/onglets.cpp" line="2946"/>
+        <location filename="../src/interface/onglets.cpp" line="2866"/>
+        <location filename="../src/interface/onglets.cpp" line="2915"/>
+        <location filename="../src/interface/onglets.cpp" line="2949"/>
         <source>* Défaut</source>
         <translation>* Default</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2918"/>
-        <location filename="../src/interface/onglets.cpp" line="6938"/>
+        <location filename="../src/interface/onglets.cpp" line="2921"/>
+        <location filename="../src/interface/onglets.cpp" line="7007"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2923"/>
+        <location filename="../src/interface/onglets.cpp" line="2926"/>
         <source>Supprimer...</source>
         <translation>Remove...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3054"/>
+        <location filename="../src/interface/onglets.cpp" line="3085"/>
         <source>o/s</source>
         <comment>Byte per second</comment>
         <translation>B/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3057"/>
+        <location filename="../src/interface/onglets.cpp" line="3088"/>
         <source>ko/s</source>
         <comment>kilo-byte per second</comment>
         <translation>kB/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3060"/>
+        <location filename="../src/interface/onglets.cpp" line="3091"/>
         <source>Mo/s</source>
         <comment>Mega-byte per second</comment>
         <translation>MB/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3122"/>
+        <location filename="../src/interface/onglets.cpp" line="3153"/>
         <source>Remplacement du fichier %1</source>
         <translation>Replacement of file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3122"/>
+        <location filename="../src/interface/onglets.cpp" line="3153"/>
         <source>Ajout du fichier %1</source>
         <translation>Add file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3138"/>
+        <location filename="../src/interface/onglets.cpp" line="3169"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation>Error while downloading file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3180"/>
-        <location filename="../src/interface/onglets.cpp" line="3201"/>
-        <location filename="../src/interface/onglets.cpp" line="5788"/>
-        <location filename="../src/interface/onglets.cpp" line="5823"/>
+        <location filename="../src/interface/onglets.cpp" line="3211"/>
+        <location filename="../src/interface/onglets.cpp" line="3232"/>
+        <location filename="../src/interface/onglets.cpp" line="5820"/>
+        <location filename="../src/interface/onglets.cpp" line="5855"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3181"/>
+        <location filename="../src/interface/onglets.cpp" line="3212"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour des fichiers</source>
         <translation>Please restart %1 in order to take into account file updates</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3680"/>
-        <location filename="../src/interface/onglets.cpp" line="3767"/>
-        <location filename="../src/interface/onglets.cpp" line="3773"/>
-        <location filename="../src/interface/onglets.cpp" line="3837"/>
-        <location filename="../src/interface/onglets.cpp" line="3841"/>
+        <location filename="../src/interface/onglets.cpp" line="3711"/>
+        <location filename="../src/interface/onglets.cpp" line="3798"/>
+        <location filename="../src/interface/onglets.cpp" line="3804"/>
+        <location filename="../src/interface/onglets.cpp" line="3868"/>
+        <location filename="../src/interface/onglets.cpp" line="3872"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3688"/>
-        <location filename="../src/interface/onglets.cpp" line="3779"/>
-        <location filename="../src/interface/onglets.cpp" line="3784"/>
-        <location filename="../src/interface/onglets.cpp" line="3794"/>
-        <location filename="../src/interface/onglets.cpp" line="3833"/>
+        <location filename="../src/interface/onglets.cpp" line="3719"/>
+        <location filename="../src/interface/onglets.cpp" line="3810"/>
+        <location filename="../src/interface/onglets.cpp" line="3815"/>
+        <location filename="../src/interface/onglets.cpp" line="3825"/>
+        <location filename="../src/interface/onglets.cpp" line="3864"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4801"/>
-        <location filename="../src/interface/onglets.cpp" line="6281"/>
+        <location filename="../src/interface/onglets.cpp" line="4833"/>
+        <location filename="../src/interface/onglets.cpp" line="6313"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>The name of TLE file to read is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4816"/>
-        <location filename="../src/interface/onglets.cpp" line="4820"/>
+        <location filename="../src/interface/onglets.cpp" line="4848"/>
+        <location filename="../src/interface/onglets.cpp" line="4852"/>
         <source>Erreur rencontrée lors de la décompression du fichier %1</source>
         <translation>Error occured while decompressing file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4831"/>
-        <location filename="../src/interface/onglets.cpp" line="6305"/>
+        <location filename="../src/interface/onglets.cpp" line="4863"/>
+        <location filename="../src/interface/onglets.cpp" line="6337"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>The file %1 does not exist</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5784"/>
+        <location filename="../src/interface/onglets.cpp" line="5816"/>
         <source>Téléchargement du fichier TLE de l&apos;ISS...</source>
         <translation>Downloading ISS TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5820"/>
+        <location filename="../src/interface/onglets.cpp" line="5852"/>
         <source>Téléchargement du fichier de manoeuvres ISS...</source>
         <translation>Downloading ISS maneuver file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6311"/>
+        <location filename="../src/interface/onglets.cpp" line="6343"/>
         <source>Erreur rencontrée lors du chargement du fichier %1</source>
         <translation>Error while loading file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6316"/>
+        <location filename="../src/interface/onglets.cpp" line="6348"/>
         <source>Le nom du fichier personnel n&apos;est pas spécifié</source>
         <translation>The name of personal TLE file to is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6326"/>
+        <location filename="../src/interface/onglets.cpp" line="6358"/>
         <source>Nom du fichier personnel et nom du fichier à lire identiques</source>
         <translation>Name of personal file and name of file to read identical</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6332"/>
-        <location filename="../src/interface/onglets.cpp" line="6338"/>
+        <location filename="../src/interface/onglets.cpp" line="6364"/>
+        <location filename="../src/interface/onglets.cpp" line="6370"/>
         <source>Erreur dans la saisie des numéros NORAD</source>
         <translation>Error in NORAD numbers input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6344"/>
-        <location filename="../src/interface/onglets.cpp" line="6350"/>
+        <location filename="../src/interface/onglets.cpp" line="6376"/>
+        <location filename="../src/interface/onglets.cpp" line="6382"/>
         <source>Erreur dans la saisie des nombres de révolutions par jour</source>
         <translation>Error in numbers of revolutions per day input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6356"/>
-        <location filename="../src/interface/onglets.cpp" line="6362"/>
+        <location filename="../src/interface/onglets.cpp" line="6388"/>
+        <location filename="../src/interface/onglets.cpp" line="6394"/>
         <source>Erreur dans la saisie des ascensions droites du noeud ascendant</source>
         <translation>Error in right ascensions of ascending node input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6368"/>
-        <location filename="../src/interface/onglets.cpp" line="6374"/>
+        <location filename="../src/interface/onglets.cpp" line="6400"/>
+        <location filename="../src/interface/onglets.cpp" line="6406"/>
         <source>Erreur dans la saisie des arguments du périgée</source>
         <translation>Error in arguments of perigee input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6380"/>
-        <location filename="../src/interface/onglets.cpp" line="6386"/>
+        <location filename="../src/interface/onglets.cpp" line="6412"/>
+        <location filename="../src/interface/onglets.cpp" line="6418"/>
         <source>Erreur dans la saisie des excentricités</source>
         <translation>Error in eccentricities input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6392"/>
-        <location filename="../src/interface/onglets.cpp" line="6398"/>
+        <location filename="../src/interface/onglets.cpp" line="6424"/>
+        <location filename="../src/interface/onglets.cpp" line="6430"/>
         <source>Erreur dans la saisie des inclinaisons (premier intervalle)</source>
         <translation>Error in inclinations input (first interval)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6408"/>
-        <location filename="../src/interface/onglets.cpp" line="6414"/>
+        <location filename="../src/interface/onglets.cpp" line="6440"/>
+        <location filename="../src/interface/onglets.cpp" line="6446"/>
         <source>Erreur dans la saisie des inclinaisons (deuxième intervalle)</source>
         <translation>Error in inclinations input (second interval)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6483"/>
+        <location filename="../src/interface/onglets.cpp" line="6515"/>
         <source>Fichier %1 écrit</source>
         <translation>File %1 written</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4751"/>
-        <location filename="../src/interface/onglets.cpp" line="4771"/>
+        <location filename="../src/interface/onglets.cpp" line="4783"/>
+        <location filename="../src/interface/onglets.cpp" line="4803"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4753"/>
+        <location filename="../src/interface/onglets.cpp" line="4785"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4773"/>
+        <location filename="../src/interface/onglets.cpp" line="4805"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)</source>
         <translation>Text files (*.txt);;TLE files (*.tle);;Gz files (*.gz)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4797"/>
+        <location filename="../src/interface/onglets.cpp" line="4829"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>The name of TLE file to update is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4848"/>
+        <location filename="../src/interface/onglets.cpp" line="4880"/>
         <source>Terminé !</source>
         <translation>Done !</translation>
     </message>
@@ -3342,7 +3342,7 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="893"/>
-        <location filename="../src/interface/onglets.cpp" line="3739"/>
+        <location filename="../src/interface/onglets.cpp" line="3770"/>
         <source>Sphérique. R=%1 %2</source>
         <comment>R = radius</comment>
         <translation>Spherical. R=%1 %2</translation>
@@ -3444,463 +3444,463 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="1670"/>
-        <location filename="../src/interface/onglets.cpp" line="5891"/>
+        <location filename="../src/interface/onglets.cpp" line="5923"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1925"/>
-        <location filename="../src/interface/onglets.cpp" line="2061"/>
+        <location filename="../src/interface/onglets.cpp" line="1928"/>
+        <location filename="../src/interface/onglets.cpp" line="2064"/>
         <source>Date :</source>
         <comment>Date and hour</comment>
         <translation>Date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1933"/>
+        <location filename="../src/interface/onglets.cpp" line="1936"/>
         <source>x : %1	vx : %2</source>
         <comment>Position, velocity</comment>
         <translation>x : %1	vx : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1936"/>
+        <location filename="../src/interface/onglets.cpp" line="1939"/>
         <source>y : %1	vy : %2</source>
         <comment>Position, velocity</comment>
         <translation>y : %1	vy : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1939"/>
+        <location filename="../src/interface/onglets.cpp" line="1942"/>
         <source>z : %1	vz : %2</source>
         <comment>Position, velocity</comment>
         <translation>z : %1	vz : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1963"/>
+        <location filename="../src/interface/onglets.cpp" line="1966"/>
         <source>Ex                   : %1	Inclinaison                         : %2</source>
         <comment>Ex = Component X of eccentricity vector</comment>
         <translation>Ex                  : %1 	Inclination                           : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1966"/>
+        <location filename="../src/interface/onglets.cpp" line="1969"/>
         <source>Ey                   : %1	Position sur orbite                 : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
         <translation>Ey                  : %1 	In orbit position                     : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1973"/>
+        <location filename="../src/interface/onglets.cpp" line="1976"/>
         <source>Demi-grand axe       : %1	Ix                 : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
         <translation>Semi-major axis     : %1 	Ix                 : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1976"/>
+        <location filename="../src/interface/onglets.cpp" line="1979"/>
         <source>Excentricité         : %1	Iy                 : %2</source>
         <comment>Iy = Component Y of inclination vector</comment>
         <translation>Eccentricity        : %1 	Iy                 : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1986"/>
+        <location filename="../src/interface/onglets.cpp" line="1989"/>
         <source>Demi-grand axe       : %1	Ix                          : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
         <translation>Semi-major axis     : %1 	Ix                       : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1989"/>
+        <location filename="../src/interface/onglets.cpp" line="1992"/>
         <source>Ex                   : %1	Iy                          : %2</source>
         <comment>Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector</comment>
         <translation>Ex                  : %1 	Iy                       : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="1993"/>
+        <location filename="../src/interface/onglets.cpp" line="1996"/>
         <source>Ey                   : %1	Argument de longitude vraie : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
         <translation>Ey                  : %1 	True longtitude argument : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2013"/>
+        <location filename="../src/interface/onglets.cpp" line="2016"/>
         <source>Doppler @ 100 MHz    : %1</source>
         <comment>Doppler effect at 100 MegaHertz</comment>
         <translation>Doppler @ 100 MHz   : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2019"/>
+        <location filename="../src/interface/onglets.cpp" line="2022"/>
         <source>Délai                : %1</source>
         <comment>Delay of signal at light speed</comment>
         <translation>Delay               : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2064"/>
+        <location filename="../src/interface/onglets.cpp" line="2067"/>
         <source>Longitude  : %1	Latitude : %2	Altitude : %3</source>
         <comment>Observer coordinates</comment>
         <translation>Longitude  : %1	Latitude : %2	Altitude : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2066"/>
+        <location filename="../src/interface/onglets.cpp" line="2069"/>
         <source>Conditions : %1</source>
         <comment>Conditions of observation</comment>
         <translation>Conditions : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2081"/>
+        <location filename="../src/interface/onglets.cpp" line="2084"/>
         <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
         <comment>Altitude of satellite</comment>
         <translation>Altitude  :  %1		Range       : %2	Constellation    : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2099"/>
+        <location filename="../src/interface/onglets.cpp" line="2102"/>
         <source>Variation distance : %1  	%2</source>
         <comment>Range rate</comment>
         <translation>Range rate       : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2115"/>
-        <location filename="../src/interface/onglets.cpp" line="2126"/>
+        <location filename="../src/interface/onglets.cpp" line="2118"/>
+        <location filename="../src/interface/onglets.cpp" line="2129"/>
         <source>Azimut (N) : %1		Déclinaison      : %2</source>
         <comment>Azimuth from the North</comment>
         <translation>Azimuth (N) : %1	Declination     : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2131"/>
+        <location filename="../src/interface/onglets.cpp" line="2134"/>
         <source>Phase        :</source>
         <comment>Moon phase</comment>
         <translation>Phase        :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2178"/>
+        <location filename="../src/interface/onglets.cpp" line="2181"/>
         <source>Numéro NORAD            : %1 		Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
         <comment>revolution per day</comment>
         <translation>NORAD number           : %1  		Mean motion      : %2 rev/day		Launch date          : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2182"/>
+        <location filename="../src/interface/onglets.cpp" line="2185"/>
         <source>Désignation COSPAR      : %1		n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
         <comment>n&apos;/2 = derivative of the mean motion divided by two (in revolution per day square)</comment>
         <translation>COSPAR Designation     : %1 		n&apos;/2             : %2 rev/day^2	Orbital category     : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2186"/>
+        <location filename="../src/interface/onglets.cpp" line="2189"/>
         <source>Époque (UTC)            : %1	n&quot;/6                  : %2 rev/jour^3	 Pays/Organisation  : %3</source>
         <comment>n&quot;/6 = second derivative of the mean motion divided by six (in revolution per day cube)</comment>
         <translation>Epoch (UTC)            : %1	n&quot;/6             : %2 rev/day^3	Country/Organization : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2190"/>
+        <location filename="../src/interface/onglets.cpp" line="2193"/>
         <source>Coeff pseudo-balistique : %1 (1/Re)	Nb orbites à l&apos;époque : %2			 Site de lancement  : %3</source>
         <comment>Pseudo-ballistic coefficient in 1/Earth radius</comment>
         <translation>Pseudo-ballistic coeff : %1 (1/Re)	Orbit # at epoch : %2			Launch site          : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2198"/>
+        <location filename="../src/interface/onglets.cpp" line="2201"/>
         <source>AD noeud ascendant      : %1		Magnitude std/max     : %2</source>
         <comment>Right ascension of the ascending node, Standard/Maximal magnitude</comment>
         <translation>RA ascending node   : %1 		Std/Max magnitude  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2214"/>
+        <location filename="../src/interface/onglets.cpp" line="2217"/>
         <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
         <comment>Standard/Maximal magnitude</comment>
         <translation>NORAD Number         : %1		Std/Max magnitude  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2590"/>
+        <location filename="../src/interface/onglets.cpp" line="2593"/>
         <source>L&apos;altitude doit être comprise entre %1%2 et %3%2</source>
         <comment>Observer altitude</comment>
         <translation>The altitude must be between %1%2 et %3%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3707"/>
+        <location filename="../src/interface/onglets.cpp" line="3738"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (DS)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3707"/>
+        <location filename="../src/interface/onglets.cpp" line="3738"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (NE)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3708"/>
+        <location filename="../src/interface/onglets.cpp" line="3739"/>
         <source>Non applicable</source>
         <translation>Not applicable</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3721"/>
-        <location filename="../src/interface/onglets.cpp" line="5001"/>
-        <location filename="../src/interface/onglets.cpp" line="5267"/>
-        <location filename="../src/interface/onglets.cpp" line="5525"/>
-        <location filename="../src/interface/onglets.cpp" line="6138"/>
+        <location filename="../src/interface/onglets.cpp" line="3752"/>
+        <location filename="../src/interface/onglets.cpp" line="5033"/>
+        <location filename="../src/interface/onglets.cpp" line="5299"/>
+        <location filename="../src/interface/onglets.cpp" line="5557"/>
+        <location filename="../src/interface/onglets.cpp" line="6170"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3743"/>
+        <location filename="../src/interface/onglets.cpp" line="3774"/>
         <source>Cylindrique. L=%1 %2, R=%3 %2</source>
         <comment>L = height, R = radius</comment>
         <translation>Cylindrical. L=%1 %2, R=%3 %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3964"/>
+        <location filename="../src/interface/onglets.cpp" line="3995"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>The name of the category is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3986"/>
+        <location filename="../src/interface/onglets.cpp" line="4017"/>
         <source>La nouvelle catégorie de lieux d&apos;observation a été créée</source>
         <translation>The new category of locations has been created</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3990"/>
+        <location filename="../src/interface/onglets.cpp" line="4021"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>The category already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4013"/>
-        <location filename="../src/interface/onglets.cpp" line="4054"/>
-        <location filename="../src/interface/onglets.cpp" line="6956"/>
+        <location filename="../src/interface/onglets.cpp" line="4044"/>
+        <location filename="../src/interface/onglets.cpp" line="4085"/>
+        <location filename="../src/interface/onglets.cpp" line="7025"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4013"/>
+        <location filename="../src/interface/onglets.cpp" line="4044"/>
         <source>Voulez-vous vraiment supprimer la catégorie &quot;%1&quot;?</source>
         <translation>Do you really want to remove the &quot;%1&quot; category?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4016"/>
-        <location filename="../src/interface/onglets.cpp" line="4056"/>
-        <location filename="../src/interface/onglets.cpp" line="4392"/>
-        <location filename="../src/interface/onglets.cpp" line="6958"/>
+        <location filename="../src/interface/onglets.cpp" line="4047"/>
+        <location filename="../src/interface/onglets.cpp" line="4087"/>
+        <location filename="../src/interface/onglets.cpp" line="4423"/>
+        <location filename="../src/interface/onglets.cpp" line="7027"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4017"/>
-        <location filename="../src/interface/onglets.cpp" line="4057"/>
-        <location filename="../src/interface/onglets.cpp" line="4393"/>
-        <location filename="../src/interface/onglets.cpp" line="6959"/>
+        <location filename="../src/interface/onglets.cpp" line="4048"/>
+        <location filename="../src/interface/onglets.cpp" line="4088"/>
+        <location filename="../src/interface/onglets.cpp" line="4424"/>
+        <location filename="../src/interface/onglets.cpp" line="7028"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4029"/>
+        <location filename="../src/interface/onglets.cpp" line="4060"/>
         <source>La catégorie &quot;%1&quot; a été supprimée</source>
         <translation>The category &quot;%1&quot; has been removed</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4043"/>
+        <location filename="../src/interface/onglets.cpp" line="4074"/>
         <source>Catégorie</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4043"/>
+        <location filename="../src/interface/onglets.cpp" line="4074"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>New name of the category :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4043"/>
-        <location filename="../src/interface/onglets.cpp" line="4353"/>
-        <location filename="../src/interface/onglets.cpp" line="6938"/>
+        <location filename="../src/interface/onglets.cpp" line="4074"/>
+        <location filename="../src/interface/onglets.cpp" line="4384"/>
+        <location filename="../src/interface/onglets.cpp" line="7007"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4054"/>
+        <location filename="../src/interface/onglets.cpp" line="4085"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>The category already exists. Do you want to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4171"/>
+        <location filename="../src/interface/onglets.cpp" line="4202"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>The name of location is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4183"/>
+        <location filename="../src/interface/onglets.cpp" line="4214"/>
         <source>Erreur dans la saisie de la longitude</source>
         <translation>Error in longitude input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4193"/>
+        <location filename="../src/interface/onglets.cpp" line="4224"/>
         <source>Erreur dans la saisie de la latitude</source>
         <translation>Error in latitude input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4202"/>
+        <location filename="../src/interface/onglets.cpp" line="4233"/>
         <source>Erreur dans la saisie de l&apos;altitude</source>
         <translation>Error in altitude input</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4212"/>
+        <location filename="../src/interface/onglets.cpp" line="4243"/>
         <source>Le lieu existe déjà dans la catégorie &quot;%1&quot;</source>
         <translation>The location already exists in the category &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4275"/>
+        <location filename="../src/interface/onglets.cpp" line="4306"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; fait déjà partie de &quot;Mes Préférés&quot;</source>
         <translation>The location &quot;%1&quot; is already in &quot;My Favorites&quot;</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4283"/>
+        <location filename="../src/interface/onglets.cpp" line="4314"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; a été ajouté dans la catégorie &quot;Mes Préférés&quot;</source>
         <translation>The location &quot;%1&quot; has been added in &quot;My Favorites&quot;</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4353"/>
+        <location filename="../src/interface/onglets.cpp" line="4384"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>New name of the location :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4385"/>
+        <location filename="../src/interface/onglets.cpp" line="4416"/>
         <source>Voulez-vous vraiment supprimer &quot;%1&quot; de la catégorie &quot;%2&quot;?</source>
         <translation>Do you really want to remove &quot;%1&quot; from the category &quot;%2&quot;?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4390"/>
+        <location filename="../src/interface/onglets.cpp" line="4421"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4406"/>
+        <location filename="../src/interface/onglets.cpp" line="4437"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; a été supprimé de la catégorie &quot;%2&quot;</source>
         <translation>The location &quot;%1&quot; has been removed from the category &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4437"/>
+        <location filename="../src/interface/onglets.cpp" line="4468"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>Location already selected</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4572"/>
-        <location filename="../src/interface/onglets.cpp" line="4643"/>
+        <location filename="../src/interface/onglets.cpp" line="4603"/>
+        <location filename="../src/interface/onglets.cpp" line="4675"/>
         <source>dd/MM/yyyy hh:mm:ss</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5039"/>
+        <location filename="../src/interface/onglets.cpp" line="5071"/>
         <source>previsions</source>
         <comment>filename (without accent)</comment>
         <translation>predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5336"/>
+        <location filename="../src/interface/onglets.cpp" line="5368"/>
         <source>flashs</source>
         <comment>file name (without accent)</comment>
         <translation>flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5667"/>
+        <location filename="../src/interface/onglets.cpp" line="5699"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation>transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6147"/>
+        <location filename="../src/interface/onglets.cpp" line="6179"/>
         <source>evenements</source>
         <comment>file name (without accent)</comment>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6938"/>
+        <location filename="../src/interface/onglets.cpp" line="7007"/>
         <source>Nom du fichier :</source>
         <translation>Name of file :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6956"/>
+        <location filename="../src/interface/onglets.cpp" line="7025"/>
         <source>Le fichier existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>The file already exists. Do you want to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6992"/>
+        <location filename="../src/interface/onglets.cpp" line="7061"/>
         <source>Supprimer un fichier...</source>
         <translation>Remove a file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6993"/>
+        <location filename="../src/interface/onglets.cpp" line="7062"/>
         <source>Fichier :</source>
         <translation>File :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5049"/>
-        <location filename="../src/interface/onglets.cpp" line="5346"/>
-        <location filename="../src/interface/onglets.cpp" line="5677"/>
-        <location filename="../src/interface/onglets.cpp" line="5941"/>
-        <location filename="../src/interface/onglets.cpp" line="6157"/>
+        <location filename="../src/interface/onglets.cpp" line="5081"/>
+        <location filename="../src/interface/onglets.cpp" line="5378"/>
+        <location filename="../src/interface/onglets.cpp" line="5709"/>
+        <location filename="../src/interface/onglets.cpp" line="5973"/>
+        <location filename="../src/interface/onglets.cpp" line="6189"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5073"/>
-        <location filename="../src/interface/onglets.cpp" line="5370"/>
-        <location filename="../src/interface/onglets.cpp" line="5701"/>
-        <location filename="../src/interface/onglets.cpp" line="5971"/>
-        <location filename="../src/interface/onglets.cpp" line="6181"/>
+        <location filename="../src/interface/onglets.cpp" line="5105"/>
+        <location filename="../src/interface/onglets.cpp" line="5402"/>
+        <location filename="../src/interface/onglets.cpp" line="5733"/>
+        <location filename="../src/interface/onglets.cpp" line="6003"/>
+        <location filename="../src/interface/onglets.cpp" line="6213"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5076"/>
+        <location filename="../src/interface/onglets.cpp" line="5108"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>None pass has been found during the given period</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5222"/>
+        <location filename="../src/interface/onglets.cpp" line="5254"/>
         <source>Le nom du fichier TLE n&apos;est pas spécifié</source>
         <translation>The name of TLE file is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5228"/>
+        <location filename="../src/interface/onglets.cpp" line="5260"/>
         <source>Le nom du fichier TLE est incorrect</source>
         <translation>The name of TLE file is incorrect</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5309"/>
-        <location filename="../src/interface/onglets.cpp" line="5553"/>
-        <location filename="../src/interface/onglets.cpp" line="5590"/>
-        <location filename="../src/interface/onglets.cpp" line="5643"/>
+        <location filename="../src/interface/onglets.cpp" line="5341"/>
+        <location filename="../src/interface/onglets.cpp" line="5585"/>
+        <location filename="../src/interface/onglets.cpp" line="5622"/>
+        <location filename="../src/interface/onglets.cpp" line="5675"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>Error occured while loading file
 The file %1 is not a TLE</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5328"/>
+        <location filename="../src/interface/onglets.cpp" line="5360"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier TLE</source>
         <translation>Error occured while execution
 There is no satellites producing flares in the TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5373"/>
+        <location filename="../src/interface/onglets.cpp" line="5405"/>
         <source>Aucun flash n&apos;a été trouvé sur la période donnée</source>
         <translation>None flare has been found during the given period</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5632"/>
+        <location filename="../src/interface/onglets.cpp" line="5664"/>
         <source>L&apos;âge du TLE de l&apos;ISS (%1 jours) est supérieur à %2 jours</source>
         <translation>The TLE age of ISS (%1 days) is over to %2 days</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5662"/>
+        <location filename="../src/interface/onglets.cpp" line="5694"/>
         <source>Le fichier TLE n&apos;existe pas</source>
         <translation>The TLE file does not exist</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5601"/>
-        <location filename="../src/interface/onglets.cpp" line="5654"/>
+        <location filename="../src/interface/onglets.cpp" line="5633"/>
+        <location filename="../src/interface/onglets.cpp" line="5686"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <translation>Error occured while loading file
 The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5704"/>
+        <location filename="../src/interface/onglets.cpp" line="5736"/>
         <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
         <translation>None ISS transit has been found during the given period</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6184"/>
+        <location filename="../src/interface/onglets.cpp" line="6216"/>
         <source>Aucun évènement n&apos;a été trouvé sur la période donnée</source>
         <translation>None event has been found during the given period</translation>
     </message>
@@ -3983,8 +3983,8 @@ The file %1 does not contain the TLE of ISS</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="1037"/>
         <location filename="../src/interface/previsat.ui" line="1289"/>
-        <location filename="../src/interface/previsat.cpp" line="2805"/>
-        <location filename="../src/interface/previsat.cpp" line="2811"/>
+        <location filename="../src/interface/previsat.cpp" line="2806"/>
+        <location filename="../src/interface/previsat.cpp" line="2812"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4000,19 +4000,19 @@ The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1100"/>
-        <location filename="../src/interface/previsat.cpp" line="580"/>
+        <location filename="../src/interface/previsat.cpp" line="582"/>
         <source>Mode de fonctionnement</source>
         <translation>Mode</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1118"/>
-        <location filename="../src/interface/previsat.cpp" line="1945"/>
+        <location filename="../src/interface/previsat.cpp" line="1946"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1140"/>
-        <location filename="../src/interface/previsat.cpp" line="1948"/>
+        <location filename="../src/interface/previsat.cpp" line="1949"/>
         <source>Mode manuel</source>
         <translation>Manual mode</translation>
     </message>
@@ -4033,19 +4033,19 @@ The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1294"/>
-        <location filename="../src/interface/previsat.cpp" line="2812"/>
+        <location filename="../src/interface/previsat.cpp" line="2813"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1299"/>
-        <location filename="../src/interface/previsat.cpp" line="2813"/>
+        <location filename="../src/interface/previsat.cpp" line="2814"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1304"/>
-        <location filename="../src/interface/previsat.cpp" line="2814"/>
+        <location filename="../src/interface/previsat.cpp" line="2815"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4073,8 +4073,8 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1864"/>
-        <location filename="../src/interface/previsat.cpp" line="2421"/>
-        <location filename="../src/interface/previsat.cpp" line="3031"/>
+        <location filename="../src/interface/previsat.cpp" line="2422"/>
+        <location filename="../src/interface/previsat.cpp" line="3032"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
@@ -4270,29 +4270,29 @@ the video stream</translation>
         <translation>Utip donation</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="562"/>
+        <location filename="../src/interface/previsat.cpp" line="564"/>
         <source>Messages</source>
         <translation>Messages</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="586"/>
-        <location filename="../src/interface/previsat.cpp" line="1966"/>
+        <location filename="../src/interface/previsat.cpp" line="588"/>
+        <location filename="../src/interface/previsat.cpp" line="1967"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="592"/>
-        <location filename="../src/interface/previsat.cpp" line="1967"/>
+        <location filename="../src/interface/previsat.cpp" line="594"/>
+        <location filename="../src/interface/previsat.cpp" line="1968"/>
         <source>Heure</source>
         <translation>Hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1425"/>
+        <location filename="../src/interface/previsat.cpp" line="1427"/>
         <source>Parcourir...</source>
         <translation>Browse...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1552"/>
+        <location filename="../src/interface/previsat.cpp" line="1554"/>
         <source>%1
 NORAD : %2
 COSPAR : %3</source>
@@ -4301,77 +4301,77 @@ NORAD : %2
 COSPAR : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="925"/>
+        <location filename="../src/interface/previsat.cpp" line="927"/>
         <source>Mise à jour du fichier TLE %1 en cours...</source>
         <translation>Updating TLE file %1...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1206"/>
+        <location filename="../src/interface/previsat.cpp" line="1208"/>
         <source>Carte du monde</source>
         <translation>World map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1241"/>
-        <location filename="../src/interface/previsat.cpp" line="1741"/>
+        <location filename="../src/interface/previsat.cpp" line="1243"/>
+        <location filename="../src/interface/previsat.cpp" line="1743"/>
         <source>Carte du ciel</source>
         <translation>Sky map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1354"/>
-        <location filename="../src/interface/previsat.cpp" line="1731"/>
+        <location filename="../src/interface/previsat.cpp" line="1356"/>
+        <location filename="../src/interface/previsat.cpp" line="1733"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1364"/>
+        <location filename="../src/interface/previsat.cpp" line="1366"/>
         <source>Réduire</source>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1909"/>
-        <location filename="../src/interface/previsat.cpp" line="2773"/>
+        <location filename="../src/interface/previsat.cpp" line="1910"/>
+        <location filename="../src/interface/previsat.cpp" line="2774"/>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <comment>date format</comment>
         <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1964"/>
+        <location filename="../src/interface/previsat.cpp" line="1965"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2449"/>
+        <location filename="../src/interface/previsat.cpp" line="2450"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2450"/>
+        <location filename="../src/interface/previsat.cpp" line="2451"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2450"/>
+        <location filename="../src/interface/previsat.cpp" line="2451"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>informations_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2546"/>
+        <location filename="../src/interface/previsat.cpp" line="2547"/>
         <source>commun</source>
         <comment>do not translate for now</comment>
         <translation>common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2561"/>
+        <location filename="../src/interface/previsat.cpp" line="2562"/>
         <source>tous</source>
         <comment>do not translate for now</comment>
         <translation>all</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1957"/>
+        <location filename="../src/interface/previsat.cpp" line="1958"/>
         <source>Jour julien</source>
         <translation>Julian day</translation>
     </message>
@@ -4386,42 +4386,42 @@ COSPAR : %3</translation>
         <translation>Automatic update of TLE</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="995"/>
+        <location filename="../src/interface/previsat.cpp" line="997"/>
         <source>Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?</source>
         <translation>An update %1 is available. Do you want to download it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="997"/>
-        <location filename="../src/interface/previsat.cpp" line="1061"/>
+        <location filename="../src/interface/previsat.cpp" line="999"/>
+        <location filename="../src/interface/previsat.cpp" line="1063"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="999"/>
-        <location filename="../src/interface/previsat.cpp" line="1063"/>
+        <location filename="../src/interface/previsat.cpp" line="1001"/>
+        <location filename="../src/interface/previsat.cpp" line="1065"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1000"/>
-        <location filename="../src/interface/previsat.cpp" line="1064"/>
+        <location filename="../src/interface/previsat.cpp" line="1002"/>
+        <location filename="../src/interface/previsat.cpp" line="1066"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1033"/>
-        <location filename="../src/interface/previsat.cpp" line="2832"/>
+        <location filename="../src/interface/previsat.cpp" line="1035"/>
+        <location filename="../src/interface/previsat.cpp" line="2833"/>
         <source>Ouverture du fichier TLE %1 ...</source>
         <translation>Loading TLE file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1059"/>
+        <location filename="../src/interface/previsat.cpp" line="1061"/>
         <source>Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?</source>
         <translation>The orbital elements are older than %1 day(s). Do you want to update them?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1035"/>
-        <location filename="../src/interface/previsat.cpp" line="2834"/>
+        <location filename="../src/interface/previsat.cpp" line="1037"/>
+        <location filename="../src/interface/previsat.cpp" line="2835"/>
         <source>Fichier TLE de %1 satellites</source>
         <translation>TLE file of %1 satellites</translation>
     </message>
@@ -4436,122 +4436,122 @@ COSPAR : %3</translation>
         <translation>TLE file %1 OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1124"/>
+        <location filename="../src/interface/previsat.cpp" line="1126"/>
         <source>de %1</source>
         <comment>for downloading PreviSat revision</comment>
         <translation>of %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1159"/>
+        <location filename="../src/interface/previsat.cpp" line="1161"/>
         <source>des fichiers internes</source>
         <comment>for downloading internal files</comment>
         <translation>of internal files</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1958"/>
+        <location filename="../src/interface/previsat.cpp" line="1959"/>
         <source>Jour</source>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2314"/>
+        <location filename="../src/interface/previsat.cpp" line="2315"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>Impossible to display online help</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2328"/>
+        <location filename="../src/interface/previsat.cpp" line="2329"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2334"/>
+        <location filename="../src/interface/previsat.cpp" line="2335"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Utip, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Utip, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2423"/>
+        <location filename="../src/interface/previsat.cpp" line="2424"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)</source>
         <translation>Text files (*.txt);;TLE files (*.tle);;Gz files (*.gz)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2455"/>
-        <location filename="../src/interface/previsat.cpp" line="2989"/>
+        <location filename="../src/interface/previsat.cpp" line="2456"/>
+        <location filename="../src/interface/previsat.cpp" line="2990"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2456"/>
+        <location filename="../src/interface/previsat.cpp" line="2457"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2545"/>
+        <location filename="../src/interface/previsat.cpp" line="2546"/>
         <source>Mise à jour des fichiers TLE communs...</source>
         <translation>Updating common TLE files...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2560"/>
+        <location filename="../src/interface/previsat.cpp" line="2561"/>
         <source>Mise à jour des groupes de TLE en cours...</source>
         <translation>Updating TLE groups...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2576"/>
+        <location filename="../src/interface/previsat.cpp" line="2577"/>
         <source>Mise à jour du fichier de données en cours...</source>
         <translation>Updating data file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2631"/>
+        <location filename="../src/interface/previsat.cpp" line="2632"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available informations</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2805"/>
-        <location filename="../src/interface/previsat.cpp" line="2811"/>
+        <location filename="../src/interface/previsat.cpp" line="2806"/>
+        <location filename="../src/interface/previsat.cpp" line="2812"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2812"/>
+        <location filename="../src/interface/previsat.cpp" line="2813"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2813"/>
+        <location filename="../src/interface/previsat.cpp" line="2814"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2814"/>
+        <location filename="../src/interface/previsat.cpp" line="2815"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2909"/>
+        <location filename="../src/interface/previsat.cpp" line="2910"/>
         <source>%1 (numéro NORAD : %2  -  %3)</source>
         <translation>%1 (NORAD number : %2  -  %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2990"/>
-        <location filename="../src/interface/previsat.cpp" line="3032"/>
+        <location filename="../src/interface/previsat.cpp" line="2991"/>
+        <location filename="../src/interface/previsat.cpp" line="3033"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3013"/>
+        <location filename="../src/interface/previsat.cpp" line="3014"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3074"/>
+        <location filename="../src/interface/previsat.cpp" line="3075"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3076"/>
+        <location filename="../src/interface/previsat.cpp" line="3077"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3102"/>
+        <location filename="../src/interface/previsat.cpp" line="3103"/>
         <source>Impossible de lancer le flux vidéo : essayez de nouveau et/ou vérifiez votre connexion Internet</source>
         <translation>Impossible to launch the video stream : try again and/or check your Internet connexion</translation>
     </message>
@@ -5112,8 +5112,8 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/satellite/evenements.cpp" line="78"/>
-        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="343"/>
-        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="355"/>
+        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="344"/>
+        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="356"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
@@ -5121,8 +5121,8 @@ Satellite %1 - NORAD number : %2</translation>
     <message>
         <location filename="../src/librairies/corps/satellite/evenements.cpp" line="113"/>
         <location filename="../src/librairies/corps/satellite/evenements.h" line="56"/>
-        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="324"/>
-        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="336"/>
+        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="325"/>
+        <location filename="../test/src/librairies/corps/satellite/satellitetest.cpp" line="337"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
