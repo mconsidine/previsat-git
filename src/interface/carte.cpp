@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    8 mai 2022
  *
  */
 
@@ -335,7 +335,7 @@ void Carte::show()
             const int imax = (_onglets->ui()->affnuit->checkState() == Qt::PartiallyChecked || mcc) ? 1 : 4;
 
             const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * _onglets->ui()->intensiteOmbre->value())));
-            const QBrush alpha = (mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 3 * alpha1.color().alpha()))) : alpha1;
+            const QBrush alpha = (mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha1.color().alpha()))) : alpha1;
 
             const QPen stylo1 = (_onglets->ui()->coulTerminateur->currentIndex() == 0) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
             QPen stylo((mcc) ? stylo1 : QPen(Qt::NoBrush, 0));

@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    7 mai 2022
+ * >    8 mai 2022
  *
  */
 
@@ -421,6 +421,11 @@ private:
     void InitFicSon(void);
 
     /**
+     * @brief InitWallCommandCenter Affichage du Wall Command Center au demarrage
+     */
+    void InitWallCommandCenter();
+
+    /**
      * @brief ReactualiserAffichage Rechargement du fichier TLE et rafraichissement de l'affichage
      */
     void ReactualiserAffichage();
@@ -597,12 +602,18 @@ private slots:
     void on_lieuxObservation1_currentIndexChanged(int index);
 
     // Options WCC
+    void on_listeStations_clicked(const QModelIndex &index);
     void on_styleWCC_toggled(bool checked);
     void on_affCerclesAcq_toggled(bool checked);
     void on_policeWCC_currentIndexChanged(int index);
     void on_coulGMT_currentIndexChanged(int index);
+    void on_coulZOE_currentIndexChanged(int index);
+    void on_coulEquateur_currentIndexChanged(int index);
+    void on_coulTerminateur_currentIndexChanged(int index);
+    void on_coulCercleVisibilite_currentIndexChanged(int index);
     void on_affBetaWCC_toggled(bool checked);
     void on_affNbOrbWCC_toggled(bool checked);
+    void on_affSAA_ZOE_toggled(bool checked);
 
     // Options d'affichage
     void on_affnomsat_stateChanged(int arg1);

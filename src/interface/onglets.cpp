@@ -1595,10 +1595,10 @@ void Onglets::AffichageLieuObs()
     return;
 }
 
+#if defined (Q_OS_WIN)
 /*
  * Calcul des informations AOS/LOS pour le suivi d'un satellite
  */
-#if defined (Q_OS_WIN)
 void Onglets::CalculAosSatSuivi() const
 {
     /* Declarations des variables locales */
@@ -1818,6 +1818,9 @@ void Onglets::InitChargementOnglets()
 
     // Chargement des stations
     InitChargementStations();
+
+    // Initialisation des options du Wall Command Center
+    InitWallCommandCenter();
 
     // Chargement des fichiers d'observation
     InitFicObs(true);
@@ -2566,7 +2569,7 @@ void Onglets::InitAffichageDemarrage()
 
     _ui->lbl_prochainAOS->adjustSize();
     _ui->lbl_prochainAOS->resize(_ui->lbl_prochainAOS->width(), 16);
-    _ui->dateAOS->move(_ui->lbl_prochainAOS->x() + _ui->lbl_prochainAOS->width() + 7, _ui->dateAOS->y());
+    _ui->dateAOS->move(_ui->lbl_prochainAOS->x() + _ui->lbl_prochainAOS->width() + 7, _ui->lbl_prochainAOS->y());
     _ui->dateJN->move(_ui->dateAOS->x(), _ui->dateJN->y());
 
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
@@ -2973,6 +2976,34 @@ void Onglets::InitFicSon()
     }
 
     _ui->listeSons->blockSignals(etat);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage du Wall Command Center au demarrage
+ */
+void Onglets::InitWallCommandCenter()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
+    _ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
+    _ui->affNbOrbWCC->setChecked(settings.value("affichage/affNbOrbWCC", true).toBool());
+    _ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
+    _ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
+    _ui->coulGMT->setCurrentIndex(settings.value("affichage/coulGMT", 0).toInt());
+    _ui->coulZOE->setCurrentIndex(settings.value("affichage/coulZOE", 0).toInt());
+    _ui->coulCercleVisibilite->setCurrentIndex(settings.value("affichage/coulCercleVisibilite", 0).toInt());
+    _ui->coulEquateur->setCurrentIndex(settings.value("affichage/coulEquateur", 0).toInt());
+    _ui->coulTerminateur->setCurrentIndex(settings.value("affichage/coulTerminateur").toInt());
+
+    on_affBetaWCC_toggled(false);
+    on_affNbOrbWCC_toggled(false);
 
     /* Retour */
     return;
@@ -4625,6 +4656,7 @@ void Onglets::on_barreOnglets_currentChanged(int index)
 
         _ui->afficherSuivi->setDefault(false);
         _ui->genererPositions->setDefault(true);
+        CalculAosSatSuivi();
 
 #endif
     } else if ((index == _ui->barreOnglets->indexOf(_ui->outils)) && _ui->evenementsOrbitaux->isVisible()) {
@@ -6531,6 +6563,12 @@ void Onglets::on_lieuxObservation1_currentIndexChanged(int index)
     return;
 }
 
+void Onglets::on_listeStations_clicked(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    emit MiseAJourCarte();
+}
+
 void Onglets::on_styleWCC_toggled(bool checked)
 {
     Q_UNUSED(checked)
@@ -6581,6 +6619,30 @@ void Onglets::on_coulGMT_currentIndexChanged(int index)
     emit MiseAJourCarte();
 }
 
+void Onglets::on_coulZOE_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_coulEquateur_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_coulTerminateur_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    emit MiseAJourCarte();
+}
+
+void Onglets::on_coulCercleVisibilite_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    emit MiseAJourCarte();
+}
+
 void Onglets::on_affBetaWCC_toggled(bool checked)
 {
     Q_UNUSED(checked)
@@ -6592,6 +6654,13 @@ void Onglets::on_affNbOrbWCC_toggled(bool checked)
     Q_UNUSED(checked)
     emit MiseAJourCarte();
 }
+
+void Onglets::on_affSAA_ZOE_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    emit MiseAJourCarte();
+}
+
 
 /*
  * Options d'affichage

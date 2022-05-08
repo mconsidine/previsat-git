@@ -362,6 +362,8 @@ void PreviSat::DemarrageApplication()
     _onglets->CalculAosSatSuivi();
 #endif
 
+    ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
+
     if (Configuration::instance()->isCarteMonde()) {
 
         // Affichage des courbes sur la carte du monde
@@ -1865,10 +1867,9 @@ void PreviSat::GestionTempsReel()
         // Affichage du radar
         if (_onglets->ui()->affradar->isChecked()) {
             _radar->show();
-            _radar->setVisible(true);
-        } else {
-            _radar->setVisible(false);
         }
+        _radar->setVisible(!ui->mccISS->isChecked());
+
     }
 
     if (ui->modeManuel->isChecked()) {
