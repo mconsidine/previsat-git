@@ -89,7 +89,8 @@ void TelescopeTest::testCalculSuiviTelescope1()
     int n = 0;
     conditions.fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(conditions.fichier, conditions.listeSatellites);
+    const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
+    const QMap<QString, TLE> tabTle = TLE::LectureFichier(conditions.fichier, donneeISS, donneeISS.size(), conditions.listeSatellites);
     Satellite sat(tabTle.first());
 
     // Determination du prochain passage
