@@ -99,8 +99,9 @@ void OngletsTest::testAll()
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
+    const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
     const QStringList listeTLE(QStringList () << "25544");
-    const QMap<QString, TLE> mapTLE = TLE::LectureFichier(nomfic, listeTLE);
+    const QMap<QString, TLE> mapTLE = TLE::LectureFichier(nomfic, donneeISS, donneeISS.size(), listeTLE);
 
     Satellite sat(mapTLE.first());
 

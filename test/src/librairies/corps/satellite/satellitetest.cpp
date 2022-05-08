@@ -52,7 +52,8 @@
 
 using namespace TestTools;
 
-const Donnees donnees("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
+const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
+const Donnees donnees(donneeISS);
 
 
 void SatelliteTest::testAll()
@@ -79,7 +80,7 @@ void SatelliteTest::testCalculPosVit()
     dir.cd(qApp->applicationName());
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "sgp4.txt";
-    QMap<QString, TLE> mapTLE = TLE::LectureFichier(fic);
+    QMap<QString, TLE> mapTLE = TLE::LectureFichier(fic, donneeISS, donneeISS.size());
 
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "sgp4_res.txt";
     QFileInfo ff(ficRes);
