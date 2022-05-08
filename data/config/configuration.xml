@@ -4,27 +4,27 @@
     <Observateurs>
         <Observateur>
             <Nom>Paris</Nom>
-            <Longitude>-002.348640000</Longitude>
+            <Longitude>-2.348640000</Longitude>
             <Latitude>48.853390000</Latitude>
             <Altitude>30</Altitude>
         </Observateur>
         <Observateur>
-            <Nom>Toulouse</Nom>
-            <Longitude>-001.443670000</Longitude>
-            <Latitude>43.604260000</Latitude>
-            <Altitude>146</Altitude>
+            <Nom>New York</Nom>
+            <Longitude>73.982500000</Longitude>
+            <Latitude>40.766111111</Latitude>
+            <Altitude>0</Altitude>
         </Observateur>
         <Observateur>
-            <Nom>Lyon</Nom>
-            <Longitude>-004.850000000</Longitude>
-            <Latitude>45.750000000</Latitude>
-            <Altitude>175</Altitude>
+            <Nom>Tokyo</Nom>
+            <Longitude>-139.779722222</Longitude>
+            <Latitude>35.696111111</Latitude>
+            <Altitude>0</Altitude>
         </Observateur>
     </Observateurs>
     <FichiersTLE>
         <Fichier nom="visual.txt">
-            <Norad>20580</Norad>
             <Norad>25544</Norad>
+            <Norad>20580</Norad>
         </Fichier>
     </FichiersTLE>
 </PreviSatConfiguration>

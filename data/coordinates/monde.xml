@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreviSatObservateurs>
+<PreviSatObservateurs version="1.0">
     <Observateur>
         <Nom>Aachen</Nom>
         <Longitude>-006.086388889</Longitude>
@@ -55,7 +55,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Zaby</Nom>
+        <Nom>Abu Zaby</Nom>
         <Longitude>-054.347777778</Longitude>
         <Latitude>+24.455555556</Latitude>
         <Altitude>0000</Altitude>
@@ -79,7 +79,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Dawhah</Nom>
+        <Nom>Ad Dawhah</Nom>
         <Longitude>-051.508333333</Longitude>
         <Latitude>+25.294722222</Latitude>
         <Altitude>0000</Altitude>
@@ -91,7 +91,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Abeba</Nom>
+        <Nom>Addis Abeba</Nom>
         <Longitude>-038.757500000</Longitude>
         <Latitude>+09.008333333</Latitude>
         <Altitude>0000</Altitude>
@@ -151,7 +151,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Temouchent</Nom>
+        <Nom>Ain Temouchent</Nom>
         <Longitude>+001.149444444</Longitude>
         <Latitude>+35.298611111</Latitude>
         <Altitude>0000</Altitude>
@@ -187,25 +187,25 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Basrah</Nom>
+        <Nom>Al Basrah</Nom>
         <Longitude>-047.804166667</Longitude>
         <Latitude>+30.489722222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Dammam</Nom>
+        <Nom>Al Dammam</Nom>
         <Longitude>-050.143611111</Longitude>
         <Latitude>+26.422222222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Manamah</Nom>
+        <Nom>Al Manamah</Nom>
         <Longitude>-050.539166667</Longitude>
         <Latitude>+26.185833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Mawsil</Nom>
+        <Nom>Al Mawsil</Nom>
         <Longitude>-043.143611111</Longitude>
         <Latitude>+36.339722222</Latitude>
         <Altitude>0000</Altitude>
@@ -229,7 +229,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Henar</Nom>
+        <Nom>Alcala De Henar</Nom>
         <Longitude>+003.369166667</Longitude>
         <Latitude>+40.485277778</Latitude>
         <Altitude>0000</Altitude>
@@ -373,7 +373,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Vell</Nom>
+        <Nom>Andorra La Vell</Nom>
         <Longitude>-001.511666667</Longitude>
         <Latitude>+42.503888889</Latitude>
         <Altitude>0000</Altitude>
@@ -385,7 +385,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Arbor</Nom>
+        <Nom>Ann Arbor</Nom>
         <Longitude>+083.748333333</Longitude>
         <Latitude>+42.281111111</Latitude>
         <Altitude>0000</Altitude>
@@ -439,7 +439,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Riyad</Nom>
+        <Nom>Ar Riyad</Nom>
         <Longitude>-046.697777778</Longitude>
         <Latitude>+24.674722222</Latitude>
         <Altitude>0000</Altitude>
@@ -655,7 +655,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Blanca</Nom>
+        <Nom>Bahia Blanca</Nom>
         <Longitude>+062.272500000</Longitude>
         <Latitude>-38.719722222</Latitude>
         <Altitude>0000</Altitude>
@@ -721,7 +721,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Beg</Nom>
+        <Nom>Bandar Seri Beg</Nom>
         <Longitude>-114.942500000</Longitude>
         <Latitude>+04.943055556</Latitude>
         <Altitude>0000</Altitude>
@@ -847,7 +847,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Yam</Nom>
+        <Nom>Bat Yam</Nom>
         <Longitude>-034.756666667</Longitude>
         <Latitude>+32.049166667</Latitude>
         <Altitude>0000</Altitude>
@@ -871,7 +871,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rouge</Nom>
+        <Nom>Baton Rouge</Nom>
         <Longitude>+091.154166667</Longitude>
         <Latitude>+30.450000000</Latitude>
         <Altitude>0000</Altitude>
@@ -955,7 +955,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Horizonte</Nom>
+        <Nom>Belo Horizonte</Nom>
         <Longitude>+043.934722222</Longitude>
         <Latitude>-19.918888889</Latitude>
         <Altitude>0000</Altitude>
@@ -967,7 +967,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Benin City</Nom>
         <Longitude>-005.626666667</Longitude>
         <Latitude>+06.329722222</Latitude>
         <Altitude>0000</Altitude>
@@ -1483,7 +1483,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Aires</Nom>
+        <Nom>Buenos Aires</Nom>
         <Longitude>+058.390277778</Longitude>
         <Latitude>-34.622500000</Latitude>
         <Altitude>0000</Altitude>
@@ -1639,7 +1639,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ranh</Nom>
+        <Nom>Cam Ranh</Nom>
         <Longitude>-109.155555556</Longitude>
         <Latitude>+11.919166667</Latitude>
         <Altitude>0000</Altitude>
@@ -1657,7 +1657,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Grande</Nom>
+        <Nom>Campina Grande</Nom>
         <Longitude>+035.875000000</Longitude>
         <Latitude>-07.224166667</Latitude>
         <Altitude>0000</Altitude>
@@ -1699,7 +1699,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Carson City</Nom>
         <Longitude>+119.766111111</Longitude>
         <Latitude>+39.161388889</Latitude>
         <Altitude>0000</Altitude>
@@ -1723,7 +1723,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>La</Nom>
+        <Nom>Castellon De La</Nom>
         <Longitude>+000.042500000</Longitude>
         <Latitude>+39.983611111</Latitude>
         <Altitude>0000</Altitude>
@@ -1753,13 +1753,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Cebu City</Nom>
         <Longitude>-123.890833333</Longitude>
         <Latitude>+10.291666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rapids</Nom>
+        <Nom>Cedar Rapids</Nom>
         <Longitude>+091.634444444</Longitude>
         <Latitude>+42.006111111</Latitude>
         <Altitude>0000</Altitude>
@@ -1999,25 +1999,25 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Heights</Nom>
+        <Nom>Citrus Heights</Nom>
         <Longitude>+121.289166667</Longitude>
         <Latitude>+38.706388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Vatic</Nom>
+        <Nom>Citta Del Vatic</Nom>
         <Longitude>-012.451111111</Longitude>
         <Latitude>+41.898333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Juarez</Nom>
+        <Nom>Ciudad Juarez</Nom>
         <Longitude>+106.471944444</Longitude>
         <Latitude>+31.741388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Obregon</Nom>
+        <Nom>Ciudad Obregon</Nom>
         <Longitude>+109.933333333</Longitude>
         <Latitude>+27.489444444</Latitude>
         <Altitude>0000</Altitude>
@@ -2065,7 +2065,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Spring</Nom>
+        <Nom>Colorado Spring</Nom>
         <Longitude>+104.820833333</Longitude>
         <Latitude>+38.832500000</Latitude>
         <Altitude>0000</Altitude>
@@ -2089,7 +2089,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rivada</Nom>
+        <Nom>Comodoro Rivada</Nom>
         <Longitude>+067.473888889</Longitude>
         <Latitude>-45.855277778</Latitude>
         <Altitude>0000</Altitude>
@@ -2155,13 +2155,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Oviedo</Nom>
+        <Nom>Coronel Oviedo</Nom>
         <Longitude>+056.432777778</Longitude>
         <Latitude>-25.443333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Christi</Nom>
+        <Nom>Corpus Christi</Nom>
         <Longitude>+097.396666667</Longitude>
         <Latitude>+27.799722222</Latitude>
         <Altitude>0000</Altitude>
@@ -2221,25 +2221,25 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bolivar</Nom>
+        <Nom>Cuidad Bolivar</Nom>
         <Longitude>+063.526111111</Longitude>
         <Latitude>+08.126666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Guate</Nom>
+        <Nom>Cuidad De Guate</Nom>
         <Longitude>+090.525000000</Longitude>
         <Latitude>+14.612500000</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Panam</Nom>
+        <Nom>Cuidad De Panam</Nom>
         <Longitude>+079.508333333</Longitude>
         <Latitude>+09.015277778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Guiyana</Nom>
+        <Nom>Cuidad Guiyana</Nom>
         <Longitude>+062.641666667</Longitude>
         <Latitude>+08.375555556</Latitude>
         <Altitude>0000</Altitude>
@@ -2263,19 +2263,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Lat</Nom>
+        <Nom>Da Lat</Nom>
         <Longitude>-108.444166667</Longitude>
         <Latitude>+11.944444444</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Nang</Nom>
+        <Nom>Da Nang</Nom>
         <Longitude>-108.220277778</Longitude>
         <Latitude>+16.031388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Gornicz</Nom>
+        <Nom>Dabrowa Gornicz</Nom>
         <Longitude>-019.248611111</Longitude>
         <Latitude>+50.337222222</Latitude>
         <Altitude>0000</Altitude>
@@ -2323,7 +2323,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Salaam</Nom>
+        <Nom>Dar Es Salaam</Nom>
         <Longitude>-039.280000000</Longitude>
         <Latitude>-06.819722222</Latitude>
         <Altitude>0000</Altitude>
@@ -2365,7 +2365,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Davao City</Nom>
         <Longitude>-125.610277778</Longitude>
         <Latitude>+07.084722222</Latitude>
         <Altitude>0000</Altitude>
@@ -2383,7 +2383,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Dun</Nom>
+        <Nom>Dehra Dun</Nom>
         <Longitude>-078.043333333</Longitude>
         <Latitude>+30.326944444</Latitude>
         <Altitude>0000</Altitude>
@@ -2407,7 +2407,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Khan</Nom>
+        <Nom>Dera Ghazi Khan</Nom>
         <Longitude>-070.641944444</Longitude>
         <Latitude>+30.066111111</Latitude>
         <Altitude>0000</Altitude>
@@ -2419,7 +2419,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Moines</Nom>
+        <Nom>Des Moines</Nom>
         <Longitude>+093.608611111</Longitude>
         <Latitude>+41.600277778</Latitude>
         <Altitude>0000</Altitude>
@@ -2485,7 +2485,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Dawe</Nom>
+        <Nom>Dire Dawe</Nom>
         <Longitude>-041.864722222</Longitude>
         <Latitude>+09.586666667</Latitude>
         <Altitude>0000</Altitude>
@@ -2641,7 +2641,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>London</Nom>
+        <Nom>East London</Nom>
         <Longitude>-027.906111111</Longitude>
         <Latitude>-32.996388889</Latitude>
         <Altitude>0000</Altitude>
@@ -2671,19 +2671,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Faiyum</Nom>
+        <Nom>El Faiyum</Nom>
         <Longitude>-030.836111111</Longitude>
         <Latitude>+29.313055556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Monte</Nom>
+        <Nom>El Monte</Nom>
         <Longitude>+118.026944444</Longitude>
         <Latitude>+34.068888889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Paso</Nom>
+        <Nom>El Paso</Nom>
         <Longitude>+106.487222222</Longitude>
         <Latitude>+31.758611111</Latitude>
         <Altitude>0000</Altitude>
@@ -2725,7 +2725,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>El-K</Nom>
+        <Nom>El-Mahalla El-K</Nom>
         <Longitude>-031.235277778</Longitude>
         <Latitude>+30.961111111</Latitude>
         <Altitude>0000</Altitude>
@@ -2785,7 +2785,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Senia</Nom>
+        <Nom>Es Senia</Nom>
         <Longitude>+000.622222222</Longitude>
         <Latitude>+35.652500000</Latitude>
         <Altitude>0000</Altitude>
@@ -2863,7 +2863,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Santan</Nom>
+        <Nom>Feira De Santan</Nom>
         <Longitude>+038.963333333</Longitude>
         <Latitude>-12.249166667</Latitude>
         <Altitude>0000</Altitude>
@@ -2911,7 +2911,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Blanca</Nom>
+        <Nom>Florida Blanca</Nom>
         <Longitude>+073.080277778</Longitude>
         <Latitude>+07.051388889</Latitude>
         <Altitude>0000</Altitude>
@@ -2923,19 +2923,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Lauderdale</Nom>
+        <Nom>Fort Lauderdale</Nom>
         <Longitude>+080.143888889</Longitude>
         <Latitude>+26.121666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Wayne</Nom>
+        <Nom>Fort Wayne</Nom>
         <Longitude>+085.134166667</Longitude>
         <Latitude>+41.078055556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Worth</Nom>
+        <Nom>Fort Worth</Nom>
         <Longitude>+097.332222222</Longitude>
         <Latitude>+32.758055556</Latitude>
         <Altitude>0000</Altitude>
@@ -2953,7 +2953,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ma</Nom>
+        <Nom>Frankfurt Am Ma</Nom>
         <Longitude>-008.688333333</Longitude>
         <Latitude>+50.103888889</Latitude>
         <Altitude>0000</Altitude>
@@ -3043,13 +3043,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Grove</Nom>
+        <Nom>Garden Grove</Nom>
         <Longitude>+117.936944444</Longitude>
         <Latitude>+33.774166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Reach</Nom>
+        <Nom>Garden Reach</Nom>
         <Longitude>-088.253611111</Longitude>
         <Latitude>+22.574444444</Latitude>
         <Altitude>0000</Altitude>
@@ -3079,7 +3079,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Antep</Nom>
+        <Nom>Gazi Antep</Nom>
         <Longitude>-037.368611111</Longitude>
         <Latitude>+37.062500000</Latitude>
         <Altitude>0000</Altitude>
@@ -3115,7 +3115,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Town</Nom>
+        <Nom>George Town</Nom>
         <Longitude>-100.338333333</Longitude>
         <Latitude>+05.418888889</Latitude>
         <Altitude>0000</Altitude>
@@ -3193,7 +3193,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cruz</Nom>
+        <Nom>Godoy Cruz</Nom>
         <Longitude>+068.833611111</Longitude>
         <Latitude>-32.929722222</Latitude>
         <Altitude>0000</Altitude>
@@ -3235,7 +3235,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Wielkopo</Nom>
+        <Nom>Gorzow Wielkopo</Nom>
         <Longitude>-015.238611111</Longitude>
         <Latitude>+52.732222222</Latitude>
         <Altitude>0000</Altitude>
@@ -3247,7 +3247,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rapids</Nom>
+        <Nom>Grand Rapids</Nom>
         <Longitude>+085.667777778</Longitude>
         <Latitude>+42.963055556</Latitude>
         <Altitude>0000</Altitude>
@@ -3379,7 +3379,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Noi</Nom>
+        <Nom>Ha Noi</Nom>
         <Longitude>-105.837222222</Longitude>
         <Latitude>+21.034166667</Latitude>
         <Altitude>0000</Altitude>
@@ -3397,7 +3397,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Phong</Nom>
+        <Nom>Hai Phong</Nom>
         <Longitude>-106.683333333</Longitude>
         <Latitude>+20.860000000</Latitude>
         <Altitude>0000</Altitude>
@@ -3685,7 +3685,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Beac</Nom>
+        <Nom>Huntington Beac</Nom>
         <Longitude>+118.000833333</Longitude>
         <Latitude>+33.657222222</Latitude>
         <Altitude>0000</Altitude>
@@ -3757,7 +3757,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Iloilo City</Nom>
         <Longitude>-122.563888889</Longitude>
         <Latitude>+10.694444444</Latitude>
         <Altitude>0000</Altitude>
@@ -4003,7 +4003,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Zdro</Nom>
+        <Nom>Jastrzebie Zdro</Nom>
         <Longitude>-018.570833333</Longitude>
         <Latitude>+49.954166667</Latitude>
         <Altitude>0000</Altitude>
@@ -4015,7 +4015,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Jefferson City</Nom>
         <Longitude>+092.175555556</Longitude>
         <Latitude>+38.574166667</Latitude>
         <Altitude>0000</Altitude>
@@ -4045,7 +4045,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Fro</Nom>
+        <Nom>Jerez De La Fro</Nom>
         <Longitude>+006.137500000</Longitude>
         <Latitude>+36.683333333</Latitude>
         <Altitude>0000</Altitude>
@@ -4057,7 +4057,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Jersey City</Nom>
         <Longitude>+074.073888889</Longitude>
         <Latitude>+40.725000000</Latitude>
         <Altitude>0000</Altitude>
@@ -4147,7 +4147,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Pessoa</Nom>
+        <Nom>Joao Pessoa</Nom>
         <Longitude>+034.855833333</Longitude>
         <Latitude>-07.130555556</Latitude>
         <Altitude>0000</Altitude>
@@ -4165,7 +4165,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Baharu</Nom>
+        <Nom>Johor Baharu</Nom>
         <Longitude>-103.771111111</Longitude>
         <Latitude>+01.458333333</Latitude>
         <Altitude>0000</Altitude>
@@ -4177,7 +4177,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Fora</Nom>
+        <Nom>Juiz De Fora</Nom>
         <Longitude>+043.355277778</Longitude>
         <Latitude>-21.750000000</Latitude>
         <Altitude>0000</Altitude>
@@ -4231,7 +4231,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Maras</Nom>
+        <Nom>Kahraman Maras</Nom>
         <Longitude>-036.926666667</Longitude>
         <Latitude>+37.580277778</Latitude>
         <Altitude>0000</Altitude>
@@ -4309,13 +4309,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Kansas City</Nom>
         <Longitude>+094.578333333</Longitude>
         <Latitude>+39.099722222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Kansas City</Nom>
         <Longitude>+094.625833333</Longitude>
         <Latitude>+39.102777778</Latitude>
         <Altitude>0000</Altitude>
@@ -4351,7 +4351,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Vary</Nom>
+        <Nom>Karlovy Vary</Nom>
         <Longitude>-012.870277778</Longitude>
         <Latitude>+50.230000000</Latitude>
         <Altitude>0000</Altitude>
@@ -4555,7 +4555,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>H</Nom>
+        <Nom>Kingston Upon H</Nom>
         <Longitude>+000.316944444</Longitude>
         <Latitude>+53.739166667</Latitude>
         <Altitude>0000</Altitude>
@@ -4717,7 +4717,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Baharu</Nom>
+        <Nom>Kota Baharu</Nom>
         <Longitude>-102.243055556</Longitude>
         <Latitude>+06.114444444</Latitude>
         <Altitude>0000</Altitude>
@@ -4765,7 +4765,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Luch</Nom>
+        <Nom>Krasnyj Luch</Nom>
         <Longitude>-038.908333333</Longitude>
         <Latitude>+48.121666667</Latitude>
         <Altitude>0000</Altitude>
@@ -4783,19 +4783,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rig</Nom>
+        <Nom>Kryvyi Rig</Nom>
         <Longitude>-033.380000000</Longitude>
         <Latitude>+47.894444444</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Lumpur</Nom>
+        <Nom>Kuala Lumpur</Nom>
         <Longitude>-101.696111111</Longitude>
         <Latitude>+03.169166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Terenggan</Nom>
+        <Nom>Kuala Terenggan</Nom>
         <Longitude>-103.141944444</Longitude>
         <Latitude>+05.328611111</Latitude>
         <Altitude>0000</Altitude>
@@ -4885,37 +4885,37 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Coruna</Nom>
+        <Nom>La Coruna</Nom>
         <Longitude>+008.408888889</Longitude>
         <Latitude>+43.362222222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Habana</Nom>
+        <Nom>La Habana</Nom>
         <Longitude>+082.372500000</Longitude>
         <Latitude>+23.106666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Paz</Nom>
+        <Nom>La Paz</Nom>
         <Longitude>+068.145833333</Longitude>
         <Latitude>-16.494166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Plata</Nom>
+        <Nom>La Plata</Nom>
         <Longitude>+057.956666667</Longitude>
         <Latitude>-34.912222222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Serena</Nom>
+        <Nom>La Serena</Nom>
         <Longitude>+071.245000000</Longitude>
         <Latitude>-29.900555556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Spezia</Nom>
+        <Nom>La Spezia</Nom>
         <Longitude>-009.819166667</Longitude>
         <Latitude>+44.105000000</Latitude>
         <Altitude>0000</Altitude>
@@ -4975,7 +4975,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Vegas</Nom>
+        <Nom>Las Vegas</Nom>
         <Longitude>+115.136111111</Longitude>
         <Latitude>+36.174722222</Latitude>
         <Altitude>0000</Altitude>
@@ -5137,7 +5137,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rock</Nom>
+        <Nom>Little Rock</Nom>
         <Longitude>+092.287500000</Longitude>
         <Latitude>+34.746388889</Latitude>
         <Altitude>0000</Altitude>
@@ -5173,7 +5173,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Zamora</Nom>
+        <Nom>Lomas De Zamora</Nom>
         <Longitude>+058.390555556</Longitude>
         <Latitude>-34.864166667</Latitude>
         <Altitude>0000</Altitude>
@@ -5203,7 +5203,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Beach</Nom>
+        <Nom>Long Beach</Nom>
         <Longitude>+118.188333333</Longitude>
         <Latitude>+33.766944444</Latitude>
         <Altitude>0000</Altitude>
@@ -5215,7 +5215,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Angeles</Nom>
+        <Nom>Los Angeles</Nom>
         <Longitude>+118.242222222</Longitude>
         <Latitude>+34.052222222</Latitude>
         <Altitude>0000</Altitude>
@@ -5575,7 +5575,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Plata</Nom>
+        <Nom>Mar Del Plata</Nom>
         <Longitude>+057.572777778</Longitude>
         <Latitude>-37.990277778</Latitude>
         <Altitude>0000</Altitude>
@@ -5689,7 +5689,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Shariff</Nom>
+        <Nom>Mazar E Shariff</Nom>
         <Longitude>-067.108055556</Longitude>
         <Latitude>+36.707500000</Latitude>
         <Altitude>0000</Altitude>
@@ -5815,7 +5815,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Mexico City</Nom>
         <Longitude>+099.180833333</Longitude>
         <Latitude>+19.363888889</Latitude>
         <Altitude>0000</Altitude>
@@ -5851,7 +5851,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Keynes</Nom>
+        <Nom>Milton Keynes</Nom>
         <Longitude>+000.730000000</Longitude>
         <Latitude>+52.026944444</Latitude>
         <Altitude>0000</Altitude>
@@ -5881,7 +5881,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Khas</Nom>
+        <Nom>Mirpur Khas</Nom>
         <Longitude>-069.013611111</Longitude>
         <Latitude>+25.526388889</Latitude>
         <Altitude>0000</Altitude>
@@ -5941,7 +5941,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cruzes</Nom>
+        <Nom>Moji Das Cruzes</Nom>
         <Longitude>+046.194444444</Longitude>
         <Latitude>-23.524722222</Latitude>
         <Altitude>0000</Altitude>
@@ -6241,25 +6241,25 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Delhi</Nom>
+        <Nom>New Delhi</Nom>
         <Longitude>-077.262777778</Longitude>
         <Latitude>+28.560833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Haven</Nom>
+        <Nom>New Haven</Nom>
         <Longitude>+072.922500000</Longitude>
         <Latitude>+41.301666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Orleans</Nom>
+        <Nom>New Orleans</Nom>
         <Longitude>+090.088333333</Longitude>
         <Latitude>+29.946111111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>York</Nom>
+        <Nom>New York</Nom>
         <Longitude>+073.982500000</Longitude>
         <Latitude>+40.766111111</Latitude>
         <Altitude>0000</Altitude>
@@ -6277,7 +6277,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>News</Nom>
+        <Nom>Newport News</Nom>
         <Longitude>+076.429166667</Longitude>
         <Latitude>+36.978888889</Latitude>
         <Altitude>0000</Altitude>
@@ -6295,7 +6295,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Trang</Nom>
+        <Nom>Nha Trang</Nom>
         <Longitude>-109.196666667</Longitude>
         <Latitude>+12.251388889</Latitude>
         <Altitude>0000</Altitude>
@@ -6349,13 +6349,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Novgorod</Nom>
+        <Nom>Niznij Novgorod</Nom>
         <Longitude>-043.944444444</Longitude>
         <Latitude>+56.296388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Tagil</Nom>
+        <Nom>Niznij Tagil</Nom>
         <Longitude>-059.968055556</Longitude>
         <Latitude>+57.923888889</Latitude>
         <Altitude>0000</Altitude>
@@ -6391,7 +6391,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Iguacu</Nom>
+        <Nom>Nova Iguacu</Nom>
         <Longitude>+043.458888889</Longitude>
         <Latitude>-22.738611111</Latitude>
         <Altitude>0000</Altitude>
@@ -6403,7 +6403,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Sad</Nom>
+        <Nom>Novi Sad</Nom>
         <Longitude>-019.832222222</Longitude>
         <Latitude>+45.251111111</Latitude>
         <Altitude>0000</Altitude>
@@ -6439,7 +6439,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Laredo</Nom>
+        <Nom>Nuevo Laredo</Nom>
         <Longitude>+099.515833333</Longitude>
         <Latitude>+27.486388889</Latitude>
         <Altitude>0000</Altitude>
@@ -6493,7 +6493,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Oklahoma City</Nom>
         <Longitude>+097.516111111</Longitude>
         <Latitude>+35.467500000</Latitude>
         <Altitude>0000</Altitude>
@@ -6661,7 +6661,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Park</Nom>
+        <Nom>Overland Park</Nom>
         <Longitude>+094.672222222</Longitude>
         <Latitude>+38.983055556</Latitude>
         <Altitude>0000</Altitude>
@@ -6727,7 +6727,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Mallor</Nom>
+        <Nom>Palma De Mallor</Nom>
         <Longitude>-002.655000000</Longitude>
         <Latitude>+39.573333333</Latitude>
         <Altitude>0000</Altitude>
@@ -6907,13 +6907,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Tiqwa</Nom>
+        <Nom>Petah Tiqwa</Nom>
         <Longitude>-034.874444444</Longitude>
         <Latitude>+32.034722222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Jaya</Nom>
+        <Nom>Petaling Jaya</Nom>
         <Longitude>-101.645000000</Longitude>
         <Latitude>+03.096666667</Latitude>
         <Altitude>0000</Altitude>
@@ -6943,7 +6943,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Penh</Nom>
+        <Nom>Phnom Penh</Nom>
         <Longitude>-104.898333333</Longitude>
         <Latitude>+11.543333333</Latitude>
         <Altitude>0000</Altitude>
@@ -6967,7 +6967,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rio</Nom>
+        <Nom>Pinar Del Rio</Nom>
         <Longitude>+083.689166667</Longitude>
         <Latitude>+22.425833333</Latitude>
         <Altitude>0000</Altitude>
@@ -7075,7 +7075,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Grossa</Nom>
+        <Nom>Ponta Grossa</Nom>
         <Longitude>+050.156388889</Longitude>
         <Latitude>-25.091944444</Latitude>
         <Altitude>0000</Altitude>
@@ -7111,37 +7111,37 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Elizabeth</Nom>
+        <Nom>Port Elizabeth</Nom>
         <Longitude>-025.588611111</Longitude>
         <Latitude>-33.956666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Harcourt</Nom>
+        <Nom>Port Harcourt</Nom>
         <Longitude>-006.999166667</Longitude>
         <Latitude>+04.791388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Louis</Nom>
+        <Nom>Port Louis</Nom>
         <Longitude>-057.489722222</Longitude>
         <Latitude>-20.165277778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Moresby</Nom>
+        <Nom>Port Moresby</Nom>
         <Longitude>-147.196944444</Longitude>
         <Latitude>-09.465555556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Spain</Nom>
+        <Nom>Port Of Spain</Nom>
         <Longitude>+061.483333333</Longitude>
         <Latitude>+10.655277778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Said</Nom>
+        <Nom>Port Said</Nom>
         <Longitude>-032.295277778</Longitude>
         <Latitude>+31.269722222</Latitude>
         <Altitude>0000</Altitude>
@@ -7159,7 +7159,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Alegre</Nom>
+        <Nom>Porto Alegre</Nom>
         <Longitude>+051.213055556</Longitude>
         <Latitude>-30.027777778</Latitude>
         <Altitude>0000</Altitude>
@@ -7213,7 +7213,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rica</Nom>
+        <Nom>Poza Rica</Nom>
         <Longitude>+097.467222222</Longitude>
         <Latitude>+20.546944444</Latitude>
         <Altitude>0000</Altitude>
@@ -7231,7 +7231,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Grande</Nom>
+        <Nom>Praia Grande</Nom>
         <Longitude>+046.439444444</Longitude>
         <Latitude>-24.009722222</Latitude>
         <Altitude>0000</Altitude>
@@ -7285,7 +7285,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Arenas</Nom>
+        <Nom>Punta Arenas</Nom>
         <Longitude>+070.922500000</Longitude>
         <Latitude>-53.150000000</Latitude>
         <Altitude>0000</Altitude>
@@ -7375,7 +7375,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Quezon City</Nom>
         <Longitude>-121.071388889</Longitude>
         <Latitude>+14.663333333</Latitude>
         <Altitude>0000</Altitude>
@@ -7399,7 +7399,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Nhon</Nom>
+        <Nom>Quy Nhon</Nom>
         <Longitude>-109.255833333</Longitude>
         <Latitude>+13.767222222</Latitude>
         <Altitude>0000</Altitude>
@@ -7423,7 +7423,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Khan</Nom>
+        <Nom>Rahimyar Khan</Nom>
         <Longitude>-070.304166667</Longitude>
         <Latitude>+28.418888889</Latitude>
         <Altitude>0000</Altitude>
@@ -7453,7 +7453,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Gan</Nom>
+        <Nom>Ramat Gan</Nom>
         <Longitude>-034.767222222</Longitude>
         <Latitude>+32.072500000</Latitude>
         <Altitude>0000</Altitude>
@@ -7477,7 +7477,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cucamong</Nom>
+        <Nom>Rancho Cucamong</Nom>
         <Longitude>+117.592500000</Longitude>
         <Latitude>+34.106666667</Latitude>
         <Altitude>0000</Altitude>
@@ -7525,7 +7525,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Calab</Nom>
+        <Nom>Reggio Di Calab</Nom>
         <Longitude>-015.636111111</Longitude>
         <Latitude>+38.096944444</Latitude>
         <Altitude>0000</Altitude>
@@ -7573,7 +7573,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Preto</Nom>
+        <Nom>Ribeirao Preto</Nom>
         <Longitude>+047.796111111</Longitude>
         <Latitude>-21.188611111</Latitude>
         <Altitude>0000</Altitude>
@@ -7597,25 +7597,25 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bamba</Nom>
+        <Nom>Rio Bamba</Nom>
         <Longitude>+078.646388889</Longitude>
         <Latitude>-01.668611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cuarto</Nom>
+        <Nom>Rio Cuarto</Nom>
         <Longitude>+064.346388889</Longitude>
         <Latitude>-33.130833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Janeiro</Nom>
+        <Nom>Rio De Janeiro</Nom>
         <Longitude>+043.217777778</Longitude>
         <Latitude>-22.888611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ziyyo</Nom>
+        <Nom>Rishon Le Ziyyo</Nom>
         <Longitude>-034.802222222</Longitude>
         <Latitude>+31.961388889</Latitude>
         <Altitude>0000</Altitude>
@@ -7687,7 +7687,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Slaska</Nom>
+        <Nom>Ruda Slaska</Nom>
         <Longitude>-018.856111111</Longitude>
         <Latitude>+50.278333333</Latitude>
         <Altitude>0000</Altitude>
@@ -7717,13 +7717,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Gravenhage</Nom>
+        <Nom>S- Gravenhage</Nom>
         <Longitude>-004.307222222</Longitude>
         <Latitude>+52.080833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Hertogenbosc</Nom>
+        <Nom>S- Hertogenbosc</Nom>
         <Longitude>-005.326388889</Longitude>
         <Latitude>+51.687500000</Latitude>
         <Altitude>0000</Altitude>
@@ -7771,37 +7771,37 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Denis</Nom>
+        <Nom>Saint Denis</Nom>
         <Longitude>-055.460277778</Longitude>
         <Latitude>-20.873333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Georges</Nom>
+        <Nom>Saint Georges</Nom>
         <Longitude>+061.791111111</Longitude>
         <Latitude>+12.008055556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Johns</Nom>
+        <Nom>Saint Johns</Nom>
         <Longitude>+061.844444444</Longitude>
         <Latitude>+17.120833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Louis</Nom>
+        <Nom>Saint Louis</Nom>
         <Longitude>+090.234166667</Longitude>
         <Latitude>+38.632777778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Paul</Nom>
+        <Nom>Saint Paul</Nom>
         <Longitude>+093.105277778</Longitude>
         <Latitude>+44.955833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Petersbur</Nom>
+        <Nom>Saint Petersbur</Nom>
         <Longitude>+082.638611111</Longitude>
         <Latitude>+27.777500000</Latitude>
         <Altitude>0000</Altitude>
@@ -7843,7 +7843,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Salt Lake City</Nom>
         <Longitude>+111.870277778</Longitude>
         <Latitude>+40.760555556</Latitude>
         <Altitude>0000</Altitude>
@@ -7903,127 +7903,127 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Antonio</Nom>
+        <Nom>San Antonio</Nom>
         <Longitude>+098.494166667</Longitude>
         <Latitude>+29.426111111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bernardino</Nom>
+        <Nom>San Bernardino</Nom>
         <Longitude>+117.288333333</Longitude>
         <Latitude>+34.108611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bernardo</Nom>
+        <Nom>San Bernardo</Nom>
         <Longitude>+070.668611111</Longitude>
         <Latitude>-33.570833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cristobal</Nom>
+        <Nom>San Cristobal</Nom>
         <Longitude>+072.233333333</Longitude>
         <Latitude>+07.765833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Diego</Nom>
+        <Nom>San Diego</Nom>
         <Longitude>+117.154722222</Longitude>
         <Latitude>+32.715833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Fernando</Nom>
+        <Nom>San Fernando</Nom>
         <Longitude>+058.646944444</Longitude>
         <Latitude>-34.471111111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Francisco</Nom>
+        <Nom>San Francisco</Nom>
         <Longitude>+122.418055556</Longitude>
         <Latitude>+37.775277778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Jose</Nom>
+        <Nom>San Jose</Nom>
         <Longitude>+121.893611111</Longitude>
         <Latitude>+37.340000000</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Juan</Nom>
+        <Nom>San Juan</Nom>
         <Longitude>+066.068888889</Longitude>
         <Latitude>+18.434166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Juan</Nom>
+        <Nom>San Juan</Nom>
         <Longitude>+068.528888889</Longitude>
         <Latitude>-31.539166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Potosi</Nom>
+        <Nom>San Luis Potosi</Nom>
         <Longitude>+100.978611111</Longitude>
         <Latitude>+22.155833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Luis</Nom>
+        <Nom>San Luis</Nom>
         <Longitude>+066.352777778</Longitude>
         <Latitude>-33.316111111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Marino</Nom>
+        <Nom>San Marino</Nom>
         <Longitude>-012.441944444</Longitude>
         <Latitude>+43.931111111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>T</Nom>
+        <Nom>San Miguel De T</Nom>
         <Longitude>+065.215000000</Longitude>
         <Latitude>-26.826388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Miguelito</Nom>
+        <Nom>San Miguelito</Nom>
         <Longitude>+079.500277778</Longitude>
         <Latitude>+09.043055556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>De</Nom>
+        <Nom>San Nicolas De</Nom>
         <Longitude>+060.227777778</Longitude>
         <Latitude>-33.333055556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Sula</Nom>
+        <Nom>San Pedro Sula</Nom>
         <Longitude>+088.031944444</Longitude>
         <Latitude>+15.496666667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rafael</Nom>
+        <Nom>San Rafael</Nom>
         <Longitude>+068.330000000</Longitude>
         <Latitude>-34.618333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>De</Nom>
+        <Nom>San Salvador De</Nom>
         <Longitude>+065.268333333</Longitude>
         <Latitude>-24.218611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Salvador</Nom>
+        <Nom>San Salvador</Nom>
         <Longitude>+089.193888889</Longitude>
         <Latitude>+13.699166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Sebastian</Nom>
+        <Nom>San Sebastian</Nom>
         <Longitude>+001.982500000</Longitude>
         <Latitude>+43.318611111</Latitude>
         <Altitude>0000</Altitude>
@@ -8047,55 +8047,55 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Urfa</Nom>
+        <Nom>Sanli Urfa</Nom>
         <Longitude>-038.797222222</Longitude>
         <Latitude>+37.160000000</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ana</Nom>
+        <Nom>Santa Ana</Nom>
         <Longitude>+117.866944444</Longitude>
         <Latitude>+33.745555556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ana</Nom>
+        <Nom>Santa Ana</Nom>
         <Longitude>+089.567500000</Longitude>
         <Latitude>+13.995000000</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Clara</Nom>
+        <Nom>Santa Clara</Nom>
         <Longitude>+079.955277778</Longitude>
         <Latitude>+22.408333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>L</Nom>
+        <Nom>Santa Cruz De L</Nom>
         <Longitude>+063.187222222</Longitude>
         <Latitude>-17.786388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Fe</Nom>
+        <Nom>Santa Fe</Nom>
         <Longitude>+105.945833333</Longitude>
         <Latitude>+35.691944444</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Fe</Nom>
+        <Nom>Santa Fe</Nom>
         <Longitude>+060.703333333</Longitude>
         <Latitude>-31.608611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Marta</Nom>
+        <Nom>Santa Marta</Nom>
         <Longitude>+074.160000000</Longitude>
         <Latitude>+11.228611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rosa</Nom>
+        <Nom>Santa Rosa</Nom>
         <Longitude>+122.712777778</Longitude>
         <Latitude>+38.430833333</Latitude>
         <Altitude>0000</Altitude>
@@ -8113,19 +8113,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Com</Nom>
+        <Nom>Santiago De Com</Nom>
         <Longitude>+008.543888889</Longitude>
         <Latitude>+42.880555556</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cub</Nom>
+        <Nom>Santiago De Cub</Nom>
         <Longitude>+075.816944444</Longitude>
         <Latitude>+20.035833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Los</Nom>
+        <Nom>Santiago De Los</Nom>
         <Longitude>+070.696666667</Longitude>
         <Latitude>+19.455833333</Latitude>
         <Altitude>0000</Altitude>
@@ -8137,55 +8137,55 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>D</Nom>
+        <Nom>Santo Domingo D</Nom>
         <Longitude>+079.196111111</Longitude>
         <Latitude>-00.244166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Domingo</Nom>
+        <Nom>Santo Domingo</Nom>
         <Longitude>+069.883888889</Longitude>
         <Latitude>+18.497500000</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Andre</Nom>
+        <Nom>Sao Andre</Nom>
         <Longitude>+046.533888889</Longitude>
         <Latitude>-23.640277778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Do</Nom>
+        <Nom>Sao Bernardo Do</Nom>
         <Longitude>+046.559166667</Longitude>
         <Latitude>-23.718333333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Rio</Nom>
+        <Nom>Sao Jose De Rio</Nom>
         <Longitude>+049.375833333</Longitude>
         <Latitude>-20.816388889</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ca</Nom>
+        <Nom>Sao Jose Dos Ca</Nom>
         <Longitude>+045.883611111</Longitude>
         <Latitude>-23.204166667</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Luis</Nom>
+        <Nom>Sao Luis</Nom>
         <Longitude>+044.276111111</Longitude>
         <Latitude>-02.499444444</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Paulo</Nom>
+        <Nom>Sao Paulo</Nom>
         <Longitude>+046.637777778</Longitude>
         <Latitude>-23.548611111</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Tome</Nom>
+        <Nom>Sao Tome</Nom>
         <Longitude>-006.731111111</Longitude>
         <Latitude>+00.336111111</Latitude>
         <Altitude>0000</Altitude>
@@ -8437,7 +8437,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Valley</Nom>
+        <Nom>Simi Valley</Nom>
         <Longitude>+118.777777778</Longitude>
         <Latitude>+34.271666667</Latitude>
         <Altitude>0000</Altitude>
@@ -8455,7 +8455,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Falls</Nom>
+        <Nom>Sioux Falls</Nom>
         <Longitude>+096.730833333</Longitude>
         <Latitude>+43.545833333</Latitude>
         <Altitude>0000</Altitude>
@@ -8539,13 +8539,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bend</Nom>
+        <Nom>South Bend</Nom>
         <Longitude>+086.250000000</Longitude>
         <Latitude>+41.677777778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Shields</Nom>
+        <Nom>South Shields</Nom>
         <Longitude>+001.427500000</Longitude>
         <Latitude>+54.996111111</Latitude>
         <Altitude>0000</Altitude>
@@ -8611,13 +8611,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Zagora</Nom>
+        <Nom>Stara Zagora</Nom>
         <Longitude>-025.635000000</Longitude>
         <Latitude>+42.425833333</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Island</Nom>
+        <Nom>Staten Island</Nom>
         <Longitude>+074.162500000</Longitude>
         <Latitude>+40.606944444</Latitude>
         <Altitude>0000</Altitude>
@@ -8629,7 +8629,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Height</Nom>
+        <Nom>Sterling Height</Nom>
         <Longitude>+083.029722222</Longitude>
         <Latitude>+42.580277778</Latitude>
         <Altitude>0000</Altitude>
@@ -8983,7 +8983,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Aviv</Nom>
+        <Nom>Tel Aviv</Nom>
         <Longitude>-034.758888889</Longitude>
         <Latitude>+32.054166667</Latitude>
         <Altitude>0000</Altitude>
@@ -9031,7 +9031,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Ch</Nom>
+        <Nom>Thanh Pho Ho Ch</Nom>
         <Longitude>-106.653333333</Longitude>
         <Latitude>+10.758055556</Latitude>
         <Altitude>0000</Altitude>
@@ -9061,19 +9061,19 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Buri</Nom>
+        <Nom>Thon Buri</Nom>
         <Longitude>-100.430833333</Longitude>
         <Latitude>+13.672777778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Oaks</Nom>
+        <Nom>Thousand Oaks</Nom>
         <Longitude>+118.850000000</Longitude>
         <Latitude>+34.177777778</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Bay</Nom>
+        <Nom>Thunder Bay</Nom>
         <Longitude>+089.255000000</Longitude>
         <Latitude>+48.441111111</Latitude>
         <Altitude>0000</Altitude>
@@ -9127,7 +9127,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Mures</Nom>
+        <Nom>Tirgu Mures</Nom>
         <Longitude>-024.567500000</Longitude>
         <Latitude>+46.549722222</Latitude>
         <Altitude>0000</Altitude>
@@ -9349,7 +9349,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Pandang</Nom>
+        <Nom>Ujung Pandang</Nom>
         <Longitude>-119.399166667</Longitude>
         <Latitude>-05.145555556</Latitude>
         <Altitude>0000</Altitude>
@@ -9523,7 +9523,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Las</Nom>
+        <Nom>Victoria De Las</Nom>
         <Longitude>+076.956944444</Longitude>
         <Latitude>+20.960000000</Latitude>
         <Altitude>0000</Altitude>
@@ -9541,7 +9541,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Nueva</Nom>
+        <Nom>Villa Nueva</Nom>
         <Longitude>+068.766666667</Longitude>
         <Latitude>-32.886944444</Latitude>
         <Altitude>0000</Altitude>
@@ -9565,7 +9565,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Mar</Nom>
+        <Nom>Vina Del Mar</Nom>
         <Longitude>+071.567222222</Longitude>
         <Latitude>-33.025277778</Latitude>
         <Altitude>0000</Altitude>
@@ -9577,7 +9577,7 @@
         <Altitude>0025</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Beach</Nom>
+        <Nom>Virginia Beach</Nom>
         <Longitude>+075.977222222</Longitude>
         <Latitude>+36.849722222</Latitude>
         <Altitude>0000</Altitude>
@@ -9625,7 +9625,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Redonda</Nom>
+        <Nom>Volta Redonda</Nom>
         <Longitude>+044.092777778</Longitude>
         <Latitude>-22.488055556</Latitude>
         <Altitude>0000</Altitude>
@@ -9643,13 +9643,13 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Madani</Nom>
+        <Nom>Wad Madani</Nom>
         <Longitude>-033.429722222</Longitude>
         <Latitude>+14.569722222</Latitude>
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Cantonment</Nom>
+        <Nom>Wah Cantonment</Nom>
         <Longitude>-072.748611111</Longitude>
         <Latitude>+33.777222222</Latitude>
         <Altitude>0000</Altitude>
@@ -9757,7 +9757,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>Slask</Nom>
+        <Nom>Wodzislaw Slask</Nom>
         <Longitude>-018.456111111</Longitude>
         <Latitude>+49.999722222</Latitude>
         <Altitude>0000</Altitude>
@@ -9919,7 +9919,7 @@
         <Altitude>0000</Altitude>
     </Observateur>
     <Observateur>
-        <Nom>City</Nom>
+        <Nom>Zamboanga City</Nom>
         <Longitude>-122.068611111</Longitude>
         <Latitude>+06.906111111</Latitude>
         <Altitude>0000</Altitude>

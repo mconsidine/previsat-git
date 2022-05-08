@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    30 avril 2022
+ * >    8 mai 2022
  *
  */
 
@@ -608,14 +608,17 @@ void Configuration::EcritureConfiguration()
         while (itTLE.hasNext()) {
             itTLE.next();
 
-            cfg.writeStartElement("Fichier");
-            cfg.writeAttribute("nom", itTLE.key());
+            if (!itTLE.value().isEmpty()) {
 
-            QStringListIterator itNorad(itTLE.value());
-            while (itNorad.hasNext()) {
-                cfg.writeTextElement("Norad", itNorad.next());
+                cfg.writeStartElement("Fichier");
+                cfg.writeAttribute("nom", itTLE.key());
+
+                QStringListIterator itNorad(itTLE.value());
+                while (itNorad.hasNext()) {
+                    cfg.writeTextElement("Norad", itNorad.next());
+                }
+                cfg.writeEndElement();
             }
-            cfg.writeEndElement();
         }
         cfg.writeEndElement();
 
@@ -2073,11 +2076,7 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
 
     QFile fi2(_dirCommonData + QDir::separator() + "config" + QDir::separator() + nomficXml);
 
-    if (fi1.exists()) {
-
-        VerifieVersionXml(fi1, fi2, version, message1);
-
-    } else {
+    if (!fi1.exists()) {
 
         if (fi2.exists()) {
 
@@ -2089,6 +2088,9 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
             Message::Afficher(message2.arg(ff.fileName()), typeMessage);
         }
     }
+
+    VerifieVersionXml(fi1, fi2, version, message1);
+
     fi2.close();
 #endif
     fi1.close();
