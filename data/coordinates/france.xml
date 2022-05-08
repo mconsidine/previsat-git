@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreviSatObservateurs>
+<PreviSatObservateurs version="1.0">
     <Observateur>
         <Nom>Abbeville</Nom>
         <Longitude>-001.833330000</Longitude>

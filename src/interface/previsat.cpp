@@ -30,13 +30,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 mai 2022
+ * >    8 mai 2022
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
+#include <QDesktopWidget>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -128,7 +129,11 @@ PreviSat::PreviSat(QWidget *parent) :
  */
 PreviSat::~PreviSat()
 {
-    closeEvent(nullptr);
+    if (_onglets != nullptr) {
+        delete _onglets;
+        _onglets = nullptr;
+    }
+
     delete ui;
 }
 
@@ -242,7 +247,20 @@ void PreviSat::ChargementTLE()
                     listeSatellites.removeOne(norad);
                 }
             }
+
             Configuration::instance()->mapSatellitesFicTLE()[fi.fileName()] = listeSatellites;
+
+            if (!listeSatellites.isEmpty()
+                    && Configuration::instance()->tleDefaut().nomsat.isEmpty()
+                    && Configuration::instance()->tleDefaut().l1.isEmpty()
+                    && Configuration::instance()->tleDefaut().l2.isEmpty()) {
+
+                const TLE tle = Configuration::instance()->mapTLE()[listeSatellites.at(0)];
+                Configuration::instance()->tleDefaut().nomsat = tle.nom();
+                Configuration::instance()->tleDefaut().l1 = tle.ligne1();
+                Configuration::instance()->tleDefaut().l2 = tle.ligne2();
+                EcritureTleDefautRegistre();
+            }
 
             // Affichage de la liste de satellites
             AfficherListeSatellites(fi.fileName());
@@ -367,10 +385,14 @@ void PreviSat::DemarrageApplication()
         _radar->show();
     }
 
+    // Affichage de la fenetre d'informations
     const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
                            + "informations/last_news_" + Configuration::instance()->locale() + ".html");
+
     if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
+        const QRect tailleEcran = QApplication::desktop()->availableGeometry();
+        infos->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, infos->size(), tailleEcran));
     }
 
     // Lancement du chronometre
@@ -861,7 +883,7 @@ void PreviSat::EnchainementCalculs()
             int nbTraces = _onglets->ui()->nombreTrajectoires->value();
 
             if (satellites.isEmpty() || !_onglets->ui()->afftraj->isChecked()) {
-                nbTraces = 0;
+                nbTraces = 1;
             } else {
                 if (mcc && satellites.at(0).tle().norad() == Configuration::instance()->noradStationSpatiale()) {
                     nbTraces = 3;
@@ -1309,6 +1331,7 @@ void PreviSat::ChangementLangue(const int index)
     _onglets->RechargerListes();
     InitFicTLE();
     GestionTempsReel();
+    settings.setValue("affichage/langue", Configuration::instance()->locale());
 
     /* Retour */
     return;
@@ -1773,7 +1796,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_radar, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
     connect(_radar, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
 
-    ChargementTraduction(Configuration::instance()->locale());
+    ChargementTraduction(settings.value("affichage/langue", "en").toString());
 
     if (settings.value("fichier/sauvegarde").toString().isEmpty()) {
         settings.setValue("fichier/sauvegarde", Configuration::instance()->dirOut());
@@ -1842,6 +1865,9 @@ void PreviSat::GestionTempsReel()
         // Affichage du radar
         if (_onglets->ui()->affradar->isChecked()) {
             _radar->show();
+            _radar->setVisible(true);
+        } else {
+            _radar->setVisible(false);
         }
     }
 
@@ -2080,7 +2106,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     Configuration::instance()->EcritureConfiguration();
 
     if (_onglets->ui()->preferences->currentIndex() < _onglets->ui()->preferences->count() - 2) {
-        _onglets->SauvePreferences(Configuration::instance()->listeFicPref().at(_onglets->ui()->preferences->currentIndex()));
+        const QString fichierPref = Configuration::instance()->dirPrf() + QDir::separator() +
+                Configuration::instance()->listeFicPref().at(_onglets->ui()->preferences->currentIndex());
+        _onglets->SauvePreferences(fichierPref);
     }
 
     if (_carte != nullptr) {
@@ -2156,11 +2184,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     if (_timerStatut != nullptr) {
         delete _timerStatut;
         _timerStatut = nullptr;
-    }
-
-    if (_onglets != nullptr) {
-        delete _onglets;
-        _onglets = nullptr;
     }
 
     /* Retour */
@@ -2591,7 +2614,7 @@ void PreviSat::on_actionInformations_triggered()
 
     if (Informations::UrlExiste(urlLastNews)) {
 
-        Informations * const infos = new Informations(this, _onglets);
+        infos = new Informations(this, _onglets);
         infos->setWindowModality(Qt::ApplicationModal);
         infos->show();
 

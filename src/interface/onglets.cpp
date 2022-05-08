@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    7 mai 2022
+ * >    8 mai 2022
  *
  */
 
@@ -613,129 +613,134 @@ void Onglets::AffichageElementsOSculateurs() const
     Vecteur3D vitesse;
 
     /* Initialisations */
-    const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
-    const QString unite = (_ui->unitesKm->isChecked()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
-    double demiGrandAxe = satellite.elements().demiGrandAxe();
 
-    if (_ui->typeRepere->currentIndex() == 0) {
-        position = satellite.position();
-    } else {
-        satellite.CalculPosVitECEF(*_date, position, vitesse);
-    }
-
-    if (_ui->unitesMi->isChecked()) {
-        position *= MILE_PAR_KM;
-        demiGrandAxe *= MILE_PAR_KM;
-    }
 
     /* Corps de la methode */
-    // Nom du satellite
-    _ui->nomsat2->setText(satellite.tle().nom());
+    if (!Configuration::instance()->listeSatellites().isEmpty()) {
 
-    // Lignes du TLE
-    _ui->ligne1->setText(satellite.tle().ligne1());
-    _ui->ligne2->setText(satellite.tle().ligne2());
+        const Satellite satellite = Configuration::instance()->listeSatellites().at(0);
+        const QString unite = (_ui->unitesKm->isChecked()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+        double demiGrandAxe = satellite.elements().demiGrandAxe();
 
-    // Position cartesienne
-    _ui->xsat->setText(text.asprintf("%+.3f ", position.x()) + unite);
-    _ui->ysat->setText(text.asprintf("%+.3f ", position.y()) + unite);
-    _ui->zsat->setText(text.asprintf("%+.3f ", position.z()) + unite);
+        if (_ui->typeRepere->currentIndex() == 0) {
+            position = satellite.position();
+        } else {
+            satellite.CalculPosVitECEF(*_date, position, vitesse);
+        }
 
-    // Elements osculateurs
-    const QString fmt1 = "%1";
-    const QString fmt2 = "%1°";
-    const QString demiGdAxe = text.asprintf("%.1f ", demiGrandAxe) + unite;
-    _ui->demiGrandAxeKeplerien->setText(demiGdAxe);
-    _ui->demiGrandAxeCirc->setText(demiGdAxe);
-    _ui->demiGrandAxeEquat->setText(demiGdAxe);
-    _ui->demiGrandAxeCircEquat->setText(demiGdAxe);
+        if (_ui->unitesMi->isChecked()) {
+            position *= MILE_PAR_KM;
+            demiGrandAxe *= MILE_PAR_KM;
+        }
 
-    _ui->frameCirculaire->setVisible(false);
-    _ui->frameCirculaireEquatorial->setVisible(false);
-    _ui->frameEquatorial->setVisible(false);
-    _ui->frameKeplerien->setVisible(false);
+        // Nom du satellite
+        _ui->nomsat2->setText(satellite.tle().nom());
 
-    switch (_ui->typeParametres->currentIndex()) {
-    default:
-    case 0:
+        // Lignes du TLE
+        _ui->ligne1->setText(satellite.tle().ligne1());
+        _ui->ligne2->setText(satellite.tle().ligne2());
 
-        // Parametres kepleriens
-        _ui->frameKeplerien->setVisible(true);
-        _ui->excentricite->setText(fmt1.arg(satellite.elements().excentricite(), 0, 'f', 7));
-        _ui->inclinaison->setText(fmt2.arg(satellite.elements().inclinaison() * RAD2DEG, 0, 'f', 4));
-        _ui->ADNoeudAscendant->setText(fmt2.arg(satellite.elements().ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
-        _ui->argumentPerigee->setText(fmt2.arg(satellite.elements().argumentPerigee() * RAD2DEG, 0, 'f', 4));
-        _ui->anomalieMoyenne->setText(fmt2.arg(satellite.elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
-        break;
+        // Position cartesienne
+        _ui->xsat->setText(text.asprintf("%+.3f ", position.x()) + unite);
+        _ui->ysat->setText(text.asprintf("%+.3f ", position.y()) + unite);
+        _ui->zsat->setText(text.asprintf("%+.3f ", position.z()) + unite);
 
-    case 1:
+        // Elements osculateurs
+        const QString fmt1 = "%1";
+        const QString fmt2 = "%1°";
+        const QString demiGdAxe = text.asprintf("%.1f ", demiGrandAxe) + unite;
+        _ui->demiGrandAxeKeplerien->setText(demiGdAxe);
+        _ui->demiGrandAxeCirc->setText(demiGdAxe);
+        _ui->demiGrandAxeEquat->setText(demiGdAxe);
+        _ui->demiGrandAxeCircEquat->setText(demiGdAxe);
 
-        // Parametres circulaires
-        _ui->frameCirculaire->setVisible(true);
-        _ui->ex1->setText(fmt1.arg(satellite.elements().exCirc(), 0, 'f', 7));
-        _ui->ey1->setText(fmt1.arg(satellite.elements().eyCirc(), 0, 'f', 7));
-        _ui->inclinaison2->setText(fmt2.arg(satellite.elements().inclinaison() * RAD2DEG, 0, 'f', 4));
-        _ui->ADNoeudAscendant2->setText(fmt2.arg(satellite.elements().ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
-        _ui->positionSurOrbite->setText(fmt2.arg(satellite.elements().pso() * RAD2DEG, 0, 'f', 4));
-        break;
+        _ui->frameCirculaire->setVisible(false);
+        _ui->frameCirculaireEquatorial->setVisible(false);
+        _ui->frameEquatorial->setVisible(false);
+        _ui->frameKeplerien->setVisible(false);
 
-    case 2:
+        switch (_ui->typeParametres->currentIndex()) {
+        default:
+        case 0:
 
-        // Parametres equatoriaux
-        _ui->frameEquatorial->setVisible(true);
-        _ui->excentricite2->setText(fmt1.arg(satellite.elements().excentricite(), 0, 'f', 7));
-        _ui->ix1->setText(fmt1.arg(satellite.elements().ix(), 0, 'f', 7));
-        _ui->iy1->setText(fmt1.arg(satellite.elements().iy(), 0, 'f', 7));
-        _ui->longitudePerigee->setText(fmt2.arg((satellite.elements().ascensionDroiteNoeudAscendant() +
-                                                 satellite.elements().argumentPerigee()) * RAD2DEG, 0, 'f', 4));
-        _ui->anomalieMoyenne2->setText(fmt2.arg(satellite.elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
-        break;
+            // Parametres kepleriens
+            _ui->frameKeplerien->setVisible(true);
+            _ui->excentricite->setText(fmt1.arg(satellite.elements().excentricite(), 0, 'f', 7));
+            _ui->inclinaison->setText(fmt2.arg(satellite.elements().inclinaison() * RAD2DEG, 0, 'f', 4));
+            _ui->ADNoeudAscendant->setText(fmt2.arg(satellite.elements().ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
+            _ui->argumentPerigee->setText(fmt2.arg(satellite.elements().argumentPerigee() * RAD2DEG, 0, 'f', 4));
+            _ui->anomalieMoyenne->setText(fmt2.arg(satellite.elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+            break;
 
-    case 3:
+        case 1:
 
-        // Parametres circulaires equatoriaux
-        _ui->frameCirculaireEquatorial->setVisible(true);
-        _ui->ex2->setText(fmt1.arg(satellite.elements().exCEq(), 0, 'f', 7));
-        _ui->ey2->setText(fmt1.arg(satellite.elements().eyCEq(), 0, 'f', 7));
-        _ui->ix2->setText(fmt1.arg(satellite.elements().ix(), 0, 'f', 7));
-        _ui->iy2->setText(fmt1.arg(satellite.elements().iy(), 0, 'f', 7));
-        _ui->argumentLongitudeVraie2->setText(fmt2.arg(satellite.elements().argumentLongitudeVraie() * RAD2DEG, 0, 'f', 4));
-        break;
-    }
+            // Parametres circulaires
+            _ui->frameCirculaire->setVisible(true);
+            _ui->ex1->setText(fmt1.arg(satellite.elements().exCirc(), 0, 'f', 7));
+            _ui->ey1->setText(fmt1.arg(satellite.elements().eyCirc(), 0, 'f', 7));
+            _ui->inclinaison2->setText(fmt2.arg(satellite.elements().inclinaison() * RAD2DEG, 0, 'f', 4));
+            _ui->ADNoeudAscendant2->setText(fmt2.arg(satellite.elements().ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
+            _ui->positionSurOrbite->setText(fmt2.arg(satellite.elements().pso() * RAD2DEG, 0, 'f', 4));
+            break;
 
-    // Autres elements osculateurs
-    _ui->anomalieVraie->setText(fmt2.arg(satellite.elements().anomalieVraie() * RAD2DEG, 0, 'f', 4));
-    _ui->anomalieExcentrique->setText(fmt2.arg(satellite.elements().anomalieExcentrique() * RAD2DEG, 0, 'f', 4));
-    _ui->champDeVue->setText("±" + fmt2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellite.altitude())) * RAD2DEG, 0, 'f', 2));
+        case 2:
 
-    // Apogee/perigee/periode orbitale
-    const QString fmt3 = "%1 %2 (%3 %2)";
-    const double apogee = (_ui->unitesKm->isChecked()) ? satellite.elements().apogee() : satellite.elements().apogee() * MILE_PAR_KM;
-    double apogeeAlt = satellite.elements().apogee() - RAYON_TERRESTRE;
-    apogeeAlt = (_ui->unitesKm->isChecked()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
-    _ui->apogee->setText(fmt3.arg(apogee, 0, 'f', 1).arg(unite).arg(apogeeAlt, 0, 'f', 1));
+            // Parametres equatoriaux
+            _ui->frameEquatorial->setVisible(true);
+            _ui->excentricite2->setText(fmt1.arg(satellite.elements().excentricite(), 0, 'f', 7));
+            _ui->ix1->setText(fmt1.arg(satellite.elements().ix(), 0, 'f', 7));
+            _ui->iy1->setText(fmt1.arg(satellite.elements().iy(), 0, 'f', 7));
+            _ui->longitudePerigee->setText(fmt2.arg((satellite.elements().ascensionDroiteNoeudAscendant() +
+                                                     satellite.elements().argumentPerigee()) * RAD2DEG, 0, 'f', 4));
+            _ui->anomalieMoyenne2->setText(fmt2.arg(satellite.elements().anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+            break;
 
-    const double perigee = (_ui->unitesKm->isChecked()) ? satellite.elements().perigee() : satellite.elements().perigee() * MILE_PAR_KM;
-    double perigeeAlt = satellite.elements().perigee() - RAYON_TERRESTRE;
-    perigeeAlt = (_ui->unitesKm->isChecked()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
-    _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
-    _ui->periode->setText(Maths::ToSexagesimal(satellite.elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
+        case 3:
 
-    // Informations de signal
-    _ui->doppler->setText(text.asprintf("%+.0f Hz", satellite.signal().doppler()));
-    _ui->attenuation->setText(fmt1.arg(satellite.signal().attenuation(), 0, 'f', 2) + " dB");
-    _ui->delai->setText(fmt1.arg(satellite.signal().delai(), 0, 'f', 2) + " ms");
+            // Parametres circulaires equatoriaux
+            _ui->frameCirculaireEquatorial->setVisible(true);
+            _ui->ex2->setText(fmt1.arg(satellite.elements().exCEq(), 0, 'f', 7));
+            _ui->ey2->setText(fmt1.arg(satellite.elements().eyCEq(), 0, 'f', 7));
+            _ui->ix2->setText(fmt1.arg(satellite.elements().ix(), 0, 'f', 7));
+            _ui->iy2->setText(fmt1.arg(satellite.elements().iy(), 0, 'f', 7));
+            _ui->argumentLongitudeVraie2->setText(fmt2.arg(satellite.elements().argumentLongitudeVraie() * RAD2DEG, 0, 'f', 4));
+            break;
+        }
 
-    // Triplet de phasage
-    const QString fmt4 = "[ %1; %2; %3 ] %4";
-    const int nu0 = satellite.phasage().nu0();
-    const int dt0 = satellite.phasage().dt0();
-    const int ct0 = satellite.phasage().ct0();
-    const int nbOrb = satellite.phasage().nbOrb();
-    if ((nu0 < -98) || (dt0 < -98) || (ct0 < -98) || (nbOrb < -98)) {
-        _ui->phasage->setText(tr("N/A", "Not applicable"));
-    } else {
-        _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
+        // Autres elements osculateurs
+        _ui->anomalieVraie->setText(fmt2.arg(satellite.elements().anomalieVraie() * RAD2DEG, 0, 'f', 4));
+        _ui->anomalieExcentrique->setText(fmt2.arg(satellite.elements().anomalieExcentrique() * RAD2DEG, 0, 'f', 4));
+        _ui->champDeVue->setText("±" + fmt2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellite.altitude())) * RAD2DEG, 0, 'f', 2));
+
+        // Apogee/perigee/periode orbitale
+        const QString fmt3 = "%1 %2 (%3 %2)";
+        const double apogee = (_ui->unitesKm->isChecked()) ? satellite.elements().apogee() : satellite.elements().apogee() * MILE_PAR_KM;
+        double apogeeAlt = satellite.elements().apogee() - RAYON_TERRESTRE;
+        apogeeAlt = (_ui->unitesKm->isChecked()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
+        _ui->apogee->setText(fmt3.arg(apogee, 0, 'f', 1).arg(unite).arg(apogeeAlt, 0, 'f', 1));
+
+        const double perigee = (_ui->unitesKm->isChecked()) ? satellite.elements().perigee() : satellite.elements().perigee() * MILE_PAR_KM;
+        double perigeeAlt = satellite.elements().perigee() - RAYON_TERRESTRE;
+        perigeeAlt = (_ui->unitesKm->isChecked()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
+        _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
+        _ui->periode->setText(Maths::ToSexagesimal(satellite.elements().periode() * HEUR2RAD, HEURE1, 1, 0, false, true));
+
+        // Informations de signal
+        _ui->doppler->setText(text.asprintf("%+.0f Hz", satellite.signal().doppler()));
+        _ui->attenuation->setText(fmt1.arg(satellite.signal().attenuation(), 0, 'f', 2) + " dB");
+        _ui->delai->setText(fmt1.arg(satellite.signal().delai(), 0, 'f', 2) + " ms");
+
+        // Triplet de phasage
+        const QString fmt4 = "[ %1; %2; %3 ] %4";
+        const int nu0 = satellite.phasage().nu0();
+        const int dt0 = satellite.phasage().dt0();
+        const int ct0 = satellite.phasage().ct0();
+        const int nbOrb = satellite.phasage().nbOrb();
+        if ((nu0 < -98) || (dt0 < -98) || (ct0 < -98) || (nbOrb < -98)) {
+            _ui->phasage->setText(tr("N/A", "Not applicable"));
+        } else {
+            _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
+        }
     }
 
     /* Retour */
@@ -1399,7 +1404,7 @@ void Onglets::ChargementPref() const
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         _ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
-        _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", true).toBool());
+        _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", 0).toInt());
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
@@ -2282,6 +2287,7 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/afflune " << QVariant(_ui->afflune->isChecked()).toString() << endl
                  << "affichage/affnomlieu " << _ui->affnomlieu->checkState() << endl
                  << "affichage/affnomsat " << _ui->affnomsat->checkState() << endl
+                 << "affichage/affNoradListes " << _ui->affNoradListes->checkState() << endl
                  << "affichage/affnotif " << QVariant(_ui->affnotif->isChecked()).toString() << endl
                  << "affichage/affnuit " << QVariant(_ui->affnuit->isChecked()).toString() << endl
                  << "affichage/affphaselune " << QVariant(_ui->affphaselune->isChecked()).toString() << endl
@@ -2298,12 +2304,12 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/groupeTLE " << _ui->groupeTLE->currentIndex() << endl
                  << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << endl
                  << "affichage/intensiteVision " << _ui->intensiteVision->value() << endl
+                 << "affichage/langue " << Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()) << endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << endl
                  << "affichage/proportionsCarte " << QVariant(_ui->proportionsCarte->isChecked()).toString() << endl
                  << "affichage/refractionPourEclipses " << QVariant(_ui->refractionPourEclipses->isChecked()).toString() << endl
                  << "affichage/rotationIconeISS " << QVariant(_ui->rotationIconeISS->isChecked()).toString() << endl
-                 << "affichage/affNoradListes " << QVariant(_ui->affNoradListes->isChecked()).toString() << endl
                  << "affichage/rotationLune " << QVariant(_ui->rotationLune->isChecked()).toString() << endl
                  << "affichage/systemeHoraire " << QVariant(_ui->syst24h->isChecked()).toString() << endl
                  << "affichage/typeParametres " << _ui->typeParametres->currentIndex() << endl
@@ -2327,7 +2333,7 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/policeWCC " << _ui->policeWCC->currentIndex() << endl;
 
             for(const QString station : Configuration::instance()->mapStations().keys()) {
-                flux << "affichage/station" + station + " " + settings.value("affichage/station" + station).toString() << endl;
+                flux << "affichage/station" + station + " " + QVariant(settings.value("affichage/station" + station).toString()).toString() << endl;
             }
 
             fi.close();
@@ -4275,6 +4281,7 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
             Configuration::instance()->EcritureFicObs(listeFicObs.at(0));
             InitFicObs(false);
             emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nomlieu), 10);
+            _ui->categoriesObs->setCurrentRow(0);
         }
     } catch (PreviSatException &e) {
     }
@@ -4443,7 +4450,7 @@ void Onglets::on_ajoutLieu_clicked()
             _ui->lieuxObs->setFocus();
         }
 
-        // TODO
+        emit MiseAJourCarte();
 
     } catch (PreviSatException &e) {
     }
@@ -4464,9 +4471,8 @@ void Onglets::on_supprLieu_clicked()
         Configuration::instance()->observateurs().removeAt(_ui->selecLieux->currentRow());
         AffichageLieuObs();
         Configuration::instance()->EcritureConfiguration();
-
-        // TODO
         _ui->outilsLieuxObservation->setVisible(false);
+        emit MiseAJourCarte();
     }
 
     /* Retour */
@@ -6738,19 +6744,19 @@ void Onglets::on_effetEclipsesMagnitude_stateChanged(int arg1)
 void Onglets::on_affradar_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
-    emit MiseAJourCarte();
+    emit RecalculerPositions();
 }
 
 void Onglets::on_affinvns_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
-    emit MiseAJourCarte();
+    emit RecalculerPositions();
 }
 
 void Onglets::on_affinvew_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
-    emit MiseAJourCarte();
+    emit RecalculerPositions();
 }
 
 void Onglets::on_affcoord_stateChanged(int arg1)
@@ -6785,7 +6791,7 @@ void Onglets::on_unitesKm_toggled(bool checked)
         _ui->nvAltitude->setValidator(valAlt);
     }
 
-    emit MiseAJourCarte();
+    emit RecalculerPositions();
 
     if (!Configuration::instance()->evenementsISS().isEmpty()) {
         AffichageManoeuvresISS();

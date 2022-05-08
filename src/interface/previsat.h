@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mai 2022
+ * >    8 mai 2022
  *
  */
 
@@ -53,6 +53,7 @@ class Carte;
 class Ciel;
 class CoordISS;
 class Date;
+class Informations;
 class Onglets;
 class Radar;
 class QLabel;
@@ -161,6 +162,7 @@ private:
     Radar *_radar;
     QToolButton *_maximise;
     QToolButton *_affichageCiel;
+    Informations *infos;
 
     // Barre de statut
     QLabel *_messageStatut;
