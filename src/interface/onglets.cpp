@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 mai 2022
+ * >    10 mai 2022
  *
  */
 
@@ -524,8 +524,6 @@ void Onglets::AffichageDonneesSatellite() const
         _ui->lbl_azimut->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
 
         _ui->lbl_prochainAOS->setVisible(true);
-        _ui->dateAOS->adjustSize();
-        _ui->dateAOS->resize(_ui->dateAOS->width(), 16);
         _ui->dateAOS->setVisible(true);
 
     } else {
@@ -2307,7 +2305,7 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/groupeTLE " << _ui->groupeTLE->currentIndex() << endl
                  << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << endl
                  << "affichage/intensiteVision " << _ui->intensiteVision->value() << endl
-                 << "affichage/langue " << Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()) << endl
+                 << "affichage/langue " << Configuration::instance()->locale() << endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << endl
                  << "affichage/proportionsCarte " << QVariant(_ui->proportionsCarte->isChecked()).toString() << endl
@@ -2567,8 +2565,6 @@ void Onglets::InitAffichageDemarrage()
     _ui->lbl_nbOrbitesSat->resize(_ui->lbl_nbOrbitesSat->width(), 16);
     _ui->nbOrbitesSat->move(_ui->lbl_nbOrbitesSat->x() + _ui->lbl_nbOrbitesSat->width() + 2, _ui->nbOrbitesSat->y());
 
-    _ui->lbl_prochainAOS->adjustSize();
-    _ui->lbl_prochainAOS->resize(_ui->lbl_prochainAOS->width(), 16);
     _ui->dateAOS->move(_ui->lbl_prochainAOS->x() + _ui->lbl_prochainAOS->width() + 7, _ui->lbl_prochainAOS->y());
     _ui->dateJN->move(_ui->dateAOS->x(), _ui->dateJN->y());
 
@@ -2845,6 +2841,9 @@ void Onglets::InitFicObs(const bool alarme)
     }
 
     _ui->categoriesObs->blockSignals(etat1);
+    if (!Configuration::instance()->listeFicObs().isEmpty()) {
+        _ui->categoriesObs->setCurrentRow(0);
+    }
     _ui->ajdfic->blockSignals(etat2);
 
     /* Retour */
@@ -4251,7 +4250,7 @@ void Onglets::on_validerObs_clicked()
                 Configuration::instance()->EcritureFicObs(fic);
             }
 
-            _ui->categoriesObs->setCurrentRow(0);
+            on_categoriesObs_currentRowChanged(0);
             AffichageLieuObs();
             _ui->outilsLieuxObservation->setVisible(false);
         }
@@ -4433,6 +4432,7 @@ void Onglets::on_actionSupprimerLieu_triggered()
             mapObs.remove(nomlieu);
             Configuration::instance()->EcritureFicObs(fic);
 
+            _ui->categoriesObs->setCurrentRow(0);
             on_categoriesObs_currentRowChanged(0);
             emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"").arg(nomlieu)
                                        .arg(_ui->categoriesObs->currentItem()->text()), 10);

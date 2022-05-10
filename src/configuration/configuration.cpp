@@ -30,16 +30,9 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 mai 2022
+ * >    10 mai 2022
  *
  */
-
-#include <QtGlobal>
-#if QT_VERSION >= 0x050000
-#include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
 
 #include <QCoreApplication>
 #include <QDir>
@@ -49,6 +42,7 @@
 #include <QLocale>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTextStream>
 #include <QXmlStreamWriter>
 #include "configuration.h"
@@ -895,8 +889,6 @@ void Configuration::DefinitionArborescences()
     _dirExe = QCoreApplication::applicationDirPath();
     _adresseAstropedia = QCoreApplication::organizationDomain();
 
-#if QT_VERSION >= 0x050000
-
     const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory);
     const QString dir = listeGenericDir.at(0) + dirAstr + QDir::separator();
     _dirLocalData = dir + "data";
@@ -915,35 +907,13 @@ void Configuration::DefinitionArborescences()
     dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
 #endif
 
-#else
-
-    const QString listeGenericDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-    _dirLocalData = listeGenericDir + QDir::separator() + "data";
-
-    _dirOut = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + dirAstr;
-    _dirTmp = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-    _dirTle = QDir::toNativeSeparators(listeGenericDir + QDir::separator() + "tle");
-
-#if defined (Q_OS_WIN)
-    dirCommon = QDir::rootPath() + "ProgramData" + QDir::separator() + dirAstr;
-#elif defined (Q_OS_LINUX)
-    dirCommon = QString("/usr/share") + QDir::separator() + dirAstr;
-#endif
-
-#endif
-
     // Cas particulier de Mac OS X
 #if defined (Q_OS_MAC)
     dirCommon = _dirExe;
     _dirLocalData = _dirCommonData;
     _dirTle = _dirExe + QDir::separator() + "tle";
     _adresseAstropedia = "http://astropedia.free.fr/";
-
-#if QT_VERSION >= 0x050000
     _dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
-#else
-    _dirOut = QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + QDir::separator() + QCoreApplication::applicationName();
-#endif
 #endif
 
 

@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    20 avril 2022
+# >    10 mai 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
@@ -44,7 +44,11 @@ BUILD_TEST   = false
 CLEANUP_TEST = true
 #-------------------------------------------------
 
-!equals(QT_MAJOR_VERSION, 4):!equals(QT_MAJOR_VERSION, 5) {
+equals(QT_MAJOR_VERSION, 5) {
+    lessThan(QT_MINOR_VERSION, 4) {
+        error("Qt $${QT_VERSION} is not suited to compile PreviSat. Use Qt 5.15.2 in preference")
+    }
+} else {
     error("Qt $${QT_VERSION} is not suited to compile PreviSat. Use Qt 5.15.2 in preference")
 }
 
@@ -278,15 +282,13 @@ OBJECTS_DIR = $$DESTDIR/obj
 MOC_DIR     = $$DESTDIR/moc
 UI_DIR      = $$DESTDIR/ui
 
-CONFIG(debug, debug|release) {
-    QMAKE_CXXFLAGS += -Wmissing-declarations
-}
 
 QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wextra -Wformat \
-    -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain -Wmissing-field-initializers \
-    -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations -Wpacked -Wparentheses -Wpointer-arith \
-    -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector -Wswitch -Wswitch-default -Wswitch-enum -Wtrigraphs \
-    -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused -Wunused-parameter -Wvariadic-macros -Wwrite-strings
+    -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain -Wmissing-declarations \
+    -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations \
+    -Wpacked -Wparentheses -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector \
+    -Wswitch -Wswitch-default -Wswitch-enum -Wtrigraphs -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused \
+    -Wunused-parameter -Wvariadic-macros -Wwrite-strings
 
 QMAKE_CXXFLAGS_RELEASE += -Os -fbounds-check -fbranch-target-load-optimize -fcaller-saves -fcommon -fcprop-registers -fcrossjumping -floop-optimize \
     -foptimize-register-move -fpeephole -fpeephole2 -frerun-cse-after-loop -fstrength-reduce -malign-double -s
