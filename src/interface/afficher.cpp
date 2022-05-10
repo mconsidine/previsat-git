@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    2 decembre 2021
+ * >    10 mai 2022
  *
  */
 
@@ -439,11 +439,7 @@ void Afficher::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
 
         tableDetail->setSelectionMode(QTableWidget::SingleSelection);
         tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
-#if QT_VERSION >= 0x050000
         tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-#else
-        tableDetail->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
-#endif
 
         if (afficherDetail != nullptr) {
             delete afficherDetail;

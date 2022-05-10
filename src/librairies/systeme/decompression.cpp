@@ -70,7 +70,7 @@ bool Decompression::DecompressionFichierGz(const QString &fichierGz)
 
     /* Corps de la methode */
     gzFile ficGz = gzopen(fichierGz.toStdString().c_str(), "rb");
-    if (ficGz != NULL) {
+    if (ficGz != nullptr) {
 
         const QFileInfo fi(fichierGz);
         QFile fd(fi.path() + QDir::separator() + fi.completeBaseName());
@@ -80,7 +80,7 @@ bool Decompression::DecompressionFichierGz(const QString &fichierGz)
             QTextStream flux(&fd);
 
             char buffer[8192];
-            while (gzgets(ficGz, buffer, 8192) != NULL) {
+            while (gzgets(ficGz, buffer, 8192) != nullptr) {
                 flux << QString(buffer).replace("\r\n", "\n");
             }
             gzclose(ficGz);

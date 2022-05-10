@@ -33,18 +33,18 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 avril 2022
+ * >    10 mai 2022
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
 #include <QApplication>
 #include <QMessageBox>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QSharedMemory>
 #include <QSplashScreen>
 #include <QTextCodec>
-#include "configuration/configuration.h"
 #include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
 
@@ -59,14 +59,11 @@ int main(int argc, char *argv[])
     try {
 
         QApplication a(argc, argv);
+
         a.setOrganizationName(ORG_NAME);
         a.setApplicationName(APP_NAME);
         a.setOrganizationDomain(DOMAIN_NAME);
 
-#if QT_VERSION < 0x050000
-        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-#endif
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
         // Lancement du splash screen et demarrage de l'application
