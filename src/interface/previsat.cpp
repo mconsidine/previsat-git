@@ -2239,6 +2239,89 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
     return;
 }
 
+void PreviSat::keyPressEvent(QKeyEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+#if defined (Q_OS_MAC)
+    const Qt::Key etapeAvant = Qt::Key_F6;
+    const Qt::Key etapeApres = Qt::Key_F7;
+
+#else
+    const Qt::Key etapeAvant = Qt::Key_F11;
+    const Qt::Key etapeApres = Qt::Key_F12;
+#endif
+
+    /* Corps de la methode */
+    if (evt->key() == Qt::Key_F10) {
+
+        // Bascule Temps reel/Mode manuel
+        if (ui->tempsReel->isChecked()) {
+            ui->modeManuel->setChecked(true);
+
+        } else if (ui->modeManuel->isChecked()) {
+            ui->tempsReel->setChecked(true);
+        }
+
+    } else if (evt->key() == Qt::Key_F8) {
+
+        // Capture de la fenetre
+        _chronometre->stop();
+        _chronometreMs->stop();
+        const QPixmap image = QPixmap::grabWidget(QApplication::activeWindow());
+
+        const QString nomFicDefaut = Configuration::instance()->dirOut() + QDir::separator() + "previsat_" +
+                _dateCourante->ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H).remove("/").remove(":").replace(" ", "_") + "_" +
+                _onglets->ui()->tuc->text().remove(" ").remove(":");
+
+        const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
+                                                         tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;" \
+                                                            "Tous les fichiers (*)"));
+
+        if (!fic.isEmpty()) {
+            image.save(fic);
+            const QFileInfo fi(fic);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
+
+        _chronometre->start();
+        _chronometreMs->start();
+
+    } else if ((evt->key() == etapeAvant) || (evt->key() == etapeApres)) {
+
+        // Etape precedente/suivante (mode manuel)
+        if (!ui->modeManuel->isChecked()) {
+            ui->modeManuel->setChecked(true);
+        }
+
+        const int sgnk = (evt->key() == etapeAvant) ? -1 : 1;
+
+        const double jd = (ui->valManuel->currentIndex() < 3) ? _dateCourante->jourJulienUTC() +
+                                                                sgnk * ui->pasManuel->currentText().toDouble() *
+                                                                qPow(NB_SEC_PAR_MIN, ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC :
+                                                                _dateCourante->jourJulienUTC() + sgnk * ui->pasManuel->currentText().toDouble();
+
+        const Date date(jd + EPS_DATES, _dateCourante->offsetUTC());
+        const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+
+        if (_onglets->ui()->dateHeure4->isVisible()) {
+            _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
+            _onglets->ui()->dateHeure4->setDateTime(date.ToQDateTime(1));
+        } else {
+            _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
+            _onglets->ui()->dateHeure3->setDateTime(date.ToQDateTime(1));
+            _onglets->ui()->dateHeure3->setFocus();
+        }
+
+    } else {
+        QMainWindow::keyPressEvent(evt);
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::resizeEvent(QResizeEvent *evt)
 {
     /* Declarations des variables locales */

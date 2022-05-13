@@ -44,21 +44,25 @@ BUILD_TEST   = false
 CLEANUP_TEST = true
 #-------------------------------------------------
 
+TARGET = PreviSat
+TEMPLATE = app
+
 equals(QT_MAJOR_VERSION, 5) {
     lessThan(QT_MINOR_VERSION, 4) {
-        error("Qt $${QT_VERSION} is not suited to compile PreviSat. Use Qt 5.15.2 in preference")
+        error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 5.15.2 in preference")
     }
 } else {
-    error("Qt $${QT_VERSION} is not suited to compile PreviSat. Use Qt 5.15.2 in preference")
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 5.15.2 in preference")
 }
 
 QT += concurrent
 
 equals(QT_MAJOR_VERSION, 5): QT += multimedia printsupport widgets xml
-greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS += -std=c++11
+greaterThan(QT_GCC_MAJOR_VERSION, 4) {
+    QMAKE_CXXFLAGS += -std=c++11
+    CONFIG += c++11
+}
 
-TARGET = PreviSat
-TEMPLATE = app
 
 ORG_NAME = Astropedia
 DOMAIN_NAME = http://astropedia.free.fr/
@@ -80,7 +84,6 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     BUILD_TEST=$$BUILD_TEST
 
 INCLUDEPATH += src
-CONFIG += c++11
 
 
 SOURCES += \
