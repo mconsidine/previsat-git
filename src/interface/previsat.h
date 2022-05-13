@@ -384,6 +384,7 @@ private slots:
     void closeEvent(QCloseEvent *evt);
     bool eventFilter(QObject *object, QEvent *evt) override;
     void mousePressEvent(QMouseEvent *evt);
+    void keyPressEvent(QKeyEvent *evt);
     void resizeEvent(QResizeEvent *evt);
 
     void on_directHelp_clicked();
@@ -433,6 +434,7 @@ private slots:
     void on_actionFichier_TLE_existant_triggered();
 
     void on_lancementVideoNasa_clicked();
+
 };
 
 #endif // PREVISAT_H
