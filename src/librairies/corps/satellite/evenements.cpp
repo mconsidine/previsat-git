@@ -237,7 +237,8 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
 /*
  * Calcul du prochain passage ombre->penombre ou penombre->ombre
  */
-Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &satellite, const int nbTrajectoires, const bool acalcEclipseLune, const bool refraction)
+Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &satellite, const int nbTrajectoires, const bool acalcEclipseLune,
+                                     const bool refraction)
 {
     /* Declarations des variables locales */
     Date dateEcl;

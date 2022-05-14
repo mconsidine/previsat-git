@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    10 mai 2022
+ * >    14 mai 2022
  *
  */
 
@@ -2521,8 +2521,8 @@ void Onglets::InitAffichageDemarrage()
     _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + 1) % _ui->informations->count()]));
 
     _ui->configuration->setCurrentIndex(_indexOption);
-    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % 4));
-    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % 4));
+    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
+    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
 
     on_miseAJourTLE_currentChanged(_indexMajTLE);
     _ui->majPrec->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[(_indexMajTLE + 2) % 2]));
@@ -3302,6 +3302,7 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
 
             acronyme = _ui->categorieOrbiteDonneesSat->text();
             _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
+            AfficherMessageStatut(Configuration::instance()->mapCategoriesOrbite()[acronyme], 5);
         }
 
         // Affichage du pays ou de l'organisation
@@ -3312,6 +3313,7 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
 
             acronyme = _ui->paysDonneesSat->text();
             _ui->paysDonneesSat->setToolTip(Configuration::instance()->mapPays()[acronyme]);
+            emit AfficherMessageStatut(Configuration::instance()->mapPays()[acronyme], 5);
         }
 
         // Affichage du site de lancement
@@ -3325,6 +3327,7 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
                 if (!site.nomlieu().isEmpty()) {
                     _ui->siteLancement->setToolTip(site.nomlieu());
                     emit AffichageSiteLancement(acronyme, site);
+                    emit AfficherMessageStatut(site.nomlieu(), 5);
                 }
             }
 
@@ -3336,10 +3339,12 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
                 if (!site.nomlieu().isEmpty()) {
                     _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
                     emit AffichageSiteLancement(acronyme, site);
+                    emit AfficherMessageStatut(site.nomlieu(), 5);
                 }
             }
         } else {
             emit AffichageSiteLancement("", Observateur());
+            emit EffacerMessageStatut();
         }
     }
 
@@ -3554,7 +3559,7 @@ void Onglets::on_infoPrec_clicked()
         _indexInfo = (_ui->informations->currentIndex() + _ui->informations->count() - 1) % _ui->informations->count();
         _ui->informations->setCurrentIndex(_indexInfo);
         _ui->barreOnglets->setTabText(2, QCoreApplication::translate("Onglets", _titreInformations[_indexInfo]));
-        on_informations_currentChanged(_indexInfo);
+        _ui->informations->setCurrentIndex(_indexInfo);
     }
 }
 
@@ -3564,7 +3569,7 @@ void Onglets::on_infoSuiv_clicked()
         _indexInfo = (_ui->informations->currentIndex() + 1) % _ui->informations->count();
         _ui->informations->setCurrentIndex(_indexInfo);
         _ui->barreOnglets->setTabText(2, QCoreApplication::translate("Onglets", _titreInformations[_indexInfo]));
-        on_informations_currentChanged(_indexInfo);
+        _ui->informations->setCurrentIndex(_indexInfo);
     }
 }
 
@@ -4524,15 +4529,18 @@ void Onglets::on_selecLieux_currentRowChanged(int currentRow)
 
 void Onglets::on_optionPrec_clicked()
 {
-    _indexOption = (_ui->configuration->currentIndex() + 3) % 4;
+    _indexOption = (_ui->configuration->currentIndex() + 3) % _ui->configuration->count();
+    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
+    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
     _ui->configuration->setCurrentIndex(_indexOption);
 }
 
 void Onglets::on_optionSuiv_clicked()
 {
-    _indexOption = (_ui->configuration->currentIndex() + 1) % 4;
+    _indexOption = (_ui->configuration->currentIndex() + 1) % _ui->configuration->count();
+    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
+    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
     _ui->configuration->setCurrentIndex(_indexOption);
-
 }
 
 void Onglets::on_actionTous_triggered()
