@@ -821,7 +821,7 @@
        <property name="geometry">
         <rect>
          <x>177</x>
-         <y>90</y>
+         <y>86</y>
          <width>382</width>
          <height>35</height>
         </rect>
@@ -4371,7 +4371,7 @@
           <number>3</number>
          </property>
          <property name="verticalSpacing">
-          <number>1</number>
+          <number>0</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="lbl_dateLancement">
@@ -4610,7 +4610,7 @@
           <x>278</x>
           <y>63</y>
           <width>244</width>
-          <height>68</height>
+          <height>55</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_info2">

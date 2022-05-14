@@ -1509,6 +1509,9 @@
             <property name="spacing">
              <number>0</number>
             </property>
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
            </layout>
           </item>
          </layout>
