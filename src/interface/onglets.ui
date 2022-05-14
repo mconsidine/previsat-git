@@ -4010,7 +4010,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="infos">
        <property name="autoFillBackground">
@@ -5096,9 +5096,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>15</y>
+           <y>16</y>
            <width>181</width>
-           <height>34</height>
+           <height>36</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_rechercheNorad_2">
@@ -5109,7 +5109,7 @@
            <number>3</number>
           </property>
           <property name="verticalSpacing">
-           <number>0</number>
+           <number>2</number>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lbl_numNorad_2">
