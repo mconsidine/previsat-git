@@ -4613,8 +4613,10 @@ void Onglets::on_barreOnglets_currentChanged(int index)
         //            _ui->dateHeure4->setDateTime(_ui->dateHeure3->dateTime());
         //        }
 
-    } else if (index == _ui->barreOnglets->indexOf(_ui->informations)) {
-        // TODO
+    } else if (index == _ui->barreOnglets->indexOf(_ui->informationsSatellite)) {
+
+        _ui->informations->setCurrentIndex(_indexInfo);
+
     } else if (index == _ui->barreOnglets->indexOf(_ui->previsions)) {
 
         const Date date(_date->jourJulien() + EPS_DATES, 0.);
