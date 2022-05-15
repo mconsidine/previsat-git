@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    14 mai 2022
+ * >    15 mai 2022
  *
  */
 
@@ -3294,31 +3294,34 @@ bool Onglets::eventFilter(QObject *object, QEvent *evt)
 
     if (evt->type() == QEvent::MouseMove) {
 
-        // Affichage de la categorie d'orbite
         if (_ui->categorieOrbite->underMouse() || _ui->categorieOrbiteDonneesSat->underMouse()) {
 
+            // Affichage de la categorie d'orbite
             QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().categorieOrbite();
             _ui->categorieOrbite->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
 
             acronyme = _ui->categorieOrbiteDonneesSat->text();
             _ui->categorieOrbiteDonneesSat->setToolTip(Configuration::instance()->mapCategoriesOrbite()[acronyme]);
             AfficherMessageStatut(Configuration::instance()->mapCategoriesOrbite()[acronyme], 5);
-        }
 
-        // Affichage du pays ou de l'organisation
-        if (_ui->pays->underMouse() || _ui->paysDonneesSat->underMouse()) {
+        } else if (_ui->pays->underMouse() || _ui->paysDonneesSat->underMouse()) {
 
+            // Affichage du pays ou de l'organisation
             QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().pays();
             _ui->pays->setToolTip(Configuration::instance()->mapPays()[acronyme]);
+            if (_ui->infos->isVisible()) {
+                emit AfficherMessageStatut(Configuration::instance()->mapPays()[acronyme], 5);
+            }
 
             acronyme = _ui->paysDonneesSat->text();
             _ui->paysDonneesSat->setToolTip(Configuration::instance()->mapPays()[acronyme]);
-            emit AfficherMessageStatut(Configuration::instance()->mapPays()[acronyme], 5);
-        }
+            if (_ui->recherche->isVisible()) {
+                emit AfficherMessageStatut(Configuration::instance()->mapPays()[acronyme], 5);
+            }
 
-        // Affichage du site de lancement
-        if (_ui->siteLancement->underMouse() || _ui->siteLancementDonneesSat->underMouse()) {
+        } else if (_ui->siteLancement->underMouse() || _ui->siteLancementDonneesSat->underMouse()) {
 
+            // Affichage du site de lancement
             if (_ui->siteLancement->underMouse()) {
 
                 const QString acronyme = Configuration::instance()->listeSatellites().at(0).tle().donnees().siteLancement();
