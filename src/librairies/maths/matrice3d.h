@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    15 mai 2022
  *
  */
 
@@ -115,6 +115,13 @@ public:
      * @return transposee de la matrice
      */
     Matrice3D Transposee() const;
+
+    /**
+     * @brief operator = Affectation d'une matrice 3D
+     * @param matrice
+     * @return matrice affectee
+     */
+    Matrice3D &operator = (const Matrice3D &matrice);
 
     /**
      * @brief operator * produit d'une matrice 3x3 par un vecteur 3D
