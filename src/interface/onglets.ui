@@ -5796,9 +5796,9 @@
      <widget class="QListWidget" name="liste2">
       <property name="geometry">
        <rect>
-        <x>566</x>
+        <x>556</x>
         <y>7</y>
-        <width>200</width>
+        <width>210</width>
         <height>200</height>
        </rect>
       </property>
@@ -7734,9 +7734,9 @@
      <widget class="QListWidget" name="liste4">
       <property name="geometry">
        <rect>
-        <x>566</x>
+        <x>556</x>
         <y>7</y>
-        <width>200</width>
+        <width>210</width>
         <height>200</height>
        </rect>
       </property>
@@ -11772,9 +11772,9 @@
        <widget class="QListWidget" name="liste3">
         <property name="geometry">
          <rect>
-          <x>553</x>
+          <x>546</x>
           <y>8</y>
-          <width>201</width>
+          <width>210</width>
           <height>170</height>
          </rect>
         </property>
