@@ -127,6 +127,7 @@ public:
     /**
      * @brief operator = Affectation d'un vecteur 3D
      * @param vecteur vecteur
+     * @return vecteur affecte
      */
     Vecteur3D &operator = (const Vecteur3D &vecteur);
 

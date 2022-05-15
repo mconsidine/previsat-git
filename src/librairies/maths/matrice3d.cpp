@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    15 mai 2022
  *
  */
 
@@ -129,6 +129,17 @@ Matrice3D Matrice3D::Transposee() const
 
     /* Retour */
     return Matrice3D(l, m, n);
+}
+
+/*
+ * Affectation d'une matrice 3D
+ */
+Matrice3D &Matrice3D::operator = (const Matrice3D &matrice)
+{
+    _vecteur1 = matrice._vecteur1;
+    _vecteur2 = matrice._vecteur2;
+    _vecteur3 = matrice._vecteur3;
+    return (*this);
 }
 
 
