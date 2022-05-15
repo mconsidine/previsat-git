@@ -821,20 +821,20 @@
        <property name="geometry">
         <rect>
          <x>177</x>
-         <y>86</y>
+         <y>90</y>
          <width>382</width>
-         <height>35</height>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_AOS" rowstretch="1,0">
         <property name="topMargin">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
