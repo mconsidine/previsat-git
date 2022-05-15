@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 mai 2022
+ * >    15 mai 2022
  *
  */
 
@@ -1391,44 +1391,49 @@ void PreviSat::InitFicTLE() const
     QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
     /* Corps de la methode */
-    const bool etat = ui->listeFichiersTLE->blockSignals(true);
-    ui->listeFichiersTLE->clear();
-    QStringListIterator it(Configuration::instance()->listeFicTLE());
-    while (it.hasNext()) {
+    try {
 
-        const QString nom = it.next();
-        const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + nom);
-        if (TLE::VerifieFichier(fic) > 0) {
+        const bool etat = ui->listeFichiersTLE->blockSignals(true);
+        ui->listeFichiersTLE->clear();
+        QStringListIterator it(Configuration::instance()->listeFicTLE());
+        while (it.hasNext()) {
 
-            ui->listeFichiersTLE->addItem(nom);
+            const QString nom = it.next();
+            const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirTle() + QDir::separator() + nom);
+            if (TLE::VerifieFichier(fic) > 0) {
 
-            if (fic == Configuration::instance()->nomfic()) {
-                const int index = ui->listeFichiersTLE->count() - 1;
-                ui->listeFichiersTLE->setCurrentIndex(index);
-                ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
+                ui->listeFichiersTLE->addItem(nom);
+
+                if (fic == Configuration::instance()->nomfic()) {
+                    const int index = ui->listeFichiersTLE->count() - 1;
+                    ui->listeFichiersTLE->setCurrentIndex(index);
+                    ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
+                }
+            } else {
+                // Suppression dans la liste des fichiers qui ne sont pas des TLE
+                if (fic == Configuration::instance()->nomfic()) {
+                    defaut = true;
+                }
+                listeTLE.removeAt(idx);
             }
+            idx++;
+        }
+
+        if (listeTLE.count() == 0) {
+            ui->listeFichiersTLE->addItem("");
         } else {
-            // Suppression dans la liste des fichiers qui ne sont pas des TLE
-            if (fic == Configuration::instance()->nomfic()) {
-                defaut = true;
+            if (defaut) {
+                Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() + listeTLE.at(0);
             }
-            listeTLE.removeAt(idx);
         }
-        idx++;
-    }
+        ui->listeFichiersTLE->addItem(tr("Parcourir..."));
+        ui->listeFichiersTLE->blockSignals(etat);
 
-    if (listeTLE.count() == 0) {
-        ui->listeFichiersTLE->addItem("");
-    } else {
-        if (defaut) {
-            Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() + listeTLE.at(0);
-        }
-    }
-    ui->listeFichiersTLE->addItem(tr("Parcourir..."));
-    ui->listeFichiersTLE->blockSignals(etat);
+        // Mise a jour de la liste de fichiers TLE
+        Configuration::instance()->setListeFicTLE(listeTLE);
 
-    // Mise a jour de la liste de fichiers TLE
-    Configuration::instance()->setListeFicTLE(listeTLE);
+    } catch (PreviSatException &e) {
+    }
 
     /* Retour */
     return;
@@ -2063,8 +2068,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     settings.setValue("fichier/listeMap", (_onglets->ui()->listeMap->currentIndex() > 0) ?
                           Configuration::instance()->listeFicMap().at(qMax(0, _onglets->ui()->listeMap->currentIndex() - 1)) : "");
-//    settings.setValue("fichier/listeSon", (_onglets->ui()->listeSons->currentIndex() > 0) ?
-//                          ficSonAOS.at(qMax(0, ui->listeSons->currentIndex() - 1)) : "");
+    //    settings.setValue("fichier/listeSon", (_onglets->ui()->listeSons->currentIndex() > 0) ?
+    //                          ficSonAOS.at(qMax(0, ui->listeSons->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", QDir::toNativeSeparators(Configuration::instance()->nomfic()));
     settings.setValue("fichier/fichierAMettreAJour", _onglets->ui()->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", _onglets->ui()->fichierALire->text());

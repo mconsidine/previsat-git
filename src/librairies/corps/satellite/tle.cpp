@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 mai 2022
+ * >    15 mai 2022
  *
  */
 
@@ -571,15 +571,22 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 
                         // Cas des TLE a 2 lignes
                         lig1 = ligne;
-                        lig2 = it.next();
-                        lig0 = lig1;
+                        if (it.hasNext()) {
+                            lig2 = it.next();
+                            lig0 = lig1;
+                        }
 
                     } else {
 
                         // Cas des TLE a 3 lignes
                         lig0 = ligne;
-                        lig1 = it.next();
-                        lig2 = it.next();
+                        if (it.hasNext()) {
+                            lig1 = it.next();
+                        }
+
+                        if (it.hasNext()) {
+                            lig2 = it.next();
+                        }
                     }
 
                     const QString nomsat = RecupereNomsat(lig0);

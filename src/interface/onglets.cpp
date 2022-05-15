@@ -3360,16 +3360,6 @@ void Onglets::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void Onglets::mouseMoveEvent(QMouseEvent *event)
-{
-    if (event->buttons() & Qt::LeftButton) {
-        const int distance = (event->pos() - _positionSouris).manhattanLength();
-        if (distance >= QApplication::startDragDistance()) {
-
-        }
-    }
-}
-
 void Onglets::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
@@ -4483,6 +4473,7 @@ void Onglets::on_ajoutLieu_clicked()
 
             Configuration::instance()->observateurs().append(mapObs.value(nomlieu));
             Configuration::instance()->EcritureConfiguration();
+            AffichageLieuObs();
             _ui->lieuxObs->setFocus();
         }
 
@@ -4508,6 +4499,7 @@ void Onglets::on_supprLieu_clicked()
         AffichageLieuObs();
         Configuration::instance()->EcritureConfiguration();
         _ui->outilsLieuxObservation->setVisible(false);
+        AffichageLieuObs();
         emit MiseAJourCarte();
     }
 
