@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    15 mai 2022
+ * >    17 mai 2022
  *
  */
 
@@ -234,7 +234,7 @@ void Onglets::show(const Date &date)
             _nbInformations = 1;
             _ui->informations->setCurrentIndex(_indexInfo);
             _ui->barreOnglets->setTabText(_ui->barreOnglets->indexOf(_ui->informationsSatellite),
-                                          QCoreApplication::translate("Onglets", _titreInformations[0]));
+                                          QCoreApplication::translate("Onglets", _titreInformations[1]));
             on_informations_currentChanged(_indexInfo);
             _ui->infoPrec->setVisible(false);
             _ui->infoSuiv->setVisible(false);
@@ -246,6 +246,9 @@ void Onglets::show(const Date &date)
             _nbInformations = 2;
             _ui->satellite->setVisible(true);
             _ui->barreOnglets->insertTab(1, _ui->osculateurs, tr("Éléments osculateurs"));
+            _ui->barreOnglets->setTabText(_ui->barreOnglets->indexOf(_ui->informationsSatellite),
+                                          QCoreApplication::translate("Onglets", _titreInformations[0]));
+
             _ui->informations->insertWidget(0, _ui->infos);
             on_infoSuiv_clicked();
             on_informations_currentChanged(0);
@@ -3422,7 +3425,9 @@ void Onglets::on_informations_currentChanged(int arg1)
         _ui->noradDonneesSat->setValue(0);
 
         _ui->frameResultats->setVisible(false);
-        if (!Configuration::instance()->listeSatellites().isEmpty()) {
+        if (Configuration::instance()->listeSatellites().isEmpty()) {
+            _ui->noradDonneesSat->setValue(Configuration::instance()->mapTLE().first().norad().toInt());
+        } else {
             _ui->noradDonneesSat->setValue(Configuration::instance()->listeSatellites().at(0).tle().norad().toInt());
         }
         _ui->nom->setFocus();
