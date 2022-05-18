@@ -2672,11 +2672,6 @@ void Onglets::InitAffichageDemarrage()
         _ficTLEMetOp.append(QDir::toNativeSeparators(nomFicMetOp));
     }
 
-    if (_ficTLEMetOp.isEmpty()) {
-        _ui->fichierTLEMetOp->addItem("");
-    }
-    _ui->fichierTLEMetOp->addItem(tr("Parcourir..."));
-
     // Affichage des manoeuvres ISS
     if (!Configuration::instance()->evenementsISS().isEmpty()) {
         AffichageManoeuvresISS();
@@ -4253,7 +4248,7 @@ void Onglets::on_validerObs_clicked()
                 Configuration::instance()->EcritureFicObs(fic);
             }
 
-            on_categoriesObs_currentRowChanged(0);
+            _ui->categoriesObs->setCurrentRow(0);
             AffichageLieuObs();
             _ui->outilsLieuxObservation->setVisible(false);
         }
