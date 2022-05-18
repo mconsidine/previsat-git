@@ -1426,7 +1426,6 @@ void PreviSat::InitFicTLE() const
                 Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() + listeTLE.at(0);
             }
         }
-        ui->listeFichiersTLE->addItem(tr("Parcourir..."));
         ui->listeFichiersTLE->blockSignals(etat);
 
         // Mise a jour de la liste de fichiers TLE

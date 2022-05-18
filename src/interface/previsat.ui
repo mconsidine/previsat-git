@@ -1729,7 +1729,6 @@ le flux vidéo</string>
     <property name="title">
      <string notr="true">Menu</string>
     </property>
-    <addaction name="actionOuvrir_fichier_TLE"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
