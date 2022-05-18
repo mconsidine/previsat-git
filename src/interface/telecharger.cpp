@@ -217,8 +217,10 @@ void Telecharger::on_telecharger_clicked()
         if (ui->listeFichiers->item(i)->checkState() == Qt::Checked) {
 
             fic = ui->listeFichiers->item(i)->text();
-            if (_adresse != COORDONNEES) {
-                fic = fic.toLower() + ".xml";
+            if (_adresse == COORDONNEES) {
+                fic += ".xml";
+            } else {
+                fic = fic.toLower();
             }
 
             if (_adresse == NOTIFICATIONS) {
