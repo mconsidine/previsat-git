@@ -590,15 +590,18 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                     }
 
                     const QString nomsat = RecupereNomsat(lig0);
-                    VerifieLignes(lig1, lig2, nomsat, alarme);
 
-                    if (((lig1 == lig0) && (itle == 3)) || ((lig1 != lig0) && (itle== 2))) {
+                    if (((lig1 == lig0) && (itle == 3))
+                            || ((lig1 != lig0) && (itle== 2))
+                            || (!lig1.startsWith("1 ") && !lig2.startsWith("2 "))) {
+
                         msg = "";
                         if (alarme) {
                             msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
                         }
                         throw PreviSatException(msg, WARNING);
                     }
+                    VerifieLignes(lig1, lig2, nomsat, alarme);
 
                     itle = (lig1 == lig0) ? 2 : 3;
                     nb++;
