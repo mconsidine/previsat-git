@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    17 mai 2022
+ * >    18 mai 2022
  *
  */
 
@@ -6107,6 +6107,38 @@ void Onglets::on_hauteurSatSuivi_currentIndexChanged(int index)
 void Onglets::on_skywatcher_clicked()
 {
     QDesktopServices::openUrl(QUrl("http://skywatcher.com/"));
+}
+
+void Onglets::on_ouvrirSatelliteTracker_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString exeSatelliteTracker = settings.value("fichier/satelliteTracker", "").toString();
+
+    /* Corps de la methode */
+    if (exeSatelliteTracker.isEmpty()) {
+
+        QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"),
+                                                       "Satellite Tracker.exe",
+                                                       tr("Fichiers exécutables (*.exe)"));
+
+        if (!fichier.isEmpty()) {
+            fichier = QDir::toNativeSeparators(fichier);
+            settings.setValue("fichier/satelliteTracker", fichier);
+            exeSatelliteTracker = fichier;
+        }
+    }
+
+    const QFileInfo fi(exeSatelliteTracker);
+    if (fi.exists()) {
+        QProcess::startDetached(exeSatelliteTracker);
+    } else {
+        settings.setValue("fichier/satelliteTracker", "");
+    }
+
+    /* Retour */
+    return;
 }
 #endif
 
