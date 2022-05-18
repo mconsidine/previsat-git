@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 mai 2022
+ * >    18 mai 2022
  *
  */
 
@@ -585,6 +585,7 @@ private slots:
     void on_lieuxObservation5_currentIndexChanged(int index);
     void on_hauteurSatSuivi_currentIndexChanged(int index);
     void on_skywatcher_clicked();
+    void on_ouvrirSatelliteTracker_clicked();
 #endif
 
     // Calcul des evenements orbitaux

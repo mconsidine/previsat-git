@@ -54,7 +54,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="general">
      <property name="font">
@@ -823,7 +823,7 @@
          <x>177</x>
          <y>90</y>
          <width>382</width>
-         <height>30</height>
+         <height>34</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_AOS" rowstretch="1,0">
@@ -6230,7 +6230,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>47</y>
+            <y>50</y>
             <width>31</width>
             <height>20</height>
            </rect>
@@ -6273,12 +6273,15 @@
         <x>10</x>
         <y>130</y>
         <width>341</width>
-        <height>26</height>
+        <height>29</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_prev2">
        <property name="spacing">
         <number>3</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
        </property>
        <item>
         <layout class="QFormLayout" name="formLayout_prev2">
@@ -7788,7 +7791,7 @@
          <x>0</x>
          <y>18</y>
          <width>541</width>
-         <height>151</height>
+         <height>165</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -7804,7 +7807,7 @@
         <property name="geometry">
          <rect>
           <x>150</x>
-          <y>110</y>
+          <y>102</y>
           <width>141</width>
           <height>23</height>
          </rect>
@@ -7817,7 +7820,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>110</y>
+          <y>102</y>
           <width>141</width>
           <height>23</height>
          </rect>
@@ -8128,6 +8131,19 @@
           </widget>
          </item>
         </layout>
+       </widget>
+       <widget class="QPushButton" name="ouvrirSatelliteTracker">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>127</y>
+          <width>141</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ouvrir Satellite Tracker</string>
+        </property>
        </widget>
       </widget>
       <widget class="QLabel" name="visibiliteSatSuivi">
