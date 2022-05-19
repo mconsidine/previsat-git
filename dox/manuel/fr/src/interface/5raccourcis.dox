@@ -14,9 +14,6 @@
 | <b><center>F10</center></b> | Bascule Temps réel / Mode manuel |
 | <b><center>F11 (F6 sur MacOS X)</center></b> | Étape précédente |
 | <b><center>F12 (F7 sur MacOS X)</center></b> | Étape suivante |
-| <b><center>Ctrl + M</center></b> | Maximisation / Minimisation de la carte |
-| <b><center>Ctrl + N</center></b> | Vision nocturne |
-| <b><center>Ctrl + O</center></b> | Ouvrir fichier TLE |
 | <b><center>Ctrl + S</center></b> | Enregistrer dans un fichier texte les données de l'onglet affiché |
 | <b><center>A…Z</center></b> | Permet de se déplacer dans la liste des satellites lorsque celle-ci est active |
 
