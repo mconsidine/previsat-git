@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -62,10 +62,10 @@ void TransitsIssTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString dirCommonData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
-    const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
     conditions.jj1 = 7790.416666666667;
@@ -74,7 +74,7 @@ void TransitsIssTest::testAll()
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
-    conditions.observateur = Observateur("Paris", -002.34864, 48.85339, 30.);
+    conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
     conditions.unite = "km";
     conditions.eclipse = false;
     conditions.seuilConjonction = 20. * DEG2RAD;
@@ -98,7 +98,7 @@ void TransitsIssTest::testCalculTransitsISS()
 
     int n = 0;
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "iss.3le";
-    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20210501_20210601";
+    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20210501_20210601.txt";
 
     conditions.tabtle = TLE::LectureFichier3le(fichier);
     conditions.ficRes = ficRes;

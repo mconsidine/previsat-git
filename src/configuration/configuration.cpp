@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    10 mai 2022
+ * >    31 mai 2022
  *
  */
 
@@ -543,7 +543,7 @@ void Configuration::Initialisation()
         // Lecture du fichier de constellations
         Corps::InitTabConstellations(_dirCommonData);
 
-        const QString httpDir = settings.value("fichier/dirHttpPrevi").toString() + "commun/data/";
+        const QString httpDir = QString("%1%2/Qt/commun/data/").arg(_adresseAstropedia).arg(QString(APP_NAME).toLower());
         _mapAdressesTelechargement.insert(COORDONNEES, httpDir + "coordinates/");
         _mapAdressesTelechargement.insert(CARTES, httpDir + "map/");
         _mapAdressesTelechargement.insert(NOTIFICATIONS, httpDir + "sound/");
@@ -1921,28 +1921,29 @@ void Configuration::VerificationArborescences()
         const QDir di = QDir(_dirLocalData);
         if (!di.exists()) {
             di.mkpath(_dirLocalData);
+        }
 
-            const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
-                                           << _dirCommonData + QDir::separator() + "html"
-                                           << _dirCommonData + QDir::separator() + "preferences"
-                                           << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "tle");
+        const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
+                                       << _dirCommonData + QDir::separator() + "html"
+                                       << _dirCommonData + QDir::separator() + "preferences"
+                                       << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "tle");
 
-            foreach(QString orig, listeDirOrig) {
-                QDir dir(orig);
-                const QString dest = orig.replace(_dirCommonData, _dirLocalData);
-                QDir::rename(dir.path(), dest);
-            }
+        foreach(QString orig, listeDirOrig) {
+            QDir dir(orig);
+            const QString dest = orig.replace(_dirCommonData, _dirLocalData);
+            dir.rename(dir.path(), dest);
+        }
 
-            const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
-                                        << _dirCommonData + QDir::separator() + "taiutc.dat");
+        const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
+                                    << _dirCommonData + QDir::separator() + "ISS.OEM_J2K_EPH.xml"
+                                    << _dirCommonData + QDir::separator() + "taiutc.dat");
 
-            foreach(QString fic, listeFics) {
-                QString file(fic);
-                const QString dest = fic.replace(_dirCommonData, _dirLocalData);
-                QFile fi;
-                fi.rename(file, dest);
-                fi.remove(file);
-            }
+        foreach(QString fic, listeFics) {
+            QString file(fic);
+            const QString dest = fic.replace(_dirCommonData, _dirLocalData);
+            QFile fi;
+            fi.rename(file, dest);
+            fi.remove(file);
         }
 #endif
 

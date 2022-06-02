@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 avril 2022
+ * >    25 mai 2022
  *
  */
 
@@ -291,17 +291,17 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     /* Corps de la methode */
     const QStringList dateNasa = dateFormatNasa.split("T");
     const QStringList anneeNbJours = dateNasa.at(0).split("-");
-    const int annee = anneeNbJours.at(0).toInt();
+    const int an = anneeNbJours.at(0).toInt();
     const int nbJours = anneeNbJours.at(1).toInt();
 
     const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", QString::SkipEmptyParts);
-    const int heure = heures.at(0).toInt();
-    const int minutes = heures.at(1).toInt();
-    const double secondes = heures.at(2).toDouble();
+    const int hr = heures.at(0).toInt();
+    const int mn = heures.at(1).toInt();
+    const double sec = heures.at(2).toDouble();
 
-    const double jours = nbJours + heure * NB_JOUR_PAR_HEUR + minutes * NB_JOUR_PAR_MIN + secondes * NB_JOUR_PAR_SEC;
+    const double jours = nbJours + hr * NB_JOUR_PAR_HEUR + mn * NB_JOUR_PAR_MIN + sec * NB_JOUR_PAR_SEC;
 
-    const Date date(annee, 1, 1., 0.);
+    const Date date(an, 1, 1., 0.);
 
     /* Retour */
     return Date(date.jourJulien() + jours - 1., 0., true);

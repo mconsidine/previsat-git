@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -63,18 +63,21 @@ void TelescopeTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString dirCommonData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
-    const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
+
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
 
     conditions.jj1 = 7531.416666666667;
     conditions.ecart = true;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 5.; // ms
-    conditions.observateur = Observateur("Paris", -002.34864, 48.85339, 30.);
+    conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
     conditions.unite = "km";
     conditions.listeSatellites.append("25544");
 
@@ -89,9 +92,11 @@ void TelescopeTest::testCalculSuiviTelescope1()
     int n = 0;
     conditions.fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
-    const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(conditions.fichier, donneeISS, donneeISS.size(), conditions.listeSatellites);
-    Satellite sat(tabTle.first());
+    const int lgrec = Configuration::instance()->lgRec();
+    const QStringList listeTLE(QStringList () << "25544");
+    QMap<QString, TLE> mapTLE = TLE::LectureFichier(conditions.fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+
+    Satellite sat(mapTLE.first());
 
     // Determination du prochain passage
     Date date(conditions.jj1, 0., false);

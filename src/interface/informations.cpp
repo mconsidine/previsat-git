@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    2 decembre 2021
+ * >    24 mai 2022
  *
  */
 
@@ -173,7 +173,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString url = settings.value("fichier/dirHttpPrevi", "").toString() + "informations/" + nomfic;
+    const QString url = QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower()) + nomfic;
 
     /* Corps de la methode */
     if (UrlExiste(url)) {

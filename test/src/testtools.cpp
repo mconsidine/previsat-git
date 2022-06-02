@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -79,15 +79,15 @@ void CompareFichiers(const QString &ficRes, const QString &ficRef)
 {
     QFile ref(ficRef);
     ref.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream fref(&ref);
-    const QString ficref = fref.readAll();
+    const QString ficref = ref.readAll();
     ref.close();
 
     QFile res(ficRes);
     res.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream fres(&res);
-    const QString ficres = fres.readAll();
+    const QString ficres = res.readAll();
     res.close();
+
+    QCOMPARE(ficres, ficref);
 }
 
 }

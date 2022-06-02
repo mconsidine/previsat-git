@@ -1,7 +1,6 @@
 Lieu d'observation        : Paris      002°20'55" Est    48°51'12" Nord   30 m
 Fuseau horaire            : UTC + 02:00
-Conditions d'observations : Hauteur maximale du Soleil = -6°
-                            Hauteur minimale du satellite = 10°
+Conditions d'observations : Hauteur maximale du Soleil = -6° / Hauteur minimale du satellite = 10°
 Unité de distance         : km
 
 Age du TLE le plus récent : 0.43 jours (au 15/08/2020 00:00:00)

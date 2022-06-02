@@ -30,7 +30,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2021
+ * >    25 mai 2022
  *
  */
 
@@ -72,14 +72,14 @@ static const char* listeCap[] = {
 /*
  * Constructeur par defaut
  */
-Observateur::Observateur()
+Observateur::Observateur() :
+    _nomlieu("")
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nomlieu = "";
     _longitude = 0.;
     _latitude = 0.;
     _altitude = 0.;
@@ -424,7 +424,7 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
     }
 
     /* Retour */
-    return (Observateur(nom, lon, lat, 0.));
+    return (Observateur(nom, lon, lat));
 }
 
 /*

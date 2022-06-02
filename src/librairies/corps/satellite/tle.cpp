@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 mai 2022
+ * >    25 mai 2022
  *
  */
 
@@ -250,7 +250,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
         QString lig0;
         QString lig1;
         QString lig2;
-        QString norad;
+        QString numeroNorad;
         TLE tle;
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -270,12 +270,12 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                     lig2 = it.next();
 
                     // Recuperation du nom du satellite dans le fichier de donnees
-                    norad = lig1.mid(2, 5);
-                    lig0 = norad;
+                    numeroNorad = lig1.mid(2, 5);
+                    lig0 = numeroNorad;
 
                     if (ajoutDonnees) {
 
-                        const int idx = lgRec * norad.toInt();
+                        const int idx = lgRec * numeroNorad.toInt();
                         if ((idx >= 0) && (idx < donneesSat.size())) {
 
                             const QString donnee = donneesSat.mid(idx, lgRec);
@@ -346,11 +346,11 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
                 QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
                 while (it.hasNext()) {
 
-                    const QString ligne0 = it.next();
-                    const QString ligne1 = it.next();
-                    const QString ligne2 = it.next();
+                    const QString lig0 = it.next();
+                    const QString lig1 = it.next();
+                    const QString lig2 = it.next();
 
-                    const TLE tle(ligne0, ligne1, ligne2);
+                    const TLE tle(lig0, lig1, lig2);
                     tabtle.append(tle);
                 }
             }
@@ -409,26 +409,26 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
     QStringListIterator it1(tleNew.keys());
     while (it1.hasNext()) {
 
-        const QString norad = it1.next();
-        if (listeNoradOld.contains(norad)) {
+        const QString numeroNorad = it1.next();
+        if (listeNoradOld.contains(numeroNorad)) {
 
             // Mise a jour du TLE
-            if (tleOld[norad]._epoque.jourJulienUTC() < tleNew[norad]._epoque.jourJulienUTC()) {
+            if (tleOld[numeroNorad]._epoque.jourJulienUTC() < tleNew[numeroNorad]._epoque.jourJulienUTC()) {
 
-                tleOld[norad] = tleNew[norad];
-                tleOld[norad]._ligne0 = (tleNew[norad]._nom == norad) ? tleOld[norad]._ligne0 : tleNew[norad]._ligne0;
+                tleOld[numeroNorad] = tleNew[numeroNorad];
+                tleOld[numeroNorad]._ligne0 = (tleNew[numeroNorad]._nom == numeroNorad) ? tleOld[numeroNorad]._ligne0 : tleNew[numeroNorad]._ligne0;
                 nbMaj++;
 
             } else {
-                compteRendu.append(tleOld[norad]._nom + "#" + tleOld[norad]._norad);
+                compteRendu.append(tleOld[numeroNorad]._nom + "#" + tleOld[numeroNorad]._norad);
             }
 
-            listeNoradNew.removeOne(norad);
-            listeNoradOld.removeOne(norad);
+            listeNoradNew.removeOne(numeroNorad);
+            listeNoradOld.removeOne(numeroNorad);
 
         } else {
             if (nomFicOld != nomFicNew) {
-                compteRendu.append(tleOld[norad]._nom + "#" + tleOld[norad]._norad);
+                compteRendu.append(tleOld[numeroNorad]._nom + "#" + tleOld[numeroNorad]._norad);
             }
         }
     }
@@ -442,7 +442,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
         QStringListIterator it2(listeNoradOld);
         while (it2.hasNext()) {
 
-            const QString norad = it2.next();
+            const QString numeroNorad = it2.next();
 
             // TLE absent du fichier de TLE recents
             // Demande de suppression
@@ -451,7 +451,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                                                     "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
-                                   message.arg(tleOld[norad]._nom).arg(tleOld[norad]._norad), QMessageBox::Yes |
+                                   message.arg(tleOld[numeroNorad]._nom).arg(tleOld[numeroNorad]._norad), QMessageBox::Yes |
                                    QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                 msgbox.setDefaultButton(QMessageBox::No);
@@ -464,7 +464,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
             }
 
             if ((res2 == QMessageBox::Yes) || (res2 == QMessageBox::YesToAll)) {
-                tleOld.remove(norad);
+                tleOld.remove(numeroNorad);
                 nbSup++;
             }
         }
@@ -473,7 +473,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
         QStringListIterator it3(listeNoradNew);
         while (it3.hasNext()) {
 
-            const QString norad = it3.next();
+            const QString numeroNorad = it3.next();
 
             // TLE absent du fichier de TLE anciens
             // Demande d'ajout
@@ -482,7 +482,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                                                     "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
-                                   message.arg(tleNew[norad]._nom).arg(tleNew[norad]._norad), QMessageBox::Yes |
+                                   message.arg(tleNew[numeroNorad]._nom).arg(tleNew[numeroNorad]._norad), QMessageBox::Yes |
                                    QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                 msgbox.setDefaultButton(QMessageBox::No);
@@ -495,7 +495,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
             }
 
             if ((res1 == QMessageBox::Yes) || (res1 == QMessageBox::YesToAll)) {
-                tleOld.insert(norad, tleNew[norad]);
+                tleOld.insert(numeroNorad, tleNew[numeroNorad]);
                 nbAdd++;
             }
         }

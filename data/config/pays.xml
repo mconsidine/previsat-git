@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreviSatPays version="1.0">
     <Pays>
-        <Acronyme>ATM</Acronyme>
-        <Description>Atmospheric orbit</Description>
-    </Pays>
-    <Pays>
         <Acronyme>AB</Acronyme>
         <Description>Arab satellite communications organization</Description>
     </Pays>
