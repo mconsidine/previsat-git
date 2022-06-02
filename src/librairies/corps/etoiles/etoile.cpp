@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    25 mai 2022
  *
  */
 
@@ -148,7 +148,7 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
             double ascDte;
             double dec;
             double mag;
-            QString nom;
+            QString nomEtoile;
 
             while (!flux.atEnd()) {
 
@@ -156,7 +156,7 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
                 ascDte = 0.;
                 dec = 0.;
                 mag = 99.;
-                nom = "";
+                nomEtoile = "";
 
                 if (ligne.length() > 34) {
 
@@ -172,9 +172,9 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
                     dec = sgnd * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
 
                     mag = ligne.mid(31, 5).toDouble();
-                    nom = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+                    nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
                 }
-                etoiles.append(Etoile(nom, ascDte, dec, mag));
+                etoiles.append(Etoile(nomEtoile, ascDte, dec, mag));
             }
         }
         fi.close();

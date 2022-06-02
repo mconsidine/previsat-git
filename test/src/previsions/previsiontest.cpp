@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -62,10 +62,10 @@ void PrevisionTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString dirCommonData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
-    const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
     conditions.jj1 = 7531.416666666667;
@@ -74,7 +74,7 @@ void PrevisionTest::testAll()
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
-    conditions.observateur = Observateur("Paris", -002.34864, 48.85339, 30.);
+    conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
     conditions.unite = "km";
     conditions.eclipse = true;
     conditions.magnitudeLimite = 99.;
@@ -100,7 +100,7 @@ void PrevisionTest::testCalculPrevisions1()
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions1_20200815_20200822.txt";
 
     conditions.fichier = fichier;
-    conditions.ficRes = ficRes;    
+    conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
     Prevision::setConditions(conditions);

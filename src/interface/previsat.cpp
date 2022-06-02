@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 mai 2022
+ * >    1er juin 2022
  *
  */
 
@@ -388,8 +388,8 @@ void PreviSat::DemarrageApplication()
     }
 
     // Affichage de la fenetre d'informations
-    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
-                           + "informations/last_news_" + Configuration::instance()->locale() + ".html");
+    const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
+                           + "last_news_" + Configuration::instance()->locale() + ".html");
 
     if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
@@ -692,15 +692,14 @@ void PreviSat::InitVerificationsMAJ()
 
         _onglets->setDirDwn(Configuration::instance()->dirTmp());
 
-        QString fic("don");
-        TelechargementFichier(settings.value("fichier/dirHttpPrevi", "").toString() + fic, false);
+        const QString fic("don");
+        _onglets->TelechargementFichier(QString("%1%2/Qt/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower()) + fic, false);
 
-        QFile fi(_dirDwn + QDir::separator() + fic);
+        QFile fi(_onglets->dirDwn() + QDir::separator() + fic);
         if (fi.exists() && (fi.size() != 0)) {
 
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QTextStream flux(&fi);
-                settings.setValue("fichier/dirHttpPreviDon", flux.readLine());
+                settings.setValue("fichier/dirHttpPreviDon", QString(fi.readLine()));
             }
             fi.close();
         }
@@ -1087,7 +1086,7 @@ void PreviSat::VerifMAJPreviSat()
     /* Initialisations */
     bool anewVersion = false;
     _onglets->setDirDwn(Configuration::instance()->dirTmp());
-    const QString dirHttpPrevi = Configuration::instance()->adresseAstropedia() + "previsat/Qt/";
+    const QString dirHttpPrevi = QString("%1%2/Qt/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower());
     const QStringList listeFic(QStringList () << "versionPreviSat" << "majFicInt" << "majInfos");
 
     /* Corps de la methode */
@@ -1386,12 +1385,13 @@ void PreviSat::InitFicTLE() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    bool defaut = false;
-    int idx = 0;
-    QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
     /* Corps de la methode */
     try {
+
+        bool defaut = false;
+        int idx = 0;
+        QStringList listeTLE = Configuration::instance()->listeFicTLE();
 
         const bool etat = ui->listeFichiersTLE->blockSignals(true);
         ui->listeFichiersTLE->clear();
@@ -2697,8 +2697,8 @@ void PreviSat::on_actionInformations_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QUrl urlLastNews(settings.value("fichier/dirHttpPrevi", "").toString()
-                           + "informations/last_news_" + Configuration::instance()->locale() + ".html");
+    const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
+                           + "last_news_" + Configuration::instance()->locale() + ".html");
 
     if (Informations::UrlExiste(urlLastNews)) {
 

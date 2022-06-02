@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    30 avril 2022
+ * >    25 mai 2022
  *
  */
 
@@ -101,6 +101,8 @@ class Configuration
 {
 #if (BUILD_TEST == true)
     friend class OngletsTest;
+    friend class SatelliteTest;
+    friend class TelescopeTest;
 #endif
 
 public:
@@ -284,6 +286,8 @@ private:
      * @brief Configuration Creation du singleton
      */
     Configuration() {
+        _lgRec = -1;
+        _issLive = false;
     }
 
     /*

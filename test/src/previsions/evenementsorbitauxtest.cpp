@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -62,10 +62,10 @@ void EvenementsOrbitauxTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString dirCommonData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
-    const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
     conditions.jj1 = 7531.416666666667;

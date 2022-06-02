@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 mai 2022
+ * >    22 mai 2022
  *
  */
 
@@ -51,6 +51,7 @@
 class TLE
 {
 #if BUILD_TEST == true
+    friend class OngletsTest;
     friend class SatelliteTest;
 #endif
 public:

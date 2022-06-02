@@ -48,7 +48,7 @@
 
 using namespace TestTools;
 
-Observateur obs("Paris", -002.34864, 48.85339, 30.);
+Observateur obs("Paris", -2.34864, 48.85339, 30.);
 
 
 void ObservateurTest::testAll()
@@ -95,7 +95,7 @@ void ObservateurTest::testCalculCap()
 {
     qInfo(Q_FUNC_INFO);
 
-    const Observateur obs2("Lyon", -004.85, 45.75, 175.);
+    const Observateur obs2("Lyon", -4.85, 45.75, 175.);
     QCOMPARE(obs.CalculCap(obs2).first, "SE");
     QCOMPARE(obs.CalculCap(obs2).second, 2.6252070672262);
 }
@@ -104,7 +104,7 @@ void ObservateurTest::testCalculDistance()
 {
     qInfo(Q_FUNC_INFO);
 
-    const Observateur obs2("Lyon", -004.85, 45.75, 175.);
+    const Observateur obs2("Lyon", -4.85, 45.75, 175.);
     QCOMPARE(obs.CalculDistance(obs2), 393.42900023395015);
 }
 
