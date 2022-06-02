@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -64,10 +64,10 @@ void OngletsTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString dirCommonData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
-    const QString dirLocalData = dir.path() + QDir::separator() + QDir::separator() + "data";
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Configuration::instance()->_dirLocalData = dirLocalData;
     Date::Initialisation(dirLocalData);
 
@@ -75,7 +75,7 @@ void OngletsTest::testAll()
 
     const Date date(2020, 8, 15, 10, 0, 0., 2. / 24.);
 
-    Observateur observateur("Paris", -002.34864, 48.85339, 30.);
+    Observateur observateur("Paris", -2.34864, 48.85339, 30.);
     observateur.CalculPosVit(date);
     QList<Observateur> obs;
     obs.append(observateur);
@@ -99,9 +99,9 @@ void OngletsTest::testAll()
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
-    const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
+    const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeTLE(QStringList () << "25544");
-    const QMap<QString, TLE> mapTLE = TLE::LectureFichier(nomfic, donneeISS, donneeISS.size(), listeTLE);
+    QMap<QString, TLE> mapTLE = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
 
     Satellite sat(mapTLE.first());
 
@@ -123,6 +123,7 @@ void OngletsTest::testAll()
     Configuration::instance()->listeSatellites().append(sat);
 
     onglets = new Onglets();
+    onglets->InitChargementOnglets();
     onglets->show(date);
     onglets->AffichageLieuObs();
 
@@ -163,6 +164,7 @@ void OngletsTest::testOngletElementsOsculateurs()
         }
 
         onglets = new Onglets();
+        onglets->InitChargementOnglets();
         onglets->ui()->typeParametres->setCurrentIndex(i - 1);
 
         if (i == 2) {

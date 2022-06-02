@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 mai 2022
+ * >    22 mai 2022
  *
  */
 
@@ -831,7 +831,7 @@ void Onglets::AffichageInformationsSatellite() const
 
 
     // Date de lancement
-    _ui->dateLancement->setText(QDate::fromString(donnee.dateLancement(), "yyyy/MM/dd").toString(tr("yyyy/MM/dd")));
+    _ui->dateLancement->setText((donnee.dateLancement().isEmpty()) ? tr("Inconnue") : donnee.dateLancement());
 
     // Categorie d'orbite
     _ui->categorieOrbite->setText(donnee.categorieOrbite());
@@ -1810,6 +1810,7 @@ void Onglets::InitChargementOnglets()
     // Initialisation au demarrage
     InitAffichageDemarrage();
 
+#if (BUILD_TEST == false)
     // Chargement des groupes de TLE (onglet Outils)
     AffichageGroupesTLE();
 
@@ -1835,6 +1836,7 @@ void Onglets::InitChargementOnglets()
 
     // Chargement des fichiers sons (pour les AOS et LOS)
     InitFicSon();
+#endif
 
     /* Retour */
     return;
@@ -2092,7 +2094,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
                 chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
                 flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
-        #if (BUILD_TEST == true)
+#if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
                         .arg(_ui->lbl_beta->text()).trimmed() << endl;
 #else
@@ -2102,12 +2104,12 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
                 chaine = tr("Variation distance : %1  \t%2", "Range rate");
                 flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
-        #if (BUILD_TEST == true)
-                        .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text())
-                        .trimmed() << endl << endl << endl;
+#if (BUILD_TEST == true)
+                        .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text()).trimmed() + " " + _ui->lbl_azimut->text()
+                     << endl << endl << endl;
 #else
-                        .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text() : _ui->lbl_beta->text())
-                        .trimmed() << endl << endl << endl;
+                        .arg((_ui->dateAOS->isVisible()) ? _ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text() + " " + _ui->lbl_azimut->text()
+                                                         : _ui->lbl_beta->text()).trimmed() << endl << endl << endl;
 #endif
             }
 
@@ -3812,14 +3814,8 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         _ui->inclinaisonDonneesSat->setText((inclinaison.isEmpty()) ? tr("Inconnue") : inclinaison + "°");
 
         // Date de lancement
-        const QString dateLancement = ligne.mid(48, 10).trimmed();
-        const int annee_lct = dateLancement.mid(0, 4).toInt();
-        const int mois_lct = dateLancement.mid(5, 2).toInt();
-        const double jour_lct = dateLancement.mid(8, 2).toDouble();
-        const Date date_lancement(annee_lct, mois_lct, jour_lct, 0.);
-
-        _ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ?
-                                                  tr("Inconnue") : date_lancement.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
+        const QString dateLancement = ligne.mid(49, 10).trimmed();
+        _ui->dateLancementDonneesSat->setText((dateLancement.isEmpty()) ? tr("Inconnue") : dateLancement);
 
         // Date de rentree
         if (dateRentree.isEmpty()) {
@@ -3837,12 +3833,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         } else {
 
-            const int annee_rentree = dateRentree.mid(0, 4).toInt();
-            const int mois_rentree = dateRentree.mid(5, 2).toInt();
-            const double jour_rentree = dateRentree.mid(8, 2).toDouble();
-            const Date date_rentree(annee_rentree, mois_rentree, jour_rentree, 0.);
-
-            _ui->dateRentree->setText(date_rentree.ToShortDate(FORMAT_COURT, SYSTEME_24H).left(10));
+            _ui->dateRentree->setText(dateRentree);
             _ui->lbl_dateRentree->setVisible(true);
             _ui->dateRentree->setVisible(true);
 

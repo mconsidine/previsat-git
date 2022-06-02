@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 mai 2022
+ * >    22 mai 2022
  *
  */
 
@@ -666,6 +666,7 @@ void Afficher::on_actionEnregistrerTxt_triggered()
 
                     if (_typeCalcul == EVENEMENTS) {
 
+                        evts.sort();
                         QStringListIterator it4(evts);
                         while (it4.hasNext()) {
                             flux << it4.next().trimmed() << endl;
@@ -1535,7 +1536,7 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
     elems.append(illumination);
 
     // Duree du transit ou de la conjonction
-    elems.append((res.duree > 0.) ? QString("%1").arg(res.duree, 4, 'f', 1) : "");
+    elems.append((res.duree > 0.) ? QString("%1").arg(res.duree, 5, 'f', 1) : "");
 
     // Altitude, distance
     double altitude = res.altitude;

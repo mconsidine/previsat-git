@@ -40,7 +40,7 @@ VER_MAJ      = 5.0
 VERSION      = 5.0.0.10
 ANNEES_DEV   = 2005-2022
 TRANSLATIONS = translations/PreviSat_en.ts
-BUILD_TEST   = false
+BUILD_TEST   = true
 CLEANUP_TEST = true
 #-------------------------------------------------
 
@@ -84,6 +84,10 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     BUILD_TEST=$$BUILD_TEST
 
 INCLUDEPATH += src
+
+unix|macx {
+    LIBS += -lz
+}
 
 
 SOURCES += \

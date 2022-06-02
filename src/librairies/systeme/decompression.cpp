@@ -30,11 +30,16 @@
  * >    26 decembre 2019
  *
  * Date de revision
- * >
+ * >    31 mai 2022
  *
  */
 
+#include <QtGlobal>
+#if defined (Q_OS_WIN)
 #include <QtZlib/zlib.h>
+#else
+#include <zlib.h>
+#endif
 #include <QDir>
 #include <QFileInfo>
 #pragma GCC diagnostic ignored "-Wconversion"

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    25 mai 2022
  *
  */
 
@@ -324,10 +324,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
-            const double beta = (mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
+            const double bt = (mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
                         PI_SUR_DEUX + 8.7 * DEG2RAD :
                         acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
-            satellites[i].CalculZoneVisibilite(beta);
+            satellites[i].CalculZoneVisibilite(bt);
         }
 
         // Calcul de la trajectoire dans le ciel
@@ -396,7 +396,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
         const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
         Satellite sat = *this;
         Observateur obs = observateur;
-        ElementsTraceCiel elements;
+        ElementsTraceCiel elem;
 
         while (!afin) {
 
@@ -424,12 +424,12 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
                 // Conditions d'eclipse
                 sat._conditionEclipse.CalculSatelliteEclipse(sat._position, soleil, lune, refraction);
 
-                elements.azimut = sat.azimut();
-                elements.hauteur = sat.hauteur();
-                elements.jourJulienUTC = j0.jourJulienUTC();
-                elements.eclipseTotale = sat._conditionEclipse.eclipseTotale();
-                elements.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
-                _traceCiel.append(elements);
+                elem.azimut = sat.azimut();
+                elem.hauteur = sat.hauteur();
+                elem.jourJulienUTC = j0.jourJulienUTC();
+                elem.eclipseTotale = sat._conditionEclipse.eclipseTotale();
+                elem.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
+                _traceCiel.append(elem);
 
             } else {
                 if (i > 0) {
@@ -452,7 +452,7 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
     /* Declarations des variables locales */
     Soleil soleil;
     Lune lune;
-    ElementsTraceSol elements;
+    ElementsTraceSol elem;
 
     /* Initialisations */
     Satellite sat = *this;
@@ -469,14 +469,14 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
 
         // Longitude
         const Vecteur3D pos = sat._position;
-        elements.longitude = RAD2DEG * modulo(PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(date), DEUX_PI);
-        if (elements.longitude < 0.) {
-            elements.longitude += T360;
+        elem.longitude = RAD2DEG * modulo(PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(date), DEUX_PI);
+        if (elem.longitude < 0.) {
+            elem.longitude += T360;
         }
 
         // Latitude
-        elements.latitude = sat.CalculLatitude(pos);
-        elements.latitude = RAD2DEG * (PI_SUR_DEUX - elements.latitude);
+        elem.latitude = sat.CalculLatitude(pos);
+        elem.latitude = RAD2DEG * (PI_SUR_DEUX - elem.latitude);
 
         // Position du Soleil
         soleil.CalculPosition(date);
@@ -489,10 +489,10 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
         // Conditions d'eclipse
         sat._conditionEclipse.CalculSatelliteEclipse(pos, soleil, lune, refraction);
 
-        elements.jourJulienUTC = date.jourJulienUTC();
-        elements.eclipseTotale = sat._conditionEclipse.eclipseTotale();
-        elements.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
-        _traceAuSol.append(elements);
+        elem.jourJulienUTC = date.jourJulienUTC();
+        elem.eclipseTotale = sat._conditionEclipse.eclipseTotale();
+        elem.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
+        _traceAuSol.append(elem);
     }
 
     /* Retour */

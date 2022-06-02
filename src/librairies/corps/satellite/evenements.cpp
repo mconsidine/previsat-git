@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    5 octobre 2020
+ * >    25 mai 2022
  *
  */
 
@@ -68,6 +68,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
     Satellite sat = satellite;
     Observateur obs = observateur;
     elements.aos = sat.hasAOS(obs);
+    elements.azimut = 0.;
     const double st = (sensCalcul) ? 1. : -1.;
 
     /* Corps de la methode */

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    22 mai 2022
  *
  */
 
@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
@@ -51,9 +52,6 @@
 
 
 using namespace TestTools;
-
-const QString donneeISS("025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998/11/20                 92.90     411     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)");
-const Donnees donnees(donneeISS);
 
 
 void SatelliteTest::testAll()
@@ -79,8 +77,13 @@ void SatelliteTest::testCalculPosVit()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+    const int lgrec = Configuration::instance()->lgRec();
+
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "sgp4.txt";
-    QMap<QString, TLE> mapTLE = TLE::LectureFichier(fic, donneeISS, donneeISS.size());
+    QMap<QString, TLE> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), lgrec);
 
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "sgp4_res.txt";
     QFileInfo ff(ficRes);
@@ -140,7 +143,11 @@ void SatelliteTest::testCalculElementsOsculateurs()
 
     const Date date(2019, 12, 31, 16, 0, 0., 0.);
     TLE tle(ligne0, ligne1, ligne2);
-    tle._donnees = donnees;
+
+    const int lgrec = Configuration::instance()->lgRec();
+    const int idx = tle.norad().toInt() * lgrec;
+    tle._donnees = Donnees(Configuration::instance()->donneesSatellites().mid(idx, lgrec));
+
     Satellite sat(tle);
     sat.CalculPosVit(date);
     sat.CalculElementsOsculateurs(date);
@@ -281,14 +288,18 @@ void SatelliteTest::testCalculMagnitude()
     const QString ligne1 = "1 25544U 98067A   19365.62109818 -.00000196  00000-0  46169-5 0  9997";
     const QString ligne2 = "2 25544  51.6443 102.5677 0005157  88.3081  52.3104 15.49523379205885";
     TLE tle(ligne0, ligne1, ligne2);
-    tle._donnees = donnees;
+
+    const int lgrec = Configuration::instance()->lgRec();
+    const int idx = tle.norad().toInt() * lgrec;
+    tle._donnees = Donnees(Configuration::instance()->donneesSatellites().mid(idx, lgrec));
+
     Satellite sat(tle);
 
     // Satellite non eclipse
     Date date(2020, 1, 1, 6, 11, 0., 0.);
     sat.CalculPosVit(date);
 
-    Observateur obs("Paris", -002.348640000, +48.853390000, 30);
+    Observateur obs("Paris", -2.348640000, +48.853390000, 30);
     obs.CalculPosVit(date);
 
     Soleil soleil;
@@ -314,7 +325,7 @@ void SatelliteTest::testCalculAOS()
     Date date(2020, 1, 11, 8, 27, 30., 0.);
     sat.CalculPosVit(date);
 
-    Observateur obs("Paris", -002.348640000, +48.853390000, 30);
+    Observateur obs("Paris", -2.348640000, +48.853390000, 30);
     obs.CalculPosVit(date);
 
     sat.CalculCoordHoriz(obs);
