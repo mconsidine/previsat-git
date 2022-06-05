@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    5 juin 2022
  *
  */
 
@@ -1322,14 +1322,14 @@ QPair<double, double> Onglets::CalculHauteurMax(const QList<double> &jjm, Observ
     }
 
     /* Retour */
-    return Maths::CalculExtremumInterpolation3(jjm, ht);;
+    return Maths::CalculExtremumInterpolation3(jjm, ht);
 }
 #endif
 
 /*
  * Chargement des preferences
  */
-void Onglets::ChargementPref() const
+void Onglets::ChargementPref()
 {
     /* Declarations des variables locales */
 
@@ -1373,6 +1373,7 @@ void Onglets::ChargementPref() const
             }
         }
 
+        const bool etat = blockSignals(true);
         _ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
         _ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
         _ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
@@ -1412,6 +1413,7 @@ void Onglets::ChargementPref() const
         _ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
         _ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 1).toInt());
         _ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+        blockSignals(etat);
     }
 
     /* Retour */
@@ -1613,7 +1615,7 @@ void Onglets::CalculAosSatSuivi() const
     /* Corps de la methode */
     try {
 
-        Date date(_date->offsetUTC());
+        Date date(*_date, _date->offsetUTC());
         Observateur obs = Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
 
         if (_ui->liste4->count() == 0) {
@@ -1656,13 +1658,10 @@ void Onglets::CalculAosSatSuivi() const
         condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, lun, true);
         const QString ecl = (condEcl.eclipseTotale()) ? tr("Satellite en éclipse") : tr("Satellite éclairé");
 
-        // Hauteur minimale du satellite
-        const double hauteurMin = DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
-                                                 abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
-
-        // Date de lever
-        const ElementsAOS elemAos = Evenements::CalculAOS(date, satSuivi, obs, true, hauteurMin);
+        // Date de lever ou de coucher
+        const ElementsAOS elemAos = Evenements::CalculAOS(date, satSuivi, obs, true, 0.);
         Date dateAosSuivi(elemAos.date.jourJulienUTC(), _date->offsetUTC());
+
         if (elemAos.aos) {
 
             Date dateLosSuivi;
@@ -1671,7 +1670,7 @@ void Onglets::CalculAosSatSuivi() const
             if (elemAos.typeAOS == tr("AOS", "Acquisition of signal")) {
 
                 const ElementsAOS elemLos = Evenements::CalculAOS(Date(dateAosSuivi.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
-                                                                  satSuivi, obs, true, hauteurMin);
+                                                                  satSuivi, obs, true, 0.);
 
                 // Date de coucher
                 dateLosSuivi = Date(elemLos.date, _date->offsetUTC());
@@ -1694,6 +1693,8 @@ void Onglets::CalculAosSatSuivi() const
                 bld.setBold(false);
                 _ui->leverSatSuivi->setFont(bld);
                 _ui->leverSatSuivi->move(_ui->hauteurMaxSatSuivi->x(), _ui->leverSatSuivi->y());
+                _ui->leverSatSuivi->adjustSize();
+                _ui->leverSatSuivi2->setVisible(false);
 
             } else {
 
@@ -1702,19 +1703,22 @@ void Onglets::CalculAosSatSuivi() const
 
                 dateLosSuivi = dateAosSuivi;
 
-                const ElementsAOS elem = Evenements::CalculAOS(dateLosSuivi, satSuivi, obs, false, hauteurMin);
+                const ElementsAOS elem = Evenements::CalculAOS(Date(dateLosSuivi.jourJulienUTC() - 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
+                                                               satSuivi, obs, false, 0.);
 
                 dateAosSuivi = elem.date;
                 azim = elemAos.azimut;
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
-                _ui->leverSatSuivi->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, false).mid(0, 7).trimmed())
+                _ui->leverSatSuivi2->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, true).mid(0, 7).trimmed())
                                             .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
 
                 bld.setBold(true);
-                _ui->leverSatSuivi->setFont(bld);
+                _ui->leverSatSuivi2->setFont(bld);
                 _ui->lbl_leverSatSuivi->setVisible(false);
-                _ui->leverSatSuivi->move(0, _ui->leverSatSuivi->y());
+                _ui->leverSatSuivi2->setVisible(true);
+                _ui->leverSatSuivi2->adjustSize();
+                _ui->leverSatSuivi->setText("");
             }
 
             // Coucher
@@ -1733,6 +1737,7 @@ void Onglets::CalculAosSatSuivi() const
             // Hauteur max
             QList<double> jjm;
             QPair<double, double> minmax;
+
             double jj0 = 0.5 * (dateAosSuivi.jourJulienUTC() + dateLosSuivi.jourJulienUTC());
             double pas = dateLosSuivi.jourJulienUTC() - jj0;
 
@@ -1744,6 +1749,7 @@ void Onglets::CalculAosSatSuivi() const
             pas *= 0.5;
 
             for(int i=0; i<4; i++) {
+
                 jjm[0] = minmax.first - pas;
                 jjm[1] = minmax.first;
                 jjm[2] = minmax.first + pas;
@@ -1751,7 +1757,7 @@ void Onglets::CalculAosSatSuivi() const
                 minmax = CalculHauteurMax(jjm, obs, satSuivi);
                 pas *= 0.5;
             }
-            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, DEGRE, 2, 0, false, false).mid(0, 7).trimmed()));
+            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, DEGRE, 2, 0, false, true).mid(0, 7).trimmed()));
 
             _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
             _ui->lbl_coucherSatSuivi->setVisible(true);
@@ -1767,7 +1773,7 @@ void Onglets::CalculAosSatSuivi() const
                 dateAosSuivi = date;
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
-                _ui->leverSatSuivi->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, false).mid(0, 7).trimmed())
+                _ui->leverSatSuivi->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, true).mid(0, 7).trimmed())
                                             .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
 
                 bld.setBold(true);
@@ -2990,6 +2996,7 @@ void Onglets::InitWallCommandCenter()
     /* Initialisations */
 
     /* Corps de la methode */
+    const bool etat = blockSignals(true);
     _ui->affBetaWCC->setChecked(settings.value("affichage/affBetaWCC", false).toBool());
     _ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
     _ui->affNbOrbWCC->setChecked(settings.value("affichage/affNbOrbWCC", true).toBool());
@@ -3003,6 +3010,7 @@ void Onglets::InitWallCommandCenter()
 
     on_affBetaWCC_toggled(false);
     on_affNbOrbWCC_toggled(false);
+    blockSignals(etat);
 
     /* Retour */
     return;
@@ -6118,7 +6126,9 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
 
     const QFileInfo fi(exeSatelliteTracker);
     if (fi.exists()) {
-        QProcess::startDetached(exeSatelliteTracker);
+        QProcess proc;
+        proc.setProgram(exeSatelliteTracker);
+        proc.startDetached();
     } else {
         settings.setValue("fichier/satelliteTracker", "");
     }
