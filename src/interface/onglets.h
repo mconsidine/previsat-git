@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 mai 2022
+ * >    4 juin 2022
  *
  */
 
@@ -365,7 +365,7 @@ private:
     /**
      * @brief ChargementPref Chargement des preferences
      */
-    void ChargementPref() const;
+    void ChargementPref();
 
     /**
      * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE

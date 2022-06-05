@@ -40,7 +40,7 @@ VER_MAJ      = 5.0
 VERSION      = 5.0.0.10
 ANNEES_DEV   = 2005-2022
 TRANSLATIONS = translations/PreviSat_en.ts
-BUILD_TEST   = true
+BUILD_TEST   = false
 CLEANUP_TEST = true
 #-------------------------------------------------
 

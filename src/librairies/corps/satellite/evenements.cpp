@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    25 mai 2022
+ * >    4 juin 2022
  *
  */
 
@@ -75,7 +75,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
     if (elements.aos) {
 
         double periode = st * NB_JOUR_PAR_MIN;
-        if ((sat.hauteur() * st) > EPSDBL100) {
+        if (((sat.hauteur() - hauteurMin) * st) > EPSDBL100) {
             elements.typeAOS = QObject::tr("LOS", "Loss of signal");
         }
 
