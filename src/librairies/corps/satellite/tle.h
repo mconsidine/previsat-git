@@ -109,9 +109,6 @@ public:
      * Methodes publiques
      */
     /**
-
-     */
-    /**
      * @brief LectureFichier Lecture du fichier TLE
      * @param nomFichier nom du fichier TLE
      * @param donneesSat donnees satellites
