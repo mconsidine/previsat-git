@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 juin 2022
+ * >    16 juin 2022
  *
  */
 
@@ -1173,7 +1173,7 @@ void Onglets::AfficherLieuSelectionne(const int index)
         // Recuperation du lieu d'observation de la liste
         if (_ui->lieuxObs->hasFocus() && (index >= 0)) {
 
-            Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row()));
+            Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow()));
             QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
             obs = mapObs.value(_ui->lieuxObs->currentItem()->text());
             _ui->selecLieux->setCurrentRow(-1);
@@ -4247,7 +4247,7 @@ void Onglets::on_validerObs_clicked()
                 Configuration::instance()->EcritureFicObs(fic);
             }
 
-            _ui->categoriesObs->setCurrentRow(0);
+            on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
             AffichageLieuObs();
             _ui->outilsLieuxObservation->setVisible(false);
         }
@@ -4285,7 +4285,7 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
     /* Corps de la methode */
     try {
 
-        Configuration::instance()->LectureFicObs(listeFicObs.at(_ui->categoriesObs->currentIndex().row()));
+        Configuration::instance()->LectureFicObs(listeFicObs.at(_ui->categoriesObs->currentRow()));
         QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
         const Observateur lieu = mapObs.value(_ui->lieuxObs->currentItem()->text());
 
@@ -4326,6 +4326,8 @@ void Onglets::on_actionModifier_coordonnees_triggered()
     /* Corps de la methode */
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
+    _ui->lbl_ajouterDans->setVisible(false);
+    _ui->ajdfic->setVisible(false);
 
     if (_ui->unitesKm->isChecked()) {
         _ui->nvAltitude->setInputMask("####");
@@ -4335,7 +4337,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
 
     try {
 
-        Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row()));
+        Configuration::instance()->LectureFicObs(Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow()));
         const Observateur obs = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
 
         _ui->nvLieu->setText(obs.nomlieu().trimmed());
@@ -4355,6 +4357,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
         } else {
             _ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
         }
+
         _ui->nvAltitude->setPalette(QPalette());
         _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
 
@@ -4383,7 +4386,7 @@ void Onglets::on_actionRenommerLieu_triggered()
 
         if (!nvNomLieu.trimmed().isEmpty()) {
 
-            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow());
             Configuration::instance()->LectureFicObs(fic, false);
             QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
             const Observateur obs = mapObs.value(_ui->lieuxObs->currentItem()->text());
@@ -4423,14 +4426,14 @@ void Onglets::on_actionSupprimerLieu_triggered()
 
         if (res == QMessageBox::Yes) {
 
-            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow());
             Configuration::instance()->LectureFicObs(fic, false);
             QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
             mapObs.remove(nomlieu);
             Configuration::instance()->EcritureFicObs(fic);
+            _ui->outilsLieuxObservation->setVisible(false);
 
-            _ui->categoriesObs->setCurrentRow(0);
-            on_categoriesObs_currentRowChanged(0);
+            on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
             emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"").arg(nomlieu)
                                        .arg(_ui->categoriesObs->currentItem()->text()), 10);
         } else {
@@ -4466,7 +4469,7 @@ void Onglets::on_ajoutLieu_clicked()
                 throw PreviSatException();
             }
 
-            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentIndex().row());
+            const QString fic = Configuration::instance()->listeFicObs().at(_ui->categoriesObs->currentRow());
             Configuration::instance()->LectureFicObs(fic, false);
             const QMap<QString, Observateur> mapObs = Configuration::instance()->mapObs();
 

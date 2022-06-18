@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    31 mai 2022
+ * >    16 juin 2022
  *
  */
 
@@ -905,10 +905,7 @@ void Configuration::DefinitionArborescences()
     dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
     dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
-#endif
-
-    // Cas particulier de Mac OS X
-#if defined (Q_OS_MAC)
+#elif defined (Q_OS_MAC)
     dirCommon = _dirExe;
     _dirLocalData = _dirCommonData;
     _dirTle = _dirExe + QDir::separator() + "tle";
