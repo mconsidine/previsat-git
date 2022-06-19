@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mai 2022
+ * >    19 juin 2022
  *
  */
 
@@ -296,10 +296,20 @@ void Satellite::CalculPosVit(const Date &date)
 /*
  * Calcul de la position d'une liste de satellites
  */
-void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
-                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
-                                            const bool extinction, const bool isISS, const bool mcc, const bool refraction, const bool traceCiel,
-                                            const bool visibilite, QList<Satellite> &satellites)
+void Satellite::CalculPosVitListeSatellites(const Date &date,
+                                            const Observateur &observateur,
+                                            const Soleil &soleil,
+                                            const Lune &lune,
+                                            const int nbTracesAuSol,
+                                            const bool acalcEclipseLune,
+                                            const bool effetEclipsePartielle,
+                                            const bool extinction,
+                                            const bool refractionAtmospherique,
+                                            const bool traceCiel,
+                                            const bool visibilite,
+                                            const bool isISS,
+                                            const bool mcc,
+                                            QList<Satellite> &satellites)
 
 {
     /* Declarations des variables locales */
@@ -314,10 +324,10 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
         satellites[i].CalculPosVit(date);
 
         // Coordonnees horizontales du satellite
-        satellites[i].CalculCoordHoriz(observateur);
+        satellites[i].CalculCoordHoriz(observateur, true, refractionAtmospherique);
 
         // Calcul des conditions d'eclipse
-        satellites[i]._conditionEclipse.CalculSatelliteEclipse(satellites[i]._position, soleil, lune, refraction);
+        satellites[i]._conditionEclipse.CalculSatelliteEclipse(satellites[i]._position, soleil, lune, refractionAtmospherique);
 
         // Coordonnees terrestres du satellite
         satellites[i].CalculCoordTerrestres(observateur);
@@ -332,7 +342,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
 
         // Calcul de la trajectoire dans le ciel
         if (traceCiel && satellites.at(i).isVisible()) {
-            satellites[i].CalculTraceCiel(date, acalcEclipseLune, refraction, obs);
+            satellites[i].CalculTraceCiel(date, acalcEclipseLune, refractionAtmospherique, obs);
         }
 
         if (i == 0) {
@@ -354,7 +364,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date, const Observateur 
                             Date(Evenements::CalculNoeudOrbite(date, satellites[i], false).jourJulienUTC() - EPS_DATES, 0., false) :
                             Date(date.jourJulienUTC(), 0., false);
 
-                satellites[i].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refraction);
+                satellites[i].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refractionAtmospherique);
             }
 
             // Calcul du phasage

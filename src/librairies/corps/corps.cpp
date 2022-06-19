@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    19 juin 2022
  *
  */
 
@@ -279,7 +279,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
 /*
  * Calcul des coordonnees horizontales
  */
-void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, const bool arefr)
+void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, const bool arefr, const bool aos)
 {
     /* Declarations des variables locales */
 
@@ -293,7 +293,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
     const double ht = asin(vec.z() / _distance);
 
     // Prise en compte de la refraction atmospherique
-    const double refraction = CalculRefractionAtmospherique(ht);
+    const double refraction = (arefr) ? CalculRefractionAtmospherique(ht) : 0.;
 
     _hauteur = ht + refraction;
 
@@ -302,7 +302,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
         _visible = true;
     } else {
         _visible = false;
-        if (arefr) {
+        if (!aos) {
             _hauteur = ht;
         }
     }
@@ -469,7 +469,7 @@ double Corps::CalculRefractionAtmospherique(const double ht) const
     /* Corps de la methode */
 
     /* Retour */
-    return (htd >= -1.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
+    return (htd >= -3.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
 }
 
 /*

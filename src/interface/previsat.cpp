@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 juin 2022
+ * >    18 juin 2022
  *
  */
 
@@ -891,12 +891,20 @@ void PreviSat::EnchainementCalculs()
                 }
             }
 
-            Satellite::CalculPosVitListeSatellites(*_dateCourante, observateur, soleil, lune, nbTraces, _onglets->ui()->eclipsesLune->isChecked(),
+            Satellite::CalculPosVitListeSatellites(*_dateCourante,
+                                                   observateur,
+                                                   soleil,
+                                                   lune,
+                                                   nbTraces,
+                                                   _onglets->ui()->eclipsesLune->isChecked(),
                                                    _onglets->ui()->effetEclipsesMagnitude->isChecked(),
                                                    _onglets->ui()->extinctionAtmospherique->isChecked(),
-                                                   satellites.at(0).tle().norad() == Configuration::instance()->noradStationSpatiale(), mcc,
-                                                   _onglets->ui()->refractionPourEclipses->isChecked(), _onglets->ui()->afftraceCiel->isChecked(),
-                                                   _onglets->ui()->affvisib->isChecked(), satellites);
+                                                   _onglets->ui()->refractionAtmospherique->isChecked(),
+                                                   _onglets->ui()->afftraceCiel->isChecked(),
+                                                   _onglets->ui()->affvisib->isChecked(),
+                                                   satellites.at(0).tle().norad() == Configuration::instance()->noradStationSpatiale(),
+                                                   mcc,
+                                                   satellites);
         }
 
 
@@ -1906,19 +1914,12 @@ void PreviSat::GestionTempsReel()
                     delete _dateCourante;
                     _dateCourante = nullptr;
                 }
-                _dateCourante = new Date(jd + EPS_DATES, offset);
+                _dateCourante = new Date(jd, offset);
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
-                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss", "date format") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
-                if (_onglets->ui()->dateHeure4->isVisible()) {
-                    _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
-                    _onglets->ui()->dateHeure4->setDateTime(_dateCourante->ToQDateTime(1));
-                } else {
-                    _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
-                    _onglets->ui()->dateHeure3->setDateTime(_dateCourante->ToQDateTime(1));
-                }
+                _onglets->show(*_dateCourante);
             }
         }
     }
@@ -2033,7 +2034,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/magnitudeEtoiles", _onglets->ui()->magnitudeEtoiles->value());
     settings.setValue("affichage/nombreTrajectoires", _onglets->ui()->nombreTrajectoires->value());
     settings.setValue("affichage/proportionsCarte", _onglets->ui()->proportionsCarte->isChecked());
-    settings.setValue("affichage/refractionPourEclipses", _onglets->ui()->refractionPourEclipses->isChecked());
+    settings.setValue("affichage/refractionAtmospherique", _onglets->ui()->refractionAtmospherique->isChecked());
     settings.setValue("affichage/rotationIconeISS", _onglets->ui()->rotationIconeISS->isChecked());
     settings.setValue("affichage/affNoradListes", _onglets->ui()->affNoradListes->isChecked());
     settings.setValue("affichage/rotationLune", _onglets->ui()->rotationLune->isChecked());
@@ -2103,6 +2104,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/lieuxObservation5", _onglets->ui()->lieuxObservation5->currentIndex());
     settings.setValue("previsions/ordreChronologiqueMetOp", _onglets->ui()->ordreChronologiqueMetOp->isChecked());
     settings.setValue("previsions/magnitudeMaxMetOp", _onglets->ui()->magnitudeMaxMetOp->value());
+
+#if defined (Q_OS_WIN)
+    settings.setValue("previsions/hauteurSatSuivi", _onglets->ui()->hauteurSatSuivi->currentIndex());
+    settings.setValue("previsions/pasSuivi", _onglets->ui()->pasSuivi->value());
+#endif
 
     if (!_onglets->ui()->verifMAJ->isChecked()) {
         settings.setValue("fichier/majPrevi", "0");
@@ -2809,9 +2815,9 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         _onglets->ui()->utcManuel->setVisible(false);
         _onglets->ui()->utcManuel2->setVisible(false);
         _onglets->ui()->frameSimu->setVisible(false);
-        if (_onglets->ui()->pause->isEnabled()) {
-            _onglets->on_pause_clicked();
-        }
+//        if (_onglets->ui()->pause->isEnabled()) {
+//            _onglets->on_pause_clicked();
+//        }
 
         on_pasReel_currentIndexChanged(ui->pasReel->currentIndex());
         ui->pasReel->setVisible(true);
@@ -2862,10 +2868,16 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         _onglets->ui()->dateHeure3->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
         _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
         _onglets->ui()->dateHeure3->setVisible(true);
+        if (_onglets->ui()->general->isVisible()) {
+            _onglets->ui()->dateHeure3->setFocus();
+        }
 
         _onglets->ui()->dateHeure4->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
         _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
         _onglets->ui()->dateHeure4->setVisible(true);
+        if (_onglets->ui()->osculateurs->isVisible()) {
+            _onglets->ui()->dateHeure4->setFocus();
+        }
 
         _onglets->ui()->dateHeure1->setVisible(false);
         _onglets->ui()->dateHeure2->setVisible(false);
@@ -2873,7 +2885,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         _onglets->ui()->utcManuel->setVisible(true);
         _onglets->ui()->utcManuel2->setVisible(true);
         //_onglets->ui()->frameSimu->setVisible(true);
-        ui->pasManuel->setFocus();
+        //ui->pasManuel->setFocus();
 
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);

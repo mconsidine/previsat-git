@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 juin 2022
+ * >    19 juin 2022
  *
  */
 
@@ -586,6 +586,7 @@ private slots:
     void on_hauteurSatSuivi_currentIndexChanged(int index);
     void on_skywatcher_clicked();
     void on_ouvrirSatelliteTracker_clicked();
+    void on_parametrageDefautSuivi_clicked();
 #endif
 
     // Calcul des evenements orbitaux
@@ -638,13 +639,13 @@ private slots:
     void on_affgrille_stateChanged(int arg1);
     void on_proportionsCarte_stateChanged(int arg1);
     void on_extinctionAtmospherique_stateChanged(int arg1);
+    void on_refractionAtmospherique_stateChanged(int arg1);
     void on_eclipsesLune_stateChanged(int arg1);
     void on_effetEclipsesMagnitude_stateChanged(int arg1);
     void on_affradar_stateChanged(int arg1);
     void on_affinvns_stateChanged(int arg1);
     void on_affinvew_stateChanged(int arg1);
     void on_affcoord_stateChanged(int arg1);
-    void on_refractionPourEclipses_stateChanged(int arg1);
     void on_affnomlieu_stateChanged(int arg1);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
