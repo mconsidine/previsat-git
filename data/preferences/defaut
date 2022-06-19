@@ -33,7 +33,7 @@ affichage/largeur 1068
 affichage/magnitudeEtoiles 4
 affichage/nombreTrajectoires 2
 affichage/proportionsCarte true
-affichage/refractionPourEclipses true
+affichage/refractionAtmospherique true
 affichage/rotationIconeISS true
 affichage/affNoradListes 0
 affichage/rotationLune false

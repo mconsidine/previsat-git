@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    19 juin 2022
  *
  */
 
@@ -76,7 +76,7 @@ void TelescopeTest::testAll()
     conditions.ecart = true;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
-    conditions.pas = 5.; // ms
+    conditions.pas = 20.; // ms
     conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
     conditions.unite = "km";
     conditions.listeSatellites.append("25544");
@@ -133,7 +133,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     const Date dateLosSuivi(elemLOS.date.jourJulienUTC(), conditions.offset);
 
     conditions.jj1 = dateAosSuivi.jourJulienUTC();
-    conditions.nbIter = qRound(((dateLosSuivi.jourJulienUTC() - dateAosSuivi.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 10000.) / conditions.pas);
+    conditions.nbIter = qRound(((dateLosSuivi.jourJulienUTC() - dateAosSuivi.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 1000.) / conditions.pas);
 
     // Nom du fichier genere
     const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";

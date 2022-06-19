@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 octobre 2020
+ * >    19 juin 2022
  *
  */
 
@@ -177,10 +177,20 @@ public:
      * @param visibilite calcul de la zone de visibilite
      * @param satellites liste de satellites
      */
-    static void CalculPosVitListeSatellites(const Date &date, const Observateur &observateur, const Soleil &soleil, const Lune &lune,
-                                            const int nbTracesAuSol, const bool acalcEclipseLune, const bool effetEclipsePartielle,
-                                            const bool extinction, const bool isISS, const bool mcc, const bool refraction, const bool traceCiel,
-                                            const bool visibilite, QList<Satellite> &satellites);
+    static void CalculPosVitListeSatellites(const Date &date,
+                                            const Observateur &observateur,
+                                            const Soleil &soleil,
+                                            const Lune &lune,
+                                            const int nbTracesAuSol,
+                                            const bool acalcEclipseLune,
+                                            const bool effetEclipsePartielle,
+                                            const bool extinction,
+                                            const bool refractionAtmospherique,
+                                            const bool traceCiel,
+                                            const bool visibilite,
+                                            const bool isISS,
+                                            const bool mcc,
+                                            QList<Satellite> &satellites);
 
     /**
      * @brief CalculTraceCiel Calcul de la trace dans le ciel

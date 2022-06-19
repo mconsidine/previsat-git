@@ -36,7 +36,7 @@
  * >    11 janvier 2020
  *
  * Date de revision
- * >
+ * >    19 juin 2022
  *
  */
 
@@ -87,10 +87,11 @@ public:
      * @param observateur observateur
      * @param sensCalcul sens de calcul (vrai pour l'AOS suivant)
      * @param hauteurMin hauteur minimale du satellite
+     * @param refraction prise en compte de la refraction
      * @return elements de l'AOS (ou LOS) suivant ou precedent
      */
     static ElementsAOS CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul = true,
-                                 const double hauteurMin = 0.);
+                                 const double hauteurMin = 0., const bool refraction = true);
 
     /**
      * @brief CalculNoeudOrbite Calcul du noeud (ascendant ou descendant) precedent ou suivant

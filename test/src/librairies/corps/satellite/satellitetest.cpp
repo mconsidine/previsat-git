@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    19 juin 2022
  *
  */
 
@@ -332,10 +332,10 @@ void SatelliteTest::testCalculAOS()
 
     // AOS suivant
     const ElementsAOS elements1 = Evenements::CalculAOS(date, sat, obs, true);
-    QCOMPARE(elements1.date.jourJulienUTC(), 7315.3887150086275);
+    QCOMPARE(elements1.date.jourJulienUTC(), 7315.388714986391);
     QCOMPARE(elements1.typeAOS, QObject::tr("AOS", "Acquisition of signal"));
     QCOMPARE(elements1.aos, true);
-    QCOMPARE(elements1.azimut, 3.2095957919723137);
+    QCOMPARE(elements1.azimut, 3.2095995038635707);
 
     // AOS precedent
     date = Date(2020, 1, 11, 21, 20, 0., 0.);
@@ -344,17 +344,17 @@ void SatelliteTest::testCalculAOS()
     sat.CalculCoordHoriz(obs);
 
     const ElementsAOS elements2 = Evenements::CalculAOS(date, sat, obs, false);
-    QCOMPARE(elements2.date.jourJulienUTC(), 7315.3887150086275);
+    QCOMPARE(elements2.date.jourJulienUTC(), 7315.388715061708);
     QCOMPARE(elements2.typeAOS, QObject::tr("AOS", "Acquisition of signal"));
     QCOMPARE(elements2.aos, true);
-    QCOMPARE(elements2.azimut, 3.209596657064488);
+    QCOMPARE(elements2.azimut, 3.2095869310587952);
 
     // LOS suivant
     const ElementsAOS elements3 = Evenements::CalculAOS(date, sat, obs, true);
-    QCOMPARE(elements3.date.jourJulienUTC(), 7315.39473843222);
+    QCOMPARE(elements3.date.jourJulienUTC(), 7315.39473841597);
     QCOMPARE(elements3.typeAOS, QObject::tr("LOS", "Loss of signal"));
     QCOMPARE(elements3.aos, true);
-    QCOMPARE(elements3.azimut, 1.4139271914129354);
+    QCOMPARE(elements3.azimut, 1.4139298680788643);
 
     // LOS precedent
     date = Date(2020, 1, 11, 21, 40, 0., 0.);
@@ -363,10 +363,10 @@ void SatelliteTest::testCalculAOS()
     sat.CalculCoordHoriz(obs);
 
     const ElementsAOS elements4 = Evenements::CalculAOS(date, sat, obs, false);
-    QCOMPARE(elements3.date.jourJulienUTC(), 7315.39473843222);
-    QCOMPARE(elements3.typeAOS, QObject::tr("LOS", "Loss of signal"));
-    QCOMPARE(elements3.aos, true);
-    QCOMPARE(elements3.azimut, 1.4139271914129354);
+    QCOMPARE(elements4.date.jourJulienUTC(), 7315.394738421487);
+    QCOMPARE(elements4.typeAOS, QObject::tr("LOS", "Loss of signal"));
+    QCOMPARE(elements4.aos, true);
+    QCOMPARE(elements4.azimut, 1.4139289593227682);
 }
 
 void SatelliteTest::testCalculNoeudOrbite()

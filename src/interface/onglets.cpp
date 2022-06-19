@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    16 juin 2022
+ * >    19 juin 2022
  *
  */
 
@@ -450,7 +450,7 @@ void Onglets::AffichageDonneesSatellite() const
             _dateEclipse = nullptr;
         }
         _dateEclipse = new Date(Evenements::CalculOmbrePenombre(*_date, satellite, _ui->nombreTrajectoires->value(), _ui->eclipsesLune->isChecked(),
-                                                                _ui->refractionPourEclipses->isChecked()), _date->offsetUTC());
+                                                                _ui->refractionAtmospherique->isChecked()), _date->offsetUTC());
         _acalcDN = false;
         _isEclipse = satellite.conditionEclipse().eclipseTotale();
     }
@@ -1396,7 +1396,7 @@ void Onglets::ChargementPref()
         _ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
         _ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
         _ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
-        _ui->refractionPourEclipses->setChecked(settings.value("affichage/refractionPourEclipses", true).toBool());
+        _ui->refractionAtmospherique->setChecked(settings.value("affichage/refractionAtmospherique", true).toBool());
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
         _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 30).toInt());
@@ -2320,7 +2320,7 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << endl
                  << "affichage/proportionsCarte " << QVariant(_ui->proportionsCarte->isChecked()).toString() << endl
-                 << "affichage/refractionPourEclipses " << QVariant(_ui->refractionPourEclipses->isChecked()).toString() << endl
+                 << "affichage/refractionAtmospherique " << QVariant(_ui->refractionAtmospherique->isChecked()).toString() << endl
                  << "affichage/rotationIconeISS " << QVariant(_ui->rotationIconeISS->isChecked()).toString() << endl
                  << "affichage/rotationLune " << QVariant(_ui->rotationLune->isChecked()).toString() << endl
                  << "affichage/systemeHoraire " << QVariant(_ui->syst24h->isChecked()).toString() << endl
@@ -2605,7 +2605,6 @@ void Onglets::InitAffichageDemarrage()
     _ui->dateHeure4->setVisible(false);
     _ui->utcManuel2->setVisible(false);
     _ui->frameSimu->setVisible(false);
-    _ui->pause->setEnabled(false);
 
     _ui->lbl_prochainAOS->setVisible(false);
     _ui->dateAOS->setVisible(false);
@@ -2685,9 +2684,12 @@ void Onglets::InitAffichageDemarrage()
         AffichageManoeuvresISS();
     }
 
+#if defined (Q_OS_WIN)
     _ui->valHauteurSatSuivi->setVisible(false);
     _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
     _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
+#endif
 
     _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
     _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
@@ -5063,7 +5065,7 @@ void Onglets::on_calculsPrev_clicked()
         conditions.extinction = _ui->extinctionAtmospherique->isChecked();
 
         // Prise en compte de la refraction atmospherique
-        conditions.refraction = _ui->refractionPourEclipses->isChecked();
+        conditions.refraction = _ui->refractionAtmospherique->isChecked();
 
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
@@ -5332,7 +5334,7 @@ void Onglets::on_calculsFlashs_clicked()
         conditions.extinction = _ui->extinctionAtmospherique->isChecked();
 
         // Prise en compte de la refraction atmospherique
-        conditions.refraction = _ui->refractionPourEclipses->isChecked();
+        conditions.refraction = _ui->refractionAtmospherique->isChecked();
 
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
@@ -5564,7 +5566,7 @@ void Onglets::on_calculsTransit_clicked()
         conditions.unite = (_ui->unitesKm->isChecked()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
         // Prise en compte de la refraction atmospherique
-        conditions.refraction = _ui->refractionPourEclipses->isChecked();
+        conditions.refraction = _ui->refractionAtmospherique->isChecked();
 
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = _ui->effetEclipsesMagnitude->isChecked();
@@ -6138,6 +6140,12 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
 
     /* Retour */
     return;
+}
+
+void Onglets::on_parametrageDefautSuivi_clicked()
+{
+    _ui->hauteurSatSuivi->setCurrentIndex(2);
+    _ui->pasSuivi->setValue(20);
 }
 #endif
 
@@ -6839,6 +6847,12 @@ void Onglets::on_extinctionAtmospherique_stateChanged(int arg1)
     emit MiseAJourCarte();
 }
 
+void Onglets::on_refractionAtmospherique_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+    emit RecalculerPositions();
+}
+
 void Onglets::on_eclipsesLune_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
@@ -6870,12 +6884,6 @@ void Onglets::on_affinvew_stateChanged(int arg1)
 }
 
 void Onglets::on_affcoord_stateChanged(int arg1)
-{
-    Q_UNUSED(arg1)
-    emit MiseAJourCarte();
-}
-
-void Onglets::on_refractionPourEclipses_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
     emit MiseAJourCarte();
@@ -6952,11 +6960,11 @@ void Onglets::on_updown_valueChanged(int arg1)
     if (_ui->options->isVisible() && _ui->heureLegale->isChecked()) {
 
         QTime heur(0, 0);
-        heur = heur.addSecs((int) fabs(arg1 * NB_SEC_PAR_MIN));
+        heur = heur.addSecs(arg1);
         const QString sgnh = (arg1 >= 0) ? " + " : " - ";
         _ui->tuc->setText(tr("UTC", "Universal Time Coordinated") + sgnh + heur.toString("hh:mm"));
         const double jjutc = _date->jourJulienUTC();
-        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_MIN;
+        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_SEC;
 
         if (_date != nullptr) {
             delete _date;
