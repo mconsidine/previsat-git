@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    4 juin 2022
+ * >    19 juin 2022
  *
  */
 
@@ -59,7 +59,7 @@
  * Calcul de l'AOS (ou LOS) suivant ou precedent
  */
 ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul,
-                                  const double hauteurMin)
+                                  const double hauteurMin, const bool refraction)
 {
     /* Declarations des variables locales */
     ElementsAOS elements;
@@ -101,7 +101,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 const Date date(jjm.at(i), 0., false);
                 obs.CalculPosVit(date);
                 sat.CalculPosVit(date);
-                sat.CalculCoordHoriz(obs, false, false);
+                sat.CalculCoordHoriz(obs, false, refraction, true);
                 ht.append(sat.hauteur() - hauteurMin);
             }
 
@@ -131,7 +131,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                         const Date date(jjm.at(i), 0., false);
                         obs.CalculPosVit(date);
                         sat.CalculPosVit(date);
-                        sat.CalculCoordHoriz(obs, true, false);
+                        sat.CalculCoordHoriz(obs, true, refraction, true);
                         ht[i] = sat.hauteur() - hauteurMin;
                     }
 
@@ -147,7 +147,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
 
                 obs.CalculPosVit(elements.date);
                 sat.CalculPosVit(elements.date);
-                sat.CalculCoordHoriz(obs, true, false);
+                sat.CalculCoordHoriz(obs, true, refraction, true);
                 elements.azimut = sat.azimut();
                 afin = true;
 

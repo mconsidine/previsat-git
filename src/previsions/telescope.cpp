@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >
+ * >    18 juin 2022
  *
  */
 
@@ -113,15 +113,18 @@ int Telescope::CalculSuiviTelescope(int &nombre)
                 sat.CalculPosVit(date);
 
                 // Position topocentrique du satellite
-                sat.CalculCoordHoriz(_conditions.observateur);
+                sat.CalculCoordHoriz(_conditions.observateur, true, false);
 
-                // Ascension droite, declinaison
-                sat.CalculCoordEquat(_conditions.observateur, false);
+                if (sat.hauteur() >= _conditions.hauteur) {
 
-                const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
-                        arg(sat.ascensionDroite() * RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * RAD2DEG, 16, 'f', 6);
+                    // Ascension droite, declinaison
+                    sat.CalculCoordEquat(_conditions.observateur, false);
 
-                flux << ephem << endl;
+                    const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
+                            arg(sat.ascensionDroite() * RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * RAD2DEG, 16, 'f', 6);
+
+                    flux << ephem << endl;
+                }
 
                 jjmsec += _conditions.pas;
                 date = Date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);

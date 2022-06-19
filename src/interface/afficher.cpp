@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 mai 2022
+ * >    19 juin 2022
  *
  */
 
@@ -1633,7 +1633,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     sat.CalculCoordHoriz(observateur);
 
     const Date dateLever = Evenements::CalculAOS(dateMax, sat, observateur, false).date;
-    sat.CalculTraceCiel(dateLever, true, _onglets->ui()->refractionPourEclipses->isChecked(), observateur, 1);
+    sat.CalculTraceCiel(dateLever, true, _onglets->ui()->refractionAtmospherique->isChecked(), observateur, 1);
     satellites.append(sat);
 
     // Chargement du ciel

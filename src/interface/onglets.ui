@@ -8101,7 +8101,7 @@
               <number>10000</number>
              </property>
              <property name="value">
-              <number>5</number>
+              <number>20</number>
              </property>
             </widget>
            </item>
@@ -8338,6 +8338,22 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QPushButton" name="parametrageDefautSuivi">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>5</y>
+        <width>161</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Paramétrage par défaut</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="options">
@@ -9116,6 +9132,166 @@
        <attribute name="title">
         <string>Configuration</string>
        </attribute>
+       <widget class="QToolButton" name="optionPrec">
+        <property name="geometry">
+         <rect>
+          <x>720</x>
+          <y>10</y>
+          <width>16</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::LeftArrow</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="optionSuiv">
+        <property name="geometry">
+         <rect>
+          <x>736</x>
+          <y>10</y>
+          <width>16</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::RightArrow</enum>
+        </property>
+       </widget>
+       <widget class="QWidget" name="formLayoutWidget_64">
+        <property name="geometry">
+         <rect>
+          <x>37</x>
+          <y>10</y>
+          <width>191</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_langue">
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="horizontalSpacing">
+          <number>3</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="lbl_langue">
+           <property name="text">
+            <string extracomment="Name of language">Langue :</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="langue">
+           <property name="autoFillBackground">
+            <bool>true</bool>
+           </property>
+           <property name="currentText">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="horizontalLayoutWidget_12">
+        <property name="geometry">
+         <rect>
+          <x>317</x>
+          <y>10</y>
+          <width>361</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_conf">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <item>
+          <layout class="QFormLayout" name="formLayout_conf">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="horizontalSpacing">
+            <number>3</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>1</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_preferences">
+             <property name="text">
+              <string>Préférences d'affichage :</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="preferences">
+             <property name="minimumSize">
+              <size>
+               <width>191</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="currentText">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_11">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <widget class="QPushButton" name="enregistrerPref">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>21</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="toolTip">
+             <string>Enregistrer les préférences d'affichage</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
        <widget class="QStackedWidget" name="configuration">
         <property name="geometry">
          <rect>
@@ -9393,6 +9569,62 @@
            <bool>true</bool>
           </property>
          </widget>
+         <widget class="QWidget" name="formLayoutWidget_70">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>70</y>
+            <width>191</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout_vision">
+           <property name="labelAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="horizontalSpacing">
+            <number>3</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_intensiteVision">
+             <property name="font">
+              <font/>
+             </property>
+             <property name="text">
+              <string>Vision nocturne :</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSlider" name="intensiteVision">
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font/>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QWidget" name="systemesolaire_etoiles">
          <widget class="QCheckBox" name="rotationLune">
@@ -9642,22 +9874,6 @@
          </widget>
         </widget>
         <widget class="QWidget" name="affichage">
-         <widget class="QCheckBox" name="refractionPourEclipses">
-          <property name="geometry">
-           <rect>
-            <x>300</x>
-            <y>100</y>
-            <width>311</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Prise en compte de la réfraction terrestre pour les éclipses</string>
-          </property>
-         </widget>
          <widget class="QCheckBox" name="affgrille">
           <property name="geometry">
            <rect>
@@ -9672,22 +9888,6 @@
           </property>
           <property name="text">
            <string>Grille</string>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="effetEclipsesMagnitude">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>120</y>
-            <width>311</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Prise en compte des éclipses partielles sur la magnitude</string>
           </property>
          </widget>
          <widget class="QCheckBox" name="calJulien">
@@ -9707,22 +9907,6 @@
           </property>
           <property name="checkable">
            <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="eclipsesLune">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>100</y>
-            <width>271</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Prise en compte des éclipses produites par la Lune</string>
           </property>
          </widget>
          <widget class="QCheckBox" name="affradar">
@@ -9795,7 +9979,7 @@
          <widget class="QCheckBox" name="affcoord">
           <property name="geometry">
            <rect>
-            <x>300</x>
+            <x>20</x>
             <y>80</y>
             <width>166</width>
             <height>20</height>
@@ -9813,7 +9997,7 @@
            <rect>
             <x>540</x>
             <y>48</y>
-            <width>121</width>
+            <width>131</width>
             <height>20</height>
            </rect>
           </property>
@@ -9828,8 +10012,8 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>80</y>
-            <width>251</width>
+            <y>100</y>
+            <width>271</width>
             <height>20</height>
            </rect>
           </property>
@@ -9903,61 +10087,53 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="formLayoutWidget_70">
+         <widget class="QCheckBox" name="refractionAtmospherique">
           <property name="geometry">
            <rect>
-            <x>557</x>
-            <y>75</y>
-            <width>191</width>
-            <height>24</height>
+            <x>20</x>
+            <y>120</y>
+            <width>271</width>
+            <height>20</height>
            </rect>
           </property>
-          <layout class="QFormLayout" name="formLayout_vision">
-           <property name="labelAlignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="horizontalSpacing">
-            <number>3</number>
-           </property>
-           <property name="verticalSpacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="lbl_intensiteVision">
-             <property name="font">
-              <font/>
-             </property>
-             <property name="text">
-              <string>Vision nocturne :</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="intensiteVision">
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font/>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="pageStep">
-              <number>5</number>
-             </property>
-             <property name="value">
-              <number>50</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string>Prise en compte de la réfraction atmosphérique</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="eclipsesLune">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>80</y>
+            <width>291</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string>Prise en compte des éclipses produites par la Lune</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="effetEclipsesMagnitude">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>100</y>
+            <width>311</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string>Prise en compte des éclipses partielles sur la magnitude</string>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="systeme">
@@ -10163,17 +10339,23 @@
             </item>
             <item row="0" column="2">
              <widget class="QSpinBox" name="updown">
+              <property name="maximumSize">
+               <size>
+                <width>18</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="font">
                <font/>
               </property>
               <property name="minimum">
-               <number>-720</number>
+               <number>-43200</number>
               </property>
               <property name="maximum">
-               <number>780</number>
+               <number>46800</number>
               </property>
               <property name="singleStep">
-               <number>15</number>
+               <number>900</number>
               </property>
              </widget>
             </item>
@@ -10194,166 +10376,6 @@
           </widget>
          </widget>
         </widget>
-       </widget>
-       <widget class="QToolButton" name="optionPrec">
-        <property name="geometry">
-         <rect>
-          <x>720</x>
-          <y>10</y>
-          <width>16</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::LeftArrow</enum>
-        </property>
-       </widget>
-       <widget class="QToolButton" name="optionSuiv">
-        <property name="geometry">
-         <rect>
-          <x>736</x>
-          <y>10</y>
-          <width>16</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::RightArrow</enum>
-        </property>
-       </widget>
-       <widget class="QWidget" name="formLayoutWidget_64">
-        <property name="geometry">
-         <rect>
-          <x>37</x>
-          <y>10</y>
-          <width>191</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_langue">
-         <property name="labelAlignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="horizontalSpacing">
-          <number>3</number>
-         </property>
-         <property name="verticalSpacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="lbl_langue">
-           <property name="text">
-            <string extracomment="Name of language">Langue :</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="langue">
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="currentText">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="horizontalLayoutWidget_12">
-        <property name="geometry">
-         <rect>
-          <x>317</x>
-          <y>10</y>
-          <width>361</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_conf">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <item>
-          <layout class="QFormLayout" name="formLayout_conf">
-           <property name="labelAlignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="horizontalSpacing">
-            <number>3</number>
-           </property>
-           <property name="verticalSpacing">
-            <number>1</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="lbl_preferences">
-             <property name="text">
-              <string>Préférences d'affichage :</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="preferences">
-             <property name="minimumSize">
-              <size>
-               <width>191</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="currentText">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QFrame" name="frame_11">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <widget class="QPushButton" name="enregistrerPref">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>21</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="toolTip">
-             <string>Enregistrer les préférences d'affichage</string>
-            </property>
-            <property name="text">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="optionWCC">

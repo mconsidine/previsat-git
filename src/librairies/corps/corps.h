@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2016
+ * >    19 juin 2022
  *
  */
 
@@ -120,8 +120,9 @@ public:
      * @param observateur observateur
      * @param acalc calcul de l'azimut
      * @param arefr prise en compte de la refraction
+     * @param aos gestion de la refraction dans le cas du calcul de lever/coucher
      */
-    void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true, const bool arefr = true);
+    void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true, const bool arefr = true, const bool aos = false);
 
     /**
      * @brief CalculCoordHoriz2 Calcul des coordonnees horizontales (avec condition de visibilite)
