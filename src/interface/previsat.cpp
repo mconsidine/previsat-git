@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 juin 2022
+ * >    25 juin 2022
  *
  */
 
@@ -2924,8 +2924,7 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     ui->listeFichiersTLE->setItemData(idx, QColor(Qt::white), Qt::BackgroundRole);
 
     /* Corps de la methode */
-    Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() +
-            Configuration::instance()->listeFicTLE().at(index);
+    Configuration::instance()->nomfic() = Configuration::instance()->dirTle() + QDir::separator() + Configuration::instance()->listeFicTLE().at(index);
     Configuration::instance()->listeSatellites().clear();
     ui->listeFichiersTLE->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
 
@@ -2933,7 +2932,27 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     ChargementTLE();
     AfficherMessageStatut(tr("Fichier TLE de %1 satellites").arg(Configuration::instance()->mapTLE().size()), 5);
 
-    DemarrageApplication();
+    const QString noradDefaut = Configuration::instance()->tleDefaut().l1.mid(2, 5);
+    QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+    const QFileInfo ff(Configuration::instance()->nomfic());
+
+    if (!Configuration::instance()->mapTLE().isEmpty()) {
+
+        QStringListIterator it(Configuration::instance()->mapSatellitesFicTLE()[ff.fileName()]);
+        while (it.hasNext()) {
+
+            const QString norad = it.next();
+            const TLE tle = Configuration::instance()->mapTLE()[norad];
+
+            if (norad == noradDefaut) {
+                satellites.insert(0, Satellite(tle));
+            } else {
+                satellites.append(Satellite(tle));
+            }
+        }
+    }
+
+    GestionTempsReel();
 
     /* Retour */
     return;
