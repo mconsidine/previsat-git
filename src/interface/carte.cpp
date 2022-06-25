@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 mai 2022
+ * >    24 juin 2022
  *
  */
 
@@ -1250,6 +1250,10 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
                         Configuration::instance()->tleDefaut().nomsat = sat.tle().nom();
                         Configuration::instance()->tleDefaut().l1 = sat.tle().ligne1();
                         Configuration::instance()->tleDefaut().l2 = sat.tle().ligne2();
+
+                        _onglets->setAcalcAOS(true);
+                        _onglets->setAcalcDN(true);
+                        _onglets->setInfo(true);
 
                         emit RecalculerPositions();
 

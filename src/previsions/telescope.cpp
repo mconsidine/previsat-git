@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    18 juin 2022
+ * >    25 juin 2022
  *
  */
 
@@ -114,8 +114,9 @@ int Telescope::CalculSuiviTelescope(int &nombre)
 
                 // Position topocentrique du satellite
                 sat.CalculCoordHoriz(_conditions.observateur, true, false);
+                const double ht = sat.CalculRefractionAtmospherique(sat.hauteur());
 
-                if (sat.hauteur() >= _conditions.hauteur) {
+                if (ht >= _conditions.hauteur) {
 
                     // Ascension droite, declinaison
                     sat.CalculCoordEquat(_conditions.observateur, false);

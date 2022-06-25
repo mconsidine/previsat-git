@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    19 juin 2022
+ * >    25 juin 2022
  *
  */
 
@@ -91,6 +91,7 @@ static const char* _titreMajTLE[] = {
 /**********
  * PUBLIC *
  **********/
+
 
 /*
  * Constructeurs
@@ -181,6 +182,7 @@ Ui::Onglets *Onglets::ui()
 void Onglets::setAcalcAOS(bool acalcAOS)
 {
     _acalcAOS = acalcAOS;
+    _htSat = 0.;
 }
 
 void Onglets::setAcalcDN(bool acalcDN)
@@ -466,7 +468,7 @@ void Onglets::AffichageDonneesSatellite() const
         // Delai de l'evenement
         transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
         const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
-        const QString cDelaiEcl = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
+        const QString cDelaiEcl = (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) ?
                     delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
                     .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
                     delaiEcl.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
@@ -512,26 +514,40 @@ void Onglets::AffichageDonneesSatellite() const
         _ui->lbl_prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
 
         // Delai de l'evenement
-        chaine = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
+        chaine = tr("%1  (dans %2).", "Delay in hours, minutes or seconds");
         Date dateAOS = Date(_elementsAOS->date, _date->offsetUTC());
         delai = dateAOS.jourJulienUTC() - _date->jourJulienUTC();
-        const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
-        const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
-                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
-                    delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
-                    .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
 
-        _ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+        const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
+        QString cDelaiAOS;
+
+        if (delai >= 1.) {
+
+            chaine = "%1%2";
+            cDelaiAOS = "";
+
+        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+
+            cDelaiAOS = delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+
+        } else {
+            cDelaiAOS = delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+                    .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
+        }
+
+        _ui->dateAOS->setText(chaine.arg(dateAOS.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)).trimmed()).
                               arg(cDelaiAOS));
         _ui->lbl_azimut->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
 
         _ui->lbl_prochainAOS->setVisible(true);
         _ui->dateAOS->setVisible(true);
+        _ui->lbl_azimut->setVisible(true);
 
     } else {
         _ui->lbl_prochainAOS->setVisible(false);
         _ui->dateAOS->setVisible(false);
+        _ui->lbl_azimut->setVisible(false);
     }
 
     // Angle beta
@@ -1622,12 +1638,12 @@ void Onglets::CalculAosSatSuivi() const
             throw PreviSatException();
         }
 
+        _ui->frameSatSelectionne->setVisible(true);
         const int nsat = getListItemChecked(_ui->liste4);
         if ((nsat == 0) && (_ui->liste4->count() > 0) && _ui->liste4->isVisible()) {
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), WARNING);
+            _ui->frameSatSelectionne->setVisible(false);
+            throw PreviSatException();
         }
-
-        _ui->frameSatSelectionne->setVisible(true);
 
         QStringList satelliteSelectionne;
         for (int i=0; i<_ui->liste4->count(); i++) {
@@ -1665,7 +1681,7 @@ void Onglets::CalculAosSatSuivi() const
         if (elemAos.aos) {
 
             Date dateLosSuivi;
-            const QString chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hour, minutes, seconds");
+            QString chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hour, minutes, seconds");
 
             if (elemAos.typeAOS == tr("AOS", "Acquisition of signal")) {
 
@@ -1679,14 +1695,27 @@ void Onglets::CalculAosSatSuivi() const
                 // Lever
                 delai = dateAosSuivi.jourJulienUTC() - date.jourJulienUTC();
                 const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
-                const QString cDelaiAOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
-                            .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
-                            delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+
+                QString cDelaiAOS;
+
+                if (delai >= 1.) {
+
+                    cDelaiAOS = "";
+                    chaine = tr("%1%2. Azimut : %3");
+
+                } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+
+                    cDelaiAOS = delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+
+                } else {
+
+                    cDelaiAOS = delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
                             .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
+                }
 
                 _ui->leverSatSuivi->setText(
-                            chaine.arg(dateAosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                            chaine.arg(dateAosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)).trimmed()).
                             arg(cDelaiAOS).arg(Maths::ToSexagesimal(elemAos.azimut, DEGRE, 3, 0, false, true).mid(0, 9)));
 
                 _ui->lbl_leverSatSuivi->setVisible(true);
@@ -1710,8 +1739,8 @@ void Onglets::CalculAosSatSuivi() const
                 azim = elemAos.azimut;
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
-                _ui->leverSatSuivi2->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, true).mid(0, 7).trimmed())
-                                            .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
+                _ui->leverSatSuivi2->setText(chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), DEGRE, 2, 0, false, true).mid(0, 8).trimmed())
+                                             .arg(Maths::ToSexagesimal(satSuivi.azimut(), DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
 
                 bld.setBold(true);
                 _ui->leverSatSuivi2->setFont(bld);
@@ -1724,14 +1753,23 @@ void Onglets::CalculAosSatSuivi() const
             // Coucher
             delai = dateLosSuivi.jourJulienUTC() - date.jourJulienUTC();
             const Date delaiLOS = Date(delai - 0.5 + EPS_DATES, 0.);
-            const QString cDelaiLOS = (delai >= NB_JOUR_PAR_HEUR - EPS_DATES) ?
-                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
-                        .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
-                        delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
+
+            QString cDelaiLOS;
+            if (delai >= 1.) {
+                cDelaiLOS = "";
+
+            } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+
+                cDelaiLOS = delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
+                        .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+
+            } else {
+                cDelaiLOS = delaiLOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(14, 5)
                         .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
+            }
 
             _ui->coucherSatSuivi->setText(
-                        chaine.arg(dateLosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H))).
+                        chaine.arg(dateLosSuivi.ToShortDate(FORMAT_COURT, ((_ui->syst24h->isChecked()) ? SYSTEME_24H : SYSTEME_12H)).trimmed()).
                         arg(cDelaiLOS).arg(Maths::ToSexagesimal(azim, DEGRE, 3, 0, false, true).mid(0, 9)));
 
             // Hauteur max
@@ -1757,7 +1795,7 @@ void Onglets::CalculAosSatSuivi() const
                 minmax = CalculHauteurMax(jjm, obs, satSuivi);
                 pas *= 0.5;
             }
-            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, DEGRE, 2, 0, false, true).mid(0, 7).trimmed()));
+            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, DEGRE, 2, 0, false, true).mid(0, 8).trimmed()));
 
             _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
             _ui->lbl_coucherSatSuivi->setVisible(true);
@@ -5907,7 +5945,7 @@ void Onglets::on_genererPositions_clicked()
                                                            Configuration::instance()->lgRec(), satelliteSelectionne);
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
-        const Date date(_date->offsetUTC());
+        const Date date(*_date, _date->offsetUTC());
         Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation5->currentIndex());
 
         obs.CalculPosVit(date);
@@ -6114,10 +6152,12 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
 
     /* Initialisations */
     QString exeSatelliteTracker = settings.value("fichier/satelliteTracker", "").toString();
+    const QFileInfo fi(exeSatelliteTracker);
 
     /* Corps de la methode */
-    if (exeSatelliteTracker.isEmpty()) {
+    if (exeSatelliteTracker.isEmpty() || !fi.exists()) {
 
+        settings.setValue("fichier/satelliteTracker", "");
         QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"),
                                                        "Satellite Tracker.exe",
                                                        tr("Fichiers exécutables (*.exe)"));
@@ -6129,13 +6169,10 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
         }
     }
 
-    const QFileInfo fi(exeSatelliteTracker);
-    if (fi.exists()) {
+    if (!exeSatelliteTracker.isEmpty()) {
         QProcess proc;
         proc.setProgram(exeSatelliteTracker);
         proc.startDetached();
-    } else {
-        settings.setValue("fichier/satelliteTracker", "");
     }
 
     /* Retour */

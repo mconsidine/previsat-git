@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 juin 2022
+ * >    24 juin 2022
  *
  */
 
@@ -907,7 +907,7 @@ void Configuration::DefinitionArborescences()
     dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
 #elif defined (Q_OS_MAC)
     dirCommon = _dirExe;
-    _dirLocalData = _dirCommonData;
+    _dirLocalData = dirCommon + QDir::separator() + "data";
     _dirTle = _dirExe + QDir::separator() + "tle";
     _adresseAstropedia = "http://astropedia.free.fr/";
     _dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) + QCoreApplication::applicationName();
@@ -932,7 +932,6 @@ void Configuration::DefinitionArborescences()
     _dirPrf = _dirLocalData + QDir::separator() + "preferences";
     _dirRsc = _dirLocalData + QDir::separator() + "resources";
     _dirSon = _dirLocalData + QDir::separator() + "sound";
-    _dirOut = QDir::toNativeSeparators(_dirOut);
 
     /* Retour */
     return;
@@ -2037,7 +2036,7 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
 #if defined (Q_OS_MAC)
     if (!fi1.exists()) {
         const QFileInfo ff(fi1.fileName());
-        Message::Afficher(message2.arg(ff.fileName()), typeMessage);
+        Message::Afficher(message2.arg(ff.fileName()).arg(QCoreApplication::applicationName()), typeMessage);
     }
 #else
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -2053,7 +2052,7 @@ void Configuration::VerifieFichierXml(const QString &nomficXml, QString &version
 
         } else {
             const QFileInfo ff(fi1.fileName());
-            Message::Afficher(message2.arg(ff.fileName()), typeMessage);
+            Message::Afficher(message2.arg(ff.fileName()).arg(QCoreApplication::applicationName()), typeMessage);
         }
     }
 
