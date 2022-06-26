@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    19 juin 2022
+ * >    26 juin 2022
  *
  */
 
@@ -212,6 +212,7 @@ signals:
     void EffacerMessageStatut();
     void ModeManuel(bool enabled);
     void ChangementDate(const QDateTime &dateTime);
+    void ChangementDate(const Date &date);
     void MiseAJourCarte();
     void RechargerTLE();
     void RecalculerPositions();
