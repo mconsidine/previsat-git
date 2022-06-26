@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    25 juin 2022
+ * >    26 juin 2022
  *
  */
 
@@ -4197,6 +4197,7 @@ void Onglets::on_actionCreer_un_nouveau_lieu_triggered()
     _ui->outilsLieuxObservation->setVisible(true);
 
     _ui->nvLieu->setText("");
+    _ui->nvLieu->setReadOnly(false);
     _ui->nvLongitude->setText("000°00'00\"");
     _ui->nvLatitude->setText("000°00'00\"");
 
@@ -4282,9 +4283,30 @@ void Onglets::on_validerObs_clicked()
 
                 const double longitude = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
                 const double latitude = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
-                mapObs.insert(nomlieu, Observateur(nomlieu, longitude, latitude, atd));
+                const Observateur obs(nomlieu, longitude, latitude, atd);
+                mapObs.insert(nomlieu, obs);
 
                 Configuration::instance()->EcritureFicObs(fic);
+
+                QListIterator<Observateur> it(Configuration::instance()->observateurs());
+                unsigned int i = 0;
+                while (it.hasNext()) {
+
+                    const Observateur observateur = it.next();
+
+                    if (observateur.nomlieu().trimmed().toLower() == obs.nomlieu().trimmed().toLower()) {
+
+                        Configuration::instance()->suppressionObservateur(observateur);
+                        Configuration::instance()->ajoutObservateur(obs);
+                        if (i == 0) {
+                            Configuration::instance()->setObservateurDefaut(Configuration::instance()->observateurs().size() - 1);
+                        }
+
+                        Configuration::instance()->EcritureConfiguration();
+                        it.toBack();
+                    }
+                    i++;
+                }
             }
 
             on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
@@ -4381,6 +4403,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
         const Observateur obs = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
 
         _ui->nvLieu->setText(obs.nomlieu().trimmed());
+        _ui->nvLieu->setReadOnly(true);
 
         _ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()), DEGRE, 3, 0, false, true));
         _ui->nvLongitude->setPalette(QPalette());
@@ -5972,7 +5995,7 @@ void Onglets::on_genererPositions_clicked()
 
             } else {
                 // Le satellite est deja dans le ciel
-                date2 = date1;
+                date2 = Evenements::CalculAOS(Date(date.jourJulienUTC() + NB_JOUR_PAR_SEC, 0.), satSuivi, obs, true, hauteurMin).date;
                 date1 = date;
             }
 
@@ -6994,12 +7017,14 @@ void Onglets::on_updown_valueChanged(int arg1)
     Q_UNUSED(arg1)
 
     /* Corps de la methode */
+
+    QTime heur(0, 0);
+    heur = heur.addSecs(abs(arg1));
+    const QString sgnh = (arg1 >= 0) ? " + " : " - ";
+    _ui->tuc->setText(tr("UTC", "Universal Time Coordinated") + sgnh + heur.toString("hh:mm"));
+
     if (_ui->options->isVisible() && _ui->heureLegale->isChecked()) {
 
-        QTime heur(0, 0);
-        heur = heur.addSecs(arg1);
-        const QString sgnh = (arg1 >= 0) ? " + " : " - ";
-        _ui->tuc->setText(tr("UTC", "Universal Time Coordinated") + sgnh + heur.toString("hh:mm"));
         const double jjutc = _date->jourJulienUTC();
         const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_SEC;
 
@@ -7009,6 +7034,7 @@ void Onglets::on_updown_valueChanged(int arg1)
         }
 
         _date = new Date(jjutc, offsetUTC);
+        emit ChangementDate(*_date);
         emit RecalculerPositions();
         emit MiseAJourCarte();
     }
@@ -7031,11 +7057,11 @@ void Onglets::on_utcAuto_stateChanged(int arg1)
         QDateTime dateUTC(dateLocale);
         dateUTC.setTimeSpec(Qt::UTC);
 
-        const int ecart = (int) ((double) dateLocale.secsTo(dateUTC) * NB_MIN_PAR_SEC + EPS_DATES);
+        const int ecart = (int) ((double) dateLocale.secsTo(dateUTC) + EPS_DATES);
         _ui->updown->setValue(ecart);
 
         const double jjutc = _date->jourJulienUTC();
-        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_MIN;
+        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_SEC;
 
         if (_date != nullptr) {
             delete _date;

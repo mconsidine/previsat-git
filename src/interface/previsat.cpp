@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 juin 2022
+ * >    26 juin 2022
  *
  */
 
@@ -640,8 +640,8 @@ void PreviSat::InitDate()
     // Determination automatique de l'ecart heure locale - UTC
     const double ecart = Date::CalculOffsetUTC(QDateTime::currentDateTime());
     double offsetUTC = (_onglets->ui()->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
-    _onglets->ui()->updown->setValue(sgn(offsetUTC) * (static_cast<int>(fabs(offsetUTC) * NB_MIN_PAR_JOUR + EPS_DATES)));
-    offsetUTC = (_onglets->ui()->heureLegale->isChecked()) ? _onglets->ui()->updown->value() * NB_JOUR_PAR_MIN : 0.;
+    _onglets->ui()->updown->setValue(sgn(offsetUTC) * (static_cast<int>(fabs(offsetUTC) * NB_SEC_PAR_JOUR + EPS_DATES)));
+    offsetUTC = (_onglets->ui()->heureLegale->isChecked()) ? _onglets->ui()->updown->value() * NB_JOUR_PAR_SEC : 0.;
 
     // Date et heure locales
     _dateCourante = new Date(offsetUTC);
@@ -1265,6 +1265,28 @@ void PreviSat::ChangementCarte()
 /*
  * Mise a jour de l'affichage suite a un changement de date
  */
+void PreviSat::ChangementDate(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_dateCourante != nullptr) {
+        delete _dateCourante;
+        _dateCourante = nullptr;
+    }
+
+    _dateCourante = new Date(date.jourJulienUTC(), date.offsetUTC());
+    ChangementDate(_dateCourante->ToQDateTime(1));
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Mise a jour de l'affichage suite a un changement de date
+ */
 void PreviSat::ChangementDate(const QDateTime &date)
 {
     /* Declarations des variables locales */
@@ -1792,6 +1814,7 @@ void PreviSat::ConnexionsSignauxSlots()
 
     connect(_onglets, SIGNAL(ModeManuel(bool)), this, SLOT(on_modeManuel_toggled(bool)));
     connect(_onglets, SIGNAL(ChangementDate(const QDateTime &)), this, SLOT(ChangementDate(const QDateTime &)));
+    connect(_onglets, SIGNAL(ChangementDate(const Date &)), this, SLOT(ChangementDate(const Date &)));
     connect(_onglets, SIGNAL(RechargerTLE()), this, SLOT(ChargementTLE()));
     connect(_onglets, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
     connect(_onglets, SIGNAL(InitFicTLE()), this, SLOT(InitFicTLE()));
@@ -1999,7 +2022,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("temps/valManuel", ui->valManuel->currentIndex());
     settings.setValue("temps/pasManuel", ui->pasManuel->currentIndex());
     settings.setValue("temps/pasReel", ui->pasReel->currentIndex());
-    settings.setValue("temps/dtu", _onglets->ui()->updown->value() * NB_JOUR_PAR_MIN);
+    settings.setValue("temps/dtu", _onglets->ui()->updown->value() * NB_JOUR_PAR_SEC);
 
     settings.setValue("affichage/affSAA", _onglets->ui()->affSAA->isChecked());
     settings.setValue("affichage/affconst", _onglets->ui()->affconst->checkState());
