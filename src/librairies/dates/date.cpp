@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mai 2022
+ * >    26 juin 2022
  *
  */
 
@@ -444,7 +444,7 @@ QString Date::ToLongDate(const DateSysteme &systeme) const
 
     /* Initialisations */
     const double offset = (fabs(_offsetUTC) > EPSDBL100) ? Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1)) : 0.;
-    const QDateTime qdate = Date((*this).jourJulienUTC() + offset + EPS_DATES, 0.).ToQDateTime(1);
+    const QDateTime qdate = Date((*this).jourJulien() - offset + EPS_DATES, offset).ToQDateTime(1);
 
     /* Corps de la methode */
     QString res = QLocale().toString(qdate, QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") + ((systeme == SYSTEME_12H) ? "a" : ""));

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 mai 2022
+ * >    26 juin 2022
  *
  */
 
@@ -292,6 +292,12 @@ private slots:
      * @brief ChangementCarte Mise a jour de l'affichage suite a un changement de carte
      */
     void ChangementCarte();
+
+    /**
+     * @brief ChangementDate Mise a jour de l'affichage suite a un changement de date
+     * @param date date
+     */
+    void ChangementDate(const Date &date);
 
     /**
      * @brief ChangementDate Mise a jour de l'affichage suite a un changement de date
