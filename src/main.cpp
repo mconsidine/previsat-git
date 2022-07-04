@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 mai 2022
+ * >    4 juillet 2022
  *
  */
 
@@ -71,8 +71,6 @@ int main(int argc, char *argv[])
         splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
         splash->show();
 
-        PreviSat w;
-
         // Verification si une instance de PreviSat existe
         const qint64 pid = a.applicationPid();
         QSharedMemory mem;
@@ -90,6 +88,8 @@ int main(int argc, char *argv[])
                 QMessageBox::warning(0, QObject::tr("Information"), mem.errorString());
             }
         }
+
+        PreviSat w;
 
         const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
         splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    4 juillet 2022
  *
  */
 
@@ -1631,6 +1631,7 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     Satellite sat(list.at(0).tle);
     sat.CalculPosVit(dateMax);
     sat.CalculCoordHoriz(observateur);
+    sat.CalculElementsOsculateurs(dateMax);
 
     const Date dateLever = Evenements::CalculAOS(dateMax, sat, observateur, false).date;
     sat.CalculTraceCiel(dateLever, true, _onglets->ui()->refractionAtmospherique->isChecked(), observateur, 1);

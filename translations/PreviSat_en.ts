@@ -4986,8 +4986,8 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="../src/main.cpp" line="86"/>
-        <location filename="../src/main.cpp" line="90"/>
+        <location filename="../src/main.cpp" line="84"/>
+        <location filename="../src/main.cpp" line="88"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -5002,7 +5002,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="85"/>
+        <location filename="../src/main.cpp" line="83"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation>An instance of %1 is already launched</translation>
     </message>

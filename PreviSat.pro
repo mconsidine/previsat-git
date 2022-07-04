@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    10 mai 2022
+# >    4 juillet 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
@@ -64,15 +64,15 @@ greaterThan(QT_GCC_MAJOR_VERSION, 4) {
 }
 
 
-ORG_NAME = Astropedia
-DOMAIN_NAME = http://astropedia.free.fr/
+ORGANIZATION = Astropedia
+DOMAIN = http://astropedia.free.fr/
 
 VERSION_STR     = '\\"$${VERSION}\\"'
 VER_MAJ_STR     = '\\"$${VER_MAJ}\\"'
 ANNEES_DEV_STR  = '\\"$${ANNEES_DEV}\\"'
 APP_NAME_STR    = '\\"$${TARGET}\\"'
-ORG_NAME_STR    = '\\"$${ORG_NAME}\\"'
-DOMAIN_NAME_STR = '\\"$${DOMAIN_NAME}\\"'
+ORG_NAME_STR    = '\\"$${ORGANIZATION}\\"'
+DOMAIN_NAME_STR = '\\"$${DOMAIN}\\"'
 
 DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     APPVER_MAJ=\"$${VER_MAJ_STR}\"        \

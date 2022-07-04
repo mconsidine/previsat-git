@@ -4942,8 +4942,8 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="../src/main.cpp" line="86"/>
-        <location filename="../src/main.cpp" line="90"/>
+        <location filename="../src/main.cpp" line="84"/>
+        <location filename="../src/main.cpp" line="88"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -4976,7 +4976,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="85"/>
+        <location filename="../src/main.cpp" line="83"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation type="unfinished">%1のインスタンスは既に開いています</translation>
     </message>
