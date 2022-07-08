@@ -7800,27 +7800,11 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QPushButton" name="afficherSuivi">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>102</y>
-          <width>141</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Afficher</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="genererPositions">
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>102</y>
+          <y>104</y>
           <width>141</width>
           <height>23</height>
          </rect>
@@ -7835,7 +7819,7 @@
           <x>0</x>
           <y>0</y>
           <width>531</width>
-          <height>50</height>
+          <height>68</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_telescope3">
@@ -8110,13 +8094,90 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>127</y>
+          <y>130</y>
           <width>141</width>
           <height>23</height>
          </rect>
         </property>
         <property name="text">
          <string>Ouvrir Satellite Tracker</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="gridLayoutWidget_10">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>130</y>
+          <width>141</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_delaiTelescope" columnstretch="0,0,0">
+         <property name="horizontalSpacing">
+          <number>3</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="2">
+          <widget class="QLabel" name="lbl_uniteDelaiTelescope">
+           <property name="text">
+            <string>s</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="delaiTelescope">
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::NoButtons</enum>
+           </property>
+           <property name="maximum">
+            <number>7200</number>
+           </property>
+           <property name="value">
+            <number>60</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="pecDelai">
+           <property name="text">
+            <string comment="telescope">Délai :</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="afficherSuivi">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>104</y>
+          <width>141</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Afficher</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="demarrerSuiviTelescope">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>131</y>
+          <width>81</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Envoyer les données satellite à la monture</string>
+        </property>
+        <property name="text">
+         <string>Démarrer</string>
         </property>
        </widget>
       </widget>
@@ -8313,29 +8374,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="parametrageDefautSuivi">
-      <property name="geometry">
-       <rect>
-        <x>380</x>
-        <y>5</y>
-        <width>161</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Paramétrage par défaut</string>
-      </property>
-     </widget>
      <widget class="QToolButton" name="skywatcher">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>140</y>
-        <width>132</width>
-        <height>62</height>
+        <x>430</x>
+        <y>0</y>
+        <width>111</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -8353,6 +8398,22 @@
       </property>
       <property name="autoRaise">
        <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="parametrageDefautSuivi">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>157</y>
+        <width>161</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Paramétrage par défaut</string>
       </property>
      </widget>
     </widget>
