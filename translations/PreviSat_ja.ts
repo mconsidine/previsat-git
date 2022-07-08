@@ -4054,7 +4054,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="1866"/>
         <location filename="../src/interface/previsat.cpp" line="2538"/>
-        <location filename="../src/interface/previsat.cpp" line="3173"/>
+        <location filename="../src/interface/previsat.cpp" line="3179"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
@@ -4447,7 +4447,7 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2311"/>
         <location filename="../src/interface/previsat.cpp" line="2572"/>
-        <location filename="../src/interface/previsat.cpp" line="3131"/>
+        <location filename="../src/interface/previsat.cpp" line="3137"/>
         <source>Enregistrer sous...</source>
         <translation type="unfinished">新規保存...</translation>
     </message>
@@ -4510,33 +4510,33 @@ COSPAR : %3</translation>
         <translation type="unfinished">日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3051"/>
+        <location filename="../src/interface/previsat.cpp" line="3054"/>
         <source>%1 (numéro NORAD : %2  -  %3)</source>
         <translation>%1 (NORAD番号 : %2  -  %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3132"/>
-        <location filename="../src/interface/previsat.cpp" line="3174"/>
+        <location filename="../src/interface/previsat.cpp" line="3138"/>
+        <location filename="../src/interface/previsat.cpp" line="3180"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3155"/>
+        <location filename="../src/interface/previsat.cpp" line="3161"/>
         <source>Fichier %1 créé</source>
         <translation type="unfinished">「%1」ファイルが作成されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3216"/>
+        <location filename="../src/interface/previsat.cpp" line="3222"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation type="unfinished">「%1」ファイルに衛星が追加されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3218"/>
+        <location filename="../src/interface/previsat.cpp" line="3224"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation type="unfinished">「%1」ファイルに%2基の衛星が追加されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3244"/>
+        <location filename="../src/interface/previsat.cpp" line="3250"/>
         <source>Impossible de lancer le flux vidéo : essayez de nouveau et/ou vérifiez votre connexion Internet</source>
         <translation type="unfinished">ビデオストリームを開始できません : もう一度試すか, インターネット接続を確認してもう一度試してください</translation>
     </message>
@@ -4544,93 +4544,93 @@ COSPAR : %3</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="792"/>
+        <location filename="../src/configuration/configuration.cpp" line="795"/>
         <source>Le fichier ne contient pas de lieux d&apos;observation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1075"/>
+        <location filename="../src/configuration/configuration.cpp" line="1078"/>
         <source>Le fichier de configuration de %1 a évolué.
 Certaines informations de configuration (par exemple les lieux d&apos;observation sélectionnés) seront perdues.</source>
         <translation type="unfinished">「%1」の設定ファイルが進化しました。
 選択した観測地など一部の設定情報が失われます。</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1078"/>
+        <location filename="../src/configuration/configuration.cpp" line="1081"/>
         <source>Le fichier %1 n&apos;existe pas :
 Utilisation de la configuration par défaut</source>
         <translation>「%1」ファイルが存在しません :
 デフォルト設定を使用します</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1200"/>
-        <location filename="../src/configuration/configuration.cpp" line="1366"/>
-        <location filename="../src/configuration/configuration.cpp" line="1508"/>
-        <location filename="../src/configuration/configuration.cpp" line="1580"/>
-        <location filename="../src/configuration/configuration.cpp" line="1664"/>
-        <location filename="../src/configuration/configuration.cpp" line="1744"/>
-        <location filename="../src/configuration/configuration.cpp" line="1828"/>
+        <location filename="../src/configuration/configuration.cpp" line="1207"/>
+        <location filename="../src/configuration/configuration.cpp" line="1373"/>
+        <location filename="../src/configuration/configuration.cpp" line="1515"/>
+        <location filename="../src/configuration/configuration.cpp" line="1587"/>
+        <location filename="../src/configuration/configuration.cpp" line="1671"/>
+        <location filename="../src/configuration/configuration.cpp" line="1751"/>
+        <location filename="../src/configuration/configuration.cpp" line="1835"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>初期化中にエラーが発生しました :
 「%1」ファイルが存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1250"/>
+        <location filename="../src/configuration/configuration.cpp" line="1257"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucune catégorie d&apos;orbite n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation>初期化中にエラーが発生しました :
 「%1」ファイルには軌道種類が見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1558"/>
+        <location filename="../src/configuration/configuration.cpp" line="1565"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun pays ou organisation n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation>初期化中にエラーが発生しました :
 「%1」ファイルには国又は組織が見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1642"/>
+        <location filename="../src/configuration/configuration.cpp" line="1649"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun satellite TDRS n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation type="unfinished">初期化中にエラーが発生しました :
 「%1」ファイルにはTDRS衛星が見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1722"/>
+        <location filename="../src/configuration/configuration.cpp" line="1729"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun site de lancement n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation>初期化中にエラーが発生しました :
 「%1」ファイルには打ち上げ場が見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1806"/>
+        <location filename="../src/configuration/configuration.cpp" line="1813"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucune station n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation type="unfinished">初期化中にエラーが発生しました :
 「%1」ファイルにはステーションが見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1893"/>
+        <location filename="../src/configuration/configuration.cpp" line="1900"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation type="unfinished">初期化中にエラーが発生しました :
 「%1」ファイルにはフレアを生成する衛星が見つからなかったので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1950"/>
+        <location filename="../src/configuration/configuration.cpp" line="1957"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>初期化中にエラーが発生しました :
 「%1」フォルダが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2006"/>
+        <location filename="../src/configuration/configuration.cpp" line="2013"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>「%1」ファイルが存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2013"/>
+        <location filename="../src/configuration/configuration.cpp" line="2020"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>「%1」ファイルが空なので、「%2」を再インストールしてください</translation>
     </message>

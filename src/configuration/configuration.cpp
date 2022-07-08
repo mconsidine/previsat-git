@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    24 juin 2022
+ * >    7 juillet 2022
  *
  */
 
@@ -168,12 +168,12 @@ QString Configuration::adresseAstropedia() const
 
 QString Configuration::adresseCelestrak() const
 {
-    return "http://www.celestrak.com/";
+    return _adresseCelestrak;
 }
 
 QString Configuration::adresseCelestrakNorad() const
 {
-    return adresseCelestrak() + "NORAD/elements/";
+    return _adresseCelestrak + "NORAD/elements/";
 }
 
 QStringList Configuration::listeFicLocalData() const
@@ -579,6 +579,9 @@ void Configuration::EcritureConfiguration()
 
         // Numero NORAD de la station spatiale
         cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
+
+        // Adresse Celestrak
+        cfg.writeTextElement("AdresseCelestrak", _adresseCelestrak);
 
         // Observateurs
         cfg.writeStartElement("Observateurs");
@@ -1103,6 +1106,10 @@ void Configuration::LectureConfiguration()
                     if (cfg.name() == "NoradStationSpatiale") {
 
                         _noradStationSpatiale = cfg.readElementText();
+
+                    } else if (cfg.name() == "AdresseCelestrak") {
+
+                        _adresseCelestrak = cfg.readElementText();
 
                     } else if (cfg.name() == "Observateurs") {
 
