@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    26 juin 2022
+ * >    8 juillet 2022
  *
  */
 
@@ -587,6 +587,7 @@ private slots:
     void on_hauteurSatSuivi_currentIndexChanged(int index);
     void on_skywatcher_clicked();
     void on_ouvrirSatelliteTracker_clicked();
+    void on_pecDelai_toggled(bool checked);
     void on_parametrageDefautSuivi_clicked();
 #endif
 

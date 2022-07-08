@@ -2131,6 +2131,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 #if defined (Q_OS_WIN)
     settings.setValue("previsions/hauteurSatSuivi", _onglets->ui()->hauteurSatSuivi->currentIndex());
     settings.setValue("previsions/pasSuivi", _onglets->ui()->pasSuivi->value());
+    settings.setValue("previsions/pecDelai", _onglets->ui()->pecDelai->isChecked());
+    settings.setValue("previsions/delaiTelescope", _onglets->ui()->delaiTelescope->value());
+    settings.setValue("previsions/demarrerSuiviTelescope", _onglets->ui()->demarrerSuiviTelescope->isChecked());
 #endif
 
     if (!_onglets->ui()->verifMAJ->isChecked()) {
