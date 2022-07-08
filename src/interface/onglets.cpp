@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    26 juin 2022
+ * >    8 juillet 2022
  *
  */
 
@@ -2727,6 +2727,10 @@ void Onglets::InitAffichageDemarrage()
     _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
     _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
     _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
+    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
+    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
+    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
+    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
 #endif
 
     _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
@@ -6193,8 +6197,24 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
     }
 
     if (!exeSatelliteTracker.isEmpty()) {
+
+        QStringList arguments;
+        if (!_ficSuivi.isEmpty()) {
+
+            arguments << "--infile" << _ficSuivi;
+
+            if (_ui->demarrerSuiviTelescope->isChecked()) {
+                arguments << "--start";
+            }
+        }
+
+        if (_ui->pecDelai->isChecked()) {
+            arguments << "--countdown" << QString::number(_ui->delaiTelescope->value());
+        }
+
         QProcess proc;
         proc.setProgram(exeSatelliteTracker);
+        proc.setArguments(arguments);
         proc.startDetached();
     }
 
@@ -6202,10 +6222,19 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
     return;
 }
 
+void Onglets::on_pecDelai_toggled(bool checked)
+{
+    _ui->delaiTelescope->setEnabled(checked);
+}
+
 void Onglets::on_parametrageDefautSuivi_clicked()
 {
     _ui->hauteurSatSuivi->setCurrentIndex(2);
     _ui->pasSuivi->setValue(20);
+    _ui->pecDelai->setChecked(false);
+    _ui->delaiTelescope->setEnabled(false);
+    _ui->delaiTelescope->setValue(60);
+    _ui->demarrerSuiviTelescope->setChecked(false);
 }
 #endif
 
