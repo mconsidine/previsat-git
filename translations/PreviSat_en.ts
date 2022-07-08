@@ -4090,7 +4090,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="1866"/>
         <location filename="../src/interface/previsat.cpp" line="2538"/>
-        <location filename="../src/interface/previsat.cpp" line="3173"/>
+        <location filename="../src/interface/previsat.cpp" line="3179"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
@@ -4495,7 +4495,7 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2311"/>
         <location filename="../src/interface/previsat.cpp" line="2572"/>
-        <location filename="../src/interface/previsat.cpp" line="3131"/>
+        <location filename="../src/interface/previsat.cpp" line="3137"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -4546,33 +4546,33 @@ COSPAR : %3</translation>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3051"/>
+        <location filename="../src/interface/previsat.cpp" line="3054"/>
         <source>%1 (numéro NORAD : %2  -  %3)</source>
         <translation>%1 (NORAD number : %2  -  %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3132"/>
-        <location filename="../src/interface/previsat.cpp" line="3174"/>
+        <location filename="../src/interface/previsat.cpp" line="3138"/>
+        <location filename="../src/interface/previsat.cpp" line="3180"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3155"/>
+        <location filename="../src/interface/previsat.cpp" line="3161"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3216"/>
+        <location filename="../src/interface/previsat.cpp" line="3222"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3218"/>
+        <location filename="../src/interface/previsat.cpp" line="3224"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3244"/>
+        <location filename="../src/interface/previsat.cpp" line="3250"/>
         <source>Impossible de lancer le flux vidéo : essayez de nouveau et/ou vérifiez votre connexion Internet</source>
         <translation>Impossible to launch the video stream : try again and/or check your Internet connexion</translation>
     </message>
@@ -4580,12 +4580,12 @@ COSPAR : %3</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="792"/>
+        <location filename="../src/configuration/configuration.cpp" line="795"/>
         <source>Le fichier ne contient pas de lieux d&apos;observation</source>
         <translation>The file does not contain locations</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1075"/>
+        <location filename="../src/configuration/configuration.cpp" line="1078"/>
         <source>Le fichier de configuration de %1 a évolué.
 Certaines informations de configuration (par exemple les lieux d&apos;observation sélectionnés) seront perdues.</source>
         <translation>L
@@ -4593,81 +4593,81 @@ The configuration file of %1 has changed.
 Some configuration informations (for example the selected locations) will be lost.</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1078"/>
+        <location filename="../src/configuration/configuration.cpp" line="1081"/>
         <source>Le fichier %1 n&apos;existe pas :
 Utilisation de la configuration par défaut</source>
         <translation>The file %1 does not exist :
 Using the default configuration</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1200"/>
-        <location filename="../src/configuration/configuration.cpp" line="1366"/>
-        <location filename="../src/configuration/configuration.cpp" line="1508"/>
-        <location filename="../src/configuration/configuration.cpp" line="1580"/>
-        <location filename="../src/configuration/configuration.cpp" line="1664"/>
-        <location filename="../src/configuration/configuration.cpp" line="1744"/>
-        <location filename="../src/configuration/configuration.cpp" line="1828"/>
+        <location filename="../src/configuration/configuration.cpp" line="1207"/>
+        <location filename="../src/configuration/configuration.cpp" line="1373"/>
+        <location filename="../src/configuration/configuration.cpp" line="1515"/>
+        <location filename="../src/configuration/configuration.cpp" line="1587"/>
+        <location filename="../src/configuration/configuration.cpp" line="1671"/>
+        <location filename="../src/configuration/configuration.cpp" line="1751"/>
+        <location filename="../src/configuration/configuration.cpp" line="1835"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 The file %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1250"/>
+        <location filename="../src/configuration/configuration.cpp" line="1257"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucune catégorie d&apos;orbite n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No orbit category has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1558"/>
+        <location filename="../src/configuration/configuration.cpp" line="1565"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun pays ou organisation n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No country or organization has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1642"/>
+        <location filename="../src/configuration/configuration.cpp" line="1649"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun satellite TDRS n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No TDRS satellite has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1722"/>
+        <location filename="../src/configuration/configuration.cpp" line="1729"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun site de lancement n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No launch site has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1806"/>
+        <location filename="../src/configuration/configuration.cpp" line="1813"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucune station n&apos;a été trouvée dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No station has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1893"/>
+        <location filename="../src/configuration/configuration.cpp" line="1900"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier %1, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 No satellite which can produce flares has been found in the file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1950"/>
+        <location filename="../src/configuration/configuration.cpp" line="1957"/>
         <source>Erreur rencontrée lors de l&apos;initialisation :
 Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>Error occured while initialization
 The directory %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2006"/>
+        <location filename="../src/configuration/configuration.cpp" line="2013"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2013"/>
+        <location filename="../src/configuration/configuration.cpp" line="2020"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>The file %1 is empty, please re-install %2</translation>
     </message>

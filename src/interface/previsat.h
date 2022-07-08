@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juin 2022
+ * >    7 juillet 2022
  *
  */
 
@@ -420,7 +420,7 @@ private slots:
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
     void on_actionSkywatcher_com_triggered();
-    void on_actionWww_celestrak_com_triggered();
+    void on_actionWww_celestrak_org_triggered();
     void on_actionWww_space_track_org_triggered();
     void on_actionA_propos_triggered();
 

@@ -10,7 +10,7 @@
         <Langue lang="ja">
             <Nom>common</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>visual.txt</Fichier>
             <Fichier>stations.txt</Fichier>
@@ -26,7 +26,7 @@
         <Langue lang="ja">
             <Nom>全て</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>1982-092.txt</Fichier>
             <Fichier>1999-025.txt</Fichier>
@@ -93,7 +93,7 @@
         <Langue lang="ja">
             <Nom>weather</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>weather.txt</Fichier>
             <Fichier>noaa.txt</Fichier>
@@ -117,7 +117,7 @@
         <Langue lang="ja">
             <Nom>communications</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>geo.txt</Fichier>
             <Fichier>intelsat.txt</Fichier>
@@ -148,7 +148,7 @@
         <Langue lang="ja">
             <Nom>navigation</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>gps-ops.txt</Fichier>
             <Fichier>glo-ops.txt</Fichier>
@@ -169,7 +169,7 @@
         <Langue lang="ja">
             <Nom>scientific</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>science.txt</Fichier>
             <Fichier>geodetic.txt</Fichier>
@@ -187,7 +187,7 @@
         <Langue lang="ja">
             <Nom>miscellaneous</Nom>
         </Langue>
-        <Site>www.celestrak.com</Site>
+        <Site>www.celestrak.org</Site>
         <Fichiers>
             <Fichier>military.txt</Fichier>
             <Fichier>radar.txt</Fichier>

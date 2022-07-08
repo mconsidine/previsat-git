@@ -1755,7 +1755,7 @@ le flux vidéo</string>
     <addaction name="separator"/>
     <addaction name="actionSkywatcher_com"/>
     <addaction name="separator"/>
-    <addaction name="actionWww_celestrak_com"/>
+    <addaction name="actionWww_celestrak_org"/>
     <addaction name="actionWww_space_track_org"/>
     <addaction name="separator"/>
     <addaction name="actionA_propos"/>
@@ -1921,9 +1921,9 @@ le flux vidéo</string>
     <bool>false</bool>
    </property>
   </action>
-  <action name="actionWww_celestrak_com">
+  <action name="actionWww_celestrak_org">
    <property name="text">
-    <string notr="true">www.celestrak.com</string>
+    <string notr="true">www.celestrak.org</string>
    </property>
   </action>
   <action name="actionWww_space_track_org">
