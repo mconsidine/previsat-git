@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 mai 2022
+ * >    7 juillet 2022
  *
  */
 
@@ -324,6 +324,7 @@ private:
 
     // Adresses internet
     QString _adresseAstropedia;
+    QString _adresseCelestrak;
 
     // Police
     QFont _police;

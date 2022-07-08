@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juin 2022
+ * >    8 juillet 2022
  *
  */
 
@@ -2788,7 +2788,7 @@ void PreviSat::on_actionSkywatcher_com_triggered()
     QDesktopServices::openUrl(QUrl("http://skywatcher.com/"));
 }
 
-void PreviSat::on_actionWww_celestrak_com_triggered()
+void PreviSat::on_actionWww_celestrak_org_triggered()
 {
     QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseCelestrak()));
 }
@@ -2975,6 +2975,9 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
         }
     }
 
+    _onglets->setAcalcAOS(true);
+    _onglets->setAcalcDN(true);
+    _onglets->setInfo(true);
     GestionTempsReel();
 
     /* Retour */
@@ -3108,6 +3111,9 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     Configuration::instance()->tleDefaut().l2 = tle.ligne2();
 
     ui->liste1->currentItem()->setCheckState(Qt::Checked);
+    _onglets->setAcalcAOS(true);
+    _onglets->setAcalcDN(true);
+    _onglets->setInfo(true);
 
     GestionTempsReel();
 
