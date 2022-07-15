@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    12 novembre 2018
+ * >    14 juillet 2022
  *
  */
 
@@ -102,7 +102,7 @@ Apropos::Apropos(QWidget *fenetreParent) :
 
     const QString msg = tr("Version %1  (%2)");
     ui->numeroVersion->setText(msg.arg(APPVERSION).arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).
-                                   toString(Qt::SystemLocaleShortDate)));
+                                   toString(tr("dd MMMM yyyy", "Date format"))));
 
     /* Retour */
     return;

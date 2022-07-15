@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juillet 2022
+ * >    15 juillet 2022
  *
  */
 
@@ -540,8 +540,6 @@ void PreviSat::InitAffichageDemarrage() const
 
     ui->frameVideo->setVisible(ui->mccISS->isChecked());
     _radar->setVisible(!ui->mccISS->isChecked());
-
-    ui->frameLatGauche->setVisible(false);
 
     /* Retour */
     return;
@@ -1213,16 +1211,16 @@ void PreviSat::ChangementCarte()
         // Passage en carte du ciel
         Configuration::instance()->setIsCarteMonde(false);
         _affichageCiel->setToolTip(tr("Carte du monde"));
-        ui->frameCarteGenerale->setVisible(false);
-        ui->frameLon->setVisible(false);
-        ui->frameCarteLon->setContentsMargins(0, 0, 20, 0);
+        ui->frameCarte->setContentsMargins(0, 0, 20, 0);
+        _carte->setVisible(false);
 
         // Ciel
         if (_ciel != nullptr) {
             _ciel->deleteLater();
             _ciel = nullptr;
         }
-        _ciel = new Ciel(_onglets, ui->frameCarteLon);
+        _ciel = new Ciel(_onglets, ui->frameCarte);
+        ui->layoutCarte->addWidget(_ciel, 0, Qt::AlignVCenter);
 
         connect(_ciel, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
         connect(_ciel, SIGNAL(AfficherMessageStatut2(const QString &)), this, SLOT(AfficherMessageStatut2(const QString &)));
@@ -1244,18 +1242,21 @@ void PreviSat::ChangementCarte()
                     Configuration::instance()->planetes(),
                     Configuration::instance()->listeSatellites());
 
+        _ciel->resizeEvent(nullptr);
+
     } else {
+
         // Passage en carte du monde
         Configuration::instance()->setIsCarteMonde(true);
         _affichageCiel->setToolTip(tr("Carte du ciel"));
-        ui->frameCarteGenerale->setVisible(true);
-        ui->frameLon->setVisible(true);
-        ui->frameCarteLon->setContentsMargins(0, 0, 0, 0);
+        ui->frameCarte->setContentsMargins(0, 0, 0, 0);
 
         if (_ciel != nullptr) {
             _ciel->deleteLater();
             _ciel = nullptr;
         }
+
+        _carte->setVisible(true);
     }
 
     /* Retour */
@@ -1385,7 +1386,6 @@ void PreviSat::ChangementZoom()
         _maximise->setToolTip(tr("Agrandir"));
         _maximise->setIcon(QIcon(":/resources/maxi.png"));
 
-        ui->layoutCarteLon->setContentsMargins(0, 0, 0, 0);
         ui->frameModeListe->setVisible(true);
         ui->frameOngletsRadar->setVisible(true);
 
@@ -1395,12 +1395,12 @@ void PreviSat::ChangementZoom()
         _maximise->setToolTip(tr("Réduire"));
         _maximise->setIcon(QIcon(":/resources/mini.png"));
 
-        ui->layoutCarteLon->setContentsMargins(0, 0, 6, 0);
+        ui->layoutCarteLon->setContentsMargins(6, 0, 34, 0);
         ui->frameModeListe->setVisible(false);
         ui->frameOngletsRadar->setVisible(false);
     }
 
-    resizeEvent(NULL);
+    resizeEvent(nullptr);
 
     /* Retour */
     return;
@@ -1755,14 +1755,12 @@ void PreviSat::ChargementFenetre()
 
     /* Corps de la methode */
     // TEMP
-    setMaximumSize(minimumSize());
     ui->actionVision_nocturne->setVisible(false);
     //
 
     // Bouton pour maximiser la carte
     isMaximise = false;
-    _maximise = new QToolButton(ui->frameCarteLon);
-    _maximise->setVisible(false); // TEMP
+    _maximise = new QToolButton(ui->frameCarte);
     _maximise->setMaximumSize(20, 20);
     _maximise->setToolTip(tr("Agrandir"));
     _maximise->setIcon(QIcon(":/resources/maxi.png"));
@@ -1772,7 +1770,7 @@ void PreviSat::ChargementFenetre()
 
     // Bouton pour passer de la carte du monde a la carte du ciel (et vice versa)
     Configuration::instance()->setIsCarteMonde(true);
-    _affichageCiel = new QToolButton(ui->frameCarteLon);
+    _affichageCiel = new QToolButton(ui->frameCarte);
     _affichageCiel->setMaximumSize(20, 20);
     _affichageCiel->setToolTip(tr("Carte du ciel"));
     _affichageCiel->setIcon(QIcon(":/resources/globe.png"));
@@ -1785,7 +1783,7 @@ void PreviSat::ChargementFenetre()
     ui->layoutOnglets->addWidget(_onglets, 0, Qt::AlignVCenter);
 
     // Carte
-    _carte = new Carte(_onglets, ui->frameCarteLon);
+    _carte = new Carte(_onglets, ui->frameCarte);
     ui->layoutCarte->addWidget(_carte);
 
     // Coordonnees de l'ISS
@@ -2371,36 +2369,9 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         if (_onglets->ui()->proportionsCarte->isChecked()) {
             ui->layoutCarte->setEnabled(false);
         }
+
+        ui->layoutCarteLon->setContentsMargins(6, 0, 34, 20);
         _carte->resizeEvent(evt);
-
-        ui->frameCarteGenerale->setGeometry(ui->frameCarteGenerale->x(), ui->frameCarteGenerale->y(), ui->frameCarteGenerale->width(),
-                                            _carte->height());
-        ui->frameCarteLon->setGeometry(ui->frameCarteLon->x(), ui->frameCarteLon->y(), ui->frameCarteLon->width(),
-                                       _carte->height());
-
-        const double hcarte6 = _carte->height() / 6.;
-        ui->S60->move(5, static_cast<int> (5 * hcarte6) - 6);
-        ui->S30->move(5, static_cast<int> (4 * hcarte6) - 6);
-        ui->SS->move(5, static_cast<int> (3.5 * hcarte6) - 7);
-        ui->N0->move(5, static_cast<int> (3 * hcarte6) - 7);
-        ui->NN->move(5, static_cast<int> (2.5 * hcarte6) - 7);
-        ui->N30->move(5, static_cast<int> (2 * hcarte6) - 7);
-        ui->N60->move(5, static_cast<int> (hcarte6) - 7);
-
-        const double lcarte12 = _carte->width() / 12.;
-        ui->W150->move(static_cast<int> (lcarte12) - 7, 0);
-        ui->W120->move(static_cast<int> (2. * lcarte12) - 7, 0);
-        ui->W90->move(static_cast<int> (3. * lcarte12) - 5, 0);
-        ui->W60->move(static_cast<int> (4. * lcarte12) - 5, 0);
-        ui->W30->move(static_cast<int> (5. * lcarte12) - 5, 0);
-        ui->WW->move(static_cast<int> (5.5 * lcarte12) - 3, 0);
-        ui->W0->move(static_cast<int> (6. * lcarte12) - 1, 0);
-        ui->EE->move(static_cast<int> (6.5 * lcarte12) - 3, 0);
-        ui->E30->move(static_cast<int> (7. * lcarte12) - 5, 0);
-        ui->E60->move(static_cast<int> (8. * lcarte12) - 5, 0);
-        ui->E90->move(static_cast<int> (9. * lcarte12) - 5, 0);
-        ui->E120->move(static_cast<int> (10. * lcarte12) - 7, 0);
-        ui->E150->move(static_cast<int> (11. * lcarte12) - 7, 0);
 
     } else {
         _ciel->resizeEvent(evt);
@@ -2411,12 +2382,9 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
         _affichageCiel->setGeometry(ui->centralWidget->width() - 30, 28, 20, 20);
 
     } else {
-        _maximise->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 0, 20, 20);
-        _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 28, 20, 20);
+        _maximise->setGeometry(qMax(815, ui->frameCarte->width() - 19), 0, 20, 20);
+        _affichageCiel->setGeometry(qMax(815, ui->frameCarte->width() - 19), 28, 20, 20);
     }
-
-    // TEMP
-    _affichageCiel->setGeometry(qMax(815, ui->frameCarteLon->width() - 19), 0, 20, 20);
 
     /* Retour */
     return;
@@ -2628,7 +2596,7 @@ void PreviSat::on_actionImprimer_carte_triggered()
             rect.moveTo(6, 6);
         } else {
             rect = _ciel->rect();
-            rect.moveTo((ui->frameCarteLon->width() - _ciel->width()) / 2 - 20, 6);
+            rect.moveTo((ui->frameCarte->width() - _ciel->width()) / 2 - 20, 6);
         }
 
         const QPixmap pixmap = QWidget::grab(rect);
