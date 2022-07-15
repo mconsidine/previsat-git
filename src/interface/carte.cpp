@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    24 juin 2022
+ * >    15 juillet 2022
  *
  */
 
@@ -119,15 +119,19 @@ void Carte::show()
     const bool mcc = Configuration::instance()->issLive() && _onglets->ui()->styleWCC->isChecked();
     const QColor crimson(220, 20, 60);
     const QColor bleuClair(173, 216, 230);
-    const QPen noir(Qt::black);
+
     QPen crayon(Qt::white);
+    crayon.setCosmetic(true);
+
+    QFont police;
+    police.setPointSize(9);
 
     if (scene != nullptr) {
         scene->deleteLater();
     }
+
     scene = new QGraphicsScene;
-    const QRect rect = QRect(ui->carte->x(), ui->carte->y(), ui->carte->width() - 2, ui->carte->height() - 2);
-    scene->setSceneRect(rect);
+    scene->setSceneRect(contentsRect());
 
     /* Corps de la methode */
     // Chargement de la carte
@@ -145,127 +149,58 @@ void Carte::show()
         // TODO
 
         // Affichage de la grille de coordonnees
+        const double largeur = ui->carte->width();
+        const double hauteur = ui->carte->height();
+        const double largeurParalleles = largeur - 24.;
+        const double hauteurMeridiens = hauteur - 24.;
+
+        unsigned int maxMeridiens = 12;
+        unsigned int maxParalleles = 6;
+        double stepMeridiens = 30.;
+        double stepParalleles = 30.;
+
+        if (mcc) {
+            maxMeridiens *= 2;
+            maxParalleles *= 2;
+            stepMeridiens /= 2.;
+            stepParalleles /= 2.;
+        }
+
         if (_onglets->ui()->affgrille->isChecked()) {
 
             const bool conditionIss = !Configuration::instance()->listeSatellites().isEmpty() && mcc
                     && (Configuration::instance()->listeSatellites().at(0).tle().norad() == Configuration::instance()->noradStationSpatiale());
-            const QPen pen = QPen((conditionIss) ? ((_onglets->ui()->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
+            QPen pen = QPen((conditionIss) ? ((_onglets->ui()->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
+            pen.setCosmetic(true);
 
-            const int lcarte = ui->carte->width();
-            const int hcarte = ui->carte->height();
-            const int lcarte2 = lcarte / 2;
-            const int hcarte2 = hcarte / 2;
+            QPen pen2(QBrush(Qt::lightGray), 1.);
+            pen2.setCosmetic(true);
 
-            scene->addLine(0, hcarte2, lcarte, hcarte2, pen);
-            scene->addLine(lcarte2, 0, lcarte2, hcarte, QPen(Qt::white));
+            // Meridiens
+            for(unsigned int i=1; i<maxMeridiens; i++) {
 
-            QPen stylo(Qt::lightGray);
-            QList<int> tabLat, tabLon;
-
-            if (mcc) {
-
-                tabLat << hcarte / 12 << hcarte / 6 << static_cast<int> (hcarte * 0.25) << hcarte / 3 << static_cast<int> (hcarte / 2.4)
-                       << static_cast<int> (7. * hcarte / 12.) << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte * 0.75)
-                       << static_cast<int> (hcarte / 1.2) << static_cast<int> (11. * hcarte / 12.);
-
-                tabLon << lcarte / 24 << lcarte / 12 << lcarte / 8 << lcarte / 6 << static_cast<int> (lcarte / 4.8) << static_cast<int> (lcarte * 0.25)
-                       << static_cast<int> (7. * lcarte / 24.) << lcarte / 3 << static_cast<int> (3. * lcarte / 8.) << static_cast<int> (lcarte / 2.4)
-                       << static_cast<int> (11. * lcarte / 24.) << static_cast<int> (13. * lcarte / 24.) << static_cast<int> (7. * lcarte / 12.)
-                       << static_cast<int> (15. * lcarte / 24.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (17. * lcarte / 24.)
-                       << static_cast<int> (lcarte * 0.75) << static_cast<int> (19. * lcarte / 24.) << static_cast<int> (lcarte / 1.2)
-                       << static_cast<int> (21. * lcarte / 24.) << static_cast<int> (11. * lcarte / 12.) << static_cast<int> (23. * lcarte / 24.);
-
-                //                ui->W150->setText("-150");
-                //                ui->W120->setText("-120");
-                //                ui->W90->setText("-90");
-                //                ui->W60->setText("-60");
-                //                ui->W30->setText("-30");
-
-                //                QPalette coul;
-                //                coul.setColor(QPalette::WindowText, Qt::white);
-                //                ui->N60->setPalette(coul);
-                //                ui->N30->setPalette(coul);
-                //                ui->N0->setPalette(coul);
-                //                ui->S30->setPalette(coul);
-                //                ui->S60->setPalette(coul);
-                //                ui->S30->setText("-30");
-                //                ui->S60->setText("-60");
-                //                ui->N60->setAlignment(Qt::AlignRight);
-                //                ui->N30->setAlignment(Qt::AlignRight);
-                //                ui->N0->setAlignment(Qt::AlignRight);
-
-            } else {
-
-                tabLat << hcarte / 6 << hcarte / 3 << static_cast<int> (hcarte / 1.5) << static_cast<int> (hcarte / 1.2);
-                tabLon << lcarte / 12 << lcarte / 6 << static_cast<int> (lcarte * 0.25) << lcarte / 3 << static_cast<int> (lcarte / 2.4)
-                       << static_cast<int> (7. * lcarte / 12.) << static_cast<int> (lcarte / 1.5) << static_cast<int> (lcarte * 0.75)
-                       << static_cast<int> (lcarte / 1.2) << static_cast<int> (11. * lcarte / 12.);
-
-                //                ui->W150->setText("150");
-                //                ui->W120->setText("120");
-                //                ui->W90->setText("90");
-                //                ui->W60->setText("60");
-                //                ui->W30->setText("30");
-
-                //                QPalette coul;
-                //                coul.setColor(QPalette::WindowText, Qt::black);
-                //                ui->N60->setPalette(coul);
-                //                ui->N30->setPalette(coul);
-                //                ui->N0->setPalette(coul);
-                //                ui->S30->setPalette(coul);
-                //                ui->S60->setPalette(coul);
-                //                ui->S30->setText("30");
-                //                ui->S60->setText("60");
-                //                ui->N60->setAlignment(Qt::AlignLeft);
-                //                ui->N30->setAlignment(Qt::AlignLeft);
-                //                ui->N0->setAlignment(Qt::AlignLeft);
-
-                // Tropiques
-                stylo.setStyle(Qt::DashLine);
-                scene->addLine(0, 66.55 * DEG2PXVT, lcarte, 66.55 * DEG2PXVT, stylo);
-                scene->addLine(0, 113.45 * DEG2PXVT, lcarte, 113.45 * DEG2PXVT, stylo);
+                const double lon = stepMeridiens * i;
+                const double x = DEG2PXHZ * lon;
+                scene->addLine(x, 0., x, hauteurMeridiens, (i == (maxMeridiens / 2)) ? pen : pen2);
             }
 
-            //            const int dec1 = (mcc) ? 12 : 8;
-            //            const int dec2 = (mcc) ? 9 : 5;
-            //            ui->W150->move(static_cast<int> (lcarte / 12.) - dec1, 0);
-            //            ui->W120->move(static_cast<int> (lcarte / 6.) - dec1, 0);
-            //            ui->W90->move(static_cast<int> (lcarte / 4.) - dec2, 0);
-            //            ui->W60->move(static_cast<int> (lcarte / 3.) - dec2, 0);
-            //            ui->W30->move(static_cast<int> (lcarte / 2.4) - dec2, 0);
+            // Paralleles
+            for(unsigned int i=1; i<maxParalleles; i++) {
 
-            stylo.setStyle(Qt::SolidLine);
-            for(int j=0; j<tabLat.size(); j++) {
-                scene->addLine(0, tabLat.at(j), lcarte, tabLat.at(j), stylo);
+                const double lat = stepParalleles * i;
+                const double y = DEG2PXVT * lat;
+                scene->addLine(0., y, largeurParalleles, y, (i == (maxParalleles / 2)) ? pen : pen2);
             }
 
-            for(int j=0; j<tabLon.size(); j++) {
-                scene->addLine(tabLon.at(j), 0, tabLon.at(j), hcarte, stylo);
-            }
-            /*
-            if (!ui->carte->isHidden()) {
-                ui->frameLat->setVisible(true);
-                ui->frameLon->setVisible(true);
-                if (mcc) {
-                    ui->NN->setVisible(false);
-                    ui->SS->setVisible(false);
-                    ui->EE->setVisible(false);
-                    ui->WW->setVisible(false);
-                    ui->frameLat2->setVisible(true);
-                } else {
-                    ui->NN->setVisible(true);
-                    ui->SS->setVisible(true);
-                    ui->EE->setVisible(true);
-                    ui->WW->setVisible(true);
-                    ui->frameLat2->setVisible(false);
-                }
-            }
+            // Tropiques
+            pen2.setStyle(Qt::DashDotLine);
+            scene->addLine(0, 66.55 * DEG2PXVT, largeur, 66.55 * DEG2PXVT, pen2);
+            scene->addLine(0, 113.45 * DEG2PXVT, largeur, 113.45 * DEG2PXVT, pen2);
 
-        } else {
-            ui->frameLat->setVisible(false);
-            ui->frameLat2->setVisible(false);
-            ui->frameLon->setVisible(false);
-   */     }
+            // Cercles polaires
+            scene->addLine(0, 23.45 * DEG2PXVT, largeur, 23.45 * DEG2PXVT, pen2);
+            scene->addLine(0, 156.55 * DEG2PXVT, largeur, 156.55 * DEG2PXVT, pen2);
+        }
 
 
         // Affichage de la SAA
@@ -337,8 +272,10 @@ void Carte::show()
             const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * _onglets->ui()->intensiteOmbre->value())));
             const QBrush alpha = (mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha1.color().alpha()))) : alpha1;
 
-            const QPen stylo1 = (_onglets->ui()->coulTerminateur->currentIndex() == 0) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
+            const QPen stylo1 = (_onglets->ui()->coulTerminateur->currentIndex() == 0) ?
+                        QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
             QPen stylo((mcc) ? stylo1 : QPen(Qt::NoBrush, 0));
+            stylo.setCosmetic(true);
 
             QVector<QPointF> zone;
             QVector<QPointF> zone1;
@@ -518,6 +455,70 @@ void Carte::show()
 
                 beta += 6. * DEG2RAD;
             }
+        }
+
+        if (_onglets->ui()->affgrille->isChecked()) {
+
+            // Etiquettes de longitude
+            QBrush couleur((soleil.latitude() > 0.) ? Qt::lightGray : Qt::gray);
+            for(unsigned int i=1; i<maxMeridiens; i++) {
+
+                if (((i % 2) == 0) || !mcc) {
+
+                    const double lon = stepMeridiens * i;
+                    const double x = DEG2PXHZ * lon;
+
+                    QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lon - 180.)));
+                    txt->setBrush(couleur);
+                    txt->setFont(police);
+
+                    const double dx = txt->boundingRect().width() * 0.5;
+                    txt->setPos(x - dx, hauteurMeridiens + 4.);
+                    scene->addItem(txt);
+                }
+            }
+
+            QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem("W");
+            txtl->setBrush(couleur);
+            txtl->setFont(police);
+            txtl->setPos(DEG2PXHZ * 165. - txtl->boundingRect().width() * 0.5, hauteurMeridiens + 4.);
+            scene->addItem(txtl);
+
+            txtl = new QGraphicsSimpleTextItem("E");
+            txtl->setBrush(couleur);
+            txtl->setFont(police);
+            txtl->setPos(DEG2PXHZ * 195. - txtl->boundingRect().width() * 0.5, hauteurMeridiens + 4.);
+            scene->addItem(txtl);
+
+            // Etiquettes de latitude
+            for(unsigned int i=1; i<maxParalleles; i++) {
+
+                if (((i % 2) == 0) || !mcc) {
+
+                    const double lat = stepParalleles * i;
+                    const double y = DEG2PXVT * lat;
+
+                    QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lat - 90.)));
+                    txt->setBrush(Qt::lightGray);
+                    txt->setFont(police);
+
+                    const double dy = txt->boundingRect().height() * 0.5 - 0.5;
+                    txt->setPos(largeur - 7. - txt->boundingRect().width(), y - dy);
+                    scene->addItem(txt);
+                }
+            }
+
+            txtl = new QGraphicsSimpleTextItem("N");
+            txtl->setFont(police);
+            txtl->setBrush(Qt::lightGray);
+            txtl->setPos(largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 75. - txtl->boundingRect().height() * 0.5);
+            scene->addItem(txtl);
+
+            txtl = new QGraphicsSimpleTextItem("S");
+            txtl->setFont(police);
+            txtl->setBrush(Qt::lightGray);
+            txtl->setPos(largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 105. - txtl->boundingRect().height() * 0.5);
+            scene->addItem(txtl);
         }
 
         // Affichage de la ZOE et de la SAA pour le Wall Command Center
@@ -1046,6 +1047,7 @@ void Carte::resizeEvent(QResizeEvent *evt)
         const int hc = (lc + 1) / 2;
         ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
     }
+
     const int hcarte = ui->carte->height() - 1;
     const int lcarte = ui->carte->width() - 1;
 
