@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 juillet 2022
+ * >    21 juillet 2022
  *
  */
 
@@ -53,8 +53,6 @@
 static QSettings settings("Astropedia", "PreviSat");
 
 Configuration *Configuration::_instance = nullptr;
-
-bool Configuration::_isCarteMonde;
 
 
 /**********
@@ -306,11 +304,6 @@ QString Configuration::noradStationSpatiale() const
     return _noradStationSpatiale;
 }
 
-bool Configuration::isCarteMonde() const
-{
-    return _isCarteMonde;
-}
-
 QString Configuration::dateDebutISS() const
 {
     return _dateDebutISS;
@@ -359,6 +352,16 @@ QStringList Configuration::listeChainesNasa() const
 bool &Configuration::issLive()
 {
     return _issLive;
+}
+
+bool &Configuration::isCarteMonde()
+{
+    return _isCarteMonde;
+}
+
+bool &Configuration::isCarteMaximisee()
+{
+    return _isCarteMaximisee;
 }
 
 
@@ -463,11 +466,6 @@ void Configuration::suppressionSatelliteFicTLE(const QString &norad)
     if (_mapSatellitesFicTLE[fic].contains(norad)) {
         _mapSatellitesFicTLE[fic].removeOne(norad);
     }
-}
-
-void Configuration::setIsCarteMonde(bool isCarteMonde)
-{
-    _isCarteMonde = isCarteMonde;
 }
 
 

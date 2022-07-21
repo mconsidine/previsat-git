@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 juillet 2022
+ * >    21 juillet 2022
  *
  */
 
@@ -175,8 +175,6 @@ public:
 
     QString noradStationSpatiale() const;
 
-    bool isCarteMonde() const;
-
     QString dateDebutISS() const;
     QList<double> masseISS() const;
     QStringList evenementsISS() const;
@@ -192,6 +190,8 @@ public:
     QStringList listeChainesNasa() const;
 
     bool &issLive();
+    bool &isCarteMonde();
+    bool &isCarteMaximisee();
 
 
     /*
@@ -213,7 +213,6 @@ public:
     void ajoutSatelliteFicTLE(const QString &norad);
     void suppressionSatelliteFicTLE(const QString &norad);
 
-    void setIsCarteMonde(bool isCarteMonde);
 
     /*
      * Constantes publiques
@@ -418,8 +417,8 @@ private:
     QStringList _listeChainesNasa;
 
     bool _issLive;
-
-    static bool _isCarteMonde;
+    bool _isCarteMonde;
+    bool _isCarteMaximisee;
 
     /*
      * Methodes privees

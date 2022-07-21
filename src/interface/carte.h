@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    20 juillet 2022
  *
  */
 
@@ -82,6 +82,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Carte *ui() const;
+
 
     /*
      * Constantes publiques
@@ -149,7 +151,7 @@ private:
     double DEG2PXHZ;
     double DEG2PXVT;
 
-    Ui::Carte *ui;
+    Ui::Carte *_ui;
     QGraphicsScene *scene;
     Onglets *_onglets;
 

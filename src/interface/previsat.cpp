@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juillet 2022
+ * >    21 juillet 2022
  *
  */
 
@@ -49,6 +49,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "ui_carte.h"
 #include "ui_coordiss.h"
 #include "apropos.h"
 #include "carte.h"
@@ -64,8 +65,6 @@
 #include "librairies/maths/maths.h"
 #include "librairies/systeme/decompression.h"
 
-
-static bool isMaximise;
 
 // Registre
 static QSettings settings("Astropedia", "PreviSat");
@@ -800,7 +799,7 @@ void PreviSat::EnchainementCalculs()
             // Coordonnees terrestres
             soleil.CalculCoordTerrestres(observateur);
 
-            if (!isMaximise) {
+            if (!Configuration::instance()->isCarteMaximisee()) {
                 // Coordonnees equatoriales
                 soleil.CalculCoordEquat(observateur);
             }
@@ -827,7 +826,7 @@ void PreviSat::EnchainementCalculs()
             // Coordonnees terrestres
             lune.CalculCoordTerrestres(observateur);
 
-            if (!isMaximise) {
+            if (!Configuration::instance()->isCarteMaximisee()) {
                 // Coordonnees equatoriales
                 lune.CalculCoordEquat(observateur);
             }
@@ -1209,8 +1208,8 @@ void PreviSat::ChangementCarte()
     if (Configuration::instance()->isCarteMonde()) {
 
         // Passage en carte du ciel
-        Configuration::instance()->setIsCarteMonde(false);
-        _affichageCiel->setToolTip(tr("Carte du monde"));
+        Configuration::instance()->isCarteMonde() = false;
+        ui->changerCarte->setToolTip(tr("Carte du monde"));
         ui->frameCarte->setContentsMargins(0, 0, 20, 0);
         _carte->setVisible(false);
 
@@ -1247,8 +1246,8 @@ void PreviSat::ChangementCarte()
     } else {
 
         // Passage en carte du monde
-        Configuration::instance()->setIsCarteMonde(true);
-        _affichageCiel->setToolTip(tr("Carte du ciel"));
+        Configuration::instance()->isCarteMonde() = true;
+        ui->changerCarte->setToolTip(tr("Carte du ciel"));
         ui->frameCarte->setContentsMargins(0, 0, 0, 0);
 
         if (_ciel != nullptr) {
@@ -1256,6 +1255,7 @@ void PreviSat::ChangementCarte()
             _ciel = nullptr;
         }
 
+        _carte->show();
         _carte->setVisible(true);
     }
 
@@ -1379,27 +1379,25 @@ void PreviSat::ChangementZoom()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (isMaximise) {
+    if (Configuration::instance()->isCarteMaximisee()) {
 
         // Passage en affichage minimise
-        isMaximise = false;
-        _maximise->setToolTip(tr("Agrandir"));
-        _maximise->setIcon(QIcon(":/resources/maxi.png"));
+        ui->zoomCarte->setToolTip(tr("Agrandir"));
+        ui->zoomCarte->setIcon(QIcon(":/resources/maxi.png"));
 
         ui->frameModeListe->setVisible(true);
         ui->frameOngletsRadar->setVisible(true);
 
     } else {
         // Passage en affichage maximise
-        isMaximise = true;
-        _maximise->setToolTip(tr("Réduire"));
-        _maximise->setIcon(QIcon(":/resources/mini.png"));
+        ui->zoomCarte->setToolTip(tr("Réduire"));
+        ui->zoomCarte->setIcon(QIcon(":/resources/mini.png"));
 
-        ui->layoutCarteLon->setContentsMargins(6, 0, 34, 0);
         ui->frameModeListe->setVisible(false);
         ui->frameOngletsRadar->setVisible(false);
     }
 
+    Configuration::instance()->isCarteMaximisee() = !Configuration::instance()->isCarteMaximisee();
     resizeEvent(nullptr);
 
     /* Retour */
@@ -1477,10 +1475,6 @@ void PreviSat::AfficherCoordIssGmt()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    if (_gmt != nullptr) {
-        delete _gmt;
-        _gmt = nullptr;
-    }
 
     /* Corps de la methode */
     if (Configuration::instance()->issLive()) {
@@ -1495,7 +1489,7 @@ void PreviSat::AfficherCoordIssGmt()
             _coordISS->ui()->orbiteISS->setVisible(true);
             _coordISS->ui()->betaISS->move(112, 26);
             _coordISS->ui()->betaISS->setVisible(true);
-            _coordISS->resize(223, 59);
+            _coordISS->setGeometry(_carte->ui()->carte->x(), 0, 223, 59);
 
         } else {
 
@@ -1516,7 +1510,7 @@ void PreviSat::AfficherCoordIssGmt()
                 _coordISS->ui()->betaISS->setVisible(true);
                 _coordISS->ui()->orbiteISS->setVisible(false);
             }
-            _coordISS->resize(223, 46);
+            _coordISS->setGeometry(_carte->ui()->carte->x(), 0, 223, 46);
         }
 
         _coordISS->show(*_dateCourante, Onglets::dateEclipse());
@@ -1534,15 +1528,17 @@ void PreviSat::AfficherCoordIssGmt()
 
         QPalette coul;
         coul.setColor(QPalette::WindowText, coulGmt[_onglets->ui()->coulGMT->currentIndex()]);
-        _gmt = new QLabel(texte, _carte);
-        _gmt->setGeometry(340, 30, 151, 16);
+
+        _gmt->setText(texte);
         _gmt->setPalette(coul);
 
         QFont police = Configuration::instance()->policeWcc();
         police.setPointSize(12);
         police.setBold(true);
+
         _gmt->setFont(police);
         _gmt->adjustSize();
+        _gmt->setGeometry((_carte->width() - _gmt->width()) / 2, 30, _gmt->width(), 16);
         _gmt->show();
     }
 
@@ -1759,24 +1755,12 @@ void PreviSat::ChargementFenetre()
     //
 
     // Bouton pour maximiser la carte
-    isMaximise = false;
-    _maximise = new QToolButton(ui->frameCarte);
-    _maximise->setMaximumSize(20, 20);
-    _maximise->setToolTip(tr("Agrandir"));
-    _maximise->setIcon(QIcon(":/resources/maxi.png"));
-    _maximise->setShortcut(QKeySequence::fromString("Ctrl+M"));
-    _maximise->setAutoRaise(true);
-    connect(_maximise, SIGNAL(clicked()), this, SLOT(ChangementZoom()));
+    Configuration::instance()->isCarteMaximisee() = false;
+    connect(ui->zoomCarte, SIGNAL(clicked()), this, SLOT(ChangementZoom()));
 
     // Bouton pour passer de la carte du monde a la carte du ciel (et vice versa)
-    Configuration::instance()->setIsCarteMonde(true);
-    _affichageCiel = new QToolButton(ui->frameCarte);
-    _affichageCiel->setMaximumSize(20, 20);
-    _affichageCiel->setToolTip(tr("Carte du ciel"));
-    _affichageCiel->setIcon(QIcon(":/resources/globe.png"));
-    _affichageCiel->setShortcut(QKeySequence::fromString("F9"));
-    _affichageCiel->setAutoRaise(true);
-    connect(_affichageCiel, SIGNAL(clicked()), this, SLOT(ChangementCarte()));
+    Configuration::instance()->isCarteMonde() = true;
+    connect(ui->changerCarte, SIGNAL(clicked()), this, SLOT(ChangementCarte()));
 
     // Onglets
     _onglets = new Onglets(this);
@@ -1787,8 +1771,10 @@ void PreviSat::ChargementFenetre()
     ui->layoutCarte->addWidget(_carte);
 
     // Coordonnees de l'ISS
-    _coordISS = new CoordISS(_carte);
+    _coordISS = new CoordISS(ui->frameCarte);
     _coordISS->setVisible(false);
+    _gmt = new QLabel("", ui->frameCarte);
+    _gmt->setVisible(false);
 
     // Radar
     _radar = new Radar(_onglets, this);
@@ -2161,16 +2147,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         _radar = nullptr;
     }
 
-    if (_maximise != nullptr) {
-        delete _maximise;
-        _maximise = nullptr;
-    }
-
-    if (_affichageCiel != nullptr) {
-        delete _affichageCiel;
-        _affichageCiel = nullptr;
-    }
-
     if (_messageStatut != nullptr) {
         delete _messageStatut;
         _messageStatut = nullptr;
@@ -2221,6 +2197,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         _timerStatut = nullptr;
     }
 
+    if (_gmt != nullptr) {
+        delete _gmt;
+        _gmt = nullptr;
+    }
+
     /* Retour */
     return;
 }
@@ -2237,6 +2218,7 @@ bool PreviSat::eventFilter(QObject *object, QEvent *evt)
         if (ui->lancementVideoNasa->underMouse()) {
             setCursor(Qt::PointingHandCursor);
         }
+
     } else if (evt->type() == QEvent::Leave) {
         setCursor(Qt::ArrowCursor);
     }
@@ -2361,29 +2343,18 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(evt)
 
     /* Corps de la methode */
     if (Configuration::instance()->isCarteMonde()) {
 
-        if (_onglets->ui()->proportionsCarte->isChecked()) {
-            ui->layoutCarte->setEnabled(false);
-        }
-
-        ui->layoutCarteLon->setContentsMargins(6, 0, 34, 20);
         _carte->resizeEvent(evt);
+
+        if (Configuration::instance()->issLive()) {
+            AfficherCoordIssGmt();
+        }
 
     } else {
         _ciel->resizeEvent(evt);
-    }
-
-    if (isMaximise) {
-        _maximise->setGeometry(ui->centralWidget->width() - 30, 0, 20, 20);
-        _affichageCiel->setGeometry(ui->centralWidget->width() - 30, 28, 20, 20);
-
-    } else {
-        _maximise->setGeometry(qMax(815, ui->frameCarte->width() - 19), 0, 20, 20);
-        _affichageCiel->setGeometry(qMax(815, ui->frameCarte->width() - 19), 28, 20, 20);
     }
 
     /* Retour */
@@ -2432,12 +2403,10 @@ void PreviSat::on_mccISS_toggled(bool checked)
     /* Corps de la methode */
     Configuration::instance()->issLive() = checked;
     GestionTempsReel();
-    _carte->show();
+
     _radar->setVisible(!checked);
     ui->frameVideo->setVisible(checked);
-    if (checked) {
-        AfficherCoordIssGmt();
-    }
+
     _coordISS->setVisible(checked);
     _gmt->setVisible(checked);
 
@@ -2518,6 +2487,7 @@ void PreviSat::on_actionOuvrir_fichier_TLE_triggered()
         } else {
             OuvertureFichierTLE(fichier);
         }
+
     } catch (PreviSatException &ex) {
     }
 
@@ -2809,9 +2779,9 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         _onglets->ui()->utcManuel->setVisible(false);
         _onglets->ui()->utcManuel2->setVisible(false);
         _onglets->ui()->frameSimu->setVisible(false);
-//        if (_onglets->ui()->pause->isEnabled()) {
-//            _onglets->on_pause_clicked();
-//        }
+        //        if (_onglets->ui()->pause->isEnabled()) {
+        //            _onglets->on_pause_clicked();
+        //        }
 
         on_pasReel_currentIndexChanged(ui->pasReel->currentIndex());
         ui->pasReel->setVisible(true);
