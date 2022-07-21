@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juillet 2022
+ * >    20 juillet 2022
  *
  */
 
@@ -58,7 +58,6 @@ class Onglets;
 class Radar;
 class QLabel;
 class QListWidgetItem;
-class QToolButton;
 
 namespace Ui {
 class PreviSat;
@@ -160,8 +159,6 @@ private:
     QLabel *_gmt;
     Onglets *_onglets;
     Radar *_radar;
-    QToolButton *_maximise;
-    QToolButton *_affichageCiel;
     Informations *infos;
 
     // Barre de statut

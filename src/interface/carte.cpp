@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    15 juillet 2022
+ * >    21 juillet 2022
  *
  */
 
@@ -72,14 +72,14 @@ static const double tabSAA_ISS[16][2] = { { 55.5, -17.3 }, { 47., -17.3 }, { 34.
  */
 Carte::Carte(Onglets *onglets, QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::Carte)
+    _ui(new Ui::Carte)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
     scene = nullptr;
     _onglets = onglets;
 
-    ui->carte->installEventFilter(this);
-    ui->carte->viewport()->installEventFilter(this);
+    _ui->carte->installEventFilter(this);
+    _ui->carte->viewport()->installEventFilter(this);
 
     DEG2PXHZ = (1. / 0.45);
     DEG2PXVT = (1. / 0.45);
@@ -96,13 +96,17 @@ Carte::~Carte()
         scene = nullptr;
     }
 
-    delete ui;
+    delete _ui;
 }
 
 
 /*
  * Accesseurs
  */
+Ui::Carte *Carte::ui() const
+{
+    return _ui;
+}
 
 
 /*
@@ -131,7 +135,7 @@ void Carte::show()
     }
 
     scene = new QGraphicsScene;
-    scene->setSceneRect(contentsRect());
+    scene->setSceneRect(rect());
 
     /* Corps de la methode */
     // Chargement de la carte
@@ -140,17 +144,17 @@ void Carte::show()
 
     QPixmap pixMap;
     pixMap.load(nomMap);
-    pixMap = pixMap.scaled(ui->carte->size());
+    pixMap = pixMap.scaled(_ui->carte->size());
     scene->addPixmap(pixMap);
 
-    if (!ui->carte->isHidden()) {
+    if (!_ui->carte->isHidden()) {
 
         // Affichage du filtre de la carte en mode vision nocturne
         // TODO
 
         // Affichage de la grille de coordonnees
-        const double largeur = ui->carte->width();
-        const double hauteur = ui->carte->height();
+        const double largeur = _ui->carte->width();
+        const double hauteur = _ui->carte->height();
         const double largeurParalleles = largeur - 24.;
         const double hauteurMeridiens = hauteur - 24.;
 
@@ -177,19 +181,31 @@ void Carte::show()
             pen2.setCosmetic(true);
 
             // Meridiens
+            double ht = hauteurMeridiens;
             for(unsigned int i=1; i<maxMeridiens; i++) {
 
                 const double lon = stepMeridiens * i;
                 const double x = DEG2PXHZ * lon;
-                scene->addLine(x, 0., x, hauteurMeridiens, (i == (maxMeridiens / 2)) ? pen : pen2);
+
+                if (Configuration::instance()->issLive()) {
+                    ht = (((i % 2) == 0) || (i == 11) || (i == 13)) ? hauteurMeridiens : hauteur;
+                }
+
+                scene->addLine(x, 0., x, ht, (i == (maxMeridiens / 2)) ? pen : pen2);
             }
 
             // Paralleles
+            double lg = largeurParalleles;
             for(unsigned int i=1; i<maxParalleles; i++) {
 
                 const double lat = stepParalleles * i;
                 const double y = DEG2PXVT * lat;
-                scene->addLine(0., y, largeurParalleles, y, (i == (maxParalleles / 2)) ? pen : pen2);
+
+                if (Configuration::instance()->issLive()) {
+                    lg = (((i % 2) == 0) || (i == 5) || (i == 7)) ? largeurParalleles : largeur;
+                }
+
+                scene->addLine(0., y, lg, y, (i == (maxParalleles / 2)) ? pen : pen2);
             }
 
             // Tropiques
@@ -245,17 +261,17 @@ void Carte::show()
             transform.translate(-7, -7);
             sol->setTransform(transform);
 
-            if (((lsol + 7) > ui->carte->width()) || ((lsol - 7) < 0)) {
+            if (((lsol + 7) > _ui->carte->width()) || ((lsol - 7) < 0)) {
 
                 QGraphicsPixmapItem * const sol2 = scene->addPixmap(pixsol);
                 transform.reset();
 
-                if ((lsol + 7) > ui->carte->width()) {
-                    transform.translate(lsol - ui->carte->width(), bsol);
+                if ((lsol + 7) > _ui->carte->width()) {
+                    transform.translate(lsol - _ui->carte->width(), bsol);
                 }
 
                 if ((lsol - 7) < 0) {
-                    transform.translate(lsol + ui->carte->width(), bsol);
+                    transform.translate(lsol + _ui->carte->width(), bsol);
                 }
 
                 transform.translate(-7, -7);
@@ -299,7 +315,7 @@ void Carte::show()
 
                     zone.append(QPointF(soleil.zone().at(j).x() * DEG2PXHZ, soleil.zone().at(j).y() * DEG2PXVT));
 
-                    if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (ui->carte->width() / 2)) {
+                    if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (_ui->carte->width() / 2)) {
                         idxIntersection.append(j);
                     }
                 }
@@ -328,31 +344,31 @@ void Carte::show()
                         // Ajout de points pour completer la zone d'ombre sur les bords de la carte
                         if (zone.first().x() < zone.last().x()) {
 
-                            zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), zone.last().y()));
+                            zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), zone.last().y()));
 
                             if (soleil.latitude() > 0.) {
-                                zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), ui->carte->height()));
-                                zone.insert(0, QPointF(zone.at(2).x() + ui->carte->width(), ui->carte->height()));
+                                zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), _ui->carte->height()));
+                                zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), _ui->carte->height()));
 
                             } else {
-                                zone.insert(0, QPointF(zone.last().x() - ui->carte->width(), -1.));
-                                zone.insert(0, QPointF(zone.at(2).x() + ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), -1.));
                             }
-                            zone.insert(0, QPointF(zone.at(3).x() + ui->carte->width(), zone.at(3).y()));
+                            zone.insert(0, QPointF(zone.at(3).x() + _ui->carte->width(), zone.at(3).y()));
 
                         } else {
 
-                            zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), zone.last().y()));
+                            zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), zone.last().y()));
 
                             if (soleil.latitude() > 0.) {
-                                zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), ui->carte->height()));
-                                zone.insert(0, QPointF(zone.at(2).x() - ui->carte->width(), ui->carte->height()));
+                                zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), _ui->carte->height()));
+                                zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), _ui->carte->height()));
 
                             } else {
-                                zone.insert(0, QPointF(zone.last().x() + ui->carte->width(), -1.));
-                                zone.insert(0, QPointF(zone.at(2).x() - ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), -1.));
+                                zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), -1.));
                             }
-                            zone.insert(0, QPointF(zone.at(3).x() - ui->carte->width(), zone.at(3).y()));
+                            zone.insert(0, QPointF(zone.at(3).x() - _ui->carte->width(), zone.at(3).y()));
                         }
 
                         const QPolygonF poly(zone);
@@ -380,30 +396,30 @@ void Carte::show()
                         if (zone1.at(jmed-1).x() > zone2.first().x()) {
 
                             if (zone1.size() > jmed) {
-                                zone1.insert(jmed, QPointF(zone2.last().x() + ui->carte->width(), zone2.last().y()));
-                                zone1.insert(jmed, QPointF(zone2.first().x() + ui->carte->width(), zone2.first().y()));
+                                zone1.insert(jmed, QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
+                                zone1.insert(jmed, QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
 
                             } else {
-                                zone1.append(QPointF(zone2.last().x() + ui->carte->width(), zone2.last().y()));
-                                zone1.append(QPointF(zone2.first().x() + ui->carte->width(), zone2.first().y()));
+                                zone1.append(QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
+                                zone1.append(QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
                             }
 
-                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() - ui->carte->width(), zone1.at(jmed-1).y()));
-                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() - ui->carte->width(), zone1.at(jmed+2).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() - _ui->carte->width(), zone1.at(jmed-1).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() - _ui->carte->width(), zone1.at(jmed+2).y()));
 
                         } else {
 
                             if (zone1.size() > jmed) {
-                                zone1.insert(jmed, QPointF(zone2.last().x() - ui->carte->width(), zone2.last().y()));
-                                zone1.insert(jmed, QPointF(zone2.first().x() - ui->carte->width(), zone2.first().y()));
+                                zone1.insert(jmed, QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
+                                zone1.insert(jmed, QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
 
                             } else {
-                                zone1.append(QPointF(zone2.last().x() - ui->carte->width(), zone2.last().y()));
-                                zone1.append(QPointF(zone2.first().x() - ui->carte->width(), zone2.first().y()));
+                                zone1.append(QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
+                                zone1.append(QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
                             }
 
-                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() + ui->carte->width(), zone1.at(jmed-1).y()));
-                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() + ui->carte->width(), zone1.at(jmed+2).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed-1).x() + _ui->carte->width(), zone1.at(jmed-1).y()));
+                            zone2.insert(0, QPointF(zone1.at(jmed+2).x() + _ui->carte->width(), zone1.at(jmed+2).y()));
                         }
 
                         const QPolygonF poly1(zone1);
@@ -421,19 +437,19 @@ void Carte::show()
                     const double x1 = qMin(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
                     const double x2 = qMax(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
 
-                    if (lsol > ui->carte->width() / 4 && lsol < (3 * ui->carte->width()) / 4) {
+                    if ((lsol > (_ui->carte->width() / 4)) && (lsol < (3 * _ui->carte->width()) / 4)) {
 
                         zone1.clear();
                         zone1.append(QPointF(-1., -1.));
                         zone1.append(QPointF(x1, -1.));
-                        zone1.append(QPointF(x1, ui->carte->height()));
-                        zone1.append(QPointF(-1., ui->carte->height()));
+                        zone1.append(QPointF(x1, _ui->carte->height()));
+                        zone1.append(QPointF(-1., _ui->carte->height()));
 
                         zone2.clear();
-                        zone2.append(QPointF(ui->carte->width(), -1.));
+                        zone2.append(QPointF(_ui->carte->width(), -1.));
                         zone2.append(QPointF(x2, -1.));
-                        zone2.append(QPointF(x2, ui->carte->height()));
-                        zone2.append(QPointF(ui->carte->width(), ui->carte->height()));
+                        zone2.append(QPointF(x2, _ui->carte->height()));
+                        zone2.append(QPointF(_ui->carte->width(), _ui->carte->height()));
 
                         const QPolygonF poly1(zone1);
                         const QPolygonF poly2(zone2);
@@ -444,8 +460,8 @@ void Carte::show()
 
                         zone1.clear();
                         zone1.append(QPointF(x1, -1.));
-                        zone1.append(QPointF(x1, ui->carte->height()));
-                        zone1.append(QPointF(x2, ui->carte->height()));
+                        zone1.append(QPointF(x1, _ui->carte->height()));
+                        zone1.append(QPointF(x2, _ui->carte->height()));
                         zone1.append(QPointF(x2, -1.));
 
                         const QPolygonF poly1(zone1);
@@ -478,13 +494,13 @@ void Carte::show()
                 }
             }
 
-            QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem("W");
+            QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem(tr("W", "Symbol for West"));
             txtl->setBrush(couleur);
             txtl->setFont(police);
             txtl->setPos(DEG2PXHZ * 165. - txtl->boundingRect().width() * 0.5, hauteurMeridiens + 4.);
             scene->addItem(txtl);
 
-            txtl = new QGraphicsSimpleTextItem("E");
+            txtl = new QGraphicsSimpleTextItem(tr("E", "Symbol for East"));
             txtl->setBrush(couleur);
             txtl->setFont(police);
             txtl->setPos(DEG2PXHZ * 195. - txtl->boundingRect().width() * 0.5, hauteurMeridiens + 4.);
@@ -508,13 +524,13 @@ void Carte::show()
                 }
             }
 
-            txtl = new QGraphicsSimpleTextItem("N");
+            txtl = new QGraphicsSimpleTextItem(tr("N", "Symbol for North"));
             txtl->setFont(police);
             txtl->setBrush(Qt::lightGray);
             txtl->setPos(largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 75. - txtl->boundingRect().height() * 0.5);
             scene->addItem(txtl);
 
-            txtl = new QGraphicsSimpleTextItem("S");
+            txtl = new QGraphicsSimpleTextItem(tr("S", "Symbol for South"));
             txtl->setFont(police);
             txtl->setBrush(Qt::lightGray);
             txtl->setPos(largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 105. - txtl->boundingRect().height() * 0.5);
@@ -577,8 +593,8 @@ void Carte::show()
 
                 txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
                 const int lng = static_cast<int> (txtObs->boundingRect().width());
-                const int xnobs = ((lobs + 7 + lng) > ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
-                const int ynobs = ((bobs + 12) > ui->carte->height()) ? bobs - 12 : bobs;
+                const int xnobs = ((lobs + 7 + lng) > _ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
+                const int ynobs = ((bobs + 12) > _ui->carte->height()) ? bobs - 12 : bobs;
 
                 txtObs->setBrush(Qt::white);
                 txtObs->setPos(xnobs, ynobs);
@@ -640,11 +656,11 @@ void Carte::show()
                             lsat2 = sat.zone().at(k).x() * DEG2PXHZ;
                             bsat2 = sat.zone().at(k).y() * DEG2PXVT + 1;
 
-                            if (fabs(lsat2 - lsat1) > (ui->carte->width() / 2)) {
+                            if (fabs(lsat2 - lsat1) > (_ui->carte->width() / 2)) {
                                 if (lsat2 < lsat1) {
-                                    lsat2 += ui->carte->width();
+                                    lsat2 += _ui->carte->width();
                                 } else {
-                                    lsat1 += ui->carte->width();
+                                    lsat1 += _ui->carte->width();
                                 }
                                 ils = k;
                             }
@@ -652,8 +668,8 @@ void Carte::show()
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
 
                             if (ils == k) {
-                                lsat1 -= ui->carte->width() + 1;
-                                lsat2 -= ui->carte->width() + 1;
+                                lsat1 -= _ui->carte->width() + 1;
+                                lsat2 -= _ui->carte->width() + 1;
                                 scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
                                 ils = 0;
                             }
@@ -688,15 +704,15 @@ void Carte::show()
             transform.translate(-7, -7);
             lun->setTransform(transform);
 
-            if (((llun + 7) > ui->carte->width()) || ((llun - 7) < 0)) {
+            if (((llun + 7) > _ui->carte->width()) || ((llun - 7) < 0)) {
 
                 QGraphicsPixmapItem * const lun2 = scene->addPixmap(pixlun);
 
-                if ((llun + 7) > ui->carte->width()) {
-                    transform2.translate(llun - ui->carte->width(), blun);
+                if ((llun + 7) > _ui->carte->width()) {
+                    transform2.translate(llun - _ui->carte->width(), blun);
                 }
                 if ((llun - 7) < 0) {
-                    transform2.translate(lsol + ui->carte->width(), blun);
+                    transform2.translate(lsol + _ui->carte->width(), blun);
                 }
                 if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
                     transform2.rotate(180.);
@@ -744,11 +760,11 @@ void Carte::show()
                     lsat2 = satellite.traceAuSol().at(j).longitude * DEG2PXHZ;
                     bsat2 = satellite.traceAuSol().at(j).latitude * DEG2PXVT;
 
-                    if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
+                    if (fabs(lsat2 - lsat1) > _ui->carte->width() / 2) {
                         if (lsat2 < lsat1) {
-                            lsat2 += ui->carte->width();
+                            lsat2 += _ui->carte->width();
                         } else {
-                            lsat1 += ui->carte->width();
+                            lsat1 += _ui->carte->width();
                         }
                         ils = j;
                     }
@@ -783,8 +799,8 @@ void Carte::show()
                                 txtOrb->setBrush(Qt::white);
 
                                 const int lng = static_cast<int> (txtOrb->boundingRect().width());
-                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + ui->carte->width() - lng - 8 : lsat2 - lng;
-                                txtOrb->setPos(xnorb, ui->carte->height() / 2 - 18);
+                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + _ui->carte->width() - lng - 8 : lsat2 - lng;
+                                txtOrb->setPos(xnorb, _ui->carte->height() / 2 - 18);
                                 scene->addItem(txtOrb);
                             }
 
@@ -835,7 +851,7 @@ void Carte::show()
                     scene->addLine(lig, crayon);
 
                     if (ils == j) {
-                        lsat2 -= ui->carte->width();
+                        lsat2 -= _ui->carte->width();
                         scene->addLine(lig, crayon);
                         ils = 0;
                     }
@@ -887,8 +903,8 @@ void Carte::show()
                                 const QFont policeSat(_onglets->ui()->policeWCC->currentText(), 11);
                                 txtSat->setFont(policeSat);
 
-                                const int lsat = qRound((180.
-                                                         - Configuration::instance()->listeSatellites().at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
+                                const int lsat =
+                                        qRound((180. - Configuration::instance()->listeSatellites().at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
                                 const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                                 crayon = QPen(QColor(satTDRS.rouge, satTDRS.vert, satTDRS.bleu), 2);
@@ -915,11 +931,11 @@ void Carte::show()
                         lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
                         bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
 
-                        if (fabs(lsat2 - lsat1) > ui->carte->width() / 2) {
+                        if (fabs(lsat2 - lsat1) > _ui->carte->width() / 2) {
                             if (lsat2 < lsat1) {
-                                lsat2 += ui->carte->width();
+                                lsat2 += _ui->carte->width();
                             } else {
-                                lsat1 += ui->carte->width();
+                                lsat1 += _ui->carte->width();
                             }
                             ils = j;
                             als[isat] = true;
@@ -928,8 +944,8 @@ void Carte::show()
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
                         if (ils == j) {
-                            lsat1 -= ui->carte->width() + 1;
-                            lsat2 -= ui->carte->width() + 1;
+                            lsat1 -= _ui->carte->width() + 1;
+                            lsat2 -= _ui->carte->width() + 1;
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
                             ils = 0;
                         }
@@ -976,12 +992,12 @@ void Carte::show()
 
                 if (listeIcones.isEmpty()) {
                     // L'icone du satellite n'a pas ete trouvee, affichage par defaut
-                    AffichageSatellite(satellites.at(isat), lsat, bsat, ui->carte->width(), ui->carte->height());
+                    AffichageSatellite(satellites.at(isat), lsat, bsat, _ui->carte->width(), _ui->carte->height());
                 } else {
 
                     // Affichage de l'icone satellite
                     img = QPixmap(listeIcones.at(0));
-                    img = img.scaled(qMin(ui->carte->width() / 12, img.width()), qMin(ui->carte->height() / 6, img.height()));
+                    img = img.scaled(qMin(_ui->carte->width() / 12, img.width()), qMin(_ui->carte->height() / 6, img.height()));
 
                     pm = scene->addPixmap(img);
 
@@ -1008,10 +1024,10 @@ void Carte::show()
                         pm2 = scene->addPixmap(img);
                         transform.reset();
 
-                        if (lsat > ui->carte->width() / 2) {
-                            transform.translate(lsat - ui->carte->width(), bsat);
+                        if (lsat > _ui->carte->width() / 2) {
+                            transform.translate(lsat - _ui->carte->width(), bsat);
                         } else {
-                            transform.translate(lsat + ui->carte->width(), bsat);
+                            transform.translate(lsat + _ui->carte->width(), bsat);
                         }
 
                         transform.rotate(angle);
@@ -1020,12 +1036,12 @@ void Carte::show()
                     }
                 }
             } else {
-                AffichageSatellite(satellites.at(isat), lsat, bsat, ui->carte->width(), ui->carte->height());
+                AffichageSatellite(satellites.at(isat), lsat, bsat, _ui->carte->width(), _ui->carte->height());
             }
         }
     }
 
-    ui->carte->setScene(scene);
+    _ui->carte->setScene(scene);
 
     /* Retour */
     return;
@@ -1045,18 +1061,16 @@ void Carte::resizeEvent(QResizeEvent *evt)
         const int lref = width();
         const int lc = qMin(href, lref);
         const int hc = (lc + 1) / 2;
-        ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
+        _ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
     }
 
-    const int hcarte = ui->carte->height() - 1;
-    const int lcarte = ui->carte->width() - 1;
+    const int hcarte = _ui->carte->height() - 1;
+    const int lcarte = _ui->carte->width() - 1;
 
     DEG2PXHZ = lcarte * (1. / T360);
     DEG2PXVT = hcarte * (2. / T360);
 
-    if (Configuration::instance()->isCarteMonde()) {
-        show();
-    }
+    show();
 
     /* Retour */
     return;
@@ -1085,8 +1099,8 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
         QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(acronyme);
         const int lng = static_cast<int> (txtObs->boundingRect().width());
-        const int xnobs = ((lobs + 7 + lng) > ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
-        const int ynobs = ((bobs + 12) > ui->carte->height()) ? bobs - 12 : bobs;
+        const int xnobs = ((lobs + 7 + lng) > _ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
+        const int ynobs = ((bobs + 12) > _ui->carte->height()) ? bobs - 12 : bobs;
 
         txtObs->setBrush(Qt::white);
         txtObs->setPos(xnobs, ynobs);
@@ -1121,7 +1135,7 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (ui->carte->underMouse()) {
+    if (_ui->carte->underMouse()) {
 
         const QMouseEvent* const evt = static_cast<const QMouseEvent*>(event);
         const int xCur = evt->x() + 1;
@@ -1325,4 +1339,3 @@ void Carte::AffichageSatellite(const Satellite &satellite, const int lsat, const
     /* Retour */
     return;
 }
-
