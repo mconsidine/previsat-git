@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    22 juillet 2022
  *
  */
 
@@ -78,8 +78,24 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief CalculFlashs Determination des flashs
+     * @param nombre nombre de satellites
+     * @return nombre de satellites
+     */
     static int CalculFlashs(int &nombre);
 
+    /**
+     * @brief CalculMagnitudeFlash Calcul de la magnitude du flash (pour l'affichage dans l'onglet General)
+     * @param date date
+     * @param satellite satellite
+     * @param soleil Soleil
+     * @param calcEclipseLune prise en compte des eclipses par la Lune
+     * @param refraction prise en compte de la refraction
+     * @return magnitude du flash
+     */
+    static double CalculMagnitudeFlash(const Date &date, const Satellite &satellite, const Soleil &soleil, const bool calcEclipseLune,
+                                       const bool refraction);
 
 protected:
 

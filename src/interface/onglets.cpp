@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 juillet 2022
+ * >    22 juillet 2022
  *
  */
 
@@ -49,6 +49,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QProgressDialog>
 #include <QScrollBar>
+#include <QSound>
 #include <QToolTip>
 #include "afficher.h"
 #include "gestionnairetle.h"
@@ -420,7 +421,56 @@ void Onglets::AffichageDonneesSatellite() const
                 double magn = satellite.magnitude().magnitude();
 
                 // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
-                // TODO
+                if (Configuration::instance()->mapFlashs().keys().contains(satellite.tle().norad()) && _ui->affnotif->isChecked()) {
+
+                    const double mag = Flashs::CalculMagnitudeFlash(*_date, satellite, Configuration::instance()->soleil(),
+                                                                    _ui->effetEclipsesMagnitude->isChecked(),
+                                                                    _ui->refractionAtmospherique->isChecked());
+
+                    magn = qMin(mag, magn);
+
+                    double crep = 0.;
+                    if (_ui->hauteurSoleilMetOp->currentIndex() <= 3) {
+                        crep = -6. * _ui->hauteurSoleilMetOp->currentIndex();
+                    } else if (_ui->hauteurSoleilMetOp->currentIndex() == 4) {
+                        crep = 90.;
+                    } else if (_ui->hauteurSoleilMetOp->currentIndex() == 5) {
+                        crep = _ui->valHauteurSoleilMetOp->text().toInt();
+                    } else {
+                    }
+                    crep *= DEG2RAD;
+
+                    NotificationSonore &notif = Configuration::instance()->notifFlashs();
+                    if (Configuration::instance()->soleil().hauteur() <= crep) {
+
+                        if ((notif == ATTENTE_LOS) && (magn <= _ui->magnitudeMaxMetOp->value())) {
+                            notif = NOTIFICATION_AOS;
+                        }
+
+
+                        if ((notif == ATTENTE_AOS) && (magn >= _ui->magnitudeMaxMetOp->value())) {
+                            notif = NOTIFICATION_LOS;
+                        }
+                    }
+
+                    if (notif == NOTIFICATION_AOS) {
+                        if (!((Configuration::instance()->notifAOS() == NOTIFICATION_AOS)
+                                || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
+                            JouerSonFlash();
+                        }
+
+                        notif = ATTENTE_AOS;
+                    }
+
+                    if (notif == NOTIFICATION_LOS) {
+                        if (!((Configuration::instance()->notifAOS() == NOTIFICATION_AOS)
+                                || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
+                            JouerSonFlash();
+                        }
+
+                        notif = ATTENTE_LOS;
+                    }
+                }
 
                 const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn)).arg(text.asprintf("%.0f", fractionIlluminee));
 
@@ -1706,7 +1756,7 @@ void Onglets::CalculAosSatSuivi() const
                 } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
 
                     cDelaiAOS = delaiAOS.ToShortDate(FORMAT_COURT, SYSTEME_24H).mid(11, 5)
-                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+                            .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
 
                 } else {
 
@@ -3055,6 +3105,26 @@ void Onglets::InitWallCommandCenter()
     on_affBetaWCC_toggled(false);
     on_affNbOrbWCC_toggled(false);
     blockSignals(etat);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Execute le son pour les flashs
+ */
+void Onglets::JouerSonFlash()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomSonFlash = Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "flare.wav";
+
+    /* Corps de la methode */
+    const QFile fi(nomSonFlash);
+    if (fi.exists()) {
+        QSound::play(nomSonFlash);
+    }
 
     /* Retour */
     return;

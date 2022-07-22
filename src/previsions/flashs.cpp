@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    22 juillet 2022
  *
  */
 
@@ -110,6 +110,9 @@ void Flashs::setConditions(const ConditionsPrevisions &conditions)
 
 /*
  * Methodes publiques
+ */
+/*
+ * Determination des flashs
  */
 int Flashs::CalculFlashs(int &nombre)
 {
@@ -307,6 +310,32 @@ int Flashs::CalculFlashs(int &nombre)
 
     /* Retour */
     return nombre;
+}
+
+/*
+ * Calcul de la magnitude du flash
+ */
+double Flashs::CalculMagnitudeFlash(const Date &date, const Satellite &satellite, const Soleil &soleil, const bool calcEclipseLune,
+                                    const bool refraction)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Satellite sat = satellite;
+    Lune lune;
+    if (calcEclipseLune) {
+        lune.CalculPosition(date);
+    }
+
+    ConditionEclipse condEcl;
+    condEcl.CalculSatelliteEclipse(satellite.position(), soleil, lune, refraction);
+
+    /* Corps de la methode */
+    const double ang = AngleReflexion(satellite, soleil);
+    const double magnitude = MagnitudeFlash(ang, condEcl, sat);
+
+    /* Retour */
+    return magnitude;
 }
 
 
