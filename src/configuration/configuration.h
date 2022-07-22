@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 juillet 2022
+ * >    22 juillet 2022
  *
  */
 
@@ -93,6 +93,12 @@ enum AdressesTelechargement {
     NOTIFICATIONS
 };
 
+enum NotificationSonore {
+    NOTIFICATION_AOS,
+    ATTENTE_AOS,
+    NOTIFICATION_LOS,
+    ATTENTE_LOS
+};
 
 class QFile;
 class QXmlStreamReader;
@@ -193,6 +199,8 @@ public:
     bool &isCarteMonde();
     bool &isCarteMaximisee();
 
+    NotificationSonore &notifAOS();
+    NotificationSonore &notifFlashs();
 
     /*
      * Modificateurs
@@ -419,6 +427,9 @@ private:
     bool _issLive;
     bool _isCarteMonde;
     bool _isCarteMaximisee;
+
+    NotificationSonore _notifAOS;
+    NotificationSonore _notifFlashs;
 
     /*
      * Methodes privees
