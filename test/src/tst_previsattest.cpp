@@ -74,7 +74,7 @@ private slots:
 
 PreviSatTest::PreviSatTest()
 {
-    qApp->setApplicationName("PreviSat");
+    qApp->setApplicationName(APP_NAME);
 }
 
 PreviSatTest::~PreviSatTest()

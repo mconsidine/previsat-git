@@ -50,7 +50,7 @@
 
 
 // Registre
-static QSettings settings("Astropedia", "PreviSat");
+static QSettings settings(ORG_NAME, APP_NAME);
 
 Configuration *Configuration::_instance = nullptr;
 

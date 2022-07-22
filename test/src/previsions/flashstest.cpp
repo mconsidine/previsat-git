@@ -63,7 +63,7 @@ void FlashsTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    qApp->setOrganizationName("Astropedia");
+    qApp->setOrganizationName(ORG_NAME);
     Configuration::instance()->Initialisation();
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
