@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 juillet 2022
+ * >    22 juillet 2022
  *
  */
 
@@ -425,6 +425,11 @@ private:
      * @brief InitWallCommandCenter Affichage du Wall Command Center au demarrage
      */
     void InitWallCommandCenter();
+
+    /**
+     * @brief JouerSonFlash Execute le son pour les flashs
+     */
+    static void JouerSonFlash();
 
     /**
      * @brief ReactualiserAffichage Rechargement du fichier TLE et rafraichissement de l'affichage

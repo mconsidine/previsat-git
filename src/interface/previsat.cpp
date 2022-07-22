@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 juillet 2022
+ * >    22 juillet 2022
  *
  */
 
@@ -45,6 +45,7 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QSettings>
+#include <QSound>
 #include "ui_onglets.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "ui_previsat.h"
@@ -1748,6 +1749,8 @@ void PreviSat::ChargementFenetre()
     _ciel = nullptr;
     _coordISS = nullptr;
     _gmt = nullptr;
+    Configuration::instance()->notifAOS() = ATTENTE_LOS;
+    Configuration::instance()->notifFlashs() = ATTENTE_LOS;
 
     /* Corps de la methode */
     // TEMP
@@ -1861,6 +1864,57 @@ void PreviSat::GestionTempsReel()
 
         // Affichage des donnees numeriques dans la barre d'onglets
         _onglets->show(*_dateCourante);
+
+        // Notifications sonores
+        if (_onglets->ui()->affnotif->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()) {
+
+            NotificationSonore &notif = Configuration::instance()->notifAOS();
+            const Satellite sat = Configuration::instance()->listeSatellites().at(0);
+
+            if (sat.isVisible() && (notif == ATTENTE_LOS)) {
+                notif = NOTIFICATION_AOS;
+            }
+
+            if (!sat.isVisible() && (notif == ATTENTE_AOS)) {
+                notif = NOTIFICATION_LOS;
+            }
+
+            if (notif == NOTIFICATION_AOS) {
+
+                // Notification sonore pour l'AOS
+                if (_onglets->ui()->listeSons->currentIndex() < _onglets->ui()->listeSons->count()) {
+
+                    const QString nomSonAOS = (_onglets->ui()->listeSons->currentIndex() == 0) ?
+                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "aos-default.wav" :
+                                Configuration::instance()->dirSon() + QDir::separator() + "aos-" + _onglets->ui()->listeSons->currentText() + ".wav";
+
+                    const QFile fi(nomSonAOS);
+                    if (fi.exists()) {
+                        QSound::play(nomSonAOS);
+                    }
+                }
+
+                notif = ATTENTE_AOS;
+            }
+
+            if (notif == NOTIFICATION_LOS) {
+
+                // Notification sonore pour le LOS
+                if (_onglets->ui()->listeSons->currentIndex() < _onglets->ui()->listeSons->count()) {
+
+                    const QString nomSonLOS = (_onglets->ui()->listeSons->currentIndex() == 0) ?
+                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "los-default.wav" :
+                                Configuration::instance()->dirSon() + QDir::separator() + "los-" + _onglets->ui()->listeSons->currentText() + ".wav";
+
+                    const QFile fi(nomSonLOS);
+                    if (fi.exists()) {
+                        QSound::play(nomSonLOS);
+                    }
+                }
+
+                notif = ATTENTE_LOS;
+            }
+        }
 
         if (Configuration::instance()->isCarteMonde()) {
 
@@ -2789,6 +2843,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
 
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
+        Configuration::instance()->notifAOS() = ATTENTE_LOS;
 
         // TODO
         //CalculAgeTLETransitISS();
@@ -2854,10 +2909,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
 
-        // TODO
-        //        notifAOS = false;
-        //        notifLOS = false;
-        //        notifFlash = false;
+        Configuration::instance()->notifAOS() = ATTENTE_LOS;
     }
 
     /* Retour */
@@ -2919,6 +2971,8 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     _onglets->setAcalcAOS(true);
     _onglets->setAcalcDN(true);
     _onglets->setInfo(true);
+    Configuration::instance()->notifAOS() = ATTENTE_LOS;
+
     GestionTempsReel();
 
     /* Retour */
@@ -3055,6 +3109,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     _onglets->setAcalcAOS(true);
     _onglets->setAcalcDN(true);
     _onglets->setInfo(true);
+    Configuration::instance()->notifAOS() = ATTENTE_LOS;
 
     GestionTempsReel();
 

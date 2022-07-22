@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 juillet 2022
+ * >    22 juillet 2022
  *
  */
 
@@ -362,6 +362,16 @@ bool &Configuration::isCarteMonde()
 bool &Configuration::isCarteMaximisee()
 {
     return _isCarteMaximisee;
+}
+
+NotificationSonore &Configuration::notifAOS()
+{
+    return _notifAOS;
+}
+
+NotificationSonore &Configuration::notifFlashs()
+{
+    return _notifFlashs;
 }
 
 
