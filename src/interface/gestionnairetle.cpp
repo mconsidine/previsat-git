@@ -52,7 +52,7 @@
 #include "librairies/exceptions/previsatexception.h"
 
 
-static QSettings settings("Astropedia", "previsat");
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********

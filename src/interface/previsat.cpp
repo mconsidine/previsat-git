@@ -68,7 +68,7 @@
 
 
 // Registre
-static QSettings settings("Astropedia", "PreviSat");
+static QSettings settings(ORG_NAME, APP_NAME);
 
 // Couleurs GMT
 static const QColor coulGmt[3] = { Qt::red, Qt::white, Qt::cyan };
