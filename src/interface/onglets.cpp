@@ -79,7 +79,7 @@ static QString _ficSuivi;
 static Afficher *afficherResultats = nullptr;
 
 // Registre
-static QSettings settings("Astropedia", "PreviSat");
+static QSettings settings(ORG_NAME, APP_NAME);
 
 static const char* _titreInformations[] = {
     QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
