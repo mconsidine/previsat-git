@@ -7259,11 +7259,12 @@
         <x>358</x>
         <y>70</y>
         <width>400</width>
-        <height>16</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Fichier de manoeuvres ISS absent : cliquer sur 'Mettre à jour TLE de l'ISS'</string>
+       <string>Fichier de manoeuvres ISS absent :
+cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
