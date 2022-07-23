@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    23 juillet 2022
  *
  */
 
@@ -3018,6 +3018,9 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
                 settings.setValue("TLE/l1", "");
                 settings.setValue("TLE/l2", "");
             }
+
+            Configuration::instance()->notifAOS() = ATTENTE_LOS;
+            Configuration::instance()->notifFlashs() = ATTENTE_LOS;
 
         } else {
 
