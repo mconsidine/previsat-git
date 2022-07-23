@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    23 juillet 2022
  *
  */
 
@@ -455,7 +455,7 @@ void Onglets::AffichageDonneesSatellite() const
 
                     if (notif == NOTIFICATION_AOS) {
                         if (!((Configuration::instance()->notifAOS() == NOTIFICATION_AOS)
-                                || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
+                              || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
                             JouerSonFlash();
                         }
 
@@ -464,7 +464,7 @@ void Onglets::AffichageDonneesSatellite() const
 
                     if (notif == NOTIFICATION_LOS) {
                         if (!((Configuration::instance()->notifAOS() == NOTIFICATION_AOS)
-                                || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
+                              || (Configuration::instance()->notifAOS() == NOTIFICATION_LOS))) {
                             JouerSonFlash();
                         }
 
@@ -2768,8 +2768,14 @@ void Onglets::InitAffichageDemarrage()
     }
 
     // Affichage des manoeuvres ISS
-    if (!Configuration::instance()->evenementsISS().isEmpty()) {
-        AffichageManoeuvresISS();
+    if (Configuration::instance()->masseISS().isEmpty()) {
+        _ui->lbl_manoeuvresISS->setText("Fichier de manoeuvres ISS absent :\ncliquer sur 'Mettre à jour manoeuvres de l'ISS'");
+    } else {
+        if (Configuration::instance()->evenementsISS().isEmpty()) {
+            _ui->lbl_manoeuvresISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
+        } else {
+            AffichageManoeuvresISS();
+        }
     }
 
 #if defined (Q_OS_WIN)
@@ -6000,8 +6006,15 @@ void Onglets::on_majManIss_clicked()
 
     // Lecture du fichier de manoeuvres
     Configuration::instance()->LectureManoeuvresISS();
-    if (!Configuration::instance()->evenementsISS().isEmpty()) {
-        AffichageManoeuvresISS();
+
+    if (Configuration::instance()->masseISS().isEmpty()) {
+        _ui->lbl_manoeuvresISS->setText("Fichier de manoeuvres ISS absent :\ncliquer sur 'Mettre à jour manoeuvres de l'ISS'");
+    } else {
+        if (Configuration::instance()->evenementsISS().isEmpty()) {
+            _ui->lbl_manoeuvresISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
+        } else {
+            AffichageManoeuvresISS();
+        }
     }
 
     /* Retour */
@@ -7070,8 +7083,14 @@ void Onglets::on_unitesKm_toggled(bool checked)
 
     emit RecalculerPositions();
 
-    if (!Configuration::instance()->evenementsISS().isEmpty()) {
-        AffichageManoeuvresISS();
+    if (Configuration::instance()->masseISS().isEmpty()) {
+        _ui->lbl_manoeuvresISS->setText("Fichier de manoeuvres ISS absent :\ncliquer sur 'Mettre à jour manoeuvres de l'ISS'");
+    } else {
+        if (Configuration::instance()->evenementsISS().isEmpty()) {
+            _ui->lbl_manoeuvresISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
+        } else {
+            AffichageManoeuvresISS();
+        }
     }
 }
 
@@ -7091,8 +7110,14 @@ void Onglets::on_unitesMi_toggled(bool checked)
 
     emit MiseAJourCarte();
 
-    if (!Configuration::instance()->evenementsISS().isEmpty()) {
-        AffichageManoeuvresISS();
+    if (Configuration::instance()->masseISS().isEmpty()) {
+        _ui->lbl_manoeuvresISS->setText("Fichier de manoeuvres ISS absent :\ncliquer sur 'Mettre à jour manoeuvres de l'ISS'");
+    } else {
+        if (Configuration::instance()->evenementsISS().isEmpty()) {
+            _ui->lbl_manoeuvresISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
+        } else {
+            AffichageManoeuvresISS();
+        }
     }
 }
 

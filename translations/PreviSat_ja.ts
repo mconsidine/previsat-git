@@ -916,8 +916,8 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="1895"/>
         <location filename="../src/interface/onglets.ui" line="6070"/>
         <location filename="../src/interface/onglets.ui" line="6695"/>
-        <location filename="../src/interface/onglets.ui" line="7411"/>
-        <location filename="../src/interface/onglets.ui" line="8352"/>
+        <location filename="../src/interface/onglets.ui" line="7412"/>
+        <location filename="../src/interface/onglets.ui" line="8353"/>
         <location filename="../src/interface/onglets.cpp" line="2163"/>
         <source>Lieu d&apos;observation :</source>
         <translation>観測地 :</translation>
@@ -925,16 +925,16 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="280"/>
         <location filename="../src/interface/onglets.ui" line="1942"/>
-        <location filename="../src/interface/onglets.ui" line="8743"/>
-        <location filename="../src/interface/onglets.ui" line="8977"/>
+        <location filename="../src/interface/onglets.ui" line="8744"/>
+        <location filename="../src/interface/onglets.ui" line="8978"/>
         <source>Longitude :</source>
         <translation>経度 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="306"/>
         <location filename="../src/interface/onglets.ui" line="1989"/>
-        <location filename="../src/interface/onglets.ui" line="8753"/>
-        <location filename="../src/interface/onglets.ui" line="9025"/>
+        <location filename="../src/interface/onglets.ui" line="8754"/>
+        <location filename="../src/interface/onglets.ui" line="9026"/>
         <source>Latitude :</source>
         <translation>緯度 :</translation>
     </message>
@@ -944,9 +944,9 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="4129"/>
         <location filename="../src/interface/onglets.ui" line="5089"/>
         <location filename="../src/interface/onglets.ui" line="5644"/>
-        <location filename="../src/interface/onglets.ui" line="8225"/>
-        <location filename="../src/interface/onglets.ui" line="8858"/>
-        <location filename="../src/interface/onglets.ui" line="8939"/>
+        <location filename="../src/interface/onglets.ui" line="8226"/>
+        <location filename="../src/interface/onglets.ui" line="8859"/>
+        <location filename="../src/interface/onglets.ui" line="8940"/>
         <source>Nom :</source>
         <translation>名前 :</translation>
     </message>
@@ -1064,8 +1064,8 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="2036"/>
-        <location filename="../src/interface/onglets.ui" line="8763"/>
-        <location filename="../src/interface/onglets.ui" line="9095"/>
+        <location filename="../src/interface/onglets.ui" line="8764"/>
+        <location filename="../src/interface/onglets.ui" line="9096"/>
         <source>Altitude :</source>
         <comment>Altitude of observer</comment>
         <translation type="unfinished">高さ :</translation>
@@ -1204,7 +1204,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="3116"/>
         <location filename="../src/interface/onglets.ui" line="3536"/>
         <location filename="../src/interface/onglets.ui" line="4524"/>
-        <location filename="../src/interface/onglets.ui" line="11619"/>
+        <location filename="../src/interface/onglets.ui" line="11620"/>
         <source>Excentricité :</source>
         <translation>離心率 :</translation>
     </message>
@@ -1217,7 +1217,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="3228"/>
         <location filename="../src/interface/onglets.ui" line="3433"/>
         <location filename="../src/interface/onglets.ui" line="4511"/>
-        <location filename="../src/interface/onglets.ui" line="11519"/>
+        <location filename="../src/interface/onglets.ui" line="11520"/>
         <source>AD noeud ascendant :</source>
         <extracomment>Right ascension of the ascending node</extracomment>
         <translation>昇交点赤経 :</translation>
@@ -1227,14 +1227,14 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="3546"/>
         <location filename="../src/interface/onglets.ui" line="4498"/>
         <location filename="../src/interface/onglets.ui" line="5503"/>
-        <location filename="../src/interface/onglets.ui" line="11663"/>
+        <location filename="../src/interface/onglets.ui" line="11664"/>
         <source>Inclinaison :</source>
         <translation>軌道傾斜角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="3443"/>
         <location filename="../src/interface/onglets.ui" line="4537"/>
-        <location filename="../src/interface/onglets.ui" line="11566"/>
+        <location filename="../src/interface/onglets.ui" line="11567"/>
         <source>Argument du périgée :</source>
         <translation>近地点引数 :</translation>
     </message>
@@ -1376,7 +1376,7 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="4257"/>
         <location filename="../src/interface/onglets.ui" line="5123"/>
-        <location filename="../src/interface/onglets.ui" line="11425"/>
+        <location filename="../src/interface/onglets.ui" line="11426"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD番号 :</translation>
     </message>
@@ -1444,8 +1444,8 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="5989"/>
         <location filename="../src/interface/onglets.ui" line="6646"/>
-        <location filename="../src/interface/onglets.ui" line="7310"/>
-        <location filename="../src/interface/onglets.ui" line="12003"/>
+        <location filename="../src/interface/onglets.ui" line="7311"/>
+        <location filename="../src/interface/onglets.ui" line="12004"/>
         <source>Date initiale :</source>
         <translation>開始日 :</translation>
     </message>
@@ -1459,14 +1459,14 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="5934"/>
         <location filename="../src/interface/onglets.ui" line="6572"/>
-        <location filename="../src/interface/onglets.ui" line="7320"/>
-        <location filename="../src/interface/onglets.ui" line="11971"/>
+        <location filename="../src/interface/onglets.ui" line="7321"/>
+        <location filename="../src/interface/onglets.ui" line="11972"/>
         <source>Date finale :</source>
         <translation>終了日 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6044"/>
-        <location filename="../src/interface/onglets.ui" line="8037"/>
+        <location filename="../src/interface/onglets.ui" line="8038"/>
         <source>Pas de génération :</source>
         <translation>出力データ時間間隔 :</translation>
     </message>
@@ -1587,56 +1587,56 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="6360"/>
         <location filename="../src/interface/onglets.ui" line="6769"/>
         <location filename="../src/interface/onglets.ui" line="6891"/>
-        <location filename="../src/interface/onglets.ui" line="7505"/>
-        <location filename="../src/interface/onglets.ui" line="7960"/>
+        <location filename="../src/interface/onglets.ui" line="7506"/>
+        <location filename="../src/interface/onglets.ui" line="7961"/>
         <source>Autre...</source>
         <translation>その他...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6306"/>
         <location filename="../src/interface/onglets.ui" line="6843"/>
-        <location filename="../src/interface/onglets.ui" line="7463"/>
-        <location filename="../src/interface/onglets.ui" line="7912"/>
+        <location filename="../src/interface/onglets.ui" line="7464"/>
+        <location filename="../src/interface/onglets.ui" line="7913"/>
         <source>Hauteur minimale du satellite :</source>
         <translation>衛星の最低仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6335"/>
         <location filename="../src/interface/onglets.ui" line="6866"/>
-        <location filename="../src/interface/onglets.ui" line="7480"/>
-        <location filename="../src/interface/onglets.ui" line="7935"/>
+        <location filename="../src/interface/onglets.ui" line="7481"/>
+        <location filename="../src/interface/onglets.ui" line="7936"/>
         <source>0°</source>
         <translation>0°</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6340"/>
         <location filename="../src/interface/onglets.ui" line="6871"/>
-        <location filename="../src/interface/onglets.ui" line="7485"/>
-        <location filename="../src/interface/onglets.ui" line="7940"/>
+        <location filename="../src/interface/onglets.ui" line="7486"/>
+        <location filename="../src/interface/onglets.ui" line="7941"/>
         <source>5°</source>
         <translation>5°</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6345"/>
         <location filename="../src/interface/onglets.ui" line="6876"/>
-        <location filename="../src/interface/onglets.ui" line="7490"/>
-        <location filename="../src/interface/onglets.ui" line="7945"/>
+        <location filename="../src/interface/onglets.ui" line="7491"/>
+        <location filename="../src/interface/onglets.ui" line="7946"/>
         <source>10°</source>
         <translation>10°</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6350"/>
         <location filename="../src/interface/onglets.ui" line="6881"/>
-        <location filename="../src/interface/onglets.ui" line="7495"/>
-        <location filename="../src/interface/onglets.ui" line="7950"/>
+        <location filename="../src/interface/onglets.ui" line="7496"/>
+        <location filename="../src/interface/onglets.ui" line="7951"/>
         <source>15°</source>
         <translation>15°</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6355"/>
         <location filename="../src/interface/onglets.ui" line="6886"/>
-        <location filename="../src/interface/onglets.ui" line="7500"/>
-        <location filename="../src/interface/onglets.ui" line="7955"/>
+        <location filename="../src/interface/onglets.ui" line="7501"/>
+        <location filename="../src/interface/onglets.ui" line="7956"/>
         <source>20°</source>
         <translation>20°</translation>
     </message>
@@ -1651,136 +1651,142 @@ COSPAR : %3</translation>
         <translation>最大等級</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7712"/>
+        <location filename="../src/interface/onglets.ui" line="7266"/>
+        <source>Fichier de manoeuvres ISS absent :
+cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets.ui" line="7713"/>
         <source>Mettre à jour manoeuvres de l&apos;ISS...</source>
         <translation type="unfinished">ISSのマヌーバを更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8103"/>
-        <location filename="../src/interface/onglets.cpp" line="6258"/>
+        <location filename="../src/interface/onglets.ui" line="8104"/>
+        <location filename="../src/interface/onglets.cpp" line="6271"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8125"/>
+        <location filename="../src/interface/onglets.ui" line="8126"/>
         <source>s</source>
         <translation type="unfinished">s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8145"/>
+        <location filename="../src/interface/onglets.ui" line="8146"/>
         <source>Délai :</source>
         <comment>telescope</comment>
         <translation type="unfinished">遅延 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8177"/>
+        <location filename="../src/interface/onglets.ui" line="8178"/>
         <source>Envoyer les données satellite à la monture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8180"/>
+        <location filename="../src/interface/onglets.ui" line="8181"/>
         <source>Démarrer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9595"/>
+        <location filename="../src/interface/onglets.ui" line="9596"/>
         <source>Valeur zoom pour les cartes :</source>
         <translation type="unfinished">地図のズームレベル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9627"/>
+        <location filename="../src/interface/onglets.ui" line="9628"/>
         <source>Affichage du numéro NORAD dans les listes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10164"/>
+        <location filename="../src/interface/onglets.ui" line="10165"/>
         <source>Prise en compte de la réfraction atmosphérique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10541"/>
+        <location filename="../src/interface/onglets.ui" line="10542"/>
         <source>Anomalie Atlantique Sud et Zone d&apos;exclusion</source>
         <translation type="unfinished">南大西洋異常帯と不可視域</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10585"/>
+        <location filename="../src/interface/onglets.ui" line="10586"/>
         <source>Angle entre le plan de l&apos;orbite et la direction du Soleil</source>
         <translation type="unfinished">軌道面と太陽の方向との間の角度</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10626"/>
+        <location filename="../src/interface/onglets.ui" line="10627"/>
         <source>Greenwich Mean Time</source>
         <translation type="unfinished">グリニッジ標準時</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10636"/>
+        <location filename="../src/interface/onglets.ui" line="10637"/>
         <source>Zone d&apos;exclusion</source>
         <translation type="unfinished">不可視域</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10825"/>
+        <location filename="../src/interface/onglets.ui" line="10826"/>
         <location filename="../src/interface/onglets.cpp" line="89"/>
         <source>Mise à jour TLE auto</source>
         <translation type="unfinished">TLEの自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11432"/>
+        <location filename="../src/interface/onglets.ui" line="11433"/>
         <source>\De 999999 à 999999</source>
         <translation>999999から999999まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11435"/>
-        <location filename="../src/interface/onglets.cpp" line="6745"/>
+        <location filename="../src/interface/onglets.ui" line="11436"/>
+        <location filename="../src/interface/onglets.cpp" line="6758"/>
         <source>De 000001 à 999999</source>
         <translation>000001から999999まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11479"/>
+        <location filename="../src/interface/onglets.ui" line="11480"/>
         <source>\De 99.999999999 à 99.999999999</source>
         <translation>99.999999999から99.999999999まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11482"/>
-        <location filename="../src/interface/onglets.cpp" line="6746"/>
+        <location filename="../src/interface/onglets.ui" line="11483"/>
+        <location filename="../src/interface/onglets.cpp" line="6759"/>
         <source>De 00.000000000 à 18.000000000</source>
         <translation>00.000000000から18.000000000まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11529"/>
-        <location filename="../src/interface/onglets.ui" line="11582"/>
-        <location filename="../src/interface/onglets.cpp" line="6747"/>
-        <location filename="../src/interface/onglets.cpp" line="6748"/>
+        <location filename="../src/interface/onglets.ui" line="11530"/>
+        <location filename="../src/interface/onglets.ui" line="11583"/>
+        <location filename="../src/interface/onglets.cpp" line="6760"/>
+        <location filename="../src/interface/onglets.cpp" line="6761"/>
         <source>De 000° à 360°</source>
         <translation>000°から360°まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11626"/>
+        <location filename="../src/interface/onglets.ui" line="11627"/>
         <source>\De 9.9999999 à 9.9999999</source>
         <translation>9.9999999から9.9999999まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11629"/>
+        <location filename="../src/interface/onglets.ui" line="11630"/>
         <source>De 0.0000000 à 1.0000000</source>
         <translation>0.0000000から1.0000000まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11710"/>
-        <location filename="../src/interface/onglets.ui" line="11729"/>
-        <location filename="../src/interface/onglets.cpp" line="6750"/>
-        <location filename="../src/interface/onglets.cpp" line="6751"/>
+        <location filename="../src/interface/onglets.ui" line="11711"/>
+        <location filename="../src/interface/onglets.ui" line="11730"/>
+        <location filename="../src/interface/onglets.cpp" line="6763"/>
+        <location filename="../src/interface/onglets.cpp" line="6764"/>
         <source>De 000° à 180°</source>
         <translation>000°から180°まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11801"/>
+        <location filename="../src/interface/onglets.ui" line="11802"/>
         <source>Passages aux noeuds</source>
         <translation type="unfinished">公点の通過</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="6008"/>
         <location filename="../src/interface/onglets.ui" line="6662"/>
-        <location filename="../src/interface/onglets.ui" line="7380"/>
-        <location filename="../src/interface/onglets.ui" line="12041"/>
+        <location filename="../src/interface/onglets.ui" line="7381"/>
+        <location filename="../src/interface/onglets.ui" line="12042"/>
         <source>Effacer heures</source>
         <translation>時間を消す</translation>
     </message>
@@ -1788,7 +1794,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="5845"/>
         <location filename="../src/interface/onglets.ui" line="6509"/>
         <location filename="../src/interface/onglets.ui" line="7113"/>
-        <location filename="../src/interface/onglets.ui" line="11927"/>
+        <location filename="../src/interface/onglets.ui" line="11928"/>
         <source>Calculs</source>
         <translation>計算</translation>
     </message>
@@ -1796,9 +1802,9 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.ui" line="5864"/>
         <location filename="../src/interface/onglets.ui" line="6547"/>
         <location filename="../src/interface/onglets.ui" line="7132"/>
-        <location filename="../src/interface/onglets.ui" line="8416"/>
-        <location filename="../src/interface/onglets.ui" line="11753"/>
-        <location filename="../src/interface/onglets.ui" line="11946"/>
+        <location filename="../src/interface/onglets.ui" line="8417"/>
+        <location filename="../src/interface/onglets.ui" line="11754"/>
+        <location filename="../src/interface/onglets.ui" line="11947"/>
         <source>Paramétrage par défaut</source>
         <translation>デフォルト設定</translation>
     </message>
@@ -1810,10 +1816,10 @@ COSPAR : %3</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="6601"/>
         <location filename="../src/interface/onglets.ui" line="6633"/>
-        <location filename="../src/interface/onglets.ui" line="7339"/>
-        <location filename="../src/interface/onglets.ui" line="7361"/>
-        <location filename="../src/interface/onglets.ui" line="11990"/>
-        <location filename="../src/interface/onglets.ui" line="12022"/>
+        <location filename="../src/interface/onglets.ui" line="7340"/>
+        <location filename="../src/interface/onglets.ui" line="7362"/>
+        <location filename="../src/interface/onglets.ui" line="11991"/>
+        <location filename="../src/interface/onglets.ui" line="12023"/>
         <source>dd/MM/yyyy HH:mm</source>
         <extracomment>Date format</extracomment>
         <translation>yyyy年MM月dd日 HH:mm</translation>
@@ -1825,7 +1831,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="7001"/>
-        <location filename="../src/interface/onglets.ui" line="11243"/>
+        <location filename="../src/interface/onglets.ui" line="11244"/>
         <source>Magnitude maximale :</source>
         <translation>最大等級 :</translation>
     </message>
@@ -1840,12 +1846,12 @@ COSPAR : %3</translation>
         <translation>ISS 太陽面 (月面) 通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7627"/>
+        <location filename="../src/interface/onglets.ui" line="7628"/>
         <source>Age maximal du TLE :</source>
         <translation>TLEの最大経過時間 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7571"/>
+        <location filename="../src/interface/onglets.ui" line="7572"/>
         <source>Élongation maximale avec le corps :</source>
         <translation>天体からの最大離角 :</translation>
     </message>
@@ -1856,19 +1862,19 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="7074"/>
-        <location filename="../src/interface/onglets.ui" line="9755"/>
+        <location filename="../src/interface/onglets.ui" line="9756"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="7093"/>
-        <location filename="../src/interface/onglets.ui" line="9720"/>
+        <location filename="../src/interface/onglets.ui" line="9721"/>
         <location filename="../src/interface/onglets.cpp" line="403"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7683"/>
+        <location filename="../src/interface/onglets.ui" line="7684"/>
         <source>Age du dernier TLE : </source>
         <translation>最後のTLEの年齢 : </translation>
     </message>
@@ -1909,133 +1915,132 @@ COSPAR : %3</translation>
         <translation>近地点</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7266"/>
         <source>Fichier de manoeuvres ISS absent : cliquer sur &apos;Mettre à jour TLE de l&apos;ISS&apos;</source>
-        <translation>ISSマヌーバファイルがありません : 「ISSのTLEを更新する」をクリックしてください </translation>
+        <translation type="vanished">ISSマヌーバファイルがありません : 「ISSのTLEを更新する」をクリックしてください </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7282"/>
+        <location filename="../src/interface/onglets.ui" line="7283"/>
         <source>Inclure transits/conjonctions lunaires de jour</source>
         <translation type="unfinished">昼間の月面通過 • 月との合を含む</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7735"/>
+        <location filename="../src/interface/onglets.ui" line="7736"/>
         <source>Télescope</source>
         <translation>望遠鏡</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7838"/>
+        <location filename="../src/interface/onglets.ui" line="7839"/>
         <source>Lever du satellite :</source>
         <translation type="unfinished">衛星が地平線から現れる :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7852"/>
+        <location filename="../src/interface/onglets.ui" line="7853"/>
         <source>Hauteur maximale :</source>
         <translation>最大仰角 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7866"/>
+        <location filename="../src/interface/onglets.ui" line="7867"/>
         <source>Coucher du satellite :</source>
         <translation type="unfinished">衛星が地平線の下に沈む :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8164"/>
+        <location filename="../src/interface/onglets.ui" line="8165"/>
         <source>Afficher</source>
         <translation>表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7813"/>
+        <location filename="../src/interface/onglets.ui" line="7814"/>
         <source>Générer les positions</source>
         <translation>位置を生成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8086"/>
+        <location filename="../src/interface/onglets.ui" line="8087"/>
         <source>ms</source>
         <extracomment>milliseconde</extracomment>
         <translation>ms</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8194"/>
+        <location filename="../src/interface/onglets.ui" line="8195"/>
         <source>Le satellite n&apos;est pas visible depuis le lieu d&apos;observation</source>
         <translation type="unfinished">衛星がその観測地から見えられません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8431"/>
+        <location filename="../src/interface/onglets.ui" line="8432"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8468"/>
-        <location filename="../src/interface/onglets.cpp" line="4520"/>
+        <location filename="../src/interface/onglets.ui" line="8469"/>
+        <location filename="../src/interface/onglets.cpp" line="4526"/>
         <source>Lieu d&apos;observation</source>
         <translation>観測地</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8483"/>
+        <location filename="../src/interface/onglets.ui" line="8484"/>
         <source>Lieux d&apos;observation :</source>
         <translation>観測地 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8526"/>
-        <location filename="../src/interface/onglets.ui" line="8601"/>
+        <location filename="../src/interface/onglets.ui" line="8527"/>
+        <location filename="../src/interface/onglets.ui" line="8602"/>
         <source>Cliquer droit pour afficher le menu contextuel</source>
         <translation>右クリックしてコンテキストメニューを表示します</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8557"/>
+        <location filename="../src/interface/onglets.ui" line="8558"/>
         <source>Sélection de la catégorie :</source>
         <translation>カテゴリの選択 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8641"/>
+        <location filename="../src/interface/onglets.ui" line="8642"/>
         <source>Lieux sélectionnés :</source>
         <translation>選択した場所 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8712"/>
+        <location filename="../src/interface/onglets.ui" line="8713"/>
         <location filename="../src/interface/onglets.cpp" line="1267"/>
         <source>Lieu :</source>
         <translation>場所 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8814"/>
-        <location filename="../src/interface/onglets.ui" line="8911"/>
+        <location filename="../src/interface/onglets.ui" line="8815"/>
+        <location filename="../src/interface/onglets.ui" line="8912"/>
         <source>Valider</source>
         <translation>確定する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8830"/>
-        <location filename="../src/interface/onglets.ui" line="8895"/>
-        <location filename="../src/interface/onglets.cpp" line="4184"/>
-        <location filename="../src/interface/onglets.cpp" line="4520"/>
-        <location filename="../src/interface/onglets.cpp" line="5226"/>
-        <location filename="../src/interface/onglets.cpp" line="5523"/>
-        <location filename="../src/interface/onglets.cpp" line="5854"/>
-        <location filename="../src/interface/onglets.cpp" line="6118"/>
-        <location filename="../src/interface/onglets.cpp" line="6398"/>
-        <location filename="../src/interface/onglets.cpp" line="7218"/>
-        <location filename="../src/interface/onglets.cpp" line="7278"/>
+        <location filename="../src/interface/onglets.ui" line="8831"/>
+        <location filename="../src/interface/onglets.ui" line="8896"/>
+        <location filename="../src/interface/onglets.cpp" line="4190"/>
+        <location filename="../src/interface/onglets.cpp" line="4526"/>
+        <location filename="../src/interface/onglets.cpp" line="5232"/>
+        <location filename="../src/interface/onglets.cpp" line="5529"/>
+        <location filename="../src/interface/onglets.cpp" line="5860"/>
+        <location filename="../src/interface/onglets.cpp" line="6131"/>
+        <location filename="../src/interface/onglets.cpp" line="6411"/>
+        <location filename="../src/interface/onglets.cpp" line="7243"/>
+        <location filename="../src/interface/onglets.cpp" line="7303"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9138"/>
+        <location filename="../src/interface/onglets.ui" line="9139"/>
         <location filename="../src/interface/onglets.cpp" line="1271"/>
         <source>m</source>
         <extracomment>Meter</extracomment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9053"/>
+        <location filename="../src/interface/onglets.ui" line="9054"/>
         <location filename="../src/interface/onglets.cpp" line="369"/>
         <location filename="../src/interface/onglets.cpp" line="1263"/>
         <location filename="../src/interface/onglets.cpp" line="1644"/>
-        <location filename="../src/interface/onglets.cpp" line="4358"/>
+        <location filename="../src/interface/onglets.cpp" line="4364"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9058"/>
+        <location filename="../src/interface/onglets.ui" line="9059"/>
         <location filename="../src/interface/onglets.cpp" line="369"/>
         <location filename="../src/interface/onglets.cpp" line="1263"/>
         <location filename="../src/interface/onglets.cpp" line="1644"/>
@@ -2043,7 +2048,7 @@ COSPAR : %3</translation>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9036"/>
+        <location filename="../src/interface/onglets.ui" line="9037"/>
         <location filename="../src/interface/onglets.cpp" line="371"/>
         <location filename="../src/interface/onglets.cpp" line="1264"/>
         <location filename="../src/interface/onglets.cpp" line="1645"/>
@@ -2051,363 +2056,363 @@ COSPAR : %3</translation>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9041"/>
+        <location filename="../src/interface/onglets.ui" line="9042"/>
         <location filename="../src/interface/onglets.cpp" line="371"/>
         <location filename="../src/interface/onglets.cpp" line="1264"/>
         <location filename="../src/interface/onglets.cpp" line="1645"/>
-        <location filename="../src/interface/onglets.cpp" line="4359"/>
+        <location filename="../src/interface/onglets.cpp" line="4365"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9170"/>
+        <location filename="../src/interface/onglets.ui" line="9171"/>
         <source>Ajouter dans :</source>
         <translation type="unfinished">保存先にしたいカテゴリ (TBC) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9194"/>
+        <location filename="../src/interface/onglets.ui" line="9195"/>
         <source>Configuration</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9346"/>
+        <location filename="../src/interface/onglets.ui" line="9347"/>
         <source>Enregistrer les préférences d&apos;affichage</source>
         <translation>表示設定を保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9266"/>
+        <location filename="../src/interface/onglets.ui" line="9267"/>
         <source>Langue :</source>
         <extracomment>Name of language</extracomment>
         <translation>言語 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9309"/>
+        <location filename="../src/interface/onglets.ui" line="9310"/>
         <source>Préférences d&apos;affichage :</source>
         <translation>表示設定 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9486"/>
+        <location filename="../src/interface/onglets.ui" line="9487"/>
         <source>Notification sonore</source>
         <translation type="unfinished">通知音 (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9382"/>
+        <location filename="../src/interface/onglets.ui" line="9383"/>
         <source>Zone de visibilité</source>
         <translation type="unfinished">フットプリント</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9401"/>
+        <location filename="../src/interface/onglets.ui" line="9402"/>
         <source>Rotation de l&apos;icône ISS</source>
         <translation>ISSアイコンの回転</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9536"/>
+        <location filename="../src/interface/onglets.ui" line="9537"/>
         <source>Trace au sol</source>
         <translation>グラウンドトラック</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9417"/>
+        <location filename="../src/interface/onglets.ui" line="9418"/>
         <source>Trace dans le ciel</source>
         <translation type="unfinished">人工衛星の飛行経路を星図にプロットする</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9433"/>
+        <location filename="../src/interface/onglets.ui" line="9434"/>
         <source>Icône des satellites</source>
         <translation>衛星のアイコン</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9449"/>
+        <location filename="../src/interface/onglets.ui" line="9450"/>
         <source>Nom des satellites</source>
         <translation>衛星</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9704"/>
+        <location filename="../src/interface/onglets.ui" line="9705"/>
         <source>Rotation de la Lune pour l&apos;hémisphère Sud</source>
         <translation type="unfinished">南半球のために月を回転させる</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9736"/>
+        <location filename="../src/interface/onglets.ui" line="9737"/>
         <source>Affichage des constellations</source>
         <translation>星座を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9774"/>
+        <location filename="../src/interface/onglets.ui" line="9775"/>
         <source>Nom des étoiles</source>
         <translation>星の名前</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9905"/>
+        <location filename="../src/interface/onglets.ui" line="9906"/>
         <source>Magnitude limite des étoiles :</source>
         <translation>星の最低等級 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9790"/>
+        <location filename="../src/interface/onglets.ui" line="9791"/>
         <source>Affichage des planètes</source>
         <translation>惑星の表示</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9846"/>
+        <location filename="../src/interface/onglets.ui" line="9847"/>
         <source>Zone d&apos;ombre</source>
         <translation type="unfinished">夜の部分を示す</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9812"/>
+        <location filename="../src/interface/onglets.ui" line="9813"/>
         <source>Phase de la Lune</source>
         <translation>月相</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9951"/>
+        <location filename="../src/interface/onglets.ui" line="9952"/>
         <source>Grille</source>
         <translation>グリッド</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10196"/>
+        <location filename="../src/interface/onglets.ui" line="10197"/>
         <source>Prise en compte des éclipses partielles sur la magnitude</source>
         <translation type="unfinished">等級の計算には衛星の部分食を考慮する (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9967"/>
+        <location filename="../src/interface/onglets.ui" line="9968"/>
         <source>Affichage du jour julien</source>
         <translation>ユリウス通日を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10180"/>
+        <location filename="../src/interface/onglets.ui" line="10181"/>
         <source>Prise en compte des éclipses produites par la Lune</source>
         <translation type="unfinished">月によって生成された衛星の食を考慮する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10132"/>
+        <location filename="../src/interface/onglets.ui" line="10133"/>
         <source>Carte du monde :</source>
         <translation>世界地図 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9986"/>
+        <location filename="../src/interface/onglets.ui" line="9987"/>
         <source>Radar</source>
         <translation>レーダー</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10005"/>
+        <location filename="../src/interface/onglets.ui" line="10006"/>
         <source>Garder les proportions de la carte du monde</source>
         <translation type="unfinished">世界地図の縦横比を維持する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10021"/>
+        <location filename="../src/interface/onglets.ui" line="10022"/>
         <source>Inversion Est/Ouest sur le radar</source>
         <translation type="unfinished">左右反転しているレーダーマップ</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10037"/>
+        <location filename="../src/interface/onglets.ui" line="10038"/>
         <source>Inversion Nord/Sud sur le radar</source>
         <translation type="unfinished">上下反転しているレーダーマップ</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9658"/>
+        <location filename="../src/interface/onglets.ui" line="9659"/>
         <source>Vision nocturne :</source>
         <translation type="unfinished">夜間視力 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10053"/>
+        <location filename="../src/interface/onglets.ui" line="10054"/>
         <source>Affichage des coordonnées</source>
         <translation>座標を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10069"/>
+        <location filename="../src/interface/onglets.ui" line="10070"/>
         <source>Affichage de la SAA</source>
         <translation>南大西洋異常帯を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10085"/>
+        <location filename="../src/interface/onglets.ui" line="10086"/>
         <source>Prise en compte de l&apos;extinction atmosphérique</source>
         <translation type="unfinished">大気減光を考慮する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10101"/>
+        <location filename="../src/interface/onglets.ui" line="10102"/>
         <source>Nom des lieux d&apos;observation</source>
         <translation>観測地の名前</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10214"/>
+        <location filename="../src/interface/onglets.ui" line="10215"/>
         <source>Unités</source>
         <translation>単位</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10229"/>
+        <location filename="../src/interface/onglets.ui" line="10230"/>
         <source>Système métrique</source>
         <translation>メートル法</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10248"/>
+        <location filename="../src/interface/onglets.ui" line="10249"/>
         <source>Système anglo-saxon</source>
         <translation type="unfinished">ヤードポンド法</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10268"/>
+        <location filename="../src/interface/onglets.ui" line="10269"/>
         <source>Système horaire</source>
         <translation>時間型式</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10283"/>
+        <location filename="../src/interface/onglets.ui" line="10284"/>
         <source>24 heures</source>
         <translation>24時間制</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10302"/>
+        <location filename="../src/interface/onglets.ui" line="10303"/>
         <source>12 heures (AM/PM)</source>
         <translation>12時間制 (AM/PM)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10322"/>
+        <location filename="../src/interface/onglets.ui" line="10323"/>
         <source>Vérification des mises à jour au démarrage</source>
         <translation>起動時に更新を確認する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10338"/>
+        <location filename="../src/interface/onglets.ui" line="10339"/>
         <source>Écart Heure locale - UTC</source>
         <translation>現地時間とUTCの差</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10381"/>
+        <location filename="../src/interface/onglets.ui" line="10382"/>
         <source>Heure locale = </source>
         <translation>現地時間 = </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10353"/>
+        <location filename="../src/interface/onglets.ui" line="10354"/>
         <source>Temps Universel Coordonné (UTC)</source>
         <translation>協定世界時 (UTC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10429"/>
+        <location filename="../src/interface/onglets.ui" line="10430"/>
         <source>Auto</source>
         <extracomment>Automatic</extracomment>
         <translation>自動</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10450"/>
+        <location filename="../src/interface/onglets.ui" line="10451"/>
         <source>Wall Command Center</source>
         <translation>ウォールコマンドセンター</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10465"/>
+        <location filename="../src/interface/onglets.ui" line="10466"/>
         <source>Style &quot;Wall Command Center&quot;</source>
         <translation type="unfinished">「ウォールコマンドセンター」スタイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10500"/>
+        <location filename="../src/interface/onglets.ui" line="10501"/>
         <source>Stations :</source>
         <translation>ステーション :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10764"/>
+        <location filename="../src/interface/onglets.ui" line="10765"/>
         <source>Choix de la police :</source>
         <translation>フォント選択 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10513"/>
+        <location filename="../src/interface/onglets.ui" line="10514"/>
         <location filename="../src/interface/onglets.cpp" line="1902"/>
         <source>Affichage</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10525"/>
+        <location filename="../src/interface/onglets.ui" line="10526"/>
         <source>Nombre d&apos;orbites</source>
         <translation>軌道の数</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10544"/>
+        <location filename="../src/interface/onglets.ui" line="10545"/>
         <source>SAA et ZOE</source>
         <extracomment>South Atlantic Anomaly and Zone of Exclusion</extracomment>
         <translation type="unfinished">SAAとZOE</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10566"/>
+        <location filename="../src/interface/onglets.ui" line="10567"/>
         <source>Cercles d&apos;acquisition</source>
         <translation type="unfinished">フットプリント</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10588"/>
+        <location filename="../src/interface/onglets.ui" line="10589"/>
         <source>Angle beta</source>
         <extracomment>Beta angle (angle between orbit plane and direction of Sun)</extracomment>
         <translation>ベータ角</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10602"/>
+        <location filename="../src/interface/onglets.ui" line="10603"/>
         <source>Couleurs</source>
         <translation>色選択</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10646"/>
+        <location filename="../src/interface/onglets.ui" line="10647"/>
         <source>Équateur :</source>
         <translation>赤道 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10639"/>
+        <location filename="../src/interface/onglets.ui" line="10640"/>
         <source>ZOE :</source>
         <extracomment>Zone of exclusion</extracomment>
         <translation type="unfinished">ZOE :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10660"/>
+        <location filename="../src/interface/onglets.ui" line="10661"/>
         <source>Cercle de visibilité :</source>
         <translation type="unfinished">フットプリント :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10668"/>
-        <location filename="../src/interface/onglets.ui" line="10701"/>
-        <location filename="../src/interface/onglets.ui" line="10734"/>
+        <location filename="../src/interface/onglets.ui" line="10669"/>
+        <location filename="../src/interface/onglets.ui" line="10702"/>
+        <location filename="../src/interface/onglets.ui" line="10735"/>
         <source>Rouge</source>
         <translation>赤</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10673"/>
-        <location filename="../src/interface/onglets.ui" line="10692"/>
-        <location filename="../src/interface/onglets.ui" line="10706"/>
-        <location filename="../src/interface/onglets.ui" line="10729"/>
+        <location filename="../src/interface/onglets.ui" line="10674"/>
+        <location filename="../src/interface/onglets.ui" line="10693"/>
+        <location filename="../src/interface/onglets.ui" line="10707"/>
+        <location filename="../src/interface/onglets.ui" line="10730"/>
         <source>Blanc</source>
         <translation>白</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10678"/>
+        <location filename="../src/interface/onglets.ui" line="10679"/>
         <source>Cyan</source>
         <translation>シアン</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10687"/>
+        <location filename="../src/interface/onglets.ui" line="10688"/>
         <source>Noir</source>
         <translation>黒</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10653"/>
+        <location filename="../src/interface/onglets.ui" line="10654"/>
         <source>Terminateur :</source>
         <translation>明暗境界線 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10629"/>
+        <location filename="../src/interface/onglets.ui" line="10630"/>
         <source>GMT :</source>
         <extracomment>Greenwich Mean Time</extracomment>
         <translation>GMT :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10715"/>
+        <location filename="../src/interface/onglets.ui" line="10716"/>
         <source>Brun</source>
         <translation>茶色</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10720"/>
+        <location filename="../src/interface/onglets.ui" line="10721"/>
         <source>Jaune</source>
         <translation>黄色</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10791"/>
+        <location filename="../src/interface/onglets.ui" line="10792"/>
         <source>Outils</source>
         <translation>ツール</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10945"/>
+        <location filename="../src/interface/onglets.ui" line="10946"/>
         <source>Mettre à jour maintenant</source>
         <translation>更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10929"/>
+        <location filename="../src/interface/onglets.ui" line="10930"/>
         <source>Paramétrage...</source>
         <translation>設定...</translation>
     </message>
@@ -2417,155 +2422,155 @@ COSPAR : %3</translation>
         <translation>TLEの手動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11063"/>
-        <location filename="../src/interface/onglets.ui" line="11093"/>
-        <location filename="../src/interface/onglets.ui" line="11331"/>
-        <location filename="../src/interface/onglets.ui" line="11391"/>
-        <location filename="../src/interface/onglets.cpp" line="5397"/>
+        <location filename="../src/interface/onglets.ui" line="11064"/>
+        <location filename="../src/interface/onglets.ui" line="11094"/>
+        <location filename="../src/interface/onglets.ui" line="11332"/>
+        <location filename="../src/interface/onglets.ui" line="11392"/>
+        <location filename="../src/interface/onglets.cpp" line="5403"/>
         <source>Parcourir...</source>
         <translation>ブラウズ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11113"/>
-        <location filename="../src/interface/onglets.ui" line="11293"/>
+        <location filename="../src/interface/onglets.ui" line="11114"/>
+        <location filename="../src/interface/onglets.ui" line="11294"/>
         <source>Fichier TLE à lire :</source>
         <translation>読み込むTLEファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11073"/>
+        <location filename="../src/interface/onglets.ui" line="11074"/>
         <source>Fichier à mettre à jour :</source>
         <translation>更新するファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11129"/>
+        <location filename="../src/interface/onglets.ui" line="11130"/>
         <source>Mettre à jour</source>
         <translation>更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11197"/>
+        <location filename="../src/interface/onglets.ui" line="11198"/>
         <source>Extraction fichier TLE</source>
         <translation>TLEファイルを抽出する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11820"/>
+        <location filename="../src/interface/onglets.ui" line="11821"/>
         <source>Passages à PSO = 90° et 270°</source>
         <translation type="unfinished">緯度引数=90°又は180°の場合の通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12110"/>
+        <location filename="../src/interface/onglets.ui" line="12111"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11526"/>
-        <location filename="../src/interface/onglets.ui" line="11579"/>
-        <location filename="../src/interface/onglets.ui" line="11707"/>
-        <location filename="../src/interface/onglets.ui" line="11726"/>
+        <location filename="../src/interface/onglets.ui" line="11527"/>
+        <location filename="../src/interface/onglets.ui" line="11580"/>
+        <location filename="../src/interface/onglets.ui" line="11708"/>
+        <location filename="../src/interface/onglets.ui" line="11727"/>
         <source>\De 999° à 999°</source>
         <translation type="unfinished">999°から999°まで</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11688"/>
+        <location filename="../src/interface/onglets.ui" line="11689"/>
         <source>1 intervalle</source>
         <translation>1つの間隔</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11693"/>
+        <location filename="../src/interface/onglets.ui" line="11694"/>
         <source>2 intervalles</source>
         <translation>2つの間隔</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11375"/>
+        <location filename="../src/interface/onglets.ui" line="11376"/>
         <source>Nom du fichier personnel :</source>
         <translation>個人用ファイルの名前 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11472"/>
+        <location filename="../src/interface/onglets.ui" line="11473"/>
         <source>Nombre de révolutions par jour :</source>
         <translation>一日あたりの公転数 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11212"/>
+        <location filename="../src/interface/onglets.ui" line="11213"/>
         <source>Recherche</source>
         <translation>探す</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11768"/>
+        <location filename="../src/interface/onglets.ui" line="11769"/>
         <source>Évènements orbitaux</source>
         <translation type="unfinished">軌道上事象/軌道イベント (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11786"/>
+        <location filename="../src/interface/onglets.ui" line="11787"/>
         <source>Évènements</source>
         <translation type="unfinished">イベント</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11839"/>
+        <location filename="../src/interface/onglets.ui" line="11840"/>
         <source>Passages apogée/périgée</source>
         <translation type="unfinished">遠地点 (近地点) 通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11858"/>
+        <location filename="../src/interface/onglets.ui" line="11859"/>
         <source>Passages ombre/pénombre/lumière</source>
         <translation type="unfinished">本影 (半影、光) 通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11877"/>
+        <location filename="../src/interface/onglets.ui" line="11878"/>
         <source>Passages terminateur</source>
         <translation>明暗境界線の通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12115"/>
+        <location filename="../src/interface/onglets.ui" line="12116"/>
         <source>Aucun</source>
         <translation>なし</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12120"/>
+        <location filename="../src/interface/onglets.ui" line="12121"/>
         <location filename="../src/interface/onglets.cpp" line="2728"/>
         <source>Créer une catégorie</source>
         <translation type="unfinished">カテゴリを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12125"/>
-        <location filename="../src/interface/onglets.ui" line="12145"/>
-        <location filename="../src/interface/onglets.ui" line="12170"/>
-        <location filename="../src/interface/onglets.cpp" line="7277"/>
+        <location filename="../src/interface/onglets.ui" line="12126"/>
+        <location filename="../src/interface/onglets.ui" line="12146"/>
+        <location filename="../src/interface/onglets.ui" line="12171"/>
+        <location filename="../src/interface/onglets.cpp" line="7302"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12130"/>
-        <location filename="../src/interface/onglets.cpp" line="2969"/>
-        <location filename="../src/interface/onglets.cpp" line="2982"/>
-        <location filename="../src/interface/onglets.cpp" line="3057"/>
-        <location filename="../src/interface/onglets.cpp" line="3074"/>
+        <location filename="../src/interface/onglets.ui" line="12131"/>
+        <location filename="../src/interface/onglets.cpp" line="2975"/>
+        <location filename="../src/interface/onglets.cpp" line="2988"/>
+        <location filename="../src/interface/onglets.cpp" line="3063"/>
+        <location filename="../src/interface/onglets.cpp" line="3080"/>
         <source>Télécharger...</source>
         <translation>ダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12135"/>
+        <location filename="../src/interface/onglets.ui" line="12136"/>
         <location filename="../src/interface/onglets.cpp" line="2731"/>
         <source>Créer un nouveau lieu</source>
         <translation>新しい場所を作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12140"/>
+        <location filename="../src/interface/onglets.ui" line="12141"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>お気に入りに追加</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12150"/>
+        <location filename="../src/interface/onglets.ui" line="12151"/>
         <source>Copier dans le presse-papier</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12155"/>
-        <location filename="../src/interface/onglets.ui" line="12160"/>
+        <location filename="../src/interface/onglets.ui" line="12156"/>
+        <location filename="../src/interface/onglets.ui" line="12161"/>
         <source>Renommer</source>
         <translation>名前を変更する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12165"/>
+        <location filename="../src/interface/onglets.ui" line="12166"/>
         <source>Modifier coordonnées</source>
         <translation>座標を編集する</translation>
     </message>
@@ -2604,11 +2609,11 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="656"/>
         <location filename="../src/interface/onglets.cpp" line="689"/>
         <location filename="../src/interface/onglets.cpp" line="1014"/>
-        <location filename="../src/interface/onglets.cpp" line="3886"/>
-        <location filename="../src/interface/onglets.cpp" line="5177"/>
-        <location filename="../src/interface/onglets.cpp" line="5443"/>
-        <location filename="../src/interface/onglets.cpp" line="5701"/>
-        <location filename="../src/interface/onglets.cpp" line="6378"/>
+        <location filename="../src/interface/onglets.cpp" line="3892"/>
+        <location filename="../src/interface/onglets.cpp" line="5183"/>
+        <location filename="../src/interface/onglets.cpp" line="5449"/>
+        <location filename="../src/interface/onglets.cpp" line="5707"/>
+        <location filename="../src/interface/onglets.cpp" line="6391"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
@@ -2752,13 +2757,13 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="943"/>
-        <location filename="../src/interface/onglets.cpp" line="3864"/>
+        <location filename="../src/interface/onglets.cpp" line="3870"/>
         <source>Modèle haute orbite</source>
         <translation>高軌道モデル</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="943"/>
-        <location filename="../src/interface/onglets.cpp" line="3864"/>
+        <location filename="../src/interface/onglets.cpp" line="3870"/>
         <source>Modèle basse orbite</source>
         <translation>低軌道モデル</translation>
     </message>
@@ -2766,9 +2771,9 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="950"/>
         <location filename="../src/interface/onglets.cpp" line="1652"/>
         <location filename="../src/interface/onglets.cpp" line="2679"/>
-        <location filename="../src/interface/onglets.cpp" line="3872"/>
-        <location filename="../src/interface/onglets.cpp" line="4286"/>
-        <location filename="../src/interface/onglets.cpp" line="4499"/>
+        <location filename="../src/interface/onglets.cpp" line="3878"/>
+        <location filename="../src/interface/onglets.cpp" line="4292"/>
+        <location filename="../src/interface/onglets.cpp" line="4505"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
@@ -2777,16 +2782,16 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="950"/>
         <location filename="../src/interface/onglets.cpp" line="1652"/>
         <location filename="../src/interface/onglets.cpp" line="2679"/>
-        <location filename="../src/interface/onglets.cpp" line="3885"/>
-        <location filename="../src/interface/onglets.cpp" line="4286"/>
-        <location filename="../src/interface/onglets.cpp" line="4499"/>
+        <location filename="../src/interface/onglets.cpp" line="3891"/>
+        <location filename="../src/interface/onglets.cpp" line="4292"/>
+        <location filename="../src/interface/onglets.cpp" line="4505"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="960"/>
-        <location filename="../src/interface/onglets.cpp" line="3891"/>
+        <location filename="../src/interface/onglets.cpp" line="3897"/>
         <source>Sphérique. R=%1 %2</source>
         <comment>R = radius</comment>
         <translation>R=%1 %2 球形。R=%1 %2</translation>
@@ -2799,7 +2804,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="968"/>
-        <location filename="../src/interface/onglets.cpp" line="3899"/>
+        <location filename="../src/interface/onglets.cpp" line="3905"/>
         <source>Boîte. %1 x %2 x %3 %4</source>
         <translation>直方体。%1 x %2 x %3 %4</translation>
     </message>
@@ -2807,7 +2812,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="972"/>
         <location filename="../src/interface/onglets.cpp" line="2307"/>
         <location filename="../src/interface/onglets.cpp" line="2322"/>
-        <location filename="../src/interface/onglets.cpp" line="3903"/>
+        <location filename="../src/interface/onglets.cpp" line="3909"/>
         <source>Inconnues</source>
         <translation type="unfinished">不明 (TBC)</translation>
     </message>
@@ -2885,9 +2890,9 @@ COSPAR : %3</translation>
         <translation type="unfinished">%1衛星の金環食 (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5130"/>
-        <location filename="../src/interface/onglets.cpp" line="6037"/>
-        <location filename="../src/interface/onglets.cpp" line="6342"/>
+        <location filename="../src/interface/onglets.cpp" line="5136"/>
+        <location filename="../src/interface/onglets.cpp" line="6050"/>
+        <location filename="../src/interface/onglets.cpp" line="6355"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
@@ -2918,7 +2923,7 @@ COSPAR : %3</translation>
         <location filename="../src/interface/onglets.cpp" line="2150"/>
         <location filename="../src/interface/onglets.cpp" line="2260"/>
         <location filename="../src/interface/onglets.cpp" line="2373"/>
-        <location filename="../src/interface/onglets.cpp" line="6667"/>
+        <location filename="../src/interface/onglets.cpp" line="6680"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation type="unfinished">「%1」ファイルの書き込み権限に問題がないか確認してください</translation>
     </message>
@@ -3073,22 +3078,22 @@ COSPAR : %3</translation>
         <translation type="unfinished">レンジレート : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7218"/>
+        <location filename="../src/interface/onglets.cpp" line="7243"/>
         <source>Nom du fichier :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7236"/>
+        <location filename="../src/interface/onglets.cpp" line="7261"/>
         <source>Le fichier existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7272"/>
+        <location filename="../src/interface/onglets.cpp" line="7297"/>
         <source>Supprimer un fichier...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7273"/>
+        <location filename="../src/interface/onglets.cpp" line="7298"/>
         <source>Fichier :</source>
         <translation type="unfinished">ファイル :</translation>
     </message>
@@ -3117,56 +3122,56 @@ COSPAR : %3</translation>
         <translation type="unfinished">Coeff pseudo-balistique : %1 (1/Re)	元期の公転数 : %2			 発射場  : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3206"/>
+        <location filename="../src/interface/onglets.cpp" line="3212"/>
         <source>o/s</source>
         <comment>Byte per second</comment>
         <translation type="unfinished">o/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3209"/>
+        <location filename="../src/interface/onglets.cpp" line="3215"/>
         <source>ko/s</source>
         <comment>kilo-byte per second</comment>
         <translation type="unfinished">ko/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3212"/>
+        <location filename="../src/interface/onglets.cpp" line="3218"/>
         <source>Mo/s</source>
         <comment>Mega-byte per second</comment>
         <translation type="unfinished">Mo/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3274"/>
+        <location filename="../src/interface/onglets.cpp" line="3280"/>
         <source>Remplacement du fichier %1</source>
         <translation type="unfinished">「%1」ファイルの置換</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3274"/>
+        <location filename="../src/interface/onglets.cpp" line="3280"/>
         <source>Ajout du fichier %1</source>
         <translation type="unfinished">「%1」ファイルの追加</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4927"/>
-        <location filename="../src/interface/onglets.cpp" line="4947"/>
+        <location filename="../src/interface/onglets.cpp" line="4933"/>
+        <location filename="../src/interface/onglets.cpp" line="4953"/>
         <source>Ouvrir fichier TLE</source>
         <translation type="unfinished">TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4929"/>
+        <location filename="../src/interface/onglets.cpp" line="4935"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4949"/>
+        <location filename="../src/interface/onglets.cpp" line="4955"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle);;Fichiers gz (*.gz)</source>
         <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle);;gzファイル (*.gz)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4973"/>
+        <location filename="../src/interface/onglets.cpp" line="4979"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation type="unfinished">更新するファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5024"/>
+        <location filename="../src/interface/onglets.cpp" line="5030"/>
         <source>Terminé !</source>
         <translation type="unfinished">終了しました !</translation>
     </message>
@@ -3218,7 +3223,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="319"/>
-        <location filename="../src/interface/onglets.cpp" line="7123"/>
+        <location filename="../src/interface/onglets.cpp" line="7148"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation type="unfinished">UTC</translation>
@@ -3255,7 +3260,7 @@ COSPAR : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="1736"/>
-        <location filename="../src/interface/onglets.cpp" line="6067"/>
+        <location filename="../src/interface/onglets.cpp" line="6080"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
@@ -3477,83 +3482,83 @@ COSPAR : %3</translation>
         <translation type="unfinished">高さは%1%2~%3%2の間でなければなりません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2811"/>
+        <location filename="../src/interface/onglets.cpp" line="2817"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2894"/>
-        <location filename="../src/interface/onglets.cpp" line="2931"/>
+        <location filename="../src/interface/onglets.cpp" line="2900"/>
+        <location filename="../src/interface/onglets.cpp" line="2937"/>
         <source>Erreur rencontrée lors de l&apos;initialisation
 Il n&apos;existe aucun fichier de lieux d&apos;observation</source>
         <translation>初期化中にエラーが発生しました
 観測地ファイルが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2910"/>
+        <location filename="../src/interface/onglets.cpp" line="2916"/>
         <source>Mes Préférés</source>
         <translation>お気に入り</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2938"/>
+        <location filename="../src/interface/onglets.cpp" line="2944"/>
         <source>Erreur rencontrée lors de l&apos;initialisation
 Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe pas</source>
         <translation>初期化中にエラーが発生しました
 観測地ファイルを含むフォルダが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="2965"/>
-        <location filename="../src/interface/onglets.cpp" line="3014"/>
-        <location filename="../src/interface/onglets.cpp" line="3048"/>
+        <location filename="../src/interface/onglets.cpp" line="2971"/>
+        <location filename="../src/interface/onglets.cpp" line="3020"/>
+        <location filename="../src/interface/onglets.cpp" line="3054"/>
         <source>* Défaut</source>
         <translation>* デフォルト</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3020"/>
-        <location filename="../src/interface/onglets.cpp" line="7218"/>
+        <location filename="../src/interface/onglets.cpp" line="3026"/>
+        <location filename="../src/interface/onglets.cpp" line="7243"/>
         <source>Enregistrer sous...</source>
         <translation type="unfinished">新規保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3025"/>
+        <location filename="../src/interface/onglets.cpp" line="3031"/>
         <source>Supprimer...</source>
         <translation>削除する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3290"/>
+        <location filename="../src/interface/onglets.cpp" line="3296"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation type="unfinished">ファイル「%1」ダウンロードのときはエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3332"/>
-        <location filename="../src/interface/onglets.cpp" line="3353"/>
-        <location filename="../src/interface/onglets.cpp" line="5964"/>
-        <location filename="../src/interface/onglets.cpp" line="5999"/>
+        <location filename="../src/interface/onglets.cpp" line="3338"/>
+        <location filename="../src/interface/onglets.cpp" line="3359"/>
+        <location filename="../src/interface/onglets.cpp" line="5970"/>
+        <location filename="../src/interface/onglets.cpp" line="6005"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3333"/>
+        <location filename="../src/interface/onglets.cpp" line="3339"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour des fichiers</source>
         <translation type="unfinished">ファイル更新の完了するためには「%1」の再起動が必要です</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3832"/>
-        <location filename="../src/interface/onglets.cpp" line="3919"/>
+        <location filename="../src/interface/onglets.cpp" line="3838"/>
         <location filename="../src/interface/onglets.cpp" line="3925"/>
-        <location filename="../src/interface/onglets.cpp" line="3978"/>
-        <location filename="../src/interface/onglets.cpp" line="3982"/>
+        <location filename="../src/interface/onglets.cpp" line="3931"/>
+        <location filename="../src/interface/onglets.cpp" line="3984"/>
+        <location filename="../src/interface/onglets.cpp" line="3988"/>
         <source>Inconnu</source>
         <translation type="unfinished">不明 (TBC)</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="900"/>
-        <location filename="../src/interface/onglets.cpp" line="3840"/>
-        <location filename="../src/interface/onglets.cpp" line="3931"/>
-        <location filename="../src/interface/onglets.cpp" line="3936"/>
-        <location filename="../src/interface/onglets.cpp" line="3940"/>
-        <location filename="../src/interface/onglets.cpp" line="3974"/>
+        <location filename="../src/interface/onglets.cpp" line="3846"/>
+        <location filename="../src/interface/onglets.cpp" line="3937"/>
+        <location filename="../src/interface/onglets.cpp" line="3942"/>
+        <location filename="../src/interface/onglets.cpp" line="3946"/>
+        <location filename="../src/interface/onglets.cpp" line="3980"/>
         <source>Inconnue</source>
         <translation type="unfinished">不明 (TBC)</translation>
     </message>
@@ -3569,374 +3574,382 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3859"/>
+        <location filename="../src/interface/onglets.cpp" line="2775"/>
+        <location filename="../src/interface/onglets.cpp" line="6014"/>
+        <location filename="../src/interface/onglets.cpp" line="7090"/>
+        <location filename="../src/interface/onglets.cpp" line="7117"/>
+        <source>Aucun évènement contenu dans le fichier ISS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets.cpp" line="3865"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (深宇宙)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3859"/>
+        <location filename="../src/interface/onglets.cpp" line="3865"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (近地球域)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3860"/>
+        <location filename="../src/interface/onglets.cpp" line="3866"/>
         <source>Non applicable</source>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3873"/>
-        <location filename="../src/interface/onglets.cpp" line="5177"/>
-        <location filename="../src/interface/onglets.cpp" line="5443"/>
-        <location filename="../src/interface/onglets.cpp" line="5701"/>
-        <location filename="../src/interface/onglets.cpp" line="6378"/>
+        <location filename="../src/interface/onglets.cpp" line="3879"/>
+        <location filename="../src/interface/onglets.cpp" line="5183"/>
+        <location filename="../src/interface/onglets.cpp" line="5449"/>
+        <location filename="../src/interface/onglets.cpp" line="5707"/>
+        <location filename="../src/interface/onglets.cpp" line="6391"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="3895"/>
+        <location filename="../src/interface/onglets.cpp" line="3901"/>
         <source>Cylindrique. L=%1 %2, R=%3 %2</source>
         <comment>L = height, R = radius</comment>
         <translation type="unfinished">円筒座標系 L=%1 %2, R=%3 %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4105"/>
+        <location filename="../src/interface/onglets.cpp" line="4111"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>カテゴリ名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4127"/>
+        <location filename="../src/interface/onglets.cpp" line="4133"/>
         <source>La nouvelle catégorie de lieux d&apos;observation a été créée</source>
         <translation>新しい歓測地が作成されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4131"/>
+        <location filename="../src/interface/onglets.cpp" line="4137"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>指定されたカテゴリはすでに存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4154"/>
-        <location filename="../src/interface/onglets.cpp" line="4195"/>
-        <location filename="../src/interface/onglets.cpp" line="7236"/>
+        <location filename="../src/interface/onglets.cpp" line="4160"/>
+        <location filename="../src/interface/onglets.cpp" line="4201"/>
+        <location filename="../src/interface/onglets.cpp" line="7261"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4154"/>
+        <location filename="../src/interface/onglets.cpp" line="4160"/>
         <source>Voulez-vous vraiment supprimer la catégorie &quot;%1&quot;?</source>
         <translation>カテゴリ「 %1」を削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4157"/>
-        <location filename="../src/interface/onglets.cpp" line="4197"/>
-        <location filename="../src/interface/onglets.cpp" line="4559"/>
-        <location filename="../src/interface/onglets.cpp" line="7238"/>
+        <location filename="../src/interface/onglets.cpp" line="4163"/>
+        <location filename="../src/interface/onglets.cpp" line="4203"/>
+        <location filename="../src/interface/onglets.cpp" line="4565"/>
+        <location filename="../src/interface/onglets.cpp" line="7263"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4158"/>
-        <location filename="../src/interface/onglets.cpp" line="4198"/>
-        <location filename="../src/interface/onglets.cpp" line="4560"/>
-        <location filename="../src/interface/onglets.cpp" line="7239"/>
+        <location filename="../src/interface/onglets.cpp" line="4164"/>
+        <location filename="../src/interface/onglets.cpp" line="4204"/>
+        <location filename="../src/interface/onglets.cpp" line="4566"/>
+        <location filename="../src/interface/onglets.cpp" line="7264"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4170"/>
+        <location filename="../src/interface/onglets.cpp" line="4176"/>
         <source>La catégorie &quot;%1&quot; a été supprimée</source>
         <translation>「%1」カテゴリが削除されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4184"/>
+        <location filename="../src/interface/onglets.cpp" line="4190"/>
         <source>Catégorie</source>
         <translation>カテゴリ</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4184"/>
+        <location filename="../src/interface/onglets.cpp" line="4190"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>新しいカテゴリ名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4184"/>
-        <location filename="../src/interface/onglets.cpp" line="4520"/>
-        <location filename="../src/interface/onglets.cpp" line="7218"/>
+        <location filename="../src/interface/onglets.cpp" line="4190"/>
+        <location filename="../src/interface/onglets.cpp" line="4526"/>
+        <location filename="../src/interface/onglets.cpp" line="7243"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4195"/>
+        <location filename="../src/interface/onglets.cpp" line="4201"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>カテゴリは既に存在します。置き換えますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4313"/>
+        <location filename="../src/interface/onglets.cpp" line="4319"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>観測地が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4325"/>
+        <location filename="../src/interface/onglets.cpp" line="4331"/>
         <source>Erreur dans la saisie de la longitude</source>
         <translation>経度を入力している時に、エラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4335"/>
+        <location filename="../src/interface/onglets.cpp" line="4341"/>
         <source>Erreur dans la saisie de la latitude</source>
         <translation>緯度を入力している時に、エラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4344"/>
+        <location filename="../src/interface/onglets.cpp" line="4350"/>
         <source>Erreur dans la saisie de l&apos;altitude</source>
         <translation>高さを入力している時に、エラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4354"/>
+        <location filename="../src/interface/onglets.cpp" line="4360"/>
         <source>Le lieu existe déjà dans la catégorie &quot;%1&quot;</source>
         <translation>その場所は既にカテゴリ「%1」に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4438"/>
+        <location filename="../src/interface/onglets.cpp" line="4444"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; fait déjà partie de &quot;Mes Préférés&quot;</source>
         <translation>観測地「%1」は既に「お気に入り」に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4446"/>
+        <location filename="../src/interface/onglets.cpp" line="4452"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; a été ajouté dans la catégorie &quot;Mes Préférés&quot;</source>
         <translation>観測地「%1」は「お気に入り」のカテゴリに追加されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4520"/>
+        <location filename="../src/interface/onglets.cpp" line="4526"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>新しい観測地の名前 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4552"/>
+        <location filename="../src/interface/onglets.cpp" line="4558"/>
         <source>Voulez-vous vraiment supprimer &quot;%1&quot; de la catégorie &quot;%2&quot;?</source>
         <translation>カテゴリ「 %2」から「 %1」を削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4557"/>
+        <location filename="../src/interface/onglets.cpp" line="4563"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4574"/>
+        <location filename="../src/interface/onglets.cpp" line="4580"/>
         <source>Le lieu d&apos;observation &quot;%1&quot; a été supprimé de la catégorie &quot;%2&quot;</source>
         <translation>カテゴリ「 %2」から観測地「 %1」が削除されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4605"/>
+        <location filename="../src/interface/onglets.cpp" line="4611"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>観測地は既に選択されています</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4745"/>
-        <location filename="../src/interface/onglets.cpp" line="4819"/>
+        <location filename="../src/interface/onglets.cpp" line="4751"/>
+        <location filename="../src/interface/onglets.cpp" line="4825"/>
         <source>dd/MM/yyyy hh:mm:ss</source>
         <comment>date format</comment>
         <translation>yyyy年MM月dd日 hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4992"/>
-        <location filename="../src/interface/onglets.cpp" line="4996"/>
+        <location filename="../src/interface/onglets.cpp" line="4998"/>
+        <location filename="../src/interface/onglets.cpp" line="5002"/>
         <source>Erreur rencontrée lors de la décompression du fichier %1</source>
         <translation type="unfinished">「%1」ファイルの展開中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5215"/>
+        <location filename="../src/interface/onglets.cpp" line="5221"/>
         <source>previsions</source>
         <comment>filename (without accent)</comment>
         <translation type="unfinished">prediction</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5225"/>
-        <location filename="../src/interface/onglets.cpp" line="5522"/>
-        <location filename="../src/interface/onglets.cpp" line="5853"/>
-        <location filename="../src/interface/onglets.cpp" line="6117"/>
-        <location filename="../src/interface/onglets.cpp" line="6397"/>
+        <location filename="../src/interface/onglets.cpp" line="5231"/>
+        <location filename="../src/interface/onglets.cpp" line="5528"/>
+        <location filename="../src/interface/onglets.cpp" line="5859"/>
+        <location filename="../src/interface/onglets.cpp" line="6130"/>
+        <location filename="../src/interface/onglets.cpp" line="6410"/>
         <source>Calculs en cours...</source>
         <translation type="unfinished">進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5249"/>
-        <location filename="../src/interface/onglets.cpp" line="5546"/>
-        <location filename="../src/interface/onglets.cpp" line="5877"/>
-        <location filename="../src/interface/onglets.cpp" line="6147"/>
-        <location filename="../src/interface/onglets.cpp" line="6421"/>
+        <location filename="../src/interface/onglets.cpp" line="5255"/>
+        <location filename="../src/interface/onglets.cpp" line="5552"/>
+        <location filename="../src/interface/onglets.cpp" line="5883"/>
+        <location filename="../src/interface/onglets.cpp" line="6160"/>
+        <location filename="../src/interface/onglets.cpp" line="6434"/>
         <source>Calculs terminés</source>
         <translation type="unfinished">計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5252"/>
+        <location filename="../src/interface/onglets.cpp" line="5258"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5398"/>
+        <location filename="../src/interface/onglets.cpp" line="5404"/>
         <source>Le nom du fichier TLE n&apos;est pas spécifié</source>
         <translation>TLEファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5404"/>
+        <location filename="../src/interface/onglets.cpp" line="5410"/>
         <source>Le nom du fichier TLE est incorrect</source>
         <translation>TLEファイルの名前が正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5485"/>
-        <location filename="../src/interface/onglets.cpp" line="5729"/>
-        <location filename="../src/interface/onglets.cpp" line="5766"/>
-        <location filename="../src/interface/onglets.cpp" line="5819"/>
+        <location filename="../src/interface/onglets.cpp" line="5491"/>
+        <location filename="../src/interface/onglets.cpp" line="5735"/>
+        <location filename="../src/interface/onglets.cpp" line="5772"/>
+        <location filename="../src/interface/onglets.cpp" line="5825"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 n&apos;est pas un TLE</source>
         <translation>ファイルの読み込み中にエラーが発生しました
 「%1」ファイルはTLEファイルではありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5504"/>
+        <location filename="../src/interface/onglets.cpp" line="5510"/>
         <source>Erreur rencontrée lors de l&apos;exécution
 Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier TLE</source>
         <translation type="unfinished">初期化中にエラーが発生しました
 TLEファイルにはフレアを生成する衛星が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5512"/>
+        <location filename="../src/interface/onglets.cpp" line="5518"/>
         <source>flashs</source>
         <comment>file name (without accent)</comment>
         <translation type="unfinished">flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5549"/>
+        <location filename="../src/interface/onglets.cpp" line="5555"/>
         <source>Aucun flash n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間にフレアが見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5777"/>
-        <location filename="../src/interface/onglets.cpp" line="5830"/>
+        <location filename="../src/interface/onglets.cpp" line="5783"/>
+        <location filename="../src/interface/onglets.cpp" line="5836"/>
         <source>Erreur rencontrée lors du chargement du fichier
 Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <translation>ファイルの読み込み中にエラーが発生しました
 「%1」ファイルにISSのTLEが含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5808"/>
+        <location filename="../src/interface/onglets.cpp" line="5814"/>
         <source>L&apos;âge du TLE de l&apos;ISS (%1 jours) est supérieur à %2 jours</source>
         <translation>ISSのTLEの経過時間は%2日以上です (%1日)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5838"/>
+        <location filename="../src/interface/onglets.cpp" line="5844"/>
         <source>Le fichier TLE n&apos;existe pas</source>
         <translation>TLEファイルが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5843"/>
+        <location filename="../src/interface/onglets.cpp" line="5849"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation type="unfinished">transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5880"/>
+        <location filename="../src/interface/onglets.cpp" line="5886"/>
         <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間にISSの通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5960"/>
+        <location filename="../src/interface/onglets.cpp" line="5966"/>
         <source>Téléchargement du fichier TLE de l&apos;ISS...</source>
         <translation type="unfinished">ISSのTLEファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5996"/>
+        <location filename="../src/interface/onglets.cpp" line="6002"/>
         <source>Téléchargement du fichier de manoeuvres ISS...</source>
         <translation type="unfinished">ISSマヌーバファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6260"/>
+        <location filename="../src/interface/onglets.cpp" line="6273"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6387"/>
+        <location filename="../src/interface/onglets.cpp" line="6400"/>
         <source>evenements</source>
         <comment>file name (without accent)</comment>
         <translation type="unfinished">events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6424"/>
+        <location filename="../src/interface/onglets.cpp" line="6437"/>
         <source>Aucun évènement n&apos;a été trouvé sur la période donnée</source>
         <translation type="unfinished">指定された期間にイベントが見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="4977"/>
-        <location filename="../src/interface/onglets.cpp" line="6521"/>
+        <location filename="../src/interface/onglets.cpp" line="4983"/>
+        <location filename="../src/interface/onglets.cpp" line="6534"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation type="unfinished">読み取るファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="5007"/>
-        <location filename="../src/interface/onglets.cpp" line="6545"/>
+        <location filename="../src/interface/onglets.cpp" line="5013"/>
+        <location filename="../src/interface/onglets.cpp" line="6558"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation type="unfinished">ファイル「%1」が存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6551"/>
+        <location filename="../src/interface/onglets.cpp" line="6564"/>
         <source>Erreur rencontrée lors du chargement du fichier %1</source>
         <translation type="unfinished">「%1」ファイルの読み込み中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6556"/>
+        <location filename="../src/interface/onglets.cpp" line="6569"/>
         <source>Le nom du fichier personnel n&apos;est pas spécifié</source>
         <translation type="unfinished">個人ファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6566"/>
+        <location filename="../src/interface/onglets.cpp" line="6579"/>
         <source>Nom du fichier personnel et nom du fichier à lire identiques</source>
         <translation type="unfinished">個人ファイル名と読み込むファイル名は同じです</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6572"/>
-        <location filename="../src/interface/onglets.cpp" line="6578"/>
+        <location filename="../src/interface/onglets.cpp" line="6585"/>
+        <location filename="../src/interface/onglets.cpp" line="6591"/>
         <source>Erreur dans la saisie des numéros NORAD</source>
         <translation type="unfinished">NORAD番号の入力中にエラーが発生しました (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6584"/>
-        <location filename="../src/interface/onglets.cpp" line="6590"/>
+        <location filename="../src/interface/onglets.cpp" line="6597"/>
+        <location filename="../src/interface/onglets.cpp" line="6603"/>
         <source>Erreur dans la saisie des nombres de révolutions par jour</source>
         <translation type="unfinished">一日あたりの公転数の入力中にエラーが発生しました (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6596"/>
-        <location filename="../src/interface/onglets.cpp" line="6602"/>
+        <location filename="../src/interface/onglets.cpp" line="6609"/>
+        <location filename="../src/interface/onglets.cpp" line="6615"/>
         <source>Erreur dans la saisie des ascensions droites du noeud ascendant</source>
         <translation type="unfinished">昇交点の赤経の入力中にエラーが発生しました (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6608"/>
-        <location filename="../src/interface/onglets.cpp" line="6614"/>
+        <location filename="../src/interface/onglets.cpp" line="6621"/>
+        <location filename="../src/interface/onglets.cpp" line="6627"/>
         <source>Erreur dans la saisie des arguments du périgée</source>
         <translation type="unfinished">Erreur dans la saisie des arguments du périgée</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6620"/>
-        <location filename="../src/interface/onglets.cpp" line="6626"/>
+        <location filename="../src/interface/onglets.cpp" line="6633"/>
+        <location filename="../src/interface/onglets.cpp" line="6639"/>
         <source>Erreur dans la saisie des excentricités</source>
         <translation type="unfinished">Erreur dans la saisie des excentricités</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6632"/>
-        <location filename="../src/interface/onglets.cpp" line="6638"/>
+        <location filename="../src/interface/onglets.cpp" line="6645"/>
+        <location filename="../src/interface/onglets.cpp" line="6651"/>
         <source>Erreur dans la saisie des inclinaisons (premier intervalle)</source>
         <translation type="unfinished">Erreur dans la saisie des inclinaisons (premier intervalle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6648"/>
-        <location filename="../src/interface/onglets.cpp" line="6654"/>
+        <location filename="../src/interface/onglets.cpp" line="6661"/>
+        <location filename="../src/interface/onglets.cpp" line="6667"/>
         <source>Erreur dans la saisie des inclinaisons (deuxième intervalle)</source>
         <translation type="unfinished">Erreur dans la saisie des inclinaisons (deuxième intervalle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="6723"/>
+        <location filename="../src/interface/onglets.cpp" line="6736"/>
         <source>Fichier %1 écrit</source>
         <translation type="unfinished">「%1」ファイルが書き込まれました</translation>
     </message>
