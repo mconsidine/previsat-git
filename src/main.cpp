@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 juillet 2022
+ * >    24 juillet 2022
  *
  */
 
@@ -66,11 +66,6 @@ int main(int argc, char *argv[])
 
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
-        // Lancement du splash screen et demarrage de l'application
-        QSplashScreen * const splash = new QSplashScreen;
-        splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
-        splash->show();
-
         // Verification si une instance de PreviSat existe
         const qint64 pid = a.applicationPid();
         QSharedMemory mem;
@@ -81,13 +76,18 @@ int main(int argc, char *argv[])
                 if (mem.attach(QSharedMemory::ReadOnly)) {
 
                     const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
-                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(QCoreApplication::applicationName()));
+                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(APP_NAME));
                     return EXIT_FAILURE;
                 }
             } else {
                 QMessageBox::warning(0, QObject::tr("Information"), mem.errorString());
             }
         }
+
+        // Lancement du splash screen et demarrage de l'application
+        QSplashScreen * const splash = new QSplashScreen;
+        splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
+        splash->show();
 
         PreviSat w;
 

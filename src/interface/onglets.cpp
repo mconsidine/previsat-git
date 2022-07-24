@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    23 juillet 2022
+ * >    24 juillet 2022
  *
  */
 
@@ -2586,6 +2586,7 @@ void Onglets::on_pause_clicked()
     _ui->forward->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    QThread::msleep(100);
     emit ModeManuel(enb);
 
     /* Retour */
@@ -2693,6 +2694,7 @@ void Onglets::InitAffichageDemarrage()
     _ui->dateHeure4->setVisible(false);
     _ui->utcManuel2->setVisible(false);
     _ui->frameSimu->setVisible(false);
+    _ui->pause->setEnabled(false);
 
     _ui->lbl_prochainAOS->setVisible(false);
     _ui->dateAOS->setVisible(false);
@@ -3650,6 +3652,7 @@ void Onglets::on_forward_clicked()
     _ui->rewind->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    QThread::msleep(100);
     emit ModeManuel(enb);
 
     /* Retour */
@@ -3670,6 +3673,7 @@ void Onglets::on_backward_clicked()
     _ui->rewind->setEnabled(enb);
     _ui->forward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+    QThread::msleep(100);
     emit ModeManuel(enb);
 
     /* Retour */
