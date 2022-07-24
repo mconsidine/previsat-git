@@ -36,7 +36,7 @@
  * >    4 mars 2012
  *
  * Date de revision
- * >    30 octobre 2021
+ * >    24 juillet 2022
  *
  */
 
@@ -216,7 +216,7 @@ void GestionnaireTLE::on_actionSupprimerGroupe_triggered()
     if (index >= 0) {
 
         const QString groupe = ui->listeGroupeTLE->currentItem()->text();
-        const QString msg = tr("Voulez-vous vraiment supprimer le groupe \"%1\"?");
+        const QString msg = tr("Voulez-vous vraiment supprimer le groupe <b>%1</b> ?");
         QMessageBox msgbox(tr("Information"), msg.arg(groupe), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
                            QMessageBox::No, QMessageBox::NoButton, this);
         msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
@@ -371,7 +371,7 @@ void GestionnaireTLE::on_actionSupprimer_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe \"%1\"?");
+    const QString msg = tr("Voulez-vous vraiment supprimer ce(s) fichier(s) du groupe <b>%1</b> ?");
     const QString groupe = ui->listeGroupeTLE->currentItem()->text();
 
     QMessageBox msgbox(tr("Information"), msg.arg(groupe), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
