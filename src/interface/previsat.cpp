@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 juillet 2022
+ * >    24 juillet 2022
  *
  */
 
@@ -1980,6 +1980,17 @@ void PreviSat::GestionTempsReel()
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
+
+                if (_onglets->ui()->dateHeure4->isVisible()) {
+                    _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
+                    _onglets->ui()->dateHeure4->setDateTime(_dateCourante->ToQDateTime(1));
+                } else {
+                    _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
+                    _onglets->ui()->dateHeure3->setDateTime(_dateCourante->ToQDateTime(1));
+                    _onglets->ui()->dateHeure3->setFocus();
+                }
+
                 _onglets->show(*_dateCourante);
             }
         }
@@ -2833,9 +2844,9 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         _onglets->ui()->utcManuel->setVisible(false);
         _onglets->ui()->utcManuel2->setVisible(false);
         _onglets->ui()->frameSimu->setVisible(false);
-        //        if (_onglets->ui()->pause->isEnabled()) {
-        //            _onglets->on_pause_clicked();
-        //        }
+        if (_onglets->ui()->pause->isEnabled()) {
+            _onglets->on_pause_clicked();
+        }
 
         on_pasReel_currentIndexChanged(ui->pasReel->currentIndex());
         ui->pasReel->setVisible(true);
@@ -2873,7 +2884,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
             _chronometre->setInterval(static_cast<int> (pas * NB_SEC_PAR_JOUR + EPS_DATES) * 1000);
 
         } else if (!_onglets->ui()->backward->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
-            _chronometre->setInterval(0);
+            _chronometre->setInterval(1000);
         }
 
         ui->modeManuel->setChecked(true);
@@ -2903,8 +2914,8 @@ void PreviSat::on_modeManuel_toggled(bool checked)
 
         _onglets->ui()->utcManuel->setVisible(true);
         _onglets->ui()->utcManuel2->setVisible(true);
-        //_onglets->ui()->frameSimu->setVisible(true);
-        //ui->pasManuel->setFocus();
+        _onglets->ui()->frameSimu->setVisible(true);
+        ui->pasManuel->setFocus();
 
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
