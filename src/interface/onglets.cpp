@@ -2550,7 +2550,7 @@ void Onglets::on_majMaintenant_clicked()
     _dirDwn = Configuration::instance()->dirTle();
     _ui->majMaintenant->setEnabled(false);
 
-    const QString chaine = tr("Mise à jour du groupe de TLE \"%1\" (à partir de %2) en cours...");
+    const QString chaine = tr("Mise à jour du groupe de TLE <b>%1</b> (à partir de %2) en cours...");
     emit AfficherMessageStatut(chaine.arg(nom).arg(categorie.site), 10);
 
     _ui->frameBarreProgression->setVisible(true);
@@ -4161,7 +4161,7 @@ void Onglets::on_actionSupprimerCategorie_triggered()
     const QString categorie = _ui->categoriesObs->currentItem()->text();
     const QString fic = categorie.toLower();
 
-    QMessageBox msgbox(tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie \"%1\"?")
+    QMessageBox msgbox(tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie <b>%1</b> ?")
                        .arg(categorie), QMessageBox::Question, QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
     msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
@@ -4170,14 +4170,14 @@ void Onglets::on_actionSupprimerCategorie_triggered()
     const int res = msgbox.result();
 
     if (res == QMessageBox::No) {
-        emit AfficherMessageStatut("", 0);
+        emit EffacerMessageStatut();
     } else {
         QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + fic);
         fi.remove();
         _ui->lieuxObs->clear();
         InitFicObs(false);
         _ui->categoriesObs->setCurrentRow(0);
-        emit AfficherMessageStatut(tr("La catégorie \"%1\" a été supprimée").arg(categorie), 10);
+        emit AfficherMessageStatut(tr("La catégorie <b>%1</b> a été supprimée").arg(categorie), 10);
     }
 
     /* Retour */
@@ -4297,7 +4297,7 @@ void Onglets::on_actionCreer_un_nouveau_lieu_triggered()
     _ui->lbl_ajouterDans->setVisible(true);
     _ui->ajdfic->setVisible(true);
     _ui->ajdfic->setCurrentIndex(_ui->categoriesObs->currentRow());
-    emit AfficherMessageStatut("", 0);
+    emit EffacerMessageStatut();
     _ui->nvLieu->setFocus();
 
     /* Retour */
@@ -4361,7 +4361,7 @@ void Onglets::on_validerObs_clicked()
             QMap<QString, Observateur> &mapObs = Configuration::instance()->mapObs();
 
             if (mapObs.contains(nomlieu) && _ui->ajdfic->isVisible()) {
-                const QString msg = tr("Le lieu existe déjà dans la catégorie \"%1\"");
+                const QString msg = tr("Le lieu existe déjà dans la catégorie <b>%1</b>");
                 throw PreviSatException(msg.arg(_ui->ajdfic->currentText()), WARNING);
             } else {
 
@@ -4445,7 +4445,7 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
         const QString nomlieu = lieu.nomlieu();
         if (mapObs.contains(nomlieu)) {
 
-            const QString msg = tr("Le lieu d'observation \"%1\" fait déjà partie de \"Mes Préférés\"");
+            const QString msg = tr("Le lieu d'observation <b>%1</b> fait déjà partie de <b>Mes Préférés</b>");
             Message::Afficher(msg.arg(nomlieu), WARNING);
 
         } else {
@@ -4453,7 +4453,7 @@ void Onglets::on_actionAjouter_Mes_Preferes_triggered()
             mapObs.insert(nomlieu, lieu);
             Configuration::instance()->EcritureFicObs(listeFicObs.at(0));
             InitFicObs(false);
-            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été ajouté dans la catégorie \"Mes Préférés\"").arg(nomlieu), 10);
+            emit AfficherMessageStatut(tr("Le lieu d'observation <b>%1</b> a été ajouté dans la catégorie <b>Mes Préférés</b>").arg(nomlieu), 10);
             _ui->categoriesObs->setCurrentRow(0);
         }
     } catch (PreviSatException &e) {
@@ -4508,7 +4508,7 @@ void Onglets::on_actionModifier_coordonnees_triggered()
         _ui->nvAltitude->setPalette(QPalette());
         _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
 
-        emit AfficherMessageStatut("", 0);
+        emit EffacerMessageStatut();
         _ui->nvLieu->setFocus();
 
     } catch (PreviSatException &e) {
@@ -4559,7 +4559,7 @@ void Onglets::on_actionSupprimerLieu_triggered()
 
     /* Initialisations */
     const QString nomlieu = _ui->lieuxObs->currentItem()->text();
-    const QString msg = tr("Voulez-vous vraiment supprimer \"%1\" de la catégorie \"%2\"?");
+    const QString msg = tr("Voulez-vous vraiment supprimer <b>%1</b> de la catégorie <b>%2</b> ?");
 
     /* Corps de la methode */
     try {
@@ -4581,10 +4581,10 @@ void Onglets::on_actionSupprimerLieu_triggered()
             _ui->outilsLieuxObservation->setVisible(false);
 
             on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
-            emit AfficherMessageStatut(tr("Le lieu d'observation \"%1\" a été supprimé de la catégorie \"%2\"").arg(nomlieu)
+            emit AfficherMessageStatut(tr("Le lieu d'observation <b>%1</b> a été supprimé de la catégorie <b>%2</b>").arg(nomlieu)
                                        .arg(_ui->categoriesObs->currentItem()->text()), 10);
         } else {
-            emit AfficherMessageStatut("", 0);
+            emit EffacerMessageStatut();
         }
     } catch (PreviSatException &e) {
     }

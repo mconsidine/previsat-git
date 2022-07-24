@@ -1582,7 +1582,8 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         const QString nomsat = it.value().nom().trimmed();
         const QString norad = it.key();
         const bool check = listeSatellites.contains(norad);
-        const QString tooltip = tr("%1\nNORAD : %2\nCOSPAR : %3").arg(nomsat).arg(norad).arg(it.value().donnees().cospar());
+        const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
+                .arg(nomsat).arg(norad).arg(it.value().donnees().cospar());
 
         switch (_onglets->ui()->affNoradListes->checkState()) {
         default:
@@ -3056,11 +3057,11 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
     /* Initialisations */
     const QString nomsat = item->text();
     const QString norad = item->data(Qt::UserRole).toString();
-    const QString cospar = item->toolTip().split("\n").last();
+    const QString cospar = item->toolTip().split(":").last().trimmed();
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  %3)").arg(nomsat).arg(norad).arg(cospar), 5);
+        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3").arg(nomsat).arg(norad).arg(cospar), 5);
     }
 
     /* Retour */
