@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 juillet 2022
+ * >    24 juillet 2022
  *
  */
 
@@ -1172,12 +1172,16 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
 
                 // Le curseur est au(dessus d'un satellite
                 if ((dt <= 16) && (sat.altitude() > 0.)) {
+
                     atrouve = true;
-                    setToolTip(tr("%1\nNORAD : %2\nCOSPAR : %3").arg(sat.tle().nom()).arg(sat.tle().norad()).arg(sat.tle().cospar()));
-                    emit AfficherMessageStatut(tr("%1 (numéro NORAD : %2  -  COSPAR : %3)").arg(sat.tle().nom()).arg(sat.tle().norad())
-                                               .arg(sat.tle().cospar()));
+                    setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
+                               .arg(sat.tle().nom()).arg(sat.tle().norad()).arg(sat.tle().cospar()));
+
+                    emit AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
+                                               .arg(sat.tle().nom()).arg(sat.tle().norad()).arg(sat.tle().cospar()));
                     setCursor(Qt::CrossCursor);
                 } else {
+
                     emit EffacerMessageStatut();
                     setToolTip("");
                     setCursor(Qt::ArrowCursor);
