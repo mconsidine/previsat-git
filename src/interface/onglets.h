@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -213,7 +213,7 @@ signals:
     void ModeManuel(bool enabled);
     void ChangementDate(const QDateTime &dateTime);
     void ChangementDate(const Date &date);
-    void MiseAJourCarte();
+    void MiseAJourCarte(QResizeEvent *evt = nullptr);
     void RechargerTLE();
     void RecalculerPositions();
     void InitFicTLE();
@@ -548,7 +548,6 @@ private slots:
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
 
-
     void on_majPrec_clicked();
     void on_majSuiv_clicked();
     void on_miseAJourTLE_currentChanged(int arg1);
@@ -654,12 +653,14 @@ private slots:
     void on_affinvew_stateChanged(int arg1);
     void on_affcoord_stateChanged(int arg1);
     void on_affnomlieu_stateChanged(int arg1);
+    void on_affSAA_toggled(bool checked);
     void on_unitesKm_toggled(bool checked);
     void on_unitesMi_toggled(bool checked);
     void on_syst24h_toggled(bool checked);
     void on_syst12h_toggled(bool checked);
     void on_updown_valueChanged(int arg1);
     void on_utcAuto_stateChanged(int arg1);
+    void on_heureLegale_toggled(bool checked);
     void on_utc_toggled(bool checked);
     void on_preferences_currentIndexChanged(int index);
     void on_enregistrerPref_clicked();

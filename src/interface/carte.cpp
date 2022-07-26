@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -140,7 +140,9 @@ void Carte::show()
     /* Corps de la methode */
     // Chargement de la carte
     const QString nomMap = (_onglets->ui()->listeMap->currentIndex() == 0) ?
-                ":/resources/map.png" : Configuration::instance()->listeFicMap().at(_onglets->ui()->listeMap->currentIndex() - 1);
+                ":/resources/map.png" :
+                Configuration::instance()->dirMap() + QDir::separator() +
+                Configuration::instance()->listeFicMap().at(_onglets->ui()->listeMap->currentIndex() - 1);
 
     QPixmap pixMap;
     pixMap.load(nomMap);
@@ -174,6 +176,7 @@ void Carte::show()
 
             const bool conditionIss = !Configuration::instance()->listeSatellites().isEmpty() && mcc
                     && (Configuration::instance()->listeSatellites().at(0).tle().norad() == Configuration::instance()->noradStationSpatiale());
+
             QPen pen = QPen((conditionIss) ? ((_onglets->ui()->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
             pen.setCosmetic(true);
 
@@ -302,6 +305,7 @@ void Carte::show()
 
                 if (mcc && (i != 0)) {
                     stylo = QPen(Qt::NoBrush, 0);
+                    stylo.setCosmetic(true);
                 }
 
                 soleil.CalculZoneVisibilite(beta);
@@ -612,6 +616,10 @@ void Carte::show()
             double bsat2;
 
             crayon = QPen(Qt::yellow);
+            crayon.setCosmetic(true);
+
+            QPen crayon2 = (_onglets->ui()->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
+            crayon2.setCosmetic(true);
 
             for(int j=0; j<Configuration::instance()->mapStations().count(); j++) {
 
@@ -643,7 +651,6 @@ void Carte::show()
                             && (Configuration::instance()->listeSatellites().at(0).tle().norad() ==
                                 Configuration::instance()->noradStationSpatiale())) {
 
-                        const QPen crayon2 = (_onglets->ui()->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
                         Satellite sat = Configuration::instance()->listeSatellites().at(0);
                         sat.CalculCercleAcquisition(station);
 
@@ -712,7 +719,7 @@ void Carte::show()
                     transform2.translate(llun - _ui->carte->width(), blun);
                 }
                 if ((llun - 7) < 0) {
-                    transform2.translate(lsol + _ui->carte->width(), blun);
+                    transform2.translate(llun + _ui->carte->width(), blun);
                 }
                 if (_onglets->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
                     transform2.rotate(180.);
@@ -724,7 +731,8 @@ void Carte::show()
             if (_onglets->ui()->affphaselune->isChecked()) {
 
                 const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
-                const QPen stylo(Qt::NoBrush, 0);
+                QPen stylo(Qt::NoBrush, 0);
+                stylo.setCosmetic(true);
                 const QPolygonF poly = Ciel::AffichagePhaseLune(Configuration::instance()->lune(), 9);
 
                 QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
@@ -778,6 +786,7 @@ void Carte::show()
                     } else {
                         crayon = bleuClair;
                     }
+                    crayon.setCosmetic(true);
 
                     if (Configuration::instance()->issLive()) {
 
@@ -807,6 +816,7 @@ void Carte::show()
                             if (_onglets->ui()->styleWCC->isChecked()) {
 
                                 crayon = QPen(Qt::white, 2);
+                                crayon.setCosmetic(true);
 
                                 // Affichage des crochets des transitions jour/nuit
                                 txt = "";
@@ -886,6 +896,8 @@ void Carte::show()
                 if (mcc) {
 
                     crayon = QPen((_onglets->ui()->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
+                    crayon.setCosmetic(true);
+
                     if (Configuration::instance()->listeSatellites().at(isat).tle().nom().toLower().startsWith("tdrs")) {
 
                         const int numeroTDRS = Configuration::instance()->listeSatellites().at(isat).tle().nom().section(" ", 1).toInt();
@@ -908,6 +920,8 @@ void Carte::show()
                                 const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * RAD2DEG) * DEG2PXVT);
 
                                 crayon = QPen(QColor(satTDRS.rouge, satTDRS.vert, satTDRS.bleu), 2);
+                                crayon.setCosmetic(true);
+
                                 txtSat->setBrush(crayon.color());
 
                                 const int lng = static_cast<int> (txtSat->boundingRect().width());
@@ -919,6 +933,7 @@ void Carte::show()
                     }
                 } else {
                     crayon = QPen(Qt::white);
+                    crayon.setCosmetic(true);
                 }
 
                 if ((satellites.at(isat).altitude() >= 0.) && (!satellites.at(isat).zone().isEmpty())) {
@@ -1062,6 +1077,8 @@ void Carte::resizeEvent(QResizeEvent *evt)
         const int lc = qMin(href, lref);
         const int hc = (lc + 1) / 2;
         _ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
+    } else {
+        _ui->carte->setGeometry(geometry());
     }
 
     const int hcarte = _ui->carte->height() - 1;
@@ -1085,6 +1102,7 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
     /* Initialisations */
     QPen crayon(Qt::white);
+    crayon.setCosmetic(true);
 
     /* Corps de la methode */
     show();
@@ -1275,6 +1293,9 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
                         _onglets->setAcalcDN(true);
                         _onglets->setInfo(true);
 
+                        Configuration::instance()->notifAOS() = ATTENTE_LOS;
+                        Configuration::instance()->notifFlashs() = ATTENTE_LOS;
+
                         emit RecalculerPositions();
 
                         Configuration::instance()->EcritureConfiguration();
@@ -1303,16 +1324,16 @@ bool Carte::eventFilter(QObject *watched, QEvent *event)
 void Carte::AffichageSatellite(const Satellite &satellite, const int lsat, const int bsat, const int lcarte, const int hcarte) const
 {
     /* Declarations des variables locales */
+    QColor couleur;
 
     /* Initialisations */
+    const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+    const QColor crimson(220, 20, 60);
+    QPen noir(Qt::black);
+    noir.setCosmetic(true);
 
     /* Corps de la methode */
     // Dessin du satellite
-    const QColor crimson(220, 20, 60);
-    const QPen noir(Qt::black);
-    const QRect rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
-
-    QColor couleur;
     if (satellite.conditionEclipse().eclipseTotale()) {
         couleur = crimson;
     } else if (satellite.conditionEclipse().eclipsePartielle() || satellite.conditionEclipse().eclipseAnnulaire()) {

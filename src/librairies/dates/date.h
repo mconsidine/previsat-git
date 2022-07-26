@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 octobre 2020
+ * >    26 juillet 2022
  *
  */
 
@@ -175,10 +175,11 @@ public:
 
     /**
      * @brief ToLongDate Conversion en chaine de caracteres longue
+     * @param locale locale
      * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format long
      */
-    QString ToLongDate(const DateSysteme &systeme) const;
+    QString ToLongDate(const QString &locale, const DateSysteme &systeme) const;
 
     /**
      * @brief operator = Affectation d'une date

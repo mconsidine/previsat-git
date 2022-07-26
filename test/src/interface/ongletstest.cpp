@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -63,6 +63,8 @@ void OngletsTest::testAll()
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
+
+    Configuration::instance()->DeterminationLocale();
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
