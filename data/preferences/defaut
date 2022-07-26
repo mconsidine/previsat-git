@@ -21,7 +21,7 @@ affichage/afftraceCiel true
 affichage/afftraj true
 affichage/affvisib 2
 affichage/calJulien false
-affichage/eclipsesLune false
+affichage/eclipsesLune true
 affichage/effetEclipsesMagnitude true
 affichage/extinction true
 affichage/fenetreMax false

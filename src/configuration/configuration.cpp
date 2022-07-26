@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -985,7 +985,6 @@ void Configuration::InitFicMap()
     const QDir di(_dirMap);
     const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
     _listeFicMap = di.entryList(filtres, QDir::Files);
-    _listeFicMap.insert(0, "defaut");
 
     /* Retour */
     return;

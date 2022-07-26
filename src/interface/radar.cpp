@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    25 juillet 2022
  *
  */
 
@@ -468,6 +468,9 @@ bool Radar::eventFilter(QObject *watched, QEvent *event)
                         _onglets->setAcalcAOS(true);
                         _onglets->setAcalcDN(true);
                         _onglets->setInfo(true);
+
+                        Configuration::instance()->notifAOS() = ATTENTE_LOS;
+                        Configuration::instance()->notifFlashs() = ATTENTE_LOS;
 
                         emit RecalculerPositions();
 
