@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    26 juillet 2022
  *
  */
 
@@ -76,7 +76,7 @@ void DateTest::testToLongDate()
     qInfo(Q_FUNC_INFO);
 
     const Date date1(2006, 1, 15, 21, 24, 37.5, 1. / 24.);
-    QCOMPARE(date1.ToLongDate(SYSTEME_24H), "Dimanche 15 janvier 2006 22:24:38");
+    QCOMPARE(date1.ToLongDate(QLocale::system().name().section('_', 0, 0), SYSTEME_24H), "Dimanche 15 janvier 2006 22:24:38");
 }
 
 void DateTest::testToQDateTime()

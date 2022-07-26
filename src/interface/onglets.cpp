@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -321,7 +321,8 @@ void Onglets::AffichageDate() const
         date = Date(_date->jourJulienUTC(), 0., true);
     }
 
-    const QString chaine = QString("%1  %2").arg(date.ToLongDate((_ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H)).arg(chaineUTC);
+    const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(),
+                                                                 (_ui->syst12h->isChecked()) ? SYSTEME_12H : SYSTEME_24H)).arg(chaineUTC);
     _ui->dateHeure1->setText(chaine);
     _ui->dateHeure2->setText(chaine);
 
@@ -2398,7 +2399,7 @@ void Onglets::SauvePreferences(const QString &fichierPref)
                  << "affichage/afftraj " << QVariant(_ui->afftraj->isChecked()).toString() << endl
                  << "affichage/affvisib " << _ui->affvisib->checkState() << endl
                  << "affichage/calJulien " << QVariant(_ui->calJulien->isChecked()).toString() << endl
-                 << "affichage/eclipsesLune " << QVariant(_ui->calJulien->isChecked()).toString() << endl
+                 << "affichage/eclipsesLune " << QVariant(_ui->eclipsesLune->isChecked()).toString() << endl
                  << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << endl
                  << "affichage/extinction " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << endl
                  << "affichage/groupeTLE " << _ui->groupeTLE->currentIndex() << endl
@@ -2800,7 +2801,7 @@ void Onglets::InitAffichageDemarrage()
     AffichageMessagesMaj();
 
     // Chargement des langues
-    const bool etat = _ui->langue->blockSignals(true);
+    const bool etat2 = _ui->langue->blockSignals(true);
     _ui->langue->clear();
     _ui->langue->addItem(QIcon(":/resources/drapeaux/fr.png"), "Français");
 
@@ -2825,7 +2826,11 @@ void Onglets::InitAffichageDemarrage()
     }
 
     _ui->langue->setCurrentIndex(Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue", "en").toString()));
-    _ui->langue->blockSignals(etat);
+    _ui->langue->blockSignals(etat2);
+
+    const bool checked = (_ui->affradar->isChecked() || (_ui->affradar->checkState() == Qt::PartiallyChecked));
+    _ui->affinvew->setEnabled(checked);
+    _ui->affinvns->setEnabled(checked);
 
     if (settings.value("affichage/utc", false).toBool()) {
         _ui->utc->setChecked(true);
@@ -2833,6 +2838,7 @@ void Onglets::InitAffichageDemarrage()
         _ui->heureLegale->setChecked(true);
     }
 
+    const bool etat3 = blockSignals(true);
     if (settings.value("affichage/unite", true).toBool()) {
         _ui->unitesKm->setChecked(true);
     } else {
@@ -2844,6 +2850,7 @@ void Onglets::InitAffichageDemarrage()
     } else {
         _ui->syst12h->setChecked(true);
     }
+    blockSignals(etat3);
 
     /* Retour */
     return;
@@ -2983,7 +2990,7 @@ void Onglets::InitFicMap(const bool majAff)
             _ui->listeMap->addItem(fic.at(0).toUpper() + fic.mid(1, fic.lastIndexOf(".")-1));
 
             if (settings.value("fichier/listeMap", "").toString() == file) {
-                _ui->listeMap->setCurrentIndex(Configuration::instance()->listeFicMap().indexOf(file)+1);
+                _ui->listeMap->setCurrentIndex(Configuration::instance()->listeFicMap().indexOf(fic)+1);
             }
         }
 
@@ -4883,7 +4890,9 @@ void Onglets::on_listeMap_currentIndexChanged(int index)
 
             } else {
                 settings.setValue("fichier/listeMap", (index == 0) ?
-                                      "" : Configuration::instance()->listeFicMap().at(qMax(0, _ui->listeMap->currentIndex()-1)));
+                                      "" :
+                                      Configuration::instance()->dirMap() + QDir::separator() +
+                                      Configuration::instance()->listeFicMap().at(qMax(0, _ui->listeMap->currentIndex()-1)));
             }
         }
         emit MiseAJourCarte();
@@ -7044,6 +7053,11 @@ void Onglets::on_effetEclipsesMagnitude_stateChanged(int arg1)
 void Onglets::on_affradar_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
+
+    const bool checked = (_ui->affradar->isChecked() || (_ui->affradar->checkState() == Qt::PartiallyChecked));
+    _ui->affinvew->setEnabled(checked);
+    _ui->affinvns->setEnabled(checked);
+
     emit RecalculerPositions();
 }
 
@@ -7071,6 +7085,12 @@ void Onglets::on_affnomlieu_stateChanged(int arg1)
     emit MiseAJourCarte();
 }
 
+void Onglets::on_affSAA_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+    emit MiseAJourCarte();
+}
+
 void Onglets::on_unitesKm_toggled(bool checked)
 {
     if (checked) {
@@ -7085,6 +7105,7 @@ void Onglets::on_unitesKm_toggled(bool checked)
         _ui->nvAltitude->setValidator(valAlt);
     }
 
+    AffichageLieuObs();
     emit RecalculerPositions();
 
     if (Configuration::instance()->masseISS().isEmpty()) {
@@ -7112,6 +7133,7 @@ void Onglets::on_unitesMi_toggled(bool checked)
         _ui->nvAltitude->setValidator(valAlt);
     }
 
+    AffichageLieuObs();
     emit MiseAJourCarte();
 
     if (Configuration::instance()->masseISS().isEmpty()) {
@@ -7128,12 +7150,18 @@ void Onglets::on_unitesMi_toggled(bool checked)
 void Onglets::on_syst24h_toggled(bool checked)
 {
     Q_UNUSED(checked)
+    if (_date != nullptr) {
+        AffichageDate();
+    }
     emit MiseAJourCarte();
 }
 
 void Onglets::on_syst12h_toggled(bool checked)
 {
     Q_UNUSED(checked)
+    if (_date != nullptr) {
+        AffichageDate();
+    }
     emit MiseAJourCarte();
 }
 
@@ -7206,6 +7234,35 @@ void Onglets::on_utcAuto_stateChanged(int arg1)
     return;
 }
 
+void Onglets::on_heureLegale_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->options->isVisible() && checked) {
+
+        _ui->utc->setChecked(false);
+        const double offsetUTC = _ui->updown->value() * NB_JOUR_PAR_SEC;
+        const double jjutc = _date->jourJulienUTC();
+
+        if (_date != nullptr) {
+            delete _date;
+            _date = nullptr;
+        }
+
+        _date = new Date(jjutc, offsetUTC);
+
+        emit ChangementDate(*_date);
+        emit RecalculerPositions();
+        emit MiseAJourCarte();
+    }
+
+    /* Retour */
+    return;
+}
+
 void Onglets::on_utc_toggled(bool checked)
 {
     /* Declarations des variables locales */
@@ -7215,7 +7272,9 @@ void Onglets::on_utc_toggled(bool checked)
     /* Corps de la methode */
     if (_ui->options->isVisible() && checked) {
 
+        _ui->heureLegale->setChecked(false);
         const double jjutc = _date->jourJulienUTC();
+
         if (_date != nullptr) {
             delete _date;
             _date = nullptr;
@@ -7223,6 +7282,7 @@ void Onglets::on_utc_toggled(bool checked)
 
         _date = new Date(jjutc, 0.);
 
+        emit ChangementDate(*_date);
         emit RecalculerPositions();
         emit MiseAJourCarte();
     }

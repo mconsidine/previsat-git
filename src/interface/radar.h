@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    26 juillet 2022
  *
  */
 
@@ -92,6 +92,9 @@ public:
     /*
      * Methodes publiques
      */
+
+public slots:
+
     /**
      * @brief show Affichage du radar
      */

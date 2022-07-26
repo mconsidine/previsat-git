@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -134,8 +134,12 @@ void Ciel::show(const Observateur &observateur,
 
     const QColor crimson(220, 20, 60);
     const QColor bleuClair(173, 216, 230);
-    const QPen noir(Qt::black);
+
+    QPen noir(Qt::black);
+    noir.setCosmetic(true);
+
     QPen crayon(Qt::white);
+    crayon.setCosmetic(true);
     QWidget::show();
 
     // Determination de la couleur du ciel
@@ -154,7 +158,9 @@ void Ciel::show(const Observateur &observateur,
     QRect rectangle(2, 2, ui->vueCiel->width() - 4, ui->vueCiel->height() - 4);
     scene->setSceneRect(rectangle);
 
-    const QPen pen(couleurCiel, Qt::SolidPattern);
+    QPen pen(couleurCiel, Qt::SolidPattern);
+    pen.setCosmetic(true);
+
     scene->addEllipse(rectangle, pen, couleurCiel);
     const int lciel = qRound(0.5 * ui->vueCiel->width());
     const int hciel = qRound(0.5 * ui->vueCiel->height());
@@ -182,6 +188,7 @@ void Ciel::show(const Observateur &observateur,
                 } else {
                     crayon = QColor(Qt::cyan);
                 }
+                crayon.setCosmetic(true);
 
                 if (((lstr2 - lstr1) * (lstr2 - lstr1) + (bstr2 - bstr1) * (bstr2 - bstr1)) < (lciel * height())) {
                     scene->addLine(lstr1, bstr1, lstr2, bstr2, crayon);
@@ -453,7 +460,8 @@ void Ciel::show(const Observateur &observateur,
         if (_onglets->ui()->affphaselune->isChecked()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
-            const QPen stylo(Qt::NoBrush, 0);
+            QPen stylo(Qt::NoBrush, 0);
+            stylo.setCosmetic(true);
             const QPolygonF poly = AffichagePhaseLune(lune, 9);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
@@ -523,6 +531,7 @@ void Ciel::show(const Observateur &observateur,
                             crayon = QPen(QColor("cyan"));
                         }
                     }
+                    crayon.setCosmetic(true);
 
                     const int lsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
                     const int bsat2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
@@ -555,6 +564,7 @@ void Ciel::show(const Observateur &observateur,
                             if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
                                 crayon = QPen(crayon.color(), 4);
+                                crayon.setCosmetic(true);
                             }
                         }
 

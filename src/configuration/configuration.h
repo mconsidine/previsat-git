@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    25 juillet 2022
  *
  */
 
@@ -295,6 +295,10 @@ private:
     Configuration() {
         _lgRec = -1;
         _issLive = false;
+        _isCarteMonde = true;
+        _isCarteMaximisee = false;
+        _notifAOS = ATTENTE_LOS;
+        _notifFlashs = ATTENTE_LOS;
     }
 
     /*

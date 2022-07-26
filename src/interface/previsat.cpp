@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    26 juillet 2022
  *
  */
 
@@ -383,9 +383,13 @@ void PreviSat::DemarrageApplication()
     }
 
     // Affichage du radar
-    if (_onglets->ui()->affradar->isChecked()) {
+    const bool radarVisible = ((_onglets->ui()->affradar->checkState() == Qt::Checked) ||
+                               ((_onglets->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                && Configuration::instance()->listeSatellites().at(0).isVisible()));
+    if (radarVisible) {
         _radar->show();
     }
+    _radar->setVisible(!ui->mccISS->isChecked() && radarVisible);
 
     // Affichage de la fenetre d'informations
     const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
@@ -1228,6 +1232,7 @@ void PreviSat::ChangementCarte()
         connect(_ciel, SIGNAL(EffacerMessageStatut()), this, SLOT(EffacerMessageStatut()));
         connect(_ciel, SIGNAL(EcritureTleDefautRegistre()), this, SLOT(EcritureTleDefautRegistre()));
         connect(_ciel, SIGNAL(RecalculerPositions()), this, SLOT(GestionTempsReel()));
+        connect(_onglets, SIGNAL(MiseAJourCarte(QResizeEvent*)), _ciel, SLOT(resizeEvent(QResizeEvent*)));
 
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
         EnchainementCalculs();
@@ -1339,9 +1344,13 @@ void PreviSat::ChangementDate(const QDateTime &date)
     }
 
     // Affichage du radar
-    if (_onglets->ui()->affradar->isChecked()) {
+    const bool radarVisible = ((_onglets->ui()->affradar->checkState() == Qt::Checked) ||
+                               ((_onglets->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                && Configuration::instance()->listeSatellites().at(0).isVisible()));
+    if (radarVisible) {
         _radar->show();
     }
+    _radar->setVisible(!ui->mccISS->isChecked() && radarVisible);
 
     /* Retour */
     return;
@@ -1794,7 +1803,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->ui()->langue, SIGNAL(currentIndexChanged(int)), this, SLOT(ChangementLangue(const int)));
     connect(_onglets, SIGNAL(AffichageSiteLancement(const QString &, const Observateur &)),
             _carte, SLOT(AffichageSiteLancement(const QString &, const Observateur &)));
-    connect(_onglets, SIGNAL(MiseAJourCarte()), _carte, SLOT(show()));
+    connect(_onglets, SIGNAL(MiseAJourCarte(QResizeEvent*)), _carte, SLOT(resizeEvent(QResizeEvent*)));
+    connect(_onglets, SIGNAL(MiseAJourCarte()), _radar, SLOT(show()));
     connect(_onglets, SIGNAL(MiseAJourCarte()), _coordISS, SLOT(setPolice()));
     connect(_onglets, SIGNAL(MiseAJourCarte()), this, SLOT(AfficherCoordIssGmt()));
     connect(_onglets, SIGNAL(AfficherMessageStatut(const QString &, const int)), this, SLOT(AfficherMessageStatut(const QString &, const int)));
@@ -1939,11 +1949,13 @@ void PreviSat::GestionTempsReel()
         }
 
         // Affichage du radar
-        if (_onglets->ui()->affradar->isChecked()) {
+        const bool radarVisible = ((_onglets->ui()->affradar->checkState() == Qt::Checked) ||
+                                   ((_onglets->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+        if (radarVisible) {
             _radar->show();
         }
-        _radar->setVisible(!ui->mccISS->isChecked());
-
+        _radar->setVisible(!ui->mccISS->isChecked() && radarVisible);
     }
 
     if (ui->modeManuel->isChecked()) {
@@ -2041,7 +2053,8 @@ void PreviSat::TempsReel()
         // Affichage de la date et l'heure dans la barre de statut
         const QDateTime d = _dateCourante->ToQDateTime(1);
         _stsDate->setText(d.toString(tr("dd/MM/yyyy", "date format")));
-        _stsHeure->setText(d.toString("hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : ""));
+        _stsHeure->setText(QLocale(Configuration::instance()->locale()).toString(d, QString("hh:mm:ss") +
+                                                                                 ((_onglets->ui()->syst12h->isChecked()) ? "a" : "")));
         _stsDate->setToolTip(tr("Date"));
         _stsHeure->setToolTip(tr("Heure"));
     }
@@ -2140,9 +2153,8 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     }
 
     settings.setValue("fichier/listeMap", (_onglets->ui()->listeMap->currentIndex() > 0) ?
+                          Configuration::instance()->dirMap() + QDir::separator() +
                           Configuration::instance()->listeFicMap().at(qMax(0, _onglets->ui()->listeMap->currentIndex() - 1)) : "");
-    //    settings.setValue("fichier/listeSon", (_onglets->ui()->listeSons->currentIndex() > 0) ?
-    //                          ficSonAOS.at(qMax(0, ui->listeSons->currentIndex() - 1)) : "");
     settings.setValue("fichier/nom", QDir::toNativeSeparators(Configuration::instance()->nomfic()));
     settings.setValue("fichier/fichierAMettreAJour", _onglets->ui()->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", _onglets->ui()->fichierALire->text());
@@ -2470,9 +2482,7 @@ void PreviSat::on_mccISS_toggled(bool checked)
     Configuration::instance()->issLive() = checked;
     GestionTempsReel();
 
-    _radar->setVisible(!checked);
     ui->frameVideo->setVisible(checked);
-
     _coordISS->setVisible(checked);
     _gmt->setVisible(checked);
 
