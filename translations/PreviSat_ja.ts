@@ -2007,8 +2007,8 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets.cpp" line="5873"/>
         <location filename="../src/interface/onglets.cpp" line="6144"/>
         <location filename="../src/interface/onglets.cpp" line="6424"/>
-        <location filename="../src/interface/onglets.cpp" line="7307"/>
-        <location filename="../src/interface/onglets.cpp" line="7367"/>
+        <location filename="../src/interface/onglets.cpp" line="7311"/>
+        <location filename="../src/interface/onglets.cpp" line="7371"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
@@ -2523,7 +2523,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets.ui" line="12126"/>
         <location filename="../src/interface/onglets.ui" line="12146"/>
         <location filename="../src/interface/onglets.ui" line="12171"/>
-        <location filename="../src/interface/onglets.cpp" line="7366"/>
+        <location filename="../src/interface/onglets.cpp" line="7370"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
@@ -3107,22 +3107,22 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <translation type="unfinished">レンジレート : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7307"/>
+        <location filename="../src/interface/onglets.cpp" line="7311"/>
         <source>Nom du fichier :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7325"/>
+        <location filename="../src/interface/onglets.cpp" line="7329"/>
         <source>Le fichier existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7361"/>
+        <location filename="../src/interface/onglets.cpp" line="7365"/>
         <source>Supprimer un fichier...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7362"/>
+        <location filename="../src/interface/onglets.cpp" line="7366"/>
         <source>Fichier :</source>
         <translation type="unfinished">ファイル :</translation>
     </message>
@@ -3252,7 +3252,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="319"/>
-        <location filename="../src/interface/onglets.cpp" line="7180"/>
+        <location filename="../src/interface/onglets.cpp" line="7184"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation type="unfinished">UTC</translation>
@@ -3540,7 +3540,7 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="3035"/>
-        <location filename="../src/interface/onglets.cpp" line="7307"/>
+        <location filename="../src/interface/onglets.cpp" line="7311"/>
         <source>Enregistrer sous...</source>
         <translation type="unfinished">新規保存...</translation>
     </message>
@@ -3600,8 +3600,8 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
     <message>
         <location filename="../src/interface/onglets.cpp" line="2778"/>
         <location filename="../src/interface/onglets.cpp" line="6027"/>
-        <location filename="../src/interface/onglets.cpp" line="7115"/>
-        <location filename="../src/interface/onglets.cpp" line="7143"/>
+        <location filename="../src/interface/onglets.cpp" line="7119"/>
+        <location filename="../src/interface/onglets.cpp" line="7147"/>
         <source>Aucun évènement contenu dans le fichier ISS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3656,7 +3656,7 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
     <message>
         <location filename="../src/interface/onglets.cpp" line="4171"/>
         <location filename="../src/interface/onglets.cpp" line="4212"/>
-        <location filename="../src/interface/onglets.cpp" line="7325"/>
+        <location filename="../src/interface/onglets.cpp" line="7329"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -3664,7 +3664,7 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
         <location filename="../src/interface/onglets.cpp" line="4174"/>
         <location filename="../src/interface/onglets.cpp" line="4214"/>
         <location filename="../src/interface/onglets.cpp" line="4576"/>
-        <location filename="../src/interface/onglets.cpp" line="7327"/>
+        <location filename="../src/interface/onglets.cpp" line="7331"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
@@ -3672,7 +3672,7 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
         <location filename="../src/interface/onglets.cpp" line="4175"/>
         <location filename="../src/interface/onglets.cpp" line="4215"/>
         <location filename="../src/interface/onglets.cpp" line="4577"/>
-        <location filename="../src/interface/onglets.cpp" line="7328"/>
+        <location filename="../src/interface/onglets.cpp" line="7332"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
@@ -3689,7 +3689,7 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
     <message>
         <location filename="../src/interface/onglets.cpp" line="4201"/>
         <location filename="../src/interface/onglets.cpp" line="4537"/>
-        <location filename="../src/interface/onglets.cpp" line="7307"/>
+        <location filename="../src/interface/onglets.cpp" line="7311"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>

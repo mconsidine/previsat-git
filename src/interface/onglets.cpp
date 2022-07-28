@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    28 juillet 2022
  *
  */
 
@@ -6788,7 +6788,11 @@ void Onglets::on_lieuxObservation1_currentIndexChanged(int index)
 
     /* Corps de la methode */
     if (_ui->lieuxObservation1->hasFocus() && (index > 0)) {
+
         Configuration::instance()->setObservateurDefaut(index);
+        _acalcAOS = true;
+        _htSat = 0.;
+
         AffichageLieuObs();
         emit RecalculerPositions();
     }
