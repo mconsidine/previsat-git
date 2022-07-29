@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    29 juillet 2022
  *
  */
 
@@ -165,9 +165,6 @@ void PreviSat::ChargementConfig()
     // Affichage au demarrage
     InitAffichageDemarrage();
 
-    // Verification des mises a jour au demarrage
-    InitVerificationsMAJ();
-
     // Initialisation des menus
     InitMenus();
 
@@ -182,6 +179,9 @@ void PreviSat::ChargementConfig()
 
     ConnexionsSignauxSlots();
     _onglets->InitChargementOnglets();
+
+    // Verification des mises a jour au demarrage
+    InitVerificationsMAJ();
 
     /* Retour */
     return;
@@ -688,6 +688,8 @@ void PreviSat::InitVerificationsMAJ()
         VerifMAJPreviSat();
     }
 #endif
+
+    settings.setValue("fichier/version", QString(APPVERSION));
 
 #if !defined (Q_OS_WIN)
     if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
@@ -1838,7 +1840,6 @@ void PreviSat::ConnexionsSignauxSlots()
     }
 
     settings.setValue("fichier/path", Configuration::instance()->dirExe());
-    settings.setValue("fichier/version", QString(APPVERSION));
     settings.setValue("affichage/flagIntensiteVision", false);
 }
 
