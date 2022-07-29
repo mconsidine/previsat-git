@@ -34,8 +34,10 @@
  *
  */
 
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "etoile.h"
@@ -86,20 +88,6 @@ Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double de
 
 
 /*
- * Accesseurs
- */
-double Etoile::magnitude() const
-{
-    return _magnitude;
-}
-
-QString Etoile::nom() const
-{
-    return _nom;
-}
-
-
-/*
  * Methodes publiques
  */
 /*
@@ -112,7 +100,7 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     /* Initialisations */
     try {
         if (etoiles.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), WARNING);
+            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
         }
     } catch (PreviSatException &e) {
         throw PreviSatException();
@@ -185,6 +173,20 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
 }
 
 
+/*
+ * Accesseurs
+ */
+double Etoile::magnitude() const
+{
+    return _magnitude;
+}
+
+const QString &Etoile::nom() const
+{
+    return _nom;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -201,6 +203,4 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
 /*
  * Methodes privees
  */
-
-
 

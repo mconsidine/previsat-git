@@ -101,25 +101,6 @@ Vecteur3D::Vecteur3D(const double xval, const double yval, const double zval)
 
 
 /*
- * Accesseurs
- */
-double Vecteur3D::x() const
-{
-    return _x;
-}
-
-double Vecteur3D::y() const
-{
-    return _y;
-}
-
-double Vecteur3D::z() const
-{
-    return _z;
-}
-
-
-/*
  * Methodes publiques
  */
 /*
@@ -194,7 +175,7 @@ bool Vecteur3D::Nul() const
 /*
  * Rotation d'un vecteur autour d'un axe
  */
-Vecteur3D Vecteur3D::Rotation(AxeType axe, double angle) const
+Vecteur3D Vecteur3D::Rotation(const AxeType &axe, const double angle) const
 {
     /* Declarations des variables locales */
     Vecteur3D vecteur;
@@ -206,17 +187,17 @@ Vecteur3D Vecteur3D::Rotation(AxeType axe, double angle) const
     /* Corps de la methode */
     switch (axe) {
 
-    case AXE_X:
+    case AxeType::AXE_X:
 
         vecteur = Vecteur3D(_x, _y * cosang + _z * sinang, -_y * sinang + _z * cosang);
         break;
 
-    case AXE_Y:
+    case AxeType::AXE_Y:
 
         vecteur = Vecteur3D(_x * cosang - _z * sinang, _y, _x * sinang + _z * cosang);
         break;
 
-    case AXE_Z:
+    case AxeType::AXE_Z:
 
         vecteur = Vecteur3D(_x * cosang + _y * sinang, -_x * sinang + _y * cosang, _z);
         break;
@@ -242,6 +223,25 @@ Vecteur3D &Vecteur3D::operator = (const Vecteur3D &vecteur)
 }
 
 
+/*
+ * Accesseurs
+ */
+double Vecteur3D::x() const
+{
+    return _x;
+}
+
+double Vecteur3D::y() const
+{
+    return _y;
+}
+
+double Vecteur3D::z() const
+{
+    return _z;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -258,5 +258,4 @@ Vecteur3D &Vecteur3D::operator = (const Vecteur3D &vecteur)
 /*
  * Methodes privees
  */
-
 

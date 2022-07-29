@@ -90,29 +90,6 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    double aaer() const;
-    double altitude() const;
-    double aray() const;
-    double latitude() const;
-    double longitude() const;
-    QString nomlieu() const;
-    Vecteur3D position() const;
-    Matrice3D rotHz() const;
-    double tempsSideralGreenwich() const;
-    Vecteur3D vitesse() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -162,12 +139,22 @@ public:
     Observateur &operator = (const Observateur &observateur);
 
 
+    /*
+     * Accesseurs
+     */
+    double longitude() const;
+    double latitude() const;
+    double altitude() const;
+    const QString &nomlieu() const;
+    double aaer() const;
+    double aray() const;
+    double tempsSideralGreenwich() const;
+    const Vecteur3D &position() const;
+    const Vecteur3D &vitesse() const;
+    const Matrice3D &rotHz() const;
+
 
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -179,10 +166,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees
@@ -215,6 +198,5 @@ private:
 
 
 };
-
 
 #endif // OBSERVATEUR_H

@@ -43,6 +43,7 @@
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
+#include "librairies/observateur/observateur.h"
 #include "lunetest.h"
 #include "test/src/testtools.h"
 
@@ -54,6 +55,8 @@ void LuneTest::testAll()
     testCalculPosition();
     testCalculPhase();
     testCalculMagnitude();
+    testCalculLeverMeridienCoucher();
+    testCalculDatesPhases();
 }
 
 void LuneTest::testCalculPosition()
@@ -92,4 +95,67 @@ void LuneTest::testCalculMagnitude()
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.magnitude(), -10.543566245403385);
+}
+
+void LuneTest::testCalculLeverMeridienCoucher()
+{
+    qInfo(Q_FUNC_INFO);
+
+    Lune lune;
+
+    // Toutes les heures sont definies
+    Date date(2022, 5, 1, 5, 6, 7., 2. / 24.);
+    Observateur obs("Paris", -2.348640000, +48.853390000, 30);
+    lune.CalculLeverMeridienCoucher(date, obs);
+
+    QCOMPARE(lune.dateLever().jourJulienUTC(), 8155.7027777777785);
+    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8156.012500000001);
+    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8156.332638888889);
+
+    // L'heure de coucher n'existe pas
+    date = Date(2022, 5, 5, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, obs);
+
+    QCOMPARE(lune.dateLever().jourJulienUTC(), 8159.788888888889);
+    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8160.147916666667);
+    QCOMPARE(lune.dateCoucher().jourJulienUTC(), DATE_INFINIE);
+
+    // L'heure de passage au meridien n'existe pas
+    date = Date(2022, 5, 16, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, obs);
+
+    QCOMPARE(lune.dateLever().jourJulienUTC(), 8171.347222222223);
+    QCOMPARE(lune.dateMeridien().jourJulienUTC(), DATE_INFINIE);
+    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8170.672916666667);
+
+    // L'heure de lever n'existe pas
+    date = Date(2022, 5, 20, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, obs);
+
+    QCOMPARE(lune.dateLever().jourJulienUTC(), DATE_INFINIE);
+    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8174.659027777778);
+    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8174.821527777778);
+}
+
+void LuneTest::testCalculDatesPhases()
+{
+    qInfo(Q_FUNC_INFO);
+
+    Date date(2022, 4, 2, 0, 0, 0., 2. / 24.);
+    Lune lune;
+    lune.CalculDatesPhases(date);
+
+    QCOMPARE(lune.datesPhases()[0].jourJulienUTC(), 8125.766956375188);
+    QCOMPARE(lune.datesPhases()[1].jourJulienUTC(), 8133.782897121634);
+    QCOMPARE(lune.datesPhases()[2].jourJulienUTC(), 8141.288298666821);
+    QCOMPARE(lune.datesPhases()[3].jourJulienUTC(), 8147.99753680239);
+
+    // Lunaison suivante
+    date = Date(2022, 4, 24, 0, 0, 0., 2. / 24.);
+    lune.CalculDatesPhases(date);
+
+    QCOMPARE(lune.datesPhases()[0].jourJulienUTC(), 8155.35252820452);
+    QCOMPARE(lune.datesPhases()[1].jourJulienUTC(), 8163.514488563886);
+    QCOMPARE(lune.datesPhases()[2].jourJulienUTC(), 8170.676375584048);
+    QCOMPARE(lune.datesPhases()[3].jourJulienUTC(), 8177.279776173665);
 }

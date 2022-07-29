@@ -45,11 +45,11 @@
 
 #include "librairies/dates/date.h"
 #include "librairies/maths/vecteur3d.h"
+#include "elementsorbitaux.h"
 #include "sgp4const.h"
 
 
 struct SGP4Private;
-class TLE;
 
 class SGP4
 {
@@ -63,12 +63,24 @@ public:
      */
     SGP4();
 
+
+    /*
+     * Methodes publiques
+     */
+    /**
+     * @brief Calcul Calcul de la position et de la vitesse
+     * @param date date
+     * @param elements elements orbitaux du satellite
+     */
+    void Calcul(const Date &date, const ElementsOrbitaux &elements);
+
+
     /*
      * Accesseurs
      */
     char method() const;
-    Vecteur3D position() const;
-    Vecteur3D vitesse() const;
+    const Vecteur3D &position() const;
+    const Vecteur3D &vitesse() const;
 
 
     /*
@@ -77,30 +89,7 @@ public:
     void setInit(const bool init);
 
 
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
-     * Methodes publiques
-     */
-    /**
-     * @brief Calcul Calcul de la position et de la vitesse
-     * @param date date
-     * @param tle TLE du satellite
-     */
-    void Calcul(const Date &date, const TLE &tle);
-
-
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -114,21 +103,10 @@ protected:
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
     // Elements orbitaux moyens
-    double _argpo;
-    double _bstar;
-    double _ecco;
-    double _inclo;
-    double _mo;
-    double _no;
-    double _omegao;
-    Date _epoque;
+    ElementsOrbitaux _elements;
 
     // Variables du modele SGP4
     SGP4Private *d_data;
@@ -168,7 +146,7 @@ private:
      * @brief SGP4Init Initialisation du modele SGP4
      * @param tle tle
      */
-    void SGP4Init(const TLE &tle);
+    void SGP4Init(const ElementsOrbitaux &elements);
 
 
 };

@@ -33,84 +33,47 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    20 juin 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
-#include <QApplication>
-#include <QMessageBox>
+#include <QDir>
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QSharedMemory>
-#include <QSplashScreen>
-#include <QTextCodec>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#include "configuration/configuration.h"
 #include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/systeme/logmessage.h"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+#include <QApplication>
 
 
 int main(int argc, char *argv[])
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
     try {
 
+        /* Declarations des variables locales */
+
+        /* Initialisations */
         QApplication a(argc, argv);
 
         a.setOrganizationName(ORG_NAME);
         a.setApplicationName(APP_NAME);
         a.setOrganizationDomain(DOMAIN_NAME);
 
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+        /* Corps de la methode */
+        // Definition du repertoire du fichier de log
+        Configuration::instance()->DefinitionDirLog();
 
-        // Verification si une instance de PreviSat existe
-        const qint64 pid = a.applicationPid();
-        QSharedMemory mem;
-        mem.setKey("pidPreviSat");
+        // Installation de la gestion du fichier de log
+        const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");
+        Q_UNUSED(msg)
 
-        if (!mem.create(sizeof(pid))) {
-            if (mem.error() == QSharedMemory::AlreadyExists) {
-                if (mem.attach(QSharedMemory::ReadOnly)) {
-
-                    const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
-                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(APP_NAME));
-                    return EXIT_FAILURE;
-                }
-            } else {
-                QMessageBox::warning(0, QObject::tr("Information"), mem.errorString());
-            }
-        }
-
-        // Lancement du splash screen et demarrage de l'application
-        QSplashScreen * const splash = new QSplashScreen;
-        splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
-        splash->show();
 
         PreviSat w;
-
-        const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
-        splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
-        a.processEvents();
-        w.ChargementConfig();
-
-        splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
-        a.processEvents();
-        w.ChargementTLE();
-
-        splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
-        a.processEvents();
-        w.MAJTLE();
-
-        splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
-        a.processEvents();
-        w.DemarrageApplication();
-
         w.show();
-        splash->finish(&w);
-        delete splash;
 
         /* Retour */
         return a.exec();

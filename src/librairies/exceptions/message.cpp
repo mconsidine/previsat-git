@@ -30,15 +30,21 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er janvier 2019
+ * >    19 juin 2022
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
 #include <QMainWindow>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QMessageBox>
 #include "message.h"
+
+
+QMainWindow *_fenetre;
 
 
 /**********
@@ -50,14 +56,8 @@
  */
 
 /*
- * Accesseurs
- */
-
-/*
  * Methodes publiques
  */
-QMainWindow *_fenetre;
-
 /*
  * Affichage d'un message dans une boite de message
  */
@@ -70,16 +70,23 @@ void Message::Afficher(const QString &message, const MessageType &typeMessage)
     /* Corps de la methode */
     switch (typeMessage) {
 
-    case INFO:
+    case MessageType::INFO:
+
+        qInfo() << message;
         QMessageBox::information(_fenetre, QObject::tr("Information"), message);
         break;
 
-    case WARNING:
+    case MessageType::WARNING:
+
+        qWarning() << message;
         QMessageBox::warning(_fenetre, QObject::tr("Avertissement"), message);
         break;
 
-    case ERREUR:
+    case MessageType::ERREUR:
+
+        qCritical() << message;
         QMessageBox::critical(_fenetre, QObject::tr("Erreur"), message);
+        break;
 
     default:
         break;
@@ -96,6 +103,11 @@ void Message::setFenetreParent(QMainWindow *fenetre)
 {
     _fenetre = fenetre;
 }
+
+
+/*
+ * Accesseurs
+ */
 
 
 /*************

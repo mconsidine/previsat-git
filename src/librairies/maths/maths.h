@@ -59,18 +59,6 @@ public:
      */
 
     /*
-     * Accesseurs
-     */
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -80,7 +68,8 @@ public:
      * @param ytab Tableau des ordonnees
      * @return Coordonnees de l'extremum
      */
-    static QPair<double, double> CalculExtremumInterpolation3(const QList<double> &xtab, const QList<double> &ytab);
+    static QPair<double, double> CalculExtremumInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
+                                                              const std::array<double, DEGRE_INTERPOLATION> &ytab);
 
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
@@ -91,7 +80,10 @@ public:
      * @param Epsilon Seuil de comparaison
      * @return valeur x correspondante
      */
-    static double CalculValeurXInterpolation3(const QList<double> &xtab, const QList<double> &ytab, const double yval, const double epsilon);
+    static double CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
+                                              const std::array<double, DEGRE_INTERPOLATION> &ytab,
+                                              const double yval,
+                                              const double epsilon);
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee
@@ -103,15 +95,16 @@ public:
      * @param espace Affichage d'un espace entre les composantes de l'angle
      * @return chaine de caracteres contenant la valeur angulaire
      */
-    static QString ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales, const bool signe,
+    static QString ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales, const bool signe,
                                  const bool espace);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+
+
+protected:
 
     /*
      * Variables protegees
@@ -123,10 +116,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees
@@ -163,7 +152,7 @@ static inline int sgn(const double x)
  * @param nbDec nombre de decimales
  * @return Arrondi
  */
-static inline double arrondi(const double x, const int nbDec)
+static inline double arrondi(const double x, const unsigned int nbDec)
 {
     /* Declarations des variables locales */
 
@@ -195,6 +184,5 @@ static inline double modulo(const double x, const double y)
     /* Retour */
     return ((z < 0.) ? z + y : z);
 }
-
 
 #endif // MATHS_H

@@ -56,20 +56,6 @@ public:
      */
     Signal();
 
-    /*
-     * Accesseurs
-     */
-    double attenuation() const;
-    double delai() const;
-    double doppler() const;
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -82,11 +68,15 @@ public:
     void Calcul(const double rangeRate, const double distance);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double attenuation() const;
+    double delai() const;
+    double doppler() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -98,10 +88,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

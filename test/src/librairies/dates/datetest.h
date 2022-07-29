@@ -54,6 +54,7 @@ private:
 
     static void testDates();
     static void testCalculOffsetUTC();
+    static void testConversionDateIso();
     static void testConversionDateNasa();
     static void testToQDateTime();
     static void testToShortDate();

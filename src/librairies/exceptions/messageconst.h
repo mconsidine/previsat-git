@@ -46,7 +46,7 @@
 /*
  * Enumerations
  */
-enum MessageType {
+enum class MessageType {
 
     ERREUR = -1,
     INFO = 0,

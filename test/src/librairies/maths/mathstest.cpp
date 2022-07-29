@@ -81,8 +81,8 @@ void MathsTest::testMaths()
     QCOMPARE(modulo(-450., 360.), 270.);
 
     // Extremum par interpolation
-    const QList<double> xtab1(QList<double> () << 12. << 16. << 20.);
-    const QList<double> ytab1(QList<double> () << 1.3814294 << 1.3812213 << 1.3812453);
+    const std::array<double, 3> xtab1 = { 12., 16., 20. };
+    const std::array<double, 3> ytab1 = { 1.3814294, 1.3812213, 1.3812453 };
     const QPair<double, double> extremum(17.5863851788, 1.38120304665537);
     QPair<double, double> val;
 
@@ -91,14 +91,14 @@ void MathsTest::testMaths()
     QCOMPARE(val.second, extremum.second);
 
     // Determination abscisse par interpolation
-    const QList<double> xtab2(QList<double> () << 26. << 27. << 28.);
-    const QList<double> ytab2(QList<double> () << -1693.4 << 406.3 << 2303.2);
+    const std::array<double, 3> xtab2 = { 26., 27., 28. };
+    const std::array<double, 3> ytab2 = { -1693.4, 406.3, 2303.2 };
     QCOMPARE(Maths::CalculValeurXInterpolation3(xtab2, ytab2, 0., EPSDBL), 26.798732704968522);
 
     // Affichage en sexagesimal
-    QCOMPARE(Maths::ToSexagesimal(12.3456789, NO_TYPE, 2, 4, true, true), "+12° 20' 44.4440\"");
-    QCOMPARE(Maths::ToSexagesimal(-0.123456789, DEGRE, 2, 4, false, false), "-07°04'24.7907\"");
-    QCOMPARE(Maths::ToSexagesimal(1.23456789, HEURE1, 2, 0, false, false), " 04h42m57s");
+    QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, 2, 4, true, true), "+12° 20' 44.4440\"");
+    QCOMPARE(Maths::ToSexagesimal(-0.123456789, AngleFormatType::DEGRE, 2, 4, false, false), "-07°04'24.7907\"");
+    QCOMPARE(Maths::ToSexagesimal(1.23456789, AngleFormatType::HEURE1, 2, 0, false, false), " 04h42m57s");
 }
 
 void MathsTest::testMatrice3D()
@@ -117,7 +117,7 @@ void MathsTest::testMatrice3D()
     const Matrice3D mat3 = mat2;
     CompareMatrices3D(mat2, mat3);
 
-    const Matrice3D mat4(AXE_X, PI / 6.);
+    const Matrice3D mat4(AxeType::AXE_X, PI / 6.);
     const Vecteur3D vec4(1., 0., 0.);
     const Vecteur3D vec5(0., sqrt(3.) / 2., -0.5);
     const Vecteur3D vec6(0., 0.5, sqrt(3.) / 2.);
@@ -201,11 +201,11 @@ void MathsTest::testVecteur3D()
     // Rotation
     double ang = 30. * DEG2RAD;
     vec2 = Vecteur3D(1., 3.2320508075688772935274463415059, 1.5980762113533159402911695122588);
-    CompareVecteurs3D(vec1.Rotation(AXE_X, ang), vec2);
+    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_X, ang), vec2);
 
     vec2 = Vecteur3D(-0.63397459621556135323627682924706, 2., 3.0980762113533159402911695122588);
-    CompareVecteurs3D(vec1.Rotation(AXE_Y, ang), vec2);
+    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_Y, ang), vec2);
 
     vec2 = Vecteur3D(1.8660254037844386467637231707529, 1.2320508075688772935274463415059, 3.);
-    CompareVecteurs3D(vec1.Rotation(AXE_Z, ang), vec2);
+    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_Z, ang), vec2);
 }

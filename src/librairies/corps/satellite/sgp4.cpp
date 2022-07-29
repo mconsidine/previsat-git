@@ -236,43 +236,11 @@ SGP4::SGP4()
     /* Initialisations */
 
     /* Corps du constructeur */
-    // Elements orbitaux moyens
-    _argpo = 0.;
-    _bstar = 0.;
-    _ecco = 0.;
-    _inclo = 0.;
-    _mo = 0.;
-    _no = 0.;
-    _omegao = 0.;
-
     d_data = new SGP4Private();
     _init = false;
 
     /* Retour */
     return;
-}
-
-/*
- * Accesseurs
- */
-char SGP4::method() const
-{
-    return d_data->_method;
-}
-
-Vecteur3D SGP4::position() const
-{
-    return _position;
-}
-
-Vecteur3D SGP4::vitesse() const
-{
-    return _vitesse;
-}
-
-void SGP4::setInit(const bool init)
-{
-    _init = init;
 }
 
 
@@ -282,13 +250,13 @@ void SGP4::setInit(const bool init)
 /*
  * Calcul de la position et de la vitesse
  */
-void SGP4::Calcul(const Date &date, const TLE &tle)
+void SGP4::Calcul(const Date &date, const ElementsOrbitaux &elements)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     if (!_init) {
-        SGP4Init(tle);
+        SGP4Init(elements);
     }
 
     /* Corps de la methode */
@@ -298,20 +266,20 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
         double sineo1 = 0.;
 
         // Calcul du temps ecoule depuis l'epoque (en minutes)
-        const double tsince = NB_MIN_PAR_JOUR * (date.jourJulienUTC() - tle.epoque().jourJulienUTC());
+        const double tsince = NB_MIN_PAR_JOUR * (date.jourJulienUTC() - elements.epoque.jourJulienUTC());
 
         d_data->_t = tsince;
 
         // Prise en compte des termes seculaires de la gravite et du freinage atmospherique
-        const double xmdf = _mo + d_data->_mdot * d_data->_t;
-        const double argpdf = _argpo + d_data->_argpdot * d_data->_t;
-        const double nodedf = _omegao + d_data->_nodedot * d_data->_t;
+        const double xmdf = _elements.mo + d_data->_mdot * d_data->_t;
+        const double argpdf = _elements.argpo + d_data->_argpdot * d_data->_t;
+        const double nodedf = _elements.omegao + d_data->_nodedot * d_data->_t;
         d_data->_argpm = argpdf;
         d_data->_mm = xmdf;
         const double tt2 = d_data->_t * d_data->_t;
         d_data->_nodem = nodedf + d_data->_nodecf * tt2;
         double tempa = 1. - d_data->_cc1 * d_data->_t;
-        double tempe = _bstar * d_data->_cc4 * d_data->_t;
+        double tempe = _elements.bstar * d_data->_cc4 * d_data->_t;
         double templ = d_data->_t2cof * tt2;
 
         if (!d_data->_isimp) {
@@ -325,13 +293,13 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
             const double tt3 = tt2 * d_data->_t;
             const double t4 = tt3 * d_data->_t;
             tempa = tempa - d_data->_d2 * tt2 - d_data->_d3 * tt3 - d_data->_d4 * t4;
-            tempe = tempe + _bstar * d_data->_cc5 * (sin(d_data->_mm) - d_data->_sinmao);
+            tempe = tempe + _elements.bstar * d_data->_cc5 * (sin(d_data->_mm) - d_data->_sinmao);
             templ = templ + d_data->_t3cof * tt3 + t4 * (d_data->_t4cof + d_data->_t * d_data->_t5cof);
         }
 
-        d_data->_nm = _no;
-        d_data->_em = _ecco;
-        d_data->_inclm = _inclo;
+        d_data->_nm = _elements.no;
+        d_data->_em = _elements.ecco;
+        d_data->_inclm = _elements.inclo;
 
         if (d_data->_method == 'd') {
             const double tc = d_data->_t;
@@ -346,7 +314,7 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
             d_data->_em = 1.e-6;
         }
 
-        d_data->_mm = d_data->_mm + _no * templ;
+        d_data->_mm = d_data->_mm + _elements.no * templ;
         double xlm = d_data->_mm + d_data->_argpm + d_data->_nodem;
         d_data->_emsq = d_data->_em * d_data->_em;
         double temp = 1. - d_data->_emsq;
@@ -476,6 +444,33 @@ void SGP4::Calcul(const Date &date, const TLE &tle)
 }
 
 
+/*
+ * Accesseurs
+ */
+char SGP4::method() const
+{
+    return d_data->_method;
+}
+
+const Vecteur3D &SGP4::position() const
+{
+    return _position;
+}
+
+const Vecteur3D &SGP4::vitesse() const
+{
+    return _vitesse;
+}
+
+
+/*
+ * Modificateurs
+ */
+void SGP4::setInit(const bool init)
+{
+    _init = init;
+}
+
 
 /*************
  * PROTECTED *
@@ -596,20 +591,20 @@ void SGP4::Dscom(const double tc) {
     /* Initialisations */
 
     /* Corps de la methode */
-    d_data->_nm = _no;
-    d_data->_em = _ecco;
-    d_data->_snodm = sin(_omegao);
-    d_data->_cnodm = cos(_omegao);
-    d_data->_sinomm = sin(_argpo);
-    d_data->_cosomm = cos(_argpo);
-    d_data->_sinim = sin(_inclo);
-    d_data->_cosim = cos(_inclo);
+    d_data->_nm = _elements.no;
+    d_data->_em = _elements.ecco;
+    d_data->_snodm = sin(_elements.omegao);
+    d_data->_cnodm = cos(_elements.omegao);
+    d_data->_sinomm = sin(_elements.argpo);
+    d_data->_cosomm = cos(_elements.argpo);
+    d_data->_sinim = sin(_elements.inclo);
+    d_data->_cosim = cos(_elements.inclo);
     d_data->_emsq = d_data->_em * d_data->_em;
     const double betasq = 1. - d_data->_emsq;
     d_data->_rtemsq = sqrt(betasq);
 
     // Initialisation des termes luni-solaires
-    d_data->_day = _epoque.jourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
+    d_data->_day = _elements.epoque.jourJulienUTC() + NB_JOURS_PAR_SIECJ + tc * NB_JOUR_PAR_MIN;
     const double xnodce = fmod(4.5236020 - 0.00092422029 * d_data->_day, DEUX_PI);
     const double stem = sin(xnodce);
     const double ctem = cos(xnodce);
@@ -834,7 +829,7 @@ void SGP4::Dsinit(const double tc) {
 
             const double cosisq = d_data->_cosim * d_data->_cosim;
             const double emo = d_data->_em;
-            d_data->_em = _ecco;
+            d_data->_em = _elements.ecco;
             const double emsqo = d_data->_emsq;
             d_data->_emsq = d_data->_eccsq;
             const double eoc = d_data->_em * d_data->_emsq;
@@ -910,8 +905,8 @@ void SGP4::Dsinit(const double tc) {
             temp = 2. * temp1 * ROOT54;
             d_data->_d5421 = temp * d_data->_f542 * d_data->_g521;
             d_data->_d5433 = temp * d_data->_f543 * d_data->_g533;
-            d_data->_xlamo = fmod(_mo + _omegao + _omegao - theta - theta, DEUX_PI);
-            d_data->_xfact = d_data->_mdot + d_data->_dmdt + 2. * (d_data->_nodedot + d_data->_dnodt - RPTIM) - _no;
+            d_data->_xlamo = fmod(_elements.mo + _elements.omegao + _elements.omegao - theta - theta, DEUX_PI);
+            d_data->_xfact = d_data->_mdot + d_data->_dmdt + 2. * (d_data->_nodedot + d_data->_dnodt - RPTIM) - _elements.no;
             d_data->_em = emo;
             d_data->_emsq = emsqo;
         }
@@ -929,15 +924,15 @@ void SGP4::Dsinit(const double tc) {
             d_data->_del2 = 2. * d_data->_del1 * d_data->_f220 * d_data->_g200 * Q22;
             d_data->_del3 = 3. * d_data->_del1 * d_data->_f330 * d_data->_g300 * Q33 * aonv;
             d_data->_del1 = d_data->_del1 * d_data->_f311 * d_data->_g310 * Q31 * aonv;
-            d_data->_xlamo = fmod(_mo + _omegao + _argpo - theta, DEUX_PI);
-            d_data->_xfact = d_data->_mdot + d_data->_xpidot - RPTIM + d_data->_dmdt + d_data->_domdt + d_data->_dnodt - _no;
+            d_data->_xlamo = fmod(_elements.mo + _elements.omegao + _elements.argpo - theta, DEUX_PI);
+            d_data->_xfact = d_data->_mdot + d_data->_xpidot - RPTIM + d_data->_dmdt + d_data->_domdt + d_data->_dnodt - _elements.no;
         }
 
         // Initialisation de l'integrateur
         d_data->_xli = d_data->_xlamo;
-        d_data->_xni = _no;
+        d_data->_xni = _elements.no;
         d_data->_atime = 0.;
-        d_data->_nm = _no + d_data->_dndt;
+        d_data->_nm = _elements.no + d_data->_dndt;
     }
 
     /* Retour */
@@ -981,7 +976,7 @@ void SGP4::Dspace(const double tc) {
 
         if (fabs(d_data->_atime) <= EPSDBL100 || d_data->_t * d_data->_atime <= 0. || fabs(d_data->_t) < fabs(d_data->_atime)) {
             d_data->_atime = 0.;
-            d_data->_xni = _no;
+            d_data->_xni = _elements.no;
             d_data->_xli = d_data->_xlamo;
         }
 
@@ -1002,7 +997,7 @@ void SGP4::Dspace(const double tc) {
             } else {
 
                 // Termes de resonance d'environ 12h
-                const double xomi = _argpo + d_data->_argpdot * d_data->_atime;
+                const double xomi = _elements.argpo + d_data->_argpdot * d_data->_atime;
                 const double x2omi = xomi + xomi;
                 const double x2li = d_data->_xli + d_data->_xli;
                 xndt = d_data->_d2201 * sin(x2omi + d_data->_xli - G22) + d_data->_d2211 * sin(d_data->_xli - G22) +
@@ -1039,12 +1034,12 @@ void SGP4::Dspace(const double tc) {
         const double xl = d_data->_xli + xldot * ft + xndt * ft2;
         if (d_data->_irez == 1) {
             d_data->_mm = xl - d_data->_nodem - d_data->_argpm + theta;
-            d_data->_dndt = d_data->_nm - _no;
+            d_data->_dndt = d_data->_nm - _elements.no;
         } else {
             d_data->_mm = xl - 2. * d_data->_nodem + 2. * theta;
-            d_data->_dndt = d_data->_nm - _no;
+            d_data->_dndt = d_data->_nm - _elements.no;
         }
-        d_data->_nm = _no + d_data->_dndt;
+        d_data->_nm = _elements.no + d_data->_dndt;
     }
 
     /* Retour */
@@ -1054,7 +1049,7 @@ void SGP4::Dspace(const double tc) {
 /*
  * Initialisation du modele SGP4
  */
-void SGP4::SGP4Init(const TLE &tle)
+void SGP4::SGP4Init(const ElementsOrbitaux &elements)
 {
     /* Declarations des variables locales */
 
@@ -1062,45 +1057,43 @@ void SGP4::SGP4Init(const TLE &tle)
 
     /* Corps de la methode */
     // Recuperation des elements du TLE et formattage
-    _argpo = DEG2RAD * tle.argpo();
-    _bstar = tle.bstar();
-    _ecco = tle.ecco();
-    _epoque = tle.epoque();
-    _inclo = DEG2RAD * tle.inclo();
-    _mo = DEG2RAD * tle.mo();
-    _no = tle.no() * DEUX_PI * NB_JOUR_PAR_MIN;
-    _omegao = DEG2RAD * tle.omegao();
+    _elements = elements;
+    _elements.argpo *= DEG2RAD;
+    _elements.inclo *= DEG2RAD;
+    _elements.mo *= DEG2RAD;
+    _elements.no *= DEUX_PI * NB_JOUR_PAR_MIN;
+    _elements.omegao *= DEG2RAD;
 
     const double ss = 78. * X1SRT + 1.;
     const double qzms2t = pow((120. - 78.) * X1SRT, 4.);
     d_data->_t = 0.;
 
-    d_data->_eccsq = _ecco * _ecco;
+    d_data->_eccsq = _elements.ecco * _elements.ecco;
     d_data->_omeosq = 1. - d_data->_eccsq;
     d_data->_rteosq = sqrt(d_data->_omeosq);
-    d_data->_cosio = cos(_inclo);
+    d_data->_cosio = cos(_elements.inclo);
     d_data->_cosio2 = d_data->_cosio * d_data->_cosio;
 
-    const double ak = pow(KE / _no, DEUX_TIERS);
+    const double ak = pow(KE / _elements.no, DEUX_TIERS);
     const double d1 = 0.75 * J2 * (3. * d_data->_cosio2 - 1.) / (d_data->_rteosq * d_data->_omeosq);
     double del = d1 / (ak * ak);
     const double del2 = del * del;
     const double adel = ak * (1. - del2 - del * (0.5 * DEUX_TIERS + del2 * (134. / 81.)));
     del = d1 / (adel * adel);
-    _no = _no / (1. + del);
+    _elements.no = _elements.no / (1. + del);
 
-    d_data->_ao = pow(KE / _no, DEUX_TIERS);
-    d_data->_sinio = sin(_inclo);
+    d_data->_ao = pow(KE / _elements.no, DEUX_TIERS);
+    d_data->_sinio = sin(_elements.inclo);
     const double po = d_data->_ao * d_data->_omeosq;
     d_data->_con42 = 1. - 5. * d_data->_cosio2;
     d_data->_con41 = -d_data->_con42 - d_data->_cosio2 - d_data->_cosio2;
     d_data->_posq = po * po;
-    d_data->_rp = d_data->_ao * (1. - _ecco);
+    d_data->_rp = d_data->_ao * (1. - _elements.ecco);
     d_data->_method = 'n';
 
-    d_data->_gsto = Observateur::CalculTempsSideralGreenwich(_epoque);
+    d_data->_gsto = Observateur::CalculTempsSideralGreenwich(_elements.epoque);
 
-    if ((d_data->_omeosq >= 0.) || (_no > 0.)) {
+    if ((d_data->_omeosq >= 0.) || (_elements.no > 0.)) {
 
         d_data->_isimp = (d_data->_rp < 220. * X1SRT + 1.);
 
@@ -1120,43 +1113,43 @@ void SGP4::SGP4Init(const TLE &tle)
 
         const double pinvsq = 1. / d_data->_posq;
         const double tsi = 1. / (d_data->_ao - sfour);
-        d_data->_eta = d_data->_ao * _ecco * tsi;
+        d_data->_eta = d_data->_ao * _elements.ecco * tsi;
 
         const double etasq = d_data->_eta * d_data->_eta;
-        const double eeta = _ecco * d_data->_eta;
+        const double eeta = _elements.ecco * d_data->_eta;
         const double psisq = fabs(1. - etasq);
         const double coef = qzms24 * pow(tsi, 4.);
         const double coef1 = coef * pow(psisq, -3.5);
-        const double cc2 = coef1 * _no * (d_data->_ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq *
+        const double cc2 = coef1 * _elements.no * (d_data->_ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * J2 * tsi / psisq *
                                           d_data->_con41 * (8. + 3. * etasq * (8. + etasq)));
-        d_data->_cc1 = _bstar * cc2;
+        d_data->_cc1 = _elements.bstar * cc2;
         double cc3 = 0.;
-        if (_ecco > 1.e-4) {
-            cc3 = -2. * coef * tsi * J3SJ2 * _no * d_data->_sinio / _ecco;
+        if (_elements.ecco > 1.e-4) {
+            cc3 = -2. * coef * tsi * J3SJ2 * _elements.no * d_data->_sinio / _elements.ecco;
         }
 
         d_data->_x1mth2 = 1. - d_data->_cosio2;
-        d_data->_cc4 = 2. * _no * coef1 * d_data->_ao * d_data->_omeosq *
-                (d_data->_eta * (2. + 0.5 * etasq) + _ecco * (0.5 + 2. * etasq) - J2 * tsi /
+        d_data->_cc4 = 2. * _elements.no * coef1 * d_data->_ao * d_data->_omeosq *
+                (d_data->_eta * (2. + 0.5 * etasq) + _elements.ecco * (0.5 + 2. * etasq) - J2 * tsi /
                  (d_data->_ao * psisq) * (-3. * d_data->_con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
-                                  0.75 * d_data->_x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _argpo)));
+                                  0.75 * d_data->_x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _elements.argpo)));
         d_data->_cc5 = 2. * coef1 * d_data->_ao * d_data->_omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
 
         const double cosio4 = d_data->_cosio2 * d_data->_cosio2;
-        const double temp1 = 1.5 * J2 * pinvsq * _no;
+        const double temp1 = 1.5 * J2 * pinvsq * _elements.no;
         const double temp2 = 0.5 * temp1 * J2 * pinvsq;
-        const double temp3 = -0.46875 * J4 * pinvsq * pinvsq * _no;
-        d_data->_mdot = _no + 0.5 * temp1 * d_data->_rteosq * d_data->_con41 + 0.0625 * temp2 * d_data->_rteosq *
+        const double temp3 = -0.46875 * J4 * pinvsq * pinvsq * _elements.no;
+        d_data->_mdot = _elements.no + 0.5 * temp1 * d_data->_rteosq * d_data->_con41 + 0.0625 * temp2 * d_data->_rteosq *
                 (13. - 78. * d_data->_cosio2 + 137. * cosio4);
         d_data->_argpdot = -0.5 * temp1 * d_data->_con42 + 0.0625 * temp2 * (7. - 114. * d_data->_cosio2 + 395. * cosio4) +
                 temp3 * (3. - 36. * d_data->_cosio2 + 49. * cosio4);
         const double xhdot1 = -temp1 * d_data->_cosio;
         d_data->_nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * d_data->_cosio2) + 2. * temp3 * (3. - 7. * d_data->_cosio2)) * d_data->_cosio;
         d_data->_xpidot = d_data->_argpdot + d_data->_nodedot;
-        d_data->_omgcof = _bstar * cc3 * cos(_argpo);
+        d_data->_omgcof = _elements.bstar * cc3 * cos(_elements.argpo);
         d_data->_xmcof = 0.;
-        if (_ecco > 1.e-4) {
-            d_data->_xmcof = -DEUX_TIERS * coef * _bstar / eeta;
+        if (_elements.ecco > 1.e-4) {
+            d_data->_xmcof = -DEUX_TIERS * coef * _elements.bstar / eeta;
         }
 
         d_data->_nodecf = 3.5 * d_data->_omeosq * xhdot1 * d_data->_cc1;
@@ -1169,25 +1162,25 @@ void SGP4::SGP4Init(const TLE &tle)
         }
 
         d_data->_aycof = -0.5 * J3SJ2 * d_data->_sinio;
-        d_data->_delmo = pow((1. + d_data->_eta * cos(_mo)), 3.);
-        d_data->_sinmao = sin(_mo);
+        d_data->_delmo = pow((1. + d_data->_eta * cos(_elements.mo)), 3.);
+        d_data->_sinmao = sin(_elements.mo);
         d_data->_x7thm1 = 7. * d_data->_cosio2 - 1.;
 
         // Initialisation du modele haute orbite
-        if (DEUX_PI >= 225. * _no) {
+        if (DEUX_PI >= 225. * _elements.no) {
 
             d_data->_method = 'd';
             d_data->_isimp = true;
-            d_data->_inclm = _inclo;
+            d_data->_inclm = _elements.inclo;
 
             const double tc = 0.;
             Dscom(tc);
 
-            d_data->_mp = _mo;
-            d_data->_argpp = _argpo;
-            d_data->_ep = _ecco;
-            d_data->_nodep = _omegao;
-            d_data->_xincp = _inclo;
+            d_data->_mp = _elements.mo;
+            d_data->_argpp = _elements.argpo;
+            d_data->_ep = _elements.ecco;
+            d_data->_nodep = _elements.omegao;
+            d_data->_xincp = _elements.inclo;
 
             Dpper();
 

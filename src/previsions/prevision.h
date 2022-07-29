@@ -53,11 +53,6 @@ public:
      *  Constructeurs
      */
 
-    /*
-     * Accesseurs
-     */
-    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
-    static DonneesPrevisions donnees();
 
     /*
      * Modificateurs
@@ -82,6 +77,13 @@ public:
      * @return nombre de satellites
      */
     static int CalculPrevisions(int &nombre);
+
+
+    /*
+     * Accesseurs
+     */
+    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
+    static DonneesPrevisions donnees();
 
 
 protected:

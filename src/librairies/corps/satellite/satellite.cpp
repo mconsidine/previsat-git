@@ -59,7 +59,7 @@ Satellite::Satellite()
 
     /* Corps du constructeur */
     _nbOrbites = 0;
-    _ageTLE = 0.;
+    _ageElementsOrbitaux = 0.;
     _beta = 0.;
     _deltaNbOrb = -1;
     _sgp4.setInit(false);
@@ -71,8 +71,8 @@ Satellite::Satellite()
 /*
  * Constructeur a partir d'un tableau de TLE
  */
-Satellite::Satellite(const QList<TLE> &tabtle) :
-    _tabtle(tabtle)
+Satellite::Satellite(const QList<ElementsOrbitaux> &elem) :
+    _listElements(elem)
 {
     /* Declarations des variables locales */
 
@@ -80,83 +80,14 @@ Satellite::Satellite(const QList<TLE> &tabtle) :
 
     /* Corps du constructeur */
     _nbOrbites = 0;
-    _ageTLE = 0.;
+    _ageElementsOrbitaux = 0.;
     _beta = 0.;
-    _deltaNbOrb = -1;
-    _tle = _tabtle.at(0);
+    _deltaNbOrb = NB_ORB_INDEFINI;
+    _elementsOrbitaux = _listElements.at(0);
     _sgp4.setInit(false);
 
     /* Retour */
     return;
-}
-
-
-/*
- * Accesseurs
- */
-double Satellite::ageTLE() const
-{
-    return _ageTLE;
-}
-
-double Satellite::beta() const
-{
-    return _beta;
-}
-
-char Satellite::method() const
-{
-    return _sgp4.method();
-}
-
-int Satellite::deltaNbOrb() const
-{
-    return _deltaNbOrb;
-}
-
-unsigned int Satellite::nbOrbites() const
-{
-    return _nbOrbites;
-}
-
-TLE Satellite::tle() const
-{
-    return _tle;
-}
-
-ConditionEclipse Satellite::conditionEclipse() const
-{
-    return _conditionEclipse;
-}
-
-ElementsOsculateurs Satellite::elements() const
-{
-    return _elements;
-}
-
-Magnitude Satellite::magnitude() const
-{
-    return _magnitude;
-}
-
-Phasage Satellite::phasage() const
-{
-    return _phasage;
-}
-
-Signal Satellite::signal() const
-{
-    return _signal;
-}
-
-QList<ElementsTraceSol> Satellite::traceAuSol() const
-{
-    return _traceAuSol;
-}
-
-QList<ElementsTraceCiel> Satellite::traceCiel() const
-{
-    return _traceCiel;
 }
 
 
@@ -210,36 +141,39 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 
     /* Corps de la methode */
     // Elements osculateurs
-    _elements.Calcul(_position, _vitesse);
+    _elementsOsculateurs.Calcul(_position, _vitesse);
 
     // Age du TLE
-    _ageTLE = date.jourJulienUTC() - _tle.epoque().jourJulienUTC();
+    _ageElementsOrbitaux = date.jourJulienUTC() - _elementsOrbitaux.epoque.jourJulienUTC();
 
     // Nombre d'orbites a la date courante
-    if (_deltaNbOrb == -1) {
+    if (_deltaNbOrb == NB_ORB_INDEFINI) {
 
-        const QString dateLancement = _tle.donnees().dateLancement();
+        const QString dateLancement = _elementsOrbitaux.donnees.dateLancement();
         if (dateLancement.isEmpty()) {
             _deltaNbOrb = 0;
         } else {
+
             const int annee = dateLancement.mid(0, 4).toInt();
             const int mois = dateLancement.mid(5, 2).toInt();
             const double jour = dateLancement.mid(8, 2).toDouble();
             const Date dateLct(annee, mois, jour, 0.);
 
             // Nombre theorique d'orbites a l'epoque
-            const int nbOrbTheo = static_cast<int> (_tle.no() * (_tle.epoque().jourJulienUTC() - dateLct.jourJulienUTC()));
+            const int nbOrbTheo = static_cast<int> (_elementsOrbitaux.no * (_elementsOrbitaux.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
             int resteOrb = nbOrbTheo%100000;
-            resteOrb += (((_tle.nbOrbitesEpoque() > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-            resteOrb -= (((_tle.nbOrbitesEpoque() < 50000) && (resteOrb > 50000)) ? 100000 : 0);
+            resteOrb += (((_elementsOrbitaux.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
+            resteOrb -= (((_elementsOrbitaux.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
             _deltaNbOrb = nbOrbTheo - resteOrb;
         }
     }
 
-    _nbOrbites = _tle.nbOrbitesEpoque() +
-            static_cast<unsigned int> (_deltaNbOrb + floor((_tle.no() + _ageTLE * _tle.bstar()) * _ageTLE +
-                                                           modulo(_tle.omegao() + _tle.mo(), DEUX_PI) / T360 -
-                                                           modulo(_elements.argumentPerigee() + _elements.anomalieVraie(), DEUX_PI) / DEUX_PI + 0.5));
+    _nbOrbites = _elementsOrbitaux.nbOrbitesEpoque +
+            static_cast<unsigned int> (_deltaNbOrb +
+                                       floor((_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux +
+                                             modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, DEUX_PI) / T360 -
+                                             modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), DEUX_PI) /
+                                             DEUX_PI + 0.5));
 
     /* Retour */
     return;
@@ -258,31 +192,32 @@ void Satellite::CalculPosVit(const Date &date)
     /* Corps de la methode */
     try {
 
-        if (!_tabtle.isEmpty()) {
+        if (!_listElements.isEmpty()) {
 
-            const double jjsav = _tle.epoque().jourJulienUTC();
-            _tle = _tabtle.at(0);
+            const double jjsav = _elementsOrbitaux.epoque.jourJulienUTC();
+            _elementsOrbitaux = _listElements.at(0);
 
             // Recherche du TLE le plus recent
-            QListIterator<TLE> it(_tabtle);
+            QListIterator it(_listElements);
             while (it.hasNext()) {
 
-                const TLE xtle = it.next();
-                if (date.jourJulienUTC() >= xtle.epoque().jourJulienUTC()) {
-                    _tle = xtle;
+                const ElementsOrbitaux elem = it.next();
+
+                if (date.jourJulienUTC() >= elem.epoque.jourJulienUTC()) {
+                    _elementsOrbitaux = elem;
                 } else {
                     it.toBack();
                 }
             }
 
             // Reinitialisation des valeurs du modele SGP4 en cas de changement de TLE
-            if (fabs(_tle.epoque().jourJulienUTC() - jjsav) > EPS_DATES) {
+            if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > EPS_DATES) {
                 _sgp4.setInit(false);
             }
         }
 
         // Calcul de la position et de la vitesse
-        _sgp4.Calcul(date, _tle);
+        _sgp4.Calcul(date, _elementsOrbitaux);
         _position = _sgp4.position();
         _vitesse = _sgp4.vitesse();
 
@@ -334,7 +269,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
 
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
-            const double bt = (mcc && satellites[i]._tle.nom().toLower().startsWith("tdrs")) ?
+            const double bt = (mcc && satellites[i]._elementsOrbitaux.nom.toLower().startsWith("tdrs")) ?
                         PI_SUR_DEUX + 8.7 * DEG2RAD :
                         acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
             satellites[i].CalculZoneVisibilite(bt);
@@ -352,7 +287,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
 
             // Magnitude et fraction illuminee
             satellites[i]._magnitude.Calcul(satellites[i]._conditionEclipse, observateur, satellites[i]._distance, satellites[i]._hauteur,
-                                            satellites[i]._tle.donnees().magnitudeStandard(), extinction, effetEclipsePartielle);
+                                            satellites[i]._elementsOrbitaux.donnees.magnitudeStandard(), extinction, effetEclipsePartielle);
 
             // Elements osculateurs
             satellites[i].CalculElementsOsculateurs(date);
@@ -360,15 +295,16 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
             // Calcul des traces au sol
             if (nbTracesAuSol > 0) {
 
-                const Date dateInit = (mcc && isISS) ?
-                            Date(Evenements::CalculNoeudOrbite(date, satellites[i], false).jourJulienUTC() - EPS_DATES, 0., false) :
-                            Date(date.jourJulienUTC(), 0., false);
+                const Date dateISS =
+                        Date(Evenements::CalculNoeudOrbite(date, satellites[i], SensCalcul::ANTI_CHRONOLOGIQUE).jourJulienUTC() - EPS_DATES, 0., false);
+
+                const Date dateInit = (mcc && isISS) ? dateISS : Date(date.jourJulienUTC(), 0., false);
 
                 satellites[i].CalculTracesAuSol(dateInit, nbTracesAuSol, acalcEclipseLune, refractionAtmospherique);
             }
 
             // Calcul du phasage
-            satellites[i]._phasage.Calcul(satellites[i]._elements, satellites[i]._tle.no());
+            satellites[i]._phasage.Calcul(satellites[i]._elementsOsculateurs, satellites[i]._elementsOrbitaux.no);
 
             // Calcul de l'angle beta
             satellites[i].CalculBeta(soleil);
@@ -393,7 +329,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 
     /* Initialisations */
     _traceCiel.clear();
-    if (_elements.demiGrandAxe() < EPSDBL100) {
+    if (_elementsOsculateurs.demiGrandAxe() < EPSDBL100) {
         CalculElementsOsculateurs(date);
     }
 
@@ -402,7 +338,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 
         bool afin = false;
         int i = 0;
-        const double step = 1. / (_tle.no() * T360);
+        const double step = 1. / (_elementsOrbitaux.no * T360);
         const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
         Satellite sat = *this;
         Observateur obs = observateur;
@@ -466,7 +402,7 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
 
     /* Initialisations */
     Satellite sat = *this;
-    const double st = 1. / (_tle.no() * T360);
+    const double st = 1. / (_elementsOrbitaux.no * T360);
     _traceAuSol.clear();
 
     /* Corps de la methode */
@@ -517,7 +453,7 @@ bool Satellite::hasAOS(const Observateur &observateur) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double incl = _tle.inclo() * DEG2RAD;
+    double incl = _elementsOrbitaux.inclo * DEG2RAD;
     if (incl >= PI_SUR_DEUX) {
         incl = PI - incl;
     }
@@ -525,7 +461,7 @@ bool Satellite::hasAOS(const Observateur &observateur) const
     /* Corps de la methode */
 
     /* Retour */
-    return (incl + acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _elements.apogee())) > fabs(observateur.latitude()) && !isGeo());
+    return (incl + acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _elementsOsculateurs.apogee())) > fabs(observateur.latitude()) && !isGeo());
 }
 
 /*
@@ -540,7 +476,76 @@ bool Satellite::isGeo() const
     /* Corps de la methode */
 
     /* Retour */
-    return (fabs(_tle.no() - 1.0027) < 2.e-4);
+    return (fabs(_elementsOrbitaux.no - 1.0027) < 2.e-4);
+}
+
+
+/*
+ * Accesseurs
+ */
+double Satellite::ageElementsOrbitaux() const
+{
+    return _ageElementsOrbitaux;
+}
+
+double Satellite::beta() const
+{
+    return _beta;
+}
+
+char Satellite::method() const
+{
+    return _sgp4.method();
+}
+
+int Satellite::deltaNbOrb() const
+{
+    return _deltaNbOrb;
+}
+
+unsigned int Satellite::nbOrbites() const
+{
+    return _nbOrbites;
+}
+
+const ElementsOrbitaux &Satellite::elementsOrbitaux() const
+{
+    return _elementsOrbitaux;
+}
+
+const ConditionEclipse &Satellite::conditionEclipse() const
+{
+    return _conditionEclipse;
+}
+
+const ElementsOsculateurs &Satellite::elementsOsculateurs() const
+{
+    return _elementsOsculateurs;
+}
+
+const Magnitude &Satellite::magnitude() const
+{
+    return _magnitude;
+}
+
+const Phasage &Satellite::phasage() const
+{
+    return _phasage;
+}
+
+const Signal &Satellite::signal() const
+{
+    return _signal;
+}
+
+const QList<ElementsTraceSol> &Satellite::traceAuSol() const
+{
+    return _traceAuSol;
+}
+
+const QList<ElementsTraceCiel> &Satellite::traceCiel() const
+{
+    return _traceCiel;
 }
 
 
@@ -560,3 +565,4 @@ bool Satellite::isGeo() const
 /*
  * Methodes privees
  */
+

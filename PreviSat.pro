@@ -33,34 +33,28 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    4 juillet 2022
+# >    20 mai 2022
 
 #-------------------------------------------------
-VER_MAJ      = 5.0
-VERSION      = 5.0.0.10
+VER_MAJ      = 6.0
+VERSION      = 6.0.0.0
 ANNEES_DEV   = 2005-2022
 TRANSLATIONS = translations/PreviSat_en.ts
-BUILD_TEST   = false
+BUILD_TEST   = true
 CLEANUP_TEST = true
 #-------------------------------------------------
 
 TARGET = PreviSat
 TEMPLATE = app
 
-equals(QT_MAJOR_VERSION, 5) {
-    lessThan(QT_MINOR_VERSION, 4) {
-        error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 5.15.2 in preference")
-    }
-} else {
-    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 5.15.2 in preference")
+!equals(QT_MAJOR_VERSION, 6) {
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.3.1 in preference")
 }
 
-QT += concurrent
-
-equals(QT_MAJOR_VERSION, 5): QT += multimedia printsupport widgets xml
-greaterThan(QT_GCC_MAJOR_VERSION, 4) {
-    QMAKE_CXXFLAGS += -std=c++11
-    CONFIG += c++11
+QT += concurrent multimedia printsupport widgets xml
+greaterThan(QT_GCC_MAJOR_VERSION, 5) {
+    QMAKE_CXXFLAGS += -std=c++17
+    CONFIG += c++17
 }
 
 
@@ -85,123 +79,134 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
 
 INCLUDEPATH += src
 
-unix|macx {
-    LIBS += -lz
-}
-
 
 SOURCES += \
-    src/configuration/configuration.cpp                    \
-    src/interface/afficher.cpp                             \
-    src/interface/apropos.cpp                              \
-    src/interface/carte.cpp                                \
-    src/interface/ciel.cpp                                 \
-    src/interface/coordiss.cpp                             \
-    src/interface/gestionnairetle.cpp                      \
-    src/interface/informations.cpp                         \
-    src/interface/onglets.cpp                              \
-    src/interface/previsat.cpp                             \
-    src/interface/radar.cpp                                \
-    src/interface/telecharger.cpp                          \
-    src/librairies/corps/corps.cpp                         \
-    src/librairies/corps/etoiles/constellation.cpp         \
-    src/librairies/corps/etoiles/etoile.cpp                \
-    src/librairies/corps/etoiles/ligneconstellation.cpp    \
-    src/librairies/corps/satellite/conditioneclipse.cpp    \
-    src/librairies/corps/satellite/donnees.cpp             \
-    src/librairies/corps/satellite/elementsosculateurs.cpp \
-    src/librairies/corps/satellite/evenements.cpp          \
-    src/librairies/corps/satellite/magnitude.cpp           \
-    src/librairies/corps/satellite/phasage.cpp             \
-    src/librairies/corps/satellite/satellite.cpp           \
-    src/librairies/corps/satellite/sgp4.cpp                \
-    src/librairies/corps/satellite/signal.cpp              \
-    src/librairies/corps/satellite/tle.cpp                 \
-    src/librairies/corps/systemesolaire/lune.cpp           \
-    src/librairies/corps/systemesolaire/planete.cpp        \
-    src/librairies/corps/systemesolaire/soleil.cpp         \
-    src/librairies/dates/date.cpp                          \
-    src/librairies/exceptions/message.cpp                  \
-    src/librairies/exceptions/previsatexception.cpp        \
-    src/librairies/maths/maths.cpp                         \
-    src/librairies/maths/matrice3d.cpp                     \
-    src/librairies/maths/vecteur3d.cpp                     \
-    src/librairies/observateur/observateur.cpp             \
-    src/librairies/systeme/decompression.cpp               \
-    src/previsions/evenementsorbitaux.cpp                  \
-    src/previsions/flashs.cpp                              \
-    src/previsions/prevision.cpp                           \
-    src/previsions/telescope.cpp                           \
-    src/previsions/transitsiss.cpp
+    src/configuration/configuration.cpp                     \
+    src/configuration/evenementsstationspatiale.cpp         \
+    src/configuration/fichierobs.cpp                        \
+    src/configuration/gestionnairexml.cpp                   \
+    src/interface/onglets/donnees/informationsiss.cpp       \
+    src/interface/onglets/donnees/informationssatellite.cpp \
+    src/interface/onglets/donnees/recherchesatellite.cpp    \
+    src/interface/onglets/general/general.cpp               \
+    src/interface/onglets/onglets.cpp                       \
+    src/interface/onglets/osculateurs/osculateurs.cpp       \
+    src/interface/onglets/previsions/evenementsorbitaux.cpp \
+    src/interface/onglets/previsions/flashs.cpp             \
+    src/interface/onglets/previsions/previsionspassage.cpp  \
+    src/interface/onglets/previsions/transits.cpp           \
+    src/interface/onglets/telescope/suivitelescope.cpp      \
+    src/interface/previsat.cpp                              \
+    src/librairies/corps/corps.cpp                          \
+    src/librairies/corps/etoiles/constellation.cpp          \
+    src/librairies/corps/etoiles/etoile.cpp                 \
+    src/librairies/corps/etoiles/ligneconstellation.cpp     \
+    src/librairies/corps/satellite/conditioneclipse.cpp     \
+    src/librairies/corps/satellite/donnees.cpp              \
+    src/librairies/corps/satellite/elementsosculateurs.cpp  \
+    src/librairies/corps/satellite/evenements.cpp           \
+    src/librairies/corps/satellite/gpformat.cpp             \
+    src/librairies/corps/satellite/magnitude.cpp            \
+    src/librairies/corps/satellite/phasage.cpp              \
+    src/librairies/corps/satellite/satellite.cpp            \
+    src/librairies/corps/satellite/sgp4.cpp                 \
+    src/librairies/corps/satellite/signal.cpp               \
+    src/librairies/corps/satellite/tle.cpp                  \
+    src/librairies/corps/systemesolaire/lune.cpp            \
+    src/librairies/corps/systemesolaire/planete.cpp         \
+    src/librairies/corps/systemesolaire/soleil.cpp          \
+    src/librairies/dates/date.cpp                           \
+    src/librairies/exceptions/message.cpp                   \
+    src/librairies/exceptions/previsatexception.cpp         \
+    src/librairies/maths/maths.cpp                          \
+    src/librairies/maths/matrice3d.cpp                      \
+    src/librairies/maths/vecteur3d.cpp                      \
+    src/librairies/observateur/observateur.cpp              \
+    src/librairies/systeme/logmessage.cpp                   \
+    src/librairies/systeme/telechargement.cpp               \
+#    src/previsions/flashs.cpp \
+    src/previsions/prevision.cpp
 
 
 HEADERS += \
-    src/configuration/configuration.h                    \
-    src/interface/afficher.h                             \
-    src/interface/apropos.h                              \
-    src/interface/carte.h                                \
-    src/interface/ciel.h                                 \
-    src/interface/coordiss.h                             \
-    src/interface/gestionnairetle.h                      \
-    src/interface/listwidgetitem.h                       \
-    src/interface/informations.h                         \
-    src/interface/onglets.h                              \
-    src/interface/previsat.h                             \
-    src/interface/radar.h                                \
-    src/interface/telecharger.h                          \
-    src/librairies/corps/corps.h                         \
-    src/librairies/corps/etoiles/constellation.h         \
-    src/librairies/corps/etoiles/etoile.h                \
-    src/librairies/corps/etoiles/ligneconstellation.h    \
-    src/librairies/corps/satellite/conditioneclipse.h    \
-    src/librairies/corps/satellite/donnees.h             \
-    src/librairies/corps/satellite/elementsosculateurs.h \
-    src/librairies/corps/satellite/evenements.h          \
-    src/librairies/corps/satellite/magnitude.h           \
-    src/librairies/corps/satellite/phasage.h             \
-    src/librairies/corps/satellite/satellite.h           \
-    src/librairies/corps/satellite/sgp4.h                \
-    src/librairies/corps/satellite/sgp4const.h           \
-    src/librairies/corps/satellite/signal.h              \
-    src/librairies/corps/satellite/tle.h                 \
-    src/librairies/corps/systemesolaire/lune.h           \
-    src/librairies/corps/systemesolaire/luneconst.h      \
-    src/librairies/corps/systemesolaire/planete.h        \
-    src/librairies/corps/systemesolaire/planeteconst.h   \
-    src/librairies/corps/systemesolaire/soleil.h         \
-    src/librairies/corps/systemesolaire/soleilconst.h    \
-    src/librairies/corps/systemesolaire/terreconst.h     \
-    src/librairies/dates/date.h                          \
-    src/librairies/dates/dateconst.h                     \
-    src/librairies/exceptions/message.h                  \
-    src/librairies/exceptions/messageconst.h             \
-    src/librairies/exceptions/previsatexception.h        \
-    src/librairies/maths/maths.h                         \
-    src/librairies/maths/mathsconst.h                    \
-    src/librairies/maths/matrice3d.h                     \
-    src/librairies/maths/vecteur3d.h                     \
-    src/librairies/observateur/observateur.h             \
-    src/librairies/systeme/decompression.h               \
-    src/previsions/evenementsorbitaux.h                  \
-    src/previsions/flashs.h                              \
-    src/previsions/prevision.h                           \
-    src/previsions/previsionsconst.h                     \
-    src/previsions/telescope.h                           \
-    src/previsions/transitsiss.h
+    src/configuration/categorieelementsorbitaux.h         \
+    src/configuration/configuration.h                     \
+    src/configuration/configurationconst.h                \
+    src/configuration/evenementsstationspatiale.h         \
+    src/configuration/fichierobs.h                        \
+    src/configuration/gestionnairexml.h                   \
+    src/configuration/satellitesflashs.h                  \
+    src/configuration/satellitetdrs.h                     \
+    src/interface/onglets/donnees/informationsiss.h       \
+    src/interface/onglets/donnees/informationssatellite.h \
+    src/interface/onglets/donnees/recherchesatellite.h    \
+    src/interface/onglets/general/general.h               \
+    src/interface/onglets/onglets.h                       \
+    src/interface/onglets/osculateurs/osculateurs.h       \
+    src/interface/onglets/previsions/evenementsorbitaux.h \
+    src/interface/onglets/previsions/flashs.h             \
+    src/interface/onglets/previsions/previsionspassage.h  \
+    src/interface/onglets/previsions/transits.h           \
+    src/interface/onglets/telescope/suivitelescope.h      \
+    src/interface/previsat.h                              \
+    src/librairies/corps/corps.h                          \
+    src/librairies/corps/corpsconst.h \
+    src/librairies/corps/ephemerides.h                    \
+    src/librairies/corps/etoiles/constellation.h          \
+    src/librairies/corps/etoiles/etoile.h                 \
+    src/librairies/corps/etoiles/ligneconstellation.h     \
+    src/librairies/corps/satellite/conditioneclipse.h     \
+    src/librairies/corps/satellite/donnees.h              \
+    src/librairies/corps/satellite/elementsorbitaux.h     \
+    src/librairies/corps/satellite/elementsosculateurs.h  \
+    src/librairies/corps/satellite/evenements.h           \
+    src/librairies/corps/satellite/evenementsconst.h      \
+    src/librairies/corps/satellite/gpformat.h             \
+    src/librairies/corps/satellite/magnitude.h            \
+    src/librairies/corps/satellite/phasage.h              \
+    src/librairies/corps/satellite/satellite.h            \
+    src/librairies/corps/satellite/sgp4.h                 \
+    src/librairies/corps/satellite/sgp4const.h            \
+    src/librairies/corps/satellite/signal.h               \
+    src/librairies/corps/satellite/tle.h                  \
+    src/librairies/corps/systemesolaire/lune.h            \
+    src/librairies/corps/systemesolaire/luneconst.h       \
+    src/librairies/corps/systemesolaire/planete.h         \
+    src/librairies/corps/systemesolaire/planeteconst.h    \
+    src/librairies/corps/systemesolaire/soleil.h          \
+    src/librairies/corps/systemesolaire/soleilconst.h     \
+    src/librairies/corps/terreconst.h                     \
+    src/librairies/dates/date.h                           \
+    src/librairies/dates/dateconst.h                      \
+    src/librairies/exceptions/message.h                   \
+    src/librairies/exceptions/messageconst.h              \
+    src/librairies/exceptions/previsatexception.h         \
+    src/librairies/maths/maths.h                          \
+    src/librairies/maths/mathsconst.h                     \
+    src/librairies/maths/matrice3d.h                      \
+    src/librairies/maths/vecteur3d.h                      \
+    src/librairies/observateur/observateur.h              \
+    src/librairies/systeme/logmessage.h                   \
+    src/librairies/systeme/telechargement.h               \
+#    src/previsions/flashs.h \
+    src/previsions/prevision.h                            \
+    src/previsions/previsionsconst.h
 
 
 FORMS += \
-    src/interface/afficher.ui        \
-    src/interface/apropos.ui         \
-    src/interface/carte.ui           \
-    src/interface/ciel.ui            \
-    src/interface/coordiss.ui        \
-    src/interface/gestionnairetle.ui \
-    src/interface/informations.ui    \
-    src/interface/onglets.ui         \
-    src/interface/previsat.ui        \
-    src/interface/radar.ui           \
-    src/interface/telecharger.ui
+    src/interface/onglets/donnees/informationsiss.ui       \
+    src/interface/onglets/donnees/informationssatellite.ui \
+    src/interface/onglets/donnees/recherchesatellite.ui    \
+    src/interface/onglets/general/general.ui               \
+    src/interface/onglets/onglets.ui                       \
+    src/interface/onglets/osculateurs/osculateurs.ui       \
+    src/interface/onglets/previsions/evenementsorbitaux.ui \
+    src/interface/onglets/previsions/flashs.ui             \
+    src/interface/onglets/previsions/previsionspassage.ui  \
+    src/interface/onglets/previsions/transits.ui           \
+    src/interface/onglets/telescope/suivitelescope.ui      \
+    src/interface/previsat.ui
+
 
 OTHER_FILES += icone.rc
 
@@ -225,40 +230,50 @@ equals(BUILD_TEST, true) {
         DESTDIR = TestPreviSat/release
     }
 
-    SOURCES += \
-        test/src/interface/ongletstest.cpp                       \
-        test/src/librairies/corps/satellite/satellitetest.cpp    \
-        test/src/librairies/corps/systemesolaire/lunetest.cpp    \
-        test/src/librairies/corps/systemesolaire/planetetest.cpp \
-        test/src/librairies/corps/systemesolaire/soleiltest.cpp  \
-        test/src/librairies/dates/datetest.cpp                   \
-        test/src/librairies/maths/mathstest.cpp                  \
-        test/src/librairies/observateur/observateurtest.cpp      \
-        test/src/librairies/systeme/decompressiontest.cpp        \
-        test/src/previsions/evenementsorbitauxtest.cpp           \
-        test/src/previsions/flashstest.cpp                       \
-        test/src/previsions/previsiontest.cpp                    \
-        test/src/previsions/telescopetest.cpp                    \
-        test/src/previsions/transitsisstest.cpp                  \
-        test/src/testtools.cpp                                   \
-        test/src/tst_previsattest.cpp
+SOURCES += \
+    test/src/librairies/corps/satellite/conditioneclipsetest.cpp    \
+    test/src/librairies/corps/satellite/donneestest.cpp             \
+    test/src/librairies/corps/satellite/elementsosculateurstest.cpp \
+    test/src/librairies/corps/satellite/evenementstest.cpp          \
+    test/src/librairies/corps/satellite/gpformattest.cpp            \
+    test/src/librairies/corps/satellite/magnitudetest.cpp           \
+    test/src/librairies/corps/satellite/phasagetest.cpp             \
+    test/src/librairies/corps/satellite/satellitetest.cpp           \
+    test/src/librairies/corps/satellite/sgp4test.cpp                \
+    test/src/librairies/corps/satellite/signaltest.cpp              \
+    test/src/librairies/corps/satellite/tletest.cpp                 \
+    test/src/librairies/corps/systemesolaire/lunetest.cpp           \
+    test/src/librairies/corps/systemesolaire/planetetest.cpp        \
+    test/src/librairies/corps/systemesolaire/soleiltest.cpp         \
+    test/src/librairies/dates/datetest.cpp                          \
+    test/src/librairies/maths/mathstest.cpp                         \
+    test/src/librairies/observateur/observateurtest.cpp             \
+    test/src/librairies/systeme/logmessagetest.cpp                  \
+    test/src/librairies/systeme/telechargementtest.cpp              \
+    test/src/testtools.cpp                                          \
+    test/src/tst_previsattest.cpp
 
-    HEADERS += \
-        test/src/interface/ongletstest.h                       \
-        test/src/librairies/corps/satellite/satellitetest.h    \
-        test/src/librairies/corps/systemesolaire/lunetest.h    \
-        test/src/librairies/corps/systemesolaire/planetetest.h \
-        test/src/librairies/corps/systemesolaire/soleiltest.h  \
-        test/src/librairies/dates/datetest.h                   \
-        test/src/librairies/maths/mathstest.h                  \
-        test/src/librairies/observateur/observateurtest.h      \
-        test/src/librairies/systeme/decompressiontest.h        \
-        test/src/previsions/evenementsorbitauxtest.h           \
-        test/src/previsions/flashstest.h                       \
-        test/src/previsions/previsiontest.h                    \
-        test/src/previsions/telescopetest.h                    \
-        test/src/previsions/transitsisstest.h                  \
-        test/src/testtools.h
+HEADERS += \
+    test/src/librairies/corps/satellite/conditioneclipsetest.h    \
+    test/src/librairies/corps/satellite/donneestest.h             \
+    test/src/librairies/corps/satellite/elementsosculateurstest.h \
+    test/src/librairies/corps/satellite/evenementstest.h          \
+    test/src/librairies/corps/satellite/gpformattest.h            \
+    test/src/librairies/corps/satellite/magnitudetest.h           \
+    test/src/librairies/corps/satellite/phasagetest.h             \
+    test/src/librairies/corps/satellite/satellitetest.h           \
+    test/src/librairies/corps/satellite/sgp4test.h                \
+    test/src/librairies/corps/satellite/signaltest.h              \
+    test/src/librairies/corps/satellite/tletest.h                 \
+    test/src/librairies/corps/systemesolaire/lunetest.h           \
+    test/src/librairies/corps/systemesolaire/planetetest.h        \
+    test/src/librairies/corps/systemesolaire/soleiltest.h         \
+    test/src/librairies/dates/datetest.h                          \
+    test/src/librairies/maths/mathstest.h                         \
+    test/src/librairies/observateur/observateurtest.h             \
+    test/src/librairies/systeme/logmessagetest.h                  \
+    test/src/librairies/systeme/telechargementtest.h              \
+    test/src/testtools.h
 
 
 } else {
@@ -274,7 +289,7 @@ equals(BUILD_TEST, true) {
         DESTDIR = release
     }
 
-    CONFIG += lrelease
+    #CONFIG += lrelease
 
     ICON = resources/icone.ico
     win32:RC_FILE = icone.rc
@@ -292,10 +307,9 @@ UI_DIR      = $$DESTDIR/ui
 
 QMAKE_CXXFLAGS += -Wconversion -Wfloat-equal -pipe -W -Wall -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wextra -Wformat \
     -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimport -Winit-self -Winvalid-pch -Wmain -Wmissing-declarations \
-    -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wno-deprecated-declarations \
-    -Wpacked -Wparentheses -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector \
-    -Wswitch -Wswitch-default -Wswitch-enum -Wtrigraphs -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused \
-    -Wunused-parameter -Wvariadic-macros -Wwrite-strings
+    -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-noreturn -Wno-deprecated-declarations -Wpacked -Wparentheses \
+    -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare -Wstack-protector -Wswitch -Wswitch-default \
+    -Wswitch-enum -Wtrigraphs -Wundef -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused -Wunused-parameter -Wvariadic-macros -Wwrite-strings
 
 QMAKE_CXXFLAGS_RELEASE += -Os -fbounds-check -fbranch-target-load-optimize -fcaller-saves -fcommon -fcprop-registers -fcrossjumping -floop-optimize \
     -foptimize-register-move -fpeephole -fpeephole2 -frerun-cse-after-loop -fstrength-reduce -malign-double -s

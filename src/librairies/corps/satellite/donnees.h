@@ -64,20 +64,13 @@ public:
      */
     explicit Donnees(const QString &donnee);
 
-    /*
-     * Accesseurs
-     */
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
+     */
+
+    /*
+     * Accesseurs
      */
     char methMagnitude() const;
     double magnitudeStandard() const;
@@ -85,22 +78,18 @@ public:
     double t1() const;
     double t2() const;
     double t3() const;
-    QString cospar() const;
-    QString dateLancement() const;
-    QString periode() const;
-    QString perigee() const;
-    QString apogee() const;
-    QString inclinaison() const;
-    QString categorieOrbite() const;
-    QString pays() const;
-    QString siteLancement() const;
+    const QString &cospar() const;
+    const QString &dateLancement() const;
+    const QString &periode() const;
+    const QString &perigee() const;
+    const QString &apogee() const;
+    const QString &inclinaison() const;
+    const QString &categorieOrbite() const;
+    const QString &pays() const;
+    const QString &siteLancement() const;
 
 
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -112,10 +101,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees
@@ -142,6 +127,5 @@ private:
 
 
 };
-
 
 #endif // DONNEES_H

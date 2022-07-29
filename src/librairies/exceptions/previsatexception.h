@@ -70,27 +70,15 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
+     */
+
+    /*
+     * Accesseurs
      */
 
 
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -104,10 +92,6 @@ protected:
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
     MessageType _typeMessage;
@@ -118,6 +102,5 @@ private:
 
 
 };
-
 
 #endif // PREVISATEXCEPTION_H

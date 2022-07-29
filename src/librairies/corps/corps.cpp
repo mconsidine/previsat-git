@@ -37,22 +37,19 @@
  *
  */
 
-#include <cmath>
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
-#include <QTextStream>
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "corps.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
-#include "librairies/dates/date.h"
+#include "terreconst.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 
 
-/**********
- * PUBLIC *
- **********/
+static const double RE2 = RAYON_TERRESTRE * E2;
 
 struct ConstElem {
     double ad1;
@@ -62,9 +59,13 @@ struct ConstElem {
 };
 
 static QList<ConstElem> _tabConst;
-static QList<double> _caz;
-static QList<double> _saz;
+static std::array<double, 360> _caz;
+static std::array<double, 360> _saz;
 
+
+/**********
+ * PUBLIC *
+ **********/
 
 /*
  * Constructeurs
@@ -98,106 +99,17 @@ Corps::Corps()
     _ct = 0.;
     _r0 = 0.;
 
-    if (_caz.isEmpty() || _saz.isEmpty()) {
-
-        for(int i=0; i<360; i++) {
-            const double az = i * DEG2RAD;
-            _caz.append(cos(az));
-            _saz.append(sin(az));
-        }
-    }
-
     /* Retour */
     return;
 }
 
 
 /*
- * Accesseurs
+ * Modificateurs
  */
-double Corps::altitude() const
-{
-    return _altitude;
-}
-
-double Corps::ascensionDroite() const
-{
-    return _ascensionDroite;
-}
-
-double Corps::azimut() const
-{
-    return _azimut;
-}
-
-QString Corps::constellation() const
-{
-    return _constellation;
-}
-
-double Corps::declinaison() const
-{
-    return _declinaison;
-}
-
-Vecteur3D Corps::dist() const
-{
-    return _dist;
-}
-
-double Corps::distance() const
-{
-    return _distance;
-}
-
-double Corps::hauteur() const
-{
-    return _hauteur;
-}
-
-double Corps::latitude() const
-{
-    return _latitude;
-}
-
-double Corps::longitude() const
-{
-    return _longitude;
-}
-
-double Corps::lonEcl() const
-{
-    return _lonEcl;
-}
-
-Vecteur3D Corps::position() const
-{
-    return _position;
-}
-
 void Corps::setPosition(const Vecteur3D &pos)
 {
     _position = pos;
-}
-
-double Corps::rangeRate() const
-{
-    return _rangeRate;
-}
-
-bool Corps::isVisible() const
-{
-    return _visible;
-}
-
-Vecteur3D Corps::vitesse() const
-{
-    return _vitesse;
-}
-
-QVector<QPointF> Corps::zone() const
-{
-    return _zone;
 }
 
 
@@ -249,24 +161,25 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
         try {
 
             if (_tabConst.isEmpty()) {
-                throw PreviSatException(QObject::tr("Tableau de constellations vide"), WARNING);
+                throw PreviSatException(QObject::tr("Tableau de constellations vide"), MessageType::WARNING);
             }
 
-            bool atrouve = false;
-            int i = 0;
-            while (!atrouve && (i < _tabConst.size())) {
+            QListIterator it(_tabConst);
+            while (it.hasNext()) {
 
-                if (_declinaison >= _tabConst.at(i).dec) {
+                const ConstElem elem = it.next();
 
-                    if (_ascensionDroite < _tabConst.at(i).ad2) {
-                        if (_ascensionDroite >= _tabConst.at(i).ad1) {
-                            atrouve = true;
-                            _constellation = _tabConst.at(i).nom;
+                if (_declinaison >= elem.dec) {
+
+                    if (_ascensionDroite < elem.ad2) {
+                        if (_ascensionDroite >= elem.ad1) {
+                            it.toBack();
+                            _constellation = elem.nom;
                         }
                     }
                 }
-                i++;
             }
+
         } catch (PreviSatException &e) {
             throw PreviSatException();
         }
@@ -335,10 +248,8 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
     /* Initialisations */
     _visible = false;
     _hauteur = -PI;
-    if (_vec1.Nul()) {
-        const double cd = cos(_declinaison);
-        _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
-    }
+    const double cd = cos(_declinaison);
+    const Vecteur3D _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
     const Vecteur3D vec2 = observateur.rotHz() * _vec1;
 
     /* Corps de la methode */
@@ -352,12 +263,14 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
 
         _hauteur = ht + refraction;
         if (_hauteur >= 0.) {
+
             // Azimut
             _azimut = atan2(vec2.y(), -vec2.x());
             if (_azimut < 0.) {
                 _azimut += DEUX_PI;
             }
             _visible = true;
+
         } else {
             _visible = false;
             _hauteur = ht;
@@ -423,16 +336,16 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
     /* Initialisations */
     _ct = 1.;
     _latitude = PI;
-    const double re2 = RAYON_TERRESTRE * E2;
 
     /* Corps de la methode */
     _r0 = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
     _latitude = atan2(pos.z(), _r0);
+
     do {
         lat = _latitude;
         const double sph = sin(lat);
         _ct = 1. / sqrt(1. - E2 * sph * sph);
-        _latitude = atan((pos.z() + re2 * _ct * sph) / _r0);
+        _latitude = atan((pos.z() + RE2 * _ct * sph) / _r0);
 
     } while (fabs(_latitude - lat) > 1.e-7);
 
@@ -440,6 +353,180 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
     return (_latitude);
 }
 
+/*
+ * Calcul des lever/passage au meridien/coucher
+ */
+void Corps::CalculLeverMeridienCoucher(const Date &date, const bool calculCrepuscules)
+{
+    /* Declarations des variables locales */
+    unsigned int fin;
+
+    /* Initialisations */
+    const unsigned int taille = (calculCrepuscules) ? 9 : 3;
+    std::array<Date, 9> datesEvt;
+    std::array<int, 9> listIdx;
+
+    datesEvt.fill(Date(DATE_INFINIE, 0.));
+    listIdx.fill(-1);
+
+    int idx = 1;
+
+    /* Corps de la methode */
+    QListIterator it(_ephem);
+    Ephemerides eph1 = it.next();
+
+    while (it.hasNext()) {
+
+        const Ephemerides eph2 = it.next();
+
+        const double ht1 = eph1.hauteur;
+        const double ht2 = eph2.hauteur;
+        const double az1 = eph1.azimut;
+        const double az2 = eph2.azimut;
+
+        // Detection d'un passage à l'horizon
+        if ((ht1 * ht2) < 0.) {
+
+            if (ht1 < ht2) {
+
+                // Lever
+                listIdx[0] = idx;
+
+            } else {
+
+                // Coucher
+                listIdx[2] = idx;
+            }
+        }
+
+        if ((az1 < PI) && (az2 > PI)) {
+
+            // Passage au meridien
+            listIdx[1] = idx;
+        }
+
+        // Crepuscules
+        if (calculCrepuscules) {
+            for(int i=1; i<=3; i++) {
+
+                const double ht1a = ht1 + 6. * i * DEG2RAD;
+                const double ht2a = ht2 + 6. * i * DEG2RAD;
+
+                if ((ht1a * ht2a) < 0.) {
+
+                    if (listIdx.at(0) == -1) {
+                        listIdx[2+i] = idx;
+                    } else {
+                        listIdx[5+i] = idx;
+                    }
+
+                }
+            }
+        }
+
+        fin = 0;
+        for(unsigned int i=0; i<taille; i++) {
+            if (listIdx[i] != -1) {
+                fin++;
+            }
+        }
+
+        if (fin == taille) {
+            it.toBack();
+        }
+
+        eph1 = eph2;
+
+        idx++;
+    }
+
+    unsigned int iter;
+    double dateEvt;
+    double t_val;
+    double yval;
+    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, DEGRE_INTERPOLATION> val;
+
+    for(unsigned int i=0; i<taille; i++) {
+
+        const int j = listIdx[i];
+
+        if (j != -1) {
+
+            const Ephemerides eph0 = _ephem.at(j - 1);
+            eph1 = _ephem.at(j);
+            const Ephemerides eph2 = _ephem.at(j + 1);
+
+            dateEvt = eph1.jourJulienUTC;
+            t_val = 0.;
+
+            // Calcul par interpolation des differentes dates
+            jjm[0] = eph0.jourJulienUTC;
+            jjm[1] = eph1.jourJulienUTC;
+            jjm[2] = eph2.jourJulienUTC;
+
+            if (i == 1) {
+
+                // Passage au meridien
+                val[0] = eph0.azimut;
+                val[1] = eph1.azimut;
+                val[2] = eph2.azimut;
+                yval = PI;
+
+            } else {
+
+                // Lever ou coucher
+                val[0] = eph0.hauteur;
+                val[1] = eph1.hauteur;
+                val[2] = eph2.hauteur;
+                yval = 0.;
+
+                // Crepuscules
+                if (calculCrepuscules) {
+                    if ((i == 3) || (i == 6)) {
+                        yval = -6. * DEG2RAD;
+                    } else if ((i == 4) || (i == 7)) {
+                        yval = -12. * DEG2RAD;
+                    } else if ((i == 5) || (i == 8)) {
+                        yval = -18. * DEG2RAD;
+                    }
+                }
+            }
+
+            iter = 0;
+            while ((fabs(t_val - dateEvt) > EPS_DATES) && (iter < ITERATIONS_MAX)) {
+
+                t_val = dateEvt;
+                dateEvt = Maths::CalculValeurXInterpolation3(jjm, val, yval, 1.e-8);
+
+                iter++;
+            }
+
+            if (iter < ITERATIONS_MAX) {
+
+                // Date arrondie a la minute
+                datesEvt[i] = Date(floor(dateEvt * NB_MIN_PAR_JOUR + 0.5) * NB_JOUR_PAR_MIN, date.offsetUTC());
+            }
+        }
+    }
+
+    _dateLever = datesEvt[0];
+    _dateMeridien = datesEvt[1];
+    _dateCoucher = datesEvt[2];
+
+    if (calculCrepuscules) {
+        for(int i=3; i<9; i++) {
+            _datesCrepuscules[i-3] = datesEvt[i];
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul de la position et de la vitesse dans le repere ECEF
+ */
 void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const
 {
     /* Declarations des variables locales */
@@ -449,8 +536,8 @@ void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3
     const Vecteur3D omegaTerre(0., 0., OMEGA);
 
     /* Corps de la methode */
-    positionECEF = _position.Rotation(AXE_Z, gmst);
-    vitesseECEF = _vitesse.Rotation(AXE_Z, gmst) - (omegaTerre ^ positionECEF);
+    positionECEF = _position.Rotation(AxeType::AXE_Z, gmst);
+    vitesseECEF = _vitesse.Rotation(AxeType::AXE_Z, gmst) - (omegaTerre ^ positionECEF);
 
     /* Retour */
     return;
@@ -489,7 +576,6 @@ void Corps::CalculZoneVisibilite(const double beta)
     const double sra = sin(srad);
 
     /* Corps de la methode */
-    _zone.clear();
     for(int i=0; i<360; i++) {
 
         const double z1 = sra * _caz[i];
@@ -505,43 +591,54 @@ void Corps::CalculZoneVisibilite(const double beta)
         const double la1 = asin(z2);
 
         const QPointF pt(fmod(PI - lo1, DEUX_PI) * RAD2DEG, (PI_SUR_DEUX - la1) * RAD2DEG);
-        _zone.append(pt);
+        _zone[i] = pt;
     }
-    _zone.append(_zone.at(0));
+    _zone[360] = _zone[0];
 
     /* Retour */
     return;
 }
 
 /*
- * Lecture du fichier de constellations
+ * Initialisation des elements relatifs aux corps
  */
-void Corps::InitTabConstellations(const QString &dirCommonData)
+void Corps::Initialisation(const QString &dirCommonData)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _tabConst.clear();
 
     /* Corps de la methode */
+    // Tableaux des cosinus et des sinus de l'azimut
+    for(int i=0; i<360; i++) {
+        const double az = i * DEG2RAD;
+        _caz[i] = cos(az);
+        _saz[i] = sin(az);
+    }
+
     try {
 
-        const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
-        QFile fi(fic);
-        if (fi.exists() && fi.size() != 0) {
+        // Lecture du fichier de constellations
+        const QString fichierConstellations = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
+
+        QFile fi(fichierConstellations);
+        if (fi.exists() && (fi.size() != 0)) {
 
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QTextStream flux(&fi);
+                const QString contenuFichier = fi.readAll();
+                const QStringList listeConstellations = contenuFichier.split("\n", Qt::SkipEmptyParts);
 
                 ConstElem cst;
-                _tabConst.clear();
+                QStringListIterator it (listeConstellations);
+                while (it.hasNext()) {
 
-                while (!flux.atEnd()) {
-
-                    const QString ligne = flux.readLine();
+                    const QString ligne = it.next();
 
                     if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                        const QStringList list = ligne.split(" ", QString::SkipEmptyParts);
+
+                        const QStringList list = ligne.split(" ", Qt::SkipEmptyParts);
 
                         cst.nom = list.at(0);
                         cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
@@ -554,8 +651,9 @@ void Corps::InitTabConstellations(const QString &dirCommonData)
             fi.close();
 
         } else {
-            throw PreviSatException(QObject::tr("Fichier %1 absent").arg(QDir::toNativeSeparators(fic)), WARNING);
+            throw PreviSatException(QObject::tr("Fichier %1 absent ou vide").arg(QDir::toNativeSeparators(fichierConstellations)), MessageType::WARNING);
         }
+
     } catch (PreviSatException &e) {
     }
 
@@ -585,6 +683,110 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
 
     /* Retour */
     return Vecteur3D(vecteur.z() * cb * cos(x), xx * ce - vecteur.z() * se * sb, xx * se + vecteur.z() * ce * sb);
+}
+
+
+/*
+ * Accesseurs
+ */
+double Corps::altitude() const
+{
+    return _altitude;
+}
+
+double Corps::ascensionDroite() const
+{
+    return _ascensionDroite;
+}
+
+double Corps::azimut() const
+{
+    return _azimut;
+}
+
+const QString &Corps::constellation() const
+{
+    return _constellation;
+}
+
+double Corps::declinaison() const
+{
+    return _declinaison;
+}
+
+const Vecteur3D &Corps::dist() const
+{
+    return _dist;
+}
+
+double Corps::distance() const
+{
+    return _distance;
+}
+
+double Corps::hauteur() const
+{
+    return _hauteur;
+}
+
+double Corps::latitude() const
+{
+    return _latitude;
+}
+
+double Corps::longitude() const
+{
+    return _longitude;
+}
+
+double Corps::lonEcl() const
+{
+    return _lonEcl;
+}
+
+const Vecteur3D &Corps::position() const
+{
+    return _position;
+}
+
+double Corps::rangeRate() const
+{
+    return _rangeRate;
+}
+
+bool Corps::isVisible() const
+{
+    return _visible;
+}
+
+const Vecteur3D &Corps::vitesse() const
+{
+    return _vitesse;
+}
+
+const std::array<QPointF, 361> &Corps::zone() const
+{
+    return _zone;
+}
+
+const Date &Corps::dateLever() const
+{
+    return _dateLever;
+}
+
+const Date &Corps::dateMeridien() const
+{
+    return _dateMeridien;
+}
+
+const Date &Corps::dateCoucher() const
+{
+    return _dateCoucher;
+}
+
+const std::array<Date, 6> &Corps::datesCrepuscules() const
+{
+    return _datesCrepuscules;
 }
 
 

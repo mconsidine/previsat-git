@@ -1,9 +1,9 @@
 Nom                : ISS
-Numéro NORAD       : 025544		Magnitude std/max  : -0.5v/-2.4
+Numéro NORAD       : 25544		Magnitude std/max  : -0.5v/-2.3
 Désignation COSPAR : 1998-067A		Modèle orbital     : SGP4 (NE)
 Dimensions/Section : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2
 
-Date de lancement  : 1998-11-20		Apogée  (Altitude) : 6799 km (421 km)
-Catégorie d'orbite : LEO/I		Périgée (Altitude) : 6793 km (415 km)
-Pays/Organisation  : ISS		Période orbitale   : 1h 32m 56s
-Site de lancement  : TTMTR		Inclinaison        : 51.6°
+Date de lancement  : 20/11/1998		Apogée  (Altitude) : 6800 km (422 km)
+Catégorie d'orbite : LEO/I		Périgée (Altitude) : 6795 km (417 km)
+Pays/Organisation  : ISS		Période orbitale   : 1h 32m 58s
+Site de lancement  : TTMTR		Inclinaison        : 51.64°

@@ -92,20 +92,6 @@ public:
         _vecteur3(vec3) {
     }
 
-    /*
-     * Accesseurs
-     */
-    Vecteur3D vecteur1() const;
-    Vecteur3D vecteur2() const;
-    Vecteur3D vecteur3() const;
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -140,11 +126,15 @@ public:
     friend inline Matrice3D operator * (const Matrice3D &matrice1, const Matrice3D &matrice2);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    const Vecteur3D &vecteur1() const;
+    const Vecteur3D &vecteur2() const;
+    const Vecteur3D &vecteur3() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -156,10 +146,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

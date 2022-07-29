@@ -47,6 +47,7 @@
 #include "luneconst.h"
 
 
+class Date;
 class Soleil;
 
 class Lune : public Corps
@@ -63,38 +64,20 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    bool luneCroissante() const;
-    double anglePhase() const;
-    double fractionIlluminee() const;
-    double magnitude() const;
-    QString phase() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
-     * @brief CalculPosition Calcul de la position de la Lune avec le modele simplifie issu de
-     * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
+     * @brief CalculDatesPhases Calcul des dates des phases lunaires
      * @param date date
      */
-    void CalculPosition(const Date &date);
+    void CalculDatesPhases(const Date &date);
 
     /**
-     * @brief CalculPhase Calcul de la phase de la Lune
-     * @param soleil
+     * @brief CalculLeverMeridienCoucher Calcul des heures de lever, passage au meridien et coucher
+     * @param date date
+     * @param observateur observateur
      */
-    void CalculPhase(const Soleil &soleil);
+    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur);
 
     /**
      * @brief CalculMagnitude Calcul de la magnitude visuelle de la Lune
@@ -102,12 +85,32 @@ public:
      */
     void CalculMagnitude(const Soleil &soleil);
 
+    /**
+     * @brief CalculPhase Calcul de la phase actuelle de la Lune
+     * @param soleil
+     */
+    void CalculPhase(const Soleil &soleil);
 
-protected:
+    /**
+     * @brief CalculPosition Calcul de la position de la Lune avec le modele simplifie issu de
+     * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
+     * @param date date
+     */
+    void CalculPosition(const Date &date);
+
 
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    bool luneCroissante() const;
+    double anglePhase() const;
+    double fractionIlluminee() const;
+    double magnitude() const;
+    const QString &phase() const;
+    const std::array<Date, NB_PHASES> &datesPhases() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -121,10 +124,6 @@ protected:
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
     bool _luneCroissante;
@@ -132,6 +131,7 @@ private:
     double _fractionIlluminee;
     double _magnitude;
     QString _phase;
+    std::array<Date, NB_PHASES> _datesPhases;
 
 
     /*

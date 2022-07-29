@@ -72,21 +72,6 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    double magnitude() const;
-    QString nom() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -102,11 +87,14 @@ public:
     static void Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double magnitude() const;
+    const QString &nom() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -118,10 +106,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

@@ -35,7 +35,11 @@
  */
 
 #include <cmath>
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/dates/date.h"
 #include "planete.h"
 #include "soleil.h"
@@ -124,6 +128,14 @@ static const double _tabPlanetes[7][6][4] = {
 /*
  * Constructeurs
  */
+/*
+ * Constructeur par defaut
+ */
+Planete::Planete()
+{
+    _iplanete = IndicePlanete::MERCURE;
+}
+
 Planete::Planete(const IndicePlanete &iplanete)
 {
     /* Declarations des variables locales */
@@ -139,15 +151,6 @@ Planete::Planete(const IndicePlanete &iplanete)
 
     /* Retour */
     return;
-}
-
-
-/*
- * Accesseurs
- */
-QString Planete::nom() const
-{
-    return QCoreApplication::translate("planet", nomPlanetes[_iplanete]);
 }
 
 
@@ -192,6 +195,32 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
     return;
 }
 
+
+/*
+ * Accesseurs
+ */
+QString Planete::nom() const
+{
+    return QCoreApplication::translate("planet", nomPlanetes[static_cast<int> (_iplanete)]);
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
 /*
  * Calcul des elements orbitaux moyens d'une planete
  */
@@ -211,7 +240,7 @@ void Planete::CalculElements(const Date &date)
     for(int i=0; i<6; i++) {
         _elem[i] = 0.;
         for(int j=0; j<4; j++) {
-            _elem[i] += _tabPlanetes[_iplanete][i][j] * tt[j];
+            _elem[i] += _tabPlanetes[static_cast<int> (_iplanete)][i][j] * tt[j];
         }
     }
 
@@ -284,22 +313,3 @@ void Planete::CalculCoordonneesSpheriques()
     /* Retour */
     return;
 }
-
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-

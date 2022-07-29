@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Tests de la classe Maths
+ * >    Tests des classes Maths, Vecteur3D et Matrice3D
  *
  * Auteur
  * >    Astropedia

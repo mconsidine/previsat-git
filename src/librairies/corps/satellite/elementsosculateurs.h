@@ -58,6 +58,20 @@ public:
      */
     ElementsOsculateurs();
 
+
+    /*
+     * Methodes publiques
+     */
+    /**
+     * @brief Calcul Calcul des elements osculateurs pour une orbite elliptique
+     * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
+     * Trajectoires spatiales, O. Zarrouati
+     * @param position vecteur position
+     * @param vitesse vecteur vitesse
+     */
+    void Calcul(const Vecteur3D &position, const Vecteur3D &vitesse);
+
+
     /*
      * Accesseurs
      */
@@ -82,32 +96,7 @@ public:
     double argumentLongitudeVraie() const;
 
 
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
-     * Methodes publiques
-     */
-    /**
-     * @brief Calcul Calcul des elements osculateurs pour une orbite elliptique
-     * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
-     * Trajectoires spatiales, O. Zarrouati
-     * @param position vecteur position
-     * @param vitesse vecteur vitesse
-     */
-    void Calcul(const Vecteur3D &position, const Vecteur3D &vitesse);
-
-
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -119,10 +108,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

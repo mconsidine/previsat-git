@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PrevisionsPassage</class>
+ <widget class="QFrame" name="PrevisionsPassage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>792</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <widget class="QWidget" name="formLayoutWidget_48">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>86</y>
+     <width>183</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_prev3">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>4</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="illuminationPrev">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Illumination requise</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="magnitudeMaxPrev">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Magnitude maximale</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="valMagnitudeMaxPrev">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>-8.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>14.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.500000000000000</double>
+      </property>
+      <property name="value">
+       <double>4.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QListWidget" name="liste2">
+   <property name="geometry">
+    <rect>
+     <x>566</x>
+     <y>26</y>
+     <width>210</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+   </property>
+   <property name="textElideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="sortingEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>6</y>
+     <width>369</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_datePrev">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>1</number>
+    </property>
+    <item row="0" column="1">
+     <widget class="QDateTimeEdit" name="dateInitialePrev">
+      <property name="minimumSize">
+       <size>
+        <width>152</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2021</year>
+        <month>3</month>
+        <day>31</day>
+       </datetime>
+      </property>
+      <property name="date">
+       <date>
+        <year>2021</year>
+        <month>3</month>
+        <day>31</day>
+       </date>
+      </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_dateFinalePrev">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Date finale :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDateTimeEdit" name="dateFinalePrev">
+      <property name="minimumSize">
+       <size>
+        <width>145</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2021</year>
+        <month>4</month>
+        <day>7</day>
+       </datetime>
+      </property>
+      <property name="date">
+       <date>
+        <year>2021</year>
+        <month>4</month>
+        <day>7</day>
+       </date>
+      </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_dateInitialePrev">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Date initiale :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="effacerHeuresPrev">
+      <property name="minimumSize">
+       <size>
+        <width>115</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Effacer heures</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="calculsPrev">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>185</y>
+     <width>101</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Calculs</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>341</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_prev1">
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_prev1">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_pasGeneration">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Pas de génération :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_hauteurSoleilPrev">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Hauteur du Soleil :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_lieuxObservation2">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Lieu d'observation :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="pasGeneration">
+        <property name="minimumSize">
+         <size>
+          <width>115</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>115</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true">1 seconde</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>1 seconde</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>5 secondes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10 secondes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>20 secondes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>30 secondes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 minute</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2 minutes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>5 minutes</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="lieuxObservation2">
+        <property name="minimumSize">
+         <size>
+          <width>195</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="hauteurSoleilPrev">
+        <property name="minimumSize">
+         <size>
+          <width>191</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true">Crépuscule civil (-6°)</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>Horizon (0°)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crépuscule civil (-6°)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crépuscule nautique (-12°)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crépuscule astronomique (-18°)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Indifférent</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Autre...</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_3">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <widget class="QLineEdit" name="valHauteurSoleilPrev">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>52</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>31</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>31</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="inputMask">
+        <string notr="true">###</string>
+       </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
+       <property name="maxLength">
+        <number>3</number>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>132</y>
+     <width>361</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_prev2">
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>4</number>
+    </property>
+    <item>
+     <layout class="QFormLayout" name="formLayout_prev2">
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_hauteurSatPrev">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Hauteur minimale du satellite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="hauteurSatPrev">
+        <property name="minimumSize">
+         <size>
+          <width>137</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>136</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true">0°</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>0°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>5°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>15°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>20°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Autre...</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_4">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLineEdit" name="valHauteurSatPrev">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>1</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="inputMask">
+        <string notr="true">99</string>
+       </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
+       <property name="maxLength">
+        <number>2</number>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="parametrageDefautPrev">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>185</y>
+     <width>161</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="text">
+    <string>Paramétrage par défaut</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

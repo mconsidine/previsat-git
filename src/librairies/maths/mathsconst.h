@@ -46,7 +46,7 @@
 /*
  * Enumerations
  */
-enum AngleFormatType {
+enum class AngleFormatType {
     DEGRE,
     HEURE1,
     HEURE2,
@@ -55,7 +55,7 @@ enum AngleFormatType {
     NO_TYPE
 };
 
-enum AxeType {
+enum class AxeType {
     AXE_X,
     AXE_Y,
     AXE_Z
@@ -70,6 +70,8 @@ static const double EPSDBL = 1.e-12;
 static const double EPSDBL100 = 1.e-10;
 
 // Constantes mathematiques
+static const unsigned int DEGRE_INTERPOLATION = 3;
+static const unsigned int ITERATIONS_MAX = 50000;
 static const double PI = 3.1415926535897932384626433832795;
 static const double DEUX_PI = 2. * PI;
 static const double PI_SUR_DEUX = 0.5 * PI;
@@ -81,6 +83,7 @@ static const double ARCSEC_PAR_MIN = 60.;
 static const double ARCSEC_PAR_DEG = 3600.;
 
 static const double DEG2RAD = PI / 180.;
+static const double ARCMIN2RAD = PI / 10800.;
 static const double ARCSEC2RAD = PI / 648000.;
 static const double HEUR2RAD = PI / 12.;
 

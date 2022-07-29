@@ -75,22 +75,6 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    bool isDessin() const;
-    Etoile etoile1() const;
-    Etoile etoile2() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -106,11 +90,15 @@ public:
     static void Initialisation(const QString &dirCommonData);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    bool isDessin() const;
+    const Etoile &etoile1() const;
+    const Etoile &etoile2() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -122,10 +110,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

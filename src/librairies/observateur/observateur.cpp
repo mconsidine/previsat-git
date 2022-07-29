@@ -30,35 +30,40 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    25 mai 2022
+ * >    11 octobre 2021
  *
  */
 
 #include <cmath>
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
-#include "librairies/corps/systemesolaire/terreconst.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/corps/terreconst.h"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
 #include "observateur.h"
 
 
 static const char* listeCap[] = {
-                 QT_TRANSLATE_NOOP("cardinal point", "N"),
-                 QT_TRANSLATE_NOOP("cardinal point", "NNE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "NE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "ENE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "E"),
-                 QT_TRANSLATE_NOOP("cardinal point", "ESE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "SE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "SSE"),
-                 QT_TRANSLATE_NOOP("cardinal point", "S"),
-                 QT_TRANSLATE_NOOP("cardinal point", "SSW"),
-                 QT_TRANSLATE_NOOP("cardinal point", "SW"),
-                 QT_TRANSLATE_NOOP("cardinal point", "WSW"),
-                 QT_TRANSLATE_NOOP("cardinal point", "W"),
-                 QT_TRANSLATE_NOOP("cardinal point", "WNW"),
-                 QT_TRANSLATE_NOOP("cardinal point", "NW"),
-                 QT_TRANSLATE_NOOP("cardinal point", "NNW") };
+    QT_TRANSLATE_NOOP("cardinal point", "N"),
+    QT_TRANSLATE_NOOP("cardinal point", "NNE"),
+    QT_TRANSLATE_NOOP("cardinal point", "NE"),
+    QT_TRANSLATE_NOOP("cardinal point", "ENE"),
+    QT_TRANSLATE_NOOP("cardinal point", "E"),
+    QT_TRANSLATE_NOOP("cardinal point", "ESE"),
+    QT_TRANSLATE_NOOP("cardinal point", "SE"),
+    QT_TRANSLATE_NOOP("cardinal point", "SSE"),
+    QT_TRANSLATE_NOOP("cardinal point", "S"),
+    QT_TRANSLATE_NOOP("cardinal point", "SSW"),
+    QT_TRANSLATE_NOOP("cardinal point", "SW"),
+    QT_TRANSLATE_NOOP("cardinal point", "WSW"),
+    QT_TRANSLATE_NOOP("cardinal point", "W"),
+    QT_TRANSLATE_NOOP("cardinal point", "WNW"),
+    QT_TRANSLATE_NOOP("cardinal point", "NW"),
+    QT_TRANSLATE_NOOP("cardinal point", "NNW")
+};
 
 
 /**********
@@ -183,60 +188,6 @@ Observateur::Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matri
 
     /* Retour */
     return;
-}
-
-
-/*
- * Accesseurs
- */
-double Observateur::aaer() const
-{
-    return _aaer;
-}
-
-double Observateur::altitude() const
-{
-    return _altitude;
-}
-
-double Observateur::aray() const
-{
-    return _aray;
-}
-
-double Observateur::latitude() const
-{
-    return _latitude;
-}
-
-double Observateur::longitude() const
-{
-    return _longitude;
-}
-
-QString Observateur::nomlieu() const
-{
-    return _nomlieu;
-}
-
-Vecteur3D Observateur::position() const
-{
-    return _position;
-}
-
-Matrice3D Observateur::rotHz() const
-{
-    return _rotHz;
-}
-
-double Observateur::tempsSideralGreenwich() const
-{
-    return _tempsSideralGreenwich;
-}
-
-Vecteur3D Observateur::vitesse() const
-{
-    return _vitesse;
 }
 
 
@@ -448,6 +399,60 @@ Observateur &Observateur::operator = (const Observateur &observateur)
     _tempsSideralGreenwich = observateur._tempsSideralGreenwich;
 
     return (*this);
+}
+
+
+/*
+ * Accesseurs
+ */
+double Observateur::longitude() const
+{
+    return _longitude;
+}
+
+double Observateur::latitude() const
+{
+    return _latitude;
+}
+
+double Observateur::altitude() const
+{
+    return _altitude;
+}
+
+const QString &Observateur::nomlieu() const
+{
+    return _nomlieu;
+}
+
+double Observateur::aaer() const
+{
+    return _aaer;
+}
+
+double Observateur::aray() const
+{
+    return _aray;
+}
+
+double Observateur::tempsSideralGreenwich() const
+{
+    return _tempsSideralGreenwich;
+}
+
+const Vecteur3D &Observateur::position() const
+{
+    return _position;
+}
+
+const Vecteur3D &Observateur::vitesse() const
+{
+    return _vitesse;
+}
+
+const Matrice3D &Observateur::rotHz() const
+{
+    return _rotHz;
 }
 
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    14 juin 2022
  *
  */
 
@@ -67,22 +67,15 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    double distanceUA() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
+    /**
+     * @brief CalculLeverMeridienCoucher Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
+     * @param date date
+     * @param observateur observateur
+     */
+    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur);
+
     /**
      * @brief CalculPosition Calcul de la position du Soleil a partir du modele simplifie
      * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
@@ -91,11 +84,13 @@ public:
     void CalculPosition(const Date &date);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double distanceUA() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -107,10 +102,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

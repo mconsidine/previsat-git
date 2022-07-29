@@ -54,7 +54,7 @@ struct ElementsEclipse {
     double elongation;
     double phiSoleil;
     double phi;
-    TypeEclipse type = NON_ECLIPSE;
+    TypeEclipse type = TypeEclipse::NON_ECLIPSE;
 };
 
 class ConditionEclipse
@@ -68,26 +68,10 @@ public:
         _eclipseTotale = false;
         _eclipsePartielle = false;
         _eclipseAnnulaire = false;
-        _eclipseLune.type = NON_ECLIPSE;
-        _eclipseSoleil.type = NON_ECLIPSE;
+        _eclipseLune.type = TypeEclipse::NON_ECLIPSE;
+        _eclipseSoleil.type = TypeEclipse::NON_ECLIPSE;
     }
 
-    /*
-     * Accesseurs
-     */
-    bool eclipseTotale() const;
-    bool eclipsePartielle() const;
-    bool eclipseAnnulaire() const;
-    ElementsEclipse eclipseLune() const;
-    ElementsEclipse eclipseSoleil() const;
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -102,11 +86,17 @@ public:
     void CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune &lune = Lune(), const bool refraction = true);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    bool eclipseTotale() const;
+    bool eclipsePartielle() const;
+    bool eclipseAnnulaire() const;
+    const ElementsEclipse &eclipseLune() const;
+    const ElementsEclipse &eclipseSoleil() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -118,10 +108,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees
@@ -146,7 +132,6 @@ private:
      */
     ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,
                                   const bool refraction);
-
 
 };
 

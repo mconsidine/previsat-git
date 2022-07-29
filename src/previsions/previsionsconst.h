@@ -44,13 +44,13 @@
 #define PREVISIONSCONST_H
 
 #include <QString>
-#include "librairies/corps/satellite/tle.h"
+#include "librairies/corps/satellite/elementsorbitaux.h"
 #include "librairies/dates/date.h"
 #include "librairies/observateur/observateur.h"
 
 
 /* Enumerations */
-enum TypeCalcul {
+enum class TypeCalcul {
     PREVISIONS,
     EVENEMENTS,
     FLASHS,
@@ -58,7 +58,7 @@ enum TypeCalcul {
     TELESCOPE
 };
 
-enum CorpsTransit {
+enum class CorpsTransit {
     CORPS_SOLEIL = 1,
     CORPS_LUNE
 };
@@ -70,48 +70,48 @@ struct ConditionsPrevisions
 {
     double jj1;
     double jj2;
-    double offset;
-    bool systeme;
+//    double offset;
+//    bool systeme;
     double pas;
 
-    QString unite;
+//    QString unite;
 
     double crepuscule;
     double hauteur;
     double magnitudeLimite;
-    double angleLimite;
-    double seuilConjonction;
+//    double angleLimite;
+//    double seuilConjonction;
 
     bool calcEclipseLune;
-    bool ecart;
+//    bool ecart;
     bool eclipse;
     bool effetEclipsePartielle;
     bool extinction;
     bool refraction;
-    bool calcTransitLunaireJour;
-    bool calcEphemSoleil;
-    bool calcEphemLune;
-    bool passageNoeuds;
-    bool passageOmbre;
-    bool passageApogee;
-    bool passagePso;
-    bool transitionsJourNuit;
+//    bool calcTransitLunaireJour;
+//    bool calcEphemSoleil;
+//    bool calcEphemLune;
+//    bool passageNoeuds;
+//    bool passageOmbre;
+//    bool passageApogee;
+//    bool passagePso;
+//    bool transitionsJourNuit;
 
-    int nbIter;
+//    int nbIter;
 
     QString fichier;
     QStringList listeSatellites;
     Observateur observateur;
 
-    QList<TLE> tabtle;
+//    QList<ElementsOrbitaux> listElem;
 
-    QString ficRes;
+//    QString ficRes;
 };
 
 struct ResultatPrevisions
 {
     QString nom;
-    TLE tle;
+    ElementsOrbitaux elements;
 
     Date date;
     double azimut;
@@ -154,7 +154,7 @@ struct ResultatPrevisions
 struct DonneesPrevisions
 {
     long long tempsEcoule;
-    QList<double> ageTle;
+    QList<double> ageElementsOrbitaux;
 };
 
 

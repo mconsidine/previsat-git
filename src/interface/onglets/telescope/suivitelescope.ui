@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SuiviTelescope</class>
+ <widget class="QFrame" name="SuiviTelescope">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>792</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <widget class="QWidget" name="formLayoutWidget_55">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>6</y>
+     <width>299</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_telescope1">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_lieuxObservation5">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Lieu d'observation :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="lieuxObservation5">
+      <property name="minimumSize">
+       <size>
+        <width>191</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QListWidget" name="liste4">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>7</y>
+     <width>210</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::SelectedClicked</set>
+   </property>
+   <property name="textElideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="skywatcher">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>0</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string notr="true">http://skywatcher.com/</string>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/resources/logo-skywatcher.png</normaloff>:/resources/logo-skywatcher.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>131</width>
+     <height>61</height>
+    </size>
+   </property>
+   <property name="autoRaise">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="parametrageDefautSuivi">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>157</y>
+     <width>161</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="text">
+    <string>Paramétrage par défaut</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frameSatSelectionne">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>35</y>
+     <width>551</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QFrame" name="frameSatSuivi">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>18</y>
+      <width>551</width>
+      <height>165</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="genererPositions">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>104</y>
+       <width>141</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Générer les positions</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_58">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>551</width>
+       <height>68</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_telescope3">
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_leverSatSuivi">
+        <property name="text">
+         <string>Lever du satellite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="leverSatSuivi">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_hauteurMaxSatSuivi">
+        <property name="text">
+         <string>Hauteur maximale :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="hauteurMaxSatSuivi">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_coucherSatSuivi">
+        <property name="text">
+         <string>Coucher du satellite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="coucherSatSuivi">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_11">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>48</y>
+       <width>359</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_telescope4">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <item>
+       <layout class="QFormLayout" name="formLayout_telescope4">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="horizontalSpacing">
+         <number>3</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_hauteurSatSuivi">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Hauteur minimale du satellite :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="hauteurSatSuivi">
+          <property name="minimumSize">
+           <size>
+            <width>141</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="currentText">
+           <string notr="true">0°</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>0°</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>5°</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10°</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>15°</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>20°</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Autre...</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_10">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLineEdit" name="valHauteurSatSuivi">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>31</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>31</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="inputMask">
+          <string notr="true">99</string>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="maxLength">
+          <number>2</number>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_12">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>75</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_telescope5">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <item>
+       <layout class="QFormLayout" name="formLayout_telescope5">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="horizontalSpacing">
+         <number>3</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_pas">
+          <property name="text">
+           <string>Pas de génération :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="pasSuivi">
+          <property name="maximumSize">
+           <size>
+            <width>51</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10000</number>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_11">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="lbl_ms">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>3</y>
+           <width>21</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string extracomment="milliseconde">ms</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="ouvrirSatelliteTracker">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>130</y>
+       <width>141</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ouvrir Satellite Tracker</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_11">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>130</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_delaiTelescope" columnstretch="0,0,0">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="2">
+       <widget class="QLabel" name="lbl_uniteDelaiTelescope">
+        <property name="text">
+         <string>s</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="delaiTelescope">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="maximum">
+         <number>7200</number>
+        </property>
+        <property name="value">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="pecDelai">
+        <property name="text">
+         <string comment="telescope">Délai :</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="afficherSuivi">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>104</y>
+       <width>141</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Afficher</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="demarrerSuiviTelescope">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>131</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Envoyer les données satellite à la monture</string>
+     </property>
+     <property name="text">
+      <string>Démarrer</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="visibiliteSatSuivi">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>18</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Le satellite n'est pas visible depuis le lieu d'observation</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_59">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>331</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_telescope2">
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_nomsatSuivi">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Nom :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="nomsatSuivi">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>240</green>
+             <blue>240</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>240</green>
+             <blue>240</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>120</red>
+             <green>120</green>
+             <blue>120</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>240</green>
+             <blue>240</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">ISS</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="leverSatSuivi2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>18</y>
+      <width>415</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>visibiliteSatSuivi</zorder>
+   <zorder>formLayoutWidget_59</zorder>
+   <zorder>leverSatSuivi2</zorder>
+   <zorder>frameSatSuivi</zorder>
+  </widget>
+  <zorder>formLayoutWidget_55</zorder>
+  <zorder>liste4</zorder>
+  <zorder>skywatcher</zorder>
+  <zorder>frameSatSelectionne</zorder>
+  <zorder>parametrageDefautSuivi</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

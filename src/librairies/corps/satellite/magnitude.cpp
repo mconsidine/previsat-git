@@ -59,23 +59,10 @@ Magnitude::Magnitude()
 
     /* Corps du constructeur */
     _fractionIlluminee = 0.;
-    _magnitude = 99.;
+    _magnitude = MAGNITUDE_INDEFINIE;
 
     /* Retour */
     return;
-}
-
-/*
- * Accesseurs
- */
-double Magnitude::fractionIlluminee() const
-{
-    return _fractionIlluminee;
-}
-
-double Magnitude::magnitude() const
-{
-    return _magnitude;
 }
 
 
@@ -91,7 +78,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _magnitude = 99.;
+    _magnitude = MAGNITUDE_INDEFINIE;
 
     /* Corps de la methode */
     if (!conditionEclipse.eclipseTotale()) {
@@ -100,7 +87,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
         _fractionIlluminee = 0.5 * (1. + cos(conditionEclipse.eclipseSoleil().elongation));
 
         // Magnitude visuelle
-        if (magnitudeStandard < 98.) {
+        if (magnitudeStandard < MAGNITUDE_INDEFINIE) {
 
             _magnitude = magnitudeStandard - 15.75 + 2.5 * log10(distance * distance / _fractionIlluminee);
 
@@ -122,6 +109,20 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
 
     /* Retour */
     return;
+}
+
+
+/*
+ * Accesseurs
+ */
+double Magnitude::fractionIlluminee() const
+{
+    return _fractionIlluminee;
+}
+
+double Magnitude::magnitude() const
+{
+    return _magnitude;
 }
 
 

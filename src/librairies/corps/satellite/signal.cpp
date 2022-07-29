@@ -65,15 +65,12 @@ Signal::Signal()
     return;
 }
 
-/*
- * Accesseurs
- */
 
 /*
  * Methodes publiques
  */
 /*
- *
+ * Calcul des elements du signal
  */
 void Signal::Calcul(const double rangeRate, const double distance)
 {
@@ -95,6 +92,10 @@ void Signal::Calcul(const double rangeRate, const double distance)
     return;
 }
 
+
+/*
+ * Accesseurs
+ */
 double Signal::attenuation() const
 {
     return _attenuation;
@@ -127,5 +128,4 @@ double Signal::doppler() const
 /*
  * Methodes privees
  */
-
 
