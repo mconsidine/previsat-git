@@ -337,46 +337,46 @@
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1143"/>
+        <location filename="../src/interface/afficher.cpp" line="1144"/>
         <source>W</source>
         <comment>West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1143"/>
+        <location filename="../src/interface/afficher.cpp" line="1144"/>
         <source>E</source>
         <comment>East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1146"/>
+        <location filename="../src/interface/afficher.cpp" line="1147"/>
         <source>N</source>
         <comment>North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1146"/>
+        <location filename="../src/interface/afficher.cpp" line="1147"/>
         <source>S</source>
         <comment>South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1476"/>
-        <location filename="../src/interface/afficher.cpp" line="1527"/>
+        <location filename="../src/interface/afficher.cpp" line="1485"/>
+        <location filename="../src/interface/afficher.cpp" line="1537"/>
         <source>Lum</source>
         <comment>Lit</comment>
         <translation>Ill</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1478"/>
-        <location filename="../src/interface/afficher.cpp" line="1529"/>
+        <location filename="../src/interface/afficher.cpp" line="1487"/>
+        <location filename="../src/interface/afficher.cpp" line="1539"/>
         <source>Omb</source>
         <comment>Shadow</comment>
         <translation>Sha</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1482"/>
-        <location filename="../src/interface/afficher.cpp" line="1533"/>
+        <location filename="../src/interface/afficher.cpp" line="1491"/>
+        <location filename="../src/interface/afficher.cpp" line="1543"/>
         <source>Pen</source>
         <comment>Penumbra</comment>
         <translation>Pen</translation>
@@ -477,41 +477,41 @@
         <translation>Elapsed time : %1s</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1261"/>
-        <location filename="../src/interface/afficher.cpp" line="1404"/>
-        <location filename="../src/interface/afficher.cpp" line="1544"/>
+        <location filename="../src/interface/afficher.cpp" line="1265"/>
+        <location filename="../src/interface/afficher.cpp" line="1411"/>
+        <location filename="../src/interface/afficher.cpp" line="1554"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translatorcomment>Symbol for nautical mile</translatorcomment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1459"/>
-        <location filename="../src/interface/afficher.cpp" line="1523"/>
+        <location filename="../src/interface/afficher.cpp" line="1468"/>
+        <location filename="../src/interface/afficher.cpp" line="1533"/>
         <source>T</source>
         <comment>transit</comment>
         <translatorcomment>Symbol for transit</translatorcomment>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1459"/>
-        <location filename="../src/interface/afficher.cpp" line="1523"/>
+        <location filename="../src/interface/afficher.cpp" line="1468"/>
+        <location filename="../src/interface/afficher.cpp" line="1533"/>
         <source>C</source>
         <comment>conjunction</comment>
         <translatorcomment>Symbol for conjunction</translatorcomment>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1460"/>
-        <location filename="../src/interface/afficher.cpp" line="1524"/>
+        <location filename="../src/interface/afficher.cpp" line="1469"/>
+        <location filename="../src/interface/afficher.cpp" line="1534"/>
         <source>S</source>
         <comment>Sun</comment>
         <translatorcomment>Symbol for Sun</translatorcomment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1460"/>
-        <location filename="../src/interface/afficher.cpp" line="1524"/>
+        <location filename="../src/interface/afficher.cpp" line="1469"/>
+        <location filename="../src/interface/afficher.cpp" line="1534"/>
         <source>L</source>
         <comment>Moon</comment>
         <translatorcomment>Symbol for Moon</translatorcomment>
@@ -4749,29 +4749,29 @@ The directory %1 does not exist, please re-install %2</translation>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1274"/>
-        <location filename="../src/interface/afficher.cpp" line="1557"/>
+        <location filename="../src/interface/afficher.cpp" line="1278"/>
+        <location filename="../src/interface/afficher.cpp" line="1567"/>
         <source>W</source>
         <comment>West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1274"/>
-        <location filename="../src/interface/afficher.cpp" line="1557"/>
+        <location filename="../src/interface/afficher.cpp" line="1278"/>
+        <location filename="../src/interface/afficher.cpp" line="1567"/>
         <source>E</source>
         <comment>East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1275"/>
-        <location filename="../src/interface/afficher.cpp" line="1558"/>
+        <location filename="../src/interface/afficher.cpp" line="1279"/>
+        <location filename="../src/interface/afficher.cpp" line="1568"/>
         <source>N</source>
         <comment>North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficher.cpp" line="1275"/>
-        <location filename="../src/interface/afficher.cpp" line="1558"/>
+        <location filename="../src/interface/afficher.cpp" line="1279"/>
+        <location filename="../src/interface/afficher.cpp" line="1568"/>
         <source>S</source>
         <comment>South</comment>
         <translation>S</translation>

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    4 juillet 2022
+ * >    29 juillet 2022
  *
  */
 
@@ -1131,7 +1131,8 @@ QStringList Afficher::ElementsDetailsEvenements(const ResultatPrevisions &res) c
     elems.append(res.nom);
 
     // Date
-    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    const double offset = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // PSO
@@ -1167,11 +1168,13 @@ QStringList Afficher::ElementsFlashs(const QList<ResultatPrevisions> &liste) con
     elems.append(liste.first().nom);
 
     // Date de debut
-    const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
+    const double offset1 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
+    const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Date de fin
-    const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
+    const double offset2 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
+    const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     double htMax = -1.;
@@ -1233,7 +1236,8 @@ QStringList Afficher::ElementsDetailsFlashs(const ResultatPrevisions &res) const
     elems.append(QString("%1").arg(res.nom, -10));
 
     // Date
-    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    const double offset = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Azimut et hauteur du satellite
@@ -1308,11 +1312,13 @@ QStringList Afficher::ElementsPrevisions(const QList<ResultatPrevisions> &liste)
     elems.append(liste.first().nom);
 
     // Date de debut
-    const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
+    const double offset1 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
+    const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Date de fin
-    const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
+    const double offset2 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
+    const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     double htMax = -1.;
@@ -1375,7 +1381,8 @@ QStringList Afficher::ElementsDetailsPrevisions(const ResultatPrevisions &res) c
     elems.append(res.nom);
 
     // Date
-    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    const double offset = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(FORMAT_COURT, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Azimut et hauteur du satellite
@@ -1428,11 +1435,13 @@ QStringList Afficher::ElementsTransits(const QList<ResultatPrevisions> &liste) c
 
     /* Corps de la methode */
     // Date de debut
-    const Date dateDeb(liste.first().date, Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1)));
+    const double offset1 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
+    const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Date de fin
-    const Date dateFin(liste.last().date, Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1)));
+    const double offset2 = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
+    const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     bool eclipse = false;
@@ -1506,7 +1515,8 @@ QStringList Afficher::ElementsDetailsTransits(const ResultatPrevisions &res) con
 
     /* Corps de la methode */
     // Date
-    const Date date(res.date, Date::CalculOffsetUTC(res.date.ToQDateTime(1)));
+    const double offset = (_conditions.ecart) ? _conditions.offset : Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(FORMAT_LONG, (_conditions.systeme) ? SYSTEME_24H : SYSTEME_12H));
 
     // Azimut et hauteur du satellite
