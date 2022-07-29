@@ -903,19 +903,19 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="2076"/>
-        <location filename="../src/interface/onglets.ui" line="2173"/>
-        <location filename="../src/interface/onglets.ui" line="3741"/>
-        <location filename="../src/interface/onglets.ui" line="3838"/>
+        <location filename="../src/interface/onglets.ui" line="2176"/>
+        <location filename="../src/interface/onglets.ui" line="3744"/>
+        <location filename="../src/interface/onglets.ui" line="3844"/>
         <source>Date :</source>
         <extracomment>Date and hour</extracomment>
         <translation>Date :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="1895"/>
-        <location filename="../src/interface/onglets.ui" line="6070"/>
-        <location filename="../src/interface/onglets.ui" line="6695"/>
-        <location filename="../src/interface/onglets.ui" line="7412"/>
-        <location filename="../src/interface/onglets.ui" line="8353"/>
+        <location filename="../src/interface/onglets.ui" line="6076"/>
+        <location filename="../src/interface/onglets.ui" line="6701"/>
+        <location filename="../src/interface/onglets.ui" line="7418"/>
+        <location filename="../src/interface/onglets.ui" line="8359"/>
         <location filename="../src/interface/onglets.cpp" line="2164"/>
         <source>Lieu d&apos;observation :</source>
         <translation>Name of location :</translation>
@@ -923,28 +923,28 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="280"/>
         <location filename="../src/interface/onglets.ui" line="1942"/>
-        <location filename="../src/interface/onglets.ui" line="8744"/>
-        <location filename="../src/interface/onglets.ui" line="8978"/>
+        <location filename="../src/interface/onglets.ui" line="8750"/>
+        <location filename="../src/interface/onglets.ui" line="8984"/>
         <source>Longitude :</source>
         <translation>Longitude :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="306"/>
         <location filename="../src/interface/onglets.ui" line="1989"/>
-        <location filename="../src/interface/onglets.ui" line="8754"/>
-        <location filename="../src/interface/onglets.ui" line="9026"/>
+        <location filename="../src/interface/onglets.ui" line="8760"/>
+        <location filename="../src/interface/onglets.ui" line="9032"/>
         <source>Latitude :</source>
         <translation>Latitude :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="152"/>
-        <location filename="../src/interface/onglets.ui" line="3887"/>
-        <location filename="../src/interface/onglets.ui" line="4129"/>
-        <location filename="../src/interface/onglets.ui" line="5089"/>
-        <location filename="../src/interface/onglets.ui" line="5644"/>
-        <location filename="../src/interface/onglets.ui" line="8226"/>
-        <location filename="../src/interface/onglets.ui" line="8859"/>
-        <location filename="../src/interface/onglets.ui" line="8940"/>
+        <location filename="../src/interface/onglets.ui" line="3893"/>
+        <location filename="../src/interface/onglets.ui" line="4135"/>
+        <location filename="../src/interface/onglets.ui" line="5095"/>
+        <location filename="../src/interface/onglets.ui" line="5650"/>
+        <location filename="../src/interface/onglets.ui" line="8232"/>
+        <location filename="../src/interface/onglets.ui" line="8865"/>
+        <location filename="../src/interface/onglets.ui" line="8946"/>
         <source>Nom :</source>
         <translation>Name :</translation>
     </message>
@@ -1004,9 +1004,9 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="736"/>
         <location filename="../src/interface/onglets.ui" line="758"/>
-        <location filename="../src/interface/onglets.ui" line="2529"/>
-        <location filename="../src/interface/onglets.ui" line="2545"/>
-        <location filename="../src/interface/onglets.ui" line="2561"/>
+        <location filename="../src/interface/onglets.ui" line="2532"/>
+        <location filename="../src/interface/onglets.ui" line="2548"/>
+        <location filename="../src/interface/onglets.ui" line="2564"/>
         <source>Double-cliquer pour changer d&apos;unités</source>
         <translation>Double clic to change units</translation>
     </message>
@@ -1055,8 +1055,8 @@ PreviSat is free !</translation>
         <translation>Magnitude :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2108"/>
-        <location filename="../src/interface/onglets.ui" line="3773"/>
+        <location filename="../src/interface/onglets.ui" line="2111"/>
+        <location filename="../src/interface/onglets.ui" line="3779"/>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <extracomment>Date format</extracomment>
         <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
@@ -1067,352 +1067,352 @@ PreviSat is free !</translation>
         <translation>Astronomical twilight</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2220"/>
+        <location filename="../src/interface/onglets.ui" line="2223"/>
         <source>Conditions :</source>
         <extracomment>Conditions of observations</extracomment>
         <translation>Conditions :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2235"/>
-        <location filename="../src/interface/onglets.ui" line="2584"/>
+        <location filename="../src/interface/onglets.ui" line="2238"/>
+        <location filename="../src/interface/onglets.ui" line="2587"/>
         <location filename="../src/interface/onglets.cpp" line="251"/>
         <source>Éléments osculateurs</source>
         <translation>Osculating elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2315"/>
+        <location filename="../src/interface/onglets.ui" line="2318"/>
         <source>Paramètres képlériens</source>
         <translation>Keplerian parameters</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2320"/>
+        <location filename="../src/interface/onglets.ui" line="2323"/>
         <source>Paramètres circulaires</source>
         <translation>Circular parameters</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2325"/>
+        <location filename="../src/interface/onglets.ui" line="2328"/>
         <source>Paramètres équatoriaux</source>
         <translation>Equatorial parameters</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2330"/>
+        <location filename="../src/interface/onglets.ui" line="2333"/>
         <source>Paramètres circulaires équatoriaux</source>
         <translation>Circular equatorial parameters</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2347"/>
-        <location filename="../src/interface/onglets.ui" line="2357"/>
+        <location filename="../src/interface/onglets.ui" line="2350"/>
+        <location filename="../src/interface/onglets.ui" line="2360"/>
         <source>ECI</source>
         <extracomment>Earth Centered Inertial</extracomment>
         <translatorcomment>Earth Centered Inertial</translatorcomment>
         <translation>ECI</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2362"/>
+        <location filename="../src/interface/onglets.ui" line="2365"/>
         <source>ECEF</source>
         <extracomment>Earth Centered Earth Fixed</extracomment>
         <translatorcomment>Earth Centered Earth Fixed</translatorcomment>
         <translation>ECEF</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2376"/>
+        <location filename="../src/interface/onglets.ui" line="2379"/>
         <location filename="../src/interface/onglets.cpp" line="2033"/>
         <source>Vecteur d&apos;état</source>
         <translation>State vector</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2416"/>
+        <location filename="../src/interface/onglets.ui" line="2419"/>
         <source>y :</source>
         <extracomment>Component Y of the position vector</extracomment>
         <translatorcomment>Position y coordinate</translatorcomment>
         <translation>y :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2519"/>
+        <location filename="../src/interface/onglets.ui" line="2522"/>
         <source>vz :</source>
         <extracomment>Component Z of the velocity vector</extracomment>
         <translatorcomment>Velocity z coordinate</translatorcomment>
         <translation>vz :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2499"/>
+        <location filename="../src/interface/onglets.ui" line="2502"/>
         <source>vx :</source>
         <extracomment>Component X of the velocity vector</extracomment>
         <translatorcomment>Velocity x coordinate</translatorcomment>
         <translation>vx :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2426"/>
+        <location filename="../src/interface/onglets.ui" line="2429"/>
         <source>z :</source>
         <extracomment>Component Z of the position vector</extracomment>
         <translatorcomment>Position z coordinate</translatorcomment>
         <translation>z :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2509"/>
+        <location filename="../src/interface/onglets.ui" line="2512"/>
         <source>vy :</source>
         <extracomment>Component Y of the velocity vector</extracomment>
         <translatorcomment>Velocity y coordinate</translatorcomment>
         <translation>vy :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2406"/>
+        <location filename="../src/interface/onglets.ui" line="2409"/>
         <source>x :</source>
         <extracomment>Component X of the position vector</extracomment>
         <translatorcomment>Position x coordinate</translatorcomment>
         <translation>x :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2722"/>
-        <location filename="../src/interface/onglets.ui" line="3023"/>
+        <location filename="../src/interface/onglets.ui" line="2725"/>
+        <location filename="../src/interface/onglets.ui" line="3026"/>
         <source>Ix :</source>
         <extracomment>Component X of inclination vector</extracomment>
         <translatorcomment>Inclination x parameter</translatorcomment>
         <translation>Ix :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2742"/>
+        <location filename="../src/interface/onglets.ui" line="2745"/>
         <source>Argument longitude vraie :</source>
         <translation>&gt;True longitude argument :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2632"/>
-        <location filename="../src/interface/onglets.ui" line="3324"/>
+        <location filename="../src/interface/onglets.ui" line="2635"/>
+        <location filename="../src/interface/onglets.ui" line="3327"/>
         <source>Ex :</source>
         <extracomment>Component X of eccentricity vector</extracomment>
         <translatorcomment>Eccentricity x parameter</translatorcomment>
         <translation>Ex :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2732"/>
-        <location filename="../src/interface/onglets.ui" line="3033"/>
+        <location filename="../src/interface/onglets.ui" line="2735"/>
+        <location filename="../src/interface/onglets.ui" line="3036"/>
         <source>Iy :</source>
         <extracomment>Component Y of inclination vector</extracomment>
         <translatorcomment>Inclination y parameter</translatorcomment>
         <translation>Iy :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2642"/>
-        <location filename="../src/interface/onglets.ui" line="3347"/>
+        <location filename="../src/interface/onglets.ui" line="2645"/>
+        <location filename="../src/interface/onglets.ui" line="3350"/>
         <source>Ey :</source>
         <extracomment>Component Y of eccentricity vector</extracomment>
         <translatorcomment>Eccentricity y parameter</translatorcomment>
         <translation>Ey :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3043"/>
-        <location filename="../src/interface/onglets.ui" line="3479"/>
-        <location filename="../src/interface/onglets.ui" line="4871"/>
+        <location filename="../src/interface/onglets.ui" line="3046"/>
+        <location filename="../src/interface/onglets.ui" line="3482"/>
+        <location filename="../src/interface/onglets.ui" line="4877"/>
         <source>Anomalie moyenne :</source>
         <translation>Mean anomaly :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3116"/>
-        <location filename="../src/interface/onglets.ui" line="3536"/>
-        <location filename="../src/interface/onglets.ui" line="4524"/>
-        <location filename="../src/interface/onglets.ui" line="11620"/>
+        <location filename="../src/interface/onglets.ui" line="3119"/>
+        <location filename="../src/interface/onglets.ui" line="3539"/>
+        <location filename="../src/interface/onglets.ui" line="4530"/>
+        <location filename="../src/interface/onglets.ui" line="11626"/>
         <source>Excentricité :</source>
         <translation>Eccentricity :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3139"/>
+        <location filename="../src/interface/onglets.ui" line="3142"/>
         <source>Longitude du périgée :</source>
         <translation>Longitude of perigee :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3228"/>
-        <location filename="../src/interface/onglets.ui" line="3433"/>
-        <location filename="../src/interface/onglets.ui" line="4511"/>
-        <location filename="../src/interface/onglets.ui" line="11520"/>
+        <location filename="../src/interface/onglets.ui" line="3231"/>
+        <location filename="../src/interface/onglets.ui" line="3436"/>
+        <location filename="../src/interface/onglets.ui" line="4517"/>
+        <location filename="../src/interface/onglets.ui" line="11526"/>
         <source>AD noeud ascendant :</source>
         <extracomment>Right ascension of the ascending node</extracomment>
         <translatorcomment>Right ascension of ascending node</translatorcomment>
         <translation>RA of ascending node :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3238"/>
-        <location filename="../src/interface/onglets.ui" line="3546"/>
-        <location filename="../src/interface/onglets.ui" line="4498"/>
-        <location filename="../src/interface/onglets.ui" line="5503"/>
-        <location filename="../src/interface/onglets.ui" line="11664"/>
+        <location filename="../src/interface/onglets.ui" line="3241"/>
+        <location filename="../src/interface/onglets.ui" line="3549"/>
+        <location filename="../src/interface/onglets.ui" line="4504"/>
+        <location filename="../src/interface/onglets.ui" line="5509"/>
+        <location filename="../src/interface/onglets.ui" line="11670"/>
         <source>Inclinaison :</source>
         <translation>Inclination :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3443"/>
-        <location filename="../src/interface/onglets.ui" line="4537"/>
-        <location filename="../src/interface/onglets.ui" line="11567"/>
+        <location filename="../src/interface/onglets.ui" line="3446"/>
+        <location filename="../src/interface/onglets.ui" line="4543"/>
+        <location filename="../src/interface/onglets.ui" line="11573"/>
         <source>Argument du périgée :</source>
         <translation>Argument of perigee :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3248"/>
+        <location filename="../src/interface/onglets.ui" line="3251"/>
         <source>Position sur orbite :</source>
         <translation>In orbit position :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2675"/>
-        <location filename="../src/interface/onglets.ui" line="3162"/>
-        <location filename="../src/interface/onglets.ui" line="3380"/>
-        <location filename="../src/interface/onglets.ui" line="3526"/>
+        <location filename="../src/interface/onglets.ui" line="2678"/>
+        <location filename="../src/interface/onglets.ui" line="3165"/>
+        <location filename="../src/interface/onglets.ui" line="3383"/>
+        <location filename="../src/interface/onglets.ui" line="3529"/>
         <source>Demi-grand axe :</source>
         <translation>Semi-major axis :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2912"/>
-        <location filename="../src/interface/onglets.ui" line="5470"/>
+        <location filename="../src/interface/onglets.ui" line="2915"/>
+        <location filename="../src/interface/onglets.ui" line="5476"/>
         <source>Apogée (Altitude) :</source>
         <translation>Apogee (Altitude) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2922"/>
-        <location filename="../src/interface/onglets.ui" line="5480"/>
+        <location filename="../src/interface/onglets.ui" line="2925"/>
+        <location filename="../src/interface/onglets.ui" line="5486"/>
         <source>Périgée (Altitude) :</source>
         <translation>Perigee (Altitude) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2932"/>
-        <location filename="../src/interface/onglets.ui" line="5490"/>
+        <location filename="../src/interface/onglets.ui" line="2935"/>
+        <location filename="../src/interface/onglets.ui" line="5496"/>
         <source>Période orbitale :</source>
         <translation>Orbital period :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2839"/>
+        <location filename="../src/interface/onglets.ui" line="2842"/>
         <source>Champ de vue :</source>
         <translation>Field of view :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2819"/>
+        <location filename="../src/interface/onglets.ui" line="2822"/>
         <source>Anomalie vraie :</source>
         <translation>True anomaly :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2829"/>
+        <location filename="../src/interface/onglets.ui" line="2832"/>
         <source>Anomalie excentrique :</source>
         <translation>Eccentric anomaly :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3603"/>
+        <location filename="../src/interface/onglets.ui" line="3606"/>
         <source>Divers</source>
         <translation>Miscellaneous</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3630"/>
+        <location filename="../src/interface/onglets.ui" line="3633"/>
         <source>Doppler@100MHz :</source>
         <extracomment>Doppler effect at 100 Mega Hertz</extracomment>
         <translation>Doppler @ 100MHz :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3637"/>
+        <location filename="../src/interface/onglets.ui" line="3640"/>
         <source>Atténuation :</source>
         <translation>Free-space loss :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3644"/>
+        <location filename="../src/interface/onglets.ui" line="3647"/>
         <source>Délai :</source>
         <extracomment>Delay of signal at light speed</extracomment>
         <translation>Delay :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3693"/>
+        <location filename="../src/interface/onglets.ui" line="3696"/>
         <source>Phasage :</source>
         <translation>Phasing :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3998"/>
+        <location filename="../src/interface/onglets.ui" line="4004"/>
         <location filename="../src/interface/onglets.cpp" line="85"/>
         <source>Informations satellite</source>
         <translation>Satellite informations</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4296"/>
+        <location filename="../src/interface/onglets.ui" line="4302"/>
         <source>Coeff pseudo-balistique :</source>
         <extracomment>Pseudo-ballistic coefficient</extracomment>
         <translation>Pseudo-ballistic coeff :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4708"/>
+        <location filename="../src/interface/onglets.ui" line="4714"/>
         <source>Nb orbites à l&apos;époque :</source>
         <translation>Orbit # at epoch :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4653"/>
-        <location filename="../src/interface/onglets.ui" line="4763"/>
-        <location filename="../src/interface/onglets.ui" line="4776"/>
+        <location filename="../src/interface/onglets.ui" line="4659"/>
+        <location filename="../src/interface/onglets.ui" line="4769"/>
+        <location filename="../src/interface/onglets.ui" line="4782"/>
         <source>rev/jour</source>
         <extracomment>revolution per day</extracomment>
         <translation>rev/day</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4412"/>
-        <location filename="../src/interface/onglets.ui" line="5377"/>
+        <location filename="../src/interface/onglets.ui" line="4418"/>
+        <location filename="../src/interface/onglets.ui" line="5383"/>
         <source>Site de lancement :</source>
         <translation>Launch site :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4402"/>
-        <location filename="../src/interface/onglets.ui" line="5367"/>
+        <location filename="../src/interface/onglets.ui" line="4408"/>
+        <location filename="../src/interface/onglets.ui" line="5373"/>
         <source>Pays/Organisation :</source>
         <translation>Country/Organization :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4900"/>
-        <location filename="../src/interface/onglets.ui" line="5204"/>
+        <location filename="../src/interface/onglets.ui" line="4906"/>
+        <location filename="../src/interface/onglets.ui" line="5210"/>
         <source>Magnitude std/max :</source>
         <extracomment>Standard/maximal magnitude</extracomment>
         <translation>Std/Max magnitude :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4666"/>
+        <location filename="../src/interface/onglets.ui" line="4672"/>
         <source>n&quot; / 6 :</source>
         <extracomment>second derivative of the mean motion divided by six (in revolution per day cube)</extracomment>
         <translation>n&quot; / 6 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4695"/>
+        <location filename="../src/interface/onglets.ui" line="4701"/>
         <source>Moyen mouvement :</source>
         <translation>Mean motion :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4283"/>
+        <location filename="../src/interface/onglets.ui" line="4289"/>
         <source>Époque (UTC) :</source>
         <extracomment>Universal Time Coordinated</extracomment>
         <translation>Epoch (UTC) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4392"/>
-        <location filename="../src/interface/onglets.ui" line="5357"/>
+        <location filename="../src/interface/onglets.ui" line="4398"/>
+        <location filename="../src/interface/onglets.ui" line="5363"/>
         <source>Catégorie d&apos;orbite :</source>
         <translation>Orbital category :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4257"/>
-        <location filename="../src/interface/onglets.ui" line="5123"/>
-        <location filename="../src/interface/onglets.ui" line="11426"/>
+        <location filename="../src/interface/onglets.ui" line="4263"/>
+        <location filename="../src/interface/onglets.ui" line="5129"/>
+        <location filename="../src/interface/onglets.ui" line="11432"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD number :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4382"/>
-        <location filename="../src/interface/onglets.ui" line="5337"/>
+        <location filename="../src/interface/onglets.ui" line="4388"/>
+        <location filename="../src/interface/onglets.ui" line="5343"/>
         <source>Date de lancement :</source>
         <translation>Launch date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4926"/>
-        <location filename="../src/interface/onglets.ui" line="5217"/>
+        <location filename="../src/interface/onglets.ui" line="4932"/>
+        <location filename="../src/interface/onglets.ui" line="5223"/>
         <source>Modèle orbital :</source>
         <translation>Propagation model :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4270"/>
-        <location filename="../src/interface/onglets.ui" line="5136"/>
+        <location filename="../src/interface/onglets.ui" line="4276"/>
+        <location filename="../src/interface/onglets.ui" line="5142"/>
         <source>Désignation COSPAR :</source>
         <translation>COSPAR designation :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4952"/>
-        <location filename="../src/interface/onglets.ui" line="5230"/>
+        <location filename="../src/interface/onglets.ui" line="4958"/>
+        <location filename="../src/interface/onglets.ui" line="5236"/>
         <source>Dimensions/Section :</source>
         <translation>Dimensions/Section :</translation>
     </message>
@@ -1422,452 +1422,452 @@ PreviSat is free !</translation>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4721"/>
+        <location filename="../src/interface/onglets.ui" line="4727"/>
         <source>n&apos; / 2 :</source>
         <extracomment>derivative of the mean motion divided by two (in revolution per day square)</extracomment>
         <translation>n&apos; / 2 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="4083"/>
+        <location filename="../src/interface/onglets.ui" line="4089"/>
         <source>(1/Re)</source>
         <extracomment>1 / Earth radius</extracomment>
         <translation>(1/Re)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5726"/>
+        <location filename="../src/interface/onglets.ui" line="5732"/>
         <source>COSPAR :</source>
         <translation>COSPAR :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5631"/>
+        <location filename="../src/interface/onglets.ui" line="5637"/>
         <source>Entrez au minimum 3 lettres du nom de l&apos;objet</source>
         <translation>Enter at least 3 letters of the object name</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5020"/>
+        <location filename="../src/interface/onglets.ui" line="5026"/>
         <location filename="../src/interface/onglets.cpp" line="1140"/>
         <source>Objets trouvés :</source>
         <translation>Found objects :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5685"/>
+        <location filename="../src/interface/onglets.ui" line="5691"/>
         <source>NORAD :</source>
         <translation>NORAD :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5347"/>
+        <location filename="../src/interface/onglets.ui" line="5353"/>
         <source>Date de rentrée :</source>
         <translation>Reentry date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5583"/>
+        <location filename="../src/interface/onglets.ui" line="5589"/>
         <source>Fichiers TLE :</source>
         <translation>TLE files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5794"/>
+        <location filename="../src/interface/onglets.ui" line="5800"/>
         <source>Prévisions</source>
         <translation>Predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5989"/>
-        <location filename="../src/interface/onglets.ui" line="6646"/>
-        <location filename="../src/interface/onglets.ui" line="7311"/>
-        <location filename="../src/interface/onglets.ui" line="12004"/>
+        <location filename="../src/interface/onglets.ui" line="5995"/>
+        <location filename="../src/interface/onglets.ui" line="6652"/>
+        <location filename="../src/interface/onglets.ui" line="7317"/>
+        <location filename="../src/interface/onglets.ui" line="12010"/>
         <source>Date initiale :</source>
         <translation>Start date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5918"/>
-        <location filename="../src/interface/onglets.ui" line="5973"/>
+        <location filename="../src/interface/onglets.ui" line="5924"/>
+        <location filename="../src/interface/onglets.ui" line="5979"/>
         <source>dd/MM/yyyy hh:mm:ss</source>
         <extracomment>Date format</extracomment>
         <translation>dd/MM/yyyy hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5934"/>
-        <location filename="../src/interface/onglets.ui" line="6572"/>
-        <location filename="../src/interface/onglets.ui" line="7321"/>
-        <location filename="../src/interface/onglets.ui" line="11972"/>
+        <location filename="../src/interface/onglets.ui" line="5940"/>
+        <location filename="../src/interface/onglets.ui" line="6578"/>
+        <location filename="../src/interface/onglets.ui" line="7327"/>
+        <location filename="../src/interface/onglets.ui" line="11978"/>
         <source>Date finale :</source>
         <translation>End date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6044"/>
-        <location filename="../src/interface/onglets.ui" line="8038"/>
+        <location filename="../src/interface/onglets.ui" line="6050"/>
+        <location filename="../src/interface/onglets.ui" line="8044"/>
         <source>Pas de génération :</source>
         <translation>Output step :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6099"/>
+        <location filename="../src/interface/onglets.ui" line="6105"/>
         <source>1 seconde</source>
         <translation>1 second</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6104"/>
+        <location filename="../src/interface/onglets.ui" line="6110"/>
         <source>5 secondes</source>
         <translation>5 seconds</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6109"/>
+        <location filename="../src/interface/onglets.ui" line="6115"/>
         <source>10 secondes</source>
         <translation>10 seconds</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6114"/>
+        <location filename="../src/interface/onglets.ui" line="6120"/>
         <source>20 secondes</source>
         <translation>20  seconds</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6119"/>
+        <location filename="../src/interface/onglets.ui" line="6125"/>
         <source>30 secondes</source>
         <translation>30 seconds</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6124"/>
+        <location filename="../src/interface/onglets.ui" line="6130"/>
         <source>1 minute</source>
         <translation>1 minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6129"/>
+        <location filename="../src/interface/onglets.ui" line="6135"/>
         <source>2 minutes</source>
         <translation>2 minutes</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6134"/>
+        <location filename="../src/interface/onglets.ui" line="6140"/>
         <source>5 minutes</source>
         <translation>5 minutes</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6057"/>
-        <location filename="../src/interface/onglets.ui" line="6715"/>
+        <location filename="../src/interface/onglets.ui" line="6063"/>
+        <location filename="../src/interface/onglets.ui" line="6721"/>
         <source>Hauteur du Soleil :</source>
         <translation>Sun elevation :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6186"/>
-        <location filename="../src/interface/onglets.ui" line="6744"/>
+        <location filename="../src/interface/onglets.ui" line="6192"/>
+        <location filename="../src/interface/onglets.ui" line="6750"/>
         <source>Horizon (0°)</source>
         <translation>Horizon (0°)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6191"/>
-        <location filename="../src/interface/onglets.ui" line="6749"/>
+        <location filename="../src/interface/onglets.ui" line="6197"/>
+        <location filename="../src/interface/onglets.ui" line="6755"/>
         <source>Crépuscule civil (-6°)</source>
         <translation>Civil twilight (-6°)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6196"/>
-        <location filename="../src/interface/onglets.ui" line="6754"/>
+        <location filename="../src/interface/onglets.ui" line="6202"/>
+        <location filename="../src/interface/onglets.ui" line="6760"/>
         <source>Crépuscule nautique (-12°)</source>
         <translation>Nautical twilight (-12°)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6201"/>
-        <location filename="../src/interface/onglets.ui" line="6759"/>
+        <location filename="../src/interface/onglets.ui" line="6207"/>
+        <location filename="../src/interface/onglets.ui" line="6765"/>
         <source>Crépuscule astronomique (-18°)</source>
         <translation>Astronomical twilight (-18°)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6206"/>
-        <location filename="../src/interface/onglets.ui" line="6764"/>
+        <location filename="../src/interface/onglets.ui" line="6212"/>
+        <location filename="../src/interface/onglets.ui" line="6770"/>
         <source>Indifférent</source>
         <translation>Indifferent</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6211"/>
-        <location filename="../src/interface/onglets.ui" line="6360"/>
-        <location filename="../src/interface/onglets.ui" line="6769"/>
-        <location filename="../src/interface/onglets.ui" line="6891"/>
-        <location filename="../src/interface/onglets.ui" line="7506"/>
-        <location filename="../src/interface/onglets.ui" line="7961"/>
+        <location filename="../src/interface/onglets.ui" line="6217"/>
+        <location filename="../src/interface/onglets.ui" line="6366"/>
+        <location filename="../src/interface/onglets.ui" line="6775"/>
+        <location filename="../src/interface/onglets.ui" line="6897"/>
+        <location filename="../src/interface/onglets.ui" line="7512"/>
+        <location filename="../src/interface/onglets.ui" line="7967"/>
         <source>Autre...</source>
         <translation>Other...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6306"/>
-        <location filename="../src/interface/onglets.ui" line="6843"/>
-        <location filename="../src/interface/onglets.ui" line="7464"/>
-        <location filename="../src/interface/onglets.ui" line="7913"/>
+        <location filename="../src/interface/onglets.ui" line="6312"/>
+        <location filename="../src/interface/onglets.ui" line="6849"/>
+        <location filename="../src/interface/onglets.ui" line="7470"/>
+        <location filename="../src/interface/onglets.ui" line="7919"/>
         <source>Hauteur minimale du satellite :</source>
         <translation>Minimal elevation of satellite :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6335"/>
-        <location filename="../src/interface/onglets.ui" line="6866"/>
-        <location filename="../src/interface/onglets.ui" line="7481"/>
-        <location filename="../src/interface/onglets.ui" line="7936"/>
+        <location filename="../src/interface/onglets.ui" line="6341"/>
+        <location filename="../src/interface/onglets.ui" line="6872"/>
+        <location filename="../src/interface/onglets.ui" line="7487"/>
+        <location filename="../src/interface/onglets.ui" line="7942"/>
         <source>0°</source>
         <translation>0°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6340"/>
-        <location filename="../src/interface/onglets.ui" line="6871"/>
-        <location filename="../src/interface/onglets.ui" line="7486"/>
-        <location filename="../src/interface/onglets.ui" line="7941"/>
+        <location filename="../src/interface/onglets.ui" line="6346"/>
+        <location filename="../src/interface/onglets.ui" line="6877"/>
+        <location filename="../src/interface/onglets.ui" line="7492"/>
+        <location filename="../src/interface/onglets.ui" line="7947"/>
         <source>5°</source>
         <translation>5°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6345"/>
-        <location filename="../src/interface/onglets.ui" line="6876"/>
-        <location filename="../src/interface/onglets.ui" line="7491"/>
-        <location filename="../src/interface/onglets.ui" line="7946"/>
+        <location filename="../src/interface/onglets.ui" line="6351"/>
+        <location filename="../src/interface/onglets.ui" line="6882"/>
+        <location filename="../src/interface/onglets.ui" line="7497"/>
+        <location filename="../src/interface/onglets.ui" line="7952"/>
         <source>10°</source>
         <translation>10°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6350"/>
-        <location filename="../src/interface/onglets.ui" line="6881"/>
-        <location filename="../src/interface/onglets.ui" line="7496"/>
-        <location filename="../src/interface/onglets.ui" line="7951"/>
+        <location filename="../src/interface/onglets.ui" line="6356"/>
+        <location filename="../src/interface/onglets.ui" line="6887"/>
+        <location filename="../src/interface/onglets.ui" line="7502"/>
+        <location filename="../src/interface/onglets.ui" line="7957"/>
         <source>15°</source>
         <translation>15°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6355"/>
-        <location filename="../src/interface/onglets.ui" line="6886"/>
-        <location filename="../src/interface/onglets.ui" line="7501"/>
-        <location filename="../src/interface/onglets.ui" line="7956"/>
+        <location filename="../src/interface/onglets.ui" line="6361"/>
+        <location filename="../src/interface/onglets.ui" line="6892"/>
+        <location filename="../src/interface/onglets.ui" line="7507"/>
+        <location filename="../src/interface/onglets.ui" line="7962"/>
         <source>20°</source>
         <translation>20°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6432"/>
+        <location filename="../src/interface/onglets.ui" line="6438"/>
         <source>Illumination requise</source>
         <translation>Illumination required</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6454"/>
+        <location filename="../src/interface/onglets.ui" line="6460"/>
         <source>Magnitude maximale</source>
         <translation>Maximal magnitude</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6008"/>
-        <location filename="../src/interface/onglets.ui" line="6662"/>
-        <location filename="../src/interface/onglets.ui" line="7381"/>
-        <location filename="../src/interface/onglets.ui" line="12042"/>
+        <location filename="../src/interface/onglets.ui" line="6014"/>
+        <location filename="../src/interface/onglets.ui" line="6668"/>
+        <location filename="../src/interface/onglets.ui" line="7387"/>
+        <location filename="../src/interface/onglets.ui" line="12048"/>
         <source>Effacer heures</source>
         <translation>Erase hours</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5845"/>
-        <location filename="../src/interface/onglets.ui" line="6509"/>
-        <location filename="../src/interface/onglets.ui" line="7113"/>
-        <location filename="../src/interface/onglets.ui" line="11928"/>
+        <location filename="../src/interface/onglets.ui" line="5851"/>
+        <location filename="../src/interface/onglets.ui" line="6515"/>
+        <location filename="../src/interface/onglets.ui" line="7119"/>
+        <location filename="../src/interface/onglets.ui" line="11934"/>
         <source>Calculs</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="5864"/>
-        <location filename="../src/interface/onglets.ui" line="6547"/>
-        <location filename="../src/interface/onglets.ui" line="7132"/>
-        <location filename="../src/interface/onglets.ui" line="8417"/>
-        <location filename="../src/interface/onglets.ui" line="11754"/>
-        <location filename="../src/interface/onglets.ui" line="11947"/>
+        <location filename="../src/interface/onglets.ui" line="5870"/>
+        <location filename="../src/interface/onglets.ui" line="6553"/>
+        <location filename="../src/interface/onglets.ui" line="7138"/>
+        <location filename="../src/interface/onglets.ui" line="8423"/>
+        <location filename="../src/interface/onglets.ui" line="11760"/>
+        <location filename="../src/interface/onglets.ui" line="11953"/>
         <source>Paramétrage par défaut</source>
         <translation>Default settings</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6494"/>
+        <location filename="../src/interface/onglets.ui" line="6500"/>
         <source>Flashs</source>
         <translation>Flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6601"/>
-        <location filename="../src/interface/onglets.ui" line="6633"/>
-        <location filename="../src/interface/onglets.ui" line="7340"/>
-        <location filename="../src/interface/onglets.ui" line="7362"/>
-        <location filename="../src/interface/onglets.ui" line="11991"/>
-        <location filename="../src/interface/onglets.ui" line="12023"/>
+        <location filename="../src/interface/onglets.ui" line="6607"/>
+        <location filename="../src/interface/onglets.ui" line="6639"/>
+        <location filename="../src/interface/onglets.ui" line="7346"/>
+        <location filename="../src/interface/onglets.ui" line="7368"/>
+        <location filename="../src/interface/onglets.ui" line="11997"/>
+        <location filename="../src/interface/onglets.ui" line="12029"/>
         <source>dd/MM/yyyy HH:mm</source>
         <extracomment>Date format</extracomment>
         <translation>MM/dd/yyyy HH:mm</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6528"/>
+        <location filename="../src/interface/onglets.ui" line="6534"/>
         <source>Classer par ordre chronologique</source>
         <translation>Chronologically sorting</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7001"/>
-        <location filename="../src/interface/onglets.ui" line="11244"/>
+        <location filename="../src/interface/onglets.ui" line="7007"/>
+        <location filename="../src/interface/onglets.ui" line="11250"/>
         <source>Magnitude maximale :</source>
         <translation>Maximal magnitude :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="6957"/>
+        <location filename="../src/interface/onglets.ui" line="6963"/>
         <source>Fichier TLE :</source>
         <translation>TLE file :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7041"/>
+        <location filename="../src/interface/onglets.ui" line="7047"/>
         <source>Transits ISS</source>
         <translation>ISS transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7628"/>
+        <location filename="../src/interface/onglets.ui" line="7634"/>
         <source>Age maximal du TLE :</source>
         <translation>TLE maximal age :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7572"/>
+        <location filename="../src/interface/onglets.ui" line="7578"/>
         <source>Élongation maximale avec le corps :</source>
         <translation>Maximal elongation with the body :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7059"/>
+        <location filename="../src/interface/onglets.ui" line="7065"/>
         <source>Corps</source>
         <translation>Body</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7074"/>
-        <location filename="../src/interface/onglets.ui" line="9756"/>
+        <location filename="../src/interface/onglets.ui" line="7080"/>
+        <location filename="../src/interface/onglets.ui" line="9762"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7093"/>
-        <location filename="../src/interface/onglets.ui" line="9721"/>
+        <location filename="../src/interface/onglets.ui" line="7099"/>
+        <location filename="../src/interface/onglets.ui" line="9727"/>
         <location filename="../src/interface/onglets.cpp" line="404"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7684"/>
+        <location filename="../src/interface/onglets.ui" line="7690"/>
         <source>Age du dernier TLE : </source>
         <translation>Last TLE age : </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7145"/>
+        <location filename="../src/interface/onglets.ui" line="7151"/>
         <source>Mettre à jour TLE de l&apos;ISS...</source>
         <translation>Update ISS TLE...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7197"/>
+        <location filename="../src/interface/onglets.ui" line="7203"/>
         <source>Évènement</source>
         <translation>Event</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7207"/>
+        <location filename="../src/interface/onglets.ui" line="7213"/>
         <source>Date</source>
         <extracomment>Date and hour</extracomment>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7217"/>
+        <location filename="../src/interface/onglets.ui" line="7223"/>
         <source>Masse</source>
         <translation>Mass</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7227"/>
+        <location filename="../src/interface/onglets.ui" line="7233"/>
         <source>ΔV</source>
         <translation>ΔV</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7237"/>
+        <location filename="../src/interface/onglets.ui" line="7243"/>
         <source>Apogée</source>
         <translation>Apogee</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7247"/>
+        <location filename="../src/interface/onglets.ui" line="7253"/>
         <source>Périgée</source>
         <translation>Perigee</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7283"/>
+        <location filename="../src/interface/onglets.ui" line="7289"/>
         <source>Inclure transits/conjonctions lunaires de jour</source>
         <translation>Include daytime lunar transits/conjunctions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7736"/>
+        <location filename="../src/interface/onglets.ui" line="7742"/>
         <source>Télescope</source>
         <translation>Telescope</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7839"/>
+        <location filename="../src/interface/onglets.ui" line="7845"/>
         <source>Lever du satellite :</source>
         <translation>Satellite rising :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7853"/>
+        <location filename="../src/interface/onglets.ui" line="7859"/>
         <source>Hauteur maximale :</source>
         <translation>Maximal elevation :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7867"/>
+        <location filename="../src/interface/onglets.ui" line="7873"/>
         <source>Coucher du satellite :</source>
         <translation>Satellite setting :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8165"/>
+        <location filename="../src/interface/onglets.ui" line="8171"/>
         <source>Afficher</source>
         <translation>Show file</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7814"/>
+        <location filename="../src/interface/onglets.ui" line="7820"/>
         <source>Générer les positions</source>
         <translation>Generate positions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8087"/>
+        <location filename="../src/interface/onglets.ui" line="8093"/>
         <source>ms</source>
         <extracomment>milliseconde</extracomment>
         <translatorcomment>millisecond</translatorcomment>
         <translation>ms</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8195"/>
+        <location filename="../src/interface/onglets.ui" line="8201"/>
         <source>Le satellite n&apos;est pas visible depuis le lieu d&apos;observation</source>
         <translation>The satellite is not visible from the location</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8432"/>
+        <location filename="../src/interface/onglets.ui" line="8438"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8469"/>
+        <location filename="../src/interface/onglets.ui" line="8475"/>
         <location filename="../src/interface/onglets.cpp" line="4537"/>
         <source>Lieu d&apos;observation</source>
         <translation>Name of location</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8484"/>
+        <location filename="../src/interface/onglets.ui" line="8490"/>
         <source>Lieux d&apos;observation :</source>
         <translation>Locations in the category :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8527"/>
-        <location filename="../src/interface/onglets.ui" line="8602"/>
+        <location filename="../src/interface/onglets.ui" line="8533"/>
+        <location filename="../src/interface/onglets.ui" line="8608"/>
         <source>Cliquer droit pour afficher le menu contextuel</source>
         <translation>Right click to show the context menu</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8558"/>
+        <location filename="../src/interface/onglets.ui" line="8564"/>
         <source>Sélection de la catégorie :</source>
         <translation>Category selection :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8642"/>
+        <location filename="../src/interface/onglets.ui" line="8648"/>
         <source>Lieux sélectionnés :</source>
         <translation>Selected locations :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8713"/>
+        <location filename="../src/interface/onglets.ui" line="8719"/>
         <location filename="../src/interface/onglets.cpp" line="1268"/>
         <source>Lieu :</source>
         <translation>Location :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8815"/>
-        <location filename="../src/interface/onglets.ui" line="8912"/>
+        <location filename="../src/interface/onglets.ui" line="8821"/>
+        <location filename="../src/interface/onglets.ui" line="8918"/>
         <source>Valider</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8831"/>
-        <location filename="../src/interface/onglets.ui" line="8896"/>
+        <location filename="../src/interface/onglets.ui" line="8837"/>
+        <location filename="../src/interface/onglets.ui" line="8902"/>
         <location filename="../src/interface/onglets.cpp" line="4201"/>
         <location filename="../src/interface/onglets.cpp" line="4537"/>
         <location filename="../src/interface/onglets.cpp" line="5245"/>
@@ -1881,7 +1881,7 @@ PreviSat is free !</translation>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9139"/>
+        <location filename="../src/interface/onglets.ui" line="9145"/>
         <location filename="../src/interface/onglets.cpp" line="1272"/>
         <source>m</source>
         <extracomment>Meter</extracomment>
@@ -1889,7 +1889,7 @@ PreviSat is free !</translation>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9054"/>
+        <location filename="../src/interface/onglets.ui" line="9060"/>
         <location filename="../src/interface/onglets.cpp" line="370"/>
         <location filename="../src/interface/onglets.cpp" line="1264"/>
         <location filename="../src/interface/onglets.cpp" line="1645"/>
@@ -1898,7 +1898,7 @@ PreviSat is free !</translation>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9059"/>
+        <location filename="../src/interface/onglets.ui" line="9065"/>
         <location filename="../src/interface/onglets.cpp" line="370"/>
         <location filename="../src/interface/onglets.cpp" line="1264"/>
         <location filename="../src/interface/onglets.cpp" line="1645"/>
@@ -1906,7 +1906,7 @@ PreviSat is free !</translation>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9037"/>
+        <location filename="../src/interface/onglets.ui" line="9043"/>
         <location filename="../src/interface/onglets.cpp" line="372"/>
         <location filename="../src/interface/onglets.cpp" line="1265"/>
         <location filename="../src/interface/onglets.cpp" line="1646"/>
@@ -1914,7 +1914,7 @@ PreviSat is free !</translation>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9042"/>
+        <location filename="../src/interface/onglets.ui" line="9048"/>
         <location filename="../src/interface/onglets.cpp" line="372"/>
         <location filename="../src/interface/onglets.cpp" line="1265"/>
         <location filename="../src/interface/onglets.cpp" line="1646"/>
@@ -1923,356 +1923,356 @@ PreviSat is free !</translation>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9171"/>
+        <location filename="../src/interface/onglets.ui" line="9177"/>
         <source>Ajouter dans :</source>
         <translation>Add in :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9195"/>
+        <location filename="../src/interface/onglets.ui" line="9201"/>
         <source>Configuration</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9347"/>
+        <location filename="../src/interface/onglets.ui" line="9353"/>
         <source>Enregistrer les préférences d&apos;affichage</source>
         <translation>Save dispaly preferences</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9267"/>
+        <location filename="../src/interface/onglets.ui" line="9273"/>
         <source>Langue :</source>
         <extracomment>Name of language</extracomment>
         <translation>Language :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9310"/>
+        <location filename="../src/interface/onglets.ui" line="9316"/>
         <source>Préférences d&apos;affichage :</source>
         <translation>Display preferences :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9487"/>
+        <location filename="../src/interface/onglets.ui" line="9493"/>
         <source>Notification sonore</source>
         <translation>Sound notification</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9383"/>
+        <location filename="../src/interface/onglets.ui" line="9389"/>
         <source>Zone de visibilité</source>
         <translation>Satellite footprint</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9402"/>
+        <location filename="../src/interface/onglets.ui" line="9408"/>
         <source>Rotation de l&apos;icône ISS</source>
         <translation>Rotate ISS icon</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9537"/>
+        <location filename="../src/interface/onglets.ui" line="9543"/>
         <source>Trace au sol</source>
         <translation>Ground track</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9418"/>
+        <location filename="../src/interface/onglets.ui" line="9424"/>
         <source>Trace dans le ciel</source>
         <translation>Sky track</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9434"/>
+        <location filename="../src/interface/onglets.ui" line="9440"/>
         <source>Icône des satellites</source>
         <translation>Satellite icons</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9450"/>
+        <location filename="../src/interface/onglets.ui" line="9456"/>
         <source>Nom des satellites</source>
         <translation>Name of satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9705"/>
+        <location filename="../src/interface/onglets.ui" line="9711"/>
         <source>Rotation de la Lune pour l&apos;hémisphère Sud</source>
         <translation>Moon rotation for southern hemisphere</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9737"/>
+        <location filename="../src/interface/onglets.ui" line="9743"/>
         <source>Affichage des constellations</source>
         <translation>Display of constellations</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9775"/>
+        <location filename="../src/interface/onglets.ui" line="9781"/>
         <source>Nom des étoiles</source>
         <translation>Name of stars</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9906"/>
+        <location filename="../src/interface/onglets.ui" line="9912"/>
         <source>Magnitude limite des étoiles :</source>
         <translation>Limiting magnitude of stars :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9791"/>
+        <location filename="../src/interface/onglets.ui" line="9797"/>
         <source>Affichage des planètes</source>
         <translation>Display of planets</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9847"/>
+        <location filename="../src/interface/onglets.ui" line="9853"/>
         <source>Zone d&apos;ombre</source>
         <translation>Night shadow</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9813"/>
+        <location filename="../src/interface/onglets.ui" line="9819"/>
         <source>Phase de la Lune</source>
         <translation>Moon phase</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9952"/>
+        <location filename="../src/interface/onglets.ui" line="9958"/>
         <source>Grille</source>
         <translation>Grid</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10197"/>
+        <location filename="../src/interface/onglets.ui" line="10203"/>
         <source>Prise en compte des éclipses partielles sur la magnitude</source>
         <translation>Set the effect of partial eclipses on the magnitude</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9968"/>
+        <location filename="../src/interface/onglets.ui" line="9974"/>
         <source>Affichage du jour julien</source>
         <translation>Display of julian date</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10181"/>
+        <location filename="../src/interface/onglets.ui" line="10187"/>
         <source>Prise en compte des éclipses produites par la Lune</source>
         <translation>Set eclipses produced by the Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10133"/>
+        <location filename="../src/interface/onglets.ui" line="10139"/>
         <source>Carte du monde :</source>
         <translation>World map :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9987"/>
+        <location filename="../src/interface/onglets.ui" line="9993"/>
         <source>Radar</source>
         <translation>Radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10006"/>
+        <location filename="../src/interface/onglets.ui" line="10012"/>
         <source>Garder les proportions de la carte du monde</source>
         <translation>Preserve proportions of world map</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10022"/>
+        <location filename="../src/interface/onglets.ui" line="10028"/>
         <source>Inversion Est/Ouest sur le radar</source>
         <translation>East/West inversion on radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10038"/>
+        <location filename="../src/interface/onglets.ui" line="10044"/>
         <source>Inversion Nord/Sud sur le radar</source>
         <translation>North/South inversion on radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9659"/>
+        <location filename="../src/interface/onglets.ui" line="9665"/>
         <source>Vision nocturne :</source>
         <translation>Night vision :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10054"/>
+        <location filename="../src/interface/onglets.ui" line="10060"/>
         <source>Affichage des coordonnées</source>
         <translation>Display of coordinates</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10070"/>
+        <location filename="../src/interface/onglets.ui" line="10076"/>
         <source>Affichage de la SAA</source>
         <translation>Display of SAA</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10086"/>
+        <location filename="../src/interface/onglets.ui" line="10092"/>
         <source>Prise en compte de l&apos;extinction atmosphérique</source>
         <translation>Set the atmospheric extinction</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10102"/>
+        <location filename="../src/interface/onglets.ui" line="10108"/>
         <source>Nom des lieux d&apos;observation</source>
         <translation>Name of locations</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10215"/>
+        <location filename="../src/interface/onglets.ui" line="10221"/>
         <source>Unités</source>
         <translation>Units</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10230"/>
+        <location filename="../src/interface/onglets.ui" line="10236"/>
         <source>Système métrique</source>
         <translation>Metric system</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10249"/>
+        <location filename="../src/interface/onglets.ui" line="10255"/>
         <source>Système anglo-saxon</source>
         <translation>US customary units</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10269"/>
+        <location filename="../src/interface/onglets.ui" line="10275"/>
         <source>Système horaire</source>
         <translation>Time convention</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10284"/>
+        <location filename="../src/interface/onglets.ui" line="10290"/>
         <source>24 heures</source>
         <translation>24 hours</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10303"/>
+        <location filename="../src/interface/onglets.ui" line="10309"/>
         <source>12 heures (AM/PM)</source>
         <translation>12 hours (AM/PM)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10323"/>
+        <location filename="../src/interface/onglets.ui" line="10329"/>
         <source>Vérification des mises à jour au démarrage</source>
         <translation>Check for updates at startup</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10339"/>
+        <location filename="../src/interface/onglets.ui" line="10345"/>
         <source>Écart Heure locale - UTC</source>
         <translation>Local hour - UTC offset</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10382"/>
+        <location filename="../src/interface/onglets.ui" line="10388"/>
         <source>Heure locale = </source>
         <translation>Local hour = </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10354"/>
+        <location filename="../src/interface/onglets.ui" line="10360"/>
         <source>Temps Universel Coordonné (UTC)</source>
         <translation>Universal Time Coordinated (UTC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10430"/>
+        <location filename="../src/interface/onglets.ui" line="10436"/>
         <source>Auto</source>
         <extracomment>Automatic</extracomment>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10451"/>
+        <location filename="../src/interface/onglets.ui" line="10457"/>
         <source>Wall Command Center</source>
         <translation>Wall Command Center</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10466"/>
+        <location filename="../src/interface/onglets.ui" line="10472"/>
         <source>Style &quot;Wall Command Center&quot;</source>
         <translation>&quot;Wall Command Center&quot; style</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10501"/>
+        <location filename="../src/interface/onglets.ui" line="10507"/>
         <source>Stations :</source>
         <translation>Stations :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10765"/>
+        <location filename="../src/interface/onglets.ui" line="10771"/>
         <source>Choix de la police :</source>
         <translation>Set the font :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10514"/>
+        <location filename="../src/interface/onglets.ui" line="10520"/>
         <location filename="../src/interface/onglets.cpp" line="1903"/>
         <source>Affichage</source>
         <translation>Display</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10526"/>
+        <location filename="../src/interface/onglets.ui" line="10532"/>
         <source>Nombre d&apos;orbites</source>
         <translation>Orbit number</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10545"/>
+        <location filename="../src/interface/onglets.ui" line="10551"/>
         <source>SAA et ZOE</source>
         <extracomment>South Atlantic Anomaly and Zone of Exclusion</extracomment>
         <translatorcomment>South Atlantic Anomaly and Zone Of Exclusion</translatorcomment>
         <translation>SAA and ZOE</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10567"/>
+        <location filename="../src/interface/onglets.ui" line="10573"/>
         <source>Cercles d&apos;acquisition</source>
         <translation>Acquisition circles</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10589"/>
+        <location filename="../src/interface/onglets.ui" line="10595"/>
         <source>Angle beta</source>
         <extracomment>Beta angle (angle between orbit plane and direction of Sun)</extracomment>
         <translation>Beta angle</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10603"/>
+        <location filename="../src/interface/onglets.ui" line="10609"/>
         <source>Couleurs</source>
         <translation>Colors</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10647"/>
+        <location filename="../src/interface/onglets.ui" line="10653"/>
         <source>Équateur :</source>
         <translation>Equator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10640"/>
+        <location filename="../src/interface/onglets.ui" line="10646"/>
         <source>ZOE :</source>
         <extracomment>Zone of exclusion</extracomment>
         <translation>ZOE :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10661"/>
+        <location filename="../src/interface/onglets.ui" line="10667"/>
         <source>Cercle de visibilité :</source>
         <translation>Footprint :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10669"/>
-        <location filename="../src/interface/onglets.ui" line="10702"/>
-        <location filename="../src/interface/onglets.ui" line="10735"/>
+        <location filename="../src/interface/onglets.ui" line="10675"/>
+        <location filename="../src/interface/onglets.ui" line="10708"/>
+        <location filename="../src/interface/onglets.ui" line="10741"/>
         <source>Rouge</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10674"/>
-        <location filename="../src/interface/onglets.ui" line="10693"/>
-        <location filename="../src/interface/onglets.ui" line="10707"/>
-        <location filename="../src/interface/onglets.ui" line="10730"/>
+        <location filename="../src/interface/onglets.ui" line="10680"/>
+        <location filename="../src/interface/onglets.ui" line="10699"/>
+        <location filename="../src/interface/onglets.ui" line="10713"/>
+        <location filename="../src/interface/onglets.ui" line="10736"/>
         <source>Blanc</source>
         <translation>White</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10679"/>
+        <location filename="../src/interface/onglets.ui" line="10685"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10688"/>
+        <location filename="../src/interface/onglets.ui" line="10694"/>
         <source>Noir</source>
         <translation>Black</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10654"/>
+        <location filename="../src/interface/onglets.ui" line="10660"/>
         <source>Terminateur :</source>
         <translation>Terminator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10630"/>
+        <location filename="../src/interface/onglets.ui" line="10636"/>
         <source>GMT :</source>
         <extracomment>Greenwich Mean Time</extracomment>
         <translatorcomment>Greenwich Mean Time</translatorcomment>
         <translation>GMT :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10716"/>
+        <location filename="../src/interface/onglets.ui" line="10722"/>
         <source>Brun</source>
         <translation>Brown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10721"/>
+        <location filename="../src/interface/onglets.ui" line="10727"/>
         <source>Jaune</source>
         <translation>Yellow</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10792"/>
+        <location filename="../src/interface/onglets.ui" line="10798"/>
         <source>Outils</source>
         <translation>Tools</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10946"/>
+        <location filename="../src/interface/onglets.ui" line="10952"/>
         <source>Mettre à jour maintenant</source>
         <translation>Update now</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10930"/>
+        <location filename="../src/interface/onglets.ui" line="10936"/>
         <source>Paramétrage...</source>
         <translation>Settings...</translation>
     </message>
@@ -2282,70 +2282,70 @@ PreviSat is free !</translation>
         <translation>Manual TLE update</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11064"/>
-        <location filename="../src/interface/onglets.ui" line="11094"/>
-        <location filename="../src/interface/onglets.ui" line="11332"/>
-        <location filename="../src/interface/onglets.ui" line="11392"/>
+        <location filename="../src/interface/onglets.ui" line="11070"/>
+        <location filename="../src/interface/onglets.ui" line="11100"/>
+        <location filename="../src/interface/onglets.ui" line="11338"/>
+        <location filename="../src/interface/onglets.ui" line="11398"/>
         <location filename="../src/interface/onglets.cpp" line="5416"/>
         <source>Parcourir...</source>
         <translation>Browse...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11114"/>
-        <location filename="../src/interface/onglets.ui" line="11294"/>
+        <location filename="../src/interface/onglets.ui" line="11120"/>
+        <location filename="../src/interface/onglets.ui" line="11300"/>
         <source>Fichier TLE à lire :</source>
         <translation>TLE File to read :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11074"/>
+        <location filename="../src/interface/onglets.ui" line="11080"/>
         <source>Fichier à mettre à jour :</source>
         <translation>TLE File to update :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11130"/>
+        <location filename="../src/interface/onglets.ui" line="11136"/>
         <source>Mettre à jour</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11198"/>
+        <location filename="../src/interface/onglets.ui" line="11204"/>
         <source>Extraction fichier TLE</source>
         <translation>TLE file extraction</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11821"/>
+        <location filename="../src/interface/onglets.ui" line="11827"/>
         <source>Passages à PSO = 90° et 270°</source>
         <translation>Passes to Position = 90° and 270°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12111"/>
+        <location filename="../src/interface/onglets.ui" line="12117"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11527"/>
-        <location filename="../src/interface/onglets.ui" line="11580"/>
-        <location filename="../src/interface/onglets.ui" line="11708"/>
-        <location filename="../src/interface/onglets.ui" line="11727"/>
+        <location filename="../src/interface/onglets.ui" line="11533"/>
+        <location filename="../src/interface/onglets.ui" line="11586"/>
+        <location filename="../src/interface/onglets.ui" line="11714"/>
+        <location filename="../src/interface/onglets.ui" line="11733"/>
         <source>\De 999° à 999°</source>
         <translation>From 999° to 999°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11689"/>
+        <location filename="../src/interface/onglets.ui" line="11695"/>
         <source>1 intervalle</source>
         <translation>1 interval</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11694"/>
+        <location filename="../src/interface/onglets.ui" line="11700"/>
         <source>2 intervalles</source>
         <translation>2 intervals</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11376"/>
+        <location filename="../src/interface/onglets.ui" line="11382"/>
         <source>Nom du fichier personnel :</source>
         <translation>Name of personal file :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11473"/>
+        <location filename="../src/interface/onglets.ui" line="11479"/>
         <source>Nombre de révolutions par jour :</source>
         <translation>Number of revolutions per day :</translation>
     </message>
@@ -2357,212 +2357,212 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="2036"/>
-        <location filename="../src/interface/onglets.ui" line="8764"/>
-        <location filename="../src/interface/onglets.ui" line="9096"/>
+        <location filename="../src/interface/onglets.ui" line="8770"/>
+        <location filename="../src/interface/onglets.ui" line="9102"/>
         <source>Altitude :</source>
         <comment>Altitude of observer</comment>
         <translation>Altitude :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="2778"/>
+        <location filename="../src/interface/onglets.ui" line="2781"/>
         <source>Somme de l&apos;argument du périgée, de l&apos;ascension droite du noeud ascendant et de l&apos;anomalie vraie</source>
         <translation>Sum of argument of perigee, right ascension of the ascending node and true anomaly</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3149"/>
+        <location filename="../src/interface/onglets.ui" line="3152"/>
         <source>Somme de l&apos;argument du périgée et de l&apos;ascension droite du noeud ascendant</source>
         <translation>Sum of argument of perigee and right ascension of the ascending node</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="3284"/>
+        <location filename="../src/interface/onglets.ui" line="3287"/>
         <source>Somme de l&apos;argument du périgée et de l&apos;anomalie moyenne</source>
         <translation>Sum of argument of perigee and mean anomaly</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7266"/>
+        <location filename="../src/interface/onglets.ui" line="7272"/>
         <source>Fichier de manoeuvres ISS absent :
 cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <translation>Missing ISS maneuver file :
 click on &apos;Update ISS maneuvers&apos;</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="7713"/>
+        <location filename="../src/interface/onglets.ui" line="7719"/>
         <source>Mettre à jour manoeuvres de l&apos;ISS...</source>
         <translation>Upadate ISS maneuvers...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8104"/>
+        <location filename="../src/interface/onglets.ui" line="8110"/>
         <location filename="../src/interface/onglets.cpp" line="6284"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8126"/>
+        <location filename="../src/interface/onglets.ui" line="8132"/>
         <source>s</source>
         <translatorcomment>seconds</translatorcomment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8146"/>
+        <location filename="../src/interface/onglets.ui" line="8152"/>
         <source>Délai :</source>
         <comment>telescope</comment>
         <translation>Countdown :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8178"/>
+        <location filename="../src/interface/onglets.ui" line="8184"/>
         <source>Envoyer les données satellite à la monture</source>
         <translation>Send satellite data to mount</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="8181"/>
+        <location filename="../src/interface/onglets.ui" line="8187"/>
         <source>Démarrer</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9596"/>
+        <location filename="../src/interface/onglets.ui" line="9602"/>
         <source>Valeur zoom pour les cartes :</source>
         <translation>Zoom value for maps :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="9628"/>
+        <location filename="../src/interface/onglets.ui" line="9634"/>
         <source>Affichage du numéro NORAD dans les listes</source>
         <translation>Display of NORAD number in lists</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10165"/>
+        <location filename="../src/interface/onglets.ui" line="10171"/>
         <source>Prise en compte de la réfraction atmosphérique</source>
         <translation>Set the atmospheric extinction</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10542"/>
+        <location filename="../src/interface/onglets.ui" line="10548"/>
         <source>Anomalie Atlantique Sud et Zone d&apos;exclusion</source>
         <translation>South Atlantic anomaly and Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10586"/>
+        <location filename="../src/interface/onglets.ui" line="10592"/>
         <source>Angle entre le plan de l&apos;orbite et la direction du Soleil</source>
         <translation>Angle between orbit plane and direction of Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10627"/>
+        <location filename="../src/interface/onglets.ui" line="10633"/>
         <source>Greenwich Mean Time</source>
         <translation>Greenwich Mean Time</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10637"/>
+        <location filename="../src/interface/onglets.ui" line="10643"/>
         <source>Zone d&apos;exclusion</source>
         <translation>Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="10826"/>
+        <location filename="../src/interface/onglets.ui" line="10832"/>
         <location filename="../src/interface/onglets.cpp" line="89"/>
         <source>Mise à jour TLE auto</source>
         <translation>Auto TLE update</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11213"/>
+        <location filename="../src/interface/onglets.ui" line="11219"/>
         <source>Recherche</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11433"/>
+        <location filename="../src/interface/onglets.ui" line="11439"/>
         <source>\De 999999 à 999999</source>
         <translation>From 999999 to 999999</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11436"/>
+        <location filename="../src/interface/onglets.ui" line="11442"/>
         <location filename="../src/interface/onglets.cpp" line="6771"/>
         <source>De 000001 à 999999</source>
         <translation>From 000001 to 999999</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11480"/>
+        <location filename="../src/interface/onglets.ui" line="11486"/>
         <source>\De 99.999999999 à 99.999999999</source>
         <translation>From 99.999999999 to 99.999999999</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11483"/>
+        <location filename="../src/interface/onglets.ui" line="11489"/>
         <location filename="../src/interface/onglets.cpp" line="6772"/>
         <source>De 00.000000000 à 18.000000000</source>
         <translation>From 00.000000000 to 18.000000000</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11530"/>
-        <location filename="../src/interface/onglets.ui" line="11583"/>
+        <location filename="../src/interface/onglets.ui" line="11536"/>
+        <location filename="../src/interface/onglets.ui" line="11589"/>
         <location filename="../src/interface/onglets.cpp" line="6773"/>
         <location filename="../src/interface/onglets.cpp" line="6774"/>
         <source>De 000° à 360°</source>
         <translation>From 000° to 360°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11627"/>
+        <location filename="../src/interface/onglets.ui" line="11633"/>
         <source>\De 9.9999999 à 9.9999999</source>
         <translation>From 9.9999999 to 9.9999999</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11630"/>
+        <location filename="../src/interface/onglets.ui" line="11636"/>
         <source>De 0.0000000 à 1.0000000</source>
         <translation>From 0.0000000 to 1.0000000</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11711"/>
-        <location filename="../src/interface/onglets.ui" line="11730"/>
+        <location filename="../src/interface/onglets.ui" line="11717"/>
+        <location filename="../src/interface/onglets.ui" line="11736"/>
         <location filename="../src/interface/onglets.cpp" line="6776"/>
         <location filename="../src/interface/onglets.cpp" line="6777"/>
         <source>De 000° à 180°</source>
         <translation>From 000° to 180°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11769"/>
+        <location filename="../src/interface/onglets.ui" line="11775"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11787"/>
+        <location filename="../src/interface/onglets.ui" line="11793"/>
         <source>Évènements</source>
         <translation>Events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11802"/>
+        <location filename="../src/interface/onglets.ui" line="11808"/>
         <source>Passages aux noeuds</source>
         <translation>Passes to nodes</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11840"/>
+        <location filename="../src/interface/onglets.ui" line="11846"/>
         <source>Passages apogée/périgée</source>
         <translation>Passes to apogee/perigee</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11859"/>
+        <location filename="../src/interface/onglets.ui" line="11865"/>
         <source>Passages ombre/pénombre/lumière</source>
         <translation>Passes to shadow/penumbra/light</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="11878"/>
+        <location filename="../src/interface/onglets.ui" line="11884"/>
         <source>Passages terminateur</source>
         <translation>Terminator passes</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12116"/>
+        <location filename="../src/interface/onglets.ui" line="12122"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12121"/>
+        <location filename="../src/interface/onglets.ui" line="12127"/>
         <location filename="../src/interface/onglets.cpp" line="2731"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12126"/>
-        <location filename="../src/interface/onglets.ui" line="12146"/>
-        <location filename="../src/interface/onglets.ui" line="12171"/>
+        <location filename="../src/interface/onglets.ui" line="12132"/>
+        <location filename="../src/interface/onglets.ui" line="12152"/>
+        <location filename="../src/interface/onglets.ui" line="12177"/>
         <location filename="../src/interface/onglets.cpp" line="7370"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12131"/>
+        <location filename="../src/interface/onglets.ui" line="12137"/>
         <location filename="../src/interface/onglets.cpp" line="2984"/>
         <location filename="../src/interface/onglets.cpp" line="2997"/>
         <location filename="../src/interface/onglets.cpp" line="3072"/>
@@ -2571,29 +2571,29 @@ click on &apos;Update ISS maneuvers&apos;</translation>
         <translation>Download...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12136"/>
+        <location filename="../src/interface/onglets.ui" line="12142"/>
         <location filename="../src/interface/onglets.cpp" line="2734"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12141"/>
+        <location filename="../src/interface/onglets.ui" line="12147"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12151"/>
+        <location filename="../src/interface/onglets.ui" line="12157"/>
         <source>Copier dans le presse-papier</source>
         <translation>Copy to the clipboard</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12156"/>
-        <location filename="../src/interface/onglets.ui" line="12161"/>
+        <location filename="../src/interface/onglets.ui" line="12162"/>
+        <location filename="../src/interface/onglets.ui" line="12167"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.ui" line="12166"/>
+        <location filename="../src/interface/onglets.ui" line="12172"/>
         <source>Modifier coordonnées</source>
         <translation>Modify coordinates</translation>
     </message>
@@ -4025,8 +4025,8 @@ The file %1 does not contain the TLE of ISS</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="342"/>
         <location filename="../src/interface/previsat.ui" line="594"/>
-        <location filename="../src/interface/previsat.cpp" line="2944"/>
-        <location filename="../src/interface/previsat.cpp" line="2950"/>
+        <location filename="../src/interface/previsat.cpp" line="2946"/>
+        <location filename="../src/interface/previsat.cpp" line="2952"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4075,19 +4075,19 @@ The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="599"/>
-        <location filename="../src/interface/previsat.cpp" line="2951"/>
+        <location filename="../src/interface/previsat.cpp" line="2953"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="604"/>
-        <location filename="../src/interface/previsat.cpp" line="2952"/>
+        <location filename="../src/interface/previsat.cpp" line="2954"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="609"/>
-        <location filename="../src/interface/previsat.cpp" line="2953"/>
+        <location filename="../src/interface/previsat.cpp" line="2955"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4116,7 +4116,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="1171"/>
         <location filename="../src/interface/previsat.cpp" line="2555"/>
-        <location filename="../src/interface/previsat.cpp" line="3201"/>
+        <location filename="../src/interface/previsat.cpp" line="3203"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
@@ -4437,7 +4437,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1046"/>
-        <location filename="../src/interface/previsat.cpp" line="2970"/>
+        <location filename="../src/interface/previsat.cpp" line="2972"/>
         <source>Ouverture du fichier TLE %1 ...</source>
         <translation>Loading TLE file %1 ...</translation>
     </message>
@@ -4448,7 +4448,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1048"/>
-        <location filename="../src/interface/previsat.cpp" line="2972"/>
+        <location filename="../src/interface/previsat.cpp" line="2974"/>
         <source>Fichier TLE de %1 satellites</source>
         <translation>TLE file of %1 satellites</translation>
     </message>
@@ -4513,7 +4513,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2373"/>
         <location filename="../src/interface/previsat.cpp" line="2590"/>
-        <location filename="../src/interface/previsat.cpp" line="3159"/>
+        <location filename="../src/interface/previsat.cpp" line="3161"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -4548,54 +4548,54 @@ the video stream</translation>
         <translation>No available informations</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2944"/>
-        <location filename="../src/interface/previsat.cpp" line="2950"/>
+        <location filename="../src/interface/previsat.cpp" line="2946"/>
+        <location filename="../src/interface/previsat.cpp" line="2952"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2951"/>
+        <location filename="../src/interface/previsat.cpp" line="2953"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2952"/>
+        <location filename="../src/interface/previsat.cpp" line="2954"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2953"/>
+        <location filename="../src/interface/previsat.cpp" line="2955"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3075"/>
+        <location filename="../src/interface/previsat.cpp" line="3077"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3160"/>
-        <location filename="../src/interface/previsat.cpp" line="3202"/>
+        <location filename="../src/interface/previsat.cpp" line="3162"/>
+        <location filename="../src/interface/previsat.cpp" line="3204"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3183"/>
+        <location filename="../src/interface/previsat.cpp" line="3185"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3244"/>
+        <location filename="../src/interface/previsat.cpp" line="3246"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3246"/>
+        <location filename="../src/interface/previsat.cpp" line="3248"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3272"/>
+        <location filename="../src/interface/previsat.cpp" line="3274"/>
         <source>Impossible de lancer le flux vidéo : essayez de nouveau et/ou vérifiez votre connexion Internet</source>
         <translation>Impossible to launch the video stream : try again and/or check your Internet connexion</translation>
     </message>

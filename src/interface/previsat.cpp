@@ -1996,7 +1996,7 @@ void PreviSat::GestionTempsReel()
 
                 const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
 
-                if (_onglets->ui()->dateHeure4->isVisible()) {
+                if (_onglets->ui()->osculateurs->isVisible()) {
                     _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
                     _onglets->ui()->dateHeure4->setDateTime(_dateCourante->ToQDateTime(1));
                 } else {
@@ -2840,7 +2840,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     /* Corps de la methode */
     if (checked) {
 
-        // Positionnement de date actuelle et enchainement des calculs
+        // Positionnement de la date actuelle et enchainement des calculs
         _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
 
         TempsReel();
@@ -2849,10 +2849,10 @@ void PreviSat::on_tempsReel_toggled(bool checked)
         ui->pasManuel->setVisible(false);
         ui->valManuel->setVisible(false);
 
-        _onglets->ui()->dateHeure1->setVisible(true);
-        _onglets->ui()->dateHeure2->setVisible(true);
-        _onglets->ui()->dateHeure3->setVisible(false);
-        _onglets->ui()->dateHeure4->setVisible(false);
+        _onglets->ui()->formLayoutWidget_16->setVisible(false);
+        _onglets->ui()->formLayoutWidget_21->setVisible(false);
+        _onglets->ui()->formLayoutWidget_17->setVisible(true);
+        _onglets->ui()->formLayoutWidget_22->setVisible(true);
         _onglets->ui()->utcManuel->setVisible(false);
         _onglets->ui()->utcManuel2->setVisible(false);
         _onglets->ui()->frameSimu->setVisible(false);
@@ -2907,27 +2907,29 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         ui->valManuel->setVisible(true);
 
         const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss", "date format") + ((_onglets->ui()->syst12h->isChecked()) ? "a" : "");
-        _onglets->ui()->dateHeure3->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+        const QDateTime date =
+                Date(_dateCourante->jourJulienUTC(), (_onglets->ui()->utc->isChecked()) ? 0. : _dateCourante->offsetUTC()).ToQDateTime(1);
+
+        _onglets->ui()->dateHeure3->setDateTime(date);
         _onglets->ui()->dateHeure3->setDisplayFormat(fmt);
-        _onglets->ui()->dateHeure3->setVisible(true);
         if (_onglets->ui()->general->isVisible()) {
             _onglets->ui()->dateHeure3->setFocus();
         }
 
-        _onglets->ui()->dateHeure4->setDateTime((_onglets->ui()->utc->isChecked()) ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+        _onglets->ui()->dateHeure4->setDateTime(date);
         _onglets->ui()->dateHeure4->setDisplayFormat(fmt);
-        _onglets->ui()->dateHeure4->setVisible(true);
         if (_onglets->ui()->osculateurs->isVisible()) {
             _onglets->ui()->dateHeure4->setFocus();
         }
 
-        _onglets->ui()->dateHeure1->setVisible(false);
-        _onglets->ui()->dateHeure2->setVisible(false);
+        _onglets->ui()->formLayoutWidget_16->setVisible(true);
+        _onglets->ui()->formLayoutWidget_21->setVisible(true);
+        _onglets->ui()->formLayoutWidget_17->setVisible(false);
+        _onglets->ui()->formLayoutWidget_22->setVisible(false);
 
         _onglets->ui()->utcManuel->setVisible(true);
         _onglets->ui()->utcManuel2->setVisible(true);
         _onglets->ui()->frameSimu->setVisible(true);
-        ui->pasManuel->setFocus();
 
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);

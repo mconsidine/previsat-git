@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    28 juillet 2022
+ * >    29 juillet 2022
  *
  */
 
@@ -2690,9 +2690,9 @@ void Onglets::InitAffichageDemarrage()
     const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2", "Observer altitude");
     _ui->nvAltitude->setToolTip(fmt.arg(valAlt->bottom()).arg(unite).arg(valAlt->top()));
 
-    _ui->dateHeure3->setVisible(false);
+    _ui->formLayoutWidget_16->setVisible(false);
+    _ui->formLayoutWidget_21->setVisible(false);
     _ui->utcManuel->setVisible(false);
-    _ui->dateHeure4->setVisible(false);
     _ui->utcManuel2->setVisible(false);
     _ui->frameSimu->setVisible(false);
     _ui->pause->setEnabled(false);
