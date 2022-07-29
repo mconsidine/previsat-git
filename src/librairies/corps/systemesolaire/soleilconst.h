@@ -46,12 +46,12 @@
 /*
  * Enumerations
  */
-enum CorpsOccultant {
+enum class CorpsOccultant {
     TERRE,
     LUNE
 };
 
-enum TypeEclipse {
+enum class TypeEclipse {
     NON_ECLIPSE,
     ECLIPSE_PARTIELLE,
     ECLIPSE_ANNULAIRE,
@@ -62,6 +62,9 @@ enum TypeEclipse {
 /*
  * Definitions des constantes
  */
+// Demi-grand axe de l'orbite de la Terre
+static const double DEMI_GRAND_AXE_TERRE = 1.000001018;
+
 // Magnitude du centre du disque solaire
 static const double MAGNITUDE_SOLEIL = -26.98;
 

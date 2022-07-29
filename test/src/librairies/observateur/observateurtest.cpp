@@ -79,13 +79,13 @@ void ObservateurTest::testCalculPosVit()
 
     const Date date(2453736.5 - TJ2000, 0., false);
     obs.CalculPosVit(date);
-    const Vecteur3D pos(-935.5234975732391, 4099.350266913102, 4779.867771479537);
-    const Vecteur3D vit(-0.2989293707781232, -0.06821945729665689, 0.);
+    const Vecteur3D pos(-935.523497565, 4099.350266913102, 4779.867771479537);
+    const Vecteur3D vit(-0.2989293707781232, -0.068219457296, 0.);
     CompareVecteurs3D(obs.position(), pos);
     CompareVecteurs3D(obs.vitesse(), vit);
 
-    const Vecteur3D vec1(-0.16754305138612963, -0.974934435897221, -0.1463973074683832);
-    const Vecteur3D vec2(0.7341532887210003, -0.2224923497600931, 0.6414952088350873);
+    const Vecteur3D vec1(-0.16754305138463807, -0.974934435897221, -0.14639730746707988);
+    const Vecteur3D vec2(0.7341532887210003, -0.222492349758, 0.6414952088350873);
     const Vecteur3D vec3(-0.6579880504935971, 0., 0.7530283695901739);
     const Matrice3D mat(vec1, vec2, vec3);
     CompareMatrices3D(obs.rotHz(), mat);

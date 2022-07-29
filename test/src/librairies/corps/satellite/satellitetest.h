@@ -54,11 +54,10 @@ private:
 
     static void testCalculPosVit();
     static void testCalculElementsOsculateurs();
-    static void testCalculSatelliteEclipse();
-    static void testCalculMagnitude();
-    static void testCalculAOS();
-    static void testCalculNoeudOrbite();
-    static void testCalculOmbrePenombre();
+    static void testHasAos1();
+    static void testHasAos2();
+    static void testIsGeo1();
+    static void testIsGeo2();
 
 };
 

@@ -34,13 +34,18 @@
  *
  */
 
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMessageBox>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
 #include "tle.h"
+
+
+QMap<QString, TLE> TLE::_mapTLE;
 
 
 /**********
@@ -60,16 +65,7 @@ TLE::TLE()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nbOrbitesEpoque = 0;
-    _argpo = 0.;
-    _bstar = 0.;
-    _ecco = 0.;
-    _inclo = 0.;
-    _mo = 0.;
-    _ndd60 = 0.;
-    _ndt20 = 0.;
-    _no = 0.;
-    _omegao = 0.;
+    _elements = {};
 
     /* Retour */
     return;
@@ -87,145 +83,51 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2) :
 
     /* Corps du constructeur */
     // Numero NORAD
-    _norad = _ligne1.mid(2, 5);
+    _elements.norad = _ligne1.mid(2, 5);
 
     // Designation COSPAR
     int annee = _ligne1.mid(9, 2).toInt();
     annee += (annee < 57) ? AN2000 : 1900;
-    _cospar = QString("%1-%2").arg(annee).arg(_ligne1.mid(11, 6).trimmed());
+    _elements.cospar = QString("%1-%2").arg(annee).arg(_ligne1.mid(11, 6).trimmed());
 
     // Epoque
-    int an = _ligne1.mid(18, 2).toInt();
+    annee = _ligne1.mid(18, 2).toInt();
     const double jrs = _ligne1.mid(20, 12).toDouble();
-    an += (an < 57) ? AN2000 : 1900;
-    const Date date(an, 1, 1., 0.);
-    _epoque = Date(date.jourJulienUTC() + jrs - 1., 0., true);
+    annee += (annee < 57) ? AN2000 : 1900;
+    const Date date(annee, 1, 1., 0.);
+    _elements.epoque = Date(date.jourJulienUTC() + jrs - 1., 0., true);
 
     // Derivees du moyen mouvement
-    _ndt20 = (_ligne1.mid(33, 1).trimmed() + "0" + _ligne1.mid(34, 9)).toDouble();
-    _ndd60 = 1.e-5 * (_ligne1.mid(44, 6) + "e" + _ligne1.mid(50, 2)).toDouble();
+    _elements.ndt20 = (_ligne1.mid(33, 1).trimmed() + "0" + _ligne1.mid(34, 9)).toDouble();
+    _elements.ndd60 = 1.e-5 * (_ligne1.mid(44, 6) + "e" + _ligne1.mid(50, 2)).toDouble();
 
     // Coefficient pseudo-balistique
-    _bstar = 1.e-5 * (_ligne1.mid(53, 6) + "e" + _ligne1.mid(59, 2)).toDouble();
+    _elements.bstar = 1.e-5 * (_ligne1.mid(53, 6) + "e" + _ligne1.mid(59, 2)).toDouble();
 
     // Elements orbitaux moyens
     // Inclinaison
-    _inclo = _ligne2.mid(8, 8).toDouble();
+    _elements.inclo = _ligne2.mid(8, 8).toDouble();
 
     // Ascension droite du noeud ascendant
-    _omegao = _ligne2.mid(17, 8).toDouble();
+    _elements.omegao = _ligne2.mid(17, 8).toDouble();
 
     // Excentricite
-    _ecco = 1.e-7 * _ligne2.mid(26, 7).toDouble();
+    _elements.ecco = 1.e-7 * _ligne2.mid(26, 7).toDouble();
 
     // Argument du perigee
-    _argpo = _ligne2.mid(34, 8).toDouble();
+    _elements.argpo = _ligne2.mid(34, 8).toDouble();
 
     // Anomalie moyenne
-    _mo = _ligne2.mid(43, 8).toDouble();
+    _elements.mo = _ligne2.mid(43, 8).toDouble();
 
     // Moyen mouvement
-    _no = _ligne2.mid(52, 11).toDouble();
+    _elements.no = _ligne2.mid(52, 11).toDouble();
 
     // Nombre d'orbites a l'epoque
-    _nbOrbitesEpoque = _ligne2.mid(63, 5).toUInt();
+    _elements.nbOrbitesEpoque = _ligne2.mid(63, 5).toUInt();
 
     /* Retour */
     return;
-}
-
-
-/*
- * Accesseurs
- */
-unsigned int TLE::nbOrbitesEpoque() const
-{
-    return _nbOrbitesEpoque;
-}
-
-double TLE::argpo() const
-{
-    return _argpo;
-}
-
-double TLE::bstar() const
-{
-    return _bstar;
-}
-
-double TLE::ecco() const
-{
-    return _ecco;
-}
-
-Date TLE::epoque() const
-{
-    return _epoque;
-}
-
-double TLE::inclo() const
-{
-    return _inclo;
-}
-
-QString TLE::ligne0() const
-{
-    return _ligne0;
-}
-
-QString TLE::ligne1() const
-{
-    return _ligne1;
-}
-
-QString TLE::ligne2() const
-{
-    return _ligne2;
-}
-
-double TLE::mo() const
-{
-    return _mo;
-}
-
-double TLE::no() const
-{
-    return _no;
-}
-
-QString TLE::nom() const
-{
-    return _nom;
-}
-
-double TLE::omegao() const
-{
-    return _omegao;
-}
-
-QString TLE::norad() const
-{
-    return _norad;
-}
-
-QString TLE::cospar() const
-{
-    return _cospar;
-}
-
-double TLE::ndt20() const
-{
-    return _ndt20;
-}
-
-double TLE::ndd60() const
-{
-    return _ndd60;
-}
-
-Donnees TLE::donnees() const
-{
-    return _donnees;
 }
 
 
@@ -235,13 +137,14 @@ Donnees TLE::donnees() const
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec, const QStringList &listeSatellites,
-                                       const bool ajoutDonnees)
+QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
+                                                    const QStringList &listeSatellites, const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
-    QMap<QString, TLE> mapTLE;
+    QMap<QString, ElementsOrbitaux> mapElem;
 
     /* Initialisations */
+    _mapTLE.clear();
 
     /* Corps de la methode */
     QFile fi(nomFichier);
@@ -279,7 +182,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                         if ((idx >= 0) && (idx < donneesSat.size())) {
 
                             const QString donnee = donneesSat.mid(idx, lgRec);
-                            tle._donnees = Donnees(donnee);
+                            tle._elements.donnees = Donnees(donnee);
                             lig0 = donnee.mid(125).trimmed();
                         }
                     }
@@ -297,20 +200,21 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                 if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
 
                     tle = TLE(lig0, lig1, lig2);
-                    tle._nom = nomsat.trimmed();
+                    tle._elements.nom = nomsat.trimmed();
 
-                    if (!mapTLE.contains(tle._norad)) {
+                    if (!mapElem.contains(tle._elements.norad)) {
 
                         if (ajoutDonnees) {
 
-                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                            const int idx = lgRec * tle._norad.toInt();
+                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                            const int idx = lgRec * tle._elements.norad.toInt();
                             if ((idx >= 0) && (idx < donneesSat.size())) {
-                                tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
+                                tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
                             }
                         }
 
-                        mapTLE.insert(tle._norad, tle);
+                        mapElem.insert(tle._elements.norad, tle._elements);
+                        _mapTLE.insert(tle._elements.norad, tle);
                     }
                 }
             }
@@ -319,18 +223,18 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
     }
 
     /* Retour */
-    return mapTLE;
+    return mapElem;
 }
 
 /*
  * Lecture du fichier 3le
  */
-QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
+QList<ElementsOrbitaux> TLE::LectureFichier3le(const QString &nomFichier3le)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QList<TLE> tabtle;
+    QList<ElementsOrbitaux> tabtle;
 
     /* Corps de la methode */
     try {
@@ -351,7 +255,7 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
                     const QString lig2 = it.next();
 
                     const TLE tle(lig0, lig1, lig2);
-                    tabtle.append(tle);
+                    tabtle.append(tle._elements);
                 }
             }
             fichier.close();
@@ -383,21 +287,23 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
     const int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0) {
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                            "Le fichier %1 n'est pas un TLE").arg(nomFicOld), WARNING);
+                                            "Le fichier %1 n'est pas un TLE").arg(nomFicOld), MessageType::WARNING);
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleOld = LectureFichier(ficOld, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleOld = LectureFichier(ficOld, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, TLE> mapTleOld = _mapTLE;
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0) {
         throw PreviSatException(QObject::tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                            "Le fichier %1 n'est pas un TLE").arg(nomFicNew), WARNING);
+                                            "Le fichier %1 n'est pas un TLE").arg(nomFicNew), MessageType::WARNING);
     }
 
     // Lecture du TLE
-    QMap<QString, TLE> tleNew = LectureFichier(ficNew, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleNew = LectureFichier(ficNew, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, TLE> mapTleNew = _mapTLE;
 
     /* Corps de la methode */
     int nbMaj = 0;
@@ -413,14 +319,15 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
         if (listeNoradOld.contains(numeroNorad)) {
 
             // Mise a jour du TLE
-            if (tleOld[numeroNorad]._epoque.jourJulienUTC() < tleNew[numeroNorad]._epoque.jourJulienUTC()) {
+            if (tleOld[numeroNorad].epoque.jourJulienUTC() < tleNew[numeroNorad].epoque.jourJulienUTC()) {
 
                 tleOld[numeroNorad] = tleNew[numeroNorad];
-                tleOld[numeroNorad]._ligne0 = (tleNew[numeroNorad]._nom == numeroNorad) ? tleOld[numeroNorad]._ligne0 : tleNew[numeroNorad]._ligne0;
+                mapTleOld[numeroNorad]._ligne0 = (tleNew[numeroNorad].nom == numeroNorad) ?
+                            mapTleOld[numeroNorad]._ligne0 : mapTleNew[numeroNorad]._ligne0;
                 nbMaj++;
 
             } else {
-                compteRendu.append(tleOld[numeroNorad]._nom + "#" + tleOld[numeroNorad]._norad);
+                compteRendu.append(tleOld[numeroNorad].nom + "#" + tleOld[numeroNorad].norad);
             }
 
             listeNoradNew.removeOne(numeroNorad);
@@ -428,7 +335,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
 
         } else {
             if (nomFicOld != nomFicNew) {
-                compteRendu.append(tleOld[numeroNorad]._nom + "#" + tleOld[numeroNorad]._norad);
+                compteRendu.append(tleOld[numeroNorad].nom + "#" + tleOld[numeroNorad].norad);
             }
         }
     }
@@ -451,7 +358,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                                                     "récents.\nVoulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
-                                   message.arg(tleOld[numeroNorad]._nom).arg(tleOld[numeroNorad]._norad), QMessageBox::Yes |
+                                   message.arg(tleOld[numeroNorad].nom).arg(tleOld[numeroNorad].norad), QMessageBox::Yes |
                                    QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                 msgbox.setDefaultButton(QMessageBox::No);
@@ -482,7 +389,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                                                     "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
-                                   message.arg(tleNew[numeroNorad]._nom).arg(tleNew[numeroNorad]._norad), QMessageBox::Yes |
+                                   message.arg(tleNew[numeroNorad].nom).arg(tleNew[numeroNorad].norad), QMessageBox::Yes |
                                    QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll, 0);
 
                 msgbox.setDefaultButton(QMessageBox::No);
@@ -515,14 +422,14 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
 
             QTextStream flux(&fichier);
 
-            QMapIterator<QString, TLE> it(tleOld);
+            QMapIterator it(mapTleOld);
             while (it.hasNext()) {
                 it.next();
 
                 const TLE tle = it.value();
-                flux << tle._ligne0 << endl;
-                flux << tle._ligne1 << endl;
-                flux << tle._ligne2 << endl;
+                flux << tle._ligne0 << Qt::endl;
+                flux << tle._ligne1 << Qt::endl;
+                flux << tle._ligne2 << Qt::endl;
             }
         }
         fichier.close();
@@ -599,7 +506,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                         if (alarme) {
                             msg = QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier);
                         }
-                        throw PreviSatException(msg, WARNING);
+                        throw PreviSatException(msg, MessageType::WARNING);
                     }
                     VerifieLignes(lig1, lig2, nomsat, alarme);
 
@@ -613,19 +520,19 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 
             // Le fichier n'existe pas
             const QString msg = (alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
+            throw PreviSatException(msg, MessageType::WARNING);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
             const QString msg = (alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
+            throw PreviSatException(msg, MessageType::WARNING);
         }
 
         // Aucun satellite dans le fichier
         if (nb == 0) {
             const QString msg = (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "";
-            throw PreviSatException(msg, WARNING);
+            throw PreviSatException(msg, MessageType::WARNING);
         }
 
     } catch (PreviSatException &e) {
@@ -637,6 +544,15 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 
     /* Retour */
     return nb;
+}
+
+
+/*
+ * Accesseurs
+ */
+const ElementsOrbitaux &TLE::elements() const
+{
+    return _elements;
 }
 
 
@@ -732,21 +648,21 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     // Verification si les lignes sont vides
     if (li1.isEmpty() || li2.isEmpty()) {
         const QString msg = (alarme) ? QObject::tr("Une des lignes du TLE est vide") : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification du numero des lignes
     if (!li1.startsWith("1 ") || !li2.startsWith("2 ")) {
         const QString msg = (alarme) ?
                     QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).arg(li2.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
         const QString msg = (alarme) ? QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat)
                                        .arg(li2.mid(1, 6).trimmed()) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification des espaces dans les lignes
@@ -755,32 +671,32 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
             (li2.at(16) != ' ') || (li2.at(25) != ' ') || (li2.at(33) != ' ') || (li2.at(42) != ' ') || (li2.at(51) != ' ')) {
         const QString msg = (alarme) ?
                     QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification de la ponctuation des lignes
     if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') ||
             (li2.at(54) != '.')) {
         const QString msg = (alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
         const QString msg = (alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)").arg(nomsat)
                                        .arg(li1.mid(2, 5)).arg(li2.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1)) {
         const QString msg = (alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     if (!CheckSum(li2)) {
         const QString msg = (alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li1.mid(2, 5)) : "";
-        throw PreviSatException(msg, WARNING);
+        throw PreviSatException(msg, MessageType::WARNING);
     }
 
     /* Retour */

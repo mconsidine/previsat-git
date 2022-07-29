@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Onglets</class>
+ <widget class="QTabWidget" name="Onglets">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>792</width>
+    <height>241</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>792</width>
+    <height>241</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>792</width>
+    <height>241</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">TabWidget</string>
+  </property>
+  <property name="toolTip">
+   <string notr="true"/>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Triangular</enum>
+  </property>
+  <property name="currentIndex">
+   <number>0</number>
+  </property>
+  <widget class="QWidget" name="general">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <attribute name="title">
+    <string>Général</string>
+   </attribute>
+  </widget>
+  <widget class="QWidget" name="elementsOsculateurs">
+   <attribute name="title">
+    <string>Éléments osculateurs</string>
+   </attribute>
+  </widget>
+  <widget class="QWidget" name="informations">
+   <attribute name="title">
+    <string>Informations satellite</string>
+   </attribute>
+   <widget class="QStackedWidget" name="stackedWidget_informations">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>781</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="informationsSat"/>
+    <widget class="QWidget" name="rechercheSat"/>
+    <widget class="QWidget" name="informationsStationSpatiale"/>
+   </widget>
+   <widget class="QToolButton" name="infoSuiv">
+    <property name="geometry">
+     <rect>
+      <x>736</x>
+      <y>0</y>
+      <width>16</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::RightArrow</enum>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="infoPrec">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>0</y>
+      <width>16</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::LeftArrow</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="previsions">
+   <attribute name="title">
+    <string>Prévisions</string>
+   </attribute>
+   <widget class="QToolButton" name="previsionSuiv">
+    <property name="geometry">
+     <rect>
+      <x>736</x>
+      <y>0</y>
+      <width>16</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::RightArrow</enum>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="previsionPrec">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>0</y>
+      <width>16</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::LeftArrow</enum>
+    </property>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget_previsions">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>781</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="prevision"/>
+    <widget class="QWidget" name="flashs"/>
+    <widget class="QWidget" name="transits"/>
+    <widget class="QWidget" name="evenementsOrbitaux"/>
+   </widget>
+   <zorder>stackedWidget_previsions</zorder>
+   <zorder>previsionSuiv</zorder>
+   <zorder>previsionPrec</zorder>
+  </widget>
+  <widget class="QWidget" name="telescope">
+   <attribute name="title">
+    <string>Télescope</string>
+   </attribute>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

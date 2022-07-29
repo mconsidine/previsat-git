@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Transits</class>
+ <widget class="QFrame" name="Transits">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>792</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <widget class="QCheckBox" name="calcTransitLunaireJour">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>132</y>
+     <width>281</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Inclure transits/conjonctions lunaires de jour</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_52">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>108</y>
+     <width>241</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_transit2">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_elongationMaxCorps">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Élongation maximale avec le corps :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="elongationMaxCorps">
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>20.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>5.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_53">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>153</y>
+     <width>161</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_transit3">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_ageMaxTLETransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Age maximal du TLE :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="ageMaxTLETransit">
+      <property name="maximumSize">
+       <size>
+        <width>41</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>7.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>2.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="calculsTransit">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>185</y>
+     <width>101</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="text">
+    <string>Calculs</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_8">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>82</y>
+     <width>331</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_transit1">
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <item>
+     <layout class="QFormLayout" name="formLayout_transit1">
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_hauteurSatTransit">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Hauteur minimale du satellite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="hauteurSatTransit">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="currentText">
+         <string notr="true">10°</string>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>0°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>5°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>15°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>20°</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Autre...</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_7">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLineEdit" name="valHauteurSatTransit">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>1</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="inputMask">
+        <string notr="true">99</string>
+       </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
+       <property name="maxLength">
+        <number>2</number>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>6</y>
+     <width>361</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_dateTransits">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>1</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_dateInitialeTransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Date initiale :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_dateFinaleTransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Date finale :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDateTimeEdit" name="dateFinaleTransit">
+      <property name="minimumSize">
+       <size>
+        <width>145</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDateTimeEdit" name="dateInitialeTransit">
+      <property name="minimumSize">
+       <size>
+        <width>152</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="displayFormat">
+       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="effacerHeuresTransit">
+      <property name="minimumSize">
+       <size>
+        <width>110</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Effacer heures</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="majTleIss">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>185</y>
+     <width>161</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour TLE de l'ISS...</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_54">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>156</y>
+     <width>181</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_transit4">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_ageTLETransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Age du dernier TLE : </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="ageTLETransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3 jours</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBoxChoixCorps">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>50</y>
+     <width>71</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="title">
+    <string>Corps</string>
+   </property>
+   <widget class="QCheckBox" name="soleilTransit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font/>
+    </property>
+    <property name="text">
+     <string>Soleil</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="luneTransit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>44</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font/>
+    </property>
+    <property name="text">
+     <string>Lune</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_51">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>58</y>
+     <width>281</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_lieuTransit">
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_lieuxObservation4">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Lieu d'observation :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="lieuxObservation4">
+      <property name="minimumSize">
+       <size>
+        <width>151</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font/>
+      </property>
+      <property name="currentText">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="parametrageDefautTransit">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>185</y>
+     <width>161</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="text">
+    <string>Paramétrage par défaut</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="liste2">
+   <property name="geometry">
+    <rect>
+     <x>566</x>
+     <y>26</y>
+     <width>210</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+   </property>
+   <property name="textElideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="sortingEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

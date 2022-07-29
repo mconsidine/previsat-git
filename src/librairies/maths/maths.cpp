@@ -34,7 +34,11 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QObject>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include <QString>
 #include "maths.h"
 
@@ -48,16 +52,13 @@
  */
 
 /*
- * Accesseurs
- */
-
-/*
  * Methodes publiques
  */
 /*
  * Calcul d'un extremum par interpolation a l'ordre 3
  */
-QPair<double, double> Maths::CalculExtremumInterpolation3(const QList<double> &xtab, const QList<double> &ytab)
+QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
+                                                          const std::array<double, DEGRE_INTERPOLATION> &ytab)
 {
     /* Declarations des variables locales */
     QPair<double, double> res;
@@ -78,17 +79,21 @@ QPair<double, double> Maths::CalculExtremumInterpolation3(const QList<double> &x
 /*
  * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3
  */
-double Maths::CalculValeurXInterpolation3(const QList<double> &xtab, const QList<double> &ytab, const double yval, const double epsilon)
+double Maths::CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
+                                          const std::array<double, DEGRE_INTERPOLATION> &ytab,
+                                          const double yval,
+                                          const double epsilon)
 {
     /* Declarations des variables locales */
-    QList<double> yy;
+    std::array<double, DEGRE_INTERPOLATION> yy;
 
     /* Initialisations */
-    int iter = 0;
+    unsigned int iter = 0;
     double dn0 = 100000.;
     double n0 = 0.;
-    for (int i=0; i<3; i++) {
-        yy.append(ytab.at(i) - yval);
+
+    for (unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+        yy[i] = ytab.at(i) - yval;
     }
 
     const double a = yy.at(1) - yy.at(0);
@@ -97,14 +102,16 @@ double Maths::CalculValeurXInterpolation3(const QList<double> &xtab, const QList
 
     /* Corps de la methode */
     const double dy = 2. * yy.at(1);
-    while (fabs(dn0) >= epsilon && iter < 100) {
+    while ((fabs(dn0) >= epsilon) && (iter < ITERATIONS_MAX)) {
 
         const double tmp1 = c * n0;
         const double tmp2 = a + b + tmp1;
         dn0 = -(dy + n0 * tmp2) / (tmp1 + tmp2);
+
         if (fabs(dn0) > 1.) {
             dn0 = sgn(dn0);
         }
+
         n0 += dn0;
         iter++;
     }
@@ -116,7 +123,7 @@ double Maths::CalculValeurXInterpolation3(const QList<double> &xtab, const QList
 /*
  * Conversion d'un angle sous forme decimale en chaine de caracteres formattee
  */
-QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle, const int nbDeg, const int nbDecimales,
+QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales,
                              const bool signe, const bool espace)
 {
     /* Declarations des variables locales */
@@ -124,28 +131,29 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
 
     /* Initialisations */
     switch (typeAngle) {
-    case DEGRE:
+    case AngleFormatType::DEGRE:
         xval = xdec * RAD2DEG;
         break;
 
-    case HEURE1:
-    case HEURE2:
+    case AngleFormatType::HEURE1:
+    case AngleFormatType::HEURE2:
         xval = xdec * RAD2HEUR;
         break;
 
-    case ARCSEC:
-    case RADIAN:
-    case NO_TYPE:
+    case AngleFormatType::ARCSEC:
+    case AngleFormatType::RADIAN:
+    case AngleFormatType::NO_TYPE:
     default:
         xval = xdec;
     }
+
     double y = fabs(xval) + EPSDBL100;
 
     int degr = nbDeg;
     if (degr < 0) {
         degr = 0;
     }
-    if ((degr > 2) && ((typeAngle == HEURE1) || (typeAngle == HEURE2))) {
+    if ((degr > 2) && ((typeAngle == AngleFormatType::HEURE1) || (typeAngle == AngleFormatType::HEURE2))) {
         degr = 2;
     }
 
@@ -154,19 +162,22 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
         dec = 0;
     }
 
-    const bool tst1 = ((typeAngle == DEGRE) || (typeAngle == NO_TYPE));
-    const bool tst2 = (typeAngle == HEURE1);
+    const bool tst1 = ((typeAngle == AngleFormatType::DEGRE) || (typeAngle == AngleFormatType::NO_TYPE));
+    const bool tst2 = (typeAngle == AngleFormatType::HEURE1);
     const QChar chr = QChar('0');
-    const QString esp = (espace && (typeAngle != HEURE2)) ? " " : "";
+
+    const QString esp = (espace && (typeAngle != AngleFormatType::HEURE2)) ? " " : "";
     const QString signe0 = (sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
+
     const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h", "hour (angle)") : ":";
     const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m", "minute (angle)") : ":";
     const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s", "second (angle)") : "";
 
     /* Corps de la methode */
-    int deg = static_cast<int>(y);
-    int min = static_cast<int>(ARCMIN_PAR_DEG * (y - deg));
+    int deg = static_cast<int> (y);
+    int min = static_cast<int> (ARCMIN_PAR_DEG * (y - deg));
     double sec = ARCSEC_PAR_DEG * (y - deg) - ARCMIN_PAR_DEG * min;
+
     if (fabs(arrondi(sec, dec) - ARCSEC_PAR_MIN) < EPSDBL100) {
         sec = 0.;
         min++;
@@ -185,6 +196,11 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
 }
 
 
+/*
+ * Accesseurs
+ */
+
+
 /*************
  * PROTECTED *
  *************/
@@ -201,6 +217,4 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType typeAngle,
 /*
  * Methodes privees
  */
-
-
 

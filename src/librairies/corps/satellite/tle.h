@@ -46,13 +46,15 @@
 #include <QMap>
 #include "librairies/dates/date.h"
 #include "donnees.h"
+#include "elementsorbitaux.h"
 
 
 class TLE
 {
-#if BUILD_TEST == true
+#if (BUILD_TEST == true)
     friend class OngletsTest;
     friend class SatelliteTest;
+    friend class TLETest;
 #endif
 public:
 
@@ -74,38 +76,6 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    unsigned int nbOrbitesEpoque() const;
-
-    double argpo() const;
-    double bstar() const;
-    double ecco() const;
-    Date epoque() const;
-    double inclo() const;
-    QString ligne0() const;
-    QString ligne1() const;
-    QString ligne2() const;
-    double mo() const;
-    double no() const;
-    QString nom() const;
-    QString norad() const;
-    QString cospar() const;
-    double omegao() const;
-    double ndt20() const;
-    double ndd60() const;
-    Donnees donnees() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -115,17 +85,17 @@ public:
      * @param lgRec longueur d'une ligne dans les donnees satellite
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @param ajoutDonnees ajout des donnees satellite
-     * @return tableau de TLE
+     * @return tableau d'elements orbitaux
      */
-    static QMap<QString, TLE> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
+    static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                              const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
 
     /**
      * @brief LectureFichier3le Lecture du fichier 3le
      * @param nomFichier3le nom du fichier 3le
-     * @return tableau de TLE
+     * @return tableau d'elements orbitaux
      */
-    static QList<TLE> LectureFichier3le(const QString &nomFichier3le);
+    static QList<ElementsOrbitaux> LectureFichier3le(const QString &nomFichier3le);
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
@@ -148,11 +118,13 @@ public:
     static int VerifieFichier(const QString &nomFichier, const bool alarme = false);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    const ElementsOrbitaux &elements() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -166,39 +138,20 @@ protected:
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
-    unsigned int _nbOrbitesEpoque;
-
-    double _argpo;
-    double _bstar;
-    double _ecco;
-    double _inclo;
-    double _mo;
-    double _no;
-    double _omegao;
-    Date _epoque;
-
-    QString _nom;
     QString _ligne0;
     QString _ligne1;
     QString _ligne2;
-    QString _norad;
-    QString _cospar;
 
-    double _ndt20;
-    double _ndd60;
+    ElementsOrbitaux _elements;
 
-    Donnees _donnees;
+    static QMap<QString, TLE> _mapTLE;
 
 
     /*
      * Methodes privees
-     */    
+     */
     /**
      * @brief CheckSum Verification du checksum d'une ligne de TLE
      * @param ligne ligne d'un TLE
@@ -221,6 +174,7 @@ private:
      * @param alarme affichage d'une boite de message
      */
     static void VerifieLignes(const QString &li1, const QString &li2, const QString &nomsat, const bool alarme);
+
 
 };
 

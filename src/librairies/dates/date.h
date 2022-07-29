@@ -43,10 +43,16 @@
 #ifndef DATE_H
 #define DATE_H
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include <QList>
 #include "dateconst.h"
 
+
+class QLocale;
 
 class Date
 {
@@ -99,29 +105,6 @@ public:
 
 
     /*
-     * Accesseurs
-     */
-    int annee() const;
-    int heure() const;
-    int jour() const;
-    int minutes() const;
-    int mois() const;
-    double jourJulien() const;
-    double jourJulienTT() const;
-    double jourJulienUTC() const;
-    double offsetUTC() const;
-    double secondes() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -130,6 +113,13 @@ public:
      * @return ecart heure legale - UTC
      */
     static double CalculOffsetUTC(const QDateTime &date);
+
+    /**
+     * @brief ConversionDateIso Conversion d'une date au format ISO en Date
+     * @param dateFormatIso date au format ISO
+     * @return date
+     */
+    static Date ConversionDateIso(const QString &dateFormatIso);
 
     /**
      * @brief ConversionDateNasa Conversion d'une date au format NASA en Date
@@ -143,6 +133,14 @@ public:
      * @param dirLocalData chemin ou se trouve le fichier
      */
     static void Initialisation(const QString &dirLocalData);
+
+    /**
+     * @brief ToLongDate Conversion en chaine de caracteres longue
+     * @param locale locale
+     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @return chaine de caracteres contenant la date au format long
+     */
+    QString ToLongDate(const QString &locale, const DateSysteme &systeme) const;
 
     /**
      * @brief ToQDateTime Conversion de la date en QDateTime
@@ -174,25 +172,28 @@ public:
     QString ToShortDateAMJmillisec() const;
 
     /**
-     * @brief ToLongDate Conversion en chaine de caracteres longue
-     * @param locale locale
-     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
-     * @return chaine de caracteres contenant la date au format long
-     */
-    QString ToLongDate(const QString &locale, const DateSysteme &systeme) const;
-
-    /**
      * @brief operator = Affectation d'une date
      * @param date date
      */
     Date &operator = (const Date &date);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    int annee() const;
+    int heure() const;
+    int jour() const;
+    int minutes() const;
+    int mois() const;
+    double jourJulien() const;
+    double jourJulienTT() const;
+    double jourJulienUTC() const;
+    double offsetUTC() const;
+    double secondes() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -204,10 +205,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

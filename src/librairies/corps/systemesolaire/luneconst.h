@@ -54,6 +54,8 @@
 /*
  * Definitions des constantes
  */
+static const unsigned int NB_PHASES = 4;
+
 // Rayon equatorial lunaire (km)
 static const double RAYON_LUNAIRE = 1737.4;
 

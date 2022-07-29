@@ -58,18 +58,6 @@ public:
      */
 
     /*
-     * Accesseurs
-     */
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
      * Methodes publiques
      */
     /**
@@ -85,11 +73,13 @@ public:
      */
     static void setFenetreParent(QMainWindow *fenetre);
 
-protected:
 
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+
+
+protected:
 
     /*
      * Variables protegees
@@ -101,10 +91,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

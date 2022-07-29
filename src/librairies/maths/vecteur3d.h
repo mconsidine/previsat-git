@@ -73,20 +73,6 @@ public:
      */
     Vecteur3D(const double xval, const double yval, const double zval);
 
-    /*
-     * Accesseurs
-     */
-    double x() const;
-    double y() const;
-    double z() const;
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -122,7 +108,7 @@ public:
      * @param angle angle de rotation (rad)
      * @return vecteur issu de la rotation
      */
-    Vecteur3D Rotation(AxeType axe, double angle) const;
+    Vecteur3D Rotation(const AxeType &axe, const double angle) const;
 
     /**
      * @brief operator = Affectation d'un vecteur 3D
@@ -162,7 +148,12 @@ public:
      */
     friend inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire);
 
-    friend inline void operator *= (Vecteur3D &vecteur1, const double scalaire);
+    /**
+     * @brief operator *= Produit d'un vecteur avec un scalaire
+     * @param vecteur vecteur
+     * @param scalaire scalaire
+     */
+    friend inline void operator *= (Vecteur3D &vecteur, const double scalaire);
 
     /**
      * @brief operator * Produit scalaire de deux vecteurs 3D
@@ -181,11 +172,15 @@ public:
     friend inline Vecteur3D operator ^ (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double x() const;
+    double y() const;
+    double z() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -197,10 +192,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees
@@ -250,11 +241,14 @@ inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire)
     return (Vecteur3D(vecteur1._x * scalaire, vecteur1._y * scalaire, vecteur1._z * scalaire));
 }
 
-inline void operator *= (Vecteur3D &vecteur1, const double scalaire)
+/*
+ * Produit d'un vecteur par un scalaire
+ */
+inline void operator *= (Vecteur3D &vecteur, const double scalaire)
 {
-    vecteur1._x *= scalaire;
-    vecteur1._y *= scalaire;
-    vecteur1._z *= scalaire;
+    vecteur._x *= scalaire;
+    vecteur._y *= scalaire;
+    vecteur._z *= scalaire;
 }
 
 /*

@@ -30,17 +30,17 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2015
+ * >    14 juin 2022
  *
  */
 
 #include <cmath>
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
+#include "librairies/maths/matrice3d.h"
+#include "librairies/observateur/observateur.h"
 #include "soleil.h"
 
-
-static const double ax = 1.000001018;
 
 /**********
  * PUBLIC *
@@ -78,17 +78,47 @@ Soleil::Soleil(const Vecteur3D &pos)
 
 
 /*
- * Accesseurs
- */
-double Soleil::distanceUA() const
-{
-    return _distanceUA;
-}
-
-
-/*
  * Methodes publiques
  */
+/*
+ * Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
+ */
+void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+    Soleil soleil;
+    Ephemerides eph;
+
+    /* Initialisations */
+    Observateur obs = observateur;
+    Date dateCalcul(date.annee(), date.mois(), date.jour(), 0, 0, 0., 0.);
+    const Date dateFin(dateCalcul.jourJulienUTC() + 1., 0., false);
+    _ephem.clear();
+
+    /* Corps de la methode */
+    do {
+
+        obs.CalculPosVit(dateCalcul);
+
+        soleil.CalculPosition(dateCalcul);
+        soleil.CalculCoordHoriz(obs, true, true, true);
+
+        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
+        eph.hauteur = soleil.hauteur();
+        eph.azimut = soleil.azimut();
+
+        _ephem.append(eph);
+
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + NB_JOUR_PAR_MIN, 0., false);
+
+    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
+
+    Corps::CalculLeverMeridienCoucher(date);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul de la position du Soleil a partir du modele simplifie
  * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
@@ -125,7 +155,7 @@ void Soleil::CalculPosition(const Date &date)
     const double v = 2. * atan(sqrt((1. + e) / (1. - e)) * tan(0.5 * u));
 
     // Rayon vecteur
-    _distanceUA = ax * (1. - e * cos(u));
+    _distanceUA = DEMI_GRAND_AXE_TERRE * (1. - e * cos(u));
 
     // Longitude apparente
     _lonEcl = lp + v - DEG2RAD * 0.00569;
@@ -136,6 +166,15 @@ void Soleil::CalculPosition(const Date &date)
 
     /* Retour */
     return;
+}
+
+
+/*
+ * Accesseurs
+ */
+double Soleil::distanceUA() const
+{
+    return _distanceUA;
 }
 
 
@@ -155,6 +194,4 @@ void Soleil::CalculPosition(const Date &date)
 /*
  * Methodes privees
  */
-
-
 

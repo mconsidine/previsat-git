@@ -50,7 +50,7 @@
 #include "phasage.h"
 #include "sgp4.h"
 #include "signal.h"
-#include "tle.h"
+#include "elementsorbitaux.h"
 
 
 struct ElementsTraceCiel {
@@ -71,9 +71,10 @@ struct ElementsTraceSol {
 
 class Satellite : public Corps
 {
-#if BUILD_TEST == true
+#if (BUILD_TEST == true)
     friend class OngletsTest;
     friend class SatelliteTest;
+    friend class EvenementsTest;
 #endif
 public:
 
@@ -86,53 +87,25 @@ public:
     Satellite();
 
     /**
-     * @brief Satellite Constructeur a partir d'un TLE
-     * @param xtle TLE
+     * @brief Satellite Constructeur a partir des elements orbitaux
+     * @param elem elements orbitaux
      */
-    explicit Satellite(const TLE &xtle) :
-        _tle(xtle) {
+    explicit Satellite(const ElementsOrbitaux &elem) :
+        _elementsOrbitaux(elem) {
 
         _nbOrbites = 0;
-        _ageTLE = 0.;
+        _ageElementsOrbitaux = 0.;
         _beta = 0.;
         _deltaNbOrb = -1;
         _sgp4.setInit(false);
     }
 
     /**
-     * @brief Satellite Constructeur a partir d'un tableau de TLE
-     * @param tabtle tableau de TLE
+     * @brief Satellite Constructeur a partir d'un tableau d'elements orbitaux
+     * @param listElements tableau de TLE
      */
-    explicit Satellite(const QList<TLE> &tabtle);
+    explicit Satellite(const QList<ElementsOrbitaux> &listElements);
 
-
-    /*
-     * Accesseurs
-     */
-    double ageTLE() const;
-    double beta() const;
-
-    char method() const;
-    int deltaNbOrb() const;
-    unsigned int nbOrbites() const;
-
-    TLE tle() const;
-    ConditionEclipse conditionEclipse() const;
-    ElementsOsculateurs elements() const;
-    Magnitude magnitude() const;
-    Phasage phasage() const;
-    Signal signal() const;
-    QList<ElementsTraceSol> traceAuSol() const;
-    QList<ElementsTraceCiel> traceCiel() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -172,7 +145,7 @@ public:
      * @param acalcEclipseLune calcul des eclipses produites par la Lune
      * @param effetEclipsePartielle prise en compte de l'effet des eclipses partielles
      * @param extinction prise en compte de l'extinction atmospherique
-     * @param refraction prise en compte de la refraction atmospherique
+     * @param refractionAtmospherique prise en compte de la refraction atmospherique
      * @param traceCiel calcul de la trace dans le ciel
      * @param visibilite calcul de la zone de visibilite
      * @param satellites liste de satellites
@@ -225,11 +198,27 @@ public:
     bool isGeo() const;
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double ageElementsOrbitaux() const;
+    double beta() const;
+
+    char method() const;
+    int deltaNbOrb() const;
+    unsigned int nbOrbites() const;
+
+    const ElementsOrbitaux &elementsOrbitaux() const;
+    const ConditionEclipse &conditionEclipse() const;
+    const ElementsOsculateurs &elementsOsculateurs() const;
+    const Magnitude &magnitude() const;
+    const Phasage &phasage() const;
+    const Signal &signal() const;
+    const QList<ElementsTraceSol> &traceAuSol() const;
+    const QList<ElementsTraceCiel> &traceCiel() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -243,22 +232,18 @@ protected:
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
     int _deltaNbOrb;
     unsigned int _nbOrbites;
-    double _ageTLE;
+    double _ageElementsOrbitaux;
     double _beta;
 
     SGP4 _sgp4;
-    TLE _tle;
-    QList<TLE> _tabtle;
+    ElementsOrbitaux _elementsOrbitaux;
+    QList<ElementsOrbitaux> _listElements;
 
-    ElementsOsculateurs _elements;
+    ElementsOsculateurs _elementsOsculateurs;
     Phasage _phasage;
     Signal _signal;
 

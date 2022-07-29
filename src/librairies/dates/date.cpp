@@ -34,19 +34,24 @@
  *
  */
 
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "date.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 
 
+QList<QPair<double, double> > Date::_ecartsTAI_UTC;
+
+
 /**********
  * PUBLIC *
  **********/
-QList<QPair<double, double> > Date::_ecartsTAI_UTC;
+
 
 /*
  * Constructeurs
@@ -119,29 +124,29 @@ Date::Date(const double jourJulien2000, const double offset, const bool acalc)
 
         int a;
         const double j1 = jourJulien2000 + 0.5;
-        int z = static_cast<int>(floor(j1));
+        int z = static_cast<int> (floor(j1));
         const double f = j1 - z;
-        z += static_cast<int>(TJ2000 + EPSDBL100);
+        z += static_cast<int> (TJ2000 + EPSDBL100);
 
         if (z < 2299161) {
             a = z;
         } else {
-            const int al = static_cast<int>(floor((z - 1867216.25) * (1. / 36524.25)));
+            const int al = static_cast<int> (floor((z - 1867216.25) * (1. / 36524.25)));
             a = z + 1 + al - al / 4;
         }
 
         const int b = a + 1524;
-        const int c = static_cast<int>(floor((b - 122.1) * NB_ANJ_PAR_JOURS));
-        const int d = static_cast<int>(floor(NB_JOURS_PAR_ANJ * c));
-        const int e = static_cast<int>(floor((b - d) * (1. / 30.6001)));
+        const int c = static_cast<int> (floor((b - 122.1) * NB_ANJ_PAR_JOURS));
+        const int d = static_cast<int> (floor(NB_JOURS_PAR_ANJ * c));
+        const int e = static_cast<int> (floor((b - d) * (1. / 30.6001)));
         const double j0 = b - d - floor(30.6001 * e) + f;
 
         _mois = (e < 14) ? e - 1 : e - 13;
         _annee = (_mois > 2) ? c - 4716 : c - 4715;
-        _jour = static_cast<int>(floor(j0));
+        _jour = static_cast<int> (floor(j0));
 
-        _heure = static_cast<int>(floor(NB_HEUR_PAR_JOUR * (j0 - _jour)));
-        _minutes = static_cast<int>(floor(NB_MIN_PAR_JOUR * (j0 - _jour) - NB_MIN_PAR_HEUR * _heure));
+        _heure = static_cast<int> (floor(NB_HEUR_PAR_JOUR * (j0 - _jour)));
+        _minutes = static_cast<int> (floor(NB_MIN_PAR_JOUR * (j0 - _jour) - NB_MIN_PAR_HEUR * _heure));
         _secondes = NB_SEC_PAR_JOUR * (j0 - _jour) - NB_SEC_PAR_HEUR * _heure - NB_SEC_PAR_MIN * _minutes;
     }
 
@@ -167,9 +172,9 @@ Date::Date(const int an, const int mo, const double xjour, const double offset)
     /* Corps du constructeur */
     _annee = an;
     _mois = mo;
-    _jour = static_cast<int>(floor(xjour));
-    _heure = static_cast<int>(floor(NB_HEUR_PAR_JOUR * (xjour - _jour)));
-    _minutes = static_cast<int>(floor(NB_MIN_PAR_JOUR * (xjour - _jour) - NB_MIN_PAR_HEUR * _heure));
+    _jour = static_cast<int> (floor(xjour));
+    _heure = static_cast<int> (floor(NB_HEUR_PAR_JOUR * (xjour - _jour)));
+    _minutes = static_cast<int> (floor(NB_MIN_PAR_JOUR * (xjour - _jour) - NB_MIN_PAR_HEUR * _heure));
     _secondes = NB_SEC_PAR_JOUR * (xjour - _jour) - NB_SEC_PAR_HEUR * _heure - NB_SEC_PAR_MIN * _minutes;
 
     _offsetUTC = offset;
@@ -204,6 +209,256 @@ Date::Date(const int an, const int mo, const int j, const int h, const int min, 
     /* Retour */
     return;
 }
+
+
+/*
+ * Methodes publiques
+ */
+/*
+ * Calcul de l'ecart Heure locale - UTC
+ */
+double Date::CalculOffsetUTC(const QDateTime &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QDateTime utc(date);
+    utc.setTimeSpec(Qt::UTC);
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return (static_cast<double> (date.secsTo(utc)) * NB_JOUR_PAR_SEC);
+}
+
+/*
+ * Conversion d'une date au format ISO en Date
+ */
+Date Date::ConversionDateIso(const QString &dateFormatIso)
+{
+    /* Declarations des variables locales */
+    Date date;
+
+    /* Initialisations */
+    const QDateTime dateTime = QDateTime::fromString(dateFormatIso, Qt::ISODate);
+    const double millisec = QString("0." + dateFormatIso.mid(20)).toDouble();
+
+    /* Corps de la methode */
+    if (dateTime.isValid()) {
+
+        const int annee = dateTime.date().year();
+        const int mois = dateTime.date().month();
+        const int jour = dateTime.date().day();
+        const int heure = dateTime.time().hour();
+        const int minutes = dateTime.time().minute();
+        const double secondes = dateTime.time().second() + millisec;
+
+        date = Date(annee, mois, jour, heure, minutes, secondes, 0.);
+    }
+
+    /* Retour */
+    return date;
+}
+
+/*
+ * Conversion d'une date au format NASA en Date
+ */
+Date Date::ConversionDateNasa(const QString &dateFormatNasa)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QStringList dateNasa = dateFormatNasa.split("T");
+    const QStringList anneeNbJours = dateNasa.at(0).split("-");
+    const int an = anneeNbJours.at(0).toInt();
+    const int nbJours = anneeNbJours.at(1).toInt();
+
+    const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", Qt::SkipEmptyParts);
+    const int hr = heures.at(0).toInt();
+    const int mn = heures.at(1).toInt();
+    const double sec = heures.at(2).toDouble();
+
+    const double jours = nbJours + hr * NB_JOUR_PAR_HEUR + mn * NB_JOUR_PAR_MIN + sec * NB_JOUR_PAR_SEC;
+
+    const Date date(an, 1, 1., 0.);
+
+    /* Retour */
+    return Date(date.jourJulien() + jours - 1., 0., true);
+}
+
+/*
+ * Lecture du fichier taiutc.dat
+ */
+void Date::Initialisation(const QString &dirLocalData)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
+
+        QFile fi(fic);
+        if (fi.exists() && (fi.size() != 0)) {
+
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+                QTextStream flux(&fi);
+
+                _ecartsTAI_UTC.clear();
+                while (!flux.atEnd()) {
+
+                    const QString ligne = flux.readLine();
+
+                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+                        const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
+                        _ecartsTAI_UTC.append(pair);
+                    }
+                }
+            }
+            fi.close();
+
+        } else {
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas").arg(QDir::toNativeSeparators(fic)), MessageType::WARNING);
+        }
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Conversion de la date en chaine de caracteres
+ */
+QString Date::ToLongDate(const QString &locale, const DateSysteme &systeme) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double offset = (fabs(_offsetUTC) > EPSDBL100) ? Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1)) : 0.;
+    const QDateTime qdate = Date((*this).jourJulien() - offset + EPS_DATES, offset).ToQDateTime(1);
+
+    /* Corps de la methode */
+    QString res = QLocale(locale).toString(qdate, QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") +
+                                           ((systeme == DateSysteme::SYSTEME_12H) ? "a" : ""));
+    res[0] = res[0].toUpper();
+
+    /* Retour */
+    return (res);
+}
+
+/*
+ * Conversion de la date en QDateTime
+ */
+QDateTime Date::ToQDateTime(const int type) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const int sec = (type == 0) ? 0 : qRound(_secondes);
+
+    /* Retour */
+    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)).addSecs(qRound(_offsetUTC * NB_SEC_PAR_JOUR)));
+}
+
+/*
+ * Conversion en chaine de caracteres courte
+ */
+QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const int fmt = (format == DateFormat::FORMAT_COURT) ? 2 : static_cast<int> (format) + 3;
+    const double tmp = floor(_jourJulien);
+    const QString chaine = " %1:%2:%3%4";
+
+    /* Corps de la methode */
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, static_cast<int> (format)) * NB_JOUR_PAR_SEC + tmp;
+    const Date date(jjsec + EPSDBL100, 0.);
+    const QDateTime date2 = date.ToQDateTime(0);
+    const QPair<int, QString> hr = getHrAmPm(date2.time().hour(), systeme);
+
+    const QString res = date2.toString(QObject::tr("dd/MM/yyyy", "Date format")) + chaine.arg(hr.first, 2, 10, QChar('0'))
+            .arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', static_cast<int> (format), QChar('0')).arg(hr.second);
+
+    /* Retour */
+    return (res);
+}
+
+/*
+ * Conversion en chaine de caracteres courte (AAAA/MM/JJ)
+ */
+QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const int fmt = (format == DateFormat::FORMAT_COURT) ? 2 : static_cast<int> (format) + 3;
+    const double tmp = floor(_jourJulien);
+    QString res = "%1/%2/%3 %4:%5:%6%7";
+
+    /* Corps de la methode */
+    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, static_cast<int> (format)) * NB_JOUR_PAR_SEC + tmp;
+    const Date date(jjsec + EPSDBL100, _offsetUTC);
+    const QPair<int, QString> hr = getHrAmPm(date._heure, systeme);
+
+    /* Retour */
+    return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0'))
+            .arg(date._jour, 2, 10, QChar('0')).arg(hr.first, 2, 10, QChar('0'))
+            .arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', static_cast<int> (format), QChar('0')).arg(hr.second));
+}
+
+/*
+ * Conversion en chaine de caracteres avec une precision a la milliseconde (UTC)
+ */
+QString Date::ToShortDateAMJmillisec() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmtDate = "yyyy/MM/dd HH:mm:ss.zzz";
+
+    /* Corps de la methode */
+    const int sec = static_cast<int> (_secondes + EPS_DATES);
+    const int msec = static_cast<int> (floor(1000. * (_secondes - sec) + 0.5));
+    const QDateTime date(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec, msec));
+
+    /* Retour */
+    return date.toString(fmtDate);
+}
+
+/*
+ * Affectation d'une date
+ */
+Date &Date::operator = (const Date &date)
+{
+    _annee = date._annee;
+    _mois = date._mois;
+    _jour = date._jour;
+    _heure = date._heure;
+    _minutes = date._minutes;
+    _secondes = date.secondes();
+
+    _jourJulien = date._jourJulien;
+    _jourJulienTT = date._jourJulienTT;
+    _jourJulienUTC = date._jourJulienUTC;
+    _offsetUTC = date._offsetUTC;
+
+    _deltaAT = date._deltaAT;
+
+    return (*this);
+}
+
 
 /*
  * Accesseurs
@@ -256,224 +511,6 @@ double Date::offsetUTC() const
 double Date::secondes() const
 {
     return _secondes;
-}
-
-
-/*
- * Methodes publiques
- */
-/*
- * Calcul de l'ecart Heure locale - UTC
- */
-double Date::CalculOffsetUTC(const QDateTime &date)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    QDateTime utc(date);
-    utc.setTimeSpec(Qt::UTC);
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return (static_cast<double>(date.secsTo(utc)) * NB_JOUR_PAR_SEC);
-}
-
-/*
- * Conversion d'une date au format NASA en Date
- */
-Date Date::ConversionDateNasa(const QString &dateFormatNasa)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QStringList dateNasa = dateFormatNasa.split("T");
-    const QStringList anneeNbJours = dateNasa.at(0).split("-");
-    const int an = anneeNbJours.at(0).toInt();
-    const int nbJours = anneeNbJours.at(1).toInt();
-
-    const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", QString::SkipEmptyParts);
-    const int hr = heures.at(0).toInt();
-    const int mn = heures.at(1).toInt();
-    const double sec = heures.at(2).toDouble();
-
-    const double jours = nbJours + hr * NB_JOUR_PAR_HEUR + mn * NB_JOUR_PAR_MIN + sec * NB_JOUR_PAR_SEC;
-
-    const Date date(an, 1, 1., 0.);
-
-    /* Retour */
-    return Date(date.jourJulien() + jours - 1., 0., true);
-}
-
-/*
- * Lecture du fichier taiutc.dat
- */
-void Date::Initialisation(const QString &dirLocalData)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
-
-        QFile fi(fic);
-        if (fi.exists() && (fi.size() != 0)) {
-
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-                QTextStream flux(&fi);
-
-                _ecartsTAI_UTC.clear();
-                while (!flux.atEnd()) {
-                    const QString ligne = flux.readLine();
-
-                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                        const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
-                        _ecartsTAI_UTC.append(pair);
-                    }
-                }
-            }
-            fi.close();
-
-        } else {
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas").arg(QDir::toNativeSeparators(fic)), WARNING);
-        }
-
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Conversion de la date en QDateTime
- */
-QDateTime Date::ToQDateTime(const int type) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const int sec = (type == 0) ? 0 : qRound(_secondes);
-
-    /* Retour */
-    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)).addSecs(qRound(_offsetUTC * NB_SEC_PAR_JOUR)));
-}
-
-/*
- * Conversion en chaine de caracteres courte
- */
-QString Date::ToShortDate(const DateFormat &format, const DateSysteme &systeme) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
-    const double tmp = floor(_jourJulien);
-    const QString chaine = " %1:%2:%3%4";
-
-    /* Corps de la methode */
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, format) * NB_JOUR_PAR_SEC + tmp;
-    const Date date(jjsec + EPSDBL100, 0.);
-    const QDateTime date2 = date.ToQDateTime(0);
-    const QPair<int, QString> hr = getHrAmPm(date2.time().hour(), systeme);
-
-    const QString res = date2.toString(QObject::tr("dd/MM/yyyy", "Date format")) + chaine.arg(hr.first, 2, 10, QChar('0')).
-            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second);
-
-    /* Retour */
-    return (res);
-}
-
-/*
- * Conversion en chaine de caracteres courte (AAAA/MM/JJ)
- */
-QString Date::ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const int fmt = (format == FORMAT_COURT) ? 2 : format + 3;
-    const double tmp = floor(_jourJulien);
-    QString res = "%1/%2/%3 %4:%5:%6%7";
-
-    /* Corps de la methode */
-    const double jjsec = arrondi(NB_SEC_PAR_JOUR * (_jourJulien - tmp) + EPS_DATES, format) * NB_JOUR_PAR_SEC + tmp;
-    const Date date(jjsec + EPSDBL100, _offsetUTC);
-    const QPair<int, QString> hr = getHrAmPm(date._heure, systeme);
-
-    /* Retour */
-    return (res.arg(date._annee, 4, 10, QChar('0')).arg(date._mois, 2, 10, QChar('0')).
-            arg(date._jour, 2, 10, QChar('0')).arg(hr.first, 2, 10, QChar('0')).
-            arg(date._minutes, 2, 10, QChar('0')).arg(date._secondes, fmt, 'f', format, QChar('0')).arg(hr.second));
-}
-
-/*
- * Conversion en chaine de caracteres avec une precision a la milliseconde (UTC)
- */
-QString Date::ToShortDateAMJmillisec() const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString fmtDate = "yyyy/MM/dd HH:mm:ss.zzz";
-
-    /* Corps de la methode */
-    const int sec = static_cast<int> (_secondes + EPS_DATES);
-    const int msec = static_cast<int> (floor(1000. * (_secondes - sec) + 0.5));
-    const QDateTime date(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec, msec));
-
-    /* Retour */
-    return date.toString(fmtDate);
-}
-
-/*
- * Conversion de la date en chaine de caracteres
- */
-QString Date::ToLongDate(const QString &locale, const DateSysteme &systeme) const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const double offset = (fabs(_offsetUTC) > EPSDBL100) ? Date::CalculOffsetUTC(Date(*this, _offsetUTC).ToQDateTime(1)) : 0.;
-    const QDateTime qdate = Date((*this).jourJulien() - offset + EPS_DATES, offset).ToQDateTime(1);
-
-    /* Corps de la methode */
-    QString res = QLocale(locale).toString(qdate, QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") + ((systeme == SYSTEME_12H) ? "a" : ""));
-    res[0] = res[0].toUpper();
-
-    /* Retour */
-    return (res);
-}
-
-/*
- * Affectation d'une date
- */
-Date &Date::operator = (const Date &date)
-{
-    _annee = date._annee;
-    _mois = date._mois;
-    _jour = date._jour;
-    _heure = date._heure;
-    _minutes = date._minutes;
-    _secondes = date.secondes();
-
-    _jourJulien = date._jourJulien;
-    _jourJulienTT = date._jourJulienTT;
-    _jourJulienUTC = date._jourJulienUTC;
-    _offsetUTC = date._offsetUTC;
-
-    _deltaAT = date._deltaAT;
-
-    return (*this);
 }
 
 
@@ -538,7 +575,7 @@ void Date::getDeltaAT()
     try {
 
         if (_ecartsTAI_UTC.isEmpty()) {
-            throw PreviSatException(QObject::tr("Ecarts TAI-UTC non initialisés"), WARNING);
+            throw PreviSatException(QObject::tr("Ecarts TAI-UTC non initialisés"), MessageType::WARNING);
         }
 
         if (_jourJulienUTC < (_ecartsTAI_UTC.at(0).first - TJ2000)) {
@@ -603,12 +640,12 @@ void Date::getDeltaAT()
         } else {
 
             // Dates ulterieures au 1er janvier 1972
-            QListIterator<QPair<double, double> > it(_ecartsTAI_UTC);
+            QListIterator it(_ecartsTAI_UTC);
             it.toBack();
 
             while (it.hasPrevious()) {
                 const QPair<double, double> pair = it.previous();
-                if (_jourJulienUTC >= pair.first - TJ2000) {
+                if (_jourJulienUTC >= (pair.first - TJ2000)) {
                     _deltaAT = pair.second;
                     it.toFront();
                 }
@@ -635,7 +672,7 @@ QPair<int, QString> Date::getHrAmPm(const int heure, const DateSysteme &systeme)
     res.second = " ";
 
     /* Corps de la methode */
-    if (systeme == SYSTEME_12H) {
+    if (systeme == DateSysteme::SYSTEME_12H) {
         res.first = heure % 12;
         res.second = ((res.first >= 0) && (heure < 12)) ? "a" : "p";
         if (res.first == 0) {

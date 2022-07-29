@@ -34,49 +34,60 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QObject>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
+#include "librairies/observateur/observateur.h"
 #include "lune.h"
 #include "soleil.h"
 
 
-static const double _tabLon[60] = { 6288774., 1274027., 658314., 213618., -185116., -114332., 58793., 57066., 53322., 45758., -40923.,
-                                    -34720., -30383., 15327., -12528., 10980., 10675., 10034., 8548., -7888., -6766., -5163., 4987., 4036.,
-                                    3994., 3861., 3665., -2689., -2602., 2390., -2348., 2236., -2120., -2069., 2048., -1773., -1595., 1215.,
-                                    -1110., -892., -810., 759., -713., -700., 691., 596., 549., 537., 520., -487., -399., -381., 351., -340.,
-                                    330., 327., -323., 299., 294., 0. };
+static const std::array<double, 60> _tabLon = { 6288774., 1274027., 658314., 213618., -185116., -114332., 58793., 57066., 53322., 45758., -40923.,
+                                                -34720., -30383., 15327., -12528., 10980., 10675., 10034., 8548., -7888., -6766., -5163., 4987., 4036.,
+                                                3994., 3861., 3665., -2689., -2602., 2390., -2348., 2236., -2120., -2069., 2048., -1773., -1595., 1215.,
+                                                -1110., -892., -810., 759., -713., -700., 691., 596., 549., 537., 520., -487., -399., -381., 351., -340.,
+                                                330., 327., -323., 299., 294., 0. };
 
-static const double _tabDist[60] = { -20905355., -3699111., -2955968., -569925., 48888., -3149., 246158., -152138., -170733., -204586.,
-                                     -129620., 108743., 104755., 10321., 0., 79661., -34782., -23210., -21636., 24208., 30824., -8379.,
-                                     -16675., -12831., -10445., -11650., 14403., -7003., 0., 10056., 6322., -9884., 5751., 0., -4950.,
-                                     4130., 0., -3958., 0., 3258., 2616., -1897., -2117., 2354., 0., 0., -1423., -1117., -1571., -1739.,
-                                     0., -4421., 0., 0., 0., 0., 1165., 0., 0., 8752. };
+static const std::array<double, 60> _tabDist = { -20905355., -3699111., -2955968., -569925., 48888., -3149., 246158., -152138., -170733., -204586.,
+                                                 -129620., 108743., 104755., 10321., 0., 79661., -34782., -23210., -21636., 24208., 30824., -8379.,
+                                                 -16675., -12831., -10445., -11650., 14403., -7003., 0., 10056., 6322., -9884., 5751., 0., -4950.,
+                                                 4130., 0., -3958., 0., 3258., 2616., -1897., -2117., 2354., 0., 0., -1423., -1117., -1571., -1739.,
+                                                 0., -4421., 0., 0., 0., 0., 1165., 0., 0., 8752. };
 
-static const double _tabLat[60] = { 5128122., 280602., 277693., 173237., 55413., 46271., 32573., 17198., 9266., 8822., 8216., 4324., 4200., -3359.,
-                                    2463., 2211., 2065., -1870., 1828., -1794., -1749., -1565., -1491., -1475., -1410., -1344., -1335., 1107., 1021.,
-                                    833., 777., 671., 607., 596., 491., -451., 439., 422., 421., -366., -351., 331., 315., 302., -283., -229., 223.,
-                                    223., -220., -220., -185., 181., -177., 176., 166., -164., 132., -119., 115., 107. };
+static const std::array<double, 60> _tabLat = { 5128122., 280602., 277693., 173237., 55413., 46271., 32573., 17198., 9266., 8822., 8216., 4324., 4200.,
+                                                -3359., 2463., 2211., 2065., -1870., 1828., -1794., -1749., -1565., -1491., -1475., -1410., -1344.,
+                                                -1335., 1107., 1021., 833., 777., 671., 607., 596., 491., -451., 439., 422., 421., -366., -351., 331.,
+                                                315., 302., -283., -229., 223., 223., -220., -220., -185., 181., -177., 176., 166., -164., 132., -119.,
+                                                115., 107. };
 
-static const int _tabCoef1[60][4] = { {0, 0, 1, 0}, {2, 0, -1, 0}, {2, 0, 0, 0}, {0, 0, 2, 0}, {0, 1, 0, 0}, {0, 0, 0, 2}, {2, 0, -2, 0},
-                                      {2, -1, -1, 0}, {2, 0, 1, 0}, {2, -1, 0, 0}, {0, 1, -1, 0}, {1, 0, 0, 0}, {0, 1, 1, 0}, {2, 0, 0, -2},
-                                      {0, 0, 1, 2}, {0, 0, 1, -2}, {4, 0, -1, 0}, {0, 0, 3, 0}, {4, 0, -2, 0}, {2, 1, -1, 0}, {2, 1, 0, 0},
-                                      {1, 0, -1, 0}, {1, 1, 0, 0}, {2, -1, 1, 0}, {2, 0, 2, 0}, {4, 0, 0, 0}, {2, 0, -3, 0}, {0, 1, -2, 0},
-                                      {2, 0, -1, 2}, {2, -1, -2, 0}, {1, 0, 1, 0}, {2, -2, 0, 0}, {0, 1, 2, 0}, {0, 2, 0, 0}, {2, -2, -1, 0},
-                                      {2, 0, 1, -2}, {2, 0, 0, 2}, {4, -1, -1, 0}, {0, 0, 2, 2}, {3, 0, -1, 0}, {2, 1, 1, 0}, {4, -1, -2, 0},
-                                      {0, 2, -1, 0}, {2, 2, -1, 0}, {2, 1, -2, 0}, {2, -1, 0, -2}, {4, 0, 1, 0}, {0, 0, 4, 0}, {4, -1, 0, 0},
-                                      {1, 0, -2, 0}, {2, 1, 0, -2}, {0, 0, 2, -2}, {1, 1, 1, 0}, {3, 0, -2, 0}, {4, 0, -3, 0}, {2, -1, 2, 0},
-                                      {0, 2, 1, 0}, {1, 1, -1, 0}, {2, 0, 3, 0}, {2, 0, -1, -2} };
+static const std::array<std::array<int, 4>, 60> _tabCoef1 = { { {0, 0, 1, 0}, {2, 0, -1, 0}, {2, 0, 0, 0}, {0, 0, 2, 0}, {0, 1, 0, 0}, {0, 0, 0, 2},
+                                                                {2, 0, -2, 0}, {2, -1, -1, 0}, {2, 0, 1, 0}, {2, -1, 0, 0}, {0, 1, -1, 0}, {1, 0, 0, 0},
+                                                                {0, 1, 1, 0}, {2, 0, 0, -2}, {0, 0, 1, 2}, {0, 0, 1, -2}, {4, 0, -1, 0}, {0, 0, 3, 0},
+                                                                {4, 0, -2, 0}, {2, 1, -1, 0}, {2, 1, 0, 0}, {1, 0, -1, 0}, {1, 1, 0, 0}, {2, -1, 1, 0},
+                                                                {2, 0, 2, 0}, {4, 0, 0, 0}, {2, 0, -3, 0}, {0, 1, -2, 0}, {2, 0, -1, 2}, {2, -1, -2, 0},
+                                                                {1, 0, 1, 0}, {2, -2, 0, 0}, {0, 1, 2, 0}, {0, 2, 0, 0}, {2, -2, -1, 0}, {2, 0, 1, -2},
+                                                                {2, 0, 0, 2}, {4, -1, -1, 0}, {0, 0, 2, 2}, {3, 0, -1, 0}, {2, 1, 1, 0}, {4, -1, -2, 0},
+                                                                {0, 2, -1, 0}, {2, 2, -1, 0}, {2, 1, -2, 0}, {2, -1, 0, -2}, {4, 0, 1, 0}, {0, 0, 4, 0},
+                                                                {4, -1, 0, 0}, {1, 0, -2, 0}, {2, 1, 0, -2}, {0, 0, 2, -2}, {1, 1, 1, 0}, {3, 0, -2, 0},
+                                                                {4, 0, -3, 0}, {2, -1, 2, 0}, {0, 2, 1, 0}, {1, 1, -1, 0}, {2, 0, 3, 0},
+                                                                {2, 0, -1, -2} } };
 
-static const int _tabCoef2[60][4] = { {0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 1, -1}, {2, 0, 0, -1}, {2, 0, -1, 1}, {2, 0, -1, -1}, {2, 0, 0, 1},
-                                      {0, 0, 2, 1}, {2, 0, 1, -1}, {0, 0, 2, -1}, {2, -1, 0, -1}, {2, 0, -2, -1}, {2, 0, 1, 1}, {2, 1, 0, -1},
-                                      {2, -1, -1, 1}, {2, -1, 0, 1}, {2, -1, -1, -1}, {0, 1, -1, -1}, {4, 0, -1, -1}, {0, 1, 0, 1}, {0, 0, 0, 3},
-                                      {0, 1, -1, 1}, {1, 0, 0, 1}, {0, 1, 1, 1}, {0, 1, 1, -1}, {0, 1, 0, -1}, {1, 0, 0, -1}, {0, 0, 3, 1},
-                                      {4, 0, 0, -1}, {4, 0, -1, 1}, {0, 0, 1, -3}, {4, 0, -2, 1}, {2, 0, 0, -3}, {2, 0, 2, -1}, {2, -1, 1, -1},
-                                      {2, 0, -2, 1}, {0, 0, 3, -1}, {2, 0, 2, 1}, {2, 0, -3, -1}, {2, 1, -1, 1}, {2, 1, 0, 1}, {4, 0, 0, 1},
-                                      {2, -1, 1, 1}, {2, -2, 0, -1}, {0, 0, 1, 3}, {2, 1, 1, -1}, {1, 1, 0, -1}, {1, 1, 0, 1}, {0, 1, -2, -1},
-                                      {2, 1, -1, -1}, {1, 0, 1, 1}, {2, -1, -2, -1}, {0, 1, 2, 1}, {4, 0, -2, -1}, {4, -1, -1, -1}, {1, 0, 1, -1},
-                                      {4, 0, 1, -1}, {1, 0, -1, -1}, {4, -1, 0, -1}, {2, -2, 0, 1} };
+static const std::array<std::array<int, 4>, 60> _tabCoef2 = { { {0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 1, -1}, {2, 0, 0, -1}, {2, 0, -1, 1},
+                                                                {2, 0, -1, -1}, {2, 0, 0, 1}, {0, 0, 2, 1}, {2, 0, 1, -1}, {0, 0, 2, -1},
+                                                                {2, -1, 0, -1}, {2, 0, -2, -1}, {2, 0, 1, 1}, {2, 1, 0, -1}, {2, -1, -1, 1},
+                                                                {2, -1, 0, 1}, {2, -1, -1, -1}, {0, 1, -1, -1}, {4, 0, -1, -1}, {0, 1, 0, 1},
+                                                                {0, 0, 0, 3}, {0, 1, -1, 1}, {1, 0, 0, 1}, {0, 1, 1, 1}, {0, 1, 1, -1},
+                                                                {0, 1, 0, -1}, {1, 0, 0, -1}, {0, 0, 3, 1}, {4, 0, 0, -1}, {4, 0, -1, 1},
+                                                                {0, 0, 1, -3}, {4, 0, -2, 1}, {2, 0, 0, -3}, {2, 0, 2, -1}, {2, -1, 1, -1},
+                                                                {2, 0, -2, 1}, {0, 0, 3, -1}, {2, 0, 2, 1}, {2, 0, -3, -1}, {2, 1, -1, 1},
+                                                                {2, 1, 0, 1}, {4, 0, 0, 1}, {2, -1, 1, 1}, {2, -2, 0, -1}, {0, 0, 1, 3},
+                                                                {2, 1, 1, -1}, {1, 1, 0, -1}, {1, 1, 0, 1}, {0, 1, -2, -1}, {2, 1, -1, -1},
+                                                                {1, 0, 1, 1}, {2, -1, -2, -1}, {0, 1, 2, 1}, {4, 0, -2, -1}, {4, -1, -1, -1},
+                                                                {1, 0, 1, -1}, {4, 0, 1, -1}, {1, 0, -1, -1}, {4, -1, 0, -1}, {2, -2, 0, 1} } };
 
 static const Vecteur3D w(0., 0., 1.);
 
@@ -98,7 +109,7 @@ Lune::Lune()
     _luneCroissante = false;
     _anglePhase = 0.;
     _fractionIlluminee = 0.;
-    _magnitude = 99.;
+    _magnitude = MAGNITUDE_INDEFINIE;
 
     /* Retour */
     return;
@@ -106,37 +117,226 @@ Lune::Lune()
 
 
 /*
- * Accesseurs
- */
-bool Lune::luneCroissante() const
-{
-    return _luneCroissante;
-}
-
-double Lune::anglePhase() const
-{
-    return _anglePhase;
-}
-
-double Lune::fractionIlluminee() const
-{
-    return _fractionIlluminee;
-}
-
-double Lune::magnitude() const
-{
-    return _magnitude;
-}
-
-QString Lune::phase() const
-{
-    return _phase;
-}
-
-
-/*
  * Methodes publiques
  */
+/*
+ * Calcul des dates des phases lunaires
+ */
+void Lune::CalculDatesPhases(const Date &date)
+{
+    /* Declarations des variables locales */
+    unsigned int iter;
+    double dateEvt;
+    double pas;
+    double t_evt;
+    Lune lune;
+    Soleil soleil;
+    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, NB_PHASES> jjPhases;
+    std::array<double, DEGRE_INTERPOLATION> ecartAngle;
+
+    /* Initialisations */
+    const double annee = date.annee() + (date.mois() - 1) / 12. + date.jour() / 365.;
+
+    /* Corps de la methode */
+    for(unsigned int i=0; i<NB_PHASES; i++) {
+
+        const double k = arrondi((annee - AN2000) * 12.3685, 0) + 0.25 * i;
+
+        const double t = k / 1236.85;
+        const double t2 = t * t;
+        const double t3 = t2 * t;
+        const double t4 = t3 * t;
+
+        // Dates approximatives des phases lunaires
+        jjPhases[i] = 5.09766 + 29.530588861 * k + 0.00015437 * t2 - 0.000000150 * t3 + 0.00000000073 * t4;
+
+        // Obtention des dates precises par interpolation
+        pas = 1.;
+        jjm[0] = jjPhases[i] - pas;
+        jjm[1] = jjPhases[i];
+        jjm[2] = jjPhases[i] + pas;
+
+        dateEvt = 0.;
+        t_evt = jjPhases[i];
+        const double angle = PI_SUR_DEUX * i;
+
+        iter = 0;
+        while ((fabs(dateEvt - t_evt) > EPS_DATES) && (iter < ITERATIONS_MAX)) {
+
+            dateEvt = t_evt;
+
+            for(unsigned int j=0; j<DEGRE_INTERPOLATION; j++) {
+
+                const Date dateCalcul(jjm.at(j), 0., false);
+
+                lune.CalculPosition(dateCalcul);
+                soleil.CalculPosition(dateCalcul);
+
+                ecartAngle[j] = modulo(lune._lonEcl - soleil.lonEcl() - angle, DEUX_PI);
+                if (ecartAngle[j] > PI) {
+                    ecartAngle[j] -= DEUX_PI;
+                }
+            }
+
+            t_evt = Maths::CalculValeurXInterpolation3(jjm, ecartAngle, 0., 1.e-8);
+            pas *= 0.5;
+
+            jjm[0] = t_evt - pas;
+            jjm[1] = t_evt;
+            jjm[2] = t_evt + pas;
+
+            iter++;
+        }
+
+        if (iter < ITERATIONS_MAX) {
+            _datesPhases[i] = Date(dateEvt, date.offsetUTC());
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul des heures de lever, passage au meridien et coucher
+ */
+void Lune::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+    Lune lune;
+    Ephemerides eph;
+
+    /* Initialisations */
+    Observateur obs = observateur;
+    Date dateCalcul(date.annee(), date.mois(), date.jour(), 0, 0, 0., 0.);
+    const Date dateFin(dateCalcul.jourJulienUTC() + 1., 0., false);
+    _ephem.clear();
+
+    /* Corps de la methode */
+    do {
+
+        obs.CalculPosVit(dateCalcul);
+
+        lune.CalculPosition(dateCalcul);
+        lune.CalculCoordHoriz(obs, true, true, true);
+
+        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
+        eph.hauteur = lune.hauteur();
+        eph.azimut = lune.azimut();
+
+        _ephem.append(eph);
+
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + NB_JOUR_PAR_MIN, 0., false);
+
+    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
+
+    Corps::CalculLeverMeridienCoucher(date, false);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul de la magnitude visuelle de la Lune
+ */
+void Lune::CalculMagnitude(const Soleil &soleil)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const double cosang = cos(_anglePhase);
+    const double angs2 = 0.5 * _anglePhase;
+    const double tanAngs2 = tan(angs2);
+    const double b = B0 / (1. + tanAngs2 / H);
+
+    const double z = tan(THETA) * tanAngs2;
+    double fCorr = 1.;
+    if (_anglePhase < 1.45) {
+        fCorr = (((((0.4619942495 * _anglePhase - 1.9799023103) * _anglePhase + 3.2706222793) * _anglePhase - 2.3757732575) * _anglePhase +
+                  0.7066275224) * _anglePhase - 0.2148362906) * _anglePhase + 1.0037993467;
+
+    } else if ((_anglePhase >= 1.45) && (_anglePhase < 2.4)) {
+        fCorr = (((((62.0366249494 * _anglePhase - 685.3561374672) * _anglePhase + 3125.5094770692) * _anglePhase - 7538.4095328747) * _anglePhase +
+                  10151.6795059045) * _anglePhase - 7242.8081201613) * _anglePhase + 2140.9898221829;
+
+    } else if ((_anglePhase >= 2.4) && (_anglePhase < 2.88)) {
+        fCorr = (((((-1.2780230784 * _anglePhase + 20.9856806508) * _anglePhase - 139.5520707759) * _anglePhase + 474.9063054183) * _anglePhase -
+                  851.1923961614) * _anglePhase + 720.4059560648) * _anglePhase - 187.0773024225;
+
+    } else {
+        fCorr = (((((194.303476382 * _anglePhase - 3472.9895343356) * _anglePhase + 25865.444540608) * _anglePhase - 102742.044141574) * _anglePhase +
+                  229573.277184166) * _anglePhase - 273606.243897778) * _anglePhase + 135882.646837775;
+    }
+
+    const double kappa = exp(-THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
+
+    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 * (1. / 6.);
+    const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
+
+    const double phi = (W0S8 * ((1. + b) * ppi - 1.) + R0S2 * (1. - R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
+                        DEUX_TIERS * R2 / PI * (sin(_anglePhase) + (PI - _anglePhase) * cosang)) / p;
+
+    const double dm = kappa * phi;
+    const double distlune = _position.Norme() * KM2UA;
+
+    _magnitude = 0.21 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Calcul de la phase actuelle de la Lune
+ */
+void Lune::CalculPhase(const Soleil &soleil)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double distlune = _position.Norme() * KM2UA;
+
+    /* Corps de la methode */
+    // Determination si la lune est croissante
+    _luneCroissante = ((soleil.position() ^ _position) * w > 0.);
+
+    // Angle de phase
+    const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
+    _anglePhase = fmod(atan(soleil.distanceUA() * sqrt(1. - cospsi * cospsi) / (distlune - soleil.distanceUA() * cospsi)), PI);
+    if (_anglePhase < 0.) {
+        _anglePhase += PI;
+    }
+
+    // Fraction illuminee
+    _fractionIlluminee = 0.5 * (1. + cos(_anglePhase));
+
+    // Phase
+    if ((_fractionIlluminee >= 0.) && (_fractionIlluminee < 0.03)) {
+        _phase = QObject::tr("Nouvelle Lune");
+    }
+
+    if ((_fractionIlluminee >= 0.03) && (_fractionIlluminee < 0.31)) {
+        _phase = (_luneCroissante) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
+    }
+
+    if ((_fractionIlluminee >= 0.31) && (_fractionIlluminee < 0.69)) {
+        _phase = (_luneCroissante) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
+    }
+
+    if ((_fractionIlluminee >= 0.69) && (_fractionIlluminee < 0.97)) {
+        _phase = (_luneCroissante) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
+    }
+
+    if (_fractionIlluminee >= 0.97) {
+        _phase = QObject::tr("Pleine Lune");
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul de la position de la Lune avec le modele simplifie issu de
  * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
@@ -214,104 +414,38 @@ void Lune::CalculPosition(const Date &date)
     return;
 }
 
+
 /*
- * Calcul de la phase de la Lune
+ * Accesseurs
  */
-void Lune::CalculPhase(const Soleil &soleil)
+bool Lune::luneCroissante() const
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const double distlune = _position.Norme() * KM2UA;
-
-    /* Corps de la methode */
-    // Determination si la lune est croissante
-    _luneCroissante = ((soleil.position() ^ _position) * w > 0.);
-
-    // Angle de phase
-    const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
-    _anglePhase = fmod(atan(soleil.distanceUA() * sqrt(1. - cospsi * cospsi) / (distlune - soleil.distanceUA() * cospsi)), PI);
-    if (_anglePhase < 0.) {
-        _anglePhase += PI;
-    }
-
-    // Fraction illuminee
-    _fractionIlluminee = 0.5 * (1. + cos(_anglePhase));
-
-    // Phase
-    if ((_fractionIlluminee >= 0.) && (_fractionIlluminee < 0.03)) {
-        _phase = QObject::tr("Nouvelle Lune");
-    }
-
-    if ((_fractionIlluminee >= 0.03) && (_fractionIlluminee < 0.31)) {
-        _phase = (_luneCroissante) ? QObject::tr("Premier croissant") : QObject::tr("Dernier croissant");
-    }
-
-    if ((_fractionIlluminee >= 0.31) && (_fractionIlluminee < 0.69)) {
-        _phase = (_luneCroissante) ? QObject::tr("Premier quartier") : QObject::tr("Dernier quartier");
-    }
-
-    if ((_fractionIlluminee >= 0.69) && (_fractionIlluminee < 0.97)) {
-        _phase = (_luneCroissante) ? QObject::tr("Gibbeuse croissante") : QObject::tr("Gibbeuse décroissante");
-    }
-
-    if (_fractionIlluminee >= 0.97) {
-        _phase = QObject::tr("Pleine Lune");
-    }
-
-    /* Retour */
-    return;
+    return _luneCroissante;
 }
 
-/*
- * Calcul de la magnitude visuelle de la Lune
- */
-void Lune::CalculMagnitude(const Soleil &soleil)
+double Lune::anglePhase() const
 {
-    /* Declarations des variables locales */
+    return _anglePhase;
+}
 
-    /* Initialisations */
+double Lune::fractionIlluminee() const
+{
+    return _fractionIlluminee;
+}
 
-    /* Corps de la methode */
-    const double cosang = cos(_anglePhase);
-    const double angs2 = 0.5 * _anglePhase;
-    const double tanAngs2 = tan(angs2);
-    const double b = B0 / (1. + tanAngs2 / H);
+double Lune::magnitude() const
+{
+    return _magnitude;
+}
 
-    const double z = tan(THETA) * tanAngs2;
-    double fCorr = 1.;
-    if (_anglePhase < 1.45) {
-        fCorr = (((((0.4619942495 * _anglePhase - 1.9799023103) * _anglePhase + 3.2706222793) * _anglePhase - 2.3757732575) * _anglePhase +
-                  0.7066275224) * _anglePhase - 0.2148362906) * _anglePhase + 1.0037993467;
+const QString &Lune::phase() const
+{
+    return _phase;
+}
 
-    } else if ((_anglePhase >= 1.45) && (_anglePhase < 2.4)) {
-        fCorr = (((((62.0366249494 * _anglePhase - 685.3561374672) * _anglePhase + 3125.5094770692) * _anglePhase - 7538.4095328747) * _anglePhase +
-                  10151.6795059045) * _anglePhase - 7242.8081201613) * _anglePhase + 2140.9898221829;
-
-    } else if ((_anglePhase >= 2.4) && (_anglePhase < 2.88)) {
-        fCorr = (((((-1.2780230784 * _anglePhase + 20.9856806508) * _anglePhase - 139.5520707759) * _anglePhase + 474.9063054183) * _anglePhase -
-                  851.1923961614) * _anglePhase + 720.4059560648) * _anglePhase - 187.0773024225;
-
-    } else {
-        fCorr = (((((194.303476382 * _anglePhase - 3472.9895343356) * _anglePhase + 25865.444540608) * _anglePhase - 102742.044141574) * _anglePhase +
-                  229573.277184166) * _anglePhase - 273606.243897778) * _anglePhase + 135882.646837775;
-    }
-
-    const double kappa = exp(-THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
-
-    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 * (1. / 6.);
-    const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
-
-    const double phi = (W0S8 * ((1. + b) * ppi - 1.) + R0S2 * (1. - R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
-                        DEUX_TIERS * R2 / PI * (sin(_anglePhase) + (PI - _anglePhase) * cosang)) / p;
-
-    const double dm = kappa * phi;
-    const double distlune = _position.Norme() * KM2UA;
-
-    _magnitude = 0.21 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
-
-    /* Retour */
-    return;
+const std::array<Date, NB_PHASES> &Lune::datesPhases() const
+{
+    return _datesPhases;
 }
 
 

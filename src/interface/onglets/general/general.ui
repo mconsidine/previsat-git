@@ -1,0 +1,2477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>General</class>
+ <widget class="QFrame" name="General">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>792</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Frame</string>
+  </property>
+  <property name="toolTip">
+   <string notr="true"/>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QStackedWidget" name="dateHeure">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>2</y>
+     <width>411</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="page_dateHeure1">
+    <widget class="QWidget" name="formLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>371</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_dateHeure1">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_dateHeure1">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Date :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="dateHeure1">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">Mercredi 31 décembre 2022  00:00:00   UTC + 01:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_dateHeure2">
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>341</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_dateHeure2" columnstretch="0,1,0">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_dateHeure2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Date :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDateTimeEdit" name="dateHeure2">
+        <property name="displayFormat">
+         <string>dddd dd MMMM yyyy HH:mm:ss</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="utcDateHeure">
+        <property name="text">
+         <string>UTC + 12:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>28</y>
+     <width>311</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_lieuObservation">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_lieuObservation">
+      <property name="text">
+       <string>Lieu d'observation :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="lieuObservation">
+      <item>
+       <property name="text">
+        <string>Paris</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>54</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_longitudeObs">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_longitudeObs">
+      <property name="text">
+       <string>Longitude :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="longitudeObs">
+      <property name="text">
+       <string>180° 59' 59&quot; Ouest</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>54</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_latitudeObs">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_latitudeObs">
+      <property name="text">
+       <string>Latitude :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="latitudeObs">
+      <property name="text">
+       <string>89° 59' 59&quot; Nord</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>54</y>
+     <width>101</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_altitudeObs">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_altitudeObs">
+      <property name="text">
+       <string>Altitude :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="altitudeObs">
+      <property name="text">
+       <string>8900 m</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>28</y>
+     <width>221</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_conditionsObservation">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_conditionsObservation">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>22</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Conditions :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="conditionsObservation">
+      <property name="text">
+       <string>Crépuscule astronomique</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStackedWidget" name="stackedWidget_soleilLune">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>30</y>
+     <width>211</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="coordonneesSoleil">
+    <widget class="QLabel" name="lbl_coordonneesSoleil">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Coordonnées du Soleil :</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_7">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>72</y>
+       <width>182</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_equatSol">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_ascensionDroiteSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Ascension droite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_declinaisonSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Déclinaison :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_constellationSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Constellation :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="ascensionDroiteSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">00h 00m 00s</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="indent">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="declinaisonSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">+00° 00' 00&quot;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="indent">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="constellationSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">And</string>
+        </property>
+        <property name="indent">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_8">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>18</y>
+       <width>142</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_topoSoleil">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_hauteurSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Hauteur :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_azimutSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_distanceSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Distance :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="hauteurSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">+00° 00' 00&quot;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="azimutSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">000° 00' 00&quot;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="distanceSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">1.017 UA</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_19">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>126</y>
+       <width>204</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_lontlatSol">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_longitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Longitude :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="longitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">000° 00' 00&quot; Ouest</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_latitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Latitude :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="latitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">00° 00' 00&quot; Nord</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_diametreApparentSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string comment="Altitude of satellite">Diamètre apparent :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="diametreApparentSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">32' 00&quot;</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="coordonneesLune">
+    <widget class="QLabel" name="lbl_coordonneesLune">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Coordonnées de la Lune :</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_9">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>72</y>
+       <width>180</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_equatLune">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_ascensionDroiteLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Ascension droite :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_declinaisonLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Déclinaison :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_constellationLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Constellation :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="ascensionDroiteLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">00h 00m 00s</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="declinaisonLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">+00° 00' 00&quot;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="constellationLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">And</string>
+        </property>
+        <property name="indent">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_10">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>18</y>
+       <width>142</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_topoLune">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_hauteurLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Hauteur :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_azimutLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_distanceLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Distance :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="hauteurLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">+00° 00' 00&quot;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="azimutLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">000° 00' 00&quot;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="distanceLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">384400 km</string>
+        </property>
+        <property name="indent">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_11">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>126</y>
+       <width>202</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_phaseLune">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_phaseLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string extracomment="Moon phase">Phase :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_illuminationLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Illumination :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_magnitudeLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Magnitude :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="phaseLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">Gibbeuse décroissante</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="illuminationLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">100%</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="magnitudeLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">-12.73</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="evenementsSoleil">
+    <widget class="QWidget" name="formLayoutWidget_12">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>72</y>
+       <width>174</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_aubes">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_aubeAstro">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Aube astronomique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_aubeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Aube nautique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_aubeCivile">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Aube civile :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="aubeAstro">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="aubeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="aubeCivile">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="lbl_evenementsSoleil">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Évènements Soleil :</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_13">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>18</y>
+       <width>121</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_leverCoucherSoleil">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_leverSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Lever :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_meridienSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string extracomment="Azimuth (from the North)">Méridien :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_coucherSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Coucher :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="leverSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="meridienSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">12:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="coucherSoleil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">18:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_14">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>126</y>
+       <width>174</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_crepuscules">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_crepusculeAstro">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule astronomique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_crepusculeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule nautique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_crepusculeCivil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule civil :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="crepusculeAstro">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="crepusculeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="crepusculeCivil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="evenementsLune">
+    <widget class="QLabel" name="lbl_evenementsLune">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Évènements Lune :</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_15">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>18</y>
+       <width>121</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_leverCoucherLune">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_leverLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Lever :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_meridienLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string extracomment="Azimuth (from the North)">Méridien :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_coucherLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Coucher :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="leverLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="meridienLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="coucherLune">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_18">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>72</y>
+       <width>201</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_phasesLune">
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_nouvelleLune">
+        <property name="text">
+         <string>Nouvelle Lune :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="nouvelleLune">
+        <property name="text">
+         <string>2022-02-01 06:00</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_premierQuartier">
+        <property name="text">
+         <string>Premier quartier :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="premierQuartier">
+        <property name="text">
+         <string>2022-02-08 06:00</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_pleineLune">
+        <property name="text">
+         <string>Pleine Lune :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="pleineLune">
+        <property name="text">
+         <string>2022-02-15 06:00</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lbl_dernierQuartier">
+        <property name="text">
+         <string>Dernier quartier :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="dernierQuartier">
+        <property name="text">
+         <string>2022-02-23 06:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QToolButton" name="soleilLunePrec">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>30</y>
+     <width>16</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="autoRaise">
+    <bool>true</bool>
+   </property>
+   <property name="arrowType">
+    <enum>Qt::LeftArrow</enum>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="soleilLuneSuiv">
+   <property name="geometry">
+    <rect>
+     <x>736</x>
+     <y>30</y>
+     <width>16</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="autoRaise">
+    <bool>true</bool>
+   </property>
+   <property name="arrowType">
+    <enum>Qt::RightArrow</enum>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_satellite">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>90</y>
+     <width>571</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget_20">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>13</y>
+      <width>135</width>
+      <height>52</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_topoSat">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_hauteurSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Hauteur :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_azimutSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string extracomment="Azimuth (from the North)">Azimut (N) :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_distanceSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Distance :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="hauteurSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">+00° 00' 00&quot;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="azimutSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">000° 00' 00&quot;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="distanceSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">00000.0 km</string>
+       </property>
+       <property name="indent">
+        <number>7</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_21">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>13</y>
+      <width>161</width>
+      <height>52</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_lla">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_longitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Longitude :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="longitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">000° 00' 00&quot; Ouest</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_latitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Latitude :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="latitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">00° 00' 00&quot; Nord</string>
+       </property>
+       <property name="indent">
+        <number>6</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_altitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string comment="Altitude of satellite">Altitude :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="altitudeSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">00000.0 km</string>
+       </property>
+       <property name="indent">
+        <number>6</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_22">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>13</y>
+      <width>170</width>
+      <height>52</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_equatSat">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_ascensionDroiteSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Ascension droite :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_declinaisonSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Déclinaison :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_constellationSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Constellation :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="ascensionDroiteSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">00h 00m 00s</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="indent">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="declinaisonSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">+00° 00' 00&quot;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="indent">
+        <number>8</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="constellationSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">And</string>
+       </property>
+       <property name="indent">
+        <number>8</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_23">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>70</y>
+      <width>176</width>
+      <height>52</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_deplacementSat">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_directionSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Direction :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_vitesseSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Vitesse orbitale :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_rangeRate">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Variation distance :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="directionSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">Descendant</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="indent">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="vitesseSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
+       </property>
+       <property name="text">
+        <string notr="true">7.777 km/s</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="indent">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="rangeRate">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Double-cliquer pour changer d'unités</string>
+       </property>
+       <property name="text">
+        <string notr="true">+28000 km/h</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="indent">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget_aos">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>70</y>
+      <width>381</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="pageAOS1">
+     <widget class="QWidget" name="formLayoutWidget_24">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>351</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_orbiteMagn1">
+       <property name="horizontalSpacing">
+        <number>3</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>1</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="orbiteSat1">
+         <property name="minimumSize">
+          <size>
+           <width>147</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Orbite n°123456</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="magnitudeSat">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string notr="true">Magnitude (Illumination) : -2.2 (50%)</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_9">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>17</y>
+        <width>381</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_AOS1" rowstretch="0,1" columnstretch="0,1,1">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>3</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>0</number>
+       </property>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_prochainAOS1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">Prochain AOS :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="dateAOS1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="lbl_azimut1">
+         <property name="text">
+          <string notr="true">Azimut : 000° 00'</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="lbl_beta1">
+         <property name="text">
+          <string notr="true">Beta : 000° 00'</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="dateJN">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_prochainJN">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">Prochain J&gt;N :</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pageAOS2">
+     <widget class="QWidget" name="formLayoutWidget_25">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>351</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_orbiteMagn1_2">
+       <property name="horizontalSpacing">
+        <number>3</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>1</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="orbiteSat2">
+         <property name="minimumSize">
+          <size>
+           <width>147</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Orbite n°123456</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="magnitudeSat2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string notr="true">Magnitude (Illumination) : -2.2 (50%)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="lbl_beta2">
+         <property name="text">
+          <string notr="true">Beta : 000° 00'</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="indent">
+          <number>6</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>33</y>
+        <width>381</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_AOS2" columnstretch="0,1,1">
+       <property name="horizontalSpacing">
+        <number>3</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>1</number>
+       </property>
+       <item row="0" column="1">
+        <widget class="QLabel" name="dateAOS2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string notr="true">2011/07/31 00:00:00 (dans 00min 00s).</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_prochainAOS2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">Prochain AOS :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="lbl_azimut2">
+         <property name="text">
+          <string notr="true">Azimut : 000° 00'</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_16">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>83</y>
+     <width>311</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_nomsat">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_nomsat">
+      <property name="text">
+       <string>Nom :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="nomsat">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>120</red>
+            <green>120</green>
+            <blue>120</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>ISS</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_17">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>83</y>
+     <width>234</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_tempsDepuisEpoque">
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_tempsDepuisEpoque">
+      <property name="text">
+       <string>Temps écoulé depuis l'époque :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="tempsDepuisEpoque">
+      <property name="text">
+       <string>-360.0 jours</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

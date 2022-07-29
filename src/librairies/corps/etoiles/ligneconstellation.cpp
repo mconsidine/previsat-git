@@ -34,8 +34,10 @@
  *
  */
 
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
@@ -69,25 +71,6 @@ LigneConstellation::LigneConstellation()
 
 
 /*
- * Accesseurs
- */
-bool LigneConstellation::isDessin() const
-{
-    return _dessin;
-}
-
-Etoile LigneConstellation::etoile1() const
-{
-    return _etoile1;
-}
-
-Etoile LigneConstellation::etoile2() const
-{
-    return _etoile2;
-}
-
-
-/*
  * Methodes publiques
  */
 /*
@@ -102,11 +85,11 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     /* Corps de la methode */
     try {
         if (_tabLigCst.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau de lignes de constellation n'est pas initialisé"), WARNING);
+            throw PreviSatException(QObject::tr("Le tableau de lignes de constellation n'est pas initialisé"), MessageType::WARNING);
         }
 
         if (etoiles.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), WARNING);
+            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
         }
 
         lignesCst.clear();
@@ -154,6 +137,25 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
 
     /* Retour */
     return;
+}
+
+
+/*
+ * Accesseurs
+ */
+bool LigneConstellation::isDessin() const
+{
+    return _dessin;
+}
+
+const Etoile &LigneConstellation::etoile1() const
+{
+    return _etoile1;
+}
+
+const Etoile &LigneConstellation::etoile2() const
+{
+    return _etoile2;
 }
 
 

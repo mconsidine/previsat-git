@@ -55,6 +55,8 @@ private:
     static void testCalculPosition();
     static void testCalculPhase();
     static void testCalculMagnitude();
+    static void testCalculLeverMeridienCoucher();
+    static void testCalculDatesPhases();
 
 };
 

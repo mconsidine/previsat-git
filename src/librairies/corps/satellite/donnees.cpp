@@ -100,6 +100,10 @@ Donnees::Donnees(const QString &donnee)
 
 
 /*
+ * Methodes publiques
+ */
+
+/*
  * Accesseurs
  */
 char Donnees::methMagnitude() const
@@ -132,55 +136,50 @@ double Donnees::t3() const
     return _t3;
 }
 
-QString Donnees::cospar() const
+const QString &Donnees::cospar() const
 {
     return _cospar;
 }
 
-QString Donnees::dateLancement() const
+const QString &Donnees::dateLancement() const
 {
     return _dateLancement;
 }
 
-QString Donnees::periode() const
+const QString &Donnees::periode() const
 {
     return _periode;
 }
 
-QString Donnees::perigee() const
+const QString &Donnees::perigee() const
 {
     return _perigee;
 }
 
-QString Donnees::apogee() const
+const QString &Donnees::apogee() const
 {
     return _apogee;
 }
 
-QString Donnees::inclinaison() const
+const QString &Donnees::inclinaison() const
 {
     return _inclinaison;
 }
 
-QString Donnees::categorieOrbite() const
+const QString &Donnees::categorieOrbite() const
 {
     return _categorieOrbite;
 }
 
-QString Donnees::pays() const
+const QString &Donnees::pays() const
 {
     return _pays;
 }
 
-QString Donnees::siteLancement() const
+const QString &Donnees::siteLancement() const
 {
     return _siteLancement;
 }
-
-
-/*
- * Methodes publiques
- */
 
 
 /*************

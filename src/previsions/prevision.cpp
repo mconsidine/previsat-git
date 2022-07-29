@@ -1,4 +1,4 @@
-﻿/*
+/*
  *     PreviSat, Satellite tracking software
  *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
  *
@@ -30,12 +30,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2021
+ * >    2 juillet 2022
  *
  */
 
 #include <QElapsedTimer>
 #include "configuration/configuration.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "prevision.h"
 
@@ -100,22 +101,23 @@ int Prevision::CalculPrevisions(int &nombre)
     double tlemax = DATE_INFINIE;
 
     tps.start();
-    _donnees.ageTle.clear();
+    _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
 
     // Creation de la liste de TLE
-    const QMap<QString, TLE> tabTle = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                                          Configuration::instance()->lgRec(), _conditions.listeSatellites);
+    const QMap<QString, ElementsOrbitaux> tabElem =
+            GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                     Configuration::instance()->lgRec(), _conditions.listeSatellites);
 
     // Creation du tableau de satellites
-    QMapIterator<QString, TLE> it1(tabTle);
+    QMapIterator it1(tabElem);
     while (it1.hasNext()) {
         it1.next();
 
-        const TLE tle = it1.value();
-        sats.append(Satellite(tle));
+        const ElementsOrbitaux elem = it1.value();
+        sats.append(Satellite(elem));
 
-        const double epok = tle.epoque().jourJulienUTC();
+        const double epok = elem.epoque.jourJulienUTC();
         if (epok > tlemin) {
             tlemin = epok;
         }
@@ -125,14 +127,14 @@ int Prevision::CalculPrevisions(int &nombre)
         }
     }
 
-    if (tabTle.keys().count() == 1) {
-        _donnees.ageTle.append(fabs(_conditions.jj1 - tlemin));
+    if (tabElem.keys().count() == 1) {
+        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - tlemin));
     } else {
 
         const double age1 = fabs(_conditions.jj1 - tlemin);
         const double age2 = fabs(_conditions.jj1 - tlemax);
-        _donnees.ageTle.append(qMin(age1, age2));
-        _donnees.ageTle.append(qMax(age1, age2));
+        _donnees.ageElementsOrbitaux.append(qMin(age1, age2));
+        _donnees.ageElementsOrbitaux.append(qMax(age1, age2));
     }
 
     // Calcul des ephemerides du Soleil et du lieu d'observation
@@ -160,7 +162,8 @@ int Prevision::CalculPrevisions(int &nombre)
         resultatSat.clear();
         sat = it2.next();
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.tle().no()), DEUX_TIERS) * (1. - sat.tle().ecco());
+        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.elementsOrbitaux().no), DEUX_TIERS) *
+                (1. - sat.elementsOrbitaux().ecco);
         const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides
@@ -196,12 +199,14 @@ int Prevision::CalculPrevisions(int &nombre)
                 if (!condEcl.eclipseTotale() || !_conditions.eclipse) {
 
                     // Magnitude du satellite
-                    magnitude.Calcul(condEcl, obs, sat.distance(), sat.hauteur(), sat.tle().donnees().magnitudeStandard(), _conditions.extinction,
+                    magnitude.Calcul(condEcl, obs, sat.distance(), sat.hauteur(), sat.elementsOrbitaux().donnees.magnitudeStandard(),
+                                     _conditions.extinction,
                                      _conditions.effetEclipsePartielle);
 
                     // Toutes les conditions sont remplies
                     if (magnitude.magnitude() < _conditions.magnitudeLimite ||
-                            ((sat.tle().donnees().magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.)) || !_conditions.eclipse) {
+                            ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.))
+                            || !_conditions.eclipse) {
 
                         sat.CalculCoordHoriz(obs);
                         soleil.CalculCoordHoriz(obs);
@@ -216,13 +221,13 @@ int Prevision::CalculPrevisions(int &nombre)
 
                             if ((!condEcl.eclipseTotale() ||
                                  !_conditions.eclipse) && ((magnitude.magnitude() < _conditions.magnitudeLimite) ||
-                                                           ((sat.tle().donnees().magnitudeStandard() > 98.) || !_conditions.eclipse))) {
+                                                           ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) || !_conditions.eclipse))) {
 
                                 // Nom du satellite
-                                res.nom = sat.tle().nom();
+                                res.nom = sat.elementsOrbitaux().nom;
 
                                 // Elements orbitaux
-                                res.tle = sat.tle();
+                                res.elements = sat.elementsOrbitaux();
 
                                 // Altitude du satellite
                                 sat.CalculLatitude(sat.position());
@@ -242,7 +247,7 @@ int Prevision::CalculPrevisions(int &nombre)
 
                                 // Magnitude
                                 res.magnitude = magnitude.magnitude();
-                                res.magnitudeStd = sat.tle().donnees().magnitudeStandard();
+                                res.magnitudeStd = sat.elementsOrbitaux().donnees.magnitudeStandard();
                                 res.penombre = (condEcl.eclipsePartielle() || condEcl.eclipseAnnulaire());
 
                                 // Distance a l'observateur
@@ -275,7 +280,8 @@ int Prevision::CalculPrevisions(int &nombre)
                                     }
                                     condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
                                     magnitude.Calcul(condEcl, _conditions.observateur, sat.distance(), sat.hauteur(),
-                                                     sat.tle().donnees().magnitudeStandard(), _conditions.extinction, _conditions.effetEclipsePartielle);
+                                                     sat.elementsOrbitaux().donnees.magnitudeStandard(), _conditions.extinction,
+                                                     _conditions.effetEclipsePartielle);
 
                                     sat.CalculCoordEquat(_conditions.observateur);
                                 }
@@ -302,7 +308,7 @@ int Prevision::CalculPrevisions(int &nombre)
         }
 
         if (!resultatSat.isEmpty()) {
-            _resultats.insert(sat.tle().nom() + " " + sat.tle().norad(), resultatSat);
+            _resultats.insert(sat.elementsOrbitaux().nom + " " + sat.elementsOrbitaux().norad, resultatSat);
         }
     }
 

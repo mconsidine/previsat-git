@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >
  *
  */
 
@@ -68,75 +68,8 @@ void DateTest::testAll()
     testToShortDateAMJ();
     testToShortDateAMJmillisec();
     testCalculOffsetUTC();
+    testConversionDateIso();
     testConversionDateNasa();
-}
-
-void DateTest::testToLongDate()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date1(2006, 1, 15, 21, 24, 37.5, 1. / 24.);
-    QCOMPARE(date1.ToLongDate(QLocale::system().name().section('_', 0, 0), SYSTEME_24H), "Dimanche 15 janvier 2006 22:24:38");
-}
-
-void DateTest::testToQDateTime()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date2(2006, 1, 15, 21, 24, 37.5, 0.);
-    const QDateTime date3(QDate(2006, 1, 15), QTime(21, 24, 38));
-    QCOMPARE(date2.ToQDateTime(1), date3);
-}
-
-void DateTest::testToShortDate()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date1(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
-    QCOMPARE(date1.ToShortDate(FORMAT_COURT, SYSTEME_24H), "15/01/2006 22:24:38 ");
-    QCOMPARE(date1.ToShortDate(FORMAT_COURT, SYSTEME_12H), "15/01/2006 10:24:38p");
-    QCOMPARE(date1.ToShortDate(FORMAT_LONG, SYSTEME_24H), "15/01/2006 22:24:37.5 ");
-    QCOMPARE(date1.ToShortDate(FORMAT_MILLISEC, SYSTEME_24H), "15/01/2006 22:24:37.535 ");
-    QCOMPARE(date1.ToShortDate(FORMAT_MILLISEC, SYSTEME_12H), "15/01/2006 10:24:37.535p");
-}
-
-void DateTest::testToShortDateAMJ()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date1(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_24H), "2006/01/15 22:24:38 ");
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_COURT, SYSTEME_12H), "2006/01/15 10:24:38p");
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_LONG, SYSTEME_24H), "2006/01/15 22:24:37.5 ");
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_LONG, SYSTEME_12H), "2006/01/15 10:24:37.5p");
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_MILLISEC, SYSTEME_24H), "2006/01/15 22:24:37.535 ");
-    QCOMPARE(date1.ToShortDateAMJ(FORMAT_MILLISEC, SYSTEME_12H), "2006/01/15 10:24:37.535p");
-}
-
-void DateTest::testToShortDateAMJmillisec()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date1(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
-    QCOMPARE(date1.ToShortDateAMJmillisec(), "2006/01/15 21:24:37.535");
-    const Date date2(2006, 1, 15, 21, 24, 37.5344, 1. / 24.);
-    QCOMPARE(date2.ToShortDateAMJmillisec(), "2006/01/15 21:24:37.534");
-}
-
-void DateTest::testCalculOffsetUTC()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const QDateTime date4(QDate(2006, 1, 15), QTime(20, 24, 37));
-    QCOMPARE(Date::CalculOffsetUTC(date4), 1. / 24.);
-}
-
-void DateTest::testConversionDateNasa()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date5(2006, 1, 15, 21, 24, 37.5, 0.);
-    CompareDates(Date::ConversionDateNasa("2006-015T21:24:37.5Z"), date5);
 }
 
 void DateTest::testDates()
@@ -159,5 +92,81 @@ void DateTest::testDates()
     CompareDates(date2, date1);
 
     const Date date3(2006, 1, 15.8921006944444, 1. / 24.);
-    CompareDates(date2, date1);
+    CompareDates(date3, date1);
+}
+
+void DateTest::testToLongDate()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2006, 1, 15, 21, 24, 37.5, 1. / 24.);
+    QCOMPARE(date.ToLongDate(QLocale::system().name().section('_', 0, 0), DateSysteme::SYSTEME_24H), "Dimanche 15 janvier 2006 22:24:38");
+}
+
+void DateTest::testToQDateTime()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2006, 1, 15, 21, 24, 37.5, 0.);
+    const QDateTime date2(QDate(2006, 1, 15), QTime(21, 24, 38));
+    QCOMPARE(date.ToQDateTime(1), date2);
+}
+
+void DateTest::testToShortDate()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:38 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_12H), "15/01/2006 10:24:38p");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:37.5 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:37.535 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_12H), "15/01/2006 10:24:37.535p");
+}
+
+void DateTest::testToShortDateAMJ()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H), "2006/01/15 22:24:38 ");
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_12H), "2006/01/15 10:24:38p");
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), "2006/01/15 22:24:37.5 ");
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_12H), "2006/01/15 10:24:37.5p");
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_24H), "2006/01/15 22:24:37.535 ");
+    QCOMPARE(date.ToShortDateAMJ(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_12H), "2006/01/15 10:24:37.535p");
+}
+
+void DateTest::testToShortDateAMJmillisec()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date1(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
+    QCOMPARE(date1.ToShortDateAMJmillisec(), "2006/01/15 21:24:37.535");
+    const Date date2(2006, 1, 15, 21, 24, 37.5344, 1. / 24.);
+    QCOMPARE(date2.ToShortDateAMJmillisec(), "2006/01/15 21:24:37.534");
+}
+
+void DateTest::testCalculOffsetUTC()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const QDateTime date(QDate(2006, 1, 15), QTime(20, 24, 37));
+    QCOMPARE(Date::CalculOffsetUTC(date), 1. / 24.);
+}
+
+void DateTest::testConversionDateIso()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2022, 06, 04, 13, 15, 30.829824, 0.);
+    CompareDates(Date::ConversionDateIso("2022-06-04T13:15:30.829824"), date);
+}
+
+void DateTest::testConversionDateNasa()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2006, 1, 15, 21, 24, 37.5, 0.);
+    CompareDates(Date::ConversionDateNasa("2006-015T21:24:37.5Z"), date);
 }

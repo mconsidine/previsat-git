@@ -47,13 +47,13 @@
 /*
  * Enumerations
  */
-enum DateFormat {
+enum class DateFormat {
     FORMAT_COURT = 0,
     FORMAT_LONG = 1,
     FORMAT_MILLISEC = 3
 };
 
-enum DateSysteme {
+enum class DateSysteme {
     SYSTEME_24H,
     SYSTEME_12H
 };
@@ -78,6 +78,7 @@ static const double NB_MILLISEC_PAR_JOUR = 86400000.;
 
 static const double NB_JOURS_PAR_ANJ = 365.25;
 static const double NB_JOURS_PAR_SIECJ = 36525.;
+static const double NB_JOURS_PAR_MILLJ = 365250.;
 
 // Ecart constant TAI-TT (en secondes)
 static const double NB_SEC_TT_TAI = 32.184;
@@ -93,6 +94,7 @@ static const double NB_HEUR_PAR_SEC = 1. / NB_SEC_PAR_HEUR;
 
 static const double NB_ANJ_PAR_JOURS = 1. / NB_JOURS_PAR_ANJ;
 static const double NB_SIECJ_PAR_JOURS = 1. / NB_JOURS_PAR_SIECJ;
+static const double NB_MILLJ_PAR_JOURS = 1. / NB_JOURS_PAR_MILLJ;
 
 
 #endif // DATESCONST_H

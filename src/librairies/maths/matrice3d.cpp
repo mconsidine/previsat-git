@@ -60,19 +60,19 @@ Matrice3D::Matrice3D(const AxeType &axe, const double ang)
     /* Corps du constructeur */
     switch (axe) {
 
-    case AXE_X:
+    case AxeType::AXE_X:
         vec1 = Vecteur3D(1., 0., 0.);
         vec2 = Vecteur3D(0., cosang, -sinang);
         vec3 = Vecteur3D(0., sinang, cosang);
         break;
 
-    case AXE_Y:
+    case AxeType::AXE_Y:
         vec1 = Vecteur3D(cosang, 0., sinang);
         vec2 = Vecteur3D(0., 1., 0.);
         vec3 = Vecteur3D(-sinang, 0., cosang);
         break;
 
-    case AXE_Z:
+    case AxeType::AXE_Z:
         vec1 = Vecteur3D(cosang, -sinang, 0.);
         vec2 = Vecteur3D(sinang, cosang, 0.);
         vec3 = Vecteur3D(0., 0., 1.);
@@ -88,25 +88,6 @@ Matrice3D::Matrice3D(const AxeType &axe, const double ang)
 
     /* Retour */
     return;
-}
-
-
-/*
- * Accesseurs
- */
-Vecteur3D Matrice3D::vecteur1() const
-{
-    return _vecteur1;
-}
-
-Vecteur3D Matrice3D::vecteur2() const
-{
-    return _vecteur2;
-}
-
-Vecteur3D Matrice3D::vecteur3() const
-{
-    return _vecteur3;
 }
 
 
@@ -143,6 +124,25 @@ Matrice3D &Matrice3D::operator = (const Matrice3D &matrice)
 }
 
 
+/*
+ * Accesseurs
+ */
+const Vecteur3D &Matrice3D::vecteur1() const
+{
+    return _vecteur1;
+}
+
+const Vecteur3D &Matrice3D::vecteur2() const
+{
+    return _vecteur2;
+}
+
+const Vecteur3D &Matrice3D::vecteur3() const
+{
+    return _vecteur3;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -159,6 +159,4 @@ Matrice3D &Matrice3D::operator = (const Matrice3D &matrice)
 /*
  * Methodes privees
  */
-
-
 

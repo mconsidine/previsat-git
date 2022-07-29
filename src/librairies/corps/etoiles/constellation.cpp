@@ -34,8 +34,10 @@
  *
  */
 
-#include <QDir>
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDir>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "constellation.h"
@@ -84,15 +86,6 @@ Constellation::Constellation(const QString &nomConst, const double ascDroite, co
 
 
 /*
- * Accesseurs
- */
-QString Constellation::nom() const
-{
-    return _nom;
-}
-
-
-/*
  * Methodes publiques
  */
 void Constellation::CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations)
@@ -105,7 +98,7 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
     try {
 
         if (constellations.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau de constellations n'est pas initialisé"), WARNING);
+            throw PreviSatException(QObject::tr("Le tableau de constellations n'est pas initialisé"), MessageType::WARNING);
         }
 
         for (int i=0; i<constellations.size(); i++) {
@@ -153,6 +146,15 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
 }
 
 
+/*
+ * Accesseurs
+ */
+const QString &Constellation::nom() const
+{
+    return _nom;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -169,6 +171,4 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
 /*
  * Methodes privees
  */
-
-
 

@@ -56,26 +56,17 @@ public:
     /*
      *  Constructeurs
      */
+    /*
+     * Constructeur par defaut
+     */
+    Planete();
+
     /**
      * @brief Planete Constructeur avec l'identifiant de la planete
      * @param iplanete indice de la planete
      */
     explicit Planete(const IndicePlanete &iplanete);
 
-
-    /*
-     * Accesseurs
-     */
-    QString nom() const;
-
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -88,11 +79,13 @@ public:
     void CalculPosition(const Date &date, const Soleil &soleil);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    QString nom() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -104,10 +97,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

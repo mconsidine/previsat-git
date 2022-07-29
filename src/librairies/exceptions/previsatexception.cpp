@@ -56,7 +56,7 @@ PreviSatException::PreviSatException() throw()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _typeMessage = INFO;
+    _typeMessage = MessageType::INFO;
 
     /* Retour */
     return;
@@ -83,11 +83,11 @@ PreviSatException::PreviSatException(const QString &message, const MessageType &
 
 
 /*
- * Accesseurs
+ * Methodes publiques
  */
 
 /*
- * Methodes publiques
+ * Accesseurs
  */
 
 

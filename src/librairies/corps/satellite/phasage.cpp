@@ -34,9 +34,12 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <QtMath>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "elementsosculateurs.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
+#include "librairies/corps/corpsconst.h"
+#include "librairies/corps/terreconst.h"
 #include "phasage.h"
 
 
@@ -57,36 +60,13 @@ Phasage::Phasage()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nbOrb = -99;
-    _ct0 = -99;
-    _dt0 = -99;
-    _nu0 = -99;
+    _nbOrb = ELEMENT_PHASAGE_INDEFINI;
+    _ct0 = ELEMENT_PHASAGE_INDEFINI;
+    _dt0 = ELEMENT_PHASAGE_INDEFINI;
+    _nu0 = ELEMENT_PHASAGE_INDEFINI;
 
     /* Retour */
     return;
-}
-
-/*
- * Accesseurs
- */
-int Phasage::nu0() const
-{
-    return _nu0;
-}
-
-int Phasage::dt0() const
-{
-    return _dt0;
-}
-
-int Phasage::ct0() const
-{
-    return _ct0;
-}
-
-int Phasage::nbOrb() const
-{
-    return _nbOrb;
 }
 
 
@@ -94,7 +74,7 @@ int Phasage::nbOrb() const
  * Methodes publiques
  */
 /*
- *
+ * Calcul des elements de phasage
  */
 void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
 {
@@ -141,21 +121,46 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
     }
 
     if (atrouve) {
-        if (precessionNoeud < 0.975 || precessionNoeud > 0.995) {
+        if ((precessionNoeud < 0.975) || (precessionNoeud > 0.995)) {
             _dt0 = static_cast<int> (qRound(nt0 - _nu0 * _ct0));
         } else {
             _dt0 = static_cast<int> (qRound((v - _nu0) * _ct0));
         }
         _nbOrb = static_cast<int> (qRound(nt0));
+
     } else {
-        _nbOrb = -99;
-        _ct0 = -99;
-        _dt0 = -99;
-        _nu0 = -99;
+        _nbOrb = ELEMENT_PHASAGE_INDEFINI;
+        _ct0 = ELEMENT_PHASAGE_INDEFINI;
+        _dt0 = ELEMENT_PHASAGE_INDEFINI;
+        _nu0 = ELEMENT_PHASAGE_INDEFINI;
     }
 
     /* Retour */
     return;
+}
+
+
+/*
+ * Accesseurs
+ */
+int Phasage::nu0() const
+{
+    return _nu0;
+}
+
+int Phasage::dt0() const
+{
+    return _dt0;
+}
+
+int Phasage::ct0() const
+{
+    return _ct0;
+}
+
+int Phasage::nbOrb() const
+{
+    return _nbOrb;
 }
 
 
@@ -175,5 +180,4 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
 /*
  * Methodes privees
  */
-
 

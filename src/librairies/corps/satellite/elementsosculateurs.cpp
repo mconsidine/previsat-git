@@ -35,7 +35,7 @@
  */
 
 #include "elementsosculateurs.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
+#include "librairies/corps/terreconst.h"
 #include "librairies/maths/mathsconst.h"
 #include "librairies/maths/vecteur3d.h"
 
@@ -79,104 +79,6 @@ ElementsOsculateurs::ElementsOsculateurs()
 
     /* Retour */
     return;
-}
-
-/*
- * Accesseurs
- */
-double ElementsOsculateurs::demiGrandAxe() const
-{
-    return _demiGrandAxe;
-}
-
-double ElementsOsculateurs::excentricite() const
-{
-    return _excentricite;
-}
-
-double ElementsOsculateurs::inclinaison() const
-{
-    return _inclinaison;
-}
-
-double ElementsOsculateurs::ascensionDroiteNoeudAscendant() const
-{
-    return _ascensionDroiteNoeudAscendant;
-}
-
-double ElementsOsculateurs::argumentPerigee() const
-{
-    return _argumentPerigee;
-}
-
-double ElementsOsculateurs::anomalieVraie() const
-{
-    return _anomalieVraie;
-}
-
-double ElementsOsculateurs::anomalieExcentrique() const
-{
-    return _anomalieExcentrique;
-}
-
-double ElementsOsculateurs::anomalieMoyenne() const
-{
-    return _anomalieMoyenne;
-}
-
-double ElementsOsculateurs::apogee() const
-{
-    return _apogee;
-}
-
-double ElementsOsculateurs::perigee() const
-{
-    return _perigee;
-}
-
-double ElementsOsculateurs::periode() const
-{
-    return _periode;
-}
-
-double ElementsOsculateurs::exCirc() const
-{
-    return _exCirc;
-}
-
-double ElementsOsculateurs::eyCirc() const
-{
-    return _eyCirc;
-}
-
-double ElementsOsculateurs::exCEq() const
-{
-    return _exCEq;
-}
-
-double ElementsOsculateurs::eyCEq() const
-{
-    return _eyCEq;
-}
-
-double ElementsOsculateurs::pso() const
-{
-    return _pso;
-}
-
-double ElementsOsculateurs::ix() const
-{
-    return _ix;
-}
-
-double ElementsOsculateurs::iy() const
-{
-    return _iy;
-}
-
-double ElementsOsculateurs::argumentLongitudeVraie() const
-{
-    return _argumentLongitudeVraie;
 }
 
 
@@ -314,6 +216,105 @@ void ElementsOsculateurs::Calcul(const Vecteur3D &position, const Vecteur3D &vit
 }
 
 
+/*
+ * Accesseurs
+ */
+double ElementsOsculateurs::demiGrandAxe() const
+{
+    return _demiGrandAxe;
+}
+
+double ElementsOsculateurs::excentricite() const
+{
+    return _excentricite;
+}
+
+double ElementsOsculateurs::inclinaison() const
+{
+    return _inclinaison;
+}
+
+double ElementsOsculateurs::ascensionDroiteNoeudAscendant() const
+{
+    return _ascensionDroiteNoeudAscendant;
+}
+
+double ElementsOsculateurs::argumentPerigee() const
+{
+    return _argumentPerigee;
+}
+
+double ElementsOsculateurs::anomalieVraie() const
+{
+    return _anomalieVraie;
+}
+
+double ElementsOsculateurs::anomalieExcentrique() const
+{
+    return _anomalieExcentrique;
+}
+
+double ElementsOsculateurs::anomalieMoyenne() const
+{
+    return _anomalieMoyenne;
+}
+
+double ElementsOsculateurs::apogee() const
+{
+    return _apogee;
+}
+
+double ElementsOsculateurs::perigee() const
+{
+    return _perigee;
+}
+
+double ElementsOsculateurs::periode() const
+{
+    return _periode;
+}
+
+double ElementsOsculateurs::exCirc() const
+{
+    return _exCirc;
+}
+
+double ElementsOsculateurs::eyCirc() const
+{
+    return _eyCirc;
+}
+
+double ElementsOsculateurs::exCEq() const
+{
+    return _exCEq;
+}
+
+double ElementsOsculateurs::eyCEq() const
+{
+    return _eyCEq;
+}
+
+double ElementsOsculateurs::pso() const
+{
+    return _pso;
+}
+
+double ElementsOsculateurs::ix() const
+{
+    return _ix;
+}
+
+double ElementsOsculateurs::iy() const
+{
+    return _iy;
+}
+
+double ElementsOsculateurs::argumentLongitudeVraie() const
+{
+    return _argumentLongitudeVraie;
+}
+
+
 /*************
  * PROTECTED *
  *************/
@@ -330,5 +331,4 @@ void ElementsOsculateurs::Calcul(const Vecteur3D &position, const Vecteur3D &vit
 /*
  * Methodes privees
  */
-
 

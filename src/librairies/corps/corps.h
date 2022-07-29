@@ -42,13 +42,15 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QPointF>
+#include <QVector>
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QString>
-#include <QVector>
+#include "corpsconst.h"
+#include "ephemerides.h"
+#include "librairies/dates/date.h"
 #include "librairies/maths/vecteur3d.h"
 
 
-class Date;
 class Observateur;
 
 class Corps
@@ -63,40 +65,12 @@ public:
      */
     Corps();
 
-    /*
-     * Accesseurs
-     */
-    double altitude() const;
-    double ascensionDroite() const;
-    double azimut() const;
-    QString constellation() const;
-    double declinaison() const;
-    Vecteur3D dist() const;
-    double distance() const;
-    double hauteur() const;
-    double latitude() const;
-    double longitude() const;
-    double lonEcl() const;
-    Vecteur3D position() const;
-    double rangeRate() const;
-    bool isVisible() const;
-    Vecteur3D vitesse() const;
-    QVector<QPointF> zone() const;
-
 
     /*
      * Modificateurs
      */
     void setPosition(const Vecteur3D &pos);
 
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -171,10 +145,9 @@ public:
     void CalculZoneVisibilite(const double beta);
 
     /**
-     * @brief InitTabConstellations Lecture du fichier de constellations
-     * @param dirCommonData chemin du fichier de constellations
+     * @brief Initialisation Initialisation des elements relatifs aux corps (satellites, systeme solaire, etc.)
      */
-    static void InitTabConstellations(const QString &dirCommonData);
+    static void Initialisation(const QString &dirCommonData);
 
     /**
      * @brief Sph2Cart Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
@@ -185,11 +158,33 @@ public:
     Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    double altitude() const;
+    double ascensionDroite() const;
+    double azimut() const;
+    const QString &constellation() const;
+    double declinaison() const;
+    const Vecteur3D &dist() const;
+    double distance() const;
+    double hauteur() const;
+    double latitude() const;
+    double longitude() const;
+    double lonEcl() const;
+    const Vecteur3D &position() const;
+    double rangeRate() const;
+    bool isVisible() const;
+    const Vecteur3D &vitesse() const;
+    const std::array<QPointF, 361> &zone() const;
+
+    const Date &dateLever() const;
+    const Date &dateMeridien() const;
+    const Date &dateCoucher() const;
+    const std::array<Date, 6> &datesCrepuscules() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -222,7 +217,15 @@ protected:
     Vecteur3D _dist;
 
     // Zone de visibilite
-    QVector<QPointF> _zone;
+    std::array<QPointF, 361> _zone;
+
+    // Dates de lever, passage au meridien et coucher
+    QList<Ephemerides> _ephem;
+    Date _dateLever;
+    Date _dateMeridien;
+    Date _dateCoucher;
+
+    std::array<Date, 6> _datesCrepuscules;
 
     double _r0;
     double _ct;
@@ -231,18 +234,19 @@ protected:
     /*
      * Methodes protegees
      */
+    /**
+     * @brief CalculLeverMeridienCoucher Calcul des lever/passage au meridien/coucher
+     * @param date date
+     * @param calculCrepuscules calcul des crepuscules (dans le cas du Soleil)
+     */
+    void CalculLeverMeridienCoucher(const Date &date, const bool calculCrepuscules = true);
 
 
 private:
 
     /*
-     * Constantes privees
-     */
-
-    /*
      * Variables privees
      */
-    Vecteur3D _vec1;
 
     /*
      * Methodes privees
@@ -252,7 +256,7 @@ private:
      */
     void CalculLatitudeAltitude();
 
-};
 
+};
 
 #endif // CORPS_H

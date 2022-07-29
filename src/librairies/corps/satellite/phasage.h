@@ -58,21 +58,6 @@ public:
      */
     Phasage();
 
-    /*
-     * Accesseurs
-     */
-    int nu0() const;
-    int dt0() const;
-    int ct0() const;
-    int nbOrb() const;
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -85,11 +70,16 @@ public:
     void Calcul(const ElementsOsculateurs &elements, const double n0);
 
 
-protected:
-
     /*
-     * Constantes protegees
+     * Accesseurs
      */
+    int nu0() const;
+    int dt0() const;
+    int ct0() const;
+    int nbOrb() const;
+
+
+protected:
 
     /*
      * Variables protegees
@@ -101,10 +91,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

@@ -35,7 +35,7 @@
  */
 
 #include "conditioneclipse.h"
-#include "librairies/corps/systemesolaire/terreconst.h"
+#include "librairies/corps/terreconst.h"
 
 
 /**********
@@ -45,6 +45,48 @@
 /*
  * Constructeurs
  */
+
+/*
+ * Methodes publiques
+ */
+/*
+ * Calcul de la condition d'eclipse du satellite
+ */
+void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune &lune, const bool refraction)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _soleil = soleil;
+
+    /* Corps de la methode */
+    // Calcul de l'eclipse par la Terre
+    _eclipseSoleil = CalculEclipse(position, soleil.position(), CorpsOccultant::TERRE, refraction);
+
+    // Calcul de l'eclipse par la Lune
+    if (lune.position().Norme() > EPSDBL100) {
+        _eclipseLune = CalculEclipse(position, lune.position(), CorpsOccultant::LUNE, false);
+    }
+
+    if ((_eclipseSoleil.type != TypeEclipse::NON_ECLIPSE) && (_eclipseLune.type != TypeEclipse::NON_ECLIPSE)) {
+
+        if (_eclipseSoleil.luminosite < _eclipseLune.luminosite) {
+            _eclipseLune.type = TypeEclipse::NON_ECLIPSE;
+            _eclipseLune.luminosite = 1.;
+        } else {
+            _eclipseSoleil.type = TypeEclipse::NON_ECLIPSE;
+            _eclipseSoleil.luminosite = 1.;
+        }
+    }
+
+    _eclipseTotale = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_TOTALE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_TOTALE));
+    _eclipsePartielle = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_PARTIELLE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_PARTIELLE));
+    _eclipseAnnulaire = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_ANNULAIRE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_ANNULAIRE));
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Accesseurs
@@ -64,56 +106,14 @@ bool ConditionEclipse::eclipseAnnulaire() const
     return _eclipseAnnulaire;
 }
 
-ElementsEclipse ConditionEclipse::eclipseLune() const
+const ElementsEclipse &ConditionEclipse::eclipseLune() const
 {
     return _eclipseLune;
 }
 
-ElementsEclipse ConditionEclipse::eclipseSoleil() const
+const ElementsEclipse &ConditionEclipse::eclipseSoleil() const
 {
     return _eclipseSoleil;
-}
-
-
-/*
- * Methodes publiques
- */
-/*
- * Calcul de la condition d'eclipse du satellite
- */
-void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune &lune, const bool refraction)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    _soleil = soleil;
-
-    /* Corps de la methode */
-    // Calcul de l'eclipse par la Terre
-    _eclipseSoleil = CalculEclipse(position, soleil.position(), TERRE, refraction);
-
-    // Calcul de l'eclipse par la Lune
-    if (lune.position().Norme() > EPSDBL100) {
-        _eclipseLune = CalculEclipse(position, lune.position(), LUNE, false);
-    }
-
-    if ((_eclipseSoleil.type != NON_ECLIPSE) && (_eclipseLune.type != NON_ECLIPSE)) {
-
-        if (_eclipseSoleil.luminosite < _eclipseLune.luminosite) {
-            _eclipseLune.type = NON_ECLIPSE;
-            _eclipseLune.luminosite = 1.;
-        } else {
-            _eclipseSoleil.type = NON_ECLIPSE;
-            _eclipseSoleil.luminosite = 1.;
-        }
-    }
-
-    _eclipseTotale = ((_eclipseSoleil.type == ECLIPSE_TOTALE) || (_eclipseLune.type == ECLIPSE_TOTALE));
-    _eclipsePartielle = ((_eclipseSoleil.type == ECLIPSE_PARTIELLE) || (_eclipseLune.type == ECLIPSE_PARTIELLE));
-    _eclipseAnnulaire = ((_eclipseSoleil.type == ECLIPSE_ANNULAIRE) || (_eclipseLune.type == ECLIPSE_ANNULAIRE));
-
-    /* Retour */
-    return;
 }
 
 
@@ -151,7 +151,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     /* Corps de la methode */
     switch (corpsOccultant) {
     default:
-    case TERRE:
+    case CorpsOccultant::TERRE:
     {
         rho = position;
         const double tanlat = position.z() / sqrt(position.x() * position.x() + position.y() * position.y());
@@ -161,7 +161,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
         rayon = RAYON_TERRESTRE * sqrt(cu * cu + G2 * su * su);
         break;
     }
-    case LUNE:
+    case CorpsOccultant::LUNE:
         rho = position - positionCorpsOccultant;
         rayon = RAYON_LUNAIRE;
         break;
@@ -171,7 +171,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     if (std::isnan(elements.phiSoleil)) {
         elements.phiSoleil = PI_SUR_DEUX;
     } else {
-        if ((corpsOccultant == TERRE) && refraction) {
+        if ((corpsOccultant == CorpsOccultant::TERRE) && refraction) {
             elements.phiSoleil += REFRACTION_HZ;
         }
     }
@@ -185,21 +185,25 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     elements.elongation = (-rho).Angle(rhoSatSol);
 
     if (((elements.phiSoleil + elements.phi) <= elements.elongation) || (distSatSol <= distance)) {
-        elements.type = NON_ECLIPSE;
+
+        elements.type = TypeEclipse::NON_ECLIPSE;
         elements.luminosite = 1.;
 
     } else if ((elements.phi - elements.phiSoleil) >= elements.elongation) {
-        elements.type = ECLIPSE_TOTALE;
+
+        elements.type = TypeEclipse::ECLIPSE_TOTALE;
         elements.luminosite = 0.;
 
     } else if ((elements.phiSoleil - elements.phi) >= elements.elongation) {
-        elements.type = ECLIPSE_ANNULAIRE;
+
+        elements.type = TypeEclipse::ECLIPSE_ANNULAIRE;
         const double cps = cos(elements.phiSoleil);
         const double cpc = cos(elements.phi);
         elements.luminosite = 1. - (1. - cpc) / (1. - cps);
 
     } else {
-        elements.type = ECLIPSE_PARTIELLE;
+
+        elements.type = TypeEclipse::ECLIPSE_PARTIELLE;
         const double cps = cos(elements.phiSoleil);
         const double cpc = cos(elements.phi);
         const double cth = cos(elements.elongation);
@@ -210,7 +214,9 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
         const double tmp1 = cps * acos((cpc - cps * cth) / (sps * sth));
         const double tmp2 = cpc * acos((cps - cpc * cth) / (spc * sth));
         const double tmp3 = acos((cth - cps * cpc) / (sps * spc));
+
         elements.luminosite = 1. - (PI - tmp1 - tmp2 - tmp3) / (PI * (1. - cps));
+
         if (elements.luminosite > 1.) {
             elements.luminosite = 1.;
         }

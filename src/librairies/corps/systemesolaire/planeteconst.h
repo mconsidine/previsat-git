@@ -46,7 +46,7 @@
 /*
  * Enumerations
  */
-enum IndicePlanete {
+enum class IndicePlanete {
     MERCURE = 0,
     VENUS,
     MARS,

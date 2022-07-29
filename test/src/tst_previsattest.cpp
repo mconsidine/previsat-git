@@ -34,28 +34,34 @@
  *
  */
 
-#include <QCoreApplication>
+#include <iostream>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QCoreApplication>
 #pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "test/src/librairies/corps/satellite/conditioneclipsetest.h"
+#include "test/src/librairies/corps/satellite/donneestest.h"
+#include "test/src/librairies/corps/satellite/elementsosculateurstest.h"
+#include "test/src/librairies/corps/satellite/evenementstest.h"
+#include "test/src/librairies/corps/satellite/gpformattest.h"
+#include "test/src/librairies/corps/satellite/magnitudetest.h"
+#include "test/src/librairies/corps/satellite/phasagetest.h"
 #include "test/src/librairies/corps/satellite/satellitetest.h"
+#include "test/src/librairies/corps/satellite/sgp4test.h"
+#include "test/src/librairies/corps/satellite/signaltest.h"
+#include "test/src/librairies/corps/satellite/tletest.h"
 #include "test/src/librairies/corps/systemesolaire/lunetest.h"
 #include "test/src/librairies/corps/systemesolaire/planetetest.h"
 #include "test/src/librairies/corps/systemesolaire/soleiltest.h"
 #include "test/src/librairies/dates/datetest.h"
 #include "test/src/librairies/maths/mathstest.h"
 #include "test/src/librairies/observateur/observateurtest.h"
-#include "test/src/librairies/systeme/decompressiontest.h"
-#include "test/src/interface/ongletstest.h"
-#include "test/src/previsions/evenementsorbitauxtest.h"
-#include "test/src/previsions/flashstest.h"
-#include "test/src/previsions/previsiontest.h"
-#include "test/src/previsions/telescopetest.h"
-#include "test/src/previsions/transitsisstest.h"
+#include "test/src/librairies/systeme/logmessagetest.h"
+#include "test/src/librairies/systeme/telechargementtest.h"
 
 
 class PreviSatTest : public QObject
@@ -74,7 +80,7 @@ private slots:
 
 PreviSatTest::PreviSatTest()
 {
-    qApp->setApplicationName(APP_NAME);
+    qApp->setApplicationName("PreviSat");
 }
 
 PreviSatTest::~PreviSatTest()
@@ -87,22 +93,26 @@ void PreviSatTest::testAll()
     // Librairies
     MathsTest::testAll();
     DateTest::testAll();
-    ObservateurTest::testAll();
+    TelechargementTest::testAll();
     SoleilTest::testAll();
-    LuneTest::testAll();
     PlaneteTest::testAll();
+    LuneTest::testAll();
+    ObservateurTest::testAll();
+
+    DonneesTest::testAll();
+    TLETest::testAll();
+    GPFormatTest::testAll();
+    SignalTest::testAll();
+    PhasageTest::testAll();
+    SGP4Test::testAll();
+    ElementsOsculateursTest::testAll();
+    ConditionEclipseTest::testAll();
+    MagnitudeTest::testAll();
     SatelliteTest::testAll();
-    DecompressionTest::testAll();
+    EvenementsTest::testAll();
 
-    // Interface
-    OngletsTest::testAll();
-
-    // Previsions
-    PrevisionTest::testAll();
-    FlashsTest::testAll();
-    TransitsIssTest::testAll();
-    TelescopeTest::testAll();
-    EvenementsOrbitauxTest::testAll();
+    // Tester en dernier
+    LogMessageTest::testAll();
 }
 
 void PreviSatTest::cleanupTestCase()

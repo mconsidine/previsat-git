@@ -49,17 +49,13 @@
  */
 
 /*
- * Accesseurs
- */
-
-/*
  * Methodes publiques
  */
 /*
  * Calcul de l'AOS (ou LOS) suivant ou precedent
  */
-ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur, const bool sensCalcul,
-                                  const double hauteurMin, const bool refraction)
+ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur,
+                                  const SensCalcul &sensCalcul, const double hauteurMin, const bool refraction)
 {
     /* Declarations des variables locales */
     ElementsAOS elements;
@@ -69,7 +65,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
     Observateur obs = observateur;
     elements.aos = sat.hasAOS(obs);
     elements.azimut = 0.;
-    const double st = (sensCalcul) ? 1. : -1.;
+    const double st = (sensCalcul == SensCalcul::CHRONOLOGIQUE) ? 1. : -1.;
 
     /* Corps de la methode */
     if (elements.aos) {
@@ -82,27 +78,24 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
         double tAOS = 0.;
         double t_ht = dateInit.jourJulienUTC();
 
-        QList<double> jjm;
-        QList<double> ht;
+        std::array<double, DEGRE_INTERPOLATION> jjm;
+        std::array<double, DEGRE_INTERPOLATION> ht;
 
         bool afin = false;
-        int iter = 0;
+        unsigned int iter = 0;
         while (!afin) {
 
-            jjm.clear();
-            ht.clear();
+            jjm[0] = t_ht;
+            jjm[1] = jjm.at(0) + 0.5 * periode;
+            jjm[2] = jjm.at(0) + periode;
 
-            jjm.append(t_ht);
-            jjm.append(jjm.at(0) + 0.5 * periode);
-            jjm.append(jjm.at(0) + periode);
-
-            for(int i=0; i<3; i++) {
+            for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
                 const Date date(jjm.at(i), 0., false);
                 obs.CalculPosVit(date);
                 sat.CalculPosVit(date);
                 sat.CalculCoordHoriz(obs, false, refraction, true);
-                ht.append(sat.hauteur() - hauteurMin);
+                ht[i] = sat.hauteur() - hauteurMin;
             }
 
             const bool atst1 = (ht.at(0) * ht.at(1) < 0.);
@@ -122,11 +115,11 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                     jjm[2] = t_ht + periode;
                 }
 
-                while (fabs(tAOS - t_ht) > EPS_DATES) {
+                while (fabs(tAOS - t_ht) > EPSDBL100) {
 
                     tAOS = t_ht;
 
-                    for(int i=0; i<3; i++) {
+                    for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
                         const Date date(jjm.at(i), 0., false);
                         obs.CalculPosVit(date);
@@ -135,7 +128,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                         ht[i] = sat.hauteur() - hauteurMin;
                     }
 
-                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPS_DATES);
+                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPSDBL100);
                     periode *= 0.5;
 
                     jjm[0] = t_ht - periode;
@@ -156,7 +149,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 t_ht += periode;
                 iter++;
 
-                if (iter > 50000) {
+                if (iter > ITERATIONS_MAX) {
                     afin = true;
                     elements.aos = false;
                 }
@@ -171,14 +164,14 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
 /*
  * Calcul du noeud (ascendant ou descendant) precedent ou suivant
  */
-Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satellite, const bool sensCalcul, const bool noeudAscendant)
+Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satellite, const SensCalcul &sensCalcul, const TypeNoeudOrbite &typeNoeud)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     Date date = dateInit;
     Satellite sat = satellite;
-    const double st = ((sensCalcul) ? 1. : -1.) / (sat.tle().no() * T360);
+    const double st = ((sensCalcul == SensCalcul::CHRONOLOGIQUE) ? 1. : -1.) / (sat.elementsOrbitaux().no * T360);
     double lat1 = sat.latitude();
 
     /* Corps de la methode */
@@ -191,36 +184,33 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
         const double lat = sat.CalculLatitude(sat.position());
 
         if ((lat1 * lat) < 0.) {
-            if (sensCalcul) {
-                atrouve = (noeudAscendant) ? lat1 < 0. : lat < 0.;
+            if (sensCalcul == SensCalcul::CHRONOLOGIQUE) {
+                atrouve = (typeNoeud == TypeNoeudOrbite::NOEUD_ASCENDANT) ? lat1 < 0. : lat < 0.;
             } else {
-                atrouve = (noeudAscendant) ? lat1 > 0. : lat > 0.;
+                atrouve = (typeNoeud == TypeNoeudOrbite::NOEUD_ASCENDANT) ? lat1 > 0. : lat > 0.;
             }
         }
         lat1 = lat;
     }
 
 
-    QList<double> jjm;
-    QList<double> lati;
+    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, DEGRE_INTERPOLATION> lati;
 
     double t_n = date.jourJulienUTC();
     double periode = st;
     bool afin = false;
     while (!afin) {
 
-        jjm.clear();
-        lati.clear();
+        jjm[0] = t_n - periode;
+        jjm[1] = t_n;
+        jjm[2] = t_n + periode;
 
-        jjm.append(t_n - periode);
-        jjm.append(t_n);
-        jjm.append(t_n + periode);
-
-        for(int i=0; i<3; i++) {
+        for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
             date = Date(jjm.at(i), 0., false);
             sat.CalculPosVit(date);
-            lati.append(sat.CalculLatitude(sat.position()));
+            lati[i] = sat.CalculLatitude(sat.position());
         }
 
         const double tNoeud = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
@@ -251,9 +241,11 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
         sat.CalculTracesAuSol(dateInit, nbTrajectoires, acalcEclipseLune, refraction);
     }
 
-    QListIterator<ElementsTraceSol> it(sat.traceAuSol());
+    QListIterator it(sat.traceAuSol());
     while (it.hasNext()) {
+
         const ElementsTraceSol elements = it.next();
+
         if (elements.jourJulienUTC >= dateInit.jourJulienUTC()) {
             if (satellite.conditionEclipse().eclipseTotale() != elements.eclipseTotale) {
                 it.toBack();
@@ -269,8 +261,8 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
         double t_ecl = sat.traceAuSol().at(i-1).jourJulienUTC;
         double periode = sat.traceAuSol().at(i).jourJulienUTC - t_ecl;
 
-        QList<double> jjm;
-        QList<double> ecl;
+        std::array<double, DEGRE_INTERPOLATION> jjm;
+        std::array<double, DEGRE_INTERPOLATION> ecl;
         Soleil soleil;
         Lune lune;
         ConditionEclipse conditionEclipse;
@@ -278,14 +270,11 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
         bool afin = false;
         while (!afin) {
 
-            jjm.clear();
-            ecl.clear();
+            jjm[0] = t_ecl - periode;
+            jjm[1] = t_ecl;
+            jjm[2] = t_ecl + periode;
 
-            jjm.append(t_ecl - periode);
-            jjm.append(t_ecl);
-            jjm.append(t_ecl + periode);
-
-            for(int j=0; j<3; j++) {
+            for(unsigned int j=0; j<DEGRE_INTERPOLATION; j++) {
 
                 const Date date(jjm.at(j), 0., false);
 
@@ -304,7 +293,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
                 conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, refraction);
                 const ElementsEclipse elements = (conditionEclipse.eclipseLune().luminosite < conditionEclipse.eclipseSoleil().luminosite) ?
                             conditionEclipse.eclipseLune() : conditionEclipse.eclipseSoleil();
-                ecl.append(elements.phi - elements.phiSoleil - elements.elongation);
+                ecl[j] = elements.phi - elements.phiSoleil - elements.elongation;
             }
 
             if (((ecl.at(0) * ecl.at(2)) < 0.) || ((ecl.at(0) > 0.) && (ecl.at(2) > 0.))) {
@@ -327,6 +316,11 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
 }
 
 
+/*
+ * Accesseurs
+ */
+
+
 /*************
  * PROTECTED *
  *************/
@@ -343,5 +337,4 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
 /*
  * Methodes privees
  */
-
 

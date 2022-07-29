@@ -43,7 +43,7 @@
 #ifndef SATELLITECONST_H
 #define SATELLITECONST_H
 
-#include "librairies/corps/systemesolaire/terreconst.h"
+#include "librairies/corps/terreconst.h"
 
 
 /*
