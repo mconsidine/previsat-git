@@ -5900,6 +5900,9 @@
          <property name="mouseTracking">
           <bool>true</bool>
          </property>
+         <property name="wrapping">
+          <bool>true</bool>
+         </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
          </property>
@@ -5953,6 +5956,9 @@
           <font/>
          </property>
          <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="wrapping">
           <bool>true</bool>
          </property>
          <property name="buttonSymbols">
@@ -6590,6 +6596,9 @@
          <property name="font">
           <font/>
          </property>
+         <property name="wrapping">
+          <bool>true</bool>
+         </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::UpDownArrows</enum>
          </property>
@@ -6621,6 +6630,9 @@
          </property>
          <property name="font">
           <font/>
+         </property>
+         <property name="wrapping">
+          <bool>true</bool>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -7339,6 +7351,9 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
          <property name="font">
           <font/>
          </property>
+         <property name="wrapping">
+          <bool>true</bool>
+         </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::UpDownArrows</enum>
          </property>
@@ -7360,6 +7375,9 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
          </property>
          <property name="font">
           <font/>
+         </property>
+         <property name="wrapping">
+          <bool>true</bool>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::UpDownArrows</enum>
@@ -11990,6 +12008,9 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
            <property name="font">
             <font/>
            </property>
+           <property name="wrapping">
+            <bool>true</bool>
+           </property>
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::UpDownArrows</enum>
            </property>
@@ -12021,6 +12042,9 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
            </property>
            <property name="font">
             <font/>
+           </property>
+           <property name="wrapping">
+            <bool>true</bool>
            </property>
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::UpDownArrows</enum>
