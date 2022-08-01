@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 juillet 2022
+ * >    1er aout 2022
  *
  */
 
@@ -3032,6 +3032,7 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
             Configuration::instance()->suppressionSatelliteFicTLE(norad);
 
             if ((i == 0) && !listeSatellites.isEmpty()) {
+
                 // On definit le satellite suivant dans la liste comme satellite par defaut
                 Configuration::instance()->tleDefaut().nomsat = listeSatellites.at(0).tle().nom();
                 Configuration::instance()->tleDefaut().l1 = listeSatellites.at(0).tle().ligne1();
@@ -3054,6 +3055,10 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
             Configuration::instance()->listeSatellites().append(Satellite(tle));
             Configuration::instance()->ajoutSatelliteFicTLE(norad);
         }
+
+        _onglets->setAcalcAOS(true);
+        _onglets->setAcalcDN(true);
+        _onglets->setInfo(true);
 
         GestionTempsReel();
         Configuration::instance()->EcritureConfiguration();
