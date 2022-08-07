@@ -595,9 +595,9 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/apropos.cpp" line="105"/>
-        <source>dd MMMM yyyy</source>
+        <source>d MMMM yyyy</source>
         <comment>Date format</comment>
-        <translation>MMMM dd yyyy</translation>
+        <translation>MMMM d yyyy</translation>
     </message>
 </context>
 <context>
