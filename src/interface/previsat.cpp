@@ -2444,15 +2444,20 @@ void PreviSat::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::WindowStateChange) {
 
-        if (Configuration::instance()->isCarteMonde()) {
+        if (_onglets->ui()->proportionsCarte->isChecked()) {
+            if (Configuration::instance()->isCarteMonde()) {
 
-            if (windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
-                _carte->setGeometry(_carte->ui()->carte->x(), _carte->ui()->carte->y(), _carteRect.width(), _carteRect.height());
+                if (windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
+                    _carte->setGeometry(_carte->ui()->carte->x(), _carte->ui()->carte->y(), _carteRect.width(), _carteRect.height());
 
-            } else if (windowState() == Qt::WindowMaximized) {
-                _carteRect = _carte->ui()->carte->rect();
+                } else if (windowState() == Qt::WindowMaximized) {
+                    _carteRect = _carte->ui()->carte->rect();
+                }
             }
+        } else {
+            _carte->setGeometry(ui->layoutCarte->geometry());
         }
+
     } else {
         QMainWindow::changeEvent(evt);
     }
