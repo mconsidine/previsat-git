@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 juillet 2022
+ * >    7 aout 2022
  *
  */
 
@@ -178,6 +178,9 @@ private:
     QTimer *_timerStatut;
 
     QString _majInfosDate;
+
+    QRect _carteRect;
+
 
     /*
      * Methodes privees
@@ -389,6 +392,7 @@ private slots:
     void mousePressEvent(QMouseEvent *evt);
     void keyPressEvent(QKeyEvent *evt);
     void resizeEvent(QResizeEvent *evt);
+    void changeEvent(QEvent *evt);
 
     void on_directHelp_clicked();
     void on_actionPaypal_triggered();

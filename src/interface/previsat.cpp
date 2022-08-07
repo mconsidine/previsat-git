@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er aout 2022
+ * >    7 aout 2022
  *
  */
 
@@ -2438,6 +2438,24 @@ void PreviSat::resizeEvent(QResizeEvent *evt)
 
     /* Retour */
     return;
+}
+
+void PreviSat::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::WindowStateChange) {
+
+        if (Configuration::instance()->isCarteMonde()) {
+
+            if (windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
+                _carte->setGeometry(_carte->ui()->carte->x(), _carte->ui()->carte->y(), _carteRect.width(), _carteRect.height());
+
+            } else if (windowState() == Qt::WindowMaximized) {
+                _carteRect = _carte->ui()->carte->rect();
+            }
+        }
+    } else {
+        QMainWindow::changeEvent(evt);
+    }
 }
 
 void PreviSat::on_directHelp_clicked()
