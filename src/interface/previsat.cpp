@@ -63,6 +63,7 @@ PreviSat::PreviSat(QWidget *parent)
         Initialisation();
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Erreur Initialisation %1").arg(metaObject()->className());
         throw PreviSatException();
     }
 }
@@ -206,11 +207,14 @@ void PreviSat::Initialisation()
     // Initialisation de la configuration generale
     Configuration::instance()->Initialisation();
 
+    qInfo() << QString("Début Initialisation %1").arg(metaObject()->className());
     _onglets = new Onglets(_ui->frameOnglets);
 
     CreationRaccourcis();
 
     //ChargementTraduction(Configuration::instance()->locale());
+
+    qInfo() << QString("Fin   Initialisation %1").arg(metaObject()->className());
 
     /* Retour */
     return;

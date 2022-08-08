@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    8 aout 2022
  *
  */
 
@@ -322,7 +322,10 @@ void Date::Initialisation(const QString &dirLocalData)
             }
             fi.close();
 
+            qInfo() << QString("Lecture fichier taiutc.dat OK");
+
         } else {
+            qInfo() << QString("Lecture fichier taiutc.dat KO");
             throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas").arg(QDir::toNativeSeparators(fic)), MessageType::WARNING);
         }
 
