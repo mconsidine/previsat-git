@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    8 aout 2022
  *
  */
 
@@ -987,7 +987,7 @@ void Carte::show()
             const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ)+1;
             const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT)+1;
 
-            if (/*mcc || */_onglets->ui()->afficone->isChecked()) {
+            if (mcc || _onglets->ui()->afficone->isChecked()) {
 
                 // Affichage de l'icone du satellite a partir du numero NORAD ou du nom
                 const QString norad = satellites.at(isat).tle().norad();
