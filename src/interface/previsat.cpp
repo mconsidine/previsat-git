@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2022
+ * >    8 aout 2022
  *
  */
 
@@ -1501,7 +1501,7 @@ void PreviSat::AfficherCoordIssGmt()
             _coordISS->ui()->orbiteISS->setVisible(true);
             _coordISS->ui()->betaISS->move(112, 26);
             _coordISS->ui()->betaISS->setVisible(true);
-            _coordISS->setGeometry(_carte->ui()->carte->x(), 0, 223, 59);
+            _coordISS->resize(223, 59);
 
         } else {
 
@@ -1522,7 +1522,7 @@ void PreviSat::AfficherCoordIssGmt()
                 _coordISS->ui()->betaISS->setVisible(true);
                 _coordISS->ui()->orbiteISS->setVisible(false);
             }
-            _coordISS->setGeometry(_carte->ui()->carte->x(), 0, 223, 46);
+            _coordISS->resize(223, 46);
         }
 
         _coordISS->show(*_dateCourante, Onglets::dateEclipse());
@@ -1539,7 +1539,7 @@ void PreviSat::AfficherCoordIssGmt()
                 chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
 
         QPalette coul;
-        coul.setColor(QPalette::WindowText, coulGmt[_onglets->ui()->coulGMT->currentIndex()]);
+        coul.setColor(_gmt->foregroundRole(), coulGmt[_onglets->ui()->coulGMT->currentIndex()]);
 
         _gmt->setText(texte);
         _gmt->setPalette(coul);
@@ -1550,7 +1550,7 @@ void PreviSat::AfficherCoordIssGmt()
 
         _gmt->setFont(police);
         _gmt->adjustSize();
-        _gmt->setGeometry((_carte->width() - _gmt->width()) / 2, 30, _gmt->width(), 16);
+        _gmt->setGeometry((_carte->ui()->carte->width() - _gmt->width()) / 2, 30, _gmt->width(), 16);
         _gmt->show();
     }
 
@@ -1786,9 +1786,9 @@ void PreviSat::ChargementFenetre()
     ui->layoutCarte->addWidget(_carte);
 
     // Coordonnees de l'ISS
-    _coordISS = new CoordISS(ui->frameCarte);
+    _coordISS = new CoordISS(_carte->ui()->carte);
     _coordISS->setVisible(false);
-    _gmt = new QLabel("", ui->frameCarte);
+    _gmt = new QLabel("", _carte->ui()->carte);
     _gmt->setVisible(false);
 
     // Radar
@@ -2276,11 +2276,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         _timerStatut = nullptr;
     }
 
-    if (_gmt != nullptr) {
-        delete _gmt;
-        _gmt = nullptr;
-    }
-
     /* Retour */
     return;
 }
@@ -2448,7 +2443,10 @@ void PreviSat::changeEvent(QEvent *evt)
             if (Configuration::instance()->isCarteMonde()) {
 
                 if (windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
-                    _carte->setGeometry(_carte->ui()->carte->x(), _carte->ui()->carte->y(), _carteRect.width(), _carteRect.height());
+
+                    if (_carte->ui()->carte->x() > 0) {
+                        _carte->setGeometry(_carte->ui()->carte->x(), _carte->ui()->carte->y(), _carteRect.width(), _carteRect.height());
+                    }
 
                 } else if (windowState() == Qt::WindowMaximized) {
                     _carteRect = _carte->ui()->carte->rect();
