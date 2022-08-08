@@ -272,33 +272,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="barreMenu">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1080</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>true</bool>
-   </property>
-   <widget class="QMenu" name="menuRaccourcis">
-    <property name="title">
-     <string notr="true">Raccourcis</string>
-    </property>
-    <addaction name="actionRaccourci_Previsions"/>
-    <addaction name="actionRaccourci_Flashs"/>
-    <addaction name="actionRaccourci_Transits"/>
-    <addaction name="actionRaccourci_Evenements"/>
-    <addaction name="separator"/>
-    <addaction name="actionRaccourci_Informations"/>
-    <addaction name="actionRaccourci_Recherche"/>
-    <addaction name="actionRaccourci_Station"/>
-   </widget>
-   <addaction name="menuRaccourcis"/>
-  </widget>
   <widget class="QStatusBar" name="barreStatut">
    <property name="autoFillBackground">
     <bool>true</bool>
@@ -307,62 +280,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionRaccourci_Previsions">
-   <property name="text">
-    <string notr="true">Raccourci Previsions</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+P</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Flashs">
-   <property name="text">
-    <string notr="true">Raccourci Flashs</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+F</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Transits">
-   <property name="text">
-    <string notr="true">Raccourci Transits</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+T</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Evenements">
-   <property name="text">
-    <string notr="true">Raccourci Evenements</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+E</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Informations">
-   <property name="text">
-    <string notr="true">Raccourci Informations</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+I</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Recherche">
-   <property name="text">
-    <string notr="true">Raccourci Recherche</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+R</string>
-   </property>
-  </action>
-  <action name="actionRaccourci_Station">
-   <property name="text">
-    <string notr="true">Raccourci Station</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Alt+S</string>
-   </property>
-  </action>
  </widget>
  <resources>
   <include location="../../resources.qrc"/>

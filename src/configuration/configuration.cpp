@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 juin 2022
+ * >    8 aout 2022
  *
  */
 
@@ -143,6 +143,8 @@ void Configuration::Initialisation()
         EvenementsStationSpatiale::LectureEvenementsStationSpatiale(_dateDebutStationSpatiale,
                                                                     _dateFinStationSpatiale,
                                                                     _masseStationSpatiale,
+                                                                    _surfaceTraineeAtmospherique,
+                                                                    _coefficientTraineeAtmospherique,
                                                                     _evenementsStationSpatiale);
 
         // Lecture du fichier de donnees satellites

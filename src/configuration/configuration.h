@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 mai 2022
+ * >    8 aout 2022
  *
  */
 
@@ -232,7 +232,9 @@ private:
     QString _noradStationSpatiale;
     QString _dateDebutStationSpatiale;
     QString _dateFinStationSpatiale;
-    QList<double> _masseStationSpatiale;
+    double _masseStationSpatiale;
+    double _surfaceTraineeAtmospherique;
+    double _coefficientTraineeAtmospherique;
     QStringList _evenementsStationSpatiale;
 
 

@@ -13,12 +13,12 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <widget class="QTableWidget" name="manoeuvresISS">
+  <widget class="QTableWidget" name="evenementsISS">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
-     <width>701</width>
+     <y>50</y>
+     <width>771</width>
      <height>161</height>
     </rect>
    </property>
@@ -121,11 +121,11 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="majManIss">
+  <widget class="QPushButton" name="majEvenementsIss">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>180</y>
+     <x>420</x>
+     <y>10</y>
      <width>251</width>
      <height>23</height>
     </rect>
@@ -133,6 +133,78 @@
    <property name="text">
     <string>Mettre à jour les informations de l'ISS...</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>176</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_informationsISS1">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_masseISS">
+      <property name="text">
+       <string>Masse :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="masseISS">
+      <property name="text">
+       <string>463000 kg</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_surfaceTrainee">
+      <property name="text">
+       <string>Surface de traînée :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="surfaceTrainee">
+      <property name="text">
+       <string>1480 m2</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>10</y>
+     <width>160</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_informationsISS2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_coefficientTrainee">
+      <property name="text">
+       <string>Coefficient de traînée :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="coefficientTrainee">
+      <property name="text">
+       <string>2.50</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

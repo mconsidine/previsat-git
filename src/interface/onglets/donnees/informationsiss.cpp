@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    8 aout 2022
  *
  */
 
@@ -54,7 +54,7 @@ InformationsISS::InformationsISS(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    _ui->manoeuvresISS->setStyleSheet("QHeaderView::section {" \
+    _ui->evenementsISS->setStyleSheet("QHeaderView::section {" \
                                       "background-color:rgb(235, 235, 235);" \
                                       "border-top: 0px solid grey;" \
                                       "border-bottom: 1px solid grey;" \
@@ -62,7 +62,7 @@ InformationsISS::InformationsISS(QWidget *parent) :
                                       "font-size: 12px;" \
                                       "font-weight: 600 }");
 
-    _ui->manoeuvresISS->resizeColumnsToContents();
+    _ui->evenementsISS->resizeColumnsToContents();
 
 }
 

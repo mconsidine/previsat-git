@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >
+ * >    8 aout 2022
  *
  */
 
@@ -145,10 +145,12 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     }
 
     const QString nomFichier = QFileInfo(context.file).fileName();
-    const QString nomFonction = QString(context.function).split(":", Qt::SkipEmptyParts).at(1).split("(", Qt::SkipEmptyParts).at(0);
+    const QString nomFonction = (nomFichier.isEmpty()) ?
+                "" : QString(context.function).split(":", Qt::SkipEmptyParts).at(1).split("(", Qt::SkipEmptyParts).at(0);
     QString message = msg;
 
-    out << ": " << QString("%1 : %2 : ").arg(nomFichier + " (ligne " + QString::number(context.line) + ")", -45).arg(nomFonction, -30)
+    out << ": " << ((nomFichier.isEmpty()) ?
+                        "" : QString("%1 : %2 : ").arg(nomFichier + " (ligne " + QString::number(context.line) + ")", -45).arg(nomFonction, -30))
         << message.replace("\"", "") << Qt::endl;
     out.flush();
 
