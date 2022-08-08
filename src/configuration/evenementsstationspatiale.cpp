@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    8 aout 2022
  *
  */
 
@@ -47,7 +47,9 @@
 
 QString EvenementsStationSpatiale::_dateDebutStationSpatiale;
 QString EvenementsStationSpatiale::_dateFinStationSpatiale;
-QList<double> EvenementsStationSpatiale::_masseStationSpatiale;
+double EvenementsStationSpatiale::_masseStationSpatiale;
+double EvenementsStationSpatiale::_surfaceTraineeAtmospherique;
+double EvenementsStationSpatiale::_coefficientTraineeAtmospherique;
 QStringList EvenementsStationSpatiale::_evenementsStationSpatiale;
 
 
@@ -67,13 +69,14 @@ QStringList EvenementsStationSpatiale::_evenementsStationSpatiale;
  */
 void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDebutEvenementsStationSpatiale,
                                                                  QString &dateFinEvenementsStationSpatiale,
-                                                                 QList<double> &masseStationSpatiale,
+                                                                 double &masseStationSpatiale,
+                                                                 double &surfaceTraineeAtmospherique,
+                                                                 double &coefficientTraineeAtmospherique,
                                                                  QStringList &evenementsStationSpatiale)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _masseStationSpatiale.clear();
     _evenementsStationSpatiale.clear();
 
     /* Corps de la methode */
@@ -116,6 +119,8 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
     dateDebutEvenementsStationSpatiale = _dateDebutStationSpatiale;
     dateFinEvenementsStationSpatiale = _dateFinStationSpatiale;
     masseStationSpatiale = _masseStationSpatiale;
+    surfaceTraineeAtmospherique = _surfaceTraineeAtmospherique;
+    coefficientTraineeAtmospherique = _coefficientTraineeAtmospherique;
     evenementsStationSpatiale = _evenementsStationSpatiale;
 
     /* Retour */
@@ -203,7 +208,17 @@ void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg)
         if (value.toLower().contains("mass")) {
 
             // Masse (en kg)
-            _masseStationSpatiale.append(value.split("=").last().toDouble());
+            _masseStationSpatiale = value.split("=").last().toDouble();
+
+        } else if (value.toLower().contains("drag_area")) {
+
+            // Surface de trainee atmospherique
+            _surfaceTraineeAtmospherique = value.split("=").last().toDouble();
+
+        } else if (value.toLower().contains("drag_coeff")) {
+
+            // Coefficient de trainee atmospherique
+            _coefficientTraineeAtmospherique = value.split("=").last().toDouble();
 
         } else if (value.contains("===")) {
 

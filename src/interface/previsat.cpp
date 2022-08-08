@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 juin 2022
+ * >    8 aout 2022
  *
  */
 
@@ -132,6 +132,62 @@ void PreviSat::ChargementTraduction(const QString &langue)
 }
 
 /*
+ * Creation des raccourcis clavier
+ */
+void PreviSat::CreationRaccourcis()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Onglet Previsions
+    _previsions = new QAction(this);
+    _previsions->setShortcut(Qt::ALT + Qt::Key_P);
+    connect(_previsions, &QAction::triggered, this, &PreviSat::RaccourciPrevisions);
+    this->addAction(_previsions);
+
+    // Onglet Flashs
+    _flashs = new QAction(this);
+    _flashs->setShortcut(Qt::ALT + Qt::Key_F);
+    connect(_flashs, &QAction::triggered, this, &PreviSat::RaccourciFlashs);
+    this->addAction(_flashs);
+
+    // Onglet Transits
+    _transits = new QAction(this);
+    _transits->setShortcut(Qt::ALT + Qt::Key_T);
+    connect(_transits, &QAction::triggered, this, &PreviSat::RaccourciTransits);
+    this->addAction(_transits);
+
+    // Onglet Evenements
+    _evenements = new QAction(this);
+    _evenements->setShortcut(Qt::ALT + Qt::Key_E);
+    connect(_evenements, &QAction::triggered, this, &PreviSat::RaccourciEvenements);
+    this->addAction(_evenements);
+
+    // Onglet Informations satellite
+    _informations = new QAction(this);
+    _informations->setShortcut(Qt::ALT + Qt::Key_I);
+    connect(_informations, &QAction::triggered, this, &PreviSat::RaccourciInformations);
+    this->addAction(_informations);
+
+    // Onglet Recherche satellite
+    _recherche = new QAction(this);
+    _recherche->setShortcut(Qt::ALT + Qt::Key_R);
+    connect(_recherche, &QAction::triggered, this, &PreviSat::RaccourciRecherche);
+    this->addAction(_recherche);
+
+    // Onglet Informations ISS
+    _station = new QAction(this);
+    _station->setShortcut(Qt::ALT + Qt::Key_S);
+    connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
+    this->addAction(_station);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation de la fenetre principale
  */
 void PreviSat::Initialisation()
@@ -150,8 +206,9 @@ void PreviSat::Initialisation()
     // Initialisation de la configuration generale
     Configuration::instance()->Initialisation();
 
-    _ui->barreMenu->setVisible(false);
     _onglets = new Onglets(_ui->frameOnglets);
+
+    CreationRaccourcis();
 
     //ChargementTraduction(Configuration::instance()->locale());
 
@@ -178,7 +235,7 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     return;
 }
 
-void PreviSat::on_actionRaccourci_Previsions_triggered()
+void PreviSat::RaccourciPrevisions()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->prevision);
@@ -186,7 +243,7 @@ void PreviSat::on_actionRaccourci_Previsions_triggered()
     _onglets->setIndexPrevisions(index);
 }
 
-void PreviSat::on_actionRaccourci_Flashs_triggered()
+void PreviSat::RaccourciFlashs()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->flashs);
@@ -194,7 +251,7 @@ void PreviSat::on_actionRaccourci_Flashs_triggered()
     _onglets->setIndexPrevisions(index);
 }
 
-void PreviSat::on_actionRaccourci_Transits_triggered()
+void PreviSat::RaccourciTransits()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->transits);
@@ -202,7 +259,7 @@ void PreviSat::on_actionRaccourci_Transits_triggered()
     _onglets->setIndexPrevisions(index);
 }
 
-void PreviSat::on_actionRaccourci_Evenements_triggered()
+void PreviSat::RaccourciEvenements()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->evenementsOrbitaux);
@@ -210,7 +267,7 @@ void PreviSat::on_actionRaccourci_Evenements_triggered()
     _onglets->setIndexPrevisions(index);
 }
 
-void PreviSat::on_actionRaccourci_Informations_triggered()
+void PreviSat::RaccourciInformations()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsSat);
@@ -218,7 +275,7 @@ void PreviSat::on_actionRaccourci_Informations_triggered()
     _onglets->setIndexInformations(index);
 }
 
-void PreviSat::on_actionRaccourci_Recherche_triggered()
+void PreviSat::RaccourciRecherche()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->rechercheSat);
@@ -226,7 +283,7 @@ void PreviSat::on_actionRaccourci_Recherche_triggered()
     _onglets->setIndexInformations(index);
 }
 
-void PreviSat::on_actionRaccourci_Station_triggered()
+void PreviSat::RaccourciStation()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsStationSpatiale);

@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    8 aout 2022
  *
  */
 
@@ -71,7 +71,9 @@ public:
      */
     static void LectureEvenementsStationSpatiale(QString &dateDebutEvenementsStationSpatiale,
                                                  QString &dateFinEvenementsStationSpatiale,
-                                                 QList<double> &masseStationSpatiale,
+                                                 double &masseStationSpatiale,
+                                                 double &surfaceTraineeAtmospherique,
+                                                 double &coefficientTraineeAtmospherique,
                                                  QStringList &evenementsStationSpatiale);
 
 
@@ -102,7 +104,9 @@ private:
      */
     static QString _dateDebutStationSpatiale;
     static QString _dateFinStationSpatiale;
-    static QList<double> _masseStationSpatiale;
+    static double _masseStationSpatiale;
+    static double _surfaceTraineeAtmospherique;
+    static double _coefficientTraineeAtmospherique;
     static QStringList _evenementsStationSpatiale;
 
     /*

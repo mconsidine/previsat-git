@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 mai 2022
+ * >    8 aout 2022
  *
  */
 
@@ -114,6 +114,14 @@ private:
 
     Onglets *_onglets;
 
+    QAction *_previsions;
+    QAction *_flashs;
+    QAction *_transits;
+    QAction *_evenements;
+    QAction *_informations;
+    QAction *_recherche;
+    QAction *_station;
+
 
     /*
      * Methodes privees
@@ -123,6 +131,11 @@ private:
      * @param langue langue (fr, en, ja)
      */
     void ChargementTraduction(const QString &langue);
+
+    /**
+     * @brief CreationRaccourcis Creation des raccourcis clavier
+     */
+    void CreationRaccourcis();
 
     /**
      * @brief Initialisation Initialisation de la fenetre principale
@@ -139,13 +152,13 @@ private:
 
 private slots:
 
-    void on_actionRaccourci_Previsions_triggered();
-    void on_actionRaccourci_Flashs_triggered();
-    void on_actionRaccourci_Transits_triggered();
-    void on_actionRaccourci_Evenements_triggered();
-    void on_actionRaccourci_Informations_triggered();
-    void on_actionRaccourci_Recherche_triggered();
-    void on_actionRaccourci_Station_triggered();
+    void RaccourciPrevisions();
+    void RaccourciFlashs();
+    void RaccourciTransits();
+    void RaccourciEvenements();
+    void RaccourciInformations();
+    void RaccourciRecherche();
+    void RaccourciStation();
 
 
 };
