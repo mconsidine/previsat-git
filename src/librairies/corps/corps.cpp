@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    8 aout 2022
  *
  */
 
@@ -650,7 +650,10 @@ void Corps::Initialisation(const QString &dirCommonData)
             }
             fi.close();
 
+            qInfo() << QString("Lecture fichier constellations.dat OK");
+
         } else {
+            qInfo() << QString("Lecture fichier constellations.dat KO");
             throw PreviSatException(QObject::tr("Fichier %1 absent ou vide").arg(QDir::toNativeSeparators(fichierConstellations)), MessageType::WARNING);
         }
 

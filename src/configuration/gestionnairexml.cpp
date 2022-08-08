@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    8 aout 2022
  *
  */
 
@@ -222,16 +222,16 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
  */
 QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<QString, QString> mapCategoriesOrbite;
+
+    /* Initialisations */
+    const QString nomficXml = "categories.xml";
+    mapCategoriesOrbite.clear();
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<QString, QString> mapCategoriesOrbite;
-
-        /* Initialisations */
-        mapCategoriesOrbite.clear();
-
-        const QString nomficXml = "categories.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -288,10 +288,13 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapCategoriesOrbite;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -306,16 +309,17 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
                                            QList<Observateur> &observateurs,
                                            QList<QPair<QString, QStringList> > &listeSatellitesFichierElem)
 {
+    /* Declarations des variables locales */
+    QStringList listeFichiersElem;
+
+    /* Initialisations */
+    observateurs.clear();
+    listeSatellitesFichierElem.clear();
+
+    const QString nomficXml = "configuration.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QStringList listeFichiersElem;
-
-        /* Initialisations */
-        observateurs.clear();
-        listeSatellitesFichierElem.clear();
-
-        const QString nomficXml = "configuration.xml";
         const QString msg1 = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
                                          "Certaines informations de configuration "
                                          "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(APP_NAME);
@@ -444,15 +448,13 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
             listeSatellitesFichierElem.append(paire);
         }
 
-        qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(observateurs.at(0).longitude() * RAD2DEG, 0, 'f', 9)
-                   .arg(observateurs.at(0).latitude() * RAD2DEG, 0, 'f', 9)
-                   .arg(observateurs.at(0).altitude() * 1.e3);
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
         /* Retour */
         return;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -462,15 +464,15 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
  */
 QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem)
 {
+    /* Declarations des variables locales */
+    QList<CategorieElementsOrbitaux> listeCategoriesElementsOrbitaux;
+
+    /* Initialisations */
+    listeCategoriesElementsOrbitaux.clear();
+    const QString nomficXml = "gestionnaireElem.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QList<CategorieElementsOrbitaux> listeCategoriesElementsOrbitaux;
-
-        /* Initialisations */
-        listeCategoriesElementsOrbitaux.clear();
-
-        const QString nomficXml = "gestionnaireElem.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -564,12 +566,14 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
         }
 
         // Verifications
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
 
         /* Retour */
         return listeCategoriesElementsOrbitaux;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -579,14 +583,15 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
  */
 QMap<QString, QString> GestionnaireXml::LecturePays()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<QString, QString> mapPays;
+
+    /* Initialisations */
+    const QString nomficXml = "pays.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<QString, QString> mapPays;
-
-        /* Initialisations */
-        const QString nomficXml = "pays.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -643,10 +648,13 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapPays;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -656,16 +664,16 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
  */
 QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<int, SatelliteTDRS> mapTDRS;
+
+    /* Initialisations */
+    mapTDRS.clear();
+    const QString nomficXml = "tdrs.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<int, SatelliteTDRS> mapTDRS;
-
-        /* Initialisations */
-        mapTDRS.clear();
-
-        const QString nomficXml = "tdrs.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -734,10 +742,13 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapTDRS;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -747,16 +758,16 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
  */
 QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<QString, Observateur> mapSitesLancement;
+
+    /* Initialisations */
+    mapSitesLancement.clear();
+    const QString nomficXml = "sites.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<QString, Observateur> mapSitesLancement;
-
-        /* Initialisations */
-        mapSitesLancement.clear();
-
-        const QString nomficXml = "sites.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -821,10 +832,13 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapSitesLancement;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -834,16 +848,16 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
  */
 QMap<QString, Observateur> GestionnaireXml::LectureStations()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<QString, Observateur> mapStations;
+
+    /* Initialisations */
+    mapStations.clear();
+    const QString nomficXml = "stations.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<QString, Observateur> mapStations;
-
-        /* Initialisations */
-        mapStations.clear();
-
-        const QString nomficXml = "stations.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -912,10 +926,13 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapStations;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }
@@ -925,16 +942,16 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
  */
 QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
 {
+    /* Declarations des variables locales */
+    QString version;
+    QMap<QString, SatellitesFlashs> mapFlashs;
+
+    /* Initialisations */
+    mapFlashs.clear();
+    const QString nomficXml = "flares.xml";
+
     try {
 
-        /* Declarations des variables locales */
-        QString version;
-        QMap<QString, SatellitesFlashs> mapFlashs;
-
-        /* Initialisations */
-        mapFlashs.clear();
-
-        const QString nomficXml = "flares.xml";
         const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                             "Le fichier %1 n'existe pas, veuillez réinstaller %2");
 
@@ -1006,10 +1023,13 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
             throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
         /* Retour */
         return mapFlashs;
 
     } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
         throw PreviSatException();
     }
 }

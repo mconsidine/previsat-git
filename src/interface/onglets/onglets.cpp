@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 juin 2022
+ * >    8 aout 2022
  *
  */
 
@@ -42,6 +42,7 @@
 #include "onglets.h"
 #include "ui_onglets.h"
 #include "general/general.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "osculateurs/osculateurs.h"
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
@@ -86,58 +87,15 @@ Onglets::Onglets(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
-    _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
+    try {
 
-    setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
+        Initialisation();
 
-    // Initialisation des onglets
-    _general = new General(_ui->general);
-    _general->show();
+    } catch (PreviSatException &e) {
+        qCritical() << QString("Erreur Initialisation %1").arg(metaObject()->className());
+        throw PreviSatException();
+    }
 
-    _osculateurs = new Osculateurs(_ui->elementsOsculateurs);
-    _osculateurs->show();
-
-
-    _informationsSatellite = new InformationsSatellite(_ui->informationsSat);
-    _informationsSatellite->show();
-
-    _rechercheSatellite = new RechercheSatellite(_ui->rechercheSat);
-    _rechercheSatellite->show();
-
-    _informationsISS = new InformationsISS(_ui->informationsStationSpatiale);
-    _informationsISS->show();
-
-
-    _previsionsPassage = new PrevisionsPassage(_ui->prevision);
-    _previsionsPassage->show();
-
-    _flashs = new Flashs(_ui->flashs);
-    _flashs->show();
-
-    _transits = new Transits(_ui->transits);
-    _transits->show();
-
-    _evenements = new EvenementsOrbitaux(_ui->evenementsOrbitaux);
-    _evenements->show();
-
-
-    _suiviTelescope = new SuiviTelescope(_ui->telescope);
-    _suiviTelescope->show();
-
-
-    _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
-
-    _ui->infoPrec->setToolTip(_titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-            % _ui->stackedWidget_informations->count()]);
-    _ui->infoSuiv->setToolTip(_titresInformations[(_indexInformations + 1) % _ui->stackedWidget_informations->count()]);
-
-
-    _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
-
-    _ui->previsionPrec->setToolTip(_titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-            % _ui->stackedWidget_previsions->count()]);
-    _ui->previsionSuiv->setToolTip(_titresPrevisions[(_indexPrevisions + 1) % _ui->stackedWidget_previsions->count()]);
 }
 
 
@@ -246,6 +204,77 @@ void Onglets::setIndexPrevisions(unsigned int newIndexPrevisions)
 /*
  * Methodes privees
  */
+/*
+ * Initialisation de la classe Onglets
+ */
+void Onglets::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << QString("Début Initialisation %1").arg(metaObject()->className());
+
+    _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
+    _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
+
+    setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
+
+    // Initialisation des onglets
+    _general = new General(_ui->general);
+    _general->show();
+
+    _osculateurs = new Osculateurs(_ui->elementsOsculateurs);
+    _osculateurs->show();
+
+
+    _informationsSatellite = new InformationsSatellite(_ui->informationsSat);
+    _informationsSatellite->show();
+
+    _rechercheSatellite = new RechercheSatellite(_ui->rechercheSat);
+    _rechercheSatellite->show();
+
+    _informationsISS = new InformationsISS(_ui->informationsStationSpatiale);
+    _informationsISS->show();
+
+
+    _previsionsPassage = new PrevisionsPassage(_ui->prevision);
+    _previsionsPassage->show();
+
+    _flashs = new Flashs(_ui->flashs);
+    _flashs->show();
+
+    _transits = new Transits(_ui->transits);
+    _transits->show();
+
+    _evenements = new EvenementsOrbitaux(_ui->evenementsOrbitaux);
+    _evenements->show();
+
+
+    _suiviTelescope = new SuiviTelescope(_ui->telescope);
+    _suiviTelescope->show();
+
+
+    _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
+
+    _ui->infoPrec->setToolTip(_titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
+            % _ui->stackedWidget_informations->count()]);
+    _ui->infoSuiv->setToolTip(_titresInformations[(_indexInformations + 1) % _ui->stackedWidget_informations->count()]);
+
+
+    _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
+
+    _ui->previsionPrec->setToolTip(_titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
+            % _ui->stackedWidget_previsions->count()]);
+    _ui->previsionSuiv->setToolTip(_titresPrevisions[(_indexPrevisions + 1) % _ui->stackedWidget_previsions->count()]);
+
+    qInfo() << QString("Fin   Initialisation %1").arg(metaObject()->className());
+
+    /* Retour */
+    return;
+}
+
 void Onglets::on_infoPrec_clicked()
 {
     _indexInformations = (_ui->stackedWidget_informations->currentIndex() + _ui->stackedWidget_informations->count() - 1)

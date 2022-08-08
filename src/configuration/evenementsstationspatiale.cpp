@@ -43,6 +43,7 @@
 #include <QXmlStreamReader>
 #include "configuration.h"
 #include "evenementsstationspatiale.h"
+#include "librairies/exceptions/previsatexception.h"
 
 
 QString EvenementsStationSpatiale::_dateDebutStationSpatiale;
@@ -74,54 +75,67 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
                                                                  double &coefficientTraineeAtmospherique,
                                                                  QStringList &evenementsStationSpatiale)
 {
-    /* Declarations des variables locales */
+    try {
 
-    /* Initialisations */
-    _evenementsStationSpatiale.clear();
+        /* Declarations des variables locales */
 
-    /* Corps de la methode */
-    QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() + Configuration::instance()->nomFichierEvenementsStationSpatiale());
+        /* Initialisations */
+        _evenementsStationSpatiale.clear();
 
-    if (fi.exists() && (fi.size() != 0)) {
+        /* Corps de la methode */
+        QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() + Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.exists() && (fi.size() != 0)) {
 
-            QXmlStreamReader cfg(&fi);
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            cfg.readNextStartElement();
-            if (cfg.name().toString().toLower() == "ndm") {
+                QXmlStreamReader cfg(&fi);
 
-                QString version;
+                cfg.readNextStartElement();
+                if (cfg.name().toString().toLower() == "ndm") {
 
-                while (cfg.readNextStartElement()) {
+                    QString version;
 
-                    if (cfg.name().toString().toLower() == "oem") {
+                    while (cfg.readNextStartElement()) {
 
-                        version = cfg.attributes().value("version").toString();
+                        if (cfg.name().toString().toLower() == "oem") {
 
-                        while (cfg.readNextStartElement()) {
+                            version = cfg.attributes().value("version").toString();
 
-                            if (cfg.name().toString().toLower() == "body") {
+                            while (cfg.readNextStartElement()) {
 
-                                LectureBody(cfg);
+                                if (cfg.name().toString().toLower() == "body") {
 
-                            } else {
-                                cfg.skipCurrentElement();
+                                    LectureBody(cfg);
+
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        fi.close();
-    }
+            fi.close();
 
-    dateDebutEvenementsStationSpatiale = _dateDebutStationSpatiale;
-    dateFinEvenementsStationSpatiale = _dateFinStationSpatiale;
-    masseStationSpatiale = _masseStationSpatiale;
-    surfaceTraineeAtmospherique = _surfaceTraineeAtmospherique;
-    coefficientTraineeAtmospherique = _coefficientTraineeAtmospherique;
-    evenementsStationSpatiale = _evenementsStationSpatiale;
+        } else {
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()),
+                                    MessageType::WARNING);
+        }
+
+        dateDebutEvenementsStationSpatiale = _dateDebutStationSpatiale;
+        dateFinEvenementsStationSpatiale = _dateFinStationSpatiale;
+        masseStationSpatiale = _masseStationSpatiale;
+        surfaceTraineeAtmospherique = _surfaceTraineeAtmospherique;
+        coefficientTraineeAtmospherique = _coefficientTraineeAtmospherique;
+        evenementsStationSpatiale = _evenementsStationSpatiale;
+
+        qInfo() << QString("Lecture fichier %1 OK").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
+
+    } catch (PreviSatException &e) {
+        qCritical() << QString("Lecture fichier %1 KO").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
+        throw PreviSatException();
+    }
 
     /* Retour */
     return;

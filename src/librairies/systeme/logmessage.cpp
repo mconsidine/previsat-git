@@ -150,7 +150,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     QString message = msg;
 
     out << ": " << ((nomFichier.isEmpty()) ?
-                        "" : QString("%1 : %2 : ").arg(nomFichier + " (ligne " + QString::number(context.line) + ")", -45).arg(nomFonction, -30))
+                        "" : QString("%1 : %2 : ").arg(nomFichier + " (ligne " + QString::number(context.line) + ")", -45).arg(nomFonction, -40))
         << message.replace("\"", "") << Qt::endl;
     out.flush();
 

@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    19 juin 2022
+ * >    8 aout 2022
  *
  */
 
@@ -148,6 +148,11 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief Initialisation Initialisation de la classe Onglets
+     */
+    void Initialisation();
+
 
 private slots:
 

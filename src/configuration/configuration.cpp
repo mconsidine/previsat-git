@@ -99,7 +99,7 @@ void Configuration::Initialisation()
     try {
 
         qInfo() << "--";
-        qInfo() << "Début initialisation";
+        qInfo() << "Début Initialisation Configuration";
 
         // Definition des arborescences
         DefinitionArborescences();
@@ -176,13 +176,25 @@ void Configuration::Initialisation()
         _nomfic = _listeSatellitesFichierElem.at(0).first;
         _noradDefaut = _listeSatellitesFichierElem.at(0).second.at(0);
 
+        qInfo() << QString("Lieu d'observation : %1 %2 %3")
+                   .arg(_observateurs.at(0).longitude() * RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.at(0).latitude() * RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.at(0).altitude() * 1.e3);
+
         qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
         qInfo() << "Numéro NORAD par défaut :" << _noradDefaut;
 
-        qInfo() << "Fin initialisation";
+        QListIterator it(_listeSatellitesFichierElem.at(0).second);
+        qInfo() << "Liste des numéros NORAD :";
+        while (it.hasNext()) {
+            qInfo() << "     " << it.next();
+        }
+
+        qInfo() << "Fin   Initialisation Configuration";
         qInfo() << "--";
 
     } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation Configuration";
         throw PreviSatException();
     }
 
@@ -532,7 +544,11 @@ void Configuration::LectureChainesNasa()
             _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
         }
         fi.close();
+
+        qInfo() << QString("Lecture fichier chaines.chnl OK");
+
     } else {
+        qCritical() << QString("Lecture fichier chaines.chnl KO");
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
@@ -561,7 +577,11 @@ void Configuration::LectureDonneesSatellites()
             _donneesSatellites = QString(qUncompress(donneesCompressees));
         }
         fi.close();
+
+        qInfo() << QString("Lecture fichier donnees.bin OK");
+
     } else {
+        qCritical() << QString("Lecture fichier donnees.bin KO");
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
@@ -620,6 +640,8 @@ void Configuration::VerificationArborescences()
             if (!dir.exists()) {
                 const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
                                                     "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
+
+                qCritical() << QString("Le répertoire %1 n'existe pas").arg(dirDat);
                 throw PreviSatException(message.arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME), MessageType::ERREUR);
             }
         }
@@ -676,6 +698,8 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
         if (!fi.exists()) {
             const QString message = QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
             const QFileInfo ff(fi.fileName());
+
+            qCritical() << QString("Le fichier %1 n'existe pas").arg(ff.fileName());
             throw PreviSatException(message.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
@@ -683,6 +707,8 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
         if (fi.size() == 0) {
             const QString message = QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2");
             const QFileInfo ff(fi.fileName());
+
+            qCritical() << QString("Le fichier %1 est vide").arg(ff.fileName());
             throw PreviSatException(message.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
