@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    8 aout 2022
+ * >    9 aout 2022
  *
  */
 
@@ -102,8 +102,8 @@ void GestionnaireXml::EcritureConfiguration()
         }
         cfg.writeEndElement();
 
-        // Listes de satellites selon le fichier TLE
-        cfg.writeStartElement("FichiersTLE");
+        // Listes de satellites selon le fichier d'elements orbitaux
+        cfg.writeStartElement("FichiersElem");
         QListIterator itElem(Configuration::instance()->listeSatellitesFichierElem());
         while (itElem.hasNext()) {
 
@@ -150,7 +150,7 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
 
         cfg.setAutoFormatting(true);
         cfg.writeStartDocument();
-        cfg.writeStartElement("PreviSatGestionTLE");
+        cfg.writeStartElement("PreviSatGestionElem");
         cfg.writeAttribute("version", Configuration::instance()->versionCategorieElem());
 
         // Categories

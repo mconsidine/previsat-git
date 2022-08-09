@@ -160,6 +160,5 @@ private slots:
     void RaccourciRecherche();
     void RaccourciStation();
 
-
 };
 #endif // PREVISAT_H
