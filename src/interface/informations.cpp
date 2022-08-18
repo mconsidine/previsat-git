@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    24 mai 2022
+ * >    18 aout 2022
  *
  */
 
@@ -184,8 +184,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
         if (fi.exists() && (fi.size() > 0)) {
 
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QTextStream flux(&fi);
-                zoneTexte->setHtml(flux.readAll());
+                zoneTexte->setHtml(fi.readAll());
             }
             fi.close();
         }

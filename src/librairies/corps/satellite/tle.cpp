@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mai 2022
+ * >    18 aout 2022
  *
  */
 
@@ -255,8 +255,7 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            QTextStream flux(&fi);
-            const QString contenuFichier = flux.readAll();
+            const QString contenuFichier = fi.readAll();
 
             QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
             while (it.hasNext()) {
@@ -340,8 +339,7 @@ QList<TLE> TLE::LectureFichier3le(const QString &nomFichier3le)
 
             if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QTextStream flux(&fichier);
-                const QString contenuFichier = flux.readAll();
+                const QString contenuFichier = fichier.readAll();
 
                 QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
                 while (it.hasNext()) {
@@ -559,8 +557,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                 QString lig2;
                 QString msg;
 
-                QTextStream flux(&fi);
-                const QString contenuFichier = flux.readAll();
+                const QString contenuFichier = fi.readAll();
 
                 QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
                 while (it.hasNext()) {

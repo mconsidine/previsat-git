@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    29 juillet 2022
+ * >    18 aout 2022
  *
  */
 
@@ -41,7 +41,6 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
-#include <QTextStream>
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include "ui_afficher.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -160,8 +159,7 @@ Afficher::Afficher(const TypeCalcul &typeCalcul, const ConditionsPrevisions &con
         QFile fi(_conditions.ficRes);
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fi);
-            const QString contenuFic = flux.readAll();
+            const QString contenuFic = fi.readAll();
             ui->fichierTexte->setReadOnly(true);
             ui->fichierTexte->setText(contenuFic);
         }
@@ -859,8 +857,7 @@ void Afficher::ChargementCarte(const Observateur &observateur, const QList<Resul
 
         if (fi.exists() && (fi.size() != 0)) {
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QTextStream flux(&fi);
-                map = flux.readAll();
+                map = fi.readAll();
             }
             fi.close();
         }

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    18 aout 2022
  *
  */
 
@@ -43,7 +43,6 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QSettings>
 #include <QStandardPaths>
-#include <QTextStream>
 #include <QXmlStreamWriter>
 #include "configuration.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -1287,8 +1286,7 @@ void Configuration::LectureChainesNasa()
     if (fi.exists() && (fi.size() != 0)) {
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fi);
-            _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
+            _listeChainesNasa = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
         }
         fi.close();
     }

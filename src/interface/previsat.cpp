@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -536,12 +536,6 @@ void PreviSat::InitAffichageDemarrage() const
     ui->pasManuel->setVisible(false);
     ui->valManuel->setVisible(false);
 
-    auto lineEdit = ui->chaineNasa->findChild<QLineEdit*>();
-    lineEdit->setReadOnly(true);
-    lineEdit->setFocusPolicy(Qt::NoFocus);
-    connect(ui->chaineNasa, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->chaineNasa,
-            [&, lineEdit](){lineEdit->deselect();}, Qt::QueuedConnection);
-
     ui->frameVideo->setVisible(ui->mccISS->isChecked());
     _radar->setVisible(!ui->mccISS->isChecked());
 
@@ -622,8 +616,6 @@ void PreviSat::InitChampsDefaut()
     on_pasManuel_currentIndexChanged(0);
     ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
-
-    ui->chaineNasa->setMaximum(Configuration::instance()->listeChainesNasa().size());
 
     /* Retour */
     return;
@@ -2139,7 +2131,6 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/affCerclesAcq", _onglets->ui()->affCerclesAcq->isChecked());
     settings.setValue("affichage/affNbOrbWCC", _onglets->ui()->affNbOrbWCC->isChecked());
     settings.setValue("affichage/affSAA_ZOE", _onglets->ui()->affSAA_ZOE->isChecked());
-    settings.setValue("affichage/chaine", ui->chaineNasa->value());
     settings.setValue("affichage/styleWCC", _onglets->ui()->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", _onglets->ui()->coulGMT->currentIndex());
     settings.setValue("affichage/coulZOE", _onglets->ui()->coulZOE->currentIndex());
@@ -2532,8 +2523,7 @@ void PreviSat::on_meteo_clicked()
 
     if (fi.exists() && (fi.size() != 0)) {
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fi);
-            map = flux.readAll();
+            map = fi.readAll();
         }
         fi.close();
     }
@@ -3290,19 +3280,44 @@ void PreviSat::on_lancementVideoNasa_clicked()
     /* Corps de la methode */
     try {
 
-        const QString fic = Configuration::instance()->listeChainesNasa().at(ui->chaineNasa->value() - 1);
-
-        // Verification de la connexion
-        QTcpSocket socket;
-        QString adresse = Configuration::instance()->adresseAstropedia();
-        socket.connectToHost(adresse.remove("http://").remove("/"), 80);
-        if (!socket.waitForConnected(1000)) {
-            throw PreviSatException(tr("Impossible de lancer le flux vidéo : " \
-                                       "essayez de nouveau et/ou vérifiez votre connexion Internet"), WARNING);
+        QString val;
+        QStringListIterator it(Configuration::instance()->listeChainesNasa());
+        while (it.hasNext()) {
+            if (!val.isEmpty()) {
+                val += ",";
+            }
+            val += "'" + it.next() + "'";
         }
 
-        setCursor(Qt::ArrowCursor);
-        QDesktopServices::openUrl(QUrl(fic));
+        QString tab = QString("var tab = [ %1 ];").arg(val);
+
+        static QString html0;
+        if (html0.isEmpty()) {
+
+            const QString ficHtml = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "chainesNASA.ht";
+            QFile fi(ficHtml);
+
+            if (fi.exists() && (fi.size() != 0)) {
+                if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    html0 = fi.readAll();
+                }
+                fi.close();
+            }
+        }
+
+        QString html = html0;
+        html = html.replace("CHANNEL_MAX", QString::number(Configuration::instance()->listeChainesNasa().count())).replace("CHANNEL_TAB", tab);
+
+        // Creation du fichier html
+        QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "chainesNASA.html");
+        if (fr.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream flux(&fr);
+            flux << html;
+        }
+        fr.close();
+
+        // Ouverture du fichier html
+        QDesktopServices::openUrl(QUrl("file:///" + fr.fileName()));
 
     } catch (PreviSatException &e) {
     }

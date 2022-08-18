@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    29 juillet 2022
+ * >    18 aout 2022
  *
  */
 
@@ -1410,9 +1410,8 @@ void Onglets::ChargementPref()
 
         // Lecture du fichier de preferences
         if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fichier);
-            const QStringList listePrf = flux.readAll().split("\n", QString::SkipEmptyParts);
 
+            const QStringList listePrf = QString(fichier.readAll()).split("\n", QString::SkipEmptyParts);
             fichier.close();
 
             QStringListIterator it(listePrf);
