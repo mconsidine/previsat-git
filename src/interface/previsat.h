@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -56,6 +56,8 @@ namespace Ui { class PreviSat; }
 QT_END_NAMESPACE
 
 class Onglets;
+class Options;
+class Outils;
 
 class PreviSat : public QMainWindow
 {
@@ -102,6 +104,7 @@ protected:
      * Methodes protegees
      */
 
+
 private:
 
     /*
@@ -122,6 +125,9 @@ private:
     QAction *_recherche;
     QAction *_station;
 
+    Options *_options;
+    Outils *_outils;
+
 
     /*
      * Methodes privees
@@ -131,6 +137,8 @@ private:
      * @param langue langue (fr, en, ja)
      */
     void ChargementTraduction(const QString &langue);
+
+    void CreationMenus();
 
     /**
      * @brief CreationRaccourcis Creation des raccourcis clavier
@@ -160,5 +168,14 @@ private slots:
     void RaccourciRecherche();
     void RaccourciStation();
 
+    void on_configuration_clicked();
+    void on_outils_clicked();
+    void on_tempsReel_toggled(bool checked);
+    void on_modeManuel_toggled(bool checked);
+
+    void on_actionOptions_triggered();
+    void on_actionOutils_triggered();
+
 };
+
 #endif // PREVISAT_H

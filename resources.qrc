@@ -1,33 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/help.png</file>
-        <file>resources/maxi.png</file>
-        <file>resources/mini.png</file>
-        <file>resources/backward.png</file>
-        <file>resources/forward.png</file>
-        <file>resources/pause.png</file>
-        <file>resources/play.png</file>
-        <file>resources/rewind.png</file>
-        <file>resources/map.png</file>
-        <file>resources/globe.png</file>
-        <file>resources/apropos.png</file>
-        <file>resources/splashscreen.png</file>
-        <file>resources/icone.ico</file>
-        <file>resources/lune.png</file>
-        <file>resources/soleil.png</file>
-        <file>resources/print.png</file>
-        <file>resources/ajout.png</file>
-        <file>resources/suppr.png</file>
-        <file>resources/pref.png</file>
-        <file>resources/editer.png</file>
-        <file>resources/NASA.bmp</file>
-        <file>resources/meteo.png</file>
-        <file>resources/paypal.png</file>
-        <file>resources/enregistrer_txt.png</file>
-        <file>resources/logo-skywatcher.png</file>
-        <file>resources/gift.png</file>
-        <file>resources/tipeee.png</file>
-        <file>resources/utip.png</file>
+        <file>resources/drapeaux/fr.png</file>
+        <file>resources/drapeaux/en.png</file>
+        <file>resources/drapeaux/ja.png</file>
         <file>resources/icones/25544.png</file>
         <file>resources/icones/20580.png</file>
         <file>resources/icones/48274.png</file>
@@ -41,8 +16,38 @@
         <file>resources/icones/otv.png</file>
         <file>resources/icones/noaa.png</file>
         <file>resources/icones/cygnus.png</file>
-        <file>resources/drapeaux/fr.png</file>
-        <file>resources/drapeaux/en.png</file>
-        <file>resources/drapeaux/ja.png</file>
+        <file>resources/interface/affichage.png</file>
+        <file>resources/interface/configuration.png</file>
+        <file>resources/interface/help.png</file>
+        <file>resources/interface/marqueur.png</file>
+        <file>resources/interface/maxi.png</file>
+        <file>resources/interface/mini.png</file>
+        <file>resources/interface/nasa.png</file>
+        <file>resources/interface/outils.png</file>
+        <file>resources/interface/backward.png</file>
+        <file>resources/interface/forward.png</file>
+        <file>resources/interface/pause.png</file>
+        <file>resources/interface/play.png</file>
+        <file>resources/interface/rewind.png</file>
+        <file>resources/interface/map.png</file>
+        <file>resources/interface/globe.png</file>
+        <file>resources/interface/apropos.png</file>
+        <file>resources/interface/splashscreen.png</file>
+        <file>resources/interface/icone.ico</file>
+        <file>resources/interface/lune.png</file>
+        <file>resources/interface/soleil.png</file>
+        <file>resources/interface/print.png</file>
+        <file>resources/interface/ajout.png</file>
+        <file>resources/interface/suppr.png</file>
+        <file>resources/interface/pref.png</file>
+        <file>resources/interface/editer.png</file>
+        <file>resources/interface/NASA.bmp</file>
+        <file>resources/interface/meteo.png</file>
+        <file>resources/interface/paypal.png</file>
+        <file>resources/interface/enregistrer_txt.png</file>
+        <file>resources/interface/logo-skywatcher.png</file>
+        <file>resources/interface/gift.png</file>
+        <file>resources/interface/tipeee.png</file>
+        <file>resources/interface/utip.png</file>
     </qresource>
 </RCC>

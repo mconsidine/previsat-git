@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    20 mai 2022
+# >    18 aout 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -96,6 +96,8 @@ SOURCES += \
     src/interface/onglets/previsions/previsionspassage.cpp  \
     src/interface/onglets/previsions/transits.cpp           \
     src/interface/onglets/telescope/suivitelescope.cpp      \
+    src/interface/options/options.cpp                       \
+    src/interface/outils/outils.cpp                         \
     src/interface/previsat.cpp                              \
     src/librairies/corps/corps.cpp                          \
     src/librairies/corps/etoiles/constellation.cpp          \
@@ -148,9 +150,11 @@ HEADERS += \
     src/interface/onglets/previsions/previsionspassage.h  \
     src/interface/onglets/previsions/transits.h           \
     src/interface/onglets/telescope/suivitelescope.h      \
+    src/interface/options/options.h                       \
+    src/interface/outils/outils.h                         \
     src/interface/previsat.h                              \
     src/librairies/corps/corps.h                          \
-    src/librairies/corps/corpsconst.h \
+    src/librairies/corps/corpsconst.h                     \
     src/librairies/corps/ephemerides.h                    \
     src/librairies/corps/etoiles/constellation.h          \
     src/librairies/corps/etoiles/etoile.h                 \
@@ -205,6 +209,8 @@ FORMS += \
     src/interface/onglets/previsions/previsionspassage.ui  \
     src/interface/onglets/previsions/transits.ui           \
     src/interface/onglets/telescope/suivitelescope.ui      \
+    src/interface/options/options.ui                       \
+    src/interface/outils/outils.ui                         \
     src/interface/previsat.ui
 
 
@@ -291,9 +297,9 @@ HEADERS += \
 
     #CONFIG += lrelease
 
-    ICON = resources/icone.ico
+    ICON = resources/interface/icone.ico
     win32:RC_FILE = icone.rc
-    mac:ICON = resources/icone.icns
+    mac:ICON = resources/interface/icone.icns
 
     SOURCES += \
         src/main.cpp

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreviSatConfiguration version="1.1">
+<PreviSatConfiguration version="1.2">
     <NoradStationSpatiale>25544</NoradStationSpatiale>
     <AdresseCelestrak>http://celestrak.org/</AdresseCelestrak>
+    <NomFichierEvenementsStationSpatiale>ISS.OEM_J2K_EPH.xml</NomFichierEvenementsStationSpatiale>
     <Observateurs>
         <Observateur>
             <Nom>Paris</Nom>
@@ -22,10 +23,10 @@
             <Altitude>0</Altitude>
         </Observateur>
     </Observateurs>
-    <FichiersTLE>
-        <Fichier nom="visual.txt">
+    <FichiersElem>
+        <Fichier nom="visual.xml">
             <Norad>25544</Norad>
             <Norad>20580</Norad>
         </Fichier>
-    </FichiersTLE>
+    </FichiersElem>
 </PreviSatConfiguration>

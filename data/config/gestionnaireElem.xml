@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatGestionElem version="1.0">
+    <Categorie>
+        <Langue lang="en">
+            <Nom>common</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>commun</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>common</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>visual.xml</Fichier>
+            <Fichier>stations.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>all</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>tous</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>全て</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>1982-092.xml</Fichier>
+            <Fichier>1999-025.xml</Fichier>
+            <Fichier>2012-044.xml</Fichier>
+            <Fichier>2019-006.xml</Fichier>
+            <Fichier>active.xml</Fichier>
+            <Fichier>amateur.xml</Fichier>
+            <Fichier>argos.xml</Fichier>
+            <Fichier>beidou.xml</Fichier>
+            <Fichier>cosmos-2251-debris.xml</Fichier>
+            <Fichier>cubesat.xml</Fichier>
+            <Fichier>dmc.xml</Fichier>
+            <Fichier>education.xml</Fichier>
+            <Fichier>engineering.xml</Fichier>
+            <Fichier>galileo.xml</Fichier>
+            <Fichier>geo.xml</Fichier>
+            <Fichier>geodetic.xml</Fichier>
+            <Fichier>glo-ops.xml</Fichier>
+            <Fichier>globalstar.xml</Fichier>
+            <Fichier>goes.xml</Fichier>
+            <Fichier>gorizont.xml</Fichier>
+            <Fichier>gps-ops.xml</Fichier>
+            <Fichier>intelsat.xml</Fichier>
+            <Fichier>iridium-33-debris.xml</Fichier>
+            <Fichier>iridium-NEXT.xml</Fichier>
+            <Fichier>iridium.xml</Fichier>
+            <Fichier>last-30-days.xml</Fichier>
+            <Fichier>military.xml</Fichier>
+            <Fichier>molniya.xml</Fichier>
+            <Fichier>musson.xml</Fichier>
+            <Fichier>nnss.xml</Fichier>
+            <Fichier>noaa.xml</Fichier>
+            <Fichier>oneweb.xml</Fichier>
+            <Fichier>orbcomm.xml</Fichier>
+            <Fichier>other-comm.xml</Fichier>
+            <Fichier>other.xml</Fichier>
+            <Fichier>planet.xml</Fichier>
+            <Fichier>radar.xml</Fichier>
+            <Fichier>raduga.xml</Fichier>
+            <Fichier>resource.xml</Fichier>
+            <Fichier>sarsat.xml</Fichier>
+            <Fichier>satnogs.xml</Fichier>
+            <Fichier>sbas.xml</Fichier>
+            <Fichier>science.xml</Fichier>
+            <Fichier>ses.xml</Fichier>
+            <Fichier>spire.xml</Fichier>
+            <Fichier>swarm.xml</Fichier>
+            <Fichier>starlink.xml</Fichier>
+            <Fichier>stations.xml</Fichier>
+            <Fichier>swarm.xml</Fichier>
+            <Fichier>tdrss.xml</Fichier>
+            <Fichier>visual.xml</Fichier>
+            <Fichier>weather.xml</Fichier>
+            <Fichier>x-comm.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>weather</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>meteo</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>weather</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>weather.xml</Fichier>
+            <Fichier>noaa.xml</Fichier>
+            <Fichier>goes.xml</Fichier>
+            <Fichier>resource.xml</Fichier>
+            <Fichier>sarsat.xml</Fichier>
+            <Fichier>dmc.xml</Fichier>
+            <Fichier>tdrss.xml</Fichier>
+            <Fichier>argos.xml</Fichier>
+            <Fichier>planet.xml</Fichier>
+            <Fichier>spire.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>communications</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>communications</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>communications</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>geo.xml</Fichier>
+            <Fichier>intelsat.xml</Fichier>
+            <Fichier>gorizont.xml</Fichier>
+            <Fichier>raduga.xml</Fichier>
+            <Fichier>molniya.xml</Fichier>
+            <Fichier>iridium.xml</Fichier>
+            <Fichier>iridium-NEXT.xml</Fichier>
+            <Fichier>oneweb.xml</Fichier>
+            <Fichier>orbcomm.xml</Fichier>
+            <Fichier>globalstar.xml</Fichier>
+            <Fichier>amateur.xml</Fichier>
+            <Fichier>x-comm.xml</Fichier>
+            <Fichier>other-comm.xml</Fichier>
+            <Fichier>ses.xml</Fichier>
+            <Fichier>satnogs.xml</Fichier>
+            <Fichier>starlink.xml</Fichier>
+            <Fichier>swarm.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>gps-ops.xml</Fichier>
+            <Fichier>glo-ops.xml</Fichier>
+            <Fichier>galileo.xml</Fichier>
+            <Fichier>beidou.xml</Fichier>
+            <Fichier>sbas.xml</Fichier>
+            <Fichier>nnss.xml</Fichier>
+            <Fichier>musson.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>scientific</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>scientifique</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>scientific</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>science.xml</Fichier>
+            <Fichier>geodetic.xml</Fichier>
+            <Fichier>engineering.xml</Fichier>
+            <Fichier>education.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>miscellaneous</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>divers</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>miscellaneous</Nom>
+        </Langue>
+        <Site>www.celestrak.org</Site>
+        <Fichiers>
+            <Fichier>military.xml</Fichier>
+            <Fichier>radar.xml</Fichier>
+            <Fichier>cubesat.xml</Fichier>
+            <Fichier>other.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>common</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>commun</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>common</Nom>
+        </Langue>
+        <Site>astropedia.free.fr</Site>
+        <Fichiers>
+            <Fichier>visible-spctrk.xml</Fichier>
+            <Fichier>human-spaceflight-spctrk.xml</Fichier>
+            <Fichier>special-interest-spctrk.xml</Fichier>
+            <Fichier>flares-spctrk.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>all</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>tous</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>all</Nom>
+        </Langue>
+        <Site>astropedia.free.fr</Site>
+        <Fichiers>
+            <Fichier>amateur-spctrk.xml</Fichier>
+            <Fichier>bright-geo-spctrk.xml</Fichier>
+            <Fichier>geo-spctrk.xml</Fichier>
+            <Fichier>heo-spctrk.xml</Fichier>
+            <Fichier>human-spaceflight-spctrk.xml</Fichier>
+            <Fichier>inmarsat-spctrk.xml</Fichier>
+            <Fichier>intelsat-spctrk.xml</Fichier>
+            <Fichier>leo-spctrk.xml</Fichier>
+            <Fichier>meo-spctrk.xml</Fichier>
+            <Fichier>flares-spctrk.xml</Fichier>
+            <Fichier>navigation-spctrk.xml</Fichier>
+            <Fichier>special-interest-spctrk.xml</Fichier>
+            <Fichier>visible-spctrk.xml</Fichier>
+            <Fichier>weather-spctrk.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>geo</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>geo</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>geo</Nom>
+        </Langue>
+        <Site>astropedia.free.fr</Site>
+        <Fichiers>
+            <Fichier>bright-geo-spctrk.xml</Fichier>
+            <Fichier>geo-spctrk.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>communications</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>communications</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>communications</Nom>
+        </Langue>
+        <Site>astropedia.free.fr</Site>
+        <Fichiers>
+            <Fichier>inmarsat-spctrk.xml</Fichier>
+            <Fichier>intelsat-spctrk.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+    <Categorie>
+        <Langue lang="en">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Langue lang="fr">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Langue lang="ja">
+            <Nom>navigation</Nom>
+        </Langue>
+        <Site>astropedia.free.fr</Site>
+        <Fichiers>
+            <Fichier>navigation-spctrk.xml</Fichier>
+        </Fichiers>
+    </Categorie>
+</PreviSatGestionElem>

@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -119,14 +119,17 @@ public:
     const QList<Observateur> &observateurs() const;
     const QMap<QString, Observateur> &mapObs() const;
 
-    // Liste des satellites de tous les fichiers d'elements orbitaux
-    const QList<QPair<QString, QStringList> > &listeSatellitesFichierElem() const;
+    // Map des satellites de tous les fichiers d'elements orbitaux
+    const QMap<QString, QStringList> &mapSatellitesFichierElem() const;
 
     const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
 
     // Donnees satellites
     const QString &donneesSatellites() const;
     int lgRec() const;
+
+    // Nom du fichier d'elements orbitaux par defaut
+    const QString &nomfic() const;
 
 
     /*
@@ -244,8 +247,8 @@ private:
     // Lieux d'observation contenus dans un fichier
     QMap<QString, Observateur> _mapObs;
 
-    // Liste des satellites de tous les fichiers d'elements orbitaux
-    QList<QPair<QString, QStringList> > _listeSatellitesFichierElem;
+    // Map des satellites de tous les fichiers d'elements orbitaux
+    QMap<QString, QStringList> _mapSatellitesFichierElem;
 
 
     // Adresses de telechargement

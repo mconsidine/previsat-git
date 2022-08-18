@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -115,8 +115,10 @@ void Configuration::Initialisation()
                                               _noradStationSpatiale,
                                               _versionCfg,
                                               _adresseCelestrak,
+                                              _nomfic,
+                                              _noradDefaut,
                                               _observateurs,
-                                              _listeSatellitesFichierElem);
+                                              _mapSatellitesFichierElem);
 
         // Lecture du fichier de categories d'orbite
         _mapCategoriesOrbite = GestionnaireXml::LectureCategoriesOrbite();
@@ -173,9 +175,6 @@ void Configuration::Initialisation()
         // Initialisation de la liste de fichiers de preferences
         InitListeFichiersPref();
 
-        _nomfic = _listeSatellitesFichierElem.at(0).first;
-        _noradDefaut = _listeSatellitesFichierElem.at(0).second.at(0);
-
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
                    .arg(_observateurs.at(0).longitude() * RAD2DEG, 0, 'f', 9)
                    .arg(_observateurs.at(0).latitude() * RAD2DEG, 0, 'f', 9)
@@ -184,7 +183,7 @@ void Configuration::Initialisation()
         qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
         qInfo() << "Numéro NORAD par défaut :" << _noradDefaut;
 
-        QListIterator it(_listeSatellitesFichierElem.at(0).second);
+        QListIterator it(_mapSatellitesFichierElem[_nomfic]);
         qInfo() << "Liste des numéros NORAD :";
         while (it.hasNext()) {
             qInfo() << "     " << it.next();
@@ -342,9 +341,9 @@ const QMap<QString, Observateur> &Configuration::mapObs() const
 }
 
 
-const QList<QPair<QString, QStringList> > &Configuration::listeSatellitesFichierElem() const
+const QMap<QString, QStringList> &Configuration::mapSatellitesFichierElem() const
 {
-    return _listeSatellitesFichierElem;
+    return _mapSatellitesFichierElem;
 }
 
 const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesElementsOrbitaux() const
@@ -360,6 +359,11 @@ const QString &Configuration::donneesSatellites() const
 int Configuration::lgRec() const
 {
     return _lgRec;
+}
+
+const QString &Configuration::nomfic() const
+{
+    return _nomfic;
 }
 
 
@@ -545,10 +549,10 @@ void Configuration::LectureChainesNasa()
         }
         fi.close();
 
-        qInfo() << QString("Lecture fichier chaines.chnl OK");
+        qInfo() << "Lecture fichier chaines.chnl OK";
 
     } else {
-        qCritical() << QString("Lecture fichier chaines.chnl KO");
+        qCritical() << "Lecture fichier chaines.chnl KO";
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
@@ -578,10 +582,10 @@ void Configuration::LectureDonneesSatellites()
         }
         fi.close();
 
-        qInfo() << QString("Lecture fichier donnees.bin OK");
+        qInfo() << "Lecture fichier donnees.bin OK";
 
     } else {
-        qCritical() << QString("Lecture fichier donnees.bin KO");
+        qCritical() << "Lecture fichier donnees.bin KO";
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
