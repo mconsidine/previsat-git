@@ -30,16 +30,23 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
 #include "previsat.h"
 #include "ui_onglets.h"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include "ui_previsat.h"
-#include "onglets/onglets.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
+#include "onglets/onglets.h"
+#include "options/options.h"
+#include "outils/outils.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "configuration/gestionnairexml.h"
 
 
 /**********
@@ -63,7 +70,7 @@ PreviSat::PreviSat(QWidget *parent)
         Initialisation();
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Erreur Initialisation %1").arg(metaObject()->className());
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
         throw PreviSatException();
     }
 }
@@ -77,6 +84,11 @@ PreviSat::~PreviSat()
     if (_onglets != nullptr) {
         delete _onglets;
         _onglets = nullptr;
+    }
+
+    if (_options != nullptr) {
+        delete _options;
+        _options = nullptr;
     }
 
     delete _ui;
@@ -122,11 +134,33 @@ void PreviSat::ChargementTraduction(const QString &langue)
     /* Initialisations */
 
     /* Corps de la methode */
-    InstallationTraduction(QString("%1_%2").arg(qApp->applicationName()).arg(langue), _appTraduction);
+    if (langue != "fr") {
+        InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
+    }
     InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
 
     _ui->retranslateUi(this);
     _onglets->ui()->retranslateUi(_onglets);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::CreationMenus()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QStyle * const styleIcones = QApplication::style();
+
+    /* Corps de la methode */
+    _ui->barreMenu->setVisible(false);
+    _ui->boutonMenu->setMenu(_ui->menuPrincipal);
+    _ui->boutonDons->setMenu(_ui->menuDons);
+
+    _ui->actionDons->setMenu(_ui->menuDons);
+    _ui->actionImporter_fichier_TLE_GP->setIcon(styleIcones->standardIcon(QStyle::SP_DialogOpenButton));
+    _ui->actionEnregistrer->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
 
     /* Retour */
     return;
@@ -207,14 +241,20 @@ void PreviSat::Initialisation()
     // Initialisation de la configuration generale
     Configuration::instance()->Initialisation();
 
-    qInfo() << QString("Début Initialisation %1").arg(metaObject()->className());
-    _onglets = new Onglets(_ui->frameOnglets);
+    qInfo() << "Début Initialisation" << metaObject()->className();
 
+    _onglets = new Onglets(_ui->frameOnglets);
+    _options = new Options();
+    _outils = new Outils();
+
+    CreationMenus();
     CreationRaccourcis();
 
-    //ChargementTraduction(Configuration::instance()->locale());
+    on_tempsReel_toggled(true);
 
-    qInfo() << QString("Fin   Initialisation %1").arg(metaObject()->className());
+    ChargementTraduction(Configuration::instance()->locale());
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     /* Retour */
     return;
@@ -233,6 +273,8 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     qApp->removeTranslator(&traduction);
     if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
+    } else {
+        qWarning() << "Impossible de charger le fichier de traduction" << langue;
     }
 
     /* Retour */
@@ -294,3 +336,40 @@ void PreviSat::RaccourciStation()
     const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
     _onglets->setIndexInformations(index);
 }
+
+void PreviSat::on_configuration_clicked()
+{
+    _options->show();
+}
+
+void PreviSat::on_outils_clicked()
+{
+    _outils->show();
+}
+
+void PreviSat::on_tempsReel_toggled(bool checked)
+{
+    _ui->pasManuel->setVisible(!checked);
+    _ui->valManuel->setVisible(!checked);
+    _ui->pasReel->setVisible(checked);
+    _ui->secondes->setVisible(checked);
+}
+
+void PreviSat::on_modeManuel_toggled(bool checked)
+{
+    _ui->pasReel->setVisible(!checked);
+    _ui->secondes->setVisible(!checked);
+    _ui->pasManuel->setVisible(checked);
+    _ui->valManuel->setVisible(checked);
+}
+
+void PreviSat::on_actionOptions_triggered()
+{
+    on_configuration_clicked();
+}
+
+void PreviSat::on_actionOutils_triggered()
+{
+    on_outils_clicked();
+}
+

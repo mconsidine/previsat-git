@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    9 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -83,6 +83,9 @@ void GestionnaireXml::EcritureConfiguration()
         // Numero NORAD de la station spatiale
         cfg.writeTextElement("NoradStationSpatiale", Configuration::instance()->noradStationSpatiale());
 
+        // Adresse du site Celestrak
+        cfg.writeTextElement("AdresseCelestrak", Configuration::instance()->adresseCelestrak());
+
         // Nom du fichier d'evenements de la Station Spatiale
         cfg.writeTextElement("NomFichierEvenementsStationSpatiale", Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
@@ -104,17 +107,32 @@ void GestionnaireXml::EcritureConfiguration()
 
         // Listes de satellites selon le fichier d'elements orbitaux
         cfg.writeStartElement("FichiersElem");
-        QListIterator itElem(Configuration::instance()->listeSatellitesFichierElem());
+
+        // Numeros NORAD du fichier par defaut
+        const QStringList listeNorad = Configuration::instance()->mapSatellitesFichierElem()[Configuration::instance()->nomfic()];
+        if (!listeNorad.isEmpty()) {
+
+            cfg.writeStartElement("Fichier");
+            cfg.writeAttribute("nom", Configuration::instance()->nomfic());
+
+            QStringListIterator itNorad(listeNorad);
+            while (itNorad.hasNext()) {
+                cfg.writeTextElement("Norad", itNorad.next());
+            }
+            cfg.writeEndElement();
+        }
+
+        QMapIterator itElem(Configuration::instance()->mapSatellitesFichierElem());
         while (itElem.hasNext()) {
 
-            const QPair paireElem = itElem.next();
+            itElem.next();
 
-            if (!paireElem.second.isEmpty()) {
+            if (!itElem.value().isEmpty() && (itElem.key() != Configuration::instance()->nomfic())) {
 
                 cfg.writeStartElement("Fichier");
-                cfg.writeAttribute("nom", paireElem.first);
+                cfg.writeAttribute("nom", itElem.key());
 
-                QStringListIterator itNorad(paireElem.second);
+                QStringListIterator itNorad(itElem.value());
                 while (itNorad.hasNext()) {
                     cfg.writeTextElement("Norad", itNorad.next());
                 }
@@ -300,21 +318,22 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
 }
 
 /*
- * Lecture du fichier de confiiguration generale
+ * Lecture du fichier de configuration generale
  */
 void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationSpatiale,
                                            QString &noradStationSpatiale,
                                            QString &versionCfg,
                                            QString &adresseCelestrak,
+                                           QString &nomfic,
+                                           QString &noradDefaut,
                                            QList<Observateur> &observateurs,
-                                           QList<QPair<QString, QStringList> > &listeSatellitesFichierElem)
+                                           QMap<QString, QStringList> &mapSatellitesFichierElem)
 {
     /* Declarations des variables locales */
-    QStringList listeFichiersElem;
 
     /* Initialisations */
     observateurs.clear();
-    listeSatellitesFichierElem.clear();
+    mapSatellitesFichierElem.clear();
 
     const QString nomficXml = "configuration.xml";
 
@@ -414,10 +433,14 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
                                     }
                                 }
 
-                                if (!listeFichiersElem.contains(nom)) {
-                                    listeFichiersElem.append(nom);
-                                    const QPair<QString, QStringList> paire(nom, elements);
-                                    listeSatellitesFichierElem.append(paire);
+                                if (!mapSatellitesFichierElem.contains(nom)) {
+
+                                    mapSatellitesFichierElem.insert(nom, elements);
+
+                                    if (nomfic.isEmpty()) {
+                                        nomfic = nom;
+                                        noradDefaut = elements.at(0);
+                                    }
                                 }
                             }
 
@@ -443,9 +466,8 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
             observateurs.append(Observateur("Paris", -2.348640000, +48.853390000, 30));
         }
 
-        if (listeSatellitesFichierElem.isEmpty()) {
-            const QPair<QString, QStringList> paire("visual.xml", QStringList() << "25544" << "20580");
-            listeSatellitesFichierElem.append(paire);
+        if (mapSatellitesFichierElem.isEmpty()) {
+            mapSatellitesFichierElem.insert("visual.xml", QStringList() << "25544" << "20580");
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);

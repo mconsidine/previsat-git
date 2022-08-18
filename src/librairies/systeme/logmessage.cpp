@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -71,6 +71,13 @@ LogMessage::LogMessage(const QString &fichier)
     _fichierLog.reset(new QFile(fichier));
     _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
     qInstallMessageHandler(messageHandler);
+
+    QTextStream out(_fichierLog.data());
+    out << "       Date (UTC)       : Type    : Fichier                                       : Fonction                                 : Message"
+        << Qt::endl;
+    out << "-----------------------------------------------------------------------------------------------------------------------------"
+           "-------------------------------------" << Qt::endl;
+    out.flush();
 
     /* Retour */
     return;
@@ -120,7 +127,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     /* Corps de la methode */
     QTextStream out(_fichierLog.data());
 #if (BUILD_TEST == false)
-    out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz : ");
+    out << QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd hh:mm:ss.zzz : ");
 #endif
 
     switch (type)

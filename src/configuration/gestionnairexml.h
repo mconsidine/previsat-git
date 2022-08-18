@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    18 aout 2022
  *
  */
 
@@ -69,7 +69,7 @@ public:
     /**
      * @brief EcritureConfiguration Ecriture de la configuration
      */
-    void EcritureConfiguration();
+    static void EcritureConfiguration();
 
     /**
      * @brief EcritureGestionnaireElementsOrbitaux Ecriture du fichier de gestionnaire d'elements orbitaux
@@ -118,20 +118,20 @@ private:
      * @param noradStationSpatiale numero NORAD de la Station Spatiale
      * @param versionCfg version du fichier de configuration
      * @param adresseCelestrak adresse du site Celestrak
+     * @param nomfic nomdu fichier d'elements orbitaux par defaut
+     * @param noradDefaut numero NORAD par defaut
      * @param observateurs liste des lieux d'observation
-     * @param listeSatellitesFichierElem liste des satellites par fichier d'elements orbitaux
+     * @param mapSatellitesFichierElem liste des satellites par fichier d'elements orbitaux
      */
     static void LectureConfiguration(QString &nomFichierEvenementsStationSpatiale,
                                      QString &noradStationSpatiale,
                                      QString &versionCfg,
                                      QString &adresseCelestrak,
+                                     QString &nomfic,
+                                     QString &noradDefaut,
                                      QList<Observateur> &observateurs,
-                                     QList<QPair<QString, QStringList> > &listeSatellitesFichierElem);
+                                     QMap<QString, QStringList> &mapSatellitesFichierElem);
 
-    /**
-     * @brief LectureGestionnaireElementsOrbitaux
-     * @return
-     */
     /**
      * @brief LectureGestionnaireElementsOrbitaux Lecture du fichier de gestionnaire d'elements orbitaux
      * @param versionCategorieElem version du fichier de categories d'elements orbitaux

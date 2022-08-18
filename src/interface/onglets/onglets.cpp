@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 aout 2022
  *
  */
 
@@ -92,7 +92,7 @@ Onglets::Onglets(QWidget *parent) :
         Initialisation();
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Erreur Initialisation %1").arg(metaObject()->className());
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
         throw PreviSatException();
     }
 
@@ -214,7 +214,7 @@ void Onglets::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << QString("Début Initialisation %1").arg(metaObject()->className());
+    qInfo() << "Début Initialisation" << metaObject()->className();
 
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
@@ -269,7 +269,7 @@ void Onglets::Initialisation()
             % _ui->stackedWidget_previsions->count()]);
     _ui->previsionSuiv->setToolTip(_titresPrevisions[(_indexPrevisions + 1) % _ui->stackedWidget_previsions->count()]);
 
-    qInfo() << QString("Fin   Initialisation %1").arg(metaObject()->className());
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     /* Retour */
     return;
