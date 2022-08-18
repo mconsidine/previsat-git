@@ -805,6 +805,8 @@
     <addaction name="separator"/>
     <addaction name="actionMettre_jour_les_fichiers_de_donn_es"/>
     <addaction name="separator"/>
+    <addaction name="actionExporter_fichier_log"/>
+    <addaction name="separator"/>
     <addaction name="actionDons"/>
     <addaction name="separator"/>
     <addaction name="actionRapport_de_bug"/>
@@ -830,7 +832,7 @@
   </widget>
   <action name="actionImporter_fichier_TLE_GP">
    <property name="text">
-    <string>Importer fichier GP / TLE ...</string>
+    <string>Importer fichier GP / TLE</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -981,6 +983,11 @@
   <action name="action_propos">
    <property name="text">
     <string>À propos</string>
+   </property>
+  </action>
+  <action name="actionExporter_fichier_log">
+   <property name="text">
+    <string>Exporter fichier log</string>
    </property>
   </action>
  </widget>
