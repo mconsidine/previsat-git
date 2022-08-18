@@ -72,12 +72,14 @@ LogMessage::LogMessage(const QString &fichier)
     _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
     qInstallMessageHandler(messageHandler);
 
+#if (BUILD_TEST == false)
     QTextStream out(_fichierLog.data());
     out << "       Date (UTC)       : Type    : Fichier                                       : Fonction                                 : Message"
         << Qt::endl;
     out << "-----------------------------------------------------------------------------------------------------------------------------"
            "-------------------------------------" << Qt::endl;
     out.flush();
+#endif
 
     /* Retour */
     return;

@@ -1,8 +1,8 @@
-INFO    : logmessagetest.cpp (ligne 73)                 : testLogMessage                 : PreviSat
-INFO    : logmessagetest.cpp (ligne 74)                 : testLogMessage                 : windows 10 x86_64
-DEBUG   : logmessagetest.cpp (ligne 77)                 : testLogMessage                 : Message de debug 1
-DEBUG   : logmessagetest.cpp (ligne 78)                 : testLogMessage                 : Message de debug 2
-WARNING : logmessagetest.cpp (ligne 81)                 : testLogMessage                 : Message d'avertissement 1
-WARNING : logmessagetest.cpp (ligne 82)                 : testLogMessage                 : Message d'avertissement 2
-ERREUR  : logmessagetest.cpp (ligne 85)                 : testLogMessage                 : Message d'erreurs 1
-ERREUR  : logmessagetest.cpp (ligne 86)                 : testLogMessage                 : Message d'erreurs 2
+INFO    : logmessagetest.cpp (ligne 73)                 : testLogMessage                           : PreviSat
+INFO    : logmessagetest.cpp (ligne 74)                 : testLogMessage                           : windows 10 x86_64
+DEBUG   : logmessagetest.cpp (ligne 77)                 : testLogMessage                           : Message de debug 1
+DEBUG   : logmessagetest.cpp (ligne 78)                 : testLogMessage                           : Message de debug 2
+WARNING : logmessagetest.cpp (ligne 81)                 : testLogMessage                           : Message d'avertissement 1
+WARNING : logmessagetest.cpp (ligne 82)                 : testLogMessage                           : Message d'avertissement 2
+ERREUR  : logmessagetest.cpp (ligne 85)                 : testLogMessage                           : Message d'erreurs 1
+ERREUR  : logmessagetest.cpp (ligne 86)                 : testLogMessage                           : Message d'erreurs 2
