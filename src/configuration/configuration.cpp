@@ -544,8 +544,7 @@ void Configuration::LectureChainesNasa()
     if (fi.exists() && (fi.size() != 0)) {
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fi);
-            _listeChainesNasa = flux.readAll().split("\n", Qt::SkipEmptyParts);
+            _listeChainesNasa = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
         }
         fi.close();
 
