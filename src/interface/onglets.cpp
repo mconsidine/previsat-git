@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 aout 2022
+ * >    21 aout 2022
  *
  */
 
@@ -3730,7 +3730,12 @@ void Onglets::on_nom_returnPressed()
             }
         }
 
-        if (!_resultatsSatellitesTrouves.isEmpty()) {
+        if (_resultatsSatellitesTrouves.isEmpty()) {
+            _ui->noradDonneesSat->blockSignals(true);
+            _ui->noradDonneesSat->setValue(999999);
+            _ui->noradDonneesSat->blockSignals(false);
+            _ui->cosparDonneesSat->setText("");
+        } else {
             _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.at(0).mid(7, 11).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
             _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
@@ -3775,6 +3780,11 @@ void Onglets::on_noradDonneesSat_valueChanged(int arg1)
             _ui->cosparDonneesSat->setText(ligne.mid(7, 11).toUpper().trimmed());
         }
 
+        if (_resultatsSatellitesTrouves.isEmpty()) {
+            _ui->nom->setText("");
+            _ui->cosparDonneesSat->setText("");
+        }
+
         AffichageResultatsDonnees();
     }
 
@@ -3806,7 +3816,12 @@ void Onglets::on_cosparDonneesSat_returnPressed()
             }
         }
 
-        if (!_resultatsSatellitesTrouves.isEmpty()) {
+        if (_resultatsSatellitesTrouves.isEmpty()) {
+            _ui->nom->setText("");
+            _ui->noradDonneesSat->blockSignals(true);
+            _ui->noradDonneesSat->setValue(999999);
+            _ui->noradDonneesSat->blockSignals(false);
+        } else {
             _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(125).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
             _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
@@ -3841,10 +3856,7 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         double per = perigee + RAYON_TERRESTRE;
 
         // Nom du satellite
-        QString nomsat = ligne.mid(125).trimmed();
-        if (nomsat.toLower() == "iss (zarya)") {
-            nomsat = "ISS";
-        }
+        const QString nomsat = ligne.mid(125).trimmed();
         _ui->nomsat->setText((nomsat.isEmpty()) ? tr("Inconnu") : nomsat);
 
         // Numero NORAD
@@ -3854,6 +3866,13 @@ void Onglets::on_satellitesTrouves_currentRowChanged(int currentRow)
         // Designation COSPAR
         const QString cospar = ligne.mid(7, 11).trimmed();
         _ui->desigCospar->setText((cospar.isEmpty()) ? tr("Inconnue") : cospar);
+
+        _ui->nom->setText(nomsat);
+        _ui->noradDonneesSat->blockSignals(true);
+        _ui->noradDonneesSat->setValue(norad.toInt());
+        _ui->noradDonneesSat->blockSignals(false);
+        _ui->cosparDonneesSat->setText(cospar);
+
 
         // Magnitude standard/maximale
         if ((magnitudeStandard > 98.) || (perigee < EPSDBL100) || (apogee < EPSDBL100)) {

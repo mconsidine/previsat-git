@@ -5658,7 +5658,7 @@
          <rect>
           <x>200</x>
           <y>4</y>
-          <width>111</width>
+          <width>121</width>
           <height>24</height>
          </rect>
         </property>
@@ -5681,7 +5681,7 @@
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>99999</number>
+            <number>999999</number>
            </property>
           </widget>
          </item>
@@ -5697,7 +5697,7 @@
        <widget class="QWidget" name="formLayoutWidget_43">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>345</x>
           <y>4</y>
           <width>151</width>
           <height>24</height>
