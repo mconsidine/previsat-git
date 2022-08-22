@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NASA channels</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body bgcolor="black" text="white">
+
+    Channel : <input type="number" id="chaine" value="1" min="1" max="CHANNEL_MAX" /><br /><br />
+
+    <iframe id="video" width="100%" height="700" frameborder="0" allowfullscreen></iframe>
+
+    <script type="text/javascript">
+
+        CHANNEL_TAB
+
+        document.getElementById("video").src = tab[0];
+        document.getElementById("chaine").addEventListener("change", function( event ) {
+            var idx = parseInt(event.target.value) - 1;
+            document.getElementById("video").src = tab[idx];
+          }, false);
+
+    </script>
+
+</body>
+</html>

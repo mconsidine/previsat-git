@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    18 aout 2022
+ * >    22 aout 2022
  *
  */
 
@@ -312,8 +312,8 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
         return mapCategoriesOrbite;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -466,8 +466,8 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
             observateurs.append(Observateur("Paris", -2.348640000, +48.853390000, 30));
         }
 
-        if (mapSatellitesFichierElem.isEmpty()) {
-            mapSatellitesFichierElem.insert("visual.xml", QStringList() << "25544" << "20580");
+        if (mapSatellitesFichierElem.isEmpty() || nomfic.isEmpty() || noradDefaut.isEmpty()) {
+            throw PreviSatException();
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
@@ -476,8 +476,8 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
         return;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -595,8 +595,8 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
         return listeCategoriesElementsOrbitaux;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -676,8 +676,8 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
         return mapPays;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -770,8 +770,8 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
         return mapTDRS;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -860,8 +860,8 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
         return mapSitesLancement;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -954,8 +954,8 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
         return mapStations;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
@@ -1051,8 +1051,8 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
         return mapFlashs;
 
     } catch (PreviSatException &e) {
-        qCritical() << QString("Lecture fichier %1 KO").arg(nomficXml);
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 }
 
