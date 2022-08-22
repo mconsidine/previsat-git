@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    8 aout 2022
+ * >    22 aout 2022
  *
  */
 
@@ -134,7 +134,8 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
 
     } catch (PreviSatException &e) {
         qCritical() << QString("Lecture fichier %1 KO").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
-        throw PreviSatException();
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
