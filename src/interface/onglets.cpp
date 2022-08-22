@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    21 aout 2022
+ * >    22 aout 2022
  *
  */
 
@@ -6930,6 +6930,7 @@ void Onglets::on_affnomsat_stateChanged(int arg1)
 void Onglets::on_afficone_stateChanged(int arg1)
 {
     Q_UNUSED(arg1)
+    _ui->rotationIconeISS->setEnabled(_ui->afficone->isChecked());
     emit MiseAJourCarte();
 }
 

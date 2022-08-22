@@ -1875,8 +1875,8 @@ PreviSat is free !</translation>
         <location filename="../src/interface/onglets.cpp" line="5891"/>
         <location filename="../src/interface/onglets.cpp" line="6162"/>
         <location filename="../src/interface/onglets.cpp" line="6442"/>
-        <location filename="../src/interface/onglets.cpp" line="7329"/>
-        <location filename="../src/interface/onglets.cpp" line="7389"/>
+        <location filename="../src/interface/onglets.cpp" line="7330"/>
+        <location filename="../src/interface/onglets.cpp" line="7390"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -2557,7 +2557,7 @@ click on &apos;Update ISS maneuvers&apos;</translation>
         <location filename="../src/interface/onglets.ui" line="12156"/>
         <location filename="../src/interface/onglets.ui" line="12176"/>
         <location filename="../src/interface/onglets.ui" line="12201"/>
-        <location filename="../src/interface/onglets.cpp" line="7388"/>
+        <location filename="../src/interface/onglets.cpp" line="7389"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
@@ -2722,7 +2722,7 @@ click on &apos;Update ISS maneuvers&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="319"/>
-        <location filename="../src/interface/onglets.cpp" line="7202"/>
+        <location filename="../src/interface/onglets.cpp" line="7203"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
@@ -3191,7 +3191,7 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="3034"/>
-        <location filename="../src/interface/onglets.cpp" line="7329"/>
+        <location filename="../src/interface/onglets.cpp" line="7330"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -3702,8 +3702,8 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="../src/interface/onglets.cpp" line="2777"/>
         <location filename="../src/interface/onglets.cpp" line="6045"/>
-        <location filename="../src/interface/onglets.cpp" line="7137"/>
-        <location filename="../src/interface/onglets.cpp" line="7165"/>
+        <location filename="../src/interface/onglets.cpp" line="7138"/>
+        <location filename="../src/interface/onglets.cpp" line="7166"/>
         <source>Aucun évènement contenu dans le fichier ISS</source>
         <translation>No events contained in the ISS file</translation>
     </message>
@@ -3758,7 +3758,7 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="../src/interface/onglets.cpp" line="4189"/>
         <location filename="../src/interface/onglets.cpp" line="4230"/>
-        <location filename="../src/interface/onglets.cpp" line="7347"/>
+        <location filename="../src/interface/onglets.cpp" line="7348"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -3766,7 +3766,7 @@ The directory containing the observation sites does not exist</translation>
         <location filename="../src/interface/onglets.cpp" line="4192"/>
         <location filename="../src/interface/onglets.cpp" line="4232"/>
         <location filename="../src/interface/onglets.cpp" line="4594"/>
-        <location filename="../src/interface/onglets.cpp" line="7349"/>
+        <location filename="../src/interface/onglets.cpp" line="7350"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
@@ -3774,7 +3774,7 @@ The directory containing the observation sites does not exist</translation>
         <location filename="../src/interface/onglets.cpp" line="4193"/>
         <location filename="../src/interface/onglets.cpp" line="4233"/>
         <location filename="../src/interface/onglets.cpp" line="4595"/>
-        <location filename="../src/interface/onglets.cpp" line="7350"/>
+        <location filename="../src/interface/onglets.cpp" line="7351"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
@@ -3791,7 +3791,7 @@ The directory containing the observation sites does not exist</translation>
     <message>
         <location filename="../src/interface/onglets.cpp" line="4219"/>
         <location filename="../src/interface/onglets.cpp" line="4555"/>
-        <location filename="../src/interface/onglets.cpp" line="7329"/>
+        <location filename="../src/interface/onglets.cpp" line="7330"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -3872,22 +3872,22 @@ The directory containing the observation sites does not exist</translation>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7329"/>
+        <location filename="../src/interface/onglets.cpp" line="7330"/>
         <source>Nom du fichier :</source>
         <translation>Name of file :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7347"/>
+        <location filename="../src/interface/onglets.cpp" line="7348"/>
         <source>Le fichier existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>The file already exists. Do you want to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7383"/>
+        <location filename="../src/interface/onglets.cpp" line="7384"/>
         <source>Supprimer un fichier...</source>
         <translation>Remove a file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets.cpp" line="7384"/>
+        <location filename="../src/interface/onglets.cpp" line="7385"/>
         <source>Fichier :</source>
         <translation>File :</translation>
     </message>
