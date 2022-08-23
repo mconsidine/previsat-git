@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2022
+ * >    23 aout 2022
  *
  */
 
@@ -1171,7 +1171,7 @@ void PreviSat::VerifMAJPreviSat()
 
                 if (fic == "majInfos") {
 
-                    //majInfosDate = ligne;
+                    _majInfosDate = ligne;
                     QFont fnt;
 
                     if (settings.value("affichage/informationsDemarrage", true).toBool()) {
@@ -3071,7 +3071,44 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
         _onglets->setAcalcDN(true);
         _onglets->setInfo(true);
 
-        GestionTempsReel();
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage des donnees numeriques dans la barre d'onglets
+        _onglets->show(*_dateCourante);
+    #if defined (Q_OS_WIN)
+        _onglets->CalculAosSatSuivi();
+    #endif
+
+        ui->mccISS->setChecked(settings.value("affichage/mccISS", false).toBool());
+
+        if (Configuration::instance()->isCarteMonde()) {
+
+            // Affichage des courbes sur la carte du monde
+            _carte->show();
+
+        } else {
+
+            // Affichage de la carte du ciel
+            _ciel->show(Configuration::instance()->observateur(),
+                        Configuration::instance()->soleil(),
+                        Configuration::instance()->lune(),
+                        Configuration::instance()->lignesCst(),
+                        Configuration::instance()->constellations(),
+                        Configuration::instance()->etoiles(),
+                        Configuration::instance()->planetes(),
+                        Configuration::instance()->listeSatellites());
+        }
+
+        // Affichage du radar
+        const bool radarVisible = ((_onglets->ui()->affradar->checkState() == Qt::Checked) ||
+                                   ((_onglets->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+        if (radarVisible) {
+            _radar->show();
+        }
+        _radar->setVisible(!ui->mccISS->isChecked() && radarVisible);
+
         Configuration::instance()->EcritureConfiguration();
     }
 

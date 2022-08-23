@@ -4111,7 +4111,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="1063"/>
         <location filename="../src/interface/previsat.cpp" line="2566"/>
-        <location filename="../src/interface/previsat.cpp" line="3219"/>
+        <location filename="../src/interface/previsat.cpp" line="3256"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
@@ -4508,7 +4508,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2359"/>
         <location filename="../src/interface/previsat.cpp" line="2601"/>
-        <location filename="../src/interface/previsat.cpp" line="3177"/>
+        <location filename="../src/interface/previsat.cpp" line="3214"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -4564,28 +4564,28 @@ the video stream</translation>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3093"/>
+        <location filename="../src/interface/previsat.cpp" line="3130"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3178"/>
-        <location filename="../src/interface/previsat.cpp" line="3220"/>
+        <location filename="../src/interface/previsat.cpp" line="3215"/>
+        <location filename="../src/interface/previsat.cpp" line="3257"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3201"/>
+        <location filename="../src/interface/previsat.cpp" line="3238"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3262"/>
+        <location filename="../src/interface/previsat.cpp" line="3299"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3264"/>
+        <location filename="../src/interface/previsat.cpp" line="3301"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>
