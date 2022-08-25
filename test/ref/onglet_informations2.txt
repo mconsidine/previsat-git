@@ -1,4 +1,4 @@
-Nom                : ISS
+Nom                : ISS (ZARYA)
 Numéro NORAD       : 025544		Magnitude std/max  : -0.5v/-2.4
 Désignation COSPAR : 1998-067A		Modèle orbital     : SGP4 (NE)
 Dimensions/Section : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2
