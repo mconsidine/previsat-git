@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 aout 2022
+ * >    25 aout 2022
  *
  */
 
@@ -405,6 +405,7 @@ void PreviSat::DemarrageApplication()
     if (_chronometre == nullptr) {
         _chronometre = new QTimer(this);
         _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
+        _chronometre->setTimerType(Qt::PreciseTimer);
         connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
         _chronometre->start();
     }
@@ -413,6 +414,7 @@ void PreviSat::DemarrageApplication()
     if (_chronometreMs == nullptr) {
         _chronometreMs = new QTimer(this);
         _chronometreMs->setInterval(200);
+        _chronometreMs->setTimerType(Qt::PreciseTimer);
         connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
         _chronometreMs->start();
     }
