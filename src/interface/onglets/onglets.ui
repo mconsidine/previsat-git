@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string notr="true">TabWidget</string>
+   <string notr="true"/>
   </property>
   <property name="toolTip">
    <string notr="true"/>

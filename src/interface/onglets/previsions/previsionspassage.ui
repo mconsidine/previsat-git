@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Frame</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="formLayoutWidget_48">
    <property name="geometry">
@@ -344,7 +344,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="lbl_lieuxObservation2">
+       <widget class="QLabel" name="lbl_lieuxObservation">
         <property name="font">
          <font/>
         </property>
@@ -422,7 +422,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="lieuxObservation2">
+       <widget class="QComboBox" name="lieuxObservation">
         <property name="minimumSize">
          <size>
           <width>195</width>

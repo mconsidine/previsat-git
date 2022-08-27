@@ -30,16 +30,22 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
 #include "suivitelescope.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
 #include "ui_suivitelescope.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -57,6 +63,15 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
     _ui(new Ui::SuiviTelescope)
 {
     _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -82,6 +97,12 @@ SuiviTelescope::~SuiviTelescope()
 /*
  * Methodes publiques
  */
+void SuiviTelescope::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************
@@ -100,4 +121,48 @@ SuiviTelescope::~SuiviTelescope()
 /*
  * Methodes privees
  */
+/*
+ * Initialisation de la classe SuiviTelescope
+ */
+void SuiviTelescope::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->valHauteurSatSuivi->setVisible(false);
+    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
+    _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
+    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
+    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
+    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
+    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void SuiviTelescope::on_parametrageDefautSuivi_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->hauteurSatSuivi->setCurrentIndex(2);
+    _ui->pasSuivi->setValue(20);
+    _ui->pecDelai->setChecked(false);
+    _ui->delaiTelescope->setEnabled(false);
+    _ui->delaiTelescope->setValue(60);
+    _ui->demarrerSuiviTelescope->setChecked(false);
+
+    /* Retour */
+    return;
+}
 

@@ -36,7 +36,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
@@ -88,6 +88,10 @@ public:
      * Methodes publiques
      */
 
+public slots:
+
+    void changeEvent(QEvent *evt);
+
 
 protected:
 
@@ -98,7 +102,6 @@ protected:
     /*
      * Methodes protegees
      */
-
 
 private:
 
@@ -111,7 +114,15 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief Initialisation Initialisation de la classe EvenementsOrbitaux
+     */
+    void Initialisation();
 
+
+private slots:
+
+    void on_parametrageDefautEvt_clicked();
 
 };
 

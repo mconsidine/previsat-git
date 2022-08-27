@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >
+ * >     27 aout 2022•
  *
  */
 
@@ -82,6 +82,12 @@ RechercheSatellite::~RechercheSatellite()
 /*
  * Methodes publiques
  */
+void RechercheSatellite::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************

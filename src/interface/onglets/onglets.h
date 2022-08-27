@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 aout 2022
+ * >    27 aout 2022
  *
  */
 
@@ -107,6 +107,10 @@ public:
     /*
      * Methodes publiques
      */
+
+public slots:
+
+    void changeEvent(QEvent *evt);
 
 
 protected:

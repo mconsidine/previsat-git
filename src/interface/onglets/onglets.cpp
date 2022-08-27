@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 aout 2022
+ * >    27 aout 2022
  *
  */
 
@@ -51,7 +51,9 @@
 #include "previsions/flashs.h"
 #include "previsions/previsionspassage.h"
 #include "previsions/transits.h"
+#if defined (Q_OS_WIN)
 #include "telescope/suivitelescope.h"
+#endif
 
 
 // Registre
@@ -95,7 +97,6 @@ Onglets::Onglets(QWidget *parent) :
         qCritical() << "Erreur Initialisation" << metaObject()->className();
         throw PreviSatException();
     }
-
 }
 
 
@@ -149,10 +150,12 @@ Onglets::~Onglets()
         _evenements = nullptr;
     }
 
+#if defined (Q_OS_WIN)
     if (_suiviTelescope != nullptr) {
         delete _suiviTelescope;
         _suiviTelescope = nullptr;
     }
+#endif
 
     delete _ui;
 }
@@ -186,7 +189,37 @@ void Onglets::setIndexPrevisions(unsigned int newIndexPrevisions)
 /*
  * Methodes publiques
  */
+void Onglets::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
 
+        _ui->retranslateUi(this);
+
+        _general->changeEvent(evt);
+        _osculateurs->changeEvent(evt);
+
+        _informationsSatellite->changeEvent(evt);
+        _rechercheSatellite->changeEvent(evt);
+        _informationsISS->changeEvent(evt);
+
+        _previsionsPassage->changeEvent(evt);
+        _flashs->changeEvent(evt);
+        _transits->changeEvent(evt);
+        _evenements->changeEvent(evt);
+
+        _ui->infoPrec->setToolTip(
+                    QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
+                % _ui->stackedWidget_informations->count()]));
+        _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
+                                  _ui->stackedWidget_informations->count()]));
+
+        _ui->previsionPrec->setToolTip(
+                    QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
+                % _ui->stackedWidget_previsions->count()]));
+        _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
+                                       _ui->stackedWidget_previsions->count()]));
+    }
+}
 
 /*************
  * PROTECTED *
@@ -252,22 +285,30 @@ void Onglets::Initialisation()
     _evenements->show();
 
 
+#if defined (Q_OS_WIN)
     _suiviTelescope = new SuiviTelescope(_ui->telescope);
     _suiviTelescope->show();
+#else
+    removeTab(indexOf(_ui->telescope));
+#endif
 
 
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
 
-    _ui->infoPrec->setToolTip(_titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-            % _ui->stackedWidget_informations->count()]);
-    _ui->infoSuiv->setToolTip(_titresInformations[(_indexInformations + 1) % _ui->stackedWidget_informations->count()]);
+    _ui->infoPrec->setToolTip(
+                QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
+            % _ui->stackedWidget_informations->count()]));
+    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
+                              _ui->stackedWidget_informations->count()]));
 
 
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
 
-    _ui->previsionPrec->setToolTip(_titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-            % _ui->stackedWidget_previsions->count()]);
-    _ui->previsionSuiv->setToolTip(_titresPrevisions[(_indexPrevisions + 1) % _ui->stackedWidget_previsions->count()]);
+    _ui->previsionPrec->setToolTip(
+                QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
+            % _ui->stackedWidget_previsions->count()]));
+    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
+                                   _ui->stackedWidget_previsions->count()]));
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -310,17 +351,20 @@ void Onglets::on_stackedWidget_informations_currentChanged(int arg1)
 {
     Q_UNUSED(arg1)
 
-    _ui->infoPrec->setToolTip(_titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-            % _ui->stackedWidget_informations->count()]);
-    _ui->infoSuiv->setToolTip(_titresInformations[(_indexInformations + 1) % _ui->stackedWidget_informations->count()]);
+    _ui->infoPrec->setToolTip(
+                QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
+            % _ui->stackedWidget_informations->count()]));
+    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
+                              _ui->stackedWidget_informations->count()]));
 }
-
 
 void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
 {
     Q_UNUSED(arg1)
 
-    _ui->previsionPrec->setToolTip(_titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-            % _ui->stackedWidget_previsions->count()]);
-    _ui->previsionSuiv->setToolTip(_titresPrevisions[(_indexPrevisions + 1) % _ui->stackedWidget_previsions->count()]);
+    _ui->previsionPrec->setToolTip(
+                QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
+            % _ui->stackedWidget_previsions->count()]));
+    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
+                                   _ui->stackedWidget_previsions->count()]));
 }

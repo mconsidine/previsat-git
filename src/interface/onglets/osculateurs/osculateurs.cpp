@@ -30,12 +30,22 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "osculateurs.h"
 #include "ui_osculateurs.h"
+#include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -53,6 +63,15 @@ Osculateurs::Osculateurs(QWidget *parent) :
     _ui(new Ui::Osculateurs)
 {
     _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -78,6 +97,12 @@ Osculateurs::~Osculateurs()
 /*
  * Methodes publiques
  */
+void Osculateurs::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************
@@ -96,4 +121,71 @@ Osculateurs::~Osculateurs()
 /*
  * Methodes privees
  */
+/*
+ * Affichage des elements osculateurs
+ */
+void Osculateurs::AffichageElementsOsculateurs()
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage du vecteur d'etat
+ */
+void Osculateurs::AffichageVecteurEtat()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de la classe Osculateurs
+ */
+void Osculateurs::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    const bool etat1 = _ui->typeRepere->blockSignals(true);
+    _ui->typeRepere->setCurrentIndex(settings.value("affichage/typeRepere", 0).toInt());
+    _ui->typeRepere->blockSignals(etat1);
+
+    const bool etat2 = _ui->typeParametres->blockSignals(true);
+    _ui->typeParametres->setCurrentIndex(settings.value("affichage/typeParametres", 0).toInt());
+    _ui->typeParametres->blockSignals(etat2);
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void Osculateurs::on_typeRepere_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    AffichageVecteurEtat();
+}
+
+
+void Osculateurs::on_typeParametres_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    AffichageElementsOsculateurs();
+}
