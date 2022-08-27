@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Frame</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="formLayoutWidget_55">
    <property name="geometry">
@@ -115,8 +115,8 @@
     <string notr="true">http://skywatcher.com/</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>:/resources/logo-skywatcher.png</normaloff>:/resources/logo-skywatcher.png</iconset>
+    <iconset resource="../../../../resources.qrc">
+     <normaloff>:/resources/interface/logo-skywatcher.png</normaloff>:/resources/interface/logo-skywatcher.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -705,6 +705,8 @@
   <zorder>frameSatSelectionne</zorder>
   <zorder>parametrageDefautSuivi</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
@@ -88,6 +88,10 @@ public:
      * Methodes publiques
      */
 
+public slots:
+
+    void changeEvent(QEvent *evt);
+
 
 protected:
 
@@ -111,7 +115,26 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief AffichageElementsOsculateurs Affichage des elements osculateurs
+     */
+    void AffichageElementsOsculateurs();
 
+    /**
+     * @brief AffichageVecteurEtat Affichage du vecteur d'etat
+     */
+    void AffichageVecteurEtat();
+
+    /**
+     * @brief Initialisation Initialisation de la classe Osculateurs
+     */
+    void Initialisation();
+
+
+private slots:
+
+    void on_typeRepere_currentIndexChanged(int index);
+    void on_typeParametres_currentIndexChanged(int index);
 
 };
 

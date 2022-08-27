@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
@@ -90,24 +90,6 @@ Options::~Options()
 /*
  * Methodes publiques
  */
-
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
 /*
  * Initialisation de la fenetre Options
  */
@@ -133,6 +115,30 @@ void Options::Initialisation()
     return;
 }
 
+void Options::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
 void Options::on_listeOptions_currentRowChanged(int currentRow)
 {
     _ui->stackedWidget_options->setCurrentIndex(currentRow);

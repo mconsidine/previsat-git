@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2022
+ * >    27 aout 2022
  *
  */
 
@@ -140,7 +140,10 @@ void PreviSat::ChargementTraduction(const QString &langue)
     InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
 
     _ui->retranslateUi(this);
-    _onglets->ui()->retranslateUi(_onglets);
+    QEvent evt(QEvent::LanguageChange);
+    _onglets->changeEvent(&evt);
+    _options->changeEvent(&evt);
+    _outils->changeEvent(&evt);
 
     /* Retour */
     return;
@@ -176,45 +179,45 @@ void PreviSat::CreationRaccourcis()
     /* Initialisations */
 
     /* Corps de la methode */
-    // Onglet Previsions
+    // Raccourci Onglet Previsions
     _previsions = new QAction(this);
     _previsions->setShortcut(Qt::ALT + Qt::Key_P);
     connect(_previsions, &QAction::triggered, this, &PreviSat::RaccourciPrevisions);
     this->addAction(_previsions);
 
-    // Onglet Flashs
+    // Raccourci Onglet Flashs
     _flashs = new QAction(this);
     _flashs->setShortcut(Qt::ALT + Qt::Key_F);
     connect(_flashs, &QAction::triggered, this, &PreviSat::RaccourciFlashs);
     this->addAction(_flashs);
 
-    // Onglet Transits
+    // Raccourci Onglet Transits
     _transits = new QAction(this);
     _transits->setShortcut(Qt::ALT + Qt::Key_T);
     connect(_transits, &QAction::triggered, this, &PreviSat::RaccourciTransits);
     this->addAction(_transits);
 
-    // Onglet Evenements
+    // Raccourci Onglet Evenements
     _evenements = new QAction(this);
     _evenements->setShortcut(Qt::ALT + Qt::Key_E);
     connect(_evenements, &QAction::triggered, this, &PreviSat::RaccourciEvenements);
     this->addAction(_evenements);
 
-    // Onglet Informations satellite
+    // Raccourci Onglet Informations satellite
     _informations = new QAction(this);
-    _informations->setShortcut(Qt::ALT + Qt::Key_I);
+    _informations->setShortcut(Qt::ALT + Qt::Key_S);
     connect(_informations, &QAction::triggered, this, &PreviSat::RaccourciInformations);
     this->addAction(_informations);
 
-    // Onglet Recherche satellite
+    // Raccourci Onglet Recherche satellite
     _recherche = new QAction(this);
     _recherche->setShortcut(Qt::ALT + Qt::Key_R);
     connect(_recherche, &QAction::triggered, this, &PreviSat::RaccourciRecherche);
     this->addAction(_recherche);
 
-    // Onglet Informations ISS
+    // Raccourci Onglet Informations ISS
     _station = new QAction(this);
-    _station->setShortcut(Qt::ALT + Qt::Key_S);
+    _station->setShortcut(Qt::ALT + Qt::Key_I);
     connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
     this->addAction(_station);
 
@@ -339,11 +342,13 @@ void PreviSat::RaccourciStation()
 
 void PreviSat::on_configuration_clicked()
 {
+    _options->Initialisation();
     _options->show();
 }
 
 void PreviSat::on_outils_clicked()
 {
+    _outils->Initialisation();
     _outils->show();
 }
 
@@ -372,4 +377,3 @@ void PreviSat::on_actionOutils_triggered()
 {
     on_outils_clicked();
 }
-

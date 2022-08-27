@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Frame</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="horizontalLayoutWidget_6">
    <property name="geometry">
@@ -35,7 +35,7 @@
        <number>2</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="lbl_lieuxObservation3">
+       <widget class="QLabel" name="lbl_lieuxObservation">
         <property name="font">
          <font/>
         </property>
@@ -45,7 +45,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="lieuxObservation3">
+       <widget class="QComboBox" name="lieuxObservation">
         <property name="font">
          <font/>
         </property>

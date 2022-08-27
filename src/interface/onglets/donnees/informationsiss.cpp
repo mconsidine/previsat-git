@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    8 aout 2022
+ * >    27 aout 2022
  *
  */
 
@@ -89,6 +89,12 @@ InformationsISS::~InformationsISS()
 /*
  * Methodes publiques
  */
+void InformationsISS::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************

@@ -30,12 +30,22 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "evenementsorbitaux.h"
 #include "ui_evenementsorbitaux.h"
+#include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -53,6 +63,15 @@ EvenementsOrbitaux::EvenementsOrbitaux(QWidget *parent) :
     _ui(new Ui::EvenementsOrbitaux)
 {
     _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -78,6 +97,12 @@ EvenementsOrbitaux::~EvenementsOrbitaux()
 /*
  * Methodes publiques
  */
+void EvenementsOrbitaux::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************
@@ -96,4 +121,46 @@ EvenementsOrbitaux::~EvenementsOrbitaux()
 /*
  * Methodes privees
  */
+/*
+ * Initialisation de la classe EvenementsOrbitaux
+ */
+void EvenementsOrbitaux::Initialisation()
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
+    _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
+    _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
+    _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
+    _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void EvenementsOrbitaux::on_parametrageDefautEvt_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->passageApogee->setChecked(true);
+    _ui->passageNoeuds->setChecked(true);
+    _ui->passageOmbre->setChecked(true);
+    _ui->passageQuadrangles->setChecked(true);
+    _ui->transitionJourNuit->setChecked(true);
+    if (!_ui->calculsEvt->isEnabled()) {
+        _ui->calculsEvt->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}

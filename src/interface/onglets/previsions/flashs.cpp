@@ -30,16 +30,22 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    27 aout 2022
  *
  */
 
 #include "flashs.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
 #include "ui_flashs.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -57,6 +63,15 @@ Flashs::Flashs(QWidget *parent) :
     _ui(new Ui::Flashs)
 {
     _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -82,6 +97,12 @@ Flashs::~Flashs()
 /*
  * Methodes publiques
  */
+void Flashs::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
 
 /*************
@@ -100,4 +121,50 @@ Flashs::~Flashs()
 /*
  * Methodes privees
  */
+/*
+ * Initialisation de la classe Flashs
+ */
+void Flashs::Initialisation()
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->valHauteurSatMetOp->setVisible(false);
+    _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
+    _ui->valHauteurSoleilMetOp->setVisible(false);
+    _ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
+    _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
+    _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void Flashs::on_parametrageDefautMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->hauteurSatMetOp->setCurrentIndex(2);
+    _ui->hauteurSoleilMetOp->setCurrentIndex(1);
+    _ui->valHauteurSatMetOp->setVisible(false);
+    _ui->valHauteurSoleilMetOp->setVisible(false);
+    _ui->lieuxObservation->setCurrentIndex(0);
+    _ui->ordreChronologiqueMetOp->setChecked(true);
+    _ui->magnitudeMaxMetOp->setValue(4.);
+    if (!_ui->calculsFlashs->isEnabled()) {
+        _ui->calculsFlashs->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}

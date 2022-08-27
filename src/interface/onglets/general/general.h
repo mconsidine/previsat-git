@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >     27 aout 2022
  *
  */
 
@@ -88,6 +88,10 @@ public:
      * Methodes publiques
      */
 
+public slots:
+
+    void changeEvent(QEvent *evt);
+
 
 protected:
 
@@ -106,16 +110,23 @@ private:
      * Variables privees
      */
     Ui::General *_ui;
+    unsigned int _indexLuneSoleil;
 
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief Initialisation Initialisation de la classe General
+     */
+    void Initialisation();
+
 
 private slots:
 
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();
+    void on_stackedWidget_soleilLune_currentChanged(int arg1);
 };
 
 #endif // GENERAL_H

@@ -30,12 +30,29 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >     27 aout 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "general.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "ui_general.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
+
+static const char* _titresLuneSoleil[] = {
+    QT_TRANSLATE_NOOP("General", "Coordonnées du Soleil"),
+    QT_TRANSLATE_NOOP("General", "Coordonnées de la Lune"),
+    QT_TRANSLATE_NOOP("General", "Évènements Soleil"),
+    QT_TRANSLATE_NOOP("General", "Évènements Lune")
+};
 
 
 /**********
@@ -53,6 +70,15 @@ General::General(QWidget *parent) :
     _ui(new Ui::General)
 {
     _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -77,6 +103,18 @@ General::~General()
 /*
  * Methodes publiques
  */
+void General::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+
+        _ui->soleilLunePrec->setToolTip(
+                    QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
+                % _ui->stackedWidget_soleilLune->count()]));
+        _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
+                                  _ui->stackedWidget_soleilLune->count()]));
+    }
+}
 
 
 /*************
@@ -95,13 +133,54 @@ General::~General()
 /*
  * Methodes privees
  */
+/*
+ * Initialisation de la classe General
+ */
+void General::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _indexLuneSoleil = settings.value("affichage/indexInformations", 0).toUInt();
+
+    _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
+
+    _ui->soleilLunePrec->setToolTip(
+                QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
+            % _ui->stackedWidget_soleilLune->count()]));
+    _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
+                              _ui->stackedWidget_soleilLune->count()]));
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
 void General::on_soleilLunePrec_clicked()
 {
-    _ui->stackedWidget_soleilLune->setCurrentIndex((_ui->stackedWidget_soleilLune->currentIndex() + _ui->stackedWidget_soleilLune->count() - 1)
-                                                  % _ui->stackedWidget_soleilLune->count());
+    _indexLuneSoleil = (_ui->stackedWidget_soleilLune->currentIndex() + _ui->stackedWidget_soleilLune->count() - 1)
+            % _ui->stackedWidget_soleilLune->count();
+    _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
 }
 
 void General::on_soleilLuneSuiv_clicked()
 {
-    _ui->stackedWidget_soleilLune->setCurrentIndex((_ui->stackedWidget_soleilLune->currentIndex() + 1) % _ui->stackedWidget_soleilLune->count());
+    _indexLuneSoleil = (_ui->stackedWidget_soleilLune->currentIndex() + 1) % _ui->stackedWidget_soleilLune->count();
+    _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
+}
+
+void General::on_stackedWidget_soleilLune_currentChanged(int arg1)
+{
+    Q_UNUSED(arg1)
+
+    _ui->soleilLunePrec->setToolTip(
+                QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
+            % _ui->stackedWidget_soleilLune->count()]));
+    _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
+                              _ui->stackedWidget_soleilLune->count()]));
 }
