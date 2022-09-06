@@ -580,8 +580,8 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/apropos.ui" line="189"/>
-        <source>Un immense merci à Michel Casabonne pour ses contributions à PreviSat.</source>
-        <translation>A great thank to Michel Casabonne for his contributions to PreviSat.</translation>
+        <source>Un immense merci à Michel Casabonne pour ses nombreuses suggestions pour PreviSat.</source>
+        <translation>A great thank to Michel Casabonne for his many suggestions to PreviSat.</translation>
     </message>
     <message>
         <location filename="../src/interface/apropos.cpp" line="71"/>

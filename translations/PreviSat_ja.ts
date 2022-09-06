@@ -569,7 +569,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/apropos.ui" line="189"/>
-        <source>Un immense merci à Michel Casabonne pour ses contributions à PreviSat.</source>
+        <source>Un immense merci à Michel Casabonne pour ses nombreuses suggestions pour PreviSat.</source>
         <translation type="unfinished">PreviSatにMichel Casabonne様の貢献に心より感謝申し上げます。</translation>
     </message>
     <message>
