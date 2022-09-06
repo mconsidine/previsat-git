@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 aout 2022
+ * >    5 septembre 2022
  *
  */
 
@@ -743,6 +743,8 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     ui->retranslateUi(this);
     _onglets->ui()->retranslateUi(_onglets);
+    QEvent evt(QEvent::LanguageChange);
+    _onglets->changeEvent(&evt);
 
     /* Retour */
     return;
@@ -3129,7 +3131,7 @@ void PreviSat::on_liste1_itemEntered(QListWidgetItem *item)
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3").arg(nomsat).arg(norad).arg(cospar), 5);
+        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3)").arg(nomsat).arg(norad).arg(cospar), 5);
     }
 
     /* Retour */

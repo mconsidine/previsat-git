@@ -2337,9 +2337,9 @@
      <widget class="QComboBox" name="typeRepere">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>88</x>
         <y>80</y>
-        <width>51</width>
+        <width>57</width>
         <height>22</height>
        </rect>
       </property>

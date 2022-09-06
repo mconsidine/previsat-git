@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    5 septembre 2022
  *
  */
 
@@ -201,6 +201,7 @@ public:
 
 public slots:
 
+    void changeEvent(QEvent *evt);
     void on_majMaintenant_clicked();
     void on_pause_clicked();
 
@@ -264,7 +265,6 @@ private:
     int _indexMajTLE;
     int _nbOnglets;
     int _nbInformations;
-    QStringList _titreOptions;
 
     QStringList _resultatsSatellitesTrouves;
 

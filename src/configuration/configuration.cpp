@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2022
+ * >    5 septembre 2022
  *
  */
 
@@ -1084,7 +1084,7 @@ void Configuration::LectureConfiguration()
     const QString msg1 = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
                                      "Certaines informations de configuration "
                                      "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(QCoreApplication::applicationName());
-    const QString msg2 = QObject::tr("Le fichier %1 n'existe pas :\nUtilisation de la configuration par défaut");
+    const QString msg2 = QObject::tr("Le fichier %1 n'existe pas :\nUtilisation de la configuration par défaut").arg(nomficXml);
 
     VerifieFichierXml(nomficXml, _versionCfg, WARNING, msg1, msg2);
 

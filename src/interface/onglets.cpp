@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 aout 2022
+ * >    5 septembre 2022
  *
  */
 
@@ -83,11 +83,21 @@ static QSettings settings(ORG_NAME, APP_NAME);
 
 static const char* _titreInformations[] = {
     QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
-    QT_TRANSLATE_NOOP("Onglets", "Recherche données") };
+    QT_TRANSLATE_NOOP("Onglets", "Recherche données")
+};
 
 static const char* _titreMajTLE[] = {
     QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE auto"),
-    QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE manuelle") };
+    QT_TRANSLATE_NOOP("Onglets", "Mise à jour TLE manuelle")
+};
+
+static const char* _titreOptions[] = {
+    QT_TRANSLATE_NOOP("Onglets", "Satellites"),
+    QT_TRANSLATE_NOOP("Onglets", "Système solaire, étoiles"),
+    QT_TRANSLATE_NOOP("Onglets", "Affichage"),
+    QT_TRANSLATE_NOOP("Onglets", "Système")
+};
+
 
 /**********
  * PUBLIC *
@@ -1899,8 +1909,6 @@ void Onglets::InitChargementOnglets()
     /* Initialisations */
 
     /* Corps de la methode */
-    _titreOptions << tr("Satellites") << tr("Système solaire, étoiles") << tr("Affichage") << tr("Système", "Operating system");
-
     // Initialisation au demarrage
     InitAffichageDemarrage();
 
@@ -2532,6 +2540,22 @@ void Onglets::TelechargementFichier(const QString &fichier, const bool async)
 }
 
 
+void Onglets::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+
+        _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + _ui->informations->count() - 1)
+                                  % _ui->informations->count()]));
+        _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + 1) % _ui->informations->count()]));
+
+        _ui->creationCategorie->setToolTip(tr("Créer une catégorie"));
+        _ui->creationLieu->setToolTip(tr("Créer un nouveau lieu"));
+
+        _ui->optionPrec->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 3) % _ui->configuration->count()]));
+        _ui->optionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 1) % _ui->configuration->count()]));
+    }
+}
+
 void Onglets::on_majMaintenant_clicked()
 {
     /* Declarations des variables locales */
@@ -2621,8 +2645,8 @@ void Onglets::InitAffichageDemarrage()
     _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreInformations[(_indexInfo + 1) % _ui->informations->count()]));
 
     _ui->configuration->setCurrentIndex(_indexOption);
-    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
-    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
+    _ui->optionPrec->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 3) % _ui->configuration->count()]));
+    _ui->optionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 1) % _ui->configuration->count()]));
 
     on_miseAJourTLE_currentChanged(_indexMajTLE);
     _ui->majPrec->setToolTip(QCoreApplication::translate("Onglets", _titreMajTLE[(_indexMajTLE + 2) % 2]));
@@ -4699,16 +4723,16 @@ void Onglets::on_selecLieux_currentRowChanged(int currentRow)
 void Onglets::on_optionPrec_clicked()
 {
     _indexOption = (_ui->configuration->currentIndex() + 3) % _ui->configuration->count();
-    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
-    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
+    _ui->optionPrec->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 3) % _ui->configuration->count()]));
+    _ui->optionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titreOptions[(_indexOption + 1) % _ui->configuration->count()]));
     _ui->configuration->setCurrentIndex(_indexOption);
 }
 
 void Onglets::on_optionSuiv_clicked()
 {
     _indexOption = (_ui->configuration->currentIndex() + 1) % _ui->configuration->count();
-    _ui->optionPrec->setToolTip(_titreOptions.at((_indexOption + 3) % _ui->configuration->count()));
-    _ui->optionSuiv->setToolTip(_titreOptions.at((_indexOption + 1) % _ui->configuration->count()));
+    _ui->optionPrec->setToolTip(QCoreApplication::translate("Onglets",_titreOptions[(_indexOption + 3) % _ui->configuration->count()]));
+    _ui->optionSuiv->setToolTip(QCoreApplication::translate("Onglets",_titreOptions[(_indexOption + 1) % _ui->configuration->count()]));
     _ui->configuration->setCurrentIndex(_indexOption);
 }
 
