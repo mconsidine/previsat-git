@@ -4800,7 +4800,7 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>13</y>
+              <y>10</y>
               <width>16</width>
               <height>16</height>
              </rect>
@@ -4819,7 +4819,7 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>28</y>
+              <y>25</y>
               <width>16</width>
               <height>16</height>
              </rect>
