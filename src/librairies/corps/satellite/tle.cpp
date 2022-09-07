@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2022
+ * >    7 septembre 2022
  *
  */
 
@@ -266,7 +266,10 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                     // Cas des TLE a 2 lignes
                     lig1 = ligne;
-                    lig2 = it.next();
+
+                    if (it.hasNext()) {
+                        lig2 = it.next();
+                    }
 
                     // Recuperation du nom du satellite dans le fichier de donnees
                     numeroNorad = lig1.mid(2, 5);
@@ -286,8 +289,14 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
 
                     // Cas des TLE a 3 lignes
                     lig0 = ligne;
-                    lig1 = it.next();
-                    lig2 = it.next();
+
+                    if (it.hasNext()) {
+                        lig1 = it.next();
+                    }
+
+                    if (it.hasNext()) {
+                        lig2 = it.next();
+                    }
                 }
 
                 const QString nomsat = RecupereNomsat(lig0);
@@ -295,21 +304,24 @@ QMap<QString, TLE> TLE::LectureFichier(const QString &nomFichier, const QString 
                 // Sauvegarde du TLE
                 if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
 
-                    tle = TLE(lig0, lig1, lig2);
-                    tle._nom = nomsat.trimmed();
+                    if (!lig0.isEmpty() && !lig1.isEmpty() && !lig2.isEmpty()) {
 
-                    if (!mapTLE.contains(tle._norad)) {
+                        tle = TLE(lig0, lig1, lig2);
+                        tle._nom = nomsat.trimmed();
 
-                        if (ajoutDonnees) {
+                        if (!mapTLE.contains(tle._norad)) {
 
-                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
-                            const int idx = lgRec * tle._norad.toInt();
-                            if ((idx >= 0) && (idx < donneesSat.size())) {
-                                tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
+                            if (ajoutDonnees) {
+
+                                // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map de TLE)
+                                const int idx = lgRec * tle._norad.toInt();
+                                if ((idx >= 0) && (idx < donneesSat.size())) {
+                                    tle._donnees = Donnees(donneesSat.mid(idx, lgRec));
+                                }
                             }
-                        }
 
-                        mapTLE.insert(tle._norad, tle);
+                            mapTLE.insert(tle._norad, tle);
+                        }
                     }
                 }
             }

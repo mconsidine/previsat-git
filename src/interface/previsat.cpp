@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 septembre 2022
+ * >    7 septembre 2022
  *
  */
 
@@ -2502,6 +2502,10 @@ void PreviSat::on_mccISS_toggled(bool checked)
     ui->frameVideo->setVisible(checked);
     _coordISS->setVisible(checked);
     _gmt->setVisible(checked);
+
+    if (ui->modeManuel->isChecked()) {
+        _radar->setVisible(!checked);
+    }
 
     /* Retour */
     return;
