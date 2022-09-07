@@ -592,78 +592,78 @@ PreviSatは、完全無料です!</translation>
 <context>
     <name>Carte</name>
     <message>
-        <location filename="../src/interface/carte.cpp" line="491"/>
+        <location filename="../src/interface/carte.cpp" line="497"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation type="unfinished">西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="497"/>
+        <location filename="../src/interface/carte.cpp" line="503"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation type="unfinished">東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="521"/>
+        <location filename="../src/interface/carte.cpp" line="527"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation type="unfinished">北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="527"/>
+        <location filename="../src/interface/carte.cpp" line="533"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1158"/>
+        <location filename="../src/interface/carte.cpp" line="1164"/>
         <source>Est</source>
         <translation type="unfinished">東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1158"/>
+        <location filename="../src/interface/carte.cpp" line="1164"/>
         <source>Ouest</source>
         <translation type="unfinished">西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1162"/>
+        <location filename="../src/interface/carte.cpp" line="1168"/>
         <source>Sud</source>
         <translation type="unfinished">南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1162"/>
+        <location filename="../src/interface/carte.cpp" line="1168"/>
         <source>Nord</source>
         <translation type="unfinished">北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1165"/>
+        <location filename="../src/interface/carte.cpp" line="1171"/>
         <source>Longitude : %1° %2</source>
         <translation type="unfinished">経度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1166"/>
+        <location filename="../src/interface/carte.cpp" line="1172"/>
         <source>Latitude : %1° %2</source>
         <translation type="unfinished">緯度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1185"/>
+        <location filename="../src/interface/carte.cpp" line="1191"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1188"/>
+        <location filename="../src/interface/carte.cpp" line="1194"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1211"/>
-        <location filename="../src/interface/carte.cpp" line="1212"/>
+        <location filename="../src/interface/carte.cpp" line="1217"/>
+        <location filename="../src/interface/carte.cpp" line="1218"/>
         <source>Soleil</source>
         <translation type="unfinished">太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1237"/>
-        <location filename="../src/interface/carte.cpp" line="1238"/>
+        <location filename="../src/interface/carte.cpp" line="1243"/>
+        <location filename="../src/interface/carte.cpp" line="1244"/>
         <source>Lune</source>
         <translation type="unfinished">月</translation>
     </message>

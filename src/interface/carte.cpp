@@ -244,24 +244,20 @@ void Carte::show()
 
             const QString iconeSoleil = (mcc) ? ":/resources/icones/soleil.png" : ":/resources/soleil.png";
 
-            if (mcc) {
-
-                QGraphicsPixmapItem *pm = scene->addPixmap(QPixmap(iconeSoleil));
-                pm->setPos(lsol - 15, bsol - 10);
-
-            } else {
-                QRect rectangle = QRect(lsol - 7, bsol - 7, 15, 15);
-                scene->addEllipse(rectangle, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::SolidPattern));
-            }
-
             QPixmap pixsol;
             pixsol.load(iconeSoleil);
-            pixsol = pixsol.scaled(17, 17);
 
-            QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
             QTransform transform;
             transform.translate(lsol, bsol);
-            transform.translate(-7, -7);
+
+            if (mcc) {
+                transform.translate(-15, -10);
+            } else {
+                pixsol = pixsol.scaled(17, 17);
+                transform.translate(-7, -7);
+            }
+
+            QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
             sol->setTransform(transform);
 
             if (((lsol + 7) > _ui->carte->width()) || ((lsol - 7) < 0)) {

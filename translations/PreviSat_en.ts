@@ -603,78 +603,78 @@ PreviSat is free !</translation>
 <context>
     <name>Carte</name>
     <message>
-        <location filename="../src/interface/carte.cpp" line="491"/>
+        <location filename="../src/interface/carte.cpp" line="497"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="497"/>
+        <location filename="../src/interface/carte.cpp" line="503"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="521"/>
+        <location filename="../src/interface/carte.cpp" line="527"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="527"/>
+        <location filename="../src/interface/carte.cpp" line="533"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1158"/>
+        <location filename="../src/interface/carte.cpp" line="1164"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1158"/>
+        <location filename="../src/interface/carte.cpp" line="1164"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1162"/>
+        <location filename="../src/interface/carte.cpp" line="1168"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1162"/>
+        <location filename="../src/interface/carte.cpp" line="1168"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1165"/>
+        <location filename="../src/interface/carte.cpp" line="1171"/>
         <source>Longitude : %1° %2</source>
         <translation>Longitude : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1166"/>
+        <location filename="../src/interface/carte.cpp" line="1172"/>
         <source>Latitude : %1° %2</source>
         <translation>Latitude : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1185"/>
+        <location filename="../src/interface/carte.cpp" line="1191"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1188"/>
+        <location filename="../src/interface/carte.cpp" line="1194"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1211"/>
-        <location filename="../src/interface/carte.cpp" line="1212"/>
+        <location filename="../src/interface/carte.cpp" line="1217"/>
+        <location filename="../src/interface/carte.cpp" line="1218"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte.cpp" line="1237"/>
-        <location filename="../src/interface/carte.cpp" line="1238"/>
+        <location filename="../src/interface/carte.cpp" line="1243"/>
+        <location filename="../src/interface/carte.cpp" line="1244"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
