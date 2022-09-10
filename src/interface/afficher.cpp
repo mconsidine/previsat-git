@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    18 aout 2022
+ * >    10 septembre 2022
  *
  */
 
@@ -1052,12 +1052,14 @@ void Afficher::EcrireEntete() const
         // Fuseau horaire
         ligne = QObject::tr("Fuseau horaire            : %1");
         QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
-        if (_conditions.ecart) {
-            if (fabs(_conditions.offset) > EPSDBL100) {
-                QTime heur(0, 0);
-                heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
-                chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
-            }
+        if (
+#if (BUILD_TEST == false)
+                !_onglets->ui()->utc->isChecked() &&
+#endif
+                (fabs(_conditions.offset) > EPSDBL100)) {
+            QTime heur(0, 0);
+            heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
+            chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
         flux << ligne.arg(chaine) << endl;
 
