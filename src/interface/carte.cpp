@@ -221,7 +221,6 @@ void Carte::show()
             scene->addLine(0, 156.55 * DEG2PXVT, largeur, 156.55 * DEG2PXVT, pen2);
         }
 
-
         // Affichage de la SAA
         if (_onglets->ui()->affSAA->isChecked() && !Configuration::instance()->issLive()) {
 

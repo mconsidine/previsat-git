@@ -57,8 +57,11 @@ private:
     static void testCalculSatelliteEclipse();
     static void testCalculMagnitude();
     static void testCalculAOS();
+    static void testCalculCercleAcquisition();
     static void testCalculNoeudOrbite();
     static void testCalculOmbrePenombre();
+    static void testCalculPosVitListeSatellites();
+    static void testCalculTraceCiel();
 
 };
 
