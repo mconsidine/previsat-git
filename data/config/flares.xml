@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreviSatFlashs version="1.0">
     <Satellite>
-        <Nom>MetOp-A</Nom>
-        <Norad>29499</Norad>
-        <Angles>
-            <Yaw>315</Yaw>
-            <Pitch>-47.6</Pitch>
-        </Angles>
-        <Angles>
-            <Yaw>270</Yaw>
-            <Pitch>-56.5</Pitch>
-        </Angles>
-        <Angles>
-            <Yaw>225</Yaw>
-            <Pitch>-47.6</Pitch>
-        </Angles>
-    </Satellite>
-    <Satellite>
         <Nom>MetOp-B</Nom>
         <Norad>38771</Norad>
         <Angles>
