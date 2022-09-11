@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    11 septembre 2022
  *
  */
 
@@ -79,6 +79,8 @@ Ciel::Ciel(Onglets *onglets, QWidget *parent) :
     ui->setupUi(this);
     scene = nullptr;
     _onglets = onglets;
+    _fenetreMax = false;
+
     ui->vueCiel->installEventFilter(this);
     ui->vueCiel->viewport()->installEventFilter(this);
 }
@@ -100,6 +102,18 @@ Ciel::~Ciel()
 /*
  * Accesseurs
  */
+bool Ciel::fenetreMax() const
+{
+    return _fenetreMax;
+}
+
+/*
+ * Modificateurs
+ */
+void Ciel::setFenetreMax(bool f)
+{
+    _fenetreMax = f;
+}
 
 
 /*
@@ -116,6 +130,7 @@ void Ciel::show(const Observateur &observateur,
                 const QList<Etoile> &etoiles,
                 const QList<Planete> &planetes,
                 const QList<Satellite> &satellites,
+                const bool fenetreMax,
                 const bool maxFlash,
                 const bool labelHeure,
                 const Date &dateDeb,
@@ -199,33 +214,34 @@ void Ciel::show(const Observateur &observateur,
         // Affichage du nom des constellations
         if (_onglets->ui()->affconst->checkState() == Qt::Checked) {
 
-            //if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-            QListIterator<Constellation> it2(constellations);
-            while (it2.hasNext()) {
+            if (Configuration::instance()->isCarteMaximisee() || fenetreMax) {
 
-                const Constellation cst = it2.next();
-                if (cst.isVisible()) {
+                QListIterator<Constellation> it2(constellations);
+                while (it2.hasNext()) {
 
-                    // Calcul des coordonnees radar du label
-                    const int lcst = qRound(lciel - lciel * (1. - cst.hauteur() * DEUX_SUR_PI) * sin(cst.azimut()));
-                    const int bcst = qRound(hciel - hciel * (1. - cst.hauteur() * DEUX_SUR_PI) * cos(cst.azimut()));
+                    const Constellation cst = it2.next();
+                    if (cst.isVisible()) {
 
-                    const int lst = lcst - lciel;
-                    const int bst = hciel - bcst;
+                        // Calcul des coordonnees radar du label
+                        const int lcst = qRound(lciel - lciel * (1. - cst.hauteur() * DEUX_SUR_PI) * sin(cst.azimut()));
+                        const int bcst = qRound(hciel - hciel * (1. - cst.hauteur() * DEUX_SUR_PI) * cos(cst.azimut()));
 
-                    QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
-                    const int lng = static_cast<int> (txtCst->boundingRect().width());
+                        const int lst = lcst - lciel;
+                        const int bst = hciel - bcst;
 
-                    const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
-                    const int yncst = (bcst + 9 > ui->vueCiel->height()) ? bcst - 10 : bcst + 1;
+                        QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
+                        const int lng = static_cast<int> (txtCst->boundingRect().width());
 
-                    txtCst->setBrush(QBrush(Qt::darkYellow));
-                    txtCst->setPos(xncst, yncst);
-                    txtCst->setFont(QFont(font().family(), 8));
-                    scene->addItem(txtCst);
+                        const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lcst - lng - 1 : lcst + 1;
+                        const int yncst = (bcst + 9 > ui->vueCiel->height()) ? bcst - 10 : bcst + 1;
+
+                        txtCst->setBrush(QBrush(Qt::darkYellow));
+                        txtCst->setPos(xncst, yncst);
+                        txtCst->setFont(QFont(font().family(), 8));
+                        scene->addItem(txtCst);
+                    }
                 }
             }
-            //}
         }
     }
 
@@ -251,29 +267,30 @@ void Ciel::show(const Observateur &observateur,
 
             // Nom des etoiles les plus brillantes
             if (_onglets->ui()->affetoiles->isChecked()) {
-                //if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
 
-                if (!etoile.nom().isEmpty() && etoile.nom().at(0).isUpper()) {
-                    if (etoile.magnitude() < (_onglets->ui()->magnitudeEtoiles->value() - 1.9)) {
+                if (Configuration::instance()->isCarteMaximisee() || fenetreMax) {
 
-                        const int lst = lstr - lciel;
-                        const int bst = hciel - bstr;
-                        const QString nomstr = etoile.nom().mid(0, 1) + etoile.nom().mid(1).toLower();
+                    if (!etoile.nom().isEmpty() && etoile.nom().at(0).isUpper()) {
+                        if (etoile.magnitude() < (_onglets->ui()->magnitudeEtoiles->value() - 1.9)) {
 
-                        txtStr = new QGraphicsSimpleTextItem(nomstr);
-                        const int lng = static_cast<int> (txtStr->boundingRect().width());
+                            const int lst = lstr - lciel;
+                            const int bst = hciel - bstr;
+                            const QString nomstr = etoile.nom().mid(0, 1) + etoile.nom().mid(1).toLower();
 
-                        const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
-                        const int ynstr = (bstr + 9 > ui->vueCiel->height()) ? bstr - 10 : bstr + 1;
+                            txtStr = new QGraphicsSimpleTextItem(nomstr);
+                            const int lng = static_cast<int> (txtStr->boundingRect().width());
 
-                        txtStr->setBrush(couleurEtoiles);
-                        txtStr->setPos(xnstr, ynstr);
-                        txtStr->setFont(font());
-                        txtStr->setScale(0.9);
-                        scene->addItem(txtStr);
+                            const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > lciel) ? lstr - lng - 1 : lstr + 1;
+                            const int ynstr = (bstr + 9 > ui->vueCiel->height()) ? bstr - 10 : bstr + 1;
+
+                            txtStr->setBrush(couleurEtoiles);
+                            txtStr->setPos(xnstr, ynstr);
+                            txtStr->setFont(font());
+                            txtStr->setScale(0.9);
+                            scene->addItem(txtStr);
+                        }
                     }
                 }
-                //}
             }
         }
     }
@@ -298,23 +315,23 @@ void Ciel::show(const Observateur &observateur,
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(rectangle, QPen(couleurPlanetes[iplanete]), coulPlanete);
 
-                    //                        if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
-                    //                                ui->affplanetes->checkState() == Qt::Checked) {
-                    const int lpl = lpla - lciel;
-                    const int bpl = hciel - bpla;
-                    const QString nompla = _planetes.at(iplanete).nom();
-                    txtPla = new QGraphicsSimpleTextItem(nompla);
-                    const int lng = static_cast<int> (txtPla->boundingRect().width());
+                    if ((Configuration::instance()->isCarteMaximisee() || fenetreMax) && (_onglets->ui()->affplanetes->checkState() == Qt::Checked)) {
 
-                    const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
-                    const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
+                        const int lpl = lpla - lciel;
+                        const int bpl = hciel - bpla;
+                        const QString nompla = _planetes.at(iplanete).nom();
+                        txtPla = new QGraphicsSimpleTextItem(nompla);
+                        const int lng = static_cast<int> (txtPla->boundingRect().width());
 
-                    txtPla->setBrush(coulPlanete);
-                    txtPla->setPos(xnpla, ynpla);
-                    txtPla->setFont(font());
-                    txtPla->setScale(0.9);
-                    scene->addItem(txtPla);
-                    //}
+                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                        const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
+
+                        txtPla->setBrush(coulPlanete);
+                        txtPla->setPos(xnpla, ynpla);
+                        txtPla->setFont(font());
+                        txtPla->setScale(0.9);
+                        scene->addItem(txtPla);
+                    }
                 }
             }
         }
@@ -324,52 +341,52 @@ void Ciel::show(const Observateur &observateur,
     if (_onglets->ui()->affsoleil->isChecked()) {
 
         // Dessin de l'ecliptique
-        //if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
+        if (Configuration::instance()->isCarteMaximisee() || fenetreMax) {
 
-        const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
-        const double de1 = tabEcliptique[0][1] * DEG2RAD;
-        const double cd1 = cos(de1);
-        const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
-        const Vecteur3D vec1 = observateur.rotHz() * vec;
+            const double ad1 = tabEcliptique[0][0] * HEUR2RAD;
+            const double de1 = tabEcliptique[0][1] * DEG2RAD;
+            const double cd1 = cos(de1);
+            const Vecteur3D vec(cos(ad1) * cd1, sin(ad1) * cd1, sin(de1));
+            const Vecteur3D vec1 = observateur.rotHz() * vec;
 
-        double ht1 = asin(vec1.z());
-        double az1 = atan2(vec1.y(), -vec1.x());
-        if (az1 < 0.) {
-            az1 += DEUX_PI;
-        }
-
-        int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
-        int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
-
-        double az2;
-
-        for(int i=1; i<49; i++) {
-
-            const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
-            const double de2 = tabEcliptique[i][1] * DEG2RAD;
-            const double cd2 = cos(de2);
-            const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
-            const Vecteur3D vec2 = observateur.rotHz() * vec0;
-
-            const double ht2 = asin(vec2.z());
-
-            az2 = atan2(vec2.y(), -vec2.x());
-            if (az2 < 0.) {
-                az2 += DEUX_PI;
+            double ht1 = asin(vec1.z());
+            double az1 = atan2(vec1.y(), -vec1.x());
+            if (az1 < 0.) {
+                az1 += DEUX_PI;
             }
 
-            const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
-            const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+            int lecl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
+            int becl1 = qRound(lciel - lciel * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
 
-            if ((ht1 >= 0.) || (ht2 >= 0.)) {
-                scene->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
+            double az2;
+
+            for(int i=1; i<49; i++) {
+
+                const double ad2 = tabEcliptique[i][0] * HEUR2RAD;
+                const double de2 = tabEcliptique[i][1] * DEG2RAD;
+                const double cd2 = cos(de2);
+                const Vecteur3D vec0(cos(ad2) * cd2, sin(ad2) * cd2, sin(de2));
+                const Vecteur3D vec2 = observateur.rotHz() * vec0;
+
+                const double ht2 = asin(vec2.z());
+
+                az2 = atan2(vec2.y(), -vec2.x());
+                if (az2 < 0.) {
+                    az2 += DEUX_PI;
+                }
+
+                const int lecl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
+                const int becl2 = qRound(lciel - lciel * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+
+                if ((ht1 >= 0.) || (ht2 >= 0.)) {
+                    scene->addLine(lecl1, becl1, lecl2, becl2, QPen(Qt::darkYellow));
+                }
+
+                lecl1 = lecl2;
+                becl1 = becl2;
+                ht1 = ht2;
             }
-
-            lecl1 = lecl2;
-            becl1 = becl2;
-            ht1 = ht2;
         }
-        //}
 
         if (soleil.isVisible()) {
 
@@ -409,23 +426,23 @@ void Ciel::show(const Observateur &observateur,
                     rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(rectangle, QPen(couleurPlanetes[iplanete]), coulPlanete);
 
-                    //                    if (ui->frameListe->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored &&
-                    //                            ui->affplanetes->checkState() == Qt::Checked) {
-                    const int lpl = lpla - lciel;
-                    const int bpl = hciel - bpla;
-                    const QString nompla = _planetes.at(iplanete).nom();
-                    txtPla = new QGraphicsSimpleTextItem(nompla);
-                    const int lng = static_cast<int> (txtPla->boundingRect().width());
+                    if ((Configuration::instance()->isCarteMaximisee() || fenetreMax) && (_onglets->ui()->affplanetes->checkState() == Qt::Checked)) {
 
-                    const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
-                    const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
+                        const int lpl = lpla - lciel;
+                        const int bpl = hciel - bpla;
+                        const QString nompla = _planetes.at(iplanete).nom();
+                        txtPla = new QGraphicsSimpleTextItem(nompla);
+                        const int lng = static_cast<int> (txtPla->boundingRect().width());
 
-                    txtPla->setBrush(coulPlanete);
-                    txtPla->setPos(xnpla, ynpla);
-                    txtPla->setFont(font());
-                    txtPla->setScale(0.9);
-                    scene->addItem(txtPla);
-                    //}
+                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > lciel) ? lpla - lng - 1 : lpla + 3;
+                        const int ynpla = (bpla + 9 > ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
+
+                        txtPla->setBrush(coulPlanete);
+                        txtPla->setPos(xnpla, ynpla);
+                        txtPla->setFont(font());
+                        txtPla->setScale(0.9);
+                        scene->addItem(txtPla);
+                    }
                 }
             }
         }
@@ -717,7 +734,8 @@ QBrush Ciel::CalculCouleurCiel(const double hauteurSoleil)
 void Ciel::resizeEvent(QResizeEvent *evt)
 {
     Q_UNUSED(evt)
-    if (!Configuration::instance()->isCarteMonde()) {
+
+    if (!Configuration::instance()->isCarteMonde() || _fenetreMax) {
 
         ui->vueCiel->setGeometry(ui->vueCiel->x(), ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
         setGeometry((parentWidget()->width() - width() - ui->est->width()) / 2, 0, ui->vueCiel->width() + 2 * ui->est->width(),
@@ -735,7 +753,8 @@ void Ciel::resizeEvent(QResizeEvent *evt)
              Configuration::instance()->constellations(),
              Configuration::instance()->etoiles(),
              Configuration::instance()->planetes(),
-             Configuration::instance()->listeSatellites());
+             Configuration::instance()->listeSatellites(),
+             _fenetreMax);
     }
 }
 

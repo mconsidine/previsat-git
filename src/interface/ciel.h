@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    6 novembre 2021
+ * >    11 septembre 2022
  *
  */
 
@@ -89,6 +89,14 @@ public:
     /*
      * Accesseurs
      */
+    bool fenetreMax() const;
+
+
+    /*
+     * Modificateurs
+     */
+    void setFenetreMax(bool f);
+
 
     /*
      * Constantes publiques
@@ -112,6 +120,7 @@ public:
               const QList<Etoile> &etoiles,
               const QList<Planete> &planetes,
               const QList<Satellite> &satellites,
+              const bool fenetreMax,
               const bool maxFlash = false,
               const bool labelHeure = false,
               const Date &dateDeb = Date(), const Date &dateMax = Date(), const Date &dateFin = Date());
@@ -175,6 +184,7 @@ private:
     QGraphicsScene *scene;
     Onglets *_onglets;
 
+    bool _fenetreMax;
     bool _labelHeure;
     QList<Satellite> _satellites;
     QList<Planete> _planetes;

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2022
+ * >    11 septembre 2022
  *
  */
 
@@ -379,7 +379,8 @@ void PreviSat::DemarrageApplication()
                     Configuration::instance()->constellations(),
                     Configuration::instance()->etoiles(),
                     Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites());
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee());
     }
 
     // Affichage du radar
@@ -1236,6 +1237,7 @@ void PreviSat::ChangementCarte()
         EnchainementCalculs();
 
         // Affichage de la carte du ciel
+        _ciel->setFenetreMax(windowState() == Qt::WindowMaximized);
         _ciel->show(Configuration::instance()->observateur(),
                     Configuration::instance()->soleil(),
                     Configuration::instance()->lune(),
@@ -1243,7 +1245,8 @@ void PreviSat::ChangementCarte()
                     Configuration::instance()->constellations(),
                     Configuration::instance()->etoiles(),
                     Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites());
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
 
         _ciel->resizeEvent(nullptr);
 
@@ -1338,7 +1341,8 @@ void PreviSat::ChangementDate(const QDateTime &date)
                     Configuration::instance()->constellations(),
                     Configuration::instance()->etoiles(),
                     Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites());
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
     }
 
     // Affichage du radar
@@ -1942,7 +1946,8 @@ void PreviSat::GestionTempsReel()
                         Configuration::instance()->constellations(),
                         Configuration::instance()->etoiles(),
                         Configuration::instance()->planetes(),
-                        Configuration::instance()->listeSatellites());
+                        Configuration::instance()->listeSatellites(),
+                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
         }
 
         // Affichage du radar
@@ -2449,6 +2454,23 @@ void PreviSat::changeEvent(QEvent *evt)
             }
         } else {
             _carte->setGeometry(ui->layoutCarte->geometry());
+        }
+
+        if (_ciel != nullptr) {
+
+            if (windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
+                _ciel->setFenetreMax(false);
+
+            } else if (windowState() == Qt::WindowMaximized) {
+                _ciel->setFenetreMax(true);
+
+            } else {
+                _ciel->setFenetreMax(false);
+            }
+
+            if (!Configuration::instance()->isCarteMonde()) {
+                _ciel->resizeEvent(nullptr);
+            }
         }
 
     } else {
@@ -3105,7 +3127,8 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
                         Configuration::instance()->constellations(),
                         Configuration::instance()->etoiles(),
                         Configuration::instance()->planetes(),
-                        Configuration::instance()->listeSatellites());
+                        Configuration::instance()->listeSatellites(),
+                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
         }
 
         // Affichage du radar

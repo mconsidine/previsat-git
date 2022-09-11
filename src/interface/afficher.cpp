@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 septembre 2022
+ * >    11 septembre 2022
  *
  */
 
@@ -1655,7 +1655,19 @@ void Afficher::on_resultatsPrevisions_itemSelectionChanged()
     _ciel->resize(ui->frameCiel->width(), ui->frameCiel->width() - 50);
 
     // Affichage de la carte du ciel
-    _ciel->show(observateur, soleil, lune, lignesCst, constellations, etoiles, planetes, satellites, (_typeCalcul == FLASHS), true, dateDeb, dateMax,
+    _ciel->show(observateur,
+                soleil,
+                lune,
+                lignesCst,
+                constellations,
+                etoiles,
+                planetes,
+                satellites,
+                true,
+                (_typeCalcul == FLASHS),
+                true,
+                dateDeb,
+                dateMax,
                 dateFin);
 
     // Affichage du detail du transit ISS
