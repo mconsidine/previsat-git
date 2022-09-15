@@ -1,0 +1,23 @@
+/**
+\page Acronymes Acronyms
+
+| Acronym | Meaning | Translation in English |
+|---------|---------|------------------------|
+| AOS | Acquisition of Signal | <center>-</center> |
+| AU | Astronomical Unit | <center>-</center> |
+| COSPAR | Committee on Space Research | <center>-</center> |
+| ECEF | Earth Centered Earth Fixed | <center>-</center> |
+| ECI | Earth Centered Inertial | <center>-</center> |
+| GMT | Greenwich Mean Time | <center>-</center> |
+| IOP | In Orbit Position | <center>-</center> |
+| LOS | Loss of Signal | <center>-</center> |
+| NORAD | North American Aerospace Defense Command | <center>-</center> |
+| RA | Right Ascension | <center>-</center> |
+| SAA | South Atlantic Anomaly | <center>-</center> |
+| SGP4 | Simplified General Perturbations 4 | <center>-</center> |
+| TAI | Temps Atomique International | International Atomic Time |
+| TLE | Two Line Elements | <center>-</center> |
+| UTC | Universal Time Coordinated | <center>-</center> |
+| ZOE | Zone Of Exclusion | <center>-</center> |
+
+*/
