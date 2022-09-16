@@ -586,7 +586,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/apropos.cpp" line="105"/>
         <source>d MMMM yyyy</source>
         <comment>Date format</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yyyy年MM月dd日</translation>
     </message>
 </context>
 <context>
@@ -613,7 +613,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/carte.cpp" line="532"/>
         <source>S</source>
         <comment>Symbol for South</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">南</translation>
     </message>
     <message>
         <location filename="../src/interface/carte.cpp" line="1163"/>
@@ -648,12 +648,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/carte.cpp" line="1190"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/interface/carte.cpp" line="1193"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
-        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  &lt;b&gt;%3&lt;/b&gt;)</translation>
+        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
         <location filename="../src/interface/carte.cpp" line="1216"/>
@@ -708,12 +708,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/ciel.cpp" line="843"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/interface/ciel.cpp" line="846"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
-        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  &lt;b&gt;%3&lt;/b&gt;)</translation>
+        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
         <location filename="../src/interface/ciel.cpp" line="902"/>
@@ -1296,7 +1296,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets.ui" line="3696"/>
         <source>Phasage :</source>
-        <translation type="unfinished">位相調整 (TBC) :</translation>
+        <translation type="unfinished">準回帰パラメータ :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="4004"/>
@@ -1694,7 +1694,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.ui" line="10189"/>
         <source>Prise en compte de la réfraction atmosphérique</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">大気差を考慮に入れる</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="10566"/>
@@ -2157,7 +2157,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.ui" line="10221"/>
         <source>Prise en compte des éclipses partielles sur la magnitude</source>
-        <translation type="unfinished">等級の計算には衛星の部分食を考慮する (TBC)</translation>
+        <translation type="unfinished">等級の計算には衛星の部分食を考慮に入れる (TBC)</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="9992"/>
@@ -2167,7 +2167,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.ui" line="10205"/>
         <source>Prise en compte des éclipses produites par la Lune</source>
-        <translation type="unfinished">月によって生成された衛星の食を考慮する</translation>
+        <translation type="unfinished">月によって生成された衛星の食を考慮に入れる</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="10157"/>
@@ -2207,12 +2207,12 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.ui" line="10094"/>
         <source>Affichage de la SAA</source>
-        <translation>南大西洋異常帯を表示する</translation>
+        <translation>SAAを表示する</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="10110"/>
         <source>Prise en compte de l&apos;extinction atmosphérique</source>
-        <translation type="unfinished">大気減光を考慮する</translation>
+        <translation type="unfinished">大気減光を考慮に入れる</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.ui" line="10126"/>
@@ -2658,19 +2658,19 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets.cpp" line="526"/>
         <source>N&gt;J</source>
         <comment>Night to day</comment>
-        <translation type="unfinished">夜間から昼間へ</translation>
+        <translation type="unfinished">「夜&gt;昼」</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="526"/>
         <source>J&gt;N</source>
         <comment>Day to night</comment>
-        <translation type="unfinished">昼間から夜間へ</translation>
+        <translation type="unfinished">「昼&gt;夜」</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="530"/>
         <source>%1 (dans %2).</source>
         <comment>Delay in hours, minutes or seconds</comment>
-        <translation>%1 (%2後)。</translation>
+        <translation>%1 (あと%2で)。</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="534"/>
@@ -2935,7 +2935,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets.cpp" line="1744"/>
         <source>%1 (dans %2). Azimut : %3</source>
         <comment>Delay in hour, minutes, seconds</comment>
-        <translation>%1 (%2後)。方位角 : %3</translation>
+        <translation>%1 (あと%2で)。方位角 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="1801"/>
@@ -3068,7 +3068,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.cpp" line="2130"/>
         <source>Phasage              : %1</source>
-        <translation type="unfinished">軌道位相調整              : %1</translation>
+        <translation type="unfinished">準回帰パラメータ              : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="2174"/>
@@ -3105,7 +3105,7 @@ cliquer sur &apos;Mettre à jour manoeuvres de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets.cpp" line="7354"/>
         <source>Nom du fichier :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイル名&#x3000;:</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="7372"/>
@@ -3586,12 +3586,12 @@ Le répertoire contenant les fichiers de lieux d&apos;observation n&apos;existe 
         <location filename="../src/interface/onglets.cpp" line="578"/>
         <source>%1  (dans %2).</source>
         <comment>Delay in hours, minutes or seconds</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 あと%2で).</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="1764"/>
         <source>%1%2. Azimut : %3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2. 方位角 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="2801"/>
@@ -3851,7 +3851,7 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
     <message>
         <location filename="../src/interface/onglets.cpp" line="6328"/>
         <source>Fichiers exécutables (*.exe)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">実行ファイル (*.exe)</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="6455"/>
@@ -3895,7 +3895,7 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <location filename="../src/interface/onglets.cpp" line="6640"/>
         <location filename="../src/interface/onglets.cpp" line="6646"/>
         <source>Erreur dans la saisie des numéros NORAD</source>
-        <translation type="unfinished">NORAD番号の入力中にエラーが発生しました (TBC)</translation>
+        <translation type="unfinished">NORAD番号の入力でエラーが発生しました</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="6652"/>
@@ -4064,7 +4064,8 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
         <location filename="../src/interface/previsat.ui" line="885"/>
         <source>Cliquer pour activer
 le flux vidéo</source>
-        <translation type="unfinished">クリックしてビデオストリームをアクティブにします</translation>
+        <translation type="unfinished">クリックしてビデオストリームを
+アクティブになります</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="969"/>
@@ -4262,7 +4263,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="1349"/>
         <source>Donation Tipeee</source>
-        <translation type="unfinished">tipeeeでのご寄付</translation>
+        <translation type="unfinished">Tipeeeでのご寄付</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1358"/>
@@ -4410,7 +4411,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2369"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PNGファイル (*.png);;JPEGファイル (*.jpg);;BMPファイル (*.bmp);;すべてのファイル (*)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1998"/>
@@ -4426,12 +4427,12 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2504"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ご注意&#x3000;: Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります。</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2510"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Utip, mais ceci induira des frais supplémentaires</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ご注意&#x3000;: Utipでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります。</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2598"/>
@@ -4466,7 +4467,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1596"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2632"/>
@@ -4481,7 +4482,6 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2722"/>
         <source>commun</source>
-        <comment>do not translate for now</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4492,7 +4492,6 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2737"/>
         <source>tous</source>
-        <comment>do not translate for now</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4529,7 +4528,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3161"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3246"/>
@@ -5163,12 +5162,12 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/radar.cpp" line="366"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/interface/radar.cpp" line="369"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
-        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  &lt;b&gt;%3&lt;/b&gt;)</translation>
+        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
         <location filename="../src/interface/radar.cpp" line="394"/>

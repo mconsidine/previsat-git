@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 septembre 2022
+ * >    16 septembre 2022
  *
  */
 
@@ -115,6 +115,7 @@ PreviSat::PreviSat(QWidget *parent) :
 
         // Chargement des elements de la fenetre
         ChargementFenetre();
+        ConnexionsSignauxSlots();
 
     } catch (PreviSatException &e) {
         throw PreviSatException();
@@ -177,7 +178,6 @@ void PreviSat::ChargementConfig()
     // Liste des fichiers TLE
     InitFicTLE();
 
-    ConnexionsSignauxSlots();
     _onglets->InitChargementOnglets();
 
     // Verification des mises a jour au demarrage
@@ -2719,7 +2719,7 @@ void PreviSat::on_actionMettre_jour_TLE_communs_triggered()
     /* Corps de la methode */
     // Mise a jour des groupes de TLE communs
     _messageStatut->setText(tr("Mise à jour des fichiers TLE communs..."));
-    MettreAJourGroupeTLE(tr("commun", "do not translate for now"));
+    MettreAJourGroupeTLE(tr("commun"));
 
     /* Retour */
     return;
@@ -2734,7 +2734,7 @@ void PreviSat::on_actionMettre_jour_tous_les_groupes_de_TLE_triggered()
     /* Corps de la methode */
     // Mise a jour de tous les groupes de TLE
     _messageStatut->setText(tr("Mise à jour des groupes de TLE en cours..."));
-    MettreAJourGroupeTLE(tr("tous", "do not translate for now"));
+    MettreAJourGroupeTLE(tr("tous"));
 
     /* Retour */
     return;

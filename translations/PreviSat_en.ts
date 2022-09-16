@@ -4353,6 +4353,16 @@ the video stream</translation>
         <translation>Minimize</translation>
     </message>
     <message>
+        <location filename="../src/interface/previsat.cpp" line="2722"/>
+        <source>commun</source>
+        <translation>common</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/previsat.cpp" line="2737"/>
+        <source>tous</source>
+        <translation>all</translation>
+    </message>
+    <message>
         <location filename="../src/interface/previsat.cpp" line="2950"/>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <comment>date format</comment>
@@ -4381,18 +4391,6 @@ the video stream</translation>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>informations_tab</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/previsat.cpp" line="2722"/>
-        <source>commun</source>
-        <comment>do not translate for now</comment>
-        <translation>common</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/previsat.cpp" line="2737"/>
-        <source>tous</source>
-        <comment>do not translate for now</comment>
-        <translation>all</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2050"/>
