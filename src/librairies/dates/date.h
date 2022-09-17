@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    17 septembre 2022
  *
  */
 
@@ -59,7 +59,7 @@ public:
      * @brief Date Obtention de la date systeme
      * @param offset ecart heure legale - UTC
      */
-    Date(const double offset = 0.);
+    explicit Date(const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un objet Date et de l'ecart heure legale - UTC

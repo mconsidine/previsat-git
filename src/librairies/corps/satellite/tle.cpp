@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 septembre 2022
+ * >    17 septembre 2022
  *
  */
 
@@ -671,7 +671,6 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
 bool TLE::CheckSum(const QString &ligne)
 {
     /* Declarations des variables locales */
-    int chr;
 
     /* Initialisations */
     int check = 0;
@@ -679,7 +678,7 @@ bool TLE::CheckSum(const QString &ligne)
     /* Corps de la methode */
     for (int i=0; i<68; i++) {
 
-        chr = ligne.at(i).digitValue();
+        const int chr = ligne.at(i).digitValue();
         if ((chr >= 0) && (chr <= 9)) {
             check += chr;
         } else {

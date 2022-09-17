@@ -30,7 +30,7 @@
  * >    13 mars 2022
  *
  * Date de revision
- * >
+ * >    17 septembre 2022
  *
  */
 
@@ -110,7 +110,6 @@ int CoordISS::CalculNumeroOrbiteISS(const Date &date)
         double lon1 = sat.longitude();
 
         bool atrouveOrb = false;
-        double lon2;
         while (!atrouveOrb) {
 
             dateCalcul = Date(dateNA.jourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
@@ -120,7 +119,7 @@ int CoordISS::CalculNumeroOrbiteISS(const Date &date)
             dateNA = Evenements::CalculNoeudOrbite(dateCalcul, sat, false);
             sat.CalculPosVit(dateNA);
             sat.CalculCoordTerrestres(dateNA);
-            lon2 = sat.longitude();
+            const double lon2 = sat.longitude();
 
             atrouveOrb = ((lon2 < 0.) && (lon1 > 0.));
             numOrbite++;
