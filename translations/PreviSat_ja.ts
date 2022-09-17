@@ -4847,48 +4847,48 @@ Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>TLEの削除</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="743"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="742"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>TLEの1行が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="750"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="749"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation type="unfinished">衛星 %1 (NORAD番号 : %2)のTLEは行の番号が正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="756"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="755"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>衛星 %1 (NORAD番号 : %2)のTLEは行の長さが正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="766"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="765"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation type="unfinished">TLEスペース位置エラー :
 衛星 %1 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="773"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="772"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation type="unfinished">TLE約物エラー :
 衛星 %1 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="779"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="778"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation type="unfinished">「%1」衛星のTLEの2行はNORAD番号が異なります (%2と%3)</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="786"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="785"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>チェックサムエラー行1 :
 衛星 %1 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="791"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="790"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>チェックサムエラー行2 :
@@ -4953,8 +4953,6 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="../src/main.cpp" line="79"/>
-        <location filename="../src/main.cpp" line="83"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -4987,7 +4985,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="78"/>
+        <location filename="../src/main.cpp" line="80"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation type="unfinished">%1のインスタンスは既に開いています</translation>
     </message>
@@ -4997,17 +4995,17 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation type="unfinished">構成を初期化しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="99"/>
+        <location filename="../src/main.cpp" line="100"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>TLEファイルを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>Mise à jour des TLE...</source>
         <translation type="unfinished">TLEの更新...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="107"/>
+        <location filename="../src/main.cpp" line="110"/>
         <source>Démarrage de l&apos;application...</source>
         <translation type="unfinished">アプリが起動しています...</translation>
     </message>

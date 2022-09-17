@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 juillet 2022
+ * >    17 septembre 2022
  *
  */
 
@@ -66,6 +66,9 @@ int main(int argc, char *argv[])
 
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
+        // Creation de la fenetre principale
+        PreviSat w;
+
         // Verification si une instance de PreviSat existe
         const qint64 pid = a.applicationPid();
         QSharedMemory mem;
@@ -74,13 +77,11 @@ int main(int argc, char *argv[])
         if (!mem.create(sizeof(pid))) {
             if (mem.error() == QSharedMemory::AlreadyExists) {
                 if (mem.attach(QSharedMemory::ReadOnly)) {
-
-                    const QString msg = QObject::tr("Une instance de %1 est déjà ouverte");
-                    QMessageBox::warning(0, QObject::tr("Information"), msg.arg(APP_NAME));
-                    return EXIT_FAILURE;
+                    throw PreviSatException(QObject::tr("Une instance de %1 est déjà ouverte").arg(APP_NAME), MessageType::WARNING);
                 }
-            } else {
-                QMessageBox::warning(0, QObject::tr("Information"), mem.errorString());
+
+            } else if (mem.error() != QSharedMemory::NoError) {
+                throw PreviSatException(mem.errorString(), MessageType::WARNING);
             }
         }
 
@@ -89,25 +90,28 @@ int main(int argc, char *argv[])
         splash->setPixmap(QPixmap(":/resources/splashscreen.png"));
         splash->show();
 
-        PreviSat w;
-
+        // Chargement de la configuration pour l'affichage
         const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
         splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
         a.processEvents();
         w.ChargementConfig();
 
+        // Ouverture du fichier d'elements orbitaux par defaut
         splash->showMessage(QObject::tr("Ouverture du fichier TLE...") + "     ", alignement, Qt::white);
         a.processEvents();
         w.ChargementTLE();
 
+        // Mise a jour eventuelle des fichiers d'elements orbitaux
         splash->showMessage(QObject::tr("Mise à jour des TLE...") + "     ", alignement, Qt::white);
         a.processEvents();
         w.MAJTLE();
 
+        // Demarrage de l'application en mode temps reel
         splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
         a.processEvents();
         w.DemarrageApplication();
 
+        // Affichage de la fenetre principale et suppression du splash screen
         w.show();
         splash->finish(&w);
         delete splash;

@@ -4893,48 +4893,48 @@ Do you want to remove this TLE from the file to update?</translation>
         <translation>Deletion of the TLE</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="743"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="742"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>One of the TLE line is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="750"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="749"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>The numbers of the lines of TLE of satellite %1 (NORAD number : %2) are incorrect</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="756"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="755"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>The length of lines of TLE of the satellite %1 (NORAD number %2) is incorrect</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="766"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="765"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Error of position of spaces in TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="773"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="772"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>Punctuation Error of TLE :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="779"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="778"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>The two lines of TLE of satellite %1 have different NORAD numbers (%2 and %3)</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="786"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="785"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>CheckSum Error line 1 :
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="791"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="790"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>CheckSum Error line 2 :
@@ -4999,8 +4999,6 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/exceptions/message.cpp" line="74"/>
-        <location filename="../src/main.cpp" line="79"/>
-        <location filename="../src/main.cpp" line="83"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -5015,7 +5013,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="78"/>
+        <location filename="../src/main.cpp" line="80"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation>An instance of %1 is already launched</translation>
     </message>
@@ -5025,17 +5023,17 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Initialisation of configuration...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="99"/>
+        <location filename="../src/main.cpp" line="100"/>
         <source>Ouverture du fichier TLE...</source>
         <translation>Loading TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>Mise à jour des TLE...</source>
         <translation>Updating TLEs...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="107"/>
+        <location filename="../src/main.cpp" line="110"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>Launching application...</translation>
     </message>
