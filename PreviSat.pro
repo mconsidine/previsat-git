@@ -33,15 +33,16 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    28 aout 2022
+# >    18 septembre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.0
-VERSION      = 5.0.3.3
+VERSION      = 5.0.4.4
 ANNEES_DEV   = 2005-2022
 TRANSLATIONS = translations/PreviSat_en.ts
 BUILD_TEST   = false
 CLEANUP_TEST = true
+COV_TEST     = false
 #-------------------------------------------------
 
 TARGET = PreviSat
@@ -221,6 +222,11 @@ equals(BUILD_TEST, true) {
 
     CONFIG(debug, debug|release) {
         DESTDIR = TestPreviSat/debug
+
+        equals(COV_TEST, true) {
+            QMAKE_CXXFLAGS += --coverage
+            QMAKE_LFLAGS += --coverage
+        }
     } else {
         DESTDIR = TestPreviSat/release
     }
@@ -259,7 +265,6 @@ equals(BUILD_TEST, true) {
         test/src/previsions/telescopetest.h                    \
         test/src/previsions/transitsisstest.h                  \
         test/src/testtools.h
-
 
 } else {
 
