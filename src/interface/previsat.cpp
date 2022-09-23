@@ -178,6 +178,7 @@ void PreviSat::CreationMenus()
     _ui->actionDons->setMenu(_ui->menuDons);
     _ui->actionImporter_fichier_TLE_GP->setIcon(styleIcones->standardIcon(QStyle::SP_DialogOpenButton));
     _ui->actionEnregistrer->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
+    _ui->actionInformations->setIcon(styleIcones->standardIcon(QStyle::SP_MessageBoxInformation));
 
     /* Retour */
     return;
