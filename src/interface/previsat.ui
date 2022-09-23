@@ -940,11 +940,15 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionImprimer_carte">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/interface/print.png</normaloff>:/resources/interface/print.png</iconset>
+   </property>
    <property name="text">
     <string>Imprimer carte</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string notr="true">Ctrl+P</string>
    </property>
   </action>
   <action name="actionMettre_jour_GP_courant">
@@ -985,6 +989,10 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionFichier_d_aide">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/interface/help.png</normaloff>:/resources/interface/help.png</iconset>
+   </property>
    <property name="text">
     <string>Fichier d'aide</string>
    </property>
