@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 aout 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -119,7 +119,7 @@ void Corps::setPosition(const Vecteur3D &pos)
 /*
  * Calcul de l'altitude du corps
  */
-double Corps::CalculAltitude(const Vecteur3D &pos)
+double Corps::CalculAltitude(const Vecteur3D &pos) const
 {
     /* Declarations des variables locales */
 
@@ -161,7 +161,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
         try {
 
             if (_tabConst.isEmpty()) {
-                throw PreviSatException(QObject::tr("Tableau de constellations vide"), MessageType::WARNING);
+                throw PreviSatException(QT_TRANSLATE_NOOP("Corps", "Tableau de constellations vide"), MessageType::WARNING);
             }
 
             QListIterator it(_tabConst);
@@ -576,7 +576,7 @@ void Corps::CalculZoneVisibilite(const double beta)
     const double sra = sin(srad);
 
     /* Corps de la methode */
-    for(int i=0; i<360; i++) {
+    for(unsigned int i=0; i<_caz.size(); i++) {
 
         const double z1 = sra * _caz[i];
 
@@ -611,7 +611,7 @@ void Corps::Initialisation(const QString &dirCommonData)
 
     /* Corps de la methode */
     // Tableaux des cosinus et des sinus de l'azimut
-    for(int i=0; i<360; i++) {
+    for(unsigned int i=0; i<_caz.size(); i++) {
         const double az = i * DEG2RAD;
         _caz[i] = cos(az);
         _saz[i] = sin(az);
@@ -650,11 +650,20 @@ void Corps::Initialisation(const QString &dirCommonData)
             }
             fi.close();
 
-            qInfo() << QString("Lecture fichier constellations.dat OK");
+            if (_tabConst.isEmpty()) {
+                const QFileInfo ff(fi.fileName());
+                throw PreviSatException(QT_TRANSLATE_NOOP("Corps", QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                        .arg(ff.fileName()).arg(APP_NAME)), MessageType::ERREUR);
+            }
+
+#if (BUILD_TEST == false)
+            qInfo() << "Lecture fichier constellations.dat OK";
+#endif
 
         } else {
-            qInfo() << QString("Lecture fichier constellations.dat KO");
-            throw PreviSatException(QObject::tr("Fichier %1 absent ou vide").arg(QDir::toNativeSeparators(fichierConstellations)), MessageType::WARNING);
+            const QFileInfo ff(fi.fileName());
+            throw PreviSatException(QT_TRANSLATE_NOOP("Corps", QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
+                                    .arg(ff.fileName()).arg(APP_NAME)), MessageType::ERREUR);
         }
 
     } catch (PreviSatException &e) {
@@ -667,7 +676,7 @@ void Corps::Initialisation(const QString &dirCommonData)
 /*
  * Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
  */
-Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date)
+Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date) const
 {
     /* Declarations des variables locales */
 

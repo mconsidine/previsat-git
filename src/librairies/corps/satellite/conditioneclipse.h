@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    21 septembre 2022
  *
  */
 
@@ -131,7 +131,7 @@ private:
      * @return elements de l'eclipse
      */
     ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,
-                                  const bool refraction);
+                                  const bool refraction) const;
 
 };
 

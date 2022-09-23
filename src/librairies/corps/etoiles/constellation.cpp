@@ -30,7 +30,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    21 septembre 2022
  *
  */
 
@@ -98,7 +98,8 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
     try {
 
         if (constellations.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau de constellations n'est pas initialisé"), MessageType::WARNING);
+            throw PreviSatException(QT_TRANSLATE_NOOP("Constellation", "Le tableau de constellations n'est pas initialisé"),
+                                    MessageType::WARNING);
         }
 
         for (int i=0; i<constellations.size(); i++) {

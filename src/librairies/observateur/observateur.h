@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 juillet 2019
+ * >    21 septembre 2022
  *
  */
 
@@ -111,7 +111,7 @@ public:
      * @param lieuDistant lieu distant
      * @return nom et valeur du cap
      */
-    QPair<QString, double> CalculCap(const Observateur &lieuDistant);
+    QPair<QString, double> CalculCap(const Observateur &lieuDistant) const;
 
     /**
      * @brief CalculDistance Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre

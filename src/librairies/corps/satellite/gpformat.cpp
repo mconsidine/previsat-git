@@ -39,6 +39,7 @@
 #include <QFile>
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
+#include <QFileInfo>
 #include <QXmlStreamReader>
 #include "librairies/exceptions/previsatexception.h"
 #include "gpformat.h"
@@ -72,7 +73,7 @@ GPFormat::GPFormat(const ElementsOrbitaux &elem)
  * Methodes publiques
  */
 QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                 const QStringList &listeSatellites, const bool ajoutDonnees)
+                                                         const QStringList &listeSatellites, const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
     QMap<QString, ElementsOrbitaux> mapElem;
@@ -81,63 +82,65 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
 
     /* Corps de la methode */
     QFile fi(nomFichier);
-    if (fi.exists() && (fi.size() != 0)) {
+    if (!fi.exists() || (fi.size() == 0)) {
+        const QFileInfo ff(fi.fileName());
+        throw PreviSatException(QT_TRANSLATE_NOOP("GPFormat", QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName())),
+                                MessageType::WARNING);
+    }
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            QXmlStreamReader gp(&fi);
-            gp.readNextStartElement();
+        QXmlStreamReader gp(&fi);
+        gp.readNextStartElement();
 
-            if (gp.name().toString() == "ndm") {
+        if (gp.name().toString() == "ndm") {
 
-                ElementsOrbitaux elem;
+            ElementsOrbitaux elem;
 
-                while (gp.readNextStartElement()) {
+            while (gp.readNextStartElement()) {
 
-                    if (gp.name().toString() == "omm") {
+                if (gp.name().toString() == "omm") {
 
-                        elem = {};
+                    elem.norad.clear();
 
-                        while (gp.readNextStartElement()) {
+                    while (gp.readNextStartElement()) {
 
-                            if (gp.name().toString() == "body") {
+                        if (gp.name().toString() == "body") {
 
-                                LectureSectionBody(gp, elem);
+                            LectureSectionBody(gp, elem);
 
-                            } else {
-                                gp.skipCurrentElement();
-                            }
-                        }
-                    } else {
-                        gp.skipCurrentElement();
-                    }
-
-                    if (listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) {
-
-                        if (!mapElem.contains(elem.norad)) {
-                            if (ajoutDonnees) {
-
-                                // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                                const int idx = lgRec * elem.norad.toInt();
-                                if ((idx >= 0) && (idx < donneesSat.size())) {
-                                    elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-                                }
-                            }
-
-                            mapElem.insert(elem.norad, elem);
+                        } else {
+                            gp.skipCurrentElement();
                         }
                     }
+                } else {
+                    gp.skipCurrentElement();
                 }
 
-            } else {
-                fi.close();
-                throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier), MessageType::WARNING);
-            }
-            fi.close();
+                if (listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) {
 
+                    if (!mapElem.contains(elem.norad)) {
+                        if (ajoutDonnees) {
+
+                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                            const int idx = lgRec * elem.norad.toInt();
+                            if ((idx >= 0) && (idx < donneesSat.size())) {
+                                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
+                            }
+                        }
+
+                        mapElem.insert(elem.norad, elem);
+                    }
+                }
+            }
+
+        } else {
+            fi.close();
+            throw PreviSatException(QT_TRANSLATE_NOOP("GPFormat", QString("Le fichier %1 ne contient aucun satellite").arg(nomFichier)),
+                                    MessageType::WARNING);
         }
-    } else {
-        throw PreviSatException(QObject::tr("Le fichier %1 est vide ou n'existe pas").arg(nomFichier), MessageType::WARNING);
+        fi.close();
+
     }
 
     /* Retour */

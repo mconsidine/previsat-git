@@ -30,7 +30,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    11 octobre 2021
+ * >    21 septembre 2022
  *
  */
 
@@ -247,7 +247,7 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
 /*
  * Calcul du cap d'un lieu d'observation par rapport a un autre
  */
-QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant)
+QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant) const
 {
     /* Declarations des variables locales */
     QPair<QString, double> res;

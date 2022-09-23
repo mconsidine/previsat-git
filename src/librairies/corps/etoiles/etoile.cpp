@@ -100,7 +100,7 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
     /* Initialisations */
     try {
         if (etoiles.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
+            throw PreviSatException(QT_TRANSLATE_NOOP("Etoile", "Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
         }
     } catch (PreviSatException &e) {
         throw PreviSatException();

@@ -159,7 +159,11 @@ void FichierObs::Lecture(const QString &ficObsXml, const bool alarme, QMap<QStri
                     }
                 }
             } else {
+
                 fi1.close();
+
+                qWarning() << "Le fichier ne contient pas de lieux d'observation";
+
                 if (alarme) {
                     throw PreviSatException(QObject::tr("Le fichier ne contient pas de lieux d'observation"), MessageType::WARNING);
                 } else {

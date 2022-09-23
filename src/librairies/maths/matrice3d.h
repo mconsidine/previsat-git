@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 mai 2022
+ * >    17 septembre 2022
  *
  */
 
@@ -57,7 +57,7 @@ public:
      * @brief Matrice3D Constructeur par defaut
      * @param valeurInit valeur d'initialisation
      */
-    Matrice3D(const double valeurInit = 0.) :
+    explicit Matrice3D(const double valeurInit = 0.) :
         _vecteur1(valeurInit),
         _vecteur2(valeurInit),
         _vecteur3(valeurInit) {
