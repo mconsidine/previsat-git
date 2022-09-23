@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    27 aout 2022
+# >    21 septembre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -42,13 +42,14 @@ ANNEES_DEV   = 2005-2022
 TRANSLATIONS = translations/PreviSat_en.ts
 BUILD_TEST   = false
 CLEANUP_TEST = true
+COV_TEST     = false
 #-------------------------------------------------
 
 TARGET = PreviSat
 TEMPLATE = app
 
 !equals(QT_MAJOR_VERSION, 6) {
-    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.3.1 in preference")
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.3.2 in preference")
 }
 
 QT += concurrent multimedia printsupport widgets xml
@@ -234,6 +235,11 @@ equals(BUILD_TEST, true) {
 
     CONFIG(debug, debug|release) {
         DESTDIR = TestPreviSat/debug
+
+        equals(COV_TEST, true) {
+            QMAKE_CXXFLAGS += --coverage
+            QMAKE_LFLAGS += --coverage
+        }
     } else {
         DESTDIR = TestPreviSat/release
     }
@@ -282,7 +288,6 @@ HEADERS += \
     test/src/librairies/systeme/logmessagetest.h                  \
     test/src/librairies/systeme/telechargementtest.h              \
     test/src/testtools.h
-
 
 } else {
 

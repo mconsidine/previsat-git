@@ -97,7 +97,8 @@ void Telechargement::TelechargementFichier(const QUrl &url)
 
     if (reponse->error()) {
 
-        throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
+        throw PreviSatException(QT_TRANSLATE_NOOP("Telechargement", QString("Erreur lors du téléchargement du fichier %1").arg(fic)),
+                                MessageType::WARNING);
 
     } else {
 
@@ -109,8 +110,8 @@ void Telechargement::TelechargementFichier(const QUrl &url)
             fi.close();
 
         } else {
-            const QString msg = tr("Impossible d'écrire le fichier %1 dans le répertoire %2");
-            throw PreviSatException(msg.arg(fic).arg(_dirDwn), MessageType::WARNING);
+            throw PreviSatException(QT_TRANSLATE_NOOP("Telechargement", QString("Impossible d'écrire le fichier %1 dans le répertoire %2")
+                                                      .arg(fic).arg(_dirDwn)), MessageType::WARNING);
         }
     }
 

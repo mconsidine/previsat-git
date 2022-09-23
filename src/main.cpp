@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 juin 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
         a.setOrganizationDomain(DOMAIN_NAME);
 
         /* Corps de la methode */
-        // Definition du repertoire du fichier de log
-        Configuration::instance()->DefinitionDirLog();
+        // Definitions preliminaires pour le logiciel
+        Configuration::instance()->Initialisation();
 
         // Installation de la gestion du fichier de log
         const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");

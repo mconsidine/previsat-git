@@ -30,15 +30,16 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    22 aout 2022
+ * >    23 septembre 2022
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include <QMessageBox>
+#pragma GCC diagnostic warning "-Wconversion"
 #include <QDomDocument>
 #include <QFile>
 #include <QXmlStreamReader>
@@ -46,6 +47,9 @@
 #include "configuration.h"
 #include "gestionnairexml.h"
 #include "librairies/exceptions/previsatexception.h"
+
+
+QList<Observateur> GestionnaireXml::_observateurs;
 
 
 /**********
@@ -245,76 +249,75 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
     QMap<QString, QString> mapCategoriesOrbite;
 
     /* Initialisations */
-    const QString nomficXml = "categories.xml";
     mapCategoriesOrbite.clear();
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "categories.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatCategories") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatCategories") {
 
-                    QString acronyme;
-                    QString desc;
+                QString acronyme;
+                QString desc;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "Categorie") {
+                    if (cfg.name().toString() == "Categorie") {
 
-                            acronyme = "";
-                            desc = "";
+                        acronyme = "";
+                        desc = "";
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Acronyme") {
-                                    acronyme = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Description") {
-                                    desc = cfg.readElementText();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            if (cfg.name().toString() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Description") {
+                                desc = cfg.readElementText();
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
 
-                            if (!acronyme.isEmpty()) {
-                                mapCategoriesOrbite.insert(acronyme, desc);
-                            }
+                        if (!acronyme.isEmpty()) {
+                            mapCategoriesOrbite.insert(acronyme, desc);
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapCategoriesOrbite.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucune catégorie d'orbite n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapCategoriesOrbite;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapCategoriesOrbite;
 }
 
 /*
@@ -332,153 +335,130 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _observateurs.clear();
     observateurs.clear();
     mapSatellitesFichierElem.clear();
 
-    const QString nomficXml = "configuration.xml";
-
     try {
 
-        const QString msg1 = QObject::tr("Le fichier de configuration de %1 a évolué.\n"
-                                         "Certaines informations de configuration "
-                                         "(par exemple les lieux d'observation sélectionnés) seront perdues.").arg(APP_NAME);
-        const QString msg2 = QObject::tr("Le fichier %1 n'existe pas :\nUtilisation de la configuration par défaut");
+        const QString nomficXml = "configuration.xml";
 
-        VerifieFichierXml(nomficXml, versionCfg, MessageType::WARNING, msg1, msg2);
+        const QString message = QObject::tr("Le fichier de configuration de %1 a évolué.\n" \
+                                            "Souhaitez-vous tenter de récupérer les lieux d'observation ?").arg(APP_NAME);
+
+        VerifieFichierXml(nomficXml, versionCfg, message);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatConfiguration") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatConfiguration") {
 
-                    QString nom;
-                    QStringList elements;
+                QString nom;
+                QStringList elements;
 
-                    double lon;
-                    double lat;
-                    double alt;
+                while (cfg.readNextStartElement()) {
 
-                    while (cfg.readNextStartElement()) {
+                    if (cfg.name().toString() == "NoradStationSpatiale") {
 
-                        if (cfg.name().toString() == "NoradStationSpatiale") {
+                        noradStationSpatiale = cfg.readElementText();
 
-                            noradStationSpatiale = cfg.readElementText();
+                    } else if (cfg.name().toString() == "AdresseCelestrak") {
 
-                        } else if (cfg.name().toString() == "AdresseCelestrak") {
+                        adresseCelestrak = cfg.readElementText();
 
-                            adresseCelestrak = cfg.readElementText();
+                    } else if (cfg.name().toString() == "NomFichierEvenementsStationSpatiale") {
 
-                        } else if (cfg.name().toString() == "NomFichierEvenementsStationSpatiale") {
+                        nomFichierEvenementsStationSpatiale = cfg.readElementText();
 
-                            nomFichierEvenementsStationSpatiale = cfg.readElementText();
+                    } else if (cfg.name().toString() == "Observateurs") {
 
-                        } else if (cfg.name().toString() == "Observateurs") {
+                        observateurs = LectureLieuxObservation(cfg);
 
+                    } else if (cfg.name().toString() == "FichiersElem") {
+
+                        while (cfg.readNextStartElement()) {
+
+                            nom = "";
+                            if ((cfg.name().toString() == "Fichier") && (cfg.attributes().hasAttribute("nom"))) {
+                                nom = cfg.attributes().value("nom").toString();
+                            } else {
+                                cfg.skipCurrentElement();
+                            }
+
+                            elements.clear();
                             while (cfg.readNextStartElement()) {
-
-                                if (cfg.name().toString() == "Observateur") {
-
-                                    nom = "";
-                                    lon = 0.;
-                                    lat = 0.;
-                                    alt = 0.;
-
-                                    while (cfg.readNextStartElement()) {
-
-                                        if (cfg.name().toString() == "Nom") {
-                                            nom = cfg.readElementText();
-                                        } else if (cfg.name().toString() == "Longitude") {
-                                            lon = cfg.readElementText().toDouble();
-                                        } else if (cfg.name().toString() == "Latitude") {
-                                            lat = cfg.readElementText().toDouble();
-                                        } else if (cfg.name().toString() == "Altitude") {
-                                            alt = cfg.readElementText().toDouble();
-                                        } else {
-                                            cfg.skipCurrentElement();
-                                        }
-                                    }
-
-                                    if (!nom.isEmpty()) {
-                                        observateurs.append(Observateur(nom, lon, lat, alt));
-                                    }
-
+                                if (cfg.name().toString() == "Norad") {
+                                    elements.append(cfg.readElementText());
                                 } else {
                                     cfg.skipCurrentElement();
                                 }
                             }
-                        } else if (cfg.name().toString() == "FichiersElem") {
 
-                            while (cfg.readNextStartElement()) {
+                            if (!mapSatellitesFichierElem.contains(nom)) {
 
-                                nom = "";
-                                if ((cfg.name().toString() == "Fichier") && (cfg.attributes().hasAttribute("nom"))) {
-                                    nom = cfg.attributes().value("nom").toString();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                                mapSatellitesFichierElem.insert(nom, elements);
 
-                                elements.clear();
-                                while (cfg.readNextStartElement()) {
-                                    if (cfg.name().toString() == "Norad") {
-                                        elements.append(cfg.readElementText());
-                                    } else {
-                                        cfg.skipCurrentElement();
-                                    }
-                                }
-
-                                if (!mapSatellitesFichierElem.contains(nom)) {
-
-                                    mapSatellitesFichierElem.insert(nom, elements);
-
-                                    if (nomfic.isEmpty()) {
-                                        nomfic = nom;
-                                        noradDefaut = elements.at(0);
-                                    }
+                                if (nomfic.isEmpty()) {
+                                    nomfic = nom;
+                                    noradDefaut = elements.at(0);
                                 }
                             }
-
-                        } else {
-                            cfg.skipCurrentElement();
                         }
+
+                    } else {
+                        cfg.skipCurrentElement();
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
-        if (nomFichierEvenementsStationSpatiale.isEmpty()) {
-            nomFichierEvenementsStationSpatiale = "ISS.OEM_J2K_EPH.xml";
+        if (!_observateurs.isEmpty()) {
+            observateurs = _observateurs;
         }
 
-        if (noradStationSpatiale.isEmpty()) {
-            noradStationSpatiale = "25544";
+        if (nomfic.isEmpty()) {
+            nomfic = "visual.xml";
         }
 
-        if (observateurs.isEmpty()) {
-            observateurs.append(Observateur("Paris", -2.348640000, +48.853390000, 30));
+        if (noradDefaut.isEmpty()) {
+            noradDefaut = noradStationSpatiale;
         }
 
-        if (mapSatellitesFichierElem.isEmpty() || nomfic.isEmpty() || noradDefaut.isEmpty()) {
-            throw PreviSatException();
+        if (mapSatellitesFichierElem.isEmpty()) {
+            const QStringList elem(QStringList() << noradStationSpatiale << "20580");
+            mapSatellitesFichierElem.insert(nomfic, elem);
+        }
+
+        if (nomFichierEvenementsStationSpatiale.isEmpty()
+                || noradStationSpatiale.isEmpty()
+                || observateurs.isEmpty()) {
+
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -491,113 +471,170 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
 
     /* Initialisations */
     listeCategoriesElementsOrbitaux.clear();
-    const QString nomficXml = "gestionnaireElem.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "gestionnaireElem.xml";
 
-        VerifieFichierXml(nomficXml, versionCategorieElem, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, versionCategorieElem);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatGestionElem") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatGestionElem") {
 
-                    QString langue;
-                    QString nom;
-                    QString site;
-                    QStringList fichiers;
-                    QMap<QString, QString> nomCategorie;
+                QString langue;
+                QString nom;
+                QString site;
+                QStringList fichiers;
+                QMap<QString, QString> nomCategorie;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        fichiers.clear();
-                        nomCategorie.clear();
+                    fichiers.clear();
+                    nomCategorie.clear();
 
-                        if (cfg.name().toString() == "Categorie") {
+                    // Categorie d'elements orbitaux
+                    if (cfg.name().toString() == "Categorie") {
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Langue") {
+                            if (cfg.name().toString() == "Langue") {
 
-                                    // Nom de la categorie
-                                    if (cfg.attributes().hasAttribute("lang")) {
-                                        langue = cfg.attributes().value("lang").toString();
+                                // Nom de la categorie
+                                if (cfg.attributes().hasAttribute("lang")) {
+                                    langue = cfg.attributes().value("lang").toString();
 
-                                        while (cfg.readNextStartElement()) {
-
-                                            if (cfg.name().toString() == "Nom") {
-                                                nom = cfg.readElementText();
-                                                nom[0] = nom[0].toUpper();
-                                            } else {
-                                                cfg.skipCurrentElement();
-                                            }
-                                        }
-
-                                        if (!langue.isEmpty()) {
-                                            nomCategorie.insert(langue, nom);
-                                        }
-                                    } else {
-                                        cfg.skipCurrentElement();
-                                    }
-
-                                } else if (cfg.name().toString() == "Site") {
-
-                                    // Site web
-                                    site = cfg.readElementText();
-
-                                } else if (cfg.name().toString() == "Fichiers") {
-
-                                    // Nom des fichiers de la categorie
                                     while (cfg.readNextStartElement()) {
 
-                                        if (cfg.name().toString() == "Fichier") {
-                                            fichiers.append(cfg.readElementText());
+                                        if (cfg.name().toString() == "Nom") {
+                                            nom = cfg.readElementText();
+                                            nom[0] = nom[0].toUpper();
                                         } else {
                                             cfg.skipCurrentElement();
                                         }
                                     }
+
+                                    if (!langue.isEmpty()) {
+                                        nomCategorie.insert(langue, nom);
+                                    }
                                 } else {
                                     cfg.skipCurrentElement();
                                 }
-                            }
 
-                            QMapIterator it(nomCategorie);
-                            while (it.hasNext()) {
-                                it.next();
-                                nomCategorie[it.key()] += "@" + site;
-                            }
+                            } else if (cfg.name().toString() == "Site") {
 
-                            if (!nomCategorie.isEmpty()) {
-                                listeCategoriesElementsOrbitaux.append({ nomCategorie, site, fichiers });
+                                // Site web
+                                site = cfg.readElementText();
+
+                            } else if (cfg.name().toString() == "Fichiers") {
+
+                                // Nom des fichiers de la categorie
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name().toString() == "Fichier") {
+                                        fichiers.append(cfg.readElementText());
+                                    } else {
+                                        cfg.skipCurrentElement();
+                                    }
+                                }
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
+
+                        QMapIterator it(nomCategorie);
+                        while (it.hasNext()) {
+                            it.next();
+                            nomCategorie[it.key()] += "@" + site;
+                        }
+
+                        if (!nomCategorie.isEmpty()) {
+                            listeCategoriesElementsOrbitaux.append({ nomCategorie, site, fichiers });
                         }
                     }
                 }
             }
-            fi1.close();
+        }
+        fi.close();
+
+        if (listeCategoriesElementsOrbitaux.isEmpty()) {
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         // Verifications
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-
-        /* Retour */
-        return listeCategoriesElementsOrbitaux;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return listeCategoriesElementsOrbitaux;
+}
+
+/*
+ * Lecture de la structure de lieux d'observations
+ */
+QList<Observateur> GestionnaireXml::LectureLieuxObservation(QXmlStreamReader &cfg)
+{
+    /* Declarations des variables locales */
+    QString nom;
+    double lon;
+    double lat;
+    double alt;
+    QList<Observateur> obs;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    while (cfg.readNextStartElement()) {
+
+        if (cfg.name().toString() == "Observateur") {
+
+            nom = "";
+            lon = 0.;
+            lat = 0.;
+            alt = 0.;
+
+            while (cfg.readNextStartElement()) {
+
+                if (cfg.name().toString() == "Nom") {
+                    nom = cfg.readElementText();
+                } else if (cfg.name().toString() == "Longitude") {
+                    lon = cfg.readElementText().toDouble();
+                } else if (cfg.name().toString() == "Latitude") {
+                    lat = cfg.readElementText().toDouble();
+                } else if (cfg.name().toString() == "Altitude") {
+                    alt = cfg.readElementText().toDouble();
+                } else {
+                    cfg.skipCurrentElement();
+                }
+            }
+
+            if (!nom.isEmpty()) {
+                obs.append(Observateur(nom, lon, lat, alt));
+            }
+        } else {
+            cfg.skipCurrentElement();
+        }
+    }
+
+    /* Retour */
+    return obs;
 }
 
 /*
@@ -610,75 +647,74 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
     QMap<QString, QString> mapPays;
 
     /* Initialisations */
-    const QString nomficXml = "pays.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "pays.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatPays") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatPays") {
 
-                    QString acronyme;
-                    QString desc;
+                QString acronyme;
+                QString desc;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "Pays") {
+                    if (cfg.name().toString() == "Pays") {
 
-                            acronyme = "";
-                            desc = "";
+                        acronyme = "";
+                        desc = "";
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Acronyme") {
-                                    acronyme = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Description") {
-                                    desc = cfg.readElementText();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            if (cfg.name().toString() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Description") {
+                                desc = cfg.readElementText();
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
 
-                            if (!acronyme.isEmpty()) {
-                                mapPays.insert(acronyme, desc);
-                            }
+                        if (!acronyme.isEmpty()) {
+                            mapPays.insert(acronyme, desc);
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapPays.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun pays ou organisation n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapPays;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapPays;
 }
 
 /*
@@ -692,87 +728,86 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
 
     /* Initialisations */
     mapTDRS.clear();
-    const QString nomficXml = "tdrs.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "tdrs.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatTDRS") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatTDRS") {
 
-                    int numero;
-                    QString denomination;
-                    int rouge;
-                    int vert;
-                    int bleu;
+                int numero;
+                QString denomination;
+                int rouge;
+                int vert;
+                int bleu;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "TDRS") {
+                    if (cfg.name().toString() == "TDRS") {
 
-                            numero = 0;
-                            denomination = "";
-                            rouge = 0;
-                            vert = 0;
-                            bleu = 0;
+                        numero = 0;
+                        denomination = "";
+                        rouge = 0;
+                        vert = 0;
+                        bleu = 0;
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Numero") {
-                                    numero = cfg.readElementText().toInt();
-                                } else if (cfg.name().toString() == "Denomination") {
-                                    denomination = cfg.readElementText();
-                                } else if (cfg.name().toString() == "CouleurR") {
-                                    rouge = cfg.readElementText().toInt();
-                                } else if (cfg.name().toString() == "CouleurV") {
-                                    vert = cfg.readElementText().toInt();
-                                } else if (cfg.name().toString() == "CouleurB") {
-                                    bleu = cfg.readElementText().toInt();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            if (cfg.name().toString() == "Numero") {
+                                numero = cfg.readElementText().toInt();
+                            } else if (cfg.name().toString() == "Denomination") {
+                                denomination = cfg.readElementText();
+                            } else if (cfg.name().toString() == "CouleurR") {
+                                rouge = cfg.readElementText().toInt();
+                            } else if (cfg.name().toString() == "CouleurV") {
+                                vert = cfg.readElementText().toInt();
+                            } else if (cfg.name().toString() == "CouleurB") {
+                                bleu = cfg.readElementText().toInt();
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
 
-                            if (!denomination.isEmpty()) {
-                                mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
-                            }
+                        if (!denomination.isEmpty()) {
+                            mapTDRS.insert(numero, { denomination, rouge, vert, bleu });
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapTDRS.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun satellite TDRS n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapTDRS;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapTDRS;
 }
 
 /*
@@ -786,83 +821,82 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
 
     /* Initialisations */
     mapSitesLancement.clear();
-    const QString nomficXml = "sites.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "sites.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatSites") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatSites") {
 
-                    QString acronyme;
-                    QString desc;
-                    double lon;
-                    double lat;
+                QString acronyme;
+                QString desc;
+                double lon;
+                double lat;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "Site") {
+                    if (cfg.name().toString() == "Site") {
 
-                            acronyme = "";
-                            desc = "";
-                            lon = 0.;
-                            lat = 0.;
+                        acronyme = "";
+                        desc = "";
+                        lon = 0.;
+                        lat = 0.;
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Acronyme") {
-                                    acronyme = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Description") {
-                                    desc = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Longitude") {
-                                    lon = cfg.readElementText().toDouble();
-                                } else if (cfg.name().toString() == "Latitude") {
-                                    lat = cfg.readElementText().toDouble();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            if (cfg.name().toString() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Description") {
+                                desc = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Longitude") {
+                                lon = cfg.readElementText().toDouble();
+                            } else if (cfg.name().toString() == "Latitude") {
+                                lat = cfg.readElementText().toDouble();
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
 
-                            if (!acronyme.isEmpty()) {
-                                mapSitesLancement.insert(acronyme, Observateur(desc, lon, lat));
-                            }
+                        if (!acronyme.isEmpty()) {
+                            mapSitesLancement.insert(acronyme, Observateur(desc, lon, lat));
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapSitesLancement.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun site de lancement n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapSitesLancement;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapSitesLancement;
 }
 
 /*
@@ -876,87 +910,86 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
 
     /* Initialisations */
     mapStations.clear();
-    const QString nomficXml = "stations.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "stations.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatStations") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatStations") {
 
-                    QString acronyme;
-                    QString nom;
-                    double lon;
-                    double lat;
-                    double alt;
+                QString acronyme;
+                QString nom;
+                double lon;
+                double lat;
+                double alt;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "Station") {
+                    if (cfg.name().toString() == "Station") {
 
-                            acronyme = "";
-                            nom = "";
-                            lon = 0.;
-                            lat = 0.;
-                            alt = 0.;
+                        acronyme = "";
+                        nom = "";
+                        lon = 0.;
+                        lat = 0.;
+                        alt = 0.;
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Acronyme") {
-                                    acronyme = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Nom") {
-                                    nom = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Longitude") {
-                                    lon = cfg.readElementText().toDouble();
-                                } else if (cfg.name().toString() == "Latitude") {
-                                    lat = cfg.readElementText().toDouble();
-                                } else if (cfg.name().toString() == "Altitude") {
-                                    alt = cfg.readElementText().toDouble();
-                                } else {
-                                    cfg.skipCurrentElement();
-                                }
+                            if (cfg.name().toString() == "Acronyme") {
+                                acronyme = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Nom") {
+                                nom = cfg.readElementText();
+                            } else if (cfg.name().toString() == "Longitude") {
+                                lon = cfg.readElementText().toDouble();
+                            } else if (cfg.name().toString() == "Latitude") {
+                                lat = cfg.readElementText().toDouble();
+                            } else if (cfg.name().toString() == "Altitude") {
+                                alt = cfg.readElementText().toDouble();
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
 
-                            if (!acronyme.isEmpty()) {
-                                mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
-                            }
+                        if (!acronyme.isEmpty()) {
+                            mapStations.insert(acronyme, Observateur(nom, lon, lat, alt));
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapStations.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucune station n'a été trouvée dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapStations;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapStations;
 }
 
 /*
@@ -970,97 +1003,101 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
 
     /* Initialisations */
     mapFlashs.clear();
-    const QString nomficXml = "flares.xml";
 
     try {
 
-        const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Le fichier %1 n'existe pas, veuillez réinstaller %2");
+        const QString nomficXml = "flares.xml";
 
-        VerifieFichierXml(nomficXml, version, MessageType::ERREUR, "", message);
+        VerifieFichierXml(nomficXml, version);
 
         /* Corps de la methode */
-        QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
-        if (fi1.exists() && (fi1.size() != 0)) {
+        if (!fi.exists() || (fi.size() == 0)) {
+            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
+                                    MessageType::ERREUR);
+        }
 
-            if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QXmlStreamReader cfg(&fi1);
+            QXmlStreamReader cfg(&fi);
 
-                cfg.readNextStartElement();
-                if (cfg.name().toString() == "PreviSatFlashs") {
+            cfg.readNextStartElement();
+            if (cfg.name().toString() == "PreviSatFlashs") {
 
-                    QString norad;
-                    QPair<double, double> angles;
-                    SatellitesFlashs satelliteFlash;
+                QString norad;
+                QPair<double, double> angles;
+                SatellitesFlashs satelliteFlash;
 
-                    while (cfg.readNextStartElement()) {
+                while (cfg.readNextStartElement()) {
 
-                        if (cfg.name().toString() == "Satellite") {
+                    if (cfg.name().toString() == "Satellite") {
 
-                            norad = "";
-                            satelliteFlash.angles.clear();
+                        norad = "";
+                        satelliteFlash.angles.clear();
 
-                            while (cfg.readNextStartElement()) {
+                        while (cfg.readNextStartElement()) {
 
-                                if (cfg.name().toString() == "Nom") {
-                                    satelliteFlash.nomsat = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Norad") {
-                                    norad = cfg.readElementText();
-                                } else if (cfg.name().toString() == "Angles") {
+                            // Nom du satellite et numero NORAD
+                            if (cfg.name().toString() == "Nom") {
+                                satelliteFlash.nomsat = cfg.readElementText();
 
-                                    while (cfg.readNextStartElement()) {
+                            } else if (cfg.name().toString() == "Norad") {
+                                norad = cfg.readElementText();
 
-                                        if (cfg.name().toString() == "Yaw") {
-                                            angles.first = cfg.readElementText().toDouble() * DEG2RAD;
-                                        } else if (cfg.name().toString() == "Pitch") {
-                                            angles.second = cfg.readElementText().toDouble() * DEG2RAD;
-                                        } else {
-                                            cfg.skipCurrentElement();
-                                        }
+                            } else if (cfg.name().toString() == "Angles") {
+
+                                // Lecture des angles
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name().toString() == "Yaw") {
+                                        angles.first = cfg.readElementText().toDouble() * DEG2RAD;
+
+                                    } else if (cfg.name().toString() == "Pitch") {
+                                        angles.second = cfg.readElementText().toDouble() * DEG2RAD;
+
+                                    } else {
+                                        cfg.skipCurrentElement();
                                     }
-                                    satelliteFlash.angles.append(angles);
-
-                                } else {
-                                    cfg.skipCurrentElement();
                                 }
-                            }
+                                satelliteFlash.angles.append(angles);
 
-                            if (!norad.isEmpty()) {
-                                mapFlashs.insert(norad, satelliteFlash);
+                            } else {
+                                cfg.skipCurrentElement();
                             }
+                        }
+
+                        if (!norad.isEmpty()) {
+                            mapFlashs.insert(norad, satelliteFlash);
                         }
                     }
                 }
             }
-            fi1.close();
         }
+        fi.close();
 
         // Verifications
         if (mapFlashs.isEmpty()) {
-            const QString msg = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                            "Aucun satellite produisant des flashs n'a été trouvé dans le fichier %1, veuillez réinstaller %2");
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(msg.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                    .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
-        /* Retour */
-        return mapFlashs;
-
     } catch (PreviSatException &e) {
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw PreviSatException();
     }
+
+    /* Retour */
+    return mapFlashs;
 }
 
 /*
  * Verification du fichier xml
  */
-void GestionnaireXml::VerifieFichierXml(const QString &nomficXml, QString &version, const MessageType &typeMessage, const QString &message1,
-                                        const QString &message2)
+void GestionnaireXml::VerifieFichierXml(const QString &nomficXml, QString &version, const QString &message)
 {
     /* Declarations des variables locales */
 
@@ -1072,7 +1109,9 @@ void GestionnaireXml::VerifieFichierXml(const QString &nomficXml, QString &versi
 #if defined (Q_OS_MAC)
     if (!fi1.exists()) {
         const QFileInfo ff(fi1.fileName());
-        throw PreviSatException(message2.arg(ff.fileName()).arg(APP_NAME), typeMessage);
+        qCritical() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
 #else
     fi1.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -1085,14 +1124,10 @@ void GestionnaireXml::VerifieFichierXml(const QString &nomficXml, QString &versi
 
             // Copie du fichier xml
             fi2.copy(fi1.fileName());
-
-        } else {
-            const QFileInfo ff(fi1.fileName());
-            throw PreviSatException(message2.arg(ff.fileName()).arg(APP_NAME), typeMessage);
         }
     }
 
-    VerifieVersionXml(fi1, fi2, version, message1);
+    VerifieVersionXml(fi1, fi2, version, message);
 
     fi2.close();
 #endif
@@ -1131,7 +1166,29 @@ void GestionnaireXml::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version
                 if (versionNew != version) {
 
                     if (!msg.isEmpty()) {
-                        Message::Afficher(msg, MessageType::WARNING);
+
+                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Avertissement"), msg, QMessageBox::Yes | QMessageBox::No, 0);
+
+                        msgbox.setDefaultButton(QMessageBox::Yes);
+                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
+                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                        msgbox.exec();
+
+                        if (msgbox.result() == QMessageBox::Yes) {
+
+                            // Tentative de recuperation des lieux d'observation
+                            QXmlStreamReader cfg(&fi1);
+                            cfg.readNextStartElement();
+
+                            while (cfg.readNextStartElement()) {
+
+                                if (cfg.name().toString() == "Observateurs") {
+                                    _observateurs = LectureLieuxObservation(cfg);
+                                } else {
+                                    cfg.skipCurrentElement();
+                                }
+                            }
+                        }
                     }
 
                     // Copie du fichier xml

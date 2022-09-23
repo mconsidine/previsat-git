@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 aout 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -66,6 +66,10 @@ PreviSat::PreviSat(QWidget *parent)
     _ui->setupUi(this);
 
     try {
+
+        _onglets = nullptr;
+        _options = nullptr;
+        _outils = nullptr;
 
         Initialisation();
 
@@ -132,6 +136,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Locale :" << langue;
 
     /* Corps de la methode */
     if (langue != "fr") {
@@ -141,9 +146,18 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     _ui->retranslateUi(this);
     QEvent evt(QEvent::LanguageChange);
-    _onglets->changeEvent(&evt);
-    _options->changeEvent(&evt);
-    _outils->changeEvent(&evt);
+
+    if (_onglets != nullptr) {
+        _onglets->changeEvent(&evt);
+    }
+
+    if (_options != nullptr) {
+        _options->changeEvent(&evt);
+    }
+
+    if (_outils != nullptr) {
+        _outils->changeEvent(&evt);
+    }
 
     /* Retour */
     return;
@@ -235,29 +249,35 @@ void PreviSat::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    // Affichage des informations generales dans le fichier de log
-    qInfo() << QString("%1 %2").arg(APP_NAME).arg(QString(APPVERSION));
-    qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
+    try {
 
-    setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(APPVER_MAJ));
+        // Affichage des informations generales dans le fichier de log
+        qInfo() << QString("%1 %2").arg(APP_NAME).arg(QString(APPVERSION));
+        qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
 
-    // Initialisation de la configuration generale
-    Configuration::instance()->Initialisation();
+        setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(APPVER_MAJ));
 
-    qInfo() << "Début Initialisation" << metaObject()->className();
+        ChargementTraduction(Configuration::instance()->locale());
 
-    _onglets = new Onglets(_ui->frameOnglets);
-    _options = new Options();
-    _outils = new Outils();
+        // Chargement de la configuration generale
+        Configuration::instance()->Chargement();
 
-    CreationMenus();
-    CreationRaccourcis();
+        qInfo() << "Début Initialisation" << metaObject()->className();
 
-    on_tempsReel_toggled(true);
+        _onglets = new Onglets(_ui->frameOnglets);
+        _options = new Options();
+        _outils = new Outils();
 
-    ChargementTraduction(Configuration::instance()->locale());
+        CreationMenus();
+        CreationRaccourcis();
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+        on_tempsReel_toggled(true);
+
+        qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
 
     /* Retour */
     return;

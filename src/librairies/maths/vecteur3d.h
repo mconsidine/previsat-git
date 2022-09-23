@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    17 septembre 2022
  *
  */
 
@@ -57,7 +57,7 @@ public:
      * @brief Vecteur3D Constructeur par defaut
      * @param valeurInit valeur d'initialisation
      */
-    Vecteur3D(const double valeurInit = 0.);
+    explicit Vecteur3D(const double valeurInit = 0.);
 
     /**
      * @brief Vecteur3D Definition a partir d'un vecteur

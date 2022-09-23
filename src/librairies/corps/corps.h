@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -80,7 +80,7 @@ public:
      * @param pos position cartesienne du corps
      * @return altitude (km)
      */
-    double CalculAltitude(const Vecteur3D &pos);
+    double CalculAltitude(const Vecteur3D &pos) const;
 
     /**
      * @brief CalculCoordEquat Calcul des coordonnees equatoriales
@@ -155,7 +155,7 @@ public:
      * @param date date
      * @return vecteur en coordonnees cartesiennes equatoriales
      */
-    Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date);
+    Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date) const;
 
 
     /*

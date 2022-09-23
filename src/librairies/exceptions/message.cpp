@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    23 septembre 2022
  *
  */
 
@@ -72,19 +72,16 @@ void Message::Afficher(const QString &message, const MessageType &typeMessage)
 
     case MessageType::INFO:
 
-        qInfo() << message;
         QMessageBox::information(_fenetre, QObject::tr("Information"), message);
         break;
 
     case MessageType::WARNING:
 
-        qWarning() << message;
         QMessageBox::warning(_fenetre, QObject::tr("Avertissement"), message);
         break;
 
     case MessageType::ERREUR:
 
-        qCritical() << message;
         QMessageBox::critical(_fenetre, QObject::tr("Erreur"), message);
         break;
 

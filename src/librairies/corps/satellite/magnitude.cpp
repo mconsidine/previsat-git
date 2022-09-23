@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    21 septembre 2022
  *
  */
 
@@ -145,7 +145,7 @@ double Magnitude::magnitude() const
 /*
  * Determination de l'extinction atmospherique
  */
-double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const double hauteur)
+double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const
 {
     /* Declarations des variables locales */
 

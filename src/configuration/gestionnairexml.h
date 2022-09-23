@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    18 aout 2022
+ * >    23 septembre 2022
  *
  */
 
@@ -52,6 +52,7 @@
 
 class QFile;
 class QString;
+class QXmlStreamReader;
 
 class GestionnaireXml
 {
@@ -102,6 +103,8 @@ private:
     /*
      * Variables privees
      */
+    static QList<Observateur> _observateurs;
+
 
     /*
      * Methodes privees
@@ -140,6 +143,13 @@ private:
     static QList<CategorieElementsOrbitaux> LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem);
 
     /**
+     * @brief LectureLieuxObservation Lecture de la structure de lieux d'observations
+     * @param cfg lecteur xml
+     * @return liste de lieux d'observations
+     */
+    static QList<Observateur> LectureLieuxObservation(QXmlStreamReader &cfg);
+
+    /**
      * @brief LecturePays Lecture du fichier listant les pays et organisations
      * @return map contenant les pays et organisations
      */
@@ -173,12 +183,9 @@ private:
      * @brief VerifieFichierXml Verification du fichier xml
      * @param nomficXml nom du fichier xml
      * @param version numero de version
-     * @param typeMessage type de message
-     * @param message1 message 1 a afficher
-     * @param message2 message 2 a afficher
+     * @param message message a afficher
      */
-    static void VerifieFichierXml(const QString &nomficXml, QString &version, const MessageType &typeMessage, const QString &message1 = QString(),
-                           const QString &message2 = QString());
+    static void VerifieFichierXml(const QString &nomficXml, QString &version, const QString &message = QString());
 
     /**
      * @brief VerifieVersionXml Verification du numero de version du fichier xml

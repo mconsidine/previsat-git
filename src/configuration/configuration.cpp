@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -68,28 +68,9 @@ Configuration *Configuration::_instance = nullptr;
  * Methodes publiques
  */
 /*
- * Definition du repertoire dirLog
+ * Chargement de la configuration generale
  */
-void Configuration::DefinitionDirLog()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString dirAstr = QString(ORG_NAME) + QDir::separator() + APP_NAME;
-
-    /* Corps de la methode */
-    const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory);
-    const QString dir = listeGenericDir.at(0) + dirAstr + QDir::separator();
-    _dirLog = dir + "log";
-
-    /* Retour */
-    return;
-}
-
-/*
- * Initialisation de la configuration generale
- */
-void Configuration::Initialisation()
+void Configuration::Chargement()
 {
     /* Declarations des variables locales */
 
@@ -99,16 +80,10 @@ void Configuration::Initialisation()
     try {
 
         qInfo() << "--";
-        qInfo() << "Début Initialisation Configuration";
-
-        // Definition des arborescences
-        DefinitionArborescences();
+        qInfo() << "Début Chargement Configuration";
 
         // Verification des arborescences
         VerificationArborescences();
-
-        // Determination de la locale et liste des langues disponibles
-        DeterminationLocale();
 
         // Lecture du fichier de configuration generale
         GestionnaireXml::LectureConfiguration(_nomFichierEvenementsStationSpatiale,
@@ -175,6 +150,7 @@ void Configuration::Initialisation()
         // Initialisation de la liste de fichiers de preferences
         InitListeFichiersPref();
 
+        // Ecriture d'informations dans le fichier de log
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
                    .arg(_observateurs.at(0).longitude() * RAD2DEG, 0, 'f', 9)
                    .arg(_observateurs.at(0).latitude() * RAD2DEG, 0, 'f', 9)
@@ -189,13 +165,33 @@ void Configuration::Initialisation()
             qInfo() << "     " << it.next();
         }
 
-        qInfo() << "Fin   Initialisation Configuration";
+        qInfo() << "Fin   Chargement Configuration";
         qInfo() << "--";
 
     } catch (PreviSatException &e) {
-        qCritical() << "Erreur Initialisation Configuration";
+        qCritical() << "Erreur Chargement Configuration";
         throw PreviSatException();
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Definition preliminaires pour le logiciel
+ */
+void Configuration::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Definition des arborescences
+    DefinitionArborescences();
+
+    // Determination de la locale et liste des langues disponibles
+    DeterminationLocale();
 
     /* Retour */
     return;
@@ -406,6 +402,7 @@ void Configuration::DefinitionArborescences()
     const QString dir = listeGenericDir.at(0) + dirAstr + QDir::separator();
     _dirLocalData = dir + "data";
     _dirElem = dir + "elem";
+    _dirLog = dir + "log";
 
     _dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) + dirAstr;
     _dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
@@ -458,19 +455,27 @@ void Configuration::DeterminationLocale()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _locale = QLocale::system().name().section('_', 0, 0);
     const QDir di(_dirLang);
     const QStringList filtres(QStringList () << QString(APP_NAME) + "_*.qm");
-    _listeFicLang = di.entryList(filtres, QDir::Files).replaceInStrings(QString(APP_NAME) + "_", "").replaceInStrings(".qm", "");
-    _listeFicLang.insert(0, "fr");
 
     /* Corps de la methode */
-    const QFile fi(di.path() + QDir::separator() + APP_NAME + "_" + _locale + ".qm");
-    if (!fi.exists() && (_locale != "fr")) {
-        _locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
+    _locale = QLocale::system().name().section('_', 0, 0);
+    _locale = "en";
+    _listeFicLang = di.entryList(filtres, QDir::Files).replaceInStrings(QString(APP_NAME) + "_", "").replaceInStrings(".qm", "");
+
+    if (!_listeFicLang.contains("fr")) {
+        _listeFicLang.insert(0, "fr");
     }
 
-    qInfo() << "Locale :" << _locale;
+    const QFile fi(di.path() + QDir::separator() + APP_NAME + "_" + _locale + ".qm");
+    if (_dirLang.isEmpty() || !di.exists() || (!fi.exists() && (_locale != "fr"))) {
+
+        _locale = QLocale(QLocale::English, QLocale::UnitedStates).name().section('_', 0, 0);
+
+        if (!_listeFicLang.contains(_locale)) {
+            _listeFicLang.append(_locale);
+        }
+    }
 
     /* Retour */
     return;
@@ -541,19 +546,25 @@ void Configuration::LectureChainesNasa()
     /* Corps de la methode */
     QFile fi(fic);
 
-    if (fi.exists() && (fi.size() != 0)) {
-
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            _listeChainesNasa = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
-        }
-        fi.close();
-
-        qInfo() << "Lecture fichier chaines.chnl OK";
-
-    } else {
-        qCritical() << "Lecture fichier chaines.chnl KO";
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
+    if (!fi.exists() || (fi.size() == 0)) {
+        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
+
+    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        _listeChainesNasa = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    }
+    fi.close();
+
+    if (_listeChainesNasa.isEmpty()) {
+        const QFileInfo ff(fi.fileName());
+        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+    }
+
+    qInfo() << "Lecture fichier chaines.chnl OK";
 
     /* Retour */
     return;
@@ -568,25 +579,31 @@ void Configuration::LectureDonneesSatellites()
 
     /* Initialisations */
     const QString fic = _dirLocalData + QDir::separator() + "donnees.bin";
-    _donneesSatellites = "";
+    _donneesSatellites.clear();
 
     /* Corps de la methode */
     QFile fi(fic);
+    const QFileInfo ff(fi.fileName());
 
-    if (fi.exists() && (fi.size() != 0)) {
-
-        if (fi.open(QIODevice::ReadOnly)) {
-            const QByteArray donneesCompressees = fi.readAll();
-            _donneesSatellites = QString(qUncompress(donneesCompressees));
-        }
-        fi.close();
-
-        qInfo() << "Lecture fichier donnees.bin OK";
-
-    } else {
-        qCritical() << "Lecture fichier donnees.bin KO";
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
+    if (!fi.exists() || (fi.size() == 0)) {
+        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
+                                MessageType::ERREUR);
     }
+
+    if (fi.open(QIODevice::ReadOnly)) {
+        const QByteArray donneesCompressees = fi.readAll();
+        _donneesSatellites = QString(qUncompress(donneesCompressees));
+    }
+    fi.close();
+
+    if (_donneesSatellites.isEmpty()) {
+        qCritical() <<  QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+    }
+
+    qInfo() << "Lecture fichier donnees.bin OK";
 
     _lgRec = static_cast<int> ((_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n'));
 
@@ -641,15 +658,16 @@ void Configuration::VerificationArborescences()
         foreach(const QString dirDat, listeDirDat) {
             const QDir dir(dirDat);
             if (!dir.exists()) {
-                const QString message = QObject::tr("Erreur rencontrée lors de l'initialisation :\n" \
-                                                    "Le répertoire %1 n'existe pas, veuillez réinstaller %2");
-
-                qCritical() << QString("Le répertoire %1 n'existe pas").arg(dirDat);
-                throw PreviSatException(message.arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME), MessageType::ERREUR);
+                qCritical() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
+                               .arg(APP_NAME);
+                throw PreviSatException(
+                            QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
+                            .arg(APP_NAME), MessageType::ERREUR);
             }
         }
 
-        const QStringList listeDir(QStringList () << _dirCfg << _dirElem << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon << _dirTmp);
+        const QStringList listeDir(QStringList () << _dirCfg << _dirElem << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon
+                                   << _dirTmp);
         foreach(const QString dir, listeDir) {
             const QDir direc = QDir(dir);
             if (!direc.exists()) {
@@ -669,8 +687,9 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.bin" << "ISS.OEM_J2K_EPH.xml" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html"
-                           << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
+        _listeFicLocalData << "donnees.bin" << "ISS.OEM_J2K_EPH.xml" << repHtm + "chaines.chnl" << repHtm + "meteo.map"
+                           << repHtm + "meteoNASA.html" << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut"
+                           << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
@@ -696,23 +715,20 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
     while (it.hasNext()) {
 
         const QFile fi(dirData + QDir::separator() + it.next());
+        const QFileInfo ff(fi.fileName());
 
         // Le fichier n'existe pas
         if (!fi.exists()) {
-            const QString message = QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2");
-            const QFileInfo ff(fi.fileName());
-
-            qCritical() << QString("Le fichier %1 n'existe pas").arg(ff.fileName());
-            throw PreviSatException(message.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2")
+                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
-            const QString message = QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2");
-            const QFileInfo ff(fi.fileName());
-
-            qCritical() << QString("Le fichier %1 est vide").arg(ff.fileName());
-            throw PreviSatException(message.arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+            throw PreviSatException(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2")
+                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
 

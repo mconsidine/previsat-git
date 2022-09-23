@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2022
+ * >    21 septembre 2022
  *
  */
 
@@ -68,12 +68,12 @@ public:
     Configuration& operator = (const Configuration &) = delete;
 
     /**
-     * @brief DefinitionDirLog Definition du repertoire dirLog
+     * @brief Chargement Chargement de la configuration generale
      */
-    void DefinitionDirLog();
+    void Chargement();
 
     /**
-     * @brief Initialisation Initialisation de la configuration generale
+     * @brief Initialisation Definitions preliminaires pour le logiciel
      */
     void Initialisation();
 

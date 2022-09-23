@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    21 septembre 2022
  *
  */
 
@@ -114,7 +114,7 @@ private:
      * @param hauteur hauteur du satellite
      * @return correction de magnitude correspondant a l'extinction atmospherique
      */
-    double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur);
+    double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const;
 
 };
 
