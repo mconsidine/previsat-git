@@ -49,7 +49,7 @@ TARGET = PreviSat
 TEMPLATE = app
 
 !equals(QT_MAJOR_VERSION, 6) {
-    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.3.2 in preference")
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.4.0 in preference")
 }
 
 QT += concurrent multimedia printsupport widgets xml
@@ -69,14 +69,14 @@ APP_NAME_STR    = '\\"$${TARGET}\\"'
 ORG_NAME_STR    = '\\"$${ORGANIZATION}\\"'
 DOMAIN_NAME_STR = '\\"$${DOMAIN}\\"'
 
-DEFINES += APPVERSION=\"$${VERSION_STR}\" \
-    APPVER_MAJ=\"$${VER_MAJ_STR}\"        \
-    APP_ANNEES_DEV=\"$${ANNEES_DEV_STR}\" \
-    APP_NAME=\"$${APP_NAME_STR}\"         \
-    ORG_NAME=\"$${ORG_NAME_STR}\"         \
-    DOMAIN_NAME=\"$${DOMAIN_NAME_STR}\"   \
-    BUILD_TEST=$$BUILD_TEST               \
-    QT_DEPRECATED_WARNINGS                \
+DEFINES += APP_VERSION=\"$${VERSION_STR}\" \
+    APP_VER_MAJ=\"$${VER_MAJ_STR}\"        \
+    APP_ANNEES_DEV=\"$${ANNEES_DEV_STR}\"  \
+    APP_NAME=\"$${APP_NAME_STR}\"          \
+    ORG_NAME=\"$${ORG_NAME_STR}\"          \
+    DOMAIN_NAME=\"$${DOMAIN_NAME_STR}\"    \
+    BUILD_TEST=$$BUILD_TEST                \
+    QT_DEPRECATED_WARNINGS                 \
     QT_MESSAGELOGCONTEXT
 
 INCLUDEPATH += src

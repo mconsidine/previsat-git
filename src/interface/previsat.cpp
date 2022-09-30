@@ -253,10 +253,10 @@ void PreviSat::Initialisation()
     try {
 
         // Affichage des informations generales dans le fichier de log
-        qInfo() << QString("%1 %2").arg(APP_NAME).arg(QString(APPVERSION));
+        qInfo() << QString("%1 %2").arg(APP_NAME).arg(QString(APP_VERSION));
         qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
 
-        setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(APPVER_MAJ));
+        setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(APP_VER_MAJ));
 
         ChargementTraduction(Configuration::instance()->locale());
 

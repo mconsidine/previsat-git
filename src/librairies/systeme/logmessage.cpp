@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    18 aout 2022
+ * >    30 septembre 2022
  *
  */
 
@@ -66,6 +66,28 @@ LogMessage::LogMessage(const QString &fichier)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    // Gestion du fichier de log en cas d'erreur lors de la precedente execution
+    QFile fi(fichier);
+    if (fi.exists() && (fi.size() != 0)) {
+
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            const QString contenu = fi.readAll();
+            fi.close();
+
+            QString dest = fichier;
+            dest = dest.replace(".log", "-prev.log");
+
+            if (contenu.contains("ERREUR")) {
+                fi.rename(dest);
+            } else {
+                QFile fi2(dest);
+                if (fi2.exists()) {
+                    fi2.remove();
+                }
+            }
+        }
+    }
 
     /* Corps du constructeur */
     _fichierLog.reset(new QFile(fichier));
