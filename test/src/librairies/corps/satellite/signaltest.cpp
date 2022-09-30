@@ -60,7 +60,7 @@ void SignalTest::testCalcul()
     Signal signal;
     signal.Calcul(2.857, 12053.);
 
-    QCOMPARE(signal.attenuation(), 154.0719031312268);
+    QCOMPARE(signal.attenuation(), 154.0696863531102);
     QCOMPARE(signal.delai(), 40.20448039423327);
     QCOMPARE(signal.doppler(), -952.9926199811205);
 }
