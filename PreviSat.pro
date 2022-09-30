@@ -75,8 +75,9 @@ DEFINES += APPVERSION=\"$${VERSION_STR}\" \
     APP_NAME=\"$${APP_NAME_STR}\"         \
     ORG_NAME=\"$${ORG_NAME_STR}\"         \
     DOMAIN_NAME=\"$${DOMAIN_NAME_STR}\"   \
+    BUILD_TEST=$$BUILD_TEST               \
     QT_DEPRECATED_WARNINGS                \
-    BUILD_TEST=$$BUILD_TEST
+    QT_MESSAGELOGCONTEXT
 
 INCLUDEPATH += src
 

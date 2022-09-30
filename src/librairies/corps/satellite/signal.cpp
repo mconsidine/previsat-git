@@ -30,14 +30,14 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    22 septembre 2022
  *
  */
 
 #include <cmath>
 #include "librairies/corps/systemesolaire/soleilconst.h"
+#include "librairies/maths/mathsconst.h"
 #include "signal.h"
-
 
 
 /**********
@@ -57,9 +57,9 @@ Signal::Signal()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _attenuation = -999999.;
-    _delai = -999999.;
-    _doppler = -999999.;
+    _attenuation = 0.;
+    _delai = 0.;
+    _doppler = 0.;
 
     /* Retour */
     return;
@@ -72,21 +72,23 @@ Signal::Signal()
 /*
  * Calcul des elements du signal
  */
-void Signal::Calcul(const double rangeRate, const double distance)
+void Signal::Calcul(const double rangeRate, const double distance, const double frequence)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
+    // Delai en secondes
+    const double delai = distance / VITESSE_LUMIERE;
 
     /* Corps de la methode */
-    // Decalage Doppler a 100 MHz
-    _doppler = -100.e6 * rangeRate / VITESSE_LUMIERE;
+    // Decalage Doppler (Hz)
+    _doppler = -frequence * rangeRate / VITESSE_LUMIERE;
 
-    // Attenuation (free-space path loss) a 100 MHz
-    _attenuation = 72.45 + 20. * log10(distance);
+    // Attenuation (free-space path loss) avec la formule exacte, en dB
+    _attenuation = 20. * log10(4. * PI * delai * frequence);
 
     // Delai du signal en millisecondes (dans le vide)
-    _delai = 1000. * distance / VITESSE_LUMIERE;
+    _delai = 1000. * delai;
 
     /* Retour */
     return;
