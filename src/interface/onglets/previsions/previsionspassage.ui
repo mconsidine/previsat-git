@@ -94,13 +94,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QListWidget" name="liste2">
+  <widget class="QListWidget" name="listePrevisions">
    <property name="geometry">
     <rect>
      <x>566</x>
-     <y>26</y>
+     <y>43</y>
      <width>210</width>
-     <height>181</height>
+     <height>164</height>
     </rect>
    </property>
    <property name="font">
@@ -700,6 +700,25 @@
    </property>
    <property name="text">
     <string>Paramétrage par défaut</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="filtreSatellites">
+   <property name="geometry">
+    <rect>
+     <x>566</x>
+     <y>20</y>
+     <width>210</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="inputMask">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string notr="true"/>
+   </property>
+   <property name="placeholderText">
+    <string>Filtre</string>
    </property>
   </widget>
  </widget>
