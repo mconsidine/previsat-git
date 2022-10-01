@@ -66,13 +66,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QListWidget" name="liste4">
+  <widget class="QListWidget" name="listeTelescope">
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>7</y>
+     <y>23</y>
      <width>210</width>
-     <height>200</height>
+     <height>184</height>
     </rect>
    </property>
    <property name="font">
@@ -699,11 +699,31 @@
    <zorder>leverSatSuivi2</zorder>
    <zorder>frameSatSuivi</zorder>
   </widget>
+  <widget class="QLineEdit" name="filtreSatellites">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>0</y>
+     <width>210</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="inputMask">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string notr="true"/>
+   </property>
+   <property name="placeholderText">
+    <string>Filtre</string>
+   </property>
+  </widget>
   <zorder>formLayoutWidget_55</zorder>
-  <zorder>liste4</zorder>
+  <zorder>listeTelescope</zorder>
   <zorder>skywatcher</zorder>
   <zorder>frameSatSelectionne</zorder>
   <zorder>parametrageDefautSuivi</zorder>
+  <zorder>filtreSatellites</zorder>
  </widget>
  <resources>
   <include location="../../../../resources.qrc"/>
