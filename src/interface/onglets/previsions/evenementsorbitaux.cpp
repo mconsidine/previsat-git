@@ -37,10 +37,10 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
+#include "ui_evenementsorbitaux.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "evenementsorbitaux.h"
-#include "ui_evenementsorbitaux.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
