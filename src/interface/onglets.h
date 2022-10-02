@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -287,6 +287,10 @@ private:
     QQueue<QUrl> _listeFichiersTelechargement;
     QElapsedTimer _tempsEcoule;
 
+    QTimer *_chronometreUdp;
+    QUdpSocket *_udpSocket;
+    QString _structureMessageUdp;
+
 
     /*
      * Methodes privees
@@ -310,6 +314,11 @@ private:
      * @brief AffichageElementsOSculateurs Affichage des elements osculateurs du satellite par defaut
      */
     void AffichageElementsOSculateurs() const;
+
+    /**
+     * @brief AffichageFrequencesRadio Affichage des frequences radio dans les listes deroulantes
+     */
+    void AffichageFrequencesRadio() const;
 
     /**
      * @brief AffichageGroupesTLE Affichage des groupes de TLE
@@ -351,6 +360,11 @@ private:
      * @brief CalculAgeTLETransitISS Calcul de l'age des TLE de l'ISS pour transits ISS
      */
     void CalculAgeTLETransitISS();
+
+    /**
+     * @brief CalculFrequencesRadio Calcul des donnees de frequence et affichage des valeurs
+     */
+    void CalculFrequencesRadio() const;
 
 #if defined (Q_OS_WIN)
     /**
@@ -438,6 +452,11 @@ private:
 
 
 private slots:
+
+    void EnvoiUdp();
+
+    void ReceptionUdp();
+
 
     /******************
      * Telechargement *
@@ -595,6 +614,11 @@ private slots:
     void on_parametrageDefautSuivi_clicked();
 #endif
 
+    // Antenne radio
+    void on_connexion_clicked();
+    void on_ouvrirCatRotator_clicked();
+    void on_parametrageDefautRadio_clicked();
+
     // Calcul des evenements orbitaux
     void on_calculsEvt_clicked();
     void on_parametrageDefautEvt_clicked();
@@ -665,6 +689,8 @@ private slots:
     void on_preferences_currentIndexChanged(int index);
     void on_enregistrerPref_clicked();
 
+    void on_frequenceMontante_currentIndexChanged(int index);
+    void on_frequenceDescendante_currentIndexChanged(int index);
 };
 
 #endif // ONGLETS_H

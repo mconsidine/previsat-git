@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    5 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -41,6 +41,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QLocale>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QXmlStreamWriter>
@@ -348,6 +349,11 @@ QStringList Configuration::listeChainesNasa() const
     return _listeChainesNasa;
 }
 
+const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const
+{
+    return _mapFrequencesRadio;
+}
+
 bool &Configuration::issLive()
 {
     return _issLive;
@@ -531,6 +537,9 @@ void Configuration::Initialisation()
 
         // Lecture du fichier des chaines NASA
         LectureChainesNasa();
+
+        // Lecture des frequences radio des satellites
+        LectureFrequencesRadio();
 
         // Cartes du monde
         InitFicMap();
@@ -1358,6 +1367,102 @@ void Configuration::LectureDonneesSatellites()
     }
 
     _lgRec = (_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n');
+
+    /* Retour */
+    return;
+}
+
+void Configuration::LectureFrequencesRadio()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _mapFrequencesRadio.clear();
+    const QString nomficXml = "radio.xml";
+
+    /* Corps de la methode */
+    QFile fi1(_dirLocalData + QDir::separator() + nomficXml);
+
+    if (fi1.exists() && (fi1.size() != 0)) {
+
+        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            QXmlStreamReader cfg(&fi1);
+
+            cfg.readNextStartElement();
+            if (cfg.name() == "PreviSatRadio") {
+
+                QString norad;
+                FrequenceRadio frequences;
+                QList<FrequenceRadio> listeFrequences;
+
+                while (cfg.readNextStartElement()) {
+
+                    if (cfg.name() == "Satellite") {
+
+                        listeFrequences.clear();
+
+                        while (cfg.readNextStartElement()) {
+
+                            if (cfg.name() == "Norad") {
+                                norad = cfg.readElementText();
+
+                            } else if (cfg.name() == "Nom") {
+                                frequences.nom = cfg.readElementText();
+
+                            } else if (cfg.name() == "Frequences") {
+
+                                frequences.frequenceDescendante.clear();
+                                frequences.frequenceMontante.clear();
+                                frequences.balise = "";
+                                frequences.mode = "";
+                                frequences.signeAppel = "";
+
+                                while (cfg.readNextStartElement()) {
+
+                                    if (cfg.name() == "FrequenceMontante") {
+                                        frequences.frequenceMontante =
+                                                cfg.readElementText().remove("*").split(QRegularExpression("[-/]"), QString::SkipEmptyParts);
+
+                                    } else if (cfg.name() == "FrequenceDescendante") {
+                                        frequences.frequenceDescendante =
+                                                cfg.readElementText().remove("*").split(QRegularExpression("[-/]"), QString::SkipEmptyParts);
+
+                                    } else if (cfg.name() == "Balise") {
+                                        frequences.balise = cfg.readElementText();
+
+                                    } else if (cfg.name() == "Mode") {
+                                        frequences.mode = cfg.readElementText();
+
+                                    } else if (cfg.name() == "SignalAppel") {
+                                        frequences.signeAppel = cfg.readElementText();
+
+                                    } else {
+                                        cfg.skipCurrentElement();
+                                    }
+                                }
+
+                                if (!frequences.nom.isEmpty()) {
+                                    listeFrequences.append(frequences);
+                                }
+                            }
+                        }
+
+                        if (!listeFrequences.isEmpty()) {
+                            _mapFrequencesRadio.insert(norad, listeFrequences);
+                        }
+                    } else {
+                        cfg.skipCurrentElement();
+                    }
+                }
+            }
+        }
+
+        fi1.close();
+    }
+
+    // Verifications
+
 
     /* Retour */
     return;

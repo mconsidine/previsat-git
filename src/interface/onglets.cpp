@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -124,6 +124,16 @@ Onglets::Onglets(QWidget *parent) :
     _ui->siteLancementDonneesSat->installEventFilter(this);
 
     _date = nullptr;
+    _chronometreUdp = nullptr;
+    _udpSocket = nullptr;
+    _structureMessageUdp = "<PREVISAT>" \
+                           "<SAT>%1</SAT>" \
+                           "<AOS>%2</AOS>" \
+                           "<AZIMUTH>%3</AZIMUTH>" \
+                           "<ELEVATION>%4</ELEVATION>" \
+                           "<SPEED>%5</SPEED>" \
+                           "</PREVISAT>";
+
 
     _info = true;
     _uniteVitesse = false;
@@ -165,6 +175,16 @@ Onglets::~Onglets()
         afficherResultats = nullptr;
     }
 
+    if (_chronometreUdp != nullptr) {
+        delete _chronometreUdp;
+        _chronometreUdp = nullptr;
+    }
+
+    if (_udpSocket != nullptr) {
+        delete _udpSocket;
+        _udpSocket = nullptr;
+    }
+
     delete _ui;
 }
 
@@ -204,6 +224,7 @@ void Onglets::setAcalcDN(bool acalcDN)
 void Onglets::setInfo(bool info)
 {
     _info = info;
+    _ui->frameFrequences->setVisible(false);
 }
 
 void Onglets::setDirDwn(const QString &dirDwn)
@@ -276,8 +297,11 @@ void Onglets::show(const Date &date)
         // Affichage des informations sur le satellite
         if (_info) {
             AffichageInformationsSatellite();
+            AffichageFrequencesRadio();
             _info = false;
         }
+
+        CalculFrequencesRadio();
     }
 
 #if defined (Q_OS_WIN)
@@ -825,6 +849,56 @@ void Onglets::AffichageElementsOSculateurs() const
     return;
 }
 
+void Onglets::AffichageFrequencesRadio() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool etat1 = _ui->frequenceMontante->blockSignals(true);
+    const bool etat2 = _ui->frequenceDescendante->blockSignals(true);
+
+    _ui->frequenceMontante->clear();
+    _ui->frequenceDescendante->clear();
+    const QString norad = Configuration::instance()->listeSatellites().at(0).tle().norad();
+    _ui->frameFrequences->setVisible(false);
+
+    /* Corps de la methode */
+    if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
+
+        _ui->frameFrequences->setVisible(true);
+
+        // Recuperation des frequences
+        const QList<FrequenceRadio> listeFrequences = Configuration::instance()->mapFrequencesRadio()[norad];
+        QListIterator<FrequenceRadio> it(listeFrequences);
+        while (it.hasNext()) {
+
+            const FrequenceRadio frequences = it.next();
+
+            for(const QString &freq : frequences.frequenceMontante) {
+                _ui->frequenceMontante->addItem(freq + " MHz");
+            }
+
+            for(const QString &freq : frequences.frequenceDescendante) {
+                _ui->frequenceDescendante->addItem(freq + " MHz");
+            }
+        }
+
+        if (_ui->frequenceMontante->count() == 0) {
+            _ui->frequenceMontante->addItem("-");
+        }
+
+        if (_ui->frequenceDescendante->count() == 0) {
+            _ui->frequenceDescendante->addItem("-");
+        }
+    }
+
+    _ui->frequenceMontante->blockSignals(etat1);
+    _ui->frequenceDescendante->blockSignals(etat2);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des groupes de TLE
  */
@@ -1366,6 +1440,64 @@ void Onglets::CalculAgeTLETransitISS()
     } else {
         _ui->ageTLETransit->setVisible(false);
         _ui->lbl_ageTLETransit->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::CalculFrequencesRadio() const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString norad = Configuration::instance()->listeSatellites().first().tle().norad();
+
+    /* Corps de la methode */
+    if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
+
+        Signal signal;
+        FrequenceRadio frequencesMontant;
+        FrequenceRadio frequencesDescendant;
+        const int indexMontant = _ui->frequenceMontante->currentIndex();
+        const int indexDescendant = _ui->frequenceDescendante->currentIndex();
+
+        if (indexMontant >= 0) {
+            frequencesMontant = Configuration::instance()->mapFrequencesRadio()[norad].at(indexMontant);
+        }
+
+        if (indexDescendant >= 0) {
+            frequencesDescendant = Configuration::instance()->mapFrequencesRadio()[norad].at(indexDescendant);
+        }
+
+        // Frequences en Hertz
+        const double frequenceMontante = (_ui->frequenceMontante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
+        const double frequenceDescendante =
+                (_ui->frequenceDescendante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
+        const double rangeRate = Configuration::instance()->listeSatellites().first().rangeRate();
+        const double distance = Configuration::instance()->listeSatellites().first().distance();
+
+        // Donnees sur le signal montant
+        signal.Calcul(rangeRate, distance, frequenceMontante);
+        const bool aff1 = (fabs(frequenceMontante) > 0.);
+        _ui->dopplerMontant->setText((aff1) ? QString("%1 Hz").arg(-signal.doppler(), 0, 'f', 0) : "-");
+        _ui->frequenceMontanteReelle->setText((aff1) ? QString("%1 MHz").arg((frequenceMontante - signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
+        _ui->attenuationMontant->setText((aff1) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
+        _ui->delaiMontant->setText((aff1) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
+        _ui->baliseMontant->setText((frequencesMontant.balise.isEmpty()) ? "-" : frequencesMontant.balise);
+        _ui->modeMontant->setText((frequencesMontant.mode.isEmpty()) ? "-" : frequencesMontant.mode);
+        _ui->signalAppelMontant->setText((frequencesMontant.signeAppel.isEmpty()) ? "-" : frequencesMontant.signeAppel);
+
+        // Donnees sur le signal descendant
+        signal.Calcul(rangeRate, distance, frequenceDescendante);
+        const bool aff2 = (fabs(frequenceDescendante) > 0.);
+        _ui->dopplerDescendant->setText((aff2) ? QString("%1 Hz").arg(signal.doppler(), 0, 'f', 0) : "-");
+        _ui->frequenceDescendanteReelle->setText((aff2) ? QString("%1 MHz").arg((frequenceDescendante + signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
+        _ui->attenuationDescendant->setText((aff2) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
+        _ui->delaiDescendant->setText((aff2) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
+        _ui->baliseDescendant->setText((frequencesDescendant.balise.isEmpty()) ? "-" : frequencesDescendant.balise);
+        _ui->modeDescendant->setText((frequencesDescendant.mode.isEmpty()) ? "-" : frequencesDescendant.mode);
+        _ui->signalAppelDescendant->setText((frequencesDescendant.signeAppel.isEmpty()) ? "-" : frequencesDescendant.signeAppel);
     }
 
     /* Retour */
@@ -2196,7 +2328,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
                 chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
                 flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+        #if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
                         .arg(_ui->lbl_beta->text()).trimmed() << endl;
 #else
@@ -2206,7 +2338,7 @@ void Onglets::SauveOngletGeneral(const QString &fic) const
 
                 chaine = tr("Variation distance : %1  \t%2", "Range rate");
                 flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+        #if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text()).trimmed() + " " + _ui->lbl_azimut->text()
                      << endl << endl << endl;
 #else
@@ -2815,6 +2947,17 @@ void Onglets::InitAffichageDemarrage()
     _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
 #endif
 
+    const QHostAddress adresse(QHostAddress::LocalHost);
+    const QString ipRange = "(([ 0]+)|([ 0]*[0-9] *)|([0-9][0-9] )|([ 0][0-9][0-9])|(1[0-9][0-9])|([2][0-4][0-9])|(25[0-5]))";
+    const QRegExpValidator *valAdresseUdp = new QRegExpValidator(QRegExp("^" + ipRange
+                                                                         + "\\." + ipRange
+                                                                         + "\\." + ipRange
+                                                                         + "\\." + ipRange + "$"));
+    _ui->adresse->setValidator(valAdresseUdp);
+    _ui->adresse->setText(adresse.toString());
+    _ui->frameFrequences->setVisible(false);
+    _ui->donneesTransmises->setVisible(false);
+
     _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
     _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
     _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
@@ -3208,6 +3351,42 @@ void Onglets::ReactualiserAffichage()
 
     /* Retour */
     return;
+}
+
+void Onglets::EnvoiUdp()
+{
+    /* Declarations des variables locales */
+    QByteArray donnees;
+
+    /* Initialisations */
+    const QHostAddress adresse(_ui->adresse->text());
+    const quint16 port = static_cast<quint16> (_ui->port->value());
+    const Satellite &sat = Configuration::instance()->listeSatellites().at(0);
+
+    /* Corps de la methode */
+    donnees.append(_structureMessageUdp.arg(sat.tle().nom())
+                   .arg((sat.isVisible()) ? 1 : 0)
+                   .arg(arrondi(sat.azimut() * RAD2DEG, 0))
+                   .arg(arrondi(sat.hauteur() * RAD2DEG, 0))
+                   .arg(sat.rangeRate() * 1.e3, 0, 'f', 1));
+
+    const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
+    _ui->donneesTransmises->setVisible(taille != -1);
+
+    _ui->nomsatRadio->setText(_ui->nomsat1->text());
+    _ui->hauteurSatRadio->setText(_ui->hauteurSat->text());
+    _ui->azimutSatRadio->setText(_ui->azimutSat->text());
+    _ui->rangeRateRadio->setText(_ui->rangeRate->text());
+
+    /* Retour */
+    return;
+}
+
+void Onglets::ReceptionUdp()
+{
+    _ui->connexion->setText(tr("Déconnecter"));
+    _ui->adresse->setReadOnly(true);
+    _ui->port->setReadOnly(true);
 }
 
 /*
@@ -6323,8 +6502,7 @@ void Onglets::on_ouvrirSatelliteTracker_clicked()
     if (exeSatelliteTracker.isEmpty() || !fi.exists()) {
 
         settings.setValue("fichier/satelliteTracker", "");
-        QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"),
-                                                       "Satellite Tracker.exe",
+        QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"), "Satellite Tracker.exe",
                                                        tr("Fichiers exécutables (*.exe)"));
 
         if (!fichier.isEmpty()) {
@@ -6375,6 +6553,108 @@ void Onglets::on_parametrageDefautSuivi_clicked()
     _ui->demarrerSuiviTelescope->setChecked(false);
 }
 #endif
+
+/*
+ * Antenne radio
+ */
+void Onglets::on_connexion_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        const QHostAddress adresse(_ui->adresse->text());
+        const quint16 port = static_cast<quint16> (_ui->port->value());
+
+        if (_udpSocket == nullptr) {
+
+            _udpSocket = new QUdpSocket(this);
+            connect(_udpSocket, SIGNAL(readyRead()), this, SLOT(ReceptionUdp()));
+
+            _udpSocket->connectToHost(adresse, port, QIODevice::WriteOnly);
+
+            if(_udpSocket->state() == QAbstractSocket::ConnectedState) {
+
+                _ui->connexion->setText(tr("Connexion en cours..."));
+
+                if (_chronometreUdp == nullptr) {
+                    _chronometreUdp = new QTimer(this);
+                    _chronometreUdp->setInterval(1000);
+                    _chronometreUdp->setTimerType(Qt::PreciseTimer);
+                    connect(_chronometreUdp, SIGNAL(timeout()), this, SLOT(EnvoiUdp()));
+                    _chronometreUdp->start();
+                }
+            }
+        } else {
+
+            _ui->connexion->setText(tr("Connecter"));
+            _ui->adresse->setReadOnly(false);
+            _ui->port->setReadOnly(false);
+
+            disconnect(_udpSocket, SIGNAL(readyRead()), this, SLOT(ReceptionUdp()));
+            disconnect(_chronometreUdp, SIGNAL(timeout()), this, SLOT(EnvoiUdp()));
+            _ui->donneesTransmises->setVisible(false);
+
+            delete _udpSocket;
+            _udpSocket = nullptr;
+
+            delete _chronometreUdp;
+            _chronometreUdp = nullptr;
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_ouvrirCatRotator_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString exeCatRotator = settings.value("fichier/catRotator", "").toString();
+    const QFileInfo fi(exeCatRotator);
+
+    /* Corps de la methode */
+    if (exeCatRotator.isEmpty() || !fi.exists()) {
+
+        settings.setValue("fichier/catRotator", "");
+        QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir CatRotator"), "CatRotator.exe", tr("Fichiers exécutables (*.exe)"));
+
+        if (!fichier.isEmpty()) {
+            fichier = QDir::toNativeSeparators(fichier);
+            settings.setValue("fichier/catRotator", fichier);
+            exeCatRotator = fichier;
+        }
+    }
+
+    if (!exeCatRotator.isEmpty()) {
+
+        QProcess proc;
+        QFileInfo fi2(exeCatRotator);
+        proc.setProgram(exeCatRotator);
+        proc.setWorkingDirectory(fi2.absoluteDir().absolutePath());
+        proc.startDetached();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Onglets::on_parametrageDefautRadio_clicked()
+{
+    if (!_ui->adresse->isReadOnly()) {
+        const QHostAddress adresse(QHostAddress::LocalHost);
+        _ui->adresse->setText(adresse.toString());
+        _ui->port->setValue(12000);
+    }
+}
+
 
 /*
  * Calcul des evenements orbitaux
@@ -7456,4 +7736,16 @@ void Onglets::on_enregistrerPref_clicked()
     if (_ui->preferences->currentIndex() < (_ui->preferences->count() - 2)) {
         SauvePreferences(Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex()));
     }
+}
+
+void Onglets::on_frequenceMontante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    CalculFrequencesRadio();
+}
+
+void Onglets::on_frequenceDescendante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    CalculFrequencesRadio();
 }

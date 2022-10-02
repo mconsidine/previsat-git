@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >
+ * >    27 septembre 2022
  *
  */
 
@@ -56,6 +56,19 @@ public:
      */
     Signal();
 
+
+    /*
+     * Methodes publiques
+     */
+    /**
+     * @brief Calcul Calcul des elements du signal
+     * @param rangeRate taux de variation de la distance au satellite (km/s)
+     * @param distance distance au satellite (km)
+     * @param frequence frequence (Hz). Par defaut 100 MHz
+     */
+    void Calcul(const double rangeRate, const double distance, const double frequence = 100.e6);
+
+
     /*
      * Accesseurs
      */
@@ -63,30 +76,8 @@ public:
     double delai() const;
     double doppler() const;
 
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
-
-    /*
-     * Methodes publiques
-     */
-    /**
-     * @brief Calcul Calcul des elements du signal
-     * @param rangeRate taux de variation de la distance au satellite
-     * @param distance distance au satellite
-     */
-    void Calcul(const double rangeRate, const double distance);
-
 
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -98,10 +89,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

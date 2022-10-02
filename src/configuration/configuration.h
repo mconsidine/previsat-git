@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 juillet 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -85,6 +85,15 @@ struct CategorieTLE {
     QMap<QString, QString> nom;
     QString site;
     QStringList fichiers;
+};
+
+struct FrequenceRadio {
+    QString nom;
+    QStringList frequenceMontante;
+    QStringList frequenceDescendante;
+    QString balise;
+    QString mode;
+    QString signeAppel;
 };
 
 enum AdressesTelechargement {
@@ -194,6 +203,8 @@ public:
     QMap<AdressesTelechargement, QString> mapAdressesTelechargement() const;
 
     QStringList listeChainesNasa() const;
+
+    const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
 
     bool &issLive();
     bool &isCarteMonde();
@@ -428,6 +439,9 @@ private:
     // Liste des chaines de la NASA
     QStringList _listeChainesNasa;
 
+    // Frequences radio des satellites
+    QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;
+
     bool _issLive;
     bool _isCarteMonde;
     bool _isCarteMaximisee;
@@ -494,6 +508,8 @@ private:
      * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites
      */
     void LectureDonneesSatellites();
+
+    void LectureFrequencesRadio();
 
     /**
      * @brief LectureGestionnaireTLE Lecture du fichier de gestionnaire de TLE
