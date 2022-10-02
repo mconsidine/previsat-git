@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    23 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -437,14 +437,16 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
             noradDefaut = noradStationSpatiale;
         }
 
+        if (nomFichierEvenementsStationSpatiale.isEmpty()) {
+            nomFichierEvenementsStationSpatiale = "ISS.OEM_J2K_EPH.xml";
+        }
+
         if (mapSatellitesFichierElem.isEmpty()) {
             const QStringList elem(QStringList() << noradStationSpatiale << "20580");
             mapSatellitesFichierElem.insert(nomfic, elem);
         }
 
-        if (nomFichierEvenementsStationSpatiale.isEmpty()
-                || noradStationSpatiale.isEmpty()
-                || observateurs.isEmpty()) {
+        if (noradStationSpatiale.isEmpty() || observateurs.isEmpty()) {
 
             qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
             throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
