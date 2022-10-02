@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    30 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -47,6 +47,13 @@
 
 
 QScopedPointer<QFile> _fichierLog;
+static const QHash<QtMsgType, QString> typeMessage = {
+    { QtMsgType::QtInfoMsg,     "INFO   " },
+    { QtMsgType::QtDebugMsg,    "DEBUG  " },
+    { QtMsgType::QtWarningMsg,  "WARNING" },
+    { QtMsgType::QtCriticalMsg, "ERREUR " },
+    { QtMsgType::QtFatalMsg,    "ERREUR " }
+};
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
@@ -147,6 +154,9 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString nomFichier = QFileInfo(context.file).fileName();
+    const QString nomFonction = QString(context.function).section("(", -2, -2).section(" ", -1).section(":", -1);
+    QString message = msg;
 
     /* Corps de la methode */
     QTextStream out(_fichierLog.data());
@@ -154,35 +164,12 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     out << QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd hh:mm:ss.zzz : ");
 #endif
 
-    switch (type)
-    {
-    default:
-    case QtInfoMsg:
-        out << "INFO    ";
-        break;
-
-    case QtDebugMsg:
-        out << "DEBUG   ";
-        break;
-
-    case QtWarningMsg:
-        out << "WARNING ";
-        break;
-
-    case QtCriticalMsg:
-    case QtFatalMsg:
-        out << "ERREUR  ";
-        break;
+    out << typeMessage.value(type) << " : ";
+    if (!nomFichier.isEmpty()) {
+        const QString fic = QString("%1 (ligne %2)").arg(nomFichier).arg(context.line);
+        out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -40);
     }
-
-    const QString nomFichier = QFileInfo(context.file).fileName();
-    const QString nomFonction = (nomFichier.isEmpty()) ?
-                "" : QString(context.function).split(":", Qt::SkipEmptyParts).at(1).split("(", Qt::SkipEmptyParts).at(0);
-    QString message = msg;
-
-    out << ": " << ((nomFichier.isEmpty()) ?
-                        "" : QString("%1 : %2 : ").arg(nomFichier + " (ligne " + QString::number(context.line) + ")", -45).arg(nomFonction, -40))
-        << message.replace("\"", "") << Qt::endl;
+    out << message.replace("\"", "") << Qt::endl;
     out.flush();
 
     /* Retour */
