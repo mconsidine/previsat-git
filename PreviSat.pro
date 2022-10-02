@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    21 septembre 2022
+# >    2 octobre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -76,7 +76,7 @@ DEFINES += APP_VERSION=\"$${VERSION_STR}\" \
     ORG_NAME=\"$${ORG_NAME_STR}\"          \
     DOMAIN_NAME=\"$${DOMAIN_NAME_STR}\"    \
     BUILD_TEST=$$BUILD_TEST                \
-    QT_DEPRECATED_WARNINGS                 \
+    QT_DISABLE_DEPRECATED_BEFORE=0x060000  \
     QT_MESSAGELOGCONTEXT
 
 INCLUDEPATH += src

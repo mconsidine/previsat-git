@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    2 octobre 2022
  *
  */
 
@@ -196,43 +196,43 @@ void PreviSat::CreationRaccourcis()
     /* Corps de la methode */
     // Raccourci Onglet Previsions
     _previsions = new QAction(this);
-    _previsions->setShortcut(Qt::ALT + Qt::Key_P);
+    _previsions->setShortcut(Qt::ALT | Qt::Key_P);
     connect(_previsions, &QAction::triggered, this, &PreviSat::RaccourciPrevisions);
     this->addAction(_previsions);
 
     // Raccourci Onglet Flashs
     _flashs = new QAction(this);
-    _flashs->setShortcut(Qt::ALT + Qt::Key_F);
+    _flashs->setShortcut(Qt::ALT | Qt::Key_F);
     connect(_flashs, &QAction::triggered, this, &PreviSat::RaccourciFlashs);
     this->addAction(_flashs);
 
     // Raccourci Onglet Transits
     _transits = new QAction(this);
-    _transits->setShortcut(Qt::ALT + Qt::Key_T);
+    _transits->setShortcut(Qt::ALT | Qt::Key_T);
     connect(_transits, &QAction::triggered, this, &PreviSat::RaccourciTransits);
     this->addAction(_transits);
 
     // Raccourci Onglet Evenements
     _evenements = new QAction(this);
-    _evenements->setShortcut(Qt::ALT + Qt::Key_E);
+    _evenements->setShortcut(Qt::ALT | Qt::Key_E);
     connect(_evenements, &QAction::triggered, this, &PreviSat::RaccourciEvenements);
     this->addAction(_evenements);
 
     // Raccourci Onglet Informations satellite
     _informations = new QAction(this);
-    _informations->setShortcut(Qt::ALT + Qt::Key_S);
+    _informations->setShortcut(Qt::ALT | Qt::Key_S);
     connect(_informations, &QAction::triggered, this, &PreviSat::RaccourciInformations);
     this->addAction(_informations);
 
     // Raccourci Onglet Recherche satellite
     _recherche = new QAction(this);
-    _recherche->setShortcut(Qt::ALT + Qt::Key_R);
+    _recherche->setShortcut(Qt::ALT | Qt::Key_R);
     connect(_recherche, &QAction::triggered, this, &PreviSat::RaccourciRecherche);
     this->addAction(_recherche);
 
     // Raccourci Onglet Informations ISS
     _station = new QAction(this);
-    _station->setShortcut(Qt::ALT + Qt::Key_I);
+    _station->setShortcut(Qt::ALT | Qt::Key_I);
     connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
     this->addAction(_station);
 
