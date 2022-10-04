@@ -1179,6 +1179,7 @@ void GestionnaireXml::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version
                         if (msgbox.result() == QMessageBox::Yes) {
 
                             // Tentative de recuperation des lieux d'observation
+                            qInfo() << "Tentative de recuperation des lieux d'observation";
                             QXmlStreamReader cfg(&fi1);
                             cfg.readNextStartElement();
 
@@ -1189,6 +1190,10 @@ void GestionnaireXml::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version
                                 } else {
                                     cfg.skipCurrentElement();
                                 }
+                            }
+
+                            if (!_observateurs.isEmpty()) {
+                                qInfo() << "Recuperation de" << _observateurs.size() << "lieux d'observation";
                             }
                         }
                     }
