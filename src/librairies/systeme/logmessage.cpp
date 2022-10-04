@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    2 octobre 2022
+ * >    4 octobre 2022
  *
  */
 
@@ -47,6 +47,7 @@
 
 
 QScopedPointer<QFile> _fichierLog;
+
 static const QHash<QtMsgType, QString> typeMessage = {
     { QtMsgType::QtInfoMsg,     "INFO   " },
     { QtMsgType::QtDebugMsg,    "DEBUG  " },
@@ -103,10 +104,8 @@ LogMessage::LogMessage(const QString &fichier)
 
 #if (BUILD_TEST == false)
     QTextStream out(_fichierLog.data());
-    out << "       Date (UTC)       : Type    : Fichier                                       : Fonction                                 : Message"
-        << Qt::endl;
-    out << "-----------------------------------------------------------------------------------------------------------------------------"
-           "-------------------------------------" << Qt::endl;
+    out << QString("       Date (UTC)       : Type    : %1 : %2 : Message").arg("Fichier", -45).arg("Fonction", -40) << Qt::endl;
+    out << QString(162, '-') << Qt::endl;
     out.flush();
 #endif
 

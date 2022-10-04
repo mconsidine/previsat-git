@@ -460,7 +460,6 @@ void Configuration::DeterminationLocale()
 
     /* Corps de la methode */
     _locale = QLocale::system().name().section('_', 0, 0);
-    _locale = "en";
     _listeFicLang = di.entryList(filtres, QDir::Files).replaceInStrings(QString(APP_NAME) + "_", "").replaceInStrings(".qm", "");
 
     if (!_listeFicLang.contains("fr")) {
