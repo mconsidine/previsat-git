@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 septembre 2022
+ * >    5 octobre 2022
  *
  */
 
@@ -1962,7 +1962,6 @@ void PreviSat::GestionTempsReel()
 
     if (ui->modeManuel->isChecked()) {
 
-        _onglets->setInfo(true);
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
 

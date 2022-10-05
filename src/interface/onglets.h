@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    2 octobre 2022
+ * >    5 octobre 2022
  *
  */
 
@@ -618,6 +618,8 @@ private slots:
     void on_connexion_clicked();
     void on_ouvrirCatRotator_clicked();
     void on_parametrageDefautRadio_clicked();
+    void on_frequenceMontante_currentIndexChanged(int index);
+    void on_frequenceDescendante_currentIndexChanged(int index);
 
     // Calcul des evenements orbitaux
     void on_calculsEvt_clicked();
@@ -689,8 +691,6 @@ private slots:
     void on_preferences_currentIndexChanged(int index);
     void on_enregistrerPref_clicked();
 
-    void on_frequenceMontante_currentIndexChanged(int index);
-    void on_frequenceDescendante_currentIndexChanged(int index);
 };
 
 #endif // ONGLETS_H

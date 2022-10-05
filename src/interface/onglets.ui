@@ -823,7 +823,7 @@
          <x>177</x>
          <y>90</y>
          <width>382</width>
-         <height>34</height>
+         <height>28</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_AOS" rowstretch="1,0">
@@ -4616,7 +4616,7 @@
           <x>278</x>
           <y>63</y>
           <width>244</width>
-          <height>68</height>
+          <height>55</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_info2">

@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    2 octobre 2022
+ * >    5 octobre 2022
  *
  */
 
@@ -1474,14 +1474,16 @@ void Onglets::CalculFrequencesRadio() const
         const double frequenceMontante = (_ui->frequenceMontante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
         const double frequenceDescendante =
                 (_ui->frequenceDescendante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
-        const double rangeRate = Configuration::instance()->listeSatellites().first().rangeRate();
-        const double distance = Configuration::instance()->listeSatellites().first().distance();
+        const Satellite &sat = Configuration::instance()->listeSatellites().first();
+        const double rangeRate = sat.rangeRate();
+        const double distance = sat.distance();
 
         // Donnees sur le signal montant
         signal.Calcul(rangeRate, distance, frequenceMontante);
         const bool aff1 = (fabs(frequenceMontante) > 0.);
         _ui->dopplerMontant->setText((aff1) ? QString("%1 Hz").arg(-signal.doppler(), 0, 'f', 0) : "-");
         _ui->frequenceMontanteReelle->setText((aff1) ? QString("%1 MHz").arg((frequenceMontante - signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
+        _ui->frequenceMontanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.isVisible() && aff1) ? "bold" : "normal"));
         _ui->attenuationMontant->setText((aff1) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiMontant->setText((aff1) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
         _ui->baliseMontant->setText((frequencesMontant.balise.isEmpty()) ? "-" : frequencesMontant.balise);
@@ -1493,6 +1495,7 @@ void Onglets::CalculFrequencesRadio() const
         const bool aff2 = (fabs(frequenceDescendante) > 0.);
         _ui->dopplerDescendant->setText((aff2) ? QString("%1 Hz").arg(signal.doppler(), 0, 'f', 0) : "-");
         _ui->frequenceDescendanteReelle->setText((aff2) ? QString("%1 MHz").arg((frequenceDescendante + signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
+        _ui->frequenceDescendanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.isVisible() && aff2) ? "bold" : "normal"));
         _ui->attenuationDescendant->setText((aff2) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiDescendant->setText((aff2) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
         _ui->baliseDescendant->setText((frequencesDescendant.balise.isEmpty()) ? "-" : frequencesDescendant.balise);
@@ -3366,8 +3369,8 @@ void Onglets::EnvoiUdp()
     /* Corps de la methode */
     donnees.append(_structureMessageUdp.arg(sat.tle().nom())
                    .arg((sat.isVisible()) ? 1 : 0)
-                   .arg(arrondi(sat.azimut() * RAD2DEG, 0))
-                   .arg(arrondi(sat.hauteur() * RAD2DEG, 0))
+                   .arg(arrondi(sat.azimut() * RAD2DEG, 1))
+                   .arg(arrondi(sat.hauteur() * RAD2DEG, 1))
                    .arg(sat.rangeRate() * 1.e3, 0, 'f', 1));
 
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
@@ -6655,6 +6658,18 @@ void Onglets::on_parametrageDefautRadio_clicked()
     }
 }
 
+void Onglets::on_frequenceMontante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    CalculFrequencesRadio();
+}
+
+void Onglets::on_frequenceDescendante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    CalculFrequencesRadio();
+}
+
 
 /*
  * Calcul des evenements orbitaux
@@ -7736,16 +7751,4 @@ void Onglets::on_enregistrerPref_clicked()
     if (_ui->preferences->currentIndex() < (_ui->preferences->count() - 2)) {
         SauvePreferences(Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex()));
     }
-}
-
-void Onglets::on_frequenceMontante_currentIndexChanged(int index)
-{
-    Q_UNUSED(index)
-    CalculFrequencesRadio();
-}
-
-void Onglets::on_frequenceDescendante_currentIndexChanged(int index)
-{
-    Q_UNUSED(index)
-    CalculFrequencesRadio();
 }
