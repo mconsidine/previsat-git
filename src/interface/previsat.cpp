@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 octobre 2022
+ * >    8 octobre 2022
  *
  */
 
@@ -2984,6 +2984,9 @@ void PreviSat::on_modeManuel_toggled(bool checked)
 void PreviSat::on_pasReel_currentIndexChanged(int index)
 {
     ui->secondes->setText((index == 0) ? tr("seconde") : tr("secondes"));
+    if (_chronometre != nullptr) {
+        _chronometre->setInterval(ui->pasReel->currentText().toInt() * 1000);
+    }
 }
 
 void PreviSat::on_pasManuel_currentIndexChanged(int index)
