@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    2 octobre 2022
+ * >    8 octobre 2022
  *
  */
 
@@ -1421,12 +1421,10 @@ void Configuration::LectureFrequencesRadio()
                                 while (cfg.readNextStartElement()) {
 
                                     if (cfg.name() == "FrequenceMontante") {
-                                        frequences.frequenceMontante =
-                                                cfg.readElementText().remove("*").split(QRegularExpression("[-/]"), QString::SkipEmptyParts);
+                                        frequences.frequenceMontante.append(cfg.readElementText().remove("*"));
 
                                     } else if (cfg.name() == "FrequenceDescendante") {
-                                        frequences.frequenceDescendante =
-                                                cfg.readElementText().remove("*").split(QRegularExpression("[-/]"), QString::SkipEmptyParts);
+                                        frequences.frequenceDescendante.append(cfg.readElementText().remove("*"));
 
                                     } else if (cfg.name() == "Balise") {
                                         frequences.balise = cfg.readElementText();
@@ -1448,7 +1446,7 @@ void Configuration::LectureFrequencesRadio()
                             }
                         }
 
-                        if (!listeFrequences.isEmpty()) {
+                        if (!listeFrequences.isEmpty() && !_mapFrequencesRadio.contains(norad)) {
                             _mapFrequencesRadio.insert(norad, listeFrequences);
                         }
                     } else {

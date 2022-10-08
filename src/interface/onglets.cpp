@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 octobre 2022
+ * >    8 octobre 2022
  *
  */
 
@@ -1456,9 +1456,16 @@ void Onglets::CalculFrequencesRadio() const
     /* Corps de la methode */
     if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
 
+        double frequenceDescendante;
+        double frequenceMontante;
         Signal signal;
         FrequenceRadio frequencesMontant;
         FrequenceRadio frequencesDescendant;
+
+        const Satellite &sat = Configuration::instance()->listeSatellites().first();
+        const double rangeRate = sat.rangeRate();
+        const double distance = sat.distance();
+
         const int indexMontant = _ui->frequenceMontante->currentIndex();
         const int indexDescendant = _ui->frequenceDescendante->currentIndex();
 
@@ -1471,12 +1478,27 @@ void Onglets::CalculFrequencesRadio() const
         }
 
         // Frequences en Hertz
-        const double frequenceMontante = (_ui->frequenceMontante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
-        const double frequenceDescendante =
-                (_ui->frequenceDescendante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
-        const Satellite &sat = Configuration::instance()->listeSatellites().first();
-        const double rangeRate = sat.rangeRate();
-        const double distance = sat.distance();
+        const QString freqMontante = _ui->frequenceMontante->currentText();
+        if (freqMontante.contains("-")) {
+
+            // On prend la moyenne des 2 frequences
+            const QStringList freqs = freqMontante.split(" ", QString::SkipEmptyParts).first().split("-", QString::SkipEmptyParts);
+            frequenceMontante = (freqs.first().toDouble() + freqs.last().toDouble()) * 0.5e6;
+
+        } else {
+            frequenceMontante = (_ui->frequenceMontante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
+        }
+
+        const QString freqDescendante = _ui->frequenceDescendante->currentText();
+        if (freqDescendante.contains("-")) {
+
+            // On prend la moyenne des 2 frequences
+            const QStringList freqs = freqDescendante.split(" ", QString::SkipEmptyParts).first().split("-", QString::SkipEmptyParts);
+            frequenceDescendante = (freqs.first().toDouble() + freqs.last().toDouble()) * 0.5e6;
+
+        } else {
+            frequenceDescendante = (_ui->frequenceDescendante->currentText().split(" ", QString::SkipEmptyParts).first() + "0").toDouble() * 1.e6;
+        }
 
         // Donnees sur le signal montant
         signal.Calcul(rangeRate, distance, frequenceMontante);
