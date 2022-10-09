@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    8 octobre 2022
+ * >    9 octobre 2022
  *
  */
 
@@ -1451,7 +1451,8 @@ void Onglets::CalculFrequencesRadio() const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString norad = Configuration::instance()->listeSatellites().first().tle().norad();
+    const Satellite &sat = Configuration::instance()->listeSatellites().first();
+    const QString norad = sat.tle().norad();
 
     /* Corps de la methode */
     if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
@@ -1462,7 +1463,6 @@ void Onglets::CalculFrequencesRadio() const
         FrequenceRadio frequencesMontant;
         FrequenceRadio frequencesDescendant;
 
-        const Satellite &sat = Configuration::instance()->listeSatellites().first();
         const double rangeRate = sat.rangeRate();
         const double distance = sat.distance();
 
@@ -1523,6 +1523,22 @@ void Onglets::CalculFrequencesRadio() const
         _ui->baliseDescendant->setText((frequencesDescendant.balise.isEmpty()) ? "-" : frequencesDescendant.balise);
         _ui->modeDescendant->setText((frequencesDescendant.mode.isEmpty()) ? "-" : frequencesDescendant.mode);
         _ui->signalAppelDescendant->setText((frequencesDescendant.signeAppel.isEmpty()) ? "-" : frequencesDescendant.signeAppel);
+    }
+
+    // Nom du satellite
+    _ui->nomsatRadio->setText(_ui->nomsat1->text());
+
+    // Affichage du prochain AOS/LOS
+    if (_elementsAOS->aos) {
+
+        const QString delai = _ui->dateAOS->text().section(")", -2, -2).section("(", 1);
+        const QString chaine = tr("Prochain %1 %2").arg(_elementsAOS->typeAOS).arg(delai);
+        _ui->prochainAOS->setText(chaine);
+        _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
+        _ui->prochainAOS->setVisible(true);
+
+    } else {
+        _ui->prochainAOS->setVisible(false);
     }
 
     /* Retour */
@@ -3398,7 +3414,6 @@ void Onglets::EnvoiUdp()
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
     _ui->donneesTransmises->setVisible(taille != -1);
 
-    _ui->nomsatRadio->setText(_ui->nomsat1->text());
     _ui->hauteurSatRadio->setText(_ui->hauteurSat->text());
     _ui->azimutSatRadio->setText(_ui->azimutSat->text());
     _ui->rangeRateRadio->setText(_ui->rangeRate->text());
