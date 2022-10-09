@@ -8532,8 +8532,8 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
      <widget class="QGroupBox" name="donneesTransmises">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>80</y>
+        <x>570</x>
+        <y>70</y>
         <width>201</width>
         <height>101</height>
        </rect>
@@ -8833,7 +8833,7 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
        <rect>
         <x>0</x>
         <y>60</y>
-        <width>531</width>
+        <width>561</width>
         <height>171</height>
        </rect>
       </property>
@@ -8848,7 +8848,7 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>231</width>
+         <width>251</width>
          <height>150</height>
         </rect>
        </property>
@@ -8993,9 +8993,9 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
       <widget class="QWidget" name="formLayoutWidget_85">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>10</y>
-         <width>251</width>
+         <width>271</width>
          <height>162</height>
         </rect>
        </property>
