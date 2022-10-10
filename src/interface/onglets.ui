@@ -8547,7 +8547,7 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
          <x>10</x>
          <y>20</y>
          <width>176</width>
-         <height>52</height>
+         <height>74</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_topoSatRadio">
@@ -8576,6 +8576,22 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="hauteurSatRadio">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string notr="true">+0.0°</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_azimutSatRadio">
           <property name="font">
@@ -8589,6 +8605,22 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="azimutSatRadio">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string notr="true">0.0°</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_rangeRateSatRadio">
           <property name="font">
@@ -8599,38 +8631,6 @@ cliquer sur 'Mettre à jour manoeuvres de l'ISS'</string>
           </property>
           <property name="text">
            <string>Variation distance :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="hauteurSatRadio">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string notr="true">+00° 00' 00&quot;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="azimutSatRadio">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string notr="true">000° 00' 00&quot;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>

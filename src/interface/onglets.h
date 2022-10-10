@@ -453,8 +453,14 @@ private:
 
 private slots:
 
+    /**
+     * @brief EnvoiUdp Envoi du datagram UDP
+     */
     void EnvoiUdp();
 
+    /**
+     * @brief ReceptionUdp Reception du datagram UDP
+     */
     void ReceptionUdp();
 
 

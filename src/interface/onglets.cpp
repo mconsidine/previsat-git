@@ -3394,6 +3394,9 @@ void Onglets::ReactualiserAffichage()
     return;
 }
 
+/*
+ * Envoi du datagram UDP
+ */
 void Onglets::EnvoiUdp()
 {
     /* Declarations des variables locales */
@@ -3403,25 +3406,30 @@ void Onglets::EnvoiUdp()
     const QHostAddress adresse(_ui->adresse->text());
     const quint16 port = static_cast<quint16> (_ui->port->value());
     const Satellite &sat = Configuration::instance()->listeSatellites().at(0);
+    const QString azimut = QString("%1°").arg(sat.azimut() * RAD2DEG, 0, 'f', 1);
+    const QString hauteur = QString("%1°").arg(sat.hauteur() * RAD2DEG, 0, 'f', 1);
 
     /* Corps de la methode */
     donnees.append(_structureMessageUdp.arg(sat.tle().nom())
                    .arg((sat.isVisible()) ? 1 : 0)
-                   .arg(arrondi(sat.azimut() * RAD2DEG, 1))
-                   .arg(arrondi(sat.hauteur() * RAD2DEG, 1))
+                   .arg(azimut)
+                   .arg(hauteur)
                    .arg(sat.rangeRate() * 1.e3, 0, 'f', 1));
 
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
     _ui->donneesTransmises->setVisible(taille != -1);
 
-    _ui->hauteurSatRadio->setText(_ui->hauteurSat->text());
-    _ui->azimutSatRadio->setText(_ui->azimutSat->text());
+    _ui->hauteurSatRadio->setText(hauteur);
+    _ui->azimutSatRadio->setText(azimut);
     _ui->rangeRateRadio->setText(_ui->rangeRate->text());
 
     /* Retour */
     return;
 }
 
+/*
+ * Reception du datagram UDP
+ */
 void Onglets::ReceptionUdp()
 {
     _ui->connexion->setText(tr("Déconnecter"));
