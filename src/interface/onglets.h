@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 octobre 2022
+ * >    12 octobre 2022
  *
  */
 
@@ -134,6 +134,11 @@ public:
      */
     void CalculAosSatSuivi() const;
 #endif
+
+    /**
+     * @brief DeconnecterUdp Deconnecter le protocole UDP
+     */
+    void DeconnecterUdp();
 
     /**
      * @brief InitChargementOnglets Initialisation du chargement des onglets

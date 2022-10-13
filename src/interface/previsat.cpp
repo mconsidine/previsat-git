@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 octobre 2022
+ * >    12 octobre 2022
  *
  */
 
@@ -1313,6 +1313,7 @@ void PreviSat::ChangementDate(const QDateTime &date)
 
     if (ui->modeManuel->isChecked()) {
         _onglets->setInfo(true);
+        _onglets->DeconnecterUdp();
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
     }
@@ -1372,6 +1373,7 @@ void PreviSat::ChangementLangue(const int index)
     ChargementTraduction(Configuration::instance()->locale());
 
     _onglets->setInfo(true);
+    _onglets->DeconnecterUdp();
     _onglets->RechargerListes();
     InitFicTLE();
     GestionTempsReel();
@@ -3039,6 +3041,7 @@ void PreviSat::on_listeFichiersTLE_currentIndexChanged(int index)
     _onglets->setAcalcAOS(true);
     _onglets->setAcalcDN(true);
     _onglets->setInfo(true);
+    _onglets->DeconnecterUdp();
     Configuration::instance()->notifAOS() = ATTENTE_LOS;
 
     GestionTempsReel();
@@ -3102,6 +3105,7 @@ void PreviSat::on_liste1_itemClicked(QListWidgetItem *item)
         _onglets->setAcalcAOS(true);
         _onglets->setAcalcDN(true);
         _onglets->setInfo(true);
+        _onglets->DeconnecterUdp();
 
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
         EnchainementCalculs();
@@ -3223,6 +3227,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     _onglets->setAcalcAOS(true);
     _onglets->setAcalcDN(true);
     _onglets->setInfo(true);
+    _onglets->DeconnecterUdp();
     Configuration::instance()->notifAOS() = ATTENTE_LOS;
 
     GestionTempsReel();

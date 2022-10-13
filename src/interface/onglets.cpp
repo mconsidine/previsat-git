@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    12 octobre 2022
  *
  */
 
@@ -224,7 +224,6 @@ void Onglets::setAcalcDN(bool acalcDN)
 void Onglets::setInfo(bool info)
 {
     _info = info;
-    _ui->frameFrequences->setVisible(false);
 }
 
 void Onglets::setDirDwn(const QString &dirDwn)
@@ -866,6 +865,7 @@ void Onglets::AffichageFrequencesRadio() const
     if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
 
         _ui->frameFrequences->setVisible(true);
+        _ui->frameSatellite->setVisible(true);
 
         // Recuperation des frequences
         const QList<FrequenceRadio> listeFrequences = Configuration::instance()->mapFrequencesRadio()[norad];
@@ -2073,6 +2073,28 @@ void Onglets::CalculAosSatSuivi() const
 #endif
 
 /*
+ * Deconnecter le protocole UDP
+ */
+void Onglets::DeconnecterUdp()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->frameFrequences->setVisible(false);
+    _ui->donneesTransmises->setVisible(false);
+    _ui->frameSatellite->setVisible(false);
+
+    if (_udpSocket != nullptr) {
+        on_connexion_clicked();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation du chargement des onglets
  */
 void Onglets::InitChargementOnglets()
@@ -2996,6 +3018,7 @@ void Onglets::InitAffichageDemarrage()
                                                                          + "\\." + ipRange + "$"));
     _ui->adresse->setValidator(valAdresseUdp);
     _ui->adresse->setText(adresse.toString());
+    _ui->frameSatellite->setVisible(false);
     _ui->frameFrequences->setVisible(false);
     _ui->donneesTransmises->setVisible(false);
 
@@ -3405,9 +3428,9 @@ void Onglets::EnvoiUdp()
     /* Initialisations */
     const QHostAddress adresse(_ui->adresse->text());
     const quint16 port = static_cast<quint16> (_ui->port->value());
-    const Satellite &sat = Configuration::instance()->listeSatellites().at(0);
-    const QString azimut = QString("%1°").arg(sat.azimut() * RAD2DEG, 0, 'f', 1);
-    const QString hauteur = QString("%1°").arg(sat.hauteur() * RAD2DEG, 0, 'f', 1);
+    const Satellite &sat = Configuration::instance()->listeSatellites().first();
+    const QString azimut = QString("%1").arg(sat.azimut() * RAD2DEG, 0, 'f', 1);
+    const QString hauteur = QString("%1").arg(sat.hauteur() * RAD2DEG, 0, 'f', 1);
 
     /* Corps de la methode */
     donnees.append(_structureMessageUdp.arg(sat.tle().nom())
@@ -3418,9 +3441,10 @@ void Onglets::EnvoiUdp()
 
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
     _ui->donneesTransmises->setVisible(taille != -1);
+    _ui->connexion->setChecked(true);
 
-    _ui->hauteurSatRadio->setText(hauteur);
-    _ui->azimutSatRadio->setText(azimut);
+    _ui->hauteurSatRadio->setText(hauteur + "°");
+    _ui->azimutSatRadio->setText(azimut + "°");
     _ui->rangeRateRadio->setText(_ui->rangeRate->text());
 
     /* Retour */
@@ -6619,26 +6643,33 @@ void Onglets::on_connexion_clicked()
 
         if (_udpSocket == nullptr) {
 
-            _udpSocket = new QUdpSocket(this);
-            connect(_udpSocket, SIGNAL(readyRead()), this, SLOT(ReceptionUdp()));
+            if (Configuration::instance()->listeSatellites().isEmpty()) {
+                _ui->connexion->setChecked(false);
+            } else {
 
-            _udpSocket->connectToHost(adresse, port, QIODevice::WriteOnly);
+                _udpSocket = new QUdpSocket(this);
+                connect(_udpSocket, SIGNAL(readyRead()), this, SLOT(ReceptionUdp()));
 
-            if(_udpSocket->state() == QAbstractSocket::ConnectedState) {
+                _udpSocket->connectToHost(adresse, port, QIODevice::WriteOnly);
 
-                _ui->connexion->setText(tr("Connexion en cours..."));
+                if (_udpSocket->state() == QAbstractSocket::ConnectedState) {
 
-                if (_chronometreUdp == nullptr) {
-                    _chronometreUdp = new QTimer(this);
-                    _chronometreUdp->setInterval(1000);
-                    _chronometreUdp->setTimerType(Qt::PreciseTimer);
-                    connect(_chronometreUdp, SIGNAL(timeout()), this, SLOT(EnvoiUdp()));
-                    _chronometreUdp->start();
+                    _ui->connexion->setText(tr("Connexion en cours..."));
+
+                    if (_chronometreUdp == nullptr) {
+
+                        _chronometreUdp = new QTimer(this);
+                        _chronometreUdp->setInterval(1000);
+                        _chronometreUdp->setTimerType(Qt::PreciseTimer);
+                        connect(_chronometreUdp, SIGNAL(timeout()), this, SLOT(EnvoiUdp()));
+                        _chronometreUdp->start();
+                    }
                 }
             }
         } else {
 
             _ui->connexion->setText(tr("Connecter"));
+            _ui->connexion->setChecked(false);
             _ui->adresse->setReadOnly(false);
             _ui->port->setReadOnly(false);
 
