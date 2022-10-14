@@ -47,6 +47,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include "apropos/apropos.h"
 #include "configuration/configuration.h"
+#include "informations/informations.h"
 #include "onglets/onglets.h"
 #include "options/options.h"
 #include "outils/outils.h"
@@ -78,6 +79,7 @@ PreviSat::PreviSat(QWidget *parent)
 
     try {
 
+        _informations = nullptr;
         _onglets = nullptr;
         _options = nullptr;
         _outils = nullptr;
@@ -227,10 +229,10 @@ void PreviSat::CreationRaccourcis()
     this->addAction(_evenements);
 
     // Raccourci Onglet Informations satellite
-    _informations = new QAction(this);
-    _informations->setShortcut(Qt::ALT | Qt::Key_S);
-    connect(_informations, &QAction::triggered, this, &PreviSat::RaccourciInformations);
-    this->addAction(_informations);
+    _informationsSatellite = new QAction(this);
+    _informationsSatellite->setShortcut(Qt::ALT | Qt::Key_S);
+    connect(_informationsSatellite, &QAction::triggered, this, &PreviSat::RaccourciInformations);
+    this->addAction(_informationsSatellite);
 
     // Raccourci Onglet Recherche satellite
     _recherche = new QAction(this);
@@ -273,8 +275,8 @@ void PreviSat::Initialisation()
 
         qInfo() << "Début Initialisation" << metaObject()->className();
 
+        _informations = new Informations(this);
         _onglets = new Onglets(_ui->frameOnglets);
-
         _options = new Options();
         _outils = new Outils();
 
@@ -534,7 +536,34 @@ void PreviSat::on_actionFichier_d_aide_triggered()
 
 void PreviSat::on_actionInformations_triggered()
 {
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QUrl urlLastNews(QString("%1/data/informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
+
+    if (Informations::UrlExiste(urlLastNews)) {
+
+        _informations->setWindowModality(Qt::ApplicationModal);
+        _informations->show();
+
+        QFont fnt;
+        fnt.setBold(false);
+        _ui->actionInformations->setFont(fnt);
+
+        if (!_majInfosDate.isEmpty()) {
+            settings.setValue("temps/lastInfos", _majInfosDate);
+        }
+
+    } else {
+        if (!_majInfosDate.isEmpty()) {
+            Message::Afficher(tr("Pas d'informations à afficher"), MessageType::INFO);
+        }
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionOptions_triggered()
