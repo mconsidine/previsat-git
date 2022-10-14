@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Flashs</class>
+ <class>CalculsFlashs</class>
  <widget class="QFrame" name="Flashs">
   <property name="geometry">
    <rect>

@@ -435,9 +435,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
+         <y>54</y>
          <width>715</width>
-         <height>165</height>
+         <height>211</height>
         </rect>
        </property>
        <property name="font">
@@ -453,27 +453,11 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QComboBox" name="groupeTLE">
-       <property name="geometry">
-        <rect>
-         <x>11</x>
-         <y>10</y>
-         <width>240</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="currentText">
-        <string notr="true"/>
-       </property>
-      </widget>
       <widget class="QFrame" name="frameBarreProgression">
        <property name="geometry">
         <rect>
-         <x>260</x>
-         <y>50</y>
+         <x>430</x>
+         <y>10</y>
          <width>241</width>
          <height>41</height>
         </rect>
@@ -548,7 +532,7 @@
       <widget class="QPushButton" name="majMaintenant">
        <property name="geometry">
         <rect>
-         <x>259</x>
+         <x>10</x>
          <y>10</y>
          <width>161</width>
          <height>23</height>
@@ -567,8 +551,8 @@
       <widget class="QComboBox" name="affichageMsgMAJ">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>50</y>
+         <x>180</x>
+         <y>10</y>
          <width>241</width>
          <height>22</height>
         </rect>

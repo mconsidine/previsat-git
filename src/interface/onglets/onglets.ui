@@ -197,6 +197,11 @@
     <string>Télescope</string>
    </attribute>
   </widget>
+  <widget class="QWidget" name="antenne">
+   <attribute name="title">
+    <string>Antenne</string>
+   </attribute>
+  </widget>
  </widget>
  <resources/>
  <connections/>

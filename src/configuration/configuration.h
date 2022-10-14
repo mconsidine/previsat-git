@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    9 octobre 2022
  *
  */
 
@@ -48,6 +48,7 @@
 #include "librairies/observateur/observateur.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
+#include "frequencesradio.h"
 #include "satellitesflashs.h"
 #include "satellitetdrs.h"
 
@@ -124,12 +125,21 @@ public:
 
     const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
 
+    // Satellites produisant des flashs
+    const QMap<QString, SatellitesFlashs> &mapFlashs() const;
+
     // Donnees satellites
     const QString &donneesSatellites() const;
     int lgRec() const;
 
     // Nom du fichier d'elements orbitaux par defaut
     const QString &nomfic() const;
+
+    // Liste des fichiers d'elements orbitaux
+    const QStringList &listeFichiersElem() const;
+
+    // Frequences radio des satellites
+    const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
 
 
     /*
@@ -239,6 +249,9 @@ private:
     double _surfaceTraineeAtmospherique;
     double _coefficientTraineeAtmospherique;
     QStringList _evenementsStationSpatiale;
+
+    // Frequences radio des satellites
+    QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;
 
 
     // Lieux d'observation

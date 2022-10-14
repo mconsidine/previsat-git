@@ -53,20 +53,18 @@ public:
      *  Constructeurs
      */
 
+    /*
+     * Accesseurs
+     */
+    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
+    static DonneesPrevisions donnees();
+
 
     /*
      * Modificateurs
      */
     static void setConditions(const ConditionsPrevisions &conditions);
 
-
-    /*
-     * Constantes publiques
-     */
-
-    /*
-     * Variables publiques
-     */
 
     /*
      * Methodes publiques
@@ -79,18 +77,7 @@ public:
     static int CalculPrevisions(int &nombre);
 
 
-    /*
-     * Accesseurs
-     */
-    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
-    static DonneesPrevisions donnees();
-
-
 protected:
-
-    /*
-     * Constantes protegees
-     */
 
     /*
      * Variables protegees
@@ -102,10 +89,6 @@ protected:
 
 
 private:
-
-    /*
-     * Constantes privees
-     */
 
     /*
      * Variables privees

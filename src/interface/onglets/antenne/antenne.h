@@ -18,30 +18,30 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    flashs.h
+ * >    antenne.h
  *
  * Localisation
- * >    interface.onglets.previsions
+ * >    interface.onglets.antenne
  *
  * Heritage
  * >    QFrame
  *
  * Description
- * >    Onglet Flashs
+ * >    Onglet Pilotage d'antenne
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    26 juin 2022
+ * >    9 octobre 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
-#ifndef FLASHS_H
-#define FLASHS_H
+#ifndef ANTENNE_H
+#define ANTENNE_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
@@ -49,12 +49,11 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 
-
 namespace Ui {
-class Flashs;
+class Antenne;
 }
 
-class Flashs : public QFrame
+class Antenne : public QFrame
 {
     Q_OBJECT
 
@@ -64,16 +63,16 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief Flashs Constructeur par defaut
+     * @brief Antenne Constructeur par defaut
      * @param parent parent
      */
-    explicit Flashs(QWidget *parent = nullptr);
+    explicit Antenne(QWidget *parent = nullptr);
 
 
     /*
      * Destructeur
      */
-    ~Flashs();
+    ~Antenne();
 
 
     /*
@@ -109,21 +108,18 @@ private:
     /*
      * Variables privees
      */
-    Ui::Flashs *_ui;
+    Ui::Antenne *_ui;
 
 
     /*
      * Methodes privees
      */
     /**
-     * @brief Initialisation Initialisation de la classe Flashs
+     * @brief Initialisation Initialisation de la classe Antenne
      */
     void Initialisation();
 
-private slots:
-
-    void on_parametrageDefautMetOp_clicked();
 
 };
 
-#endif // FLASHS_H
+#endif // ANTENNE_H

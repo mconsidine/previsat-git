@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    configurationconst.h
+ * >    frequencesradio.h
  *
  * Localisation
  * >    configuration
@@ -27,45 +27,32 @@
  * >
  *
  * Description
- * >     Donnees generales pour la configuration
+ * >    Informations sur les frequences radio des satellites
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    19 juin 2022
+ * >    9 octobre 2022
  *
  * Date de revision
  * >
  *
  */
 
-#ifndef CONFIGURATIONCONST_H
-#define CONFIGURATIONCONST_H
+#ifndef FREQUENCESRADIO_H
+#define FREQUENCESRADIO_H
+
+#include <QString>
 
 
-/*
- * Macros
- */
-#define EFFACE_OBJET(objet)   \
-    if ((objet) != nullptr) { \
-        delete (objet);       \
-        (objet) = nullptr;    \
-    }
-
-
-/*
- * Enumerations
- */
-enum class AdressesTelechargement {
-    COORDONNEES = 0,
-    CARTES,
-    NOTIFICATIONS
+struct FrequenceRadio {
+    QString nom;
+    QStringList frequenceMontante;
+    QStringList frequenceDescendante;
+    QString balise;
+    QString mode;
+    QString signalAppel;
 };
 
-/*
- * Definitions des constantes
- */
-
-
-#endif // CONFIGURATIONCONST_H
+#endif // FREQUENCESRADIO_H

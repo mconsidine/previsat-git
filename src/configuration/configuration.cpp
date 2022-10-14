@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    9 octobre 2022
  *
  */
 
@@ -115,6 +115,9 @@ void Configuration::Chargement()
 
         // Lecture du fichier de statut des satellites produisant des flashs
         _mapFlashs = GestionnaireXml::LectureStatutSatellitesFlashs();
+
+        // Lecture des frequences radio des satellites
+        _mapFrequencesRadio = GestionnaireXml::LectureFrequencesRadio();
 
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
         EvenementsStationSpatiale::LectureEvenementsStationSpatiale(_dateDebutStationSpatiale,
@@ -347,6 +350,11 @@ const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesElementsOr
     return _listeCategoriesElementsOrbitaux;
 }
 
+const QMap<QString, SatellitesFlashs> &Configuration::mapFlashs() const
+{
+    return _mapFlashs;
+}
+
 const QString &Configuration::donneesSatellites() const
 {
     return _donneesSatellites;
@@ -360,6 +368,16 @@ int Configuration::lgRec() const
 const QString &Configuration::nomfic() const
 {
     return _nomfic;
+}
+
+const QStringList &Configuration::listeFichiersElem() const
+{
+    return _listeFichiersElem;
+}
+
+const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const
+{
+    return _mapFrequencesRadio;
 }
 
 

@@ -64,91 +64,99 @@ enum class CorpsTransit {
 };
 
 
-/* Declaration des constantes */
+/* Declaration des structures */
 
 struct ConditionsPrevisions
 {
-    double jj1;
-    double jj2;
-//    double offset;
-//    bool systeme;
-    double pas;
-
-//    QString unite;
-
-    double crepuscule;
-    double hauteur;
-    double magnitudeLimite;
-//    double angleLimite;
-//    double seuilConjonction;
-
     bool calcEclipseLune;
-//    bool ecart;
     bool eclipse;
     bool effetEclipsePartielle;
     bool extinction;
     bool refraction;
-//    bool calcTransitLunaireJour;
-//    bool calcEphemSoleil;
-//    bool calcEphemLune;
-//    bool passageNoeuds;
-//    bool passageOmbre;
-//    bool passageApogee;
-//    bool passagePso;
-//    bool transitionsJourNuit;
 
-//    int nbIter;
+    double crepuscule;
+    double hauteur;
+    double jj1;
+    double jj2;
+    double magnitudeLimite;
+    double pas;
 
     QString fichier;
     QStringList listeSatellites;
+
     Observateur observateur;
+};
 
-//    QList<ElementsOrbitaux> listElem;
+struct ConditionsFlashs
+{
+    bool effetEclipsePartielle;
+    bool extinction;
 
-//    QString ficRes;
+    double angleLimite;
+    double crepuscule;
+    double hauteur;
+    double jj1;
+    double jj2;
+    double magnitudeLimite;
+
+    bool calcEclipseLune;
+    bool refraction;
+
+    QString fichier;
+    QStringList listeSatellites;
+
+    Observateur observateur;
 };
 
 struct ResultatPrevisions
 {
-    QString nom;
-    ElementsOrbitaux elements;
+    bool penombre;
 
-    Date date;
-    double azimut;
-    double hauteur;
+    double altitude;
     double ascensionDroite;
+    double azimut;
+    double azimutSoleil;
     double declinaison;
-    QString constellation;
+    double distance;
+    double hauteur;
+    double hauteurSoleil;
     double magnitude;
     double magnitudeStd;
+
+    QString constellation;
+    QString nom;
+
+    Date date;
+    ElementsOrbitaux elements;
+};
+
+struct ResultatFlashs
+{
     bool penombre;
-    double distance;
-    double altitude;
-
-    double azimutSoleil;
-    double hauteurSoleil;
-
-    // Pour les flashs
-    double angleReflexion;
-    double distanceObs;
-    double magnitudeMax;
     bool penombreMax;
-    QString miroir;
+
+    double altitude;
+    double angleReflexion;
+    double ascensionDroite;
+    double azimut;
+    double azimutSoleil;
+    double declinaison;
+    double distance;
+    double distanceObs;
+    double hauteur;
+    double hauteurSoleil;
+    double magnitude;
+    double magnitudeMax;
+    double magnitudeStd;
+
     QString cap;
+    QString constellation;
+    QString miroir;
+    QString nom;
+
+    Date date;
+    ElementsOrbitaux elements;
     Observateur obsmax;
-
-    // Pour les transits ISS
-    bool eclipse;
-    bool transit;
-    CorpsTransit typeCorps;
-    double angle;
-    double duree;
-
-    // Pour les evenements orbitaux
-    double pso;
-    double longitude;
-    double latitude;
-    QString typeEvenement;
 };
 
 struct DonneesPrevisions

@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    23 septembre 2022
+ * >
  *
  */
 
@@ -134,6 +134,12 @@ private:
                                      QString &noradDefaut,
                                      QList<Observateur> &observateurs,
                                      QMap<QString, QStringList> &mapSatellitesFichierElem);
+
+    /**
+     * @brief LectureFrequencesRadio Lecture du fichier contenant les frequences radio des satellites
+     * @return map contenant les frequences radio des satellites
+     */
+    static QMap<QString, QList<FrequenceRadio> > LectureFrequencesRadio();
 
     /**
      * @brief LectureGestionnaireElementsOrbitaux Lecture du fichier de gestionnaire d'elements orbitaux

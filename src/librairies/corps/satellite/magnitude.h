@@ -77,6 +77,15 @@ public:
     void Calcul(const ConditionEclipse &conditionEclipse, const Observateur &observateur, const double distance, const double hauteur,
                 const double magnitudeStandard, const bool extinction = true, const bool effetEclipsePartielle = true);
 
+    /**
+     * @brief ExtinctionAtmospherique Determination de l'extinction atmospherique
+     * issu de l'article "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
+     * @param observateur observateur
+     * @param hauteur hauteur du satellite
+     * @return correction de magnitude correspondant a l'extinction atmospherique
+     */
+    double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const;
+
 
     /*
      * Accesseurs
@@ -107,14 +116,7 @@ private:
     /*
      * Methodes privees
      */
-    /**
-     * @brief ExtinctionAtmospherique Determination de l'extinction atmospherique
-     * issu de l'article "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
-     * @param observateur observateur
-     * @param hauteur hauteur du satellite
-     * @return correction de magnitude correspondant a l'extinction atmospherique
-     */
-    double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const;
+
 
 };
 

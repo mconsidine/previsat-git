@@ -53,6 +53,7 @@ struct EphemeridesPrevisions
     Vecteur3D positionSoleil;
 };
 
+
 /**********
  * PUBLIC *
  **********/
@@ -104,10 +105,10 @@ int Prevision::CalculPrevisions(int &nombre)
     _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
 
-    // Creation de la liste de TLE
-    const QMap<QString, ElementsOrbitaux> tabElem =
-            GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                     Configuration::instance()->lgRec(), _conditions.listeSatellites);
+    // Creation de la liste d'elements orbitaux
+    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec(), _conditions.listeSatellites);
+    // TODO si TLE
 
     // Creation du tableau de satellites
     QMapIterator it1(tabElem);

@@ -111,6 +111,26 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
     return;
 }
 
+/*
+ * Determination de l'extinction atmospherique
+ */
+double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    double corr = 0.;
+
+    /* Corps de la methode */
+    if (hauteur >= 0.) {
+        const double cosz = cos(PI_SUR_DEUX - hauteur);
+        corr = (0.016 + observateur.aray() + observateur.aaer()) / (cosz + 0.025 * exp(-11. * cosz));
+    }
+
+    /* Retour */
+    return corr;
+}
+
 
 /*
  * Accesseurs
@@ -142,22 +162,4 @@ double Magnitude::magnitude() const
 /*
  * Methodes privees
  */
-/*
- * Determination de l'extinction atmospherique
- */
-double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const
-{
-    /* Declarations des variables locales */
 
-    /* Initialisations */
-    double corr = 0.;
-
-    /* Corps de la methode */
-    if (hauteur >= 0.) {
-        const double cosz = cos(PI_SUR_DEUX - hauteur);
-        corr = (0.016 + observateur.aray() + observateur.aaer()) / (cosz + 0.025 * exp(-11. * cosz));
-    }
-
-    /* Retour */
-    return corr;
-}

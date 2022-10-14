@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    2 octobre 2022
+# >    9 octobre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -60,7 +60,7 @@ greaterThan(QT_GCC_MAJOR_VERSION, 5) {
 
 
 ORGANIZATION = Astropedia
-DOMAIN = http://astropedia.free.fr/
+DOMAIN = http://previsat.free.fr/
 
 VERSION_STR     = '\\"$${VERSION}\\"'
 VER_MAJ_STR     = '\\"$${VER_MAJ}\\"'
@@ -87,14 +87,16 @@ SOURCES += \
     src/configuration/evenementsstationspatiale.cpp         \
     src/configuration/fichierobs.cpp                        \
     src/configuration/gestionnairexml.cpp                   \
+    src/interface/apropos/apropos.cpp                       \
+    src/interface/onglets/antenne/antenne.cpp               \
     src/interface/onglets/donnees/informationsiss.cpp       \
     src/interface/onglets/donnees/informationssatellite.cpp \
     src/interface/onglets/donnees/recherchesatellite.cpp    \
     src/interface/onglets/general/general.cpp               \
     src/interface/onglets/onglets.cpp                       \
     src/interface/onglets/osculateurs/osculateurs.cpp       \
+    src/interface/onglets/previsions/calculsflashs.cpp      \
     src/interface/onglets/previsions/evenementsorbitaux.cpp \
-    src/interface/onglets/previsions/flashs.cpp             \
     src/interface/onglets/previsions/previsionspassage.cpp  \
     src/interface/onglets/previsions/transits.cpp           \
     src/interface/options/options.cpp                       \
@@ -127,7 +129,7 @@ SOURCES += \
     src/librairies/observateur/observateur.cpp              \
     src/librairies/systeme/logmessage.cpp                   \
     src/librairies/systeme/telechargement.cpp               \
-#    src/previsions/flashs.cpp \
+    src/previsions/flashs.cpp                               \
     src/previsions/prevision.cpp
 
 
@@ -137,17 +139,20 @@ HEADERS += \
     src/configuration/configurationconst.h                \
     src/configuration/evenementsstationspatiale.h         \
     src/configuration/fichierobs.h                        \
+    src/configuration/frequencesradio.h                   \
     src/configuration/gestionnairexml.h                   \
     src/configuration/satellitesflashs.h                  \
     src/configuration/satellitetdrs.h                     \
+    src/interface/apropos/apropos.h                       \
+    src/interface/onglets/antenne/antenne.h               \
     src/interface/onglets/donnees/informationsiss.h       \
     src/interface/onglets/donnees/informationssatellite.h \
     src/interface/onglets/donnees/recherchesatellite.h    \
     src/interface/onglets/general/general.h               \
     src/interface/onglets/onglets.h                       \
     src/interface/onglets/osculateurs/osculateurs.h       \
+    src/interface/onglets/previsions/calculsflashs.h      \
     src/interface/onglets/previsions/evenementsorbitaux.h \
-    src/interface/onglets/previsions/flashs.h             \
     src/interface/onglets/previsions/previsionspassage.h  \
     src/interface/onglets/previsions/transits.h           \
     src/interface/options/options.h                       \
@@ -192,20 +197,22 @@ HEADERS += \
     src/librairies/observateur/observateur.h              \
     src/librairies/systeme/logmessage.h                   \
     src/librairies/systeme/telechargement.h               \
-#    src/previsions/flashs.h \
+    src/previsions/flashs.h                               \
     src/previsions/prevision.h                            \
     src/previsions/previsionsconst.h
 
 
 FORMS += \
+    src/interface/apropos/apropos.ui                       \
+    src/interface/onglets/antenne/antenne.ui               \
     src/interface/onglets/donnees/informationsiss.ui       \
     src/interface/onglets/donnees/informationssatellite.ui \
     src/interface/onglets/donnees/recherchesatellite.ui    \
     src/interface/onglets/general/general.ui               \
     src/interface/onglets/onglets.ui                       \
     src/interface/onglets/osculateurs/osculateurs.ui       \
+    src/interface/onglets/previsions/calculsflashs.ui      \
     src/interface/onglets/previsions/evenementsorbitaux.ui \
-    src/interface/onglets/previsions/flashs.ui             \
     src/interface/onglets/previsions/previsionspassage.ui  \
     src/interface/onglets/previsions/transits.ui           \
     src/interface/options/options.ui                       \
