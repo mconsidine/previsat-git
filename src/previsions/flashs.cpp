@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    14 octobre 2022
  *
  */
 
@@ -74,8 +74,8 @@ static int _pan;
 static char _mir;
 static Vecteur3D _direction;
 static ConditionsFlashs _conditions;
-static QList<QList<ResultatFlashs> > _resultatSat;
-static QMap<QString, QList<QList<ResultatFlashs> > > _resultats;
+static QList<QList<ResultatPrevisions> > _resultatSat;
+static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
 
 
@@ -90,7 +90,7 @@ static DonneesPrevisions _donnees;
 /*
  * Accesseurs
  */
-QMap<QString, QList<QList<ResultatFlashs> > > &Flashs::resultats()
+QMap<QString, QList<QList<ResultatPrevisions> > > &Flashs::resultats()
 {
     return _resultats;
 }
@@ -484,12 +484,13 @@ QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
 /*
  * Calcul des bornes inferieures et superieures du flash
  */
-void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, Date lim[])
+void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> lim)
 {
     /* Declarations des variables locales */
     double tmp;
     std::array<double, DEGRE_INTERPOLATION> jjm;
-    double limite[4], lim0[4];
+    std::array<double, 4> limite;
+    std::array<double, 4> lim0;
 
     /* Initialisations */
     double dateInf;
@@ -669,7 +670,7 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
 
             if (mag <= mgn0) {
 
-                Date dates[3];
+                std::array<Date, 3> dates;
 
                 // Calcul des limites du flash
                 CalculLimitesFlash(mgn0, minmax.first, sat, soleil, dates);
@@ -682,8 +683,8 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                     // Calcul des valeurs exactes pour les differentes dates
                     Observateur obsmax;
                     ConditionEclipse condEcl2;
-                    ResultatFlashs res;
-                    QList<ResultatFlashs> result;
+                    ResultatPrevisions res;
+                    QList<ResultatPrevisions> result;
                     for(int i=0; i<3; i++) {
 
                         res.obsmax = Observateur();
@@ -801,7 +802,8 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
 /*
  * Calcul d'une limite du flash
  */
-void Flashs::LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil, double limite[])
+void Flashs::LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+                         std::array<double, 4> limite)
 {
     /* Declarations des variables locales */
     Lune lune;

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 juillet 2022
+ * >    14 octobre 2022
  *
  */
 
@@ -59,7 +59,7 @@ public:
     /*
      * Accesseurs
      */
-    static QMap<QString, QList<QList<ResultatFlashs> > > &resultats();
+    static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
     static DonneesPrevisions donnees();
 
 
@@ -143,7 +143,7 @@ private:
      * @param soleil Soleil
      * @param lim dates limites du flash
      */
-    static void CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, Date lim[]);
+    static void CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> lim);
 
     /**
      * @brief DeterminationFlash Determination du flash
@@ -162,7 +162,8 @@ private:
      * @param soleil Soleil
      * @param limite date et valeur limite du flash
      */
-    static void LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil, double limite[]);
+    static void LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+                            std::array<double, 4> limite);
 
     /**
      * @brief MagnitudeFlash Determination de la magnitude du flash

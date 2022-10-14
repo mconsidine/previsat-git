@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    3 octobre 2021
+ * >    14 octobre 2022
  *
  */
 
@@ -108,34 +108,31 @@ struct ConditionsFlashs
     Observateur observateur;
 };
 
-struct ResultatPrevisions
+struct ConditionsTransits
 {
-    bool penombre;
+    bool calcEphemLune;
+    bool calcEphemSoleil;
+    bool calcTransitLunaireJour;
+    bool refraction;
 
-    double altitude;
-    double ascensionDroite;
-    double azimut;
-    double azimutSoleil;
-    double declinaison;
-    double distance;
     double hauteur;
-    double hauteurSoleil;
-    double magnitude;
-    double magnitudeStd;
+    double jj1;
+    double jj2;
+    double seuilConjonction;
 
-    QString constellation;
-    QString nom;
-
-    Date date;
-    ElementsOrbitaux elements;
+    Observateur observateur;
+    QList<ElementsOrbitaux> tabElem;
 };
 
-struct ResultatFlashs
+struct ResultatPrevisions
 {
+    bool eclipse;
     bool penombre;
     bool penombreMax;
+    bool transit;
 
     double altitude;
+    double angle;
     double angleReflexion;
     double ascensionDroite;
     double azimut;
@@ -143,6 +140,7 @@ struct ResultatFlashs
     double declinaison;
     double distance;
     double distanceObs;
+    double duree;
     double hauteur;
     double hauteurSoleil;
     double magnitude;
@@ -154,6 +152,7 @@ struct ResultatFlashs
     QString miroir;
     QString nom;
 
+    CorpsTransit typeCorps;
     Date date;
     ElementsOrbitaux elements;
     Observateur obsmax;

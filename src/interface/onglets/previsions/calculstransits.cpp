@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    previsionspassage.cpp
+ * >    calculstransits.cpp
  *
  * Localisation
  * >    interface.onglets.previsions
@@ -34,11 +34,11 @@
  *
  */
 
-#include "previsionspassage.h"
+#include "calculstransits.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
-#include "ui_previsionspassage.h"
+#include "ui_calculstransits.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
@@ -58,9 +58,9 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-PrevisionsPassage::PrevisionsPassage(QWidget *parent) :
+CalculsTransits::CalculsTransits(QWidget *parent) :
     QFrame(parent),
-    _ui(new Ui::PrevisionsPassage)
+    _ui(new Ui::CalculsTransits)
 {
     _ui->setupUi(this);
 
@@ -78,7 +78,7 @@ PrevisionsPassage::PrevisionsPassage(QWidget *parent) :
 /*
  * Destructeur
  */
-PrevisionsPassage::~PrevisionsPassage()
+CalculsTransits::~CalculsTransits()
 {
     delete _ui;
 }
@@ -97,7 +97,7 @@ PrevisionsPassage::~PrevisionsPassage()
 /*
  * Methodes publiques
  */
-void PrevisionsPassage::changeEvent(QEvent *evt)
+void CalculsTransits::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
@@ -122,9 +122,9 @@ void PrevisionsPassage::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
- * Initialisation de la classe PrevisionsPassage
+ * Initialisation de la classe CalculsTransits
  */
-void PrevisionsPassage::Initialisation()
+void CalculsTransits::Initialisation()
 {
     /* Declarations des variables locales */
 
@@ -133,15 +133,11 @@ void PrevisionsPassage::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
-    _ui->valHauteurSatPrev->setVisible(false);
-    _ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
-    _ui->valHauteurSoleilPrev->setVisible(false);
-    _ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
-    _ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
-    _ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
-    _ui->valMagnitudeMaxPrev->setVisible(_ui->magnitudeMaxPrev->isChecked());
+    _ui->valHauteurSatTransit->setVisible(false);
+    _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
+    _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
+    _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -149,24 +145,20 @@ void PrevisionsPassage::Initialisation()
     return;
 }
 
-void PrevisionsPassage::on_parametrageDefautPrev_clicked()
+void CalculsTransits::on_parametrageDefautTransit_clicked()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->pasGeneration->setCurrentIndex(5);
+    _ui->hauteurSatTransit->setCurrentIndex(1);
+    _ui->valHauteurSatTransit->setVisible(false);
     _ui->lieuxObservation->setCurrentIndex(0);
-    _ui->hauteurSatPrev->setCurrentIndex(0);
-    _ui->hauteurSoleilPrev->setCurrentIndex(1);
-    _ui->valHauteurSatPrev->setVisible(false);
-    _ui->valHauteurSoleilPrev->setVisible(false);
-    _ui->valMagnitudeMaxPrev->setVisible(false);
-    _ui->illuminationPrev->setChecked(true);
-    _ui->magnitudeMaxPrev->setChecked(false);
-    if (!_ui->calculsPrev->isEnabled()) {
-        _ui->calculsPrev->setEnabled(true);
+    _ui->ageMaxTLETransit->setValue(2.);
+    _ui->elongationMaxCorps->setValue(5.);
+    if (!_ui->calculsTransit->isEnabled()) {
+        _ui->calculsTransit->setEnabled(true);
     }
 
     /* Retour */

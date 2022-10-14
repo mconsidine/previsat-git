@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Transits</class>
- <widget class="QFrame" name="Transits">
+ <class>CalculsTransits</class>
+ <widget class="QFrame" name="CalculsTransits">
   <property name="geometry">
    <rect>
     <x>0</x>

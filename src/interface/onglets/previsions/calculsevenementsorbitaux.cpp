@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    transits.cpp
+ * >    calculsevenementsorbitaux.cpp
  *
  * Localisation
  * >    interface.onglets.previsions
@@ -34,13 +34,13 @@
  *
  */
 
-#include "transits.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
-#include "ui_transits.h"
+#include "ui_calculsevenementsorbitaux.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "calculsevenementsorbitaux.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -58,9 +58,9 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-Transits::Transits(QWidget *parent) :
+CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
     QFrame(parent),
-    _ui(new Ui::Transits)
+    _ui(new Ui::CalculsEvenementsOrbitaux)
 {
     _ui->setupUi(this);
 
@@ -78,7 +78,7 @@ Transits::Transits(QWidget *parent) :
 /*
  * Destructeur
  */
-Transits::~Transits()
+CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 {
     delete _ui;
 }
@@ -97,7 +97,7 @@ Transits::~Transits()
 /*
  * Methodes publiques
  */
-void Transits::changeEvent(QEvent *evt)
+void CalculsEvenementsOrbitaux::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
@@ -122,9 +122,9 @@ void Transits::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
- * Initialisation de la classe Transits
+ * Initialisation de la classe CalculsEvenementsOrbitaux
  */
-void Transits::Initialisation()
+void CalculsEvenementsOrbitaux::Initialisation()
 {
     /* Declarations des variables locales */
 
@@ -133,11 +133,11 @@ void Transits::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->valHauteurSatTransit->setVisible(false);
-    _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
-    _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
-    _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
+    _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
+    _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
+    _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
+    _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
+    _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -145,20 +145,20 @@ void Transits::Initialisation()
     return;
 }
 
-void Transits::on_parametrageDefautTransit_clicked()
+void CalculsEvenementsOrbitaux::on_parametrageDefautEvt_clicked()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->hauteurSatTransit->setCurrentIndex(1);
-    _ui->valHauteurSatTransit->setVisible(false);
-    _ui->lieuxObservation->setCurrentIndex(0);
-    _ui->ageMaxTLETransit->setValue(2.);
-    _ui->elongationMaxCorps->setValue(5.);
-    if (!_ui->calculsTransit->isEnabled()) {
-        _ui->calculsTransit->setEnabled(true);
+    _ui->passageApogee->setChecked(true);
+    _ui->passageNoeuds->setChecked(true);
+    _ui->passageOmbre->setChecked(true);
+    _ui->passageQuadrangles->setChecked(true);
+    _ui->transitionJourNuit->setChecked(true);
+    if (!_ui->calculsEvt->isEnabled()) {
+        _ui->calculsEvt->setEnabled(true);
     }
 
     /* Retour */
