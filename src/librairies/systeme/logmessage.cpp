@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    4 octobre 2022
+ * >    14 octobre 2022
  *
  */
 
@@ -104,7 +104,7 @@ LogMessage::LogMessage(const QString &fichier)
 
 #if (BUILD_TEST == false)
     QTextStream out(_fichierLog.data());
-    out << QString("       Date (UTC)       : Type    : %1 : %2 : Message").arg("Fichier", -45).arg("Fonction", -40) << Qt::endl;
+    out << QString("       Date (UTC)       : Type    : %1 : %2 : Message").arg("Fichier", -45).arg("Fonction", -45) << Qt::endl;
     out << QString(162, '-') << Qt::endl;
     out.flush();
 #endif
@@ -166,7 +166,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     out << typeMessage.value(type) << " : ";
     if (!nomFichier.isEmpty()) {
         const QString fic = QString("%1 (ligne %2)").arg(nomFichier).arg(context.line);
-        out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -40);
+        out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -45);
     }
     out << message.replace("\"", "") << Qt::endl;
     out.flush();

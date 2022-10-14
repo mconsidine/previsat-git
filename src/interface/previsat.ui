@@ -864,26 +864,24 @@ le flux vidéo</string>
     <addaction name="actionOptions"/>
     <addaction name="actionOutils"/>
     <addaction name="separator"/>
-    <addaction name="actionMettre_jour_GP_courant"/>
-    <addaction name="actionMettre_jour_groupe_GP_courant"/>
-    <addaction name="actionMettre_jour_GP_communs"/>
-    <addaction name="actionMettre_jour_tous_les_groupes_de_GP"/>
+    <addaction name="actionMettre_a_jour_GP_courant"/>
+    <addaction name="actionMettre_a_jour_groupe_GP_courant"/>
+    <addaction name="actionMettre_a_jour_GP_communs"/>
+    <addaction name="actionMettre_a_jour_tous_les_groupes_de_GP"/>
     <addaction name="separator"/>
-    <addaction name="actionMettre_jour_les_fichiers_de_donn_es"/>
+    <addaction name="actionMettre_a_jour_les_fichiers_de_donnees"/>
     <addaction name="separator"/>
     <addaction name="actionExporter_fichier_log"/>
     <addaction name="separator"/>
     <addaction name="actionDons"/>
     <addaction name="separator"/>
-    <addaction name="actionRapport_de_bug"/>
-    <addaction name="actionprevisat_sourceforge_net"/>
+    <addaction name="actionPartenaires"/>
     <addaction name="separator"/>
-    <addaction name="actionskywatcher_com"/>
+    <addaction name="actionElementsOrbitaux"/>
     <addaction name="separator"/>
-    <addaction name="actioncelestrak_org"/>
-    <addaction name="actionspace_track_org"/>
+    <addaction name="actionContact"/>
     <addaction name="separator"/>
-    <addaction name="action_propos"/>
+    <addaction name="actionApropos"/>
    </widget>
    <widget class="QMenu" name="menuDons">
     <property name="title">
@@ -893,8 +891,24 @@ le flux vidéo</string>
     <addaction name="actionTipeee"/>
     <addaction name="actionUtip"/>
    </widget>
+   <widget class="QMenu" name="menuPartenaires">
+    <property name="title">
+     <string>Partenaires</string>
+    </property>
+    <addaction name="actionSkywatcher"/>
+    <addaction name="actionPianetaRadio"/>
+   </widget>
+   <widget class="QMenu" name="menuElementsOrbitaux">
+    <property name="title">
+     <string>Éléments Orbitaux</string>
+    </property>
+    <addaction name="actionCelestrak"/>
+    <addaction name="actionSpaceTrack"/>
+   </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuDons"/>
+   <addaction name="menuPartenaires"/>
+   <addaction name="menuElementsOrbitaux"/>
   </widget>
   <action name="actionImporter_fichier_TLE_GP">
    <property name="text">
@@ -951,7 +965,7 @@ le flux vidéo</string>
     <string notr="true">Ctrl+P</string>
    </property>
   </action>
-  <action name="actionMettre_jour_GP_courant">
+  <action name="actionMettre_a_jour_GP_courant">
    <property name="text">
     <string>Mettre à jour GP courant</string>
    </property>
@@ -959,7 +973,7 @@ le flux vidéo</string>
     <string>F5</string>
    </property>
   </action>
-  <action name="actionMettre_jour_groupe_GP_courant">
+  <action name="actionMettre_a_jour_groupe_GP_courant">
    <property name="text">
     <string>Mettre à jour groupe GP courant</string>
    </property>
@@ -967,7 +981,7 @@ le flux vidéo</string>
     <string>Ctrl+F5</string>
    </property>
   </action>
-  <action name="actionMettre_jour_GP_communs">
+  <action name="actionMettre_a_jour_GP_communs">
    <property name="text">
     <string>Mettre à jour GP communs</string>
    </property>
@@ -975,7 +989,7 @@ le flux vidéo</string>
     <string>Alt+F5</string>
    </property>
   </action>
-  <action name="actionMettre_jour_tous_les_groupes_de_GP">
+  <action name="actionMettre_a_jour_tous_les_groupes_de_GP">
    <property name="text">
     <string>Mettre à jour tous les groupes de GP</string>
    </property>
@@ -983,7 +997,7 @@ le flux vidéo</string>
     <string>Shift+F5</string>
    </property>
   </action>
-  <action name="actionMettre_jour_les_fichiers_de_donn_es">
+  <action name="actionMettre_a_jour_les_fichiers_de_donnees">
    <property name="text">
     <string>Mettre à jour les fichiers de données</string>
    </property>
@@ -1009,6 +1023,10 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/interface/configuration.png</normaloff>:/resources/interface/configuration.png</iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
@@ -1017,6 +1035,10 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionOutils">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/interface/outils.png</normaloff>:/resources/interface/outils.png</iconset>
+   </property>
    <property name="text">
     <string>Outils</string>
    </property>
@@ -1025,36 +1047,25 @@ le flux vidéo</string>
    </property>
   </action>
   <action name="actionDons">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/resources/interface/gift.png</normaloff>:/resources/interface/gift.png</iconset>
+   </property>
    <property name="text">
     <string>Dons ...</string>
    </property>
   </action>
-  <action name="actionRapport_de_bug">
+  <action name="actionContact">
    <property name="text">
-    <string>Rapport de bug</string>
+    <string>Contact</string>
    </property>
   </action>
-  <action name="actionprevisat_sourceforge_net">
+  <action name="actionPartenaires">
    <property name="text">
-    <string>previsat.sourceforge.net</string>
+    <string>Partenaires ...</string>
    </property>
   </action>
-  <action name="actionskywatcher_com">
-   <property name="text">
-    <string>skywatcher.com</string>
-   </property>
-  </action>
-  <action name="actioncelestrak_org">
-   <property name="text">
-    <string>celestrak.org</string>
-   </property>
-  </action>
-  <action name="actionspace_track_org">
-   <property name="text">
-    <string>space-track.org</string>
-   </property>
-  </action>
-  <action name="action_propos">
+  <action name="actionApropos">
    <property name="text">
     <string>À propos</string>
    </property>
@@ -1062,6 +1073,31 @@ le flux vidéo</string>
   <action name="actionExporter_fichier_log">
    <property name="text">
     <string>Exporter fichier log</string>
+   </property>
+  </action>
+  <action name="actionSkywatcher">
+   <property name="text">
+    <string>Sky-Watcher</string>
+   </property>
+  </action>
+  <action name="actionPianetaRadio">
+   <property name="text">
+    <string>PianetaRadio.it / CatRotator</string>
+   </property>
+  </action>
+  <action name="actionElementsOrbitaux">
+   <property name="text">
+    <string>Éléments orbitaux ...</string>
+   </property>
+  </action>
+  <action name="actionCelestrak">
+   <property name="text">
+    <string>celestrak.org</string>
+   </property>
+  </action>
+  <action name="actionSpaceTrack">
+   <property name="text">
+    <string>space-track.org</string>
    </property>
   </action>
  </widget>

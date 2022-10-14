@@ -55,6 +55,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class PreviSat; }
 QT_END_NAMESPACE
 
+
 class Onglets;
 class Options;
 class Outils;
@@ -160,6 +161,7 @@ private:
 
 private slots:
 
+    // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
     void RaccourciFlashs();
     void RaccourciTransits();
@@ -168,13 +170,44 @@ private slots:
     void RaccourciRecherche();
     void RaccourciStation();
 
+    // Boutons de l'interface graphique
     void on_configuration_clicked();
     void on_outils_clicked();
+    void on_aide_clicked();
+
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
 
+    // Menu deroulant
+    void on_actionImporter_fichier_TLE_GP_triggered();
+    void on_actionEnregistrer_triggered();
+    void on_actionImprimer_carte_triggered();
+
+    void on_actionFichier_d_aide_triggered();
+    void on_actionInformations_triggered();
     void on_actionOptions_triggered();
     void on_actionOutils_triggered();
+
+    void on_actionMettre_a_jour_GP_courant_triggered();
+    void on_actionMettre_a_jour_groupe_GP_courant_triggered();
+    void on_actionMettre_a_jour_GP_communs_triggered();
+    void on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered();
+
+    void on_actionMettre_a_jour_les_fichiers_de_donnees_triggered();
+    void on_actionExporter_fichier_log_triggered();
+
+    void on_actionPayPal_triggered();
+    void on_actionTipeee_triggered();
+    void on_actionUtip_triggered();
+
+    void on_actionSkywatcher_triggered();
+    void on_actionPianetaRadio_triggered();
+
+    void on_actionCelestrak_triggered();
+    void on_actionSpaceTrack_triggered();
+
+    void on_actionContact_triggered();
+    void on_actionApropos_triggered();
 
 };
 

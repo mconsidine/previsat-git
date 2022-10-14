@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    8 aout 2022
+ * >
  *
  */
 
@@ -51,8 +51,6 @@ class QXmlStreamReader;
 
 class EvenementsStationSpatiale
 {
-    friend class Configuration;
-
 public:
 
     /*

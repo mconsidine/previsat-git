@@ -18,34 +18,29 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    flashs.cpp
+ * >    antenne.cpp
  *
  * Localisation
- * >    interface.onglets.previsions
+ * >    interface.onglets.antenne
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    26 juin 2022
+ * >    9 octobre 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
-#include "flashs.h"
+#include "antenne.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QSettings>
-#include "ui_flashs.h"
+#include "ui_antenne.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
-
-
-// Registre
-static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -58,9 +53,9 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-Flashs::Flashs(QWidget *parent) :
+Antenne::Antenne(QWidget *parent) :
     QFrame(parent),
-    _ui(new Ui::Flashs)
+    _ui(new Ui::Antenne)
 {
     _ui->setupUi(this);
 
@@ -78,7 +73,7 @@ Flashs::Flashs(QWidget *parent) :
 /*
  * Destructeur
  */
-Flashs::~Flashs()
+Antenne::~Antenne()
 {
     delete _ui;
 }
@@ -97,7 +92,7 @@ Flashs::~Flashs()
 /*
  * Methodes publiques
  */
-void Flashs::changeEvent(QEvent *evt)
+void Antenne::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
@@ -122,9 +117,9 @@ void Flashs::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
- * Initialisation de la classe Flashs
+ * Initialisation de la classe Antenne
  */
-void Flashs::Initialisation()
+void Antenne::Initialisation()
 {
     /* Declarations des variables locales */
 
@@ -133,37 +128,11 @@ void Flashs::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->valHauteurSatMetOp->setVisible(false);
-    _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
-    _ui->valHauteurSoleilMetOp->setVisible(false);
-    _ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
-    _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
-    _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
+    _ui->frameFrequences->setVisible(false);
+    _ui->frameSatellite->setVisible(false);
+    _ui->donneesTransmises->setVisible(false);
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
-}
-
-void Flashs::on_parametrageDefautMetOp_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    _ui->hauteurSatMetOp->setCurrentIndex(2);
-    _ui->hauteurSoleilMetOp->setCurrentIndex(1);
-    _ui->valHauteurSatMetOp->setVisible(false);
-    _ui->valHauteurSoleilMetOp->setVisible(false);
-    _ui->lieuxObservation->setCurrentIndex(0);
-    _ui->ordreChronologiqueMetOp->setChecked(true);
-    _ui->magnitudeMaxMetOp->setValue(4.);
-    if (!_ui->calculsFlashs->isEnabled()) {
-        _ui->calculsFlashs->setEnabled(true);
-    }
 
     /* Retour */
     return;

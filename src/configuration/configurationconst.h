@@ -43,6 +43,17 @@
 #ifndef CONFIGURATIONCONST_H
 #define CONFIGURATIONCONST_H
 
+
+/*
+ * Macros
+ */
+#define EFFACE_OBJET(objet)   \
+    if ((objet) != nullptr) { \
+        delete (objet);       \
+        (objet) = nullptr;    \
+    }
+
+
 /*
  * Enumerations
  */

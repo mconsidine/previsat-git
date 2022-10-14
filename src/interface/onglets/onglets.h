@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    27 aout 2022
+ * >    9 octobre 2022
  *
  */
 
@@ -62,11 +62,12 @@ class RechercheSatellite;
 class InformationsISS;
 
 class PrevisionsPassage;
-class Flashs;
+class CalculsFlashs;
 class Transits;
 class EvenementsOrbitaux;
 
 class SuiviTelescope;
+class Antenne;
 
 
 class Onglets : public QTabWidget
@@ -142,11 +143,12 @@ private:
     InformationsISS *_informationsISS;
 
     PrevisionsPassage *_previsionsPassage;
-    Flashs *_flashs;
+    CalculsFlashs *_flashs;
     Transits *_transits;
     EvenementsOrbitaux *_evenements;
 
     SuiviTelescope *_suiviTelescope;
+    Antenne *_antenne;
 
 
     /*
