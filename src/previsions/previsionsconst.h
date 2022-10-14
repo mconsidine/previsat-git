@@ -140,6 +140,21 @@ struct ConditionsEvenements
     QStringList listeSatellites;
 };
 
+struct ConditionsTelescope
+{
+    int nbIter;
+
+    double hauteur;
+    double jj1;
+    double pas;
+
+    QString fichier;
+    QString ficRes;
+    QStringList listeSatellites;
+
+    Observateur observateur;
+};
+
 struct ResultatPrevisions
 {
     bool eclipse;

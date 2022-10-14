@@ -132,6 +132,7 @@ SOURCES += \
     src/previsions/evenementsorbitaux.cpp                          \
     src/previsions/flashs.cpp                                      \
     src/previsions/prevision.cpp                                   \
+    src/previsions/telescope.cpp                                   \
     src/previsions/transits.cpp
 
 
@@ -203,6 +204,7 @@ HEADERS += \
     src/previsions/flashs.h                                      \
     src/previsions/prevision.h                                   \
     src/previsions/previsionsconst.h                             \
+    src/previsions/telescope.h                                   \
     src/previsions/transits.h
 
 
