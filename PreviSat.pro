@@ -88,6 +88,7 @@ SOURCES += \
     src/configuration/fichierobs.cpp                               \
     src/configuration/gestionnairexml.cpp                          \
     src/interface/apropos/apropos.cpp                              \
+    src/interface/informations/informations.cpp                    \
     src/interface/onglets/antenne/antenne.cpp                      \
     src/interface/onglets/donnees/informationsiss.cpp              \
     src/interface/onglets/donnees/informationssatellite.cpp        \
@@ -147,6 +148,7 @@ HEADERS += \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
     src/interface/apropos/apropos.h                              \
+    src/interface/informations/informations.h                    \
     src/interface/onglets/antenne/antenne.h                      \
     src/interface/onglets/donnees/informationsiss.h              \
     src/interface/onglets/donnees/informationssatellite.h        \
@@ -210,6 +212,7 @@ HEADERS += \
 
 FORMS += \
     src/interface/apropos/apropos.ui                              \
+    src/interface/informations/informations.ui                    \
     src/interface/onglets/antenne/antenne.ui                      \
     src/interface/onglets/donnees/informationsiss.ui              \
     src/interface/onglets/donnees/informationssatellite.ui        \

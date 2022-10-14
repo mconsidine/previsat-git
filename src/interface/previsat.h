@@ -56,6 +56,7 @@ namespace Ui { class PreviSat; }
 QT_END_NAMESPACE
 
 
+class Informations;
 class Onglets;
 class Options;
 class Outils;
@@ -114,6 +115,8 @@ private:
     QTranslator _qtTraduction;
     QTranslator _appTraduction;
 
+    QString _majInfosDate;
+
     Ui::PreviSat *_ui;
 
     Onglets *_onglets;
@@ -122,10 +125,11 @@ private:
     QAction *_flashs;
     QAction *_transits;
     QAction *_evenements;
-    QAction *_informations;
+    QAction *_informationsSatellite;
     QAction *_recherche;
     QAction *_station;
 
+    Informations *_informations;
     Options *_options;
     Outils *_outils;
 
