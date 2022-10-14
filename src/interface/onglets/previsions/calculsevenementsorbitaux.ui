@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EvenementsOrbitaux</class>
- <widget class="QFrame" name="EvenementsOrbitaux">
+ <class>CalculsEvenementsOrbitaux</class>
+ <widget class="QFrame" name="CalculsEvenementsOrbitaux">
   <property name="geometry">
    <rect>
     <x>0</x>

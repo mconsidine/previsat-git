@@ -61,10 +61,10 @@ class InformationsSatellite;
 class RechercheSatellite;
 class InformationsISS;
 
-class PrevisionsPassage;
+class CalculsPrevisions;
 class CalculsFlashs;
-class Transits;
-class EvenementsOrbitaux;
+class CalculsTransits;
+class CalculsEvenementsOrbitaux;
 
 class SuiviTelescope;
 class Antenne;
@@ -142,10 +142,10 @@ private:
     RechercheSatellite *_rechercheSatellite;
     InformationsISS *_informationsISS;
 
-    PrevisionsPassage *_previsionsPassage;
+    CalculsPrevisions *_previsions;
     CalculsFlashs *_flashs;
-    Transits *_transits;
-    EvenementsOrbitaux *_evenements;
+    CalculsTransits *_transits;
+    CalculsEvenementsOrbitaux *_evenements;
 
     SuiviTelescope *_suiviTelescope;
     Antenne *_antenne;

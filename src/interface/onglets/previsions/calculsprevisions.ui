@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PrevisionsPassage</class>
- <widget class="QFrame" name="PrevisionsPassage">
+ <class>CalculsPrevisions</class>
+ <widget class="QFrame" name="CalculsPrevisions">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    evenementsorbitaux.cpp
+ * >    calculsprevisions.cpp
  *
  * Localisation
  * >    interface.onglets.previsions
@@ -34,13 +34,13 @@
  *
  */
 
+#include "calculsprevisions.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
-#include "ui_evenementsorbitaux.h"
+#include "ui_calculsprevisions.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include "evenementsorbitaux.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -58,9 +58,9 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-EvenementsOrbitaux::EvenementsOrbitaux(QWidget *parent) :
+CalculsPrevisions::CalculsPrevisions(QWidget *parent) :
     QFrame(parent),
-    _ui(new Ui::EvenementsOrbitaux)
+    _ui(new Ui::CalculsPrevisions)
 {
     _ui->setupUi(this);
 
@@ -78,7 +78,7 @@ EvenementsOrbitaux::EvenementsOrbitaux(QWidget *parent) :
 /*
  * Destructeur
  */
-EvenementsOrbitaux::~EvenementsOrbitaux()
+CalculsPrevisions::~CalculsPrevisions()
 {
     delete _ui;
 }
@@ -97,7 +97,7 @@ EvenementsOrbitaux::~EvenementsOrbitaux()
 /*
  * Methodes publiques
  */
-void EvenementsOrbitaux::changeEvent(QEvent *evt)
+void CalculsPrevisions::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
@@ -122,9 +122,9 @@ void EvenementsOrbitaux::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
- * Initialisation de la classe EvenementsOrbitaux
+ * Initialisation de la classe CalculsPrevisions
  */
-void EvenementsOrbitaux::Initialisation()
+void CalculsPrevisions::Initialisation()
 {
     /* Declarations des variables locales */
 
@@ -133,11 +133,15 @@ void EvenementsOrbitaux::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
-    _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
-    _ui->passageOmbre->setChecked(settings.value("previsions/passageOmbre", true).toBool());
-    _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
-    _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
+    _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
+    _ui->valHauteurSatPrev->setVisible(false);
+    _ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
+    _ui->valHauteurSoleilPrev->setVisible(false);
+    _ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
+    _ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
+    _ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
+    _ui->valMagnitudeMaxPrev->setVisible(_ui->magnitudeMaxPrev->isChecked());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -145,20 +149,24 @@ void EvenementsOrbitaux::Initialisation()
     return;
 }
 
-void EvenementsOrbitaux::on_parametrageDefautEvt_clicked()
+void CalculsPrevisions::on_parametrageDefautPrev_clicked()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->passageApogee->setChecked(true);
-    _ui->passageNoeuds->setChecked(true);
-    _ui->passageOmbre->setChecked(true);
-    _ui->passageQuadrangles->setChecked(true);
-    _ui->transitionJourNuit->setChecked(true);
-    if (!_ui->calculsEvt->isEnabled()) {
-        _ui->calculsEvt->setEnabled(true);
+    _ui->pasGeneration->setCurrentIndex(5);
+    _ui->lieuxObservation->setCurrentIndex(0);
+    _ui->hauteurSatPrev->setCurrentIndex(0);
+    _ui->hauteurSoleilPrev->setCurrentIndex(1);
+    _ui->valHauteurSatPrev->setVisible(false);
+    _ui->valHauteurSoleilPrev->setVisible(false);
+    _ui->valMagnitudeMaxPrev->setVisible(false);
+    _ui->illuminationPrev->setChecked(true);
+    _ui->magnitudeMaxPrev->setChecked(false);
+    if (!_ui->calculsPrev->isEnabled()) {
+        _ui->calculsPrev->setEnabled(true);
     }
 
     /* Retour */

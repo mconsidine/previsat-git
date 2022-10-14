@@ -49,10 +49,10 @@
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
 #include "donnees/recherchesatellite.h"
-#include "previsions/evenementsorbitaux.h"
+#include "previsions/calculsevenementsorbitaux.h"
 #include "previsions/calculsflashs.h"
-#include "previsions/previsionspassage.h"
-#include "previsions/transits.h"
+#include "previsions/calculsprevisions.h"
+#include "previsions/calculstransits.h"
 #if defined (Q_OS_WIN)
 #include "telescope/suivitelescope.h"
 #endif
@@ -112,7 +112,7 @@ Onglets::~Onglets()
     EFFACE_OBJET(_informationsSatellite);
     EFFACE_OBJET(_rechercheSatellite);
     EFFACE_OBJET(_informationsISS);
-    EFFACE_OBJET(_previsionsPassage);
+    EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
     EFFACE_OBJET(_transits);
     EFFACE_OBJET(_evenements);
@@ -168,7 +168,7 @@ void Onglets::changeEvent(QEvent *evt)
         _rechercheSatellite->changeEvent(evt);
         _informationsISS->changeEvent(evt);
 
-        _previsionsPassage->changeEvent(evt);
+        _previsions->changeEvent(evt);
         _flashs->changeEvent(evt);
         _transits->changeEvent(evt);
         _evenements->changeEvent(evt);
@@ -244,16 +244,16 @@ void Onglets::Initialisation()
     _informationsISS->show();
 
 
-    _previsionsPassage = new PrevisionsPassage(_ui->prevision);
-    _previsionsPassage->show();
+    _previsions = new CalculsPrevisions(_ui->prevision);
+    _previsions->show();
 
     _flashs = new CalculsFlashs(_ui->flashs);
     _flashs->show();
 
-    _transits = new Transits(_ui->transits);
+    _transits = new CalculsTransits(_ui->transits);
     _transits->show();
 
-    _evenements = new EvenementsOrbitaux(_ui->evenementsOrbitaux);
+    _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
     _evenements->show();
 
 
