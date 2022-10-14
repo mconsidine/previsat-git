@@ -129,6 +129,7 @@ SOURCES += \
     src/librairies/observateur/observateur.cpp                     \
     src/librairies/systeme/logmessage.cpp                          \
     src/librairies/systeme/telechargement.cpp                      \
+    src/previsions/evenementsorbitaux.cpp                          \
     src/previsions/flashs.cpp                                      \
     src/previsions/prevision.cpp                                   \
     src/previsions/transits.cpp
@@ -198,6 +199,7 @@ HEADERS += \
     src/librairies/observateur/observateur.h                     \
     src/librairies/systeme/logmessage.h                          \
     src/librairies/systeme/telechargement.h                      \
+    src/previsions/evenementsorbitaux.h                          \
     src/previsions/flashs.h                                      \
     src/previsions/prevision.h                                   \
     src/previsions/previsionsconst.h                             \
