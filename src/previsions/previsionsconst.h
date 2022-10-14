@@ -89,8 +89,10 @@ struct ConditionsPrevisions
 
 struct ConditionsFlashs
 {
+    bool calcEclipseLune;
     bool effetEclipsePartielle;
     bool extinction;
+    bool refraction;
 
     double angleLimite;
     double crepuscule;
@@ -98,9 +100,6 @@ struct ConditionsFlashs
     double jj1;
     double jj2;
     double magnitudeLimite;
-
-    bool calcEclipseLune;
-    bool refraction;
 
     QString fichier;
     QStringList listeSatellites;
@@ -124,6 +123,23 @@ struct ConditionsTransits
     QList<ElementsOrbitaux> tabElem;
 };
 
+struct ConditionsEvenements
+{
+    bool calcEclipseLune;
+    bool passageApogee;
+    bool passageNoeuds;
+    bool passageOmbre;
+    bool passagePso;
+    bool transitionsJourNuit;
+
+    double jj1;
+    double jj2;
+
+    QString fichier;
+    QString unite;
+    QStringList listeSatellites;
+};
+
 struct ResultatPrevisions
 {
     bool eclipse;
@@ -143,14 +159,18 @@ struct ResultatPrevisions
     double duree;
     double hauteur;
     double hauteurSoleil;
+    double latitude;
+    double longitude;
     double magnitude;
     double magnitudeMax;
     double magnitudeStd;
+    double pso;
 
     QString cap;
     QString constellation;
     QString miroir;
     QString nom;
+    QString typeEvenement;
 
     CorpsTransit typeCorps;
     Date date;
