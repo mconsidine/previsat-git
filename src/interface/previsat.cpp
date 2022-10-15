@@ -30,31 +30,38 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
-#include <QDesktopServices>
-#include "previsat.h"
-#include "ui_onglets.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFileDialog>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTimer>
+#include "ui_options.h"
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QDesktopServices>
+#include "listWidgetItem.h"
+#include "previsat.h"
+#include "ui_onglets.h"
 #include "apropos/apropos.h"
 #include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
 #include "onglets/onglets.h"
+#include "onglets/previsions/calculsevenementsorbitaux.h"
+#include "onglets/previsions/calculsprevisions.h"
+#include "onglets/previsions/calculstransits.h"
+#include "onglets/telescope/suivitelescope.h"
 #include "options/options.h"
 #include "outils/outils.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/previsatexception.h"
-#include "configuration/gestionnairexml.h"
 
 
 // Registre
@@ -84,6 +91,14 @@ PreviSat::PreviSat(QWidget *parent)
         _options = nullptr;
         _outils = nullptr;
 
+        _messageStatut = nullptr;
+        _messageStatut2 = nullptr;
+        _messageStatut3 = nullptr;
+        _modeFonctionnement = nullptr;
+        _stsDate = nullptr;
+        _stsHeure = nullptr;
+        _timerStatut = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -98,6 +113,7 @@ PreviSat::PreviSat(QWidget *parent)
  */
 PreviSat::~PreviSat()
 {
+    EFFACE_OBJET(_informations);
     EFFACE_OBJET(_onglets);
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
@@ -117,6 +133,82 @@ PreviSat::~PreviSat()
 /*
  * Methodes publiques
  */
+/*
+ * Chargement du fichier d'elements orbitaux par defaut
+ */
+void PreviSat::ChargementElementsOrbitaux()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QString nomfic = Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic();
+        QFileInfo ff(nomfic);
+
+        if (!Configuration::instance()->listeFichiersElem().isEmpty() && !Configuration::instance()->listeFichiersElem().contains(ff.fileName())) {
+            nomfic = Configuration::instance()->listeFichiersElem().first();
+            ff = QFileInfo(nomfic);
+        }
+
+        if (ff.exists() && (ff.size() != 0)) {
+
+            if (ff.suffix() == "xml") {
+
+                // Cas d'un fichier au format GP
+                Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                           Configuration::instance()->lgRec()));
+                qInfo() << "Lecture du fichier GP" << ff.fileName();
+
+            } else {
+
+                // Cas d'un fichier au format TLE
+                qInfo() << "Vérification du fichier TLE" << ff.fileName();
+                AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(ff.fileName()));
+
+                if (TLE::VerifieFichier(nomfic, true) > 0) {
+                    qInfo() << QString("Fichier TLE %1 OK").arg(ff.fileName());
+                    AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(ff.fileName()));
+                } else {
+                    qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
+                }
+
+                // Lecture du fichier TLE en entier
+                Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                      Configuration::instance()->lgRec()));
+                qInfo() << "Lecture du fichier TLE" << ff.fileName();
+            }
+
+            // Mise a jour de la liste de satellites
+            QStringList listeSatellites = Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()];
+
+            QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
+            while (it.hasNext()) {
+
+                const QString norad = it.next();
+                if (!Configuration::instance()->mapElementsOrbitaux().keys().contains(norad)) {
+                    listeSatellites.removeOne(norad);
+                }
+            }
+
+            Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()] = listeSatellites;
+
+            if (!listeSatellites.isEmpty()) {
+                GestionnaireXml::EcritureConfiguration();
+            }
+
+            // Affichage de la liste de satellites
+            AfficherListeSatellites(ff.fileName());
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
 
 
 /*************
@@ -154,6 +246,10 @@ void PreviSat::ChargementTraduction(const QString &langue)
     _ui->retranslateUi(this);
     QEvent evt(QEvent::LanguageChange);
 
+    if (_informations != nullptr) {
+        _informations->changeEvent(&evt);
+    }
+
     if (_onglets != nullptr) {
         _onglets->changeEvent(&evt);
     }
@@ -170,6 +266,9 @@ void PreviSat::ChargementTraduction(const QString &langue)
     return;
 }
 
+/*
+ * Creation des menus
+ */
 void PreviSat::CreationMenus()
 {
     /* Declarations des variables locales */
@@ -251,6 +350,32 @@ void PreviSat::CreationRaccourcis()
 }
 
 /*
+ * Gestion de la police
+ */
+void PreviSat::GestionPolice()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFont police;
+#if defined (Q_OS_WIN)
+    police.setFamily("Segoe UI");
+#elif defined (Q_OS_LINUX)
+    police.setFamily("Sans Serif");
+#elif defined (Q_OS_MAC)
+    police.setFamily("Marion");
+#endif
+
+    setFont(police);
+    Configuration::instance()->setPolice(police);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation de la fenetre principale
  */
 void PreviSat::Initialisation()
@@ -283,12 +408,171 @@ void PreviSat::Initialisation()
         CreationMenus();
         CreationRaccourcis();
 
+        // Gestion de la police
+        GestionPolice();
+
+        //on_pasReel_currentIndexChanged(0);
+        _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
+
+        //on_pasManuel_currentIndexChanged(0);
+        _ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
+        _ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
         on_tempsReel_toggled(true);
+        _ui->frameVideo->setVisible(_ui->issLive->isChecked());
+        //_radar->setVisible(!(_ui->issLive->isChecked());
+
+        // Barre de statut
+        InitBarreStatut();
+
+        // Liste des fichiers d'elements orbitaux
+        InitFicElem();
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     } catch (PreviSatException &e) {
         throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de la barre de statut
+ */
+void PreviSat::InitBarreStatut()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut = new QLabel("", this);
+    _messageStatut->setFrameStyle(QFrame::NoFrame);
+    _messageStatut->setIndent(3);
+    _messageStatut->setMinimumSize(405, 0);
+    _messageStatut->setToolTip(tr("Messages"));
+
+    _messageStatut2 = new QLabel("", this);
+    _messageStatut2->setFrameStyle(QFrame::NoFrame);
+    _messageStatut2->setFixedWidth(140);
+    _messageStatut2->setAlignment(Qt::AlignCenter);
+    _messageStatut2->setVisible(false);
+
+    _messageStatut3 = new QLabel("", this);
+    _messageStatut3->setFrameStyle(QFrame::NoFrame);
+    _messageStatut3->setFixedWidth(140);
+    _messageStatut3->setAlignment(Qt::AlignCenter);
+    _messageStatut3->setVisible(false);
+
+    _modeFonctionnement = new QLabel("", this);
+    _modeFonctionnement->setFrameStyle(QFrame::NoFrame);
+    _modeFonctionnement->setFixedWidth(103);
+    _modeFonctionnement->setAlignment(Qt::AlignCenter);
+    _modeFonctionnement->setToolTip(tr("Mode de fonctionnement"));
+
+    _stsDate = new QLabel("", this);
+    _stsDate->setFrameStyle(QFrame::NoFrame);
+    _stsDate->setFixedWidth(90);
+    _stsDate->setAlignment(Qt::AlignCenter);
+    _stsDate->setToolTip(tr("Date"));
+
+    _stsHeure = new QLabel("", this);
+    _stsHeure->setFrameStyle(QFrame::NoFrame);
+    _stsHeure->setFixedWidth(77);
+    _stsHeure->setAlignment(Qt::AlignCenter);
+    _stsHeure->setToolTip(tr("Heure"));
+
+    _ui->barreStatut->addPermanentWidget(_messageStatut, 1);
+    _ui->barreStatut->addPermanentWidget(_messageStatut2);
+    _ui->barreStatut->addPermanentWidget(_messageStatut3);
+    _ui->barreStatut->addPermanentWidget(_modeFonctionnement);
+    _ui->barreStatut->addPermanentWidget(_stsDate);
+    _ui->barreStatut->addPermanentWidget(_stsHeure);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Liste des fichiers d'elements orbitaux
+ */
+void PreviSat::InitFicElem()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QString nomfic;
+        bool ajout = false;
+        bool defaut = false;
+        int idx = 0;
+        QStringList listeElem = Configuration::instance()->listeFichiersElem();
+
+        const bool etat = _ui->listeFichiersElem->blockSignals(true);
+        _ui->listeFichiersElem->clear();
+
+        QStringListIterator it(Configuration::instance()->listeFichiersElem());
+        while (it.hasNext()) {
+
+            const QString nom = it.next();
+            const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirElem() + QDir::separator() + nom);
+
+            const QFileInfo ff(fic);
+            if (ff.suffix() == "xml") {
+
+                // Cas des fichiers GP
+                const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                                         Configuration::instance()->lgRec());
+
+                ajout = (mapElem.size() != 0);
+                nomfic = ff.baseName();
+
+            } else {
+
+                // Cas des fichiers TLE
+                ajout = (TLE::VerifieFichier(fic) > 0);
+                nomfic = nom;
+            }
+
+            if (ajout) {
+
+                // Ajout du fichier dans la liste
+                _ui->listeFichiersElem->addItem(nomfic);
+
+                if (nom == Configuration::instance()->nomfic()) {
+                    const int index = _ui->listeFichiersElem->count() - 1;
+                    _ui->listeFichiersElem->setCurrentIndex(index);
+                    _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
+                }
+            } else {
+
+                // Suppression dans la liste des fichiers qui ne sont pas des elements orbitaux
+                if (nom == Configuration::instance()->nomfic()) {
+                    defaut = true;
+                }
+                listeElem.removeAt(idx);
+            }
+
+            idx++;
+        }
+
+        if (listeElem.count() == 0) {
+            _ui->listeFichiersElem->addItem("");
+        } else {
+            if (defaut) {
+                Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
+            }
+        }
+        _ui->listeFichiersElem->blockSignals(etat);
+
+        // Mise a jour de la liste de fichiers d'elements orbitaux
+        Configuration::instance()->setListeFicElem(listeElem);
+
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */
@@ -310,6 +594,140 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
         qApp->installTranslator(&traduction);
     } else {
         qWarning() << "Impossible de charger le fichier de traduction" << langue;
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Afficher les noms des satellites dans les listes
+ */
+void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets)
+{
+    /* Declarations des variables locales */
+    QString nomsatComplet;
+    ListWidgetItem *elem;
+
+    // TODO a deplacer
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->previsions(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->transits(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->evenements(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->previsions(), SLOT(InitAffichageListeSatellites()));
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->transits(), SLOT(InitAffichageListeSatellites()));
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->evenements(), SLOT(InitAffichageListeSatellites()));
+
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->previsions(), SLOT(TriAffichageListeSatellites()));
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->transits(), SLOT(TriAffichageListeSatellites()));
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->evenements(), SLOT(TriAffichageListeSatellites()));
+
+#if defined (Q_OS_WIN)
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->suiviTelescope(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(InitAffichageListeSatellites()));
+
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(TriAffichageListeSatellites()));
+#endif
+
+    /* Initialisations */
+    _ui->listeSatellites->clear();
+    _ui->listeSatellites->scrollToTop();
+    emit InitAffichageListeSatellites();
+
+    const QStringList &listeSatellites = Configuration::instance()->mapSatellitesFichierElem()[nomfic];
+    const QString noradDefaut = Configuration::instance()->noradDefaut();
+
+    /* Corps de la methode */
+    QMapIterator<QString, ElementsOrbitaux> it(Configuration::instance()->mapElementsOrbitaux());
+    while (it.hasNext()) {
+        it.next();
+
+        const QString nomsat = it.value().nom.trimmed();
+        const QString norad = it.key();
+        const bool check = listeSatellites.contains(norad);
+        const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
+                .arg(nomsat).arg(norad).arg(it.value().donnees.cospar());
+
+        // Affichage du numero NORAD
+        switch (_options->ui()->affNoradListes->checkState()) {
+        default:
+        case Qt::Unchecked:
+            nomsatComplet = nomsat;
+            break;
+
+        case Qt::Checked:
+            nomsatComplet = QString("%1     (%2)").arg(nomsat).arg(norad);
+            break;
+
+        case Qt::PartiallyChecked:
+            nomsatComplet = (nomsat.contains("R/B") || nomsat.contains(" DEB")) ? QString("%1     (%2)").arg(nomsat).arg(norad) : nomsat;
+            break;
+        }
+
+        // Ajout dans la liste principale
+        elem = new ListWidgetItem(nomsatComplet, _ui->listeSatellites);
+        elem->setData(Qt::UserRole, norad);
+        elem->setToolTip(tooltip);
+        elem->setFlags(Qt::ItemIsEnabled);
+        elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+        if (norad == noradDefaut) {
+            _ui->listeSatellites->setCurrentItem(elem);
+        }
+
+        if (majListesOnglets) {
+            // Ajout dans les listes de la barre d'onglets
+            emit AffichageListeSatellites(nomsatComplet, norad, noradDefaut, tooltip, check);
+        }
+    }
+
+    _ui->listeSatellites->sortItems();
+    _ui->listeSatellites->scrollToItem(_ui->listeSatellites->currentItem(), QAbstractItemView::PositionAtTop);
+
+    emit TriAffichageListeSatellites();
+
+
+
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage d'un message dans la zone de statut
+ */
+void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut->setText(message);
+    _messageStatut->repaint();
+
+    if ((_timerStatut != nullptr) && (_timerStatut->interval() > 0)) {
+
+        if (_timerStatut->isActive()) {
+            _timerStatut->stop();
+        }
+
+        _timerStatut->deleteLater();
+        _timerStatut = nullptr;
+    }
+
+    if (secondes > 0) {
+
+        _timerStatut = new QTimer(this);
+        _timerStatut->setInterval(secondes * 1000);
+        connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
+        _timerStatut->start();
     }
 
     /* Retour */
@@ -693,4 +1111,19 @@ void PreviSat::on_actionApropos_triggered()
 
     /* Retour */
     return;
+}
+
+void PreviSat::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listeSatellites->count(); i++) {
+        const QString elem = _ui->listeSatellites->item(i)->text();
+        _ui->listeSatellites->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+void PreviSat::on_filtreSatellites_returnPressed()
+{
+    _ui->filtreSatellites->clear();
+    _ui->listeSatellites->sortItems();
+    _ui->listeSatellites->scrollToItem(_ui->listeSatellites->currentItem(), QAbstractItemView::PositionAtTop);
 }

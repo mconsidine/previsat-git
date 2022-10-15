@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -135,6 +135,28 @@ Ui::Onglets *Onglets::ui()
     return _ui;
 }
 
+CalculsPrevisions *Onglets::previsions() const
+{
+    return _previsions;
+}
+
+CalculsTransits *Onglets::transits() const
+{
+    return _transits;
+}
+
+CalculsEvenementsOrbitaux *Onglets::evenements() const
+{
+    return _evenements;
+}
+
+#if defined (Q_OS_WIN)
+SuiviTelescope *Onglets::suiviTelescope() const
+{
+    return _suiviTelescope;
+}
+#endif
+
 
 /*
  * Modificateurs
@@ -192,6 +214,7 @@ void Onglets::changeEvent(QEvent *evt)
                                        _ui->stackedWidget_previsions->count()]));
     }
 }
+
 
 /*************
  * PROTECTED *

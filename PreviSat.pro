@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    9 octobre 2022
+# >    15 octobre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -147,6 +147,7 @@ HEADERS += \
     src/configuration/gestionnairexml.h                          \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
+    src/interface/listWidgetItem.h                               \
     src/interface/apropos/apropos.h                              \
     src/interface/informations/informations.h                    \
     src/interface/onglets/antenne/antenne.h                      \

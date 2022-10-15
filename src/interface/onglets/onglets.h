@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -96,6 +96,12 @@ public:
      * Accesseurs
      */
     Ui::Onglets *ui();
+    CalculsPrevisions *previsions() const;
+    CalculsTransits *transits() const;
+    CalculsEvenementsOrbitaux *evenements() const;
+#if defined (Q_OS_WIN)
+    SuiviTelescope *suiviTelescope() const;
+#endif
 
 
     /*
@@ -108,6 +114,7 @@ public:
     /*
      * Methodes publiques
      */
+
 
 public slots:
 
@@ -147,7 +154,9 @@ private:
     CalculsTransits *_transits;
     CalculsEvenementsOrbitaux *_evenements;
 
+#if defined (Q_OS_WIN)
     SuiviTelescope *_suiviTelescope;
+#endif
     Antenne *_antenne;
 
 

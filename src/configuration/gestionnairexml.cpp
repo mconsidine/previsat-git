@@ -190,7 +190,7 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
 
                 cfg.writeStartElement("Langue");
                 cfg.writeAttribute("lang", it2.key());
-                cfg.writeTextElement("Nom", it2.value().split("@").at(0).toLower());
+                cfg.writeTextElement("Nom", it2.value().split("@").first().toLower());
                 cfg.writeEndElement();
             }
             cfg.writeTextElement("Site", categorie.site);
@@ -412,7 +412,7 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
 
                                 if (nomfic.isEmpty()) {
                                     nomfic = nom;
-                                    noradDefaut = elements.at(0);
+                                    noradDefaut = elements.first();
                                 }
                             }
                         }

@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "calculsevenementsorbitaux.h"
+#include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -97,6 +98,49 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des satellites dans la liste
+ */
+void CalculsEvenementsOrbitaux::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                                const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeEvenements);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listeEvenements->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void CalculsEvenementsOrbitaux::InitAffichageListeSatellites()
+{
+    _ui->listeEvenements->clear();
+    _ui->listeEvenements->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void CalculsEvenementsOrbitaux::TriAffichageListeSatellites()
+{
+    _ui->listeEvenements->sortItems();
+    _ui->listeEvenements->scrollToItem(_ui->listeEvenements->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
 void CalculsEvenementsOrbitaux::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -143,6 +187,20 @@ void CalculsEvenementsOrbitaux::Initialisation()
 
     /* Retour */
     return;
+}
+
+void CalculsEvenementsOrbitaux::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listeEvenements->count(); i++) {
+        const QString elem = _ui->listeEvenements->item(i)->text();
+        _ui->listeEvenements->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+void CalculsEvenementsOrbitaux::on_filtreSatellites_returnPressed()
+{
+    _ui->filtreSatellites->clear();
+    TriAffichageListeSatellites();
 }
 
 void CalculsEvenementsOrbitaux::on_parametrageDefautEvt_clicked()

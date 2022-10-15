@@ -36,15 +36,20 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QFont>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMap>
 #include <QString>
+#include "librairies/corps/satellite/elementsorbitaux.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "librairies/observateur/observateur.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
@@ -105,6 +110,10 @@ public:
     // Locale
     const QString &locale() const;
 
+    // Polices
+    const QFont &police() const;
+    const QFont &policeWcc() const;
+
     // Versions des fichiers de configuration
     const QString &versionCfg() const;
     const QString &versionCategorieElem() const;
@@ -133,10 +142,17 @@ public:
     int lgRec() const;
 
     // Nom du fichier d'elements orbitaux par defaut
-    const QString &nomfic() const;
+    QString &nomfic();
+
+    // Numero NORAD par defaut
+    const QString &noradDefaut() const;
 
     // Liste des fichiers d'elements orbitaux
     const QStringList &listeFichiersElem() const;
+
+    const QList<Satellite> &listeSatellites() const;
+
+    const QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux() const;
 
     // Frequences radio des satellites
     const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
@@ -145,6 +161,10 @@ public:
     /*
      * Modificateurs
      */
+    void setPolice(const QFont &p);
+    void setPoliceWcc(const QFont &p);
+    void setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux> &map);
+    void setListeFicElem(const QStringList &listeFic);
 
 
 protected:
@@ -200,6 +220,10 @@ private:
 
     // Fichiers du repertoire data local
     QStringList _listeFicLocalData;
+
+    // Polices
+    QFont _police;
+    QFont _policeWcc;
 
 
     // Fichiers xml de configuration
@@ -278,6 +302,12 @@ private:
     // Liste des fichiers d'elements orbitaux
     QStringList _listeFichiersElem;
 
+    // Map des elements orbitaux d'un fichier
+    QMap<QString, ElementsOrbitaux> _mapElementsOrbitaux;
+
+    QList<Satellite> _listeSatellites;
+
+    // Autres
     // Liste des cartes du monde
     QStringList _listeFicMap;
 

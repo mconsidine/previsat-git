@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -41,6 +41,7 @@
 #include "ui_calculsprevisions.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -87,16 +88,62 @@ CalculsPrevisions::~CalculsPrevisions()
 /*
  * Accesseurs
  */
+Ui::CalculsPrevisions *CalculsPrevisions::ui() const
+{
+    return _ui;
+}
 
 
 /*
  * Modificateurs
  */
 
-
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des satellites dans la liste
+ */
+void CalculsPrevisions::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                                const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listePrevisions);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listePrevisions->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void CalculsPrevisions::InitAffichageListeSatellites()
+{
+    _ui->listePrevisions->clear();
+    _ui->listePrevisions->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void CalculsPrevisions::TriAffichageListeSatellites()
+{
+    _ui->listePrevisions->sortItems();
+    _ui->listePrevisions->scrollToItem(_ui->listePrevisions->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
 void CalculsPrevisions::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -147,6 +194,20 @@ void CalculsPrevisions::Initialisation()
 
     /* Retour */
     return;
+}
+
+void CalculsPrevisions::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listePrevisions->count(); i++) {
+        const QString elem = _ui->listePrevisions->item(i)->text();
+        _ui->listePrevisions->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+void CalculsPrevisions::on_filtreSatellites_returnPressed()
+{
+    _ui->filtreSatellites->clear();
+    TriAffichageListeSatellites();
 }
 
 void CalculsPrevisions::on_parametrageDefautPrev_clicked()

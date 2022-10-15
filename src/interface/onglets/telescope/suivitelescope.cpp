@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -41,6 +41,7 @@
 #include "ui_suivitelescope.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -97,6 +98,49 @@ SuiviTelescope::~SuiviTelescope()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des satellites dans la liste
+ */
+void SuiviTelescope::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                             const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTelescope);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listeTelescope->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void SuiviTelescope::InitAffichageListeSatellites()
+{
+    _ui->listeTelescope->clear();
+    _ui->listeTelescope->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void SuiviTelescope::TriAffichageListeSatellites()
+{
+    _ui->listeTelescope->sortItems();
+    _ui->listeTelescope->scrollToItem(_ui->listeTelescope->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
 void SuiviTelescope::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -148,6 +192,20 @@ void SuiviTelescope::Initialisation()
     return;
 }
 
+void SuiviTelescope::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listeTelescope->count(); i++) {
+        const QString elem = _ui->listeTelescope->item(i)->text();
+        _ui->listeTelescope->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+void SuiviTelescope::on_filtreSatellites_returnPressed()
+{
+    _ui->filtreSatellites->clear();
+    TriAffichageListeSatellites();
+}
+
 void SuiviTelescope::on_parametrageDefautSuivi_clicked()
 {
     /* Declarations des variables locales */
@@ -165,4 +223,3 @@ void SuiviTelescope::on_parametrageDefautSuivi_clicked()
     /* Retour */
     return;
 }
-

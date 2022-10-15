@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -129,7 +129,7 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
             while (!flux.atEnd()) {
 
                 const QStringList ligne = flux.readLine().split(" ");
-                const QPair<int, int> lig(ligne.at(0).toInt(), ligne.at(1).toInt());
+                const QPair<int, int> lig(ligne.first().toInt(), ligne.at(1).toInt());
                 _tabLigCst.append(lig);
             }
         }

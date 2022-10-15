@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -143,6 +143,13 @@ bool Informations::UrlExiste(const QUrl &url)
 
     /* Retour */
     return false;
+}
+
+void Informations::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
 }
 
 

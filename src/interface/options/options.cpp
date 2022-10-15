@@ -30,17 +30,23 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
 #include "options.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -82,6 +88,10 @@ Options::~Options()
 /*
  * Accesseurs
  */
+Ui::Options *Options::ui()
+{
+    return _ui;
+}
 
 /*
  * Modificateurs
@@ -108,6 +118,38 @@ void Options::Initialisation()
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
     _ui->listeOptions->setFocus();
+
+    const int index = settings.value("affichage/policeWCC", 0).toInt();
+    _ui->policeWCC->clear();
+
+#if defined (Q_OS_WIN)
+    _ui->policeWCC->addItem("Lucida Console");
+    _ui->policeWCC->addItem("MS Shell Dlg 2");
+
+    const int taille = 10;
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+
+#elif defined (Q_OS_LINUX)
+    _ui->policeWCC->addItem("FreeSans");
+    _ui->policeWCC->addItem("Sans Serif");
+
+    const int taille = 11;
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille);
+
+#elif defined (Q_OS_MAC)
+    _ui->policeWCC->addItem("Lucida Grande");
+    _ui->policeWCC->addItem("Marion");
+
+    const int taille = 13;
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+
+#else
+    const int taille = 11;
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille);
+
+#endif
+
+    Configuration::instance()->setPoliceWcc(policeWcc);
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 

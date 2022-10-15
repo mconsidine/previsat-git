@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -56,6 +56,7 @@ namespace Ui { class PreviSat; }
 QT_END_NAMESPACE
 
 
+class QLabel;
 class Informations;
 class Onglets;
 class Options;
@@ -94,6 +95,17 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief ChargementElementsOrbitaux Chargement du fichier d'elements orbitaux par defaut
+     */
+    void ChargementElementsOrbitaux();
+
+
+signals:
+
+    void AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool);
+    void InitAffichageListeSatellites();
+    void TriAffichageListeSatellites();
 
 
 protected:
@@ -133,6 +145,16 @@ private:
     Options *_options;
     Outils *_outils;
 
+    // Barre de statut
+    QLabel *_messageStatut;
+    QLabel *_messageStatut2;
+    QLabel *_messageStatut3;
+    QLabel *_modeFonctionnement;
+    QLabel *_stsDate;
+    QLabel *_stsHeure;
+
+    QTimer *_timerStatut;
+
 
     /*
      * Methodes privees
@@ -143,6 +165,9 @@ private:
      */
     void ChargementTraduction(const QString &langue);
 
+    /**
+     * @brief CreationMenus Creation des menus
+     */
     void CreationMenus();
 
     /**
@@ -151,9 +176,24 @@ private:
     void CreationRaccourcis();
 
     /**
+     * @brief GestionPolice Gestion de la police
+     */
+    void GestionPolice();
+
+    /**
      * @brief Initialisation Initialisation de la fenetre principale
      */
     void Initialisation();
+
+    /**
+     * @brief InitBarreStatut Initialisation de la barre de statut
+     */
+    void InitBarreStatut();
+
+    /**
+     * @brief InitFicElem Liste des fichiers d'elements orbitaux
+     */
+    void InitFicElem();
 
     /**
      * @brief InstallationTraduction Installation de la traduction
@@ -164,6 +204,21 @@ private:
 
 
 private slots:
+
+    /**
+     * @brief AfficherListeSatellites Afficher les noms des satellites dans les listes
+     * @param nomfic nom du fichier TLE
+     * @param majListesOnglets mise a jour des listes dans les onglets
+     */
+    void AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets = true);
+
+    /**
+     * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
+     * @param message message
+     * @param secondes nombre de secondes pendant lesquelles le message est affiche
+     */
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+
 
     // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
@@ -212,6 +267,9 @@ private slots:
 
     void on_actionContact_triggered();
     void on_actionApropos_triggered();
+
+    void on_filtreSatellites_textChanged(const QString &arg1);
+    void on_filtreSatellites_returnPressed();
 
 };
 
