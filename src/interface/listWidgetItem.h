@@ -18,62 +18,48 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    informations.h
+ * >    listwidgetitem.h
  *
  * Localisation
- * >
+ * >    interface
  *
  * Heritage
- * >    QMainWindow
+ * >    QListWidgetItem
+ *
+ * Description
+ * >    Liste personnalisee
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    1er mai 2019
+ * >
  *
  * Date de revision
- * >    15 octobre 2022
+ * >
  *
  */
 
-#ifndef INFORMATIONS_H
-#define INFORMATIONS_H
+#ifndef LISTWIDGETITEM_H
+#define LISTWIDGETITEM_H
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QMainWindow>
+#include <QListWidgetItem>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 
 
-class QTextBrowser;
-class QUrl;
-
-namespace Ui {
-class Informations;
-}
-
-class Informations : public QMainWindow
+class ListWidgetItem : public QListWidgetItem
 {
-    Q_OBJECT
-
 public:
 
     /*
      *  Constructeurs
      */
-    /**
-     * @brief Informations Constructeur par defaut
-     * @param fenetreParent fenetre parent
-     */
-    explicit Informations(QWidget *fenetreParent);
-
-
-    /*
-     * Destructeur
-     */
-    ~Informations();
+    explicit ListWidgetItem(const QString &text, QListWidget *listview = nullptr) :
+        QListWidgetItem(text, listview) {
+    }
 
 
     /*
@@ -83,17 +69,10 @@ public:
     /*
      * Methodes publiques
      */
-    /**
-     * @brief UrlExiste Verification de l'existence d'une adresse
-     * @param url url
-     * @return vrai si l'url existe
-     */
-    static bool UrlExiste(const QUrl &url);
-
-
-public slots:
-
-    void changeEvent(QEvent *evt);
+    virtual bool operator < (const QListWidgetItem & other) const {
+        return  (data(Qt::DisplayRole) == other.data(Qt::DisplayRole)) ?
+                    (data(Qt::UserRole).toString() < other.data(Qt::UserRole).toString()) : QListWidgetItem::operator < (other);
+    }
 
 
 protected:
@@ -112,26 +91,12 @@ private:
     /*
      * Variables privees
      */
-    Ui::Informations *_ui;
-
 
     /*
      * Methodes privees
      */
-    /**
-     * @brief OuvertureInfo Ouverture du fichier d'informations
-     * @param nomfic nom du fichier
-     * @param onglet onglet
-     * @param zoneTexte zone de texte
-     */
-    void OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte);
-
-
-private slots:
-
-    void on_ok_clicked();
 
 
 };
 
-#endif // INFORMATIONS_H
+#endif // LISTWIDGETITEM_H

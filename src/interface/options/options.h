@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -79,6 +79,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Options *ui();
+
 
     /*
      * Modificateurs

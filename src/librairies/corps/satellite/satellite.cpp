@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -83,7 +83,7 @@ Satellite::Satellite(const QList<ElementsOrbitaux> &elem) :
     _ageElementsOrbitaux = 0.;
     _beta = 0.;
     _deltaNbOrb = NB_ORB_INDEFINI;
-    _elementsOrbitaux = _listElements.at(0);
+    _elementsOrbitaux = _listElements.first();
     _sgp4.setInit(false);
 
     /* Retour */
@@ -195,7 +195,7 @@ void Satellite::CalculPosVit(const Date &date)
         if (!_listElements.isEmpty()) {
 
             const double jjsav = _elementsOrbitaux.epoque.jourJulienUTC();
-            _elementsOrbitaux = _listElements.at(0);
+            _elementsOrbitaux = _listElements.first();
 
             // Recherche du TLE le plus recent
             QListIterator it(_listElements);

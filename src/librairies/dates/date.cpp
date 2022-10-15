@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -327,14 +327,14 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
-        const QStringList anneeNbJours = dateNasa.at(0).split("-", Qt::SkipEmptyParts);
+        const QStringList anneeNbJours = dateNasa.first().split("-", Qt::SkipEmptyParts);
 
         if (anneeNbJours.size() != 2) {
             qWarning() << "Date au format NASA invalide (anneeNbJours.size() != 2)";
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
-        const int an = anneeNbJours.at(0).toInt();
+        const int an = anneeNbJours.first().toInt();
         const int nbJours = anneeNbJours.at(1).toInt();
         const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", Qt::SkipEmptyParts);
 
@@ -343,7 +343,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
-        const int hr = heures.at(0).toInt();
+        const int hr = heures.first().toInt();
         const int mn = heures.at(1).toInt();
         const double sec = heures.at(2).toDouble();
         const double jours = nbJours + hr * NB_JOUR_PAR_HEUR + mn * NB_JOUR_PAR_MIN + sec * NB_JOUR_PAR_SEC;
@@ -669,7 +669,7 @@ void Date::getDeltaAT()
             throw PreviSatException(QT_TRANSLATE_NOOP("Date", "Ecarts TAI-UTC non initialisés"), MessageType::WARNING);
         }
 
-        if (_jourJulienUTC < (_ecartsTAI_UTC.at(0).first - TJ2000)) {
+        if (_jourJulienUTC < (_ecartsTAI_UTC.first().first - TJ2000)) {
 
             const double mjd = _jourJulienUTC + 51544.5;
 

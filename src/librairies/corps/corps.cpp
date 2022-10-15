@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -640,7 +640,7 @@ void Corps::Initialisation(const QString &dirCommonData)
 
                         const QStringList list = ligne.split(" ", Qt::SkipEmptyParts);
 
-                        cst.nom = list.at(0);
+                        cst.nom = list.first();
                         cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
                         cst.ad2 = list.at(2).toDouble() * HEUR2RAD;
                         cst.dec = list.at(3).toDouble() * DEG2RAD;

@@ -33,15 +33,16 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    15 octobre 2022
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#include <QSplashScreen>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -71,9 +72,29 @@ int main(int argc, char *argv[])
         const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");
         Q_UNUSED(msg)
 
+        // Lancement du splash screen
+        QSplashScreen * const splash = new QSplashScreen;
+        splash->setPixmap(QPixmap(":/resources/interface/splashscreen.png"));
+        splash->show();
 
+        const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
+        splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
+        a.processEvents();
+
+        // Creation de la fenetre principale
         PreviSat w;
+
+        // Ouverture du fichier d'elements orbitaux par defaut
+        splash->showMessage(QObject::tr("Ouverture du fichier d'elements orbitaux...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.ChargementElementsOrbitaux();
+
+
+
+        // Affichage de la fenetre principale et suppression du splash screen
         w.show();
+        splash->finish(&w);
+        delete splash;
 
         /* Retour */
         return a.exec();

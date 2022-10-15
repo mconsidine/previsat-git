@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 octobre 2022
+ * >    15 octobre 2022
  *
  */
 
@@ -155,9 +155,9 @@ void Configuration::Chargement()
 
         // Ecriture d'informations dans le fichier de log
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(_observateurs.at(0).longitude() * RAD2DEG, 0, 'f', 9)
-                   .arg(_observateurs.at(0).latitude() * RAD2DEG, 0, 'f', 9)
-                   .arg(_observateurs.at(0).altitude() * 1.e3);
+                   .arg(_observateurs.first().longitude() * RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.first().latitude() * RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.first().altitude() * 1.e3);
 
         qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
         qInfo() << "Numéro NORAD par défaut :" << _noradDefaut;
@@ -300,6 +300,16 @@ const QString &Configuration::locale() const
     return _locale;
 }
 
+const QFont &Configuration::police() const
+{
+    return _police;
+}
+
+const QFont &Configuration::policeWcc() const
+{
+    return _policeWcc;
+}
+
 
 const QString &Configuration::versionCfg() const
 {
@@ -365,14 +375,29 @@ int Configuration::lgRec() const
     return _lgRec;
 }
 
-const QString &Configuration::nomfic() const
+QString &Configuration::nomfic()
 {
     return _nomfic;
+}
+
+const QString &Configuration::noradDefaut() const
+{
+    return _noradDefaut;
 }
 
 const QStringList &Configuration::listeFichiersElem() const
 {
     return _listeFichiersElem;
+}
+
+const QList<Satellite> &Configuration::listeSatellites() const
+{
+    return _listeSatellites;
+}
+
+const QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux() const
+{
+    return _mapElementsOrbitaux;
 }
 
 const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const
@@ -384,6 +409,25 @@ const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio()
 /*
  * Modificateurs
  */
+void Configuration::setPolice(const QFont &p)
+{
+    _police = p;
+}
+
+void Configuration::setPoliceWcc(const QFont &p)
+{
+    _policeWcc = p;
+}
+
+void Configuration::setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux> &map)
+{
+    _mapElementsOrbitaux = map;
+}
+
+void Configuration::setListeFicElem(const QStringList &listeFic)
+{
+    _listeFichiersElem = listeFic;
+}
 
 
 /*************
@@ -417,7 +461,7 @@ void Configuration::DefinitionArborescences()
     _dirExe = QCoreApplication::applicationDirPath();
 
     const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory);
-    const QString dir = listeGenericDir.at(0) + dirAstr + QDir::separator();
+    const QString dir = listeGenericDir.first() + dirAstr + QDir::separator();
     _dirLocalData = dir + "data";
     _dirElem = dir + "elem";
     _dirLog = dir + "log";

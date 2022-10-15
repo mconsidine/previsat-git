@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -41,6 +41,7 @@
 #include "ui_calculstransits.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -97,6 +98,49 @@ CalculsTransits::~CalculsTransits()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des satellites dans la liste
+ */
+void CalculsTransits::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                              const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTransits);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listeTransits->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void CalculsTransits::InitAffichageListeSatellites()
+{
+    _ui->listeTransits->clear();
+    _ui->listeTransits->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void CalculsTransits::TriAffichageListeSatellites()
+{
+    _ui->listeTransits->sortItems();
+    _ui->listeTransits->scrollToItem(_ui->listeTransits->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
 void CalculsTransits::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -143,6 +187,20 @@ void CalculsTransits::Initialisation()
 
     /* Retour */
     return;
+}
+
+void CalculsTransits::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listeTransits->count(); i++) {
+        const QString elem = _ui->listeTransits->item(i)->text();
+        _ui->listeTransits->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+void CalculsTransits::on_filtreSatellites_returnPressed()
+{
+    _ui->filtreSatellites->clear();
+    TriAffichageListeSatellites();
 }
 
 void CalculsTransits::on_parametrageDefautTransit_clicked()

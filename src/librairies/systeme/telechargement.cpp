@@ -93,7 +93,7 @@ void Telechargement::TelechargementFichier(const QUrl &url)
 
     const QFileInfo ff(url.path());
     const QString fic = (ff.fileName().contains("gp")) ?
-                url.query().split("&", Qt::SkipEmptyParts).at(0).split("=", Qt::SkipEmptyParts).at(1) + ".xml" : ff.fileName();
+                url.query().split("&", Qt::SkipEmptyParts).first().split("=", Qt::SkipEmptyParts).at(1) + ".xml" : ff.fileName();
 
     if (reponse->error()) {
 

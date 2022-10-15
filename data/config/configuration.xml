@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreviSatConfiguration version="1.2">
-    <NoradStationSpatiale>25544</NoradStationSpatiale>
+    <NoradStationSpatiale>025544</NoradStationSpatiale>
     <AdresseCelestrak>http://celestrak.org/</AdresseCelestrak>
     <NomFichierEvenementsStationSpatiale>ISS.OEM_J2K_EPH.xml</NomFichierEvenementsStationSpatiale>
     <Observateurs>
@@ -25,8 +25,8 @@
     </Observateurs>
     <FichiersElem>
         <Fichier nom="visual.xml">
-            <Norad>25544</Norad>
-            <Norad>20580</Norad>
+            <Norad>025544</Norad>
+            <Norad>020580</Norad>
         </Fichier>
     </FichiersElem>
 </PreviSatConfiguration>
