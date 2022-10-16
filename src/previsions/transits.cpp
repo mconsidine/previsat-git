@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -145,13 +145,13 @@ int Transits::CalculTransits(int &nombre)
     QList<QList<ResultatPrevisions> > resultatSat;
 
     // Boucle sur le tableau d'ephemerides
-    QMapIterator<CorpsTransit, QList<EphemeridesTransits> > it1(tabEphem);
+    QMapIterator it1(tabEphem);
     while (it1.hasNext()) {
         it1.next();
 
         const CorpsTransit typeCorps = it1.key();
 
-        QListIterator<EphemeridesTransits> it2(it1.value());
+        QListIterator it2(it1.value());
         while (it2.hasNext()) {
 
             const EphemeridesTransits ephem = it2.next();

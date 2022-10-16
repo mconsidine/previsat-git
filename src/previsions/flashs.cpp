@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -138,7 +138,7 @@ int Flashs::CalculFlashs(int &nombre)
     // TODO si TLE
 
     // Creation du tableau de satellites
-    QMapIterator<QString, ElementsOrbitaux> it1(tabElem);
+    QMapIterator it1(tabElem);
     while (it1.hasNext()) {
         it1.next();
 
@@ -170,7 +170,7 @@ int Flashs::CalculFlashs(int &nombre)
 
 
     /* Corps de la methode */
-    QListIterator<EphemeridesFlashs> it2(tabEphem);
+    QListIterator it2(tabEphem);
 
     bool atrouve;
     double jj0;
@@ -185,7 +185,7 @@ int Flashs::CalculFlashs(int &nombre)
     QPair<double, double> minmax;
 
     // Boucle sur les satellites
-    QListIterator<Satellite> it4(sats);
+    QListIterator it4(sats);
     while (it4.hasNext()) {
 
         sat = it4.next();

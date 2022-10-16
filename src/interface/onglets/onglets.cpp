@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -85,11 +85,13 @@ static const char* _titresPrevisions[] = {
 /*
  * Constructeur par defaut
  */
-Onglets::Onglets(QWidget *parent) :
+Onglets::Onglets(Options *options, QWidget *parent) :
     QTabWidget(parent),
     _ui(new Ui::Onglets)
 {
     _ui->setupUi(this);
+
+    _options = options;
 
     try {
 
@@ -233,6 +235,14 @@ void Onglets::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
+ * Affichage du lieu d'observation
+ */
+void Onglets::AffichageLieuObservation()
+{
+    emit AffichageLieuObs();
+}
+
+/*
  * Initialisation de la classe Onglets
  */
 void Onglets::Initialisation()
@@ -250,7 +260,7 @@ void Onglets::Initialisation()
     setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
 
     // Initialisation des onglets
-    _general = new General(_ui->general);
+    _general = new General(_options, _ui->general);
     _general->show();
 
     _osculateurs = new Osculateurs(_ui->elementsOsculateurs);
@@ -290,6 +300,13 @@ void Onglets::Initialisation()
     _antenne = new Antenne(_ui->antenne);
     _antenne->show();
 
+    connect(this, SIGNAL(AffichageLieuObs()), _general, SLOT(AffichageLieuObs()));
+    connect(this, SIGNAL(AffichageLieuObs()), _previsions, SLOT(AffichageLieuObs()));
+    connect(this, SIGNAL(AffichageLieuObs()), _flashs, SLOT(AffichageLieuObs()));
+    connect(this, SIGNAL(AffichageLieuObs()), _transits, SLOT(AffichageLieuObs()));
+    connect(this, SIGNAL(AffichageLieuObs()), _suiviTelescope, SLOT(AffichageLieuObs()));
+
+    AffichageLieuObservation();
 
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
 

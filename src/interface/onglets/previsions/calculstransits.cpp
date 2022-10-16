@@ -41,7 +41,8 @@
 #include "ui_calculstransits.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include "interface/listWidgetItem.h"
+#include "configuration/configuration.h"
+#include "interface/listwidgetitem.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -98,49 +99,6 @@ CalculsTransits::~CalculsTransits()
 /*
  * Methodes publiques
  */
-/*
- * Affichage des satellites dans la liste
- */
-void CalculsTransits::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
-                                              const bool check)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTransits);
-    elem->setData(Qt::UserRole, norad);
-    elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-
-    if (norad == noradDefaut) {
-        _ui->listeTransits->setCurrentItem(elem);
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Initialisation de l'affichage de la liste
- */
-void CalculsTransits::InitAffichageListeSatellites()
-{
-    _ui->listeTransits->clear();
-    _ui->listeTransits->scrollToTop();
-}
-
-/*
- * Tri dans l'affichage des satellites
- */
-void CalculsTransits::TriAffichageListeSatellites()
-{
-    _ui->listeTransits->sortItems();
-    _ui->listeTransits->scrollToItem(_ui->listeTransits->currentItem(), QAbstractItemView::PositionAtTop);
-}
-
 void CalculsTransits::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -187,6 +145,72 @@ void CalculsTransits::Initialisation()
 
     /* Retour */
     return;
+}
+
+/*
+ * Affichage des lieux d'observation dans la liste deroulante
+ */
+void CalculsTransits::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->lieuxObservation->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+        const QString nomlieu = it.next().nomlieu();
+        _ui->lieuxObservation->addItem(nomlieu);
+    }
+
+    _ui->lieuxObservation->setCurrentIndex(0);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des satellites dans la liste
+ */
+void CalculsTransits::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                              const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTransits);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listeTransits->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void CalculsTransits::InitAffichageListeSatellites()
+{
+    _ui->listeTransits->clear();
+    _ui->listeTransits->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void CalculsTransits::TriAffichageListeSatellites()
+{
+    _ui->listeTransits->sortItems();
+    _ui->listeTransits->scrollToItem(_ui->listeTransits->currentItem(), QAbstractItemView::PositionAtTop);
 }
 
 void CalculsTransits::on_filtreSatellites_textChanged(const QString &arg1)

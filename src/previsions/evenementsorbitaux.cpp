@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -134,7 +134,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     // TODO si le fichier n'est un GP
 
     // Creation du tableau de satellites
-    QMapIterator<QString, ElementsOrbitaux> it1(tabElem);
+    QMapIterator it1(tabElem);
     while (it1.hasNext()) {
         it1.next();
 
@@ -187,7 +187,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
 
     // Boucle sur les satellites
     int j = 0;
-    QMapIterator<QString, QList<EphemeridesEvenements> > it2(tabEphem);
+    QMapIterator it2(tabEphem);
     while (it2.hasNext()) {
         it2.next();
 
@@ -208,7 +208,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
         // Boucle sur les ephemerides
         i = 0;
         dim = static_cast<int> (it2.value().size() - 2);
-        QListIterator<EphemeridesEvenements> it3(it2.value());
+        QListIterator it3(it2.value());
         do {
 
             const EphemeridesEvenements eph1 = it3.next();
@@ -480,7 +480,7 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
     const double pas = NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
-    QListIterator<Satellite> it(satellites);
+    QListIterator it(satellites);
     while (it.hasNext()) {
 
         sat = it.next();

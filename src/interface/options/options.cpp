@@ -151,6 +151,8 @@ void Options::Initialisation()
 
     Configuration::instance()->setPoliceWcc(policeWcc);
 
+    AffichageLieuObs();
+
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     /* Retour */
@@ -181,6 +183,27 @@ void Options::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+/*
+ * Affichage des lieux d'observation selectionnes
+ */
+void Options::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->selecLieux->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+        const QString nomlieu = it.next().nomlieu();
+        _ui->selecLieux->addItem(nomlieu);
+    }
+
+    /* Retour */
+    return;
+}
+
 void Options::on_listeOptions_currentRowChanged(int currentRow)
 {
     _ui->stackedWidget_options->setCurrentIndex(currentRow);

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -138,6 +138,8 @@ void Configuration::Chargement()
 
         // Lecture du fichier de constellations
         Corps::Initialisation(_dirCommonData);
+
+        _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
 
         const QString httpDir = QString("%1%2/Qt/commun/data/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower());
         _mapAdressesTelechargement.insert(AdressesTelechargement::COORDONNEES, httpDir + "coordinates/");
@@ -327,6 +329,11 @@ const QString &Configuration::adresseCelestrak() const
     return _adresseCelestrak;
 }
 
+const QString &Configuration::adresseCelestrakNorad() const
+{
+    return _adresseCelestrakNorad;
+}
+
 
 const QString &Configuration::nomFichierEvenementsStationSpatiale() const
 {
@@ -358,6 +365,11 @@ const QMap<QString, QStringList> &Configuration::mapSatellitesFichierElem() cons
 const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesElementsOrbitaux() const
 {
     return _listeCategoriesElementsOrbitaux;
+}
+
+const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesMajElementsOrbitaux() const
+{
+    return _listeCategoriesMajElementsOrbitaux;
 }
 
 const QMap<QString, SatellitesFlashs> &Configuration::mapFlashs() const

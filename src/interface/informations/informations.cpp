@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -52,6 +52,7 @@
 #include <QTcpSocket>
 #include "informations.h"
 #include "configuration/configuration.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -177,29 +178,34 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString url = QString("%1/data/informations/").arg(DOMAIN_NAME) + nomfic;
 
     /* Corps de la methode */
-    if (UrlExiste(url)) {
+    try {
 
-        Telechargement telechargement(Configuration::instance()->dirTmp());
-        telechargement.TelechargementFichier(url);
+        const QString url = QString("%1/data/informations/").arg(DOMAIN_NAME) + nomfic;
 
-        QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomfic);
-        if (fi.exists() && (fi.size() > 0)) {
+        if (UrlExiste(url)) {
 
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                zoneTexte->setHtml(fi.readAll());
+            Telechargement telechargement(Configuration::instance()->dirTmp());
+            telechargement.TelechargementFichier(url);
+
+            QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + nomfic);
+            if (fi.exists() && (fi.size() > 0)) {
+
+                if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    zoneTexte->setHtml(fi.readAll());
+                }
+                fi.close();
             }
-            fi.close();
-        }
 
-    } else {
-        if (onglet == _ui->ongletDerniereInfo) {
-            deleteLater();
         } else {
-            _ui->ongletsInfos->removeTab(_ui->ongletsInfos->indexOf(onglet));
+            if (onglet == _ui->ongletDerniereInfo) {
+                deleteLater();
+            } else {
+                _ui->ongletsInfos->removeTab(_ui->ongletsInfos->indexOf(onglet));
+            }
         }
+    } catch (PreviSatException &e) {
     }
 
     /* Retour */

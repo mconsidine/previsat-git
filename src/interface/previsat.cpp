@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -45,7 +45,8 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QDesktopServices>
-#include "listWidgetItem.h"
+#include <QMessageBox>
+#include "listwidgetitem.h"
 #include "previsat.h"
 #include "ui_onglets.h"
 #include "apropos/apropos.h"
@@ -61,7 +62,10 @@
 #include "outils/outils.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/dates/date.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
+#include "librairies/systeme/telechargement.h"
 
 
 // Registre
@@ -99,6 +103,8 @@ PreviSat::PreviSat(QWidget *parent)
         _stsHeure = nullptr;
         _timerStatut = nullptr;
 
+        _dateCourante = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -134,9 +140,62 @@ PreviSat::~PreviSat()
  * Methodes publiques
  */
 /*
+ * Mise a jour des elements orbitaux lors du demarrage
+ */
+void PreviSat::MajGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    InitDate();
+
+    /* Corps de la methode */
+    // Mise a jour des elements orbitaux si necessaire
+    if (Configuration::instance()->listeCategoriesElementsOrbitaux().size() > 0) {
+
+        if (settings.value("temps/ageMaxElementsOrbitaux", true).toBool()) {
+
+            const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
+            const int ageMax = settings.value("temps/ageMax", 15).toInt();
+            const QString noradDefaut = Configuration::instance()->noradDefaut();
+
+            if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
+                    ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
+                MajWebGP();
+                settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+            }
+        } else {
+            emit AfficherMessageStatut(tr("Mise à jour automatique des éléments orbitaux"), 10);
+            MajWebGP();
+            settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+        }
+    } else {
+        VerifAgeGP();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Demarrage de l'application apres le chargement de la configuration
+ */
+void PreviSat::DemarrageApplication()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return;
+}
+
+/*
  * Chargement du fichier d'elements orbitaux par defaut
  */
-void PreviSat::ChargementElementsOrbitaux()
+void PreviSat::ChargementGP()
 {
     /* Declarations des variables locales */
 
@@ -160,7 +219,7 @@ void PreviSat::ChargementElementsOrbitaux()
                 // Cas d'un fichier au format GP
                 Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
                                                                                            Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier GP" << ff.fileName();
+                qInfo() << "Lecture du fichier GP" << ff.fileName() << "OK";
 
             } else {
 
@@ -178,7 +237,7 @@ void PreviSat::ChargementElementsOrbitaux()
                 // Lecture du fichier TLE en entier
                 Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
                                                                                       Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier TLE" << ff.fileName();
+                qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
             }
 
             // Mise a jour de la liste de satellites
@@ -261,6 +320,47 @@ void PreviSat::ChargementTraduction(const QString &langue)
     if (_outils != nullptr) {
         _outils->changeEvent(&evt);
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Connexions entre les differents elements de l'interface
+ */
+void PreviSat::ConnexionsSignauxSlots()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Connexions avec la barre d'onglets
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->previsions(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->transits(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->evenements(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->previsions(), SLOT(InitAffichageListeSatellites()));
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->transits(), SLOT(InitAffichageListeSatellites()));
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->evenements(), SLOT(InitAffichageListeSatellites()));
+
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->previsions(), SLOT(TriAffichageListeSatellites()));
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->transits(), SLOT(TriAffichageListeSatellites()));
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->evenements(), SLOT(TriAffichageListeSatellites()));
+
+#if defined (Q_OS_WIN)
+    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
+            _onglets->suiviTelescope(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+
+    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(InitAffichageListeSatellites()));
+
+    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(TriAffichageListeSatellites()));
+#endif
 
     /* Retour */
     return;
@@ -401,12 +501,15 @@ void PreviSat::Initialisation()
         qInfo() << "Début Initialisation" << metaObject()->className();
 
         _informations = new Informations(this);
-        _onglets = new Onglets(_ui->frameOnglets);
         _options = new Options();
+        _onglets = new Onglets(_options, _ui->frameOnglets);
         _outils = new Outils();
 
         CreationMenus();
         CreationRaccourcis();
+
+        // Connexions signaux-slots
+        ConnexionsSignauxSlots();
 
         // Gestion de la police
         GestionPolice();
@@ -425,7 +528,7 @@ void PreviSat::Initialisation()
         InitBarreStatut();
 
         // Liste des fichiers d'elements orbitaux
-        InitFicElem();
+        InitFicGP();
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -495,9 +598,32 @@ void PreviSat::InitBarreStatut()
 }
 
 /*
+ * Initialisation de la date
+ */
+void PreviSat::InitDate()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Determination automatique de l'ecart heure locale - UTC
+    const double ecart = Date::CalculOffsetUTC(QDateTime::currentDateTime());
+    double offsetUTC = (_options->ui()->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
+    _options->ui()->updown->setValue(sgn(offsetUTC) * (static_cast<int>(fabs(offsetUTC) * NB_SEC_PAR_JOUR + EPS_DATES)));
+    offsetUTC = (_options->ui()->heureLegale->isChecked()) ? _options->ui()->updown->value() * NB_JOUR_PAR_SEC : 0.;
+
+    // Date et heure locales
+    _dateCourante = new Date(offsetUTC);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Liste des fichiers d'elements orbitaux
  */
-void PreviSat::InitFicElem()
+void PreviSat::InitFicGP()
 {
     /* Declarations des variables locales */
 
@@ -601,6 +727,124 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
 }
 
 /*
+ * Mise a jour du fichier GP courant
+ */
+void PreviSat::MajFichierGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Mise a jour du fichier GP courant";
+
+        const QFileInfo ff(Configuration::instance()->nomfic());
+
+        Telechargement tel(Configuration::instance()->dirElem());
+        _messageStatut->setText(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()));
+
+        const QString ficMaj = (ff.fileName().contains("spctrk")) ?
+                    QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) : Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
+
+        tel.TelechargementFichier(QUrl(ficMaj));
+        AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+        settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Mise a jour automatique des elements orbitaux
+ */
+void PreviSat::MajWebGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Mise a jour des fichiers GP";
+
+        Telechargement tel(Configuration::instance()->dirElem());
+
+        QListIterator it(Configuration::instance()->listeCategoriesMajElementsOrbitaux());
+        while (it.hasNext()) {
+
+            const CategorieElementsOrbitaux categorie = it.next();
+            QString adresse = categorie.site;
+
+            if (adresse.contains("celestrak")) {
+                adresse = Configuration::instance()->adresseCelestrakNorad();
+            }
+
+            if (adresse.contains("previsat")) {
+                adresse = QString(DOMAIN_NAME) + "elem/%1";
+            }
+
+            if (!adresse.endsWith("/")) {
+                adresse.append("/");
+            }
+
+            foreach (const QString fic, categorie.fichiers) {
+
+                const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
+                const QString ficMaj = adresse.arg(fichier);
+                tel.TelechargementFichier(QUrl(ficMaj));
+            }
+        }
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification de l'age des elements orbitaux d'un satellite
+ */
+void PreviSat::VerifAgeGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (Configuration::instance()->mapElementsOrbitaux().count() > 0) {
+
+        const int ageMax = settings.value("temps/ageMax", 15).toInt();
+        const QString noradDefaut = Configuration::instance()->noradDefaut();
+
+        if ((fabs(_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax) &&
+                _ui->tempsReel->isChecked()) {
+
+            const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
+
+            QMessageBox msgbox(tr("Information"), msg.arg(ageMax), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
+                               QMessageBox::No, QMessageBox::NoButton, this);
+            msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
+            msgbox.setButtonText(QMessageBox::No, tr("Non"));
+            msgbox.exec();
+
+            const int res = msgbox.result();
+            if (res == QMessageBox::Yes) {
+                MajFichierGP();
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Afficher les noms des satellites dans les listes
  */
 void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets)
@@ -608,33 +852,6 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     /* Declarations des variables locales */
     QString nomsatComplet;
     ListWidgetItem *elem;
-
-    // TODO a deplacer
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->previsions(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->transits(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->evenements(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->previsions(), SLOT(InitAffichageListeSatellites()));
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->transits(), SLOT(InitAffichageListeSatellites()));
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->evenements(), SLOT(InitAffichageListeSatellites()));
-
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->previsions(), SLOT(TriAffichageListeSatellites()));
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->transits(), SLOT(TriAffichageListeSatellites()));
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->evenements(), SLOT(TriAffichageListeSatellites()));
-
-#if defined (Q_OS_WIN)
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->suiviTelescope(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(InitAffichageListeSatellites()));
-
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(TriAffichageListeSatellites()));
-#endif
 
     /* Initialisations */
     _ui->listeSatellites->clear();
@@ -645,7 +862,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     const QString noradDefaut = Configuration::instance()->noradDefaut();
 
     /* Corps de la methode */
-    QMapIterator<QString, ElementsOrbitaux> it(Configuration::instance()->mapElementsOrbitaux());
+    QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
     while (it.hasNext()) {
         it.next();
 
