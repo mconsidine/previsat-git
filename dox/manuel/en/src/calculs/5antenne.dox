@@ -1,0 +1,12 @@
+/**
+\page Antenne Antenna tracking
+
+This feature allows to track an artificial satellite by means of an antenna dedicated to the radio, through the software CatRotator.
+
+\image html antenne.png
+
+On this tab are displayed the address and the port on which the software CatRotator is connected to receive elevation and azimuth data of the selected satellite. By clicking on the Connect button, PreviSat sends data by means of UDP protocol on the address and port given by user.
+
+PreviSat gives in the dropdown lists the frequencies used by the selected satellite (if they are known). PreviSat calculates the Doppler effect and the real frequency (uplink and downlink). It also determines the free-space path loss for these frequencies and the transmission delay (in the vacuum).
+
+*/
