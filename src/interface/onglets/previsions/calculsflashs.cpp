@@ -41,6 +41,7 @@
 #include "ui_calculsflashs.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -142,6 +143,29 @@ void CalculsFlashs::Initialisation()
     _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des lieux d'observation dans la liste deroulante
+ */
+void CalculsFlashs::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->lieuxObservation->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+        const QString nomlieu = it.next().nomlieu();
+        _ui->lieuxObservation->addItem(nomlieu);
+    }
+
+    _ui->lieuxObservation->setCurrentIndex(0);
 
     /* Retour */
     return;

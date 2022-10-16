@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >     27 aout 2022
+ * >
  *
  */
 
@@ -54,6 +54,9 @@ namespace Ui {
 class General;
 }
 
+class Options;
+
+
 class General : public QFrame
 {
     Q_OBJECT
@@ -67,7 +70,7 @@ public:
      * @brief General Constructeur par defaut
      * @param parent parent
      */
-    explicit General(QWidget *parent = nullptr);
+    explicit General(Options *options, QWidget *parent = nullptr);
 
 
     /*
@@ -112,6 +115,8 @@ private:
     Ui::General *_ui;
     unsigned int _indexLuneSoleil;
 
+    Options *_options;
+
 
     /*
      * Methodes privees
@@ -123,6 +128,8 @@ private:
 
 
 private slots:
+
+    void AffichageLieuObs();
 
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();

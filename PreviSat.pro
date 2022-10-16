@@ -147,7 +147,7 @@ HEADERS += \
     src/configuration/gestionnairexml.h                          \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
-    src/interface/listWidgetItem.h                               \
+    src/interface/listwidgetitem.h                               \
     src/interface/apropos/apropos.h                              \
     src/interface/informations/informations.h                    \
     src/interface/onglets/antenne/antenne.h                      \

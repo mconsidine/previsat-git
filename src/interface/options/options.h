@@ -122,6 +122,11 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief AffichageLieuObs Affichage des lieux d'observation selectionnes
+     */
+    void AffichageLieuObs();
+
 
 private slots:
 

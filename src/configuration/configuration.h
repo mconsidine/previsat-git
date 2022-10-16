@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -120,6 +120,7 @@ public:
 
     // Adresses internet
     const QString &adresseCelestrak() const;
+    const QString &adresseCelestrakNorad() const;
 
     // Evenements Station Spatiale
     const QString &nomFichierEvenementsStationSpatiale() const;
@@ -133,6 +134,7 @@ public:
     const QMap<QString, QStringList> &mapSatellitesFichierElem() const;
 
     const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
+    const QList<CategorieElementsOrbitaux> &listeCategoriesMajElementsOrbitaux() const;
 
     // Satellites produisant des flashs
     const QMap<QString, SatellitesFlashs> &mapFlashs() const;
@@ -233,12 +235,14 @@ private:
 
     // Adresses internet
     QString _adresseCelestrak;
+    QString _adresseCelestrakNorad;
 
     // Categories d'orbite
     QMap<QString, QString> _mapCategoriesOrbite;
 
     // Categories d'elements orbitaux
     QList<CategorieElementsOrbitaux> _listeCategoriesElementsOrbitaux;
+    QList<CategorieElementsOrbitaux> _listeCategoriesMajElementsOrbitaux;
 
     // Pays ou organisations
     QMap<QString, QString> _mapPays;

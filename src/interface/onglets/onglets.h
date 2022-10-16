@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -69,6 +69,8 @@ class CalculsEvenementsOrbitaux;
 class SuiviTelescope;
 class Antenne;
 
+class Options;
+
 
 class Onglets : public QTabWidget
 {
@@ -83,7 +85,7 @@ public:
      * @brief Onglets Constructeur par defaut
      * @param parent parent
      */
-    explicit Onglets(QWidget *parent = nullptr);
+    explicit Onglets(Options *options, QWidget *parent = nullptr);
 
 
     /*
@@ -119,6 +121,11 @@ public:
 public slots:
 
     void changeEvent(QEvent *evt);
+
+
+signals:
+
+    void AffichageLieuObs();
 
 
 protected:
@@ -159,10 +166,17 @@ private:
 #endif
     Antenne *_antenne;
 
+    Options *_options;
+
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief AffichageLieuObservation Affichage du lieu d'observation
+     */
+    void AffichageLieuObservation();
+
     /**
      * @brief Initialisation Initialisation de la classe Onglets
      */

@@ -30,17 +30,21 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >     27 aout 2022
+ * >
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
+#include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "general.h"
+#include "configuration/configuration.h"
+#include "interface/options/options.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
 #include "ui_general.h"
 
 
@@ -65,11 +69,13 @@ static const char* _titresLuneSoleil[] = {
 /*
  * Constructeur par defaut
  */
-General::General(QWidget *parent) :
+General::General(Options *options, QWidget *parent) :
     QFrame(parent),
     _ui(new Ui::General)
 {
     _ui->setupUi(this);
+
+    _options = options;
 
     try {
 
@@ -156,6 +162,49 @@ void General::Initialisation()
                               _ui->stackedWidget_soleilLune->count()]));
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void General::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool premier = true;
+    _ui->lieuObservation->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+
+        const Observateur obs = it.next();
+        const QString nomlieu = obs.nomlieu();
+
+        _ui->lieuObservation->addItem(nomlieu);
+
+        if (premier) {
+
+            // Longitude/Latitude/Altitude
+            const double lo = obs.longitude();
+            const double la = obs.latitude();
+            const double atd = obs.altitude() * 1000.;
+
+            const QString ew = (lo < 0.) ? tr("Est") : tr("Ouest");
+            const QString ns = (la < 0.) ? tr("Sud") : tr("Nord");
+
+            // Affichage des coordonnees
+            const QString fmt = "%1 %2";
+            _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
+            _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
+            _ui->altitudeObs->setText(fmt.arg((_options->ui()->unitesKm->isChecked()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
+                                      arg((_options->ui()->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot")));
+            premier = false;
+        }
+    }
+
+    _ui->lieuObservation->setCurrentIndex(0);
 
     /* Retour */
     return;

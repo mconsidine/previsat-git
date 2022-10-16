@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -43,6 +43,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QSplashScreen>
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QSharedMemory>
 #include "configuration/configuration.h"
 #include "interface/previsat.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -72,6 +73,25 @@ int main(int argc, char *argv[])
         const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");
         Q_UNUSED(msg)
 
+        // Verification si une instance de PreviSat existe
+        const qint64 pid = a.applicationPid();
+        QSharedMemory mem;
+        mem.setKey("pid" + QString(APP_NAME));
+
+        if (!mem.create(sizeof(pid))) {
+            if (mem.error() == QSharedMemory::AlreadyExists) {
+                if (mem.attach(QSharedMemory::ReadOnly)) {
+
+                    qWarning() << QString("Une instance de %1 est déjà ouverte").arg(APP_NAME);
+                    throw PreviSatException(QObject::tr("Une instance de %1 est déjà ouverte").arg(APP_NAME), MessageType::WARNING);
+                }
+
+            } else if (mem.error() != QSharedMemory::NoError) {
+                qWarning() << "Erreur lors de la verification d'instance unique :" << mem.errorString();
+                throw PreviSatException(mem.errorString(), MessageType::WARNING);
+            }
+        }
+
         // Lancement du splash screen
         QSplashScreen * const splash = new QSplashScreen;
         splash->setPixmap(QPixmap(":/resources/interface/splashscreen.png"));
@@ -85,11 +105,19 @@ int main(int argc, char *argv[])
         PreviSat w;
 
         // Ouverture du fichier d'elements orbitaux par defaut
-        splash->showMessage(QObject::tr("Ouverture du fichier d'elements orbitaux...") + "     ", alignement, Qt::white);
+        splash->showMessage(QObject::tr("Ouverture du fichier GP...") + "     ", alignement, Qt::white);
         a.processEvents();
-        w.ChargementElementsOrbitaux();
+        w.ChargementGP();
 
+        // Mise a jour eventuelle des fichiers d'elements orbitaux
+        splash->showMessage(QObject::tr("Mise à jour des éléments orbitaux...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.MajGP();
 
+        // Demarrage de l'application en mode temps reel
+        splash->showMessage(QObject::tr("Démarrage de l'application...") + "     ", alignement, Qt::white);
+        a.processEvents();
+        w.DemarrageApplication();
 
         // Affichage de la fenetre principale et suppression du splash screen
         w.show();

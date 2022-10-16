@@ -41,6 +41,7 @@
 #include "ui_suivitelescope.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
 #include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"
 
@@ -98,6 +99,77 @@ SuiviTelescope::~SuiviTelescope()
 /*
  * Methodes publiques
  */
+void SuiviTelescope::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+/*
+ * Initialisation de la classe SuiviTelescope
+ */
+void SuiviTelescope::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->valHauteurSatSuivi->setVisible(false);
+    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
+    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
+    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
+    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
+    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void SuiviTelescope::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->lieuxObservation->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+        const QString nomlieu = it.next().nomlieu();
+        _ui->lieuxObservation->addItem(nomlieu);
+    }
+
+    _ui->lieuxObservation->setCurrentIndex(0);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des satellites dans la liste
  */
@@ -139,57 +211,6 @@ void SuiviTelescope::TriAffichageListeSatellites()
 {
     _ui->listeTelescope->sortItems();
     _ui->listeTelescope->scrollToItem(_ui->listeTelescope->currentItem(), QAbstractItemView::PositionAtTop);
-}
-
-void SuiviTelescope::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
-
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-/*
- * Initialisation de la classe SuiviTelescope
- */
-void SuiviTelescope::Initialisation()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
-
-    _ui->valHauteurSatSuivi->setVisible(false);
-    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
-    _ui->lieuxObservation5->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
-    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
-    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
-    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
-    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
-    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
-
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
 }
 
 void SuiviTelescope::on_filtreSatellites_textChanged(const QString &arg1)

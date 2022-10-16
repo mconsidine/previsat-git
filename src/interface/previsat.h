@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -57,6 +57,7 @@ QT_END_NAMESPACE
 
 
 class QLabel;
+class Date;
 class Informations;
 class Onglets;
 class Options;
@@ -96,9 +97,22 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief ChargementElementsOrbitaux Chargement du fichier d'elements orbitaux par defaut
+     * @brief MajGP Mise a jour des elements orbitaux lors du demarrage
      */
-    void ChargementElementsOrbitaux();
+    void MajGP();
+
+    /**
+     * @brief DemarrageApplication Demarrage de l'application apres le chargement de la configuration
+     */
+    void DemarrageApplication();
+
+
+public slots:
+
+    /**
+     * @brief ChargementGP Chargement du fichier d'elements orbitaux par defaut
+     */
+    void ChargementGP();
 
 
 signals:
@@ -155,6 +169,8 @@ private:
 
     QTimer *_timerStatut;
 
+    Date *_dateCourante;
+
 
     /*
      * Methodes privees
@@ -164,6 +180,11 @@ private:
      * @param langue langue (fr, en, ja)
      */
     void ChargementTraduction(const QString &langue);
+
+    /**
+     * @brief ConnexionsSignauxSlots Connexions entre les differents elements de l'interface
+     */
+    void ConnexionsSignauxSlots();
 
     /**
      * @brief CreationMenus Creation des menus
@@ -191,9 +212,14 @@ private:
     void InitBarreStatut();
 
     /**
-     * @brief InitFicElem Liste des fichiers d'elements orbitaux
+     * @brief InitDate Initialisation de la date
      */
-    void InitFicElem();
+    void InitDate();
+
+    /**
+     * @brief InitFicGP Liste des fichiers d'elements orbitaux
+     */
+    void InitFicGP();
 
     /**
      * @brief InstallationTraduction Installation de la traduction
@@ -201,6 +227,21 @@ private:
      * @param traduction traduction
      */
     void InstallationTraduction(const QString &langue, QTranslator &traduction);
+
+    /**
+     * @brief MajFichierGP Mise a jour du fichier GP courant
+     */
+    void MajFichierGP();
+
+    /**
+     * @brief MajWebGP Mise a jour automatique des elements orbitaux
+     */
+    void MajWebGP();
+
+    /**
+     * @brief VerifAgeGP Verification de l'age des elements orbitaux d'un satellite
+     */
+    void VerifAgeGP();
 
 
 private slots:
@@ -268,6 +309,7 @@ private slots:
     void on_actionContact_triggered();
     void on_actionApropos_triggered();
 
+    // Filtre sur les satellites
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
 

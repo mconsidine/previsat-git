@@ -120,7 +120,13 @@ private:
      */
     void Initialisation();
 
+
 private slots:
+
+    /**
+     * @brief AffichageLieuObs Affichage des lieux d'observation dans la liste deroulante
+     */
+    void AffichageLieuObs();
 
     void on_parametrageDefautMetOp_clicked();
 

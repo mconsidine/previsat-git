@@ -34,7 +34,6 @@
  *
  */
 
-#include <QDomDocument>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wredundant-decls"
@@ -92,13 +91,12 @@ void Telechargement::TelechargementFichier(const QUrl &url)
     event.exec();
 
     const QFileInfo ff(url.path());
-    const QString fic = (ff.fileName().contains("gp")) ?
-                url.query().split("&", Qt::SkipEmptyParts).first().split("=", Qt::SkipEmptyParts).at(1) + ".xml" : ff.fileName();
+    const QString fic = (ff.fileName().contains("gp")) ? url.query().section("&", -2, -2).section("=", -1) + ".xml" : ff.fileName();
 
     if (reponse->error()) {
 
-        throw PreviSatException(QT_TRANSLATE_NOOP("Telechargement", QString("Erreur lors du téléchargement du fichier %1").arg(fic)),
-                                MessageType::WARNING);
+        qWarning() << "Erreur lors du téléchargement du fichier" << fic;
+        throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
 
     } else {
 
@@ -110,8 +108,8 @@ void Telechargement::TelechargementFichier(const QUrl &url)
             fi.close();
 
         } else {
-            throw PreviSatException(QT_TRANSLATE_NOOP("Telechargement", QString("Impossible d'écrire le fichier %1 dans le répertoire %2")
-                                                      .arg(fic).arg(_dirDwn)), MessageType::WARNING);
+            qWarning() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
+            throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
         }
     }
 

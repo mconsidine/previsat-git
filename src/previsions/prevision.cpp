@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 juillet 2022
+ * >    16 octobre 2022
  *
  */
 
@@ -142,7 +142,7 @@ int Prevision::CalculPrevisions(int &nombre)
     const QList<EphemeridesPrevisions> tabEphem = CalculEphemSoleilObservateur();
 
     /* Corps de la methode */
-    QListIterator<EphemeridesPrevisions> it3(tabEphem);
+    QListIterator it3(tabEphem);
 
     bool afin;
     bool atrouve;
@@ -157,7 +157,7 @@ int Prevision::CalculPrevisions(int &nombre)
     QList<QList<ResultatPrevisions> > resultatSat;
 
     // Boucle sur les satellites
-    QListIterator<Satellite> it2(sats);
+    QListIterator it2(sats);
     while (it2.hasNext()) {
 
         resultatSat.clear();
