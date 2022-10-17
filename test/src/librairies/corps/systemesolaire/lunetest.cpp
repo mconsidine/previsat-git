@@ -106,35 +106,35 @@ void LuneTest::testCalculLeverMeridienCoucher()
     // Toutes les heures sont definies
     Date date(2022, 5, 1, 5, 6, 7., 2. / 24.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
-    lune.CalculLeverMeridienCoucher(date, obs);
+    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.dateLever().jourJulienUTC(), 8155.7027777777785);
-    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8156.012500000001);
-    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8156.332638888889);
+    QCOMPARE(lune.dateLever(), "06h52");
+    QCOMPARE(lune.dateMeridien(), "14h18");
+    QCOMPARE(lune.dateCoucher(), "21h59");
 
     // L'heure de coucher n'existe pas
     date = Date(2022, 5, 5, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs);
+    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.dateLever().jourJulienUTC(), 8159.788888888889);
-    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8160.147916666667);
-    QCOMPARE(lune.dateCoucher().jourJulienUTC(), DATE_INFINIE);
+    QCOMPARE(lune.dateLever(), "08h56");
+    QCOMPARE(lune.dateMeridien(), "17h33");
+    QCOMPARE(lune.dateCoucher(), "-");
 
     // L'heure de passage au meridien n'existe pas
     date = Date(2022, 5, 16, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs);
+    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.dateLever().jourJulienUTC(), 8171.347222222223);
-    QCOMPARE(lune.dateMeridien().jourJulienUTC(), DATE_INFINIE);
-    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8170.672916666667);
+    QCOMPARE(lune.dateLever(), "22h20");
+    QCOMPARE(lune.dateMeridien(), "-");
+    QCOMPARE(lune.dateCoucher(), "06h09");
 
     // L'heure de lever n'existe pas
     date = Date(2022, 5, 20, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs);
+    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.dateLever().jourJulienUTC(), DATE_INFINIE);
-    QCOMPARE(lune.dateMeridien().jourJulienUTC(), 8174.659027777778);
-    QCOMPARE(lune.dateCoucher().jourJulienUTC(), 8174.821527777778);
+    QCOMPARE(lune.dateLever(), "-");
+    QCOMPARE(lune.dateMeridien(), "05h49");
+    QCOMPARE(lune.dateCoucher(), "09h43");
 }
 
 void LuneTest::testCalculDatesPhases()
@@ -143,19 +143,19 @@ void LuneTest::testCalculDatesPhases()
 
     Date date(2022, 4, 2, 0, 0, 0., 2. / 24.);
     Lune lune;
-    lune.CalculDatesPhases(date);
+    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.datesPhases()[0].jourJulienUTC(), 8125.766956375188);
-    QCOMPARE(lune.datesPhases()[1].jourJulienUTC(), 8133.782897121634);
-    QCOMPARE(lune.datesPhases()[2].jourJulienUTC(), 8141.288298666821);
-    QCOMPARE(lune.datesPhases()[3].jourJulienUTC(), 8147.99753680239);
+    QCOMPARE(lune.datesPhases()[0], "01/04/2022 08h24");
+    QCOMPARE(lune.datesPhases()[1], "09/04/2022 08h47");
+    QCOMPARE(lune.datesPhases()[2], "16/04/2022 20h55");
+    QCOMPARE(lune.datesPhases()[3], "23/04/2022 13h56");
 
     // Lunaison suivante
     date = Date(2022, 4, 24, 0, 0, 0., 2. / 24.);
-    lune.CalculDatesPhases(date);
+    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
 
-    QCOMPARE(lune.datesPhases()[0].jourJulienUTC(), 8155.35252820452);
-    QCOMPARE(lune.datesPhases()[1].jourJulienUTC(), 8163.514488563886);
-    QCOMPARE(lune.datesPhases()[2].jourJulienUTC(), 8170.676375584048);
-    QCOMPARE(lune.datesPhases()[3].jourJulienUTC(), 8177.279776173665);
+    QCOMPARE(lune.datesPhases()[0], "30/04/2022 22h27");
+    QCOMPARE(lune.datesPhases()[1], "09/05/2022 02h20");
+    QCOMPARE(lune.datesPhases()[2], "16/05/2022 06h13");
+    QCOMPARE(lune.datesPhases()[3], "8177.279776173665");
 }

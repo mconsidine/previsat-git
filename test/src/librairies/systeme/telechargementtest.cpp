@@ -66,7 +66,7 @@ void TelechargementTest::testTelechargementFichier()
     dir.cd(qApp->applicationName());
 
     // Telechargement d'un fichier texte
-    const QString fic = QString("%1previsat/test/visual-ok.txt").arg(DOMAIN_NAME);
+    const QString fic = QString("%1test/visual-ok.txt").arg(DOMAIN_NAME);
 
     Telechargement dwn(QDir::current().path() + QDir::separator() + "test" + QDir::separator());
     const QUrl url(fic);
