@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 decembre 2018
+ * >    17 octobre 2022
  *
  */
 
@@ -74,7 +74,9 @@ PreviSatException::PreviSatException(const QString &message, const MessageType &
     /* Corps du constructeur */
     _typeMessage = typeMessage;
     if (!message.trimmed().isEmpty()) {
+#if (BUILD_TEST == false)
         Message::Afficher(message, typeMessage);
+#endif
     }
 
     /* Retour */
