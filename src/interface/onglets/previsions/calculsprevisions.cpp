@@ -102,58 +102,6 @@ Ui::CalculsPrevisions *CalculsPrevisions::ui() const
 /*
  * Methodes publiques
  */
-void CalculsPrevisions::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
-
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-/*
- * Initialisation de la classe CalculsPrevisions
- */
-void CalculsPrevisions::Initialisation()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
-
-    _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
-    _ui->valHauteurSatPrev->setVisible(false);
-    _ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
-    _ui->valHauteurSoleilPrev->setVisible(false);
-    _ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
-    _ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
-    _ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
-    _ui->valMagnitudeMaxPrev->setVisible(_ui->magnitudeMaxPrev->isChecked());
-
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
-}
-
 /*
  * Affichage des lieux d'observation dans la liste deroulante
  */
@@ -218,6 +166,63 @@ void CalculsPrevisions::TriAffichageListeSatellites()
 {
     _ui->listePrevisions->sortItems();
     _ui->listePrevisions->scrollToItem(_ui->listePrevisions->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
+void CalculsPrevisions::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+/*
+ * Initialisation de la classe CalculsPrevisions
+ */
+void CalculsPrevisions::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
+    _ui->valHauteurSatPrev->setVisible(false);
+    _ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
+    _ui->valHauteurSoleilPrev->setVisible(false);
+    _ui->hauteurSoleilPrev->setCurrentIndex(settings.value("previsions/hauteurSoleilPrev", 1).toInt());
+    _ui->illuminationPrev->setChecked(settings.value("previsions/illuminationPrev", true).toBool());
+    _ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
+    _ui->valMagnitudeMaxPrev->setVisible(_ui->magnitudeMaxPrev->isChecked());
+
+    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    if (effacerFiltre) {
+        connect(effacerFiltre, &QAction::triggered, this, &CalculsPrevisions::on_filtreSatellites_returnPressed);
+    }
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
 }
 
 void CalculsPrevisions::on_filtreSatellites_textChanged(const QString &arg1)

@@ -36,7 +36,7 @@
  * >    11 janvier 2020
  *
  * Date de revision
- * >    19 juin 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -54,13 +54,6 @@
 
 class Satellite;
 class Observateur;
-
-struct ElementsAOS {
-    Date date;
-    double azimut;
-    QString typeAOS = QObject::tr("AOS", "Acquisition of signal");
-    bool aos;
-};
 
 class Evenements
 {

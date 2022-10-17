@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    17 octobre 2022
  *
  */
 
@@ -70,14 +70,14 @@ public:
      * @brief CalculDatesPhases Calcul des dates des phases lunaires
      * @param date date
      */
-    void CalculDatesPhases(const Date &date);
+    void CalculDatesPhases(const Date &date, const DateSysteme &syst);
 
     /**
      * @brief CalculLeverMeridienCoucher Calcul des heures de lever, passage au meridien et coucher
      * @param date date
      * @param observateur observateur
      */
-    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur);
+    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
 
     /**
      * @brief CalculMagnitude Calcul de la magnitude visuelle de la Lune
@@ -107,7 +107,7 @@ public:
     double fractionIlluminee() const;
     double magnitude() const;
     const QString &phase() const;
-    const std::array<Date, NB_PHASES> &datesPhases() const;
+    const std::array<QString, NB_PHASES> &datesPhases() const;
 
 
 protected:
@@ -131,7 +131,7 @@ private:
     double _fractionIlluminee;
     double _magnitude;
     QString _phase;
-    std::array<Date, NB_PHASES> _datesPhases;
+    std::array<QString, NB_PHASES> _datesPhases;
 
 
     /*

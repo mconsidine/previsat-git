@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -110,9 +110,14 @@ Informations::~Informations()
     delete _ui;
 }
 
+
 /*
  * Accesseurs
  */
+Ui::Informations *Informations::ui() const
+{
+    return _ui;
+}
 
 
 /*

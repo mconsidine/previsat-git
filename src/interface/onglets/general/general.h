@@ -54,7 +54,10 @@ namespace Ui {
 class General;
 }
 
-class Options;
+class CalculsFlashs;
+class Date;
+class Osculateurs;
+struct ElementsAOS;
 
 
 class General : public QFrame
@@ -70,7 +73,7 @@ public:
      * @brief General Constructeur par defaut
      * @param parent parent
      */
-    explicit General(Options *options, QWidget *parent = nullptr);
+    explicit General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *parent = nullptr);
 
 
     /*
@@ -82,6 +85,9 @@ public:
     /*
      * Accesseurs
      */
+    Ui::General *ui() const;
+    ElementsAOS *elementsAOS() const;
+
 
     /*
      * Modificateurs
@@ -90,8 +96,21 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
+
 
 public slots:
+
+    /**
+     * @brief AffichageLieuObs Affichage des lieux d'observation dans la liste deroulante
+     */
+    void AffichageLieuObs();
+
+    /**
+     * @brief SauveOngletGeneral Sauvegarde des donnees de l'onglet
+     * @param fichier nom du fichier
+     */
+    void SauveOngletGeneral(const QString &fichier);
 
     void changeEvent(QEvent *evt);
 
@@ -113,23 +132,66 @@ private:
      * Variables privees
      */
     Ui::General *_ui;
+    CalculsFlashs *_flashs;
+    Osculateurs *_osculateurs;
+
+    bool _uniteVitesse;
     unsigned int _indexLuneSoleil;
 
-    Options *_options;
+    static bool _acalcDN;
+    static bool _isEclipse;
+    static Date *_dateEclipse;
+
+    static bool _acalcAOS;
+    static double _htSat;
+    static ElementsAOS *_elementsAOS;
 
 
     /*
      * Methodes privees
      */
     /**
+     * @brief AffichageDate Affichage de la date
+     * @param date date
+     */
+    void AffichageDate(const Date &date);
+
+    /**
+     * @brief AffichageDonneesSatellite Affichage des donnees relatives au satellite par defaut
+     * @param date date
+     */
+    void AffichageDonneesSatellite(const Date &date);
+
+    /**
+     * @brief AffichageDonneesSoleilLune Affichage des donnees du Soleil et de la Lune
+     */
+    void AffichageDonneesSoleilLune();
+
+    /**
+     * @brief EcritureInformationsEclipse Ecriture des informations d'eclipse
+     * @param corpsOccultant corps occultant
+     * @param fractionIlluminee fraction illuminee
+     */
+    void EcritureInformationsEclipse(const QString &corpsOccultant, const double fractionIlluminee) const;
+
+    /**
      * @brief Initialisation Initialisation de la classe General
      */
     void Initialisation();
 
+    /**
+     * @brief JouerSonFlash Execute la notification sonore d'un flash
+     */
+    void JouerSonFlash();
+
 
 private slots:
 
-    void AffichageLieuObs();
+    /**
+     * @brief AffichageVitesses Affichage des vitesses (par seconde ou par heure)
+     * @param date date
+     */
+    void AffichageVitesses(const Date &date);
 
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();

@@ -54,6 +54,9 @@ namespace Ui {
 class Osculateurs;
 }
 
+class Date;
+
+
 class Osculateurs : public QFrame
 {
     Q_OBJECT
@@ -79,6 +82,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Osculateurs *ui() const;
+
 
     /*
      * Modificateurs
@@ -87,10 +92,23 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
+
 
 public slots:
 
+    /**
+     * @brief SauveOngletElementsOsculateurs Sauvegarde des donnees de l'onglet
+     * @param fichier nom du fichier
+     */
+    void SauveOngletElementsOsculateurs(const QString &fichier);
+
     void changeEvent(QEvent *evt);
+
+
+signals:
+
+    void AffichageVitesses(const Date &date);
 
 
 protected:
@@ -111,6 +129,8 @@ private:
      */
     Ui::Osculateurs *_ui;
 
+    Date *_date;
+
 
     /*
      * Methodes privees
@@ -122,8 +142,9 @@ private:
 
     /**
      * @brief AffichageVecteurEtat Affichage du vecteur d'etat
+     * @param date date
      */
-    void AffichageVecteurEtat();
+    void AffichageVecteurEtat(const Date &date);
 
     /**
      * @brief Initialisation Initialisation de la classe Osculateurs

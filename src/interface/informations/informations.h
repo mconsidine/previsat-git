@@ -33,7 +33,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -79,6 +79,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Informations *ui() const;
+
 
     /*
      * Methodes publiques

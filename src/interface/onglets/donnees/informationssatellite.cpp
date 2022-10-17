@@ -34,8 +34,14 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QFile>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#include "configuration/configuration.h"
 #include "informationssatellite.h"
 #include "ui_informationssatellite.h"
+#include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
 
 
 /**********
@@ -78,6 +84,210 @@ InformationsSatellite::~InformationsSatellite()
 /*
  * Methodes publiques
  */
+void InformationsSatellite::show()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString fmt1 = "%1";
+    const QString fmt2 = "%1°";
+    const Satellite satellite = Configuration::instance()->listeSatellites().first();
+    const ElementsOrbitaux elem = satellite.elementsOrbitaux();
+    const Donnees donnee = elem.donnees;
+
+    /* Corps de la methode */
+    // Nom du satellite
+    _ui->nomsat->setText(elem.nom);
+
+    // Numero NORAD
+    _ui->norad->setText(elem.norad);
+
+    // Designation COSPAR
+    _ui->cospar->setText(elem.cospar);
+
+    // Epoque du TLE
+    _ui->epoque->setText(elem.epoque.ToShortDate(DateFormat::FORMAT_COURT,
+                                                 (Configuration::instance()->syst12h()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H));
+
+    // Coefficient pseudo-ballistique
+    _ui->bstar->setText(fmt1.arg(elem.bstar, 0, 'g', 6));
+
+
+    // Moyen mouvement
+    _ui->nbRev->setText(fmt1.arg(elem.no, 0, 'f', 8));
+
+    // Derivees du moyen mouvement
+    _ui->nbRev2->setText(fmt1.arg(elem.ndt20, 0, 'f', 8));
+    _ui->nbRev3->setText(fmt1.arg(elem.ndd60, 0, 'f', 8));
+
+    // Nombre d'orbites a l'epoque
+    _ui->nbOrbitesEpoque->setText(fmt1.arg(elem.nbOrbitesEpoque));
+
+
+    // Date de lancement
+    _ui->dateLancement->setText((donnee.dateLancement().isEmpty()) ? tr("Inconnue") : donnee.dateLancement());
+
+    // Categorie d'orbite
+    _ui->categorieOrbite->setText(donnee.categorieOrbite());
+
+    // Pays ou organisation
+    _ui->pays->setText(donnee.pays());
+
+    // Site de lancement
+    _ui->siteLancement->setText(donnee.siteLancement());
+    _ui->siteLancement->adjustSize();
+    _ui->siteLancement->setFixedHeight(16);
+
+
+    // Inclinaison moyenne
+    _ui->inclinaisonMoy->setText(fmt2.arg(elem.inclo, 0, 'f', 4));
+
+    // Ascension droite moyenne du noeud ascendant
+    _ui->ADNoeudAscendantMoy->setText(fmt2.arg(elem.omegao, 0, 'f', 4));
+
+    // Excentricite moyenne
+    _ui->excentriciteMoy->setText(fmt1.arg(elem.ecco, 0, 'f', 7));
+
+    // Argument du perigee moyen
+    _ui->argumentPerigeeMoy->setText(fmt2.arg(elem.argpo, 0, 'f', 4));
+
+
+    // Anomalie moyenne (moyenne)
+    _ui->anomalieMoy->setText(fmt2.arg(elem.mo, 0, 'f', 4));
+
+    // Magnitude standard, methode de determination de la magnitude, magnitude maximale
+    if (donnee.magnitudeStandard() < MAGNITUDE_INDEFINIE) {
+
+        QString text;
+        const double magMax = donnee.magnitudeStandard() - 15.75
+                + 5. * log10(1.45 * (satellite.elementsOsculateurs().demiGrandAxe() * (1. - satellite.elementsOsculateurs().excentricite())
+                                     - RAYON_TERRESTRE));
+        _ui->magnitudeStdMax->setText(text.asprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
+
+    } else {
+        _ui->magnitudeStdMax->setText("?/?");
+    }
+
+    // Modele orbital
+    _ui->modele->setText((satellite.method() == 'd') ? "SGP4 (DS)" : "SGP4 (NE)");
+    _ui->modele->setToolTip((satellite.method() == 'd') ? tr("Modèle haute orbite") : tr("Modèle basse orbite"));
+
+    // Dimensions du satellite
+    double t1 = donnee.t1();
+    double t2 = donnee.t2();
+    double t3 = donnee.t3();
+    double section = donnee.section();
+    const QString unite = (Configuration::instance()->unitesKm()) ? tr("m", "meter") : tr("ft", "foot");
+    if (!Configuration::instance()->unitesKm()) {
+        t1 *= PIED_PAR_METRE;
+        t2 *= PIED_PAR_METRE;
+        t3 *= PIED_PAR_METRE;
+        section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
+    }
+
+    QString dimensions;
+    if ((fabs(t2) < EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+        const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
+        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite);
+    }
+    if ((fabs(t2) >= EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+        const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height; R = radius");
+        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite).arg(t2, 0, 'f', 1);
+    }
+    if ((fabs(t2) >= EPSDBL100) && (fabs(t3) >= EPSDBL100)) {
+        const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
+        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite);
+    }
+    if (fabs(t1) < EPSDBL100) {
+        dimensions = tr("Inconnues");
+    }
+
+    if (fabs(section) > EPSDBL100) {
+        dimensions.append(" / %1 %2");
+        dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite);
+        _ui->sq->setVisible(true);
+    } else {
+        _ui->sq->setVisible(false);
+    }
+
+    _ui->dimensions->setText(dimensions);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Sauvegarde des donnees de l'onglet
+ */
+void InformationsSatellite::SauveOngletInformations(const QString &fichier)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QFile sw(fichier);
+        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+            if (!sw.isWritable()) {
+                qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+            }
+
+            QTextStream flux(&sw);
+
+#if (BUILD_TEST == false)
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
+                 << Qt::endl << Qt::endl << Qt::endl;
+#endif
+
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl;
+
+            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
+                                "revolution per day");
+            flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << Qt::endl;
+
+            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
+                        "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
+            flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << Qt::endl;
+
+            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3",
+                        "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
+            flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << Qt::endl;
+
+            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3",
+                        "Pseudo-ballistic coefficient in 1/Earth radius");
+            flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << Qt::endl << Qt::endl;
+
+            chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
+            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
+                    .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << Qt::endl;
+
+            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
+                        "Right ascension of the ascending node, Standard/Maximal magnitude");
+            flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << Qt::endl;
+
+            chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+            flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << Qt::endl;
+
+            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section    : %2%3");
+            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text())
+                    .arg((_ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << Qt::endl;
+
+        }
+        sw.close();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
 void InformationsSatellite::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {

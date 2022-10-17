@@ -63,6 +63,13 @@ enum class AdressesTelechargement {
     NOTIFICATIONS
 };
 
+enum class NotificationSonore {
+    NOTIFICATION_AOS,
+    ATTENTE_AOS,
+    NOTIFICATION_LOS,
+    ATTENTE_LOS
+};
+
 /*
  * Definitions des constantes
  */

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    17 octobre 2022
  *
  */
 
@@ -55,6 +55,7 @@
  * Definitions des constantes
  */
 static const unsigned int NB_PHASES = 4;
+static const unsigned int NB_TERMES_PERIODIQUES = 60;
 
 // Rayon equatorial lunaire (km)
 static const double RAYON_LUNAIRE = 1737.4;

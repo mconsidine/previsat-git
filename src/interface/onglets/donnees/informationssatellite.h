@@ -87,8 +87,16 @@ public:
     /*
      * Methodes publiques
      */
+    void show();
+
 
 public slots:
+
+    /**
+     * @brief SauveOngletInformations Sauvegarde des donnees de l'onglet
+     * @param fichier nom du fichier
+     */
+    void SauveOngletInformations(const QString &fichier);
 
     void changeEvent(QEvent *evt);
 

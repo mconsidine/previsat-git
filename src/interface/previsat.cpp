@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -53,7 +53,10 @@
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
+#include "onglets/donnees/informationssatellite.h"
+#include "onglets/general/general.h"
 #include "onglets/onglets.h"
+#include "onglets/osculateurs/osculateurs.h"
 #include "onglets/previsions/calculsevenementsorbitaux.h"
 #include "onglets/previsions/calculsprevisions.h"
 #include "onglets/previsions/calculstransits.h"
@@ -62,6 +65,7 @@
 #include "outils/outils.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/dates/date.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
@@ -187,6 +191,43 @@ void PreviSat::DemarrageApplication()
     /* Initialisations */
 
     /* Corps de la methode */
+    if (Configuration::instance()->etoiles().isEmpty()) {
+        Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
+    }
+
+    if (Configuration::instance()->constellations().isEmpty()) {
+        Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
+        LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
+    }
+
+    const QString noradDefaut = Configuration::instance()->noradDefaut();
+    QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+    const QFileInfo ff(Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic());
+
+    if (!Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
+
+        QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
+        while (it.hasNext()) {
+
+            const QString norad = it.next();
+            const ElementsOrbitaux elem = Configuration::instance()->mapElementsOrbitaux()[norad];
+
+            if (norad == noradDefaut) {
+                satellites.insert(0, Satellite(elem));
+            } else {
+                satellites.append(Satellite(elem));
+            }
+        }
+    }
+
+    // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+    EnchainementCalculs();
+
+    // Affichage des donnees numeriques dans la barre d'onglets
+    _onglets->show(*_dateCourante);
+#if defined (Q_OS_WIN)
+    //_onglets->CalculAosSatSuivi();
+#endif
 
     /* Retour */
     return;
@@ -335,32 +376,33 @@ void PreviSat::ConnexionsSignauxSlots()
     /* Initialisations */
 
     /* Corps de la methode */
+    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    if (effacerFiltre) {
+        connect(effacerFiltre, &QAction::triggered, this, &PreviSat::on_filtreSatellites_returnPressed);
+    }
+
     // Connexions avec la barre d'onglets
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->previsions(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+    connect(this, &PreviSat::AffichageListeSatellites, _onglets->previsions(), &CalculsPrevisions::AfficherListeSatellites);
+    connect(this, &PreviSat::AffichageListeSatellites, _onglets->transits(), &CalculsTransits::AfficherListeSatellites);
+    connect(this, &PreviSat::AffichageListeSatellites, _onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherListeSatellites);
 
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->transits(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
+    connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->previsions(), &CalculsPrevisions::InitAffichageListeSatellites);
+    connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->transits(), &CalculsTransits::InitAffichageListeSatellites);
+    connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->evenements(), &CalculsEvenementsOrbitaux::InitAffichageListeSatellites);
 
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->evenements(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->previsions(), SLOT(InitAffichageListeSatellites()));
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->transits(), SLOT(InitAffichageListeSatellites()));
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->evenements(), SLOT(InitAffichageListeSatellites()));
-
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->previsions(), SLOT(TriAffichageListeSatellites()));
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->transits(), SLOT(TriAffichageListeSatellites()));
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->evenements(), SLOT(TriAffichageListeSatellites()));
+    connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->previsions(), &CalculsPrevisions::TriAffichageListeSatellites);
+    connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->transits(), &CalculsTransits::TriAffichageListeSatellites);
+    connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->evenements(), &CalculsEvenementsOrbitaux::TriAffichageListeSatellites);
 
 #if defined (Q_OS_WIN)
-    connect(this, SIGNAL(AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)),
-            _onglets->suiviTelescope(), SLOT(AfficherListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool)));
-
-    connect(this, SIGNAL(InitAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(InitAffichageListeSatellites()));
-
-    connect(this, SIGNAL(TriAffichageListeSatellites()), _onglets->suiviTelescope(), SLOT(TriAffichageListeSatellites()));
+    connect(this, &PreviSat::AffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::AfficherListeSatellites);
+    connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::InitAffichageListeSatellites);
+    connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::TriAffichageListeSatellites);
 #endif
+
+    connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
+    connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
+    connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
 
     /* Retour */
     return;
@@ -450,6 +492,156 @@ void PreviSat::CreationRaccourcis()
 }
 
 /*
+ * Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+ */
+void PreviSat::EnchainementCalculs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+
+        /*
+         * Calcul de la position de l'observateur
+         */
+        Observateur &observateur = Configuration::instance()->observateur();
+        observateur.CalculPosVit(*_dateCourante);
+
+
+        /*
+         * Position du Soleil
+         */
+        Soleil &soleil = Configuration::instance()->soleil();
+        soleil.CalculPosition(*_dateCourante);
+
+        // Position topocentrique
+        soleil.CalculCoordHoriz(observateur);
+
+        // Coordonnees terrestres
+        soleil.CalculCoordTerrestres(observateur);
+
+        // Heures de lever/passage au meridien/coucher/crepuscules
+        const DateSysteme syst = (_options->ui()->syst12h->isChecked()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
+        soleil.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
+
+        if (_isCarteMonde && !Configuration::instance()->isCarteMaximisee()) {
+            // Coordonnees equatoriales
+            soleil.CalculCoordEquat(observateur);
+        }
+
+
+        /*
+         * Position de la Lune
+         */
+        Lune &lune = Configuration::instance()->lune();
+        lune.CalculPosition(*_dateCourante);
+
+        // Calcul de la phase lunaire
+        lune.CalculPhase(soleil);
+
+        // Coordonnees topocentriques
+        lune.CalculCoordHoriz(observateur);
+
+        // Coordonnees terrestres
+        lune.CalculCoordTerrestres(observateur);
+
+        // Calcul de la magnitude de la Lune
+        lune.CalculMagnitude(soleil);
+
+        // Heures de lever/passage au meridien/coucher
+        lune.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
+
+        // Calcul des phases de la Lune
+        lune.CalculDatesPhases(*_dateCourante, syst);
+
+        if (_isCarteMonde && !Configuration::instance()->isCarteMaximisee()) {
+            // Coordonnees equatoriales
+            lune.CalculCoordEquat(observateur);
+        }
+
+
+        if (!_isCarteMonde) {
+
+            /*
+             * Calcul de la position des planetes
+             */
+            if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
+
+                std::array<Planete, NB_PLANETES> &planetes = Configuration::instance()->planetes();
+
+                for(unsigned int i=0; i<NB_PLANETES; i++) {
+
+                    planetes[i].CalculPosition(*_dateCourante, soleil);
+                    planetes[i].CalculCoordHoriz(observateur);
+                }
+            }
+
+            /*
+             * Calcul de la position du catalogue d'etoiles
+             */
+            Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
+            if (_options->ui()->affconst->isChecked()) {
+                Constellation::CalculConstellations(observateur, Configuration::instance()->constellations());
+            }
+
+            if (_options->ui()->affconst->checkState() != Qt::Unchecked) {
+                LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles(), Configuration::instance()->lignesCst());
+            }
+        }
+
+        QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+        if (satellites.isEmpty()) {
+
+            const QString titre = "%1 %2";
+            setWindowTitle(titre.arg(APP_NAME).arg(APP_VER_MAJ));
+
+        } else {
+
+            const QString titre = "%1 %2 - %3";
+            setWindowTitle(titre.arg(APP_NAME).arg(APP_VER_MAJ).arg(satellites.first().elementsOrbitaux().nom));
+
+            // Calculs specifiques lors de l'affichage du Wall Command Center
+            const bool mcc = _ui->issLive->isChecked();
+
+            // Nombre de traces au sol a afficher
+            int nbTraces = _options->ui()->nombreTrajectoires->value();
+
+            if (satellites.isEmpty() || !_options->ui()->afftraj->isChecked()) {
+                nbTraces = 1;
+            } else {
+                if (mcc && satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale()) {
+                    nbTraces = 3;
+                }
+            }
+
+            Satellite::CalculPosVitListeSatellites(*_dateCourante,
+                                                   observateur,
+                                                   soleil,
+                                                   lune,
+                                                   nbTraces,
+                                                   _options->ui()->eclipsesLune->isChecked(),
+                                                   _options->ui()->effetEclipsesMagnitude->isChecked(),
+                                                   _options->ui()->extinctionAtmospherique->isChecked(),
+                                                   _options->ui()->refractionAtmospherique->isChecked(),
+                                                   _options->ui()->afftraceCiel->isChecked(),
+                                                   _options->ui()->affvisib->isChecked(),
+                                                   satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale(),
+                                                   mcc,
+                                                   satellites);
+        }
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Gestion de la police
  */
 void PreviSat::GestionPolice()
@@ -513,6 +705,8 @@ void PreviSat::Initialisation()
 
         // Gestion de la police
         GestionPolice();
+
+        _isCarteMonde = true;
 
         //on_pasReel_currentIndexChanged(0);
         _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
@@ -943,9 +1137,25 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
 
         _timerStatut = new QTimer(this);
         _timerStatut->setInterval(secondes * 1000);
-        connect(_timerStatut, SIGNAL(timeout()), this, SLOT(EffacerMessageStatut()));
+        connect(_timerStatut, &QTimer::timeout, this, &PreviSat::EffacerMessageStatut);
         _timerStatut->start();
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Effacer la zone de message de statut
+ */
+void PreviSat::EffacerMessageStatut()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _messageStatut->setText("");
 
     /* Retour */
     return;
@@ -1147,6 +1357,47 @@ void PreviSat::on_actionEnregistrer_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
+    if (_ui->actionEnregistrer->isVisible() && (_onglets->currentIndex() < 3)) {
+
+        const QStringList listeNoms(QStringList() << tr("onglet_general", "file name (without accent)")
+                                    << tr("onglet_elements", "file name (without accent)") << tr("onglet_informations", "file name (without accent)"));
+
+        const QString nomFicDefaut = settings.value("fichier/sauvegarde", Configuration::instance()->dirOut()).toString() + QDir::separator() +
+                listeNoms.at(_onglets->currentIndex()) + ".txt";
+
+        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
+                                                             tr("Fichiers texte (*.txt);;Tous les fichiers (*.*)"));
+
+        if (!fichier.isEmpty()) {
+
+            switch (_onglets->currentIndex()) {
+            case 0:
+                // Sauvegarde de l'onglet General
+                emit SauveOngletGeneral(fichier);
+                break;
+
+            case 1:
+                // Sauvegarde de l'onglet Elements osculateurs
+                emit SauveOngletElementsOsculateurs(fichier);
+                break;
+
+            case 2:
+                // Sauvegarde de l'onglet Informations satellite ou Recherche satellite
+                if (_onglets->ui()->informationsSat->isVisible()) {
+                    emit SauveOngletInformations(fichier);
+                } else if (_onglets->ui()->rechercheSat->isVisible()) {
+                    emit SauveOngletRecherche(fichier);
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            const QFileInfo fi(fichier);
+            settings.setValue("fichier/sauvegarde", fi.absolutePath());
+        }
+    }
 
     /* Retour */
     return;

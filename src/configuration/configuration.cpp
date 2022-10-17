@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -312,6 +312,11 @@ const QFont &Configuration::policeWcc() const
     return _policeWcc;
 }
 
+bool Configuration::isCarteMaximisee()
+{
+    return _isCarteMaximisee;
+}
+
 
 const QString &Configuration::versionCfg() const
 {
@@ -345,6 +350,11 @@ const QString &Configuration::noradStationSpatiale() const
     return _noradStationSpatiale;
 }
 
+Observateur &Configuration::observateur()
+{
+    return _observateurs[0];
+}
+
 
 const QList<Observateur> &Configuration::observateurs() const
 {
@@ -361,6 +371,22 @@ const QMap<QString, QStringList> &Configuration::mapSatellitesFichierElem() cons
 {
     return _mapSatellitesFichierElem;
 }
+
+Soleil &Configuration::soleil()
+{
+    return _soleil;
+}
+
+Lune &Configuration::lune()
+{
+    return _lune;
+}
+
+std::array<Planete, NB_PLANETES> &Configuration::planetes()
+{
+    return _planetes;
+}
+
 
 const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesElementsOrbitaux() const
 {
@@ -402,7 +428,7 @@ const QStringList &Configuration::listeFichiersElem() const
     return _listeFichiersElem;
 }
 
-const QList<Satellite> &Configuration::listeSatellites() const
+QList<Satellite> &Configuration::listeSatellites()
 {
     return _listeSatellites;
 }
@@ -415,6 +441,66 @@ const QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux() cons
 const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const
 {
     return _mapFrequencesRadio;
+}
+
+QList<Etoile> &Configuration::etoiles()
+{
+    return _etoiles;
+}
+
+QList<Constellation> &Configuration::constellations()
+{
+    return _constellations;
+}
+
+QList<LigneConstellation> &Configuration::lignesCst()
+{
+    return _lignesCst;
+}
+
+NotificationSonore Configuration::notifAOS() const
+{
+    return _notifAOS;
+}
+
+NotificationSonore Configuration::notifFlashs() const
+{
+    return _notifFlashs;
+}
+
+bool Configuration::unitesKm() const
+{
+    return _unitesKm;
+}
+
+bool Configuration::syst12h() const
+{
+    return _syst12h;
+}
+
+bool Configuration::affnotif() const
+{
+    return _affnotif;
+}
+
+bool Configuration::effetEclipsesMagnitude() const
+{
+    return _effetEclipsesMagnitude;
+}
+
+bool Configuration::refractionAtmospherique() const
+{
+    return _refractionAtmospherique;
+}
+
+bool Configuration::eclipsesLune() const
+{
+    return _eclipsesLune;
+}
+
+int Configuration::nombreTrajectoires() const
+{
+    return _nombreTrajectoires;
 }
 
 

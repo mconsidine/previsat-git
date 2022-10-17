@@ -99,54 +99,6 @@ CalculsTransits::~CalculsTransits()
 /*
  * Methodes publiques
  */
-void CalculsTransits::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
-
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-/*
- * Initialisation de la classe CalculsTransits
- */
-void CalculsTransits::Initialisation()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
-
-    _ui->valHauteurSatTransit->setVisible(false);
-    _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
-    _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
-    _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
-
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
-}
-
 /*
  * Affichage des lieux d'observation dans la liste deroulante
  */
@@ -211,6 +163,59 @@ void CalculsTransits::TriAffichageListeSatellites()
 {
     _ui->listeTransits->sortItems();
     _ui->listeTransits->scrollToItem(_ui->listeTransits->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
+void CalculsTransits::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+/*
+ * Initialisation de la classe CalculsTransits
+ */
+void CalculsTransits::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->valHauteurSatTransit->setVisible(false);
+    _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
+    _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
+    _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
+
+    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    if (effacerFiltre) {
+        connect(effacerFiltre, &QAction::triggered, this, &CalculsTransits::on_filtreSatellites_returnPressed);
+    }
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
 }
 
 void CalculsTransits::on_filtreSatellites_textChanged(const QString &arg1)

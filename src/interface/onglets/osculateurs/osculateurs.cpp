@@ -36,12 +36,16 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QFile>
 #include <QSettings>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "osculateurs.h"
 #include "ui_osculateurs.h"
+#include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
+#include "librairies/maths/vecteur3d.h"
 
 
 // Registre
@@ -66,6 +70,8 @@ Osculateurs::Osculateurs(QWidget *parent) :
 
     try {
 
+        _date = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -87,16 +93,221 @@ Osculateurs::~Osculateurs()
 /*
  * Accesseurs
  */
+Ui::Osculateurs *Osculateurs::ui() const
+{
+    return _ui;
+}
 
 
 /*
  * Modificateurs
  */
 
-
 /*
  * Methodes publiques
  */
+void Osculateurs::show(const Date &date)
+{
+    /* Declarations des variables locales */
+    QString text;
+
+    /* Initialisations */
+    EFFACE_OBJET(_date);
+    _date = new Date(date);
+
+    const QString fmt1 = "%1";
+    const QString fmt2 = "%1°";
+
+    const Satellite &satellite = Configuration::instance()->listeSatellites().first();
+    const ElementsOsculateurs &elements = satellite.elementsOsculateurs();
+    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+
+    /* Corps de la methode */
+    AffichageVecteurEtat(date);
+    AffichageElementsOsculateurs();
+
+    // Nom du satellite
+    _ui->nomsat->setText(satellite.elementsOrbitaux().nom);
+
+    // Autres elements osculateurs
+    _ui->anomalieVraie->setText(fmt2.arg(elements.anomalieVraie() * RAD2DEG, 0, 'f', 4));
+    _ui->anomalieExcentrique->setText(fmt2.arg(elements.anomalieExcentrique() * RAD2DEG, 0, 'f', 4));
+    _ui->champDeVue->setText("±" + fmt2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellite.altitude())) * RAD2DEG, 0, 'f', 2));
+
+    // Apogee/perigee/periode orbitale
+    const QString fmt3 = "%1 %2 (%3 %2)";
+    const double apogee = (Configuration::instance()->unitesKm()) ? elements.apogee() : elements.apogee() * MILE_PAR_KM;
+    double apogeeAlt = elements.apogee() - RAYON_TERRESTRE;
+    apogeeAlt = (Configuration::instance()->unitesKm()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
+    _ui->apogee->setText(fmt3.arg(apogee, 0, 'f', 1).arg(unite).arg(apogeeAlt, 0, 'f', 1));
+
+    const double perigee = (Configuration::instance()->unitesKm()) ? elements.perigee() : elements.perigee() * MILE_PAR_KM;
+    double perigeeAlt = elements.perigee() - RAYON_TERRESTRE;
+    perigeeAlt = (Configuration::instance()->unitesKm()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
+    _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
+    _ui->periode->setText(Maths::ToSexagesimal(elements.periode() * HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true));
+
+    // Informations de signal
+    _ui->doppler->setText(text.asprintf("%+.0f Hz", satellite.signal().doppler()));
+    _ui->attenuation->setText(fmt1.arg(satellite.signal().attenuation(), 0, 'f', 2) + " dB");
+    _ui->delai->setText(fmt1.arg(satellite.signal().delai(), 0, 'f', 2) + " ms");
+
+    // Triplet de phasage
+    const QString fmt4 = "[ %1; %2; %3 ] %4";
+    const int nu0 = satellite.phasage().nu0();
+    const int dt0 = satellite.phasage().dt0();
+    const int ct0 = satellite.phasage().ct0();
+    const int nbOrb = satellite.phasage().nbOrb();
+
+    if ((nu0 == ELEMENT_PHASAGE_INDEFINI)
+            || (dt0 == ELEMENT_PHASAGE_INDEFINI)
+            || (ct0 == ELEMENT_PHASAGE_INDEFINI)
+            || (nbOrb == ELEMENT_PHASAGE_INDEFINI)) {
+        _ui->phasage->setText(tr("N/A", "Not applicable"));
+    } else {
+        _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
+    }
+
+    /* Retour */
+    return;
+}
+
+
+/*
+ * Sauvegarde des donnees de l'onglet
+ */
+void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QFile sw(fichier);
+        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+            if (!sw.isWritable()) {
+                qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+            }
+
+            QTextStream flux(&sw);
+
+#if (BUILD_TEST == false)
+            const QString titre = "%1 %2 / %3 (c) %4";
+            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
+                 << Qt::endl << Qt::endl << Qt::endl;
+#endif
+            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure2->text() << Qt::endl << Qt::endl;
+
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl;
+
+            flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
+            QString chaine = tr("x : %1\tvx : %2", "Position, velocity");
+            flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << Qt::endl;
+
+            chaine = tr("y : %1\tvy : %2", "Position, velocity");
+            flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << Qt::endl;
+
+            chaine = tr("z : %1\tvz : %2", "Position, velocity");
+            flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << Qt::endl << Qt::endl;
+
+            flux << tr("Éléments osculateurs :") << Qt::endl;
+            switch (_ui->typeParametres->currentIndex()) {
+
+            case 0:
+                // Parametres kepleriens
+                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+                flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << Qt::endl;
+
+                chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
+                flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << Qt::endl;
+
+                chaine = tr("Inclinaison          : %1\tAnomalie moyenne                    : %2");
+                flux << chaine.arg(_ui->inclinaison->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne->text().rightJustified(9, '0'))
+                     << Qt::endl << Qt::endl;
+                break;
+
+            case 1:
+                // Parametres circulaires
+                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+                flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << Qt::endl;
+
+                chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
+                flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << Qt::endl;
+
+                chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
+                flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
+                     << Qt::endl << Qt::endl;
+                break;
+
+            case 2:
+                // Parametres equatoriaux
+                chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
+                flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << Qt::endl;
+
+                chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
+                flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << Qt::endl;
+
+                chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
+                flux << chaine.arg(_ui->longitudePerigee->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne2->text().rightJustified(9, '0'))
+                     << Qt::endl << Qt::endl;
+                break;
+
+            case 3:
+                // Parametres circulaires equatoriaux
+                chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
+                flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << Qt::endl;
+
+                chaine = tr("Ex                   : %1\tIy                          : %2",
+                            "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
+                flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << Qt::endl;
+
+                chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
+                flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
+                     << Qt::endl << Qt::endl;
+                break;
+
+            default:
+                break;
+            }
+
+            chaine = tr("Anomalie vraie       : %1\tApogée  (Altitude) : %2");
+            flux << chaine.arg(_ui->anomalieVraie->text().rightJustified(9, '0')).arg(_ui->apogee->text()) << Qt::endl;
+
+            chaine = tr("Anomalie excentrique : %1\tPérigée (Altitude) : %2");
+            flux << chaine.arg(_ui->anomalieExcentrique->text().rightJustified(9, '0')).arg(_ui->perigee->text()) << Qt::endl;
+
+            chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
+            flux << chaine.arg(_ui->champDeVue->text()).arg(_ui->periode->text().replace(" ", "")) << Qt::endl << Qt::endl;
+
+
+            flux << tr("Divers :") << Qt::endl;
+            chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
+            flux << chaine.arg(_ui->doppler->text()) << Qt::endl;
+
+            chaine = tr("Atténuation          : %1");
+            flux << chaine.arg(_ui->attenuation->text()) << Qt::endl;
+
+            chaine = tr("Délai                : %1", "Delay of signal at light speed");
+            flux << chaine.arg(_ui->delai->text()) << Qt::endl << Qt::endl;
+
+            chaine = tr("Phasage              : %1");
+            flux << chaine.arg(_ui->phasage->text()) << Qt::endl;
+        }
+
+        sw.close();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
 void Osculateurs::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -127,10 +338,72 @@ void Osculateurs::changeEvent(QEvent *evt)
 void Osculateurs::AffichageElementsOsculateurs()
 {
     /* Declarations des variables locales */
+    QString text;
 
     /* Initialisations */
+    const QString fmt1 = "%1";
+    const QString fmt2 = "%1°";
+
+    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+    const ElementsOsculateurs &elements = Configuration::instance()->listeSatellites().first().elementsOsculateurs();
+    double demiGrandAxe = elements.demiGrandAxe();
+
+    if (!Configuration::instance()->unitesKm()) {
+        demiGrandAxe *= MILE_PAR_KM;
+    }
+
+    const QString demiGdAxe = text.asprintf("%.1f ", demiGrandAxe) + unite;
 
     /* Corps de la methode */
+    _ui->demiGrandAxeKeplerien->setText(demiGdAxe);
+    _ui->demiGrandAxeCirc->setText(demiGdAxe);
+    _ui->demiGrandAxeEquat->setText(demiGdAxe);
+    _ui->demiGrandAxeCircEquat->setText(demiGdAxe);
+
+    _ui->stackedWidget_elements->setCurrentIndex(_ui->typeParametres->currentIndex());
+
+    switch (_ui->typeParametres->currentIndex()) {
+    default:
+    case 0:
+
+        // Parametres kepleriens
+        _ui->excentricite->setText(fmt1.arg(elements.excentricite(), 0, 'f', 7));
+        _ui->inclinaison->setText(fmt2.arg(elements.inclinaison() * RAD2DEG, 0, 'f', 4));
+        _ui->ADNoeudAscendant->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
+        _ui->argumentPerigee->setText(fmt2.arg(elements.argumentPerigee() * RAD2DEG, 0, 'f', 4));
+        _ui->anomalieMoyenne->setText(fmt2.arg(elements.anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+        break;
+
+    case 1:
+
+        // Parametres circulaires
+        _ui->ex1->setText(fmt1.arg(elements.exCirc(), 0, 'f', 7));
+        _ui->ey1->setText(fmt1.arg(elements.eyCirc(), 0, 'f', 7));
+        _ui->inclinaison2->setText(fmt2.arg(elements.inclinaison() * RAD2DEG, 0, 'f', 4));
+        _ui->ADNoeudAscendant2->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
+        _ui->positionSurOrbite->setText(fmt2.arg(elements.pso() * RAD2DEG, 0, 'f', 4));
+        break;
+
+    case 2:
+
+        // Parametres equatoriaux
+        _ui->excentricite2->setText(fmt1.arg(elements.excentricite(), 0, 'f', 7));
+        _ui->ix1->setText(fmt1.arg(elements.ix(), 0, 'f', 7));
+        _ui->iy1->setText(fmt1.arg(elements.iy(), 0, 'f', 7));
+        _ui->longitudePerigee->setText(fmt2.arg((elements.ascensionDroiteNoeudAscendant() + elements.argumentPerigee()) * RAD2DEG, 0, 'f', 4));
+        _ui->anomalieMoyenne2->setText(fmt2.arg(elements.anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+        break;
+
+    case 3:
+
+        // Parametres circulaires equatoriaux
+        _ui->ex2->setText(fmt1.arg(elements.exCEq(), 0, 'f', 7));
+        _ui->ey2->setText(fmt1.arg(elements.eyCEq(), 0, 'f', 7));
+        _ui->ix2->setText(fmt1.arg(elements.ix(), 0, 'f', 7));
+        _ui->iy2->setText(fmt1.arg(elements.iy(), 0, 'f', 7));
+        _ui->argumentLongitudeVraie2->setText(fmt2.arg(elements.argumentLongitudeVraie() * RAD2DEG, 0, 'f', 4));
+        break;
+    }
 
     /* Retour */
     return;
@@ -139,13 +412,33 @@ void Osculateurs::AffichageElementsOsculateurs()
 /*
  * Affichage du vecteur d'etat
  */
-void Osculateurs::AffichageVecteurEtat()
+void Osculateurs::AffichageVecteurEtat(const Date &date)
 {
     /* Declarations des variables locales */
+    QString text;
+    Vecteur3D position;
+    Vecteur3D vitesse;
 
     /* Initialisations */
 
     /* Corps de la methode */
+    const Satellite &satellite = Configuration::instance()->listeSatellites().first();
+    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+
+    if (_ui->typeRepere->currentIndex() == 0) {
+        position = satellite.position();
+    } else {
+        satellite.CalculPosVitECEF(date, position, vitesse);
+    }
+
+    if (!Configuration::instance()->unitesKm()) {
+        position *= MILE_PAR_KM;
+    }
+
+    // Position cartesienne
+    _ui->xsat->setText(text.asprintf("%+.3f ", position.x()) + unite);
+    _ui->ysat->setText(text.asprintf("%+.3f ", position.y()) + unite);
+    _ui->zsat->setText(text.asprintf("%+.3f ", position.z()) + unite);
 
     /* Retour */
     return;
@@ -180,7 +473,8 @@ void Osculateurs::Initialisation()
 void Osculateurs::on_typeRepere_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
-    AffichageVecteurEtat();
+    AffichageVecteurEtat(*_date);
+    emit AffichageVitesses(*_date);
 }
 
 

@@ -43,6 +43,10 @@
 #ifndef EVENEMENTSCONST_H
 #define EVENEMENTSCONST_H
 
+#include <QString>
+#include "librairies/dates/date.h"
+
+
 /*
  * Enumerations
  */
@@ -60,5 +64,14 @@ enum class TypeNoeudOrbite {
  * Definitions des constantes
  */
 
+/*
+ * Definitions des structures
+ */
+struct ElementsAOS {
+    Date date;
+    double azimut;
+    QString typeAOS = QObject::tr("AOS", "Acquisition of signal");
+    bool aos;
+};
 
 #endif // EVENEMENTSCONST_H

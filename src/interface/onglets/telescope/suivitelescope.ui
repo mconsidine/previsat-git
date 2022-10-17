@@ -717,6 +717,9 @@
    <property name="placeholderText">
     <string>Filtre</string>
    </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
+   </property>
   </widget>
   <zorder>formLayoutWidget_55</zorder>
   <zorder>listeTelescope</zorder>

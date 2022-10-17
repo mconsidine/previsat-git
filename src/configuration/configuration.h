@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -48,8 +48,12 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMap>
 #include <QString>
+#include "librairies/corps/etoiles/constellation.h"
+#include "librairies/corps/etoiles/etoile.h"
+#include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/corps/satellite/elementsorbitaux.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/observateur/observateur.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
@@ -114,6 +118,9 @@ public:
     const QFont &police() const;
     const QFont &policeWcc() const;
 
+    bool isCarteMaximisee();
+
+
     // Versions des fichiers de configuration
     const QString &versionCfg() const;
     const QString &versionCategorieElem() const;
@@ -127,11 +134,18 @@ public:
     const QString &noradStationSpatiale() const;
 
     // Lieux d'observation
+    Observateur &observateur();
     const QList<Observateur> &observateurs() const;
     const QMap<QString, Observateur> &mapObs() const;
 
     // Map des satellites de tous les fichiers d'elements orbitaux
     const QMap<QString, QStringList> &mapSatellitesFichierElem() const;
+
+    // Soleil, Lune, planetes
+    Soleil &soleil();
+    Lune &lune();
+    std::array<Planete, NB_PLANETES> &planetes();
+
 
     const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
     const QList<CategorieElementsOrbitaux> &listeCategoriesMajElementsOrbitaux() const;
@@ -152,12 +166,28 @@ public:
     // Liste des fichiers d'elements orbitaux
     const QStringList &listeFichiersElem() const;
 
-    const QList<Satellite> &listeSatellites() const;
+    QList<Satellite> &listeSatellites();
 
     const QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux() const;
 
     // Frequences radio des satellites
     const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
+
+    QList<Etoile> &etoiles();
+    QList<Constellation> &constellations();
+    QList<LigneConstellation> &lignesCst();
+
+    // Notifications sonores
+    NotificationSonore notifAOS() const;
+    NotificationSonore notifFlashs() const;
+
+    bool unitesKm() const;
+    bool syst12h() const;
+    bool affnotif() const;
+    bool effetEclipsesMagnitude() const;
+    bool refractionAtmospherique() const;
+    bool eclipsesLune() const;
+    int nombreTrajectoires() const;
 
 
     /*
@@ -227,6 +257,8 @@ private:
     QFont _police;
     QFont _policeWcc;
 
+    bool _isCarteMaximisee;
+
 
     // Fichiers xml de configuration
     // Versions des fichiers de configuration
@@ -281,6 +313,11 @@ private:
     // Frequences radio des satellites
     QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;
 
+    // Etoiles
+    QList<Etoile> _etoiles;
+    QList<Constellation> _constellations;
+    QList<LigneConstellation> _lignesCst;
+
 
     // Lieux d'observation
     QList<Observateur> _observateurs;
@@ -290,6 +327,12 @@ private:
 
     // Map des satellites de tous les fichiers d'elements orbitaux
     QMap<QString, QStringList> _mapSatellitesFichierElem;
+
+
+    // Soleil, Lune, planetes
+    Soleil _soleil;
+    Lune _lune;
+    std::array<Planete, NB_PLANETES> _planetes;
 
 
     // Adresses de telechargement
@@ -317,6 +360,18 @@ private:
 
     // Fichiers de preferences
     QStringList _listeFicPref;
+
+    // Notifications sonores
+    NotificationSonore _notifAOS;
+    NotificationSonore _notifFlashs;
+
+    bool _unitesKm;
+    bool _syst12h;
+    bool _affnotif;
+    bool _effetEclipsesMagnitude;
+    bool _refractionAtmospherique;
+    bool _eclipsesLune;
+    int _nombreTrajectoires;
 
 
     /*

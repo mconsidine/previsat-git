@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -47,11 +47,12 @@
 #include <QString>
 #include "corpsconst.h"
 #include "ephemerides.h"
-#include "librairies/dates/date.h"
 #include "librairies/maths/vecteur3d.h"
 
 
+class Date;
 class Observateur;
+enum class DateSysteme;
 
 class Corps
 {
@@ -177,11 +178,10 @@ public:
     bool isVisible() const;
     const Vecteur3D &vitesse() const;
     const std::array<QPointF, 361> &zone() const;
-
-    const Date &dateLever() const;
-    const Date &dateMeridien() const;
-    const Date &dateCoucher() const;
-    const std::array<Date, 6> &datesCrepuscules() const;
+    const QString &dateLever() const;
+    const QString &dateMeridien() const;
+    const QString &dateCoucher() const;
+    const std::array<QString, 6> &datesCrepuscules() const;
 
 
 protected:
@@ -221,11 +221,12 @@ protected:
 
     // Dates de lever, passage au meridien et coucher
     QList<Ephemerides> _ephem;
-    Date _dateLever;
-    Date _dateMeridien;
-    Date _dateCoucher;
+    QString _dateLever;
+    QString _dateMeridien;
+    QString _dateCoucher;
 
-    std::array<Date, 6> _datesCrepuscules;
+    std::array<QString, 6> _datesCrepuscules;
+
 
     double _r0;
     double _ct;
@@ -239,7 +240,7 @@ protected:
      * @param date date
      * @param calculCrepuscules calcul des crepuscules (dans le cas du Soleil)
      */
-    void CalculLeverMeridienCoucher(const Date &date, const bool calculCrepuscules = true);
+    void CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst, const bool calculCrepuscules = true);
 
 
 private:

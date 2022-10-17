@@ -50,7 +50,7 @@
 /*
  * Definitions des constantes
  */
-static const int ELEMENT_PHASAGE_INDEFINI = -99;
+static const int ELEMENT_PHASAGE_INDEFINI = -999;
 static const int NB_ORB_INDEFINI = -1;
 
 static const double MAGNITUDE_INDEFINIE = 99.;

@@ -40,11 +40,13 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "onglets.h"
+#include "ui_general.h"
 #include "ui_onglets.h"
 #include "antenne/antenne.h"
 #include "configuration/configuration.h"
 #include "general/general.h"
 #include "librairies/exceptions/previsatexception.h"
+//#include "librairies/corps/satellite/evenements.h"
 #include "osculateurs/osculateurs.h"
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
@@ -92,6 +94,7 @@ Onglets::Onglets(Options *options, QWidget *parent) :
     _ui->setupUi(this);
 
     _options = options;
+    _info = true;
 
     try {
 
@@ -137,6 +140,21 @@ Ui::Onglets *Onglets::ui()
     return _ui;
 }
 
+General *Onglets::general() const
+{
+    return _general;
+}
+
+Osculateurs *Onglets::osculateurs() const
+{
+    return _osculateurs;
+}
+
+InformationsSatellite *Onglets::informationsSatellite() const
+{
+    return _informationsSatellite;
+}
+
 CalculsPrevisions *Onglets::previsions() const
 {
     return _previsions;
@@ -179,6 +197,73 @@ void Onglets::setIndexPrevisions(unsigned int newIndexPrevisions)
 /*
  * Methodes publiques
  */
+void Onglets::show(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    //    if (Configuration::instance()->listeSatellites().isEmpty()) {
+
+    //        removeTab(indexOf(_ui->elementsOsculateurs));
+
+
+
+    //        if (_nbInformations == 2) {
+
+    //            _indexInfo = 0;
+    //            _nbInformations = 1;
+    //            _ui->informations->setCurrentIndex(_indexInfo);
+    //            setTabText(indexOf(_ui->informationsSat), QCoreApplication::translate("Onglets", _titreInformations[1]));
+    //            //on_informations_currentChanged(_indexInfo);
+    //            _ui->infoPrec->setVisible(false);
+    //            _ui->infoSuiv->setVisible(false);
+    //        }
+    //    } else {
+    //        if (count() < _nbOnglets) {
+
+    //            _nbInformations = 2;
+    //            insertTab(1, _ui->elementsOsculateurs, tr("Éléments osculateurs"));
+    //            setTabText(indexOf(_ui->informationsSat), QCoreApplication::translate("Onglets", _titreInformations[0]));
+
+    //            _ui->informations->insertWidget(0, _ui->informationsSat);
+    //            on_infoSuiv_clicked();
+    //            //on_informations_currentChanged(0);
+    //        }
+    //    }
+
+    // Affichage des donnees de l'onglet General
+    _general->show(date);
+
+    if (!Configuration::instance()->listeSatellites().isEmpty()) {
+
+        // Affichage des donnees de l'onglet Elements osculateurs
+        _osculateurs->show(date);
+
+        // Affichage des informations sur le satellite
+        if (_info) {
+
+            _informationsSatellite->show();
+            _antenne->InitAffichageFrequences();
+            _info = false;
+        }
+
+        _antenne->show(_general->ui()->nomsat->text(), _general->ui()->dateAOS1->text(), *_general->elementsAOS());
+    }
+
+
+    //#if defined (Q_OS_WIN)
+    //    if (_ui->telescope->isVisible() && (getListItemChecked(_ui->liste4) > 0)) {
+    //        CalculAosSatSuivi();
+    //    }
+    //#endif
+
+
+    /* Retour */
+    return;
+}
+
 void Onglets::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -260,15 +345,11 @@ void Onglets::Initialisation()
     setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
 
     // Initialisation des onglets
-    _general = new General(_options, _ui->general);
-    _general->show();
-
     _osculateurs = new Osculateurs(_ui->elementsOsculateurs);
-    _osculateurs->show();
-
+    _flashs = new CalculsFlashs(_ui->flashs);
+    _general = new General(_flashs, _osculateurs, _ui->general);
 
     _informationsSatellite = new InformationsSatellite(_ui->informationsSat);
-    _informationsSatellite->show();
 
     _rechercheSatellite = new RechercheSatellite(_ui->rechercheSat);
     _rechercheSatellite->show();
@@ -280,7 +361,6 @@ void Onglets::Initialisation()
     _previsions = new CalculsPrevisions(_ui->prevision);
     _previsions->show();
 
-    _flashs = new CalculsFlashs(_ui->flashs);
     _flashs->show();
 
     _transits = new CalculsTransits(_ui->transits);
@@ -298,13 +378,13 @@ void Onglets::Initialisation()
 #endif
 
     _antenne = new Antenne(_ui->antenne);
-    _antenne->show();
+    //    _antenne->show();
 
-    connect(this, SIGNAL(AffichageLieuObs()), _general, SLOT(AffichageLieuObs()));
-    connect(this, SIGNAL(AffichageLieuObs()), _previsions, SLOT(AffichageLieuObs()));
-    connect(this, SIGNAL(AffichageLieuObs()), _flashs, SLOT(AffichageLieuObs()));
-    connect(this, SIGNAL(AffichageLieuObs()), _transits, SLOT(AffichageLieuObs()));
-    connect(this, SIGNAL(AffichageLieuObs()), _suiviTelescope, SLOT(AffichageLieuObs()));
+    connect(this, &Onglets::AffichageLieuObs, _general, &General::AffichageLieuObs);
+    connect(this, &Onglets::AffichageLieuObs, _previsions, &CalculsPrevisions::AffichageLieuObs);
+    connect(this, &Onglets::AffichageLieuObs, _flashs, &CalculsFlashs::AffichageLieuObs);
+    connect(this, &Onglets::AffichageLieuObs, _transits, &CalculsTransits::AffichageLieuObs);
+    connect(this, &Onglets::AffichageLieuObs, _suiviTelescope, &SuiviTelescope::AffichageLieuObs);
 
     AffichageLieuObservation();
 

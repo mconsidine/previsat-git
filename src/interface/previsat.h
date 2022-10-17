@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -119,6 +119,10 @@ signals:
 
     void AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool);
     void InitAffichageListeSatellites();
+    void SauveOngletGeneral(const QString &);
+    void SauveOngletElementsOsculateurs(const QString &);
+    void SauveOngletInformations(const QString &);
+    void SauveOngletRecherche(const QString &);
     void TriAffichageListeSatellites();
 
 
@@ -171,6 +175,8 @@ private:
 
     Date *_dateCourante;
 
+    bool _isCarteMonde;
+
 
     /*
      * Methodes privees
@@ -195,6 +201,11 @@ private:
      * @brief CreationRaccourcis Creation des raccourcis clavier
      */
     void CreationRaccourcis();
+
+    /**
+     * @brief EnchainementCalculs Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+     */
+    void EnchainementCalculs();
 
     /**
      * @brief GestionPolice Gestion de la police
@@ -260,6 +271,10 @@ private slots:
      */
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
 
+    /**
+     * @brief EffacerMessageStatut Effacer la zone de message de statut
+     */
+    void EffacerMessageStatut();
 
     // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
