@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -44,6 +44,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include "corps.h"
 #include "terreconst.h"
+#include "librairies/dates/date.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
@@ -356,7 +357,7 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
 /*
  * Calcul des lever/passage au meridien/coucher
  */
-void Corps::CalculLeverMeridienCoucher(const Date &date, const bool calculCrepuscules)
+void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst, const bool calculCrepuscules)
 {
     /* Declarations des variables locales */
     unsigned int fin;
@@ -510,13 +511,14 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const bool calculCrepus
         }
     }
 
-    _dateLever = datesEvt[0];
-    _dateMeridien = datesEvt[1];
-    _dateCoucher = datesEvt[2];
+    _dateLever = (listIdx[0] == -1) ? "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
+    _dateMeridien = (listIdx[1] == -1) ? "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
+    _dateCoucher = (listIdx[2] == -1) ? "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
 
     if (calculCrepuscules) {
         for(int i=3; i<9; i++) {
-            _datesCrepuscules[i-3] = datesEvt[i];
+            _datesCrepuscules[i-3] =
+                    (listIdx[i] == -1) ? "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
         }
     }
 
@@ -781,22 +783,22 @@ const std::array<QPointF, 361> &Corps::zone() const
     return _zone;
 }
 
-const Date &Corps::dateLever() const
+const QString &Corps::dateLever() const
 {
     return _dateLever;
 }
 
-const Date &Corps::dateMeridien() const
+const QString &Corps::dateMeridien() const
 {
     return _dateMeridien;
 }
 
-const Date &Corps::dateCoucher() const
+const QString &Corps::dateCoucher() const
 {
     return _dateCoucher;
 }
 
-const std::array<Date, 6> &Corps::datesCrepuscules() const
+const std::array<QString, 6> &Corps::datesCrepuscules() const
 {
     return _datesCrepuscules;
 }

@@ -36,7 +36,7 @@
  * >    21 juillet 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    17 octobre 2022
  *
  */
 
@@ -60,6 +60,7 @@ enum class IndicePlanete {
 /*
  * Definitions des constantes
  */
+static const unsigned int NB_PLANETES = 7;
 
 
 #endif // PLANETECONST_H

@@ -71,6 +71,8 @@ class Antenne;
 
 class Options;
 
+class Date;
+
 
 class Onglets : public QTabWidget
 {
@@ -98,6 +100,11 @@ public:
      * Accesseurs
      */
     Ui::Onglets *ui();
+
+    General *general() const;
+    Osculateurs *osculateurs() const;
+    InformationsSatellite *informationsSatellite() const;
+
     CalculsPrevisions *previsions() const;
     CalculsTransits *transits() const;
     CalculsEvenementsOrbitaux *evenements() const;
@@ -116,6 +123,7 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
 
 
 public slots:
@@ -167,6 +175,11 @@ private:
     Antenne *_antenne;
 
     Options *_options;
+
+    bool _info;
+    int _indexInfo;
+    int _nbInformations;
+
 
 
     /*

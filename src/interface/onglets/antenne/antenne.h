@@ -53,6 +53,9 @@ namespace Ui {
 class Antenne;
 }
 
+struct ElementsAOS;
+
+
 class Antenne : public QFrame
 {
     Q_OBJECT
@@ -86,6 +89,13 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief InitAffichageFrequences Initialisation de l'affichage des frequences
+     */
+    void InitAffichageFrequences();
+
+    void show(const QString &nomsat, const QString &dateAOS, const ElementsAOS &elementsAOS);
+
 
 public slots:
 

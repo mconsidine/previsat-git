@@ -98,6 +98,49 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des satellites dans la liste
+ */
+void CalculsEvenementsOrbitaux::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+                                                const bool check)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeEvenements);
+    elem->setData(Qt::UserRole, norad);
+    elem->setToolTip(tooltip);
+    elem->setFlags(Qt::ItemIsEnabled);
+    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+
+    if (norad == noradDefaut) {
+        _ui->listeEvenements->setCurrentItem(elem);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de l'affichage de la liste
+ */
+void CalculsEvenementsOrbitaux::InitAffichageListeSatellites()
+{
+    _ui->listeEvenements->clear();
+    _ui->listeEvenements->scrollToTop();
+}
+
+/*
+ * Tri dans l'affichage des satellites
+ */
+void CalculsEvenementsOrbitaux::TriAffichageListeSatellites()
+{
+    _ui->listeEvenements->sortItems();
+    _ui->listeEvenements->scrollToItem(_ui->listeEvenements->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
 void CalculsEvenementsOrbitaux::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -140,53 +183,15 @@ void CalculsEvenementsOrbitaux::Initialisation()
     _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
 
+    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    if (effacerFiltre) {
+        connect(effacerFiltre, &QAction::triggered, this, &CalculsEvenementsOrbitaux::on_filtreSatellites_returnPressed);
+    }
+
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     /* Retour */
     return;
-}
-
-/*
- * Affichage des satellites dans la liste
- */
-void CalculsEvenementsOrbitaux::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
-                                                const bool check)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeEvenements);
-    elem->setData(Qt::UserRole, norad);
-    elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
-
-    if (norad == noradDefaut) {
-        _ui->listeEvenements->setCurrentItem(elem);
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Initialisation de l'affichage de la liste
- */
-void CalculsEvenementsOrbitaux::InitAffichageListeSatellites()
-{
-    _ui->listeEvenements->clear();
-    _ui->listeEvenements->scrollToTop();
-}
-
-/*
- * Tri dans l'affichage des satellites
- */
-void CalculsEvenementsOrbitaux::TriAffichageListeSatellites()
-{
-    _ui->listeEvenements->sortItems();
-    _ui->listeEvenements->scrollToItem(_ui->listeEvenements->currentItem(), QAbstractItemView::PositionAtTop);
 }
 
 void CalculsEvenementsOrbitaux::on_filtreSatellites_textChanged(const QString &arg1)

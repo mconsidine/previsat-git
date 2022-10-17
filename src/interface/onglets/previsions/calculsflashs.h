@@ -79,6 +79,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::CalculsFlashs *ui() const;
+
 
     /*
      * Modificateurs
@@ -88,7 +90,13 @@ public:
      * Methodes publiques
      */
 
+
 public slots:
+
+    /**
+     * @brief AffichageLieuObs Affichage des lieux d'observation dans la liste deroulante
+     */
+    void AffichageLieuObs();
 
     void changeEvent(QEvent *evt);
 
@@ -122,11 +130,6 @@ private:
 
 
 private slots:
-
-    /**
-     * @brief AffichageLieuObs Affichage des lieux d'observation dans la liste deroulante
-     */
-    void AffichageLieuObs();
 
     void on_parametrageDefautMetOp_clicked();
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -74,7 +74,7 @@ public:
      * @param date date
      * @param observateur observateur
      */
-    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur);
+    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
 
     /**
      * @brief CalculPosition Calcul de la position du Soleil a partir du modele simplifie

@@ -86,8 +86,8 @@ void Telechargement::TelechargementFichier(const QUrl &url)
 
     /* Corps de la methode */
     QEventLoop event;
-    connect(reponse, SIGNAL(downloadProgress(qint64, qint64)), SLOT(ProgressionTelechargement(qint64, qint64)));
-    connect(reponse, SIGNAL(finished()), &event, SLOT(quit()));
+    connect(reponse, &QNetworkReply::downloadProgress, this, &Telechargement::ProgressionTelechargement);
+    connect(reponse, &QNetworkReply::finished, &event, &QEventLoop::quit);
     event.exec();
 
     const QFileInfo ff(url.path());

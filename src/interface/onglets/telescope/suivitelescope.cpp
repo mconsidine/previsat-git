@@ -99,57 +99,9 @@ SuiviTelescope::~SuiviTelescope()
 /*
  * Methodes publiques
  */
-void SuiviTelescope::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
-
-
-/*************
- * PROTECTED *
- *************/
-
 /*
- * Methodes protegees
+ * Affichage des lieux d'observation dans la liste deroulante
  */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-/*
- * Initialisation de la classe SuiviTelescope
- */
-void SuiviTelescope::Initialisation()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
-
-    _ui->valHauteurSatSuivi->setVisible(false);
-    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
-    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
-    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
-    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
-    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
-    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
-
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
-}
-
 void SuiviTelescope::AffichageLieuObs()
 {
     /* Declarations des variables locales */
@@ -211,6 +163,62 @@ void SuiviTelescope::TriAffichageListeSatellites()
 {
     _ui->listeTelescope->sortItems();
     _ui->listeTelescope->scrollToItem(_ui->listeTelescope->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
+void SuiviTelescope::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+/*
+ * Initialisation de la classe SuiviTelescope
+ */
+void SuiviTelescope::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->valHauteurSatSuivi->setVisible(false);
+    _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
+    _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
+    _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());
+    _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
+    _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
+
+    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    if (effacerFiltre) {
+        connect(effacerFiltre, &QAction::triggered, this, &SuiviTelescope::on_filtreSatellites_returnPressed);
+    }
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
 }
 
 void SuiviTelescope::on_filtreSatellites_textChanged(const QString &arg1)

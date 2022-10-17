@@ -30,7 +30,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    11 octobre 2021
+ * >    17 octobre 2022
  *
  */
 
@@ -54,7 +54,7 @@ static const char* nomPlanetes[] = {
                                QT_TRANSLATE_NOOP("planet", "Uranus"),
                                QT_TRANSLATE_NOOP("planet", "Neptune") };
 
-static const double _tabPlanetes[7][6][4] = {
+static const double _tabPlanetes[NB_PLANETES][6][4] = {
     // Mercure
     {
         { 252.250906, 149474.0722491, 0.00030350, 0.000000018 },    // Longitude moyenne

@@ -90,6 +90,26 @@ public:
 
 public slots:
 
+    /**
+     * @brief AfficherListeSatellites Affichage des satellites dans la liste
+     * @param nomsat nom du satellite
+     * @param norad numero NORAD
+     * @param noradDefaut numero NORAD du satellite par defaut
+     * @param tooltip tooltip a afficher
+     * @param check vrai si le satellite doit etre coche
+     */
+    void AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip, const bool check);
+
+    /**
+     * @brief InitAffichageListeSatellites Initialisation de l'affichage de la liste
+     */
+    void InitAffichageListeSatellites();
+
+    /**
+     * @brief TriAffichageListeSatellites Tri dans l'affichage des satellites
+     */
+    void TriAffichageListeSatellites();
+
     void changeEvent(QEvent *evt);
 
 
@@ -121,26 +141,6 @@ private:
 
 
 private slots:
-
-    /**
-     * @brief AfficherListeSatellites Affichage des satellites dans la liste
-     * @param nomsat nom du satellite
-     * @param norad numero NORAD
-     * @param noradDefaut numero NORAD du satellite par defaut
-     * @param tooltip tooltip a afficher
-     * @param check vrai si le satellite doit etre coche
-     */
-    void AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip, const bool check);
-
-    /**
-     * @brief InitAffichageListeSatellites Initialisation de l'affichage de la liste
-     */
-    void InitAffichageListeSatellites();
-
-    /**
-     * @brief TriAffichageListeSatellites Tri dans l'affichage des satellites
-     */
-    void TriAffichageListeSatellites();
 
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();

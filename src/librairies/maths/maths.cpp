@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2018
+ * >    17 octobre 2022
  *
  */
 
@@ -64,13 +64,13 @@ QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<doubl
     QPair<double, double> res;
 
     /* Initialisations */
-    const double a = ytab.at(1) - ytab.at(0);
-    const double b = ytab.at(2) - ytab.at(1);
+    const double a = ytab[1] - ytab[0];
+    const double b = ytab[2] - ytab[1];
     const double ci = (a + b) / (b - a);
 
     /* Corps de la methode */
-    res.first = xtab.at(1) - 0.5 * (xtab.at(1) - xtab.at(0)) * ci;
-    res.second = ytab.at(1) - 0.125 * (a + b) * ci;
+    res.first = xtab[1] - 0.5 * (xtab[1] - xtab[0]) * ci;
+    res.second = ytab[1] - 0.125 * (a + b) * ci;
 
     /* Retour */
     return res;
@@ -93,15 +93,15 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPO
     double n0 = 0.;
 
     for (unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
-        yy[i] = ytab.at(i) - yval;
+        yy[i] = ytab[i] - yval;
     }
 
-    const double a = yy.at(1) - yy.at(0);
-    const double b = yy.at(2) - yy.at(1);
+    const double a = yy[1] - yy[0];
+    const double b = yy[2] - yy[1];
     const double c = b - a;
 
     /* Corps de la methode */
-    const double dy = 2. * yy.at(1);
+    const double dy = 2. * yy[1];
     while ((fabs(dn0) >= epsilon) && (iter < ITERATIONS_MAX)) {
 
         const double tmp1 = c * n0;
@@ -117,7 +117,7 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPO
     }
 
     /* Retour */
-    return (xtab.at(1) + n0 * (xtab.at(1) - xtab.at(0)));
+    return (xtab[1] + n0 * (xtab[1] - xtab[0]));
 }
 
 /*

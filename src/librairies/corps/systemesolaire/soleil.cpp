@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 juin 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -83,7 +83,7 @@ Soleil::Soleil(const Vecteur3D &pos)
 /*
  * Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
  */
-void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur)
+void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -113,7 +113,7 @@ void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &obs
 
     } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
 
-    Corps::CalculLeverMeridienCoucher(date);
+    Corps::CalculLeverMeridienCoucher(date, syst);
 
     /* Retour */
     return;

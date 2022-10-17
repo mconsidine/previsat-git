@@ -88,6 +88,10 @@ CalculsFlashs::~CalculsFlashs()
 /*
  * Accesseurs
  */
+Ui::CalculsFlashs *CalculsFlashs::ui() const
+{
+    return _ui;
+}
 
 
 /*
@@ -98,6 +102,29 @@ CalculsFlashs::~CalculsFlashs()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des lieux d'observation dans la liste deroulante
+ */
+void CalculsFlashs::AffichageLieuObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->lieuxObservation->clear();
+
+    /* Corps de la methode */
+    QListIterator it(Configuration::instance()->observateurs());
+    while (it.hasNext()) {
+        const QString nomlieu = it.next().nomlieu();
+        _ui->lieuxObservation->addItem(nomlieu);
+    }
+
+    _ui->lieuxObservation->setCurrentIndex(0);
+
+    /* Retour */
+    return;
+}
+
 void CalculsFlashs::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -143,29 +170,6 @@ void CalculsFlashs::Initialisation()
     _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
-
-    /* Retour */
-    return;
-}
-
-/*
- * Affichage des lieux d'observation dans la liste deroulante
- */
-void CalculsFlashs::AffichageLieuObs()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    _ui->lieuxObservation->clear();
-
-    /* Corps de la methode */
-    QListIterator it(Configuration::instance()->observateurs());
-    while (it.hasNext()) {
-        const QString nomlieu = it.next().nomlieu();
-        _ui->lieuxObservation->addItem(nomlieu);
-    }
-
-    _ui->lieuxObservation->setCurrentIndex(0);
 
     /* Retour */
     return;

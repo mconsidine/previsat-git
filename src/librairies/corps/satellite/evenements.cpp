@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    19 juin 2022
+ * >    17 octobre 2022
  *
  */
 
@@ -86,23 +86,23 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
         while (!afin) {
 
             jjm[0] = t_ht;
-            jjm[1] = jjm.at(0) + 0.5 * periode;
-            jjm[2] = jjm.at(0) + periode;
+            jjm[1] = jjm[0] + 0.5 * periode;
+            jjm[2] = jjm[0] + periode;
 
             for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
-                const Date date(jjm.at(i), 0., false);
+                const Date date(jjm[i], 0., false);
                 obs.CalculPosVit(date);
                 sat.CalculPosVit(date);
                 sat.CalculCoordHoriz(obs, false, refraction, true);
                 ht[i] = sat.hauteur() - hauteurMin;
             }
 
-            const bool atst1 = (ht.at(0) * ht.at(1) < 0.);
-            const bool atst2 = (ht.at(1) * ht.at(2) < 0.);
+            const bool atst1 = (ht[0] * ht[1] < 0.);
+            const bool atst2 = (ht[1] * ht[2] < 0.);
             if (atst1 || atst2) {
 
-                t_ht = (atst1) ? jjm.at(1) : jjm.at(2);
+                t_ht = (atst1) ? jjm[1] : jjm[2];
 
                 if (elements.typeAOS == QObject::tr("AOS", "Acquisition of signal")) {
                     jjm[0] = t_ht - periode;
@@ -121,7 +121,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
 
                     for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
-                        const Date date(jjm.at(i), 0., false);
+                        const Date date(jjm[i], 0., false);
                         obs.CalculPosVit(date);
                         sat.CalculPosVit(date);
                         sat.CalculCoordHoriz(obs, true, refraction, true);
@@ -208,7 +208,7 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
 
         for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
 
-            date = Date(jjm.at(i), 0., false);
+            date = Date(jjm[i], 0., false);
             sat.CalculPosVit(date);
             lati[i] = sat.CalculLatitude(sat.position());
         }
@@ -276,7 +276,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
 
             for(unsigned int j=0; j<DEGRE_INTERPOLATION; j++) {
 
-                const Date date(jjm.at(j), 0., false);
+                const Date date(jjm[j], 0., false);
 
                 // Position du satellite
                 sat.CalculPosVit(date);
@@ -296,7 +296,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
                 ecl[j] = elements.phi - elements.phiSoleil - elements.elongation;
             }
 
-            if (((ecl.at(0) * ecl.at(2)) < 0.) || ((ecl.at(0) > 0.) && (ecl.at(2) > 0.))) {
+            if (((ecl[0] * ecl[2]) < 0.) || ((ecl[0] > 0.) && (ecl[2] > 0.))) {
                 tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
             }
 

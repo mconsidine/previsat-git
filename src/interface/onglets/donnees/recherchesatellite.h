@@ -90,6 +90,12 @@ public:
 
 public slots:
 
+    /**
+     * @brief SauveOngletRecherche Sauvegarde des donnees de l'onglet
+     * @param fichier nom du fichier
+     */
+    void SauveOngletRecherche(const QString &fichier);
+
     void changeEvent(QEvent *evt);
 
 
