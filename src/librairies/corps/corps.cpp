@@ -511,14 +511,18 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
         }
     }
 
-    _dateLever = (listIdx[0] == -1) ? "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
-    _dateMeridien = (listIdx[1] == -1) ? "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
-    _dateCoucher = (listIdx[2] == -1) ? "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
+    _dateLever = (listIdx[0] == -1) ?
+                "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+    _dateMeridien = (listIdx[1] == -1) ?
+                "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+    _dateCoucher = (listIdx[2] == -1) ?
+                "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
 
     if (calculCrepuscules) {
         for(int i=3; i<9; i++) {
             _datesCrepuscules[i-3] =
-                    (listIdx[i] == -1) ? "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h");
+                    (listIdx[i] == -1) ?
+                        "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
         }
     }
 

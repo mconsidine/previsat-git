@@ -781,7 +781,7 @@ void General::SauveOngletGeneral(const QString &fichier)
                 flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
-                        .arg(_ui->lbl_beta->text()).trimmed() << Qt::endl;
+                        .arg(_ui->lbl_beta1->text()).trimmed() << Qt::endl;
 #else
                         .arg((_ui->dateJN->isVisible()) ? _ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " " : _ui->magnitudeSat->text())
                         .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_beta1->text() : "").trimmed() << Qt::endl;
@@ -790,7 +790,7 @@ void General::SauveOngletGeneral(const QString &fichier)
                 chaine = tr("Variation distance : %1  \t%2", "Range rate");
                 flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
-                        .arg(_ui->lbl_prochainAOS->text() + " " + _ui->dateAOS->text()).trimmed() + " " + _ui->lbl_azimut->text()
+                        .arg(_ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
                      << Qt::endl << Qt::endl << Qt::endl;
 #else
                         .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text() + " " + _ui->lbl_azimut1->text()

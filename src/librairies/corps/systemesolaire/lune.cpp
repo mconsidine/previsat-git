@@ -120,6 +120,7 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
     /* Declarations des variables locales */
     unsigned int iter;
     double dateEvt;
+    double k;
     double pas;
     double t_evt;
     Lune lune;
@@ -134,7 +135,10 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
     /* Corps de la methode */
     for(unsigned int i=0; i<NB_PHASES; i++) {
 
-        const double k = arrondi((annee - AN2000) * 12.3685, 0) + 0.25 * i;
+        k = arrondi((annee - AN2000) * 12.3685, 0) + 0.25 * i;
+//        if ((k - 1) > date.jourJulienUTC()) {
+//            k--;
+//        }
 
         const double t = k / 1236.85;
         const double t2 = t * t;
@@ -183,7 +187,7 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
         }
 
         if (iter < ITERATIONS_MAX) {
-            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToShortDate(DateFormat::FORMAT_COURT, syst).remove(16, 3).replace(":", "h");
+            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToShortDate(DateFormat::FORMAT_COURT, syst).remove(16, 3).replace(":", "h").trimmed();
         }
     }
 
