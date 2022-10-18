@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -42,6 +42,7 @@
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
+#include "gpformat.h"
 #include "tle.h"
 
 
@@ -205,7 +206,7 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
                 }
             }
 
-            const QString nomsat = RecupereNomsat(lig0);
+            const QString nomsat = GPFormat::RecupereNomsat(lig0);
 
             // Sauvegarde du TLE
             if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
@@ -507,7 +508,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                         }
                     }
 
-                    const QString nomsat = RecupereNomsat(lig0);
+                    const QString nomsat = GPFormat::RecupereNomsat(lig0);
 
                     if (((lig1 == lig0) && (itle == 3))
                             || ((lig1 != lig0) && (itle== 2))
@@ -608,41 +609,6 @@ bool TLE::CheckSum(const QString &ligne)
 
     /* Retour */
     return ((check % 10) == ligne.at(68).digitValue());
-}
-
-/*
- * Recupere le nom du satellite
- */
-QString TLE::RecupereNomsat(const QString &lig0)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    QString nomsat = lig0.trimmed();
-
-    /* Corps de la methode */
-    if ((nomsat.size() > 25) && (nomsat.mid(25).contains('.') > 0)) {
-        nomsat = nomsat.mid(0, 15).trimmed();
-    }
-
-    if (nomsat.startsWith("0 ")) {
-        nomsat = nomsat.mid(2);
-    }
-
-    if (nomsat.startsWith("1 ")) {
-        nomsat = nomsat.mid(2, 5);
-    }
-
-    if (nomsat.toLower().trimmed() == "iss (zarya)") {
-        nomsat = "ISS";
-    }
-
-    if ((nomsat.contains("iridium", Qt::CaseInsensitive)) && (nomsat.contains("["))) {
-        nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
-    }
-
-    /* Retour */
-    return nomsat;
 }
 
 /*

@@ -79,6 +79,13 @@ public:
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                                   const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
 
+    /**
+     * @brief RecupereNomsat Recupere le nom du satellite
+     * @param nomComplet nom complet du satellite
+     * @return nom du satellite
+     */
+    static QString RecupereNomsat(const QString &nomsat);
+
 
     /*
      * Accesseurs

@@ -72,6 +72,9 @@ GPFormat::GPFormat(const ElementsOrbitaux &elem)
 /*
  * Methodes publiques
  */
+/*
+ * Lecture d'un fichier au format GP
+ */
 QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                                          const QStringList &listeSatellites, const bool ajoutDonnees)
 {
@@ -158,12 +161,47 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
             qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(nomFichier);
             throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier), MessageType::WARNING);
         }
-        fi.close();
 
+        fi.close();
     }
 
     /* Retour */
     return mapElem;
+}
+
+/*
+ * Recupere le nom du satellite
+ */
+QString GPFormat::RecupereNomsat(const QString &lig0)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString nomsat = lig0.trimmed();
+
+    /* Corps de la methode */
+    if ((nomsat.size() > 25) && (nomsat.mid(25).contains('.') > 0)) {
+        nomsat = nomsat.mid(0, 15).trimmed();
+    }
+
+    if (nomsat.startsWith("0 ")) {
+        nomsat = nomsat.mid(2);
+    }
+
+    if (nomsat.startsWith("1 ")) {
+        nomsat = nomsat.mid(2, 5);
+    }
+
+    if (nomsat.toLower().trimmed() == "iss (zarya)") {
+        nomsat = "ISS";
+    }
+
+    if ((nomsat.contains("iridium", Qt::CaseInsensitive)) && (nomsat.contains("["))) {
+        nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
+    }
+
+    /* Retour */
+    return nomsat;
 }
 
 
@@ -329,7 +367,8 @@ void GPFormat::LectureSectionMetaData(QXmlStreamReader &gp, ElementsOrbitaux &el
         if (gp.name().toString() == "OBJECT_NAME") {
 
             // Nom de l'objet
-            elem.nom = gp.readElementText();
+            const QString nomsat = gp.readElementText();
+            elem.nom = RecupereNomsat(nomsat);
 
         } else if (gp.name().toString() == "OBJECT_ID") {
 
